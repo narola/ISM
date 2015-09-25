@@ -58,7 +58,12 @@ class Common extends CI_Controller {
 	public function template_notice(){
 		
 		$notice_id = $this->input->post('notice_id');
-		
+
+		$result = $this->common_model->sql_select(TBL_NOTICEBOARD,FALSE,array('where'=>array('id'=>$notice_id)),array('single'=>TRUE));
+
+		$new_str = '';
+		p($result);
+		//echo $new_str;		
 	}
 
 }

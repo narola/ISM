@@ -30,7 +30,10 @@
             <!--row1-->
             <div class="row reg_header">
                 <div class="col-sm-12">
-                    <img src="assets/images/site_logo.png">
+                    <img src="assets/images/site_logo.png"> 
+                    <a href="login/logout"  class="btn btn_green" style="float:right;padding-left:26px;">
+                        <span class="icon icon_logout"></span>
+                    </a>
                 </div>
             </div>
             <!--row2-->
@@ -38,11 +41,13 @@
             	<div class="col-sm-12 text-center">
                 	<div class="user_container">
                         <div class="user_profile_img">
-                            <img src="assets/images/user1.jpg">
+                            <img src="assets/images/user1dasd.jpg" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+
+
                         </div>
                         <div class="user_profile_info">
                             <h1>Welcome To ISM</h1>
-                            <h2>Adam Rose</h2>
+                            <h2><?php echo $this->session->userdata('user')['first_name'].' '.$this->session->userdata('user')['last_name']; ?></h2>
                             <h4>St.Xaviers High School</h4>
                             <h4>First Year, Computer Science</h4>
                         </div>
@@ -56,30 +61,35 @@
                     	<div class="col-sm-12 text-center">
                         	<h2 class="noti_username">Your Tutorial group is as per below</h2>
                         </div>
-                    	<!--item1-->
-                        <?php 
-                        foreach($users as $user){
-                            ?>
-                            <div class="col-sm-6">
-                                <div class="col-sm-12 group_member">
-                                    <div class="col-sm-4 member text-center">
-                                        <div class="user_profile_img">
-                                            <img src="<?php echo UPLOAD_URL.'/'.$user['profile_pic']; ?>">
-                                        </div>
-                                        <h3><?php echo $user['full_name']; ?></h3>
-                                        <p class="active">Active Today</p>
+                        <?php
+                        for ($i=0; $i < 4; $i++) { 
+                        ?>  
+                        <div class="col-sm-6">
+                            <div class="col-sm-12 group_member">
+                                <div class="col-sm-4 member text-center">
+                                    <div class="user_profile_img">
+                                        <img src="<?php echo base_url()?>uploads/<?php echo isset($users[$i]['profile_pic'])?$users[$i]['profile_pic']:''?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                     </div>
-                                    <div class="col-sm-8 member_info">
-                                        <h3><?php echo $user['school_name']; ?></h3>
-                                        <p><?php echo $user['school_address'];  ?></p>
-                                        <p><?php echo $user['city_name'].', '. $user['state_name'].', '.$user['country_name'];  ?></p>
-                                    </div>
+                                    <h3><?php echo isset($users[$i]['full_name'])?$users[$i]['full_name']:'';?></h3>
+                                    <p class="active">Member Since 2 Weeks</p>
+                                </div>
+                                <div class="col-sm-8 member_info">
+                                    <h3><?php echo isset($users[$i]['school_name'])?$users[$i]['school_name']:'';?></h3>
+                                    <p><?php echo isset($users[$i]['school_address'])?$users[$i]['school_address']:'';?></p>
+                                    <p>
+                                        <?php echo isset($users[$i]['city_name'])?$users[$i]['city_name'].',':'';?>
+                                        <?php echo isset($users[$i]['state_name'])?$users[$i]['state_name'].',':'';?>
+                                        <?php echo isset($users[$i]['country_name'])?$users[$i]['country_name']:'';?>
+                                    </p>
                                 </div>
                             </div>
-                            <?php
+                        </div>
+                        <?php 
                         }
                         ?>
+                    	
                         <div class="col-sm-12 text-center accept-bar">
+
                         	<form name="accept" action="" method="POST">
                                 <?php 
                                     $disabled = '';

@@ -194,7 +194,6 @@ class Common_model extends CI_Model {
 			$method = 'row_array';
 		}
 
-
 		/* Check to return only count or full data */
 		if(isset($options['count']) && $options['count'] == true){
 			return $this->db->count_all_results();

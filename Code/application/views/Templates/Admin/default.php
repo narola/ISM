@@ -65,7 +65,7 @@
                 <li><a href="#">Classroom</a></li>
                 <li><a href="#">Subject</a></li>
                 <li><a href="#">Badges</a></li>
-                <li><a href="#">User</a></li>
+                <li><a href="<?php echo base_url().'admin/user';?>">User</a></li>
                 <li><a href="#">Topics</a></li>
               </ul>
             </li>
@@ -134,15 +134,28 @@
                     
                 </ul>
                 <!--//notification-->
+
 				<ul class="personal_menu">
-                	<li><a href="#"><span class="icon icon_feed"></span>Feeds</a></li><!-- class="active"-->
-                	<li><a href="#"><span class="icon icon_spam"></span>Spam<span class="badge message_badge">12</span></a></li>
-                	<li><a href="#"><span class="icon icon_banner"></span>Banners</a></li>                	
-                	<li><a href="#"><span class="icon icon_notice"></span>Notice Board</a></li>
-                    <li><a href="#"><span class="icon icon_ques"></span>Questionaries</a></li>
-                    <li><a href="#"><span class="icon icon_credencial"></span>General Credencials</a></li>
+                	<li>
+                        <a href="#"><span class="icon icon_feed"></span>Feeds</a>
+                    </li><!-- class="active"-->
+                	<li>
+                        <a href="#"><span class="icon icon_spam"></span>Spam<span class="badge message_badge">12</span></a>
+                    </li>
+                	<li>
+                        <a href="#"><span class="icon icon_banner"></span>Banners</a>
+                    </li>                	
+                	<li>
+                        <a href="<?php echo base_url().'admin/notice'; ?>"><span class="icon icon_notice"></span>Notice Board</a>
+                    </li>
+                    <li>
+                        <a href="#"><span class="icon icon_ques"></span>Questionaries</a>
+                    </li>
+                    <li>
+                        <a href="#"><span class="icon icon_credencial"></span>General Credencials</a>
+                    </li>
                 </ul>
-                <a href="Login.html" class="logout"><span class="icon icon_logout"></span>LogOut</a>
+                <a href="<?php echo base_url().'admin/logout';  ?>" class="logout"><span class="icon icon_logout"></span>LogOut</a>
                 <p class="copyright">©2015 ISM | All Rights Reserved.</p>
             </div>
             <!--//side left-->

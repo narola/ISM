@@ -5,14 +5,14 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1"><title>Login</title>
-	<!-- <base href="<?php echo base_url();?>"> -->
-    <link href="<?php echo base_url();?>assets/css/bootstrap.min.css" rel="stylesheet">
+	<base href="<?php echo base_url();?>">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <!--date_picker-->
-    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/datepicker.css">
+    <link rel="stylesheet" href="assets/css/datepicker.css">
     <!--custom css-->
-    <link href="<?php echo base_url();?>assets/css/ism_style.css" rel="stylesheet">
-    <link href="<?php echo base_url();?>assets/css/responsive.css" rel="stylesheet">
-    <link href="<?php echo base_url();?>assets/css/icon.css" rel="stylesheet">
+    <link href="assets/css/ism_style.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet">
+    <link href="assets/css/icon.css" rel="stylesheet">
     <!--fonts-->
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,100,300,200,500,600,700,800,900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -20,7 +20,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <link rel="icon" type="image/png" href="<?php echo base_url();?>assets/images/graduate.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/images/graduate.png" sizes="32x32" />
    
 </head>
 
@@ -28,7 +28,7 @@
 	<div class="container-fluid">
 		<div class="row reg_header">
         	<div class="col-sm-12">
-            	<img src="<?php echo base_url();?>assets/images/site_logo.png">
+            	<img src="assets/images/site_logo.png">
             </div>
         </div>
         <div class="row reg_bg">
@@ -158,7 +158,7 @@
                         </div>
                         <div class="box_body">
                             <div class="col-sm-12">	
-                            	<p>You are registered for following school, <a href="#" onclick="enabled_all();">Click Here</a> if it’s not your school.</p>
+                            	<p>You are registered for following school, <a href="javascript:void(0)" onclick="enabled_all();">Click Here</a> if it’s not your school.</p>
                                 <div class="school_info">
                                     <div class="form-group small_input select">
                                         <label for="">School Name</label>
@@ -348,10 +348,10 @@
         </footer>
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="<?php echo base_url();?>assets/js/jquery-1.11.3.min.js"></script>
+    <script src="assets/js/jquery-1.11.3.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script> 
-    <script src="<?php echo base_url();?>assets/js/bootstrap-datepicker.js"></script> 
+    <script src="assets/js/bootstrap.min.js"></script> 
+    <script src="assets/js/bootstrap-datepicker.js"></script> 
     <script type="text/javascript">
         function get_states(country_id){
             $.ajax({

@@ -7,13 +7,17 @@ class ISM_Controller extends CI_Controller {
 		
 		parent::__construct();
 		$this->load->model(array('common_model'));	
-		$exceptional_url = array('admin','admin/logout','student/logout','student/forgot_password','student/reset_password');
-		if(uri_string() != ''){
-
-		}
-
+		$exceptional_url = array('admin','admin/logout','student/logout','student/forgot_password','student/reset_password','student/group_allocation');
 		if(in_array(uri_string(), $exceptional_url) == FALSE && is_loggedin() == FALSE){
 				redirect('login');
+		}
+		else{
+			if(in_array(uri_string(), $exceptional_url) == FALSE){
+				$group_id   =   $this->session->userdata('user')['group_id']; 
+            	$count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id,'joining_status'=>'1')),array('count'=>TRUE));
+            	if($count_member != 5)
+                	redirect('login/welcome');
+        	}
 		}
 
 		 // $this->output->enable_profiler(TRUE);

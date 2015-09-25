@@ -89,6 +89,10 @@ class User extends ISM_Controller {
 																	);
 		$this->pagination->initialize($config);
 		
+		$this->data['schools'] = $this->common_model->sql_select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
+		$this->data['courses'] = $this->common_model->sql_select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));
+		$this->data['roles'] = $this->common_model->sql_select(TBL_ROLES,FALSE,FALSE,array('limit'=>10));
+		
 		$this->template->load('admin/default','admin/user/view_user',$this->data);
 	}
 

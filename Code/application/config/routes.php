@@ -57,6 +57,7 @@ $route['default_controller'] = 'login';
 
 $route['admin'] = "admin/dashboard";
 $route['admin/dashboard'] = "admin/dashboard/dashboard";
+$route['admin/auto_generated_credentials'] = "admin/dashboard/auto_generated_credentials";
 $route['admin/logout'] = "admin/dashboard/logout"; 
 
 $route['admin/(:any)'] = "admin/$1"; 
