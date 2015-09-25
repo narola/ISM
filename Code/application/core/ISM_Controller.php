@@ -8,7 +8,9 @@ class ISM_Controller extends CI_Controller {
 		parent::__construct();
 		$this->load->model(array('common_model'));	
 		$exceptional_url = array('admin','admin/logout','student/logout','student/forgot_password','student/reset_password');
-		
+		if(uri_string() != ''){
+
+		}
 
 		if(in_array(uri_string(), $exceptional_url) == FALSE && is_loggedin() == FALSE){
 				redirect('login');

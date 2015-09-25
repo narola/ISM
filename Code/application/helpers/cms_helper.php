@@ -49,12 +49,90 @@ function flashMessage($success = '', $error = '') {
     }
 }
 
+
+/**
+* Return difference between two times in seconds.
+* @time1 = Basically End Time
+* @time2 = Basically Current Time
+*/
+
+  function dateDiff($time1, $time2) {
+    // If not numeric then convert texts to unix timestamps
+    if (!is_int($time1)) {
+      $time1 = strtotime($time1);
+    }
+    if (!is_int($time2)) {
+      $time2 = strtotime($time2);
+    }
+ 
+    // If time1 is bigger than time2
+    // Then swap time1 and time2
+    if ($time1 > $time2) {
+      $ttime = $time1;
+      $time1 = $time2;
+      $time2 = $ttime;
+    }
+ 
+    // Set up intervals and diffs arrays
+    $intervals = array('year','month','day','hour','minute','second');
+    $diffs = array();
+ 
+    // Loop thru all intervals
+    foreach ($intervals as $interval) {
+      // Create temp time from time1 and interval
+      $ttime = strtotime('+1 ' . $interval, $time1);
+      // Set initial values
+      $add = 1;
+      $looped = 0;
+      // Loop until temp time is smaller than time2
+      while ($time2 >= $ttime) {
+        // Create new temp time from time1 and interval
+        $add++;
+        $ttime = strtotime("+" . $add . " " . $interval, $time1);
+        $looped++;
+      }
+ 
+      $time1 = strtotime("+" . $looped . " " . $interval, $time1);
+      $diffs[$interval] = $looped;
+    }
+    
+    $count = 0;
+    $times = array();
+    // Loop thru all diffs
+    foreach ($diffs as $interval => $value) {
+      // Break if we have needed precission
+      if ($count >= 6) {
+		break;
+      }
+      // Add value and interval 
+      if ($value > 0) {
+			// Add value and interval to times array
+			$times[$interval] =  $value;
+			$count++;
+      }
+    }
+    $check = array('day' => 86400, 'hour' => 3600, 'minute' => 60, 'second' => 1);
+ 	$seconds = 0;
+ 	foreach($times as $key => $value ){
+ 		foreach ($check as $k => $v) {
+ 			if($k == $key){
+ 				$seconds += $value*$check[$key];
+ 			}
+ 		}
+ 		
+ 	}
+    
+    return $seconds;
+  }
+
+
+
 /**
 *	This function will return true if called within active hours.
 *	return  true/false or null 
 *	@Author = Sandip Gopani (SAG)
 */
-function is_active_hours(){
+function active_hours(){
 	$CI =& get_instance();
 		// Get active hours time from DB
 		$active = $CI->common_model->sql_select(
@@ -63,7 +141,8 @@ function is_active_hours(){
 			"ac.config_key = 'activeHoursStartTime' OR ac.config_key = 'activeHoursEndTime'"
 			);
 		
-		$starttime = $endtime = $output = false;
+		$starttime = $endtime = null;
+		$output = 0;
 		$currenttime = getdate(); // Get an array of current time
 
 		// Store current hours and minutes
@@ -85,13 +164,12 @@ function is_active_hours(){
 			$end = DateTime::createFromFormat('H:i', $endtime);
 
 			// Check current time is between $starttime and $endtime
-			if ($cur > $start && $cur < $end){ 
-			   $output = true;
+			if ($cur > $start && $cur < $end){
+			   $output = dateDiff($endtime.':00', $currenttime.':'.getdate()['seconds']);
 			}
 		}
 		return $output;
 	}
-
 
 /** 
 * This function simply return output of sql_select function of common_model.  

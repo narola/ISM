@@ -122,7 +122,7 @@ class Login extends CI_Controller {
 
     public function set_session($userid){
         $users = select('users u',
-                'u.*,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic',   
+                'u.*,tm.group_id,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic',   
                 array('where'   =>  array('u.id' => $userid)),
                 array('join'    =>    
                     array(

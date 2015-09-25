@@ -132,4 +132,5 @@ define('TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION','tutorial_group_topic_allocation');
 define('TBL_USERS','users');
 define('TBL_USER_NOTIFICATION','user_notification');
 define('TBL_USER_PROFILE_PICTURE','user_profile_picture');
+define('TBL_TUTORIAL_GROUP_MEMBER_SCORE','tutorial_group_member_score');
 
