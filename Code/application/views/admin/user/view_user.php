@@ -36,13 +36,25 @@
           <div class="col-sm-12">
               <div class="form-group">
                     <select class="form-control">
-                        <option>Select School</option>
-                    </select>
+                                <option>Select School</option>
+                                <?php 
+                                  if(!empty($schools)){ 
+                                    foreach($schools as $school) {
+                                    ?>
+                                    <option><?php echo $school['school_name']; ?></option>  
+                                <?php }  } ?>
+                            </select>
                 </div>
                 <div class="form-group">
-                    <select class="form-control">
-                        <option>Select Course</option>
-                    </select>
+                   <select class="form-control">
+                                <option>Select Course</option>
+                                <?php 
+                                  if(!empty($courses)){ 
+                                    foreach($courses as $course) {
+                                    ?>
+                                    <option><?php echo $course['course_name']; ?></option>  
+                                <?php }  } ?>
+                            </select>
                 </div>
                 <div class="form-group">
                     <select class="form-control">
@@ -51,13 +63,25 @@
                 </div>
                 <div class="form-group">
                     <select class="form-control">
-                        <option>Select Area</option>
-                    </select>
+                                <option>School Role</option>
+                                <?php 
+                                  if(!empty($roles)){ 
+                                    foreach($roles as $role) {
+                                    ?>
+                                    <option><?php echo $role['role_name']; ?></option>  
+                                <?php }  } ?>
+                            </select>
                 </div>
                 <div class="form-group">
                     <select class="form-control">
-                        <option>School Role</option>
-                    </select>
+                                <option>School Role</option>
+                                <?php 
+                                  if(!empty($roles)){ 
+                                    foreach($roles as $role) {
+                                    ?>
+                                    <option><?php echo $role['role_name']; ?></option>  
+                                <?php }  } ?>
+                            </select>
                 </div>
             </div>
         </div>

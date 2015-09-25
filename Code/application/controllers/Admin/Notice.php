@@ -65,6 +65,10 @@ class Notice extends ISM_Controller {
 																		'offset'=>$offset)
 																	);
 
+		$this->data['schools'] = $this->common_model->sql_select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
+		$this->data['courses'] = $this->common_model->sql_select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));
+		$this->data['roles'] = $this->common_model->sql_select(TBL_ROLES,FALSE,FALSE,array('limit'=>10));
+
 		$this->pagination->initialize($config);
 		
 		$this->template->load('admin/default','admin/notice/view_notice',$this->data);	

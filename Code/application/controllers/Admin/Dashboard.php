@@ -110,6 +110,32 @@ class Dashboard extends ISM_Controller {
 		$this->load->view('admin/dashboard');
 
 	}
+
+	/**
+	 * function auto_generated_credentials() will generate auto credentials for school.
+	 *
+	 * @author Virendra patel Sparks ID - VPA
+	 **/
+
+	public  function auto_generated_credentials(){
+
+		$this->data['schools']	=	$this->common_model->sql_select('schools');
+		$this->data['roles'] = $this->common_model->sql_select('roles');
+		$this->data['courses'] = $this->common_model->sql_select('courses');
+
+		$this->form_validation->set_rules('school_id', 'School Name', 'trim|required');
+		$this->form_validation->set_rules('role_id', 'Role', 'trim|required');
+		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
+		$this->form_validation->set_rules('no_of_credentials', 'No of credentials', 'trim|required|integer|greater_than[0]');
+
+		if($this->form_validation->run() == FALSE){
+			//$this->load->view('admin/student_credentials_dashboard',$data);
+			$this->template->load('admin/default','admin/generated_credentials',$this->data);
+		}else{
+
+		}
+
+	}
 	
 	/**
 	 * function logout will clear All Session Data and Delete Remember_me Coookie.
