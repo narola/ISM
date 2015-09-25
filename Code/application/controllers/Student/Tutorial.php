@@ -19,7 +19,7 @@ class Tutorial extends ISM_Controller {
 			p(getdate(),true);
 		if(is_active_hours() == true){
 			
-		}	
+		}	  
 	}	
 
 
