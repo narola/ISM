@@ -12,12 +12,19 @@ class ISM_Controller extends CI_Controller {
 				redirect('login');
 		}
 		else{
-			if(in_array(uri_string(), $exceptional_url) == FALSE){
-				$group_id   =   $this->session->userdata('user')['group_id']; 
-            	$count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id,'joining_status'=>'1')),array('count'=>TRUE));
-            	if($count_member != 5)
-                	redirect('login/welcome');
-        	}
+
+			$role = $this->session->userdata('role');
+
+			if($role != 'admin'){
+				if(in_array(uri_string(), $exceptional_url) == FALSE){
+					$group_id   =   $this->session->userdata('user')['group_id']; 
+	            	$count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,
+	            		array('where'=>array('group_id'=>$group_id,'joining_status'=>'1')),array('count'=>TRUE));
+	            	if($count_member != 5)
+	                	redirect('login/welcome');
+        		}
+			}
+			
 		}
 
 		 // $this->output->enable_profiler(TRUE);
