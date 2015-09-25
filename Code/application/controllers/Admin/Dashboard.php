@@ -38,7 +38,7 @@ class Dashboard extends ISM_Controller {
 		$loggedin = is_loggedin();  /* is_logginin() in cms_helper.php It will Check Admin is loggen or not. */
 
 		if($loggedin == TRUE){
-			redirect('admin/dashboard');
+			redirect('admin/user');
 		}
 
 		$this->form_validation->set_rules('username', 'Email / User Name', 'trim|required');
@@ -54,19 +54,27 @@ class Dashboard extends ISM_Controller {
 			$password = $this->input->post('password');
 
 			if(filter_var($username, FILTER_VALIDATE_EMAIL)) {
-				$fetch_data = $this->common_model->sql_select('users',FALSE,array('email_id'=>$username),array('single'=>TRUE));
+				$fetch_data = $this->common_model->sql_select('users',FALSE,array('where'=>array('email_id'=>$username)),array('single'=>TRUE));
 
 		    }else {
-				$fetch_data = $this->common_model->sql_select('users',FALSE,array('username'=>$username),array('single'=>TRUE));
+				$fetch_data = $this->common_model->sql_select('users',FALSE,array('where'=>array('username'=>$username)),array('single'=>TRUE));
 		    }
+
+
 
 			if(!empty($fetch_data)){
 
 				$db_pass = $this->encrypt->decode($fetch_data['password']);
-				
-			    if($db_pass === $password && $fetch_data['is_delete']==0 ){
 
-					$role_data = $this->common_model->sql_select('roles',FALSE,array('id'=>$fetch_data['role_id']),array('single'=>TRUE));	
+
+			    if($db_pass == $password && $fetch_data['is_delete']==0 && $fetch_data['role_id'] == 1 ){
+
+
+
+					$role_data = $this->common_model->sql_select('roles',FALSE,array('where'=>array('id'=>$fetch_data['role_id']))
+						,array('single'=>TRUE));	
+
+
 
 			    	/* If remember Me Checkbox is clicked */
 					/* Set Cookie IF Start */
@@ -81,6 +89,8 @@ class Dashboard extends ISM_Controller {
 						$this->input->set_cookie($cookie);
 					}   /* Set Cookie IF END */
 
+					
+
 					$array = array(
 						'id' => $fetch_data['id'],
 						'role' => $role_data['role_name'],
@@ -88,7 +98,7 @@ class Dashboard extends ISM_Controller {
 						'email_id'=>$fetch_data['email_id'],
 						'loggedin' =>TRUE
 					);
-					
+
 					$this->session->set_userdata( $array ); // Set Session for Admin
 
 					redirect('admin/user');  
@@ -97,6 +107,8 @@ class Dashboard extends ISM_Controller {
 			    	$this->session->set_flashdata('error', 'Invalid Username or Password.');		
 					redirect('admin');	
 			    }
+
+
 
 			}else{
 				$this->session->set_flashdata('error', 'Invalid Username or Password.');		

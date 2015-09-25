@@ -31,7 +31,15 @@
             <div class="login_board text-center">
                 <div class="col-sm-12">
                     <img src="<?php echo base_url().'assets'; ?>/images/logo_login_admin.png" class="logo">
+
+                    <?php $error = $this->session->flashdata('error'); ?>
+  
+                          
+
                     <form class="login_form" method="POST">
+                        <div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
+                                  <?php echo strip_tags($error) ; ?>
+                          </div>
                         <div class="form-group">
                             <input placeholder="Enter Email/Username" class="form-control" type="text" name="username">
                         </div>
