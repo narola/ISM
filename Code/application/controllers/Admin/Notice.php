@@ -22,16 +22,59 @@ class Notice extends ISM_Controller {
 	public function index()
 	{
 
-		$this->data['notices'] = select('noticeboard');
+		$this->load->library('pagination');
+		
+		$config['base_url'] = base_url().'admin/notice/index';
+		$config['uri_segment'] = 4;
+		$config['num_links'] = 5;
+		$config['total_rows'] = $this->common_model->sql_select('noticeboard',FALSE,FALSE,array('count'=>TRUE));
+		$config['per_page'] = 10;
 
+		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
+ 		$config['full_tag_close'] = '</ul>';
+
+ 		$config['num_tag_open'] = '<li>';
+ 		$config['num_tag_close'] = '</li>';
+
+ 		$config['first_link'] = 'First';
+	 	$config['first_tag_open'] = '<li>';
+	 	$config['first_tag_close'] = '</li>';
+
+	 	$config['cur_tag_open'] = '<li><a>';
+	 	$config['cur_tag_close'] = '</a></li>';
+
+	 	$config['prev_link'] = '&laquo;';
+	 	$config['prev_tag_open'] = '<li>';
+	 	$config['prev_tag_close'] = '</li>';
+
+	 	$config['next_link'] = '&raquo;';
+	 	$config['next_tag_open'] = '<li>';
+	 	$config['next_tag_close'] = '</li>';
+
+	 	$config['last_link'] = 'Last';
+	 	$config['last_tag_open'] = '<li>';
+	 	$config['last_tag_close'] = '</li>';
+	 	
+		$offset = $this->uri->segment(4);
+
+		$this->data['notices'] = $this->common_model->sql_select('noticeboard',
+																	FALSE,
+																	array('where'=>array('is_delete'=>FALSE)),
+																	array(
+																		'limit'=>$config['per_page'],
+																		'offset'=>$offset)
+																	);
+
+		$this->pagination->initialize($config);
+		
 		$this->template->load('admin/default','admin/notice/view_notice',$this->data);	
 	}
 
 	public function add(){
 
-		$this->data['roles'] = $this->common_model->sql_select('roles');
-		$this->data['templates'] = $this->common_model->sql_select('noticeboard',false,array('where'=>array('is_template'=>TRUE)));
-		$this->data['classrooms'] = $this->common_model->sql_select('classrooms');
+		$this->data['roles'] = $this->common_model->sql_select(TBL_ROLES);
+		$this->data['templates'] = $this->common_model->sql_select(TBL_NOTICEBOARD,false,array('where'=>array('is_template'=>TRUE)));
+		$this->data['classrooms'] = $this->common_model->sql_select(TBL_CLASSROOMS);
 
 		$this->form_validation->set_rules('notice_title', 'Notice Title', 'trim|required');
 		$this->form_validation->set_rules('notice', 'Notice Description', 'trim|required');
@@ -56,7 +99,7 @@ class Notice extends ISM_Controller {
 					'is_testdata'=>'yes'
 				);
 
-			$notice_id = $this->common_model->insert('noticeboard',$data);
+			$notice_id = $this->common_model->insert(TBL_NOTICEBOARD,$data);
 
 			$noticeboard_viewer = array(
 					'notice_id'=>$notice_id,
@@ -68,20 +111,72 @@ class Notice extends ISM_Controller {
 					'is_testdata'=>'yes'
 				);
 
-			$this->common_model->insert('noticeboard_viewer',$noticeboard_viewer);
-			
+			$this->common_model->insert(TBL_NOTICEBOARD_VIEWER,$noticeboard_viewer);
+			$this->session->set_flashdata('success', 'Data is Successfully created.');
 			redirect('admin/notice');
-
 		}
+	}
+
+	public function update($id){
+
+		$this->data['roles'] = $this->common_model->sql_select(TBL_ROLES);
+		$this->data['templates'] = $this->common_model->sql_select(TBL_NOTICEBOARD,false,array('where'=>array('is_template'=>TRUE)));
+		$this->data['classrooms'] = $this->common_model->sql_select(TBL_CLASSROOMS);
 		
+		$this->data['notice'] = select(TBL_NOTICEBOARD,
+							TBL_NOTICEBOARD.'.notice_title,'.TBL_NOTICEBOARD.'.notice,'.TBL_NOTICEBOARD.
+							'.is_template,'.TBL_NOTICEBOARD_VIEWER.'.classroom_id,'.TBL_NOTICEBOARD_VIEWER.'.role_id,'.
+							TBL_NOTICEBOARD_VIEWER.'.id as notice_viewer_id,'.TBL_NOTICEBOARD.'.status',
+							array('where'=>array(TBL_NOTICEBOARD.'.id'=>$id)),
+						  	array(
+						  		'single'=>TRUE,
+						  		'join'	=>array(
+						  					array(
+							    				'table' => TBL_NOTICEBOARD_VIEWER,
+							    				'condition' => TBL_NOTICEBOARD_VIEWER.".notice_id = ".TBL_NOTICEBOARD.".id",
+							    				)
+						  				)
+						  			));		
+
+		$this->form_validation->set_rules('notice_title', 'Notice Title', 'trim|required');
+		$this->form_validation->set_rules('notice', 'Notice Description', 'trim|required');
+		$this->form_validation->set_rules('role_id', 'Role', 'trim|required');
+		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim');
+
+		if($this->form_validation->run() == FALSE ){
+			$this->template->load('admin/default','admin/notice/update_notice',$this->data);	
+		}else{
+
+			$notice_id = $id;
+			$notice_viewer_id = $this->data['notice']['notice_viewer_id'];
+
+			$notice_data = array(
+					'notice_title'=>$this->input->post('notice_title'),
+					'notice'=>$this->input->post('notice'),
+					'status'=>$this->input->post('status'),
+					'modified_date'=>date('Y-m-d H:i:s',time()),
+					'is_template'=>$this->input->post('is_template'),
+				);
+
+			$this->common_model->update(TBL_NOTICEBOARD,$notice_id,$notice_data);
+
+			$notice_viewer_data = array(
+									'role_id'=>$this->input->post('role_id'),
+									'classroom_id'=>$this->input->post('classroom_id'),
+									'modified_date'=>date('Y-m-d H:i:s',time()),
+								);
+			$this->common_model->update(TBL_NOTICEBOARD_VIEWER,$notice_viewer_id,$notice_viewer_data);
+			$this->session->set_flashdata('success', 'Data is Successfully Updated.');
+			redirect('admin/notice');
+			//redirect('','refresh');
+		}
 	}
 
-	public function update(){
+	public function delete($id){
 
-	}
-
-	public function delete(){
-
+		$this->common_model->update(TBL_NOTICEBOARD,$id,array('is_delete'=>TRUE));
+		$this->session->set_flashdata('success', 'Data is Successfully Updated.');
+		redirect('admin/notice');	
 	}
 
 }

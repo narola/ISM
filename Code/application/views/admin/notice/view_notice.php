@@ -59,17 +59,25 @@
 
                   <div class="col-lg-4 col-md-6">                     
                       <div class="box notice shadow_effect">
-                            <a href="#myModal" data-toggle="modal">
+                            <a href="#myModal_<?php echo $notice['id']; ?>" data-toggle="modal">
                                 <div class="notice_header">
-                                    <h3><?php echo $notice['notice_title']; ?><span> <?php echo $notice['created_date']; ?> </span></h3>
+                                    <h3>
+                                        <?php echo ucfirst(character_limiter($notice['notice_title'],15)); ?>
+                                        <span> <?php 
+                                                    $originalDate = $notice['created_date'];
+                                                   echo  $newDate = date("M d,  Y", strtotime($originalDate));
+                                                ?> 
+                                        </span>
+                                    </h3>
                                 </div>
                                 <div class="notice_body">
-                                    <p><?php echo $notice['notice']; ?></p>
+                                    <p><?php echo character_limiter($notice['notice'],300); ?></p>
                                     <div class="notice_action">
                                         <a href="#" class="icon icon_zip_color"></a>
-                                        <a href="#" class="icon icon_edit_color"></a>
+                                        <a href="<?php echo base_url().'admin/notice/update/'.$notice['id']; ?>" class="icon icon_edit_color"></a>
                                         <a href="#" class="icon icon_copy_color"></a>
-                                        <a href="#" class="icon icon_delete_color"></a>
+                                        <a href="<?php echo base_url().'admin/notice/delete/'.$notice['id']; ?>" 
+                                          onclick="return confirm('Are you sure to delete this data ?')"; class="icon icon_delete_color"></a>
                                         <input type="checkbox"><label class="save_box"></label>
                                     </div>
                                 </div>
@@ -82,6 +90,39 @@
                     <div class="clearfix"></div>
                 </div>
                 <!--//noticeboard-->
-                
+                <?php  echo $this->pagination->create_links();  ?>
       </div>
             <!--//main-->
+
+   <?php 
+        if(!empty($notices)) { 
+            foreach($notices as $notice) {
+            ?>  
+
+         <!-- Modal -->
+    <div class="modal fade" id="myModal_<?php echo $notice['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModal_<?php echo $notice['id']; ?>Label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header notice_header text-center">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel"> <?php echo ucfirst($notice['notice_title']); ?></h4>
+            <small><?php 
+                        $originalDate = $notice['created_date'];
+                       echo  $newDate = date("M d,  Y", strtotime($originalDate));
+                    ?> 
+            </small>
+          </div>
+          <div class="modal-body">
+             <p><?php echo $notice['notice']; ?></p>
+            <h4 class="notice_by"><?php echo ucfirst($this->session->userdata('username')); ?><span>ISM Admin</span></h4>
+            <div class="clearfix"></div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <!-- /.modal -->
+
+   <?php } } ?> 
+
+                   

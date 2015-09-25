@@ -94,7 +94,6 @@
                           <?php 
                             if(!empty($all_users)) {
 
-                              p($all_users,true);
                               foreach($all_users as $user) {
                             ?>
                           <tr>
@@ -107,14 +106,14 @@
                               </td>
                               <td class="username">
                                   <div class="chat_img_holder"><img src="<?php echo base_url().'assets'; ?>/images/user3.jpg"></div>
-                                  <h4><?php echo $user['username']; ?></h4>
+                                  <h4><?php echo ucfirst($user['username']); ?></h4>
                                   <p class="active">Active Today</p>
                               </td>
 
                               <td>First Year</td>
                               <td>Computer Science</td>
-                              <td></td>
-                              <td></td>
+                              <td> <?php echo ucfirst($user['city_name']); ?> </td>
+                              <td><?php echo ucfirst($user['role_name']); ?></td>
                               <td>
                                   <a href="#" class="icon icon_timeline"></a>
                                   <a href="#" class="icon icon_books"></a>
