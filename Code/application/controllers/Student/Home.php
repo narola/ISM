@@ -36,7 +36,6 @@ class Home extends ISM_Controller {
 			1
 			);
 
-
 		// No. of users who accept group join request.
 		$total_joined = select(
 			'tutorial_group_member',

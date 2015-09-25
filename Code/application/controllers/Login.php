@@ -20,7 +20,7 @@ class Login extends CI_Controller {
           set sessin data and force login student */
 
         if (isset($remember_me)) {
-            $rem_data = select('users',null, array('where'=>array('id'=>$this->encrypt->decode($remember_me))));
+            $rem_data = select(TBL_USERS,null, array('where'=>array('id'=>$this->encrypt->decode($remember_me))));
             // $array = array(
             //     'id' => $rem_data['id'],
             //     'loggedin' => TRUE
@@ -33,9 +33,12 @@ class Login extends CI_Controller {
 
         if ($loggedin == TRUE) {
 
-        	$role = $this->session->userdata('role') . '/dashboard';
-            $role = base_url() . 'student/home';
-            redirect($role);
+        	$group_id   =   $this->session->userdata('user')['group_id']; 
+            $count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id,'joining_status'=>'1')),array('count'=>TRUE));
+            if($count_member == 5)
+                redirect('student/home');
+            else
+                redirect('login/welcome');
         }
 
         $this->form_validation->set_rules('username', 'User Name', 'trim|required');
@@ -51,10 +54,10 @@ class Login extends CI_Controller {
 
 
             if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
-                $fetch_data = select('users',null, array('where'=>array('email_id' => $username)),1);
+                $fetch_data = select(TBL_USERS,null, array('where'=>array('email_id' => $username)),1);
             } else {
 
-                $fetch_data = select('users',null, array('where'=>array('username' => $username)),1);
+                $fetch_data = select(TBL_USERS,null, array('where'=>array('username' => $username)),1);
             }
 
          
@@ -82,20 +85,31 @@ class Login extends CI_Controller {
                     // $this->session->set_userdata($array);
 
                     $this->set_session($fetch_data['id']);
+                    // p($this->session->userdata('user'));
+                    // echo $this->session->userdata('user')['group_id'];
+                    // exit;
                     $role = $fetch_data['role_id'];
                     switch ($role) {
-                        case '2': redirect('student/home');
+                        case '2':
+                            $group_id   =   $this->session->userdata('user')['group_id']; 
+                            if($this->session->userdata('user')['group_id'] != ''){
+                                $count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id,'joining_status'=>'1')),array('count'=>TRUE));
+                                if($count_member == 5)
+                                    redirect('student/home');
+                                else
+                                    redirect('login/welcome');
+                            }
                             break;
                         default:
                             break;
                     }
                 } else {
-                    $this->session->set_flashdata('error', 'Invalid Username or Password.');
+                    $this->session->set_flashdata('msg', 'Invalid Username or Password.');
                     redirect('login');
                 }
             } else {
 
-                $auto_generated_data = select('auto_generated_credential',null, array('where' => array('username' => $username)),1);
+                $auto_generated_data = select(TBL_AUTO_GENERATED_CREDENTIAL,null, array('where' => array('username' => $username)),1);
 
                 if (!empty($auto_generated_data)) {
                     $user_pass = $auto_generated_data['password']; /* Data from database */
@@ -121,42 +135,42 @@ class Login extends CI_Controller {
     }
 
     public function set_session($userid){
-        $users = select('users u',
-                'u.*,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic',   
+        $users = select(TBL_USERS.' u',
+                'u.*,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id',   
                 array('where'   =>  array('u.id' => $userid)),
                 array('join'    =>    
                     array(
                         array(
-                            'table' => 'user_profile_picture up',
+                            'table' => TBL_USER_PROFILE_PICTURE.' up',
                             'condition' => 'up.user_id = u.id'
                             ),
                         array(
-                            'table' => 'tutorial_group_member tm',
+                            'table' => TBL_TUTORIAL_GROUP_MEMBER.' tm',
                             'condition' => 'tm.user_id = u.id'
                             ),
                         
                         array(
-                            'table' => 'tutorial_groups gu',
+                            'table' => TBL_TUTORIAL_GROUPS.' gu',
                             'condition' => 'gu.id = tm.group_id'
                             ),
                         array(
-                            'table' => 'student_academic_info si',
+                            'table' => TBL_STUDENT_ACADEMIC_INFO.' si',
                             'condition' => 'u.id = si.user_id'
                             ),
                         array(
-                            'table' => 'schools s',
+                            'table' => TBL_SCHOOLS.' s',
                             'condition' => 's.id = si.school_id'
                             ),
                         array(
-                            'table' => 'cities ct',
+                            'table' => TBL_CITIES.' ct',
                             'condition' => 'ct.id = u.city_id'
                             ), 
                         array(
-                            'table' => 'countries cut',
+                            'table' => TBL_COUNTRIES.' cut',
                             'condition' => 'cut.id = u.country_id'
                             ), 
                         array(
-                            'table' => 'states st',
+                            'table' => TBL_STATES.' st',
                             'condition' => 'st.id = u.state_id'
                             )
                         )
@@ -196,7 +210,7 @@ class Login extends CI_Controller {
     {
         $emailid    =   $this->input->post('emailid',TRUE);
         $data       =   array('where'   =>  array('email_id' => $emailid));
-        $get_data   =   select('users',null,$data,1);
+        $get_data   =   select(TBL_USERS,null,$data,1);
         if(sizeof($get_data)>0){
             $options = array(
                             'join' =>
@@ -211,7 +225,7 @@ class Login extends CI_Controller {
                             'single'=>1
                         );
             $where = array('where'  =>  array('u.email_id' => $emailid));
-            $chkdata = select('users u','f.token,f.complete_date',$where,$options);
+            $chkdata = select(TBL_USERS.' u','f.token,f.complete_date',$where,$options);
             if(empty($chkdata['complete_date']) && $chkdata['token'] != ''){
                 $this->session->set_flashdata('msg', 'Request Alredy Sended Please Check It');
                 redirect('login');  
@@ -260,7 +274,7 @@ class Login extends CI_Controller {
     public function change()
     {
         $token          =   $this->input->get_post('id',TRUE);
-        $token_result   =   select('user_forgot_password',null,array('where'=>array('token'=>$token)),1);
+        $token_result   =   select(TBL_USER_FORGOT_PASSWORD,null,array('where'=>array('token'=>$token)),1);
         if(sizeof($token_result)>0){
             $complete_date = $token_result['complete_date'];
             if(!empty($complete_date))
@@ -296,12 +310,12 @@ class Login extends CI_Controller {
             $this->load->view('login/reset_forgot_password');
         }
         else{
-            $get_record =   select('user_forgot_password',null,array('where'=>array('token'=>$token)),1);
+            $get_record =   select(TBL_USER_FORGOT_PASSWORD,null,array('where'=>array('token'=>$token)),1);
             if(sizeof($get_record)>0){
                 $user_id = $get_record['user_id'];
                 $password_data = array('password' => $this->encrypt->encode($this->input->post('new_password',TRUE)));
-                update('users',$user_id,$password_data);
-                update('user_forgot_password',array('token'=>$token),array('complete_date'=>date('Y-m-d H:i:s')));
+                update(TBL_USERS,$user_id,$password_data);
+                update(TBL_USER_FORGOT_PASSWORD,array('token'=>$token),array('complete_date'=>date('Y-m-d H:i:s')));
                 $this->session->set_flashdata('msg', 'Your Password Successfully Changed');
                 redirect('login');
             }else{
@@ -310,4 +324,10 @@ class Login extends CI_Controller {
             }
         }
     }  
+
+    /*----Load welcome page---*/
+    public function welcome()
+    {
+        $this->load->view('student/welcome');
+    }
 }
