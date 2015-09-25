@@ -1,0 +1,277 @@
+@charset "utf-8";
+/* CSS Document */
+/*---------------icon------------*/
+.icon {
+	display:inline-block;
+	height:30px;
+	width:30px;
+    vertical-align: middle;
+	margin-right:10px;
+}
+.icon_info, 
+.icon_school, 
+.icon_lock, 
+.icon_menu_home, 
+.icon_menu_tut, 
+.icon_menu_class, 
+.icon_menu_assess, 
+.icon_search, 
+.icon_bell, 
+.icon_message, 
+.icon_request,
+.icon_pin,
+.icon_image,
+.icon_user,
+.icon_thumb_0,
+.icon_thumb,
+.icon_comment,
+.icon_user_2,
+.icon_emoji,
+.icon_logout,
+.icon_option,
+.icon_option_dark,
+.icon_go,
+.icon_menu_group,
+.icon_menu_organize,
+.icon_menu_manage,
+.icon_menu_report,
+.icon_grid,
+.icon_list,
+.icon_refresh,
+.icon_feed,
+.icon_spam,
+.icon_banner,
+.icon_notice,
+.icon_ques,
+.icon_credencial,
+.icon_timeline,
+.icon_books,
+.icon_performance,
+.icon_blockuser,
+.icon_mail,
+.icon_chat,
+.icon_add,
+.icon_edit,
+.icon_zip,
+.icon_delete,
+.icon_zip_color,
+.icon_edit_color,
+.icon_copy_color,
+.icon_delete_color,
+.icon_expand{
+	background-image:url(../images/icon-set.png);
+	background-position:0 0;
+}
+.icon_info, .icon_school, .icon_lock{
+	opacity:0.2;
+}
+.icon_menu_home, .icon_menu_tut, .icon_menu_class, .icon_menu_assess, .icon_menu_group, .icon_menu_organize, .icon_menu_manage, .icon_menu_report{
+	width:33px;
+    vertical-align: bottom;
+    margin-right: 5px;
+}
+.icon_school{
+	background-position:-65px 0;
+}
+.icon_lock{
+	background-position:-33px 0;
+}
+.icon_menu_home{
+	background-position:-124px 0;
+}
+.icon_menu_tut{
+	background-position:-154px 0;
+}
+.icon_menu_class{
+	background-position:-187px 0;
+}
+.icon_menu_assess{
+	background-position:-220px 0;
+}
+.icon_search{
+    background-position: -254px 0;
+    opacity: 0.4;
+}
+.icon_bell, .icon_message, .icon_request{
+	width:34px;
+	margin-right:0;
+}
+.icon_bell{
+	background-position: -284px 0;
+}
+.icon_message{
+	background-position: -318px 0;
+}
+.icon_request{
+	background-position: -354px 0;
+}
+.icon_pin, .icon_image, .icon_user{
+	width:25px;
+	height:26px;
+	opacity:0.2;
+	margin-right: 15px;
+}
+.icon_pin{
+	background-position:-415px 0;
+}
+.icon_image{
+	background-position:-439px 0;
+}
+.icon_user{
+	background-position:-463px 0;
+}
+.icon_thumb_0,
+.icon_thumb,
+.icon_comment,
+.icon_user_2{
+	width:20px;
+	height:20px;
+	margin-right:2px;
+}
+.icon_thumb_0{
+	background-position:-79px -31px;
+}
+.icon_thumb{
+	background-position:-96px -31px;
+}
+.icon_comment{
+	background-position:-38px -30px;
+}
+.icon_user_2{
+	background-position:-59px -30px;
+}
+.icon_emoji{
+	background-position:-387px 0;
+}
+.icon_logout{
+	opacity:0.2;
+	height:25px;
+	background-position:-114px -30px;
+}
+.icon_option{
+    width: 18px;
+	background-position:-141px -30px;
+}
+.icon_option_dark{
+	width:9px;
+	margin-left:10px;
+	margin-right:0;
+	background-position:-166px -30px;
+}
+.icon_go{
+	margin-right:0;
+	background-position:-179px -30px;
+}
+.icon_menu_group{
+	background-position: -205px -30px;
+    width: 44px;
+}
+.icon_menu_organize{
+    background-position: -256px -30px;
+}
+.icon_menu_manage{
+	background-position:-294px -30px;
+}
+.icon_menu_report{
+	background-position:-327px -30px;
+}
+.icon_search, .icon_grid, .icon_list, .icon_refresh{
+	opacity:0.4;
+	margin:0;
+}
+.icon_grid{
+	background-position:-41px -60px;
+}
+/*.icon_grid:hover, .icon_grid:focus{
+	background-position:-4px -60px;
+}*/
+.icon_list{
+	background-position:-122px -60px;
+}
+.icon_refresh{
+	background-position:-198px -60px;
+}
+.icon_feed{
+	background-position:-361px -34px;
+}
+.icon_spam{
+	background-position:-396px -32px;
+}
+.icon_banner{
+	background-position:-432px -30px;
+}
+.icon_notice{
+	background-position:-468px -32px;
+}
+.icon_ques{
+	background-position:-233px -61px;
+}
+.icon_credencial{
+    float: left;
+	background-position:-265px -61px;
+}
+.icon_timeline,
+.icon_books,
+.icon_performance,
+.icon_blockuser,
+.icon_mail,
+.icon_chat{
+	margin-right:15px;
+}
+.icon_timeline,
+.icon_books,
+.icon_performance{
+	margin-bottom:10px;
+}
+.icon_timeline{
+	background-position:-299px -61px;
+}
+.icon_books{
+	background-position:-337px -61px;
+}
+.icon_performance{
+	background-position:-372px -61px;
+}
+.icon_blockuser{
+	background-position:-404px -61px;
+}
+.icon_mail{
+	background-position:-439px -61px;
+}
+.icon_chat{
+	background-position:-473px -61px;
+}
+.icon_add{
+	height:50px;
+	width:50px;
+	margin:0 0 10px 0;
+    background-position: -57px -95px;
+}
+.icon_edit{
+    background-position: -121px -104px;
+}
+.icon_zip{
+    background-position: -159px -104px;
+}
+.icon_delete{
+    background-position: -194px -104px;
+}
+.icon_zip_color{
+    background-position: -229px -104px;
+}
+.icon_edit_color{
+    background-position: -268px -104px;
+}
+.icon_copy_color{
+    background-position: -304px -104px;
+}
+.icon_delete_color{
+    background-position: -343px -104px;
+}
+.icon_expand{
+    background-position: -422px -110px;
+    height: 16px;
+    width: 16px;
+}
+/*--------------icon---------------*/
+

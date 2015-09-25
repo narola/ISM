@@ -1,0 +1,540 @@
+@charset "utf-8";
+/* CSS Document */
+@media (max-width:1920px){
+	
+}
+@media (max-width:1366px){
+	.box_body .age{
+		width: 26.5%;
+	}
+	.three_tabs > li {
+		padding: 10px;
+	}
+	.inner_pages_admin .three_tabs > li {
+    	padding: 10px 29px;
+	}
+	.filter .form-group{
+		width: 18.7%;
+	}
+	.inner_pages_admin .personal_menu > li > a{
+		font-size: 14px;
+	}
+	.exam_year > p > span, .exam_type > p:last-child, .exam_cat > p:last-child{
+		font-size:15px;
+	}
+	.add_exam{
+		height:215px;
+	}
+}
+@media (max-width:1280px){
+	.login_background{
+		background-size:auto;
+	}
+	.box_body .age {
+    	width: 26%;
+	}
+	.inner_pages .user_profile_img{
+		margin: -15px 7px 15px 0;
+	}
+	.navbar_admin .navbar-brand{
+		padding: 15px 25px 15px 20px;
+	}
+	.inner_pages_admin .three_tabs > li {
+    	padding: 10px 25px;
+	}
+	.filter .form-group {
+    	width: 18.5%;
+	}
+	.icon_notice{
+		float:left;
+	}
+	.sidebar_left_container .logout{
+		bottom:47px;
+	}
+	.table_user .squaredThree label{
+		left:20px;
+	}
+	#carousel-noticeboard{
+		width:315px;
+	}
+	.carousel-caption {
+    	font-size: 18px;
+	}
+	.stm_list {
+    	max-height: 422px;
+	}
+	.mate_descrip .btn_green{
+		padding: 3px 9px;
+	}
+	.suggested_mates_card{
+		 padding: 22px 16px;
+	}
+	.suggested_mates_holder .btn_blue{
+		font-size:12px;
+		padding:6px;
+	}
+	.stm_item .stm_user_img{
+		height:40px;
+		width:40px;
+		margin-right:5px;
+	}
+	.stm_item.online p, .stm_item.offline p{
+		margin:10px 0;
+	}
+	.stm .box_header{
+		padding: 16px 15px;
+	}
+	.sidebar_right_admin .stm .box_header {
+    	padding: 7px 15px;
+	}
+	.inner_pages_admin .personal_menu > li > a {
+    	font-size: 12px;
+	}
+	.sidebar_right_container2 .stm{
+		border-bottom: 1px solid #ddd;
+    	border-left: medium none;
+	}
+	.welcome_bg{
+		background-size:auto;
+	}
+	.exam_year .icon_option_dark {
+    	margin-left: 3px;
+	}
+	.add_exam{
+		height:211px;
+	}
+	.table_group>thead>tr>th:first-child {
+    	width: 38px;
+	}
+	.navbar-default .navbar-nav > li > a{
+		padding:15px;
+	}
+	.topic_action{
+		width:8%;
+	}
+	.topic_content{
+		width: 92%;
+	}
+	.admin_question{
+		width:82%;
+	}
+}	
+@media (max-width:1024px){
+	.login_background {
+		background-size:auto;
+	}
+	.welcome_bg{
+		background-size:auto;
+	}
+	.user_profile_img{
+		height:90px;
+		width:90px;
+	}	
+	.three_tabs > li{
+		padding: 10px 5px;
+	}
+	.personal_menu > li > a{
+		font-size:12px;
+	}
+	.three_tabs .dropdown-menu{
+	    min-width: 130px;		
+		width:inherit;
+	}
+	#carousel-noticeboard{
+		width:240px;
+	}
+	.carousel-caption {
+	    font-size: 15px;
+		bottom: 0;
+	}
+	.suggested_mates{
+		display:none;
+	}
+	.stm{
+		width:100%;
+	}
+	.btn_find_studymates {
+		display:block;
+	}
+	.score_img{width:30%;}
+	.score_descrip{width:70%;}
+	.score_points {
+		padding-left: 36%;
+		width: 100%;
+	}
+	.stm_list {
+    	max-height: 305px;
+	}
+	.member_info {
+    	padding: 30px 20px;
+	}
+	.inner_pages .user_profile_img {
+   		float: none;
+    	margin: 75px auto 0;
+	}
+	.inner_pages.sidebar_left_container{
+		text-align:center;
+	}
+	.inner_pages.sidebar_left_container h4 {
+    	margin: 10px 0 5px;
+	}
+	.three_tabs{
+		margin-top:25px;
+	}
+	.sidebar_left_container .logout{
+		bottom: 45px;
+	}
+	.main2{
+		width: 64%;
+	}
+	.sidebar_right_container2{
+		width:22%;
+	}
+	.navbar_admin .navbar-nav .icon{
+		display:none;
+	}
+	.navbar_admin .navbar-right .icon{
+		display:block;
+	}
+	.navbar_admin .navbar-nav > li > a{
+		padding:20px 16px;
+	}
+	.navbar_admin .navbar-right > li > a{
+		padding:15px 16px;
+	}
+	.inner_pages_admin .three_tabs > li {
+   		padding: 10px 17px;
+	}
+	.filter .form-group {
+    	margin-bottom: 15px;
+    	width: 31.7%;
+	}
+	.filter .form-group:nth-child(3n){
+		margin-right:0;
+	}
+	.filter {
+    	padding: 22px 0 7px;
+	}
+	.personal_menu .icon{
+		display:none;
+	}
+	.sidebar_right_admin .score_rank{
+		margin-left:30%;	
+	}
+	.stm .box_header {
+    	padding: 7px 15px;
+	}
+	.table_user>thead>tr>th:first-child{
+		 width: 40px;
+	}
+	.icon_timeline, .icon_books, .icon_performance, .icon_blockuser, .icon_mail, .icon_chat {
+    	margin-right: 12px;
+	}
+	.username .chat_img_holder {
+    	float: none;
+	}
+	
+	.group_members>tbody>tr>td{
+		vertical-align:top;
+	}
+	.table_group > thead > tr > th:first-child{
+		width:50px;
+	}
+}
+
+@media (max-width:980px){
+	.login_background {
+		background-image:url(../images/login_bg_tab.jpg);
+	}
+	.welcome_bg{
+		background-image:url(../images/welcome_bg_tab.jpg);
+	}
+	.login_board{
+		margin: 120px auto 20px;
+	}
+	.box_body .small_input{
+		width:31.95%;
+	}
+	.reg_bg{
+		background-size: contain;
+	}
+	.navbar-brand{
+		padding:15px;
+	}
+	.navbar-default .navbar-nav > li > a{
+		padding:15px 10px;
+	}
+	.navbar-right > li > a {
+    	padding: 15px 10px;
+	}
+	.three_tabs > li {
+		border-right: medium none;
+		display: block;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+	}
+	.three_tabs .badge{
+	 	right: 20px;
+	}	
+	#carousel-noticeboard {
+    	width: 260px;
+	}
+	#carousel-noticeboard .carousel-control.left,	
+	#carousel-noticeboard .carousel-control.right {
+    	display:none;
+	}
+	.score_descrip p{
+		display:none;
+	}
+	.score_descrip .score_name{
+		display:block;
+	}
+	.member{
+		min-height: 220px;
+	}
+	.navbar_admin .navbar-nav > li > a {
+    	padding: 20px 12px;
+	}
+	.navbar_admin .navbar-right > li > a {
+    	padding: 15px 16px;
+	}
+	.filter .form-group {
+    	width: 31.6%;
+	}
+	.inner_pages_admin .three_tabs > li{
+		padding:10px 16px;
+		display:inline-block;
+		border-bottom:none;
+	}
+	.inner_pages_admin .three_tabs > li:first-child{
+		border-right: 1px solid rgba(255,255,255,0.2);
+	}
+	.sidebar_right_admin .score_number{
+		display:block;
+	}
+	.sidebar_right_admin .score_rank {
+    	margin-left: 0;
+	}
+	.add_exam a{
+		margin-top:12%;
+	}
+	.table_group > thead > tr > th:first-child{
+		width:60px;
+	}
+}
+@media (max-width:800px){
+	.login_background {
+		background-size:auto;
+	}
+	.box_body .age {
+    	width: 25%;
+	}
+	.box_body .small_input {
+    	width: 31.55%;
+	}
+	.avatar, .avatar img{
+		width:100%;
+	}
+	div.upload, div.upload input{
+		font-size: 12px;
+		width:100%;
+	}
+	#carousel-noticeboard {
+    	width: 200px;
+	}
+	.personal_menu li{
+		 padding: 15px 10px;
+	}
+	.sidebar_left_container .logout{
+		padding: 10px 2px 8px;
+	}
+	.logout .icon_logout{
+		margin-right:2px;
+	}
+	.carousel-caption {
+    	bottom: -26px;
+	}
+	.score_descrip {
+    	padding: 0;
+    	width: 100%;
+	}
+	.score_points {
+    	padding-left:0;
+	}
+	.score_img {
+    	width: 40%;
+		float: none;
+	    margin: 0 auto;
+	}
+	.score_item{
+		text-align:center;
+		
+	}
+	.stm_item .stm_user_img{
+		width:35px;
+		height:35px;
+		margin-right: 5px;
+	}
+	.stm_item.online p, .stm_item.offline p{
+		margin: 7px 0;
+	}
+	.navbar-default.navbar_admin .navbar-nav > li > a {
+    	font-size: 12px;
+    	padding: 20px 7px;
+	}
+	.navbar-default.navbar_admin .navbar-right > li > a{
+		border:none;
+		padding: 15px 5px;
+	}
+	.filter .form-group {
+    	width: 31.2%;
+	}
+	.inner_pages_admin .three_tabs > li{
+		padding: 10px 8px;
+	}
+	.inner_pages_admin .three_tabs .badge {
+    	right: 0;
+	}
+	.table_user > thead > tr > th:first-child {
+    	width: 235px;
+	}
+	.sidebar_right_admin .score_rank {
+    	margin-left: 32%;
+		width:34%;
+	}
+	.table_group > thead > tr > th:first-child{
+		width:10%;
+	}
+	.topic_content>div{
+		text-align:left;
+	}
+	.topic_action{
+		width:12%;
+	}
+	.topic_content{
+		width: 88%;
+	}
+	.topic_content .btn-group {
+		float: none;
+		margin-top: 10px;
+	}
+}
+@media (max-width:768px){
+	.login_background {
+		background-size:100%;
+	}
+	.box_body .age {
+    	width: 24.5%;
+	}
+	.box_body .small_input {
+    	width: 31.5%;
+	}
+	.personal_menu li {
+    	padding: 15px 8px;
+	}
+	.navbar-default .navbar-nav > li > a > span{
+		display:none;
+	}
+	.navbar-default .navbar-nav > li > a {
+    	padding: 20px 18px;
+	}
+	.navbar-brand {
+    	padding: 15px 45px 15px 15px;
+	}
+	textarea.post_input{
+		height:60px;
+	}
+	.btn_post{
+		padding: 9px 30px;
+	}
+	.filter .form-group {
+    	width: 31%;
+	}
+	
+}
+@media (max-width:767px){
+	.login_background {
+		background-size:auto;
+	}
+	.login_board{
+		margin: 20px auto;
+    	width: 90%;
+	}
+	.login_board .col-sm-12 {
+    	padding: 30px 20px 20px;
+	}
+	.logo{
+		width:115px;
+		height:auto;
+	}
+	.login_form {
+    	padding: 40px 0 0;
+	}
+	.login_links {
+    	font-size: 12px;
+	}
+	.box_body .age {
+    	width: 24%;
+	}
+	.box_body .small_input {
+    	margin-right: 0;
+    	width: 100%;
+	}
+	.avatar, .avatar img {
+    	width: auto;
+	}
+	div.upload{
+		margin-top:10px;
+		margin-bottom:20px;
+	}
+	div.upload, div.upload input{
+		width: 208px;
+	}
+	.reg_header{
+		text-align:center;
+	}
+	.reg_btns .btn:first-child {
+    	margin-bottom: 15px;
+		margin-right:0;
+	}
+	.welcome_content{
+		margin-top: 40px;
+	}
+	.welcome_content img{
+		height:100px;
+		width:auto;
+	}
+	.para_welcome1{
+		font-size:18px;
+	}
+	.loader::after, .loader::before{
+		width: 100px;
+	}
+	.para_welcome2{
+		font-size: 16px;
+	}
+	
+}
+@media (max-width:414px) {
+	.login_background {
+    	background-size: 140% auto;
+	}
+	.login_board {
+    	margin: 90px auto 20px;
+	}
+}
+@media (max-width:375px){
+	.box_body .dob{
+		width:69%;
+	}
+}
+@media (max-width:320px){
+	.login_board {
+    	margin: 20px auto;
+	}
+	h3 {
+    	font-size: 16px;
+	}
+	.box_body .dob, .box_body .age {
+    	width: 100%;
+	}
+}
