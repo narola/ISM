@@ -84,3 +84,52 @@ define('EXIT_DATABASE', 8); // database error
 define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 define('UPLOAD_URL','uploads'); // Path of uploaded media/document.
+
+/*
+| Constants For Table Names
+*/
+define('TBL_ADMIN_CONFIG','admin_config');
+define('TBL_AUTO_GENERATED_CREDENTIALS','auto_generated_credentials');
+define('TBL_CITIES','cities');
+define('TBL_CLASSROOMS','classrooms');
+define('TBL_COUNTRIES','countries');
+define('TBL_COURSES','courses');
+define('TBL_COURSE_CATEGORY','course_category');
+define('TBL_COURSE_SUBJECT','course_subject');
+define('TBL_DISTRICTS','districts');
+define('TBL_EXAMS','exams');
+define('TBL_EXAM_SCHEDULE','exam_schedule');
+define('TBL_FEEDS','feeds');
+define('TBL_FEEDS_TAGGED_USER','feeds_tagged_user');
+define('TBL_FEED_COMMENT','feed_comment');
+define('TBL_FEED_IMAGE','feed_image');
+define('TBL_FEED_LIKE','feed_like');
+define('TBL_NOTICEBOARD','noticeboard');
+define('TBL_NOTICEBOARD_VIEWER','noticeboard_viewer');
+define('TBL_QUESTIONS','questions');
+define('TBL_ROLES','roles');
+define('TBL_SCHOOLS','schools');
+define('TBL_SCHOOL_CLASSROOM','school_classroom');
+define('TBL_SCHOOL_COURSE','school_course');
+define('TBL_STATES','states');
+define('TBL_STUDENT_ACADEMIC_INFO','student_academic_info');
+define('TBL_STUDENT_EXAM_RESPONSE','student_exam_response');
+define('TBL_STUDENT_EXAM_SCORE','student_exam_score');
+define('TBL_STUDENT_PROFILE','student_profile');
+define('TBL_STUDYMATES','studymates');
+define('TBL_STUDYMATES_REQUEST','studymates_request');
+define('TBL_SUBJECTS','subjects');
+define('TBL_TAGS','tags');
+define('TBL_TAGS_QUESTION','tags_question');
+define('TBL_TEACHER_PROFILE','teacher_profile');
+define('TBL_TEACHER_SUBJECT_INFO','teacher_subject_info');
+define('TBL_TOPICS','topics');
+define('TBL_TUTORIAL_GROUPS','tutorial_groups');
+define('TBL_TUTORIAL_GROUP_MEMBERS','tutorial_group_members');
+define('TBL_TUTORIAL_GROUP_DISCUSSIONS','tutorial_group_discussions');
+define('TBL_TUTORIAL_GROUP_QUESTION','tutorial_group_question');
+define('TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION','tutorial_group_topic_allocation');
+define('TBL_USERS','users');
+define('TBL_USER_NOTIFICATION','user_notification');
+define('TBL_USER_PROFILE_PICTURE','user_profile_picture');
+
