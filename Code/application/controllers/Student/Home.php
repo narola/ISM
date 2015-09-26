@@ -24,10 +24,10 @@ class Home extends ISM_Controller {
 	*/
 	public function group_allocation(){
 		$data = array(); 
-
+		// p($this->session->userdata('user'));
 		// Get latest info of logged in USER.  Becasue logged in user may chaged related data after login.
 		$user_group_info = select(
-			'tutorial_group_member',
+			TBL_TUTORIAL_GROUP_MEMBER,
 			null,
 			array(
 				'where' => array(
@@ -38,7 +38,7 @@ class Home extends ISM_Controller {
 
 		// No. of users who accept group join request.
 		$total_joined = select(
-			'tutorial_group_member',
+			TBL_TUTORIAL_GROUP_MEMBER,
 			null,
 			array(
 				'where' => array(
@@ -49,11 +49,13 @@ class Home extends ISM_Controller {
 	
 		//  Handle post request to join group
 		if($this->input->server('REQUEST_METHOD') == 'POST'){
-			update('tutorial_group_member',$this->session->userdata('user')['id'], array('joining_status' => 1));
-			
+			update(TBL_TUTORIAL_GROUP_MEMBER,array('user_id'=>$this->session->userdata('user')['id']), array('joining_status' => 1));
 			// If loggedin user accept group and all other members also accepted group then rerirect to "student/home" 
-			if(select('tutorial_group_member',null,$where,array('count' => true)) == 5){
+			if(select(TBL_TUTORIAL_GROUP_MEMBER,null,$where,array('count' => true)) == 5){
 					$this->session->set_flashdata('success','Thanks for acceptting!!');
+					$websocket_id = str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz').time();
+					update(TBL_USRS,array('id'=>$this->session->userdata('user')['id']), array('websocket_id' => $websocket_id));
+                    //generate websocket cookie
 					redirect('student/home');
 			}else{
 				$this->session->set_flashdata('error','All group member must accept group to go ahead!!');
@@ -79,42 +81,42 @@ class Home extends ISM_Controller {
 		}
 
 		// Get information of all group members excluding loggedin USER
-		$data['users'] = select('users',
-	    		'users.id,users.full_name,schools.school_name, schools.address as school_address, cities.city_name as city_name, countries.country_name as country_name, states.state_name as state_name,user_profile_picture.profile_link as profile_pic',	
+		$data['users'] = select(TBL_USERS.' u',
+	    		'u.id,u.full_name,s.school_name, s.address as school_address, ct.city_name as city_name, cu.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic',	
 			    	array(
 					'where' => array(
-						'tutorial_group_member.group_id' => $user_group_info['group_id'],
-						'users.id !=' => $this->session->userdata('user')['id']
+						'tm.group_id' => $user_group_info['group_id'],
+						'u.id !=' => $this->session->userdata('user')['id']
 						)
 					),
 		    		array( 'join' =>  array(
 				    			array(
-				    				'table' => 'user_profile_picture',
-				    				'condition' => 'user_profile_picture.user_id = users.id',
+				    				'table' => TBL_USER_PROFILE_PICTURE.' up',
+				    				'condition' => 'up.user_id = u.id',
 				    				),
 				    			array(
-				    				'table' => 'tutorial_group_member',
-				    				'condition' => 'tutorial_group_member.user_id = users.id',
+				    				'table' => TBL_TUTORIAL_GROUP_MEMBER.' tm',
+				    				'condition' => 'tm.user_id = u.id',
 				    				),
 					    		array(
-				    				'table' => 'student_academic_info',
-				    				'condition' => 'student_academic_info.user_id = tutorial_group_member.user_id',
+				    				'table' => TBL_STUDENT_ACADEMIC_INFO.' si',
+				    				'condition' => 'si.user_id = tm.user_id',
 				    				),
 				    			array(
-				    				'table' => 'schools',
-				    				'condition' => 'student_academic_info.school_id = schools.id',
+				    				'table' => TBL_SCHOOLS.' s',
+				    				'condition' => 'si.school_id = s.id',
 				    				),
 				    			array(
-				    				'table' => 'countries',
-				    				'condition' => 'countries.id = schools.country_id',
+				    				'table' => TBL_COUNTRIES.' cu',
+				    				'condition' => 'cu.id = s.country_id',
 				    				),
 					    		array(
-				    				'table' => 'cities',
-				    				'condition' => 'cities.id = schools.city_id',
+				    				'table' => TBL_CITIES.' ct',
+				    				'condition' => 'ct.id = s.city_id',
 				    				),
 				    			array(
-				    				'table' => 'states',
-				    				'condition' => 'states.id = schools.state_id',
+				    				'table' => TBL_STATES.' st',
+				    				'condition' => 'st.id = s.state_id',
 				    				)
 					    		)
 		    				)

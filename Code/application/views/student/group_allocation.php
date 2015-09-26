@@ -41,15 +41,15 @@
             	<div class="col-sm-12 text-center">
                 	<div class="user_container">
                         <div class="user_profile_img">
-                            <img src="assets/images/user1dasd.jpg" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                            <img src="uploads/<?php echo $this->session->userdata('user')['profile_pic'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
 
 
                         </div>
                         <div class="user_profile_info">
                             <h1>Welcome To ISM</h1>
                             <h2><?php echo $this->session->userdata('user')['first_name'].' '.$this->session->userdata('user')['last_name']; ?></h2>
-                            <h4>St.Xaviers High School</h4>
-                            <h4>First Year, Computer Science</h4>
+                            <h4><?php echo $this->session->userdata('user')['school_name'];?></h4>
+                            <h4><?php echo $this->session->userdata('user')['academic_year'].', '.$this->session->userdata('user')['course_name'];?></h4>
                         </div>
                     </div>
                 </div>

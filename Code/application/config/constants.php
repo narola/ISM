@@ -183,7 +183,7 @@ define('TBL_USER_LIBRARY','user_library');
 define('TBL_USER_NOTIFICATION','user_notification');
 define('TBL_USER_PERMISSION','user_permission');
 define('TBL_USER_PROFILE_PICTURE','user_profile_picture');
-define('TBL_TUTORIAL_GROUP_MEMBER_SCORE','tutorial_group_member_score');
+//define('TBL_TUTORIAL_GROUP_MEMBER_SCORE','tutorial_group_member_score');
 define('TBL_USERS','users');
 define('TBL_WORD_WATCH','word_watch');
 
