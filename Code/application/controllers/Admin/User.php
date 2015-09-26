@@ -155,6 +155,14 @@ class User extends ISM_Controller {
 
 	}
 
+	public function test(){
+		
+		//echo $this->encrypt->encode('narola21');
+		
+		//echo $this->encrypt->decode('+4BGgmtmbYLxR5vRgkZbBgKU4+NurCdP4mX6AIDbQ6E8txp3IrYdcFTaRNWlyOCtayYF3UE1lPFYTBQnRKoS0A==');
+
+	}
+
 	public function update($id){
 
 		if(empty($id) && !	is_numeric($id)){
