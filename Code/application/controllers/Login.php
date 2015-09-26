@@ -85,17 +85,19 @@ class Login extends CI_Controller {
                     // $this->session->set_userdata($array);
 
                     $this->set_session($fetch_data['id']);
-                    // p($this->session->userdata('user'));
-                    // echo $this->session->userdata('user')['group_id'];
-                    // exit;
+                    $websocket_id = str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz').time();
+                    update(TBL_USRS,array('id'=>$this->session->userdata('user')['id']), array('websocket_id' => $websocket_id));
+                    
                     $role = $fetch_data['role_id'];
                     switch ($role) {
                         case '2':
                             $group_id   =   $this->session->userdata('user')['group_id']; 
                             if($this->session->userdata('user')['group_id'] != ''){
                                 $count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id,'joining_status'=>'1')),array('count'=>TRUE));
-                                if($count_member == 5)
+                                if($count_member == 5){
+                                    //generate websocket cookie
                                     redirect('student/home');
+                                }
                                 else
                                     redirect('login/welcome');
                             }
@@ -137,7 +139,7 @@ class Login extends CI_Controller {
     public function set_session($userid){
 
         $users = select(TBL_USERS.' u',
-                'u.*,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id',   
+                'u.*,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id,co.course_name,si.academic_year',   
                 array('where'   =>  array('u.id' => $userid)),
                 array('join'    =>    
                     array(
@@ -173,6 +175,10 @@ class Login extends CI_Controller {
                         array(
                             'table' => TBL_STATES.' st',
                             'condition' => 'st.id = u.state_id'
+                            ),
+                        array(
+                            'table' => TBL_COURSES.' co',
+                            'condition' => 'si.course_id = co.id'
                             )
                         )
                     )    
