@@ -51,7 +51,7 @@ class Tutorial extends ISM_Controller {
 						'condition' => 'ta.topic_id = t.id'
 						),
 					array(
-						'table' => TBL_TUTORIAL_GROUP_MEMBERS.' tm',
+						'table' => TBL_TUTORIAL_GROUP_MEMBER.' tm',
 						'condition' => 'tm.group_id = ta.group_id'
 						),
 					array(
@@ -67,7 +67,7 @@ class Tutorial extends ISM_Controller {
 			if(isset($data['topic']) && !empty($data['topic'])){
 				// Get all discussion messages.
 				$data['discussion'] = select(
-						TBL_TUTORIAL_GROUP_DISCUSSIONS.' td',
+						TBL_TUTORIAL_GROUP_DISCUSSION.' td',
 						'u.full_name,
 						td.message,
 						td.message_type,
@@ -85,6 +85,7 @@ class Tutorial extends ISM_Controller {
 							)
 						)
 					);
+				
 				// Set WeekDay
 				if(isset($data['discussion']) && !empty($data['discussion'])){
 					foreach($data['discussion'] as $key => $value){
@@ -102,7 +103,7 @@ class Tutorial extends ISM_Controller {
 
 			// Get information of all group members
 			$data['member'] = select(
-					TBL_TUTORIAL_GROUP_MEMBERS.' tm',
+					TBL_TUTORIAL_GROUP_MEMBER.' tm',
 					'u.full_name,sc.school_name,up.profile_link',
 					array('where' => array('tm.group_id' => $this->session->userdata('user')['group_id'])),
 					array('join' => array(
@@ -121,13 +122,11 @@ class Tutorial extends ISM_Controller {
 							array(
 							'table' => TBL_USER_PROFILE_PICTURE. ' up',
 							'condition' => 'up.user_id = u.id'
-							)	
+							)
 						)
 					)
 				);
-
 			p($data,true);
-			  
 	}	
 
 

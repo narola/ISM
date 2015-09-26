@@ -168,7 +168,6 @@ define('TBL_TEACHER_SUBJECT_INFO','teacher_subject_info');
 define('TBL_TOPICS','topics');
 define('TBL_TUTORIAL_GROUP_DISCUSSION','tutorial_group_discussion');
 define('TBL_TUTORIAL_GROUP_MEMBER','tutorial_group_member');
-define('TBL_TUTORIAL_GROUP_MEMBER_SCORE','tutorial_group_member_score');
 define('TBL_TUTORIAL_GROUP_QUESTION','tutorial_group_question');
 define('TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION','tutorial_group_topic_allocation');
 define('TBL_TUTORIAL_GROUPS','tutorial_groups');
