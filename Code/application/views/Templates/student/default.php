@@ -28,7 +28,7 @@
             });
         })(jQuery);
     </script>-->
-    <script>var ws = "<?php echo $this->session->userdata('user')['websocket_id']; ?>";</script>
+    <script>var ws = "<?php echo $this->session->userdata('user')['id']; ?>";</script>
 </head>
 
 <body>
