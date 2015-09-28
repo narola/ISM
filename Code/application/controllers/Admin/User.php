@@ -15,9 +15,9 @@ class User extends ISM_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-			
-		$this->load->library(array('form_validation','encrypt'));
-		$this->load->model(array('common_model'));
+		
+		$this->load->helper(array('csv','file'));		
+		$this->load->library(array('zip'));
 	}
 
 	// ---------------------------- User Module Start --------------------------------------------
@@ -26,11 +26,21 @@ class User extends ISM_Controller {
 
 		$this->load->library('pagination');
 		
-		$config['base_url'] = base_url().'admin/user/index';
+		$role = $this->input->get('role');
+
+		if(!empty($role)){
+			$where = array('where'=>array('role_id'=>$role));	
+		}else{
+			$where=null;
+		}	
+		
+		$config['base_url'] = base_url().'admin/user/index' ;
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
-		$config['total_rows'] = $this->common_model->sql_select('users',FALSE,FALSE,array('count'=>TRUE));
+		$config['total_rows'] = $this->common_model->sql_select('users',FALSE,$where,array('count'=>TRUE));
 		$config['per_page'] = 15;
+
+		//$config['page_query_string'] = TRUE;
 
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
  		$config['full_tag_close'] = '</ul>';
@@ -58,12 +68,11 @@ class User extends ISM_Controller {
 	 	$config['last_tag_close'] = '</li>';
 	 	
 		$offset = $this->uri->segment(4);
- 
-		//$this->data['all_users'] = $this->common_model->get_all('users','',$config['per_page'],$uri);
+
 		$this->data['all_users'] = $this->common_model->sql_select('users',
 																	'users.id,users.username,cities.city_name,states.state_name,
 																	users.role_id,roles.role_name',
-																	FALSE,
+																	$where,
 																	array(
 																		'limit'=>$config['per_page'],
 																		'offset'=>$offset,
@@ -111,8 +120,6 @@ class User extends ISM_Controller {
 
 		if($this->form_validation->run() == FALSE){
 
-			//$this->load->view('admin/user/add_user',$this->data);
-			
 			$this->template->load('admin/default','admin/user/add_user',$this->data);
 			
 		}else{
@@ -156,11 +163,9 @@ class User extends ISM_Controller {
 	}
 
 	public function test(){
-		
-		//echo $this->encrypt->encode('narola21');
-		
-		//echo $this->encrypt->decode('+4BGgmtmbYLxR5vRgkZbBgKU4+NurCdP4mX6AIDbQ6E8txp3IrYdcFTaRNWlyOCtayYF3UE1lPFYTBQnRKoS0A==');
 
+		 //$this->template->load('admin/default','admin/user/select_test');
+		$this->load->view('admin/user/select_test');
 	}
 
 	public function update($id){
@@ -171,12 +176,13 @@ class User extends ISM_Controller {
 
 		$this->data['user'] = $this->common_model->sql_select('users',FALSE,array('where'=>array('id'=>$id)),array('single'=>TRUE));	
 		$this->data['countries']  = $this->common_model->sql_select('countries');
-		$this->data['states'] = $this->common_model->sql_select('states',array('country_id'=>$this->data['user']['country_id']));
-		$this->data['cities'] = $this->common_model->sql_select('cities',array('state_id'=>$this->data['user']['state_id']));
+		$this->data['states'] = $this->common_model->sql_select('states',FALSE,array('where'=>array('country_id'=>$this->data['user']['country_id'])));
+	     $this->data['cities'] = $this->common_model->sql_select('cities',FALSE,array('where'=>array('state_id'=>$this->data['user']['state_id'])));
 		$this->data['roles'] = $this->common_model->sql_select('roles');
 		$this->data['packages'] = $this->common_model->sql_select('membership_package');
-
 		
+
+
 		if($_POST){
 			
 			$username = $this->input->post('username');
@@ -242,6 +248,76 @@ class User extends ISM_Controller {
 		$this->common_model->update('users',$id,array('user_status'=>'blocked'));
 		$this->session->set_flashdata('success', 'User is Successfully Blocked.');
 		redirect('admin/view_user');
+	}
+
+	public function send_message($id){
+		
+		$this->data['user'] = $this->common_model->sql_select('users',FALSE,array('where'=>array('id'=>$id)),array('single'=>true));
+		$this->data['templates'] = $this->common_model->sql_select('messages',FALSE,array('where'=>array('is_template'=>'1')));
+		
+		$this->form_validation->set_rules('message_to', 'Recipient', 'trim|required');	
+		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
+		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
+
+		if($this->form_validation->run() == FALSE){
+			
+			$this->template->load('admin/default','admin/user/send_message',$this->data);
+		}else{
+
+			$username = $this->input->post('message_to');
+
+			$user_data = $this->common_model->sql_select('users',FALSE,array('where'=>array('username'=>$username)),array('single'=>TRUE));
+
+			if(!empty($user_data)){
+
+				$data = array(
+						'message_text'=>$this->input->post('message_desc'),
+						'sender_id'=>$this->session->userdata('id'),
+						'message_title'=>$this->input->post('message_title'),
+						'status'=>'1',
+						'reply_for'=>'0',
+						'created_date'=>date('Y-m-d H:i:s',time()),
+						'modified_date'=>'0000-00-00 00:00:00',
+						'is_template'=>$this->input->post('save_template'),
+						'is_delete'=>'0',
+						'is_testdata'=>'yes'
+					);
+
+				$message_id = $this->common_model->insert('messages',$data);
+
+				$data_message_receiver = array(
+						'message_id'=>$message_id,
+						'receiver_id'=>$user_data['id'],
+						'created_date'=>date('Y-m-d H:i:s',time()),
+						'modified_date'=>'0000-00-00 00:00:00',	
+						'is_delete'=>'0',
+						'is_testdata'=>'yes'
+					);
+
+				$this->common_model->insert('message_receiver',$data_message_receiver);
+
+				die();
+
+				$this->email->from('email@email.com', 'Name');
+				$this->email->to('someone@example.com');
+				
+				$this->email->subject('subject');
+				$this->email->message('message');
+				
+				$this->email->send();
+				
+				echo $this->email->print_debugger();
+
+				p($data);
+
+			}else{
+				$this->session->set_flashdata('error', 'Username you entered doen not exists.');
+				redirect('admin/user/send_message/'.$id);
+			}
+			p($user_data);
+
+		}
+
 	}
 
 	// ---------------------------- User Module END --------------------------------------------

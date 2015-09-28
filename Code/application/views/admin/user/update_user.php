@@ -90,6 +90,7 @@
                                 <option selected disabled>Select State</option>
                                 <?php 
                                   if(!empty($states)){ 
+                                    
                                     foreach($states as $state) {
                                   ?> 
                                 <option value="<?php echo $state['id']; ?>"> <?php echo $state['state_name']; ?></option>

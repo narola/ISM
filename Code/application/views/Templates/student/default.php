@@ -74,7 +74,7 @@
                     <img src="assets/images/user1.jpg">
                 </div>
                 <h4>Adam Ross</h4>
-                <a href="#">View Profile</a>
+                <a href="student/user_account">View Profile</a>
                 <!--notification-->
                 <ul class="three_tabs">
                     <li class="dropdown">

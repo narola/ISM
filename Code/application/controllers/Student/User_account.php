@@ -11,13 +11,16 @@ class User_account extends CI_Controller {
 	    $this->load->model('student/student_account_model');
 	    $this->load->library('upload','form_validation');
 	    $this->data[] = array();
-	    if(!empty($this->session->userdata('user')))
+
+	    P($this->session->userdata('user'));
+	    if(!empty($this->session->userdata('user')) && $this->session->userdata('user')['membercount'] != 5)
 	    	redirect('student/group_allocation');
 	}
 
 	public function index()
 	{	
-		// /*------fill combo's------*/
+		
+		/*------fill combo's------*/
 		$this->data['countries'] 	= 	select(TBL_COUNTRIES);
 		$this->data['states'] 		= 	select(TBL_STATES);
 		$this->data['cities'] 		= 	select(TBL_CITIES);
@@ -325,7 +328,7 @@ class User_account extends CI_Controller {
 
 	 public function set_session($userid){
         $users = select(TBL_USERS.' u',
-                'u.*,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id,co.course_name,si.academic_year',   
+                'u.*,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id,co.course_name,si.academic_year,(select count(*) cnt from tutorial_group_member where group_id = gu.id) as membercount',   
                 array('where'   =>  array('u.id' => $userid)),
                 array('join'    =>    
                     array(
