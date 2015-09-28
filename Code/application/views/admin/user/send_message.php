@@ -11,8 +11,6 @@
         </div>
     </div>
     <!--//breadcrumb-->
-    <!--filter-->
-    <!--//filter-->
     
     <!--message-->
    	<div class="row">
@@ -26,7 +24,7 @@
                     	<div class="form-group">
                             <label>Select Template</label>
                             <select class="form-control js-example-basic-single" onclick="get_message_template(this.value)" >
-                                <option value="" >Select Template</option>
+                                <option value="" > No Template </option>
                                 <?php  
                                     if(!empty($templates)){
                                         foreach($templates as $template) {
@@ -38,12 +36,28 @@
                             </select>
 
                         </div>
+
                         <div class="form-group">
-                        	<label>Recipient <span> (Selected recipients are all students)</span></label>
-                            <input type="text" class="form-control" name="message_to" value="<?php echo $user['username']; ?>" >
+                            <label> Select Users </label>
+
+                            <select name="all_users[]" class="js-example-basic-single form-control" multiple="multiple">
+
+                                <?php 
+                                if(!empty($users)) {
+                                    foreach($users as $user){
+                                     ?>
+                                    <option value="<?php echo $user['id'] ?>" 
+                                        <?php if($user['username'] == $u['username']){ echo "selected='selected'"; } ?>>
+                                        <?php echo $user['username']; ?>
+                                    </option>            
+                                <?php } } ?>
+
+                            </select>
+                            
                         </div>
-                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_to'),''))){ echo 'hide';} ?>">
-                          <?php echo strip_tags(form_error('message_to'),'') ; ?>
+
+                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('all_users'),''))){ echo 'hide';} ?>">
+                          <?php echo strip_tags(form_error('all_users'),'') ; ?>
                         </div>
                         <?php $error = $this->session->flashdata('error'); ?>
   
@@ -53,7 +67,7 @@
 
                         <div class="form-group">
                         	<label>Title</label>
-                            <input type="text" class="form-control" name="message_title" value="<?php echo set_value('message_title'); ?>" >
+                            <input type="text" class="form-control" name="message_title" id="message_title" value="<?php echo set_value('message_title'); ?>" >
                         </div>
 
                         <div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_title'),''))){ echo 'hide';} ?>">
@@ -61,7 +75,7 @@
                         </div>  
                         <div class="form-group">
                         	<label>Message</label>
-                            <textarea class="form-control" name="message_desc"><?php echo set_value('message_desc'); ?></textarea>
+                            <textarea class="form-control" name="message_desc" id="message_desc"><?php echo set_value('message_desc'); ?></textarea>
                             <label class="notify"><input type="checkbox" name="notify_sms">Notify Student Via SMS</label><br/>
                         </div>
                         <div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_desc'),''))){ echo 'hide';} ?>">
@@ -86,22 +100,27 @@
 <script type="text/javascript">
     
   $(document).ready(function() {
-      $(".js-example-basic-single").select2({
-         closeOnSelect:false
-      });
+      $(".js-example-basic-single").select2();
     });
 
-    // function get_message_template(msg_id){
+    function get_message_template(msg_id){
         
-    //     $.ajax({
-    //         url:'',
-    //         type:'',
-    //         data:{},
-    //         success:function(data){
-    //             alert(data);
-    //         }
-    //     });
-
-    // }
+        if(msg_id != ''){
+            $.ajax({
+                url:'<?php echo base_url()."common/template_message";?>',
+                type:'post',
+                data:{msg_id:msg_id},
+                success:function(data){
+                    data = data.split('###');
+                    $('#message_title').val(data[0]);
+                    $('#message_desc').val(data[1]); 
+                }
+            });
+        }else{
+            $('#message_title').val('');
+            $('#message_desc').val(''); 
+        }
+    
+    }
 
 </script>

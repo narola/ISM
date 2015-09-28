@@ -21,8 +21,14 @@ class User extends ISM_Controller {
 	}
 
 	// ---------------------------- User Module Start --------------------------------------------
-	 	
- 	public function index(){
+	
+	/**
+	  * function index() have all users listing using codeigniter pagination limit of 15 users per page
+	  *
+	  * @author Virendra Patel - Spark ID - VPA
+	  **/
+	 
+	 public function index() {
 
 		$this->load->library('pagination');
 		
@@ -69,6 +75,7 @@ class User extends ISM_Controller {
 	 	
 		$offset = $this->uri->segment(4);
 
+		//fetch all data of users joins with roles,cities,countries,states 
 		$this->data['all_users'] = $this->common_model->sql_select('users',
 																	'users.id,users.username,cities.city_name,states.state_name,
 																	users.role_id,roles.role_name',
@@ -104,6 +111,11 @@ class User extends ISM_Controller {
 		
 		$this->template->load('admin/default','admin/user/view_user',$this->data);
 	}
+
+	/**
+	  * function add() have User Registration form to Add user by Admin using codeigniter validation
+	  *
+	  **/
 
 	public function add(){
 
@@ -167,6 +179,12 @@ class User extends ISM_Controller {
 		 //$this->template->load('admin/default','admin/user/select_test');
 		$this->load->view('admin/user/select_test');
 	}
+
+	/**
+	  * function update() have Form of user rgisteration with fill up data with userdata of given ID
+	  *	@param User ID
+	  * @author Virendra Patel - Spark ID- VPA
+	  **/
 
 	public function update($id){
 
@@ -244,18 +262,41 @@ class User extends ISM_Controller {
 
 	}
 
+	/**
+	 * function Blcked will block user for temporary set database field 'status' of `users` table set to 'blocked' and redirect to user listing page
+	 *
+	 **/
+	
 	public function blocked($id){
 		$this->common_model->update('users',$id,array('user_status'=>'blocked'));
 		$this->session->set_flashdata('success', 'User is Successfully Blocked.');
 		redirect('admin/view_user');
 	}
 
+	/**
+	 * function send_message will used to send message from admin to other user tables-(messages,messages_receiver) 
+	 *	admin can send messages to one or more than one users at a time
+	 **/
 	public function send_message($id){
 		
-		$this->data['user'] = $this->common_model->sql_select('users',FALSE,array('where'=>array('id'=>$id)),array('single'=>true));
-		$this->data['templates'] = $this->common_model->sql_select('messages',FALSE,array('where'=>array('is_template'=>'1')));
-		
-		$this->form_validation->set_rules('message_to', 'Recipient', 'trim|required');	
+		$this->data['u'] = $this->common_model->sql_select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>true));
+
+		$this->data['templates'] = $this->common_model->sql_select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
+		$this->data['users'] = $this->common_model->sql_select(TBL_USERS,
+																TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
+																 array('where_not_in'=>array(TBL_USERS.'.role_id'=>array('1'))),
+																 array(
+																	'order_by'=>TBL_USERS.'.username',
+																	'join'=>array(
+																				array(
+																					'table'=>'roles',
+																					'condition'=>TBL_USERS.'.role_id='.TBL_ROLES.'.id'
+																				)
+																			)
+																		)
+																);	
+
+		$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
 		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
 		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
 
@@ -264,38 +305,43 @@ class User extends ISM_Controller {
 			$this->template->load('admin/default','admin/user/send_message',$this->data);
 		}else{
 
-			$username = $this->input->post('message_to');
 
-			$user_data = $this->common_model->sql_select('users',FALSE,array('where'=>array('username'=>$username)),array('single'=>TRUE));
+			$all_users = $this->input->post('all_users');
 
-			if(!empty($user_data)){
+			if(!empty($all_users)){			
 
-				$data = array(
-						'message_text'=>$this->input->post('message_desc'),
-						'sender_id'=>$this->session->userdata('id'),
-						'message_title'=>$this->input->post('message_title'),
-						'status'=>'1',
-						'reply_for'=>'0',
-						'created_date'=>date('Y-m-d H:i:s',time()),
-						'modified_date'=>'0000-00-00 00:00:00',
-						'is_template'=>$this->input->post('save_template'),
-						'is_delete'=>'0',
-						'is_testdata'=>'yes'
-					);
+				foreach($all_users as $user){
 
-				$message_id = $this->common_model->insert('messages',$data);
+						$data = array(
+								'message_text'=>$this->input->post('message_desc'),
+								'sender_id'=>$this->session->userdata('id'),
+								'message_title'=>$this->input->post('message_title'),
+								'status'=>'1',
+								'reply_for'=>'0',
+								'created_date'=>date('Y-m-d H:i:s',time()),
+								'modified_date'=>'0000-00-00 00:00:00',
+								'is_template'=>$this->input->post('save_template'),
+								'is_delete'=>'0',
+								'is_testdata'=>'yes'
+							);
 
-				$data_message_receiver = array(
-						'message_id'=>$message_id,
-						'receiver_id'=>$user_data['id'],
-						'created_date'=>date('Y-m-d H:i:s',time()),
-						'modified_date'=>'0000-00-00 00:00:00',	
-						'is_delete'=>'0',
-						'is_testdata'=>'yes'
-					);
+						//insert data into messages table
+						$message_id = $this->common_model->insert(TBL_MESSAGES,$data);
 
-				$this->common_model->insert('message_receiver',$data_message_receiver);
+						$data_message_receiver = array(
+								'message_id'=>$message_id,
+								'receiver_id'=>$user,
+								'created_date'=>date('Y-m-d H:i:s',time()),
+								'modified_date'=>'0000-00-00 00:00:00',	
+								'is_delete'=>'0',
+								'is_testdata'=>'yes'
+							);
 
+						// insert data into messages_receiver table using message id from message table
+						$this->common_model->insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
+
+					}
+				}
 				die();
 
 				$this->email->from('email@email.com', 'Name');
@@ -309,12 +355,6 @@ class User extends ISM_Controller {
 				echo $this->email->print_debugger();
 
 				p($data);
-
-			}else{
-				$this->session->set_flashdata('error', 'Username you entered doen not exists.');
-				redirect('admin/user/send_message/'.$id);
-			}
-			p($user_data);
 
 		}
 
