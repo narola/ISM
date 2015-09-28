@@ -87,9 +87,13 @@
         </div>
         <!--//filter-->
         <!--button div-->
+    
+
+        <form method="post" action="<?php echo base_url().'admin/user/send_messages'; ?>">  <!-- Form Start -->
+    
         <div class="row div_buttons">
           <div class="col-sm-6">
-              <button class="btn btn_black">Send Message</button>
+              <button class="btn btn_black" type="submit">Send Message</button>
               <a class="btn btn_green" href="<?php echo base_url().'admin/user/add';?>" >Add User</a>
             </div>
 
@@ -159,6 +163,9 @@
                 </nav>
             </div>
         </div>
+
+       </form> <!-- Form END  -->
+        
         <!--//row table-->
     </div>
     <!--//main-->

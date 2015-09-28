@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -25,7 +26,6 @@ class User extends ISM_Controller {
 	/**
 	  * function index() have all users listing using codeigniter pagination limit of 15 users per page
 	  *
-	  * @author Virendra Patel - Spark ID - VPA
 	  **/
 	 
 	 public function index() {
@@ -86,19 +86,19 @@ class User extends ISM_Controller {
 																		'join' =>  array(
 																	    			array(
 																	    				'table' => 'roles',
-																	    				'condition' => 'roles.id = users.role_id',
+																	    				'condition' => 'roles.id = users.role_id'
 																						),
 																	    			array(
 																	    				'table' => 'countries',
-																	    				'condition' => 'countries.id = users.country_id',
+																	    				'condition' => 'countries.id = users.country_id'
 																						),
 																	    			array(
 																	    				'table' => 'states',
-																	    				'condition' => 'states.id = users.state_id',
+																	    				'condition' => 'states.id = users.state_id'
 																						),
 																	    			array(
 																	    				'table' => 'cities',
-																	    				'condition' => 'cities.id = users.city_id',
+																	    				'condition' => 'cities.id = users.city_id'
 																						)
 																		    		)
 																		)
@@ -354,15 +354,98 @@ class User extends ISM_Controller {
 				
 				echo $this->email->print_debugger();
 
-				p($data);
+
+
+		}
+
+	}
+
+	public function send_messages(){
+		
+		if($_POST){
+			
+			if(isset($_POST['all_users'])){
+				$this->data['post_users'] = $this->input->post('all_users[]');
+				$this->data['my_cnt'] = 1;
+			}else{
+				$this->data['post_users'] = $this->input->post('users');
+				$this->data['my_cnt'] = 0;	
+			}
+
+		}else{
+			$this->data['post_users'] = array();
+		} 
+
+
+		$this->data['templates'] = $this->common_model->sql_select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
+		$this->data['users'] = $this->common_model->sql_select(TBL_USERS,
+																TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
+																 array('where_not_in'=>array(TBL_USERS.'.role_id'=>array('1'))),
+																 array(
+																	'order_by'=>TBL_USERS.'.username',
+																	'join'=>array(
+																				array(
+																					'table'=>'roles',
+																					'condition'=>TBL_USERS.'.role_id='.TBL_ROLES.'.id'
+																				)
+																			)
+																		)
+																);
+
+		$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
+		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
+		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
+
+		if($this->form_validation->run() == FALSE){
+
+			$this->template->load('admin/default','admin/user/send_messages',$this->data);	
+
+		}else{
+			
+
+			$all_users = $this->input->post('all_users');
+
+
+			if(!empty($all_users)){			
+
+				foreach($all_users as $user){
+
+						$data = array(
+								'message_text'=>$this->input->post('message_desc'),
+								'sender_id'=>$this->session->userdata('id'),
+								'message_title'=>$this->input->post('message_title'),
+								'status'=>'1',
+								'reply_for'=>'0',
+								'created_date'=>date('Y-m-d H:i:s',time()),
+								'modified_date'=>'0000-00-00 00:00:00',
+								'is_template'=>$this->input->post('save_template'),
+								'is_delete'=>'0',
+								'is_testdata'=>'yes'
+							);
+
+						//insert data into messages table
+						$message_id = $this->common_model->insert(TBL_MESSAGES,$data);
+
+						$data_message_receiver = array(
+								'message_id'=>$message_id,
+								'receiver_id'=>$user,
+								'created_date'=>date('Y-m-d H:i:s',time()),
+								'modified_date'=>'0000-00-00 00:00:00',	
+								'is_delete'=>'0',
+								'is_testdata'=>'yes'
+							);
+
+						// insert data into messages_receiver table using message id from message table
+						$this->common_model->insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
+
+					}
+				}
 
 		}
 
 	}
 
 	// ---------------------------- User Module END --------------------------------------------
-
-
 
 }
 
