@@ -24,7 +24,7 @@ class Home extends ISM_Controller {
 	*/
 	public function group_allocation(){
 		$data = array(); 
-		// p($this->session->userdata('user'));
+		p($this->session->userdata('user'));
 		// Get latest info of logged in USER.  Becasue logged in user may chaged related data after login.
 		$user_group_info = select(
 			TBL_TUTORIAL_GROUP_MEMBER,
@@ -53,9 +53,6 @@ class Home extends ISM_Controller {
 			// If loggedin user accept group and all other members also accepted group then rerirect to "student/home" 
 			if(select(TBL_TUTORIAL_GROUP_MEMBER,null,$where,array('count' => true)) == 5){
 					$this->session->set_flashdata('success','Thanks for acceptting!!');
-					$websocket_id = str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz').time();
-					update(TBL_USRS,array('id'=>$this->session->userdata('user')['id']), array('websocket_id' => $websocket_id));
-                    //generate websocket cookie
 					redirect('student/home');
 			}else{
 				$this->session->set_flashdata('error','All group member must accept group to go ahead!!');

@@ -85,8 +85,6 @@ class Login extends CI_Controller {
                     // $this->session->set_userdata($array);
 
                     $this->set_session($fetch_data['id']);
-                    $websocket_id = str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz').time();
-                    update(TBL_USRS,array('id'=>$this->session->userdata('user')['id']), array('websocket_id' => $websocket_id));
                     
                     $role = $fetch_data['role_id'];
                     switch ($role) {

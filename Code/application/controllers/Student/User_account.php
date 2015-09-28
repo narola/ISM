@@ -76,7 +76,7 @@ class User_account extends CI_Controller {
 			 "password"			=>	$this->encrypt->encode($this->input->post("new_password")),
 			 "created_date"		=>	date('Y-m-d H:i:s',time()),
 			 "modified_date"	=>	date('Y-m-d H:i:s',time()),
-			 "websocket_id"		=>	str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz').time()
+			 "websocket_id"		=>	str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-,.').time()
 			);
 			$insertid =  insert(TBL_USERS,$data_student);
 			
