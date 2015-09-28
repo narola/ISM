@@ -28,6 +28,7 @@
             });
         })(jQuery);
     </script>-->
+    <script>var ws = "<?php echo $this->session->userdata('user')['websocket_id']; ?>";</script>
 </head>
 
 <body>
@@ -143,11 +144,12 @@
     <!--scroll-->
     <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
      <?php flashMessage($this->session->flashdata('success'),$this->session->flashdata('error')); ?>
-     <script>setTimeout(
+    <script>setTimeout(
               function(){
                $(".alert-dismissible").hide(500);
               }, 3000);
-         </script>
-
+    </script>
+    <script src="assets/js/ws.js"></script>
+   
 </body>
 </html>

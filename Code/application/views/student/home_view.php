@@ -494,8 +494,12 @@
                         <p class="to">Hello</p>
                         <p class="from">Have you completed the assignment of maths?</p>
                         <p class="to">Not yet.</p>
+                        <p class="from">Hi</p>
+                        <p class="to">Hello</p>
+                        <p class="from">Have you completed the assignment of maths?</p>
+                        <p class="to">Not yet.</p>
                     </div>
-                    <input type="text" class="chat_input" placeholder="Say It">
+                    <input type="text"  class="chat_input" placeholder="Say It">
                     <a href="#" class="icon icon_emoji"></a>
                     <a href="#" class="icon icon_pin"></a>
                     <input type="file" class="chat_pin">
@@ -516,7 +520,7 @@
                         <div class="to"><p>Not yet.</p></div>
                         <div class="to"><p>Will do tonight</p></div>
                     </div>
-                    <input type="text" class="chat_input" placeholder="Say It">
+                    <input type="text" id="chat_input" class="chat_input" placeholder="Say It">
                     <a href="#" class="icon icon_emoji"></a>
                     <a href="#" class="icon icon_pin"></a>
                     <input type="file" class="chat_pin">
