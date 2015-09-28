@@ -1158,8 +1158,20 @@ textarea.post_input{
 .passive .chat_header {
 	background-color: #323941;
 }
-.chat.passive{
+.chat.chat_3{
     bottom: 62px;
+	z-index:3;
+}
+.chat.chat_2{
+    bottom: 114px;
+	z-index:2;	
+}
+.chat.chat_1{
+    bottom: 166px;
+	z-index:1;
+}
+.chat.active{
+	z-index:10;
 }
 .chat_img_holder {
     width: 45px;
@@ -1863,11 +1875,11 @@ ul.tut_weekdays {
 .time_chart .box_body{
 	padding:10px;
 }
-.item {
+.item_chart {
     position: relative;
     text-align:center;
 }
-.item:before{
+.item_chart:before{
 	content:"";
 	box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.5);
     height: 154px;
@@ -1878,7 +1890,7 @@ ul.tut_weekdays {
     left: 25px;
     top: 3px;
 }
-.item:after{
+.item_chart:after{
 	content:"";
 	box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.3) inset;
     height: 154px;
@@ -1889,7 +1901,7 @@ ul.tut_weekdays {
     left: 25px;
     top: 3px;
 }
-.item h2 {
+.item_chart h2 {
 	font-family:Arial, Helvetica, sans-serif;
     position: absolute;
     margin: 55px auto;
@@ -1897,17 +1909,17 @@ ul.tut_weekdays {
     font-size: 30px;
     font-weight: 600;
 }
-.item h2 span{
+.item_chart h2 span{
 	color:#1bc4a3;
 	font-size:16px;
 	font-weight:500;
 	display:block;
 }
-.item h4{
+.item_chart h4{
 	text-transform:uppercase;
 	margin: 0;
 }
-.time_chart .box .item h4 span{
+.time_chart .box .item_chart h4 span{
 	font-family: Arial, Helvetica, sans-serif;
     color: #1bc4a3;
     text-shadow: 0px 1px 2px rgba(0,0,0,0.2);
