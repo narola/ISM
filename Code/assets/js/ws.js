@@ -95,10 +95,10 @@ var Server;
             Server.bind('message', function( payload ) {
             	var obj = $.parseJSON(payload);
                 if(obj.type == 'studymate'){
-                	if(ws != obj.to){
+                	if(ws == obj.from){
                 		$('.chat[data-mate="'+obj.to+'"] .chat_text #mCSB_4 #mCSB_4_container').append("<div class='to'><p>"+obj.message+"</p></div>");	
                 	}else{
-                		$('.chat[data-mate="'+obj.to+'"] .chat_text #mCSB_4 #mCSB_4_container').append("<div class='from'><p>"+obj.message+"</p></div>");	
+                		$('.chat[data-mate="'+obj.from+'"] .chat_text #mCSB_4 #mCSB_4_container').append("<div class='from'><p>"+obj.message+"</p></div>");	
                 	}
                 	
                 }
