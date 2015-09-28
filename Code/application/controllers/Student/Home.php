@@ -13,7 +13,7 @@ class Home extends ISM_Controller {
 
 	public function index()
 	{
-		$data['title'] = 'ISM Login';
+		$data['title'] = 'ISM - Home';
 		$this->template->load('student/default','student/home_view',$data);
 	}
 

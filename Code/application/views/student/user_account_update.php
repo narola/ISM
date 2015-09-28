@@ -102,6 +102,9 @@
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Contact Number" name="contact_number" value="<?php echo isset($contact_number)?$contact_number:set_value('contact_number');?>">
                                 </div>
+                                <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('contact_number'),''))){ echo 'hide';} ?>">
+                                        <?php echo strip_tags(form_error('contact_number'),''); ?>
+                                </div>
                                 <div class="form-group">
                                     <textarea class="form-control" placeholder="Home Address" name="home_address"><?php echo isset($home_address)?$home_address:set_value('home_address');?></textarea>
                                 </div>                         
@@ -295,7 +298,7 @@
                                     </div>
                                     
                                     <div class="form-group small_input <?php echo isset($display)?$display:'select';?>">
-                                        <label for="">Program / Coures</label>
+                                        <label for="">Program / Course</label>
                                         <select class="form-control" disabled name="program_id" id="program_id" style="display:<?php echo isset($display)?$display:'';?>">
                                         <option value="">Select Program/Coures</option>
                                         <?php 
