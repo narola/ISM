@@ -71,7 +71,14 @@
                 <li><a href="#">Subject</a></li>
                 <li><a href="#">Badges</a></li>
                 <li><a href="<?php echo base_url().'admin/user';?>">User</a></li>
-                <li><a href="#">Topics</a></li>
+                <li class="dropdown sub_menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Topics</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Allocate Topics</a></li>
+                        <li><a href="List_of_topics.html">List of Topics</a></li>
+                        <li><a href="#">Add New Topic</a></li>
+                    </ul>
+                </li>
               </ul>
             </li>
             <li><a href="#"><span class="icon icon_menu_report"></span> Reports</a></li>
