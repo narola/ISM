@@ -452,7 +452,7 @@
                     <a href="#" class="icon icon_pin"></a>
                     <input type="file" class="chat_pin">
                 </div>
-                <div class="chat active" data-mate="16">
+                <div class="chat active" data-mate="1">
                     <div class="chat_header">
                         <div class="chat_img_holder">
                             <img src="assets/images/user2.jpg">
@@ -463,7 +463,7 @@
                     <div class="chat_text mCustomScrollbar" data-mcs-theme="minimal-dark">
 
                     </div>
-                    <input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="16">
+                    <input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="1">
                     <a href="#" class="icon icon_emoji"></a>
                     <a href="#" class="icon icon_pin"></a>
                     <input type="file" class="chat_pin">
