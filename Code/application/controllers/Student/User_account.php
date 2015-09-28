@@ -1,12 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-/*-kap-22-09-2015-------------------*/
+/**
+* kap - kamlesh pokiya 
+*
+*/
 class User_account extends CI_Controller {
 
 	public function __construct()
 	{
 	    parent::__construct();
-	    $this->data['title'] = 'ISM User Account';
+	    $this->data['title'] = 'ISM - Manage Account';
 	    $this->load->model('common_model');
 	    $this->load->model('student/student_account_model');
 	    $this->load->library('upload','form_validation');
@@ -65,6 +68,7 @@ class User_account extends CI_Controller {
 		    		'single' => 1
 		    		));
 		$this->form_validation->set_rules('username', 'Username', 'trim|required|callback_check_user');
+		$this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|regex_match[/^[0-9().-]+$/]');
 		
 		if(isset($this->session->userdata('user')['id'])){
 			$this->form_validation->set_rules('new_password', 'New Password', 'trim|exact_length[8]');
@@ -92,7 +96,7 @@ class User_account extends CI_Controller {
 		$this->form_validation->set_rules('reg[birthdate]', 'Date of birth', 'regex_match[(0[1-9]|1[0-9]|2[0-9]|3(0|1))-(0[1-9]|1[0-2])-\d{4}]');
 		
 		if($this->form_validation->run() == FALSE){
-			$this->load->view('student/user_account_update_view',$this->data);
+			$this->load->view('student/user_account_update',$this->data);
 		}
 		else{
 			$data_student = array(
