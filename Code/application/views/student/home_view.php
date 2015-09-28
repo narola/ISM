@@ -370,106 +370,23 @@
                         <h3>Studymates <span> STM</span></h3>
                     </div>
                     <div class="stm_list mCustomScrollbar" data-mcs-theme="minimal-dark">
-                        <!--stm1-->
-                        <div class="stm_item online">
-                            <a href="#">
-                            <div class="stm_user_img">
-                                <img src="<?php echo base_url();?>assets/images/user1.jpg">
+                        <?php foreach($classmates as $key => $value){
+                            $u = 'offline';
+                            if($value['is_online'] == 1){
+                                $u = 'online';
+                            }
+                            ?>
+                            <div class="stm_item <?php echo $u; ?>">
+                                <a href="#">
+                                <div class="stm_user_img">
+                                    <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                                </div>
+                                <p><?php echo $value['full_name']; ?></p>
+                                </a>
+                                <div class="clearfix"></div>
                             </div>
-                            <p>Mary Watson</p>
-                            </a>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--stm1-->
-                        <div class="stm_item online">
-                            <a href="#">
-                            <div class="stm_user_img">
-                                <img src="<?php echo base_url();?>assets/images/user2.jpg">
-                            </div>
-                            <p>Adam Rose</p>
-                            </a>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--stm1-->
-                        <div class="stm_item online">
-                            <a href="#">
-                            <div class="stm_user_img">
-                                <img src="<?php echo base_url();?>assets/images/user3.jpg">
-                            </div>
-                            <p>John Smith</p>
-                            </a>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--stm1-->
-                        <div class="stm_item online">
-                            <a href="#">
-                            <div class="stm_user_img">
-                                <img src="<?php echo base_url();?>assets/images/user4.jpg">
-                            </div>
-                            <p>Adam Stranger</p>
-                            </a>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--stm1-->
-                        <div class="stm_item online">
-                            <a href="#">
-                            <div class="stm_user_img">
-                                <img src="<?php echo base_url();?>assets/images/user1.jpg">
-                            </div>
-                            <p>Mary Watson</p>
-                            </a>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--stm1-->
-                        <div class="stm_item online">
-                            <a href="#">
-                            <div class="stm_user_img">
-                                <img src="<?php echo base_url();?>assets/images/user2.jpg">
-                            </div>
-                            <p>Adam Rose</p>
-                            </a>
-                            <div class="clearfix"></div>
-                        </div>                    
-                        <!--stm1-->
-                        <div class="stm_item offline">
-                            <a href="#">
-                            <div class="stm_user_img">
-                                <img src="<?php echo base_url();?>assets/images/user5.jpg">
-                            </div>
-                            <p>Dean Winchester</p>
-                            </a>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--stm1-->
-                        <div class="stm_item offline">
-                            <a href="#">
-                            <div class="stm_user_img">
-                                <img src="<?php echo base_url();?>assets/images/user6.jpg">
-                            </div>
-                            <p>Sam Winchester</p>
-                            </a>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--stm1-->
-                        <div class="stm_item offline">
-                            <a href="#">
-                            <div class="stm_user_img">
-                                <img src="<?php echo base_url();?>assets/images/user7.jpg">
-                            </div>
-                            <p>Lucifer Dey</p>
-                            </a>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--stm1-->
-                        <div class="stm_item offline">
-                            <a href="#">
-                            <div class="stm_user_img">
-                                <img src="<?php echo base_url();?>assets/images/avatar.png">
-                            </div>
-                            <p>Ronald Weasley</p>
-                            </a>
-                            <div class="clearfix"></div>
-                        </div> 
+                            <?php 
+                        }  ?>
                      </div>       
                      <div class="text-center">
                         <button class="btn_find_studymates btn btn_blue">Find more Studymates</button>
@@ -481,46 +398,72 @@
             <!--//side right-->
             <!--chat-->
             <div class="chat_container">
-                <div class="chat passive">
+                <div class="chat passive chat_1">
                     <div class="chat_header">
                         <div class="chat_img_holder">
-                            <img src="<?php echo base_url();?>assets/images/user4.jpg">
+                            <img src="assets/images/user7.jpg">
                         </div>
-                        <p class="chat_name">Adam Stranger</p>
+                        <p class="chat_name">Neil Granger</p>
                         <a href="#"><span class="icon icon_option"></span></a>
                     </div>
                     <div class="chat_text">
-                        <p class="from">Hi</p>
-                        <p class="to">Hello</p>
-                        <p class="from">Have you completed the assignment of maths?</p>
-                        <p class="to">Not yet.</p>
-                        <p class="from">Hi</p>
-                        <p class="to">Hello</p>
-                        <p class="from">Have you completed the assignment of maths?</p>
-                        <p class="to">Not yet.</p>
+                        
+                        <div class="to"><p>Will do tonight</p></div>
                     </div>
-                    <input type="text"  class="chat_input" placeholder="Say It">
+                    <input type="text" class="chat_input" placeholder="Say It">
                     <a href="#" class="icon icon_emoji"></a>
                     <a href="#" class="icon icon_pin"></a>
                     <input type="file" class="chat_pin">
                 </div>
                 
-                <div class="chat active">
+                <div class="chat passive chat_2">
                     <div class="chat_header">
                         <div class="chat_img_holder">
-                            <img src="<?php echo base_url();?>assets/images/user2.jpg">
+                            <img src="assets/images/user5.jpg">
                         </div>
-                        <p class="chat_name">Alia Merchant</p>
+                        <p class="chat_name">Ronaldo D.</p>
+                        <a href="#"><span class="icon icon_option"></span></a>
+                    </div>
+                    <div class="chat_text">
+                        <div class="from"><p>Have you completed the assignment of maths?</p></div>
+                        <div class="to"><p>Not yet.</p></div>
+                        <div class="to"><p>Will do tonight</p></div>
+                    </div>
+                    <input type="text" class="chat_input" placeholder="Say It">
+                    <a href="#" class="icon icon_emoji"></a>
+                    <a href="#" class="icon icon_pin"></a>
+                    <input type="file" class="chat_pin">
+                </div>
+                
+                <div class="chat passive chat_3">
+                    <div class="chat_header">
+                        <div class="chat_img_holder">
+                            <img src="assets/images/user4.jpg">
+                        </div>
+                        <p class="chat_name">Adam Stranger</p>
                         <a href="#"><span class="icon icon_option"></span></a>
                     </div>
                     <div class="chat_text">
                         <div class="from"><p>Hi</p></div>
                         <div class="to"><p>Hello</p></div>
-                        <div class="from"><p>Have you completed the assignment of maths?</p></div>
-                        <div class="to"><p>Not yet.</p></div>
-                        <div class="to"><p>Will do tonight</p></div>
                     </div>
-                    <input type="text" id="chat_input" class="chat_input" placeholder="Say It">
+                    <input type="text" class="chat_input" placeholder="Say It">
+                    <a href="#" class="icon icon_emoji"></a>
+                    <a href="#" class="icon icon_pin"></a>
+                    <input type="file" class="chat_pin">
+                </div>
+                <div class="chat active" data-mate="16">
+                    <div class="chat_header">
+                        <div class="chat_img_holder">
+                            <img src="assets/images/user2.jpg">
+                        </div>
+                        <p class="chat_name">Alia Merchant</p>
+                        <a href="#"><span class="icon icon_option"></span></a>
+                    </div>
+                    <div class="chat_text mCustomScrollbar" data-mcs-theme="minimal-dark">
+
+                    </div>
+                    <input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="16">
                     <a href="#" class="icon icon_emoji"></a>
                     <a href="#" class="icon icon_pin"></a>
                     <input type="file" class="chat_pin">

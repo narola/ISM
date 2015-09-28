@@ -19,14 +19,18 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     }
     
     $data = json_decode($message, true);
-    
     /* For individual chat */
-    if($data['type'] = 'individual'){
+    if($data['type'] = 'studymate'){
         $responce = $Server->single_chat($data);
     }
-     foreach ($Server->wsClients as $id => $client)
-                $Server->wsSend($id, json_encode($responce));
     
+    if($responce['to'] == 'self'){
+        $Server->wsSend($clientID, json_encode($responce));
+    }else{
+         foreach ($Server->wsClients as $id => $client)
+                $Server->wsSend($id, json_encode($responce));
+    }
+         
    /*
     if (sizeof($Server->wsClients) == 1)
         $Server->wsSend($clientID, "There isn't anyone else in the room, but I'll still listen to you. --Your Trusty Server");
@@ -34,8 +38,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         foreach ($Server->wsClients as $id => $client)
             if ($id != $clientID)
                 $Server->wsSend($id, "Visitor $clientID ($ip) said \"$message\"");
-     */
-   
+     */  
 }
 
 // when a client connects

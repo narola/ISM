@@ -1,3 +1,25 @@
+        $(document).ready(function() {
+            $('.chat .chat_header').click(function(){
+                if($(this).parent().hasClass('passive')){
+                    if($(this).parent().hasClass('chat_3')){
+                        $('.chat.active').addClass('chat_3 passive');                      
+                        $('.chat.active').removeClass('active');
+                    }
+                    if($(this).parent().hasClass('chat_2')){
+                        $('.chat.active').addClass('chat_2 passive');                      
+                        $('.chat.active').removeClass('active');
+                    }
+                    if($(this).parent().hasClass('chat_1')){
+                        $('.chat.active').addClass('chat_1 passive');                      
+                        $('.chat.active').removeClass('active');
+                    }
+                    $(this).parent().removeClass();
+                    $(this).parent().addClass('active');
+                    $(this).parent().addClass('chat');
+                }
+            });
+        });
+
 var WS = function(url)
 {
 	var callbacks = {};
@@ -20,7 +42,6 @@ var WS = function(url)
 			this.conn = new MozWebSocket(url);
 		else
 			this.conn = new WebSocket(url);
-
 		// dispatch to the right handlers
 		this.conn.onmessage = function(evt){
 			dispatch('message', evt.data);
@@ -45,7 +66,7 @@ var WS = function(url)
 
 var Server;
         function log( text ) {
-         /*   $log = $('#log');
+            /*$log = $('.chat_text');
             //Add text to log
             $log.append(($log.val()?"\n":'')+text);
             //Autoscroll
@@ -58,7 +79,7 @@ var Server;
 
         $(document).ready(function() {
             
-            Server = new WS('ws://192.168.1.124:9300');            
+            Server = new WS('ws://192.168.1.124:9300');       
 
             //Let the user know we're connected
             Server.bind('open', function() {
@@ -72,21 +93,29 @@ var Server;
 
             //Log any messages sent from server
             Server.bind('message', function( payload ) {
-                alert(payload);
+            	var obj = $.parseJSON(payload);
+                if(obj.type == 'studymate'){
+                	if(ws != obj.to){
+                		$('.chat[data-mate="'+obj.to+'"] .chat_text #mCSB_4 #mCSB_4_container').append("<div class='to'><p>"+obj.message+"</p></div>");	
+                	}else{
+                		$('.chat[data-mate="'+obj.to+'"] .chat_text #mCSB_4 #mCSB_4_container').append("<div class='from'><p>"+obj.message+"</p></div>");	
+                	}
+                	
+                }
+                
             });
 
             Server.connect();
 
-            $('#chat_input').keypress(function(e) {
+            $('input[data-type="chat"]').keypress(function(e) {
                 if ( e.keyCode == 13 && this.value ) {
                     var request = {
-                    	type:"individual",
+                    	type:"studymate",
 			    		from: ws,
-			    		to:"12345",
+			    		to:$(this).data('id'),
 			    		message:this.value
 			    	};
                     send(JSON.stringify(request));
-
                     $(this).val('');
                 }
             });
