@@ -60,7 +60,9 @@
 .icon_delete_color,
 .icon_expand,
 .icon_mic,
-.icon_link{
+.icon_link,
+.icon_call_user,
+.icon_call_user_disable{
 	background-image:url(../images/icon-set.png);
 	background-position:0 0;
 }
@@ -280,6 +282,17 @@
 }
 .icon_link{
     background-position: -475px -102px;
+}
+.icon_call_user{
+	background-position: -31px -163px;
+	height: 20px;
+    width: 20px;
+}
+.icon_call_user_disable{
+	background-position: -5px -163px;
+    height: 20px;
+    width: 20px;
+	opacity:0.2;
 }
 /*--------------icon---------------*/
 
