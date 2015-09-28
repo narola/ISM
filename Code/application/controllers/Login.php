@@ -137,10 +137,10 @@ class Login extends CI_Controller {
     public function set_session($userid){
 
         $users = select(TBL_USERS.' u',
-                'u.*,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id,co.course_name,si.academic_year,(select count(*) cnt from tutorial_group_member where group_id = gu.id) as membercount',   
+                'u.*,s.district_id,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id,co.course_name,si.academic_year,si.course_id,si.classroom_id,si.school_id,(select count(*) cnt from tutorial_group_member where group_id = gu.id) as membercount',   
                 array('where'   =>  array('u.id' => $userid)),
                 array('join'    =>    
-                    array(
+                   array(
                         array(
                             'table' => TBL_USER_PROFILE_PICTURE.' up',
                             'condition' => 'up.user_id = u.id'
@@ -179,7 +179,7 @@ class Login extends CI_Controller {
                             'condition' => 'si.course_id = co.id'
                             )
                         )
-                    )    
+                    )
                 );
         $session_data = array(
             'loggedin' => TRUE,

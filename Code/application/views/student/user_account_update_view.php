@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+`<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>ISM Registration</title>
@@ -21,7 +21,16 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link rel="icon" type="image/png" href="assets/images/graduate.png" sizes="32x32" />
-   
+    <style>
+        .avatar1 {
+            border: 6px solid rgba(255, 255, 255, 0.1);
+            border-radius: 70%;
+            height: 150px;
+            margin: 75px auto 15px;
+            overflow: hidden;
+            width: 150px;
+        }
+    </style>
 </head>
 
 <body>
@@ -39,12 +48,17 @@
                         <div class="box_header">
                             <h3><span class="icon icon_info"></span>Personal Information</h3>
                         </div>
-                        <?php $error = $this->session->flashdata('error_cur_pass'); ?>
-  
-                        <div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
-                            <?php echo strip_tags($error) ; ?>
-                        </div>
+                        <?php 
+                            $error = $this->session->flashdata('error_cur_pass'); 
+                            $success = $this->session->flashdata('success'); 
+                        ?>
                         <div class="box_body">
+                            <div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
+                                <?php echo strip_tags($error) ; ?>
+                            </div>
+                            <div class="alert alert-success <?php if(empty(strip_tags($success,''))){ echo 'hide';} ?>">
+                                <?php echo strip_tags($success) ; ?>
+                            </div>
                         	<!--avatar-->
                             <div class="col-sm-4 text-center visible-xs">
                                 <div class="avatar">               
@@ -58,10 +72,10 @@
                             <!--//avatar-->
                         	<div class="col-sm-8">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Full Name" name="full_name" value="<?php echo set_value('full_name');?>">
+                                    <input type="text" class="form-control" placeholder="Full Name" name="full_name" value="<?php echo isset($full_name)?$full_name : set_value('full_name');?>">
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Email Address" name="email_id" value="<?php echo set_value('email_id');?>">
+                                    <input type="email" class="form-control" placeholder="Email Address" name="email_id" value="<?php echo isset($email_id)?$email_id : set_value('email_id');?>">
                                 </div>
                                 <div class="form-group select">
                                     <select class="form-control" name="gender" id="gender">
@@ -71,12 +85,12 @@
                                     </select>
                                 </div>
                                 <script>
-                                    <?php $gender = set_value('gender');?>
+                                    <?php $gender = isset($gender) ? $gender : set_value('gender');?>
                                     document.getElementById('gender').value = '<?= $gender; ?>';
                                 </script>    
                                 <div class="form-group dob">
                                     <div class="input-append date" id="birthdate" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                        <input type="text" class="form-control" placeholder="Date of Birth" name="birthdate" value="<?php echo set_value('birthdate');?>">
+                                        <input type="text" class="form-control" placeholder="Date of Birth" name="birthdate" value="<?php echo isset($birthdate)?$birthdate:set_value('birthdate');?>">
                                     </div>
                                 </div>
                                 <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('birthdate'),''))){ echo 'hide';} ?>">
@@ -86,41 +100,40 @@
                                     <input type="text" class="form-control" placeholder="Age" disabled >
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Contact Number" name="contact_number" value="<?php echo set_value('contact_number');?>">
+                                    <input type="text" class="form-control" placeholder="Contact Number" name="contact_number" value="<?php echo isset($contact_number)?$contact_number:set_value('contact_number');?>">
                                 </div>
                                 <div class="form-group">
-                                    <textarea class="form-control" placeholder="Home Address" name="home_address"><?php echo set_value('home_address');?></textarea>
+                                    <textarea class="form-control" placeholder="Home Address" name="home_address"><?php echo isset($home_address)?$home_address:set_value('home_address');?></textarea>
                                 </div>                         
                             </div>
                             <!--avatar-->
                             <div class="col-sm-4 text-center hidden-xs">
-                            	<div class="avatar">
-                                	<img src="<?php echo base_url() ?>assets/images/avatar.png">
+                            	<div class="avatar1" >
+                                	<img src="<?php echo UPLOAD_URL.'/'.$profile_pic;?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                 </div>
                                 <div class="upload">
                                 	<input type="file" name="profile_image_1">
                                     <span>Upload Profile Picture</span>
                                 </div>
-                                
                             </div>
                             <!--//avatar-->
-                            <div class="col-sm-12">	
-                            	<div class="form-group small_input select">
-                                   <select class="form-control" name="country_id" onchange="get_states(this.value)" id="country_id" >
-                                    <option selected disabled>Select Country</option> 
-                                    <?php 
-                                      if(!empty($countries)){ 
-                                        foreach($countries as $country) {
-                                      ?> 
-                                    <option value="<?php echo $country['id']; ?>"> <?php echo $country['country_name']; ?></option>
-                                    <?php }  }else{ ?>
-                                    <option > No Country</option>
-                                    <?php } ?>
-                                  </select>
+                            <div class="col-sm-12"> 
+                                       <div class="form-group small_input select">
+                                    <select class="form-control" name="country_id" onchange="get_states(this.value)" id="country_id" >
+                                        <option selected disabled>Select Country</option> 
+                                        <?php 
+                                          if(!empty($countries)){ 
+                                            foreach($countries as $country) {
+                                          ?> 
+                                        <option value="<?php echo $country['id']; ?>"> <?php echo $country['country_name']; ?></option>
+                                        <?php }  }else{ ?>
+                                        <option > No Country</option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
-
+                                        
                                 <div class="form-group small_input select">
-                                    <select name="state_id" id="states_id" onchange="get_cities(this.value)" class="form-control">
+                                    <select name="state_id" id="state_id" onchange="get_cities(this.value)" class="form-control">
                                         <option selected disabled>Select State</option>
                                         <?php 
                                           if(!empty($states)){ 
@@ -132,6 +145,7 @@
                                         <?php } ?>
                                     </select>
                                 </div>
+                                
                                 <div class="form-group small_input select">
                                     <select name="city_id" id="city_id" class="form-control">
                                         <option selected disabled>Select City</option>
@@ -143,9 +157,18 @@
                                         <?php }  }else{ ?>
                                         <option > No Country</option>
                                         <?php } ?>
-                                      </select>
+                                    </select>
                                 </div>
-                                
+                                 <script>
+                                    <?php $country = isset($country_id) ? $country_id : set_value('country_id');?>
+                                    document.getElementById('country_id').value = '<?= $country; ?>';
+
+                                    <?php $state = isset($state_id) ? $state_id : set_value('state_id');?>
+                                    document.getElementById('state_id').value = '<?= $state; ?>';
+                           
+                                    <?php $city = isset($city_id) ? $city_id : set_value('city_id');?>
+                                    document.getElementById('city_id').value = '<?= $city; ?>';
+                                </script>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -158,11 +181,11 @@
                         </div>
                         <div class="box_body">
                             <div class="col-sm-12">	
-                            	<p>You are registered for following school, <a href="javascript:void(0)" onclick="enabled_all();">Click Here</a> if it’s not your school.</p>
+                            	<p  style='display:<?php echo isset($display)?$display:"";?>'>You are registered for following school, <a href="javascript:void(0)" onclick="enabled_all();">Click Here</a> if it’s not your school.</p>
                                 <div class="school_info">
-                                    <div class="form-group small_input select">
+                                    <div class="form-group small_input <?php echo isset($display)?$display:'select';?>">
                                         <label for="">School Name</label>
-                                        <select  class="form-control" name="school_id" id="school_id"  disabled>
+                                        <select  class="form-control" name="school_id" id="school_id"  disabled style="display:<?php echo isset($display)?$display:'';?>">
                                             <option value="">Select School</option>
                                             <?php 
                                               if(!empty($schools)){ 
@@ -180,6 +203,9 @@
                                                 <option value="">No School</option>
                                             <?php } ?>
                                         </select>
+                                        
+                                            <?php echo isset($school_name)?'<br>'.$school_name:'';?>
+                                        
                                         <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('school_id'),''))){ echo 'hide';} ?>">
                                         <?php echo strip_tags(form_error('school_id'),''); ?>
                                         </div>
@@ -188,7 +214,7 @@
                                     
                                     <div class="form-group small_input select">
                                         <label for="">Class</label>
-                                        <select class="form-control" name='class_id' id="class_id" disabled>
+                                        <select class="form-control" name='class_id' id="class_id" <?php echo isset($disabled)?'':'disabled';?>>
                                             <option value="">Select Class</option>
                                         <?php 
                                           if(!empty($class)){ 
@@ -207,13 +233,13 @@
                                         <?php } ?>
                                         </select>
                                         <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('class_id'),''))){ echo 'hide';} ?>">
-                                    <?php echo strip_tags(form_error('class_id'),''); ?>
-                                    </div>
+                                            <?php echo strip_tags(form_error('class_id'),''); ?>
+                                        </div>
                                     </div>
 
-                                    <div class="form-group small_input select">
+                                    <div class="form-group small_input <?php echo isset($display)?$display:'select';?>">
                                         <label for="">Academic Year</label>
-                                        <select class="form-control" name="year_id" id="year_id" disabled>
+                                        <select class="form-control" name="year_id" id="year_id" disabled style="display:<?php echo isset($display)?$display:'';?>">
                                             <option value="">Select Year</option>
                                             <option value="2015-2016" selected>2015-2016</option>
                                         <?php 
@@ -232,9 +258,10 @@
                                             <!-- <option value="">No Year</option> -->
                                         <?php } ?>
                                         </select>
+                                        <?php echo isset($academic_year)?'<br>'.$academic_year:'';?>
                                         <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('year_id'),''))){ echo 'hide';} ?>">
-                                    <?php echo strip_tags(form_error('year_id'),''); ?>
-                                    </div>
+                                            <?php echo strip_tags(form_error('year_id'),''); ?>
+                                        </div>
                                     </div>
                                     
                                     <div class="form-group small_input">
@@ -242,9 +269,9 @@
                                         <input name="region" type="text" class="form-control" placeholder="Region of School">
                                     </div>
                                     <div class="form-group small_input select">
-                                        <label for="">District o School</label>
+                                        <label for="">District of School</label>
                                         <!-- <input type="text" class="form-control" placeholder="District of School"> -->
-                                        <select class="form-control" name="district_id" id="district_id" disabled>
+                                        <select class="form-control" name="district_id" id="district_id" <?php echo isset($disabled)?'':'disabled';?>>
                                         <option value="">Select District</option>
                                         <?php 
                                           if(!empty($districts)){ 
@@ -263,13 +290,13 @@
                                         <?php } ?>
                                         </select>
                                         <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('district_id'),''))){ echo 'hide';} ?>">
-                                    <?php echo strip_tags(form_error('district_id'),''); ?>
-                                    </div>
+                                            <?php echo strip_tags(form_error('district_id'),''); ?>
+                                        </div>
                                     </div>
                                     
-                                    <div class="form-group small_input select">
+                                    <div class="form-group small_input <?php echo isset($display)?$display:'select';?>">
                                         <label for="">Program / Coures</label>
-                                        <select class="form-control" disabled name="program_id" id="program_id">
+                                        <select class="form-control" disabled name="program_id" id="program_id" style="display:<?php echo isset($display)?$display:'';?>">
                                         <option value="">Select Program/Coures</option>
                                         <?php 
                                           if(!empty($program)){ 
@@ -280,17 +307,24 @@
                                                     <?php echo $p['course_name']; ?>
                                                 </option>
                                             <?php }else{?>
-                                                    <option value="<?php echo $p['id'];?>">
-                                                        <?php echo $p['course_name']; ?>
-                                                    </option>
+                                                <option value="<?php echo $p['id'];?>">
+                                                    <?php echo $p['course_name']; ?>
+                                                </option>
                                         <?php }}}else{?>
                                             <option value="">No Program/Coures</option>
                                         <?php } ?>
                                         </select>
-                                         <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('program_id'),''))){ echo 'hide';} ?>">
-                                    <?php echo strip_tags(form_error('program_id'),''); ?>
+                                        <?php echo isset($course_name)?'<br>'.$course_name:'';?>
+                                        <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('program_id'),''))){ echo 'hide';} ?>">
+                                            <?php echo strip_tags(form_error('program_id'),''); ?>
+                                        </div>
                                     </div>
-                                    </div>
+                                    <script>
+                                        <?php $class = isset($classroom_id) ? $classroom_id : set_value('class_id');?>
+                                        document.getElementById('class_id').value = '<?= $class; ?>';
+                                        <?php $district = isset($district_id) ? $district_id : set_value('district_id');?>
+                                        document.getElementById('district_id').value = '<?= $district; ?>';
+                                    </script>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -305,13 +339,13 @@
                         <div class="box_body">
                             <div class="col-sm-8">	
                             	<div class="form-group">
-                                	<input type="text" class="form-control" placeholder="Username" name="username" value="<?php echo set_value('username');?>">
+                                	<input type="text" class="form-control" placeholder="Username" name="username" value="<?php echo isset($username)?$username:set_value('username');?>">
                                 </div>
                                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('username'),''))){ echo 'hide';} ?>">
                                     <?php echo strip_tags(form_error('username'),'') ; ?>
                                 </div>
                                 <div class="form-group">
-                                	<input type="password" class="form-control" placeholder="Current Password" name="cur_password" value="<?php echo set_value('cur_password');?>">
+                                	<input type="password" class="form-control" placeholder="Current Password" name="cur_password" value="<?php echo isset($password)?$password:set_value('cur_password');?>">
                                 </div>
                                 <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('cur_password'),''))){ echo 'hide';} ?>">
                                     <?php echo strip_tags(form_error('cur_password'),''); ?>
@@ -360,6 +394,7 @@
                data:{country_id:country_id},
                success:function(data){
                   $('#states_id').html(data);
+                  alert(data);
                }
             });
         }

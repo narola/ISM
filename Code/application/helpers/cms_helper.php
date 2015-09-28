@@ -233,3 +233,56 @@ function is_loggedin(){
 	return $CI->session->userdata('loggedin');
 }
 
+
+/**
+     * Crop Uploaded image in $width & $height and move cropped images to destination
+     * @param type $src
+     * @param type $destination
+     * @param type $width
+     * @param type $height
+     * @param type $type
+     * @Authos Sandip Gopani (SAG)
+     */
+
+function crop($src, $width, $height) {
+
+    $destination = $src;
+    $type = strtolower(pathinfo($src, PATHINFO_EXTENSION));
+    $allowed_type = array('png', 'jpeg', 'gif', 'jpg');
+    $return = 0;
+    if (in_array($type, $allowed_type)) {
+        list($w, $h) = getimagesize($src);
+
+        $sourceRatio = $w / $h;
+        $targetRatio = $width / $height;
+
+        if ($sourceRatio < $targetRatio) {
+            $scale = $w / $width;
+        } else {
+            $scale = $h / $height;
+        }
+        $cropWidth = $width * $scale;
+        $cropHeight = $height * $scale;
+
+        $widthPadding = ($w - $cropWidth) / 2;
+        $heightPadding = ($h - $cropHeight) / 2;
+
+        if ($type == 'jpg' || $type == 'jpeg') {
+            $img_r = imagecreatefromjpeg($src);
+            $function = 'imagejpeg';
+        } else if ($type == 'png') {
+            $img_r = imagecreatefrompng($src);
+            $function = 'imagepng';
+        } else if ($type == 'gif') {
+            $img_r = imagecreatefromgif($src);
+            $function = 'imagejgif';
+        }
+        $dst_r = ImageCreateTrueColor($width, $height);
+        imagecopyresampled($dst_r, $img_r, 0, 0, $widthPadding, $heightPadding, $width, $height, $cropWidth, $cropHeight);
+
+        if ($function($dst_r, $destination)) {
+            $return = 1;
+        }
+    }
+    return $return;
+}
