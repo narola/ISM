@@ -12,13 +12,31 @@ class Notice_board extends CI_Controller {
 	{
 	    parent::__construct();
 	    $this->data['title'] = 'ISM - Notice Board';
-	    $this->load->model('common_model');
-	    $this->load->model('student/student_account_model');
 	    $this->load->library('upload','form_validation');
 	}
 
 	public function index()
 	{	
-		exit();
+		$id 	=	$this->session->userdata('user')['id'];
+		$where 	= 	array('or_where' => array('nv.classroom_id'=> null,'si.user_id' => $id),'where'=>array('role_id'=>2));
+		$option	=	array('join' => 
+						array(
+							array(
+								'table' 	=> 	TBL_NOTICEBOARD_VIEWER.' nv',
+								'condition' =>	'nv.notice_id = n.id'
+							),
+							array(
+								'table'		=>	TBL_STUDENT_ACADEMIC_INFO.' si',
+								'condition' =>  'si.classroom_id = nv.classroom_id'
+							)
+						)
+					);	
+		$this->data['notice_list']	= select(TBL_NOTICEBOARD.' n','notice_title,notice',$where,$option);
+		qry();
+		p($this->data['notice_list'],TRUE);
+			
+		$this->template->load('student/default','student/notice_board',$this->data);
+		// exit();
+
 	}
 }

@@ -10,8 +10,6 @@ class User_account extends CI_Controller {
 	{
 	    parent::__construct();
 	    $this->data['title'] = 'ISM - Manage Account';
-	    $this->load->model('common_model');
-	    $this->load->model('student/student_account_model');
 	    $this->load->library('upload','form_validation');
 	    $this->data[] = array();
 	    if(!empty($this->session->userdata('user')) && $this->session->userdata('user')['membercount'] != 5)
