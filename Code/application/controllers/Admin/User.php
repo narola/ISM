@@ -164,14 +164,8 @@ class User extends ISM_Controller {
 
 	public function test(){
 
-		 $array = array(
-			array('Last Name', 'First Name', 'Gender'),
-			array('Furtado', 'Nelly', 'female'),
-			array('Twain', 'Shania', 'female'),
-			array('Farmer', 'Mylene', 'female')
-		);
-		
-		echo array_to_csv($array,'todo.csv');
+		 //$this->template->load('admin/default','admin/user/select_test');
+		$this->load->view('admin/user/select_test');
 	}
 
 	public function update($id){

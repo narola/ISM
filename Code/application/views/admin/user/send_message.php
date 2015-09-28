@@ -25,7 +25,7 @@
                     <div class="box_body">
                     	<div class="form-group">
                             <label>Select Template</label>
-                            <select class="form-control" onclick="get_message_template(this.value)">
+                            <select class="form-control js-example-basic-single" onclick="get_message_template(this.value)" >
                                 <option value="" >Select Template</option>
                                 <?php  
                                     if(!empty($templates)){
@@ -36,6 +36,7 @@
                                 <option value="" disabled>No Templates Found.</option>
                                 <?php } ?>
                             </select>
+
                         </div>
                         <div class="form-group">
                         	<label>Recipient <span> (Selected recipients are all students)</span></label>
@@ -84,17 +85,23 @@
 
 <script type="text/javascript">
     
-    function get_message_template(msg_id){
-        
-        $.ajax({
-            url:'',
-            type:'',
-            data:{},
-            success:function(data){
-                alert(data);
-            }
-        });
+  $(document).ready(function() {
+      $(".js-example-basic-single").select2({
+         closeOnSelect:false
+      });
+    });
 
-    }
-    
+    // function get_message_template(msg_id){
+        
+    //     $.ajax({
+    //         url:'',
+    //         type:'',
+    //         data:{},
+    //         success:function(data){
+    //             alert(data);
+    //         }
+    //     });
+
+    // }
+
 </script>
