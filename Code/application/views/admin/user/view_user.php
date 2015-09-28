@@ -144,7 +144,7 @@
                                   <a href="#" class="icon icon_performance"></a>
                                   <a href="#" class="icon icon_blockuser"></a>
                                   <a href="#" class="icon icon_mail"></a>
-                                  <a href="#" class="icon icon_chat"></a>
+                                  <a href="<?php echo base_url().'admin/user/send_message/'.$user['id']; ?>" class="icon icon_chat"></a>
                                   <a href="<?php echo base_url().'admin/user/update/'.$user['id']; ?>" class="icon icon_edit"> </a>
                               </td>
                             </tr>

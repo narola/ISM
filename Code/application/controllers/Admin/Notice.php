@@ -4,12 +4,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Notice extends ISM_Controller {
 
 /**
- * function add(),update(),delete() 
+ * function add(),update(),delete(),index()-Default Function  
  *	
  *
  * @author Virendra Patel Sparks ID-VPA
  **/
-
+	
+	// Create Public Blank Variable Use in all function
 	public $data = array();
 
 	public function __construct()
@@ -19,6 +20,7 @@ class Notice extends ISM_Controller {
 		$this->load->model(array('common_model'));	
 	}
 
+	//  List All noticeboard which is_delete=0(TRUE) ,and admin can view,delete,add,and change into archive notice
 	public function index()
 	{
 
@@ -74,6 +76,7 @@ class Notice extends ISM_Controller {
 		$this->template->load('admin/default','admin/notice/view_notice',$this->data);	
 	}
 
+	// Notice Add Form
 	public function add(){
 
 		$this->data['roles'] = $this->common_model->sql_select(TBL_ROLES);
@@ -121,6 +124,7 @@ class Notice extends ISM_Controller {
 		}
 	}
 
+	//Notice update Form
 	public function update($id){
 
 		$this->data['roles'] = $this->common_model->sql_select(TBL_ROLES);
@@ -176,10 +180,17 @@ class Notice extends ISM_Controller {
 		}
 	}
 
+	// Notice Delete on function call with id as parameter ( Update is_delete to 1 )
 	public function delete($id){
 
 		$this->common_model->update(TBL_NOTICEBOARD,$id,array('is_delete'=>TRUE));
-		$this->session->set_flashdata('success', 'Data is Successfully Updated.');
+		$this->session->set_flashdata('success', 'Data is Successfully Deleted.');
+		redirect('admin/notice');	
+	}
+
+	public function archive($id){
+		$this->common_model->update(TBL_NOTICEBOARD,$id,array('status'=>'archive'));
+		$this->session->set_flashdata('success', "Data's Status has been added to Archive.");
 		redirect('admin/notice');	
 	}
 

@@ -91,11 +91,12 @@
                                 <div class="notice_body">
                                     <p><?php echo character_limiter($notice['notice'],300); ?></p>
                                     <div class="notice_action">
-                                        <a href="#" class="icon icon_zip_color"></a>
+                                        <a href="<?php echo base_url().'admin/notice/archive/'.$notice['id']; ?>" class="icon icon_zip_color"
+                                          onclick="return confirm('Are you sure to add this data to archive?')" ></a>
                                         <a href="<?php echo base_url().'admin/notice/update/'.$notice['id']; ?>" class="icon icon_edit_color"></a>
                                         <a href="#" class="icon icon_copy_color"></a>
                                         <a href="<?php echo base_url().'admin/notice/delete/'.$notice['id']; ?>" 
-                                          onclick="return confirm('Are you sure to delete this data ?')"; class="icon icon_delete_color"></a>
+                                          onclick="return confirm('Are you sure to delete this data ?')" class="icon icon_delete_color"></a>
                                         <input type="checkbox"><label class="save_box"></label>
                                     </div>
                                 </div>
