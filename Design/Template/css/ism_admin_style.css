@@ -63,11 +63,11 @@
 	font-weight:bold;
 }
 .sidebar_right_admin .score_rank{
-    width: 25%;
+    width: 50px;
     float: left;
 	height:58px;
 	background-image:url(../images/icon-set.png);
-    background-position: 7px -93px;
+    background-position: 3px -93px;
 }
 
 .page_header{
@@ -345,7 +345,7 @@
 	color:#fff;
 	text-decoration:none;
 }
-.form-group .btn_black{
+.no_effect .btn_black{
 	padding: 6px 20px;
     font-size: 14px;
     text-transform: uppercase;
@@ -712,7 +712,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 	margin-top:13px;
 	float:right;
 }
-.noticeboard{
+.noticeboard, .general_cred{
 	background-color:#fff;
 }
 .noticeboard .group_filter{
@@ -819,4 +819,42 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     transform: scaleX(-1);
     filter: FlipH;
     -ms-filter: "FlipH";
+}
+.txt_red{
+	color:#da534f;
+}
+.txt_blue{
+	color:#4294d0;
+}
+.txt_green{
+	color:#1bc4a3;
+}
+.general_cred .box {
+    margin: 30px 15px;
+}
+.general_cred .box_header {
+    background-color: #F2F2F2;
+	text-align:center;
+}
+.confirmation p{
+	font-size:18px;	
+	line-height:1.6;
+	max-width:700px;
+	margin:0 auto 20px;
+}
+.confirmation{
+	padding:15px;
+}
+.confirmation p span{
+	font-weight:600;
+}
+.btn_red{
+	background-color:#ff6b6b;
+	color:#fff;
+}
+.confirmation .btn{
+	text-transform:uppercase;
+}
+.confirmation .btn_red{
+	margin-right:5px;
 }
