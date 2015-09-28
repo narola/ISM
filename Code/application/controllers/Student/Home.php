@@ -13,7 +13,59 @@ class Home extends ISM_Controller {
 
 	public function index()
 	{
-		$data['title'] = 'ISM Login';
+
+/*
+
+$where = array('where' => array('tm.user_id' =>  $this->session->userdata('user')['id']));
+		$options = array('join' => array(
+				array(
+					'table' => TBL_TUTORIAL_GROUP_MEMBER.' tm',
+					'condition' => 'tm.user_id = u.id'
+				),
+				array(
+					'table' => TBL_TUTORIAL_GROUP_MEMBER.' tgm',
+					'condition' => 'tm.group_id = tgm.group_id'
+				)
+			)
+		);
+		$data['c'] = select(TBL_STUDYMATES.' sm', 'sm.mate_of',$where,$options);
+		qry();
+		p($data['c'],true);
+
+*/
+		$data['title'] = 'ISM - Home';
+		// Get Classmates details
+		$where = array('where' => array('sm.mate_id' =>  $this->session->userdata('user')['id'] ));
+		$options = array('join' => array(
+				array(
+					'table' => TBL_STUDYMATES.' sm',
+					'condition' => 'sm.mate_of = u.id'
+				),
+				array(
+					'table' => TBL_USER_PROFILE_PICTURE.' upp',
+					'condition' => 'upp.user_id = u.id'
+				)
+			),
+		'order_by' => array('sm.is_online DESC')
+		);
+		$classmate1 = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,sm.is_online',$where,$options);
+		$where = array('where' => array('sm.mate_of' =>  $this->session->userdata('user')['id'] ));
+		$options = array('join' => array(
+				array(
+					'table' => TBL_STUDYMATES.' sm',
+					'condition' => 'sm.mate_id = u.id'
+				),
+				array(
+					'table' => TBL_USER_PROFILE_PICTURE.' upp',
+					'condition' => 'upp.user_id = u.id'
+				)
+			),
+		'order_by' => array('sm.is_online DESC')
+		);
+		$classmate2 = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,sm.is_online',$where,$options);
+		$data['classmates'] = array_merge($classmate1,$classmate2);
+		//p($data,true);
+
 		$this->template->load('student/default','student/home_view',$data);
 	}
 

@@ -432,6 +432,7 @@ class PHPWebSocket {
 
 
 
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -609,6 +610,7 @@ class PHPWebSocket {
 
 
 
+
             
 // work out hash to use in Sec-WebSocket-Accept reply header
         $hash = base64_encode(sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
@@ -766,19 +768,53 @@ class PHPWebSocket {
      * @param Array $data
      */
     function single_chat($data = null) {
-        if (is_array($data) && !empty($data) && $data != null) {
+        if (is_array($data) && !empty($data)) {
             $link = $this->db();
             $from = mysqli_escape_string($link, $data['from']);
             $to = mysqli_escape_string($link, $data['to']);
             $msg = mysqli_escape_string($link, $data['message']);
-            $query = "INSERT INTO `ism`.`user_chat` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`, `media_type`, `received_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (NULL, $from, $to, '$msg', NULL, NULL, NULL, CURRENT_TIMESTAMP, '0', 'yes')";
-            $x = mysqli_query($link, $query);
-            if(!$x){
-                $this->log(mysqli_error($link));
+            if ($from != $to) {  // User cannot send messages to self
+                $query = "SELECT mate_id, mate_of FROM `studymates` WHERE mate_id = $from OR mate_of= $from";
+                $row = mysqli_query($link, $query);
+                $all = array();
+                while ($rows = mysqli_fetch_assoc($row)) {
+                    if ($rows['mate_id'] !== $from) {
+                        $all[] = $rows['mate_id'];
+                    }
+                    if ($rows['mate_of'] !== $from) {
+                        $all[] = $rows['mate_of'];
+                    }
+                }
+                if (in_array($to, $all)) {
+                    $query = "INSERT INTO `ism`.`user_chat` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`, `media_type`, `received_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (NULL, $from, $to, '$msg', NULL, NULL, NULL, CURRENT_TIMESTAMP, '0', 'yes')";
+                    $x = mysqli_query($link, $query);
+                    if (!$x) {
+                        $data['to'] = 'self';
+                        $data['error'] = 'Unable to save message.! Please try again.';
+                    }
+                } else {
+                    $data['to'] = 'self';
+                    $data['error'] = 'Please do not modify things manually!';
+                }
+            } else {
+                $data['to'] = 'self';
+                $data['error'] = 'You cannot send messages to self!';
             }
-            
-        }   
-        return $data;
+
+            return $data;
+        } else {
+            return null;
+        }
+    }
+
+    function chat_security($user_id, $to) {
+        /*   $link = $this->db();    
+          $query = "SELECT `tgm`.`user_id` FROM `users` `u` LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`user_id` = `u`.`id` LEFT JOIN `tutorial_group_member` `tgm` ON `tm`.`group_id` = `tgm`.`group_id` WHERE `tm`.`user_id` = $user_id";
+          $row = mysqli_query($link);
+          while($rows = mysqli_fetch_assoc($row)){
+          $this->log();
+          }
+         */
     }
 
 }
