@@ -24,7 +24,6 @@ class Home extends ISM_Controller {
 	*/
 	public function group_allocation(){
 		$data = array(); 
-		p($this->session->userdata('user'));
 		// Get latest info of logged in USER.  Becasue logged in user may chaged related data after login.
 		$user_group_info = select(
 			TBL_TUTORIAL_GROUP_MEMBER,
