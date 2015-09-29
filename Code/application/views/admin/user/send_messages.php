@@ -11,7 +11,7 @@
         </div>
     </div>
     <!--//breadcrumb-->
-    
+       
     <!--message-->
    	<div class="row">
     	<div class="col-sm-12 new_message">

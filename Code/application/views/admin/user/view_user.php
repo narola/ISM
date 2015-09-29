@@ -32,59 +32,65 @@
         </div>
         <!--//breadcrumb-->
         <!--filter-->
-        <div class="row filter">
-          <div class="col-sm-12">
-              <div class="form-group">
-                    <select class="form-control">
-                                <option>Select School</option>
-                                <?php 
-                                  if(!empty($schools)){ 
-                                    foreach($schools as $school) {
-                                    ?>
-                                    <option><?php echo $school['school_name']; ?></option>  
-                                <?php }  } ?>
-                            </select>
-                </div>
-                <div class="form-group">
-                   <select class="form-control">
-                                <option>Select Course</option>
-                                <?php 
-                                  if(!empty($courses)){ 
-                                    foreach($courses as $course) {
-                                    ?>
-                                    <option><?php echo $course['course_name']; ?></option>  
-                                <?php }  } ?>
-                            </select>
-                </div>
-                <div class="form-group">
-                    <select class="form-control">
-                        <option>Select Year</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <select class="form-control">
-                                <option>School Role</option>
-                                <?php 
-                                  if(!empty($roles)){ 
-                                    foreach($roles as $role) {
-                                    ?>
-                                    <option><?php echo $role['role_name']; ?></option>  
-                                <?php }  } ?>
-                            </select>
-                </div>
-                <div class="form-group">
-                    <select class="form-control">
-                                <option>School Role</option>
-                                <?php 
-                                  if(!empty($roles)){ 
-                                    foreach($roles as $role) {
-                                    ?>
-                                    <option><?php echo $role['role_name']; ?></option>  
-                                <?php }  } ?>
-                            </select>
-                </div>
-            </div>
-        </div>
+
+        <form method="get" id="filter">
+	        <div class="row filter">
+	          <div class="col-sm-12">
+	              <div class="form-group">
+	                    <select class="form-control" name="school" onchange="filter_data()">
+	                          <option>Select School</option>
+	                          <?php 
+	                            if(!empty($schools)){ 
+	                              foreach($schools as $school) {
+	                              ?>
+	                              <option value="<?php echo $school['id']; ?>" ><?php echo $school['school_name']; ?></option>  
+	                          <?php }  } ?>
+	                      </select>
+	                </div>
+	                <div class="form-group">
+	                   <select class="form-control" name="course" onchange="filter_data()">
+	                                <option>Select Course</option>
+	                                <?php 
+	                                  if(!empty($courses)){ 
+	                                    foreach($courses as $course) {
+	                                    ?>
+	                                    <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>  
+	                                <?php }  } ?>
+	                            </select>
+	                </div>
+	                <div class="form-group">
+	                    <select class="form-control" name="year" onchange="filter_data()">
+	                        <option>Select Year</option>
+	                        <option value="2015">2015</option>
+	                        <option value="2016">2016</option>
+	                    </select>
+	                </div>
+	                <div class="form-group">
+	                    <select class="form-control" name="role" onchange="filter_data()">
+	                                <option>School Role</option>
+	                                <?php 
+	                                  if(!empty($roles)){ 
+	                                    foreach($roles as $role) {
+	                                    ?>
+	                                    <option value="<?php echo $role['id']; ?>"><?php echo $role['role_name']; ?></option>  
+	                                <?php }  } ?>
+	                            </select>
+	                </div>
+	                <div class="form-group">
+	                    <select class="form-control" onchange="filter_data()">
+	                                <option>School Role</option>
+	                                <?php 
+	                                  if(!empty($roles)){ 
+	                                    foreach($roles as $role) {
+	                                    ?>
+	                                    <option><?php echo $role['role_name']; ?></option>  
+	                                <?php }  } ?>
+	                            </select>
+	                </div>
+	            </div>
+	        </div>
+
+    	</form>	
         <!--//filter-->
         <!--button div-->
     
@@ -170,4 +176,13 @@
     </div>
     <!--//main-->
 
+<script type="text/javascript">
+	
+	function filter_data(){
+
+		$('#filter').submit();
+
+	}
+	
+</script>
  

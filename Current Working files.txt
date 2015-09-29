@@ -3,8 +3,8 @@ Mention the files you are working currently to avoid conflicts.
 =================================================================
 @vpa
 appication\controllers\admin\dashboard.php
-appication\controllers\admin\notice.php
 appication\controllers\admin\user.php
+appication\views\admin\user\send_messages.php
 
 =================================================================
 @sag

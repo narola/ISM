@@ -1,13 +1,5 @@
 <?php
-error_reporting(0);
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-/**
- * class User 
- * 	
- * @package default
- * @author Virendra patel ( Sparks ID- VPA )
- **/
 
 class User extends ISM_Controller {
 
@@ -28,81 +20,107 @@ class User extends ISM_Controller {
 	  *
 	  **/
 	 
-	 public function index() {
+	public function index() {
 
 		$this->load->library('pagination');
 		
 		$role = $this->input->get('role');
+		$course  = $this->input->get('course');
+		$school = $this->input->get('school');
+		$year = $this->input->get('year');
 
-		if(!empty($role)){
-			$where = array('where'=>array('role_id'=>$role));	
+		
+
+		if( !empty($role) || !empty($course || !empty($school) || !empty($year) )){
+
+			$str = '';
+
+			if(!empty($role)){ $where['where']['role_id'] = $role ; $str .= '&role='.$role; }	
+			
+			if(!empty($course)){  $where['where']['student_academic_info.course_id'] = $course; $str .='&course='.$course; }
+
+			if(!empty($school)){  $where['where']['student_academic_info.school_id'] = $school; $str .='&school='.$school; }
+
+			if(!empty($year)){ 
+								$next_year=$year+1; $academic_year = "$year-$next_year";    // find next year and create string like 2015-2016
+								$where['where']['student_academic_info.academic_year'] = $academic_year; $str .='year='.$year;  
+							}
+
+			$str =  trim($str,'&');
+
+			$config['base_url']	 = base_url().'admin/user/index?'.$str;
+			$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
+			$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
+
 		}else{
 			$where=null;
-		}	
-		
-		$config['base_url'] = base_url().'admin/user/index' ;
+			$config['base_url']	 = base_url().'admin/user/index';
+			$offset = $this->uri->segment(4);
+		}
+
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
-		$config['total_rows'] = $this->common_model->sql_select('users',FALSE,$where,array('count'=>TRUE));
+		$config['total_rows'] = select('users',FALSE,$where,array('count'=>TRUE,'join'=>array(array('table' => 'student_academic_info','condition' => 'users.id = student_academic_info.user_id'))));
 		$config['per_page'] = 15;
 
-		//$config['page_query_string'] = TRUE;
-
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
- 		$config['full_tag_close'] = '</ul>';
+	  	$config['full_tag_close'] = '</ul>';
 
- 		$config['num_tag_open'] = '<li>';
- 		$config['num_tag_close'] = '</li>';
+	  	$config['num_tag_open'] = '<li>';
+	  	$config['num_tag_close'] = '</li>';
 
- 		$config['first_link'] = 'First';
-	 	$config['first_tag_open'] = '<li>';
-	 	$config['first_tag_close'] = '</li>';
+	  	$config['first_link'] = 'First';
+	  	$config['first_tag_open'] = '<li>';
+	  	$config['first_tag_close'] = '</li>';
 
-	 	$config['cur_tag_open'] = '<li><a>';
-	 	$config['cur_tag_close'] = '</a></li>';
+	  	$config['cur_tag_open'] = '<li><a>';
+	  	$config['cur_tag_close'] = '</a></li>';
 
-	 	$config['prev_link'] = '&laquo;';
-	 	$config['prev_tag_open'] = '<li>';
-	 	$config['prev_tag_close'] = '</li>';
+	  	$config['prev_link'] = '&laquo;';
+	  	$config['prev_tag_open'] = '<li>';
+	  	$config['prev_tag_close'] = '</li>';
 
-	 	$config['next_link'] = '&raquo;';
-	 	$config['next_tag_open'] = '<li>';
-	 	$config['next_tag_close'] = '</li>';
+		$config['next_link'] = '&raquo;';
+	  	$config['next_tag_open'] = '<li>';
+	  	$config['next_tag_close'] = '</li>';
 
-	 	$config['last_link'] = 'Last';
-	 	$config['last_tag_open'] = '<li>';
-	 	$config['last_tag_close'] = '</li>';
-	 	
-		$offset = $this->uri->segment(4);
+	  	$config['last_link'] = 'Last';
+	  	$config['last_tag_open'] = '<li>';
+	  	$config['last_tag_close'] = '</li>';
 
 		//fetch all data of users joins with roles,cities,countries,states 
-		$this->data['all_users'] = $this->common_model->sql_select('users',
-																	'users.id,users.username,cities.city_name,states.state_name,
-																	users.role_id,roles.role_name',
-																	$where,
-																	array(
-																		'limit'=>$config['per_page'],
-																		'offset'=>$offset,
-																		'join' =>  array(
-																	    			array(
-																	    				'table' => 'roles',
-																	    				'condition' => 'roles.id = users.role_id'
-																						),
-																	    			array(
-																	    				'table' => 'countries',
-																	    				'condition' => 'countries.id = users.country_id'
-																						),
-																	    			array(
-																	    				'table' => 'states',
-																	    				'condition' => 'states.id = users.state_id'
-																						),
-																	    			array(
-																	    				'table' => 'cities',
-																	    				'condition' => 'cities.id = users.city_id'
-																						)
-																		    		)
-																		)
-																	);
+		$this->data['all_users'] =   select('users',
+											'users.id,users.username,cities.city_name,states.state_name,
+											users.role_id,roles.role_name,student_academic_info.course_id',
+											$where,
+											array(
+												'limit'=>$config['per_page'],
+												'offset'=>$offset,
+												'join' =>  array(
+											    			array(
+											    				'table' => 'roles',
+											    				'condition' => 'roles.id = users.role_id'
+																),
+											    			array(
+											    				'table' => 'countries',
+											    				'condition' => 'countries.id = users.country_id'
+																),
+											    			array(
+											    				'table' => 'states',
+											    				'condition' => 'states.id = users.state_id'
+																),
+											    			array(
+											    				'table' => 'cities',
+											    				'condition' => 'cities.id = users.city_id'
+																),
+											    			array(
+											    				'table' => 'student_academic_info',
+											    				'condition' => 'users.id = student_academic_info.user_id'
+																)
+												    		)
+												)
+											);
+		
 		$this->pagination->initialize($config);
 		
 		$this->data['schools'] = $this->common_model->sql_select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
@@ -176,7 +194,6 @@ class User extends ISM_Controller {
 
 	public function test(){
 
-		 //$this->template->load('admin/default','admin/user/select_test');
 		$this->load->view('admin/user/select_test');
 	}
 
@@ -367,6 +384,8 @@ class User extends ISM_Controller {
 			if(isset($_POST['all_users'])){
 				$this->data['post_users'] = $this->input->post('all_users[]');
 				$this->data['my_cnt'] = 1;
+			}elseif(isset($_POST['message_title'])){
+				$this->data['my_cnt'] = 1;
 			}else{
 				$this->data['post_users'] = $this->input->post('users');
 				$this->data['my_cnt'] = 0;	
@@ -375,7 +394,6 @@ class User extends ISM_Controller {
 		}else{
 			$this->data['post_users'] = array();
 		} 
-
 
 		$this->data['templates'] = $this->common_model->sql_select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
 		$this->data['users'] = $this->common_model->sql_select(TBL_USERS,
@@ -402,9 +420,7 @@ class User extends ISM_Controller {
 
 		}else{
 			
-
 			$all_users = $this->input->post('all_users');
-
 
 			if(!empty($all_users)){			
 
@@ -439,11 +455,9 @@ class User extends ISM_Controller {
 						$this->common_model->insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
 
 					}
-				}
-
+				}		
+			}
 		}
-
-	}
 
 	// ---------------------------- User Module END --------------------------------------------
 
