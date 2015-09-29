@@ -24,39 +24,51 @@ class User extends ISM_Controller {
 
 		$this->load->library('pagination');
 		
-		$role = $this->input->get('role');
-		$course  = $this->input->get('course');
-		$school = $this->input->get('school');
-		$year = $this->input->get('year');
+		if($_GET){
 
-		
+			if(!empty($_GET['role'])){
+				$role = $this->input->get('role');
+			}	
+			if(!empty($_GET['course'])){
+				$course  = $this->input->get('course');
+			}
+			if(!empty($_GET['school'])){
+				$school = $this->input->get('school');
+			}
+			if(!empty($_GET['year'])){
+				$year = $this->input->get('year');
+			}
 
-		if( !empty($role) || !empty($course || !empty($school) || !empty($year) )){
+			if( !empty($role) || !empty($course) || !empty($school) || !empty($year) ){
 
-			$str = '';
+				$str = '';
 
-			if(!empty($role)){ $where['where']['role_id'] = $role ; $str .= '&role='.$role; }	
-			
-			if(!empty($course)){  $where['where']['student_academic_info.course_id'] = $course; $str .='&course='.$course; }
+				if(!empty($role)){ $where['where']['role_id'] = $role ; $str .= '&role='.$role; }	
+				
+				if(!empty($course)){  $where['where']['student_academic_info.course_id'] = $course; $str .='&course='.$course; }
 
-			if(!empty($school)){  $where['where']['student_academic_info.school_id'] = $school; $str .='&school='.$school; }
+				if(!empty($school)){  $where['where']['student_academic_info.school_id'] = $school; $str .='&school='.$school; }
 
-			if(!empty($year)){ 
-								$next_year=$year+1; $academic_year = "$year-$next_year";    // find next year and create string like 2015-2016
-								$where['where']['student_academic_info.academic_year'] = $academic_year; $str .='year='.$year;  
-							}
+				if(!empty($year)){ 
+									$next_year=$year+1; $academic_year = "$year-$next_year";    // find next year and create string like 2015-2016
+									$where['where']['student_academic_info.academic_year'] = $academic_year; $str .='year='.$year;  
+								}
 
-			$str =  trim($str,'&');
+				$str =  trim($str,'&');
 
-			$config['base_url']	 = base_url().'admin/user/index?'.$str;
-			$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
-			$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
+				$config['base_url']	 = base_url().'admin/user/index?'.$str;
+				$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
+				$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
+				
+			}
 
 		}else{
 			$where=null;
 			$config['base_url']	 = base_url().'admin/user/index';
 			$offset = $this->uri->segment(4);
 		}
+
+		
 
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
@@ -91,7 +103,8 @@ class User extends ISM_Controller {
 		//fetch all data of users joins with roles,cities,countries,states 
 		$this->data['all_users'] =   select('users',
 											'users.id,users.username,cities.city_name,states.state_name,
-											users.role_id,roles.role_name,student_academic_info.course_id',
+											users.role_id,roles.role_name,student_academic_info.course_id,courses.course_name,
+											classrooms.class_name',
 											$where,
 											array(
 												'limit'=>$config['per_page'],
@@ -116,7 +129,15 @@ class User extends ISM_Controller {
 											    			array(
 											    				'table' => 'student_academic_info',
 											    				'condition' => 'users.id = student_academic_info.user_id'
-																)
+																),
+											    			array(
+											    				'table'=>'courses',
+											    				'condition'=>'student_academic_info.course_id=courses.id'	
+											    				),
+											    			array(
+											    				'table'=>'classrooms',
+											    				'condition'=>'student_academic_info.classroom_id=classrooms.id'	
+											    				),		
 												    		)
 												)
 											);

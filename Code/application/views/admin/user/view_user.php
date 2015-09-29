@@ -37,8 +37,8 @@
 	        <div class="row filter">
 	          <div class="col-sm-12">
 	              <div class="form-group">
-	                    <select class="form-control" name="school" onchange="filter_data()">
-	                          <option>Select School</option>
+	                    <select class="form-control" name="school" onchange="filter_data()" id="school">
+	                          <option value="">Select School</option>
 	                          <?php 
 	                            if(!empty($schools)){ 
 	                              foreach($schools as $school) {
@@ -48,8 +48,8 @@
 	                      </select>
 	                </div>
 	                <div class="form-group">
-	                   <select class="form-control" name="course" onchange="filter_data()">
-	                                <option>Select Course</option>
+	                   <select class="form-control" name="course" onchange="filter_data()" id="course" >
+	                                <option value="">Select Course</option>
 	                                <?php 
 	                                  if(!empty($courses)){ 
 	                                    foreach($courses as $course) {
@@ -59,15 +59,15 @@
 	                            </select>
 	                </div>
 	                <div class="form-group">
-	                    <select class="form-control" name="year" onchange="filter_data()">
-	                        <option>Select Year</option>
+	                    <select class="form-control" name="year" onchange="filter_data()" id="year">
+	                        <option value="">Select Year</option>
 	                        <option value="2015">2015</option>
 	                        <option value="2016">2016</option>
 	                    </select>
 	                </div>
 	                <div class="form-group">
-	                    <select class="form-control" name="role" onchange="filter_data()">
-	                                <option>School Role</option>
+	                    <select class="form-control" name="role" id="role" onchange="filter_data()">
+	                                <option value="">School Role</option>
 	                                <?php 
 	                                  if(!empty($roles)){ 
 	                                    foreach($roles as $role) {
@@ -76,7 +76,7 @@
 	                                <?php }  } ?>
 	                            </select>
 	                </div>
-	                <div class="form-group">
+	                <!-- <div class="form-group">
 	                    <select class="form-control" onchange="filter_data()">
 	                                <option>School Role</option>
 	                                <?php 
@@ -86,7 +86,7 @@
 	                                    <option><?php echo $role['role_name']; ?></option>  
 	                                <?php }  } ?>
 	                            </select>
-	                </div>
+	                </div> -->
 	            </div>
 	        </div>
 
@@ -158,7 +158,11 @@
                                   <a href="<?php echo base_url().'admin/user/update/'.$user['id']; ?>" class="icon icon_edit"> </a>
                               </td>
                             </tr>
-                            <?php } } ?>
+                            <?php } }else{ ?>
+							
+							<tr> <td colspan="7"> No Data Found. </td> </tr>		
+							
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>
@@ -171,7 +175,6 @@
         </div>
 
        </form> <!-- Form END  -->
-        
         <!--//row table-->
     </div>
     <!--//main-->
@@ -179,10 +182,35 @@
 <script type="text/javascript">
 	
 	function filter_data(){
+		
+		var role = $('#role').val();
+		var school = $('#school').val();
+		var year = $('#year').val();
+		var course = $('#course').val();
 
+		if(role == '' ){ $('#role').removeAttr('name'); }
+		if(school == '' ){ $('#school').removeAttr('name'); }
+		if(year == '' ){ $('#year').removeAttr('name'); }
+		if(course == '' ){ $('#course').removeAttr('name'); }
+		
 		$('#filter').submit();
-
 	}
-	
+
+	<?php if(!empty($_GET['role'])) { ?>
+		$('#role').val('<?php echo $_GET["role"];?>');	
+	<?php } ?>
+
+	<?php if(!empty($_GET['school'])) { ?>
+		$('#school').val('<?php echo $_GET["school"];?>');	
+	<?php } ?>
+
+	<?php if(!empty($_GET['year'])) { ?>
+		$('#year').val('<?php echo $_GET["year"];?>');	
+	<?php } ?>
+
+	<?php if(!empty($_GET['course'])) { ?>
+		$('#course').val('<?php echo $_GET["course"];?>');	
+	<?php } ?>			
+
 </script>
  
