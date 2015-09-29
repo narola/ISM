@@ -377,7 +377,7 @@
                             }
                             ?>
                             <div class="stm_item <?php echo $u; ?>">
-                                <a href="#">
+                                <a href="#" onclick="active_check();">
                                 <div class="stm_user_img">
                                     <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                 </div>

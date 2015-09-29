@@ -67,3 +67,91 @@ $('input[data-type="chat"]').keypress(function (e) {
         $(this).val('');
     }
 });
+
+function set_status(id,status){
+    if(status == true){
+        value = $.cookie('status');
+        if(value == 'undefind' || value == '' || value == null){
+            $.cookie('status',id);
+        }
+         var splitString = value.split(',');
+         if(splitString.length>1){
+             check  = $.inArray(id,splitString);
+             var a = splitString.indexOf(id);
+             if(a != -1){
+                append = $.cookie('status')+','+id;
+                $.cookie('status',append);
+             } 
+         }
+         else{
+            if(value != id){
+                append = $.cookie('status')+','+id;
+                $.cookie('status',append);
+            }
+
+        }
+    }
+    else if(status == false){
+        value = $.cookie('status');
+        var splitString = value.split(',');
+         if(splitString.length>1){
+            y = jQuery.grep(splitString, function(value) {
+                  return value != id;
+                }); 
+
+                $.cookie('status',y);
+             
+         }
+         else{
+            if(value == id){
+                $.cookie('status','');
+            }
+
+        }
+    }
+    alert($.cookie('status'))
+}
+
+function active_check(id,status){
+    if(status == true){
+        value = $.cookie('active_check');
+        if(value == 'undefind' || value == '' || value == null){
+            $.cookie('active_check',id);
+        }
+         var splitString = value.split(',');
+         if(splitString.length>1){
+             check  = $.inArray(id,splitString);
+             var a = splitString.indexOf(id);
+             if(a != -1){
+                append = $.cookie('active_check')+','+id;
+                $.cookie('active_check',append);
+             } 
+         }
+         else{
+            if(value != id){
+                append = $.cookie('active_check')+','+id;
+                $.cookie('active_check',append);
+            }
+
+        }
+    }
+    else if(status == false){
+        value = $.cookie('active_check');
+        var splitString = value.split(',');
+         if(splitString.length>1){
+            y = jQuery.grep(splitString, function(value) {
+                  return value != id;
+                }); 
+
+                $.cookie('active_check',y);
+             
+         }
+         else{
+            if(value == id){
+                $.cookie('active_check','');
+            }
+
+        }
+    }
+    alert($.cookie('active_check'))
+}
