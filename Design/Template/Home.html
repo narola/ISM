@@ -672,10 +672,14 @@
                         <p class="chat_name">Alia Merchant</p>
                         <a href="#"><span class="icon icon_option"></span></a>
                     </div>
-                    <div class="chat_text">
+                    
+                    <div class="chat_text mCustomScrollbar" data-mcs-theme="minimal-dark">
                     	<div class="from"><p>Hi</p></div>
                     	<div class="to"><p>Hello</p></div>
                     	<div class="from"><p>Have you completed the assignment of maths?</p></div>
+                    	<div class="to"><p>Not yet.</p></div>
+                        <div class="to"><p>Will do tonight</p></div>
+                        <div class="from"><p>Have you completed the assignment of maths?</p></div>
                     	<div class="to"><p>Not yet.</p></div>
                         <div class="to"><p>Will do tonight</p></div>
                     </div>
@@ -716,7 +720,15 @@
 					jQuery(this).parent().addClass('chat');
 				}
 			});
+			
+			
         });
+	</script>
+    <script type="text/javascript">
+		$(document).ready(function() {
+			/*$('.chat_text').mCustomScrollbar('scrollTo','bottom');*/
+			$(".chat_text").scrollTop('div:last-child');
+		});
 	</script>
 </body>
 </html>

@@ -18,6 +18,27 @@ $(document).ready(function () {
             $(this).parent().addClass('chat');
         }
     });
+
+    var _URL = window.URL || window.webkitURL;
+    $("#chat_upload").change(function (e) {
+        if(this.files[0].size <= 1024*1024*10){
+            
+        }else{
+            
+        }
+         alert(this.files[0].size);
+        var file, img;
+        if ((file = this.files[0])) {
+            img = new Image();
+            img.onload = function () {
+                alert(this.width + " " + this.height);
+            };
+            img.src = _URL.createObjectURL(file);
+        }
+    });
+
+
+
 });
 
 if ("WebSocket" in window)
@@ -43,7 +64,10 @@ if ("WebSocket" in window)
                 alert(obj.error);
             }
         } else if (obj.type == 'notification') {
-            alert(obj.message);
+            if (obj.status == 'available') {
+                set_status(obj.user_id, obj.live_status);
+                alert(obj.message);
+            }
         } else {
             alert('Message Not Catched!!');
         }
@@ -67,6 +91,7 @@ $('input[data-type="chat"]').keypress(function (e) {
         $(this).val('');
     }
 });
+
 
 function set_status(id,status){
     if(status == true){

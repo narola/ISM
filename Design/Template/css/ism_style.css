@@ -1252,6 +1252,7 @@ input.chat_input {
     width: 100%;
     left: 0;
     padding: 6px 40px;
+	outline: none;
 }
 .chat .icon_emoji {
     position: absolute;
@@ -1779,7 +1780,7 @@ ul.tut_weekdays {
 	opacity:0.5;
 }
 
-.calculator {
+.calculator, .white_board, .explore, .dictionary {
     margin: 0;
     width: 84%;
 	border-right:1px solid #fff;
@@ -1787,6 +1788,9 @@ ul.tut_weekdays {
 	float:left;
     overflow: auto;
 	background-color:#fff;
+}
+.white_board, .explore, .dictionary{
+	display:none;
 }
 .calculator .textarea {
     background-color: #fff;
@@ -2035,4 +2039,34 @@ svg {
 .toolkit_tabs ul>li.active{
     background-image: url(../images/tab_active.png);
 	z-index:9;
+}
+.board_tools>li{
+	list-style: none;
+    float: left;
+    padding: 2% 6%;
+    background-color: #dedede;
+}
+
+.board_tools>li:hover>a{
+	opacity:1;
+}
+
+.alert_notification{
+	position: fixed;
+    z-index: 2;
+    bottom: 5px;
+    right: 30px;
+	width:320px;
+    height: 120px;
+    background-color: #baede3;
+    border: 1px solid #1bc4a3;
+    color: #333;
+}
+.alert_notification p{
+	font-style:italic;
+	margin:10px 0;
+}
+.alert_notification a{
+	color:#1bc4a3;
+	text-decoration:none;
 }
