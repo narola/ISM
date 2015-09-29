@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     $('.chat .chat_header').click(function () {
         if ($(this).parent().hasClass('passive')) {
             if ($(this).parent().hasClass('chat_3')) {
@@ -21,12 +22,12 @@ $(document).ready(function () {
 
     var _URL = window.URL || window.webkitURL;
     $("#chat_upload").change(function (e) {
-        if(this.files[0].size <= 1024*1024*10){
-            
-        }else{
-            
+        if (this.files[0].size <= 1024 * 1024 * 10) {
+
+        } else {
+            alert('');
         }
-         alert(this.files[0].size);
+        alert(this.files[0].size);
         var file, img;
         if ((file = this.files[0])) {
             img = new Image();
@@ -65,8 +66,9 @@ if ("WebSocket" in window)
             }
         } else if (obj.type == 'notification') {
             if (obj.status == 'available') {
-                set_status(obj.user_id, obj.live_status);
-                alert(obj.message);
+                set_status(obj.user_id,obj.live_status);
+                $(".alert_notification p").html(obj.message);
+                $(".alert_notification").show().delay(3000).fadeOut();
             }
         } else {
             alert('Message Not Catched!!');
@@ -77,7 +79,7 @@ if ("WebSocket" in window)
         alert('Disconnected from Server!');
     };
 }
-
+/* Send message for individual chat. */
 $('input[data-type="chat"]').keypress(function (e) {
     if (e.keyCode == 13 && this.value) {
         var request = {
@@ -91,5 +93,48 @@ $('input[data-type="chat"]').keypress(function (e) {
         $(this).val('');
     }
 });
+
+/* Check user is online or not */
+function set_status(id, status) {
+    if (status == true) {
+        value = $.cookie('status');
+        if (value == 'undefind' || value == '' || value == null) {
+            $.cookie('status', id);
+        }
+        var splitString = value.split(',');
+        if (splitString.length > 1) {
+            check = $.inArray(id, splitString);
+            var a = splitString.indexOf(id);
+            if (a != -1) {
+                append = $.cookie('status') + ',' + id;
+                $.cookie('status', append);
+            }
+        } else {
+            if (value != id) {
+                append = $.cookie('status') + ',' + id;
+                $.cookie('status', append);
+            }
+
+        }
+    } else if (status == false) {
+        value = $.cookie('status');
+        var splitString = value.split(',');
+        if (splitString.length > 1) {
+            y = jQuery.grep(splitString, function (value) {
+                return value != id;
+            });
+
+            $.cookie('status', y);
+
+        }
+        else {
+            if (value == id) {
+                $.cookie('status', '');
+            }
+
+        }
+    }
+}
+
 
 

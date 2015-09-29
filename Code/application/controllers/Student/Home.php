@@ -65,8 +65,6 @@ $where = array('where' => array('tm.user_id' =>  $this->session->userdata('user'
 		);
 		$classmate2 = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,sm.is_online',$where,$options);
 		$data['classmates'] = array_merge($classmate1,$classmate2);
-		//qry();
-		//p($data,true);
 		
 
 		$this->template->load('student/default','student/home_view',$data);

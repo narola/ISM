@@ -136,6 +136,13 @@
 
         </div>
     </div>
+
+<div class="alert alert_notification alert-dismissible" role="alert" style="display: none;">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+      <p></p>
+    </div>
+
+
     <!--//body-->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="assets/js/jquery-1.11.3.min.js"></script>

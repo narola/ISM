@@ -374,7 +374,7 @@
                         $all_online = explode(',',$this->input->cookie('status'));
                         foreach($classmates as $key => $value){
                             $u = 'offline';
-                            if($value['is_online'] == 1){
+                            if(in_array($value['is_online'], $all_online)){
                                 $u = 'online';
                             }
                             ?>

@@ -860,6 +860,18 @@ class PHPWebSocket {
             return null;
         }
     }
+    
+    
+    function check_online_classmate($id){
+         $all = $this->class_mate_list($id);
+         $online = array();
+         foreach($this->wsClients as $id => $value){
+             if(in_array($value[12], $all)){
+                 $online[] =  $value[12];
+             }
+         }
+        return $online;
+    }
 
 }
 

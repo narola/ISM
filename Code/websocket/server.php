@@ -35,9 +35,9 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                             'live_status' => true,
                             'user_id' => $user_info['id'],
                             'profile_link' => $user_info['profile_link'],
-                            'message' => $user_info['full_name'] . " is online!!"
+                            'message' => "<b>" . $user_info['full_name'] . "</b> is now online!"                           
                         );
-                         $Server->log($user_info['full_name'] . " is online!!");
+                        $Server->log("Online");
                         $Server->wsSend($id, json_encode($res));
                     }
                 }
@@ -51,7 +51,6 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         foreach ($Server->wsClients as $id => $client)
             $Server->wsSend($id, json_encode($responce));
     }
-
 }
 
 // when a client connects
@@ -73,13 +72,13 @@ function wsOnClose($clientID, $status) {
                     'live_status' => false,
                     'user_id' => $user_info['id'],
                     'profile_link' => $user_info['profile_link'],
-                    'message' => $user_info['full_name'] . " is offline!!"
+                    'message' => "<b>" . $user_info['full_name'] . "</b> is now offline!"
                 );
-                $Server->log($user_info['full_name'] . " is offline!!");
+                $Server->log("Offline");
                 $Server->wsSend($id, json_encode($res));
             }
         }
-    }else{
+    } else {
         $Server->log("Null got");
     }
 }
