@@ -96,10 +96,13 @@ class Topic extends ISM_Controller {
 											    				'table' => TBL_USERS.' user',
 											    				'condition' => 'user.id = tut_topic.created_by',
 																)
-												    		)
+												    		),
+												
+
 												)
 											);
 // p($this->data);
+// qry(true);
 		$this->pagination->initialize($config);
 
 		$this->data['roles'] = select(TBL_ROLES,FALSE,FALSE,null);

@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="col-sm-12">
                                 	<span class="label label_black">Allocated <?php echo $topic['allocation_count']; ?> times</span>
-                                    <span class="label label_red">550 Question</span>
+                                    <span class="label label_red"><?php //echo $topic['question_count']; ?>550 Question</span>
                                 
                                		<!-- Split button -->
                                     <div class="btn-group">
@@ -123,5 +123,12 @@
         $('#filter').submit();
 
     }
+    <?php if(!empty($_GET['role'])) { ?>
+        $('#role').val('<?php echo $_GET["role"];?>');  
+    <?php } ?>
+
+    <?php if(!empty($_GET['subject'])) { ?>
+        $('#subject').val('<?php echo $_GET["subject"];?>');  
+    <?php } ?>
     
 </script>
