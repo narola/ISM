@@ -1,125 +1,227 @@
-        $(document).ready(function() {
-            $('.chat .chat_header').click(function(){
-                if($(this).parent().hasClass('passive')){
-                    if($(this).parent().hasClass('chat_3')){
-                        $('.chat.active').addClass('chat_3 passive');                      
-                        $('.chat.active').removeClass('active');
-                    }
-                    if($(this).parent().hasClass('chat_2')){
-                        $('.chat.active').addClass('chat_2 passive');                      
-                        $('.chat.active').removeClass('active');
-                    }
-                    if($(this).parent().hasClass('chat_1')){
-                        $('.chat.active').addClass('chat_1 passive');                      
-                        $('.chat.active').removeClass('active');
-                    }
-                    $(this).parent().removeClass();
-                    $(this).parent().addClass('active');
-                    $(this).parent().addClass('chat');
-                }
-            });
-        });
+$(document).ready(function () {
 
-var WS = function(url)
+    $('.chat .chat_header').click(function () {
+        if ($(this).parent().hasClass('passive')) {
+            if ($(this).parent().hasClass('chat_3')) {
+                $('.chat.active').addClass('chat_3 passive');
+                $('.chat.active').removeClass('active');
+            }
+            if ($(this).parent().hasClass('chat_2')) {
+                $('.chat.active').addClass('chat_2 passive');
+                $('.chat.active').removeClass('active');
+            }
+            if ($(this).parent().hasClass('chat_1')) {
+                $('.chat.active').addClass('chat_1 passive');
+                $('.chat.active').removeClass('active');
+            }
+            $(this).parent().removeClass();
+            $(this).parent().addClass('active');
+            $(this).parent().addClass('chat');
+        }
+    });
+
+    var _URL = window.URL || window.webkitURL;
+    $("#chat_upload").change(function (e) {
+        if (this.files[0].size <= 1024 * 1024 * 10) {
+
+        } else {
+            alert('');
+        }
+        alert(this.files[0].size);
+        var file, img;
+        if ((file = this.files[0])) {
+            img = new Image();
+            img.onload = function () {
+                alert(this.width + " " + this.height);
+            };
+            img.src = _URL.createObjectURL(file);
+        }
+    });
+
+
+
+});
+
+if ("WebSocket" in window)
 {
-	var callbacks = {};
-	var ws_url = url;
-	var conn;
+    var ws = new WebSocket("ws://192.168.1.124:9300");
 
-	this.bind = function(event_name, callback){
-		callbacks[event_name] = callbacks[event_name] || [];
-		callbacks[event_name].push(callback);
-		return this;// chainable
-	};
+    ws.onopen = function ()
+    {
+        ws.send('{"type":"con","from":"' + wp + '","to":"self","error":""}');
+    };
 
-	this.send = function(event_name, event_data){
-		this.conn.send( event_data );
-		return this;
-	};
-
-	this.connect = function() {
-		if ( typeof(MozWebSocket) == 'function' )
-			this.conn = new MozWebSocket(url);
-		else
-			this.conn = new WebSocket(url);
-		// dispatch to the right handlers
-		this.conn.onmessage = function(evt){
-			dispatch('message', evt.data);
-		};
-
-		this.conn.onclose = function(){dispatch('close',null)}
-		this.conn.onopen = function(){dispatch('open',null)}
-	};
-
-	this.disconnect = function() {
-		this.conn.close();
-	};
-
-	var dispatch = function(event_name, message){
-		var chain = callbacks[event_name];
-		if(typeof chain == 'undefined') return; // no callbacks for this event
-		for(var i = 0; i < chain.length; i++){
-			chain[i]( message )
-		}
-	}
-};
-
-var Server;
-        function log( text ) {
-            /*$log = $('.chat_text');
-            //Add text to log
-            $log.append(($log.val()?"\n":'')+text);
-            //Autoscroll
-            $log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;*/
+    ws.onmessage = function (evt)
+    {
+        var obj = $.parseJSON(evt.data);
+        if (obj.type == 'studymate') {
+            if (ws == obj.from) {
+                $('.chat[data-mate="' + obj.to + '"] .chat_text #mCSB_4 #mCSB_4_container').append("<div class='to'><p>" + obj.message + "</p></div>");
+            } else {
+                $('.chat[data-mate="' + obj.from + '"] .chat_text #mCSB_4 #mCSB_4_container').append("<div class='from'><p>" + obj.message + "</p></div>");
+            }
+        } else if (obj.type == 'con') {
+            if (obj.error != '') {
+                alert(obj.error);
+            }
+        } else if (obj.type == 'notification') {
+            if (obj.status == 'available') {
+                set_status(obj.user_id,obj.live_status);
+                $(".alert_notification p").html(obj.message);
+                $(".alert_notification").show().delay(3000).fadeOut();
+            }
+        } else {
+            alert('Message Not Catched!!');
         }
+    };
+    ws.onclose = function ()
+    {
+        alert('Disconnected from Server!');
+    };
+}
+/* Send message for individual chat. */
+$('input[data-type="chat"]').keypress(function (e) {
+    if (e.keyCode == 13 && this.value) {
+        var request = {
+            type: 'studymate',
+            from: wp,
+            to: $(this).data('id'),
+            error: '',
+            message: this.value
+        };
+        ws.send(JSON.stringify(request));
+        $(this).val('');
+    }
+});
 
-        function send( text ) {
-            Server.send( 'message', text );
+/* Check user is online or not */
+function set_status(id, status) {
+    if (status == true) {
+        value = $.cookie('status');
+        if (value == 'undefind' || value == '' || value == null) {
+            $.cookie('status', id);
         }
+        var splitString = value.split(',');
+        if (splitString.length > 1) {
+            check = $.inArray(id, splitString);
+            var a = splitString.indexOf(id);
+            if (a != -1) {
+                append = $.cookie('status') + ',' + id;
+                $.cookie('status', append);
+            }
+        } else {
+            if (value != id) {
+                append = $.cookie('status') + ',' + id;
+                $.cookie('status', append);
+            }
 
-        $(document).ready(function() {
-            
-            Server = new WS('ws://192.168.1.124:9300');       
-
-            //Let the user know we're connected
-            Server.bind('open', function() {
-                log( "Connected." );
+        }
+    } else if (status == false) {
+        value = $.cookie('status');
+        var splitString = value.split(',');
+        if (splitString.length > 1) {
+            y = jQuery.grep(splitString, function (value) {
+                return value != id;
             });
 
-            //OH NOES! Disconnection occurred.
-            Server.bind('close', function( data ) {
-                log( "Disconnected." );
-            });
+            $.cookie('status', y);
 
-            //Log any messages sent from server
-            Server.bind('message', function( payload ) {
-            	var obj = $.parseJSON(payload);
-                if(obj.type == 'studymate'){
-                	if(ws == obj.from){
-                		$('.chat[data-mate="'+obj.to+'"] .chat_text #mCSB_4 #mCSB_4_container').append("<div class='to'><p>"+obj.message+"</p></div>");	
-                	}else{
-                		$('.chat[data-mate="'+obj.from+'"] .chat_text #mCSB_4 #mCSB_4_container').append("<div class='from'><p>"+obj.message+"</p></div>");	
-                	}
-                	
-                }
-                
-            });
+        }
+        else {
+            if (value == id) {
+                $.cookie('status', '');
+            }
 
-            Server.connect();
-
-            $('input[data-type="chat"]').keypress(function(e) {
-                if ( e.keyCode == 13 && this.value ) {
-                    var request = {
-                    	type:"studymate",
-			    		from: ws,
-			    		to:$(this).data('id'),
-			    		message:this.value
-			    	};
-                    send(JSON.stringify(request));
-                    $(this).val('');
-                }
-            });
+        }
+    }
+}
 
 
 
- });
+function set_status(id,status){
+    if(status == true){
+        value = $.cookie('status');
+        if(value == 'undefind' || value == '' || value == null){
+            $.cookie('status',id);
+        }
+         var splitString = value.split(',');
+         if(splitString.length>1){
+             check  = $.inArray(id,splitString);
+             var a = splitString.indexOf(id);
+             if(a != -1){
+                append = $.cookie('status')+','+id;
+                $.cookie('status',append);
+             } 
+         }
+         else{
+            if(value != id){
+                append = $.cookie('status')+','+id;
+                $.cookie('status',append);
+            }
+
+        }
+    }
+    else if(status == false){
+        value = $.cookie('status');
+        var splitString = value.split(',');
+         if(splitString.length>1){
+            y = jQuery.grep(splitString, function(value) {
+                  return value != id;
+                }); 
+
+                $.cookie('status',y);
+             
+         }
+         else{
+            if(value == id){
+                $.cookie('status','');
+            }
+
+        }
+    }
+    alert($.cookie('status'))
+}
+
+function active_check(id,status){
+    if(status == true){
+        value = $.cookie('active_check');
+        if(value == 'undefind' || value == '' || value == null){
+            $.cookie('active_check',id);
+        }
+         var splitString = value.split(',');
+         if(splitString.length>1){
+             check  = $.inArray(id,splitString);
+             var a = splitString.indexOf(id);
+             if(a != -1){
+                append = $.cookie('active_check')+','+id;
+                $.cookie('active_check',append);
+             } 
+         }
+         else{
+            if(value != id){
+                append = $.cookie('active_check')+','+id;
+                $.cookie('active_check',append);
+            }
+
+        }
+    }
+    else if(status == false){
+        value = $.cookie('active_check');
+        var splitString = value.split(',');
+         if(splitString.length>1){
+            y = jQuery.grep(splitString, function(value) {
+                  return value != id;
+                }); 
+
+                $.cookie('active_check',y);
+             
+         }
+         else{
+            if(value == id){
+                $.cookie('active_check','');
+            }
+
+        }
+    }
+    alert($.cookie('active_check'))
+}

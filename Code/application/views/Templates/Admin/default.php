@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>ISM Admin | Manage User</title>
+    <title>ISM Admin | <?php echo $page_title; ?></title>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1"><title>Login</title>
-	<link href="<?php echo base_url().'assets'; ?>/css/bootstrap.min.css" rel="stylesheet">
+    <base href="<?php echo base_url();?>" >
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <!--custom css-->
-    <link href="<?php echo base_url().'assets'; ?>/css/ism_style.css" rel="stylesheet">
-    <link href="<?php echo base_url().'assets'; ?>/css/ism_admin_style.css" rel="stylesheet">
-    <link href="<?php echo base_url().'assets'; ?>/css/responsive.css" rel="stylesheet">
-    <link href="<?php echo base_url().'assets'; ?>/css/icon.css" rel="stylesheet">
+    <link href="assets/css/ism_style.css" rel="stylesheet">
+    <link href="assets/css/ism_admin_style.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet">
+    <link href="assets/css/icon.css" rel="stylesheet">
     <!--scroll-->
-    <link href="<?php echo base_url().'assets'; ?>/css/jquery.mCustomScrollbar.css" rel="stylesheet">
+    <link href="assets/css/jquery.mCustomScrollbar.css" rel="stylesheet">
     <!-- Select2 CSS Start -->
-    <link href="<?php echo base_url().'assets'; ?>/css/select2-bootstrap.css" rel="stylesheet">    
-    <link href="<?php echo base_url().'assets'; ?>/css/select2.css" rel="stylesheet">
+    <link href="assets/css/select2-bootstrap.css" rel="stylesheet">    
+    <link href="assets/css/select2.css" rel="stylesheet">
     <!-- Select2 CSS END -->
 
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -23,16 +24,16 @@
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,100,300,200,500,600,700,800,900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-    <script src="<?php echo base_url().'assets'; ?>/js/jquery-1.11.3.min.js"></script>
-    <script src="<?php echo base_url().'assets'; ?>/js/jquery-ui.min.js"></script> <!-- jQuery UI JS -->
-    <script src="<?php echo base_url().'assets'; ?>/js/bootstrap.min.js"></script> <!-- Bootstap JS -->
-    <script src="<?php echo base_url().'assets'; ?>/js/select2.min.js"></script> <!-- Select2 JS -->
+    <script src="assets/js/jquery-1.11.3.min.js"></script>
+    <script src="assets/js/jquery-ui.min.js"></script> <!-- jQuery UI JS -->
+    <script src="assets/js/bootstrap.min.js"></script> <!-- Bootstap JS -->
+    <script src="assets/js/select2.min.js"></script> <!-- Select2 JS -->
     
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <link rel="icon" type="image/png" href="<?php echo base_url().'assets'; ?>/images/graduate_admin.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/images/graduate_admin.png" sizes="32x32" />
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top navbar_admin">
@@ -45,7 +46,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"><img src="<?php echo base_url().'assets'; ?>/images/site_admin_logo.png"></a>
+          <a class="navbar-brand" href="#"><img src="assets/images/site_admin_logo.png"></a>
         </div>
     
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -70,12 +71,12 @@
                 <li><a href="#">Classroom</a></li>
                 <li><a href="#">Subject</a></li>
                 <li><a href="#">Badges</a></li>
-                <li><a href="<?php echo base_url().'admin/user';?>">User</a></li>
+                <li><a href="admin/user">User</a></li>
                 <li class="dropdown sub_menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Topics</a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Allocate Topics</a></li>
-                        <li><a href="List_of_topics.html">List of Topics</a></li>
+                        <li><a href="admin/topic/lists">List of Topics</a></li>
                         <li><a href="#">Add New Topic</a></li>
                     </ul>
                 </li>
@@ -98,7 +99,7 @@
         	<!--side left-->
             <div class="sidebar_left_container inner_pages inner_pages_admin text-center mCustomScrollbar" data-mcs-theme="minimal"><!-- scrollbar" id="style-3-->
                 <div class="user_profile_img">
-                    <img src="<?php echo base_url().'assets'; ?>/images/user1.jpg">
+                    <img src="assets/images/user1.jpg">
                 </div>
                 <h4>Adam Ross</h4>
                 <a href="#">View Profile</a>
@@ -109,7 +110,7 @@
                     	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span><span class="badge bell_badge">03</span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">
-                            	<div class="user_small_img"><img src="<?php echo base_url().'assets'; ?>/images/user2.jpg"></div>
+                            	<div class="user_small_img"><img src="assets/images/user2.jpg"></div>
                                 <div class="notification_txt">
                                 	<p><span class="noti_username">Adam Stranger</span> tagged you in a post</p>
                                 	<span class="noti_time">1 hour ago</span>
@@ -117,7 +118,7 @@
                                 <div class="clearfix"></div>
                             </a></li>
                             <li><a href="#">
-                            	<div class="user_small_img"><img src="<?php echo base_url().'assets'; ?>/images/user3.jpg"></div>
+                            	<div class="user_small_img"><img src="assets/images/user3.jpg"></div>
                                 <div class="notification_txt">
                                 	<p><span class="noti_username">Matt Larner</span> sent you studymate request</p>
                                 	<span class="noti_time">1 hour ago</span>
@@ -125,7 +126,7 @@
                                 <div class="clearfix"></div>
                             </a></li>
                             <li><a href="#">
-                            	<div class="user_small_img"><img src="<?php echo base_url().'assets'; ?>/images/user4.jpg"></div>
+                            	<div class="user_small_img"><img src="assets/images/user4.jpg"></div>
                                 <div class="notification_txt">
                                 	<p><span class="noti_username">Mary Watson</span> tagged you in a post</p>
                                 	<span class="noti_time">1 hour ago</span>
@@ -133,7 +134,7 @@
                                 <div class="clearfix"></div>
                             </a></li>
                             <li><a href="#">
-                            	<div class="user_small_img"><img src="<?php echo base_url().'assets'; ?>/images/ISM.jpg"></div>
+                            	<div class="user_small_img"><img src="assets/images/ISM.jpg"></div>
                                 <div class="notification_txt">
                                 	<p>Please check the published notice</p>
                                 	<span class="noti_time">1 hour ago</span>
@@ -158,7 +159,7 @@
                         <a href="#"><span class="icon icon_banner"></span>Banners</a>
                     </li>                	
                 	<li>
-                        <a href="<?php echo base_url().'admin/notice'; ?>"><span class="icon icon_notice"></span>Notice Board</a>
+                        <a href="admin/notice"><span class="icon icon_notice"></span>Notice Board</a>
                     </li>
                     <li>
                         <a href="#"><span class="icon icon_ques"></span>Questionaries</a>
@@ -167,7 +168,7 @@
                         <a href="#"><span class="icon icon_credencial"></span>General Credencials</a>
                     </li>
                 </ul>
-                <a href="<?php echo base_url().'admin/logout';  ?>" class="logout"><span class="icon icon_logout"></span>LogOut</a>
+                <a href="admin/logout" class="logout"><span class="icon icon_logout"></span>LogOut</a>
                 <p class="copyright">©2015 ISM | All Rights Reserved.</p>
             </div>
             <!--//side left-->
@@ -189,7 +190,7 @@
                         <!--item1-->
                         <div class="score_item">
                         	<div class="score_img">
-                            	<img src="<?php echo base_url().'assets'; ?>/images/user5.jpg">
+                            	<img src="assets/images/user5.jpg">
                             </div>
                             <div class="score_descrip">
                             	<p class="score_name">Adam Stranger</p>
@@ -205,7 +206,7 @@
                         <!--item2-->
                         <div class="score_item">
                         	<div class="score_img">
-                            	<img src="<?php echo base_url().'assets'; ?>/images/user3.jpg">
+                            	<img src="assets/images/user3.jpg">
                             </div>
                             <div class="score_descrip">
                             	<p class="score_name">Matt Larner</p>
@@ -225,7 +226,7 @@
                         <!--item1-->
                         <div class="score_item">
                         	<div class="score_img">
-                            	<img src="<?php echo base_url().'assets'; ?>/images/user5.jpg">
+                            	<img src="assets/images/user5.jpg">
                             </div>
                             <div class="score_descrip">
                             	<p class="score_name">Adam Stranger</p>
@@ -241,7 +242,7 @@
                         <!--item2-->
                         <div class="score_item">
                         	<div class="score_img">
-                            	<img src="<?php echo base_url().'assets'; ?>/images/user3.jpg">
+                            	<img src="assets/images/user3.jpg">
                             </div>
                             <div class="score_descrip">
                             	<p class="score_name">Matt Larner</p>
@@ -269,7 +270,7 @@
                     <!--item1-->
                         <div class="score_item">
                         	<div class="score_img">
-                            	<img src="<?php echo base_url().'assets'; ?>/images/group1.jpg">
+                            	<img src="assets/images/group1.jpg">
                             </div>
                             <div class="score_descrip">
                             	<p class="score_name">Venice Beauty</p>
@@ -285,7 +286,7 @@
                         <!--item2-->
                         <div class="score_item">
                         	<div class="score_img">
-                            	<img src="<?php echo base_url().'assets'; ?>/images/group2.jpg">
+                            	<img src="assets/images/group2.jpg">
                             </div>
                             <div class="score_descrip">
                             	<p class="score_name">Happy Club</p>
@@ -301,7 +302,7 @@
                         <!--item1-->
                         <div class="score_item">
                         	<div class="score_img">
-                            	<img src="<?php echo base_url().'assets'; ?>/images/group3.jpg">
+                            	<img src="assets/images/group3.jpg">
                             </div>
                             <div class="score_descrip">
                             	<p class="score_name">Rankers</p>
@@ -317,7 +318,7 @@
                         <!--item2-->
                         <div class="score_item">
                         	<div class="score_img">
-                            	<img src="<?php echo base_url().'assets'; ?>/images/avatar_group.png">
+                            	<img src="assets/images/avatar_group.png">
                             </div>
                             <div class="score_descrip">
                             	<p class="score_name">Allrounders</p>
@@ -333,7 +334,7 @@
                         <!--item2-->
                         <div class="score_item">
                         	<div class="score_img">
-                            	<img src="<?php echo base_url().'assets'; ?>/images/group1.jpg">
+                            	<img src="assets/images/group1.jpg">
                             </div>
                             <div class="score_descrip">
                             	<p class="score_name">Cool Group</p>
@@ -364,7 +365,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     
 
-    <script src="<?php echo base_url().'assets'; ?>/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
 
 </body>
 </html>

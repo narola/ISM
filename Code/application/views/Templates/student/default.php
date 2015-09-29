@@ -28,7 +28,28 @@
             });
         })(jQuery);
     </script>-->
-    <script>var ws = "<?php echo $this->session->userdata('user')['id']; ?>";</script>
+    <script>var wp = "<?php echo $this->session->userdata('user')['id']; ?>";</script>
+     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="assets/js/jquery-1.11.3.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="assets/js/bootstrap.min.js"></script> 
+    <!--scroll-->
+    <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+     <?php flashMessage($this->session->flashdata('success'),$this->session->flashdata('error')); ?>
+    <script>setTimeout(
+              function(){
+               $(".alert-dismissible").hide(500);
+              }, 3000);
+        $(document).ready(function(){
+            $('.chat_text').mCustomScrollbar("scrollTo","bottom");    
+        })
+        
+    </script>
+    <script src="assets/js/jquery.cookie.js"></script>
+    <script src="assets/js/ws.js"></script>
+    <script>
+        // set_status(5,false);
+    </script>
 </head>
 
 <body>
@@ -136,20 +157,14 @@
 
         </div>
     </div>
+
+<div class="alert alert_notification alert-dismissible" role="alert" style="display: none;">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+      <p></p>
+    </div>
+
+
     <!--//body-->
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="assets/js/jquery-1.11.3.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="assets/js/bootstrap.min.js"></script> 
-    <!--scroll-->
-    <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-     <?php flashMessage($this->session->flashdata('success'),$this->session->flashdata('error')); ?>
-    <script>setTimeout(
-              function(){
-               $(".alert-dismissible").hide(500);
-              }, 3000);
-    </script>
-    <script src="assets/js/ws.js"></script>
    
 </body>
 </html>

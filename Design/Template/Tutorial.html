@@ -232,11 +232,11 @@
                 <!--calc-->
                 <div class="calculator row mCustomScrollbar" data-mcs-theme="minimal-dark" id="accordian_calc">
                 	<div class="col-sm-12 textarea">
-                    	<span>23 + 12000 /1000 - 458 +</span>
+                    	<span>23 + 12000 /1000 -</span>
                     	<h1>2500</h1>
                     </div>
                     <div class="calc_header">
-                    	<a data-toggle="collapse" data-parent="#accordion_calc" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Scientific <span class="fa fa-angle-up"></span></a>
+                    	<a data-toggle="collapse" data-parent="#accordion_calc" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Scientific <span class="fa fa-angle-down"></span></a>
                     </div>
 	                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                         <div class="calc_btns">
@@ -295,13 +295,40 @@
                     </div>
                 </div>
                 <!--//calc-->
+                <!--white board-->
+                <div class="white_board">
+                	<ul class="board_tools">
+                    	<li class="paint"><a href="#" class="icon icon_paint"></a></li>
+                        <li class="pen">
+                        	<a href="#" class="icon icon_pen"></a>
+                            <ul class="pen_size">
+                            	<li><a href="#" class="s"></a></li>
+                                <li><a href="#" class="m"></a></li>
+                                <li><a href="#" class="l"></a></li>
+                                <li><a href="#" class="xl"></a></li>
+                            </ul>
+                        </li>
+                        <li class="erase"><a href="#" class="icon icon_erase"></a></li>
+                        <li class="clear"><a href="#" class="icon icon_clear"></a></li>
+                    </ul>
+                </div>
+                <!--//white board-->
+                <!--Explore-->
+                <div class="explore">
+                </div>
+                <!--//Explore-->
+                <!--dictionary-->
+                <div class="dictionary">
+                </div>
+                <!--//dictionary-->
+                
                 <!--tabs-->
                 <div class="toolkit_tabs">
                 	<ul>
-                    	<li class="active"><a href="#">Calculator</a></li>
-                    	<li><a href="#">White board</a></li>
-                    	<li><a href="#">Explore</a></li>
-                    	<li><a href="#">Dictionary</a></li>
+                    	<li id="calc_tab" class="active"><a href="#">Calculator</a></li>
+                    	<li id="white_board_tab"><a href="#">White board</a></li>
+                    	<li id="explore_tab"><a href="#">Explore</a></li>
+                    	<li id="dictionary_tab"><a href="#">Dictionary</a></li>
                     </ul>
                 </div>
                 <!--//tabs-->
@@ -409,6 +436,14 @@
         </div>
     </div>
     <!--//body-->
+    <!--toast-->
+    <div class="alert alert_notification alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <strong>Emma Watson</strong> tagged you in her post.
+      <p>Lorem ipsum dolor sit amet, conse ctetur adipi scing suscipit justoi...</p>
+      <a href="#">Click here to view</a>
+    </div>
+    <!--//toast-->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery-1.11.3.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -418,14 +453,56 @@
 
 	<script type="text/javascript">
    		jQuery(document).ready(function() {
-            if(jQuery('.calc_header a').hasClass('collapsed')){
-				jQuery('.calc_header span').removeClass('fa-angle-up');	
-				jQuery('.calc_header span').addClass('fa-angle-down');							
+            if(!$('.calc_header a').hasClass('collapsed')){
+				$('.calc_header a span').removeClass('fa-angle-up');	
+				$('.calc_header a span').addClass('fa-angle-down');
 			}
 			else{
-				jQuery('.calc_header span').addClass('fa-angle-up');
-				jQuery('.calc_header span').removeClass('fa-angle-down');	
+				$('.calc_header a span').addClass('fa-angle-up');
+				$('.calc_header a span').removeClass('fa-angle-down');
 			};
+			
+			$('#calc_tab').click(function(){
+				$(this).addClass('active');
+				$('#white_board_tab, #explore_tab, #dictionary_tab').removeClass();
+				$('.calculator').css('display','block');
+				$('.white_board, .explore, .dictionary').css('display','none');
+			});
+			$('#white_board_tab').click(function(){
+				$(this).addClass('active');
+				$('#calc_tab, #explore_tab, #dictionary_tab').removeClass();
+				$('.white_board').css('display','block');
+				$('.calculator, .explore, .dictionary').css('display','none');
+			});
+			$('#explore_tab').click(function(){
+				$(this).addClass('active');
+				$('#white_board_tab, #calc_tab, #dictionary_tab').removeClass();
+				$('.explore').css('display','block');
+				$('.white_board, .calculator, .dictionary').css('display','none');
+			});
+			$('#dictionary_tab').click(function(){
+				$(this).addClass('active');
+				$('#white_board_tab, #calc_tab, #explore_tab').removeClass();
+				$('.dictionary').css('display','block');
+				$('.white_board, .calculator, .explore').css('display','none');
+			});
+			
+			$(".alert_notification").show().delay(3000).fadeOut();
+			
+			$('.board_tools>li>a').mouseover(function(){
+				$(this).parent().css('background-color','#f2f2f2');	
+			});
+			$('.board_tools>li>a').mouseout(function(){
+				$(this).parent().css('background-color','#dedede');	
+			});
+			
+			$('.pen_size').mouseover(function(){
+				$(this).parent().css('background-color','#f2f2f2');
+			});
+			$('.pen_size').mouseout(function(){
+				$(this).parent().css('background-color','#dedede');
+			});
+			
         });
 		
    	</script>

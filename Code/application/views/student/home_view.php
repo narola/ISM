@@ -370,14 +370,16 @@
                         <h3>Studymates <span> STM</span></h3>
                     </div>
                     <div class="stm_list mCustomScrollbar" data-mcs-theme="minimal-dark">
-                        <?php foreach($classmates as $key => $value){
+                        <?php
+                        $all_online = explode(',',$this->input->cookie('status'));
+                        foreach($classmates as $key => $value){
                             $u = 'offline';
-                            if($value['is_online'] == 1){
+                            if(in_array($value['is_online'], $all_online)){
                                 $u = 'online';
                             }
                             ?>
                             <div class="stm_item <?php echo $u; ?>">
-                                <a href="#">
+                                <a href="#" onclick="active_check();">
                                 <div class="stm_user_img">
                                     <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                 </div>
@@ -460,13 +462,15 @@
                         <p class="chat_name">Alia Merchant</p>
                         <a href="#"><span class="icon icon_option"></span></a>
                     </div>
-                    <div class="chat_text mCustomScrollbar" data-mcs-theme="minimal-dark">
+                    <div class="chat_text mCustomScrollbar" data-mcs-position="bottom">
 
                     </div>
-                    <input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="1">
+                    <input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="16">
                     <a href="#" class="icon icon_emoji"></a>
                     <a href="#" class="icon icon_pin"></a>
-                    <input type="file" class="chat_pin">
+                    <input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="16">
                 </div>
             </div>
+
+
             <!--//chat-->

@@ -11,59 +11,76 @@ require 'class.PHPWebSocket.php';
 function wsOnMessage($clientID, $message, $messageLength, $binary) {
     global $Server;
     $ip = long2ip($Server->wsClients[$clientID][6]);
-
-    // check if message length is 0
     if ($messageLength == 0) {
         $Server->wsClose($clientID);
         return;
     }
-    
+
     $data = json_decode($message, true);
     /* For individual chat */
-    if($data['type'] = 'studymate'){
-        $responce = $Server->single_chat($data);
+    if ($data['type'] == 'studymate') {
+        $responce = $Server->single_chat($clientID, $data);
+    } else if ($data['type'] == 'post') {
+        $responce = $Server->classmate_post($data);
+    } else if ($data['type'] == 'con') {
+        $responce = $Server->sync($clientID, $data);
+        if ($responce['error'] == '') {
+            $user_info = $Server->get_client_info($Server->wsClients[$clientID][12]);
+            if ($user_info != null) {
+                foreach ($Server->wsClients as $id => $client) {
+                    if (in_array($Server->wsClients[$id][12], $responce['classmates'])) {
+                        $res = array(
+                            'type' => 'notification',
+                            'status' => 'available',
+                            'live_status' => true,
+                            'user_id' => $user_info['id'],
+                            'profile_link' => $user_info['profile_link'],
+                            'message' => "<b>" . $user_info['full_name'] . "</b> is now online!"                           
+                        );
+                        $Server->log("Online");
+                        $Server->wsSend($id, json_encode($res));
+                    }
+                }
+            }
+        }
     }
-    
-    if($responce['to'] == 'self'){
+
+    if ($responce['to'] == 'self') {
         $Server->wsSend($clientID, json_encode($responce));
-    }else{
-         foreach ($Server->wsClients as $id => $client)
-                $Server->wsSend($id, json_encode($responce));
-    }
-         
-   /*
-    if (sizeof($Server->wsClients) == 1)
-        $Server->wsSend($clientID, "There isn't anyone else in the room, but I'll still listen to you. --Your Trusty Server");
-    else
+    } else {
         foreach ($Server->wsClients as $id => $client)
-            if ($id != $clientID)
-                $Server->wsSend($id, "Visitor $clientID ($ip) said \"$message\"");
-     */  
+            $Server->wsSend($id, json_encode($responce));
+    }
 }
 
 // when a client connects
 function wsOnOpen($clientID) {
     global $Server;
-    $ip = long2ip($Server->wsClients[$clientID][6]);
-
-    $Server->log("$ip ($clientID) has connected.");
-
-    //Send a join notice to everyone but the person who joined
-    foreach ($Server->wsClients as $id => $client)
-        if ($id != $clientID)
-            $Server->wsSend($id, "Visitor $clientID ($ip) has joined the room.");
 }
 
 // when a client closes or lost connection
 function wsOnClose($clientID, $status) {
     global $Server;
-    $ip = long2ip($Server->wsClients[$clientID][6]);
-
-    $Server->log("$ip ($clientID) has disconnected.");
-
-    //Send a user left notice to everyone in the room
-    foreach ($Server->wsClients as $id => $client)
-        $Server->wsSend($id, "Visitor $clientID ($ip) has left the room.");
+    $user_info = $Server->get_client_info($Server->wsClients[$clientID][12]);
+    $classMate = $Server->class_mate_list($Server->wsClients[$clientID][12]);
+    if ($user_info != null) {
+        foreach ($Server->wsClients as $id => $client) {
+            if (in_array($Server->wsClients[$id][12], $classMate)) {
+                $res = array(
+                    'type' => 'notification',
+                    'status' => 'available',
+                    'live_status' => false,
+                    'user_id' => $user_info['id'],
+                    'profile_link' => $user_info['profile_link'],
+                    'message' => "<b>" . $user_info['full_name'] . "</b> is now offline!"
+                );
+                $Server->log("Offline");
+                $Server->wsSend($id, json_encode($res));
+            }
+        }
+    } else {
+        $Server->log("Null got");
+    }
 }
 
 // start the server
