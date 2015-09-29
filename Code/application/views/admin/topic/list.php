@@ -52,10 +52,10 @@
                         	<div class="topic_content">
                            		<div class="col-md-6">
                                 	<h3><?php echo $topic['topic_name'] ?></h3><p>(Subject : <span><?php echo $topic['subject_name'] ?></span>)</p>
-                                	<h3 class="class"><span>Class : </span>First Year Science</h3> 
+                                	<h3 class="class"><span>Class : </span><?php echo $topic['class_name']; ?> </h3>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                	<h3>Submitted By : <span>Ben Jass Teacher</span></h3>
+                                	<h3>Submitted By : <span><?php echo $topic['first_name'].' '.$topic['last_name']; ?></span></h3>
                                 </div>
                                 <div class="col-sm-12 topic_description">
                                 	<p><?php echo $topic['topic_description']; ?></p>

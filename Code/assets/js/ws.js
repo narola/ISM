@@ -97,6 +97,7 @@ $('input[data-type="chat"]').keypress(function (e) {
 });
 
 /* Check user is online or not */
+
 function set_status(id, status) {
     var value = $.cookie('status');
     var regex = new RegExp("-" + id + "-", "g");
@@ -120,3 +121,66 @@ function set_status(id, status) {
     }
     $.cookie('status', value);
 }
+
+function active_check(id) {
+    var value = $.cookie('active');
+    var regex = new RegExp("-" + id + "-", "g");
+    if($(".chat_container .chat").length <= 5){
+        if (value == 'undefind' || value == '' || value == null) {
+            $.cookie('active', "-" + id + "-");
+        }
+        else{
+            if (value.indexOf("-" + id + "-") > -1) {
+                 
+            }
+            else{
+                 value = value + id + "-";
+            }    
+        }
+        $.cookie('active', value);
+    }
+}
+
+
+  $(document).on('click','#mate_list',function(){
+
+            active_check($(this).attr('data-id'));
+            cookie = $.cookie('active');
+            var str='';
+            var len = $('.chat_container .chat[data-chat="yes"]').length;
+            var i = 1;
+            for (i = 1; i <= len; i++) {
+                alert('got');
+                   $(".chat_container .chat:nth-child(1)").remove();
+            }
+/*            if(len <=4){
+                $(".chat_container .chat:nth-child(1)").remove();
+            }
+*/
+            str += '<div class="chat active" data-chat="yes" data-mate="1">';
+                str += '<div class="chat_header"><div class="chat_img_holder">';
+                str += '<img src="'+$(this).children('div').children('img').attr('src')+'">';
+                str += '</div><p class="chat_name">'+$(this).children('p').html()+'</p>';
+                str += '<a href="#"><span class="icon icon_option"></span></a></div>';
+                str += '<div class="chat_text mCustomScrollbar" data-mcs-position="bottom"></div>';
+                str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="'+$(this).data('id')+'">';
+                str += '<a href="#" class="icon icon_emoji"></a>';
+                str += '<a href="#" class="icon icon_pin"></a>';
+                str += '<input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="16">';
+                str += '</div>';
+                // str += '<div class="chat passive chat_1">';
+                // str += '<div class="chat_header"><div class="chat_img_holder">';
+                // str += '<img src="'+$(this).children('div').children('img').attr('src')+'">';
+                // str += '</div><p class="chat_name">'+$(this).children('p').html()+'</p>';
+                // str += '<a href="#"><span class="icon icon_option"></span></a></div>';
+                // str += '<div class="chat_text mCustomScrollbar" data-mcs-position="bottom"></div>';
+                // str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="'+$(this).data('id')+'">';
+                // str += '<a href="#" class="icon icon_emoji"></a>';
+                // str += '<a href="#" class="icon icon_pin"></a>';
+                // str += '<input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="16">';
+                // str += '</div>';
+
+            $('#chat_container').append(str);
+
+       });
+

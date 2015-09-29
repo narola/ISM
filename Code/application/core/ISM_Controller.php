@@ -6,12 +6,16 @@ class ISM_Controller extends CI_Controller {
 	public function __construct(){
 		
 		parent::__construct();
+		
 		$this->load->model(array('common_model'));	
-		$exceptional_url = array('admin','admin/logout','student/logout','student/forgot_password','student/reset_password','student/group_allocation');
+		
+		$exceptional_url = array('admin','admin/logout','student/logout','student/forgot_password','student/reset_password',
+								'student/group_allocation');
+		
 		if(in_array(uri_string(), $exceptional_url) == FALSE && is_loggedin() == FALSE){
 				redirect('login');
-		}
-		else{
+
+		} else{
 
 			$role = $this->session->userdata('role');
 
