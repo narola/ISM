@@ -47,7 +47,7 @@ class Topic extends ISM_Controller {
 											);
 // p($this->data);
 
-		
+		$this->data['page_title'] = 'Topics';
 		$this->template->load('admin/default','admin/topic/list', $this->data);
 	}
 
