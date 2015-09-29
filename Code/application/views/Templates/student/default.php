@@ -28,7 +28,7 @@
             });
         })(jQuery);
     </script>-->
-    <script>var ws = "<?php echo $this->session->userdata('user')['id']; ?>";</script>
+    <script>var wp = "<?php echo $this->session->userdata('user')['id']; ?>";</script>
 </head>
 
 <body>
@@ -148,6 +148,10 @@
               function(){
                $(".alert-dismissible").hide(500);
               }, 3000);
+        $(document).ready(function(){
+            $('.chat_text').mCustomScrollbar("scrollTo","bottom");    
+        })
+        
     </script>
     <script src="assets/js/ws.js"></script>
    

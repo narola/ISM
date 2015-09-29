@@ -11,43 +11,59 @@ require 'class.PHPWebSocket.php';
 function wsOnMessage($clientID, $message, $messageLength, $binary) {
     global $Server;
     $ip = long2ip($Server->wsClients[$clientID][6]);
-
-    // check if message length is 0
     if ($messageLength == 0) {
         $Server->wsClose($clientID);
         return;
     }
-    
+
     $data = json_decode($message, true);
     /* For individual chat */
-    if($data['type'] = 'studymate'){
-        $responce = $Server->single_chat($data);
+    if ($data['type'] == 'studymate') {
+        $responce = $Server->single_chat($clientID, $data);
+    } else if ($data['type'] == 'post') {
+        $responce = $Server->classmate_post($data);
+    } else if ($data['type'] == 'con') {
+        $responce = $Server->sync($clientID, $data);
+        if ($responce['error'] == '') {
+            $user_info = $Server->get_client_info($Server->wsClients[$clientID][12]);
+            if ($user_info != null) {
+                $Server->log(json_encode($user_info));
+                foreach ($Server->wsClients as $id => $client) {
+                    if (in_array($Server->wsClients[$id][12], $responce['classmates'])) {
+                        $res = array(
+                            'type' => 'notification',
+                            'status' => 'available',
+                            'message' => $user_info['full_name'] . " is online!!"
+                        );
+                        $Server->wsSend($id, json_encode($res));
+                    }
+                }
+            }
+        }
     }
-    
-    if($responce['to'] == 'self'){
+
+    if ($responce['to'] == 'self') {
         $Server->wsSend($clientID, json_encode($responce));
-    }else{
-         foreach ($Server->wsClients as $id => $client)
-                $Server->wsSend($id, json_encode($responce));
-    }
-         
-   /*
-    if (sizeof($Server->wsClients) == 1)
-        $Server->wsSend($clientID, "There isn't anyone else in the room, but I'll still listen to you. --Your Trusty Server");
-    else
+    } else {
         foreach ($Server->wsClients as $id => $client)
-            if ($id != $clientID)
-                $Server->wsSend($id, "Visitor $clientID ($ip) said \"$message\"");
-     */  
+            $Server->wsSend($id, json_encode($responce));
+    }
+
+    /*
+      if (sizeof($Server->wsClients) == 1)
+      $Server->wsSend($clientID, "There isn't anyone else in the room, but I'll still listen to you. --Your Trusty Server");
+      else
+      foreach ($Server->wsClients as $id => $client)
+      if ($id != $clientID)
+      $Server->wsSend($id, "Visitor $clientID ($ip) said \"$message\"");
+     */
 }
 
 // when a client connects
 function wsOnOpen($clientID) {
     global $Server;
-    $ip = long2ip($Server->wsClients[$clientID][6]);
 
-    $Server->log("$ip ($clientID) has connected.");
-
+    // $Server->wsSend($clientID, json_encode(array('type' => 'connect_check')));
     //Send a join notice to everyone but the person who joined
     foreach ($Server->wsClients as $id => $client)
         if ($id != $clientID)

@@ -1223,7 +1223,7 @@ p.chat_name {
     padding: 2px 10px;
 	background-color:#fff;
 	border:1px solid rgba(0,0,0,0.1);
-	margin:0px 10px;
+	margin:7px 10px;
 	display:inline-block;
 }
 .chat_text .from p:before{

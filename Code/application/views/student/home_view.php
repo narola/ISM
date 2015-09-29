@@ -460,7 +460,7 @@
                         <p class="chat_name">Alia Merchant</p>
                         <a href="#"><span class="icon icon_option"></span></a>
                     </div>
-                    <div class="chat_text mCustomScrollbar" data-mcs-theme="minimal-dark">
+                    <div class="chat_text mCustomScrollbar" data-mcs-position="bottom">
 
                     </div>
                     <input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="16">
@@ -469,4 +469,6 @@
                     <input type="file" class="chat_pin">
                 </div>
             </div>
+
+
             <!--//chat-->
