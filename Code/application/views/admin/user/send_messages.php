@@ -11,7 +11,7 @@
         </div>
     </div>
     <!--//breadcrumb-->
-    
+       
     <!--message-->
    	<div class="row">
     	<div class="col-sm-12 new_message">
@@ -46,8 +46,8 @@
                                 if(!empty($users)) {
                                     foreach($users as $user){
                                      ?>
-                                    <option value="<?php echo $user['id'] ?>" 
-                                        <?php if($user['username'] == $u['username']){ echo "selected='selected'"; } ?>>
+                                    <option value="<?php echo $user['id'] ?>" <?php echo set_select('all_users', $user['id']); ?>
+                                       <?php if(in_array($user['id'],$post_users) && isset($post_users)){ echo "selected='selected'"; } ?>  >
                                         <?php echo $user['username']; ?>
                                     </option>            
                                 <?php } } ?>
@@ -66,11 +66,11 @@
                         </div>
 
                         <div class="form-group">
-                        	<label>Title</label>
+                        	<label>Title <?php echo $my_cnt; ?></label>
                             <input type="text" class="form-control" name="message_title" id="message_title" value="<?php echo set_value('message_title'); ?>" >
                         </div>
-
-                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_title'),''))){ echo 'hide';} ?>">
+    
+                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_title'),'')) || $my_cnt == 0 ){ echo 'hide';} ?>">
                           <?php echo strip_tags(form_error('message_title'),'') ; ?>
                         </div>  
                         <div class="form-group">
@@ -78,7 +78,7 @@
                             <textarea class="form-control" name="message_desc" id="message_desc"><?php echo set_value('message_desc'); ?></textarea>
                             <label class="notify"><input type="checkbox" name="notify_sms">Notify Student Via SMS</label><br/>
                         </div>
-                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_desc'),''))){ echo 'hide';} ?>">
+                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_desc'),'')) || $my_cnt == 0 ){ echo 'hide';} ?>">
                           <?php echo strip_tags(form_error('message_desc'),'') ; ?>
                         </div>
                     </div>

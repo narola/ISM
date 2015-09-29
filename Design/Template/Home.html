@@ -121,7 +121,7 @@
                 	<li><a href="My_exam.html">My Exams</a></li>
                 	<li><a href="#">Studymates</a></li>
                 	<li><a href="#">My Activities</a></li>
-                	<li><a href="#">Notice Board</a></li>
+                	<li><a href="Notice_board.html">Notice Board</a></li>
                 </ul>
                 <a href="Login.html" class="logout"><span class="icon icon_logout"></span>LogOut</a>
                 <p class="copyright">©2015 ISM | All Rights Reserved.</p>
@@ -725,10 +725,11 @@
         });
 	</script>
     <script type="text/javascript">
-		$(document).ready(function() {
-			/*$('.chat_text').mCustomScrollbar('scrollTo','bottom');*/
-			$(".chat_text").scrollTop('div:last-child');
-		});
+	 window.onkeyup = function (event) {
+	  if (event.keyCode == 27) {
+	   	$('.chat.active').css('display','none');
+	  }
+	 }
 	</script>
 </body>
 </html>

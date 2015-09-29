@@ -1,13 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-/**
- * class User 
- * 	
- * @package default
- * @author Virendra patel ( Sparks ID- VPA )
- **/
-
 class User extends ISM_Controller {
 
 	public $data = array();
@@ -21,81 +14,134 @@ class User extends ISM_Controller {
 	}
 
 	// ---------------------------- User Module Start --------------------------------------------
-	 	
- 	public function index(){
+	
+	/**
+	  * function index() have all users listing using codeigniter pagination limit of 15 users per page
+	  *
+	  **/
+	 
+	public function index() {
 
 		$this->load->library('pagination');
 		
-		$role = $this->input->get('role');
+		if($_GET){
 
-		if(!empty($role)){
-			$where = array('where'=>array('role_id'=>$role));	
+			if(!empty($_GET['role'])){
+				$role = $this->input->get('role');
+			}	
+			if(!empty($_GET['course'])){
+				$course  = $this->input->get('course');
+			}
+			if(!empty($_GET['school'])){
+				$school = $this->input->get('school');
+			}
+			if(!empty($_GET['year'])){
+				$year = $this->input->get('year');
+			}
+
+			if( !empty($role) || !empty($course) || !empty($school) || !empty($year) ){
+
+				$str = '';
+
+				if(!empty($role)){ $where['where']['role_id'] = $role ; $str .= '&role='.$role; }	
+				
+				if(!empty($course)){  $where['where']['student_academic_info.course_id'] = $course; $str .='&course='.$course; }
+
+				if(!empty($school)){  $where['where']['student_academic_info.school_id'] = $school; $str .='&school='.$school; }
+
+				if(!empty($year)){ 
+									$next_year=$year+1; $academic_year = "$year-$next_year";    // find next year and create string like 2015-2016
+									$where['where']['student_academic_info.academic_year'] = $academic_year; $str .='year='.$year;  
+								}
+
+				$str =  trim($str,'&');
+
+				$config['base_url']	 = base_url().'admin/user/index?'.$str;
+				$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
+				$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
+				
+			}
+
 		}else{
 			$where=null;
-		}	
+			$config['base_url']	 = base_url().'admin/user/index';
+			$offset = $this->uri->segment(4);
+		}
+
 		
-		$config['base_url'] = base_url().'admin/user/index' ;
+
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
-		$config['total_rows'] = $this->common_model->sql_select('users',FALSE,$where,array('count'=>TRUE));
+		$config['total_rows'] = select('users',FALSE,$where,array('count'=>TRUE,'join'=>array(array('table' => 'student_academic_info','condition' => 'users.id = student_academic_info.user_id'))));
 		$config['per_page'] = 15;
 
-		//$config['page_query_string'] = TRUE;
-
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
- 		$config['full_tag_close'] = '</ul>';
+	  	$config['full_tag_close'] = '</ul>';
 
- 		$config['num_tag_open'] = '<li>';
- 		$config['num_tag_close'] = '</li>';
+	  	$config['num_tag_open'] = '<li>';
+	  	$config['num_tag_close'] = '</li>';
 
- 		$config['first_link'] = 'First';
-	 	$config['first_tag_open'] = '<li>';
-	 	$config['first_tag_close'] = '</li>';
+	  	$config['first_link'] = 'First';
+	  	$config['first_tag_open'] = '<li>';
+	  	$config['first_tag_close'] = '</li>';
 
-	 	$config['cur_tag_open'] = '<li><a>';
-	 	$config['cur_tag_close'] = '</a></li>';
+	  	$config['cur_tag_open'] = '<li><a>';
+	  	$config['cur_tag_close'] = '</a></li>';
 
-	 	$config['prev_link'] = '&laquo;';
-	 	$config['prev_tag_open'] = '<li>';
-	 	$config['prev_tag_close'] = '</li>';
+	  	$config['prev_link'] = '&laquo;';
+	  	$config['prev_tag_open'] = '<li>';
+	  	$config['prev_tag_close'] = '</li>';
 
-	 	$config['next_link'] = '&raquo;';
-	 	$config['next_tag_open'] = '<li>';
-	 	$config['next_tag_close'] = '</li>';
+		$config['next_link'] = '&raquo;';
+	  	$config['next_tag_open'] = '<li>';
+	  	$config['next_tag_close'] = '</li>';
 
-	 	$config['last_link'] = 'Last';
-	 	$config['last_tag_open'] = '<li>';
-	 	$config['last_tag_close'] = '</li>';
-	 	
-		$offset = $this->uri->segment(4);
+	  	$config['last_link'] = 'Last';
+	  	$config['last_tag_open'] = '<li>';
+	  	$config['last_tag_close'] = '</li>';
 
-		$this->data['all_users'] = $this->common_model->sql_select('users',
-																	'users.id,users.username,cities.city_name,states.state_name,
-																	users.role_id,roles.role_name',
-																	$where,
-																	array(
-																		'limit'=>$config['per_page'],
-																		'offset'=>$offset,
-																		'join' =>  array(
-																	    			array(
-																	    				'table' => 'roles',
-																	    				'condition' => 'roles.id = users.role_id',
-																						),
-																	    			array(
-																	    				'table' => 'countries',
-																	    				'condition' => 'countries.id = users.country_id',
-																						),
-																	    			array(
-																	    				'table' => 'states',
-																	    				'condition' => 'states.id = users.state_id',
-																						),
-																	    			array(
-																	    				'table' => 'cities',
-																	    				'condition' => 'cities.id = users.city_id',
-																						)
-																		    		)
-																		)
-																	);
+		//fetch all data of users joins with roles,cities,countries,states 
+		$this->data['all_users'] =   select('users',
+											'users.id,users.username,cities.city_name,states.state_name,
+											users.role_id,roles.role_name,student_academic_info.course_id,courses.course_name,
+											classrooms.class_name',
+											$where,
+											array(
+												'limit'=>$config['per_page'],
+												'offset'=>$offset,
+												'join' =>  array(
+											    			array(
+											    				'table' => 'roles',
+											    				'condition' => 'roles.id = users.role_id'
+																),
+											    			array(
+											    				'table' => 'countries',
+											    				'condition' => 'countries.id = users.country_id'
+																),
+											    			array(
+											    				'table' => 'states',
+											    				'condition' => 'states.id = users.state_id'
+																),
+											    			array(
+											    				'table' => 'cities',
+											    				'condition' => 'cities.id = users.city_id'
+																),
+											    			array(
+											    				'table' => 'student_academic_info',
+											    				'condition' => 'users.id = student_academic_info.user_id'
+																),
+											    			array(
+											    				'table'=>'courses',
+											    				'condition'=>'student_academic_info.course_id=courses.id'	
+											    				),
+											    			array(
+											    				'table'=>'classrooms',
+											    				'condition'=>'student_academic_info.classroom_id=classrooms.id'	
+											    				),		
+												    		)
+												)
+											);
+		
 		$this->pagination->initialize($config);
 		
 		$this->data['schools'] = $this->common_model->sql_select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
@@ -104,6 +150,11 @@ class User extends ISM_Controller {
 		
 		$this->template->load('admin/default','admin/user/view_user',$this->data);
 	}
+
+	/**
+	  * function add() have User Registration form to Add user by Admin using codeigniter validation
+	  *
+	  **/
 
 	public function add(){
 
@@ -164,9 +215,14 @@ class User extends ISM_Controller {
 
 	public function test(){
 
-		 //$this->template->load('admin/default','admin/user/select_test');
 		$this->load->view('admin/user/select_test');
 	}
+
+	/**
+	  * function update() have Form of user rgisteration with fill up data with userdata of given ID
+	  *	@param User ID
+	  * @author Virendra Patel - Spark ID- VPA
+	  **/
 
 	public function update($id){
 
@@ -244,18 +300,41 @@ class User extends ISM_Controller {
 
 	}
 
+	/**
+	 * function Blcked will block user for temporary set database field 'status' of `users` table set to 'blocked' and redirect to user listing page
+	 *
+	 **/
+	
 	public function blocked($id){
 		$this->common_model->update('users',$id,array('user_status'=>'blocked'));
 		$this->session->set_flashdata('success', 'User is Successfully Blocked.');
 		redirect('admin/view_user');
 	}
 
+	/**
+	 * function send_message will used to send message from admin to other user tables-(messages,messages_receiver) 
+	 *	admin can send messages to one or more than one users at a time
+	 **/
 	public function send_message($id){
 		
-		$this->data['user'] = $this->common_model->sql_select('users',FALSE,array('where'=>array('id'=>$id)),array('single'=>true));
-		$this->data['templates'] = $this->common_model->sql_select('messages',FALSE,array('where'=>array('is_template'=>'1')));
-		
-		$this->form_validation->set_rules('message_to', 'Recipient', 'trim|required');	
+		$this->data['u'] = $this->common_model->sql_select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>true));
+
+		$this->data['templates'] = $this->common_model->sql_select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
+		$this->data['users'] = $this->common_model->sql_select(TBL_USERS,
+																TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
+																 array('where_not_in'=>array(TBL_USERS.'.role_id'=>array('1'))),
+																 array(
+																	'order_by'=>TBL_USERS.'.username',
+																	'join'=>array(
+																				array(
+																					'table'=>'roles',
+																					'condition'=>TBL_USERS.'.role_id='.TBL_ROLES.'.id'
+																				)
+																			)
+																		)
+																);	
+
+		$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
 		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
 		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
 
@@ -264,38 +343,43 @@ class User extends ISM_Controller {
 			$this->template->load('admin/default','admin/user/send_message',$this->data);
 		}else{
 
-			$username = $this->input->post('message_to');
 
-			$user_data = $this->common_model->sql_select('users',FALSE,array('where'=>array('username'=>$username)),array('single'=>TRUE));
+			$all_users = $this->input->post('all_users');
 
-			if(!empty($user_data)){
+			if(!empty($all_users)){			
 
-				$data = array(
-						'message_text'=>$this->input->post('message_desc'),
-						'sender_id'=>$this->session->userdata('id'),
-						'message_title'=>$this->input->post('message_title'),
-						'status'=>'1',
-						'reply_for'=>'0',
-						'created_date'=>date('Y-m-d H:i:s',time()),
-						'modified_date'=>'0000-00-00 00:00:00',
-						'is_template'=>$this->input->post('save_template'),
-						'is_delete'=>'0',
-						'is_testdata'=>'yes'
-					);
+				foreach($all_users as $user){
 
-				$message_id = $this->common_model->insert('messages',$data);
+						$data = array(
+								'message_text'=>$this->input->post('message_desc'),
+								'sender_id'=>$this->session->userdata('id'),
+								'message_title'=>$this->input->post('message_title'),
+								'status'=>'1',
+								'reply_for'=>'0',
+								'created_date'=>date('Y-m-d H:i:s',time()),
+								'modified_date'=>'0000-00-00 00:00:00',
+								'is_template'=>$this->input->post('save_template'),
+								'is_delete'=>'0',
+								'is_testdata'=>'yes'
+							);
 
-				$data_message_receiver = array(
-						'message_id'=>$message_id,
-						'receiver_id'=>$user_data['id'],
-						'created_date'=>date('Y-m-d H:i:s',time()),
-						'modified_date'=>'0000-00-00 00:00:00',	
-						'is_delete'=>'0',
-						'is_testdata'=>'yes'
-					);
+						//insert data into messages table
+						$message_id = $this->common_model->insert(TBL_MESSAGES,$data);
 
-				$this->common_model->insert('message_receiver',$data_message_receiver);
+						$data_message_receiver = array(
+								'message_id'=>$message_id,
+								'receiver_id'=>$user,
+								'created_date'=>date('Y-m-d H:i:s',time()),
+								'modified_date'=>'0000-00-00 00:00:00',	
+								'is_delete'=>'0',
+								'is_testdata'=>'yes'
+							);
 
+						// insert data into messages_receiver table using message id from message table
+						$this->common_model->insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
+
+					}
+				}
 				die();
 
 				$this->email->from('email@email.com', 'Name');
@@ -308,21 +392,95 @@ class User extends ISM_Controller {
 				
 				echo $this->email->print_debugger();
 
-				p($data);
 
-			}else{
-				$this->session->set_flashdata('error', 'Username you entered doen not exists.');
-				redirect('admin/user/send_message/'.$id);
-			}
-			p($user_data);
 
 		}
 
 	}
 
+	public function send_messages(){
+		
+		if($_POST){
+			
+			if(isset($_POST['all_users'])){
+				$this->data['post_users'] = $this->input->post('all_users[]');
+				$this->data['my_cnt'] = 1;
+			}elseif(isset($_POST['message_title'])){
+				$this->data['my_cnt'] = 1;
+			}else{
+				$this->data['post_users'] = $this->input->post('users');
+				$this->data['my_cnt'] = 0;	
+			}
+
+		}else{
+			$this->data['post_users'] = array();
+		} 
+
+		$this->data['templates'] = $this->common_model->sql_select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
+		$this->data['users'] = $this->common_model->sql_select(TBL_USERS,
+																TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
+																 array('where_not_in'=>array(TBL_USERS.'.role_id'=>array('1'))),
+																 array(
+																	'order_by'=>TBL_USERS.'.username',
+																	'join'=>array(
+																				array(
+																					'table'=>'roles',
+																					'condition'=>TBL_USERS.'.role_id='.TBL_ROLES.'.id'
+																				)
+																			)
+																		)
+																);
+
+		$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
+		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
+		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
+
+		if($this->form_validation->run() == FALSE){
+
+			$this->template->load('admin/default','admin/user/send_messages',$this->data);	
+
+		}else{
+			
+			$all_users = $this->input->post('all_users');
+
+			if(!empty($all_users)){			
+
+				foreach($all_users as $user){
+
+						$data = array(
+								'message_text'=>$this->input->post('message_desc'),
+								'sender_id'=>$this->session->userdata('id'),
+								'message_title'=>$this->input->post('message_title'),
+								'status'=>'1',
+								'reply_for'=>'0',
+								'created_date'=>date('Y-m-d H:i:s',time()),
+								'modified_date'=>'0000-00-00 00:00:00',
+								'is_template'=>$this->input->post('save_template'),
+								'is_delete'=>'0',
+								'is_testdata'=>'yes'
+							);
+
+						//insert data into messages table
+						$message_id = $this->common_model->insert(TBL_MESSAGES,$data);
+
+						$data_message_receiver = array(
+								'message_id'=>$message_id,
+								'receiver_id'=>$user,
+								'created_date'=>date('Y-m-d H:i:s',time()),
+								'modified_date'=>'0000-00-00 00:00:00',	
+								'is_delete'=>'0',
+								'is_testdata'=>'yes'
+							);
+
+						// insert data into messages_receiver table using message id from message table
+						$this->common_model->insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
+
+					}
+				}		
+			}
+		}
+
 	// ---------------------------- User Module END --------------------------------------------
-
-
 
 }
 

@@ -66,6 +66,15 @@ class Common extends CI_Controller {
 		//echo $new_str;		
 	}
 
+	public function template_message(){
+
+		$msg_id = $this->input->post('msg_id');
+		$data = $this->common_model->sql_select('messages',FALSE,array('where'=>array('id'=>$msg_id)),array('single'=>TRUE)); 
+		$new_str = '';
+		$new_str .=$data['message_title'].'###'.$data['message_text'];
+		echo $new_str;
+	}
+
 }
 
 /* End of file common.php */
