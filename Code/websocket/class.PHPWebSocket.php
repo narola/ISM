@@ -62,6 +62,8 @@ class PHPWebSocket {
       9 => string    FrameBuffer,                       // joined onto end as a frame's data comes in, reset to blank string when all frame data has been read
       10 => integer  MessageOpcode,                     // stored by the first frame for fragmented messages, default value is 0
       11 => integer  MessageBufferLength                // the payload data length of MessageBuffer
+      12 => integer  User_id;
+      13 => integer  message no.
       )
 
       $wsRead[ integer ClientID ] = resource Socket         // this one-dimensional array is used for socket_select()
@@ -221,7 +223,7 @@ class PHPWebSocket {
         $clientID = $this->wsGetNextClientID();
 
         // store initial client data
-        $this->wsClients[$clientID] = array($socket, '', self::WS_READY_STATE_CONNECTING, time(), false, 0, $clientIP, false, 0, '', 0, 0);
+        $this->wsClients[$clientID] = array($socket, '', self::WS_READY_STATE_CONNECTING, time(), false, 0, $clientIP, false, 0, '', 0, 0, 0, 0);
 
         // store socket - used for socket_select()
         $this->wsRead[$clientID] = $socket;
@@ -433,6 +435,10 @@ class PHPWebSocket {
 
 
 
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -611,6 +617,10 @@ class PHPWebSocket {
 
 
 
+
+
+
+
             
 // work out hash to use in Sec-WebSocket-Accept reply header
         $hash = base64_encode(sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
@@ -767,24 +777,15 @@ class PHPWebSocket {
      * Mange individual text chat
      * @param Array $data
      */
-    function single_chat($data = null) {
+    function single_chat($clientID, $data = null) {
+        $this->wsClients[$clientID][13] ++;
         if (is_array($data) && !empty($data)) {
             $link = $this->db();
             $from = mysqli_escape_string($link, $data['from']);
             $to = mysqli_escape_string($link, $data['to']);
             $msg = mysqli_escape_string($link, $data['message']);
             if ($from != $to) {  // User cannot send messages to self
-                $query = "SELECT mate_id, mate_of FROM `studymates` WHERE mate_id = $from OR mate_of= $from";
-                $row = mysqli_query($link, $query);
-                $all = array();
-                while ($rows = mysqli_fetch_assoc($row)) {
-                    if ($rows['mate_id'] !== $from) {
-                        $all[] = $rows['mate_id'];
-                    }
-                    if ($rows['mate_of'] !== $from) {
-                        $all[] = $rows['mate_of'];
-                    }
-                }
+                $all = $this->class_mate_list($from);
                 if (in_array($to, $all)) {
                     $query = "INSERT INTO `ism`.`user_chat` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`, `media_type`, `received_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (NULL, $from, $to, '$msg', NULL, NULL, NULL, CURRENT_TIMESTAMP, '0', 'yes')";
                     $x = mysqli_query($link, $query);
@@ -800,21 +801,66 @@ class PHPWebSocket {
                 $data['to'] = 'self';
                 $data['error'] = 'You cannot send messages to self!';
             }
-
+            mysqli_close($link);
             return $data;
         } else {
             return null;
         }
     }
 
-    function chat_security($user_id, $to) {
-        /*   $link = $this->db();    
-          $query = "SELECT `tgm`.`user_id` FROM `users` `u` LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`user_id` = `u`.`id` LEFT JOIN `tutorial_group_member` `tgm` ON `tm`.`group_id` = `tgm`.`group_id` WHERE `tm`.`user_id` = $user_id";
-          $row = mysqli_query($link);
-          while($rows = mysqli_fetch_assoc($row)){
-          $this->log();
-          }
-         */
+    function classmate_post($data = null) {
+        return $data;
+    }
+
+    function sync($clientID, $data) {
+        if ($this->wsClients[$clientID][13] == 0) {
+            $this->wsClients[$clientID][12] = $data['from'];
+            $this->wsClients[$clientID][13] ++;
+            $data['classmates'] = $this->class_mate_list($data['from']);
+        } else {
+            $data['to'] = 'self';
+            $data['error'] = 'Manual Modification not allowed!';
+        }
+        return $data;
+    }
+
+    function class_mate_list($user_id) {
+        $link = $this->db();
+        $query = "SELECT mate_id, mate_of FROM `studymates` WHERE mate_id = $user_id OR mate_of= $user_id";
+        $row = mysqli_query($link, $query);
+        $all = array();
+        while ($rows = mysqli_fetch_assoc($row)) {
+            if ($rows['mate_id'] !== $user_id) {
+                $all[] = $rows['mate_id'];
+            }
+            if ($rows['mate_of'] !== $user_id) {
+                $all[] = $rows['mate_of'];
+            }
+        }
+        if ($link != null) {
+            mysqli_close($link);
+        }
+        $this->log(json_encode($all));
+        return $all;
+    }
+
+    function get_client_info($id) {
+        $link = $this->db();
+        $query = "SELECT `u`.`id`,`u`.`full_name`, `upp`.`profile_link`  FROM `users` `u` LEFT JOIN `user_profile_picture` `upp` ON `upp`.`user_id` = `u`.`id` WHERE `u`.`id` = $id LIMIT 1";
+        $row = mysqli_query($link,$query);
+        $count = mysqli_num_rows($row);
+        $this->log(mysqli_error($link));
+        $rows = mysqli_fetch_assoc($row);
+        mysqli_close($link);
+        if ($count == 1) {
+            return array(
+                'id' => $rows['id'],
+                'full_name' => $rows['full_name'],
+                'profile_link' => $rows['profile_link']
+            );
+        } else {
+            return null;
+        }
     }
 
 }
