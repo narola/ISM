@@ -15,29 +15,38 @@
                 </div>
                 <!--//breadcrumb-->
                 <!--filter-->
+                <form method="get" id="filter">
                 <div class="row filter group_filter">
                 	<div class="col-sm-12">
                     	<div class="form-group">
-                            <select class="form-control">
-                                <option>Select Subject</option>
+                            <select class="form-control" name="subject" onchange="filter_data()" id="subject">
+                                <option value="">Select Subject</option>
+                                    <?php 
+                                      if(!empty($subjects)){ 
+                                        foreach($subjects as $subject) {
+                                        ?>
+                                        <option value="<?php echo $subject['id']; ?>"><?php echo $subject['subject_name']; ?></option>  
+                                    <?php }  } ?>
                             </select>
                         </div>
                         <div class="form-group">
-                            <select class="form-control">
-                                <option>Select year</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control">
-                                <option>Select Role</option>
-                            </select>
-                        </div>
+                        <select class="form-control" name="role" onchange="filter_data()" id="role">
+                                    <option value="">Select Role</option>
+                                    <?php 
+                                      if(!empty($roles)){ 
+                                        foreach($roles as $role) {
+                                        ?>
+                                        <option value="<?php echo $role['id']; ?>"><?php echo $role['role_name']; ?></option>  
+                                    <?php }  } ?>
+                                </select>
+                    </div>
                         <div class="form-group no_effect search_input">
                         	<input class="form-control" type="text" placeholder="Search">
                             <a href="#" class="fa fa-search"></a>
                         </div>
                     </div>
                 </div>
+            </form>
                 <!--//filter-->
                 <!--topics-->
                 <div class="row">
@@ -91,9 +100,28 @@
                     }
                         ?>
                        
-                        
+                        <nav  class="text-center">
+       
+                <?php  echo $this->pagination->create_links();  ?>
+
+                </nav>
                     </div>
                 </div>
                 <!--//topics-->
 			</div>
             <!--//main-->
+            <script type="text/javascript">
+    
+    function filter_data(){
+
+        var role = $('#role').val();
+        var subject = $('#subject').val();
+        
+        if(role == '' ){ $('#role').removeAttr('name'); }
+        if(subject == '' ){ $('#subject').removeAttr('name'); }
+        
+        $('#filter').submit();
+
+    }
+    
+</script>
