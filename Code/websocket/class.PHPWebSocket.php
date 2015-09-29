@@ -840,7 +840,6 @@ class PHPWebSocket {
         if ($link != null) {
             mysqli_close($link);
         }
-        $this->log(json_encode($all));
         return $all;
     }
 
@@ -849,7 +848,6 @@ class PHPWebSocket {
         $query = "SELECT `u`.`id`,`u`.`full_name`, `upp`.`profile_link`  FROM `users` `u` LEFT JOIN `user_profile_picture` `upp` ON `upp`.`user_id` = `u`.`id` WHERE `u`.`id` = $id LIMIT 1";
         $row = mysqli_query($link,$query);
         $count = mysqli_num_rows($row);
-        $this->log(mysqli_error($link));
         $rows = mysqli_fetch_assoc($row);
         mysqli_close($link);
         if ($count == 1) {
