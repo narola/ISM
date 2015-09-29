@@ -118,6 +118,21 @@
 	.admin_question{
 		width:82%;
 	}
+	.calculator{
+		width:79%;
+	}
+	.calc_btns .btn{
+		width: 19.3%;
+	}
+	.basic_btns .btn{
+		 width: 24.3%;
+	}
+	.basic_btns .btn_0 {
+    	width: 49.5%;
+	}
+	.item_chart:after, .item_chart:before{
+		left:4px;
+	}
 }	
 @media (max-width:1024px){
 	.login_background {

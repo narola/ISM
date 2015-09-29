@@ -42,7 +42,7 @@ if ("WebSocket" in window)
             if (obj.error != '') {
                 alert(obj.error);
             }
-        }else if(obj.type == 'notification'){
+        } else if (obj.type == 'notification') {
             alert(obj.message);
         } else {
             alert('Message Not Catched!!');
@@ -53,8 +53,6 @@ if ("WebSocket" in window)
         alert('Disconnected from Server!');
     };
 }
-
-
 
 $('input[data-type="chat"]').keypress(function (e) {
     if (e.keyCode == 13 && this.value) {

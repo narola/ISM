@@ -29,8 +29,8 @@
                 <div class="col-sm-12">
                 	<img src="assets/images/logo.png" class="logo">
                     <form class="login_form" method="post">
-                         <div class=" alert alert-danger <?php if(empty($this->session->flashdata('msg'))){ echo 'hide';} ?>">
-                            <?php echo $this->session->flashdata('msg');?>
+                         <div class=" alert alert-danger <?php if(empty($this->session->flashdata('error'))){ echo 'hide';} ?>">
+                            <?php echo $this->session->flashdata('error');?>
                         </div>
                     	<div class="form-group">
                     		<input placeholder="Enter Email/Username" class="form-control" type="text" name="username">
