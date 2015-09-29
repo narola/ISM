@@ -35,12 +35,13 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                             'live_status' => true,
                             'user_id' => $user_info['id'],
                             'profile_link' => $user_info['profile_link'],
-                            'message' => "<b>" . $user_info['full_name'] . "</b> is now online!"                           
+                            'message' => "<b>" . $user_info['full_name'] . "</b> is now online!"
                         );
                         $Server->log("Online");
                         $Server->wsSend($id, json_encode($res));
                     }
                 }
+                  $Server->wsSend($id, json_encode(array('type' => 'online_users','message' => $Server->check_online_classmate($Server->wsClients[$clientID][12]))));
             }
         }
     }
@@ -72,7 +73,8 @@ function wsOnClose($clientID, $status) {
                     'live_status' => false,
                     'user_id' => $user_info['id'],
                     'profile_link' => $user_info['profile_link'],
-                    'message' => "<b>" . $user_info['full_name'] . "</b> is now offline!"
+                    'message' => "<b>" . $user_info['full_name'] . "</b> is now offline!",
+                    'online_users' => $Server->check_online_classmate($Server->wsClients[$clientID][12])
                 );
                 $Server->log("Offline");
                 $Server->wsSend($id, json_encode($res));

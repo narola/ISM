@@ -870,7 +870,7 @@ class PHPWebSocket {
                  $online[] =  $value[12];
              }
          }
-        return $online;
+        return implode('-', $online);
     }
 
 }

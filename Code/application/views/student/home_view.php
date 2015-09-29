@@ -371,15 +371,17 @@
                     </div>
                     <div class="stm_list mCustomScrollbar" data-mcs-theme="minimal-dark">
                         <?php
-                        $all_online = explode(',',$this->input->cookie('status'));
+                        $all_online = rtrim(get_cookie('status'),"-");
+                        $all_online = ltrim($all_online,"-");
+                        $all_online = (Array)explode('-', $all_online);
                         foreach($classmates as $key => $value){
                             $u = 'offline';
-                            if(in_array($value['is_online'], $all_online)){
+                            if(in_array($value['id'], $all_online)){
                                 $u = 'online';
                             }
                             ?>
                             <div class="stm_item <?php echo $u; ?>">
-                                <a href="#" onclick="active_check();">
+                                <a id="mate_list" href="#" data-id="<?php echo $value['id']; ?>">
                                 <div class="stm_user_img">
                                     <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                 </div>

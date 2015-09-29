@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     $('.chat .chat_header').click(function () {
         if ($(this).parent().hasClass('passive')) {
             if ($(this).parent().hasClass('chat_3')) {
@@ -66,10 +65,13 @@ if ("WebSocket" in window)
             }
         } else if (obj.type == 'notification') {
             if (obj.status == 'available') {
-                set_status(obj.user_id,obj.live_status);
-                $(".alert_notification p").html(obj.message);
-                $(".alert_notification").show().delay(3000).fadeOut();
+                set_status(obj.user_id, obj.live_status);
             }
+        } else if (obj.type == 'online_users') {
+            var theString = obj.message;
+            $.each(theString.split("-"), function (index, id) {
+                $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('offline').addClass('online');
+            });
         } else {
             alert('Message Not Catched!!');
         }
@@ -96,132 +98,25 @@ $('input[data-type="chat"]').keypress(function (e) {
 
 /* Check user is online or not */
 function set_status(id, status) {
-    if (status == true) {
-        value = $.cookie('status');
-        if (value == 'undefind' || value == '' || value == null) {
-            $.cookie('status', id);
-        }
-        var splitString = value.split(',');
-        if (splitString.length > 1) {
-            check = $.inArray(id, splitString);
-            var a = splitString.indexOf(id);
-            if (a != -1) {
-                append = $.cookie('status') + ',' + id;
-                $.cookie('status', append);
-            }
+    var value = $.cookie('status');
+    var regex = new RegExp("-" + id + "-", "g");
+    if (value == 'undefind' || value == '' || value == null) {
+        if (status == true) {
+            $.cookie('status', "-" + id + "-");
         } else {
-            if (value != id) {
-                append = $.cookie('status') + ',' + id;
-                $.cookie('status', append);
-            }
-
-        }
-    } else if (status == false) {
-        value = $.cookie('status');
-        var splitString = value.split(',');
-        if (splitString.length > 1) {
-            y = jQuery.grep(splitString, function (value) {
-                return value != id;
-            });
-
-            $.cookie('status', y);
-
-        }
-        else {
-            if (value == id) {
-                $.cookie('status', '');
-            }
-
+            $.cookie('status', "-");
         }
     }
-}
-
-
-
-function set_status(id,status){
-    if(status == true){
-        value = $.cookie('status');
-        if(value == 'undefind' || value == '' || value == null){
-            $.cookie('status',id);
+    if (value.indexOf("-" + id + "-") > -1) {
+        if (status == false) {
+            value = value.replace(regex, '-');
+            $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('online').addClass('offline');
         }
-         var splitString = value.split(',');
-         if(splitString.length>1){
-             check  = $.inArray(id,splitString);
-             var a = splitString.indexOf(id);
-             if(a != -1){
-                append = $.cookie('status')+','+id;
-                $.cookie('status',append);
-             } 
-         }
-         else{
-            if(value != id){
-                append = $.cookie('status')+','+id;
-                $.cookie('status',append);
-            }
-
+    } else {
+        if (status == true) {
+            value = value + id + "-";
+            $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('offline').addClass('online');
         }
     }
-    else if(status == false){
-        value = $.cookie('status');
-        var splitString = value.split(',');
-         if(splitString.length>1){
-            y = jQuery.grep(splitString, function(value) {
-                  return value != id;
-                }); 
-
-                $.cookie('status',y);
-             
-         }
-         else{
-            if(value == id){
-                $.cookie('status','');
-            }
-
-        }
-    }
-    alert($.cookie('status'))
-}
-
-function active_check(id,status){
-    if(status == true){
-        value = $.cookie('active_check');
-        if(value == 'undefind' || value == '' || value == null){
-            $.cookie('active_check',id);
-        }
-         var splitString = value.split(',');
-         if(splitString.length>1){
-             check  = $.inArray(id,splitString);
-             var a = splitString.indexOf(id);
-             if(a != -1){
-                append = $.cookie('active_check')+','+id;
-                $.cookie('active_check',append);
-             } 
-         }
-         else{
-            if(value != id){
-                append = $.cookie('active_check')+','+id;
-                $.cookie('active_check',append);
-            }
-
-        }
-    }
-    else if(status == false){
-        value = $.cookie('active_check');
-        var splitString = value.split(',');
-         if(splitString.length>1){
-            y = jQuery.grep(splitString, function(value) {
-                  return value != id;
-                }); 
-
-                $.cookie('active_check',y);
-             
-         }
-         else{
-            if(value == id){
-                $.cookie('active_check','');
-            }
-
-        }
-    }
-    alert($.cookie('active_check'))
+    $.cookie('status', value);
 }

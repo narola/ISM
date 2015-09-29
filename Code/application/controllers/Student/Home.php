@@ -14,26 +14,6 @@ class Home extends ISM_Controller {
 
 	public function index()
 	{
-
-/*
-
-$where = array('where' => array('tm.user_id' =>  $this->session->userdata('user')['id']));
-		$options = array('join' => array(
-				array(
-					'table' => TBL_TUTORIAL_GROUP_MEMBER.' tm',
-					'condition' => 'tm.user_id = u.id'
-				),
-				array(
-					'table' => TBL_TUTORIAL_GROUP_MEMBER.' tgm',
-					'condition' => 'tm.group_id = tgm.group_id'
-				)
-			)
-		);
-		$data['c'] = select(TBL_STUDYMATES.' sm', 'sm.mate_of',$where,$options);
-		qry();
-		p($data['c'],true);
-
-*/
 		$data['title'] = 'ISM - Home';
 		// Get Classmates details
 		$where = array('where' => array('sm.mate_id' =>  $this->session->userdata('user')['id'] ));
