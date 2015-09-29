@@ -118,8 +118,8 @@
 	.admin_question{
 		width:82%;
 	}
-	.calculator{
-		width:79%;
+	.calculator, .white_board, .explore, .dictionary{
+		width:80%;
 	}
 	.calc_btns .btn{
 		width: 19.3%;
@@ -132,6 +132,15 @@
 	}
 	.item_chart:after, .item_chart:before{
 		left:4px;
+	}
+	.toolkit_tabs {
+	    width: 55px;
+	}
+	.board_tools > li{
+		padding: 5px 3.9%;
+	}
+	.tut_week_heading p {
+    	left: -12px;
 	}
 }	
 @media (max-width:1024px){
@@ -254,6 +263,51 @@
 	}
 	.table_group > thead > tr > th:first-child{
 		width:50px;
+	}
+	.tut_week_heading p {
+    	left: -15px;
+		top:370px;
+	}
+	.main_tut, .input{
+		width:40%;
+	}
+	.toolkit{
+		right: 21%;
+    	width: 25%;
+	}
+	.calculator, .white_board, .explore, .dictionary {
+    	width: 78%;
+	}
+	.toolkit_tabs ul > li{
+		z-index:5;
+	}
+	.calc_btns .btn {
+    	width: 19.2%;
+		padding:3px;
+		height:40px;
+	}
+	.basic_btns .btn {
+    	height: 50px;
+    	width: 24.2%;
+	}
+	.admin_question {
+    	width: 72%;
+	}
+	.item_chart::after, .item_chart::before {
+    	left: 10px;
+	}
+	.alert_notification{
+		z-index:6;
+	}
+	.board_tools > li {
+    	padding: 5px 2.4%;
+	}
+	.pen_size{
+		width:50px;
+	}
+	.toolkit_tabs{
+		height:100vh;
+		overflow:auto;
 	}
 }
 

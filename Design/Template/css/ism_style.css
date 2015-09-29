@@ -1784,7 +1784,7 @@ ul.tut_weekdays {
     margin: 0;
     width: 84%;
 	border-right:1px solid #fff;
-	height: 90vh;
+	height: 91vh;
 	float:left;
     overflow: auto;
 	background-color:#fff;
@@ -2043,13 +2043,79 @@ svg {
 .board_tools>li{
 	list-style: none;
     float: left;
-    padding: 2% 6%;
     background-color: #dedede;
+    padding: 5px 6%;
+	position:relative;
 }
-
-.board_tools>li:hover>a{
+.board_tools>li:hover{
+	background-color:#f2f2f2 !important;
+}
+.board_tools>li>a:hover{
 	opacity:1;
 }
+.board_tools>li>a.icon_paint:hover{
+    background-position: -239px -151px;
+}
+.board_tools>li>a.icon_pen:hover{
+    background-position: -283px -151px;
+}
+.board_tools>li>a.icon_erase:hover{
+    background-position: -324px -151px;
+}
+.board_tools>li>a.icon_clear:hover {
+    background-position: -370px -151px;
+}
+.pen_size{
+	background-color: #f2f2f2;
+    list-style: none;
+    margin-top: 5px;
+    display: none;
+    width: 76px;
+    position: absolute;
+    left: 0;
+}
+.board_tools>li:hover>.pen_size{
+	display:block;
+}
+.pen_size>li{
+	padding:10px;
+}
+.pen_size>li>a.s{
+	height: 8px;
+    display: block;
+    width: 8px;
+    background-color: #666;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+.pen_size>li>a.m{
+	height: 12px;
+    display: block;
+    width: 12px;
+    background-color: #666;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+.pen_size>li>a.l{
+	height: 16px;
+    display: block;
+    width: 16px;
+    background-color: #666;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+.pen_size>li>a.xl{
+	height: 20px;
+    display: block;
+    width: 20px;
+    background-color: #666;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+.pen_size>li>a:hover{
+	background-color:#333;
+}
+
 
 .alert_notification{
 	position: fixed;

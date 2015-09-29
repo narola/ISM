@@ -232,7 +232,7 @@
                 <!--calc-->
                 <div class="calculator row mCustomScrollbar" data-mcs-theme="minimal-dark" id="accordian_calc">
                 	<div class="col-sm-12 textarea">
-                    	<span>23 + 12000 /1000 - 458 +</span>
+                    	<span>23 + 12000 /1000 -</span>
                     	<h1>2500</h1>
                     </div>
                     <div class="calc_header">
@@ -299,7 +299,15 @@
                 <div class="white_board">
                 	<ul class="board_tools">
                     	<li class="paint"><a href="#" class="icon icon_paint"></a></li>
-                        <li class="pen"><a href="#" class="icon icon_pen"></a></li>
+                        <li class="pen">
+                        	<a href="#" class="icon icon_pen"></a>
+                            <ul class="pen_size">
+                            	<li><a href="#" class="s"></a></li>
+                                <li><a href="#" class="m"></a></li>
+                                <li><a href="#" class="l"></a></li>
+                                <li><a href="#" class="xl"></a></li>
+                            </ul>
+                        </li>
                         <li class="erase"><a href="#" class="icon icon_erase"></a></li>
                         <li class="clear"><a href="#" class="icon icon_clear"></a></li>
                     </ul>
@@ -480,6 +488,21 @@
 			});
 			
 			$(".alert_notification").show().delay(3000).fadeOut();
+			
+			$('.board_tools>li>a').mouseover(function(){
+				$(this).parent().css('background-color','#f2f2f2');	
+			});
+			$('.board_tools>li>a').mouseout(function(){
+				$(this).parent().css('background-color','#dedede');	
+			});
+			
+			$('.pen_size').mouseover(function(){
+				$(this).parent().css('background-color','#f2f2f2');
+			});
+			$('.pen_size').mouseout(function(){
+				$(this).parent().css('background-color','#dedede');
+			});
+			
         });
 		
    	</script>
