@@ -372,14 +372,15 @@
                     <div class="stm_list mCustomScrollbar" data-mcs-theme="minimal-dark">
                         <?php
                         $all_online = explode(',',$this->input->cookie('status'));
+
                         foreach($classmates as $key => $value){
                             $u = 'offline';
-                            if(in_array($value['is_online'], $all_online)){
+                            if(in_array($value['id'], $all_online)){
                                 $u = 'online';
                             }
                             ?>
                             <div class="stm_item <?php echo $u; ?>">
-                                <a href="#" onclick="active_check();">
+                                <a id="mate_list" href="javascript:void(0);" data-id="<?php echo $value['id'];?>">
                                 <div class="stm_user_img">
                                     <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                 </div>
@@ -399,77 +400,8 @@
             </div>
             <!--//side right-->
             <!--chat-->
-            <div class="chat_container">
-                <div class="chat passive chat_1">
-                    <div class="chat_header">
-                        <div class="chat_img_holder">
-                            <img src="assets/images/user7.jpg">
-                        </div>
-                        <p class="chat_name">Neil Granger</p>
-                        <a href="#"><span class="icon icon_option"></span></a>
-                    </div>
-                    <div class="chat_text">
-                        
-                        <div class="to"><p>Will do tonight</p></div>
-                    </div>
-                    <input type="text" class="chat_input" placeholder="Say It">
-                    <a href="#" class="icon icon_emoji"></a>
-                    <a href="#" class="icon icon_pin"></a>
-                    <input type="file" class="chat_pin">
-                </div>
-                
-                <div class="chat passive chat_2">
-                    <div class="chat_header">
-                        <div class="chat_img_holder">
-                            <img src="assets/images/user5.jpg">
-                        </div>
-                        <p class="chat_name">Ronaldo D.</p>
-                        <a href="#"><span class="icon icon_option"></span></a>
-                    </div>
-                    <div class="chat_text">
-                        <div class="from"><p>Have you completed the assignment of maths?</p></div>
-                        <div class="to"><p>Not yet.</p></div>
-                        <div class="to"><p>Will do tonight</p></div>
-                    </div>
-                    <input type="text" class="chat_input" placeholder="Say It">
-                    <a href="#" class="icon icon_emoji"></a>
-                    <a href="#" class="icon icon_pin"></a>
-                    <input type="file" class="chat_pin">
-                </div>
-                
-                <div class="chat passive chat_3">
-                    <div class="chat_header">
-                        <div class="chat_img_holder">
-                            <img src="assets/images/user4.jpg">
-                        </div>
-                        <p class="chat_name">Adam Stranger</p>
-                        <a href="#"><span class="icon icon_option"></span></a>
-                    </div>
-                    <div class="chat_text">
-                        <div class="from"><p>Hi</p></div>
-                        <div class="to"><p>Hello</p></div>
-                    </div>
-                    <input type="text" class="chat_input" placeholder="Say It">
-                    <a href="#" class="icon icon_emoji"></a>
-                    <a href="#" class="icon icon_pin"></a>
-                    <input type="file" class="chat_pin">
-                </div>
-                <div class="chat active" data-mate="1">
-                    <div class="chat_header">
-                        <div class="chat_img_holder">
-                            <img src="assets/images/user2.jpg">
-                        </div>
-                        <p class="chat_name">Alia Merchant</p>
-                        <a href="#"><span class="icon icon_option"></span></a>
-                    </div>
-                    <div class="chat_text mCustomScrollbar" data-mcs-position="bottom">
-
-                    </div>
-                    <input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="16">
-                    <a href="#" class="icon icon_emoji"></a>
-                    <a href="#" class="icon icon_pin"></a>
-                    <input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="16">
-                </div>
+            <div class="chat_container" id = 'chat_container'>
+                 
             </div>
 
 

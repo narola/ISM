@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     $('.chat .chat_header').click(function () {
         if ($(this).parent().hasClass('passive')) {
             if ($(this).parent().hasClass('chat_3')) {
@@ -95,133 +94,65 @@ $('input[data-type="chat"]').keypress(function (e) {
 });
 
 /* Check user is online or not */
-function set_status(id, status) {
-    if (status == true) {
-        value = $.cookie('status');
+function active_check(id) {
+    var value = $.cookie('active');
+    var regex = new RegExp("-" + id + "-", "g");
+    if($(".chat_container .chat").length <= 5){
         if (value == 'undefind' || value == '' || value == null) {
-            $.cookie('status', id);
+            $.cookie('active', "-" + id + "-");
         }
-        var splitString = value.split(',');
-        if (splitString.length > 1) {
-            check = $.inArray(id, splitString);
-            var a = splitString.indexOf(id);
-            if (a != -1) {
-                append = $.cookie('status') + ',' + id;
-                $.cookie('status', append);
+        else{
+            if (value.indexOf("-" + id + "-") > -1) {
+                 
             }
-        } else {
-            if (value != id) {
-                append = $.cookie('status') + ',' + id;
-                $.cookie('status', append);
-            }
-
+            else{
+                 value = value + id + "-";
+            }    
         }
-    } else if (status == false) {
-        value = $.cookie('status');
-        var splitString = value.split(',');
-        if (splitString.length > 1) {
-            y = jQuery.grep(splitString, function (value) {
-                return value != id;
-            });
-
-            $.cookie('status', y);
-
-        }
-        else {
-            if (value == id) {
-                $.cookie('status', '');
-            }
-
-        }
+        $.cookie('active', value);
     }
 }
 
 
+  $(document).on('click','#mate_list',function(){
 
-function set_status(id,status){
-    if(status == true){
-        value = $.cookie('status');
-        if(value == 'undefind' || value == '' || value == null){
-            $.cookie('status',id);
-        }
-         var splitString = value.split(',');
-         if(splitString.length>1){
-             check  = $.inArray(id,splitString);
-             var a = splitString.indexOf(id);
-             if(a != -1){
-                append = $.cookie('status')+','+id;
-                $.cookie('status',append);
-             } 
-         }
-         else{
-            if(value != id){
-                append = $.cookie('status')+','+id;
-                $.cookie('status',append);
+            active_check($(this).attr('data-id'));
+            cookie = $.cookie('active');
+            var str='';
+            var len = $('.chat_container .chat[data-chat="yes"]').length;
+            var i = 1;
+            for (i = 1; i <= len; i++) {
+                alert('got');
+                   $(".chat_container .chat:nth-child(1)").remove();
             }
-
-        }
-    }
-    else if(status == false){
-        value = $.cookie('status');
-        var splitString = value.split(',');
-         if(splitString.length>1){
-            y = jQuery.grep(splitString, function(value) {
-                  return value != id;
-                }); 
-
-                $.cookie('status',y);
-             
-         }
-         else{
-            if(value == id){
-                $.cookie('status','');
+/*            if(len <=4){
+                $(".chat_container .chat:nth-child(1)").remove();
             }
+*/
+            str += '<div class="chat active" data-chat="yes" data-mate="1">';
+                str += '<div class="chat_header"><div class="chat_img_holder">';
+                str += '<img src="'+$(this).children('div').children('img').attr('src')+'">';
+                str += '</div><p class="chat_name">'+$(this).children('p').html()+'</p>';
+                str += '<a href="#"><span class="icon icon_option"></span></a></div>';
+                str += '<div class="chat_text mCustomScrollbar" data-mcs-position="bottom"></div>';
+                str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="'+$(this).data('id')+'">';
+                str += '<a href="#" class="icon icon_emoji"></a>';
+                str += '<a href="#" class="icon icon_pin"></a>';
+                str += '<input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="16">';
+                str += '</div>';
+                // str += '<div class="chat passive chat_1">';
+                // str += '<div class="chat_header"><div class="chat_img_holder">';
+                // str += '<img src="'+$(this).children('div').children('img').attr('src')+'">';
+                // str += '</div><p class="chat_name">'+$(this).children('p').html()+'</p>';
+                // str += '<a href="#"><span class="icon icon_option"></span></a></div>';
+                // str += '<div class="chat_text mCustomScrollbar" data-mcs-position="bottom"></div>';
+                // str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="'+$(this).data('id')+'">';
+                // str += '<a href="#" class="icon icon_emoji"></a>';
+                // str += '<a href="#" class="icon icon_pin"></a>';
+                // str += '<input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="16">';
+                // str += '</div>';
 
-        }
-    }
-    alert($.cookie('status'))
-}
+            $('#chat_container').append(str);
 
-function active_check(id,status){
-    if(status == true){
-        value = $.cookie('active_check');
-        if(value == 'undefind' || value == '' || value == null){
-            $.cookie('active_check',id);
-        }
-         var splitString = value.split(',');
-         if(splitString.length>1){
-             check  = $.inArray(id,splitString);
-             var a = splitString.indexOf(id);
-             if(a != -1){
-                append = $.cookie('active_check')+','+id;
-                $.cookie('active_check',append);
-             } 
-         }
-         else{
-            if(value != id){
-                append = $.cookie('active_check')+','+id;
-                $.cookie('active_check',append);
-            }
+       });
 
-        }
-    }
-    else if(status == false){
-        value = $.cookie('active_check');
-        var splitString = value.split(',');
-         if(splitString.length>1){
-            y = jQuery.grep(splitString, function(value) {
-                  return value != id;
-                }); 
-
-                $.cookie('active_check',y);
-             
-         }
-         else{
-            if(value == id){
-                $.cookie('active_check','');
-            }
-
-        }
-    }
-    alert($.cookie('active_check'))
-}
