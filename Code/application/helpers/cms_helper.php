@@ -233,6 +233,15 @@ function is_loggedin(){
 	return $CI->session->userdata('loggedin');
 }
 
+/**
+* This function simply check Admin is loggedin or not 
+* @Author = VPA
+*/
+function is_loggedin_admin(){
+  $CI =& get_instance();
+  return $CI->session->userdata('loggedin_admin');
+}
+
 
 /**
      * Crop Uploaded image in $width & $height and move cropped images to destination
@@ -241,7 +250,7 @@ function is_loggedin(){
      * @param type $width
      * @param type $height
      * @param type $type
-     * @Authos Sandip Gopani (SAG)
+     * @Author Sandip Gopani (SAG)
      */
 
 function crop($src, $width, $height) {
@@ -285,6 +294,16 @@ function crop($src, $width, $height) {
         }
     }
     return $return;
+}
+
+/**
+* This function simply print studymate list
+* @userid = user id for want its studymates 
+* @Author = Kamlesh Pokiya (KAP)
+*/
+function studymates($userid){
+  $CI =& get_instance();
+  return $CI->common_model->class_mate_list($userid);
 }
 
 

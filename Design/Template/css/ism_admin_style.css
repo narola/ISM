@@ -85,9 +85,6 @@
 .breadcrumb>li{
 	font-weight:600;
 }
-.filter{
-	padding:22px 0;
-}
 .filter .form-group {
     width: 18.8%;
     float: left;
@@ -196,7 +193,7 @@
     border: 1px solid #f5f5f5;
 }
 .pagination_admin>li.active>a, .pagination_admin>li.active>a:hover{
-	background-color:#323941;
+	background-color:#ff9b9b;
 	border: 1px solid #f5f5f5;
 }
 .sidebar_right_admin .stm{
@@ -411,6 +408,13 @@
     font-size: 28px;
     font-weight: 700;
     color: #1bc4a3;
+    font-family: sans-serif;
+    vertical-align: middle;
+}
+.table_group .group_total_points{
+    font-size: 28px;
+    font-weight: 700;
+    color: #da534f;
     font-family: sans-serif;
     vertical-align: middle;
 }
@@ -937,6 +941,9 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 	transition:all ease .5s;
 	overflow-x:hidden !important;
 }
+.sidebar_shrink:hover {
+    box-shadow: 3px 0px 10px 0px rgba(0,0,0,0.2);
+}
 .sidebar_shrink:hover, .sidebar_shrink:hover .logout{
 	width:14%;
 }
@@ -948,4 +955,52 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .sidebar_shrink:hover .logout>span.icon{
 	display:inline-block;
 	margin-right:10px;
+}
+.main_wide{
+	margin-left:5%;
+	width:95%;
+	border:none;
+}
+.allocate_topic{
+	padding:30px 0;
+}
+.topic_groups {
+	padding:0;
+}
+.topic_groups .table>tbody>tr>td{
+	border-top:none;
+}
+.topic_groups .table>tbody>tr>td.username{
+	padding:0;
+}
+.topic_groups .table_group .username>.chat_img_holder{
+	margin:10px;
+}
+.topic_groups .table_group .username h4>span:last-child {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+}
+.topic_groups .table_group .username h4 {
+    margin: 20px 0px;
+}
+.allocate_topic .box_header {
+    box-shadow: 0px 3px 6px -1px rgba(0,0,0,0.1);
+}
+.topic_groups .group_members>tbody>tr>td {
+    padding: 10px;
+	border:none;
+}
+.topic_groups .group_members{
+    border-top: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0px -2px 1px 0px rgba(0,0,0,0.05);
+}
+.group_score>div:first-child, .group_score>div:nth-child(2){
+	width:50%;
+	float:left;
+	text-align:center;
+    border-top: 1px solid rgba(0,0,0,0.07);
+}
+.group_score{
+	padding:15px;
 }

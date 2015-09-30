@@ -236,7 +236,7 @@
                     	<h1>2500</h1>
                     </div>
                     <div class="calc_header">
-                    	<a data-toggle="collapse" data-parent="#accordion_calc" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Scientific <span class="fa fa-angle-down"></span></a>
+                    	<a class="collapsed" data-toggle="collapse" data-parent="#accordion_calc" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Scientific <span class="fa fa-angle-down"></span></a>
                     </div>
 	                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                         <div class="calc_btns">
@@ -453,14 +453,17 @@
 
 	<script type="text/javascript">
    		jQuery(document).ready(function() {
-            if(!$('.calc_header a').hasClass('collapsed')){
-				$('.calc_header a span').removeClass('fa-angle-up');	
-				$('.calc_header a span').addClass('fa-angle-down');
-			}
-			else{
-				$('.calc_header a span').addClass('fa-angle-up');
-				$('.calc_header a span').removeClass('fa-angle-down');
-			};
+			$('.calc_header a').click(function(){
+				if(!$('.calc_header a').hasClass('collapsed')){
+					$('.calc_header a span').removeClass('fa-angle-up');	
+					$('.calc_header a span').addClass('fa-angle-down');
+				}
+				else{
+					$('.calc_header a span').addClass('fa-angle-up');
+					$('.calc_header a span').removeClass('fa-angle-down');
+				};
+			});
+            
 			
 			$('#calc_tab').click(function(){
 				$(this).addClass('active');

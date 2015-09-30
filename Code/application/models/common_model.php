@@ -203,9 +203,31 @@ class Common_model extends CI_Model {
 		
 	}
 
+/* 	Master function to find studemates
+*  
+*  	@user_id = user id for want its studymates
+*	@Author - (Kamlesh Pokiya) KAP
+**/
+	function class_mate_list($user_id) {
+   
+    $where = array('where'=>array('mate_id'=>$user_id),'or_where'=>array('mate_of'=>$user_id));
+    $result = $this->sql_select(TBL_STUDYMATES,'mate_id,mate_of',$where);
+    $all = array();
+    foreach ($result as $key => $rows) {
+     	if ($rows['mate_id'] !== $user_id) {
+            $all[] = $rows['mate_id'];
+        }
+        if ($rows['mate_of'] !== $user_id) {
+            $all[] = $rows['mate_of'];
+        }
+     } 
+    return $all;
+	}
 
 }
-	
+
+
+
 
 /* End of file Common_model.php */
 /* Location: ./application/models/Common_model.php */

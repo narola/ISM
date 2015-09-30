@@ -15,12 +15,11 @@ class Home extends ISM_Controller {
 	public function index()
 	{
 
-						
 		$user_id = $this->session->userdata('user')['id'];
 		$data['title'] = 'ISM - Home';
-
+		$studymates = implode(',',studymates($user_id));
+		
 		// Get Post feed
-
 		$options =	array(
 						'join'	=>	array(
 							array(
@@ -36,7 +35,7 @@ class Home extends ISM_Controller {
 						'order_by' => 'f.id DESC'
 
 					);  
-		$where = array('where'=>array('f.is_delete'=> 0));
+		$where = array('where'=>array('f.is_delete'=> 0),'where_in'=>array('f.feed_by'=>$studymates));
 		$data['feed'] = select(TBL_FEEDS.' f','f.id as fid,f.feed_text,f.posted_on,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like',$where,$options);
 		$feed_ids = array();
 		foreach ($data['feed'] as $key => $value) {

@@ -1,22 +1,20 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Dashboard extends ISM_Controller {
+class Dashboard extends ADMIN_Controller {
 
 	public $data = array();
 
 	public function __construct()
 	{
 		parent::__construct();
-		
 		$this->load->helper('csv');	
-		$this->load->library(array('form_validation','encrypt'));
-		$this->load->model(array('common_model'));
 	}
 
 
 	public function index()
 	{
+
 		$remember_me = get_cookie('Remember_me');  
 
 		/* 	If Remember_key Cookie exists in browser then it wil fetch data using it's value and 
@@ -26,21 +24,24 @@ class Dashboard extends ISM_Controller {
 
 			$remember_me_decode = $this->encrypt->decode($remember_me);
 
-			$rem_data = $this->common_model->sql_select('users',FALSE,array('where'=>array('id'=>$remember_me)),array('single'=>TRUE));	
+			$rem_data = select(TBL_USERS,FALSE,array('where'=>array('id'=>$remember_me)),array('single'=>TRUE));	
 
 			$array = array(
 				'id'=>$rem_data['id'],
-				'loggedin'=>TRUE
+				'loggedin_admin'=>TRUE
 			);
 			
 			$this->session->set_userdata( $array );
 		}
 
-		$loggedin = is_loggedin();  /* is_logginin() in cms_helper.php It will Check Admin is loggen or not. */
+		$loggedin = is_loggedin();
+		$loggedin_admin = is_loggedin_admin();  /* is_logginin() in cms_helper.php It will Check Admin is loggen or not. */
 
-		if($loggedin == TRUE){
+		if($loggedin == FALSE && $loggedin_admin == TRUE){
 			redirect('admin/user');
-		}
+		}elseif($loggedin == TRUE){
+			redirect('login');
+		}	
 
 		$this->form_validation->set_rules('username', 'Email / User Name', 'trim|required');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');	
@@ -55,10 +56,10 @@ class Dashboard extends ISM_Controller {
 			$password = $this->input->post('password');
 
 			if(filter_var($username, FILTER_VALIDATE_EMAIL)) {
-				$fetch_data = $this->common_model->sql_select('users',FALSE,array('where'=>array('email_id'=>$username)),array('single'=>TRUE));
+				$fetch_data = select(TBL_USERS,FALSE,array('where'=>array('email_id'=>$username)),array('single'=>TRUE));
 
 		    }else {
-				$fetch_data = $this->common_model->sql_select('users',FALSE,array('where'=>array('username'=>$username)),array('single'=>TRUE));
+				$fetch_data = select(TBL_USERS,FALSE,array('where'=>array('username'=>$username)),array('single'=>TRUE));
 		    }
 
 			if(!empty($fetch_data)){
@@ -67,7 +68,7 @@ class Dashboard extends ISM_Controller {
 
 			    if($db_pass == $password && $fetch_data['is_delete']==0 && $fetch_data['role_id'] == 1 ){
 
-					$role_data = $this->common_model->sql_select('roles',FALSE,array('where'=>array('id'=>$fetch_data['role_id']))
+					$role_data = select(TBL_ROLES,FALSE,array('where'=>array('id'=>$fetch_data['role_id']))
 						,array('single'=>TRUE));	
 
 			    	/* If remember Me Checkbox is clicked */
@@ -88,7 +89,7 @@ class Dashboard extends ISM_Controller {
 						'role' => $role_data['role_name'],
 						'username'=>$fetch_data['username'],
 						'email_id'=>$fetch_data['email_id'],
-						'loggedin' =>TRUE
+						'loggedin_admin' =>TRUE
 					);
 
 					$this->session->set_userdata( $array ); // Set Session for Admin
@@ -119,10 +120,10 @@ class Dashboard extends ISM_Controller {
 
 	public  function auto_generated_credentials(){
 
-		$this->data['schools']	=	$this->common_model->sql_select(TBL_SCHOOLS);
-		$this->data['roles'] = $this->common_model->sql_select(TBL_ROLES);
-		$this->data['courses'] = $this->common_model->sql_select(TBL_COURSES);
-		$this->data['classrooms'] = $this->common_model->sql_select(TBL_CLASSROOMS);
+		$this->data['schools']	=	select(TBL_SCHOOLS);
+		$this->data['roles'] = select(TBL_ROLES);
+		$this->data['courses'] = select(TBL_COURSES);
+		$this->data['classrooms'] = select(TBL_CLASSROOMS);
 
 		$this->form_validation->set_rules('school_id', 'School Name', 'trim|required');
 		$this->form_validation->set_rules('role_id', 'Role', 'trim|required');
@@ -131,7 +132,6 @@ class Dashboard extends ISM_Controller {
 		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required');
 
 		if($this->form_validation->run() == FALSE){
-			//$this->load->view('admin/student_credentials_dashboard',$data);
 			$this->template->load('admin/default','admin/generated_credentials',$this->data);
 		}else{
 
@@ -141,6 +141,7 @@ class Dashboard extends ISM_Controller {
 			$classroom_id = $this->input->post('classroom_id');
 			$no_of_credentials	=	$this->input->post('no_of_credentials',TRUE);
 
+			//No of Credentials loop will run if that username does not exist in users.username table.field
 			for ($i=0; $i < $no_of_credentials; $i++) { 
 
 				$usrename_str 	= 	'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
@@ -150,9 +151,9 @@ class Dashboard extends ISM_Controller {
 				
 				$data = array('username'=>$username);
 				
-				$find_credentials = $this->common_model->sql_select(TBL_AUTO_GENERATED_CREDENTIAL,FALSE,array('where'=>$data));
+				$find_credentials = select(TBL_AUTO_GENERATED_CREDENTIAL,FALSE,array('where'=>$data));
 
-				$find_user = $this->common_model->sql_select(TBL_USERS,FALSE,array('where'=>$data));
+				$find_user = select(TBL_USERS,FALSE,array('where'=>$data));
 
 				if(sizeof($find_credentials)>0 || sizeof($find_user) > 0){
 
@@ -176,14 +177,11 @@ class Dashboard extends ISM_Controller {
 							'is_testdata'=>'yes'
 						);
 
-					$this->common_model->insert(TBL_AUTO_GENERATED_CREDENTIAL,$data);	
- 					
+					insert(TBL_AUTO_GENERATED_CREDENTIAL,$data); // insert data into database using common_model.php and cms_helper.php
+						 			
  				}
-			}
-
-			
-		}
-
+			} // End Of For Loop			
+		} // End else consdition
 	}
 	
 	/**
