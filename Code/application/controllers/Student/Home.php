@@ -16,7 +16,7 @@ class Home extends ISM_Controller {
 	{
 
 						
-
+		$user_id = $this->session->userdata('user')['id'];
 		$data['title'] = 'ISM - Home';
 
 		// Get Post feed
@@ -61,7 +61,7 @@ class Home extends ISM_Controller {
 		// p($data['comment'],TRUE);	
 
 		// Get Classmates details
-		$where = array('where' => array('sm.mate_id' =>  $this->session->userdata('user')['id'] ));
+		$where = array('where' => array('sm.mate_id' =>  $user_id ));
 		$options = array('join' => array(
 				array(
 					'table' => TBL_STUDYMATES.' sm',
@@ -75,7 +75,7 @@ class Home extends ISM_Controller {
 		'order_by' => array('sm.is_online DESC')
 		);
 		$classmate1 = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,sm.is_online',$where,$options);
-		$where = array('where' => array('sm.mate_of' =>  $this->session->userdata('user')['id'] ));
+		$where = array('where' => array('sm.mate_of' =>  $user_id ));
 		$options = array('join' => array(
 				array(
 					'table' => TBL_STUDYMATES.' sm',
@@ -113,7 +113,11 @@ class Home extends ISM_Controller {
 				array('where' => array('u.id' => $active_chat_id)),
 				$options
 				);
-			$data['active_chat']['comment'] = array_reverse (select(TBL_USER_CHAT. ' uc','uc.id, uc.sender_id,uc.receiver_id,uc.message',array('or_where' => array('uc.sender_id' => $active_chat_id, 'uc.receiver_id' => $active_chat_id )),array('limit' => 10,'order_by' => 'uc.id DESC')));
+			$data['active_chat']['comment'] = array_reverse (select(
+				TBL_USER_CHAT. ' uc',
+				'uc.id,uc.sender_id,uc.receiver_id,uc.message',
+				"(uc.sender_id = $active_chat_id AND uc.receiver_id = $user_id) OR (uc.sender_id = $user_id AND uc.receiver_id = $active_chat_id) ",
+				array('limit' => 10,'order_by' => 'uc.id DESC')));
 		}
 		$this->template->load('student/default','student/home_view',$data);
 	}

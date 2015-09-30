@@ -875,10 +875,8 @@ class PHPWebSocket {
         return implode('-', $online);
     }
 
-    function get_latest_msg($data = null) {
-        $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message`
-            FROM `user_chat` `uc`
-            WHERE `uc`.`sender_id` = '" . $data['my_id'] . "' OR `uc`.`receiver_id` = '" . $data['my_id'] . "' ORDER BY `uc`.`id` DESC LIMIT 10";
+    function get_latest_msg($data = null,$userID) {
+        $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message` FROM `user_chat` `uc` WHERE (`uc`.`sender_id` = ".$data['my_id']." AND `uc`.`receiver_id` = $userID) OR (`uc`.`sender_id` = $userID AND `uc`.`receiver_id` = ".$data['my_id'].") ORDER BY `uc`.`id` DESC LIMIT 10";
         $link = $this->db();
         $row = mysqli_query($link, $query);
         $result = array();
