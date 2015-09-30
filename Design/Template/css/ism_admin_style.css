@@ -890,7 +890,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .confirmation p span{
 	font-weight:600;
 }
-.btn_red{
+.btn_red, .btn_red:hover, .btn_red:focus{
 	background-color:#ff6b6b;
 	color:#fff;
 }
