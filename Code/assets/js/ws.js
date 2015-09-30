@@ -54,6 +54,7 @@ if ("WebSocket" in window)
     {   
         var obj = $.parseJSON(evt.data);
         if (obj.type == 'studymate') {
+            alert(evt.data);
             if (wp == obj.from) {
                 $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p></div>");
             } else {

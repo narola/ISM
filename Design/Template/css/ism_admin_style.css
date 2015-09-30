@@ -195,6 +195,10 @@
 	font-weight:600;
     border: 1px solid #f5f5f5;
 }
+.pagination_admin>li.active>a, .pagination_admin>li.active>a:hover{
+	background-color:#323941;
+	border: 1px solid #f5f5f5;
+}
 .sidebar_right_admin .stm{
 	border:none;
 }
@@ -893,6 +897,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .btn_red, .btn_red:hover, .btn_red:focus{
 	background-color:#ff6b6b;
 	color:#fff;
+	outline:none;
 }
 .confirmation .btn{
 	text-transform:uppercase;
@@ -900,3 +905,29 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .confirmation .btn_red{
 	margin-right:5px;
 }
+
+/*allocate topic page*/
+.sidebar_shrink .personal_menu{
+	padding-top:70px;
+	padding-bottom:0;
+}
+/*.sidebar_shrink .user_profile_img, 
+.sidebar_shrink .three_tabs, 
+.sidebar_shrink h4, 
+.sidebar_shrink>a, 
+.sidebar_shrink .copyright{
+	display:none;
+}
+.sidebar_shrink .personal_menu>li>a>span{
+	display:none;
+}
+.sidebar_shrink .personal_menu>li>a>span.icon{
+	display:inline-block;
+}
+.sidebar_shrink .logout>span{
+	display:none;
+}
+.sidebar_shrink .logout>span.icon{
+	display:inline-block;
+}
+*/

@@ -41,18 +41,33 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                         $Server->wsSend($id, json_encode($res));
                     }
                 }
-                  $Server->wsSend($id, json_encode(array('type' => 'online_users','message' => $Server->check_online_classmate($Server->wsClients[$clientID][12]))));
+                $Server->wsSend($id, json_encode(array('type' => 'online_users', 'message' => $Server->check_online_classmate($Server->wsClients[$clientID][12]))));
             }
         }
-    }else if($data['type'] == 'get_latest_message'){
-        $responce = $Server->get_latest_msg($data);
+    } else if ($data['type'] == 'get_latest_message') {
+        $responce = $Server->get_latest_msg($data,$Server->wsClients[$clientID][12]);
     }
 
     if ($responce['to'] == 'self') {
         $Server->wsSend($clientID, json_encode($responce));
     } else {
-        foreach ($Server->wsClients as $id => $client)
-            $Server->wsSend($id, json_encode($responce));
+        if ($responce['type'] == 'studymate') {
+            
+            /* Send to Receiver.. */
+            foreach ($Server->wsClients as $id => $client) {
+                $Server->log("ID ==> " .$Server->wsClients[$id][12]);
+                if ($responce['to'] == $Server->wsClients[$id][12]) {
+                   $Server->log("Responce  :-".json_encode($responce));
+                    $Server->wsSend($id, json_encode($responce));
+                    $Server->wsSend($clientID, json_encode($responce));
+                }
+            }
+            /* Send to self. */
+            
+        } else {
+            foreach ($Server->wsClients as $id => $client)
+                $Server->wsSend($id, json_encode($responce));
+        }
     }
 }
 
