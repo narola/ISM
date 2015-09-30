@@ -91,10 +91,10 @@
                                 </div>
                             </div>
                             <div class="topic_action">
-                           		<a href="#" class="icon icon_edit"></a>
-                                <a href="#" class="icon icon_zip"></a>
-                                <a href="#" class="icon icon_delete"></a>
-                                <a href="#" class="fa fa-angle-double-down"></a>                                
+                           		<a data-toggle="tooltip" data-placement="right" data-original-title="Edit" class="icon icon_edit"></a>
+                                <a data-toggle="tooltip" data-placement="right" data-original-title="Archive" class="icon icon_zip"></a>
+                                <a data-toggle="tooltip" data-placement="right" data-original-title="Delete" class="icon icon_delete"></a>
+                                <a data-toggle="tooltip"  class="fa fa-angle-double-down"></a>                                
                             </div>
                             <div class="clearfix"></div>
                         </div>
