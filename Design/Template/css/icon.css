@@ -66,7 +66,8 @@
 .icon_paint,
 .icon_pen,
 .icon_erase,
-.icon_clear{
+.icon_clear,
+.icon_add_small{
 	background-image:url(../images/icon-set.png);
 	background-position:0 0;
 }
@@ -319,5 +320,11 @@
 .icon_clear{
 	background-position: -192px -151px;
 }
+.icon_add_small{
+    background-position: -919px -160px;
+    height: 24px;
+    width: 24px;
+}
+
 /*--------------icon---------------*/
 

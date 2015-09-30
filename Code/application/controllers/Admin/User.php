@@ -11,6 +11,7 @@ class User extends ISM_Controller {
 		
 		$this->load->helper(array('csv','file'));		
 		$this->load->library(array('zip'));
+
 	}
 
 	// ---------------------------- User Module Start --------------------------------------------
@@ -21,34 +22,27 @@ class User extends ISM_Controller {
 	  **/
 	 
 	public function index() {
+		
+		$this->data['page_title'] = 'Users';
 
 		$this->load->library('pagination');
 		
 		if($_GET){
 
-			if(!empty($_GET['role'])){
-				$role = $this->input->get('role');
-			}	
-			if(!empty($_GET['course'])){
-				$course  = $this->input->get('course');
-			}
-			if(!empty($_GET['school'])){
-				$school = $this->input->get('school');
-			}
-			if(!empty($_GET['year'])){
-				$year = $this->input->get('year');
-			}
+			if( !empty($_GET['role']) ) { $role = $this->input->get('role'); }	
+			if( !empty($_GET['course'])){ $course  = $this->input->get('course'); }
+			if( !empty($_GET['school'])){ $school = $this->input->get('school'); }
+			if( !empty($_GET['year']) ) { $year = $this->input->get('year'); }
+			if( !empty($_GET['classroom']) ){  $classroom = $this->input->get('classroom'); }
 
-			if( !empty($role) || !empty($course) || !empty($school) || !empty($year) ){
+			if( !empty($role) || !empty($course) || !empty($school) || !empty($year) || !empty($classroom) ){
 
 				$str = '';
 
 				if(!empty($role)){ $where['where']['role_id'] = $role ; $str .= '&role='.$role; }	
-				
 				if(!empty($course)){  $where['where']['student_academic_info.course_id'] = $course; $str .='&course='.$course; }
-
 				if(!empty($school)){  $where['where']['student_academic_info.school_id'] = $school; $str .='&school='.$school; }
-
+				if(!empty($classroom)){ $where['where']['student_academic_info.classroom_id'] = $classroom; $str .= '&$classroom='.$classroom;  }
 				if(!empty($year)){ 
 									$next_year=$year+1; $academic_year = "$year-$next_year";    // find next year and create string like 2015-2016
 									$where['where']['student_academic_info.academic_year'] = $academic_year; $str .='year='.$year;  
@@ -67,8 +61,6 @@ class User extends ISM_Controller {
 			$config['base_url']	 = base_url().'admin/user/index';
 			$offset = $this->uri->segment(4);
 		}
-
-		
 
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
@@ -144,10 +136,11 @@ class User extends ISM_Controller {
 		
 		$this->pagination->initialize($config);
 		
-		$this->data['schools'] = $this->common_model->sql_select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
-		$this->data['courses'] = $this->common_model->sql_select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));
-		$this->data['roles'] = $this->common_model->sql_select(TBL_ROLES,FALSE,FALSE,array('limit'=>10));
-		
+		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
+		$this->data['courses'] = select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));
+		$this->data['roles'] = select(TBL_ROLES,FALSE,FALSE,array('limit'=>10));
+		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,FALSE,array('limit'=>10));
+
 		$this->template->load('admin/default','admin/user/view_user',$this->data);
 	}
 
@@ -158,11 +151,13 @@ class User extends ISM_Controller {
 
 	public function add(){
 
-		$this->data['countries']  = $this->common_model->sql_select('countries');
-		$this->data['states'] = $this->common_model->sql_select('states');
-		$this->data['cities'] = $this->common_model->sql_select('cities');
-		$this->data['roles'] = $this->common_model->sql_select('roles');
-		$this->data['packages'] = $this->common_model->sql_select('membership_package');
+		$this->data['page_title'] = 'Users Add';
+
+		$this->data['countries']  =select('countries');
+		$this->data['states'] =select('states');
+		$this->data['cities'] =select('cities');
+		$this->data['roles'] =select('roles');
+		$this->data['packages'] =select('membership_package');
 
 		$this->form_validation->set_rules('username', 'User Name', 'trim|required|is_unique[users.username]');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');	
@@ -177,6 +172,9 @@ class User extends ISM_Controller {
 
 			$encrypted_password = $this->encrypt->encode($this->input->post("password"));
 
+			$bdate = $this->input->post("birthdate");
+			if(!empty($bdate)){ $bdate = $this->input->post("birthdate"); }else{ $bdate = "0000-00-00"; }
+
 			$data=array(
 				 "username"=>$this->input->post("username"),
 				 "password"=>$encrypted_password,
@@ -189,7 +187,7 @@ class User extends ISM_Controller {
 				 "city_id"=>$this->input->post("city"),
 				 "state_id"=>$this->input->post("state"),
 				 "country_id"=>$this->input->post("country"),
-				 "birthdate"=>$this->input->post("birthdate"),
+				 "birthdate"=>$bdate,
 				 "gender"=>$this->input->post("gender"),
 				 "device_type"=>$this->input->post("device_type"),
 				 "device_token"=>$this->input->post("device_token"),
@@ -202,12 +200,13 @@ class User extends ISM_Controller {
 				 "created_date"=>date('Y-m-d H:i:s'),
 				 "modified_date"=>date('Y-m-d H:i:s'),
 				 "is_delete"=>0,
-				 "is_testdata"=>'yes'
+				 "is_testdata"=>'yes',
+				 "websocket_id"=>''
 			);
 			
-			$this->common_model->insert('users',$data);	
+			insert('users',$data);	 // insert data into database using common_model.php and cms_helper.php
 
-			$this->session->set_flashdata('success', 'Data is Successfully created.');
+			$this->session->set_flashdata('success', 'Record is Successfully created.');
 			redirect('admin/user');
 		}
 
@@ -226,19 +225,19 @@ class User extends ISM_Controller {
 
 	public function update($id){
 
+		$this->data['page_title'] = 'Users Update';
+
 		if(empty($id) && !	is_numeric($id)){
 			redirect('admin/dashboard');
 		 }
 
-		$this->data['user'] = $this->common_model->sql_select('users',FALSE,array('where'=>array('id'=>$id)),array('single'=>TRUE));	
-		$this->data['countries']  = $this->common_model->sql_select('countries');
-		$this->data['states'] = $this->common_model->sql_select('states',FALSE,array('where'=>array('country_id'=>$this->data['user']['country_id'])));
-	     $this->data['cities'] = $this->common_model->sql_select('cities',FALSE,array('where'=>array('state_id'=>$this->data['user']['state_id'])));
-		$this->data['roles'] = $this->common_model->sql_select('roles');
-		$this->data['packages'] = $this->common_model->sql_select('membership_package');
+		$this->data['user'] = select('users',FALSE,array('where'=>array('id'=>$id)),array('single'=>TRUE));	
+		$this->data['countries'] = select('countries');
+		$this->data['states'] = select('states',FALSE,array('where'=>array('country_id'=>$this->data['user']['country_id'])));
+	    $this->data['cities'] = select('cities',FALSE,array('where'=>array('state_id'=>$this->data['user']['state_id'])));
+		$this->data['roles'] = select('roles');
+		$this->data['packages'] = select('membership_package');
 		
-
-
 		if($_POST){
 			
 			$username = $this->input->post('username');
@@ -253,7 +252,7 @@ class User extends ISM_Controller {
 			if($this->data['user']['email_id'] !== $email){
 				$email_rule = 'trim|required|is_unique[users.email_id]';
 			}else{
-				$email_rule = 'trim|required';
+				$email_rule = 'trim';
 			}
 
 		}else{
@@ -266,11 +265,13 @@ class User extends ISM_Controller {
 
 		if($this->form_validation->run() == FALSE){
 
-			//$this->load->view('admin/user/update_user',$data);
 			$this->template->load('admin/default','admin/user/update_user',$this->data);
 
 		}else{
 			
+			$bdate = $this->input->post("birthdate");
+			if(!empty($bdate)){ $bdate = $this->input->post("birthdate"); }else{ $bdate = "0000-00-00"; }
+
 			$data=array(
 				 "username"=>$this->input->post("username"),
 				 "first_name"=>$this->input->post("first_name"),
@@ -282,7 +283,7 @@ class User extends ISM_Controller {
 				 "city_id"=>$this->input->post("city"),
 				 "state_id"=>$this->input->post("state"),
 				 "country_id"=>$this->input->post("country"),
-				 "birthdate"=>$this->input->post("birthdate"),
+				 "birthdate"=>$bdate,
 				 "gender"=>$this->input->post("gender"),
 				 "modified_date"=>date('Y-m-d H:i:s'),
 				 "role_id"=>$this->input->post("roles"),
@@ -291,9 +292,9 @@ class User extends ISM_Controller {
 				 "package_id"=>$this->input->post("package")
 			);
 	
-			$this->common_model->update('users',$id,$data);	
+			update('users',$id,$data);	// Update data  using common_model.php and cms_helper.php
 
-			$this->session->set_flashdata('success', 'Data is Successfully updated.');
+			$this->session->set_flashdata('success', 'Record is Successfully updated.');
 			redirect('admin/user');
 
 		}
@@ -306,9 +307,9 @@ class User extends ISM_Controller {
 	 **/
 	
 	public function blocked($id){
-		$this->common_model->update('users',$id,array('user_status'=>'blocked'));
+		update('users',$id,array('user_status'=>'blocked'));
 		$this->session->set_flashdata('success', 'User is Successfully Blocked.');
-		redirect('admin/view_user');
+		redirect('admin/user');
 	}
 
 	/**
@@ -317,22 +318,23 @@ class User extends ISM_Controller {
 	 **/
 	public function send_message($id){
 		
-		$this->data['u'] = $this->common_model->sql_select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>true));
+		$this->data['page_title'] = 'User Send Message';
 
-		$this->data['templates'] = $this->common_model->sql_select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
-		$this->data['users'] = $this->common_model->sql_select(TBL_USERS,
-																TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
-																 array('where_not_in'=>array(TBL_USERS.'.role_id'=>array('1'))),
-																 array(
-																	'order_by'=>TBL_USERS.'.username',
-																	'join'=>array(
-																				array(
-																					'table'=>'roles',
-																					'condition'=>TBL_USERS.'.role_id='.TBL_ROLES.'.id'
-																				)
-																			)
-																		)
-																);	
+		$this->data['u'] =select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>true));
+		$this->data['templates'] =select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
+		$this->data['users'] =select(TBL_USERS,
+									TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
+									 array('where_not_in'=>array(TBL_USERS.'.role_id'=>array('1'))),
+									 array(
+										'order_by'=>TBL_USERS.'.username',
+										'join'=>array(
+													array(
+														'table'=>'roles',
+														'condition'=>TBL_USERS.'.role_id='.TBL_ROLES.'.id'
+													)
+												)
+											)
+									);	
 
 		$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
 		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
@@ -364,7 +366,7 @@ class User extends ISM_Controller {
 							);
 
 						//insert data into messages table
-						$message_id = $this->common_model->insert(TBL_MESSAGES,$data);
+						$message_id = insert(TBL_MESSAGES,$data);
 
 						$data_message_receiver = array(
 								'message_id'=>$message_id,
@@ -376,10 +378,14 @@ class User extends ISM_Controller {
 							);
 
 						// insert data into messages_receiver table using message id from message table
-						$this->common_model->insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
+						insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
 
 					}
 				}
+
+				$this->session->set_flashdata('success', 'Message has been Successfully sent.');
+				redirect('admin/user');
+
 				die();
 
 				$this->email->from('email@email.com', 'Name');
@@ -400,6 +406,8 @@ class User extends ISM_Controller {
 
 	public function send_messages(){
 		
+		$this->data['page_title'] = 'Users Send Messages';
+
 		if($_POST){
 			
 			if(isset($_POST['all_users'])){
@@ -416,20 +424,20 @@ class User extends ISM_Controller {
 			$this->data['post_users'] = array();
 		} 
 
-		$this->data['templates'] = $this->common_model->sql_select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
-		$this->data['users'] = $this->common_model->sql_select(TBL_USERS,
-																TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
-																 array('where_not_in'=>array(TBL_USERS.'.role_id'=>array('1'))),
-																 array(
-																	'order_by'=>TBL_USERS.'.username',
-																	'join'=>array(
-																				array(
-																					'table'=>'roles',
-																					'condition'=>TBL_USERS.'.role_id='.TBL_ROLES.'.id'
-																				)
-																			)
-																		)
-																);
+		$this->data['templates'] =select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
+		$this->data['users'] =select(TBL_USERS,
+									TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
+									 array('where_not_in'=>array(TBL_USERS.'.role_id'=>array('1'))),
+									 array(
+										'order_by'=>TBL_USERS.'.username',
+										'join'=>array(
+													array(
+														'table'=>'roles',
+														'condition'=>TBL_USERS.'.role_id='.TBL_ROLES.'.id'
+													)
+												)
+											)
+									);
 
 		$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
 		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
@@ -461,7 +469,7 @@ class User extends ISM_Controller {
 							);
 
 						//insert data into messages table
-						$message_id = $this->common_model->insert(TBL_MESSAGES,$data);
+						$message_id = insert(TBL_MESSAGES,$data);
 
 						$data_message_receiver = array(
 								'message_id'=>$message_id,
@@ -473,9 +481,12 @@ class User extends ISM_Controller {
 							);
 
 						// insert data into messages_receiver table using message id from message table
-						$this->common_model->insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
+						insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
 
 					}
+
+					$this->session->set_flashdata('success', 'Messages has been Successfully sent.');
+					redirect('admin/user');
 				}		
 			}
 		}

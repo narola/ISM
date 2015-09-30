@@ -835,6 +835,48 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .general_cred .box_header {
     background-color: #F2F2F2;
 	text-align:center;
+	padding: 12px 15px;
+	border-bottom:1px solid rgba(0,0,0,0.07);
+}
+.general_cred .box_header h3{
+	color:#333;
+	text-align:left;
+}
+.general_cred .box_body{
+	border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+.general_cred .form-group label{
+	display:block;
+}
+.general_cred input.form-control {
+    width: 95%;
+    margin-right: 10px;
+    display: inline-block;
+}
+.general_cred .box_body .form-control:focus {
+    border-color: rgba(255,107,107,0.2);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(255,107,107,0.2);
+}
+.three_inputs {
+    width: 32.3%;
+    float: left;
+	margin-right:15px;
+}
+.general_cred .box_body .select:after{
+	top:10px;
+}
+.general_cred .box_body .three_inputs.select:after{
+	color:#ff6b6b;
+    top: 35px;
+    right: 65px;
+}
+.three_inputs:nth-last-child(2){
+	margin-right:0;
+}
+.three_inputs .form-control {
+    display: inline-block;
+    width: 85%;
+    margin-right: 10px;
 }
 .confirmation p{
 	font-size:18px;	
@@ -848,7 +890,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .confirmation p span{
 	font-weight:600;
 }
-.btn_red{
+.btn_red, .btn_red:hover, .btn_red:focus{
 	background-color:#ff6b6b;
 	color:#fff;
 }

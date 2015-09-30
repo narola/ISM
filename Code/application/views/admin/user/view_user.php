@@ -1,24 +1,3 @@
-<?php 
-   /**
-     * variable $error and $success are flash messages  
-     *
-     * @var $error & $success
-     **/
-
-?>
-
-  <?php $error = $this->session->flashdata('error'); ?>
-  
-  <div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
-          <?php echo strip_tags($error) ; ?>
-  </div>
-
-  <?php $success = $this->session->flashdata('success'); ?>
-  
-  <div class="alert alert-success <?php if(empty(strip_tags($success,''))){ echo 'hide';} ?>">
-          <?php echo strip_tags($success) ; ?>
-  </div> 
-
 <!--main-->
     <div class="col-sm-7 main main2">
       <!--breadcrumb-->
@@ -76,21 +55,34 @@
 	                                <?php }  } ?>
 	                            </select>
 	                </div>
-	                <!-- <div class="form-group">
-	                    <select class="form-control" onchange="filter_data()">
-	                                <option>School Role</option>
-	                                <?php 
-	                                  if(!empty($roles)){ 
-	                                    foreach($roles as $role) {
-	                                    ?>
-	                                    <option><?php echo $role['role_name']; ?></option>  
-	                                <?php }  } ?>
-	                            </select>
-	                </div> -->
+	                <div class="form-group">
+	                    <select class="form-control" name="classroom" id="classroom" onchange="filter_data()">
+                            <option value="">School Classroom</option>
+                            <?php 
+                              if(!empty($classrooms)){ 
+                                foreach($classrooms as $classroom) {
+                                ?>
+                                <option value="<?php echo $classroom['id']; ?>"><?php echo $classroom['class_name']; ?></option>  
+                            <?php }  } ?>
+                        </select>
+	                </div>
 	            </div>
 	        </div>
 
     	</form>	
+
+    	<?php $success = $this->session->flashdata('success'); ?>
+  
+		<div class="alert alert-success <?php if(empty(strip_tags($success,''))){ echo 'hide';} ?>">
+		    <?php echo strip_tags($success) ; ?>
+		</div>
+		
+		<?php $error = $this->session->flashdata('error'); ?>
+  
+		<div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
+		    <?php echo strip_tags($error) ; ?>
+		</div>
+
         <!--//filter-->
         <!--button div-->
     
@@ -141,18 +133,19 @@
                               <td class="username">
                                   <div class="chat_img_holder"><img src="<?php echo base_url().'assets'; ?>/images/user3.jpg"></div>
                                   <h4><?php echo ucfirst($user['username']); ?></h4>
-                                  <p class="active">Active Today</p>
+                                  <?php if(!empty($user['user_status']) && $user['user_status']== 'active'){ echo '<p class="active">Active Today</p>'; } ?>
+                                  
                               </td>
 
-                              <td>First Year</td>
-                              <td>Computer Science</td>
+                              <td><?php echo ucfirst($user['class_name']); ?></td>
+                              <td> <?php echo ucfirst($user['course_name']); ?> </td>
                               <td> <?php echo ucfirst($user['city_name']); ?> </td>
                               <td><?php echo ucfirst($user['role_name']); ?></td>
                               <td>
                                   <a href="#" class="icon icon_timeline"></a>
                                   <a href="#" class="icon icon_books"></a>
                                   <a href="#" class="icon icon_performance"></a>
-                                  <a href="#" class="icon icon_blockuser"></a>
+                                  <a href="<?php echo base_url().'admin/user/blocked/'.$user['id']; ?>" onclick="return confirm('Block User ?');" class="icon icon_blockuser"></a>
                                   <a href="#" class="icon icon_mail"></a>
                                   <a href="<?php echo base_url().'admin/user/send_message/'.$user['id']; ?>" class="icon icon_chat"></a>
                                   <a href="<?php echo base_url().'admin/user/update/'.$user['id']; ?>" class="icon icon_edit"> </a>
@@ -187,12 +180,14 @@
 		var school = $('#school').val();
 		var year = $('#year').val();
 		var course = $('#course').val();
+		var classroom = $('#classroom').val();
 
 		if(role == '' ){ $('#role').removeAttr('name'); }
 		if(school == '' ){ $('#school').removeAttr('name'); }
 		if(year == '' ){ $('#year').removeAttr('name'); }
 		if(course == '' ){ $('#course').removeAttr('name'); }
-		
+		if(classroom == ''){ $('#classroom').removeAttr('name'); }
+
 		$('#filter').submit();
 	}
 
@@ -210,6 +205,10 @@
 
 	<?php if(!empty($_GET['course'])) { ?>
 		$('#course').val('<?php echo $_GET["course"];?>');	
+	<?php } ?>
+
+	<?php if(!empty($_GET['classroom'])) { ?>
+		$('#classroom').val('<?php echo $_GET["classroom"];?>');	
 	<?php } ?>			
 
 </script>

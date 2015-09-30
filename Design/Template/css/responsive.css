@@ -142,6 +142,18 @@
 	.tut_week_heading p {
     	left: -12px;
 	}
+	.general_cred input.form-control{
+		width:94%;
+	}
+	.three_inputs .form-control{
+		width: 81%;
+	}
+	.three_inputs{
+		width:32%;
+	}
+	.sidebar_right_admin .score_rank{
+		margin-left:30%;	
+	}
 }	
 @media (max-width:1024px){
 	.login_background {
@@ -242,9 +254,7 @@
 	.personal_menu .icon{
 		display:none;
 	}
-	.sidebar_right_admin .score_rank{
-		margin-left:30%;	
-	}
+	
 	.stm .box_header {
     	padding: 7px 15px;
 	}
@@ -308,6 +318,15 @@
 	.toolkit_tabs{
 		height:100vh;
 		overflow:auto;
+	}
+	.general_cred input.form-control {
+    	width: 91%;
+	}
+	.three_inputs .form-control {
+    	width: 72%;
+	}
+	.three_inputs {
+    	width: 31.5%;
 	}
 }
 
@@ -388,6 +407,12 @@
 	}
 	.table_group > thead > tr > th:first-child{
 		width:60px;
+	}
+	.three_inputs {
+    	width: 100%;
+	}
+	.three_inputs .form-control {
+    	width: 91%;
 	}
 }
 @media (max-width:800px){
@@ -485,6 +510,9 @@
 	.topic_content .btn-group {
 		float: none;
 		margin-top: 10px;
+	}
+	.general_cred input.form-control , .three_inputs .form-control{
+    	width: 88%;
 	}
 }
 @media (max-width:768px){
