@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.chat .chat_header').click(function () {
+    $(document).on('click', '.chat .chat_header', function () {
         if ($(this).parent().hasClass('passive')) {
             if ($(this).parent().hasClass('chat_3')) {
                 $('.chat.active').addClass('chat_3 passive');
@@ -51,13 +51,13 @@ if ("WebSocket" in window)
     };
 
     ws.onmessage = function (evt)
-    {
+    {   
         var obj = $.parseJSON(evt.data);
         if (obj.type == 'studymate') {
-            if (ws == obj.from) {
-                $('.chat[data-mate="' + obj.to + '"] .chat_text #mCSB_4 #mCSB_4_container').append("<div class='to'><p>" + obj.message + "</p></div>");
+            if (wp == obj.from) {
+                $('.chat[data-id="' + obj.to + '"] .chat_text #mCSB_5 #mCSB_5_container').append("<div class='to'><p>" + obj.message + "</p></div>");
             } else {
-                $('.chat[data-mate="' + obj.from + '"] .chat_text #mCSB_4 #mCSB_4_container').append("<div class='from'><p>" + obj.message + "</p></div>");
+                $('.chat[data-id="' + obj.from + '"] .chat_text #mCSB_5 #mCSB_5_container').append("<div class='from'><p>" + obj.message + "</p></div>");
             }
         } else if (obj.type == 'con') {
             if (obj.error != '') {
@@ -72,7 +72,9 @@ if ("WebSocket" in window)
             $.each(theString.split("-"), function (index, id) {
                 $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('offline').addClass('online');
             });
-        } else {
+        }else if(obj.type == 'get_latest_message'){
+            $('.chat[data-id="' + obj.my_id + '"] .chat_text #mCSB_5 #mCSB_5_container').html(obj.message);
+        }else {
             alert('Message Not Catched!!');
         }
     };
@@ -82,7 +84,7 @@ if ("WebSocket" in window)
     };
 }
 /* Send message for individual chat. */
-$('input[data-type="chat"]').keypress(function (e) {
+$(document).on('keypress', 'input[data-type="chat"]', function (e) {
     if (e.keyCode == 13 && this.value) {
         var request = {
             type: 'studymate',
@@ -123,64 +125,62 @@ function set_status(id, status) {
 }
 
 function active_check(id) {
-    var value = $.cookie('active');
-    var regex = new RegExp("-" + id + "-", "g");
-    if($(".chat_container .chat").length <= 5){
-        if (value == 'undefind' || value == '' || value == null) {
-            $.cookie('active', "-" + id + "-");
-        }
-        else{
-            if (value.indexOf("-" + id + "-") > -1) {
-                 
-            }
-            else{
-                 value = value + id + "-";
-            }    
-        }
-        $.cookie('active', value);
-    }
+    $.cookie('active', id);
 }
 
+$(document).on('click', '#mate_list', function () {
+    active_check($(this).attr('data-id'));
+    var cookie = $.cookie('active');
+    var str = '';
+    var id = $(this).data('id');
+    var len = $('.chat_container .chat').length;
+    var j = 3;
+    var is_needed = true;
 
-  $(document).on('click','#mate_list',function(){
-
-            active_check($(this).attr('data-id'));
-            cookie = $.cookie('active');
-            var str='';
-            var len = $('.chat_container .chat[data-chat="yes"]').length;
-            var i = 1;
-            for (i = 1; i <= len; i++) {
-                alert('got');
-                   $(".chat_container .chat:nth-child(1)").remove();
+    for (var i = 1; i <= len; i++) {
+            if ($(".chat_container .chat:nth-child(" + i + ")").data('id') == id) {
+                is_needed = false;
             }
-/*            if(len <=4){
-                $(".chat_container .chat:nth-child(1)").remove();
+    }
+    if(len >= 4 && is_needed == true){
+        alert('removed');
+            $(".chat_container .chat_1").remove();
+    }
+
+    for (var i = 1; i <= len; i++) {            
+            if ($(".chat_container .chat:nth-child(" + i + ")").data('id') != id && j>0) {
+                $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
+            j--;
             }
-*/
-            str += '<div class="chat active" data-chat="yes" data-mate="1">';
-                str += '<div class="chat_header"><div class="chat_img_holder">';
-                str += '<img src="'+$(this).children('div').children('img').attr('src')+'">';
-                str += '</div><p class="chat_name">'+$(this).children('p').html()+'</p>';
-                str += '<a href="#"><span class="icon icon_option"></span></a></div>';
-                str += '<div class="chat_text mCustomScrollbar" data-mcs-position="bottom"></div>';
-                str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="'+$(this).data('id')+'">';
-                str += '<a href="#" class="icon icon_emoji"></a>';
-                str += '<a href="#" class="icon icon_pin"></a>';
-                str += '<input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="16">';
-                str += '</div>';
-                // str += '<div class="chat passive chat_1">';
-                // str += '<div class="chat_header"><div class="chat_img_holder">';
-                // str += '<img src="'+$(this).children('div').children('img').attr('src')+'">';
-                // str += '</div><p class="chat_name">'+$(this).children('p').html()+'</p>';
-                // str += '<a href="#"><span class="icon icon_option"></span></a></div>';
-                // str += '<div class="chat_text mCustomScrollbar" data-mcs-position="bottom"></div>';
-                // str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="'+$(this).data('id')+'">';
-                // str += '<a href="#" class="icon icon_emoji"></a>';
-                // str += '<a href="#" class="icon icon_pin"></a>';
-                // str += '<input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="16">';
-                // str += '</div>';
+            
+    }
 
-            $('#chat_container').append(str);
+    if (is_needed == true) {
 
-       });
+        var request = {
+            type: 'get_latest_message',
+            to: 'self',
+            my_id: id,
+            error: ''
+        };
+        ws.send(JSON.stringify(request));
+
+        str += '<div class="chat active" data-id="' + id + '">';
+        str += '<div class="chat_header"><div class="chat_img_holder">';
+        str += '<img src="' + $(this).children('div').children('img').attr('src') + '">';
+        str += '</div><p class="chat_name">' + $(this).children('p').html() + '</p>';
+        str += '<a href="#"><span class="icon icon_option"></span></a></div>';
+        str += '<div class="chat_text"></div>';
+        str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="' + id + '">';
+        str += '<a href="#" class="icon icon_emoji"></a>';
+        str += '<a href="#" class="icon icon_pin"></a>';
+        str += '<input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="16">';
+        str += '</div>';
+        $('#chat_container').append(str);
+          $("#chat_container .chat[data-id='"+id+"'] .chat_text").mCustomScrollbar({theme:"minimal-dark"});
+    } else {
+        $(".chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
+    }
+
+});
 

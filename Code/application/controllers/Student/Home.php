@@ -14,6 +14,9 @@ class Home extends ISM_Controller {
 
 	public function index()
 	{
+
+						
+
 		$data['title'] = 'ISM - Home';
 		// Get Classmates details
 		$where = array('where' => array('sm.mate_id' =>  $this->session->userdata('user')['id'] ));
@@ -45,8 +48,31 @@ class Home extends ISM_Controller {
 		);
 		$classmate2 = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,sm.is_online',$where,$options);
 		$data['classmates'] = array_merge($classmate1,$classmate2);
-		
+		/* Get all online users */
 
+		$all_online = rtrim(get_cookie('status'),"-");
+        $all_online = ltrim($all_online,"-");
+        $data['online'] = (Array)explode('-', $all_online);
+
+		/* Get user id of active chat window */
+		$active_chat_id = get_cookie('active');
+		if(!empty($active_chat_id)){
+			$options = array('join' => array(
+				array(
+					'table' => TBL_USER_PROFILE_PICTURE.' upp',
+					'condition' => 'upp.user_id = u.id'
+					)
+				),
+			'single' => true
+			);
+			$data['active_chat']['user'] = select(
+				TBL_USERS.' u',
+				'u.id, u.full_name,upp.profile_link',
+				array('where' => array('u.id' => $active_chat_id)),
+				$options
+				);
+			$data['active_chat']['comment'] = array_reverse (select(TBL_USER_CHAT. ' uc','uc.id, uc.sender_id,uc.receiver_id,uc.message',array('or_where' => array('uc.sender_id' => $active_chat_id, 'uc.receiver_id' => $active_chat_id )),array('limit' => 10,'order_by' => 'uc.id DESC')));
+		}
 		$this->template->load('student/default','student/home_view',$data);
 	}
 
@@ -149,7 +175,6 @@ class Home extends ISM_Controller {
 				    				)
 					    		)
 		    				)
-
 		    		);
 		$this->load->view('student/group_allocation',$data);
 	}

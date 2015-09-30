@@ -44,6 +44,8 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                   $Server->wsSend($id, json_encode(array('type' => 'online_users','message' => $Server->check_online_classmate($Server->wsClients[$clientID][12]))));
             }
         }
+    }else if($data['type'] == 'get_latest_message'){
+        $responce = $Server->get_latest_msg($data);
     }
 
     if ($responce['to'] == 'self') {

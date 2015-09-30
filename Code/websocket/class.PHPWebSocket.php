@@ -1,5 +1,4 @@
 <?php
-
 /*
   Handle persistance connection between client and server.
  */
@@ -439,6 +438,8 @@ class PHPWebSocket {
 
 
 
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -613,6 +614,8 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
 
 
 
@@ -846,7 +849,7 @@ class PHPWebSocket {
     function get_client_info($id) {
         $link = $this->db();
         $query = "SELECT `u`.`id`,`u`.`full_name`, `upp`.`profile_link`  FROM `users` `u` LEFT JOIN `user_profile_picture` `upp` ON `upp`.`user_id` = `u`.`id` WHERE `u`.`id` = $id LIMIT 1";
-        $row = mysqli_query($link,$query);
+        $row = mysqli_query($link, $query);
         $count = mysqli_num_rows($row);
         $rows = mysqli_fetch_assoc($row);
         mysqli_close($link);
@@ -860,19 +863,43 @@ class PHPWebSocket {
             return null;
         }
     }
-    
-    
-    function check_online_classmate($id){
-         $all = $this->class_mate_list($id);
-         $online = array();
-         foreach($this->wsClients as $id => $value){
-             if(in_array($value[12], $all)){
-                 $online[] =  $value[12];
-             }
-         }
+
+    function check_online_classmate($id) {
+        $all = $this->class_mate_list($id);
+        $online = array();
+        foreach ($this->wsClients as $id => $value) {
+            if (in_array($value[12], $all)) {
+                $online[] = $value[12];
+            }
+        }
         return implode('-', $online);
     }
 
-}
+    function get_latest_msg($data = null) {
+        $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message`
+            FROM `user_chat` `uc`
+            WHERE `uc`.`sender_id` = '" . $data['my_id'] . "' OR `uc`.`receiver_id` = '" . $data['my_id'] . "' ORDER BY `uc`.`id` DESC LIMIT 10";
+        $link = $this->db();
+        $row = mysqli_query($link, $query);
+        $result = array();
+        while ($rows = mysqli_fetch_assoc($row)) {
+            $result[] = array(
+                'sender_id' => $rows['sender_id'],
+                'receiver_id' => $rows['receiver_id'],
+                'message' => $rows['message']
+            );
+        }
+        $result = array_reverse($result);
+        $html = '';
+        foreach ($result as $value)
+            if ($value['sender_id'] == $data['my_id']) {
+                $html .= '<div class="from"><p>'.$value['message'].'</p></div>';
+            } else {
+                $html .= '<div class="to"><p>'.$value['message'].'</p></div>';
+            }
+        $data['message'] = $html;
+        return $data;
+    }
 
+}
 ?>
