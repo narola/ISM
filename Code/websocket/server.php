@@ -55,15 +55,12 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
             
             /* Send to Receiver.. */
             foreach ($Server->wsClients as $id => $client) {
-                $Server->log("ID ==> " .$Server->wsClients[$id][12]);
                 if ($responce['to'] == $Server->wsClients[$id][12]) {
-                   $Server->log("Responce  :-".json_encode($responce));
                     $Server->wsSend($id, json_encode($responce));
-                    $Server->wsSend($clientID, json_encode($responce));
                 }
             }
             /* Send to self. */
-            
+            $Server->wsSend($clientID, json_encode($responce));
         } else {
             foreach ($Server->wsClients as $id => $client)
                 $Server->wsSend($id, json_encode($responce));

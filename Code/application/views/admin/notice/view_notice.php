@@ -94,7 +94,14 @@
                                         <a href="<?php echo base_url().'admin/notice/archive/'.$notice['id']; ?>" class="icon icon_zip_color"
                                           onclick="return confirm('Are you sure to add this data to archive?')" ></a>
                                         <a href="<?php echo base_url().'admin/notice/update/'.$notice['id']; ?>" class="icon icon_edit_color"></a>
-                                        <a href="#" class="icon icon_copy_color"></a>
+                                        
+
+                                        <button id="notice_<?php echo $notice['id']; ?>" class="btn btn-link icon icon_copy_color"  
+                                            data-clipboard-target="notice_text_<?php echo $notice['id']; ?>">
+                                        </button>
+
+                                      <!--   <a id="target-to-copy" class="icon icon_copy_color" data-clipboard-target="clipboard-text"></a>  -->
+                                        
                                         <a href="<?php echo base_url().'admin/notice/delete/'.$notice['id']; ?>" 
                                           onclick="return confirm('Are you sure to delete this data ?')" class="icon icon_delete_color"></a>
                                         <input type="checkbox"><label class="save_box"></label>
@@ -107,41 +114,55 @@
                    <?php } } ?> 
 
                     <div class="clearfix"></div>
+                    <div class="text-center ">
+                    <?php  echo $this->pagination->create_links();  ?>
+                    </div>
                 </div>
                 <!--//noticeboard-->
-                <?php  echo $this->pagination->create_links();  ?>
+                
       </div>
             <!--//main-->
 
+
    <?php 
-        if(!empty($notices)) { 
+    if(!empty($notices)) { 
             foreach($notices as $notice) {
             ?>  
 
          <!-- Modal -->
-    <div class="modal fade" id="myModal_<?php echo $notice['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModal_<?php echo $notice['id']; ?>Label">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header notice_header text-center">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel"> <?php echo ucfirst($notice['notice_title']); ?></h4>
-            <small><?php 
-                        $originalDate = $notice['created_date'];
-                       echo  $newDate = date("M d,  Y", strtotime($originalDate));
-                    ?> 
-            </small>
+        <div class="modal fade" id="myModal_<?php echo $notice['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModal_<?php echo $notice['id']; ?>Label">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header notice_header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"> <?php echo ucfirst($notice['notice_title']); ?></h4>
+                <small><?php 
+                            $originalDate = $notice['created_date'];
+                           echo  $newDate = date("M d,  Y", strtotime($originalDate));
+                        ?> 
+                </small>
+              </div>
+              <div class="modal-body">
+                 <p id="notice_text_<?php echo $notice['id']; ?>"><?php echo $notice['notice']; ?></p>
+                <h4 class="notice_by"><?php echo ucfirst($this->session->userdata('username')); ?><span>ISM Admin</span></h4>
+                <div class="clearfix"></div>
+              </div>
+              
+            </div>
           </div>
-          <div class="modal-body">
-             <p><?php echo $notice['notice']; ?></p>
-            <h4 class="notice_by"><?php echo ucfirst($this->session->userdata('username')); ?><span>ISM Admin</span></h4>
-            <div class="clearfix"></div>
-          </div>
-          
         </div>
-      </div>
-    </div>
     <!-- /.modal -->
 
    <?php } } ?> 
 
-                   
+
+<script type="text/javascript">
+    
+     <?php 
+    if(!empty($notices)) { 
+        foreach($notices as $notice) {
+        ?> 
+        var clientTarget = new ZeroClipboard( $("#notice_<?php echo $notice['id']; ?>") );
+    <?php } } ?>        
+ 
+</script>

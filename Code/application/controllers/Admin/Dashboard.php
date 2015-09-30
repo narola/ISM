@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Dashboard extends ISM_Controller {
+class Dashboard extends ADMIN_Controller {
 
 	public $data = array();
 
@@ -17,6 +17,7 @@ class Dashboard extends ISM_Controller {
 
 	public function index()
 	{
+
 		$remember_me = get_cookie('Remember_me');  
 
 		/* 	If Remember_key Cookie exists in browser then it wil fetch data using it's value and 
@@ -30,17 +31,20 @@ class Dashboard extends ISM_Controller {
 
 			$array = array(
 				'id'=>$rem_data['id'],
-				'loggedin'=>TRUE
+				'loggedin_admin'=>TRUE
 			);
 			
 			$this->session->set_userdata( $array );
 		}
 
-		$loggedin = is_loggedin();  /* is_logginin() in cms_helper.php It will Check Admin is loggen or not. */
+		$loggedin = is_loggedin();
+		$loggedin_admin = is_loggedin_admin();  /* is_logginin() in cms_helper.php It will Check Admin is loggen or not. */
 
-		if($loggedin == TRUE){
+		if($loggedin == FALSE && $loggedin_admin == TRUE){
 			redirect('admin/user');
-		}
+		}elseif($loggedin == TRUE){
+			redirect('login');
+		}	
 
 		$this->form_validation->set_rules('username', 'Email / User Name', 'trim|required');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');	
@@ -88,7 +92,7 @@ class Dashboard extends ISM_Controller {
 						'role' => $role_data['role_name'],
 						'username'=>$fetch_data['username'],
 						'email_id'=>$fetch_data['email_id'],
-						'loggedin' =>TRUE
+						'loggedin_admin' =>TRUE
 					);
 
 					$this->session->set_userdata( $array ); // Set Session for Admin

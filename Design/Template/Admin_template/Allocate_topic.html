@@ -86,7 +86,7 @@
     <div class="container-fluid">
     	<div class="row">
         	<!--side left-->
-            <div class="sidebar_shrink sidebar_left_container inner_pages inner_pages_admin text-center"><!-- scrollbar" id="style-3-->
+            <div class="sidebar_shrink sidebar_left_container inner_pages inner_pages_admin text-center mCustomScrollbar" data-mcs-theme="minimal"><!-- scrollbar" id="style-3-->
                 <div class="user_profile_img">
                     <img src="../images/user1.jpg">
                 </div>
@@ -142,12 +142,69 @@
                 	<li><a href="#"><span class="icon icon_banner"></span><span>Banners</span></a></li>                	
                 	<li><a href="Notice_board.html"><span class="icon icon_notice"></span><span>Notice Board</span></a></li>
                     <li><a href="#"><span class="icon icon_ques"></span><span>Questionaries</span></a></li>
-                    <li class="active"><a href="General_credencials.html"><span class="icon icon_credencial"></span><span>General Credencials</span></a></li>
+                    <li><a href="General_credencials.html"><span class="icon icon_credencial"></span><span>General Credencials</span></a></li>
                 </ul>
                 <a href="Login.html" class="logout"><span class="icon icon_logout"></span><span>LogOut</span></a>
                 <p class="copyright">©2015 ISM | All Rights Reserved.</p>
             </div>
             <!--//side left-->
+            <!--main-->
+            <div class="col-sm-7 main main2 main_wide">
+            	<!--breadcrumb-->
+           		<div class="row page_header">
+                	<div class="col-sm-12">
+                    	<ol class="breadcrumb">
+                          <li><a href="#">Manage</a></li>                          
+                          <li><a href="#">Topics</a></li>
+                          <li class="active">Allocate Topic</li>
+                        </ol>                  
+                    </div>
+                </div>
+                <!--//breadcrumb-->
+                <!--filter-->
+                <div class="row filter group_filter">
+                	<div class="col-sm-12">
+                    	<div class="form-group">
+                            <select class="form-control">
+                                <option>Select Topic</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>Select Group</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>Sort By</option>
+                            </select>
+                        </div>
+                        <div class="form-group no_effect text-right">
+                        	<button class="btn btn_green add_topic no-margin">Add New Topic</button>
+                        </div>
+                    </div>
+                </div>
+                <!--//filter--> 
+                <!--row-->
+                <div class="allocate_topic">
+                	<div class="col-sm-6">
+                    	<div class="box general_cred">
+                        	<div class="box_header">
+                            	<h3>Allocate Topic for Groups</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                    	<div class="box general_cred">
+                        	<div class="box_header">
+                            	<h3>Recommended Topics</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <!--//row-->              
+			</div>
+            <!--//main-->
 		</div>
     </div>
     <!--//body-->

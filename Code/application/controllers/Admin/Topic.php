@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author Namrata Varma ( Sparks ID- NV )
  **/
 
-class Topic extends ISM_Controller {
+class Topic extends ADMIN_Controller {
 
 	public $data = array();
 
@@ -78,7 +78,7 @@ class Topic extends ISM_Controller {
 	  	$config['last_tag_close'] = '</li>';
 
 		$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC.' tut_topic',
-											'tut_topic.id,tut_topic.topic_name,tut_topic.topic_description,tut_topic.allocation_count,tut_topic.classroom_id,tut_topic.subject_id, tut_topic.created_by,sub.subject_name,class.class_name,user.first_name,user.last_name,user.role_id',
+											'tut_topic.id,tut_topic.topic_name,tut_topic.topic_description,tut_topic.allocation_count,tut_topic.classroom_id,tut_topic.subject_id, tut_topic.created_by,sub.subject_name,class.class_name,user.first_name,user.last_name,user.role_id,count(quest.question_id) as questions_count',
 											$where,
 											array(
 												'limit'=>$config['per_page'],
@@ -95,10 +95,13 @@ class Topic extends ISM_Controller {
 											    			array(
 											    				'table' => TBL_USERS.' user',
 											    				'condition' => 'user.id = tut_topic.created_by',
+																),
+											    			array(
+											    				'table' => TBL_TUTORIAL_GROUP_QUESTION.' quest',
+											    				'condition' => 'quest.tutorial_topic_id = tut_topic.id',
 																)
 												    		),
-												
-
+												'group_by'=>'tut_topic.id'
 												)
 											);
 // p($this->data);

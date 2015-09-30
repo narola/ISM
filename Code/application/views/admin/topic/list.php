@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="col-sm-12">
                                 	<span class="label label_black">Allocated <?php echo $topic['allocation_count']; ?> times</span>
-                                    <span class="label label_red"><?php //echo $topic['question_count']; ?>550 Question</span>
+                                    <span class="label label_red"><?php echo $topic['questions_count']; ?> Question<?php echo ($topic['questions_count'] > 1) ? 's' : ''; ?></span>
                                 
                                		<!-- Split button -->
                                     <div class="btn-group">
@@ -80,8 +80,9 @@
                                         <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu">
+                                        <li><a href="#">Approve</a></li>
                                         <li><a href="#">Inappropriate</a></li>
-                                        <li><a href="#">Appropriate</a></li>
+                                        <li><a href="#">Pending</a></li>
                                       </ul>
                                     </div>
                                     

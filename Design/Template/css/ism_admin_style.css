@@ -85,9 +85,6 @@
 .breadcrumb>li{
 	font-weight:600;
 }
-.filter{
-	padding:22px 0;
-}
 .filter .form-group {
     width: 18.8%;
     float: left;
@@ -908,26 +905,52 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 
 /*allocate topic page*/
 .sidebar_shrink .personal_menu{
-	padding-top:70px;
+	padding-top:50px;
 	padding-bottom:0;
+	width:280%;
+	transition:all ease .4s;
 }
-/*.sidebar_shrink .user_profile_img, 
+.sidebar_shrink:hover .personal_menu{
+	width:100%;
+}
+.sidebar_shrink .user_profile_img, 
 .sidebar_shrink .three_tabs, 
-.sidebar_shrink h4, 
-.sidebar_shrink>a, 
-.sidebar_shrink .copyright{
-	display:none;
-}
-.sidebar_shrink .personal_menu>li>a>span{
-	display:none;
-}
-.sidebar_shrink .personal_menu>li>a>span.icon{
-	display:inline-block;
-}
+.sidebar_shrink h4,
+.sidebar_shrink .copyright,
+.sidebar_shrink .personal_menu>li>a>span,
 .sidebar_shrink .logout>span{
 	display:none;
 }
+.sidebar_shrink .personal_menu>li>a>span.icon,
 .sidebar_shrink .logout>span.icon{
 	display:inline-block;
+	margin:0;
 }
-*/
+.sidebar_shrink .logout{
+	bottom:0;
+}
+.sidebar_shrink, .sidebar_shrink .logout{
+	width:5%;
+	transition:all ease .5s;
+	overflow-x:hidden !important;
+}
+.sidebar_shrink:hover, .sidebar_shrink:hover .logout{
+	width:14%;
+}
+.sidebar_shrink:hover .personal_menu>li>a>span,
+.sidebar_shrink:hover .logout>span{
+	display:inline;
+}
+.sidebar_shrink:hover .personal_menu>li>a>span.icon,
+.sidebar_shrink:hover .logout>span.icon{
+	display:inline-block;
+	margin-right:10px;
+}
+.main_wide{
+	margin-left:5%;
+	width:95%;
+	border:none;
+}
+.allocate_topic{
+	padding:30px 0;
+}

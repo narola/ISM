@@ -210,10 +210,10 @@
                                 <div class="notice_body">
                                     <p>Lorem Ipsum is simply dummy text of the prining and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting.</p>
                                     <div class="notice_action">
-                                        <a href="#" class="icon icon_zip_color"></a>
-                                        <a href="#" class="icon icon_edit_color"></a>
-                                        <a href="#" class="icon icon_copy_color"></a>
-                                        <a href="#" class="icon icon_delete_color"></a>
+                                        <a href="#" class="icon icon_zip_color" data-toggle="tooltip" data-placement="bottom" title="Archive"></a>
+                                        <a href="#" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="Edit"></a>
+                                        <a href="#" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="Copy"></a>
+                                        <a href="#" class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="Delete"></a>
                                         <input type="checkbox"><label class="save_box"></label>
                                     </div>
                                 </div>
@@ -229,10 +229,10 @@
                                 <div class="notice_body">
                                     <p>Lorem Ipsum is simply dummy text of the prining and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting.</p>
                                     <div class="notice_action">
-                                        <a href="#" class="icon icon_zip_color"></a>
-                                        <a href="#" class="icon icon_edit_color"></a>
-                                        <a href="#" class="icon icon_copy_color"></a>
-                                        <a href="#" class="icon icon_delete_color"></a>
+                                        <a href="#" class="icon icon_zip_color" data-toggle="tooltip" data-placement="bottom" title="Archive"></a>
+                                        <a href="#" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="Edit"></a>
+                                        <a href="#" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="Copy"></a>
+                                        <a href="#" class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="Delete"></a>
                                         <input type="checkbox"><label class="save_box"></label>
                                     </div>
                                 </div>
@@ -453,6 +453,11 @@
     <script src="../js/bootstrap.min.js"></script> 
     <!--scroll-->
     <script src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script type="text/javascript">
+		$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+		})
+    </script>
 
 </body>
 </html>

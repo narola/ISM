@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Notice extends ISM_Controller {
+class Notice extends ADMIN_Controller {
 
 /**
  * function add(),update(),delete(),index()-Default Function  
@@ -23,6 +23,7 @@ class Notice extends ISM_Controller {
 	//  List All noticeboard which is_delete=0(TRUE) ,and admin can view,delete,add,and change into archive notice
 	public function index()
 	{
+		$this->data['page_title'] = 'Notice';
 
 		$this->load->library('pagination');
 		
@@ -42,7 +43,7 @@ class Notice extends ISM_Controller {
 	 	$config['first_tag_open'] = '<li>';
 	 	$config['first_tag_close'] = '</li>';
 
-	 	$config['cur_tag_open'] = '<li><a>';
+	 	$config['cur_tag_open'] = '<li style="display:none"></li><li class="active"><a>';
 	 	$config['cur_tag_close'] = '</a></li>';
 
 	 	$config['prev_link'] = '&laquo;';
