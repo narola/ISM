@@ -17,8 +17,14 @@ class Notice_board extends CI_Controller {
 
 	public function index()
 	{	
+		// p($_POST,TRUE);
+		$sort_by = $this->input->post('sort_by',TRUE);
+		
+		// if()
 		$id 	=	$this->session->userdata('user')['id'];
-		$where 	= 	array('or_where' => array('nv.classroom_id'=> null,'si.user_id' => $id),'where'=>array('role_id'=>2));
+		$where 	= 	array('or_where' => 
+						array('nv.classroom_id' => null,'si.user_id' => $id),
+						'where'=>array('role_id' => 2,'n.is_delete' => 0));
 		$option	=	array('join' => 
 						array(
 							array(
@@ -32,8 +38,8 @@ class Notice_board extends CI_Controller {
 						)
 					);	
 		$this->data['notice_list']	= select(TBL_NOTICEBOARD.' n','n.notice_title,n.notice,n.created_date',$where,$option);
-		// qry();
-		p($this->data['notice_list'],TRUE);
+		// qry(true);
+		// p($this->data['notice_list'],TRUE);
 			
 		$this->template->load('student/default','student/notice_board',$this->data);
 		// exit();
