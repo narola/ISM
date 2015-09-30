@@ -66,7 +66,7 @@
                         </div>
 
                         <div class="form-group">
-                        	<label>Title <?php echo $my_cnt; ?></label>
+                        	<label>Title </label>
                             <input type="text" class="form-control" name="message_title" id="message_title" value="<?php echo set_value('message_title'); ?>" >
                         </div>
     
