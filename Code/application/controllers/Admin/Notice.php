@@ -20,7 +20,7 @@ class Notice extends ADMIN_Controller {
 		$this->load->model(array('common_model'));	
 	}
 
-	//  List All noticeboard which is_delete=0(TRUE) ,and admin can view,delete,add,and change into archive notice
+	//  List All noticeboard view,delete,add,and change into archive notice
 	public function index()
 	{
 		$this->data['page_title'] = 'Notice';
@@ -30,7 +30,7 @@ class Notice extends ADMIN_Controller {
 		$config['base_url'] = base_url().'admin/notice/index';
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
-		$config['total_rows'] = $this->common_model->sql_select('noticeboard',FALSE,FALSE,array('count'=>TRUE));
+		$config['total_rows'] = select('noticeboard',FALSE,FALSE,array('count'=>TRUE));
 		$config['per_page'] = 10;
 
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
@@ -60,17 +60,23 @@ class Notice extends ADMIN_Controller {
 	 	
 		$offset = $this->uri->segment(4);
 
-		$this->data['notices'] = $this->common_model->sql_select('noticeboard',
-																	FALSE,
-																	array('where'=>array('is_delete'=>FALSE)),
-																	array(
-																		'limit'=>$config['per_page'],
-																		'offset'=>$offset)
-																	);
+		$this->data['notices'] = select(TBL_NOTICEBOARD,
+										FALSE,
+										array('where'=>array('is_delete'=>FALSE)),
+										array(
+											'limit'=>$config['per_page'],
+											'offset'=>$offset,
+											'join'=>array(
+														array(
+															'table'=>'',
+														),
+													)
+												)
+										);
 
-		$this->data['schools'] = $this->common_model->sql_select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
-		$this->data['courses'] = $this->common_model->sql_select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));
-		$this->data['roles'] = $this->common_model->sql_select(TBL_ROLES,FALSE,FALSE,array('limit'=>10));
+		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
+		$this->data['courses'] = select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));
+		$this->data['roles'] = select(TBL_ROLES,FALSE,FALSE,array('limit'=>10));
 
 		$this->pagination->initialize($config);
 		
@@ -80,9 +86,9 @@ class Notice extends ADMIN_Controller {
 	// Notice Add Form
 	public function add(){
 
-		$this->data['roles'] = $this->common_model->sql_select(TBL_ROLES);
-		$this->data['templates'] = $this->common_model->sql_select(TBL_NOTICEBOARD,false,array('where'=>array('is_template'=>TRUE)));
-		$this->data['classrooms'] = $this->common_model->sql_select(TBL_CLASSROOMS);
+		$this->data['roles'] = select(TBL_ROLES);
+		$this->data['templates'] = select(TBL_NOTICEBOARD,false,array('where'=>array('is_template'=>TRUE)));
+		$this->data['classrooms'] = select(TBL_CLASSROOMS);
 
 		$this->form_validation->set_rules('notice_title', 'Notice Title', 'trim|required');
 		$this->form_validation->set_rules('notice', 'Notice Description', 'trim|required');
@@ -107,7 +113,7 @@ class Notice extends ADMIN_Controller {
 					'is_testdata'=>'yes'
 				);
 
-			$notice_id = $this->common_model->insert(TBL_NOTICEBOARD,$data);
+			$notice_id = insert(TBL_NOTICEBOARD,$data);
 
 			$noticeboard_viewer = array(
 					'notice_id'=>$notice_id,
@@ -119,7 +125,7 @@ class Notice extends ADMIN_Controller {
 					'is_testdata'=>'yes'
 				);
 
-			$this->common_model->insert(TBL_NOTICEBOARD_VIEWER,$noticeboard_viewer);
+			insert(TBL_NOTICEBOARD_VIEWER,$noticeboard_viewer);
 			$this->session->set_flashdata('success', 'Data is Successfully created.');
 			redirect('admin/notice');
 		}
@@ -128,9 +134,9 @@ class Notice extends ADMIN_Controller {
 	//Notice update Form
 	public function update($id){
 
-		$this->data['roles'] = $this->common_model->sql_select(TBL_ROLES);
-		$this->data['templates'] = $this->common_model->sql_select(TBL_NOTICEBOARD,false,array('where'=>array('is_template'=>TRUE)));
-		$this->data['classrooms'] = $this->common_model->sql_select(TBL_CLASSROOMS);
+		$this->data['roles'] = select(TBL_ROLES);
+		$this->data['templates'] = select(TBL_NOTICEBOARD,false,array('where'=>array('is_template'=>TRUE)));
+		$this->data['classrooms'] = select(TBL_CLASSROOMS);
 		
 		$this->data['notice'] = select(TBL_NOTICEBOARD,
 							TBL_NOTICEBOARD.'.notice_title,'.TBL_NOTICEBOARD.'.notice,'.TBL_NOTICEBOARD.
@@ -167,14 +173,14 @@ class Notice extends ADMIN_Controller {
 					'is_template'=>$this->input->post('is_template'),
 				);
 
-			$this->common_model->update(TBL_NOTICEBOARD,$notice_id,$notice_data);
+			update(TBL_NOTICEBOARD,$notice_id,$notice_data);
 
 			$notice_viewer_data = array(
 									'role_id'=>$this->input->post('role_id'),
 									'classroom_id'=>$this->input->post('classroom_id'),
 									'modified_date'=>date('Y-m-d H:i:s',time()),
 								);
-			$this->common_model->update(TBL_NOTICEBOARD_VIEWER,$notice_viewer_id,$notice_viewer_data);
+			update(TBL_NOTICEBOARD_VIEWER,$notice_viewer_id,$notice_viewer_data);
 			$this->session->set_flashdata('success', 'Data is Successfully Updated.');
 			redirect('admin/notice');
 			//redirect('','refresh');
@@ -184,17 +190,18 @@ class Notice extends ADMIN_Controller {
 	// Notice Delete on function call with id as parameter ( Update is_delete to 1 )
 	public function delete($id){
 
-		$this->common_model->update(TBL_NOTICEBOARD,$id,array('is_delete'=>TRUE));
+		update(TBL_NOTICEBOARD,$id,array('is_delete'=>TRUE));
 		$this->session->set_flashdata('success', 'Data is Successfully Deleted.');
 		redirect('admin/notice');	
 	}
 
+	//Admin can cange status of Notice Active to Archive
 	public function archive($id){
-		$this->common_model->update(TBL_NOTICEBOARD,$id,array('status'=>'archive'));
+		update(TBL_NOTICEBOARD,$id,array('status'=>'archive'));
 		$this->session->set_flashdata('success', "Data's Status has been added to Archive.");
 		redirect('admin/notice');	
 	}
-
+	
 }
 
 /* End of file Notice.php */

@@ -92,18 +92,17 @@
                                     <p><?php echo character_limiter($notice['notice'],300); ?></p>
                                     <div class="notice_action">
                                         <a href="<?php echo base_url().'admin/notice/archive/'.$notice['id']; ?>" class="icon icon_zip_color"
-                                          onclick="return confirm('Are you sure to add this data to archive?')" ></a>
-                                        <a href="<?php echo base_url().'admin/notice/update/'.$notice['id']; ?>" class="icon icon_edit_color"></a>
-                                        
-
+                                          onclick="return confirm('Are you sure to add this data to archive?')" 
+                                          data-toggle="tooltip" data-placement="bottom" title="Archive"></a> 
+                                        <a href="<?php echo base_url().'admin/notice/update/'.$notice['id']; ?>" 
+                                            class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="Edit"></a>
                                         <button id="notice_<?php echo $notice['id']; ?>" class="btn btn-link icon icon_copy_color"  
-                                            data-clipboard-target="notice_text_<?php echo $notice['id']; ?>">
+                                            data-clipboard-target="notice_text_<?php echo $notice['id']; ?>" 
+                                            data-toggle="tooltip" data-placement="bottom" title="Copy">
                                         </button>
-
-                                      <!--   <a id="target-to-copy" class="icon icon_copy_color" data-clipboard-target="clipboard-text"></a>  -->
-                                        
                                         <a href="<?php echo base_url().'admin/notice/delete/'.$notice['id']; ?>" 
-                                          onclick="return confirm('Are you sure to delete this data ?')" class="icon icon_delete_color"></a>
+                                            onclick="return confirm('Are you sure to delete this data ?')" 
+                                            class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="Delete" ></a>
                                         <input type="checkbox"><label class="save_box"></label>
                                     </div>
                                 </div>
