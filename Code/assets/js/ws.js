@@ -55,9 +55,9 @@ if ("WebSocket" in window)
         var obj = $.parseJSON(evt.data);
         if (obj.type == 'studymate') {
             if (wp == obj.from) {
-                $('.chat[data-id="' + obj.to + '"] .chat_text #mCSB_5 #mCSB_5_container').append("<div class='to'><p>" + obj.message + "</p></div>");
+                $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p></div>");
             } else {
-                $('.chat[data-id="' + obj.from + '"] .chat_text #mCSB_5 #mCSB_5_container').append("<div class='from'><p>" + obj.message + "</p></div>");
+                $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p></div>");
             }
         } else if (obj.type == 'con') {
             if (obj.error != '') {
