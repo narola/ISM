@@ -33,7 +33,7 @@ class Notice_board extends CI_Controller {
 					);	
 		$this->data['notice_list']	= select(TBL_NOTICEBOARD.' n','n.notice_title,n.notice,n.created_date',$where,$option);
 		// qry();
-		// p($this->data['notice_list'],TRUE);
+		p($this->data['notice_list'],TRUE);
 			
 		$this->template->load('student/default','student/notice_board',$this->data);
 		// exit();
