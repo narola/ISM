@@ -32,7 +32,8 @@ class Home extends ISM_Controller {
 								'condition' => 'u.id = p.user_id'	
 							)
 						),
-						'limit'=>4
+						'limit'=>4,
+						'order_by' => 'f.id DESC'
 
 					);  
 		$where = array('where'=>array('f.is_delete'=> 0));
@@ -55,7 +56,6 @@ class Home extends ISM_Controller {
 				);	
 		$where = array('where'=>array('fc.is_delete'=> 0));
 		$data['comment'] = select(TBL_FEED_COMMENT.' fc','feed_id,comment,u.full_name,p.profile_link',$where,$options);
-
 		// qry();
 		// p($data['feed']);	
 		// p($data['comment'],TRUE);	

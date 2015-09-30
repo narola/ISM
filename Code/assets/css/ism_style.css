@@ -21,7 +21,13 @@ h4{
 a:focus, .btn:focus:active{
 	outline:none;
 }
-
+pre{
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    font-size: 14px;
+    font-family: 'Raleway', sans-serif;
+}
 .no-margin{
 	margin:0;
 }
@@ -1063,7 +1069,7 @@ textarea.post_input{
 	border-bottom:1px solid rgba(0,0,0,0.07);
 	position:relative;
 }
-.stm_user_img .message_badge {
+.stm_item .message_badge {
     position: absolute;
     left: 44px;
     top: 3px;
