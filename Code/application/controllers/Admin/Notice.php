@@ -53,25 +53,25 @@ class Notice extends ADMIN_Controller {
 		$offset = $this->uri->segment(4);
 
 		$this->data['notices'] = select(TBL_NOTICEBOARD,
-										'noticeboard.notice_title,noticeboard.notice,roles.role_name',
+										FALSE,
 										array('where'=>array('noticeboard.is_delete'=>FALSE)),
 										array(
 											'limit'=>$config['per_page'],
 											'offset'=>$offset,
-											'join'=>array(
-														array(
-															'table'=>'noticeboard_viewer',
-															'condition'=>'noticeboard.id=noticeboard_viewer.notice_id'
-														),
-														array(
-															'table'=>'roles',
-															'condition'=>'noticeboard_viewer.role_id=roles.id'
-														)
-													)
+											// 'join'=>array(
+											// 			array(
+											// 				'table'=>'noticeboard_viewer',
+											// 				'condition'=>'noticeboard.id=noticeboard_viewer.notice_id'
+											// 			),
+											// 			array(
+											// 				'table'=>'roles',
+											// 				'condition'=>'noticeboard_viewer.role_id=roles.id'
+											// 			)
+											// 		)
 												)
 										);
 
-		p($this->data['notices'],true);
+		
 
 		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
 		$this->data['courses'] = select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));
