@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Notice extends ISM_Controller {
+class Notice extends ADMIN_Controller {
 
 /**
  * function add(),update(),delete(),index()-Default Function  

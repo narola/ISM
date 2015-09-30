@@ -233,6 +233,15 @@ function is_loggedin(){
 	return $CI->session->userdata('loggedin');
 }
 
+/**
+* This function simply check Admin is loggedin or not 
+* @Author = VPA
+*/
+function is_loggedin_admin(){
+  $CI =& get_instance();
+  return $CI->session->userdata('loggedin_admin');
+}
+
 
 /**
      * Crop Uploaded image in $width & $height and move cropped images to destination

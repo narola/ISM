@@ -29,11 +29,10 @@ class Login extends CI_Controller {
             $this->set_session($remember_me);
         }
 
-        $role = $this->session->userdata('role');
-
         $loggedin = is_loggedin();
+        $loggedin_admin = is_loggedin_admin();
 
-        if ($loggedin == TRUE && $role!= 'admin') {
+        if ($loggedin == TRUE &&  $loggedin_admin == FALSE) {
 
         	$group_id   =   $this->session->userdata('user')['group_id']; 
             $count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id,'joining_status'=>'1')),array('count'=>TRUE));
@@ -41,7 +40,7 @@ class Login extends CI_Controller {
                 redirect('student/home');
             else
                 redirect('login/welcome');
-        }elseif($loggedin == TRUE){
+        }elseif($loggedin_admin == TRUE){
             redirect('admin/user');
         }
 
