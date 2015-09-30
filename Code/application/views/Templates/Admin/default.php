@@ -368,5 +368,11 @@
 
     <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
 
+    <script type="text/javascript">
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
 </body>
 </html>

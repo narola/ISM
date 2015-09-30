@@ -48,11 +48,28 @@
     <script src="assets/js/jquery.cookie.js"></script>s
     <script src="assets/js/ws.js"></script>
     <script>
-        /*----show all comment----*/
+        /*----show all comment[student]----*/
         function showall(id){
             $('.post'+id).show();
         }
     </script>
+    <script>
+        /*---noticeboard filter[student]---*/
+        function search_noticeboard () {
+                
+            txt_value = $('#txt_search').val();
+            if(txt_value != ''){
+                $('#frm_notice_board').submit();
+            }
+            sort_value = $('#sort_by').val();
+            if(sort_value != ''){
+                $('#frm_notice_board').submit();
+            }
+            else{
+                return false;
+            }
+        }
+</script>
 </head>
 
 <body>
@@ -72,7 +89,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="Home.html"><span class="icon icon_menu_home"></span> Home</a></li>
+            <li class="active"><a href="/student/home"><span class="icon icon_menu_home"></span> Home</a></li>
             <li><a href="Tutorial.html"><span class="icon icon_menu_tut"></span> Tutorial</a></li>
             <li><a href="#"><span class="icon icon_menu_class"></span> Classroom</a></li>
             <li class="dropdown">
@@ -95,9 +112,9 @@
             <!--side left-->
             <div class="sidebar_left_container text-center mCustomScrollbar" data-mcs-theme="minimal"><!-- scrollbar" id="style-3-->
                 <div class="user_profile_img">
-                    <img src="assets/images/user1.jpg">
+                    <img src="<?php echo UPLOAD_URL.'/'.$this->session->userdata['user']['profile_pic'];?>">
                 </div>
-                <h4>Adam Ross</h4>
+                <h4><?php echo $this->session->userdata['user']['full_name'];?></h4>
                 <a href="student/user_account">View Profile</a>
                 <!--notification-->
                 <ul class="three_tabs">
@@ -143,11 +160,11 @@
                 </ul>
                 <!--//notification-->
                 <ul class="personal_menu">
-                    <li><a href="My_feeds.html">My Feeds</a></li>
-                    <li><a href="My_exam.html">My Exams</a></li>
+                    <li><a href="/student/home">My Feeds</a></li>
+                    <li><a href="#">My Exams</a></li>
                     <li><a href="#">Studymates</a></li>
                     <li><a href="#">My Activities</a></li>
-                    <li><a href="#">Notice Board</a></li>
+                    <li><a href="/student/notice_board">Notice Board</a></li>
                 </ul>
                 <a href="login/logout" class="logout"><span class="icon icon_logout"></span>LogOut</a>
                 <p class="copyright">©2015 ISM | All Rights Reserved.</p>
