@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author Namrata Varma ( Sparks ID- NV )
  **/
 
-class Topic extends ISM_Controller {
+class Topic extends ADMIN_Controller {
 
 	public $data = array();
 

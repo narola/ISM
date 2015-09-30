@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends ISM_Controller {
+class User extends ADMIN_Controller {
 
 	public $data = array();
 

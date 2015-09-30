@@ -9,11 +9,16 @@ class ISM_Controller extends CI_Controller {
 		
 		$this->load->model(array('common_model'));	
 		
-		$exceptional_url = array('admin','admin/logout','student/logout','student/forgot_password','student/reset_password',
+		$exceptional_url = array('student/logout','student/forgot_password','student/reset_password',
 								'student/group_allocation');
 		
 		if(in_array(uri_string(), $exceptional_url) == FALSE && is_loggedin() == FALSE){
-				redirect('login');
+				
+				if(is_loggedin_admin() == TRUE){
+					redirect('admin/user');
+				}
+
+			  redirect('login');
 
 		} else{
 
