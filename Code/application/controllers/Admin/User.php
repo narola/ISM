@@ -64,7 +64,7 @@ class User extends ADMIN_Controller {
 
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
-		$config['total_rows'] = select('users',FALSE,$where,array('count'=>TRUE,'join'=>array(array('table' => 'student_academic_info','condition' => 'users.id = student_academic_info.user_id'))));
+		$config['total_rows'] = select(TBL_USERS,FALSE,$where,array('count'=>TRUE,'join'=>array(array('table' => TBL_STUDENT_ACADEMIC_INFO,'condition' => TBL_USERS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.user_id'))));
 		$config['per_page'] = 15;
 
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
@@ -78,7 +78,7 @@ class User extends ADMIN_Controller {
 	  	$config['first_tag_close'] = '</li>';
 
 	  	$config['cur_tag_open'] = '<li style="display:none"></li><li class="active"><a>';
-	  	$config['cur_tag_close'] = '</a></li>';
+	  	$config['cur_tag_close'] = '</a></li><li style="display:none"></li>';
 
 	  	$config['prev_link'] = '&laquo;';
 	  	$config['prev_tag_open'] = '<li>';
@@ -93,42 +93,42 @@ class User extends ADMIN_Controller {
 	  	$config['last_tag_close'] = '</li>';
 
 		//fetch all data of users joins with roles,cities,countries,states 
-		$this->data['all_users'] =   select('users',
-											'users.id,users.username,cities.city_name,states.state_name,
-											users.role_id,roles.role_name,student_academic_info.course_id,courses.course_name,
-											classrooms.class_name',
+		$this->data['all_users'] =   select(TBL_USERS,
+											TBL_USERS.'.id,'.TBL_USERS.'.username,'.TBL_CITIES.'.city_name,'.TBL_STATES.'.state_name,
+											'.TBL_USERS.'.role_id,'.TBL_ROLES.'.role_name,'.TBL_STUDENT_ACADEMIC_INFO.'.course_id,'.TBL_COURSES.'.course_name,
+											'.TBL_CLASSROOMS.'.class_name',
 											$where,
 											array(
 												'limit'=>$config['per_page'],
 												'offset'=>$offset,
 												'join' =>  array(
 											    			array(
-											    				'table' => 'roles',
-											    				'condition' => 'roles.id = users.role_id'
+											    				'table' => TBL_ROLES,
+											    				'condition' => TBL_ROLES.'.id = '.TBL_USERS.'.role_id'
 																),
 											    			array(
-											    				'table' => 'countries',
-											    				'condition' => 'countries.id = users.country_id'
+											    				'table' => TBL_COUNTRIES,
+											    				'condition' => TBL_COUNTRIES.'.id = '.TBL_USERS.'.country_id'
 																),
 											    			array(
-											    				'table' => 'states',
-											    				'condition' => 'states.id = users.state_id'
+											    				'table' => TBL_STATES,
+											    				'condition' => TBL_STATES.'.id = '.TBL_USERS.'.state_id'
 																),
 											    			array(
-											    				'table' => 'cities',
-											    				'condition' => 'cities.id = users.city_id'
+											    				'table' => TBL_CITIES,
+											    				'condition' => TBL_CITIES.'.id = '.TBL_USERS.'.city_id'
 																),
 											    			array(
-											    				'table' => 'student_academic_info',
-											    				'condition' => 'users.id = student_academic_info.user_id'
+											    				'table' => TBL_STUDENT_ACADEMIC_INFO,
+											    				'condition' => TBL_USERS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.user_id'
 																),
 											    			array(
-											    				'table'=>'courses',
-											    				'condition'=>'student_academic_info.course_id=courses.id'	
+											    				'table'=>TBL_COURSES,
+											    				'condition'=>TBL_STUDENT_ACADEMIC_INFO.'.course_id='.TBL_COURSES.'.id'	
 											    				),
 											    			array(
-											    				'table'=>'classrooms',
-											    				'condition'=>'student_academic_info.classroom_id=classrooms.id'	
+											    				'table'=>TBL_CLASSROOMS,
+											    				'condition'=>TBL_STUDENT_ACADEMIC_INFO.'.classroom_id='.TBL_CLASSROOMS.'.id'	
 											    				),		
 												    		)
 												)
@@ -153,11 +153,11 @@ class User extends ADMIN_Controller {
 
 		$this->data['page_title'] = 'Users Add';
 
-		$this->data['countries']  =select('countries');
-		$this->data['states'] =select('states');
-		$this->data['cities'] =select('cities');
-		$this->data['roles'] =select('roles');
-		$this->data['packages'] =select('membership_package');
+		$this->data['countries']  =select(TBL_COUNTRIES);
+		$this->data['states'] =select(TBL_STATES);
+		$this->data['cities'] =select(TBL_CITIES);
+		$this->data['roles'] =select(TBL_ROLES);
+		$this->data['packages'] =select(TBL_MEMBERSHIP_PACKAGE);
 
 		$this->form_validation->set_rules('username', 'User Name', 'trim|required|is_unique[users.username]');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');	
@@ -204,7 +204,7 @@ class User extends ADMIN_Controller {
 				 "websocket_id"=>''
 			);
 			
-			insert('users',$data);	 // insert data into database using common_model.php and cms_helper.php
+			insert(TBL_USERS,$data);	 // insert data into database using common_model.php and cms_helper.php
 
 			$this->session->set_flashdata('success', 'Record is Successfully created.');
 			redirect('admin/user');
@@ -213,7 +213,6 @@ class User extends ADMIN_Controller {
 	}
 
 	public function test(){
-
 		$this->load->view('admin/user/select_test');
 	}
 
@@ -231,12 +230,12 @@ class User extends ADMIN_Controller {
 			redirect('admin/dashboard');
 		 }
 
-		$this->data['user'] = select('users',FALSE,array('where'=>array('id'=>$id)),array('single'=>TRUE));	
-		$this->data['countries'] = select('countries');
-		$this->data['states'] = select('states',FALSE,array('where'=>array('country_id'=>$this->data['user']['country_id'])));
-	    $this->data['cities'] = select('cities',FALSE,array('where'=>array('state_id'=>$this->data['user']['state_id'])));
-		$this->data['roles'] = select('roles');
-		$this->data['packages'] = select('membership_package');
+		$this->data['user'] = select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>TRUE));	
+		$this->data['countries'] = select(TBL_COUNTRIES);
+		$this->data['states'] = select(TBL_STATES,FALSE,array('where'=>array('country_id'=>$this->data['user']['country_id'])));
+	    $this->data['cities'] = select(TBL_CITIES,FALSE,array('where'=>array('state_id'=>$this->data['user']['state_id'])));
+		$this->data['roles'] = select(TBL_ROLES);
+		$this->data['packages'] = select(TBL_MEMBERSHIP_PACKAGE);
 		
 		if($_POST){
 			
@@ -292,7 +291,7 @@ class User extends ADMIN_Controller {
 				 "package_id"=>$this->input->post("package")
 			);
 	
-			update('users',$id,$data);	// Update data  using common_model.php and cms_helper.php
+			update(TBL_USERS,$id,$data);	// Update data  using common_model.php and cms_helper.php
 
 			$this->session->set_flashdata('success', 'Record is Successfully updated.');
 			redirect('admin/user');
@@ -307,7 +306,7 @@ class User extends ADMIN_Controller {
 	 **/
 	
 	public function blocked($id){
-		update('users',$id,array('user_status'=>'blocked'));
+		update(TBL_USERS,$id,array('user_status'=>'blocked'));
 		$this->session->set_flashdata('success', 'User is Successfully Blocked.');
 		redirect('admin/user');
 	}
@@ -397,8 +396,6 @@ class User extends ADMIN_Controller {
 				$this->email->send();
 				
 				echo $this->email->print_debugger();
-
-
 
 		}
 

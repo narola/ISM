@@ -27,7 +27,7 @@ class Dashboard extends ADMIN_Controller {
 
 			$remember_me_decode = $this->encrypt->decode($remember_me);
 
-			$rem_data = $this->common_model->sql_select('users',FALSE,array('where'=>array('id'=>$remember_me)),array('single'=>TRUE));	
+			$rem_data = select(TBL_USERS,FALSE,array('where'=>array('id'=>$remember_me)),array('single'=>TRUE));	
 
 			$array = array(
 				'id'=>$rem_data['id'],
@@ -59,10 +59,10 @@ class Dashboard extends ADMIN_Controller {
 			$password = $this->input->post('password');
 
 			if(filter_var($username, FILTER_VALIDATE_EMAIL)) {
-				$fetch_data = $this->common_model->sql_select('users',FALSE,array('where'=>array('email_id'=>$username)),array('single'=>TRUE));
+				$fetch_data = select(TBL_USERS,FALSE,array('where'=>array('email_id'=>$username)),array('single'=>TRUE));
 
 		    }else {
-				$fetch_data = $this->common_model->sql_select('users',FALSE,array('where'=>array('username'=>$username)),array('single'=>TRUE));
+				$fetch_data = select(TBL_USERS,FALSE,array('where'=>array('username'=>$username)),array('single'=>TRUE));
 		    }
 
 			if(!empty($fetch_data)){
@@ -71,7 +71,7 @@ class Dashboard extends ADMIN_Controller {
 
 			    if($db_pass == $password && $fetch_data['is_delete']==0 && $fetch_data['role_id'] == 1 ){
 
-					$role_data = $this->common_model->sql_select('roles',FALSE,array('where'=>array('id'=>$fetch_data['role_id']))
+					$role_data = select(TBL_ROLES,FALSE,array('where'=>array('id'=>$fetch_data['role_id']))
 						,array('single'=>TRUE));	
 
 			    	/* If remember Me Checkbox is clicked */
@@ -123,10 +123,10 @@ class Dashboard extends ADMIN_Controller {
 
 	public  function auto_generated_credentials(){
 
-		$this->data['schools']	=	$this->common_model->sql_select(TBL_SCHOOLS);
-		$this->data['roles'] = $this->common_model->sql_select(TBL_ROLES);
-		$this->data['courses'] = $this->common_model->sql_select(TBL_COURSES);
-		$this->data['classrooms'] = $this->common_model->sql_select(TBL_CLASSROOMS);
+		$this->data['schools']	=	select(TBL_SCHOOLS);
+		$this->data['roles'] = select(TBL_ROLES);
+		$this->data['courses'] = select(TBL_COURSES);
+		$this->data['classrooms'] = select(TBL_CLASSROOMS);
 
 		$this->form_validation->set_rules('school_id', 'School Name', 'trim|required');
 		$this->form_validation->set_rules('role_id', 'Role', 'trim|required');
@@ -135,7 +135,6 @@ class Dashboard extends ADMIN_Controller {
 		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required');
 
 		if($this->form_validation->run() == FALSE){
-			//$this->load->view('admin/student_credentials_dashboard',$data);
 			$this->template->load('admin/default','admin/generated_credentials',$this->data);
 		}else{
 
@@ -154,9 +153,9 @@ class Dashboard extends ADMIN_Controller {
 				
 				$data = array('username'=>$username);
 				
-				$find_credentials = $this->common_model->sql_select(TBL_AUTO_GENERATED_CREDENTIAL,FALSE,array('where'=>$data));
+				$find_credentials = select(TBL_AUTO_GENERATED_CREDENTIAL,FALSE,array('where'=>$data));
 
-				$find_user = $this->common_model->sql_select(TBL_USERS,FALSE,array('where'=>$data));
+				$find_user = select(TBL_USERS,FALSE,array('where'=>$data));
 
 				if(sizeof($find_credentials)>0 || sizeof($find_user) > 0){
 
@@ -180,14 +179,10 @@ class Dashboard extends ADMIN_Controller {
 							'is_testdata'=>'yes'
 						);
 
-					$this->common_model->insert(TBL_AUTO_GENERATED_CREDENTIAL,$data);	
- 					
+					insert(TBL_AUTO_GENERATED_CREDENTIAL,$data);	 			
  				}
-			}
-
-			
-		}
-
+			} // End Of For Loop			
+		} // End else consdition
 	}
 	
 	/**
