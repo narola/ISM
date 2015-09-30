@@ -1,4 +1,5 @@
 <?php
+
 /*
   Handle persistance connection between client and server.
  */
@@ -440,6 +441,7 @@ class PHPWebSocket {
 
 
 
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -614,6 +616,7 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
 
 
 
@@ -811,10 +814,6 @@ class PHPWebSocket {
         }
     }
 
-    function classmate_post($data = null) {
-        return $data;
-    }
-
     function sync($clientID, $data) {
         if ($this->wsClients[$clientID][13] == 0) {
             $this->wsClients[$clientID][12] = $data['from'];
@@ -875,8 +874,8 @@ class PHPWebSocket {
         return implode('-', $online);
     }
 
-    function get_latest_msg($data = null,$userID) {
-        $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message` FROM `user_chat` `uc` WHERE (`uc`.`sender_id` = ".$data['my_id']." AND `uc`.`receiver_id` = $userID) OR (`uc`.`sender_id` = $userID AND `uc`.`receiver_id` = ".$data['my_id'].") ORDER BY `uc`.`id` DESC LIMIT 10";
+    function get_latest_msg($data = null, $userID) {
+        $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message` FROM `user_chat` `uc` WHERE (`uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` = $userID) OR (`uc`.`sender_id` = $userID AND `uc`.`receiver_id` = " . $data['my_id'] . ") ORDER BY `uc`.`id` DESC LIMIT 10";
         $link = $this->db();
         $row = mysqli_query($link, $query);
         $result = array();
@@ -891,12 +890,54 @@ class PHPWebSocket {
         $html = '';
         foreach ($result as $value)
             if ($value['sender_id'] == $data['my_id']) {
-                $html .= '<div class="from"><p>'.$value['message'].'</p></div>';
+                $html .= '<div class="from"><p>' . $value['message'] . '</p></div>';
             } else {
-                $html .= '<div class="to"><p>'.$value['message'].'</p></div>';
+                $html .= '<div class="to"><p>' . $value['message'] . '</p></div>';
             }
         $data['message'] = $html;
         return $data;
+    }
+
+    function classmate_post($data = null) {
+        if (is_array($data) && !empty($data)) {
+            $link = $this->db();
+            $from = mysqli_escape_string($link, $data['from']); // Who is posting or commenting.
+            $to = mysqli_escape_string($link, $data['to']); // Post ID
+            $msg = mysqli_escape_string($link, $data['message']); // Post or comment
+
+            if ($data['type'] == 'comment' && $to != 'all') {
+                $query = "SELECT id FROM feeds where feed_by=" . $from;
+                $all = array();
+                $row = mysqli_query($link, $query);
+                while ($rows = mysqli_fetch_assoc($row)) {
+                    $all[] = $rows['id'];
+                }
+                if (in_array($to, $all)) {
+
+                    $query = "INSERT INTO `feed_comment`(`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,'$msg',$from,$to,CURRENT_TIMESTAMP,NULL,0,'yes')";
+                    $x = mysqli_query($link, $query);
+                    if (!$x) {
+                        $data['to'] = 'self';
+                        $data['error'] = 'Unable to save message.! Please try again.';
+                    }
+                } else {
+                    $data['to'] = 'self';
+                    $data['error'] = 'Please do not modify things manually!';
+                }
+            } else if ($data['type'] == 'post' && $to == 'all') {
+
+                $query = "INSERT INTO `feeds`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$from,'$msg','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
+                $x = mysqli_query($link, $query);
+
+                if (!$x) {
+                    $data['to'] = 'self';
+                    $data['error'] = 'Unable to save message.! Please try again.';
+                }
+            }
+            return $data;
+        } else {
+            return null;
+        }
     }
 
 }
