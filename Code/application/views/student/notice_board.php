@@ -1,8 +1,16 @@
 <script>
     function search_noticeboard () {
-        sort_value  =   $('#sort_by').val();
-        if(sort_value != null || sort_value != ''){
+            
+        txt_value = $('#txt_search').val();
+        if(txt_value != ''){
             $('#frm_notice_board').submit();
+        }
+        sort_value = $('#sort_by').val();
+        if(sort_value != ''){
+            $('#frm_notice_board').submit();
+        }
+        else{
+            return false;
         }
     }
 </script>
@@ -13,7 +21,7 @@
         <div class="col-sm-12">
             <form action="" method="post" id="frm_notice_board">
                 <div class="form-group">
-                    <select class="form-control" name="sort_by" id="sort_by" onchange="search_noticeboard();">
+                    <select class="form-control" name="sort_by" id="sort_by">
                         <option value="">Sort By</option>
                         <option value="date">Date</option>
                         <option value="title">Title</option>
@@ -21,24 +29,32 @@
                 </div>
                 <div class="form-group">
                     <select class="form-control" name="sort_type" id="sort_type" onchange="search_noticeboard();">
+                        <option value="">Order By</option>
                         <option value="ascending">Ascending</option>
                         <option value="descending">Descending</option>
                     </select>
                 </div>
                 
                 <div class="form-group no_effect search_input">
-                    <input class="form-control" type="text" placeholder="Search">
-                    <a href="#" class="fa fa-search"></a>
+                    <input class="form-control" type="text" placeholder="Search" name="txt_search" id="txt_search" value="<?php echo $txt_search;?>">
+                    <a href="javascript:void(0);" class="fa fa-search" onclick="search_noticeboard();"></a>
                 </div>
             </form>
         </div>
+        <script> 
+            sort_by = '<?php echo $sort_by;?>';
+            document.getElementById('sort_by').value = sort_by;
+            sort_type = '<?php echo $sort_type;?>';
+            document.getElementById('sort_type').value = sort_type;
+        </script>    
+
     </div>
     <!--//filter-->
     <!--topics-->
     <div class="row">
         <div class="col-sm-12 notice_container">
             <?php 
-                if(isset($notice_list)){
+                if(sizeof($notice_list)>0){
                     foreach ($notice_list as $key => $value) {
             ?>
             <div class="box">
@@ -62,7 +78,38 @@
             <?php
                     }
                 }
+                else{
+
             ?>
+
+          <div class="box">
+                <div class="notice_content">
+                    <div class="col-md-12">
+                        <h3>No records found...</h3>
+                    </div>
+                </div>                            
+                <div class="clearfix"></div>
+            </div>
+            <?php
+                }
+            ?>
+            <ul class="pagination pagination_admin">
+                <li>
+                  <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">«</span>
+                  </a>
+                </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li>
+                  <a href="#" aria-label="Next">
+                    <span aria-hidden="true">»</span>
+                  </a>
+                </li>
+              </ul>
         </div>
     <!--//topics-->    
     </div>

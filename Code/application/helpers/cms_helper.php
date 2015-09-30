@@ -287,4 +287,14 @@ function crop($src, $width, $height) {
     return $return;
 }
 
+/**
+* This function simply print studymate list
+* @userid = user id for want its studymates 
+* @Author = Kamlesh Pokiya (KAP)
+*/
+function studymates($userid){
+  $CI =& get_instance();
+  return $CI->common_model->class_mate_list($userid);
+}
+
 
