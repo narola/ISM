@@ -8,10 +8,7 @@ class Dashboard extends ADMIN_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		
 		$this->load->helper('csv');	
-		$this->load->library(array('form_validation','encrypt'));
-		$this->load->model(array('common_model'));
 	}
 
 
@@ -144,6 +141,7 @@ class Dashboard extends ADMIN_Controller {
 			$classroom_id = $this->input->post('classroom_id');
 			$no_of_credentials	=	$this->input->post('no_of_credentials',TRUE);
 
+			//No of Credentials loop will run if that username does not exist in users.username table.field
 			for ($i=0; $i < $no_of_credentials; $i++) { 
 
 				$usrename_str 	= 	'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
@@ -179,7 +177,8 @@ class Dashboard extends ADMIN_Controller {
 							'is_testdata'=>'yes'
 						);
 
-					insert(TBL_AUTO_GENERATED_CREDENTIAL,$data);	 			
+					insert(TBL_AUTO_GENERATED_CREDENTIAL,$data); // insert data into database using common_model.php and cms_helper.php
+						 			
  				}
 			} // End Of For Loop			
 		} // End else consdition

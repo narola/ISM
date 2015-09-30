@@ -3,21 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Notice extends ADMIN_Controller {
 
-/**
- * function add(),update(),delete(),index()-Default Function  
- *	
- *
- * @author Virendra Patel Sparks ID-VPA
- **/
-	
 	// Create Public Blank Variable Use in all function
+
 	public $data = array();
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->library(array('form_validation','encrypt'));
-		$this->load->model(array('common_model'));	
 	}
 
 	//  List All noticeboard view,delete,add,and change into archive notice
@@ -61,18 +53,25 @@ class Notice extends ADMIN_Controller {
 		$offset = $this->uri->segment(4);
 
 		$this->data['notices'] = select(TBL_NOTICEBOARD,
-										FALSE,
-										array('where'=>array('is_delete'=>FALSE)),
+										'noticeboard.notice_title,noticeboard.notice,roles.role_name',
+										array('where'=>array('noticeboard.is_delete'=>FALSE)),
 										array(
 											'limit'=>$config['per_page'],
 											'offset'=>$offset,
 											'join'=>array(
 														array(
-															'table'=>'',
+															'table'=>'noticeboard_viewer',
+															'condition'=>'noticeboard.id=noticeboard_viewer.notice_id'
 														),
+														array(
+															'table'=>'roles',
+															'condition'=>'noticeboard_viewer.role_id=roles.id'
+														)
 													)
 												)
 										);
+
+		p($this->data['notices'],true);
 
 		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
 		$this->data['courses'] = select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));

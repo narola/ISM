@@ -212,10 +212,6 @@ class User extends ADMIN_Controller {
 
 	}
 
-	public function test(){
-		$this->load->view('admin/user/select_test');
-	}
-
 	/**
 	  * function update() have Form of user rgisteration with fill up data with userdata of given ID
 	  *	@param User ID
@@ -226,8 +222,8 @@ class User extends ADMIN_Controller {
 
 		$this->data['page_title'] = 'Users Update';
 
-		if(empty($id) && !	is_numeric($id)){
-			redirect('admin/dashboard');
+		if(empty($id) && !is_numeric($id)){
+			redirect('admin');
 		 }
 
 		$this->data['user'] = select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>TRUE));	
@@ -319,6 +315,10 @@ class User extends ADMIN_Controller {
 		
 		$this->data['page_title'] = 'User Send Message';
 
+		if(empty($id) && !is_numeric($id)){
+			redirect('admin');
+		 }
+
 		$this->data['u'] =select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>true));
 		$this->data['templates'] =select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
 		$this->data['users'] =select(TBL_USERS,
@@ -385,17 +385,15 @@ class User extends ADMIN_Controller {
 				$this->session->set_flashdata('success', 'Message has been Successfully sent.');
 				redirect('admin/user');
 
-				die();
-
-				$this->email->from('email@email.com', 'Name');
-				$this->email->to('someone@example.com');
+				// $this->email->from('email@email.com', 'Name');
+				// $this->email->to('someone@example.com');
 				
-				$this->email->subject('subject');
-				$this->email->message('message');
+				// $this->email->subject('subject');
+				// $this->email->message('message');
 				
-				$this->email->send();
+				// $this->email->send();
 				
-				echo $this->email->print_debugger();
+				// echo $this->email->print_debugger();
 
 		}
 
