@@ -62,7 +62,7 @@ class Topic extends ISM_Controller {
 	  	$config['first_tag_open'] = '<li>';
 	  	$config['first_tag_close'] = '</li>';
 
-	  	$config['cur_tag_open'] = '<li><a>';
+	  	$config['cur_tag_open'] = ' <li style="display:none"></li><li class="active"><a>';
 	  	$config['cur_tag_close'] = '</a></li>';
 
 	  	$config['prev_link'] = '&laquo;';

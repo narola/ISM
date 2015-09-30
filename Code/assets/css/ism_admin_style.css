@@ -195,6 +195,10 @@
 	font-weight:600;
     border: 1px solid #f5f5f5;
 }
+.pagination_admin>li.active>a, .pagination_admin>li.active>a:hover{
+	background-color:#323941;
+	border: 1px solid #f5f5f5;
+}
 .sidebar_right_admin .stm{
 	border:none;
 }
@@ -835,6 +839,48 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .general_cred .box_header {
     background-color: #F2F2F2;
 	text-align:center;
+	padding: 12px 15px;
+	border-bottom:1px solid rgba(0,0,0,0.07);
+}
+.general_cred .box_header h3{
+	color:#333;
+	text-align:left;
+}
+.general_cred .box_body{
+	border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+.general_cred .form-group label{
+	display:block;
+}
+.general_cred input.form-control {
+    width: 95%;
+    margin-right: 10px;
+    display: inline-block;
+}
+.general_cred .box_body .form-control:focus {
+    border-color: rgba(255,107,107,0.2);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(255,107,107,0.2);
+}
+.three_inputs {
+    width: 32.3%;
+    float: left;
+	margin-right:15px;
+}
+.general_cred .box_body .select:after{
+	top:10px;
+}
+.general_cred .box_body .three_inputs.select:after{
+	color:#ff6b6b;
+    top: 35px;
+    right: 65px;
+}
+.three_inputs:nth-last-child(2){
+	margin-right:0;
+}
+.three_inputs .form-control {
+    display: inline-block;
+    width: 85%;
+    margin-right: 10px;
 }
 .confirmation p{
 	font-size:18px;	
@@ -848,9 +894,10 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .confirmation p span{
 	font-weight:600;
 }
-.btn_red{
+.btn_red, .btn_red:hover, .btn_red:focus{
 	background-color:#ff6b6b;
 	color:#fff;
+	outline:none;
 }
 .confirmation .btn{
 	text-transform:uppercase;
@@ -858,3 +905,29 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .confirmation .btn_red{
 	margin-right:5px;
 }
+
+/*allocate topic page*/
+.sidebar_shrink .personal_menu{
+	padding-top:70px;
+	padding-bottom:0;
+}
+/*.sidebar_shrink .user_profile_img, 
+.sidebar_shrink .three_tabs, 
+.sidebar_shrink h4, 
+.sidebar_shrink>a, 
+.sidebar_shrink .copyright{
+	display:none;
+}
+.sidebar_shrink .personal_menu>li>a>span{
+	display:none;
+}
+.sidebar_shrink .personal_menu>li>a>span.icon{
+	display:inline-block;
+}
+.sidebar_shrink .logout>span{
+	display:none;
+}
+.sidebar_shrink .logout>span.icon{
+	display:inline-block;
+}
+*/
