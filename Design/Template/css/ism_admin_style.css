@@ -85,9 +85,6 @@
 .breadcrumb>li{
 	font-weight:600;
 }
-.filter{
-	padding:22px 0;
-}
 .filter .form-group {
     width: 18.8%;
     float: left;
@@ -948,4 +945,12 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .sidebar_shrink:hover .logout>span.icon{
 	display:inline-block;
 	margin-right:10px;
+}
+.main_wide{
+	margin-left:5%;
+	width:95%;
+	border:none;
+}
+.allocate_topic{
+	padding:30px 0;
 }
