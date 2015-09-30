@@ -31,7 +31,7 @@ class Notice extends ADMIN_Controller {
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
 		$config['total_rows'] = $this->common_model->sql_select('noticeboard',FALSE,FALSE,array('count'=>TRUE));
-		$config['per_page'] = 3;
+		$config['per_page'] = 10;
 
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
  		$config['full_tag_close'] = '</ul>';
