@@ -1,19 +1,4 @@
-<script>
-    function search_noticeboard () {
-            
-        txt_value = $('#txt_search').val();
-        if(txt_value != ''){
-            $('#frm_notice_board').submit();
-        }
-        sort_value = $('#sort_by').val();
-        if(sort_value != ''){
-            $('#frm_notice_board').submit();
-        }
-        else{
-            return false;
-        }
-    }
-</script>
+
 <!--main-->
 <div class="col-sm-7 main main2">
     <!--filter-->
@@ -79,9 +64,7 @@
                     }
                 }
                 else{
-
             ?>
-
           <div class="box">
                 <div class="notice_content">
                     <div class="col-md-12">
@@ -93,6 +76,8 @@
             <?php
                 }
             ?>
+            <?php echo $pagination;?>
+            <nav class="text-center">
             <ul class="pagination pagination_admin">
                 <li>
                   <a href="#" aria-label="Previous">
@@ -110,6 +95,7 @@
                   </a>
                 </li>
               </ul>
+            </nav>
         </div>
     <!--//topics-->    
     </div>

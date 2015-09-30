@@ -35,13 +35,31 @@ class Notice_board extends CI_Controller {
 		else
 			$order_column = 'n.id';
 
+		$config['base_url'] 	= base_url().'/student/notice_board/index';
+		
+		$config['per_page'] 	= 1;
+		$config["uri_segment"] 	= 4;
+		$page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+		// echo $page;
+		// exit;
 		$classroom_id 	=	$this->session->userdata('user')['classroom_id'];
 		// p($id,TRUE);
 		if($txt_search != '')
 			$where 	= 	"(nv.classroom_id is null or nv.classroom_id =".$classroom_id.") and n.is_delete = 0 and (n.notice_title like '%".$txt_search."%' or n.notice like '%".$txt_search."%')";
 		else
 			$where 	= 	"(nv.classroom_id is null or nv.classroom_id =".$classroom_id.") and n.is_delete = 0";
-						
+		$option	=	array('join' => 
+							array(
+								array(
+									'table' 	=> 	TBL_NOTICEBOARD.' n',
+									'condition' =>	'nv.notice_id = n.id'
+								)
+							),
+							'count'=>TRUE
+						);	
+
+		$config['total_rows'] 	= select(TBL_NOTICEBOARD_VIEWER.' nv','n.notice_title,n.notice,n.created_date',$where,$option);
+							
 		$option	=	array('join' => 
 						array(
 							array(
@@ -49,12 +67,43 @@ class Notice_board extends CI_Controller {
 								'condition' =>	'nv.notice_id = n.id'
 							)
 						),
-						'order_by' => $order_column.' '.$order_by
+						'order_by' => $order_column.' '.$order_by,
+						'limit' => $config['per_page'],
+						'offset'=> $page
 					);	
 		$this->data['notice_list']	= 	select(TBL_NOTICEBOARD_VIEWER.' nv','n.notice_title,n.notice,n.created_date',$where,$option);
 		$this->data['sort_type']	=	$sort_type;	
 		$this->data['sort_by']		=	$sort_by;
 		$this->data['txt_search']	=	$txt_search;
+		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
+	  	$config['full_tag_close'] = '</ul>';
+
+	  	$config['num_tag_open'] = '<li>';
+	  	$config['num_tag_close'] = '</li>';
+
+	  	$config['first_link'] = 'First';
+	  	$config['first_tag_open'] = '<li>';
+	  	$config['first_tag_close'] = '</li>';
+
+	  	$config['cur_tag_open'] = '<li style="display:none"></li><li class="active"><a>';
+	  	$config['cur_tag_close'] = '</a></li><li style="display:none"></li>';
+
+	  	$config['prev_link'] = '&laquo;';
+	  	$config['prev_tag_open'] = '<li>';
+	  	$config['prev_tag_close'] = '</li>';
+
+		$config['next_link'] = '&raquo;';
+	  	$config['next_tag_open'] = '<li>';
+	  	$config['next_tag_close'] = '</li>';
+
+	  	$config['last_link'] = 'Last';
+	  	$config['last_tag_open'] = '<li>';
+	  	$config['last_tag_close'] = '</li>';
+
+
+		$this->pagination->initialize($config);
+		$this->data['pagination']=$this->pagination->create_links();
+
 		// qry(true);
 		// p($this->data['notice_list'],TRUE);
 			
