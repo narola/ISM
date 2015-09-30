@@ -15,6 +15,48 @@ class Home extends ISM_Controller {
 	public function index()
 	{
 		$data['title'] = 'ISM - Home';
+
+		// Get Post feed
+
+		$options =	array(
+						'join'	=>	array(
+							array(
+								'table' => TBL_USERS.' u',
+								'condition' => 'u.id = f.feed_by'
+							),
+							array(
+								'table'=>TBL_USER_PROFILE_PICTURE.' p',
+								'condition' => 'u.id = p.user_id'	
+							)
+						),
+						'limit'=>4
+
+					);  
+		$where = array('where'=>array('f.is_delete'=> 0));
+		$data['feed'] = select(TBL_FEEDS.' f','f.id as fid,f.feed_text,f.posted_on,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like',$where,$options);
+		$feed_ids = array();
+		foreach ($data['feed'] as $key => $value) {
+			$feed_ids[] = $value['fid'];
+		}
+		$options = array(
+					'join' => array(
+						array(
+							'table' => TBL_USERS.' u', 
+							'condition'=>'u.id = fc.comment_by'
+						),
+						array(
+								'table'=>TBL_USER_PROFILE_PICTURE.' p',
+								'condition' => 'u.id = p.user_id'	
+						)
+					)
+				);	
+		$where = array('where'=>array('fc.is_delete'=> 0));
+		$data['comment'] = select(TBL_FEED_COMMENT.' fc','feed_id,comment,u.full_name,p.profile_link',$where,$options);
+
+		// qry();
+		// p($data['feed']);	
+		// p($data['comment'],TRUE);	
+
 		// Get Classmates details
 		$where = array('where' => array('sm.mate_id' =>  $this->session->userdata('user')['id'] ));
 		$options = array('join' => array(

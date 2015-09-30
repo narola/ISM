@@ -1,3 +1,8 @@
+ <script>
+    function showall(id){
+        $('.post'+id).show();
+    }
+</script>
  <!--main-->
             <div class="col-sm-7 main">
                 <div class="box">
@@ -18,56 +23,75 @@
                     </div>
                 </div>
                 <!--feed box-->
-                <div class="box feeds">
-                    <div class="user_small_img">
-                        <img src="<?php echo base_url();?>assets/images/user2.jpg">
-                    </div>
-                    <div class="feed_text">
-                        <h4>Emma Mall</h4>
-                        <span class="date">Sept 1, 2015</span>
+                <?php 
+                    if(isset($feed)){
+                        $j = 1;
+                        foreach ($feed as $key => $value) {
+                ?>
+                        <div class="box feeds">
+                            <div class="user_small_img">
+                                <img src="<?php echo base_url();?>assets/images/user2.jpg">
+                            </div>
+                            <div class="feed_text">
+                                <h4><?php echo $value['full_name'];?></h4>
+                                <span class="date"><?php $old_date = strtotime($value['posted_on']);echo date("M j, Y",$old_date);?></span>
+                                <div class="clearfix"></div>
+                                <p><?php echo $value['feed_text'];?></p>
+                                <a href="#" class="like_btn"><span class="icon icon_thumb_0"></span><?php echo $value['tot_like'];?></a>
+                                <a href="#" class="comment_btn"><span class="icon icon_comment"></span><?php echo $value['tot_comment'];?></a>
+                                <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
+                                <div class="dropdown tag_user" style="display: inline-block;">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Emma Mall</a></li>
+                                        <li><a href="#">Gill Christ</a></li>
+                                        <li><a href="#">Adam Stranger</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        
                         <div class="clearfix"></div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esse et eum facilis impedit officiis omnis optio, placeat, quia quo reprehenderit sunt velit? Asperiores cumque deserunt eveniet hic reprehenderit sit, ut voluptatum?</p>
-                        <a href="#" class="like_btn"><span class="icon icon_thumb_0"></span>23</a>
-                        <a href="#" class="comment_btn"><span class="icon icon_comment"></span>07</a>
-                        <a href="#">View All</a>
-                        <div class="dropdown tag_user" style="display: inline-block;">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Emma Mall</a></li>
-                                <li><a href="#">Gill Christ</a></li>
-                                <li><a href="#">Adam Stranger</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
+                        <!--comment-->
+                        <?php 
+                            if(isset($comment)){
+                                $i = 1;
+                                foreach ($comment as $key => $com) {
+                                    if($value['fid'] == $com['feed_id']){
+                                        if($i > 3)
+                                            $display = 'none';
+                                        else
+                                            $display = '';
+                                    ?>
+
+                                    <div class="comment <?= 'post'.$j;?>" style="display:<?= $display;?>">
+                                        <div class="user_small_img user_comment">
+                                            <img src="<?php echo UPLOAD_URL.'/'.$com['profile_link'];?>">
+                                        </div>
+                                        <div class="notification_txt">
+                                            <p><a href="#" class="noti_username"><?php echo $com['full_name'];?></a> <?php echo $com['comment'];?></p>
+                                            <span class="noti_time">1 Day</span>                            
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    
+                                    <?php
+                                        $i++;
+                                    }
+                                }
+                                ?>
+                                <div class="write_comment box_body">
+                                    <input type="text" class="form-control" placeholder="Write Your Comment Here">                  
+                                    <a class="icon icon_image"></a>
+                                    <input type="file">
+                                </div>
+                                <?php
+                            }
+                        echo '</div>';
+                        $j++;
+                        }
+                    }
+                ?>
                     <!--comment-->
-                    <div class="comment">
-                        <div class="user_small_img user_comment">
-                            <img src="<?php echo base_url();?>assets/images/user3.jpg">
-                        </div>
-                        <div class="notification_txt">
-                            <p><a href="#" class="noti_username">Adam Stranger</a> What time did it finish?</p>
-                            <span class="noti_time">1 Day</span>                            
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <!--comment2-->
-                    <div class="comment">
-                        <div class="user_small_img user_comment">
-                            <img src="<?php echo base_url();?>assets/images/user4.jpg">
-                        </div>
-                        <div class="notification_txt">
-                            <p><a href="#" class="noti_username">Matt Larner</a> Thanks Emma</p>
-                            <span class="noti_time">1 Day</span>                            
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="write_comment box_body">
-                        <input type="text" class="form-control" placeholder="Write Your Comment Here">                        
-                        <a class="icon icon_image"></a>
-                        <input type="file">
-                    </div>                  
-                </div>
                 <!--//feed box-->
                 <!--feed box-->
                 <div class="box feeds">
