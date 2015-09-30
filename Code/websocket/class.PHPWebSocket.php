@@ -902,11 +902,11 @@ class PHPWebSocket {
         if (is_array($data) && !empty($data)) {
             $link = $this->db();
             $from = mysqli_escape_string($link, $data['from']); // Who is posting or commenting.
-            $to = mysqli_escape_string($link, $data['to']); // Post ID
-            $msg = mysqli_escape_string($link, $data['message']); // Post or comment
+            $to = mysqli_escape_string($link, $data['to']); // Feed ID
+            $msg = mysqli_escape_string($link, $data['message']); // Feed or comment
 
             if ($data['type'] == 'comment' && $to != 'all') {
-                $query = "SELECT id FROM feeds where feed_by=" . $from;
+                $query = "SELECT id FROM feeds where feed_by = " . $from;
                 $all = array();
                 $row = mysqli_query($link, $query);
                 while ($rows = mysqli_fetch_assoc($row)) {

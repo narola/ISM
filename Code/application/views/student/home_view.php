@@ -406,6 +406,7 @@
 
                                 <div class="stm_user_img">
                                     <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                                <span class="badge message_badge">5</span>
                                 </div>
                                 <p><?php echo $value['full_name']; ?></p>
                                 </a>
