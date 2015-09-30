@@ -67,24 +67,26 @@
                                 	<h3>Submitted By : <span><?php echo $topic['first_name'].' '.$topic['last_name']; ?></span></h3>
                                 </div>
                                 <div class="col-sm-12 topic_description">
-                                	<p><?php echo $topic['topic_description']; ?></p>
+                                	<p><?php echo word_limiter($topic['topic_description'],50); ?></p>
                                 </div>
                                 <div class="col-sm-12">
                                 	<span class="label label_black">Allocated <?php echo $topic['allocation_count']; ?> times</span>
                                     <span class="label label_red"><?php echo $topic['questions_count']; ?> Question<?php echo ($topic['questions_count'] > 1) ? 's' : ''; ?></span>
                                 
                                		<!-- Split button -->
+                                    
                                     <div class="btn-group">
-                                      <button type="button" class="btn btn-default">Approve</button>
+                                      <button type="button" class="set_status_<?php echo $topic['id']; ?> btn btn-default"><?php echo ($topic['status']) ? $topic['status'] : 'Select Status'; ?></button>
                                       <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="caret"></span>
                                       </button>
-                                      <ul class="dropdown-menu">
-                                        <li><a href="#">Approve</a></li>
-                                        <li><a href="#">Inappropriate</a></li>
-                                        <li><a href="#">Pending</a></li>
+                                      <ul class="dropdown-menu" data-topic="<?php echo $topic['id']; ?>">
+                                        <li><a class="status" id="Approve">Approve</a></li>
+                                        <li><a class="status" id="Inappropriate">Inappropriate</a></li>
+                                        <li><a class="status" id="Pending">Pending</a></li>
                                       </ul>
                                     </div>
+                                
                                     
                                 </div>
                             </div>
@@ -132,4 +134,17 @@
         $('#subject').val('<?php echo $_GET["subject"];?>');  
     <?php } ?>
     
+    $("a.status").click(function(){
+        var id = $(this).attr('id');
+        var topic_id = $(this).parents('ul').data('topic');
+        $.ajax({
+           url:'<?php echo base_url()."admin/topic/set_topic_status"; ?>',
+           dataType: "JSON",
+           type:'POST',
+           data:{status:id, topic_id:topic_id},
+           success:function(data){
+                $("button."+data.html).html(data.topic_status);
+            }
+        });
+    });
 </script>

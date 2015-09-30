@@ -62,8 +62,8 @@ class Topic extends ADMIN_Controller {
 	  	$config['first_tag_open'] = '<li>';
 	  	$config['first_tag_close'] = '</li>';
 
-	  	$config['cur_tag_open'] = ' <li style="display:none"></li><li class="active"><a>';
-	  	$config['cur_tag_close'] = '</a></li>';
+	  	$config['cur_tag_open'] = '<li style="display:none"></li><li class="active"><a>';
+	  	$config['cur_tag_close'] = '</a></li><li style="display:none"></li>';
 
 	  	$config['prev_link'] = '&laquo;';
 	  	$config['prev_tag_open'] = '<li>';
@@ -78,7 +78,7 @@ class Topic extends ADMIN_Controller {
 	  	$config['last_tag_close'] = '</li>';
 
 		$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC.' tut_topic',
-											'tut_topic.id,tut_topic.topic_name,tut_topic.topic_description,tut_topic.allocation_count,tut_topic.classroom_id,tut_topic.subject_id, tut_topic.created_by,sub.subject_name,class.class_name,user.first_name,user.last_name,user.role_id,count(quest.question_id) as questions_count',
+											'tut_topic.id,tut_topic.topic_name,tut_topic.status,tut_topic.topic_description,tut_topic.allocation_count,tut_topic.classroom_id,tut_topic.subject_id, tut_topic.created_by,sub.subject_name,class.class_name,user.first_name,user.last_name,user.role_id,count(quest.question_id) as questions_count',
 											$where,
 											array(
 												'limit'=>$config['per_page'],
@@ -113,6 +113,26 @@ class Topic extends ADMIN_Controller {
 
 		$this->data['page_title'] = 'Topics';
 		$this->template->load('admin/default','admin/topic/list', $this->data);
+	}
+
+	/**
+	* ajax function to save the status of the topic 
+	*/
+	public function set_topic_status(){
+		$status = $this->input->post('status');
+		$topic_id = $this->input->post('topic_id');
+		$data=array(
+				 "status"=>$status
+				 );
+		update('tutorial_topic',$topic_id,$data);	// Update data  using common_model.php and cms_helper.php
+		
+		$response = array('topic_status'=>$status,
+			'html'=>'set_status_'.$topic_id
+			);
+		echo json_encode($response);
+		exit; 
+
+
 	}
 
 

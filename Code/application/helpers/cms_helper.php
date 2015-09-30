@@ -250,7 +250,7 @@ function is_loggedin_admin(){
      * @param type $width
      * @param type $height
      * @param type $type
-     * @Authos Sandip Gopani (SAG)
+     * @Author Sandip Gopani (SAG)
      */
 
 function crop($src, $width, $height) {
