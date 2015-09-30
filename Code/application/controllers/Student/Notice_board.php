@@ -17,29 +17,43 @@ class Notice_board extends CI_Controller {
 	public function index()
 	{	
 		// p($_POST,TRUE);
-		$sort_by 	= $this->input->post('sort_by',TRUE);
-		$sort_type 	= $this->input->post('sort_type',TRUE);
-		$txt_search = $this->input->post('txt_search',TRUE);
-		if($sort_type == 'ascending')
+		$sort_by 	= $this->input->get_post('sort_by',TRUE);
+		$sort_type 	= $this->input->get_post('sort_type',TRUE);
+		$txt_search = $this->input->get_post('txt_search',TRUE);
+		$str = '';
+		if($sort_type == 'ascending'){
 			$order_by = 'ASC';
-		elseif($sort_type == 'descending')	
+			$str .= '&sort_type=ascending';
+		}
+		elseif($sort_type == 'descending'){
 			$order_by = 'DESC';
-		else
+			$str .= '&sort_type=descending';
+		}	
+		else{
 			$order_by = 'ASC';
+		}
 		if($sort_by == 'date'){
 			$order_column = 'n.created_date';
+			$str .= '&sort_by=date';
 		}
 		elseif($sort_by == 'title'){
 			$order_column = 'n.notice_title';
+			$str .= '&sort_type=title';
 		}
 		else
 			$order_column = 'n.id';
+		if($txt_search!='')
+			$str .= '&txt_search='.$txt_search;
 
-		$config['base_url'] 	= base_url().'/student/notice_board/index';
-		
-		$config['per_page'] 	= 1;
+		if($str != '')
+			$config['base_url'] 	= base_url().'/student/notice_board/index?'.$str;
+		else
+			$config['base_url'] 	= base_url().'/student/notice_board/index';
+		$config['page_query_string'] = TRUE;
+		$config['per_page'] 	= 5;
+		$config['num_links'] 	= 5;
 		$config["uri_segment"] 	= 4;
-		$page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+		$page = $this->input->get_post('per_page');
 		// echo $page;
 		// exit;
 		$classroom_id 	=	$this->session->userdata('user')['classroom_id'];
@@ -85,7 +99,7 @@ class Notice_board extends CI_Controller {
 	  	$config['first_tag_open'] = '<li>';
 	  	$config['first_tag_close'] = '</li>';
 
-	  	$config['cur_tag_open'] = '<li style="display:none"></li><li class="active"><a>';
+	  	$config['cur_tag_open'] = '<li style="display:none"></li><li><a style="background-color:#323941;">';
 	  	$config['cur_tag_close'] = '</a></li><li style="display:none"></li>';
 
 	  	$config['prev_link'] = '&laquo;';

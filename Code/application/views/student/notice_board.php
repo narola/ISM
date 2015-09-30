@@ -1,4 +1,9 @@
-
+<style type="text/css">
+    .active{
+        background-color:#323941;
+    border: 1px solid #f5f5f5;
+    }
+</style>
 <!--main-->
 <div class="col-sm-7 main main2">
     <!--filter-->
@@ -76,25 +81,9 @@
             <?php
                 }
             ?>
-            <?php echo $pagination;?>
+            
             <nav class="text-center">
-            <ul class="pagination pagination_admin">
-                <li>
-                  <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">«</span>
-                  </a>
-                </li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li>
-                  <a href="#" aria-label="Next">
-                    <span aria-hidden="true">»</span>
-                  </a>
-                </li>
-              </ul>
+                <?php echo $pagination;?>
             </nav>
         </div>
     <!--//topics-->    
