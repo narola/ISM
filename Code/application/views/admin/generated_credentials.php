@@ -2,7 +2,7 @@
 <div class="col-sm-7 main main2 general_cred">
     <div class="box">
           
-        <form method="post">
+        <form method="post" onsubmit="return success_credential()" >
 
           <div class="box_header">
             <h3>General Credencials</h3>
@@ -12,7 +12,7 @@
               
               <div class="form-group three_inputs select">
                   <label>Select School </label>
-                  <select class="form-control js-example-basic-single" name="school_id">
+                  <select class="form-control js-example-basic-single" id="school_id" name="school_id">
                      <option selected value=""> Select School</option>
                       <?php 
                           if(!empty($schools)) {
@@ -29,9 +29,9 @@
                   <?php echo myform_error('school_id'); ?>
               </div>
 
-              <div class="form-group three_inputs select" name="role_id">
+              <div class="form-group three_inputs select" >
                   <label>Role</label>
-                  <select class="form-control " name="role_id">
+                  <select class="form-control " name="role_id" id="role_id">
                     <option selected disabled> Select Role</option>
                       <?php 
                           if(!empty($roles)) {
@@ -52,7 +52,7 @@
            <div class="box_body">
                 <div class="form-group three_inputs select">
                       <label>Course </label>
-                      <select class="form-control " name="course_id">
+                      <select class="form-control " name="course_id" id="course_id" >
                           <option selected disabled> Select Course</option>
                           <?php 
                               if(!empty($courses)) {
@@ -68,9 +68,10 @@
                       <a href="#" class="icon icon_add_small"></a>
                       <?php echo myform_error('course_id'); ?>
                   </div>
+
                   <div class="form-group three_inputs select">
                       <label>Classroom</label>
-                      <select class="form-control" name="classroom_id">
+                      <select class="form-control" name="classroom_id" id="classroom_id">
                           <option selected disabled> Select Classroom</option>
                           <?php 
                               if(!empty($classrooms)) {
@@ -86,9 +87,10 @@
                       <a href="#" class="icon icon_add_small"></a>
                       <?php echo myform_error('classroom_id'); ?>
                   </div>
+
                   <div class="form-group three_inputs select">
                       <label>Year</label>
-                      <select class="form-control">
+                      <select class="form-control" name="year_id" id="year_id">
                           <option value="<?php echo $cur_year; ?>"><?php echo $cur_year; ?></option>
                           <option value="<?php echo $next_year; ?>"><?php echo $next_year; ?></option>
                       </select>
@@ -104,7 +106,7 @@
           <div class="box_body">  
               <div class="form-group col-sm-5">
                 <label>Enter Number of Users</label>
-                <input type="text" name="no_of_credentials" value="<?php echo set_value('no_of_credentials'); ?>" class="form-control" id="">
+                <input type="text" name="no_of_credentials" id="noc" value="<?php echo set_value('no_of_credentials'); ?>" class="form-control" id="">
                 <?php echo myform_error('no_of_credentials'); ?>
               </div>
               <div class="clearfix"></div>
@@ -112,9 +114,21 @@
           
           <div class="box_header">
             <div class="confirmation">
-                <p>You have requested <span class="txt_red">50</span> credencials for <span class="txt_blue">Students</span> of <span class="txt_blue">St. Xevier's School</span> belong to first academic year in <span class="txt_green">Computer Science Course</span></p>
-                <button class="btn btn_red">Confirm & Generate</button>
+                <p id="dialog_box" class="hide">You have requested <span class="txt_red" id="noc_new">50</span> credencials for <span id="role_id_new" class="txt_blue">Students</span> of <span class="txt_blue" id="school_id_new">St. Xevier's School</span> belong to first academic year in <span class="txt_green" id="course_id_new">Computer Science Course</span></p>
+
+                <?php echo flashMessage(TRUE); ?>
+
+                <?php 
+                    $success = $this->session->flashdata('success'); 
+                ?>
+                
+                <div class="alert alert-success <?php if(empty(strip_tags($success,''))){ echo 'hide';} ?>">
+                    <?php echo strip_tags($success) ; ?>
+                </div>
+
+                <button class="btn btn_red" type="submit">Confirm & Generate</button>
                 <button class="btn btn_black_normal">Cancle</button>
+
             </div>
           </div>
         
@@ -128,4 +142,37 @@
     $(document).ready(function() {
       $(".js-example-basic-single").select2({ placeholder: "Select a school"});
     });
+
+    function success_credential(){
+        
+        var school_id = $('#school_id').val();
+        var noc = $('#noc').val();  
+        var course_id = $('#course_id').val();
+        var role_id = $('#role_id').val();
+        var year_id = $('#year_id').val();
+
+        var error_count = 0;
+
+        if(school_id == '' || $.isNumeric(school_id) == false){  alert('IF1'); error_count++; }
+        if(noc == '' || $.isNumeric(noc) == false){ alert('IF2'); error_count++; }
+        if(course_id == '' || $.isNumeric(course_id) == false){ alert('IF3'); error_count++; }
+        if(role_id == '' || $.isNumeric(role_id) == false){ alert('IF4'); error_count++; }
+        if(year_id == '' || $.isNumeric(year_id) == false){ alert('IF5'); error_count++; }
+
+        if(error_count == 0){
+
+            var school_name = $('#school_id option:selected').text();
+            var course_name = $('#course_id option:selected').text();
+            var role_name = $('#role_id option:selected').text();    
+            
+            $('#dialog_box').removeClass('hide');
+            $('#noc_new').html(noc);
+            $('#role_id_new').html(role_name);
+            $('#course_id_new').html(course_name);
+            $('#school_id_new').html(school_name);
+
+        }
+        
+    }
+
 </script>

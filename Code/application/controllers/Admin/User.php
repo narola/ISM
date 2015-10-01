@@ -24,8 +24,6 @@ class User extends ADMIN_Controller {
 	public function index() {
 		
 		$this->data['page_title'] = 'Users';
-
-		$this->load->library('pagination');
 		
 		if($_GET){
 
