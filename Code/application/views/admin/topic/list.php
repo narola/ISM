@@ -93,7 +93,7 @@
                             </div>
                             <div class="topic_action">
                            		<a data-toggle="tooltip" data-placement="right" data-original-title="Edit" class="icon icon_edit"></a>
-                                <a data-toggle="tooltip" data-status="<?php echo $topic['is_archived']; ?>" id="archive_<?php echo $topic['id']; ?>" data-placement="right" data-original-title="Archive" class="archive icon icon_zip"></a>
+                                <a data-toggle="tooltip" status="<?php echo $topic['is_archived']; ?>" id="archive_<?php echo $topic['id']; ?>" data-placement="right" data-original-title="Archive" class="archive icon <?php echo ($topic['is_archived']==0) ? 'icon_zip' : 'icon_zip_active'; ?>"></a>
                                 <a data-toggle="tooltip" id="delete_<?php echo $topic['id']; ?>" data-placement="right" data-original-title="Delete" class="delete icon icon_delete"></a>
                                 <a data-toggle="tooltip" class="fa fa-angle-double-down"></a>                                
                             </div>
@@ -152,15 +152,26 @@
     $("a.archive").click(function(){
         var str_id = $(this).attr('id');
         var split_id = str_id.split("_");
-        var is_archive = $(this).data['status'];
+        var is_archive = $(this).attr('status');
         var topic_id = split_id[1];
         $.ajax({
            url:'<?php echo base_url()."admin/topic/archive_topic"; ?>',
            dataType: "JSON",
            type:'POST',
            data:{is_archive:is_archive, topic_id:topic_id},
-           success:function(data){
-                console.log(data);
+           success:function(response){
+                
+                $(".topic_action a#"+response.id).attr('status', response.status);
+                if(response.status == 1)
+                { 
+                  $(".topic_action a#"+response.id).removeClass("icon_zip").addClass("icon_zip_active");
+                  $(".topic_action a#"+response.id).attr('data-original-title', 'Archived');
+                }
+                else
+                {
+                    $(".topic_action a#"+response.id).removeClass("icon_zip_active").addClass("icon_zip");
+                    $(".topic_action a#"+response.id).attr('data-original-title', 'Archive');
+                }
             }
         });
     })
