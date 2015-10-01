@@ -2227,6 +2227,7 @@ svg {
 .select2-container .select2-choice .select2-arrow{
 	display: none !important;
 }
+
 .modal-content {
     border-radius: 0;
 }
@@ -2253,3 +2254,4 @@ svg {
 	display:block;
 	color:#333;
 }
+

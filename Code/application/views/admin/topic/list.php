@@ -53,6 +53,7 @@
                 	<div class="col-sm-12 topic_container">
                     	<!--topic1-->
                         <?php 
+
                             if(!empty($all_topics)) {
 
                               foreach($all_topics as $topic) {
@@ -64,7 +65,7 @@
                                 	<h3 class="class"><span>Class : </span><?php echo $topic['class_name']; ?> </h3>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                	<h3>Submitted By : <span><?php echo $topic['first_name'].' '.$topic['last_name']; ?></span></h3>
+                                	<h3>Assigned By : <span><?php echo ucfirst($topic['first_name']).' '.ucfirst($topic['last_name']); ?></span></h3>
                                 </div>
                                 <div class="col-sm-12 topic_description">
                                 	<p><?php echo word_limiter($topic['topic_description'],50); ?></p>
@@ -92,9 +93,9 @@
                             </div>
                             <div class="topic_action">
                            		<a data-toggle="tooltip" data-placement="right" data-original-title="Edit" class="icon icon_edit"></a>
-                                <a data-toggle="tooltip" data-placement="right" data-original-title="Archive" class="icon icon_zip"></a>
-                                <a data-toggle="tooltip" data-placement="right" data-original-title="Delete" class="icon icon_delete"></a>
-                                <a data-toggle="tooltip"  class="fa fa-angle-double-down"></a>                                
+                                <a data-toggle="tooltip" data-status="<?php echo $topic['is_archived']; ?>" id="archive_<?php echo $topic['id']; ?>" data-placement="right" data-original-title="Archive" class="archive icon icon_zip"></a>
+                                <a data-toggle="tooltip" id="delete_<?php echo $topic['id']; ?>" data-placement="right" data-original-title="Delete" class="delete icon icon_delete"></a>
+                                <a data-toggle="tooltip" class="fa fa-angle-double-down"></a>                                
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -147,4 +148,20 @@
             }
         });
     });
+
+    $("a.archive").click(function(){
+        var str_id = $(this).attr('id');
+        var split_id = str_id.split("_");
+        var is_archive = $(this).data['status'];
+        var topic_id = split_id[1];
+        $.ajax({
+           url:'<?php echo base_url()."admin/topic/archive_topic"; ?>',
+           dataType: "JSON",
+           type:'POST',
+           data:{is_archive:is_archive, topic_id:topic_id},
+           success:function(data){
+                console.log(data);
+            }
+        });
+    })
 </script>

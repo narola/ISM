@@ -157,6 +157,9 @@
 	.stm_user_img .message_badge {
     	left: 34px;
 	}
+	.sidebar_shrink .logout {
+    	bottom: 0 !important;
+	}
 }	
 @media (max-width:1024px){
 	.login_background {
@@ -330,6 +333,21 @@
 	}
 	.three_inputs {
     	width: 31.5%;
+	}
+	.sidebar_shrink, .sidebar_shrink .logout{
+		width:7%;
+	}
+	.main_wide {
+    	margin-left: 7%;
+    	width: 93%;
+	}
+	.main_wide .filter .form-group{
+		width:32.2%;
+	}
+	.recommended h4 > span {
+		display: block;
+		float: none;
+		margin-top: 10px;
 	}
 }
 
@@ -517,6 +535,9 @@
 	.general_cred input.form-control , .three_inputs .form-control{
     	width: 88%;
 	}
+	.main_wide .filter .form-group {
+    	width: 31.9%;
+	}
 }
 @media (max-width:768px){
 	.login_background {
@@ -549,7 +570,9 @@
 	.filter .form-group {
     	width: 31%;
 	}
-	
+	.main_wide .filter .form-group {
+    	width: 31.8%;
+	}
 }
 @media (max-width:767px){
 	.login_background {
