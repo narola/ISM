@@ -442,6 +442,19 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -627,6 +640,19 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
             
 // work out hash to use in Sec-WebSocket-Accept reply header
         $hash = base64_encode(sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
@@ -750,7 +776,11 @@ class PHPWebSocket {
     }
 
     function log($message) {
-        echo date('Y-m-d H:i:s: ') . $message . "\n";
+        if (is_array($message)) {
+            echo "\n" . date('Y-m-d H:i:s: ') . json_encode($message) . "\n";
+        } else {
+            echo "\n" . date('Y-m-d H:i:s: ') . $message . "\n";
+        }
     }
 
     function bind($type, $func) {
@@ -767,7 +797,9 @@ class PHPWebSocket {
     }
 
     /**
-     * Connect With DB
+     * Connect with Database
+     * @global mixed $db
+     * @author Sandip Gopani (SAG)
      */
     function db() {
         global $db;
@@ -781,7 +813,9 @@ class PHPWebSocket {
 
     /**
      * Mange individual text chat
+     * @param int $clientID
      * @param Array $data
+     * @author Sandip Gopani (SAG)
      */
     function single_chat($clientID, $data = null) {
         $this->wsClients[$clientID][13] ++;
@@ -790,10 +824,19 @@ class PHPWebSocket {
             $from = mysqli_escape_string($link, $data['from']);
             $to = mysqli_escape_string($link, $data['to']);
             $msg = mysqli_escape_string($link, $data['message']);
+
             if ($from != $to) {  // User cannot send messages to self
                 $all = $this->class_mate_list($from);
                 if (in_array($to, $all)) {
-                    $query = "INSERT INTO `ism`.`user_chat` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`, `media_type`, `received_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (NULL, $from, $to, '$msg', NULL, NULL, NULL, CURRENT_TIMESTAMP, '0', 'yes')";
+                    $received_status = 0;
+                    foreach ($this->wsClients as $id => $client) {
+                        if ($this->wsClients[$id][12] == $to) {
+                            $received_status = 1;
+                            break;
+                        }
+                    }
+
+                    $query = "INSERT INTO `ism`.`user_chat` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`, `media_type`, `received_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (NULL, $from, $to, '$msg', NULL, NULL, $received_status, CURRENT_TIMESTAMP, '0', 'yes')";
                     $x = mysqli_query($link, $query);
                     if (!$x) {
                         $data['to'] = 'self';
@@ -814,6 +857,13 @@ class PHPWebSocket {
         }
     }
 
+    /**
+     * Sync UserID with websocketID.
+     * @param int $clientID
+     * @param array $data
+     * @return string
+     * @author Sandip Gopani (SAG)
+     */
     function sync($clientID, $data) {
         if ($this->wsClients[$clientID][13] == 0) {
             $this->wsClients[$clientID][12] = $data['from'];
@@ -826,6 +876,12 @@ class PHPWebSocket {
         return $data;
     }
 
+    /**
+     *  Get array of all study mates.
+     * @param int $user_id
+     * @return string
+     * @author Sandip Gopani (SAG)
+     */
     function class_mate_list($user_id) {
         $link = $this->db();
         $query = "SELECT mate_id, mate_of FROM `studymates` WHERE mate_id = $user_id OR mate_of= $user_id";
@@ -839,12 +895,19 @@ class PHPWebSocket {
                 $all[] = $rows['mate_of'];
             }
         }
+        $all[] = $user_id;
         if ($link != null) {
             mysqli_close($link);
         }
         return $all;
     }
 
+    /**
+     * Get user info based on id passed.
+     * @param int $id
+     * @return array
+     * @author Sandip Gopani (SAG)
+     */
     function get_client_info($id) {
         $link = $this->db();
         $query = "SELECT `u`.`id`,`u`.`full_name`, `upp`.`profile_link`  FROM `users` `u` LEFT JOIN `user_profile_picture` `upp` ON `upp`.`user_id` = `u`.`id` WHERE `u`.`id` = $id LIMIT 1";
@@ -863,6 +926,12 @@ class PHPWebSocket {
         }
     }
 
+    /**
+     * Get list current online studymates.
+     * @param int $id
+     * @return string
+     * @author Sandip Gopani (SAG)
+     */
     function check_online_classmate($id) {
         $all = $this->class_mate_list($id);
         $online = array();
@@ -874,9 +943,18 @@ class PHPWebSocket {
         return implode('-', $online);
     }
 
+    /**
+     * Get list of latest message.
+     * @param array $data
+     * @param int $userID
+     * @return string
+     * @author Sandip Gopani (SAG)
+     */
     function get_latest_msg($data = null, $userID) {
+
         $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message` FROM `user_chat` `uc` WHERE (`uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` = $userID) OR (`uc`.`sender_id` = $userID AND `uc`.`receiver_id` = " . $data['my_id'] . ") ORDER BY `uc`.`id` DESC LIMIT 10";
         $link = $this->db();
+        mysqli_query($link, "UPDATE `user_chat` `uc` SET  `uc`.`received_status` = 1  WHERE `uc`.`received_status` = 0 AND `uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` =" . $userID);
         $row = mysqli_query($link, $query);
         $result = array();
         while ($rows = mysqli_fetch_assoc($row)) {
@@ -894,51 +972,157 @@ class PHPWebSocket {
             } else {
                 $html .= '<div class="to"><p>' . $value['message'] . '</p></div>';
             }
+        $this->log($html);
         $data['message'] = $html;
         return $data;
     }
 
-    function classmate_post($data = null) {
+    /**
+     * Save New feed.
+     * @param int $user_id
+     * @param Array $data
+     * @return Array
+     * @author Sandip Gopani (SAG)
+     */
+    function classmate_post($user_id, $data = null) {
         if (is_array($data) && !empty($data)) {
             $link = $this->db();
-            $from = mysqli_escape_string($link, $data['from']); // Who is posting or commenting.
-            $to = mysqli_escape_string($link, $data['to']); // Feed ID
             $msg = mysqli_escape_string($link, $data['message']); // Feed or comment
+            $query = "INSERT INTO `feeds`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$user_id,'$msg','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
+            $x = mysqli_query($link, $query);
+            $data['post_id'] = mysqli_insert_id($link);
+            $data['tot_like'] = 0;
+            $data['tot_comment'] = 0;
+            if (!$x) {
+                $data['to'] = 'self';
+                $data['error'] = 'Unable to save message.! Please try again.';
+            }
+        }
+        return array_merge($data, $this->get_client_info($user_id));
+    }
 
-            if ($data['type'] == 'comment' && $to != 'all') {
-                $query = "SELECT id FROM feeds where feed_by = " . $from;
-                $all = array();
-                $row = mysqli_query($link, $query);
-                while ($rows = mysqli_fetch_assoc($row)) {
-                    $all[] = $rows['id'];
+    /**
+     * Save feed comment
+     * @param int $user_id
+     * @param Array $data
+     * @author Sandip Gopani (SAG)
+     */
+    function classmate_comment($user_id, $data) {
+        $link = $this->db();
+        $query = "SELECT `f`.`feed_by` FROM `feeds` `f` WHERE `f`.`id` = " . $data['to'] . " LIMIT 1";
+        $row = mysqli_query($link, $query);
+        if (mysqli_num_rows($row) == 1) {
+            $rows = mysqli_fetch_assoc($row);
+            $data['allStudyMate'] = $this->class_mate_list($rows['feed_by']);
+            if (in_array($user_id, $data['allStudyMate'])) {
+                $query = "INSERT INTO `ism`.`feed_comment` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $data['message'] . "',$user_id, '" . $data['to'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes');";
+                $x = mysqli_query($link, $query);
+                if (!$x) {
+                    $data['to'] = "self";
+                    $data['error'] = "Unable to save your comment! Please try again.";
                 }
-                if (in_array($to, $all)) {
+            } else {
+                $data['to'] = "self";
+                $data['error'] = "You are not authorized to commet on this post.";
+            }
+        } else {
+            $data['to'] = 'self';
+            $data['error'] = 'Unable to Identify post. Please don\'t modify data manually.';
+        }
+        $this->log($data);
+        return array_merge($data, $this->get_client_info($user_id));
+    }
 
-                    $query = "INSERT INTO `feed_comment`(`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,'$msg',$from,$to,CURRENT_TIMESTAMP,NULL,0,'yes')";
-                    $x = mysqli_query($link, $query);
-                    if (!$x) {
-                        $data['to'] = 'self';
-                        $data['error'] = 'Unable to save message.! Please try again.';
+    function load_more($data = null) {
+        $link = $this->db();
+        if (is_array($data)) {
+            if (!empty($data['start']) && is_numeric($data['start'])) {
+                $limit = 4;
+                $data['start'] += $limit;
+                $query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, `f`.`posted_on`, `u`.`full_name`, (select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment, (select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like, `p`.`profile_link` FROM `feeds` `f` LEFT JOIN `users` `u` ON `u`.`id` = `f`.`feed_by` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` WHERE `f`.`is_delete` =0 AND `f`.`feed_by` IN('138', '139', '141', '140') ORDER BY `f`.`id` DESC LIMIT " . $data['start'] . "," . $limit;
+                $row = mysqli_query($link, $query);
+                echo mysqli_error($link);
+                $all = array();
+                while ($rows = mysqli_fetch_assoc($row)) {
+                    $all[] = $rows;
+                }
+                $data['feed'] = $all;
+            }
+        }
+        $this->log($data);
+        return $data;
+    }
+
+    function post_like_unlike($user_id, $data) {
+        $link = $this->db();
+        $query = "SELECT `f`.`feed_by` FROM `feeds` `f` WHERE `f`.`id` = " . $data['fid'] . " LIMIT 1";
+        $row = mysqli_query($link, $query);
+        if (mysqli_num_rows($row) == 1) {
+            $rows = mysqli_fetch_assoc($row);
+            $data['allStudyMate'] = $this->class_mate_list($rows['feed_by']);
+            if (in_array($user_id, $data['allStudyMate'])) {
+                $query = "select * from feed_like where feed_id =" . $data['fid'] . " and like_by=" . $user_id;
+                $row = mysqli_query($link, $query);
+                $row_cnt = $row->num_rows;
+                if ($row_cnt > 0) {
+                    $dt = mysqli_fetch_assoc($row);
+                    if ($dt['is_delete'] == 0) {
+                        $query = "update feed_like set is_delete = 1 where feed_id =" . $data['fid'] . " and like_by=" . $user_id;
+                        $data['message'] = 'unlike';
+                    } else {
+                        $query = "update feed_like set is_delete = 0 where feed_id =" . $data['fid'] . " and like_by=" . $user_id;
+                        $data['message'] = 'like';
                     }
                 } else {
-                    $data['to'] = 'self';
-                    $data['error'] = 'Please do not modify things manually!';
+                    $query = "INSERT INTO `feed_like`(`id`, `like_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL," . $user_id . "," . $data['fid'] . ",CURRENT_TIMESTAMP,NULL,0,'yes')";
+                    $data['message'] = 'like';
                 }
-            } else if ($data['type'] == 'post' && $to == 'all') {
+                mysqli_query($link, $query);
+                $query = 'SELECT count(*) cnt FROM feed_like where is_delete = 0  AND feed_id=' . $data['fid'];
+                $row = mysqli_query($link, $query);
+                $d = mysqli_fetch_assoc($row);
+                $data['like_cnt'] = $d['cnt'];
+            } else {
+                $data['to'] = "self";
+                $data['error'] = "You are not authorized to commet on this post.";
+            }
+        } else {
+            $data['to'] = 'self';
+            $data['error'] = 'Unable to Identify post. Please don\'t modify data manually.';
+        }
+        $this->log($data);
+        return array_merge($data, $this->get_client_info($user_id));
+    }
 
-                $query = "INSERT INTO `feeds`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$from,'$msg','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
+    /**
+     * Save Disscussion of tutorial group. 
+     * @param int $userId
+     * @param array $data
+     */
+    function discussion($userId, $data = null) {
+        if (is_array($data) && !empty($data)) {
+            $c_week = ceil(getdate()['yday'] / 7);
+            $link = $this->db();
+            $query = "SELECT `tg`.`topic_id`, `tm`.`group_id` FROM  `tutorial_group_topic_allocation` `tg` "
+                    . "LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `tg`.`group_id` "
+                    . "WHERE `tm`.`user_id` = $userId AND `tg`.`week_no` = $c_week LIMIT 1";
+            $row = mysqli_query($link, $query);
+            $this->log(mysqli_error_list($link));
+            if (mysqli_num_rows($row) == 1) {
+                $rows = mysqli_fetch_assoc($row);
+                $query = "INSERT INTO `ism`.`tutorial_group_discussion` (`id`, `group_id`, `topic_id`, `sender_id`, `message`, `message_type`, `message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, '".$data['message']."', '', '', '0', '', '', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
                 $x = mysqli_query($link, $query);
-
+                $data['disscusion_id'] = mysqli_insert_id($link);
                 if (!$x) {
                     $data['to'] = 'self';
-                    $data['error'] = 'Unable to save message.! Please try again.';
+                    $data['error'] = 'Unable to save your message! Try again!';
                 }
             }
-            return $data;
-        } else {
-            return null;
         }
+        $data['allStudyMate'] = $this->class_mate_list($userId);
+        return array_merge($data, $this->get_client_info($userId));
     }
 
 }
+
 ?>

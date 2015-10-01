@@ -21,8 +21,8 @@
 
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <!--fonts-->
-    <link href='https://fonts.googleapis.com/css?family=Raleway:400,100,300,200,500,600,700,800,900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='assets/css/fonts.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
 
     <script src="assets/js/jquery-1.11.3.min.js"></script>
     <script src="assets/js/jquery-ui.min.js"></script> <!-- jQuery UI JS -->

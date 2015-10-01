@@ -363,9 +363,18 @@ function crop($src, $width, $height) {
 * @userid = user id for want its studymates 
 * @author = Kamlesh Pokiya (KAP)
 */
-function studymates($userid){
+function studymates($userid,$append = true){
   $CI =& get_instance();
-  return $CI->common_model->class_mate_list($userid);
+  return $CI->common_model->class_mate_list($userid,$append);
+}
+
+/**
+*  Return an array of id of current online user.
+*/
+function online(){ 
+      $all_online = rtrim(get_cookie('status'),"-");
+      $all_online = ltrim($all_online,"-");
+      return explode('-', $all_online);
 }
 
 

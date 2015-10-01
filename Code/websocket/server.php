@@ -20,8 +20,6 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     /* For individual chat */
     if ($data['type'] == 'studymate') {
         $responce = $Server->single_chat($clientID, $data);
-    } else if ($data['type'] == 'post') {
-        $responce = $Server->classmate_post($data);
     } else if ($data['type'] == 'con') {
         $responce = $Server->sync($clientID, $data);
         if ($responce['error'] == '') {
@@ -45,22 +43,44 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
             }
         }
     } else if ($data['type'] == 'get_latest_message') {
-        $responce = $Server->get_latest_msg($data,$Server->wsClients[$clientID][12]);
+        $responce = $Server->get_latest_msg($data, $Server->wsClients[$clientID][12]);
+    } else if ($data['type'] == 'post') {
+        $responce = $Server->classmate_post($Server->wsClients[$clientID][12], $data);
+        $Server->log($responce);
+    } else if ($data['type'] == 'feed_comment') {
+        $responce = $Server->classmate_comment($Server->wsClients[$clientID][12], $data);
+    } else if ($data['type'] == 'load_more_feed') {
+        $responce = $Server->load_more($data);
+    } else if ($data['type'] == 'like') {
+        $responce = $Server->post_like_unlike($Server->wsClients[$clientID][12],$data);
+    } else if($data['type'] == 'discussion'){
+        $responce = $Server->discussion($Server->wsClients[$clientID][12],$data);
     }
-
+    $check = array('feed_comment','like','discussion');
+    
     if ($responce['to'] == 'self') {
         $Server->wsSend($clientID, json_encode($responce));
     } else {
         if ($responce['type'] == 'studymate') {
-            
-            /* Send to Receiver.. */
             foreach ($Server->wsClients as $id => $client) {
                 if ($responce['to'] == $Server->wsClients[$id][12]) {
                     $Server->wsSend($id, json_encode($responce));
                 }
             }
-            /* Send to self. */
             $Server->wsSend($clientID, json_encode($responce));
+        } else if ($responce['type'] == 'post') {
+            $classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
+            foreach ($Server->wsClients as $id => $client) {
+                if (in_array($Server->wsClients[$id][12], $classmates)) {
+                    $Server->wsSend($id, json_encode($responce));
+                }
+            }
+        } else if (in_array($responce['type'], $check)) {
+            foreach ($Server->wsClients as $id => $client) {
+                if (in_array($Server->wsClients[$id][12], $responce['allStudyMate'])) {
+                    $Server->wsSend($id, json_encode($responce));
+                }
+            }
         } else {
             foreach ($Server->wsClients as $id => $client)
                 $Server->wsSend($id, json_encode($responce));

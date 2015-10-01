@@ -6,7 +6,7 @@
  <!--main-->
             <div class="col-sm-7 main">
                 <div class="box">
-                    <textarea type="text" class="form-control post_input" placeholder="SAY IT"></textarea>
+                    <textarea id="feed_post" type="text" class="form-control post_input" placeholder="SAY IT" ></textarea>
                     <a href="#" class="icon icon_emoji"></a>
                     <div class="box_header">
                         <a href="#" class="icon icon_pin"><input type="file"></a>
@@ -19,25 +19,26 @@
                                 <li><a href="#">Adam Stranger</a></li>
                             </ul>
                         </div>
-                        <button class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
+                        <button data-type="post" class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
                     </div>
                 </div>
                 <!--feed box-->
+                <div id="all_feed">
                 <?php 
                     if(isset($feed)){
                         $j = 1;
                         foreach ($feed as $key => $value) {
                 ?>
-                        <div class="box feeds">
+                        <div class="box feeds" data-id="<?php echo $value['fid']; ?>">
                             <div class="user_small_img">
-                                <img src="<?php echo base_url();?>assets/images/user2.jpg">
+                                <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                             </div>
                             <div class="feed_text">
                                 <h4><?php echo $value['full_name'];?></h4>
                                 <span class="date"><?php $old_date = strtotime($value['posted_on']);echo date("M j, Y",$old_date);?></span>
                                 <div class="clearfix"></div>
                                 <p><?php echo $value['feed_text'];?></p>
-                                <a href="#" class="like_btn"><span class="icon icon_thumb_0"></span><?php echo $value['tot_like'];?></a>
+                                <a href="javascript:void(0);" data-id="<?php echo $value['fid'];?>" data-type="feed-like" class="like_btn"><span class="icon icon_thumb_0"></span><span><?php echo $value['tot_like'];?></span></a>
                                 <a href="#" class="comment_btn"><span class="icon icon_comment"></span><?php echo $value['tot_comment'];?></a>
                                 <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
                                 <div class="dropdown tag_user" style="display: inline-block;">
@@ -50,123 +51,55 @@
                                 </div>
                             </div>
                         
-                        <div class="clearfix"></div>
-                        <!--comment-->
-                        <?php 
-                            if(isset($comment)){
-                                $i = 1;
-                                foreach ($comment as $key => $com) {
-                                    if($value['fid'] == $com['feed_id']){
-                                        if($i > 3)
-                                            $display = 'none';
-                                        else
-                                            $display = '';
-                                    ?>
+                            <div class="clearfix"></div>
+                            <!--comment-->
+                            <div id="feed_comments">
+                            <?php 
+                                if(sizeof($value['comment'])>0 && isset($value['comment'])){
+                                    $i = 1;
+                                    foreach ($value['comment'] as $key => $com) {
+                                        if($value['fid'] == $com['feed_id']){
+                                            if($i > 3)
+                                                $display = 'none';
+                                            else
+                                                $display = '';
+                                        ?>
 
-                                    <div class="comment <?= 'post'.$j;?>" style="display:<?= $display;?>">
-                                        <div class="user_small_img user_comment">
-                                            <img src="<?php echo UPLOAD_URL.'/'.$com['profile_link'];?>">
+                                        <div class="comment <?= 'post'.$j;?>" style="display:<?= $display;?>">
+                                            <div class="user_small_img user_comment">
+                                                <img src="<?php echo UPLOAD_URL.'/'.$com['profile_link'];?>">
+                                            </div>
+                                            <div class="notification_txt">
+                                                <p><a href="#" class="noti_username"><?php echo $com['full_name'];?></a> <?php echo $com['comment'];?></p>
+                                                <span class="noti_time">1 Day</span>                            
+                                            </div>
+                                            <div class="clearfix"></div>
                                         </div>
-                                        <div class="notification_txt">
-                                            <p><a href="#" class="noti_username"><?php echo $com['full_name'];?></a> <?php echo $com['comment'];?></p>
-                                            <span class="noti_time">1 Day</span>                            
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    
-                                    <?php
-                                        $i++;
+                                        
+                                        <?php
+                                            $i++;
+                                        }
                                     }
                                 }
-                                ?>
-                                <div class="write_comment box_body">
-                                    <input type="text" class="form-control" placeholder="Write Your Comment Here">                  
-                                    <a class="icon icon_image"></a>
-                                    <input type="file">
-                                </div>
-                                <?php
-                            }
-                        echo '</div>';
+                            ?>
+                            </div>
+                            <div class="write_comment box_body">
+                                <input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="<?php echo $value['fid']; ?>">                  
+                                <a class="icon icon_image"></a>
+                                <input type="file">
+                            </div>
+                        </div>
+                        <?php
                         $j++;
                         }
                     }
                 ?>
-                    <!--comment-->
+            </div>
+
                 <!--//feed box-->
-                <!--feed box-->
-                <div class="box feeds">
-                    <div class="user_small_img">
-                        <img src="<?php echo base_url();?>assets/images/user6.jpg">
-                    </div>
-                    <div class="feed_text">
-                        <h4>John Gray</h4>
-                        <span class="date">Sept 1, 2015</span>
-                        <div class="clearfix"></div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esse et eum facilis impedit officiis omnis optio, placeat, quia quo reprehenderit sunt velit? Asperiores cumque deserunt eveniet hic reprehenderit sit, ut voluptatum?</p>
-                        <div class="shared_images">
-                            <div><img src="<?php echo base_url();?>assets/images/shared1.jpg"></div>
-                            <div><img src="<?php echo base_url();?>assets/images/shared2.jpg"></div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <a href="#" class="like_btn"><span class="icon icon_thumb"></span>54</a>
-                        <a href="#" class="comment_btn"><span class="icon icon_comment"></span>12</a>
-                        <a href="#">View All</a>
-                        <div class="dropdown tag_user" style="display: inline-block;">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Emma Mall</a></li>
-                                <li><a href="#">Gill Christ</a></li>
-                                <li><a href="#">Adam Stranger</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <!--comment-->
-                    <div class="comment">
-                        <div class="user_small_img user_comment">
-                            <img src="<?php echo base_url();?>assets/images/user3.jpg">
-                        </div>
-                        <div class="notification_txt">
-                            <p><a href="#" class="noti_username">Adam Stranger</a> What time did it finish?</p>
-                            <span class="noti_time">1 Day</span>                            
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <!--comment2-->
-                    <div class="comment">
-                        <div class="user_small_img user_comment">
-                            <img src="<?php echo base_url();?>assets/images/user4.jpg">
-                        </div>
-                        <div class="notification_txt">
-                            <p><a href="#" class="noti_username">Matt Larner</a> Thanks Emma</p>
-                            <span class="noti_time">1 Day</span>                            
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <!--comment3-->
-                    <div class="comment">
-                        <div class="user_small_img user_comment">
-                            <img src="<?php echo base_url();?>assets/images/user5.jpg">
-                        </div>
-                        <div class="notification_txt">
-                            <p><a href="#" class="noti_username">Matt Larner</a> Check this out.</p>
-                            <div class="shared_<?php echo base_url();?>assets/images">
-                                <div><img src="<?php echo base_url();?>assets/images/shared3.jpg"></div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <span class="noti_time">1 Day</span>                            
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="write_comment box_body">
-                        <input type="text" class="form-control" placeholder="Write Your Comment Here">                        
-                        <a class="icon icon_image"></a>
-                        <input type="file">
-                    </div>                  
-                </div>
-                <!--//feed box-->
+                
                 <div class="box text-center load_more">
-                    <a href="#">Load More</a>
+                    <button href="javascript:void(0);" data-type="load_more" data-start="4">Load More</button>
                 </div>
             </div>
             <!--//main-->
@@ -401,13 +334,13 @@
                                 $u = 'online';
                             }
                             ?>
-                            <div class="stm_item <?php echo $u; ?>">
+                            <div class="stm_item <?php echo $u; ?>" data-id="<?php echo $value['id']; ?>">
                                 <a id="mate_list" href="javascript:void(0);" data-id="<?php echo $value['id']; ?>">
 
                                 <div class="stm_user_img">
-                                    <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
-                                <span class="badge message_badge">5</span>
+                                    <img src="/<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                 </div>
+                                <span class="badge message_badge"><?php if($value['unread_msg'] > 0) echo $value['unread_msg']; ?></span>
                                 <p><?php echo $value['full_name']; ?></p>
                                 </a>
                                 <div class="clearfix"></div>

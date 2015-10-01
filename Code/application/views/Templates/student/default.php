@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title><?php echo $title;?></title>
+    <title><?php if(isset($title)) echo $title;?></title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1"><title>Login</title>
@@ -28,7 +28,10 @@
             });
         })(jQuery);
     </script>-->
-    <script>var wp = "<?php echo $this->session->userdata('user')['id']; ?>";</script>
+    <script>
+    var wp = "<?php echo $this->session->userdata('user')['id']; ?>";
+   
+    </script>
      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="assets/js/jquery-1.11.3.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -45,7 +48,7 @@
         })
         
     </script>
-    <script src="assets/js/jquery.cookie.js"></script>s
+    <script src="assets/js/jquery.cookie.js"></script>
     <script src="assets/js/ws.js"></script>
     <script>
         /*----show all comment[student]----*/
@@ -90,7 +93,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/student/home"><span class="icon icon_menu_home"></span> Home</a></li>
-            <li><a href="Tutorial.html"><span class="icon icon_menu_tut"></span> Tutorial</a></li>
+            <li><a href="student/tutorial"><span class="icon icon_menu_tut"></span> Tutorial</a></li>
             <li><a href="#"><span class="icon icon_menu_class"></span> Classroom</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
@@ -170,11 +173,7 @@
                 <p class="copyright">©2015 ISM | All Rights Reserved.</p>
             </div>
             <!--//side left-->
-                
             <?php echo $body; ?>
-
-
-
         </div>
     </div>
 

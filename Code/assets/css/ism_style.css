@@ -317,7 +317,11 @@ pre{
 	-webkit-appearance:none;
 	-moz-appearance:none;
 	/*color:#bfbfbf;*/
+<<<<<<< HEAD
 	color: #333;
+=======
+	color:#333;
+>>>>>>> 3a212f0fcf93a7a13092daafe78b16f5af6ba22b
 }
 .box_body .dob{
 	position:relative;
@@ -2226,4 +2230,116 @@ svg {
 }
 .select2-container .select2-choice .select2-arrow{
 	display: none !important;
+
+}
+.modal-content {
+    border-radius: 0;
+}
+.modal-header.notice_header {
+    padding: 15px 15px 7px;
+}
+.notice_header {
+    background-image: url(../images/add_exam_bg.png);
+}
+.modal-dialog{
+    width: 700px;
+	margin:100px auto 30px;
+}
+.modal-body{
+	padding:30px;
+}
+.notice_by {
+    float: right;
+    margin-bottom: 0;
+    margin-top: 30px;
+    color: #1bc4a3;
+}
+.notice_by span{
+	display:block;
+	color:#333;
+}
+.general_cred .box {
+    margin: 30px 15px;
+}
+.general_cred .box_header {
+    background-color: #F2F2F2;
+	text-align:center;
+	padding: 12px 15px;
+	border-bottom:1px solid rgba(0,0,0,0.1);
+}
+.general_cred .box_header h3{
+	color:#333;
+	text-align:left;
+}
+.stydymates .box_header h3{
+	text-align:center;
+}
+.stydymates .box {
+    margin-bottom: 0;
+    margin-top: 15px;
+}
+.studyamte_list{
+	max-height:484px;
+	padding:0;
+}
+.study_mate{
+	padding: 15px;
+	border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+.study_mate .mate_user_img {
+    float: left;
+    margin: 0 15px 0 0;
+	height:84px;
+	width:84px;
+}
+.box_body .study_mate p {
+    margin: 0;
+	font-size:14px;
+}
+.box_body .study_mate h4{
+	margin-top:0
+}
+.study_mate .form-group{
+	margin:10px 0 0;
+}
+.study_mate .form-group>.form-control{
+	border-radius:4px;	
+}
+.study_mate .btn_green{
+	height:40px;
+}
+.ol:before{
+	content: "";
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    border: 2px solid #1bc4a3;
+    position: absolute;
+    left: 10px;
+    top: 45%;
+}
+.ol{
+	position:relative;
+}
+.studymate_recom .carousel .item .suggested_mates_card{
+	width:20%;
+	border:none;
+	border-right:1px solid rgba(0,0,0,0.07);
+	float:left;
+}
+.studymate_recom .carousel .item .suggested_mates_card:last-child{
+	border:none;
+}
+.studymate_recom{
+	padding:15px;
+}
+.studymate_recom #carousel-studymate .carousel-control.left {
+    left: -20px;
+}
+.studymate_recom #carousel-studymate .carousel-control.right {
+    right: -20px;
+}
+.stydymates {
+    padding-bottom: 30px;
 }
