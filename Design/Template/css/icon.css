@@ -67,7 +67,8 @@
 .icon_pen,
 .icon_erase,
 .icon_clear,
-.icon_add_small{
+.icon_add_small,
+.icon_zip_active{
 	background-image:url(../images/icon-set.png);
 	background-position:0 0;
 }
@@ -326,6 +327,8 @@
     height: 24px;
     width: 24px;
 }
-
+.icon_zip_active{
+    background-position: -944px -155px;
+}
 /*--------------icon---------------*/
 
