@@ -56,9 +56,9 @@ if ("WebSocket" in window)
         if (obj.type == 'studymate') {
             
                 if (wp == obj.from) {
-                    $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').prepend("<div class='to'><p>" + obj.message + "</p></div>");
+                    $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p></div>");
                 } else {
-                    $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').prepend("<div class='from'><p>" + obj.message + "</p></div>");
+                    $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p></div>");
                 }
             if( $('#chat_container .chat.active').data('id') != obj.from && wp != obj.from){
                 
@@ -67,7 +67,7 @@ if ("WebSocket" in window)
             
                 var c =  $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="'+obj.from+'"] a span.badge');
                 var count = c.text();
-                if(count == '' || count == 0 || count == ''){
+                if(count == '' || count == 0 || count == '' || count == 'undefined'){
                     count = 0;
                 }
                 c.html(++count);              
@@ -131,15 +131,18 @@ function set_status(id, status) {
     var ac = $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="'+id+'"]');
     if (value.indexOf("-" + id + "-") > -1) {
         if (status == false) {
+
             value = value.replace(regex, '-');
             $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('online').addClass('offline');
-           $('.stm_list .mCustomScrollBox .mCSB_container').append('<div class="'+ac.attr('class')+'" data-id="'+id+'">'+ac.remove().html()+'</div>');     
+            if(wp != id)
+            $('.stm_list .mCustomScrollBox .mCSB_container').append('<div class="'+ac.attr('class')+'" data-id="'+id+'">'+ac.remove().html()+'</div>');     
             
         }
     } else {
         if (status == true) {
             value = value + id + "-";
             $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('offline').addClass('online');
+            if(wp != id)
             $('.stm_list .mCustomScrollBox .mCSB_container').prepend('<div class="'+ac.attr('class')+'" data-id="'+id+'">'+ac.remove().html()+'</div>');
         }
     }
@@ -280,3 +283,15 @@ function generate_comment(obj){
     str += '</div>';
     $('#all_feed .box.feeds[data-id="'+obj.to+'"] #feed_comments').prepend(str).fadeOut(0).fadeIn(400);
 }
+
+$(document).on('click','a[data-type="load_more"]',function(){
+     $('a[data-type="load_more"]').prop('disabled', true);
+     var request = {
+            type: 'load_more_feed',
+            to: 'self',
+            start: $(this).data('start'),
+            message: '',
+            error: ''
+        };
+        ws.send(JSON.stringify(request));
+})
