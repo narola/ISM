@@ -89,9 +89,22 @@ if ("WebSocket" in window)
         }else if(obj.type == 'get_latest_message'){
             $('.chat[data-id="' + obj.my_id + '"] .chat_text #mCSB_5 #mCSB_5_container').html(obj.message);
         }else if(obj.type == 'post'){
-            generate_post(obj);
+           // if(obj.id != wp){
+                $('.alert_notification p').html("New feed from <b>"+obj.full_name+"</b>").show();
+           // }
+            generate_post(obj,true);
         }else if(obj.type == 'feed_comment'){
             generate_comment(obj);
+        }else if(obj.type == 'load_more_feed'){
+            $.each(obj.feed, function(index,jsonObject){
+                generate_post(jsonObject,false);
+                $.each(jsonObject, function(key,val){
+                    console.log("key : "+key+" ; value : "+val);
+                });
+            });
+            $('button[data-type="load_more"]').prop('disabled', false);
+        }else if(obj.type == 'discussion'){
+            generate_cm(obj);
         }else {
             alert('Message Not Catched!!');
         }
@@ -237,7 +250,7 @@ $(document).on('keypress','#all_feed .box.feeds .write_comment input[data-type="
 });
 
 
-function generate_post(obj){
+function generate_post(obj,status){
     str = '<div class="box feeds" data-id="'+obj.post_id+'">';
     str += '<div class="user_small_img">';
     str += '<img src="uploads/'+obj.profile_link+'">';
@@ -247,8 +260,8 @@ function generate_post(obj){
     str += '<span class="date">Sep 28, 2015</span>';
     str += '<div class="clearfix"></div>';
     str += '<pre>'+obj.message+'</pre>';
-    str += '<a href="#" class="like_btn"><span class="icon icon_thumb_0"></span>0</a>';
-    str += '<a href="#" class="comment_btn"><span class="icon icon_comment"></span>0</a>';
+    str += '<a href="#" class="like_btn"><span class="icon icon_thumb_0"></span>'+obj.tot_like+'</a>';
+    str += '<a href="#" class="comment_btn"><span class="icon icon_comment"></span>'+obj.tot_comment+'</a>';
     str += '<div class="dropdown tag_user" style="display: inline-block;">';
     str += '<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>';
     str += '<ul class="dropdown-menu">';
@@ -266,7 +279,13 @@ function generate_post(obj){
     str += '<input type="file">';
     str += '</div>';
     str += '</div>';
-    $("#all_feed").prepend(str).fadeOut(0).fadeIn(400);
+    if(status == true){
+        $("#all_feed").prepend(str);
+    }else{
+        $("#all_feed").append(str);
+    }
+     $("#all_feed .box.feeds[data-id='"+obj.post_id+"']").fadeOut(0).fadeIn(400);
+    
 }
 
 function generate_comment(obj){
@@ -281,11 +300,12 @@ function generate_comment(obj){
     str += '</div>';
     str += '<div class="clearfix"></div>';
     str += '</div>';
-    $('#all_feed .box.feeds[data-id="'+obj.to+'"] #feed_comments').prepend(str).fadeOut(0).fadeIn(400);
+    $('#all_feed .box.feeds[data-id="'+obj.to+'"] #feed_comments').prepend(str);
+    $('#all_feed .box.feeds[data-id="'+obj.to+'"] #feed_comments .comment:nth-child(1)').fadeOut(0).fadeIn(400);
 }
 
-$(document).on('click','a[data-type="load_more"]',function(){
-     $('a[data-type="load_more"]').prop('disabled', true);
+$(document).on('click','button[data-type="load_more"]',function(){
+     $('button[data-type="load_more"]').prop('disabled', true);
      var request = {
             type: 'load_more_feed',
             to: 'self',
@@ -293,5 +313,33 @@ $(document).on('click','a[data-type="load_more"]',function(){
             message: '',
             error: ''
         };
-        ws.send(JSON.stringify(request));
+       ws.send(JSON.stringify(request));
 })
+
+$(document).on('click','.option_bar[data-type="discussion-submit"]',function(){
+    var request = {
+            type: 'discussion',
+            to: 'all',
+            message:$('textarea[data-type="discussion"]').val(),
+            error: ''
+        };
+        ws.send(JSON.stringify(request));
+});
+
+function generate_cm(obj){
+    var cl_me = "";
+    if(wp == obj.id)
+        cl_me = "me";
+    str = "";
+    str += '<div class="col-sm-12 '+cl_me+'" data-id="'+obj.disscusion_id+'">';
+    str += '<div class="mate_user_img">';
+    str += '<img src="/uploads/'+obj.profile_link+'">';
+    str += '</div>';
+    str += '<div class="admin_question">';
+    str += '<h4>'+obj.full_name+'<span>Sep 07 2015 2:32 pm</span></h4>';
+    str += '<p>'+obj.message+'</p>';
+    str += '</div>';
+    str += '</div>';
+    $('.row.discussion').append(str);
+    $('.row.discussion div[data-id="'+obj.disscusion_id+'"]').fadeOut(0).fadeIn(400);
+}

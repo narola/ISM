@@ -47,10 +47,17 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     } else if ($data['type'] == 'post') {
         $responce = $Server->classmate_post($Server->wsClients[$clientID][12], $data);
         $Server->log($responce);
-    } else if ($data['type'] == 'feed_comment'){
-        $responce = $Server->classmate_comment($Server->wsClients[$clientID][12],$data);
+    } else if ($data['type'] == 'feed_comment') {
+        $responce = $Server->classmate_comment($Server->wsClients[$clientID][12], $data);
+    } else if ($data['type'] == 'load_more_feed') {
+        $responce = $Server->load_more($data);
+    } else if ($data['type'] == 'like') {
+        $responce = $Server->post_like_unlike($Server->wsClients[$clientID][12],$data);
+    } else if($data['type'] == 'discussion'){
+        $responce = $Server->discussion($Server->wsClients[$clientID][12],$data);
     }
-
+    $check = array('feed_comment','like','discussion');
+    
     if ($responce['to'] == 'self') {
         $Server->wsSend($clientID, json_encode($responce));
     } else {
@@ -68,15 +75,13 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                     $Server->wsSend($id, json_encode($responce));
                 }
             }
-            $Server->wsSend($clientID, json_encode($responce));
-        } else if($responce['type'] == 'feed_comment'){
+        } else if (in_array($responce['type'], $check)) {
             foreach ($Server->wsClients as $id => $client) {
                 if (in_array($Server->wsClients[$id][12], $responce['allStudyMate'])) {
-                    $Server->log("Comment sent to :".$Server->wsClients[$id][12]);
                     $Server->wsSend($id, json_encode($responce));
                 }
             }
-        }else {
+        } else {
             foreach ($Server->wsClients as $id => $client)
                 $Server->wsSend($id, json_encode($responce));
         }

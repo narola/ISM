@@ -100,7 +100,7 @@
                 <!--//feed box-->
                 
                 <div class="box text-center load_more">
-                    <a href="#">Load More</a>
+                    <button href="javascript:void(0);" data-type="load_more" data-start="4">Load More</button>
                 </div>
             </div>
             <!--//main-->

@@ -306,4 +306,13 @@ function studymates($userid,$append = true){
   return $CI->common_model->class_mate_list($userid,$append);
 }
 
+/**
+*  Return an array of id of current online user.
+*/
+function online(){ 
+      $all_online = rtrim(get_cookie('status'),"-");
+      $all_online = ltrim($all_online,"-");
+      return explode('-', $all_online);
+}
+
 

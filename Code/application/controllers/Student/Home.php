@@ -73,9 +73,7 @@ class Home extends ISM_Controller {
 		$data['classmates'] = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,  (SELECT count(*) FROM `user_chat` `uc` WHERE `uc`.`sender_id` = `u`.`id` AND `uc`.`receiver_id` = '.$user_id.' AND `uc`.`received_status` = 0) as `unread_msg`',$where,$options);
 
 		/* Get all online users */
-		$all_online = rtrim(get_cookie('status'),"-");
-        $all_online = ltrim($all_online,"-");
-        $data['online'] = (Array)explode('-', $all_online);
+        $data['online'] = online();
 
 		/* Get user id of active chat window */
 		$active_chat_id = get_cookie('active');
