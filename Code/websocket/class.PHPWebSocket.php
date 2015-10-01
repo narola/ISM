@@ -878,6 +878,7 @@ class PHPWebSocket {
                 $all[] = $rows['mate_of'];
             }
         }
+        $all[] = $user_id;
         if ($link != null) {
             mysqli_close($link);
         }
@@ -952,12 +953,13 @@ class PHPWebSocket {
             } else {
                 $html .= '<div class="to"><p>' . $value['message'] . '</p></div>';
             }
+            $this->log($html);
         $data['message'] = $html;
         return $data;
     }
 
     /**
-     *  Save New feed.
+     * Save New feed.
      * @param int $user_id
      * @param Array $data
      * @return Array
@@ -991,7 +993,6 @@ class PHPWebSocket {
         if (mysqli_num_rows($row) == 1) {
             $rows = mysqli_fetch_assoc($row);
             $data['allStudyMate'] = $this->class_mate_list($rows['feed_by']);
-            $data['allStudyMate'][] = $user_id;
             if (in_array($user_id, $data['allStudyMate'])) {
                 $query = "INSERT INTO `ism`.`feed_comment` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $data['message'] . "',$user_id, '" . $data['to'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes');";
                 $x = mysqli_query($link, $query);
