@@ -36,7 +36,7 @@ class Home extends ISM_Controller {
 
 					);  
 
-		$where = array('where'=>array('f.is_delete'=> 0),'where_in'=>array('f.feed_by'=>$studymates));
+		$where = array('where'=>array('f.is_delete'=> 0),'where_in'=>array('f.feed_by'=>studymates($user_id)));
 		$data['feed'] = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.posted_on,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link',$where,$options);
 		// qry();
 		// p($data['feed'],TRUE);	
