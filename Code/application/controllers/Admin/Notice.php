@@ -22,7 +22,7 @@ class Notice extends ADMIN_Controller {
 		$config['base_url'] = base_url().'admin/notice/index';
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
-		$config['total_rows'] = select('noticeboard',FALSE,FALSE,array('count'=>TRUE));
+		$config['total_rows'] = select('noticeboard',FALSE,array('where'=>array('noticeboard_viewer.is_delete'=>FALSE)),array('count'=>TRUE));
 		$config['per_page'] = 10;
 
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';

@@ -14,7 +14,6 @@ class Dashboard extends ADMIN_Controller {
 
 	public function index()
 	{
-
 		$remember_me = get_cookie('Remember_me');  
 
 		/* 	If Remember_key Cookie exists in browser then it wil fetch data using it's value and 
@@ -93,10 +92,8 @@ class Dashboard extends ADMIN_Controller {
 					);
 
 					$this->session->set_userdata( $array ); // Set Session for Admin
-
 					redirect('admin/user');  
-
-			    }else{
+				}else{
 			    	$this->session->set_flashdata('error', 'Invalid Username or Password.');		
 					redirect('admin');	
 			    }
@@ -119,12 +116,17 @@ class Dashboard extends ADMIN_Controller {
 	 **/
 
 	public  function auto_generated_credentials(){
+		
+		$this->data['page_title'] = 'Auto Generated Credentials';
 
-		$this->data['schools']	=	select(TBL_SCHOOLS);
+		$this->data['schools'] = select(TBL_SCHOOLS);
 		$this->data['roles'] = select(TBL_ROLES);
 		$this->data['courses'] = select(TBL_COURSES);
 		$this->data['classrooms'] = select(TBL_CLASSROOMS);
 
+		$this->data['cur_year'] = date('Y');
+		$this->data['next_year'] = date('Y')+1;
+		
 		$this->form_validation->set_rules('school_id', 'School Name', 'trim|required');
 		$this->form_validation->set_rules('role_id', 'Role', 'trim|required');
 		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
@@ -135,6 +137,7 @@ class Dashboard extends ADMIN_Controller {
 			$this->template->load('admin/default','admin/generated_credentials',$this->data);
 		}else{
 
+			p($_POST,true);
 			$school_id = $this->input->post('school_id');
 			$role_id = $this->input->post('role_id');
 			$course_id = $this->input->post('course_id');

@@ -344,7 +344,6 @@ class User extends ADMIN_Controller {
 			$this->template->load('admin/default','admin/user/send_message',$this->data);
 		}else{
 
-
 			$all_users = $this->input->post('all_users');
 
 			if(!empty($all_users)){			

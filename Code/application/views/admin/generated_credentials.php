@@ -1,68 +1,58 @@
 <!--main-->
-<div class="col-sm-7 main main2">
-  <!--breadcrumb-->
-  <div class="row page_header">
-      <div class="col-sm-12">
-          <ol class="breadcrumb">
-              <li><a href="#">Admin</a></li>                          
-              <li class="active"><a href="#">Manage Credentials</a></li>
-          </ol>
-        </div>
-    </div>
-    <!--//breadcrumb-->
-    <!--message-->
-    <div class="row">
-      <div class="col-sm-12 new_message">
-        <form method="post">  
-          <div class="box exam_card">
-              <div class="box_header">
-                  <h3> Generate Credentials </h3>
-                </div>
-                <div class="box_body">
-                  
-                  <div class="form-group">
-                      <label> Select School </label>
-                       <select name="school_id" class="form-control">
-                          <option selected disabled> Select School</option>
-                          <?php 
-                              if(!empty($schools)) {
-                                foreach($schools as $school) { 
-                              ?>
-                              <option value="<?php echo $school['id']; ?>" <?php echo set_select('school_id', $school['id']); ?> ><?php echo $school['school_name']; ?></option>
-                          <?php } }else{ ?>
-                              <option disabled > No Schools Found</option>  
-                          <?php } ?>
-                       </select> 
-                  </div>
+<div class="col-sm-7 main main2 general_cred">
+    <div class="box">
+          
+        <form method="post">
 
-                  <div class="alert alert-danger <?php if(empty(strip_tags(form_error('school_id'),''))){ echo 'hide';} ?>">
-                    <?php echo strip_tags(form_error('school_id'),'') ; ?>
-                  </div>
+          <div class="box_header">
+            <h3>General Credencials</h3>
+          </div>
 
-                  <div class="form-group">
-                      <label> Select Role </label>
-                       <select name="role_id" class="form-control">
-                          <option selected disabled> Select Role</option>
-                          <?php 
-                              if(!empty($roles)) {
-                                foreach($roles as $role) { 
-                              ?>
-                              <option value="<?php echo $role['id']; ?>" <?php echo set_select('role_id', $role['id']); ?>>
-                                   <?php echo $role['role_name']; ?>
-                              </option>
-                          <?php } }else{ ?>
-                              <option disabled > No Roles Found</option>  
-                          <?php } ?>
-                       </select> 
-                  </div>
+          <div class="box_body">  
+              
+              <div class="form-group three_inputs select">
+                  <label>Select School </label>
+                  <select class="form-control js-example-basic-single" name="school_id">
+                     <option selected value=""> Select School</option>
+                      <?php 
+                          if(!empty($schools)) {
+                            foreach($schools as $school) { 
+                          ?>
+                          <option value="<?php echo $school['id']; ?>" <?php echo set_select('school_id', $school['id']); ?> >
+                                <?php echo $school['school_name']; ?>
+                          </option>
+                      <?php } }else{ ?>
+                          <option disabled > No Schools Found</option>  
+                      <?php } ?> 
+                  </select>
+                  <a href="#" class="icon icon_add_small"></a>
+                  <?php echo myform_error('school_id'); ?>
+              </div>
 
-                  <div class="alert alert-danger <?php if(empty(strip_tags(form_error('role_id'),''))){ echo 'hide';} ?>">
-                    <?php echo strip_tags(form_error('role_id'),'') ; ?>
-                  </div>
-
-                  <div class="form-group">
-                      <label> Select Course </label>
-                       <select name="course_id" class="form-control">
+              <div class="form-group three_inputs select" name="role_id">
+                  <label>Role</label>
+                  <select class="form-control " name="role_id">
+                    <option selected disabled> Select Role</option>
+                      <?php 
+                          if(!empty($roles)) {
+                            foreach($roles as $role) { 
+                          ?>
+                          <option value="<?php echo $role['id']; ?>" <?php echo set_select('role_id', $role['id']); ?>>
+                               <?php echo $role['role_name']; ?>
+                          </option>
+                      <?php } }else{ ?>
+                          <option disabled > No Roles Found</option>  
+                      <?php } ?>
+                  </select>
+                  <?php echo myform_error('role_id'); // create custom helper function in cms_helper.php  ?> 
+              </div>
+              <div class="clearfix"></div>
+           </div>
+           
+           <div class="box_body">
+                <div class="form-group three_inputs select">
+                      <label>Course </label>
+                      <select class="form-control " name="course_id">
                           <option selected disabled> Select Course</option>
                           <?php 
                               if(!empty($courses)) {
@@ -73,17 +63,14 @@
                               </option>
                           <?php } }else{ ?>
                               <option disabled > No Course Found</option>  
-                          <?php } ?>
-                       </select> 
+                          <?php } ?>      
+                      </select>
+                      <a href="#" class="icon icon_add_small"></a>
+                      <?php echo myform_error('course_id'); ?>
                   </div>
-
-                  <div class="alert alert-danger <?php if(empty(strip_tags(form_error('course_id'),''))){ echo 'hide';} ?>">
-                    <?php echo strip_tags(form_error('course_id'),'') ; ?>
-                  </div>
-
-                  <div class="form-group">
-                      <label> Select Classroom </label>
-                       <select name="classroom_id" class="form-control">
+                  <div class="form-group three_inputs select">
+                      <label>Classroom</label>
+                      <select class="form-control" name="classroom_id">
                           <option selected disabled> Select Classroom</option>
                           <?php 
                               if(!empty($classrooms)) {
@@ -95,44 +82,50 @@
                           <?php } }else{ ?>
                               <option disabled > No Classroom Found</option>  
                           <?php } ?>
-                       </select> 
+                      </select>
+                      <a href="#" class="icon icon_add_small"></a>
+                      <?php echo myform_error('classroom_id'); ?>
                   </div>
-
-                  <div class="alert alert-danger <?php if(empty(strip_tags(form_error('classroom_id'),''))){ echo 'hide';} ?>">
-                    <?php echo strip_tags(form_error('classroom_id'),'') ; ?>
+                  <div class="form-group three_inputs select">
+                      <label>Year</label>
+                      <select class="form-control">
+                          <option value="<?php echo $cur_year; ?>"><?php echo $cur_year; ?></option>
+                          <option value="<?php echo $next_year; ?>"><?php echo $next_year; ?></option>
+                      </select>
+                      <a href="#" class="icon icon_add_small"></a>
                   </div>
-                  
-                </div>
+                  <div class="clearfix"></div>
+           </div>
 
-               <div class="box_header">
-                  <h3> HOW MANY USERS TO GENERATE FOR SELECTED CRITERIA? </h3>
-               </div>
+          <div class="box_header">
+            <h3>How many users to generate for selected criteria?</h3>
+          </div>
 
-               <div class="box_body">
-                 <div class="form-group">
-                      <label> Number of Credentials </label>
-                        <input type="text" class="form-control" name="no_of_credentials">
-                  </div>
-                  <div class="alert alert-danger <?php if(empty(strip_tags(form_error('no_of_credentials'),''))){ echo 'hide';} ?>">
-                    <?php echo strip_tags(form_error('no_of_credentials'),'') ; ?>
-                  </div>
-               </div>
-
-               <!-- <div class="box_header"  >
-                  <h3> 
-                         You have requested <span id="no_of_ids"> 50  </span>  for <span id="role_name">Student</span> of <span id="school_name"> St.xavier  </span>
-                         Belongs to first academic year in Computer Science.
-                 </h3>
-               </div> -->
-
-               <div class="box_footer">
-                  <button type="submit" class="btn btn_green">Generate</button>
-                  <button class="btn btn_black">Cancel</button>
-               </div>
+          <div class="box_body">  
+              <div class="form-group col-sm-5">
+                <label>Enter Number of Users</label>
+                <input type="text" name="no_of_credentials" value="<?php echo set_value('no_of_credentials'); ?>" class="form-control" id="">
+                <?php echo myform_error('no_of_credentials'); ?>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          
+          <div class="box_header">
+            <div class="confirmation">
+                <p>You have requested <span class="txt_red">50</span> credencials for <span class="txt_blue">Students</span> of <span class="txt_blue">St. Xevier's School</span> belong to first academic year in <span class="txt_green">Computer Science Course</span></p>
+                <button class="btn btn_red">Confirm & Generate</button>
+                <button class="btn btn_black_normal">Cancle</button>
             </div>
-          </form>
-        </div>
-    </div>
-    <!--//mesage-->
+          </div>
+        
+        </form>
+
+      </div>
 </div>
 <!--//main-->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+      $(".js-example-basic-single").select2({ placeholder: "Select a school"});
+    });
+</script>

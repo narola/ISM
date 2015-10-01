@@ -316,7 +316,8 @@ pre{
 .box_body select.form-control{
 	-webkit-appearance:none;
 	-moz-appearance:none;
-	color:#bfbfbf;
+	/*color:#bfbfbf;*/
+	color: #333;
 }
 .box_body .dob{
 	position:relative;
@@ -2207,4 +2208,22 @@ svg {
     text-align: center;
 	float: right;
     text-decoration: none;
+}
+.form-control.select2-container {
+    height: 40px !important;
+}
+.select2-container .select2-choice{
+	height: 40px !important;
+	border-radius: 0 !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    padding: 6px 20px !important;
+}
+.select2-container .select2-choice > .select2-chosen{
+	height: 40px !important;
+    color: #333 !important;
+}
+.select2-container .select2-choice .select2-arrow{
+	display: none !important;
 }

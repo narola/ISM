@@ -2,11 +2,12 @@
 
 /**
 *	Print array/string.
-*	@data  = data that you want to print
-*	@is_die = if true. Excecution will stop after print. 
-* 	Author = VPA
-*	Modified = Sandip Gopani (SAG)
+*	@param - data  = data that you want to print
+*	@param -is_die = if true. Excecution will stop after print. 
+* @author = Virendra Patel - VPA
+*	@modified = Sandip Gopani (SAG)
 */
+
 function p($data, $is_die = false){
 
 	if(is_array($data)){
@@ -18,15 +19,14 @@ function p($data, $is_die = false){
 	}
 
 	if($is_die)
-	die;
-	
+	die;	
 }
 
 /**
 * 	Append current timesptamp to file name
 *	@name = 
 *	return  = timestamp appended unique file name.
-*	Author = Sandip Gopani (SAG)
+*	@author = Sandip Gopani (SAG)
 */
 function file_name($name = null){
 	if($name != null){
@@ -35,10 +35,26 @@ function file_name($name = null){
 	return $name;
 }
 
+/**
+ * function will return alert box with alert alert-danger class and mostly used for indiviousl error in form validation
+ * @return String
+ * @author Virendra Patel - Sparks ID-VPA
+ **/
+
+function myform_error($field){
+  
+  $error = form_error($field);
+  $str = '';
+  if(!empty($error)){
+    $str .= '<div class="alert alert-danger">'.strip_tags($error,'').'</div>';
+  }
+  return $str;
+}
+
 
 /**
 *	This function will display notification msg.
-*	@Author = Sandip Gopani (SAG)
+*	@author = Sandip Gopani (SAG)
 */
 function flashMessage($success = '', $error = '') {
 	$CI =& get_instance();
@@ -130,7 +146,7 @@ function flashMessage($success = '', $error = '') {
 /**
 *	This function will return true if called within active hours.
 *	return  true/false or null 
-*	@Author = Sandip Gopani (SAG)
+*	@author = Sandip Gopani (SAG)
 */
 function active_hours(){
 	$CI =& get_instance();
@@ -174,7 +190,7 @@ function active_hours(){
 /** 
 * This function simply return output of sql_select function of common_model.  
 * This is just to simplify function call.
-* @Author = Sandip Gopani (SAG)
+* @author = Sandip Gopani (SAG)
 */
 function select($table, $select = null, $where = null, $options = null){
 	$CI =& get_instance();
@@ -184,7 +200,7 @@ function select($table, $select = null, $where = null, $options = null){
 /** 
 * This function simply return output of update function of common_model.  
 * This is just to simplify function call.
-* @Author = Sandip Gopani (SAG)
+* @author = Sandip Gopani (SAG)
 */
 function update($table, $id = null, $data){
 	$CI =& get_instance();
@@ -194,7 +210,7 @@ function update($table, $id = null, $data){
 /** 
 * This function simply return output of insert function of common_model.  
 * This is just to simplify function call.
-* @Author = Sandip Gopani (SAG)
+* @author = Sandip Gopani (SAG)
 */
 function insert($table,$data){	
 	$CI =& get_instance();
@@ -204,7 +220,7 @@ function insert($table,$data){
 /** 
 * This function simply return output of delete function of common_model.  
 * This is just to simplify function call.
-* @Author = Sandip Gopani (SAG)
+* @author = Sandip Gopani (SAG)
 */
 function delete($table,$id){
 	$CI =& get_instance();
@@ -215,7 +231,7 @@ function delete($table,$id){
 /**
 * This function simply print last executed query
 * @bool = boolean execution stopped if true 
-* @Author = Sandip Gopani (SAG)
+* @author = Sandip Gopani (SAG)
 */
 function qry($bool = false){
 	$CI =& get_instance();
@@ -226,7 +242,7 @@ function qry($bool = false){
 
 /**
 * This function simply check user is loggedin or not 
-* @Author = VPA
+* @author = VPA
 */
 function is_loggedin(){
 	$CI =& get_instance();
@@ -235,7 +251,7 @@ function is_loggedin(){
 
 /**
 * This function simply check Admin is loggedin or not 
-* @Author = VPA
+* @author = VPA
 */
 function is_loggedin_admin(){
   $CI =& get_instance();
@@ -250,7 +266,7 @@ function is_loggedin_admin(){
      * @param type $width
      * @param type $height
      * @param type $type
-     * @Author Sandip Gopani (SAG)
+     * @author Sandip Gopani (SAG)
      */
 
 function crop($src, $width, $height) {
@@ -299,7 +315,7 @@ function crop($src, $width, $height) {
 /**
 * This function simply print studymate list
 * @userid = user id for want its studymates 
-* @Author = Kamlesh Pokiya (KAP)
+* @author = Kamlesh Pokiya (KAP)
 */
 function studymates($userid){
   $CI =& get_instance();
