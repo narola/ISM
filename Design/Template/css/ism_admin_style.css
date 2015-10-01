@@ -818,19 +818,6 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .txt_green{
 	color:#1bc4a3;
 }
-.general_cred .box {
-    margin: 30px 15px;
-}
-.general_cred .box_header {
-    background-color: #F2F2F2;
-	text-align:center;
-	padding: 12px 15px;
-	border-bottom:1px solid rgba(0,0,0,0.07);
-}
-.general_cred .box_header h3{
-	color:#333;
-	text-align:left;
-}
 .general_cred .box_body{
 	border-bottom: 1px solid rgba(0,0,0,0.07);
 }
