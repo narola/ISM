@@ -349,6 +349,16 @@
 		float: none;
 		margin-top: 10px;
 	}
+	.studymate_recom .mate_user_img{
+		height:64px;
+		width:64px;
+	}
+	.studymate_recom .mate_descrip p{
+		display:none;
+	}
+	.studymate_recom .mate_descrip p:first-child, .studymate_recom .mate_descrip p:nth-last-child(2){
+		display:block;
+	}
 }
 
 @media (max-width:980px){

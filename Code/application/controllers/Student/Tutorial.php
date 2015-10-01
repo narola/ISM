@@ -14,11 +14,14 @@ class Tutorial extends ISM_Controller {
 	    parent::__construct();
 	}
 	
-	/*  */
-	public function index(){
 
+	public function index(){
+			
 			$data = array();
+			$data['weekday'] = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
+			$data['user_id'] = $user_id = $this->session->userdata('user')['id'];
 			$is_active = false;
+			//$data['title'] = 'ISM - Group Tutorial';
 			$data['active_comment'] = 0;
 			$data['disable_group_chatting'] = false;
 
@@ -30,21 +33,22 @@ class Tutorial extends ISM_Controller {
 
 			// Get Current week no.
 			$c_week = ceil(getdate()['yday']/7);
-			
 			if($c_week > 3){
 				$data['disable_group_chatting'] = true;
 			}
 
 			// Get current topic data from DB
 			$data['topic']  = select(
-				TBL_TOPICS.' t',
+				TBL_TUTORIAL_TOPIC.' t',
 				't.id,
 				t.topic_name,
 				t.topic_description,
 				t.created_date,
-				ts.score,
-				ta.group_score',
-				array('where' => array('ta.group_id' => $this->session->userdata('user')['group_id'],'ta.week_no' => $c_week,'tm.user_id' => $this->session->userdata('user')['id']  )),
+				ts.score as my_score,
+				ta.group_score,
+				up.profile_link,
+				u.full_name',
+				array('where' => array('ta.group_id' => $this->session->userdata('user')['group_id'],'ta.week_no' => $c_week,'tm.user_id' => $user_id  )),
 				array('join' => array(
 					array(
 						'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' ta',
@@ -57,23 +61,33 @@ class Tutorial extends ISM_Controller {
 					array(
 						'table' => TBL_TUTORIAL_GROUP_MEMBER_SCORE.' ts',
 						'condition' => 'ts.member_id = tm.id'
+						),
+					array(
+						'table' => TBL_USERS.' u',
+						'condition' => 'u.id = t.created_by'
+						),
+					array(
+						'table' => TBL_USER_PROFILE_PICTURE.' up',
+						'condition' => 'up.user_id = u.id'
 						)
 					),
 				'single' => true
 				)
 			);
-
 			// Check topic found or not.
 			if(isset($data['topic']) && !empty($data['topic'])){
 				// Get all discussion messages.
 				$data['discussion'] = select(
 						TBL_TUTORIAL_GROUP_DISCUSSION.' td',
 						'u.full_name,
+						td.id,
 						td.message,
 						td.message_type,
 						td.message_status,
 						td.media_link,
 						td.media_type,
+						up.profile_link,
+						td.sender_id,
 						td.created_date,
 						td.in_active_hours',
 						array('where' => array('td.topic_id' => $data['topic']['id'])),
@@ -81,6 +95,10 @@ class Tutorial extends ISM_Controller {
 							array(
 								'table' => TBL_USERS.' u',
 								'condition' => 'td.sender_id = u.id'
+								),
+							array(
+								'table' => TBL_USER_PROFILE_PICTURE. ' up',
+								'condition' => 'up.user_id = u.id'
 								)
 							)
 						)
@@ -100,12 +118,12 @@ class Tutorial extends ISM_Controller {
 				}
 
 			}
-
+			$data['online'] = online();
 			// Get information of all group members
 			$data['member'] = select(
 					TBL_TUTORIAL_GROUP_MEMBER.' tm',
-					'u.full_name,sc.school_name,up.profile_link',
-					array('where' => array('tm.group_id' => $this->session->userdata('user')['group_id'])),
+					'u.id, u.full_name,sc.school_name,up.profile_link',
+					array('where' => array('tm.group_id' => $this->session->userdata('user')['group_id'],'u.id !=' => $this->session->userdata('user')['id'] )),
 					array('join' => array(
 							array(
 							'table' => TBL_USERS. ' u',
@@ -126,7 +144,8 @@ class Tutorial extends ISM_Controller {
 						)
 					)
 				);
-			p($data,true);
+		//	p($data,true);
+			$this->template->load('student/default','student/tutorial_group',$data);
 	}	
 
 
