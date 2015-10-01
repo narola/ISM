@@ -450,6 +450,7 @@ class PHPWebSocket {
 
 
 
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -624,6 +625,7 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
 
 
 
@@ -845,7 +847,6 @@ class PHPWebSocket {
      * @return string
      * @author Sandip Gopani (SAG)
      */
-
     function sync($clientID, $data) {
         if ($this->wsClients[$clientID][13] == 0) {
             $this->wsClients[$clientID][12] = $data['from'];
@@ -992,13 +993,13 @@ class PHPWebSocket {
             $data['allStudyMate'] = $this->class_mate_list($rows['feed_by']);
             $data['allStudyMate'][] = $user_id;
             if (in_array($user_id, $data['allStudyMate'])) {
-                $query = "INSERT INTO `ism`.`feed_comment` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '".$data['message']."',$user_id, '".$data['to']."', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes');";
-                $x = mysqli_query($link,$query);
-                if(!$x){
+                $query = "INSERT INTO `ism`.`feed_comment` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $data['message'] . "',$user_id, '" . $data['to'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes');";
+                $x = mysqli_query($link, $query);
+                if (!$x) {
                     $data['to'] = "self";
                     $data['error'] = "Unable to save your comment! Please try again.";
                 }
-            }else{
+            } else {
                 $data['to'] = "self";
                 $data['error'] = "You are not authorized to commet on this post.";
             }

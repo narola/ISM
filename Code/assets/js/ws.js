@@ -273,7 +273,7 @@ function generate_comment(obj){
     str += '<img src="uploads/'+obj.profile_link+'">';
     str += '</div>';
     str += '<div class="notification_txt">';
-    str += '<p><a href="#" class="noti_username">'+obj.full_name+'</a>'+obj.message+'</p>';
+    str += '<p><a href="#" class="noti_username">'+obj.full_name+'</a>&nbsp;&nbsp;'+obj.message+'</p>';
     str += '<span class="noti_time">1 Day</span> ';                          
     str += '</div>';
     str += '<div class="clearfix"></div>';

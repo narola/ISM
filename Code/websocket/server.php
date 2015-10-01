@@ -70,9 +70,9 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
             }
             $Server->wsSend($clientID, json_encode($responce));
         } else if($responce['type'] == 'feed_comment'){
-
             foreach ($Server->wsClients as $id => $client) {
                 if (in_array($Server->wsClients[$id][12], $responce['allStudyMate'])) {
+                    $Server->log("Comment sent to :".$Server->wsClients[$id][12]);
                     $Server->wsSend($id, json_encode($responce));
                 }
             }
