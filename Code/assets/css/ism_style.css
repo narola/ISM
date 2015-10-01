@@ -317,7 +317,11 @@ pre{
 	-webkit-appearance:none;
 	-moz-appearance:none;
 	/*color:#bfbfbf;*/
+<<<<<<< HEAD
+	color: #333;
+=======
 	color:#333;
+>>>>>>> 3a212f0fcf93a7a13092daafe78b16f5af6ba22b
 }
 .box_body .dob{
 	position:relative;
@@ -2226,6 +2230,7 @@ svg {
 }
 .select2-container .select2-choice .select2-arrow{
 	display: none !important;
+
 }
 .modal-content {
     border-radius: 0;

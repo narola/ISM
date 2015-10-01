@@ -17,12 +17,16 @@ class Notice extends ADMIN_Controller {
 	{
 		$this->data['page_title'] = 'Notice';
 
-		$this->load->library('pagination');
+		if($_GET){
+
+		}else{
+			$where = array('is_delete'=>FALSE);
+			$config['base_url'] = base_url().'admin/notice/index';	
+			$offset = $this->uri->segment(4);
+		}
 		
-		$config['base_url'] = base_url().'admin/notice/index';
-		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
-		$config['total_rows'] = select('noticeboard',FALSE,FALSE,array('count'=>TRUE));
+		$config['total_rows'] = select(TBL_NOTICEBOARD,FALSE,array('where'=>$where),array('count'=>TRUE,'join'=>array(array('table'=>'noticeboard_viewer','condition'=>'noticeboard.id=noticeboard_viewer.notice_id'))));
 		$config['per_page'] = 10;
 
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
@@ -49,29 +53,24 @@ class Notice extends ADMIN_Controller {
 	 	$config['last_link'] = 'Last';
 	 	$config['last_tag_open'] = '<li>';
 	 	$config['last_tag_close'] = '</li>';
-	 	
-		$offset = $this->uri->segment(4);
 
 		$this->data['notices'] = select(TBL_NOTICEBOARD,
-										FALSE,
+										"noticeboard.notice,noticeboard.created_date,noticeboard.notice_title,noticeboard_viewer.role_id",
 										array('where'=>array('noticeboard.is_delete'=>FALSE)),
 										array(
 											'limit'=>$config['per_page'],
 											'offset'=>$offset,
-											// 'join'=>array(
-											// 			array(
-											// 				'table'=>'noticeboard_viewer',
-											// 				'condition'=>'noticeboard.id=noticeboard_viewer.notice_id'
-											// 			),
-											// 			array(
-											// 				'table'=>'roles',
-											// 				'condition'=>'noticeboard_viewer.role_id=roles.id'
-											// 			)
-											// 		)
+											'order_by'=>array('created_date DESC'),
+											'join'=>array(
+													array(
+														'table'=>'noticeboard_viewer'	,
+														'condition'=>'noticeboard.id=noticeboard_viewer.notice_id'
+													)
 												)
+											)
 										);
-
-		
+		qry();
+		p($this->data['notices'],true);	
 
 		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
 		$this->data['courses'] = select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));

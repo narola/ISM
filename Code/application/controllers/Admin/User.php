@@ -24,8 +24,6 @@ class User extends ADMIN_Controller {
 	public function index() {
 		
 		$this->data['page_title'] = 'Users';
-
-		$this->load->library('pagination');
 		
 		if($_GET){
 
@@ -343,7 +341,6 @@ class User extends ADMIN_Controller {
 			
 			$this->template->load('admin/default','admin/user/send_message',$this->data);
 		}else{
-
 
 			$all_users = $this->input->post('all_users');
 

@@ -8,13 +8,12 @@ class Dashboard extends ADMIN_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->helper('csv');	
+		$this->load->helper(array('csv','file','download'));	
 	}
 
 
 	public function index()
 	{
-
 		$remember_me = get_cookie('Remember_me');  
 
 		/* 	If Remember_key Cookie exists in browser then it wil fetch data using it's value and 
@@ -93,10 +92,8 @@ class Dashboard extends ADMIN_Controller {
 					);
 
 					$this->session->set_userdata( $array ); // Set Session for Admin
-
 					redirect('admin/user');  
-
-			    }else{
+				}else{
 			    	$this->session->set_flashdata('error', 'Invalid Username or Password.');		
 					redirect('admin');	
 			    }
@@ -119,17 +116,22 @@ class Dashboard extends ADMIN_Controller {
 	 **/
 
 	public  function auto_generated_credentials(){
+		
+		$this->data['page_title'] = 'Auto Generated Credentials';
 
-		$this->data['schools']	=	select(TBL_SCHOOLS);
+		$this->data['schools'] = select(TBL_SCHOOLS);
 		$this->data['roles'] = select(TBL_ROLES);
 		$this->data['courses'] = select(TBL_COURSES);
 		$this->data['classrooms'] = select(TBL_CLASSROOMS);
 
-		$this->form_validation->set_rules('school_id', 'School Name', 'trim|required');
-		$this->form_validation->set_rules('role_id', 'Role', 'trim|required');
-		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
+		$this->data['cur_year'] = date('Y');
+		$this->data['next_year'] = date('Y')+1;
+		
+		$this->form_validation->set_rules('school_id', 'School Name', 'trim|required|integer');
+		$this->form_validation->set_rules('role_id', 'Role', 'trim|required|integer');
+		$this->form_validation->set_rules('course_id', 'Course', 'trim|required|integer');
 		$this->form_validation->set_rules('no_of_credentials', 'No of credentials', 'trim|required|integer|greater_than[0]');
-		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required');
+		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required|integer');
 
 		if($this->form_validation->run() == FALSE){
 			$this->template->load('admin/default','admin/generated_credentials',$this->data);
@@ -140,6 +142,11 @@ class Dashboard extends ADMIN_Controller {
 			$course_id = $this->input->post('course_id');
 			$classroom_id = $this->input->post('classroom_id');
 			$no_of_credentials	=	$this->input->post('no_of_credentials',TRUE);
+
+			$role_name = select(TBL_ROLES,'role_name',array('where'=>array('id'=>$role_id)),array('single'=>TRUE));
+			$course_name = select(TBL_COURSES,'course_name',array('where'=>array('id'=>$course_id)),array('single'=>TRUE));
+			$class_name = select(TBL_CLASSROOMS,'class_name',array('where'=>array('id'=>$classroom_id)),array('single'=>TRUE));
+			$school_name = select(TBL_SCHOOLS,'school_name',array('where'=>array('id'=>$school_id)),array('single'=>TRUE));
 
 			//No of Credentials loop will run if that username does not exist in users.username table.field
 			for ($i=0; $i < $no_of_credentials; $i++) { 
@@ -159,7 +166,7 @@ class Dashboard extends ADMIN_Controller {
 
 					$i--;
 					continue;
-
+					
 				}else{
 
 					$data = array(
@@ -178,9 +185,39 @@ class Dashboard extends ADMIN_Controller {
 						);
 
 					insert(TBL_AUTO_GENERATED_CREDENTIAL,$data); // insert data into database using common_model.php and cms_helper.php
-						 			
  				}
-			} // End Of For Loop			
+			} // End Of For Loop	
+
+			// find no of entries whose school,role,course and classroom are same 
+			$count_query= select(TBL_AUTO_GENERATED_CREDENTIAL,'username,password',array('where'=>array('school_id'=>$school_id,
+																'role_id'=>$role_id,'classroom_id'=> $classroom_id,'course_id'=> $course_id)),array('count'=>TRUE));
+
+			//If data exists for same school,course,classroom,and role if not exits then IF Cond.. otherwise ELSE Cond..
+			if($count_query == $no_of_credentials){
+				$csv_query = $this->db->query("SELECT username,password FROM ".TBL_AUTO_GENERATED_CREDENTIAL." WHERE school_id='$school_id' AND 
+										role_id='$role_id' AND classroom_id='$classroom_id' AND course_id='$course_id' ");
+			}else{
+				
+				$offset = $count_query - $no_of_credentials; 
+				$limit =  $no_of_credentials; 
+
+				$csv_query = $this->db->query("SELECT username,password FROM ".TBL_AUTO_GENERATED_CREDENTIAL." WHERE school_id='$school_id' AND 
+										role_id='$role_id' AND classroom_id='$classroom_id' AND course_id='$course_id' LIMIT $offset,$limit ");
+			}
+
+			$data =  csv_from_results($csv_query);  // function in cms_helper.php used to generate only text accordingly comma saperated value
+			$path = $_SERVER['DOCUMENT_ROOT'].'/csv/myfile.csv';
+
+			if ( !write_file($path, $data) ){
+			  	show_404();
+			}
+
+			
+			$data = file_get_contents($path);
+			force_download($school_name['school_name'].'.csv',$data);
+			
+			redirect('admin/auto_generated_credentials');
+
 		} // End else consdition
 	}
 	
