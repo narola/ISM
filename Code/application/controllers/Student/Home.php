@@ -118,8 +118,40 @@ class Home extends ISM_Controller {
 				"(uc.sender_id = $active_chat_id AND uc.receiver_id = $user_id) OR (uc.sender_id = $user_id AND uc.receiver_id = $active_chat_id) ",
 				array('limit' => 10,'order_by' => 'uc.id DESC')));
 		}
+
+		//----Get Suggested studymates
+
+		$user_group_id = $this->session->userdata('user')['group_id'];
+		$where = array('where' => array('m.group_id'=>$user_group_id));
+		$options = array('join' => array(
+					array(
+						'table' => TBL_STUDENT_ACADEMIC_INFO.' in',
+						'condition' => 'in.user_id = m.user_id',
+						'join'=>'join'
+					),
+					array(
+						'table' => TBL_STUDENT_ACADEMIC_INFO.' in1',
+						'condition' => 'in.classroom_id = in1.classroom_id and in.course_id = in1.course_id and in.academic_year = in1.academic_year and in.school_id = in1.school_id',
+						'join'=>'join'
+					),
+					array(
+						'table' => TBL_USERS.' u',
+						'condition' => 'in1.user_id = u.id'
+					),
+					array(
+						'table' => TBL_SCHOOLS.' s',
+						'condition' => 's.id = in.school_id'
+					),
+					array(
+						'table' => TBL_COURSES.' c',
+						'condition' => 'c.id = in1.course_id'
+					),
+				)
+			);
+		$data['suggested_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name',$where,$options);
 		$this->template->load('student/default','student/home_view',$data);
 	}
+
 
 
 	/**
