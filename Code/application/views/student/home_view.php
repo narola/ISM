@@ -31,7 +31,7 @@
                 ?>
                         <div class="box feeds" data-id="<?php echo $value['fid']; ?>">
                             <div class="user_small_img">
-                                <img src="<?php echo base_url();?>assets/images/user2.jpg">
+                                <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                             </div>
                             <div class="feed_text">
                                 <h4><?php echo $value['full_name'];?></h4>
