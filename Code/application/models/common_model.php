@@ -209,7 +209,6 @@ class Common_model extends CI_Model {
 *	@Author - (Kamlesh Pokiya) KAP
 **/
 
-	public function class_mate_list($user_id) {
 
 	function class_mate_list($user_id, $append = true) {
 
