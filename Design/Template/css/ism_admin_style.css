@@ -643,11 +643,11 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .topic_action a{
 	text-decoration:none;
 	margin: 8px 12px;
-	opacity:0.7;
+	opacity:1;
 }
 .topic_action a:last-child{
 	font-size: 34px;
-    color: #000;
+    color: #333;
     display: inline-block;
     height: 30px;
     width: 30px;
@@ -784,28 +784,9 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 	color:#333;
 }
 .notice_by{
-	float:right;
-	margin-bottom:0;
-	margin-top:30px;
 	color:#ff6b6b;
 }
-.notice_by span{
-	display:block;
-	color:#333;
-}
-.modal-content{
-	border-radius:0;
-}
-.modal-dialog{
-    width: 700px;
-	margin:100px auto 30px;
-}
-.modal-body{
-	padding:30px;
-}
-.modal-header.notice_header{
-    padding: 15px 15px 7px;
-}
+
 .modal-header.notice_header:after,
 .modal-header.notice_header:before{
 	content: "";
@@ -912,7 +893,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 
 /*allocate topic page*/
 .sidebar_shrink .personal_menu{
-	padding-top:50px;
+	padding-top:70px;
 	padding-bottom:0;
 	width:280%;
 	transition:all ease .4s;
@@ -975,6 +956,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .topic_groups .table_group .username>.chat_img_holder{
 	margin:10px;
+	float: left;
 }
 .topic_groups .table_group .username h4>span:last-child {
     display: block;
@@ -995,12 +977,65 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     border-top: 1px solid rgba(0,0,0,0.1);
     box-shadow: 0px -2px 1px 0px rgba(0,0,0,0.05);
 }
-.group_score>div:first-child, .group_score>div:nth-child(2){
+.group_score>div:nth-child(3), .group_score>div:nth-child(2){
 	width:50%;
 	float:left;
 	text-align:center;
-    border-top: 1px solid rgba(0,0,0,0.07);
+}
+.group_score hr {
+    margin: 0 0 10px;
+	border-color: rgba(0,0,0,0.1);
+}
+.group_score>div:nth-child(2){
+	border-right: 1px solid rgba(0,0,0,0.1);
 }
 .group_score{
-	padding:15px;
+	padding:10px;
+}
+.group_score>div>h2{
+	margin:0;
+}
+.group_score>div>p{
+	margin:0 0 5px;
+	text-transform:uppercase;
+	font-weight:600;
+	font-size:13px;
+}
+.topic_groups .table_group>tbody>tr{
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.topic_groups .table{
+	margin:0;
+}
+.topic_groups .table>tbody>tr>.recommended{
+	padding:0;
+}
+.recommended h4{
+	border-bottom:1px solid rgba(0,0,0,0.07);
+	padding: 18px 15px;
+    margin: 0 0 10px;
+}
+.recommended h4>span{
+	color:#4294d0;
+	float:right;
+}
+.recommended ul{
+    padding-left: 30px;
+}
+.recommended ul>li>p{
+    margin-bottom: 7px;
+}
+.recom_action{
+	padding: 9px 15px 12px;
+	border-top: 1px solid rgba(0,0,0,0.07);
+}
+.recom_action .btn{
+	margin:0;
+	float:right;
+}
+.allocate_topic .general_cred .box_header h3{
+	text-align:center;
+}
+.sidebar_shrink .profile_link{
+	display:none;
 }
