@@ -92,7 +92,20 @@ if ("WebSocket" in window)
             generate_post(obj);
         }else if(obj.type == 'feed_comment'){
             generate_comment(obj);
-        }else {
+        }else if(obj.type == 'like'){
+            if(wp == obj.id){
+                if(obj.message == 'like'){
+                    $('.like_btn[data-id="' + obj.fid + '"]').html('<span class="icon icon_thumb"></span>'+obj.like_cnt);
+                }
+                else{
+                    $('.like_btn[data-id="' + obj.fid + '"]').html('<span class="icon icon_thumb_0"></span>'+obj.like_cnt);
+                }
+            }
+            else{
+                $('.like_btn[data-id="' + obj.fid + '"] span:nth-of-type(2)').html(obj.like_cnt);
+            }   
+        }
+        else {
             alert('Message Not Catched!!');
         }
     };
@@ -295,3 +308,15 @@ $(document).on('click','a[data-type="load_more"]',function(){
         };
         ws.send(JSON.stringify(request));
 })
+
+$(document).on('click','a[data-type="feed-like"]',function(e){     
+    var request = {
+        type: 'like',
+        fid: $(this).data('id'),
+        to:'',
+        message: '',
+        error: ''
+    };
+    ws.send(JSON.stringify(request));
+    $(this).val('');
+});

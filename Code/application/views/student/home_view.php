@@ -38,7 +38,7 @@
                                 <span class="date"><?php $old_date = strtotime($value['posted_on']);echo date("M j, Y",$old_date);?></span>
                                 <div class="clearfix"></div>
                                 <p><?php echo $value['feed_text'];?></p>
-                                <a href="#" class="like_btn"><span class="icon icon_thumb_0"></span><?php echo $value['tot_like'];?></a>
+                                <a href="javascript:void(0);" data-id="<?php echo $value['fid'];?>" data-type="feed-like" class="like_btn"><span class="icon icon_thumb_0"></span><span><?php echo $value['tot_like'];?></span></a>
                                 <a href="#" class="comment_btn"><span class="icon icon_comment"></span><?php echo $value['tot_comment'];?></a>
                                 <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
                                 <div class="dropdown tag_user" style="display: inline-block;">
