@@ -118,7 +118,8 @@ if ("WebSocket" in window)
                 $('.like_btn[data-id="' + obj.fid + '"] span:nth-of-type(2)').html(obj.like_cnt);
             }   
         }else if(obj.type == "discussion-type"){
-            $('.box_footer[data-id="'+obj.type_id+'"]').html('Typeing..');
+            $('.box_footer[data-id="'+obj.type_id+'"]').html(obj.message);
+            setTimeout(function(){  $('.box_footer[data-id="'+obj.type_id+'"]').html('Online'); }, 2000);
         }
         else {
             alert('Message Not Catched!!');
@@ -346,7 +347,7 @@ $(document).on('keypress','textarea[data-type="discussion"]',function(){
     var request = {
             type: 'discussion-type',
             to: 'all',
-            message:'Typeing..',
+            message:'Typing..',
             error: ''
         };
         ws.send(JSON.stringify(request));
