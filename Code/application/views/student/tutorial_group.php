@@ -220,7 +220,7 @@
 
                         <?php foreach($member as $k =>$v){
                         ?>
-                            <div class="box_body">
+                            <div class="box_body" data-id="<?php echo $v['id']; ?>">
                             <div class="mate_user_img">
                                 <img src="/<?php echo UPLOAD_URL.'/'.$v['profile_link']; ?>">
                             </div>
@@ -228,7 +228,7 @@
                             <p><?php echo $v['school_name']; ?></p>
                             <a href="#" class="icon <?php echo in_array($v['id'], $online)? 'icon_call_user_disable': 'icon_call_user'; ?>"></a>
                         </div>
-                        <div class="box_footer">
+                        <div class="box_footer" data-id="<?php echo $v['id']; ?>">
                             <p><?php echo in_array($v['id'], $online)? 'Online': 'Offline'; ?></p>
                         </div>
                         <?php
