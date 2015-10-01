@@ -38,7 +38,7 @@
                                 <span class="date"><?php $old_date = strtotime($value['posted_on']);echo date("M j, Y",$old_date);?></span>
                                 <div class="clearfix"></div>
                                 <p><?php echo $value['feed_text'];?></p>
-                                <a href="#" class="like_btn"><span class="icon icon_thumb_0"></span><?php echo $value['tot_like'];?></a>
+                                <a href="javascript:void(0);" data-id="<?php echo $value['fid'];?>" data-type="feed-like" class="like_btn"><span class="icon icon_thumb_0"></span><span><?php echo $value['tot_like'];?></span></a>
                                 <a href="#" class="comment_btn"><span class="icon icon_comment"></span><?php echo $value['tot_comment'];?></a>
                                 <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
                                 <div class="dropdown tag_user" style="display: inline-block;">
@@ -51,52 +51,51 @@
                                 </div>
                             </div>
                         
-                        <div class="clearfix"></div>
-                        <!--comment-->
-                        <div id="feed_comments">
-                        <?php 
-                            if(isset($comment)){
-                                $i = 1;
-                                foreach ($comment as $key => $com) {
-                                    if($value['fid'] == $com['feed_id']){
-                                        if($i > 3)
-                                            $display = 'none';
-                                        else
-                                            $display = '';
-                                    ?>
+                            <div class="clearfix"></div>
+                            <!--comment-->
+                            <div id="feed_comments">
+                            <?php 
+                                if(sizeof($value['comment'])>0 && isset($value['comment'])){
+                                    $i = 1;
+                                    foreach ($value['comment'] as $key => $com) {
+                                        if($value['fid'] == $com['feed_id']){
+                                            if($i > 3)
+                                                $display = 'none';
+                                            else
+                                                $display = '';
+                                        ?>
 
-                                    <div class="comment <?= 'post'.$j;?>" style="display:<?= $display;?>">
-                                        <div class="user_small_img user_comment">
-                                            <img src="<?php echo UPLOAD_URL.'/'.$com['profile_link'];?>">
+                                        <div class="comment <?= 'post'.$j;?>" style="display:<?= $display;?>">
+                                            <div class="user_small_img user_comment">
+                                                <img src="<?php echo UPLOAD_URL.'/'.$com['profile_link'];?>">
+                                            </div>
+                                            <div class="notification_txt">
+                                                <p><a href="#" class="noti_username"><?php echo $com['full_name'];?></a> <?php echo $com['comment'];?></p>
+                                                <span class="noti_time">1 Day</span>                            
+                                            </div>
+                                            <div class="clearfix"></div>
                                         </div>
-                                        <div class="notification_txt">
-                                            <p><a href="#" class="noti_username"><?php echo $com['full_name'];?></a> <?php echo $com['comment'];?></p>
-                                            <span class="noti_time">1 Day</span>                            
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    
-                                    <?php
-                                        $i++;
+                                        
+                                        <?php
+                                            $i++;
+                                        }
                                     }
                                 }
-                                ?>
-                                 </div>
-                                <div class="write_comment box_body">
-                                    <input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="<?php echo $value['fid']; ?>">                  
-                                    <a class="icon icon_image"></a>
-                                    <input type="file">
-                                </div>
-                                <?php
-                            }
-                        echo '</div>';
+                            ?>
+                            </div>
+                            <div class="write_comment box_body">
+                                <input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="<?php echo $value['fid']; ?>">                  
+                                <a class="icon icon_image"></a>
+                                <input type="file">
+                            </div>
+                        </div>
+                        <?php
                         $j++;
                         }
                     }
                 ?>
             </div>
 
-                <!--comment-->
                 <!--//feed box-->
                 
                 <div class="box text-center load_more">

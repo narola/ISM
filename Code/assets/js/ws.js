@@ -95,6 +95,7 @@ if ("WebSocket" in window)
             generate_post(obj,true);
         }else if(obj.type == 'feed_comment'){
             generate_comment(obj);
+<<<<<<< HEAD
         }else if(obj.type == 'load_more_feed'){
             $.each(obj.feed, function(index,jsonObject){
                 generate_post(jsonObject,false);
@@ -105,7 +106,20 @@ if ("WebSocket" in window)
             $('button[data-type="load_more"]').prop('disabled', false);
         }else if(obj.type == 'discussion'){
             generate_cm(obj);
-        }else {
+        }else if(obj.type == 'like'){
+            if(wp == obj.id){
+                if(obj.message == 'like'){
+                    $('.like_btn[data-id="' + obj.fid + '"]').html('<span class="icon icon_thumb"></span>'+obj.like_cnt);
+                }
+                else{
+                    $('.like_btn[data-id="' + obj.fid + '"]').html('<span class="icon icon_thumb_0"></span>'+obj.like_cnt);
+                }
+            }
+            else{
+                $('.like_btn[data-id="' + obj.fid + '"] span:nth-of-type(2)').html(obj.like_cnt);
+            }   
+        }
+        else {
             alert('Message Not Catched!!');
         }
     };
@@ -316,6 +330,7 @@ $(document).on('click','button[data-type="load_more"]',function(){
        ws.send(JSON.stringify(request));
 })
 
+
 $(document).on('click','.option_bar[data-type="discussion-submit"]',function(){
     var request = {
             type: 'discussion',
@@ -343,3 +358,16 @@ function generate_cm(obj){
     $('.row.discussion').append(str);
     $('.row.discussion div[data-id="'+obj.disscusion_id+'"]').fadeOut(0).fadeIn(400);
 }
+
+$(document).on('click','a[data-type="feed-like"]',function(e){     
+    var request = {
+        type: 'like',
+        fid: $(this).data('id'),
+        to:'',
+        message: '',
+        error: ''
+    };
+    ws.send(JSON.stringify(request));
+    $(this).val('');
+});
+
