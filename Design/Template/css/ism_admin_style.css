@@ -784,28 +784,9 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 	color:#333;
 }
 .notice_by{
-	float:right;
-	margin-bottom:0;
-	margin-top:30px;
 	color:#ff6b6b;
 }
-.notice_by span{
-	display:block;
-	color:#333;
-}
-.modal-content{
-	border-radius:0;
-}
-.modal-dialog{
-    width: 700px;
-	margin:100px auto 30px;
-}
-.modal-body{
-	padding:30px;
-}
-.modal-header.notice_header{
-    padding: 15px 15px 7px;
-}
+
 .modal-header.notice_header:after,
 .modal-header.notice_header:before{
 	content: "";
