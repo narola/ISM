@@ -221,6 +221,7 @@ class Common_model extends CI_Model {
             $all[] = $rows['mate_of'];
         }
      } 
+    $all[]=$user_id;
     return $all;
 	}
 

@@ -17,7 +17,7 @@ class Home extends ISM_Controller {
 
 		$user_id = $this->session->userdata('user')['id'];
 		$data['title'] = 'ISM - Home';
-		$studymates = implode(',',studymates($user_id));
+		$studymates = studymates($user_id);
 		
 		// Get Post feed
 		$options =	array(
@@ -32,11 +32,12 @@ class Home extends ISM_Controller {
 							)
 						),
 						'limit'=>4,
+						'offset'=>0,
 						'order_by' => 'f.id DESC'
 
 					);  
 		$where = array('where'=>array('f.is_delete'=> 0),'where_in'=>array('f.feed_by'=>$studymates));
-		$data['feed'] = select(TBL_FEEDS.' f','f.id as fid,f.feed_text,f.posted_on,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like',$where,$options);
+		$data['feed'] = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.posted_on,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like',$where,$options);
 		$feed_ids = array();
 		foreach ($data['feed'] as $key => $value) {
 			$feed_ids[] = $value['fid'];
@@ -55,8 +56,6 @@ class Home extends ISM_Controller {
 				);	
 		$where = array('where'=>array('fc.is_delete'=> 0));
 		$data['comment'] = select(TBL_FEED_COMMENT.' fc','feed_id,comment,u.full_name,p.profile_link',$where,$options);
-		// qry();
-		// p($data['feed']);	
 		// p($data['comment'],TRUE);	
 
 		// Get Classmates details
