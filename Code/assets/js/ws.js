@@ -95,7 +95,6 @@ if ("WebSocket" in window)
             generate_post(obj,true);
         }else if(obj.type == 'feed_comment'){
             generate_comment(obj);
-<<<<<<< HEAD
         }else if(obj.type == 'load_more_feed'){
             $.each(obj.feed, function(index,jsonObject){
                 generate_post(jsonObject,false);
