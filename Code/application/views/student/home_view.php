@@ -24,77 +24,77 @@
                 </div>
                 <!--feed box-->
                 <div id="all_feed">
-                <?php 
-                    if(isset($feed)){
-                        $j = 1;
-                        foreach ($feed as $key => $value) {
-                ?>
-                        <div class="box feeds" data-id="<?php echo $value['fid']; ?>">
-                            <div class="user_small_img">
-                                <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
-                            </div>
-                            <div class="feed_text">
-                                <h4><?php echo $value['full_name'];?></h4>
-                                <span class="date"><?php $old_date = strtotime($value['posted_on']);echo date("M j, Y",$old_date);?></span>
-                                <div class="clearfix"></div>
-                                <p><?php echo $value['feed_text'];?></p>
-                                <a href="javascript:void(0);" data-id="<?php echo $value['fid'];?>" data-type="feed-like" class="like_btn"><span class="icon icon_thumb_0"></span><span><?php echo $value['tot_like'];?></span></a>
-                                <a href="#" class="comment_btn"><span class="icon icon_comment"></span><?php echo $value['tot_comment'];?></a>
-                                <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
-                                <div class="dropdown tag_user" style="display: inline-block;">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Emma Mall</a></li>
-                                        <li><a href="#">Gill Christ</a></li>
-                                        <li><a href="#">Adam Stranger</a></li>
-                                    </ul>
+                    <?php 
+                        if(isset($feed)){
+                            $j = 1;
+                            foreach ($feed as $key => $value) {
+                    ?>
+                            <div class="box feeds" data-id="<?php echo $value['fid']; ?>">
+                                <div class="user_small_img">
+                                    <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                 </div>
-                            </div>
-                        
-                            <div class="clearfix"></div>
-                            <!--comment-->
-                            <div id="feed_comments">
-                            <?php 
-                                if(sizeof($value['comment'])>0 && isset($value['comment'])){
-                                    $i = 1;
-                                    foreach ($value['comment'] as $key => $com) {
-                                        if($value['fid'] == $com['feed_id']){
-                                            if($i > 3)
-                                                $display = 'none';
-                                            else
-                                                $display = '';
-                                        ?>
+                                <div class="feed_text">
+                                    <h4><?php echo $value['full_name'];?></h4>
+                                    <span class="date"><?php $old_date = strtotime($value['posted_on']);echo date("M j, Y",$old_date);?></span>
+                                    <div class="clearfix"></div>
+                                    <p><?php echo $value['feed_text'];?></p>
+                                    <a href="javascript:void(0);" data-id="<?php echo $value['fid'];?>" data-type="feed-like" class="like_btn"><span class="icon icon_thumb_0"></span><span><?php echo $value['tot_like'];?></span></a>
+                                    <a href="#" class="comment_btn"><span class="icon icon_comment"></span><?php echo $value['tot_comment'];?></a>
+                                    <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
+                                    <div class="dropdown tag_user" style="display: inline-block;">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Emma Mall</a></li>
+                                            <li><a href="#">Gill Christ</a></li>
+                                            <li><a href="#">Adam Stranger</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            
+                                <div class="clearfix"></div>
+                                <!--comment-->
+                                <div id="feed_comments">
+                                <?php 
+                                    if(sizeof($value['comment'])>0 && isset($value['comment'])){
+                                        $i = 1;
+                                        foreach ($value['comment'] as $key => $com) {
+                                            if($value['fid'] == $com['feed_id']){
+                                                if($i > 3)
+                                                    $display = 'none';
+                                                else
+                                                    $display = '';
+                                            ?>
 
-                                        <div class="comment <?= 'post'.$j;?>" style="display:<?= $display;?>">
-                                            <div class="user_small_img user_comment">
-                                                <img src="<?php echo UPLOAD_URL.'/'.$com['profile_link'];?>">
+                                            <div class="comment <?= 'post'.$j;?>" style="display:<?= $display;?>">
+                                                <div class="user_small_img user_comment">
+                                                    <img src="<?php echo UPLOAD_URL.'/'.$com['profile_link'];?>">
+                                                </div>
+                                                <div class="notification_txt">
+                                                    <p><a href="#" class="noti_username"><?php echo $com['full_name'];?></a> <?php echo $com['comment'];?></p>
+                                                    <span class="noti_time">1 Day</span>                            
+                                                </div>
+                                                <div class="clearfix"></div>
                                             </div>
-                                            <div class="notification_txt">
-                                                <p><a href="#" class="noti_username"><?php echo $com['full_name'];?></a> <?php echo $com['comment'];?></p>
-                                                <span class="noti_time">1 Day</span>                            
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        
-                                        <?php
-                                            $i++;
+                                            
+                                            <?php
+                                                $i++;
+                                            }
                                         }
                                     }
-                                }
-                            ?>
+                                ?>
+                                </div>
+                                <div class="write_comment box_body">
+                                    <input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="<?php echo $value['fid']; ?>">                  
+                                    <a class="icon icon_image"></a>
+                                    <input type="file">
+                                </div>
                             </div>
-                            <div class="write_comment box_body">
-                                <input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="<?php echo $value['fid']; ?>">                  
-                                <a class="icon icon_image"></a>
-                                <input type="file">
-                            </div>
-                        </div>
-                        <?php
-                        $j++;
+                            <?php
+                            $j++;
+                            }
                         }
-                    }
-                ?>
-            </div>
+                    ?>
+                </div>
 
                 <!--//feed box-->
                 
@@ -254,6 +254,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <!--//high score board-->
+               
                 <!--Suggested Studymates-->
                 <div class="suggested_mates box">
                     <div class="box_header">
@@ -266,6 +267,7 @@
                             <li data-target="#carousel-studymate" data-slide-to="0" class="active"></li>
                             <li data-target="#carousel-studymate" data-slide-to="1"></li>
                             <li data-target="#carousel-studymate" data-slide-to="2"></li>
+                            <!-- <li data-target="#carousel-studymate" data-slide-to="3"></li> -->
                           </ol>
                         
                           <!-- Wrapper for slides -->
@@ -287,23 +289,33 @@
                                 </div>
                                 <!--//card-->
                             </div>
-                            <div class="item">
-                              <!--card-->
-                                <div class="suggested_mates_card">
-                                    <div class="mate_user_img">
-                                        <img src="<?php echo base_url();?>assets/images/user7.jpg">
-                                    </div>
-                                    <div class="mate_descrip">
-                                        <p class="mate_name">Adam Stranger</p>
-                                        <p class="mate_following">Folowing 34 Authers</p>
-                                        <p>Live in Ghana</p>
-                                        <p>Student from St.Xeviers</p>
-                                        <p>F.Y. CS</p>
-                                        <button class="btn btn_green">Add Studymates</button>
-                                    </div>
-                                </div>
-                                <!--//card-->
-                            </div>
+                            <?php 
+                                if(isset($suggested_studymates)){
+                                    $i = 1;
+                                    foreach ($suggested_studymates as $key => $value) {
+                                    ?>
+                                        <div class="item">
+                                          <!--card-->
+                                            <div class="suggested_mates_card">
+                                                <div class="mate_user_img">
+                                                    <img src="<?php echo base_url();?>assets/images/user7.jpg">
+                                                </div>
+                                                <div class="mate_descrip">
+                                                    <p class="mate_name"><?php echo $value['full_name'];?></p>
+                                                    <p class="mate_following">Folowing 34 Authers</p>
+                                                    <p>Live in Ghana</p>
+                                                    <p>Student from <?php echo $value['school_name'];?></p>
+                                                    <p><?php echo $value['course_name'];?></p>
+                                                    <button class="btn btn_green">Add Studymates</button>
+                                                </div>
+                                            </div>
+                                            <!--//card-->
+                                        </div>
+                                    <?php
+                                    $i++;
+                                    }
+                                }
+                            ?>
                           </div>
                         
                           <!-- Controls -->
