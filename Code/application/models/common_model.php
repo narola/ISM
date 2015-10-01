@@ -208,7 +208,7 @@ class Common_model extends CI_Model {
 *  	@user_id = user id for want its studymates
 *	@Author - (Kamlesh Pokiya) KAP
 **/
-	function class_mate_list($user_id) {
+	function class_mate_list($user_id, $append = true) {
    
     $where = array('where'=>array('mate_id'=>$user_id),'or_where'=>array('mate_of'=>$user_id));
     $result = $this->sql_select(TBL_STUDYMATES,'mate_id,mate_of',$where);
@@ -220,8 +220,10 @@ class Common_model extends CI_Model {
         if ($rows['mate_of'] !== $user_id) {
             $all[] = $rows['mate_of'];
         }
-     } 
-    $all[]=$user_id;
+     }
+
+    if($append)
+    	$all[]=$user_id;
     return $all;
 	}
 

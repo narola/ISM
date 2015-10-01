@@ -301,9 +301,9 @@ function crop($src, $width, $height) {
 * @userid = user id for want its studymates 
 * @Author = Kamlesh Pokiya (KAP)
 */
-function studymates($userid){
+function studymates($userid,$append = true){
   $CI =& get_instance();
-  return $CI->common_model->class_mate_list($userid);
+  return $CI->common_model->class_mate_list($userid,$append);
 }
 
 

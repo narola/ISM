@@ -451,6 +451,7 @@ class PHPWebSocket {
 
 
 
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -645,6 +646,7 @@ class PHPWebSocket {
 
 
 
+
             
 // work out hash to use in Sec-WebSocket-Accept reply header
         $hash = base64_encode(sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
@@ -816,10 +818,19 @@ class PHPWebSocket {
             $from = mysqli_escape_string($link, $data['from']);
             $to = mysqli_escape_string($link, $data['to']);
             $msg = mysqli_escape_string($link, $data['message']);
+            
             if ($from != $to) {  // User cannot send messages to self
                 $all = $this->class_mate_list($from);
                 if (in_array($to, $all)) {
-                    $query = "INSERT INTO `ism`.`user_chat` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`, `media_type`, `received_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (NULL, $from, $to, '$msg', NULL, NULL, NULL, CURRENT_TIMESTAMP, '0', 'yes')";
+                    $received_status = 0;
+                    foreach ($this->wsClients as $id => $client) {
+                        if ($this->wsClients[$id][12] == $to) {
+                           $received_status = 1;
+                           break;
+                        }
+                    }
+
+                    $query = "INSERT INTO `ism`.`user_chat` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`, `media_type`, `received_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (NULL, $from, $to, '$msg', NULL, NULL, $received_status, CURRENT_TIMESTAMP, '0', 'yes')";
                     $x = mysqli_query($link, $query);
                     if (!$x) {
                         $data['to'] = 'self';
@@ -878,6 +889,7 @@ class PHPWebSocket {
                 $all[] = $rows['mate_of'];
             }
         }
+        $all[] = $user_id;
         if ($link != null) {
             mysqli_close($link);
         }
@@ -933,8 +945,10 @@ class PHPWebSocket {
      * @author Sandip Gopani (SAG)
      */
     function get_latest_msg($data = null, $userID) {
+        
         $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message` FROM `user_chat` `uc` WHERE (`uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` = $userID) OR (`uc`.`sender_id` = $userID AND `uc`.`receiver_id` = " . $data['my_id'] . ") ORDER BY `uc`.`id` DESC LIMIT 10";
         $link = $this->db();
+        mysqli_query($link, "UPDATE `user_chat` `uc` SET  `uc`.`received_status` = 1  WHERE `uc`.`received_status` = 0 AND `uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` =" . $userID );
         $row = mysqli_query($link, $query);
         $result = array();
         while ($rows = mysqli_fetch_assoc($row)) {
@@ -952,12 +966,13 @@ class PHPWebSocket {
             } else {
                 $html .= '<div class="to"><p>' . $value['message'] . '</p></div>';
             }
+        $this->log($html);
         $data['message'] = $html;
         return $data;
     }
 
     /**
-     *  Save New feed.
+     * Save New feed.
      * @param int $user_id
      * @param Array $data
      * @return Array
@@ -991,7 +1006,6 @@ class PHPWebSocket {
         if (mysqli_num_rows($row) == 1) {
             $rows = mysqli_fetch_assoc($row);
             $data['allStudyMate'] = $this->class_mate_list($rows['feed_by']);
-            $data['allStudyMate'][] = $user_id;
             if (in_array($user_id, $data['allStudyMate'])) {
                 $query = "INSERT INTO `ism`.`feed_comment` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $data['message'] . "',$user_id, '" . $data['to'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes');";
                 $x = mysqli_query($link, $query);
@@ -1012,4 +1026,5 @@ class PHPWebSocket {
     }
 
 }
+
 ?>

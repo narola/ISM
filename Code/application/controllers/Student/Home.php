@@ -16,8 +16,7 @@ class Home extends ISM_Controller {
 	{
 
 		$user_id = $this->session->userdata('user')['id'];
-		$data['title'] = 'ISM - Home';
-		$studymates = studymates($user_id);
+		$data['title'] = 'ISM - Home';		
 		
 		// Get Post feed
 		$options =	array(
@@ -36,10 +35,12 @@ class Home extends ISM_Controller {
 						'order_by' => 'f.id DESC'
 
 					);  
+
 		$where = array('where'=>array('f.is_delete'=> 0),'where_in'=>array('f.feed_by'=>$studymates));
 		$data['feed'] = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.posted_on,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link',$where,$options);
 		// qry();
 		// p($data['feed'],TRUE);	
+
 
 		$feed_ids = array();
 		foreach ($data['feed'] as $key => $value) {
@@ -58,41 +59,20 @@ class Home extends ISM_Controller {
 					)
 				);	
 		$where = array('where'=>array('fc.is_delete'=> 0));
-		$data['comment'] = select(TBL_FEED_COMMENT.' fc','feed_id,comment,u.full_name,p.profile_link',$where,$options);
-		// p($data['comment'],TRUE);	
+		$data['comment'] = select(TBL_FEED_COMMENT.' fc','feed_id,comment,u.full_name,p.profile_link',$where,$options);	
 
 		// Get Classmates details
-		$where = array('where' => array('sm.mate_id' =>  $user_id ));
+		$where = array('where_in' => array('u.id' =>  studymates($user_id,false)));
 		$options = array('join' => array(
-				array(
-					'table' => TBL_STUDYMATES.' sm',
-					'condition' => 'sm.mate_of = u.id'
-				),
 				array(
 					'table' => TBL_USER_PROFILE_PICTURE.' upp',
 					'condition' => 'upp.user_id = u.id'
 				)
 			),
-		'order_by' => array('sm.is_online DESC')
 		);
-		$classmate1 = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,sm.is_online',$where,$options);
-		$where = array('where' => array('sm.mate_of' =>  $user_id ));
-		$options = array('join' => array(
-				array(
-					'table' => TBL_STUDYMATES.' sm',
-					'condition' => 'sm.mate_id = u.id'
-				),
-				array(
-					'table' => TBL_USER_PROFILE_PICTURE.' upp',
-					'condition' => 'upp.user_id = u.id'
-				)
-			),
-		'order_by' => array('sm.is_online DESC')
-		);
-		$classmate2 = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,sm.is_online',$where,$options);
-		$data['classmates'] = array_merge($classmate1,$classmate2);
-		/* Get all online users */
+		$data['classmates'] = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,  (SELECT count(*) FROM `user_chat` `uc` WHERE `uc`.`sender_id` = `u`.`id` AND `uc`.`receiver_id` = '.$user_id.' AND `uc`.`received_status` = 0) as `unread_msg`',$where,$options);
 
+		/* Get all online users */
 		$all_online = rtrim(get_cookie('status'),"-");
         $all_online = ltrim($all_online,"-");
         $data['online'] = (Array)explode('-', $all_online);
