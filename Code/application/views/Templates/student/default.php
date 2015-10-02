@@ -165,7 +165,7 @@
                 <ul class="personal_menu">
                     <li><a href="/student/home">My Feeds</a></li>
                     <li><a href="#">My Exams</a></li>
-                    <li><a href="#">Studymates</a></li>
+                    <li><a href="/student/studymates">Studymates</a></li>
                     <li><a href="#">My Activities</a></li>
                     <li><a href="/student/notice_board">Notice Board</a></li>
                 </ul>
