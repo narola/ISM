@@ -1,5 +1,6 @@
 <div class="col-sm-7 main main_tut">
     <?php 	if(isset($topic) && !empty($topic)){ ?>
+            <div class="fixed_comment">
                 <div class="row discussion_header">
                 	<div class="col-sm-12">
                         <h3><span>Topic - </span><?php echo $topic['topic_name']; ?></h3>
@@ -17,6 +18,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
                 <div class="row discussion">
                 <?php 
                 if(isset($discussion) && count($discussion) > 0){
@@ -68,6 +70,7 @@
                         	<a href="#" class="icon icon_image"></a>
                             <a href="#" class="icon icon_mic"></a>
                             <a href="#" class="icon icon_link"></a>
+                            <button class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
                         </div>
                     	<textarea placeholder="SAY IT" data-type="discussion"></textarea>
                         <a href="#" class="icon icon_emoji"></a>

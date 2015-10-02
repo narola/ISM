@@ -25,6 +25,22 @@
 	.add_exam{
 		height:215px;
 	}
+	.fixed_comment{
+		width: 44.6%;
+	}
+	.admin_question {
+    	width: 84%;
+	}
+	.item_chart:after, .item_chart:before{
+		left:8px;
+	}
+	.calculator, .white_board, .explore, .dictionary{
+		width:81%;
+	}
+	.board_tools > li{
+		padding: 5px 4.6%;
+	}
+	
 }
 @media (max-width:1280px){
 	.login_background{
@@ -49,7 +65,7 @@
 		float:left;
 	}
 	.sidebar_left_container .logout{
-		bottom:47px;
+		bottom:42px;
 	}
 	.table_user .squaredThree label{
 		left:20px;
@@ -122,13 +138,16 @@
 		width:80%;
 	}
 	.calc_btns .btn{
-		width: 19.3%;
+		width: 19.6%;
 	}
-	.basic_btns .btn{
-		 width: 24.3%;
+	.basic_btns .btn {
+    	width: 24.6%;
 	}
 	.basic_btns .btn_0 {
-    	width: 49.5%;
+    	width: 49.6%;
+	}
+	.fixed_comment {
+    	width: 44.5%;
 	}
 	.item_chart:after, .item_chart:before{
 		left:4px;
@@ -222,9 +241,6 @@
 	}
 	.three_tabs{
 		margin-top:25px;
-	}
-	.sidebar_left_container .logout{
-		bottom: 45px;
 	}
 	.main2{
 		width: 64%;
@@ -358,6 +374,9 @@
 	}
 	.studymate_recom .mate_descrip p:first-child, .studymate_recom .mate_descrip p:nth-last-child(2){
 		display:block;
+	}
+	.fixed_comment {
+    	width: 36.9%;
 	}
 }
 
@@ -547,6 +566,9 @@
 	}
 	.main_wide .filter .form-group {
     	width: 31.9%;
+	}
+	.study_mate .mate_user_img{
+		margin: 0 15px 15px 0;
 	}
 }
 @media (max-width:768px){
