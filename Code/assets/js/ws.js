@@ -1,4 +1,9 @@
 $(document).ready(function () {
+
+  /*  $('html, body').animate({
+    scrollTop: $("#target-element").offset().top
+}, 1000);*/
+    
     $(document).on('click', '.chat .chat_header', function () {
         if ($(this).parent().hasClass('passive')) {
             if ($(this).parent().hasClass('chat_3')) {
@@ -231,7 +236,16 @@ $(document).on('click', '#mate_list', function () {
         str += '<input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="16">';
         str += '</div>';
         $('#chat_container').append(str);
-          $("#chat_container .chat[data-id='"+id+"'] .chat_text").mCustomScrollbar({theme:"minimal-dark"});
+        $("#chat_container .chat[data-id='"+id+"'] .chat_text")
+        .mCustomScrollbar({
+            theme:"minimal-dark"
+            /*callbacks:{
+                    onSelectorChange: function(){
+                         $("#chat_container .chat[data-id='"+id+"'] .chat_text .mCustomScrollBox .mCSB_container").animate({
+                            scrollTop: $("#chat_container .chat[data-id='"+id+"'] .chat_text .mCustomScrollBox .mCSB_container")[0].scrollHeight}, 10);
+                     }
+            }*/
+});
     } else {
         $(".chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
     }
@@ -386,3 +400,15 @@ $(document).on('click','a[data-type="feed-like"]',function(e){
 
 });
 
+$('a[href^="#"]').on('click', function(event) {
+
+    var target = $( $(this).attr('href') );
+
+    if( target.length ) {
+        event.preventDefault();
+        $('html, body').animate({
+            scrollTop: target.offset().top
+        }, 1000);
+    }
+
+});

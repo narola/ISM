@@ -1,5 +1,6 @@
 <div class="col-sm-7 main main_tut">
-            	<div class="row discussion_header">
+    <?php 	if(isset($topic) && !empty($topic)){ ?>
+                <div class="row discussion_header">
                 	<div class="col-sm-12">
                         <h3><span>Topic - </span><?php echo $topic['topic_name']; ?></h3>
                         <a href="#" class="icon icon_expand"></a>
@@ -25,7 +26,7 @@
                        $clss_me = '';
                        if($v['sender_id'] == $user_id)
                         $clss_me = 'me';
-                      // if($v['week_day'] <= 2){
+                       if($v['week_day'] <= 2){
                             if($week !== $v['week_day']){
                                 $week = $v['week_day'];
                             ?>
@@ -46,12 +47,13 @@
                                 </div>
                             </div>
                             <?php
-                           // }
+                            }
                         $i++;
                     }
                 }
                 ?> 
-                </div>            
+                </div>
+                <?php if($current_weekday <= 3){ ?>           
                 <div class="row">
                		<!--input-->
                     <div class="col-sm-12 input">
@@ -59,6 +61,7 @@
                           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                           Active hours are finished!
                         </div>
+                        
                     	<div class="option_bar" data-type="discussion-submit">
                         	<a href="#" class="icon icon_pin"></a>
                         	<a href="#" class="icon icon_image"></a>
@@ -66,10 +69,18 @@
                             <a href="#" class="icon icon_link"></a>
                         </div>
                     	<textarea placeholder="SAY IT" data-type="discussion"></textarea>
-                        <a href="#" class="icon icon_emoji"></a>                        
+                        <a href="#" class="icon icon_emoji"></a>
+                                             
                     </div>
                     <!--//input-->
-                </div>    
+                </div>
+                <?php 
+                }
+                 }else{ 
+?>
+<h1>No topic allocated for this week!</h1>
+<?php
+                } ?>  
             </div>
 
 

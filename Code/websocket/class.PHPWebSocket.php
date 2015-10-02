@@ -455,6 +455,8 @@ class PHPWebSocket {
 
 
 
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -653,6 +655,8 @@ class PHPWebSocket {
 
 
 
+
+
             
 // work out hash to use in Sec-WebSocket-Accept reply header
         $hash = base64_encode(sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
@@ -775,11 +779,16 @@ class PHPWebSocket {
         return $this->wsSendClientMessage($clientID, $binary ? self::WS_OPCODE_BINARY : self::WS_OPCODE_TEXT, $message);
     }
 
-    function log($message) {
+    function log($message, $status = true) {
+        $re = 'Request';
+        if ($status == false) {
+            $re = 'Responce';
+        }
+        echo "\n---------------------------------------- Time: " . date("H:m:s") . " ($re)\n\n";
         if (is_array($message)) {
-            echo "\n" . date('Y-m-d H:i:s: ') . json_encode($message) . "\n";
+            print_r($message);
         } else {
-            echo "\n" . date('Y-m-d H:i:s: ') . $message . "\n";
+            echo $message;
         }
     }
 
@@ -972,7 +981,6 @@ class PHPWebSocket {
             } else {
                 $html .= '<div class="to"><p>' . $value['message'] . '</p></div>';
             }
-        $this->log($html);
         $data['message'] = $html;
         return $data;
     }
@@ -1029,7 +1037,6 @@ class PHPWebSocket {
             $data['to'] = 'self';
             $data['error'] = 'Unable to Identify post. Please don\'t modify data manually.';
         }
-        $this->log($data);
         return array_merge($data, $this->get_client_info($user_id));
     }
 
@@ -1049,7 +1056,6 @@ class PHPWebSocket {
                 $data['feed'] = $all;
             }
         }
-        $this->log($data);
         return $data;
     }
 
@@ -1090,7 +1096,6 @@ class PHPWebSocket {
             $data['to'] = 'self';
             $data['error'] = 'Unable to Identify post. Please don\'t modify data manually.';
         }
-        $this->log($data);
         return array_merge($data, $this->get_client_info($user_id));
     }
 
@@ -1107,10 +1112,9 @@ class PHPWebSocket {
                     . "LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `tg`.`group_id` "
                     . "WHERE `tm`.`user_id` = $userId AND `tg`.`week_no` = $c_week LIMIT 1";
             $row = mysqli_query($link, $query);
-            $this->log(mysqli_error_list($link));
             if (mysqli_num_rows($row) == 1) {
                 $rows = mysqli_fetch_assoc($row);
-                $query = "INSERT INTO `ism`.`tutorial_group_discussion` (`id`, `group_id`, `topic_id`, `sender_id`, `message`, `message_type`, `message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, '".$data['message']."', '', '', '0', '', '', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
+                $query = "INSERT INTO `ism`.`tutorial_group_discussion` (`id`, `group_id`, `topic_id`, `sender_id`, `message`, `message_type`, `message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, '" . $data['message'] . "', '', '', '0', '', '', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
                 $x = mysqli_query($link, $query);
                 $data['disscusion_id'] = mysqli_insert_id($link);
                 if (!$x) {

@@ -15,8 +15,9 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $Server->wsClose($clientID);
         return;
     }
-
+   
     $data = json_decode($message, true);
+    $Server->log($data);
     /* For individual chat */
     if ($data['type'] == 'studymate') {
         $responce = $Server->single_chat($clientID, $data);
@@ -35,7 +36,6 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                             'profile_link' => $user_info['profile_link'],
                             'message' => "<b>" . $user_info['full_name'] . "</b> is now online!"
                         );
-                        $Server->log("Online");
                         $Server->wsSend($id, json_encode($res));
                     }
                 }
@@ -46,7 +46,6 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->get_latest_msg($data, $Server->wsClients[$clientID][12]);
     } else if ($data['type'] == 'post') {
         $responce = $Server->classmate_post($Server->wsClients[$clientID][12], $data);
-        $Server->log($responce);
     } else if ($data['type'] == 'feed_comment') {
         $responce = $Server->classmate_comment($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'load_more_feed') {
@@ -66,6 +65,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     }
     $check = array('feed_comment', 'like', 'discussion');
     if (isset($responce)) {
+        $Server->log($responce,false);
         if ($responce['to'] == 'self') {
             $Server->wsSend($clientID, json_encode($responce));
         } else {
@@ -117,7 +117,6 @@ function wsOnClose($clientID, $status) {
                     'message' => "<b>" . $user_info['full_name'] . "</b> is now offline!",
                     'online_users' => $Server->check_online_classmate($Server->wsClients[$clientID][12])
                 );
-                $Server->log("Offline");
                 $Server->wsSend($id, json_encode($res));
             }
         }

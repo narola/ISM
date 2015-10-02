@@ -21,10 +21,9 @@ class Tutorial extends ISM_Controller {
 			$data['weekday'] = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
 			$data['user_id'] = $user_id = $this->session->userdata('user')['id'];
 			$is_active = false;
-			//$data['title'] = 'ISM - Group Tutorial';
+			$data['title'] = 'ISM - Group Tutorial';
 			$data['active_comment'] = 0;
-			$data['disable_group_chatting'] = false;
-
+			$data['menu'] = 'week';
 			// Store remaining reconds of active time or 0 if inactive hours.
 			$data['time'] = active_hours();
 			if($data['time'] > 0){
@@ -32,10 +31,9 @@ class Tutorial extends ISM_Controller {
 			}
 
 			// Get Current week no.
+			$data['current_weekday'] = getdate()['wday'];
 			$c_week = ceil(getdate()['yday']/7);
-			if($c_week > 3){
-				$data['disable_group_chatting'] = true;
-			}
+			
 
 			// Get current topic data from DB
 			$data['topic']  = select(
@@ -144,7 +142,7 @@ class Tutorial extends ISM_Controller {
 						)
 					)
 				);
-		//	p($data,true);
+			// p($data,true);
 			$this->template->load('student/default','student/tutorial_group',$data);
 	}	
 
