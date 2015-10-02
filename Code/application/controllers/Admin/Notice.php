@@ -10,24 +10,44 @@ class Notice extends ADMIN_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->data['page_title'] = 'Notice';
 	}
 
 	//  List All noticeboard view,delete,add,and change into archive notice
 	public function index()
 	{
-		$this->data['page_title'] = 'Notice';
-
+		
 		if($_GET){
 
+			if( !empty($_GET['role']) ) { $role = $this->input->get('role'); }	
+			if( !empty($_GET['status']) ) { $status = $this->input->get('status'); }	
+
+			if( !empty($role) || !empty($status) ){
+
+				$str = '';
+				
+				$where['noticeboard.is_delete'] = FALSE;
+
+				if(!empty($role)){ $where['noticeboard_viewer.role_id'] = $role ; $str .= '&role='.$role; }	
+				if(!empty($status)){ $where['noticeboard.status'] = $status;   $str .= '&status='.$status; }
+
+				$str =  trim($str,'&');
+
+				$config['base_url'] = base_url().'admin/notice/index?'.$str;
+				$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
+				$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
+
+			}				
+
 		}else{
-			$where = array('is_delete'=>FALSE);
+			$where = array('noticeboard.is_delete'=>FALSE);
 			$config['base_url'] = base_url().'admin/notice/index';	
 			$offset = $this->uri->segment(4);
 		}
-		
+
 		$config['num_links'] = 5;
 		$config['total_rows'] = select(TBL_NOTICEBOARD,FALSE,array('where'=>$where),array('count'=>TRUE,'join'=>array(array('table'=>'noticeboard_viewer','condition'=>'noticeboard.id=noticeboard_viewer.notice_id'))));
-		$config['per_page'] = 10;
+		$config['per_page'] = 2;
 
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
  		$config['full_tag_close'] = '</ul>';
@@ -40,7 +60,7 @@ class Notice extends ADMIN_Controller {
 	 	$config['first_tag_close'] = '</li>';
 
 	 	$config['cur_tag_open'] = '<li style="display:none"></li><li class="active"><a>';
-	 	$config['cur_tag_close'] = '</a></li>';
+	 	$config['cur_tag_close'] = '</a></li><li style="display:none"></li>';
 
 	 	$config['prev_link'] = '&laquo;';
 	 	$config['prev_tag_open'] = '<li>';
@@ -55,8 +75,8 @@ class Notice extends ADMIN_Controller {
 	 	$config['last_tag_close'] = '</li>';
 
 		$this->data['notices'] = select(TBL_NOTICEBOARD,
-										"noticeboard.notice,noticeboard.created_date,noticeboard.notice_title,noticeboard_viewer.role_id",
-										array('where'=>array('noticeboard.is_delete'=>FALSE)),
+										"noticeboard.id,noticeboard.notice,noticeboard.created_date,noticeboard.notice_title,noticeboard_viewer.role_id",
+										array('where'=>$where),
 										array(
 											'limit'=>$config['per_page'],
 											'offset'=>$offset,
@@ -69,9 +89,8 @@ class Notice extends ADMIN_Controller {
 												)
 											)
 										);
-		qry();
-		p($this->data['notices'],true);	
 
+		
 		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
 		$this->data['courses'] = select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));
 		$this->data['roles'] = select(TBL_ROLES,FALSE,FALSE,array('limit'=>10));
