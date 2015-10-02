@@ -209,7 +209,9 @@ class Common_model extends CI_Model {
 *	@Author - (Kamlesh Pokiya) KAP
 **/
 
-function class_mate_list($user_id, $append = true) {
+
+
+	function class_mate_list($user_id, $append = true) {
 
    
     $where = array('where'=>array('mate_id'=>$user_id),'or_where'=>array('mate_of'=>$user_id));

@@ -38,7 +38,20 @@
                                     <span class="date"><?php $old_date = strtotime($value['posted_on']);echo date("M j, Y",$old_date);?></span>
                                     <div class="clearfix"></div>
                                     <p><?php echo $value['feed_text'];?></p>
-                                    <a href="javascript:void(0);" data-id="<?php echo $value['fid'];?>" data-type="feed-like" class="like_btn"><span class="icon icon_thumb_0"></span><span><?php echo $value['tot_like'];?></span></a>
+                                    <a href="javascript:void(0);" data-id="<?php echo $value['fid'];?>" data-type="feed-like" class="like_btn">
+                                        <?php 
+                                            if($value['my_like'] == 1 || $value['my_like'] == ''){
+                                            ?>
+                                                <span class="icon icon_thumb_0"></span>
+                                            <?php
+                                            }
+                                            else{
+                                            ?>
+                                                <span class="icon icon_thumb"></span>
+                                            <?php
+                                            }
+                                        ?>    
+                                        <span><?php echo $value['tot_like'];?></span></a>
                                     <a href="#" class="comment_btn"><span class="icon icon_comment"></span><?php echo $value['tot_comment'];?></a>
                                     <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
                                     <div class="dropdown tag_user" style="display: inline-block;">
@@ -272,29 +285,19 @@
                         
                           <!-- Wrapper for slides -->
                           <div class="carousel-inner" role="listbox">
-                            <div class="item active">
-                              <!--card-->
-                                <div class="suggested_mates_card">
-                                    <div class="mate_user_img">
-                                        <img src="<?php echo base_url();?>assets/images/user6.jpg">
-                                    </div>
-                                    <div class="mate_descrip">
-                                        <p class="mate_name">Adam Stranger</p>
-                                        <p class="mate_following">Folowing 34 Authers</p>
-                                        <p>Live in Ghana</p>
-                                        <p>Student from St.Xeviers</p>
-                                        <p>F.Y. CS</p>
-                                        <button class="btn btn_green">Add Studymates</button>
-                                    </div>
-                                </div>
-                                <!--//card-->
-                            </div>
+                            
                             <?php 
                                 if(isset($suggested_studymates)){
                                     $i = 1;
                                     foreach ($suggested_studymates as $key => $value) {
+                                        if($i == 1)
+                                            $class = ' active';
+                                        else
+                                            $class = '';
+
+
                                     ?>
-                                        <div class="item">
+                                        <div class="item<?php echo $class;?>">
                                           <!--card-->
                                             <div class="suggested_mates_card">
                                                 <div class="mate_user_img">

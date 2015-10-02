@@ -141,15 +141,15 @@ class Topic extends ADMIN_Controller {
 	public function archive_topic(){
 		$curr = $this->input->post('is_archive');
 		$new = ($curr == 0) ? 1 : 0;
+
 		$topic_id = $this->input->post('topic_id');
 		$data=array(
 				 "is_archived"=>$new
 				 );
-		// update('tutorial_topic',$topic_id,$data);	// Update data  using common_model.php and cms_helper.php
+		update('tutorial_topic',$topic_id,$data);	// Update data  using common_model.php and cms_helper.php
 		
-		$response = array('topic_id'=>$topic_id,
-			'curr'=>$curr,
-			'is_archived'=>$new
+		$response = array('status'=>$new,
+			'id'=>'archive_'.$topic_id
 			);
 		echo json_encode($response);
 		exit; 
