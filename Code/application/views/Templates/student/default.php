@@ -162,37 +162,38 @@
                     <li><a href="#"><span class="icon icon_request"></span><span class="badge request_badge">07</span></a></li>
                 </ul>
                 <!--//notification-->
-
-                <?php if(isset($menu)){ 
-                    if($menu == 'personal'){
-                ?>
-                    <ul class="personal_menu">
-                        <li><a href="/student/home">My Feeds</a></li>
-                        <li><a href="#">My Exams</a></li>
-                        <li><a href="#">Studymates</a></li>
-                        <li><a href="#">My Activities</a></li>
-                        <li><a href="/student/notice_board">Notice Board</a></li>
-                    </ul>
+                    
                 <?php 
-                    }else if($menu == 'week'){
-                        ?>
-                   <div class="tut_week">
-                    <div class="tut_week_heading">
-                        <p>Week 1</p>                   
+                if(isset($menu)){
+                    ?>
+                    <div class="tut_week">
+                        <div class="tut_week_heading">
+                            <p>Week 1</p>                   
+                        </div>
+                        <ul class="tut_weekdays">
+                            <li><a href="#Monday">Monday</a></li>
+                            <li><a href="#Tuesday">Tuesday</a></li>
+                            <li><a href="#Wednesday">Wednesday</a></li>
+                            <li><a href="#">Thursday</a></li>
+                            <li><a href="#">Friday</a></li>
+                            <li><a href="#">Saturday</a></li>
+                        </ul>
+                        <div class="clearfix"></div>
                     </div>
-                    <ul class="tut_weekdays">
-                        <li><a href="#Monday">Monday</a></li>
-                        <li><a href="#Tuesday">Tuesday</a></li>
-                        <li><a href="#Wednesday">Wednesday</a></li>
-                        <li><a href="#">Thursday</a></li>
-                        <li><a href="#">Friday</a></li>
-                        <li><a href="#">Saturday</a></li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
-                        <?php
-                    }
-                } ?>
+                <?php
+                }
+                else{
+                ?>
+                 <ul class="personal_menu">
+                    <li><a href="/student/home">My Feeds</a></li>
+                    <li><a href="#">My Exams</a></li>
+                    <li><a href="#">Studymates</a></li>
+                    <li><a href="#">My Activities</a></li>
+                    <li><a href="/student/notice_board">Notice Board</a></li>
+                </ul>
+                <?php
+                    } 
+                ?>
 
                 <a href="login/logout" class="logout"><span class="icon icon_logout"></span>LogOut</a>
                 <p class="copyright">©2015 ISM | All Rights Reserved.</p>
