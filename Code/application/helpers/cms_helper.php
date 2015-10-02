@@ -116,6 +116,7 @@ function flashMessage($success = '', $error = '') {
 * Return difference between two times in seconds.
 * @time1 = Basically End Time
 * @time2 = Basically Current Time
+* @Author = Sandip Gopani (SAG)
 */
 
 function dateDiff($time1, $time2) {
@@ -183,7 +184,6 @@ function dateDiff($time1, $time2) {
  		}
  		
  	}
-    
     return $seconds;
   }
 

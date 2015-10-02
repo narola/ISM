@@ -183,9 +183,9 @@
                         <li><a href="#Monday">Monday</a></li>
                         <li><a href="#Tuesday">Tuesday</a></li>
                         <li><a href="#Wednesday">Wednesday</a></li>
-                        <li><a href="#Thursday">Thursday</a></li>
-                        <li><a href="#Friday">Friday</a></li>
-                        <li><a href="#Saturday">Saturday</a></li>
+                        <li><a href="#">Thursday</a></li>
+                        <li><a href="#">Friday</a></li>
+                        <li><a href="#">Saturday</a></li>
                     </ul>
                     <div class="clearfix"></div>
                 </div>
