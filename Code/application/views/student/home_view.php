@@ -111,8 +111,8 @@
 
                 <!--//feed box-->
                 
-                <div class="box text-center load_more">
-                    <button href="javascript:void(0);" data-type="load_more" data-start="4">Load More</button>
+                <div class="box text-center load_more mate_descrip">
+                    <button href="javascript:void(0);" data-type="load_more" data-start="4" class="btn btn_green no-margin">Load More</button>
                 </div>
             </div>
             <!--//main-->
