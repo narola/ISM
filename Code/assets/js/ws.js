@@ -117,6 +117,9 @@ if ("WebSocket" in window)
             else{
                 $('.like_btn[data-id="' + obj.fid + '"] span:nth-of-type(2)').html(obj.like_cnt);
             }   
+        }else if(obj.type == "discussion-type"){
+            $('.box_footer[data-id="'+obj.type_id+'"]').html(obj.message);
+            setTimeout(function(){  $('.box_footer[data-id="'+obj.type_id+'"]').html('Online'); }, 2000);
         }
         else {
             alert('Message Not Catched!!');
@@ -340,6 +343,17 @@ $(document).on('click','.option_bar[data-type="discussion-submit"]',function(){
         ws.send(JSON.stringify(request));
 });
 
+$(document).on('keypress','textarea[data-type="discussion"]',function(){
+    var request = {
+            type: 'discussion-type',
+            to: 'all',
+            message:'Typing..',
+            error: ''
+        };
+        ws.send(JSON.stringify(request));
+});
+
+
 function generate_cm(obj){
     var cl_me = "";
     if(wp == obj.id)
@@ -354,6 +368,7 @@ function generate_cm(obj){
     str += '<p>'+obj.message+'</p>';
     str += '</div>';
     str += '</div>';
+    $('textarea[data-type="discussion"]').val('');
     $('.row.discussion').append(str);
     $('.row.discussion div[data-id="'+obj.disscusion_id+'"]').fadeOut(0).fadeIn(400);
 }
@@ -368,5 +383,6 @@ $(document).on('click','a[data-type="feed-like"]',function(e){
     };
     ws.send(JSON.stringify(request));
     $(this).val('');
+
 });
 
