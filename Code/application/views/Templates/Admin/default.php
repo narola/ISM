@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>ISM Admin | <?php echo $page_title; ?></title>
+    <title>ISM Admin | <?php if(!empty($page_title)){ echo $page_title; } ?></title>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1"><title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="<?php echo base_url();?>" >
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <!--custom css-->
@@ -53,12 +53,12 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li><a href="Home.html"><span class="icon icon_menu_home"></span> Home</a></li>
+            <li><a href="#"><span class="icon icon_menu_home"></span> Home</a></li>
             <li class="dropdown">
             	<a href="Tutorial.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
                 <ul class="dropdown-menu">
                     <li><a href="#">Question Bank</a></li>
-                    <li><a href="Exam.html">Exams</a></li>
+                    <li><a href="#">Exams</a></li>
                 </ul>
             </li>
             <li><a href="#"><span class="icon icon_menu_group"></span> Groups</a></li>
@@ -166,7 +166,7 @@
                         <a href="#"><span class="icon icon_ques"></span>Questionaries</a>
                     </li>
                     <li>
-                        <a href="#"><span class="icon icon_credencial"></span>General Credencials</a>
+                        <a href="admin/auto_generated_credentials"><span class="icon icon_credencial"></span>Generate Credencials</a>
                     </li>
                 </ul>
                 <a href="admin/logout" class="logout"><span class="icon icon_logout"></span>LogOut</a>

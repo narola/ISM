@@ -475,6 +475,11 @@
         $('#birthdate input').datepicker({
             format: 'yyyy-mm-dd'
         });
+
+
+        function send_email(){
+            
+        }
 </script>
 
 </body>

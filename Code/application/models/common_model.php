@@ -4,55 +4,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Common_model extends CI_Model {
 
 	/**
-	 * function get(),get_all(),insert(),update(),delete()
+	 * function insert(),update(),delete()
 	 * @return Either Array Or Object Or Integer
 	 * @author Virendra patel (Sparks Id-VPA)
 	 **/
 
-	public function get($table,$data=FALSE,$format=FALSE)
-	{
-		if($format == TRUE){
-			$method = 'row';	
-		}else{
-			$method = 'row_array';
-		}
-
-		if(!is_array($data)){
-			$data = array('id'=>$data);
-		}
-		$res = $this->db->get_where($table,$data)->$method();
-		return $res;
-	}
-
-	public function get_all($table,$data=FALSE,$limit=FALSE,$offset=FALSE,$format=FALSE)
-	{
-		if($format == TRUE){
-			$method = 'result';	
-		}else{
-			$method = 'result_array';
-		}
-
-		if(!empty($data)){
-			$get = 'get_where';
-		}else{
-			$get = 'get';
-		}
-
-		if(!empty($limit) && !empty($offset)){
-			$this->db->limit($limit,$offset);
-		}else{
-			$this->db->limit($limit);
-		}
-
-		$res = $this->db->$get($table,$data)->$method();
-		return $res;
-	}
-
-
 	public function insert($table,$data){
 
 		$this->db->insert($table,$data);
-		$id = $this->db->insert_id();
+		$id = $this->db->insert_id(); // fetch last inserted id in table
 		return $id;
 	}
 	
@@ -63,7 +23,7 @@ class Common_model extends CI_Model {
             	$this->db->where('id',$id);
             }
 		$this->db->update($table,$data);
-		$update_id = $this->db->affected_rows();
+		$update_id = $this->db->affected_rows(); // fetch affected rown in table.
 		return $update_id;
 	}
 
@@ -74,23 +34,6 @@ class Common_model extends CI_Model {
 			$this->db->where(array('id'=>$id));
 		}
 		$this->db->delete($table);
-	}
-
-
-	public function is_loggedin(){
-
-		return (bool)$this->session->userdata('loggedin');
-	}
-
-	public function count($table,$data){
-		$this->db->where($data);
-		$res = $this->get_all($table);
-		return count($res);
-	}
-
-	public function count_all($table){
-		$res = $this->get_all($table);
-		return count($res);
 	}
 
 /* 	Master function to select required data from DB
@@ -210,8 +153,8 @@ class Common_model extends CI_Model {
 **/
 
 
-	function class_mate_list($user_id, $append = true) {
 
+	function class_mate_list($user_id, $append = true) {
    
     $where = array('where'=>array('mate_id'=>$user_id),'or_where'=>array('mate_of'=>$user_id));
     $result = $this->sql_select(TBL_STUDYMATES,'mate_id,mate_of',$where);

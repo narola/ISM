@@ -153,11 +153,11 @@
 
         var error_count = 0;
 
-        if(school_id == '' || $.isNumeric(school_id) == false){  alert('IF1'); error_count++; }
-        if(noc == '' || $.isNumeric(noc) == false){ alert('IF2'); error_count++; }
-        if(course_id == '' || $.isNumeric(course_id) == false){ alert('IF3'); error_count++; }
-        if(role_id == '' || $.isNumeric(role_id) == false){ alert('IF4'); error_count++; }
-        if(year_id == '' || $.isNumeric(year_id) == false){ alert('IF5'); error_count++; }
+        if(school_id == '' || $.isNumeric(school_id) == false){   error_count++; }
+        if(noc == '' || $.isNumeric(noc) == false){  error_count++; }
+        if(course_id == '' || $.isNumeric(course_id) == false){  error_count++; }
+        if(role_id == '' || $.isNumeric(role_id) == false){  error_count++; }
+        if(year_id == '' || $.isNumeric(year_id) == false){  error_count++; }
 
         if(error_count == 0){
 
