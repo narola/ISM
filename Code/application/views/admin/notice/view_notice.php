@@ -5,17 +5,20 @@
             <div class="row filter">
               <div class="col-sm-12">
                   <div class="form-group">
-                        <select class="form-control" name="school" onchange="filter_data()" id="school">
+                        <select class="form-control"   onchange="filter_data()" id="school">
                               <option value="">Select School</option>
                           </select>
                     </div>
                     <div class="form-group">
-                       <select class="form-control" name="course" onchange="filter_data()" id="course" >
-                            <option value="">Select Course</option>
+                       <select class="form-control" name="status" onchange="filter_data()" id="status" >
+                            <option value="">Select Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="archive">Archive</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <select class="form-control" name="year" onchange="filter_data()" id="year">
+                        <select class="form-control"   onchange="filter_data()" id="year">
                             <option value="">Select Year</option>
                             <option value="2015">2015</option>
                             <option value="2016">2016</option>
@@ -24,11 +27,23 @@
                     <div class="form-group">
                         <select class="form-control" name="role" id="role" onchange="filter_data()">
                             <option value="">School Role</option>
+                            <?php 
+                              if(!empty($roles)){ 
+                                foreach($roles as $role) {
+                                ?>
+                                <option value="<?php echo $role['id']; ?>"><?php echo $role['role_name']; ?></option>  
+                            <?php }  } ?>
                         </select>
                     </div>
                     <div class="form-group">
-                        <select class="form-control" name="classroom" id="classroom" onchange="filter_data()">
+                        <select class="form-control" id="classroom" onchange="filter_data()">
                             <option value="">School Classroom</option>
+                            <?php 
+                              if(!empty($classrooms)){ 
+                                foreach($classrooms as $classroom) {
+                                ?>
+                                <option value="<?php echo $classroom['id']; ?>"><?php echo $classroom['class_name']; ?></option>  
+                            <?php }  } ?>
                         </select>
                     </div>
                 </div>
@@ -139,6 +154,31 @@ if(!empty($notices)) {
         foreach($notices as $notice) {
         ?> 
         var clientTarget = new ZeroClipboard( $("#notice_<?php echo $notice['id']; ?>") );
-    <?php } } ?>        
- 
+    <?php } } ?>
+
+    function filter_data(){
+        
+        var role = $('#role').val();
+        var status = $('#status').val();
+        var classroom = $('#classroom').val();
+        
+        if(role == '' ){ $('#role').removeAttr('name'); }
+        if(status == '' ){ $('#status').removeAttr('name'); }
+        if(classroom == ''){ $('#classroom').removeAttr('name'); }
+
+        $('#filter').submit();
+    }
+
+    <?php if(!empty($_GET['role'])) { ?>
+        $('#role').val('<?php echo $_GET["role"];?>');  
+    <?php } ?>
+
+    <?php if(!empty($_GET['status'])) { ?>
+        $('#status').val('<?php echo $_GET["status"];?>');  
+    <?php } ?>
+
+    <?php if(!empty($_GET['classroom'])) { ?>
+        $('#classroom').val('<?php echo $_GET["classroom"];?>');    
+    <?php } ?>
+
 </script>

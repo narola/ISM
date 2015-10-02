@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>ISM Admin | <?php echo $page_title; ?></title>
+    <title>ISM Admin | <?php if(!empty($page_title)){ echo $page_title; } ?></title>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1"><title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="<?php echo base_url();?>" >
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <!--custom css-->
