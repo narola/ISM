@@ -26,9 +26,14 @@ class Home extends ISM_Controller {
 								'condition' => 'u.id = f.feed_by'
 							),
 							array(
-								'table'=>TBL_USER_PROFILE_PICTURE.' p',
+								'table' => TBL_USER_PROFILE_PICTURE.' p',
 								'condition' => 'u.id = p.user_id'	
+							),
+							array(
+								'table' => TBL_FEED_LIKE.' l',
+								'condition' => 'l.feed_id = f.id and l.like_by ='.$user_id
 							)
+
 						),
 						'limit'=>4,
 						'offset'=>0,
@@ -37,7 +42,7 @@ class Home extends ISM_Controller {
 					);  
 
 		$where = array('where'=>array('f.is_delete'=> 0),'where_in'=>array('f.feed_by'=>studymates($user_id)));
-		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.posted_on,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link',$where,$options);
+		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.posted_on,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link,l.is_delete as my_like',$where,$options);
 		
 		//---find feeds
 		$feed_ids = array();
