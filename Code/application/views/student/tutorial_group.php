@@ -28,11 +28,11 @@
                        $clss_me = '';
                        if($v['sender_id'] == $user_id)
                         $clss_me = 'me';
-                       if($v['week_day'] <= 2){
+                      // if($v['week_day'] <= 2){
                             if($week !== $v['week_day']){
                                 $week = $v['week_day'];
                             ?>
-                            <div class="divide_discussion col-sm-12">                    
+                            <div class="divide_discussion col-sm-12" id="<?php echo $weekday[$v['week_day']-1]; ?>">                    
                                 <div class="clearfix"></div>                    
                                 <hr><h4><?php echo $weekday[$v['week_day']-1]; ?></h4>
                             </div>
@@ -49,21 +49,22 @@
                                 </div>
                             </div>
                             <?php
-                            }
+                          //  }
                         $i++;
                     }
                 }
                 ?> 
                 </div>
-                <?php if($current_weekday <= 3){ ?>           
+                <?php //if($current_weekday <= 3){ ?>           
                 <div class="row">
                		<!--input-->
                     <div class="col-sm-12 input">
-                    	<div class="alert alert-danger alert-dismissible" role="alert">
+                    	<?php if($time == 0){ ?>
+                        <div class="alert alert-danger alert-dismissible" role="alert">
                           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                           Active hours are finished!
                         </div>
-                        
+                        <?php } ?>
                     	<div class="option_bar" data-type="discussion-submit">
                         	<a href="#" class="icon icon_pin"></a>
                         	<a href="#" class="icon icon_image"></a>
@@ -78,7 +79,7 @@
                     <!--//input-->
                 </div>
                 <?php 
-                }
+              //  }
                  }else{ 
 ?>
 <h1>No topic allocated for this week!</h1>
@@ -218,7 +219,7 @@
                     </div>
                     <div class="box">
                         <div class="box_body">
-                            <h5>Active Comments : <span><?php echo $active_comment; ?></span></h5>
+                            <h5>Active Comments : <span id="active_comment_count"><?php echo $active_comment; ?></span></h5>
                         </div>
                     </div>                    
                     <div class="box">

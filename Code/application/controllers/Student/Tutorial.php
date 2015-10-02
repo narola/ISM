@@ -72,6 +72,7 @@ class Tutorial extends ISM_Controller {
 				'single' => true
 				)
 			);
+
 			// Check topic found or not.
 			if(isset($data['topic']) && !empty($data['topic'])){
 				// Get all discussion messages.
@@ -142,7 +143,7 @@ class Tutorial extends ISM_Controller {
 						)
 					)
 				);
-			// p($data,true);
+			   //p($data,true);
 			$this->template->load('student/default','student/tutorial_group',$data);
 	}	
 

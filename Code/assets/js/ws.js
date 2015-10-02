@@ -382,6 +382,9 @@ function generate_cm(obj){
     str += '<p>'+obj.message+'</p>';
     str += '</div>';
     str += '</div>';
+    if(obj.active_count != 'skip'){
+        $('#active_comment_count').html(obj.active_count);
+    }
     $('textarea[data-type="discussion"]').val('');
     $('.row.discussion').append(str);
     $('.row.discussion div[data-id="'+obj.disscusion_id+'"]').fadeOut(0).fadeIn(400);
@@ -400,15 +403,13 @@ $(document).on('click','a[data-type="feed-like"]',function(e){
 
 });
 
-$('a[href^="#"]').on('click', function(event) {
-
-    var target = $( $(this).attr('href') );
-
-    if( target.length ) {
-        event.preventDefault();
-        $('html, body').animate({
-            scrollTop: target.offset().top
-        }, 1000);
+$(document).on('click','.tut_weekdays li a', function(e) {
+    var nav = $(this).attr('href');
+     e.preventDefault();
+if (nav.length) {
+        $('html,body').animate({
+            scrollTop: $(nav).offset().top},
+            'slow');
     }
-
+    return false;
 });
