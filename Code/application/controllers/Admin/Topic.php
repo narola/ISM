@@ -116,6 +116,21 @@ class Topic extends ADMIN_Controller {
 	}
 
 	/**
+	* ajax function to allocate topic to groups 
+	*/
+	public function allocate(){
+
+		$ddate = date('Y-m-d', time());
+		echo $ddate;
+		$date = new DateTime($ddate);
+		$week = $date->format("W");
+		echo "Weeknummer: $week";
+		exit;
+		$this->data['page_title'] = 'Allocate Topic';
+		$this->template->load('admin/default','admin/topic/allocate', $this->data);
+	}
+
+	/**
 	* ajax function to save the status of the topic 
 	*/
 	public function set_topic_status(){
