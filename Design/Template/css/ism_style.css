@@ -28,11 +28,17 @@ pre{
     font-size: 14px;
     font-family: 'Raleway', sans-serif;
 }
+option{
+	padding:5px 12px;
+}
+.btn{
+	outline:none;
+}
 .no-margin{
 	margin:0 !important;
 }
 .no-padding{
-	padding:0;
+	padding:0 !important;
 }
 .background{
 	background-color:#f5f5f5;
@@ -661,15 +667,20 @@ div.upload input {
     padding: 15px 15px 9px 9px;
     display: block;
     position: fixed;
-    bottom: 30px;
+    /*bottom: 30px;*/
+	
+	/*position: absolute;*/
+    bottom: 25px;
     /* width: 220px; */
     width: 14%;
+	/*width: 100%;*/
     text-align: center;
     text-transform: uppercase;
     font-weight: 600;
 }
 .copyright{
-	bottom: 0;
+	/*bottom: -10px;*/
+	bottom: -5px;
     background-color:#323941;
     padding: 0;
     font-size: 12px;
@@ -679,6 +690,9 @@ div.upload input {
     margin: 0 0 3px 0;
     padding: 5px;
 }
+/*#mCSB_1_container{
+	height:100%;
+}*/
 /*.scrollbar
 {
 	/*margin-left: 30px;* /
@@ -862,12 +876,11 @@ textarea.post_input{
     top: 8px;
     right: 0;
 }
-
 .sidebar_right_container{
 	/*bottom: -17px;*/
     width: 30%;
 	float:left;
-	max-height:100vh;
+	height:100vh;
 	position:fixed;
 	right:0;
 	overflow-y:auto;
@@ -1335,6 +1348,7 @@ input.chat_input {
 .member{
 	padding:0;
 	border-right: 1px solid rgba(0,0,0,0.1);
+    min-height: 240px;
 }
 .member .user_profile_img{
 	margin: 15px auto;
@@ -1713,6 +1727,7 @@ ul.tut_weekdays {
 	width:99.8%;
 	background-color:#1bc4a3;
     margin-bottom: -5px;
+	position: relative;
 }
 .input .icon_emoji {
     position: absolute;
@@ -1770,6 +1785,10 @@ ul.tut_weekdays {
 }
 .pagination_admin.pagination>li:last-child>a, .pagination_admin.pagination>li:last-child>span {
     margin-left: 10px;
+}
+.pagination_admin>li.active>a, .pagination_admin>li.active>a:hover{
+	background-color:#323941;
+	border: 1px solid #f5f5f5;
 }
 .filter .no_effect:after, .filter .no_effect:before{
 	content:none;
@@ -1847,7 +1866,7 @@ ul.tut_weekdays {
 	font-weight:300;
     float: left;
     border-radius: 0;
-    margin: 2px 0 0 2px;
+    margin: 1px 0 0 1px;
 	box-shadow:0px 4px 4px -1px rgba(255,255,255,0.08) inset, 0px 0px 12px 2px rgba(0,0,0,0.1) inset;	
 	border: none;
 }
@@ -1858,7 +1877,7 @@ ul.tut_weekdays {
 	margin-left:0 !important;
 }
 .basic_btns .btn:nth-child(5n+1){
-	margin-left:2px;
+	margin-left:1px;
 }
 .dropdown-menu .form-group {
     margin: 10px 15px;
@@ -1866,13 +1885,12 @@ ul.tut_weekdays {
 .basic_btns .btn{
 	font-family:Arial, Helvetica, sans-serif;
     height: 65px;
-    width: 24.5%;
-	font-size:18px;
+    width: 24.7%;
+	font-size:26px;
     box-shadow: 0px 5px 8px 0px rgba(255,255,255,0.1) inset;
 }
-
 .basic_btns .btn_0{
-	width:49.6%;
+	width:49.8%;
 }
 .basic_btns .btn_blue {
     background: linear-gradient(#44b2e2, #1a87b5);
@@ -1915,8 +1933,8 @@ ul.tut_weekdays {
     width: 154px;
     border-radius: 50%;
     margin: 0px auto;
-    left: 26px;
-    top: 2px;
+    left: 25px;
+    top: 3px;
 }
 .item_chart:after{
 	content:"";
@@ -1926,8 +1944,8 @@ ul.tut_weekdays {
     width: 154px;
     border-radius: 50%;
     margin: 0px auto;
-    left: 26px;
-    top: 2px;
+    left: 25px;
+    top: 3px;
 }
 .item_chart h2 {
 	font-family:Arial, Helvetica, sans-serif;
@@ -2337,4 +2355,13 @@ svg {
 }
 .stydymates {
     padding-bottom: 30px;
+}
+.fixed_comment{
+    position: fixed;
+    width: 45%;
+    z-index: 1;	
+}
+.discussion {
+    margin-top: 190px;
+    margin-bottom: 150px;
 }

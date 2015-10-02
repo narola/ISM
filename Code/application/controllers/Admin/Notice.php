@@ -29,14 +29,16 @@ class Notice extends ADMIN_Controller {
 				$where['noticeboard.is_delete'] = FALSE;
 
 				if(!empty($role)){ $where['noticeboard_viewer.role_id'] = $role ; $str .= '&role='.$role; }	
-				if(!empty($status)){ $where['noticeboard.status'] = $status;   $str .= '&status='.$status; }
+				if(!empty($status)){ 
+							if($status != 'template') { $where['noticeboard.status'] = $status;   $str .= '&status='.$status;}
+							else{ $where['noticeboard.is_template'] = TRUE;   $str .= '&status='.$status; } 
+						}
 
 				$str =  trim($str,'&');
 
 				$config['base_url'] = base_url().'admin/notice/index?'.$str;
 				$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
 				$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
-
 			}				
 
 		}else{
@@ -90,10 +92,9 @@ class Notice extends ADMIN_Controller {
 											)
 										);
 
-		
 		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
 		$this->data['courses'] = select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));
-		$this->data['roles'] = select(TBL_ROLES,FALSE,FALSE,array('limit'=>10));
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array(''),array('limit'=>10));
 
 		$this->pagination->initialize($config);
 		
