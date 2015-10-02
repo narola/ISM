@@ -162,6 +162,7 @@
                     <li><a href="#"><span class="icon icon_request"></span><span class="badge request_badge">07</span></a></li>
                 </ul>
                 <!--//notification-->
+
                 <?php if(isset($menu)){ 
                     if($menu == 'personal'){
                 ?>
@@ -192,6 +193,7 @@
                         <?php
                     }
                 } ?>
+
                 <a href="login/logout" class="logout"><span class="icon icon_logout"></span>LogOut</a>
                 <p class="copyright">©2015 ISM | All Rights Reserved.</p>
             </div>
