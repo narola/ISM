@@ -382,9 +382,19 @@ function generate_cm(obj){
     str += '<p>'+obj.message+'</p>';
     str += '</div>';
     str += '</div>';
+    
     if(obj.active_count != 'skip'){
         $('#active_comment_count').html(obj.active_count);
     }
+
+    if(obj.group_score != 'skip'){
+        $('#group_score_count').html(obj.group_score);
+    }
+
+    if(obj.my_score != 'skip'){
+        $('#my_score_count').html(obj.my_score);
+    }
+
     $('textarea[data-type="discussion"]').val('');
     $('.row.discussion').append(str);
     $('.row.discussion div[data-id="'+obj.disscusion_id+'"]').fadeOut(0).fadeIn(400);

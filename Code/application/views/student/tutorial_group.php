@@ -210,7 +210,7 @@
                                   <circle id="circle" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="15" stroke="#1bc4a3" fill="none"></circle>
                                  </g>
                                 </svg>
-                                <h4 class="group_score">Group Score : <span><?php echo $topic['group_score']; ?></span></h4>
+                                <h4 class="group_score">Group Score : <span id="group_score_count" ><?php echo $topic['group_score']; ?></span></h4>
                             </div>
                         </div>
                     </div>
@@ -221,7 +221,7 @@
                     </div>                    
                     <div class="box">
                         <div class="box_body">
-                            <h5>My Score : <span><?php echo $topic['my_score']; ?></span></h5>
+                            <h5>My Score : <span id="my_score_count" ><?php echo $topic['my_score']; ?></span></h5>
                         </div>
                     </div>
                     <!--group-->
