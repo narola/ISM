@@ -95,71 +95,21 @@
                     </div>
                 </div>
                 <!--calc-->
-                <div class="calculator row mCustomScrollbar" data-mcs-theme="minimal-dark" id="accordian_calc">
-                    <div class="col-sm-12 textarea">
-                        <span>23 + 12000 /1000 -</span>
-                        <h1>2500</h1>
+ <!-- <div style="border:1px solid;padding-top:10px;text-align:center;"> -->
+                    
+                    
+                  <!-- </div> -->
+                  </p>
+
+                <div class="calculator row " id="accordian_calc">
+                    <div class="form-group">
+                        <label for="exampleInputName2">Type word: </label>
+                        <input class="form-control"type="text" name="txtsearch" data-type="search-dictionary" placeholder="Type Word..."><br>
                     </div>
-                    <div class="calc_header">
-                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion_calc" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Scientific <span class="fa fa-angle-down"></span></a>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                        <div class="calc_btns">
-                            <button class="btn">2<sup>nd</sup></button>
-                            <button class="btn">x<sup>2</sup></button>
-                            <button class="btn">x<sup>3</sup></button>
-                            <button class="btn">x<sup>y</sup></button>
-                            <button class="btn">e<sup>x</sup></button>
-                            <button class="btn">1/x</button>
-                            <button class="btn">2<sup>nd</sup></button>
-                            <button class="btn">2<sup>nd</sup></button>
-                            <button class="btn">2<sup>nd</sup></button>
-                            <button class="btn">log<sub>10</sub></button>
-                            <button class="btn">1</button>
-                            <button class="btn">x</button>
-                            <button class="btn">10<sup>x</sup></button>
-                            <button class="btn">In</button>
-                            <button class="btn">log</button>
-                            <button class="btn">x!</button>
-                            <button class="btn">sin</button>
-                            <button class="btn">cos</button>
-                            <button class="btn">tan</button>
-                            <button class="btn">e</button>
-                            <button class="btn">Rad</button>
-                            <button class="btn">sinh</button>
-                            <button class="btn">cosh</button>
-                            <button class="btn">tanh</button>
-                            <button class="btn">Rand</button>
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
-                    <div class="calc_header">
-                        <a>Basic</a>
-                    </div>
-                    <div class="calc_btns basic_btns">
-                        <button class="btn btn_blue">C</button>
-                        <button class="btn btn_red">+ _</button>
-                        <button class="btn btn_red">%</button>
-                        <button class="btn btn_green">+</button>
-                        <button class="btn btn_white">7</button>
-                        <button class="btn btn_white">8</button>
-                        <button class="btn btn_white">9</button>
-                        <button class="btn btn_green">-</button>
-                        <button class="btn btn_white">4</button>
-                        <button class="btn btn_white">5</button>
-                        <button class="btn btn_white">6</button>
-                        <button class="btn btn_green">x</button>
-                        <button class="btn btn_white">1</button>
-                        <button class="btn btn_white">2</button>
-                        <button class="btn btn_white">3</button>
-                        <button class="btn btn_green">/</button>
-                        <button class="btn btn_white btn_0">0</button>
-                        <button class="btn btn_white">.</button>
-                        <button class="btn btn_white">=</button>
-                        <div class="clearfix"></div>
+                    <div id="Serach_Result">
+                        
                     </div>
                 </div>
-                <!--//calc-->
                 <!--white board-->
                 <div class="white_board">
                     <ul class="board_tools">

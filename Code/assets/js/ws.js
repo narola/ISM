@@ -1,29 +1,22 @@
 $(document).ready(function () {
 
-  /*  $('html, body').animate({
-    scrollTop: $("#target-element").offset().top
-}, 1000);*/
-    
+    /* Handle multiple chat window. */
     $(document).on('click', '.chat .chat_header', function () {
         if ($(this).parent().hasClass('passive')) {
             if ($(this).parent().hasClass('chat_3')) {
-                $('.chat.active').addClass('chat_3 passive');
-                $('.chat.active').removeClass('active');
+                $('.chat.active').removeClass('active').addClass('chat_3 passive');
             }
             if ($(this).parent().hasClass('chat_2')) {
-                $('.chat.active').addClass('chat_2 passive');
-                $('.chat.active').removeClass('active');
+                $('.chat.active').removeClass('active').addClass('chat_2 passive');
             }
             if ($(this).parent().hasClass('chat_1')) {
-                $('.chat.active').addClass('chat_1 passive');
-                $('.chat.active').removeClass('active');
+                $('.chat.active').removeClass('active').addClass('chat_1 passive');
             }
-            $(this).parent().removeClass();
-            $(this).parent().addClass('active');
-            $(this).parent().addClass('chat');
+            $(this).parent().removeClass().addClass('active').addClass('chat');
         }
     });
 
+/* Validate length of selected file. */
     var _URL = window.URL || window.webkitURL;
     $("#chat_upload").change(function (e) {
         if (this.files[0].size <= 1024 * 1024 * 10) {
@@ -45,7 +38,7 @@ $(document).ready(function () {
 
 
 });
-
+/* Check wheather web socket is supported by browser. */
 if ("WebSocket" in window)
 {
     var ws = new WebSocket("ws://192.168.1.124:9300");
@@ -103,10 +96,8 @@ if ("WebSocket" in window)
         }else if(obj.type == 'load_more_feed'){
             $.each(obj.feed, function(index,jsonObject){
                 generate_post(jsonObject,false);
-                $.each(jsonObject, function(key,val){
-                    console.log("key : "+key+" ; value : "+val);
-                });
             });
+            $('button[data-type="load_more"]').attr('data-start',obj.start);
             $('button[data-type="load_more"]').prop('disabled', false);
         }else if(obj.type == 'discussion'){
             generate_cm(obj);
@@ -125,6 +116,9 @@ if ("WebSocket" in window)
         }else if(obj.type == "discussion-type"){
             $('.box_footer[data-id="'+obj.type_id+'"]').html(obj.message);
             setTimeout(function(){  $('.box_footer[data-id="'+obj.type_id+'"]').html('Online'); }, 2000);
+        }else if(obj.type == "dictionary"){
+            $('#Serach_Result').html(obj.message);
+            $('input[data-type="search-dictionary"]').removeAttr('disabled');
         }
         else {
             alert('Message Not Catched!!');
@@ -135,6 +129,7 @@ if ("WebSocket" in window)
         alert('Disconnected from Server!');
     };
 }
+
 /* Send message for individual chat. */
 $(document).on('keypress', 'input[data-type="chat"]', function (e) {
     if (e.keyCode == 13 && this.value) {
@@ -201,6 +196,7 @@ $(document).on('click', '#mate_list', function () {
                 is_needed = false;
             }
     }
+
     if(len >= 4 && is_needed == true){
             $(".chat_container .chat_1").remove();
     }
@@ -239,13 +235,7 @@ $(document).on('click', '#mate_list', function () {
         $("#chat_container .chat[data-id='"+id+"'] .chat_text")
         .mCustomScrollbar({
             theme:"minimal-dark"
-            /*callbacks:{
-                    onSelectorChange: function(){
-                         $("#chat_container .chat[data-id='"+id+"'] .chat_text .mCustomScrollBox .mCSB_container").animate({
-                            scrollTop: $("#chat_container .chat[data-id='"+id+"'] .chat_text .mCustomScrollBox .mCSB_container")[0].scrollHeight}, 10);
-                     }
-            }*/
-});
+        });
     } else {
         $(".chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
     }
@@ -253,8 +243,9 @@ $(document).on('click', '#mate_list', function () {
 
 });
 
-
+/* Send Feed Post */
 $(document).on('click','button[data-type="post"]',function(){
+       if($.trim($('#feed_post').val()) != ''){
         var request = {
             type:'post',
             to: 'all',
@@ -263,11 +254,12 @@ $(document).on('click','button[data-type="post"]',function(){
         };
         ws.send(JSON.stringify(request));
         $('#feed_post').val('');
+    }
 });
-$(document).on('keypress','#all_feed .box.feeds .write_comment input[data-type="feed_comment"]',function(e){
-     
-     if (e.keyCode == 13 && this.value) {
 
+/* Send comment */
+$(document).on('keypress','#all_feed .box.feeds .write_comment input[data-type="feed_comment"]',function(e){
+     if (e.keyCode == 13 && $.trim($(this).val()) != '') {
         var request = {
             type: 'feed_comment',
             to: $(this).data('id'),
@@ -279,8 +271,12 @@ $(document).on('keypress','#all_feed .box.feeds .write_comment input[data-type="
      }
 });
 
-
+/* Generate HTML clock of Feed Post. */
 function generate_post(obj,status){
+    var cls = '';
+    if(obj.my_like != 0){
+        cls = '_0';
+    }
     str = '<div class="box feeds" data-id="'+obj.post_id+'">';
     str += '<div class="user_small_img">';
     str += '<img src="uploads/'+obj.profile_link+'">';
@@ -290,7 +286,7 @@ function generate_post(obj,status){
     str += '<span class="date">Sep 28, 2015</span>';
     str += '<div class="clearfix"></div>';
     str += '<pre>'+obj.message+'</pre>';
-    str += '<a href="#" class="like_btn"><span class="icon icon_thumb_0"></span>'+obj.tot_like+'</a>';
+    str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="'+obj.post_id+'"><span class="icon icon_thumb'+cls+'"></span>'+obj.tot_like+'</a>';
     str += '<a href="#" class="comment_btn"><span class="icon icon_comment"></span>'+obj.tot_comment+'</a>';
     str += '<div class="dropdown tag_user" style="display: inline-block;">';
     str += '<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>';
@@ -315,9 +311,9 @@ function generate_post(obj,status){
         $("#all_feed").append(str);
     }
      $("#all_feed .box.feeds[data-id='"+obj.post_id+"']").fadeOut(0).fadeIn(400);
-    
 }
 
+/* Generate HTML block of feed comment. */
 function generate_comment(obj){
     str = "";
     str += '<div class="comment" style="display:block">';
@@ -334,20 +330,22 @@ function generate_comment(obj){
     $('#all_feed .box.feeds[data-id="'+obj.to+'"] #feed_comments .comment:nth-child(1)').fadeOut(0).fadeIn(400);
 }
 
+/* load more feeds. */
 $(document).on('click','button[data-type="load_more"]',function(){
      $('button[data-type="load_more"]').prop('disabled', true);
      var request = {
             type: 'load_more_feed',
             to: 'self',
-            start: $(this).data('start'),
+            start: $(this).attr('data-start'),
             message: '',
             error: ''
         };
        ws.send(JSON.stringify(request));
 })
 
-
+/* Submit group discussion comment. */
 $(document).on('click','.option_bar[data-type="discussion-submit"]',function(){
+    if($.trim($('textarea[data-type="discussion"]').val()) != ''){
     var request = {
             type: 'discussion',
             to: 'all',
@@ -355,9 +353,12 @@ $(document).on('click','.option_bar[data-type="discussion-submit"]',function(){
             error: ''
         };
         ws.send(JSON.stringify(request));
+    }
 });
 
+/* Send tying event. */
 $(document).on('keypress','textarea[data-type="discussion"]',function(){
+    if($(this).val().length%2 == 0){
     var request = {
             type: 'discussion-type',
             to: 'all',
@@ -365,9 +366,10 @@ $(document).on('keypress','textarea[data-type="discussion"]',function(){
             error: ''
         };
         ws.send(JSON.stringify(request));
+    }
 });
 
-
+/* Generate html block of group disscussion  comment */
 function generate_cm(obj){
     var cl_me = "";
     if(wp == obj.id)
@@ -400,7 +402,8 @@ function generate_cm(obj){
     $('.row.discussion div[data-id="'+obj.disscusion_id+'"]').fadeOut(0).fadeIn(400);
 }
 
-$(document).on('click','a[data-type="feed-like"]',function(e){     
+/* Feed like dislike  */
+$(document).on('click','a[data-type="feed-like"]',function(e){   
     var request = {
         type: 'like',
         fid: $(this).data('id'),
@@ -413,13 +416,30 @@ $(document).on('click','a[data-type="feed-like"]',function(e){
 
 });
 
+/* Weekday scroll in tutorial group. */
 $(document).on('click','.tut_weekdays li a', function(e) {
     var nav = $(this).attr('href');
      e.preventDefault();
 if (nav.length) {
         $('html,body').animate({
-            scrollTop: $(nav).offset().top},
-            'slow');
+            scrollTop: $(nav).offset().top - 240},
+            500);
     }
     return false;
+});
+
+/* Send Request to search from dictionary... */
+$(document).on('keypress','input[data-type="search-dictionary"]', function(e) {
+  
+    if (e.keyCode == 13 && this.value) {
+    var request = {
+        type: 'dictionary',
+        to:'self',
+        keyword: this.value,
+        error: ''
+    };
+    ws.send(JSON.stringify(request));
+    $('#Serach_Result').html('<img class="pre_loader" src="assets/images/loader1.GIF">').fadeIn(300);
+    $(this).attr('disabled','');
+}
 });

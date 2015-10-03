@@ -469,6 +469,10 @@ class PHPWebSocket {
 
 
 
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -642,6 +646,10 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
+
 
 
 
@@ -1063,13 +1071,14 @@ class PHPWebSocket {
         return array_merge($data, $this->get_client_info($user_id));
     }
 
-    function load_more($data = null) {
+    function load_more($user_id, $data = null) {
         $link = $this->db();
         if (is_array($data)) {
             if (!empty($data['start']) && is_numeric($data['start'])) {
                 $limit = 4;
+                $ID_in = implode(',', $this->class_mate_list($user_id));
                 $data['start'] += $limit;
-                $query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, `f`.`posted_on`, `u`.`full_name`, (select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment, (select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like, `p`.`profile_link` FROM `feeds` `f` LEFT JOIN `users` `u` ON `u`.`id` = `f`.`feed_by` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` WHERE `f`.`is_delete` =0 AND `f`.`feed_by` IN('138', '139', '141', '140') ORDER BY `f`.`id` DESC LIMIT " . $data['start'] . "," . $limit;
+                $query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, `f`.`posted_on`, `u`.`full_name`, `l`.`is_delete` as my_like , (select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment, (select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like, `p`.`profile_link` FROM `feeds` `f` LEFT JOIN `users` `u` ON `u`.`id` = `f`.`feed_by` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` LEFT JOIN `feed_like` `l` ON `l`.`feed_id` = `f`.`id` AND `l`.`like_by` = $user_id  WHERE `f`.`is_delete` = 0 AND `f`.`feed_by` IN($ID_in) ORDER BY `f`.`id` DESC LIMIT " . $data['start'] . "," . $limit;
                 $row = mysqli_query($link, $query);
                 echo mysqli_error($link);
                 $all = array();
@@ -1146,7 +1155,7 @@ class PHPWebSocket {
                 $x = mysqli_query($link, $query);
                 $data['disscusion_id'] = mysqli_insert_id($link);
 
-                $query = "SELECT `ts`.`score` as `my_score`, `ta`.`group_score`,(SELECT count(`td`.`id`) FROM `tutorial_group_discussion` `td` WHERE `td`.`group_id` = ".$rows['group_id']." AND `td`.`topic_id` = ".$rows['topic_id']." AND in_active_hours = 1) as active_count  FROM `tutorial_topic` `t` LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` LEFT JOIN `tutorial_group_member_score` `ts` ON `ts`.`member_id` = `tm`.`id` LEFT JOIN `users` `u` ON `u`.`id` = `t`.`created_by` LEFT JOIN `user_profile_picture` `up` ON `up`.`user_id` = `u`.`id` WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' AND `ta`.`week_no` = $c_week AND `tm`.`user_id` = '$userId'";
+                $query = "SELECT `ts`.`score` as `my_score`, `ta`.`group_score`,(SELECT count(`td`.`id`) FROM `tutorial_group_discussion` `td` WHERE `td`.`group_id` = " . $rows['group_id'] . " AND `td`.`topic_id` = " . $rows['topic_id'] . " AND in_active_hours = 1) as active_count  FROM `tutorial_topic` `t` LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` LEFT JOIN `tutorial_group_member_score` `ts` ON `ts`.`member_id` = `tm`.`id` LEFT JOIN `users` `u` ON `u`.`id` = `t`.`created_by` LEFT JOIN `user_profile_picture` `up` ON `up`.`user_id` = `u`.`id` WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' AND `ta`.`week_no` = $c_week AND `tm`.`user_id` = '$userId'";
                 $row = mysqli_query($link, $query);
                 $rows = mysqli_fetch_assoc($row);
                 foreach ($rows as $k => $v) {
@@ -1277,6 +1286,19 @@ class PHPWebSocket {
         return $output;
     }
 
-}
+    function dictionary($data = null) {
+        if (is_array($data)) {
+            $curl_handle = curl_init();
+            curl_setopt($curl_handle, CURLOPT_URL, 'http://www.stands4.com/services/v2/defs.php?uid=4350&tokenid=CL5ORBQQ9fbL7uno&word=' . $data['keyword']);
+            curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST, "GET");
+            $buffer = curl_exec($curl_handle);
+            curl_close($curl_handle);
+            $data['message'] = $buffer;
+           
+            return $data;
+        }
+    }
 
+}
 ?>
