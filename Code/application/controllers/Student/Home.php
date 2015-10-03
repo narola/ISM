@@ -17,7 +17,6 @@ class Home extends ISM_Controller {
 
 		$user_id = $this->session->userdata('user')['id'];
 		$data['title'] = 'ISM - Home';		
-		$data['menu'] = 'personal';
 		// Get Post feed with comment 
 		$options =	array(
 						'join'	=>	array(

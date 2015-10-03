@@ -58,160 +58,30 @@
               <div class="carousel-inner" role="listbox">
                 <!--item-->
                 <div class="item active">
+                    <?php 
+                        if(isset($recommended_studymates)){
+                            foreach ($recommended_studymates as $key => $value) {
+                    ?>
                   <!--card-->
                     <div class="suggested_mates_card">
                         <div class="mate_user_img">
                             <img src="assets/images/user6.jpg">
                         </div>
                         <div class="mate_descrip">
-                            <p class="mate_name">Adam Stranger</p>
+                            <p class="mate_name"><?php echo $value['full_name'];?></p>
                             <p class="mate_following">Folowing 34 Authers</p>
                             
-                            <p>Student from St.Xeviers</p>
-                            <p>F.Y. CS</p>
-                            <button class="btn btn_green">Add Studymates</button>
-                        </div>
-                    </div>
-                    <!--//card-->                           
-                    <!--card-->
-                    <div class="suggested_mates_card">
-                        <div class="mate_user_img">
-                            <img src="assets/images/user7.jpg">
-                        </div>
-                        <div class="mate_descrip">
-                            <p class="mate_name">Adam Stranger</p>
-                            <p class="mate_following">Folowing 34 Authers</p>
-                            
-                            <p>Student from St.Xeviers</p>
-                            <p>F.Y. CS</p>
+                            <p><?php echo $value['school_name'];?></p>
+                            <p><?php echo $value['course_name'];?></p>
                             <button class="btn btn_green">Add Studymates</button>
                         </div>
                     </div>
                     <!--//card-->
-                    <!--card-->
-                    <div class="suggested_mates_card">
-                        <div class="mate_user_img">
-                            <img src="assets/images/user4.jpg">
-                        </div>
-                        <div class="mate_descrip">
-                            <p class="mate_name">Adam Stranger</p>
-                            <p class="mate_following">Folowing 34 Authers</p>
-                            
-                            <p>Student from St.Xeviers</p>
-                            <p>F.Y. CS</p>
-                            <button class="btn btn_green">Add Studymates</button>
-                        </div>
-                    </div>
-                    <!--//card-->
-                    <!--card-->
-                    <div class="suggested_mates_card">
-                        <div class="mate_user_img">
-                            <img src="assets/images/user3.jpg">
-                        </div>
-                        <div class="mate_descrip">
-                            <p class="mate_name">Adam Stranger</p>
-                            <p class="mate_following">Folowing 34 Authers</p>
-                            
-                            <p>Student from St.Xeviers</p>
-                            <p>F.Y. CS</p>
-                            <button class="btn btn_green">Add Studymates</button>
-                        </div>
-                    </div>
-                    <!--//card-->
-                    <!--card-->
-                    <div class="suggested_mates_card">
-                        <div class="mate_user_img">
-                            <img src="assets/images/user2.jpg">
-                        </div>
-                        <div class="mate_descrip">
-                            <p class="mate_name">Adam Stranger</p>
-                            <p class="mate_following">Folowing 34 Authers</p>
-                            
-                            <p>Student from St.Xeviers</p>
-                            <p>F.Y. CS</p>
-                            <button class="btn btn_green">Add Studymates</button>
-                        </div>
-                    </div>
-                    <!--//card-->
-                </div>
-                <!--//item-->
-                <!--item-->
-                <div class="item">
-                  <!--card-->
-                    <div class="suggested_mates_card">
-                        <div class="mate_user_img">
-                            <img src="assets/images/user6.jpg">
-                        </div>
-                        <div class="mate_descrip">
-                            <p class="mate_name">Adam Stranger</p>
-                            <p class="mate_following">Folowing 34 Authers</p>
-                            
-                            <p>Student from St.Xeviers</p>
-                            <p>F.Y. CS</p>
-                            <button class="btn btn_green">Add Studymates</button>
-                        </div>
-                    </div>
-                    <!--//card-->                           
-                    <!--card-->
-                    <div class="suggested_mates_card">
-                        <div class="mate_user_img">
-                            <img src="assets/images/user7.jpg">
-                        </div>
-                        <div class="mate_descrip">
-                            <p class="mate_name">Adam Stranger</p>
-                            <p class="mate_following">Folowing 34 Authers</p>
-                            
-                            <p>Student from St.Xeviers</p>
-                            <p>F.Y. CS</p>
-                            <button class="btn btn_green">Add Studymates</button>
-                        </div>
-                    </div>
-                    <!--//card-->
-                    <!--card-->
-                    <div class="suggested_mates_card">
-                        <div class="mate_user_img">
-                            <img src="assets/images/user4.jpg">
-                        </div>
-                        <div class="mate_descrip">
-                            <p class="mate_name">Adam Stranger</p>
-                            <p class="mate_following">Folowing 34 Authers</p>
-                            
-                            <p>Student from St.Xeviers</p>
-                            <p>F.Y. CS</p>
-                            <button class="btn btn_green">Add Studymates</button>
-                        </div>
-                    </div>
-                    <!--//card-->
-                    <!--card-->
-                    <div class="suggested_mates_card">
-                        <div class="mate_user_img">
-                            <img src="assets/images/user3.jpg">
-                        </div>
-                        <div class="mate_descrip">
-                            <p class="mate_name">Adam Stranger</p>
-                            <p class="mate_following">Folowing 34 Authers</p>
-                            
-                            <p>Student from St.Xeviers</p>
-                            <p>F.Y. CS</p>
-                            <button class="btn btn_green">Add Studymates</button>
-                        </div>
-                    </div>
-                    <!--//card-->
-                    <!--card-->
-                    <div class="suggested_mates_card">
-                        <div class="mate_user_img">
-                            <img src="assets/images/user2.jpg">
-                        </div>
-                        <div class="mate_descrip">
-                            <p class="mate_name">Adam Stranger</p>
-                            <p class="mate_following">Folowing 34 Authers</p>
-                            
-                            <p>Student from St.Xeviers</p>
-                            <p>F.Y. CS</p>
-                            <button class="btn btn_green">Add Studymates</button>
-                        </div>
-                    </div>
-                    <!--//card-->
+                    <?php
+                            }
+                        }
+                    ?>                           
+                   
                 </div>
                 <!--//item-->
               </div>

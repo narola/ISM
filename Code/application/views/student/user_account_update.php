@@ -388,7 +388,11 @@
                     <div class="col-sm-12 text-center reg_btns">
                     	<input type="hidden" value="" name="todo" id="todo">
                         <a href="<?php echo site_url();?>/student/home" class="btn_black btn">Cancel</a>
-                        <input type="submit" name="btnsubmit" class="btn_black btn btn_green" value="Submit">
+                        <?php if(isset($school_information['is_my_school'])){?>
+                            <a disabled data-toggle="tooltip" data-placement="top" title="You have already request for change school" class="btn_black btn btn_green">submit</a>
+                        <?php }else{ ?>
+                            <input type="submit" name="btnsubmit" class="btn_black btn btn_green" value="Submit">
+                        <?php } ?>
                     </div>
                 </form>
             </div>
@@ -409,24 +413,33 @@
                         <small>Sep 7, 2015</small>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" action="" onsubmit="return send_email();" method="post">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Email</label>
                                 <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputPassword" placeholder="Email">
+                                    <input type="email" class="form-control" id="email" name="request_email" placeholder="Email">
+                                    <br>
+                                    <div class="alert alert-danger" style="display:none" id="err1">
+                                        Email field is required
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputPassword" class="col-sm-2 control-label">Message</label>
                                 <div class="col-sm-10">
-                                   <textarea class="form-control" placeholder="Write school information..."></textarea>
+                                   <textarea class="form-control" placeholder="Write school information..." name="message" id="message"></textarea>
+                                   <br>
+                                    <div class="alert alert-danger" style="display:none" id="err2">
+                                        Message field is required
+                                    </div> 
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                  <button type="button" class="btn btn_black_normal">SEND REQUEST</button>
+                                    <input type="hidden" name="send_request" value="change">
+                                    <input type="submit" class="btn btn_black_normal" value="SEND REQUEST">
                                 </div>
-                              </div>
+                            </div>
                         </form>
                         <h4 class="notice_by">Gilbert Addoh<span>ISM Admin</span></h4>
                         <div class="clearfix"></div>
@@ -476,10 +489,33 @@
             format: 'yyyy-mm-dd'
         });
 
-
         function send_email(){
-            
+            email = $('#email').val();
+            message = $('#message').val();
+       
+            if(email == '' && message == ''){
+                $('#err2').show();
+                $('#err1').show();   
+            }
+            else if(message == '' && email != ''){
+                $('#err2').show();
+                $('#err1').hide();
+            }
+            else if(email == '' && message != ''){
+                $('#err1').show();
+                $('#err2').hide();
+            }
+            else {
+                return true;
+            } 
+            return false;
         }
+
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
+
+
 </script>
 
 </body>
