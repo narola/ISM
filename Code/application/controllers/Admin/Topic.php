@@ -26,7 +26,7 @@ class Topic extends ADMIN_Controller {
 		
 		$role = $this->input->get('role');
 		$subject  = $this->input->get('subject');
-		
+		$where['where']['tut_topic.is_delete']=0;
 		if( !empty($role) || !empty($subject)){
 
 			$str = '';
@@ -42,7 +42,6 @@ class Topic extends ADMIN_Controller {
 			$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
 
 		}else{
-			$where=null;
 			$config['base_url']	 = base_url().'admin/topic/lists';
 			$offset = $this->uri->segment(4);
 		}
@@ -104,8 +103,6 @@ class Topic extends ADMIN_Controller {
 												'group_by'=>'tut_topic.id'
 												)
 											);
-// p($this->data);
-// qry(true);
 		$this->pagination->initialize($config);
 
 		$this->data['roles'] = select(TBL_ROLES,FALSE,FALSE,null);
@@ -120,12 +117,33 @@ class Topic extends ADMIN_Controller {
 	*/
 	public function allocate(){
 
-		$ddate = date('Y-m-d', time());
-		echo $ddate;
+		$ddate = date('Y', time());
+		
 		$date = new DateTime($ddate);
 		$week = $date->format("W");
-		echo "Weeknummer: $week";
+		
+		$date1 = new DateTime('2015-09-24 10:18:40');
+		$year = $date1->format('Y');
+
+		$where['where']['week_no'] = $week;
+		$where['where']['YEAR(created_date)'] = $year;
+
+		/*$allocated_groups = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' tut_topic',
+			'tut_topic.group_id',
+			$where
+			);
+
+		
+		$where  = array('where_not_in' => array('id' => $allocated_groups)) ;
+
+		$unallocated_groups = select(TBL_TUTORIAL_GROUPS.' grp',
+			'grp.id',
+			$where
+			);
+		p($unallocated_groups);
 		exit;
+
+		exit;*/
 		$this->data['page_title'] = 'Allocate Topic';
 		$this->template->load('admin/default','admin/topic/allocate', $this->data);
 	}
@@ -147,7 +165,6 @@ class Topic extends ADMIN_Controller {
 		echo json_encode($response);
 		exit; 
 
-
 	}
 
 	/**
@@ -168,8 +185,6 @@ class Topic extends ADMIN_Controller {
 			);
 		echo json_encode($response);
 		exit; 
-
-
 	}
 
 
