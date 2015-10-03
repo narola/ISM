@@ -2365,3 +2365,7 @@ svg {
     margin-top: 190px;
     margin-bottom: 150px;
 }
+
+.pre_loader{
+	margin:0 auto;display:block;width:255px;height:5px;
+}
