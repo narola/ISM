@@ -128,22 +128,50 @@ class Topic extends ADMIN_Controller {
 		$where['where']['week_no'] = $week;
 		$where['where']['YEAR(created_date)'] = $year;
 
-		/*$allocated_groups = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' tut_topic',
+		$allocated_groups = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' tut_topic',
 			'tut_topic.group_id',
 			$where
 			);
 
+		$allocated_group_ids = array_column($allocated_groups, 'group_id');
 		
-		$where  = array('where_not_in' => array('id' => $allocated_groups)) ;
+		$where  = array('where_not_in' => array('id' => $allocated_group_ids),
+			'where'=> array('is_completed'=>1)) ;
 
 		$unallocated_groups = select(TBL_TUTORIAL_GROUPS.' grp',
 			'grp.id',
 			$where
 			);
-		p($unallocated_groups);
+		$unallocated_group_ids = array_column($unallocated_groups, 'id');
+
+		p($unallocated_group_ids);
+
+		$last_week = $week-1;
+		$where  = array('where' => array('week_no' => $last_week,
+			'YEAR(created_date)' => $year
+			),
+		// 'where_in'=>array('group_id'=>$unallocated_group_ids)
+		);
+		
+
+		$last_week_groups = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' tut_topic',
+			'tut_topic.group_id,tut_topic.topic_id',
+			$where
+			);
+		p($last_week_groups);
+
+		foreach ($unallocated_group_ids as $unallocated) {
+			if(in_array($unallocated, array_column($last_week_groups, 'group_id'))){
+				
+			}else{
+				
+			}
+		}
+
+
 		exit;
 
-		exit;*/
+		
 		$this->data['page_title'] = 'Allocate Topic';
 		$this->template->load('admin/default','admin/topic/allocate', $this->data);
 	}
