@@ -27,7 +27,7 @@
                         </select>
 	                </div>
 	                <div class="form-group">
-	                    <select class="form-control" onchange="filter_data()" id="year">
+	                    <select class="form-control" onchange="filter_data()" name="year" id="year">
 	                        <option value="">Select Year</option>
 	                        <option value="2015">2015</option>
 	                        <option value="2016">2016</option>
@@ -92,8 +92,8 @@
                                 <tr>
                                     <td class="checkbox_td">
                                         <div class="squaredThree">
-                                            <input type="checkbox" value="None" id="squaredThree" name="check">
-                                            <label for="squaredThree"></label>
+                                            <input type="checkbox" value="<?php echo $group['id']; ?>" id="squaredThree_<?php echo $group['id']; ?>" name="group_messages">
+                                            <label for="squaredThree_<?php echo $group['id']; ?>"></label>
                                         </div>
                                     </td>
                                     <td class="username">
@@ -153,7 +153,7 @@
                                 </tr>    
                             <?php } }else{ ?>
 							
-							<tr> <td colspan="7" class="text-center"><strong>No Data Found. </strong> </td> </tr>		
+							<tr> <td colspan="7" class="text-center"><strong>No Group Found. </strong> </td> </tr>		
 							
                             <?php } ?>
                         </tbody>
@@ -178,10 +178,11 @@
 		
 		var course = $('#course').val();
         var q = $('#q').val();
-
+        var year = $('#year').val();
 		
 		if(course == '' ){ $('#course').removeAttr('name'); }
 		if(q == ''){ $('#q').removeAttr('name'); }
+        if(year == '' ){ $('#year').removeAttr('name'); }
 
 		$('#filter').submit();
 	}
@@ -193,6 +194,10 @@
 	<?php if(!empty($_GET['q'])) { ?>
 		$('#q').val('<?php echo $_GET["q"];?>');	
 	<?php } ?>			
+
+    <?php if(!empty($_GET['year'])) { ?>
+        $('#year').val('<?php echo $_GET["year"];?>');    
+    <?php } ?>          
 
 </script>
  

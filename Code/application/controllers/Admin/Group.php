@@ -26,12 +26,17 @@ class Group extends ADMIN_Controller {
 		if(!empty($_GET['course']) ||  !empty($_GET['year']) ||  !empty($_GET['q']) ){
 
 			if( !empty($_GET['course'])){ $course  = $this->input->get('course'); }
-			if( !empty($_GET['q']) ) { $year = $this->input->get('q'); }
+			if( !empty($_GET['q']) ) { $q = $this->input->get('q'); }
+			if( !empty($_GET['year']) ) { $year = $this->input->get('year'); }
 			
 			$str = '';
 
 			if(!empty($course)){ $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.course_id'] = $course; $str .='&course='.$course; }
-			if(!empty($q)){ $where['like']['group_name'] = $q; $str .='&q='.$q; }
+			if(!empty($q)){ $where['like'][TBL_TUTORIAL_GROUPS.'.group_name'] = $q; $where['like'][TBL_TUTORIAL_GROUP_MEMBER.'.group_name'] = $q;  $str .='&q='.$q; }
+			if(!empty($year)){ 
+								$next_year=$year+1; $academic_year = "$year-$next_year";    // find next year and create string like 2015-2016
+								$where['where']['student_academic_info.academic_year'] = $academic_year; $str .='&year='.$year;  
+							}
 
 			$str =  trim($str,'&');
 
@@ -47,12 +52,13 @@ class Group extends ADMIN_Controller {
 
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
-		$config['total_rows'] =  select(TBL_TUTORIAL_GROUPS,
+		$config['total_rows'] =  count(select(TBL_TUTORIAL_GROUPS,
 											TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
 											TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
 											TBL_COURSES.'.id as course_id',
 											$where,
 											array(
+
 												'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
 												'join' =>  array(
 											    			array(
@@ -74,9 +80,9 @@ class Group extends ADMIN_Controller {
 											    				)
 											    			)
 												)
-											);
-
-		$config['per_page'] = 2;
+											));
+		
+		$config['per_page'] = 15;
 		
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
 	  	$config['full_tag_close'] = '</ul>';
@@ -171,9 +177,10 @@ class Group extends ADMIN_Controller {
 											);
 		
 		// /p($this->data['all_groups_members']);
-		echo "<br/>------------------------------------------------------------------------<br/>";
-		p($config['total_rows']);
-		p(count($this->data['all_groups']) ,true );
+		// echo "<br/>------------------------------------------------------------------------<br/>";
+		// p($config['total_rows']);
+
+		//p($this->data['all_groups'],true );
 
 		$this->pagination->initialize($config);
 		
