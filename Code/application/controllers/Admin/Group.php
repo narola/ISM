@@ -30,7 +30,7 @@ class Group extends ADMIN_Controller {
 			
 			$str = '';
 
-			if(!empty($course)){ $where['where'][TBL_COURSES.'.id'] = $course; $str .='&course='.$course; }
+			if(!empty($course)){ $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.course_id'] = $course; $str .='&course='.$course; }
 			if(!empty($q)){ $where['like']['group_name'] = $q; $str .='&q='.$q; }
 
 			$str =  trim($str,'&');
@@ -47,11 +47,12 @@ class Group extends ADMIN_Controller {
 
 		$config['uri_segment'] = 4;
 		$config['num_links'] = 5;
-		$config['total_rows'] = select(TBL_TUTORIAL_GROUPS,
-											'COUNT(*) AS `numrows`,`tutorial_groups`.`id`, `tutorial_groups`.`group_name`, `tutorial_groups`.`group_type`, `tutorial_groups`.`group_status`, `tutorial_groups`.`is_completed`, `courses`.`course_name`, `courses`.`id` as `course_id`',
+		$config['total_rows'] =  select(TBL_TUTORIAL_GROUPS,
+											TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
+											TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
+											TBL_COURSES.'.id as course_id',
 											$where,
 											array(
-												'count'=>TRUE,
 												'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
 												'join' =>  array(
 											    			array(
@@ -74,9 +75,7 @@ class Group extends ADMIN_Controller {
 											    			)
 												)
 											);
-		
-		qry();
-		echo '<br/>------------------------------------------------------------------------<br/>';
+
 		$config['per_page'] = 2;
 		
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
@@ -134,9 +133,9 @@ class Group extends ADMIN_Controller {
 											    			)
 												)
 											);
+		
+	
 		//fetch all data of group right joins with tutorial group members
-		qry();
-
 		$this->data['all_groups_members'] =   select(TBL_TUTORIAL_GROUPS,
 											TBL_TUTORIAL_GROUP_MEMBER.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.id as gid,'.
 											TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name,'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link,'.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
@@ -172,17 +171,14 @@ class Group extends ADMIN_Controller {
 											);
 		
 		// /p($this->data['all_groups_members']);
-		 echo "<br/>------------------------------------------------------------------------<br/>";
+		echo "<br/>------------------------------------------------------------------------<br/>";
 		p($config['total_rows']);
-		p($this->data['all_groups'],true);
+		p(count($this->data['all_groups']) ,true );
 
 		$this->pagination->initialize($config);
 		
-		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
 		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
-		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
-		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
-
+		
 		$this->template->load('admin/default','admin/group/view_group',$this->data);
 	}
 
