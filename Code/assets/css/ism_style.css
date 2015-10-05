@@ -1048,7 +1048,7 @@ textarea.post_input{
 	color:#1bc4a3;
 	margin-bottom:5px;
 }
-.mate_descrip .btn_green{
+.mate_descrip .btn_green, .mate_descrip .btn_black_normal{
 	font-weight: 500;
     padding: 3px 16px;
     margin-top: 15px;
