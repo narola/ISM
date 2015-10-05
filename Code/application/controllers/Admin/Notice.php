@@ -16,30 +16,28 @@ class Notice extends ADMIN_Controller {
 	//  List All noticeboard view,delete,add,and change into archive notice
 	public function index()
 	{
-		
-		if($_GET){
+		if( !empty($_GET['role']) || !empty($_GET['status']) || !empty($_GET['classroom']) ){
 
 			if( !empty($_GET['role']) ) { $role = $this->input->get('role'); }	
-			if( !empty($_GET['status']) ) { $status = $this->input->get('status'); }	
+			if( !empty($_GET['status']) ) { $status = $this->input->get('status'); }
+			if( !empty($_GET['classroom']) ) { $classroom = $this->input->get('classroom'); }	
+			
+			$str = '';
+			
+			$where['noticeboard.is_delete'] = FALSE;
 
-			if( !empty($role) || !empty($status) ){
+			if(!empty($role)){ $where['noticeboard_viewer.role_id'] = $role ; $str .= '&role='.$role; }	
+			if(!empty($status)){ 
+						if($status != 'template') { $where['noticeboard.status'] = $status;   $str .= '&status='.$status;}
+						else{ $where['noticeboard.is_template'] = TRUE;   $str .= '&status='.$status; } 
+					}
+			if(!empty($classroom)){  $where['noticeboard_viewer.classroom_id'] = $classroom ; $str .= '&classroom='.$classroom; }		
+					
+			$str =  trim($str,'&');
 
-				$str = '';
-				
-				$where['noticeboard.is_delete'] = FALSE;
-
-				if(!empty($role)){ $where['noticeboard_viewer.role_id'] = $role ; $str .= '&role='.$role; }	
-				if(!empty($status)){ 
-							if($status != 'template') { $where['noticeboard.status'] = $status;   $str .= '&status='.$status;}
-							else{ $where['noticeboard.is_template'] = TRUE;   $str .= '&status='.$status; } 
-						}
-
-				$str =  trim($str,'&');
-
-				$config['base_url'] = base_url().'admin/notice/index?'.$str;
-				$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
-				$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
-			}				
+			$config['base_url'] = base_url().'admin/notice/index?'.$str;
+			$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
+			$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
 
 		}else{
 			$where = array('noticeboard.is_delete'=>FALSE);
@@ -49,7 +47,7 @@ class Notice extends ADMIN_Controller {
 
 		$config['num_links'] = 5;
 		$config['total_rows'] = select(TBL_NOTICEBOARD,FALSE,array('where'=>$where),array('count'=>TRUE,'join'=>array(array('table'=>'noticeboard_viewer','condition'=>'noticeboard.id=noticeboard_viewer.notice_id'))));
-		$config['per_page'] = 2;
+		$config['per_page'] = 11;
 
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
  		$config['full_tag_close'] = '</ul>';
@@ -76,8 +74,9 @@ class Notice extends ADMIN_Controller {
 	 	$config['last_tag_open'] = '<li>';
 	 	$config['last_tag_close'] = '</li>';
 
+	 	//fetch data from noticeboard table and join with noticeboard viewerd table
 		$this->data['notices'] = select(TBL_NOTICEBOARD,
-										"noticeboard.id,noticeboard.notice,noticeboard.created_date,noticeboard.notice_title,noticeboard_viewer.role_id",
+										"noticeboard.id,noticeboard.status,noticeboard.notice,noticeboard.created_date,noticeboard.notice_title,noticeboard_viewer.role_id",
 										array('where'=>$where),
 										array(
 											'limit'=>$config['per_page'],
@@ -92,10 +91,14 @@ class Notice extends ADMIN_Controller {
 											)
 										);
 
-		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
-		$this->data['courses'] = select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));
-		$this->data['roles'] = select(TBL_ROLES,FALSE,array(''),array('limit'=>10));
+		//if(empty($this->data['notices'])){ $this->session->set_flashdata('error', 'No Notices Found.'); }
 
+		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where_not_in'=>array('role_name'=>array('admin'))),array('limit'=>10));
+		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+
+		//pass pagination configuration set in $config variable and initialize into pagination class
 		$this->pagination->initialize($config);
 		
 		$this->template->load('admin/default','admin/notice/view_notice',$this->data);	
@@ -105,7 +108,7 @@ class Notice extends ADMIN_Controller {
 	public function add(){
 
 		$this->data['roles'] = select(TBL_ROLES);
-		$this->data['templates'] = select(TBL_NOTICEBOARD,false,array('where'=>array('is_template'=>TRUE)));
+		$this->data['templates'] = select(TBL_NOTICEBOARD,false,array('where'=>array('is_template'=>TRUE,'is_delete'=>FALSE)));
 		$this->data['classrooms'] = select(TBL_CLASSROOMS);
 
 		$this->form_validation->set_rules('notice_title', 'Notice Title', 'trim|required');
@@ -193,9 +196,11 @@ class Notice extends ADMIN_Controller {
 
 			update(TBL_NOTICEBOARD,$notice_id,$notice_data);
 
+			if(!empty($this->input->post('classroom_id'))){ $classroom_id = $this->input->post('classroom_id');}else{ $classroom_id = null; }
+			 
 			$notice_viewer_data = array(
 									'role_id'=>$this->input->post('role_id'),
-									'classroom_id'=>$this->input->post('classroom_id'),
+									'classroom_id'=>$classroom_id,
 									'modified_date'=>date('Y-m-d H:i:s',time()),
 								);
 			update(TBL_NOTICEBOARD_VIEWER,$notice_viewer_id,$notice_viewer_data);
@@ -214,9 +219,15 @@ class Notice extends ADMIN_Controller {
 	}
 
 	//Admin can cange status of Notice Active to Archive
-	public function archive($id){
-		update(TBL_NOTICEBOARD,$id,array('status'=>'archive'));
-		$this->session->set_flashdata('success', "Data's Status has been added to Archive.");
+	public function archive($id,$active=''){
+
+		if(!empty($active)){
+			update(TBL_NOTICEBOARD,$id,array('status'=>'active'));	
+			$this->session->set_flashdata('success', "Data's Status has been added to Active.");
+		}else{
+			update(TBL_NOTICEBOARD,$id,array('status'=>'archive'));	
+			$this->session->set_flashdata('success', "Data's Status has been added to Archive.");
+		}
 		redirect('admin/notice');	
 	}
 	

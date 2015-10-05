@@ -31,7 +31,7 @@
                                 foreach($roles as $role) { 
                                    if($role['role_name'] != 'admin') { 
                               ?>
-                              <option value="<?php echo $role['id']; ?>"><?php echo $role['role_name']; ?></option>
+                              <option value="<?php echo $role['id']; ?>"><?php echo ucfirst($role['role_name']); ?></option>
                           <?php }  } } ?>
                        </select> 
                   </div>
@@ -48,7 +48,7 @@
                               if(!empty($classrooms)) {
                                 foreach($classrooms as $classroom) { 
                               ?>
-                              <option value="<?php echo $classroom['id']; ?>"><?php echo $classroom['class_name']; ?></option>
+                              <option value="<?php echo $classroom['id']; ?>"><?php echo ucfirst($classroom['class_name']); ?></option>
                           <?php } } ?>
                        </select> 
                   </div>
@@ -71,11 +71,28 @@
                   <div class="form-group">
                       <label>Status</label>
                       
-                      <input type="radio" name="status" value="active" <?php if($notice['status']=='active'){ echo "checked"; } ?>   > Active
+                     <!--  <input type="radio" name="status" value="active" <?php if($notice['status']=='active'){ echo "checked"; } ?>   > Active
                       <input type="radio" name="status" value="inactive"  <?php if($notice['status']=='inactive'){ echo "checked"; } ?>> Inactive
-                      <input type="radio" name="status" value="archive" <?php if($notice['status']=='archive'){ echo "checked"; } ?> > Archive
-
+                      <input type="radio" name="status" value="archive" <?php if($notice['status']=='archive'){ echo "checked"; } ?> > Archive -->
+                        
                   </div>
+                  
+                  <div class="form-group">
+                        <div class="circleThree">
+                            <input type="radio" value="active" id="circleThree"  <?php if($notice['status']=='active'){ echo "checked='checked'"; } ?> name="status">
+                            <label for="circleThree"></label>
+                            <span> Active </span>
+                       
+                            <input type="radio" value="inactive" id="circleThree1" <?php if($notice['status']=='inactive'){ echo "checked='checked'";  } ?> name="status">
+                            <label for="circleThree1"></label>
+                            <span>Inactive</span>
+
+                            <input type="radio" value="archive" id="circleThree2" <?php if($notice['status']=='archive'){ echo "checked='checked'"; } ?> name="status">
+                            <label for="circleThree2"></label>
+                            <span>Archive</span>
+                        </div>
+                    </div>  
+
                 </div>
                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('notice'),''))){ echo 'hide';} ?>">
                     <?php echo strip_tags(form_error('notice'),'') ; ?>

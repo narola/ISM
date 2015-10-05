@@ -87,7 +87,7 @@
     
         <form method="post" action="<?php echo base_url().'admin/user/send_messages'; ?>">  <!-- Form Start -->
     
-        <div class="row div_buttons">
+        <!-- <div class="row div_buttons">
           <div class="col-sm-6">
               <button class="btn btn_black" type="submit">Send Message</button>
               <a class="btn btn_green" href="<?php echo base_url().'admin/user/add';?>" >Add User</a>
@@ -96,7 +96,7 @@
           <div class="col-sm-6 text-right">
               <button class="btn btn_green">Invite Mate</button>
             </div>
-        </div>
+        </div> -->
         <!--//button-div-->
         <!--row table-->
         <div class="row tabel_view">
@@ -106,59 +106,80 @@
                       <thead>
                             <tr>
                                 <th></th>
-                                <th style="width: 240px;">Username</th>
-                                <th>Class</th>
-                                <th>Course</th>
-                                <th>City</th>
-                                <th>Role</th>
+                                <th style="width: 550px;">Group Detail</th>
+                                <th>Rank</th>
+                                <th>Score</th>
                                 <th style="width:180px;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                           <?php 
-                            if(!empty($all_users)) {
-
-                              foreach($all_users as $user) {
+                            if(!empty($all_groups)) {
+                            
+                              foreach($all_groups as $group) {
                             ?>
-                          <tr>
-                              <td class="checkbox_td">
-                                <div class="squaredThree">
-                                    <!-- Checkboxes for User and it will disabled for if user is admin because admin cant sent messages to admin  -->
-                                    <input type="checkbox" <?php if($user['role_id']=='1'){ echo 'disabled'; } ?> 
-                                    value="<?php echo $user['id']; ?>" id="squaredThree_<?php echo $user['id']; ?>" name="users[]"> 
-                                    <label for="squaredThree_<?php echo $user['id']; ?>"></label>
-                                </div>
-                              </td>
-                              <td class="username">
-                                  <div class="chat_img_holder"><img src="<?php echo base_url().'assets'; ?>/images/user3.jpg"></div>
-                                  <h4><?php echo ucfirst($user['username']); ?></h4>
-                                  <?php if($user['user_status']=='active'){ 
-                                        echo '<p class="active">Active Today</p>'; 
-                                    }elseif($user['user_status']=='blocked'){ 
-                                        echo '<p style="color:red">Blocked</p>';
-                                    } ?>
-                              </td>
+                                <tr>
+                                    <td class="checkbox_td">
+                                        <div class="squaredThree">
+                                            <input type="checkbox" value="None" id="squaredThree" name="check">
+                                            <label for="squaredThree"></label>
+                                        </div>
+                                    </td>
+                                    <td class="username">
+                                        <div class="chat_img_holder">
+                                            <!-- <img src="../images/group1.jpg"> -->
+                                            <img src="<?php echo 'uploads/user_141/user6_1443673332.jpg'; ?>">
+                                        </div>
+                                        <h4><span>Group Name : </span> <?php echo $group['group_name'] ?> <span> [<?php echo $group['course_name'] ?>]</span></h4>
+                                        <table class="group_members">
+                                        <?php
+                                            
+                                            if(!empty($all_groups_members)) {
+                                                $cnt = 0;
+                                                foreach($all_groups_members as $member) {
+                                                    if( $member['gid'] == $group['id']){
+                                                        if($cnt == 0){ echo '<tr>'; }
+                                                        if($cnt == 3){ echo '<tr>'; }
+                                             ?>
 
-                              <td><?php echo ucfirst($user['class_name']); ?></td>
-                              <td> <?php echo ucfirst($user['course_name']); ?> </td>
-                              <td> <?php echo ucfirst($user['city_name']); ?> </td>
-                              <td><?php echo ucfirst($user['role_name']); ?></td>
-                              <td>
-                                  <a href="#" class="icon icon_timeline"></a>
-                                  <a href="#" class="icon icon_books"></a>
-                                  <a href="#" class="icon icon_performance"></a>
-                                  <?php if($user['user_status'] == 'blocked') { ?>  
-                                  <a href="<?php echo base_url().'admin/user/active/'.$user['id']; ?>" 
-                                    onclick="return confirm('Activate User ?');" class="icon icon_user"></a>
-                                  <?php }else{ ?>   
-                                  <a href="<?php echo base_url().'admin/user/blocked/'.$user['id']; ?>" 
-                                    onclick="return confirm('Blocked User ?');" class="icon icon_blockuser"></a>  
-                                  <?php } ?>
-                                  <a href="#" class="icon icon_mail"></a>
-                                  <a href="<?php echo base_url().'admin/user/send_message/'.$user['id']; ?>" class="icon icon_chat"></a>
-                                  <a href="<?php echo base_url().'admin/user/update/'.$user['id']; ?>" class="icon icon_edit"> </a>
-                              </td>
-                            </tr>
+                                                <td>
+                                                    <div class="chat_img_holder">
+                                                        <?php if(!empty($member['profile_link'])) { ?>
+                                                        <img src="<?php echo 'uploads/'.$member['profile_link']; ?>">
+                                                        <?php }else{ ?>
+                                                        <img src="<?php echo 'uploads/user_141/user6_1443673332.jpg'; ?>">
+                                                        <?php } ?>
+                                                    </div>
+                                                    <p><?php echo character_limiter(ucfirst($member['username']),5); ?> </p>
+                                                    <span><?php echo character_limiter(ucfirst($member['school_name']),5); ?></span>
+                                                </td>
+
+                                                <?php 
+                                                    if($cnt == 2){ echo '</tr>'; } 
+                                                    if($cnt == 4){ echo '<td></td></tr>'; } 
+                                                    $cnt++;
+                                                } 
+                                            } // End of foreach Loop
+                                            
+                                        }  // End of If condition ?>
+                                            <?php if($cnt == 0) { ?>
+                                            <tr>
+                                                <td> No Members Found. </td>
+                                            </tr>    
+                                            <?php } ?>
+                                        </table>                                            
+                                    </td>
+                                    <td class="group_rank">01</td>
+                                    <td class="group_points"><p>5500</p><p>4 Assignments</p><p>10 Exams</p></td>
+                                    <td>
+                                        <a href="#" class="icon icon_timeline"></a>
+                                        <a href="#" class="icon icon_books"></a>
+                                        <a href="#" class="icon icon_performance"></a>
+                                        <a href="#" class="icon icon_blockuser"></a>
+                                        <a href="#" class="icon icon_mail"></a>
+                                        <a href="#" class="icon icon_chat"></a>
+                                    </td>
+                                </tr>    
                             <?php } }else{ ?>
 							
 							<tr> <td colspan="7" class="text-center"><strong>No Data Found. </strong> </td> </tr>		

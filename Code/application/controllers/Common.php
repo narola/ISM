@@ -6,13 +6,12 @@ class Common extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('common_model');	
 	}
 	
 	public function ajax_get_states(){
 		
 		$country_id = $this->input->post('country_id');
-		$all_states = $this->common_model->sql_select('states',FALSE,array('where'=>array('country_id'=>$country_id)));
+		$all_states = select(TBL_STATES,FALSE,array('where'=>array('country_id'=>$country_id)));
 		$new_str = '';
 		
 		$new_str .= '<option selected disabled >Select State</option>';
@@ -27,8 +26,7 @@ class Common extends CI_Controller {
 	public function ajax_get_cities(){
 
 		$state_id = $this->input->post('state_id');
-		$all_cities = $this->common_model->sql_select('cities',FALSE,array('where'=>array('state_id'=>$state_id)));
-		
+		$all_cities = select(TBL_CITIES,FALSE,array('where'=>array('state_id'=>$state_id)));
 		$new_str = '';
 
 		$new_str .= '<option selected disabled >Select City</option>';
@@ -43,7 +41,7 @@ class Common extends CI_Controller {
 	public function ajax_get_districts(){
 
 		$city_id = $this->input->post('city_id');
-		$all_districts = $this->common_model->sql_select('districts',FALSE,array('where'=>array('city_id'=>$city_id)));
+		$all_districts = select(TBL_DISTRICTS,FALSE,array('where'=>array('city_id'=>$city_id)));
 		$new_str = '';
 
 		$new_str .= '<option selected disabled > Select District </option>';
@@ -58,18 +56,16 @@ class Common extends CI_Controller {
 	public function template_notice(){
 		
 		$notice_id = $this->input->post('notice_id');
-
-		$result = $this->common_model->sql_select(TBL_NOTICEBOARD,FALSE,array('where'=>array('id'=>$notice_id)),array('single'=>TRUE));
-
+		$data = select(TBL_NOTICEBOARD,FALSE,array('where'=>array('id'=>$notice_id)),array('single'=>TRUE));
 		$new_str = '';
-		p($result);
-		//echo $new_str;		
+		$new_str .=$data['notice'].'###'.$data['notice_title'];
+		echo $new_str;
 	}
 
 	public function template_message(){
 
 		$msg_id = $this->input->post('msg_id');
-		$data = $this->common_model->sql_select('messages',FALSE,array('where'=>array('id'=>$msg_id)),array('single'=>TRUE)); 
+		$data = select(TBL_MESSAGES,FALSE,array('where'=>array('id'=>$msg_id)),array('single'=>TRUE)); 
 		$new_str = '';
 		$new_str .=$data['message_title'].'###'.$data['message_text'];
 		echo $new_str;
