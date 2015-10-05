@@ -64,7 +64,7 @@
                             $i = 1;
                             foreach ($recommended_studymates as $key => $value) {
                             if($i/6==1){
-                                echo '</div><div class="item ">';     
+                                echo '</div><div class="item">';     
                             }
                         ?>
                             <!--card-->
@@ -77,7 +77,7 @@
                                     <p class="mate_following">Folowing 34 Authers</p>
                                     <p><?php echo $value['school_name'];?></p>
                                     <p><?php echo $value['course_name'];?></p>
-                                    <button class="btn btn_green">Add Studymates</button>
+                                    <button class="btn btn_green" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>">Add Studymates</button>
                                 </div>
                             </div>
                             <!--//card-->

@@ -156,7 +156,7 @@ class Common_model extends CI_Model {
 
 	function class_mate_list($user_id, $append = true) {
    
-    $where = 'mate_of ='. $user_id.' or mate_id ='.$user_id.' and is_delete=0';
+    $where = '(mate_of ='. $user_id.' or mate_id ='.$user_id.') and is_delete=0';
     $result = $this->sql_select(TBL_STUDYMATES,'mate_id,mate_of',$where);
     $all = array();
     foreach ($result as $key => $rows) {
