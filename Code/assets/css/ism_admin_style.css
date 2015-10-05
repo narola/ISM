@@ -806,15 +806,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     filter: FlipH;
     -ms-filter: "FlipH";
 }
-.txt_red{
-	color:#da534f;
-}
-.txt_blue{
-	color:#4294d0;
-}
-.txt_green{
-	color:#1bc4a3;
-}
+
 .general_cred .box_body{
 	border-bottom: 1px solid rgba(0,0,0,0.07);
 }

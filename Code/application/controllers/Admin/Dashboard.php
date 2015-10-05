@@ -1,6 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * class Dashboard extends ADMIN_Controller which is in application/libraries Folder
+ * ADMIN_Controller is extend in config.php using __autoload megic method		 
+ *
+ * @author Virendra Patel - Spark ID- VPA
+ **/
+
 class Dashboard extends ADMIN_Controller {
 
 	public $data = array();
@@ -10,7 +17,6 @@ class Dashboard extends ADMIN_Controller {
 		parent::__construct();
 		$this->load->helper(array('csv','file','download'));	
 	}
-
 
 	public function index()
 	{
@@ -110,7 +116,7 @@ class Dashboard extends ADMIN_Controller {
 	}
 
 	/**
-	 * function auto_generated_credentials() will generate auto credentials for school.
+	 * function auto_generated_credentials() will generate credentials for school.
 	 *
 	 * @author Virendra patel Sparks ID - VPA
 	 **/
@@ -127,22 +133,26 @@ class Dashboard extends ADMIN_Controller {
 		$this->data['cur_year'] = date('Y');
 		$this->data['next_year'] = date('Y')+1;
 		
+		//set Codeigniter Form Validation using form_validation Class
 		$this->form_validation->set_rules('school_id', 'School Name', 'trim|required|integer');
 		$this->form_validation->set_rules('role_id', 'Role', 'trim|required|integer');
 		$this->form_validation->set_rules('course_id', 'Course', 'trim|required|integer');
 		$this->form_validation->set_rules('no_of_credentials', 'No of credentials', 'trim|required|integer|greater_than[0]');
 		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required|integer');
 
+		// if from_validation set rules are false or if data not posted then it will set to FALSE
 		if($this->form_validation->run() == FALSE){
 			$this->template->load('admin/default','admin/generated_credentials',$this->data);
 		}else{
 
+			//ELSE if data posted by user and all set validation are TRUE
 			$school_id = $this->input->post('school_id');
 			$role_id = $this->input->post('role_id');
 			$course_id = $this->input->post('course_id');
 			$classroom_id = $this->input->post('classroom_id');
 			$no_of_credentials	=	$this->input->post('no_of_credentials',TRUE);
 
+			// Fetch role name,course name,classroom name,school name from diffetent table using cms_helper.php and common_model.php
 			$role_name = select(TBL_ROLES,'role_name',array('where'=>array('id'=>$role_id)),array('single'=>TRUE));
 			$course_name = select(TBL_COURSES,'course_name',array('where'=>array('id'=>$course_id)),array('single'=>TRUE));
 			$class_name = select(TBL_CLASSROOMS,'class_name',array('where'=>array('id'=>$classroom_id)),array('single'=>TRUE));
@@ -163,7 +173,7 @@ class Dashboard extends ADMIN_Controller {
 				$find_user = select(TBL_USERS,FALSE,array('where'=>$data));
 
 				if(sizeof($find_credentials)>0 || sizeof($find_user) > 0){
-
+					//if data found in users or auto_generated_credentials table then it will decrease $i value and continue 
 					$i--;
 					continue;
 					
@@ -181,6 +191,7 @@ class Dashboard extends ADMIN_Controller {
 							'course_id'=> $course_id,
 							'academic_year'=>'',
 							'is_delete'=>FALSE,
+							'is_my_school'=>FALSE,
 							'is_testdata'=>'yes'
 						);
 
@@ -212,7 +223,6 @@ class Dashboard extends ADMIN_Controller {
 			  	show_404();
 			}
 
-			
 			$data = file_get_contents($path);
 			force_download($school_name['school_name'].'.csv',$data);
 			
