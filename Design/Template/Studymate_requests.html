@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>ISM | My Studymates</title>
+    <title>ISM | Studymate Requests</title>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1"><title>Login</title>
@@ -120,7 +120,7 @@
 				<ul class="personal_menu">
                 	<li><a href="My_feeds.html">My Feeds</a></li>
                 	<li><a href="My_exam.html">My Exams</a></li>
-                	<li class="active"><a href="#">Studymates</a></li>
+                	<li><a href="#">Studymates</a></li>
                 	<li><a href="#">My Activities</a></li>
                 	<li><a href="Notice_board.html">Notice Board</a></li>
                 </ul>
@@ -129,31 +129,42 @@
             </div>
             <!--//side left-->
             <!--main-->
-            <div class="col-sm-7 main main2 stydymates">   
-           		<div class="box general_cred">
-                	<div class="box_header">
-                    	<h3>My Studymates</h3>
-                    </div>
-                    <div class="box_body studyamte_list mCustomScrollbar" data-mcs-theme="minimal-dark">
+            <div class="col-sm-7 main main2 stydymates">  
+            	<!--search bar-->
+                <div class="row search_bar">
+                	<input type="text" class="form-control" placeholder="Type here to search you mate">
+                    <a href="#" class="icon icon_search"></a>
+                    <button class="btn btn_green">View Recommendation</button>
+                </div>
+				<!--//search bar-->
+                <!--filterbar-->
+                <div class="row filter_bar">
+                	<ul>
+                   		<li><a href="#">People</a></li>
+                        <li><a href="#">School</a></li>
+                        <li><a href="#">Area</a></li>
+                        <li><a href="#">Course</a></li>
+                   	</ul>
+                </div>
+                <!--//filterbar-->
+           		<!--search result-->
+                <h5 class="search_result_label">Search Result for</h5>
+                <div class="box general_cred">
+                	<div class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark">
                     	<!--item1-->
-                        <div class="study_mate ol">
+                        <div class="study_mate">
                             <div class="col-lg-9 col-md-8 col-sm-7">
                                 <div class="mate_user_img">
                                     <img src="images/user1.jpg">
                                 </div>
                                 <h4>Adam Rose</h4>
                                 <p>Student from Lourdes convents</p>
-                                
+                                <p>Live in Ghana</p>
                                 <a href="#">Following 34 Authers</a>
                             </div>
                             <div class="col-lg-3 col-md-4 col-sm-5">
-                                <button class="btn btn_green btn-block">View Profile</button>
-                                <div class="form-group select">
-                                    <select class="form-control">
-                                        <option>Studymates</option>
-                                        <option>Remove Studymate</option>
-                                    </select>
-                                </div>
+                                <button class="btn btn_green btn-block">Add Studymate</button>
+                                
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -170,13 +181,7 @@
                                 <a href="#">Following 34 Authers</a>
                             </div>
                             <div class="col-lg-3 col-md-4 col-sm-5">
-                                <button class="btn btn_green btn-block">View Profile</button>
-                                <div class="form-group select">
-                                    <select class="form-control">
-                                        <option>Studymates</option>
-                                        <option>Remove Studymate</option>
-                                    </select>
-                                </div>
+                                <button class="btn btn_green btn-block">Add Studymate</button>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -193,19 +198,13 @@
                                 <a href="#">Following 34 Authers</a>
                             </div>
                             <div class="col-lg-3 col-md-4 col-sm-5">
-                                <button class="btn btn_green btn-block">View Profile</button>
-                                <div class="form-group select">
-                                    <select class="form-control">
-                                        <option>Studymates</option>
-                                        <option>Remove Studymate</option>
-                                    </select>
-                                </div>
+                                <button class="btn btn_black_normal btn-block">Respond to Request</button>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <!--//item1-->
                         <!--item1-->
-                        <div class="study_mate ol">
+                        <div class="study_mate">
                             <div class="col-lg-9 col-md-8 col-sm-7">
                                 <div class="mate_user_img">
                                     <img src="images/user3.jpg">
@@ -216,19 +215,93 @@
                                 <a href="#">Following 34 Authers</a>
                             </div>
                             <div class="col-lg-3 col-md-4 col-sm-5">
-                                <button class="btn btn_green btn-block">View Profile</button>
-                                <div class="form-group select">
-                                    <select class="form-control">
-                                        <option>Studymates</option>
-                                        <option>Remove Studymate</option>
-                                    </select>
+                                <button class="btn btn_green btn-block">Add Studymate</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <!--//item1-->
+                        <div class="text-center">
+                        	<a href="#" class="search_result_label">View More</a>
+                        </div>
+                    </div>
+                </div>
+                <!--//search result-->
+                <div class="box general_cred">
+                	<div class="box_header">
+                    	<h3>Studymate Requests</h3>
+                    </div>
+                    <div class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark">
+                    	<!--item1-->
+                        <div class="study_mate">
+                            <div class="col-lg-9 col-md-8 col-sm-7">
+                                <div class="mate_user_img">
+                                    <img src="images/user1.jpg">
                                 </div>
+                                <h4>Adam Rose</h4>
+                                <p>Student from Lourdes convents</p>
+                                <p>Live in Ghana</p>
+                                <a href="#">Following 34 Authers</a>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-5">
+                                <button class="btn btn_green btn-block">Confirm Request</button>
+                                
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <!--//item1-->
                         <!--item1-->
-                        <div class="study_mate ol">
+                        <div class="study_mate">
+                            <div class="col-lg-9 col-md-8 col-sm-7">
+                                <div class="mate_user_img">
+                                    <img src="images/user4.jpg">
+                                </div>
+                                <h4>Adam Rose</h4>
+                                <p>Student from Lourdes convents</p>
+                                
+                                <a href="#">Following 34 Authers</a>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-5">
+                                <button class="btn btn_green btn-block">Confirm Request</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <!--//item1-->
+                        <!--item1-->
+                        <div class="study_mate">
+                            <div class="col-lg-9 col-md-8 col-sm-7">
+                                <div class="mate_user_img">
+                                    <img src="images/user2.jpg">
+                                </div>
+                                <h4>Adam Rose</h4>
+                                <p>Student from Lourdes convents</p>
+                                
+                                <a href="#">Following 34 Authers</a>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-5">
+                                <button class="btn btn_green btn-block">Confirm Request</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <!--//item1-->
+                        <!--item1-->
+                        <div class="study_mate">
+                            <div class="col-lg-9 col-md-8 col-sm-7">
+                                <div class="mate_user_img">
+                                    <img src="images/user3.jpg">
+                                </div>
+                                <h4>Adam Rose</h4>
+                                <p>Student from Lourdes convents</p>
+                                
+                                <a href="#">Following 34 Authers</a>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-5">
+                                <button class="btn btn_green btn-block">Confirm Request</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <!--//item1-->
+                        <!--item1-->
+                        <div class="study_mate">
                             <div class="col-lg-9 col-md-8 col-sm-7">
                                 <div class="mate_user_img">
                                     <img src="images/user5.jpg">
@@ -239,13 +312,7 @@
                                 <a href="#">Following 34 Authers</a>
                             </div>
                             <div class="col-lg-3 col-md-4 col-sm-5">
-                                <button class="btn btn_green btn-block">View Profile</button>
-                                <div class="form-group select">
-                                    <select class="form-control">
-                                        <option>Studymates</option>
-                                        <option>Remove Studymate</option>
-                                    </select>
-                                </div>
+                                <button class="btn btn_green btn-block">Confirm Request</button>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -262,13 +329,7 @@
                                 <a href="#">Following 34 Authers</a>
                             </div>
                             <div class="col-lg-3 col-md-4 col-sm-5">
-                                <button class="btn btn_green btn-block">View Profile</button>
-                                <div class="form-group select">
-                                    <select class="form-control">
-                                        <option>Studymates</option>
-                                        <option>Remove Studymate</option>
-                                    </select>
-                                </div>
+                               <button class="btn btn_green btn-block">Confirm Request</button>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -285,13 +346,7 @@
                                 <a href="#">Following 34 Authers</a>
                             </div>
                             <div class="col-lg-3 col-md-4 col-sm-5">
-                                <button class="btn btn_green btn-block">View Profile</button>
-                                <div class="form-group select">
-                                    <select class="form-control">
-                                        <option>Studymates</option>
-                                        <option>Remove Studymate</option>
-                                    </select>
-                                </div>
+                                <button class="btn btn_green btn-block">Confirm Request</button>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -299,7 +354,7 @@
                     </div>
                 </div>
 				<!--suggestion-->
-                <div class="box general_cred">
+                <div class="box general_cred" id="recommendation">
                 	<div class="box_header">
                     	<h3>Recommended Studymates</h3>
                     </div>
@@ -311,7 +366,7 @@
                           <div class="carousel-inner" role="listbox">
                             <!--item-->
                             <div class="item active">
-                              <!--card-->
+                              <!--card--> 
                                 <div class="suggested_mates_card">
                                     <div class="mate_user_img">
                                         <img src="images/user6.jpg">
@@ -507,6 +562,7 @@
                                 <p>F.Y. CS</p>
                             </div>
                             <div class="score_points">
+
                             	<p>Score</p>
                                 <p class="score_number">500</p>
                             </div>

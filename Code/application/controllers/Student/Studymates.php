@@ -80,7 +80,6 @@ class Studymates extends ISM_Controller {
 		'group_by' => 'in1.user_id'
 			);
 		$data['recommended_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,p.profile_link',$where,$options);
-		
 		$this->template->load('student/default','student/studymates',$data);
 	}
 }

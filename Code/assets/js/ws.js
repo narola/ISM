@@ -129,6 +129,13 @@ if ("WebSocket" in window)
             $('input[data-type="search-dictionary"]').removeAttr('disabled');
 
         }
+        else if(obj.type == "send_studymate_request"){
+
+            // $('#Serach_Result').html(obj.message);
+            alert('hi');
+            $('.suggested_mates_card .mate_descrip button[data-id="'+obj.studymate_id+'"]').removeClass('btn_green').attr('disabled',true).addClass('btn_black_normal').html('Request Already Sent');
+
+        }
         else {
             alert('Message Not Catched!!');
         }
@@ -473,4 +480,14 @@ $(document).on('keypress','input[data-type="search-dictionary"], a[data-type="se
     $(this).attr('disabled','');
     }
 
+});
+
+$(document).on('click','button[data-type="studyment-request"]',function(e){
+   var request = {
+        type: 'send_studymate_request',
+        to: 'self',
+        studymate_id: $(this).attr('data-id'),
+        error : ''
+    };
+    ws.send(JSON.stringify(request)); 
 });

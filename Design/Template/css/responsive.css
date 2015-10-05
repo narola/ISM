@@ -40,7 +40,9 @@
 	.board_tools > li{
 		padding: 5px 4.6%;
 	}
-	
+	.search_bar .form-control{
+		width:70%;
+	}
 }
 @media (max-width:1280px){
 	.login_background{
@@ -378,6 +380,9 @@
 	.fixed_comment {
     	width: 36.9%;
 	}
+	.search_bar .form-control {
+    	width: 58%;
+	}
 }
 
 @media (max-width:980px){
@@ -569,6 +574,9 @@
 	}
 	.study_mate .mate_user_img{
 		margin: 0 15px 15px 0;
+	}
+	.search_bar .form-control {
+    	width: 46%;
 	}
 }
 @media (max-width:768px){
