@@ -102,11 +102,15 @@
                   </p>
 
                 <div class="calculator row " id="accordian_calc">
-                    <div class="form-group">
-                        <label for="exampleInputName2">Type word: </label>
-                        <input class="form-control"type="text" name="txtsearch" data-type="search-dictionary" placeholder="Type Word..."><br>
-                    </div>
-                    <div id="Serach_Result">
+                    
+
+                    <div class="dictionary_div">
+                        <div class="form-group no_effect search_input">
+                            <input class="form-control" type="text" placeholder="Search" data-type="search-dictionary">
+                            <a href="javascript:void(0);" class="fa fa-search" data-type="search-dictionary"></a>
+                        </div>
+                        <div class="dictionary_result mCustomScrollbar" data-mcs-theme="minimal-dark">
+                        </div>
                         
                     </div>
                 </div>

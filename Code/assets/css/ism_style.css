@@ -2365,7 +2365,31 @@ svg {
     margin-top: 190px;
     margin-bottom: 150px;
 }
-
 .pre_loader{
 	margin:0 auto;display:block;width:255px;height:5px;
+}
+.dictionary_div{
+	padding:15px;
+}
+.dictionary_div .form-group{
+	position:relative;
+}
+.result_box h5{
+    font-weight: bold;
+}
+.result_box h5 span{
+	font-weight:400;
+	background-color:rgba(27,196,163,0.1);
+	padding:3px 5px;
+}	
+.result_box h5:last-child{
+	line-height:22px;
+	font-size:13px;
+}
+.result_box {
+   padding: 1px 10px;
+    border-left: 2px solid rgba(0,0,0,0.07);
+    border-right: 2px solid rgba(0,0,0,0.07);
+    border-radius: 9px;
+    margin-bottom: 9px;
 }

@@ -473,6 +473,9 @@ class PHPWebSocket {
 
 
 
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -646,6 +649,9 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
 
 
 
@@ -1295,9 +1301,21 @@ class PHPWebSocket {
             $buffer = curl_exec($curl_handle);
             curl_close($curl_handle);
             $data['message'] = $buffer;
-           
+
             return $data;
         }
+    }
+
+    function close_studymate($userid, $data) {
+        $link = $this->db();
+        $query = "UPDATE studymates SET is_delete = 1 where (mate_id = " . $userid . " and mate_of=" . $data['studymate_id'] . ") or (mate_of = " . $userid . " and mate_id = " . $data['studymate_id'] . ")";
+        $x = mysqli_query($link, $query);
+        if (!$x) {
+            $data['to'] = 'self';
+            $data['error'] = 'Unable to Identify studymate. Please don\'t modify data manually.';
+        }
+        $data['result'] = 'Done';
+        return $data;
     }
 
 }
