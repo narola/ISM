@@ -23,16 +23,16 @@
                   
                   <div class="form-group">
                       <label> Templates </label>
-                       <select name="roles" class="form-control" onchange="get_template(this.value)">
+                       <select name="roles" class="form-control" onchange="get_notice_template(this.value)">
                           <option selected disabled> Select Template</option>
+                          <option value="">No Template</option>
                           <?php 
                               if(!empty($templates)) {
                                 foreach($templates as $template) { 
                               ?>
                               <option value="<?php echo $template['id']; ?>"><?php echo word_limiter($template['notice_title'],7); ?></option>
-                          <?php } }else{ ?>
-                              <option disabled > No Templates </option>  
-                          <?php } ?>
+                          <?php } } ?>
+                              
                        </select> 
                   </div>
                           
@@ -45,7 +45,7 @@
                                 foreach($roles as $role) { 
                                    if($role['role_name'] != 'admin') { 
                               ?>
-                              <option value="<?php echo $role['id']; ?>"><?php echo $role['role_name']; ?></option>
+                              <option value="<?php echo $role['id']; ?>"><?php echo ucfirst($role['role_name']); ?></option>
                           <?php }  } } ?>
                        </select> 
                   </div>
@@ -73,19 +73,24 @@
                     
                   <div class="form-group">
                       <label>Notice Title</label>
-                        <input type="text" class="form-control" name="notice_title">
+                        <input type="text" class="form-control" id="notice_title" name="notice_title">
                   </div>
+
                   <div class="alert alert-danger <?php if(empty(strip_tags(form_error('notice_title'),''))){ echo 'hide';} ?>">
                     <?php echo strip_tags(form_error('notice_title'),'') ; ?>
                   </div>
+
                   <div class="form-group">
                       <label>Notice</label>
-                      <textarea class="form-control" name="notice"></textarea>
+                      <textarea class="form-control" name="notice" id="notice"></textarea>
                   </div>
+
                 </div>
+
                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('notice'),''))){ echo 'hide';} ?>">
                     <?php echo strip_tags(form_error('notice'),'') ; ?>
                 </div>
+
                 <div class="box_footer">
                   <button type="submit" class="btn btn_green">Save</button>
                   <input type="checkbox" name="is_template" id="is_template" value="1"><label class="save_box"></label><label for="is_template">Save in Templates</label>
@@ -100,17 +105,25 @@
 <!--//main-->
 
 <script type="text/javascript">
-       
-       function get_template(notice_id){
 
+    function get_notice_template(notice_id){
+        
+        if(notice_id != ''){
             $.ajax({
                 url:'<?php echo base_url()."common/template_notice" ?>',    
-                type:'POST',
+                type:'post',
                 data:{notice_id:notice_id},
                 success:function(data){
-                    alert(data);
+                    data = data.split('###');
+                    $('#notice_title').val(data[1]);
+                    $('#notice').val(data[0]); 
                 }
             });
-       } 
+        }else{
+            $('#notice_title').val('');
+            $('#notice').val(''); 
+        }        
+    }
     
 </script>
+

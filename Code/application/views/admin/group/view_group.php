@@ -1,0 +1,198 @@
+<!--main-->
+    <div class="col-sm-7 main main2">
+      <!--breadcrumb-->
+      <div class="row page_header">
+          <div class="col-sm-12">
+              <ol class="breadcrumb">
+                  <li><a href="#">Manage</a></li>
+                  <li class="active">User</li>
+                </ol>
+            </div>
+        </div>
+        <!--//breadcrumb-->
+        <!--filter-->
+        <form method="get" id="filter">
+	        <div class="row filter">
+	          <div class="col-sm-12">
+	              
+	                <div class="form-group">
+	                   <select class="form-control" name="course" onchange="filter_data()" id="course" >
+                            <option value="">Select Course</option>
+                            <?php 
+                              if(!empty($courses)){ 
+                                foreach($courses as $course) {
+                                ?>
+                                <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>  
+                            <?php }  } ?>
+                        </select>
+	                </div>
+	                <div class="form-group">
+	                    <select class="form-control" onchange="filter_data()" id="year">
+	                        <option value="">Select Year</option>
+	                        <option value="2015">2015</option>
+	                        <option value="2016">2016</option>
+	                    </select>
+	                </div>
+	                <div class="form-group">
+	                    <input type="text" name="q" id="q" class="form-control">
+	                </div>
+	            </div>
+	        </div>
+            
+    	</form>	
+
+    	<?php $success = $this->session->flashdata('success'); ?>
+  
+		<div class="alert alert-success <?php if(empty(strip_tags($success,''))){ echo 'hide';} ?>">
+		    <?php echo strip_tags($success) ; ?>
+		</div>
+		
+		<?php $error = $this->session->flashdata('error'); ?>
+  
+		<div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
+		    <?php echo strip_tags($error) ; ?>
+		</div>
+
+        <!--//filter-->
+        <!--button div-->
+    
+        <form method="post" action="<?php echo base_url().'admin/user/send_messages'; ?>">  <!-- Form Start -->
+    
+        <!-- <div class="row div_buttons">
+          <div class="col-sm-6">
+              <button class="btn btn_black" type="submit">Send Message</button>
+              <a class="btn btn_green" href="<?php echo base_url().'admin/user/add';?>" >Add User</a>
+            </div>
+
+          <div class="col-sm-6 text-right">
+              <button class="btn btn_green">Invite Mate</button>
+            </div>
+        </div> -->
+        <!--//button-div-->
+        <!--row table-->
+        <div class="row tabel_view">
+          <div class="col-sm-12">
+              <div class="table-responsive">
+                  <table class="table table-striped table-bordered table_user">
+                      <thead>
+                            <tr>
+                                <th></th>
+                                <th style="width: 550px;">Group Detail</th>
+                                <th>Rank</th>
+                                <th>Score</th>
+                                <th style="width:180px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <?php 
+                            if(!empty($all_groups)) {
+                            
+                              foreach($all_groups as $group) {
+                            ?>
+                                <tr>
+                                    <td class="checkbox_td">
+                                        <div class="squaredThree">
+                                            <input type="checkbox" value="None" id="squaredThree" name="check">
+                                            <label for="squaredThree"></label>
+                                        </div>
+                                    </td>
+                                    <td class="username">
+                                        <div class="chat_img_holder">
+                                            <!-- <img src="../images/group1.jpg"> -->
+                                            <img src="<?php echo 'uploads/user_141/user6_1443673332.jpg'; ?>">
+                                        </div>
+                                        <h4><span>Group Name : </span> <?php echo $group['group_name'] ?> <span> [<?php echo $group['course_name'] ?>]</span></h4>
+                                        <table class="group_members">
+                                        <?php
+                                            
+                                            if(!empty($all_groups_members)) {
+                                                $cnt = 0;
+                                                foreach($all_groups_members as $member) {
+                                                    if( $member['gid'] == $group['id']){
+                                                        if($cnt == 0){ echo '<tr>'; }
+                                                        if($cnt == 3){ echo '<tr>'; }
+                                             ?>
+
+                                                <td>
+                                                    <div class="chat_img_holder">
+                                                        <?php if(!empty($member['profile_link'])) { ?>
+                                                        <img src="<?php echo 'uploads/'.$member['profile_link']; ?>">
+                                                        <?php }else{ ?>
+                                                        <img src="<?php echo 'uploads/user_141/user6_1443673332.jpg'; ?>">
+                                                        <?php } ?>
+                                                    </div>
+                                                    <p><?php echo character_limiter(ucfirst($member['username']),5); ?> </p>
+                                                    <span><?php echo character_limiter(ucfirst($member['school_name']),5); ?></span>
+                                                </td>
+
+                                                <?php 
+                                                    if($cnt == 2){ echo '</tr>'; } 
+                                                    if($cnt == 4){ echo '<td></td></tr>'; } 
+                                                    $cnt++;
+                                                } 
+                                            } // End of foreach Loop
+                                            
+                                        }  // End of If condition ?>
+                                            <?php if($cnt == 0) { ?>
+                                            <tr>
+                                                <td> No Members Found. </td>
+                                            </tr>    
+                                            <?php } ?>
+                                        </table>                                            
+                                    </td>
+                                    <td class="group_rank">01</td>
+                                    <td class="group_points"><p>5500</p><p>4 Assignments</p><p>10 Exams</p></td>
+                                    <td>
+                                        <a href="#" class="icon icon_timeline"></a>
+                                        <a href="#" class="icon icon_books"></a>
+                                        <a href="#" class="icon icon_performance"></a>
+                                        <a href="#" class="icon icon_blockuser"></a>
+                                        <a href="#" class="icon icon_mail"></a>
+                                        <a href="#" class="icon icon_chat"></a>
+                                    </td>
+                                </tr>    
+                            <?php } }else{ ?>
+							
+							<tr> <td colspan="7" class="text-center"><strong>No Data Found. </strong> </td> </tr>		
+							
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+                <nav  class="text-center">
+       
+			    <?php echo $this->pagination->create_links(); ?>
+
+                </nav>
+            </div>
+        </div>
+
+       </form> <!-- Form END  -->
+        <!--//row table-->
+    </div>
+    <!--//main-->
+
+<script type="text/javascript">
+	
+	function filter_data(){
+		
+		var course = $('#course').val();
+        var q = $('#q').val();
+
+		
+		if(course == '' ){ $('#course').removeAttr('name'); }
+		if(q == ''){ $('#q').removeAttr('name'); }
+
+		$('#filter').submit();
+	}
+
+	<?php if(!empty($_GET['course'])) { ?>
+		$('#course').val('<?php echo $_GET["course"];?>');	
+	<?php } ?>
+
+	<?php if(!empty($_GET['q'])) { ?>
+		$('#q').val('<?php echo $_GET["q"];?>');	
+	<?php } ?>			
+
+</script>
+ 

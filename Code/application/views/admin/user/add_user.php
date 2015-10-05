@@ -145,9 +145,9 @@
                         <div class="form-group">
                             <label>User Status</label>
                             <select name="user_status" class="form-control">
-                                <option value="active" >Active</option>
-                                <option value="block" >Block</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="active"> Active </option>
+                                <option value="block"> Block </option>
+                                <option value="inactive"> Inactive </option>
                             </select>
                         </div>
 

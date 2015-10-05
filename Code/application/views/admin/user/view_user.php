@@ -11,7 +11,6 @@
         </div>
         <!--//breadcrumb-->
         <!--filter-->
-
         <form method="get" id="filter">
 	        <div class="row filter">
 	          <div class="col-sm-12">
@@ -46,18 +45,18 @@
 	                </div>
 	                <div class="form-group">
 	                    <select class="form-control" name="role" id="role" onchange="filter_data()">
-	                                <option value="">School Role</option>
-	                                <?php 
-	                                  if(!empty($roles)){ 
-	                                    foreach($roles as $role) {
-	                                    ?>
-	                                    <option value="<?php echo $role['id']; ?>"><?php echo $role['role_name']; ?></option>  
-	                                <?php }  } ?>
-	                            </select>
+                            <option value="">Select Role</option>
+                            <?php 
+                              if(!empty($roles)){ 
+                                foreach($roles as $role) {
+                                ?>
+                                <option value="<?php echo $role['id']; ?>"><?php echo $role['role_name']; ?></option>  
+                            <?php }  } ?>
+                        </select>
 	                </div>
 	                <div class="form-group">
 	                    <select class="form-control" name="classroom" id="classroom" onchange="filter_data()">
-                            <option value="">School Classroom</option>
+                            <option value="">Select Classroom</option>
                             <?php 
                               if(!empty($classrooms)){ 
                                 foreach($classrooms as $classroom) {
@@ -66,6 +65,11 @@
                             <?php }  } ?>
                         </select>
 	                </div>
+
+                    <!-- <div class="form-group">
+                        <input type="text" name="q" onkeyup="filter_data()" id="q" id="">
+                    </div> -->
+
 	            </div>
 	        </div>
             
@@ -86,13 +90,12 @@
         <!--//filter-->
         <!--button div-->
     
-
         <form method="post" action="<?php echo base_url().'admin/user/send_messages'; ?>">  <!-- Form Start -->
     
         <div class="row div_buttons">
           <div class="col-sm-6">
               <button class="btn btn_black" type="submit">Send Message</button>
-              <a class="btn btn_green" href="<?php echo base_url().'admin/user/add';?>" >Add User</a>
+              <!-- <a class="btn btn_green" href="<?php echo base_url().'admin/user/add';?>" >Add User</a> -->
             </div>
 
           <div class="col-sm-6 text-right">
@@ -125,16 +128,20 @@
                           <tr>
                               <td class="checkbox_td">
                                 <div class="squaredThree">
-                                    <input type="checkbox" value="<?php echo $user['id']; ?>" id="squaredThree_<?php echo $user['id']; ?>" 
-                                    name="users[]">
+                                    <!-- Checkboxes for User and it will disabled for if user is admin because admin cant sent messages to admin  -->
+                                    <input type="checkbox" <?php if($user['role_id']=='1'){ echo 'disabled'; } ?> 
+                                    value="<?php echo $user['id']; ?>" id="squaredThree_<?php echo $user['id']; ?>" name="users[]"> 
                                     <label for="squaredThree_<?php echo $user['id']; ?>"></label>
                                 </div>
                               </td>
                               <td class="username">
                                   <div class="chat_img_holder"><img src="<?php echo base_url().'assets'; ?>/images/user3.jpg"></div>
                                   <h4><?php echo ucfirst($user['username']); ?></h4>
-                                  <?php if(!empty($user['user_status']) && $user['user_status']== 'active'){ echo '<p class="active">Active Today</p>'; } ?>
-                                  
+                                  <?php if($user['user_status']=='active'){ 
+                                        echo '<p class="active">Active Today</p>'; 
+                                    }elseif($user['user_status']=='blocked'){ 
+                                        echo '<p style="color:red">Blocked</p>';
+                                    } ?>
                               </td>
 
                               <td><?php echo ucfirst($user['class_name']); ?></td>
@@ -145,7 +152,13 @@
                                   <a href="#" class="icon icon_timeline"></a>
                                   <a href="#" class="icon icon_books"></a>
                                   <a href="#" class="icon icon_performance"></a>
-                                  <a href="<?php echo base_url().'admin/user/blocked/'.$user['id']; ?>" onclick="return confirm('Block User ?');" class="icon icon_blockuser"></a>
+                                  <?php if($user['user_status'] == 'blocked') { ?>  
+                                  <a href="<?php echo base_url().'admin/user/active/'.$user['id']; ?>" 
+                                    onclick="return confirm('Activate User ?');" class="icon icon_user"></a>
+                                  <?php }else{ ?>   
+                                  <a href="<?php echo base_url().'admin/user/blocked/'.$user['id']; ?>" 
+                                    onclick="return confirm('Blocked User ?');" class="icon icon_blockuser"></a>  
+                                  <?php } ?>
                                   <a href="#" class="icon icon_mail"></a>
                                   <a href="<?php echo base_url().'admin/user/send_message/'.$user['id']; ?>" class="icon icon_chat"></a>
                                   <a href="<?php echo base_url().'admin/user/update/'.$user['id']; ?>" class="icon icon_edit"> </a>
@@ -153,7 +166,7 @@
                             </tr>
                             <?php } }else{ ?>
 							
-							<tr> <td colspan="7"> No Data Found. </td> </tr>		
+							<tr> <td colspan="7" class="text-center"><strong>No Data Found. </strong> </td> </tr>		
 							
                             <?php } ?>
                         </tbody>
@@ -181,14 +194,16 @@
 		var year = $('#year').val();
 		var course = $('#course').val();
 		var classroom = $('#classroom').val();
+    var q = $('#q').val();
 
 		if(role == '' ){ $('#role').removeAttr('name'); }
 		if(school == '' ){ $('#school').removeAttr('name'); }
 		if(year == '' ){ $('#year').removeAttr('name'); }
 		if(course == '' ){ $('#course').removeAttr('name'); }
 		if(classroom == ''){ $('#classroom').removeAttr('name'); }
+        if(q == ''){ $('#q').removeAttr('name');}else{ setTimeout(function() { $('#filter').submit(); }, 1000); }
 
-		$('#filter').submit();
+		//$('#filter').submit();
 	}
 
 	<?php if(!empty($_GET['role'])) { ?>
@@ -209,7 +224,11 @@
 
 	<?php if(!empty($_GET['classroom'])) { ?>
 		$('#classroom').val('<?php echo $_GET["classroom"];?>');	
-	<?php } ?>			
+	<?php } ?>
+
+    <?php if(!empty($_GET['q'])) { ?>
+        $('#q').val('<?php echo $_GET["q"];?>');    
+    <?php } ?>			
 
 </script>
  
