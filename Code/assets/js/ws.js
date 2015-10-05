@@ -52,7 +52,6 @@ if ("WebSocket" in window)
     {       
         var obj = $.parseJSON(evt.data);
         if (obj.type == 'studymate') {
-            
                 if (wp == obj.from) {
                     $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p></div>");
                 } else {
@@ -116,9 +115,19 @@ if ("WebSocket" in window)
         }else if(obj.type == "discussion-type"){
             $('.box_footer[data-id="'+obj.type_id+'"]').html(obj.message);
             setTimeout(function(){  $('.box_footer[data-id="'+obj.type_id+'"]').html('Online'); }, 2000);
+
+        }else if(obj.type == "close_studymate"){
+           $('#close_mate').modal('toggle');
+            if(obj.error == ''){
+                $('.studyamte_list .mCustomScrollBox  .mCSB_container  .study_mate[data-id="'+obj.studymate_id+'"]').fadeOut(300);
+            }else{
+                alert(" => " + obj.error);
+            }
+
         }else if(obj.type == "dictionary"){
             $('.dictionary_result .mCustomScrollBox .mCSB_container').html(obj.message);
             $('input[data-type="search-dictionary"]').removeAttr('disabled');
+
         }
         else {
             alert('Message Not Catched!!');
@@ -428,18 +437,40 @@ if (nav.length) {
     return false;
 });
 
+
+$(document).on('change', '#action_studymate', function(){
+    val = $(this).val();
+    if(val == 1){
+        $('button[data-type="close-studymate"]').attr('data-id',$(this).data('id'));   
+        $('#close_mate').modal('show');
+           
+    }
+});
+
+$(document).on('click','button[data-type="close-studymate"]',function(e){
+
+    var request = {
+        type: 'close_studymate',
+        to: 'self',
+        studymate_id: $(this).attr('data-id'),
+        error : ''
+    };
+    ws.send(JSON.stringify(request));
+});
+
 /* Send Request to search from dictionary... */
 $(document).on('keypress','input[data-type="search-dictionary"], a[data-type="search-dictionary"]', function(e) {
   
     if (e.keyCode == 13 && this.value) {
     var request = {
-        type: 'dictionary',
-        to:'self',
-        keyword: this.value,
-        error: ''
-    };
+            type: 'dictionary',
+            to:'self',
+            keyword: this.value,
+            error: ''
+        };
     ws.send(JSON.stringify(request));
     $('.dictionary_result .mCustomScrollBox .mCSB_container').html('<img class="pre_loader" src="assets/images/loader1.GIF">').fadeIn(300);
     $(this).attr('disabled','');
-}
+    }
+
 });

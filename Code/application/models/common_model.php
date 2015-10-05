@@ -98,7 +98,7 @@ class Common_model extends CI_Model {
 			
 		}
 		
-		/* Check fourth parameter is paased and process 4th param. */
+		/* Check fourth parameter is passed and process 4th param. */
 		if(!empty($options) && is_array($options)){
 			$check_key = array('group_by','order_by');
 			foreach ($options as $key => $value) {
@@ -156,7 +156,7 @@ class Common_model extends CI_Model {
 
 	function class_mate_list($user_id, $append = true) {
    
-    $where = array('where'=>array('mate_id'=>$user_id),'or_where'=>array('mate_of'=>$user_id));
+    $where = 'mate_of ='. $user_id.' or mate_id ='.$user_id.' and is_delete=0';
     $result = $this->sql_select(TBL_STUDYMATES,'mate_id,mate_of',$where);
     $all = array();
     foreach ($result as $key => $rows) {
