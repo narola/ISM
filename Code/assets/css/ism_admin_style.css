@@ -1045,3 +1045,10 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .general_cred .box_body .half_size.select:after{
     right: 70px;
 }
+.half_size textarea.form-control{
+	width:95%;
+	height:150px;
+}
+#cke_editor1{
+    width: 95%;
+}

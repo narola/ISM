@@ -1049,3 +1049,6 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 	width:95%;
 	height:150px;
 }
+#cke_editor1{
+    width: 95%;
+}
