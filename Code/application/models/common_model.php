@@ -98,7 +98,7 @@ class Common_model extends CI_Model {
 			
 		}
 		
-		/* Check fourth parameter is paased and process 4th param. */
+		/* Check fourth parameter is passed and process 4th param. */
 		if(!empty($options) && is_array($options)){
 			$check_key = array('group_by','order_by');
 			foreach ($options as $key => $value) {
