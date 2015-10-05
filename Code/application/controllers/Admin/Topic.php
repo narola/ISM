@@ -3,8 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * class Topic 
- * 	
- *
  * @package default
  * @author Namrata Varma ( Sparks ID- NV )
  **/
