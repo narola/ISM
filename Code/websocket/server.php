@@ -71,22 +71,25 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         if (isset($vals['result'])) {
             $responce['message'] = '';
             foreach ($vals['result'] as $key => $value) {
-
-                $responce['message'] .= '<div id="callout-focus-demo" class="bs-callout bs-callout-info">'
-                        . '<h4>' . $value['term'][0] . '<code>' . $value['partofspeech'][0] . '</code>'
-                        . '</h4>'
-                        . '<p>'
-                        . '<b>Definition: </b>' . $value['definition'][0] . ''
-                        . '</p><p>'
-                        . '<code><b>Example: </b>' . $value['definition'][0] . '</code>.'
-                        . '</p></div>';
+                $responce['message'] .= ' <div class="result_box">
+                                <h5>'.$value['term'][0].'<span>: '.$value['partofspeech'][0].'</span></h5>'
+                                .'<strong>Definition:</strong><span>' . $value['definition'][0] . '</span>
+                                <h5><span><strong>Example: </strong>' . $value['definition'][0] . '</span></h5>
+                            </div>';
+                
             }
         }
+    }else if($data['type'] == 'close_studymate'){
+          $responce = $Server->close_studymate($Server->wsClients[$clientID][12], $data);
     }
+    
+    
+    
+    
     $check = array('feed_comment', 'like', 'discussion');
     if (isset($responce)) {
         $Server->log($responce, false);
-        if ($responce['to'] == 'self') {
+        if ($responce['to'] == 'self') {           
             $Server->wsSend($clientID, json_encode($responce));
         } else {
             if ($responce['type'] == 'studymate') {

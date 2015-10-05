@@ -125,7 +125,7 @@ if ("WebSocket" in window)
             }
 
         }else if(obj.type == "dictionary"){
-            $('#Serach_Result').html(obj.message);
+            $('.dictionary_result .mCustomScrollBox .mCSB_container').html(obj.message);
             $('input[data-type="search-dictionary"]').removeAttr('disabled');
 
         }
@@ -466,7 +466,7 @@ $(document).on('click','button[data-type="close-studymate"]',function(e){
 });
 
 /* Send Request to search from dictionary... */
-$(document).on('keypress','input[data-type="search-dictionary"]', function(e) {
+$(document).on('keypress','input[data-type="search-dictionary"], a[data-type="search-dictionary"]', function(e) {
   
     if (e.keyCode == 13 && this.value) {
     var request = {
@@ -476,7 +476,7 @@ $(document).on('keypress','input[data-type="search-dictionary"]', function(e) {
             error: ''
         };
     ws.send(JSON.stringify(request));
-    $('#Serach_Result').html('<img class="pre_loader" src="assets/images/loader1.GIF">').fadeIn(300);
+    $('.dictionary_result .mCustomScrollBox .mCSB_container').html('<img class="pre_loader" src="assets/images/loader1.GIF">').fadeIn(300);
     $(this).attr('disabled','');
     }
 
