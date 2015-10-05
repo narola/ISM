@@ -65,6 +65,11 @@
                             <?php }  } ?>
                         </select>
 	                </div>
+
+                    <!-- <div class="form-group">
+                        <input type="text" name="q" onkeyup="filter_data()" id="q" id="">
+                    </div> -->
+
 	            </div>
 	        </div>
             
@@ -90,7 +95,7 @@
         <div class="row div_buttons">
           <div class="col-sm-6">
               <button class="btn btn_black" type="submit">Send Message</button>
-              <a class="btn btn_green" href="<?php echo base_url().'admin/user/add';?>" >Add User</a>
+              <!-- <a class="btn btn_green" href="<?php echo base_url().'admin/user/add';?>" >Add User</a> -->
             </div>
 
           <div class="col-sm-6 text-right">
@@ -189,14 +194,16 @@
 		var year = $('#year').val();
 		var course = $('#course').val();
 		var classroom = $('#classroom').val();
+    var q = $('#q').val();
 
 		if(role == '' ){ $('#role').removeAttr('name'); }
 		if(school == '' ){ $('#school').removeAttr('name'); }
 		if(year == '' ){ $('#year').removeAttr('name'); }
 		if(course == '' ){ $('#course').removeAttr('name'); }
 		if(classroom == ''){ $('#classroom').removeAttr('name'); }
+        if(q == ''){ $('#q').removeAttr('name');}else{ setTimeout(function() { $('#filter').submit(); }, 1000); }
 
-		$('#filter').submit();
+		//$('#filter').submit();
 	}
 
 	<?php if(!empty($_GET['role'])) { ?>
@@ -217,7 +224,11 @@
 
 	<?php if(!empty($_GET['classroom'])) { ?>
 		$('#classroom').val('<?php echo $_GET["classroom"];?>');	
-	<?php } ?>			
+	<?php } ?>
+
+    <?php if(!empty($_GET['q'])) { ?>
+        $('#q').val('<?php echo $_GET["q"];?>');    
+    <?php } ?>			
 
 </script>
  

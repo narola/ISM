@@ -14,56 +14,27 @@
         <form method="get" id="filter">
 	        <div class="row filter">
 	          <div class="col-sm-12">
-	              <div class="form-group">
-	                    <select class="form-control" name="school" onchange="filter_data()" id="school">
-	                          <option value="">Select School</option>
-	                          <?php 
-	                            if(!empty($schools)){ 
-	                              foreach($schools as $school) {
-	                              ?>
-	                              <option value="<?php echo $school['id']; ?>" ><?php echo $school['school_name']; ?></option>  
-	                          <?php }  } ?>
-	                      </select>
-	                </div>
+	              
 	                <div class="form-group">
 	                   <select class="form-control" name="course" onchange="filter_data()" id="course" >
-	                                <option value="">Select Course</option>
-	                                <?php 
-	                                  if(!empty($courses)){ 
-	                                    foreach($courses as $course) {
-	                                    ?>
-	                                    <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>  
-	                                <?php }  } ?>
-	                            </select>
+                            <option value="">Select Course</option>
+                            <?php 
+                              if(!empty($courses)){ 
+                                foreach($courses as $course) {
+                                ?>
+                                <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>  
+                            <?php }  } ?>
+                        </select>
 	                </div>
 	                <div class="form-group">
-	                    <select class="form-control" name="year" onchange="filter_data()" id="year">
+	                    <select class="form-control" onchange="filter_data()" id="year">
 	                        <option value="">Select Year</option>
 	                        <option value="2015">2015</option>
 	                        <option value="2016">2016</option>
 	                    </select>
 	                </div>
 	                <div class="form-group">
-	                    <select class="form-control" name="role" id="role" onchange="filter_data()">
-                            <option value="">Select Role</option>
-                            <?php 
-                              if(!empty($roles)){ 
-                                foreach($roles as $role) {
-                                ?>
-                                <option value="<?php echo $role['id']; ?>"><?php echo $role['role_name']; ?></option>  
-                            <?php }  } ?>
-                        </select>
-	                </div>
-	                <div class="form-group">
-	                    <select class="form-control" name="classroom" id="classroom" onchange="filter_data()">
-                            <option value="">Select Classroom</option>
-                            <?php 
-                              if(!empty($classrooms)){ 
-                                foreach($classrooms as $classroom) {
-                                ?>
-                                <option value="<?php echo $classroom['id']; ?>"><?php echo $classroom['class_name']; ?></option>  
-                            <?php }  } ?>
-                        </select>
+	                    <input type="text" name="q" id="q" class="form-control">
 	                </div>
 	            </div>
 	        </div>
@@ -190,7 +161,7 @@
                 </div>
                 <nav  class="text-center">
        
-			    <?php  echo $this->pagination->create_links();  ?>
+			    <?php echo $this->pagination->create_links(); ?>
 
                 </nav>
             </div>
@@ -205,39 +176,22 @@
 	
 	function filter_data(){
 		
-		var role = $('#role').val();
-		var school = $('#school').val();
-		var year = $('#year').val();
 		var course = $('#course').val();
-		var classroom = $('#classroom').val();
+        var q = $('#q').val();
 
-		if(role == '' ){ $('#role').removeAttr('name'); }
-		if(school == '' ){ $('#school').removeAttr('name'); }
-		if(year == '' ){ $('#year').removeAttr('name'); }
+		
 		if(course == '' ){ $('#course').removeAttr('name'); }
-		if(classroom == ''){ $('#classroom').removeAttr('name'); }
+		if(q == ''){ $('#q').removeAttr('name'); }
 
 		$('#filter').submit();
 	}
-
-	<?php if(!empty($_GET['role'])) { ?>
-		$('#role').val('<?php echo $_GET["role"];?>');	
-	<?php } ?>
-
-	<?php if(!empty($_GET['school'])) { ?>
-		$('#school').val('<?php echo $_GET["school"];?>');	
-	<?php } ?>
-
-	<?php if(!empty($_GET['year'])) { ?>
-		$('#year').val('<?php echo $_GET["year"];?>');	
-	<?php } ?>
 
 	<?php if(!empty($_GET['course'])) { ?>
 		$('#course').val('<?php echo $_GET["course"];?>');	
 	<?php } ?>
 
-	<?php if(!empty($_GET['classroom'])) { ?>
-		$('#classroom').val('<?php echo $_GET["classroom"];?>');	
+	<?php if(!empty($_GET['q'])) { ?>
+		$('#q').val('<?php echo $_GET["q"];?>');	
 	<?php } ?>			
 
 </script>

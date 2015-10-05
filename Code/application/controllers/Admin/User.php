@@ -25,13 +25,15 @@ class User extends ADMIN_Controller {
 		
 		$this->data['page_title'] = 'Users';
 		
-		if(!empty($_GET['role']) || !empty($_GET['course']) || !empty($_GET['school']) ||  !empty($_GET['year']) || !empty($_GET['classroom']) ){
+		if(!empty($_GET['role']) || !empty($_GET['course']) || !empty($_GET['school']) ||  !empty($_GET['year']) 
+			|| !empty($_GET['classroom']) || !empty($_GET['q']) ){
 
 			if( !empty($_GET['role']) ) { $role = $this->input->get('role'); }	
 			if( !empty($_GET['course'])){ $course  = $this->input->get('course'); }
 			if( !empty($_GET['school'])){ $school = $this->input->get('school'); }
 			if( !empty($_GET['year']) ) { $year = $this->input->get('year'); }
 			if( !empty($_GET['classroom']) ){  $classroom = $this->input->get('classroom'); }
+			if( !empty($_GET['q']) ){  $q = $this->input->get('q'); }
 
 			$str = '';
 
@@ -41,8 +43,9 @@ class User extends ADMIN_Controller {
 			if(!empty($classroom)){ $where['where']['student_academic_info.classroom_id'] = $classroom; $str .= '&$classroom='.$classroom;  }
 			if(!empty($year)){ 
 								$next_year=$year+1; $academic_year = "$year-$next_year";    // find next year and create string like 2015-2016
-								$where['where']['student_academic_info.academic_year'] = $academic_year; $str .='year='.$year;  
+								$where['where']['student_academic_info.academic_year'] = $academic_year; $str .='&year='.$year;  
 							}
+			if(!empty($q)){ $where['like'][TBL_USERS.'.username'] = $q; $str.='&q='.$q; }							
 
 			$str =  trim($str,'&');
 
@@ -203,7 +206,6 @@ class User extends ADMIN_Controller {
 			$this->session->set_flashdata('success', 'Record is Successfully created.');
 			redirect('admin/user');
 		}
-
 	}
 
 	/**
@@ -448,7 +450,7 @@ class User extends ADMIN_Controller {
 		if($this->form_validation->run() == FALSE){
 
 			$this->template->load('admin/default','admin/user/send_messages',$this->data);	
-
+			
 		}else{
 			
 			$all_users = $this->input->post('all_users');
