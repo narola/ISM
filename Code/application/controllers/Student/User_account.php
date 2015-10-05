@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 * kap - kamlesh pokiya 
 *
 */
-class User_account extends CI_Controller {
+class User_account extends ISM_Controller {
 
 	public function __construct()
 	{
@@ -348,7 +348,7 @@ class User_account extends CI_Controller {
 							$member_count	=	count($grade_array)+1;
 							if($member_count == 5){
 								$is_completed	=  array('is_completed' => 1);
-								$where	=	array('group_id' => $value['group_id']);
+								$where	=	array('id' => $value['group_id']);
 								update(TBL_TUTORIAL_GROUPS,$where,$is_completed);
 							}
 							redirect('login/welcome');

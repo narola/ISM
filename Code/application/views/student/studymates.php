@@ -13,7 +13,7 @@
                     <div class="study_mate ol" data-id="<?php echo $value['user_id'];?>">
                         <div class="col-lg-9 col-md-8 col-sm-7">
                             <div class="mate_user_img">
-                                <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                                <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                             </div>
                             <h4><?php echo $value['full_name'];?></h4>
                             <p>Student from <?php echo $value['school_name'];?></p>
@@ -70,14 +70,19 @@
                             <!--card-->
                             <div class="suggested_mates_card">
                                 <div class="mate_user_img">
-                                    <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                                    <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                 </div>
                                 <div class="mate_descrip">
                                     <p class="mate_name"><?php echo $value['full_name'];?></p>
                                     <p class="mate_following">Folowing 34 Authers</p>
                                     <p><?php echo $value['school_name'];?></p>
                                     <p><?php echo $value['course_name'];?></p>
+                                    <?php if($value['srid'] != ''){?>
+                                    <button class="btn btn_black_normal" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>" disabled>Request Already Sent</button>
+                                    <?php }else{ ?>
                                     <button class="btn btn_green" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>">Add Studymates</button>
+                                    <?php } ?>
+
                                 </div>
                             </div>
                             <!--//card-->

@@ -377,4 +377,7 @@ function online(){
       return explode('-', $all_online);
 }
 
-
+function count_studymate_request($userid){
+  $CI =& get_instance();
+  return $CI->common_model->count_studymate_request($userid);
+}

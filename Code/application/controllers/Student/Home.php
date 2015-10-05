@@ -49,7 +49,9 @@ class Home extends ISM_Controller {
 			$feed_ids[] = $value['fid'];
 			$data_array[$key] = $value;
 		}	
-		
+		if(sizeof($feed_ids)>0)
+		{	
+
 		//---find feeds commentss
 		$options = array(
 				'join' => array(
@@ -93,7 +95,7 @@ class Home extends ISM_Controller {
 			),
 		);
 		$data['classmates'] = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,  (SELECT count(*) FROM `user_chat` `uc` WHERE `uc`.`sender_id` = `u`.`id` AND `uc`.`receiver_id` = '.$user_id.' AND `uc`.`received_status` = 0) as `unread_msg`',$where,$options);
-
+	}
 		/* Get all online users */
         $data['online'] = online();
 

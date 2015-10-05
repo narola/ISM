@@ -1,8 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Studymates extends ISM_Controller {
-	/*	Student Studymate.
+class Studymates_request extends ISM_Controller {
+	
+	/*	Student Studymate Request.
 	*	@Auther : Kamlesh Pokiya (KAP). 
 	*/
 
@@ -13,28 +14,22 @@ class Studymates extends ISM_Controller {
 
 	public function index()
 	{
-		$data['title'] = 'ISM - MY Studymates';
+		$data['title'] = 'ISM - MY Studymate Requests';
 		$user_group_id = $this->session->userdata('user')['group_id'];
 		$user_id = $this->session->userdata('user')['id'];
-		
-		/*----get studymate list-----*/
-		$my_studymates = studymates($user_id,false);
-		
-		if(sizeof($my_studymates)>0){
-			$where = array('where_in' => array('u.id' => $my_studymates));
-			$options = array('join' =>
-						array(
+		/*----get studymate request list----*/
+		$options = array('join' => array(
 							array(
-								'table' => TBL_STUDENT_ACADEMIC_INFO.' i',
-								'condition' => 'i.user_id = u.id'
+								'table' => TBL_USERS.' u',
+								'condition' => 'u.id = s.request_to_mate_id'
 							),
 							array(
-								'table' => TBL_SCHOOLS.' s',
-								'condition' => 's.id = i.school_id'
+								'table' => TBL_STUDENT_ACADEMIC_INFO.' si',
+								'condition' => 'si.user_id = u.id'	
 							),
 							array(
-								'table' => TBL_COURSES.' c',
-								'condition' => 'c.id = i.course_id'
+								'table' => TBL_SCHOOLS.' sl',
+								'condition' => 'sl.id = si.school_id'
 							),
 							array(
 								'table' => TBL_USER_PROFILE_PICTURE.' p',
@@ -42,11 +37,14 @@ class Studymates extends ISM_Controller {
 							)
 						)
 					);
-			$data['my_studymates'] = select(TBL_USERS.' u','u.id as user_id,u.full_name,s.school_name,c.course_name,p.profile_link',$where,$options);
-		}
-		else{
+		$where = array('where'=>array('s.request_from_mate_id'=>$user_id));
+		$data['studymate_request'] = select(TBL_STUDYMATES_REQUEST.' s','sl.school_name,u.full_name,p.profile_link',$where,$options);
+		
+		/*----get studymate list-----*/
+		$my_studymates = studymates($user_id,false);
+		if(!sizeof($my_studymates) > 0)
 			$my_studymates = array('');
-		}
+
 		/*----get recommended studymate list---*/
 		$where = array('where' => array('m.group_id'=>$user_group_id,'in1.user_id !=' => $user_id),'where_not_in'=>array('in1.user_id' => $my_studymates));
 		$options = array('join' => array(
@@ -86,6 +84,6 @@ class Studymates extends ISM_Controller {
 			);
 		$data['recommended_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,p.profile_link,sr.id as srid',$where,$options);
 
-		$this->template->load('student/default','student/studymates',$data);
+		$this->template->load('student/default','student/studymates_request',$data);
 	}
 }

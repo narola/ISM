@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *
 */
 
-class Notice_board extends CI_Controller {
+class Notice_board extends ISM_Controller {
 
 	public function __construct()
 	{

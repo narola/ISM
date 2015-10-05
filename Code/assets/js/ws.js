@@ -51,6 +51,10 @@ if ("WebSocket" in window)
     ws.onmessage = function (evt)
     {       
         var obj = $.parseJSON(evt.data);
+        if(obj.error != 'skip'){
+             $(".alert_notification p").html(obj.error);
+             $(".alert_notification").show().delay(3000).fadeOut();
+        }
         if (obj.type == 'studymate') {
                 if (wp == obj.from) {
                     $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p></div>");
@@ -71,9 +75,7 @@ if ("WebSocket" in window)
            }  
             
         } else if (obj.type == 'con') {
-            if (obj.error != '') {
-                alert(obj.error);
-            }
+            
         } else if (obj.type == 'notification') {
             if (obj.status == 'available') {
                 set_status(obj.user_id, obj.live_status);
@@ -120,8 +122,6 @@ if ("WebSocket" in window)
            $('#close_mate').modal('toggle');
             if(obj.error == ''){
                 $('.studyamte_list .mCustomScrollBox  .mCSB_container  .study_mate[data-id="'+obj.studymate_id+'"]').fadeOut(300);
-            }else{
-                alert(" => " + obj.error);
             }
 
         }else if(obj.type == "dictionary"){
@@ -130,9 +130,7 @@ if ("WebSocket" in window)
 
         }
         else if(obj.type == "send_studymate_request"){
-
-            // $('#Serach_Result').html(obj.message);
-            alert('hi');
+            $('.mCSB_container .three_tabs .badge').html(obj.count);
             $('.suggested_mates_card .mate_descrip button[data-id="'+obj.studymate_id+'"]').removeClass('btn_green').attr('disabled',true).addClass('btn_black_normal').html('Request Already Sent');
 
         }

@@ -343,25 +343,27 @@
                     </div>
                     <div class="stm_list mCustomScrollbar" data-mcs-theme="minimal-dark">
                         <?php
-                        foreach($classmates as $key => $value){
-                            $u = 'offline';
-                            if(in_array($value['id'], $online)){
-                                $u = 'online';
-                            }
-                            ?>
-                            <div class="stm_item <?php echo $u; ?>" data-id="<?php echo $value['id']; ?>">
-                                <a id="mate_list" href="javascript:void(0);" data-id="<?php echo $value['id']; ?>">
+                        if(isset($classmates) > 0){
+                            foreach($classmates as $key => $value){
+                                $u = 'offline';
+                                if(in_array($value['id'], $online)){
+                                    $u = 'online';
+                                }
+                                ?>
+                                <div class="stm_item <?php echo $u; ?>" data-id="<?php echo $value['id']; ?>">
+                                    <a id="mate_list" href="javascript:void(0);" data-id="<?php echo $value['id']; ?>">
 
-                                <div class="stm_user_img">
-                                    <img src="/<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                                    <div class="stm_user_img">
+                                        <img src="/<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                                    </div>
+                                    <span class="badge message_badge"><?php if($value['unread_msg'] > 0) echo $value['unread_msg']; ?></span>
+                                    <p><?php echo $value['full_name']; ?></p>
+                                    </a>
+                                    <div class="clearfix"></div>
                                 </div>
-                                <span class="badge message_badge"><?php if($value['unread_msg'] > 0) echo $value['unread_msg']; ?></span>
-                                <p><?php echo $value['full_name']; ?></p>
-                                </a>
-                                <div class="clearfix"></div>
-                            </div>
-                            <?php 
-                        }  ?>
+                                <?php 
+                            }  
+                        }?>
                      </div>       
                      <div class="text-center">
                         <button class="btn_find_studymates btn btn_blue">Find more Studymates</button>

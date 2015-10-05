@@ -173,6 +173,11 @@ class Common_model extends CI_Model {
     return $all;
 	}
 
+	function count_studymate_request($user_id){
+				
+		return $this->sql_select(TBL_STUDYMATES_REQUEST,null,array('where'=>array('request_to_mate_id'=> $user_id,'status'=>0)),array('count'=>true));
+	}
+
 }
 
 
