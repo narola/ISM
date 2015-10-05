@@ -388,7 +388,7 @@
                     <div class="col-sm-12 text-center reg_btns">
                     	<input type="hidden" value="" name="todo" id="todo">
                         <a href="<?php echo site_url();?>/student/home" class="btn_black btn">Cancel</a>
-                        <?php if(isset($school_information['is_my_school'])){?>
+                        <?php if(isset($school_information['is_my_school']) && $school_information['is_my_school'] == 1){?>
                             <a disabled data-toggle="tooltip" data-placement="top" title="You have already request for change school" class="btn_black btn btn_green">submit</a>
                         <?php }else{ ?>
                             <input type="submit" name="btnsubmit" class="btn_black btn btn_green" value="Submit">
