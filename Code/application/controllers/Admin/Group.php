@@ -32,7 +32,7 @@ class Group extends ADMIN_Controller {
 			$str = '';
 
 			if(!empty($course)){ $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.course_id'] = $course; $str .='&course='.$course; }
-			if(!empty($q)){ $where['like'][TBL_TUTORIAL_GROUPS.'.group_name'] = $q; $where['like'][TBL_TUTORIAL_GROUP_MEMBER.'.group_name'] = $q;  $str .='&q='.$q; }
+			if(!empty($q)){ $where['like'][TBL_TUTORIAL_GROUPS.'.group_name'] = $q; $where['or_like'][TBL_USERS.'.username'] = $q;  $str .='&q='.$q; }
 			if(!empty($year)){ 
 								$next_year=$year+1; $academic_year = "$year-$next_year";    // find next year and create string like 2015-2016
 								$where['where']['student_academic_info.academic_year'] = $academic_year; $str .='&year='.$year;  
