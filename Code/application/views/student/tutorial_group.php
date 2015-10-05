@@ -1,5 +1,6 @@
 <div class="col-sm-7 main main_tut">
     <?php 	if(isset($topic) && !empty($topic)){ ?>
+            <div class="fixed_comment">
                 <div class="row discussion_header">
                 	<div class="col-sm-12">
                         <h3><span>Topic - </span><?php echo $topic['topic_name']; ?></h3>
@@ -17,6 +18,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
                 <div class="row discussion">
                 <?php 
                 if(isset($discussion) && count($discussion) > 0){
@@ -26,11 +28,11 @@
                        $clss_me = '';
                        if($v['sender_id'] == $user_id)
                         $clss_me = 'me';
-                       if($v['week_day'] <= 2){
+                      // if($v['week_day'] <= 2){
                             if($week !== $v['week_day']){
                                 $week = $v['week_day'];
                             ?>
-                            <div class="divide_discussion col-sm-12">                    
+                            <div class="divide_discussion col-sm-12" id="<?php echo $weekday[$v['week_day']-1]; ?>">                    
                                 <div class="clearfix"></div>                    
                                 <hr><h4><?php echo $weekday[$v['week_day']-1]; ?></h4>
                             </div>
@@ -47,26 +49,28 @@
                                 </div>
                             </div>
                             <?php
-                            }
+                          //  }
                         $i++;
                     }
                 }
                 ?> 
                 </div>
-                <?php if($current_weekday <= 3){ ?>           
+                <?php //if($current_weekday <= 3){ ?>           
                 <div class="row">
                		<!--input-->
                     <div class="col-sm-12 input">
-                    	<div class="alert alert-danger alert-dismissible" role="alert">
+                    	<?php if($time == 0){ ?>
+                        <div class="alert alert-danger alert-dismissible" role="alert">
                           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                           Active hours are finished!
                         </div>
-                        
+                        <?php } ?>
                     	<div class="option_bar" data-type="discussion-submit">
                         	<a href="#" class="icon icon_pin"></a>
                         	<a href="#" class="icon icon_image"></a>
                             <a href="#" class="icon icon_mic"></a>
                             <a href="#" class="icon icon_link"></a>
+                            <button class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
                         </div>
                     	<textarea placeholder="SAY IT" data-type="discussion"></textarea>
                         <a href="#" class="icon icon_emoji"></a>
@@ -75,7 +79,7 @@
                     <!--//input-->
                 </div>
                 <?php 
-                }
+              //  }
                  }else{ 
 ?>
 <h1>No topic allocated for this week!</h1>
@@ -91,71 +95,25 @@
                     </div>
                 </div>
                 <!--calc-->
-                <div class="calculator row mCustomScrollbar" data-mcs-theme="minimal-dark" id="accordian_calc">
-                    <div class="col-sm-12 textarea">
-                        <span>23 + 12000 /1000 -</span>
-                        <h1>2500</h1>
-                    </div>
-                    <div class="calc_header">
-                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion_calc" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Scientific <span class="fa fa-angle-down"></span></a>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                        <div class="calc_btns">
-                            <button class="btn">2<sup>nd</sup></button>
-                            <button class="btn">x<sup>2</sup></button>
-                            <button class="btn">x<sup>3</sup></button>
-                            <button class="btn">x<sup>y</sup></button>
-                            <button class="btn">e<sup>x</sup></button>
-                            <button class="btn">1/x</button>
-                            <button class="btn">2<sup>nd</sup></button>
-                            <button class="btn">2<sup>nd</sup></button>
-                            <button class="btn">2<sup>nd</sup></button>
-                            <button class="btn">log<sub>10</sub></button>
-                            <button class="btn">1</button>
-                            <button class="btn">x</button>
-                            <button class="btn">10<sup>x</sup></button>
-                            <button class="btn">In</button>
-                            <button class="btn">log</button>
-                            <button class="btn">x!</button>
-                            <button class="btn">sin</button>
-                            <button class="btn">cos</button>
-                            <button class="btn">tan</button>
-                            <button class="btn">e</button>
-                            <button class="btn">Rad</button>
-                            <button class="btn">sinh</button>
-                            <button class="btn">cosh</button>
-                            <button class="btn">tanh</button>
-                            <button class="btn">Rand</button>
-                            <div class="clearfix"></div>
+ <!-- <div style="border:1px solid;padding-top:10px;text-align:center;"> -->
+                    
+                    
+                  <!-- </div> -->
+                  </p>
+
+                <div class="calculator row " id="accordian_calc">
+                    
+
+                    <div class="dictionary_div">
+                        <div class="form-group no_effect search_input">
+                            <input class="form-control" type="text" placeholder="Search" data-type="search-dictionary">
+                            <a href="javascript:void(0);" class="fa fa-search" data-type="search-dictionary"></a>
                         </div>
-                    </div>
-                    <div class="calc_header">
-                        <a>Basic</a>
-                    </div>
-                    <div class="calc_btns basic_btns">
-                        <button class="btn btn_blue">C</button>
-                        <button class="btn btn_red">+ _</button>
-                        <button class="btn btn_red">%</button>
-                        <button class="btn btn_green">+</button>
-                        <button class="btn btn_white">7</button>
-                        <button class="btn btn_white">8</button>
-                        <button class="btn btn_white">9</button>
-                        <button class="btn btn_green">-</button>
-                        <button class="btn btn_white">4</button>
-                        <button class="btn btn_white">5</button>
-                        <button class="btn btn_white">6</button>
-                        <button class="btn btn_green">x</button>
-                        <button class="btn btn_white">1</button>
-                        <button class="btn btn_white">2</button>
-                        <button class="btn btn_white">3</button>
-                        <button class="btn btn_green">/</button>
-                        <button class="btn btn_white btn_0">0</button>
-                        <button class="btn btn_white">.</button>
-                        <button class="btn btn_white">=</button>
-                        <div class="clearfix"></div>
+                        <div class="dictionary_result mCustomScrollbar" data-mcs-theme="minimal-dark">
+                        </div>
+                        
                     </div>
                 </div>
-                <!--//calc-->
                 <!--white board-->
                 <div class="white_board">
                     <ul class="board_tools">
@@ -209,18 +167,18 @@
                                   <circle id="circle" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="15" stroke="#1bc4a3" fill="none"></circle>
                                  </g>
                                 </svg>
-                                <h4 class="group_score">Group Score : <span><?php echo $topic['group_score']; ?></span></h4>
+                                <h4 class="group_score">Group Score : <span id="group_score_count" ><?php echo $topic['group_score']; ?></span></h4>
                             </div>
                         </div>
                     </div>
                     <div class="box">
                         <div class="box_body">
-                            <h5>Active Comments : <span><?php echo $active_comment; ?></span></h5>
+                            <h5>Active Comments : <span id="active_comment_count"><?php echo $active_comment; ?></span></h5>
                         </div>
                     </div>                    
                     <div class="box">
                         <div class="box_body">
-                            <h5>My Score : <span><?php echo $topic['my_score']; ?></span></h5>
+                            <h5>My Score : <span id="my_score_count" ><?php echo $topic['my_score']; ?></span></h5>
                         </div>
                     </div>
                     <!--group-->

@@ -48,6 +48,17 @@
 
     <div class="padding_b30">
 
+    	<div class="col-sm-2 col-sm-offset-10">
+            <div class="box_body bulk_action">
+                <div class="form-group select">
+                    <select class="form-control">
+                        <option>Bulk Action</option>
+                        <option>Delete</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
       <div class="col-lg-4 col-md-6">
           <div class="box add_notice shadow_effect text-center">
                 <a href="<?php echo base_url().'admin/notice/add'; ?>">

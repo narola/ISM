@@ -56,8 +56,8 @@ class User_account extends CI_Controller {
 		$this->data['program'] 		= 	select(TBL_COURSES);
 		$this->data['districts'] 		= 	select(TBL_DISTRICTS);
 		$this->data['school_information'] = select(TBL_AUTO_GENERATED_CREDENTIAL.' a',
-	    		's.id as school_id,a.classroom_id as class_id,a.course_id as program,s.district_id',	
-	    		array('a.username' => $this->session->userdata('credential_user')),
+	    		's.id as school_id,a.classroom_id as class_id,a.course_id as program,s.district_id,a.is_my_school',	
+	    		array('where' => array('a.username' => $this->session->userdata('credential_user'))),
 		    		array( 'join' => array(
 		    			array(
 		    				'table' => TBL_SCHOOLS.' s',
@@ -65,6 +65,7 @@ class User_account extends CI_Controller {
 		    			)),
 		    		'single' => 1
 		    		));
+		
 		$this->form_validation->set_rules('username', 'Username', 'trim|required|callback_check_user');
 		$this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|regex_match[/^[0-9().-]+$/]');
 		
@@ -90,13 +91,24 @@ class User_account extends CI_Controller {
 			}
 		}
 		
+		/*---send request for change school detail ------*/
+		$request_change = $this->input->post('send_request');
+		if($request_change == 'change')
+		{
+			$this->send_mail($this->session->userdata('credential_user'));
+		}
+
 		$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|is_unique[users.email_id]|callbach_check_email');
 		$this->form_validation->set_rules('reg[birthdate]', 'Date of birth', 'regex_match[(0[1-9]|1[0-9]|2[0-9]|3(0|1))-(0[1-9]|1[0-2])-\d{4}]');
-		
+					
 		if($this->form_validation->run() == FALSE){
 			$this->load->view('student/user_account_update',$this->data);
 		}
 		else{
+			if($this->input->post("birthdate") == '')
+				$birthdate = null;
+			else
+				$birthdate = $this->input->post("birthdate");
 			$data_student = array(
 				"full_name"			=>	$this->input->post("full_name"),
 				"email_id"			=>	$this->input->post("email_id"),
@@ -107,7 +119,7 @@ class User_account extends CI_Controller {
 				"state_id"			=>	$this->input->post("state_id"),
 				"city_id"			=>	$this->input->post("city_id"),
 				"username"			=>	$this->input->post("username"),
-				"birthdate"			=>	$this->input->post("birthdate"),
+				"birthdate"			=>	$birthdate,
 				"password"			=>	$this->encrypt->encode($this->input->post("new_password")),
 				"created_date"		=>	date('Y-m-d H:i:s',time()),
 				"modified_date"		=>	date('Y-m-d H:i:s',time())
@@ -256,8 +268,8 @@ class User_account extends CI_Controller {
 						$data = array('upload_data' => $this->upload->data());
 						$student_profile = "user_".$insertid.'/'.$data['upload_data']['file_name'];
 					}
+					crop(UPLOAD_URL.'/'.$student_profile,150,150);
 				}
-				crop(UPLOAD_URL.'/'.$student_profile,150,150);
 
 				/*-----------user profile pic detail--------------*/
 
@@ -280,7 +292,7 @@ class User_account extends CI_Controller {
 	           	
 	           	/*------------group allocation--------------------*/
 	           	
-	           	$where 	=	array('where'=>array('i.school_id !='=>$school_id,'i.course_id'=>$course_id,'tg.is_completed'=>'1'));
+	           	$where 	=	array('where'=>array('i.school_id !='=>$school_id,'i.course_id'=>$course_id,'tg.is_completed'=>'0'));
 	           	$options	=	array('join'=>
 	   							array(
 	   								array(
@@ -306,6 +318,7 @@ class User_account extends CI_Controller {
 	           	$found_group_name 	=	select(TBL_GROUP_NAMES,'group_name',null,$options);
 	           	$course_name		=	select(TBL_COURSES,'course_name',array('where'=>array('id'=>$course_id)),1);
 	           	$group_name 		=	$found_group_name['group_name'].'-'.$course_name['course_name'];
+
 	           	if(sizeof($exist_members)>0){
 	               	foreach ($exist_members as $key => $value) {
 	               		$grade_array	=	explode(',',$value['grade']);
@@ -359,6 +372,7 @@ class User_account extends CI_Controller {
 	           }
 			}
 		}
+
 	}
 
 	/*--get state country wise-----------------*/
@@ -492,5 +506,28 @@ class User_account extends CI_Controller {
         );
         $this->session->set_userdata($session_data);
         return;
+    }
+
+
+    public function send_mail($username){
+    	update(TBL_AUTO_GENERATED_CREDENTIAL,array('username'=>$username),array('is_my_school'=>1));
+		$message = $this->input->post('message');
+		$email_id = $this->input->post('email');
+		$configs = mail_config();
+        $this->load->library('email', $configs);
+        $this->email->initialize($configs);
+        $this->email->from('kap.narola@narolainfotech.com', 'Kamlesh Pokiya');
+        $this->email->to($email_id);
+        $msg = '';
+        $msg .='<html>';
+        $msg .='<head><title></title></head>';
+        $msg .= '<body>Dear Admin,<p>'.$message.'</p><body>';
+        $msg .='</html>';
+        $this->email->subject('Reset Password');
+        $this->email->message($msg);
+        $this->email->send();
+        $this->email->print_debugger();
+		$this->session->set_flashdata('success','Your request successfully send...');
+		redirect('student/user_account');	
     }
 }

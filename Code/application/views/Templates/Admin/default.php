@@ -76,7 +76,7 @@
                 <li class="dropdown sub_menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Topics</a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Allocate Topics</a></li>
+                        <li><a href="admin/topic/allocate">Allocate Topics</a></li>
                         <li><a href="admin/topic/lists">List of Topics</a></li>
                         <li><a href="#">Add New Topic</a></li>
                     </ul>

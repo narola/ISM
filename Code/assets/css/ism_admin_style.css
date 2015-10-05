@@ -192,10 +192,7 @@
 	font-weight:600;
     border: 1px solid #f5f5f5;
 }
-.pagination_admin>li.active>a, .pagination_admin>li.active>a:hover{
-	background-color:#ff9b9b;
-	border: 1px solid #f5f5f5;
-}
+
 .sidebar_right_admin .stm{
 	border:none;
 }
@@ -691,7 +688,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .notice_body p{
 	padding: 15px;
 	margin-bottom:15px;
-    max-height: 150px;
+    height: 150px;
     overflow: hidden;
 }
 .notice_action a {
@@ -840,6 +837,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .general_cred .box_body .select:after{
 	top:10px;
+	color:#ff6b6b;
 }
 .general_cred .box_body .three_inputs.select:after{
 	color:#ff6b6b;
@@ -1025,4 +1023,32 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .sidebar_shrink .profile_link{
 	display:none;
+}
+.bulk_action{
+	padding:15px 0 0 0;
+}
+.bulk_action .form-group{
+	margin:0;
+}
+.bulk_action .select:after{
+	color: #ff6b6b;
+}
+.bulk_action .form-control:focus{
+	border-color: rgba(255,107,107,0.2);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(255,107,107,0.2);
+}
+.half_size .form-control{
+    width: 90%;
+    display: inline-block;
+    margin-right: 10px;
+}
+.general_cred .box_body .half_size.select:after{
+    right: 70px;
+}
+.half_size textarea.form-control{
+	width:95%;
+	height:150px;
+}
+#cke_editor1{
+    width: 95%;
 }

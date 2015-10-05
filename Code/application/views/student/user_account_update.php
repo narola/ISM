@@ -111,9 +111,23 @@
                             </div>
                             <!--avatar-->
                             <div class="col-sm-4 text-center hidden-xs">
+
+                                <?php 
+                                    if(isset($profile_pic)){
+                                ?>
                             	<div class="avatar1" >
                                 	<img src="<?php echo UPLOAD_URL.'/'.$profile_pic;?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                 </div>
+                                <?php 
+                                    }
+                                    else{
+                                ?>
+                                <div class="avatar" >
+                                    <img src="<?php echo base_url() ?>assets/images/avatar.png">
+                                </div>
+                                <?php
+                                    }
+                                ?>
                                 <div class="upload">
                                 	<input type="file" name="profile_image_1">
                                     <span>Upload Profile Picture</span>
@@ -184,7 +198,9 @@
                         </div>
                         <div class="box_body">
                             <div class="col-sm-12">	
-                            	<p  style='display:<?php echo isset($display)?$display:"";?>'>You are registered for following school, <a href="javascript:void(0)" onclick="enabled_all();">Click Here</a> if it’s not your school.</p>
+                            	<p  style='display:<?php echo isset($display)?$display:"";?>'>You are registered for following school, 
+                                    <a href="#sample" data-toggle="modal">Click Here</a> if it’s not your school.</p>
+                               
                                 <div class="school_info">
                                     <div class="form-group small_input <?php echo isset($display)?$display:'select';?>">
                                         <label for="">School Name</label>
@@ -193,7 +209,7 @@
                                             <?php 
                                               if(!empty($schools)){ 
                                                 foreach($schools as $school) {
-                                                    if($school_information[0]['school_id'] == $school['id']){
+                                                    if($school_information['school_id'] == $school['id']){
                                               ?> 
                                                     <option value="<?php echo $school['id'];?>" selected>
                                                         <?php echo $school['school_name']; ?>
@@ -214,7 +230,6 @@
                                         </div>
                                     </div>
                                                                        
-                                    
                                     <div class="form-group small_input select">
                                         <label for="">Class</label>
                                         <select class="form-control" name='class_id' id="class_id" <?php echo isset($disabled)?'':'disabled';?>>
@@ -222,7 +237,7 @@
                                         <?php 
                                           if(!empty($class)){ 
                                             foreach($class as $c) {
-                                                if($school_information[0]['class_id'] == $c['id']){
+                                                if($school_information['class_id'] == $c['id']){
                                           ?> 
                                                 <option value="<?php echo $c['id'];?>" selected>
                                                     <?php echo $c['class_name']; ?>
@@ -248,7 +263,7 @@
                                         <?php 
                                           if(!empty($years)){ 
                                             foreach($years as $year) {
-                                                if($school_information[0]['year_id'] == $year['id']){
+                                                if($school_information['year_id'] == $year['id']){
                                           ?> 
                                                 <option value="<?php echo $year['id'];?>" selected>
                                                     <?php echo $year['year']; ?>
@@ -279,7 +294,7 @@
                                         <?php 
                                           if(!empty($districts)){ 
                                             foreach($districts as $district) {
-                                                if($school_information[0]['district_id'] == $district['id']){
+                                                if($school_information['district_id'] == $district['id']){
                                           ?> 
                                                 <option value="<?php echo $district['id'];?>" selected>
                                                     <?php echo $district['district_name']; ?>
@@ -304,7 +319,7 @@
                                         <?php 
                                           if(!empty($program)){ 
                                             foreach($program as $p) {
-                                                if($school_information[0]['program'] == $p['id']){
+                                                if($school_information['program'] == $p['id']){
                                           ?> 
                                                 <option value="<?php echo $p['id'];?>" selected>
                                                     <?php echo $p['course_name']; ?>
@@ -373,7 +388,11 @@
                     <div class="col-sm-12 text-center reg_btns">
                     	<input type="hidden" value="" name="todo" id="todo">
                         <a href="<?php echo site_url();?>/student/home" class="btn_black btn">Cancel</a>
-                        <input type="submit" name="btnsubmit" class="btn_black btn btn_green" value="Submit">
+                        <?php if(isset($school_information['is_my_school'])){?>
+                            <a disabled data-toggle="tooltip" data-placement="top" title="You have already request for change school" class="btn_black btn btn_green">submit</a>
+                        <?php }else{ ?>
+                            <input type="submit" name="btnsubmit" class="btn_black btn btn_green" value="Submit">
+                        <?php } ?>
                     </div>
                 </form>
             </div>
@@ -384,6 +403,51 @@
             </div>
         </footer>
     </div>
+     <!-- Modal -->
+        <div class="modal fade" id="sample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header notice_header text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">REQUEST FORM</h4>
+                        <small>Sep 7, 2015</small>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" action="" onsubmit="return send_email();" method="post">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" id="email" name="request_email" placeholder="Email">
+                                    <br>
+                                    <div class="alert alert-danger" style="display:none" id="err1">
+                                        Email field is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword" class="col-sm-2 control-label">Message</label>
+                                <div class="col-sm-10">
+                                   <textarea class="form-control" placeholder="Write school information..." name="message" id="message"></textarea>
+                                   <br>
+                                    <div class="alert alert-danger" style="display:none" id="err2">
+                                        Message field is required
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <input type="hidden" name="send_request" value="change">
+                                    <input type="submit" class="btn btn_black_normal" value="SEND REQUEST">
+                                </div>
+                            </div>
+                        </form>
+                        <h4 class="notice_by">Gilbert Addoh<span>ISM Admin</span></h4>
+                        <div class="clearfix"></div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    <!-- /.modal -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="assets/js/jquery-1.11.3.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -424,6 +488,34 @@
         $('#birthdate input').datepicker({
             format: 'yyyy-mm-dd'
         });
+
+        function send_email(){
+            email = $('#email').val();
+            message = $('#message').val();
+       
+            if(email == '' && message == ''){
+                $('#err2').show();
+                $('#err1').show();   
+            }
+            else if(message == '' && email != ''){
+                $('#err2').show();
+                $('#err1').hide();
+            }
+            else if(email == '' && message != ''){
+                $('#err1').show();
+                $('#err2').hide();
+            }
+            else {
+                return true;
+            } 
+            return false;
+        }
+
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
+
+
 </script>
 
 </body>

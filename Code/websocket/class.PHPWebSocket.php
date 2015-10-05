@@ -457,6 +457,25 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -484,7 +503,6 @@ class PHPWebSocket {
         } else {
             $data = '';
         }
-
         // check if this is not a continuation frame and if there is already data in the message buffer
         if ($opcode != self::WS_OPCODE_CONTINUATION && $this->wsClients[$clientID][11] > 0) {
             // clear the message buffer
@@ -631,6 +649,25 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1040,13 +1077,14 @@ class PHPWebSocket {
         return array_merge($data, $this->get_client_info($user_id));
     }
 
-    function load_more($data = null) {
+    function load_more($user_id, $data = null) {
         $link = $this->db();
         if (is_array($data)) {
             if (!empty($data['start']) && is_numeric($data['start'])) {
                 $limit = 4;
+                $ID_in = implode(',', $this->class_mate_list($user_id));
                 $data['start'] += $limit;
-                $query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, `f`.`posted_on`, `u`.`full_name`, (select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment, (select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like, `p`.`profile_link` FROM `feeds` `f` LEFT JOIN `users` `u` ON `u`.`id` = `f`.`feed_by` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` WHERE `f`.`is_delete` =0 AND `f`.`feed_by` IN('138', '139', '141', '140') ORDER BY `f`.`id` DESC LIMIT " . $data['start'] . "," . $limit;
+                $query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, `f`.`posted_on`, `u`.`full_name`, `l`.`is_delete` as my_like , (select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment, (select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like, `p`.`profile_link` FROM `feeds` `f` LEFT JOIN `users` `u` ON `u`.`id` = `f`.`feed_by` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` LEFT JOIN `feed_like` `l` ON `l`.`feed_id` = `f`.`id` AND `l`.`like_by` = $user_id  WHERE `f`.`is_delete` = 0 AND `f`.`feed_by` IN($ID_in) ORDER BY `f`.`id` DESC LIMIT " . $data['start'] . "," . $limit;
                 $row = mysqli_query($link, $query);
                 echo mysqli_error($link);
                 $all = array();
@@ -1105,6 +1143,7 @@ class PHPWebSocket {
      * @param array $data
      */
     function discussion($userId, $data = null) {
+        $data['active_count'] = $data['group_score'] = $data['my_score'] = 'skip';
         if (is_array($data) && !empty($data)) {
             $c_week = ceil(getdate()['yday'] / 7);
             $link = $this->db();
@@ -1114,19 +1153,170 @@ class PHPWebSocket {
             $row = mysqli_query($link, $query);
             if (mysqli_num_rows($row) == 1) {
                 $rows = mysqli_fetch_assoc($row);
-                $query = "INSERT INTO `ism`.`tutorial_group_discussion` (`id`, `group_id`, `topic_id`, `sender_id`, `message`, `message_type`, `message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, '" . $data['message'] . "', '', '', '0', '', '', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
+                $is_active = 0;
+                if ($this->active_hours() > 0) {
+                    $is_active = 1;
+                }
+                $query = "INSERT INTO `ism`.`tutorial_group_discussion` (`id`, `group_id`, `topic_id`, `sender_id`, `message`, `message_type`, `message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, '" . $data['message'] . "', '', '', $is_active, '', '', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
                 $x = mysqli_query($link, $query);
                 $data['disscusion_id'] = mysqli_insert_id($link);
+
+                $query = "SELECT `ts`.`score` as `my_score`, `ta`.`group_score`,(SELECT count(`td`.`id`) FROM `tutorial_group_discussion` `td` WHERE `td`.`group_id` = " . $rows['group_id'] . " AND `td`.`topic_id` = " . $rows['topic_id'] . " AND in_active_hours = 1) as active_count  FROM `tutorial_topic` `t` LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` LEFT JOIN `tutorial_group_member_score` `ts` ON `ts`.`member_id` = `tm`.`id` LEFT JOIN `users` `u` ON `u`.`id` = `t`.`created_by` LEFT JOIN `user_profile_picture` `up` ON `up`.`user_id` = `u`.`id` WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' AND `ta`.`week_no` = $c_week AND `tm`.`user_id` = '$userId'";
+                $row = mysqli_query($link, $query);
+                $rows = mysqli_fetch_assoc($row);
+                foreach ($rows as $k => $v) {
+                    $data[$k] = $v;
+                }
                 if (!$x) {
                     $data['to'] = 'self';
                     $data['error'] = 'Unable to save your message! Try again!';
                 }
+            } else {
+                $data['error'] = 'No topic allocated! or Discussion time is over!';
             }
         }
         $data['allStudyMate'] = $this->class_mate_list($userId);
         return array_merge($data, $this->get_client_info($userId));
     }
 
-}
+    /**
+     * Return difference between two times in seconds.
+     * @time1 = Basically End Time
+     * @time2 = Basically Current Time
+     * @Author = Sandip Gopani (SAG)
+     */
+    function dateDiff($time1, $time2) {
+        // If not numeric then convert texts to unix timestamps
+        if (!is_int($time1)) {
+            $time1 = strtotime($time1);
+        }
+        if (!is_int($time2)) {
+            $time2 = strtotime($time2);
+        }
 
+        // If time1 is bigger than time2
+        // Then swap time1 and time2
+        if ($time1 > $time2) {
+            $ttime = $time1;
+            $time1 = $time2;
+            $time2 = $ttime;
+        }
+
+        // Set up intervals and diffs arrays
+        $intervals = array('year', 'month', 'day', 'hour', 'minute', 'second');
+        $diffs = array();
+
+        // Loop thru all intervals
+        foreach ($intervals as $interval) {
+            // Create temp time from time1 and interval
+            $ttime = strtotime('+1 ' . $interval, $time1);
+            // Set initial values
+            $add = 1;
+            $looped = 0;
+            // Loop until temp time is smaller than time2
+            while ($time2 >= $ttime) {
+                // Create new temp time from time1 and interval
+                $add++;
+                $ttime = strtotime("+" . $add . " " . $interval, $time1);
+                $looped++;
+            }
+
+            $time1 = strtotime("+" . $looped . " " . $interval, $time1);
+            $diffs[$interval] = $looped;
+        }
+
+        $count = 0;
+        $times = array();
+        // Loop thru all diffs
+        foreach ($diffs as $interval => $value) {
+            // Break if we have needed precission
+            if ($count >= 6) {
+                break;
+            }
+            // Add value and interval 
+            if ($value > 0) {
+                // Add value and interval to times array
+                $times[$interval] = $value;
+                $count++;
+            }
+        }
+        $check = array('day' => 86400, 'hour' => 3600, 'minute' => 60, 'second' => 1);
+        $seconds = 0;
+        foreach ($times as $key => $value) {
+            foreach ($check as $k => $v) {
+                if ($k == $key) {
+                    $seconds += $value * $check[$key];
+                }
+            }
+        }
+        return $seconds;
+    }
+
+    /**
+     * 	This function will return true if called within active hours.
+     * 	return  true/false or null 
+     * 	@author = Sandip Gopani (SAG)
+     */
+    function active_hours() {
+        $link = $this->db();
+        $starttime = $endtime = null;
+        $output = 0;
+        $currenttime = getdate(); // Get an array of current time
+        // Store current hours and minutes
+        $currenttime = (string) $currenttime['hours'] . ':' . $currenttime['minutes'];
+
+        $query = "SELECT `ac`.`config_value`, `ac`.`config_key` FROM `admin_config` `ac` WHERE `ac`.`config_key` = 'activeHoursStartTime' OR  `ac`.`config_key` = 'activeHoursEndTime'";
+        $row = mysqli_query($link, $query);
+        $this->log(mysqli_error($link));
+        if (mysqli_num_rows($row) == 2) {
+            while ($rows = mysqli_fetch_assoc($row)) {
+                if ($rows['config_key'] == 'activeHoursStartTime') {
+                    // Asign time and remove seconds from value incase added by admin ( e.g  11:30:54 will become 11:30 ). Same with else part
+                    $starttime = explode(':', $rows['config_value'])[0] . ':' . explode(':', $rows['config_value'])[1];
+                } else {
+                    $endtime = explode(':', $rows['config_value'])[0] . ':' . explode(':', $rows['config_value'])[1];
+                }
+            }
+            if ($starttime !== null && $endtime !== null) {
+                // Convert to date time
+                $cur = DateTime::createFromFormat('H:i', $currenttime);
+                $start = DateTime::createFromFormat('H:i', $starttime);
+                $end = DateTime::createFromFormat('H:i', $endtime);
+                // Check current time is between $starttime and $endtime
+                if ($cur > $start && $cur < $end) {
+                    $output = $this->dateDiff($endtime . ':00', $currenttime . ':' . getdate()['seconds']);
+                }
+            }
+        }
+
+        return $output;
+    }
+
+    function dictionary($data = null) {
+        if (is_array($data)) {
+            $curl_handle = curl_init();
+            curl_setopt($curl_handle, CURLOPT_URL, 'http://www.stands4.com/services/v2/defs.php?uid=4350&tokenid=CL5ORBQQ9fbL7uno&word=' . $data['keyword']);
+            curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST, "GET");
+            $buffer = curl_exec($curl_handle);
+            curl_close($curl_handle);
+            $data['message'] = $buffer;
+
+            return $data;
+        }
+    }
+
+    function close_studymate($userid, $data) {
+        $link = $this->db();
+        $query = "UPDATE studymates SET is_delete = 1 where (mate_id = " . $userid . " and mate_of=" . $data['studymate_id'] . ") or (mate_of = " . $userid . " and mate_id = " . $data['studymate_id'] . ")";
+        $x = mysqli_query($link, $query);
+        if (!$x) {
+            $data['to'] = 'self';
+            $data['error'] = 'Unable to Identify studymate. Please don\'t modify data manually.';
+        }
+        $data['result'] = 'Done';
+        return $data;
+    }
+
+}
 ?>

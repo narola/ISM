@@ -4,6 +4,7 @@
 set_time_limit(0);
 
 require 'config.php';
+require 'conertor.php';
 // include the web sockets server script (the server is started at the far bottom of this file)
 require 'class.PHPWebSocket.php';
 
@@ -15,7 +16,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $Server->wsClose($clientID);
         return;
     }
-   
+
     $data = json_decode($message, true);
     $Server->log($data);
     /* For individual chat */
@@ -49,24 +50,46 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     } else if ($data['type'] == 'feed_comment') {
         $responce = $Server->classmate_comment($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'load_more_feed') {
-        $responce = $Server->load_more($data);
+        $responce = $Server->load_more($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'like') {
         $responce = $Server->post_like_unlike($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'discussion') {
         $responce = $Server->discussion($Server->wsClients[$clientID][12], $data);
-    }else if ($data['type'] == 'discussion-type') {
-       $classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
-                foreach ($Server->wsClients as $id => $client) {
-                    if (in_array($Server->wsClients[$id][12], $classmates) && $id != $clientID) {
-                        $data['type_id'] = $Server->wsClients[$clientID][12];
-                        $Server->wsSend($id, json_encode($data));
-                    }
-                }
+    } else if ($data['type'] == 'discussion-type') {
+        $classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
+        foreach ($Server->wsClients as $id => $client) {
+            if (in_array($Server->wsClients[$id][12], $classmates) && $id != $clientID) {
+                $data['type_id'] = $Server->wsClients[$clientID][12];
+                $Server->wsSend($id, json_encode($data));
+            }
+        }
+    } else if ($data['type'] == 'dictionary') {
+        $responce = $Server->dictionary($data);
+        $xml = new simpleXml2Array($responce['message'], null);
+        $vals = $xml->arr;
+        $responce['message'] = 'No result found!';
+        if (isset($vals['result'])) {
+            $responce['message'] = '';
+            foreach ($vals['result'] as $key => $value) {
+                $responce['message'] .= ' <div class="result_box">
+                                <h5>'.$value['term'][0].'<span>: '.$value['partofspeech'][0].'</span></h5>'
+                                .'<strong>Definition:</strong><span>' . $value['definition'][0] . '</span>
+                                <h5><span><strong>Example: </strong>' . $value['definition'][0] . '</span></h5>
+                            </div>';
+                
+            }
+        }
+    }else if($data['type'] == 'close_studymate'){
+          $responce = $Server->close_studymate($Server->wsClients[$clientID][12], $data);
     }
+    
+    
+    
+    
     $check = array('feed_comment', 'like', 'discussion');
     if (isset($responce)) {
-        $Server->log($responce,false);
-        if ($responce['to'] == 'self') {
+        $Server->log($responce, false);
+        if ($responce['to'] == 'self') {           
             $Server->wsSend($clientID, json_encode($responce));
         } else {
             if ($responce['type'] == 'studymate') {
@@ -92,7 +115,6 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
             }
         }
     }
-    
 }
 
 // when a client connects
@@ -127,6 +149,7 @@ function wsOnClose($clientID, $status) {
 
 // start the server
 $Server = new PHPWebSocket();
+
 $Server->bind('message', 'wsOnMessage');
 $Server->bind('open', 'wsOnOpen');
 $Server->bind('close', 'wsOnClose');

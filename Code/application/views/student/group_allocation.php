@@ -42,8 +42,6 @@
                 	<div class="user_container">
                         <div class="user_profile_img">
                             <img src="uploads/<?php echo $this->session->userdata('user')['profile_pic'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
-
-
                         </div>
                         <div class="user_profile_info">
                             <h1>Welcome To ISM</h1>
@@ -87,7 +85,6 @@
                         <?php 
                         }
                         ?>
-                    	
                         <div class="col-sm-12 text-center accept-bar">
 
                         	<form name="accept" action="" method="POST">
