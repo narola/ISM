@@ -43,6 +43,10 @@
 	.search_bar .form-control{
 		width:70%;
 	}
+	.commented_on .user_small_img {
+    	height: auto;
+    	width: 10%
+	}
 }
 @media (max-width:1280px){
 	.login_background{
