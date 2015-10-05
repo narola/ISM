@@ -437,7 +437,7 @@ if (nav.length) {
     return false;
 });
 
-<<<<<<< HEAD
+
 $(document).on('change', '#action_studymate', function(){
     val = $(this).val();
     if(val == 1){
@@ -456,21 +456,21 @@ $(document).on('click','button[data-type="close-studymate"]',function(e){
         error : ''
     };
     ws.send(JSON.stringify(request));
+});
 
-=======
 /* Send Request to search from dictionary... */
 $(document).on('keypress','input[data-type="search-dictionary"]', function(e) {
   
     if (e.keyCode == 13 && this.value) {
     var request = {
-        type: 'dictionary',
-        to:'self',
-        keyword: this.value,
-        error: ''
-    };
+            type: 'dictionary',
+            to:'self',
+            keyword: this.value,
+            error: ''
+        };
     ws.send(JSON.stringify(request));
     $('#Serach_Result').html('<img class="pre_loader" src="assets/images/loader1.GIF">').fadeIn(300);
     $(this).attr('disabled','');
-}
->>>>>>> 8272196b2b2f4459f63555c1dcad46c698230724
+    }
+
 });
