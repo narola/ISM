@@ -43,7 +43,7 @@ class Tutorial extends ISM_Controller {
 				t.topic_description,
 				t.created_date,
 				ts.score as my_score,
-				ta.group_score,
+				(SELECT SUM(group_score) FROM '.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' WHERE group_id = tm.group_id) as group_score,
 				up.profile_link,
 				u.full_name',
 				array('where' => array('ta.group_id' => $this->session->userdata('user')['group_id'],'ta.week_no' => $c_week,'tm.user_id' => $user_id  )),
@@ -143,7 +143,7 @@ class Tutorial extends ISM_Controller {
 						)
 					)
 				);
-			   //p($data,true);
+			 //p($data,true);
 			$this->template->load('student/default','student/tutorial_group',$data);
 	}	
 

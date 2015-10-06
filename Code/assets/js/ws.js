@@ -51,6 +51,10 @@ if ("WebSocket" in window)
     ws.onmessage = function (evt)
     {       
         var obj = $.parseJSON(evt.data);
+        if(obj.error != 'skip'){
+            $(".alert_notification p").html(obj.error);
+            $(".alert_notification").show().delay(3000).fadeOut();
+        }
         if (obj.type == 'studymate') {
                 if (wp == obj.from) {
                     $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p></div>");
@@ -71,9 +75,7 @@ if ("WebSocket" in window)
            }  
             
         } else if (obj.type == 'con') {
-            if (obj.error != '') {
-                alert(obj.error);
-            }
+            
         } else if (obj.type == 'notification') {
             if (obj.status == 'available') {
                 set_status(obj.user_id, obj.live_status);
@@ -146,7 +148,6 @@ $(document).on('keypress', 'input[data-type="chat"]', function (e) {
             type: 'studymate',
             from: wp,
             to: $(this).data('id'),
-            error: '',
             message: this.value
         };
         ws.send(JSON.stringify(request));
@@ -223,8 +224,7 @@ $(document).on('click', '#mate_list', function () {
         var request = {
             type: 'get_latest_message',
             to: 'self',
-            my_id: id,
-            error: ''
+            my_id: id
         };
 
         ws.send(JSON.stringify(request));
@@ -258,8 +258,7 @@ $(document).on('click','button[data-type="post"]',function(){
         var request = {
             type:'post',
             to: 'all',
-            message: $('#feed_post').val(),
-            error: ''
+            message: $('#feed_post').val()
         };
         ws.send(JSON.stringify(request));
         $('#feed_post').val('');
@@ -272,8 +271,7 @@ $(document).on('keypress','#all_feed .box.feeds .write_comment input[data-type="
         var request = {
             type: 'feed_comment',
             to: $(this).data('id'),
-            message: $(this).val(),
-            error: ''
+            message: $(this).val()
         };
         ws.send(JSON.stringify(request));
         $(this).val('');
@@ -346,8 +344,7 @@ $(document).on('click','button[data-type="load_more"]',function(){
             type: 'load_more_feed',
             to: 'self',
             start: $(this).attr('data-start'),
-            message: '',
-            error: ''
+            message: ''
         };
        ws.send(JSON.stringify(request));
 })
@@ -358,8 +355,7 @@ $(document).on('click','.option_bar[data-type="discussion-submit"]',function(){
     var request = {
             type: 'discussion',
             to: 'all',
-            message:$('textarea[data-type="discussion"]').val(),
-            error: ''
+            message:$('textarea[data-type="discussion"]').val()
         };
         ws.send(JSON.stringify(request));
     }
@@ -371,8 +367,7 @@ $(document).on('keypress','textarea[data-type="discussion"]',function(){
     var request = {
             type: 'discussion-type',
             to: 'all',
-            message:'Typing..',
-            error: ''
+            message:'Typing..'
         };
         ws.send(JSON.stringify(request));
     }
@@ -418,7 +413,6 @@ $(document).on('click','a[data-type="feed-like"]',function(e){
         fid: $(this).data('id'),
         to:'',
         message: '',
-        error: ''
     };
     ws.send(JSON.stringify(request));
     $(this).val('');
@@ -452,8 +446,7 @@ $(document).on('click','button[data-type="close-studymate"]',function(e){
     var request = {
         type: 'close_studymate',
         to: 'self',
-        studymate_id: $(this).attr('data-id'),
-        error : ''
+        studymate_id: $(this).attr('data-id')
     };
     ws.send(JSON.stringify(request));
 });
@@ -465,8 +458,7 @@ $(document).on('keypress','input[data-type="search-dictionary"], a[data-type="se
     var request = {
             type: 'dictionary',
             to:'self',
-            keyword: this.value,
-            error: ''
+            keyword: this.value
         };
     ws.send(JSON.stringify(request));
     $('.dictionary_result .mCustomScrollBox .mCSB_container').html('<img class="pre_loader" src="assets/images/loader1.GIF">').fadeIn(300);

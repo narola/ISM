@@ -476,6 +476,41 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -649,6 +684,41 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -928,9 +998,10 @@ class PHPWebSocket {
      * @return string
      * @author Sandip Gopani (SAG)
      */
-    function class_mate_list($user_id) {
+    function class_mate_list($user_id, $status = true) {
+
         $link = $this->db();
-        $query = "SELECT mate_id, mate_of FROM `studymates` WHERE mate_id = $user_id OR mate_of= $user_id";
+        $query = "SELECT mate_id, mate_of FROM `studymates` WHERE ( mate_id = $user_id OR mate_of= $user_id ) and is_delete = 0";
         $row = mysqli_query($link, $query);
         $all = array();
         while ($rows = mysqli_fetch_assoc($row)) {
@@ -941,7 +1012,9 @@ class PHPWebSocket {
                 $all[] = $rows['mate_of'];
             }
         }
-        $all[] = $user_id;
+        if ($status) {
+            $all[] = $user_id;
+        }
         if ($link != null) {
             mysqli_close($link);
         }
@@ -1144,37 +1217,123 @@ class PHPWebSocket {
      */
     function discussion($userId, $data = null) {
         $data['active_count'] = $data['group_score'] = $data['my_score'] = 'skip';
+        $data['time_to_left'] = 0;
+        $data['message'] = preg_replace('!\s+!', ' ', $data['message']);
+        $link = $this->db();
+        $words = explode(' ', $data['message']);
+
         if (is_array($data) && !empty($data)) {
-            $c_week = ceil(getdate()['yday'] / 7);
-            $link = $this->db();
-            $query = "SELECT `tg`.`topic_id`, `tm`.`group_id` FROM  `tutorial_group_topic_allocation` `tg` "
+
+
+            // Get score related configuration from admin_config table. And stored into $config variable.
+            $query = "select `ac`.`config_key`,`ac`.`config_value` FROM `admin_config` `ac` WHERE `ac`.`config_key` IN('activeHrFirstCommentScore','activeHoursFirstCommentCount','nonActivehoursScore','spamWordDeduction','activeHoursCommentScore','groupScoreFromIndividual')";
+            $row = mysqli_query($link, $query);
+            $config = array();
+            while ($rows = mysqli_fetch_assoc($row)) {
+                $config[$rows['config_key']] = $rows['config_value'];
+            }
+
+            $day = getdate();
+            $c_week = ceil($day['yday'] / 7);
+            $current_date = $day['year'] . '-' . $day['mon'] . '-' . $day['mday'];
+
+            $query = "SELECT `tm`.`id` as member_id,`tg`.`topic_id`, `tm`.`group_id` FROM  `tutorial_group_topic_allocation` `tg` "
                     . "LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `tg`.`group_id` "
                     . "WHERE `tm`.`user_id` = $userId AND `tg`.`week_no` = $c_week LIMIT 1";
             $row = mysqli_query($link, $query);
+
+            $score = 0;
             if (mysqli_num_rows($row) == 1) {
                 $rows = mysqli_fetch_assoc($row);
                 $is_active = 0;
-                if ($this->active_hours() > 0) {
-                    $is_active = 1;
+                $data['time_to_left'] = $this->active_hours();
+                $score = $config['nonActivehoursScore'];
+                $query = "SELECT `td`.`comment_score`,`td`.`sender_id` FROM `tutorial_group_discussion` `td` WHERE `td`.`group_id` = " . $rows['group_id'] . " AND `td`.`topic_id` = " . $rows['topic_id'] . " AND date(`td`.`created_date`) = '$current_date' ORDER BY `td`.`id` DESC LIMIT 0,3";
+                $row = mysqli_query($link, $query);
+                $consecutvie = 0;
+                $allow_score = true;
+                $i = 1;
+                while ($rowq = mysqli_fetch_assoc($row)) {
+                    if ($rowq['sender_id'] == $userId) {
+                        if ($rowq['comment_score'] == 0) {
+                            $consecutvie ++;
+                        } else {
+                            if ($consecutvie < 2) {
+                                $allow_score = false;
+                            }
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                    $i++;
                 }
-                $query = "INSERT INTO `ism`.`tutorial_group_discussion` (`id`, `group_id`, `topic_id`, `sender_id`, `message`, `message_type`, `message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, '" . $data['message'] . "', '', '', $is_active, '', '', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
+
+                if ($allow_score == true) {
+                    // Check comment is in active hours.
+                    if ($data['time_to_left'] > 0) {
+                        $is_active = 1;
+
+                        $query = "SELECT count(id) as total_count FROM `tutorial_group_discussion` `td` WHERE date(`created_date`) = '$current_date' AND `td`.`in_active_hours` = 1 ";
+                        $row = mysqli_query($link, $query);
+                        $rowp = mysqli_fetch_assoc($row);
+                        $score = $config['activeHoursCommentScore'];
+
+                        // Check total comment of the day is less than value of wesactiveHrsFirstCommentCount field in admin config.
+                        if ($rowp['total_count'] <= $config['activeHoursFirstCommentCount']) {
+                            if (count($words) >= 3) {
+                                $score = $config['activeHrFirstCommentScore'];
+                            }
+                        }
+                    }
+                } else {
+                    $score = 0;
+                }
+                // Check spam word exist or not. If spam word exist deduct points based on admin_config (spamWordDeduction) value. 
+                $query = "SELECT * FROM `word_watch` `ww`";
+                $row = mysqli_query($link, $query);
+                while ($rowq = mysqli_fetch_assoc($row)) {
+                    if (in_array($rowq['word'], $words)) {
+                        $score -= $config['spamWordDeduction'];
+                        $data['error'] = 'Spam words found. <b>' . $config['spamWordDeduction'] . ' points</b> diducted!';
+                        break;
+                    }
+                }
+                
+                $query = "INSERT INTO `ism`.`tutorial_group_discussion` (`id`, `group_id`, `topic_id`, `sender_id`, `comment_score`, `message`, `message_type`, `message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, $score,'" . $data['message'] . "', '', '', $is_active, '', '', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
                 $x = mysqli_query($link, $query);
                 $data['disscusion_id'] = mysqli_insert_id($link);
 
-                $query = "SELECT `ts`.`score` as `my_score`, `ta`.`group_score`,(SELECT count(`td`.`id`) FROM `tutorial_group_discussion` `td` WHERE `td`.`group_id` = " . $rows['group_id'] . " AND `td`.`topic_id` = " . $rows['topic_id'] . " AND in_active_hours = 1) as active_count  FROM `tutorial_topic` `t` LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` LEFT JOIN `tutorial_group_member_score` `ts` ON `ts`.`member_id` = `tm`.`id` LEFT JOIN `users` `u` ON `u`.`id` = `t`.`created_by` LEFT JOIN `user_profile_picture` `up` ON `up`.`user_id` = `u`.`id` WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' AND `ta`.`week_no` = $c_week AND `tm`.`user_id` = '$userId'";
-                $row = mysqli_query($link, $query);
-                $rows = mysqli_fetch_assoc($row);
-                foreach ($rows as $k => $v) {
-                    $data[$k] = $v;
-                }
-                if (!$x) {
+                // Update group score and student score.
+                if ($x) {
+                    $add_to_group = 0;
+                    if ($score > 0) {
+                        // Get persentage of score to add in group score.
+                        $add_to_group = ceil(($score * $config['groupScoreFromIndividual']) / 100);
+                        $query = "UPDATE `tutorial_group_topic_allocation` SET `group_score` = `group_score` + $add_to_group WHERE `group_id` = " . $rows['group_id'] . " AND `topic_id` = " . $rows['topic_id'] . " AND `week_no` = " . $c_week;
+                        mysqli_query($link, $query);
+                    }
+                    $this->log("Score :- ".$score);
+                    $query = "UPDATE `tutorial_group_member_score` SET `score` = `score` + $score WHERE `topic_id` = " . $rows['topic_id'] . " AND member_id =" . $rows['member_id'];
+                    mysqli_query($link, $query);
+                    $this->log($query);
+                } else {
                     $data['to'] = 'self';
                     $data['error'] = 'Unable to save your message! Try again!';
+                }
+
+                $query = "SELECT `ts`.`score` as `my_score`,(SELECT SUM(group_score) FROM tutorial_group_topic_allocation WHERE group_id = " . $rows['group_id'] . ") as group_score,(SELECT count(`td`.`id`) FROM `tutorial_group_discussion` `td` WHERE `td`.`group_id` = " . $rows['group_id'] . " AND `td`.`topic_id` = " . $rows['topic_id'] . " AND in_active_hours = 1) as active_count  FROM `tutorial_topic` `t` LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` LEFT JOIN `tutorial_group_member_score` `ts` ON `ts`.`member_id` = `tm`.`id` LEFT JOIN `users` `u` ON `u`.`id` = `t`.`created_by` LEFT JOIN `user_profile_picture` `up` ON `up`.`user_id` = `u`.`id` WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' AND `ta`.`week_no` = $c_week AND `tm`.`user_id` = '$userId'";
+                $row = mysqli_query($link, $query);
+                $rows = mysqli_fetch_assoc($row);
+
+                foreach ($rows as $k => $v) {
+                    $data[$k] = $v;
                 }
             } else {
                 $data['error'] = 'No topic allocated! or Discussion time is over!';
             }
         }
+        $this->log("User UD :".$userId);
         $data['allStudyMate'] = $this->class_mate_list($userId);
         return array_merge($data, $this->get_client_info($userId));
     }
@@ -1230,6 +1389,7 @@ class PHPWebSocket {
         // Loop thru all diffs
         foreach ($diffs as $interval => $value) {
             // Break if we have needed precission
+
             if ($count >= 6) {
                 break;
             }
@@ -1267,7 +1427,6 @@ class PHPWebSocket {
 
         $query = "SELECT `ac`.`config_value`, `ac`.`config_key` FROM `admin_config` `ac` WHERE `ac`.`config_key` = 'activeHoursStartTime' OR  `ac`.`config_key` = 'activeHoursEndTime'";
         $row = mysqli_query($link, $query);
-        $this->log(mysqli_error($link));
         if (mysqli_num_rows($row) == 2) {
             while ($rows = mysqli_fetch_assoc($row)) {
                 if ($rows['config_key'] == 'activeHoursStartTime') {
@@ -1288,7 +1447,6 @@ class PHPWebSocket {
                 }
             }
         }
-
         return $output;
     }
 
@@ -1318,5 +1476,57 @@ class PHPWebSocket {
         return $data;
     }
 
+    function send_studymate_request($userid, $data) {
+
+        $link = $this->db();
+        $studymate = $this->class_mate_list($userid, false);
+        // if (sizeof($studymate) > 0) {
+        $this->log($studymate);
+        $query = "SELECT id FROM studymates_request where request_from_mate_id=" . $userid . " and request_to_mate_id=" . $data['studymate_id'] . " and status IN (0,2)";
+        $rows = mysqli_query($link, $query);
+        // $this->log(mysqli_error($link));
+        $row_cnt = mysqli_num_rows($rows);
+        if ($row_cnt > 0) {
+            $data['to'] = 'self';
+            $data['error'] = 'Syudymates request already sent!. You can\'t send again';
+        } else {
+            if (sizeof($studymate) > 0)
+                $where = "`in1`.`user_id` NOT IN(" . implode(',', $studymate) . ")";
+            else
+                $where = ' 1=1';
+            $query = "SELECT group_id FROM tutorial_group_member where user_id=" . $userid;
+            $rows = mysqli_query($link, $query);
+            $row = mysqli_fetch_assoc($rows);
+            $group_id = $row['group_id'];
+
+            $query = "SELECT `in1`.`user_id` FROM `tutorial_group_member` `m` JOIN `student_academic_info` `in` ON `in`.`user_id` = `m`.`user_id` JOIN `student_academic_info` `in1` ON `in`.`classroom_id` = `in1`.`classroom_id` and `in`.`course_id` = `in1`.`course_id` and `in`.`academic_year` = `in1`.`academic_year` and `in`.`school_id` = `in1`.`school_id` WHERE `m`.`group_id` = " . $group_id . " AND `in1`.`user_id` != " . $userid . " AND $where  GROUP BY `in1`.`user_id`";
+
+            $rows = mysqli_query($link, $query);
+            while ($row = mysqli_fetch_assoc($rows)) {
+                $all[] = $row['user_id'];
+            }
+
+            if (in_array($data['studymate_id'], $all)) {
+                $query = "INSERT INTO `studymates_request`(`id`, `request_from_mate_id`, `request_to_mate_id`, `status`, `created_date`, `is_delete`, `is_testdata`) VALUES (NULL,$userid," . $data['studymate_id'] . ",0,CURRENT_TIMESTAMP,0,'yes')";
+                $x = mysqli_query($link, $query);
+                if (!$x) {
+                    $data['to'] = 'self';
+                    $data['error'] = 'Unable to save message.! Please try again.';
+                } else {
+                    $query = "SELECT count(*) as cnt FROM studymates_request where request_to_mate_id =" . $data['studymate_id'];
+                    $rows = mysqli_query($link, $query);
+                    $row = mysqli_fetch_assoc($rows);
+                    $data['count'] = $row['cnt'];
+                }
+            } else {
+                $data['to'] = 'self';
+                $data['error'] = 'Unable to Identify post. Please don\'t modify data manually.';
+            }
+            // }
+        }
+        return $data;
+    }
+
 }
+
 ?>
