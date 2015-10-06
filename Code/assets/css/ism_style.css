@@ -1955,7 +1955,10 @@ ul.tut_weekdays {
     font-size: 30px;
     font-weight: 600;
 }
-.item_chart h2 span{
+.item_chart h2 + span{
+	position: absolute;
+    margin: 88px auto 0;
+    width: 100%;
 	color:#1bc4a3;
 	font-size:16px;
 	font-weight:500;
