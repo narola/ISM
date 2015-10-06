@@ -32,10 +32,14 @@ class my_activities extends ISM_Controller {
 								'table' => TBL_FEEDS.' like_feed',
 								'condition' => 'like_feed.id = like.feed_id'
 							)
+							array(
+								'table' => TBL_FEED_COMMENT.' comment'//-my comment
+								'condition' => 'comment.comment_by = u.id'
+							)
 						),
 						'order_by' => 'like.created_date DESC'
 					);
-		$select = 'u.full_name,u.id,like_feed.feed_text,like.created_date';
+		$select = 'u.full_name,u.id,like_feed.feed_text,like.created_date,(select count(*) from feed_like where feed_id = like_feed.id) as totlike,(select count(*) from feed_comment where feed_id = like_feed.id) as totcomment';
 		$data['my_activities'] = select(TBL_USERS.' u',$select,$where,$options);
 		qry();
 		p($data['my_activities'],true);

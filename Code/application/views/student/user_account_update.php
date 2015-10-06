@@ -137,7 +137,7 @@
                             <div class="col-sm-12"> 
                                        <div class="form-group small_input select">
                                     <select class="form-control" name="country_id" onchange="get_states(this.value)" id="country_id" >
-                                        <option selected disabled>Select Country</option> 
+                                        <option selected value="">Select Country</option> 
                                         <?php 
                                           if(!empty($countries)){ 
                                             foreach($countries as $country) {
@@ -151,7 +151,7 @@
                                         
                                 <div class="form-group small_input select">
                                     <select name="state_id" id="state_id" onchange="get_cities(this.value)" class="form-control">
-                                        <option selected disabled>Select State</option>
+                                        <option selected value="">Select State</option>
                                         <?php 
                                           if(!empty($states)){ 
                                             foreach($states as $state) {
@@ -165,7 +165,7 @@
                                 
                                 <div class="form-group small_input select">
                                     <select name="city_id" id="city_id" class="form-control">
-                                        <option selected disabled>Select City</option>
+                                        <option selected value="">Select City</option>
                                         <?php 
                                           if(!empty($cities)){ 
                                             foreach($cities as $city) {
@@ -454,8 +454,7 @@
                type:'POST',
                data:{country_id:country_id},
                success:function(data){
-                  $('#states_id').html(data);
-                  alert(data);
+                  $('#state_id').html(data);
                }
             });
         }
