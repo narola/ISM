@@ -46,7 +46,6 @@
         $(document).ready(function(){
             $('.chat_text').mCustomScrollbar("scrollTo","bottom");    
         })
-        
     </script>
     <script src="assets/js/jquery.cookie.js"></script>
     <script src="assets/js/ws.js"></script>
@@ -209,7 +208,65 @@
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
       <p></p>
     </div>
+<?php if(isset($menu) && $menu == 'week'){ ?>
+<script type="text/javascript">
+        jQuery(document).ready(function() {
+            $('.calc_header a').click(function(){
+                if(!$('.calc_header a').hasClass('collapsed')){
+                    $('.calc_header a span').removeClass('fa-angle-up');    
+                    $('.calc_header a span').addClass('fa-angle-down');
+                }
+                else{
+                    $('.calc_header a span').addClass('fa-angle-up');
+                    $('.calc_header a span').removeClass('fa-angle-down');
+                };
+            });
+            
+            
+            $('#calc_tab').click(function(){
+                $(this).addClass('active');
+                $('#white_board_tab, #explore_tab, #dictionary_tab').removeClass();
+                $('.calculator').css('display','block');
+                $('.white_board, .explore, .dictionary').css('display','none');
+            });
+            $('#white_board_tab').click(function(){
+                $(this).addClass('active');
+                $('#calc_tab, #explore_tab, #dictionary_tab').removeClass();
+                $('.white_board').css('display','block');
+                $('.calculator, .explore, .dictionary').css('display','none');
+            });
+            $('#explore_tab').click(function(){
+                $(this).addClass('active');
+                $('#white_board_tab, #calc_tab, #dictionary_tab').removeClass();
+                $('.explore').css('display','block');
+                $('.white_board, .calculator, .dictionary').css('display','none');
+            });
+            $('#dictionary_tab').click(function(){
+                $(this).addClass('active');
+                $('#white_board_tab, #calc_tab, #explore_tab').removeClass();
+                $('.dictionary').css('display','block');
+                $('.white_board, .calculator, .explore').css('display','none');
+            });
+            
+            $('.board_tools>li>a').mouseover(function(){
+                $(this).parent().css('background-color','#f2f2f2'); 
+            });
+            $('.board_tools>li>a').mouseout(function(){
+                $(this).parent().css('background-color','#dedede'); 
+            });
+            
+            $('.pen_size').mouseover(function(){
+                $(this).parent().css('background-color','#f2f2f2');
+            });
+            $('.pen_size').mouseout(function(){
+                $(this).parent().css('background-color','#dedede');
+            });
+            
+        });
+        
+    </script>
 
+<?php } ?>
 
     <!--//body-->
    
