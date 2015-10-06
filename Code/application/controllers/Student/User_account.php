@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 * kap - kamlesh pokiya 
 *
 */
-class User_account extends ISM_Controller {
+class User_account extends CI_Controller {
 
 	public function __construct()
 	{
