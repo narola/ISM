@@ -8,10 +8,8 @@ class User extends ADMIN_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		
 		$this->load->helper(array('csv','file'));		
 		$this->load->library(array('zip'));
-
 	}
 
 	// ---------------------------- User Module Start --------------------------------------------
@@ -93,7 +91,7 @@ class User extends ADMIN_Controller {
 		$this->data['all_users'] =   select(TBL_USERS,
 											TBL_USERS.'.id,'.TBL_USERS.'.user_status,'.TBL_USERS.'.username,'.TBL_CITIES.'.city_name,'.TBL_STATES.'.state_name,
 											'.TBL_USERS.'.role_id,'.TBL_ROLES.'.role_name,'.TBL_STUDENT_ACADEMIC_INFO.'.course_id,'.TBL_COURSES.'.course_name,
-											'.TBL_CLASSROOMS.'.class_name',
+											'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link',
 											$where,
 											array(
 												'limit'=>$config['per_page'],
@@ -126,11 +124,15 @@ class User extends ADMIN_Controller {
 											    			array(
 											    				'table'=>TBL_CLASSROOMS,
 											    				'condition'=>TBL_STUDENT_ACADEMIC_INFO.'.classroom_id='.TBL_CLASSROOMS.'.id'	
-											    				),		
+											    				),
+											    			array(
+											    				'table'=>TBL_USER_PROFILE_PICTURE,
+											    				'condition'=>TBL_USER_PROFILE_PICTURE.'.id='.TBL_USERS.'.id'	
+											    				)			
 												    		)
 												)
 											);
-		
+
 		$this->pagination->initialize($config);
 		
 		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
