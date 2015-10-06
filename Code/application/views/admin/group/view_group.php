@@ -61,7 +61,7 @@
         <!-- <div class="row div_buttons">
           <div class="col-sm-6">
               <button class="btn btn_black" type="submit">Send Message</button>
-              <a class="btn btn_green" href="<?php echo base_url().'admin/user/add';?>" >Add User</a>
+              <a class="btn btn_green" href="<?php //echo base_url().'admin/user/add';?>" >Add User</a>
             </div>
 
           <div class="col-sm-6 text-right">
@@ -99,7 +99,7 @@
                                     <td class="username">
                                         <div class="chat_img_holder">
                                             <!-- <img src="../images/group1.jpg"> -->
-                                            <img src="<?php echo 'uploads/user_141/user6_1443673332.jpg'; ?>">
+                                            <img src="<?php echo 'uploads/user_141/user6_1443673332.jpg'; ?>" >
                                         </div>
                                         <h4><span>Group Name : </span> <?php echo $group['group_name'] ?> <span> [<?php echo $group['course_name'] ?>]</span></h4>
                                         <table class="group_members">
@@ -115,11 +115,8 @@
 
                                                 <td>
                                                     <div class="chat_img_holder">
-                                                        <?php if(!empty($member['profile_link'])) { ?>
-                                                        <img src="<?php echo 'uploads/'.$member['profile_link']; ?>">
-                                                        <?php }else{ ?>
-                                                        <img src="<?php echo 'uploads/user_141/user6_1443673332.jpg'; ?>">
-                                                        <?php } ?>
+                                                        <img src="<?php echo 'uploads/'.$member['profile_link']; ?>" 
+                                                        onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                                     </div>
                                                     <p><?php echo character_limiter(ucfirst($member['username']),5); ?> </p>
                                                     <span><?php echo character_limiter(ucfirst($member['school_name']),5); ?></span>
@@ -186,6 +183,9 @@
 
 		$('#filter').submit();
 	}
+
+
+
 
 	<?php if(!empty($_GET['course'])) { ?>
 		$('#course').val('<?php echo $_GET["course"];?>');	

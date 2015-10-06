@@ -187,24 +187,24 @@
 
 <script type="text/javascript">
 	
-	function filter_data(){
-		
-		var role = $('#role').val();
-		var school = $('#school').val();
-		var year = $('#year').val();
-		var course = $('#course').val();
-		var classroom = $('#classroom').val();
-    var q = $('#q').val();
+    function filter_data(){
+    	
+    	var role = $('#role').val();
+    	var school = $('#school').val();
+    	var year = $('#year').val();
+    	var course = $('#course').val();
+    	var classroom = $('#classroom').val();
+        var q = $('#q').val();
 
-		if(role == '' ){ $('#role').removeAttr('name'); }
-		if(school == '' ){ $('#school').removeAttr('name'); }
-		if(year == '' ){ $('#year').removeAttr('name'); }
-		if(course == '' ){ $('#course').removeAttr('name'); }
-		if(classroom == ''){ $('#classroom').removeAttr('name'); }
-        if(q == ''){ $('#q').removeAttr('name');}else{ setTimeout(function() { $('#filter').submit(); }, 1000); }
+    	if(role == '' ){ $('#role').removeAttr('name'); }
+    	if(school == '' ){ $('#school').removeAttr('name'); }
+    	if(year == '' ){ $('#year').removeAttr('name'); }
+    	if(course == '' ){ $('#course').removeAttr('name'); }
+    	if(classroom == ''){ $('#classroom').removeAttr('name'); }
+        //if(q == ''){ $('#q').removeAttr('name');}else{  setTimeout(function() { $('#filter').submit(); }, 1000); }
 
-		//$('#filter').submit();
-	}
+    	$('#filter').submit();
+    }
 
 	<?php if(!empty($_GET['role'])) { ?>
 		$('#role').val('<?php echo $_GET["role"];?>');	

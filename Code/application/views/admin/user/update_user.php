@@ -115,9 +115,16 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label>Birth Date</label>
-                            <input type="text" name="birthdate" id="datepicker" value="<?php echo $user['birthdate']; ?>"  >
+                            <input type="text" name="birthdate" id="datepicker" value="<?php //echo $user['birthdate']; ?>"  >
+                        </div> -->
+
+                        <div class="form-group dob">
+                        
+                           <div data-date-format="dd-mm-yyyy" data-date="12-02-2012" id="birthdate" class="input-append date">
+                                <input type="text" name="birthdate" placeholder="Date of Birth" value="<?php echo $user['birthdate']; ?>" class="form-control">
+                            </div> 
                         </div>
 
                         <div class="form-group">
@@ -172,7 +179,7 @@
 
                     <div class="box_footer">
                     	<button type="submit" class="btn btn_green">Save</button>
-                        <button class="btn btn_black">Cancel</button>
+                        <a href="<?php echo base_url().'admin/user'; ?>" class="btn btn_black">Cancel</a>
                     </div>
 
                 </form>   
