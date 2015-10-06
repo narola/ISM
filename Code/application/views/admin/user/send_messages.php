@@ -42,17 +42,24 @@
 
                             <select name="all_users[]" class="js-example-basic-single form-control" multiple="multiple">
 
-                                <?php 
-                                if(!empty($users)) {
-                                    foreach($users as $user){
+                                <?php
+                                if(!empty($roles)) {
+                                    foreach($roles as $role){
                                      ?>
-                                    <option value="<?php echo $user['id'] ?>" <?php echo set_select('all_users', $user['id']); ?>
-                                       <?php if(in_array($user['id'],$post_users) && isset($post_users)){ echo "selected='selected'"; } ?>  >
-                                        <?php echo $user['username']; ?>
-                                    </option>            
+                                     <optgroup label="<?php echo ucfirst($role['role_name']); ?>">
+                                        <?php 
+                                            if(!empty($users)){ foreach($users as $user) {
+                                                  if($user['rid']==$role['id']) {  
+                                         ?>
+                                           <option value="<?php echo $user['id'] ?>" <?php echo set_select('all_users', $user['id']); ?>
+                                               <?php if(in_array($user['id'],$post_users) && isset($post_users)){ echo "selected='selected'"; } ?>  >
+                                                <?php echo ucfirst($user['username']); ?>
+                                            </option> 
+                                        <?php } } }?>
+                                     </optgroup>            
                                 <?php } } ?>
 
-                            </select>
+                             </select>
                             
                         </div>
 

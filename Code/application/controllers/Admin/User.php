@@ -53,6 +53,8 @@ class User extends ADMIN_Controller {
 	
 		}else{
 			$where=null;
+			$where['where'][TBL_USERS.'.is_delete']=FALSE;
+			
 			$config['base_url']	 = base_url().'admin/user/index';
 			$offset = $this->uri->segment(4);
 		}
@@ -237,20 +239,20 @@ class User extends ADMIN_Controller {
 			$email = $this->input->post('email_id');
 
 			if($this->data['user']['username'] !== $username){
-				$user_rule = 'trim|required|is_unique[users.username]';
+				$user_rule = 'trim|required|is_unique[users.username]|alpha_numeric';
 			}else{
-				$user_rule = 'trim|required';
+				$user_rule = 'trim|required|alpha_numeric';
 			}
 
 			if($this->data['user']['email_id'] !== $email){
 				$email_rule = 'trim|required|is_unique[users.email_id]';
 			}else{
-				$email_rule = 'trim';
+				$email_rule = 'trim|valid_email';
 			}
 
 		}else{
-			$user_rule = 'trim|required';
-			$email_rule = 'trim|required';
+			$user_rule = 'trim|required|alpha_numeric';
+			$email_rule = 'trim|required|valid_email';
 		}
 
 		$this->form_validation->set_rules('username', 'User Name', $user_rule);
@@ -333,7 +335,10 @@ class User extends ADMIN_Controller {
 		$this->data['templates'] =select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
 		$this->data['users'] =select(TBL_USERS,
 									TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
-									 array('where_not_in'=>array(TBL_USERS.'.role_id'=>array('1'))),
+									 array(
+									 		'where'=>array(TBL_USERS.'.is_delete'=>FALSE),
+									 		'where_not_in'=>array(TBL_USERS.'.user_status'=>array('blocked'))
+									 	  ),
 									 array(
 										'order_by'=>TBL_USERS.'.username',
 										'join'=>array(
@@ -436,8 +441,11 @@ class User extends ADMIN_Controller {
 
 		$this->data['templates'] =select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
 		$this->data['users'] =select(TBL_USERS,
-									TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
-									 array('where_not_in'=>array(TBL_USERS.'.role_id'=>array('1'))),
+									 TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name,'.TBL_ROLES.'.id as rid',
+									 array(
+									 		'where'=>array(TBL_USERS.'.is_delete'=>FALSE),
+									 		'where_not_in'=>array(TBL_USERS.'.user_status'=>array('blocked'))
+									 	  ),
 									 array(
 										'order_by'=>TBL_USERS.'.username',
 										'join'=>array(
@@ -448,6 +456,8 @@ class User extends ADMIN_Controller {
 												)
 											)
 									);
+
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
 
 		$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
 		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
@@ -500,6 +510,10 @@ class User extends ADMIN_Controller {
 
 						if(!empty($user_mail['email_id'])){
 							
+							$config = mail_config();
+							
+							$this->email->initialize($config);
+							$this->load->library('email', $config);	
 							$this->email->from('admin@admin.com', 'Admin');
 							$this->email->to($user_mail['email_id']);
 							
@@ -508,7 +522,6 @@ class User extends ADMIN_Controller {
 							
 							$this->email->send();
 						}
-						
 					}
 
 					$this->session->set_flashdata('success', 'Messages has been Successfully sent.');
