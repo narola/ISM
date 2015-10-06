@@ -337,12 +337,6 @@
                                             <?php echo strip_tags(form_error('program_id'),''); ?>
                                         </div>
                                     </div>
-                                    <script>
-                                        <?php $class = isset($classroom_id) ? $classroom_id : set_value('class_id');?>
-                                        document.getElementById('class_id').value = '<?= $class; ?>';
-                                        <?php $district = isset($district_id) ? $district_id : set_value('district_id');?>
-                                        document.getElementById('district_id').value = '<?= $district; ?>';
-                                    </script>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
