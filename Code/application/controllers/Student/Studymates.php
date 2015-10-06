@@ -19,6 +19,7 @@ class Studymates extends ISM_Controller {
 		
 		/*----get studymate list-----*/
 		$my_studymates = studymates($user_id,false);
+		
 		if(sizeof($my_studymates)>0){
 			$where = array('where_in' => array('u.id' => $my_studymates));
 			$options = array('join' =>
@@ -74,13 +75,17 @@ class Studymates extends ISM_Controller {
 					array(
 						'table' => TBL_USER_PROFILE_PICTURE.' p',
 						'condition' => 'u.id = p.user_id'
-					)
+					),
+					array(
+						'table' => TBL_STUDYMATES_REQUEST.' sr',
+						'condition' => 'sr.request_from_mate_id='.$user_id.' and sr.request_to_mate_id = in1.user_id'
+					),
 					
 				),
 		'group_by' => 'in1.user_id'
 			);
-		$data['recommended_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,p.profile_link',$where,$options);
-		
+		$data['recommended_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,p.profile_link,sr.id as srid',$where,$options);
+
 		$this->template->load('student/default','student/studymates',$data);
 	}
 }

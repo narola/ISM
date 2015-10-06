@@ -54,6 +54,7 @@ if ("WebSocket" in window)
         if(obj.error != 'skip'){
             $(".alert_notification p").html(obj.error);
             $(".alert_notification").show().delay(3000).fadeOut();
+
         }
         if (obj.type == 'studymate') {
                 if (wp == obj.from) {
@@ -122,13 +123,16 @@ if ("WebSocket" in window)
            $('#close_mate').modal('toggle');
             if(obj.error == ''){
                 $('.studyamte_list .mCustomScrollBox  .mCSB_container  .study_mate[data-id="'+obj.studymate_id+'"]').fadeOut(300);
-            }else{
-                alert(" => " + obj.error);
             }
 
         }else if(obj.type == "dictionary"){
             $('.dictionary_result .mCustomScrollBox .mCSB_container').html(obj.message);
             $('input[data-type="search-dictionary"]').removeAttr('disabled');
+
+        }
+        else if(obj.type == "send_studymate_request"){
+            $('.mCSB_container .three_tabs .badge').html(obj.count);
+            $('.suggested_mates_card .mate_descrip button[data-id="'+obj.studymate_id+'"]').removeClass('btn_green').attr('disabled',true).addClass('btn_black_normal').html('Request Already Sent');
 
         }
         else {
@@ -465,4 +469,14 @@ $(document).on('keypress','input[data-type="search-dictionary"], a[data-type="se
     $(this).attr('disabled','');
     }
 
+});
+
+$(document).on('click','button[data-type="studyment-request"]',function(e){
+   var request = {
+        type: 'send_studymate_request',
+        to: 'self',
+        studymate_id: $(this).attr('data-id'),
+        error : ''
+    };
+    ws.send(JSON.stringify(request)); 
 });

@@ -8,10 +8,8 @@ class User extends ADMIN_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		
 		$this->load->helper(array('csv','file'));		
 		$this->load->library(array('zip'));
-
 	}
 
 	// ---------------------------- User Module Start --------------------------------------------
@@ -25,35 +23,34 @@ class User extends ADMIN_Controller {
 		
 		$this->data['page_title'] = 'Users';
 		
-		if($_GET){
+		if(!empty($_GET['role']) || !empty($_GET['course']) || !empty($_GET['school']) ||  !empty($_GET['year']) 
+			|| !empty($_GET['classroom']) || !empty($_GET['q']) ){
 
 			if( !empty($_GET['role']) ) { $role = $this->input->get('role'); }	
 			if( !empty($_GET['course'])){ $course  = $this->input->get('course'); }
 			if( !empty($_GET['school'])){ $school = $this->input->get('school'); }
 			if( !empty($_GET['year']) ) { $year = $this->input->get('year'); }
 			if( !empty($_GET['classroom']) ){  $classroom = $this->input->get('classroom'); }
+			if( !empty($_GET['q']) ){  $q = $this->input->get('q'); }
 
-			if( !empty($role) || !empty($course) || !empty($school) || !empty($year) || !empty($classroom) ){
+			$str = '';
 
-				$str = '';
+			if(!empty($role)){ $where['where']['role_id'] = $role ; $str .= '&role='.$role; }	
+			if(!empty($course)){  $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.course_id'] = $course; $str .='&course='.$course; }
+			if(!empty($school)){  $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.school_id'] = $school; $str .='&school='.$school; }
+			if(!empty($classroom)){ $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.classroom_id'] = $classroom; $str .= '&$classroom='.$classroom;  }
+			if(!empty($year)){ 
+								$next_year=$year+1; $academic_year = "$year-$next_year";    // find next year and create string like 2015-2016
+								$where['where'][TBL_STUDENT_ACADEMIC_INFO.'.academic_year'] = $academic_year; $str .='&year='.$year;  
+							}
+			if(!empty($q)){ $where['like'][TBL_USERS.'.username'] = $q; $str.='&q='.$q; }							
 
-				if(!empty($role)){ $where['where']['role_id'] = $role ; $str .= '&role='.$role; }	
-				if(!empty($course)){  $where['where']['student_academic_info.course_id'] = $course; $str .='&course='.$course; }
-				if(!empty($school)){  $where['where']['student_academic_info.school_id'] = $school; $str .='&school='.$school; }
-				if(!empty($classroom)){ $where['where']['student_academic_info.classroom_id'] = $classroom; $str .= '&$classroom='.$classroom;  }
-				if(!empty($year)){ 
-									$next_year=$year+1; $academic_year = "$year-$next_year";    // find next year and create string like 2015-2016
-									$where['where']['student_academic_info.academic_year'] = $academic_year; $str .='year='.$year;  
-								}
+			$str =  trim($str,'&');
 
-				$str =  trim($str,'&');
-
-				$config['base_url']	 = base_url().'admin/user/index?'.$str;
-				$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
-				$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
-				
-			}
-
+			$config['base_url']	 = base_url().'admin/user/index?'.$str;
+			$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
+			$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'	
+	
 		}else{
 			$where=null;
 			$config['base_url']	 = base_url().'admin/user/index';
@@ -92,9 +89,9 @@ class User extends ADMIN_Controller {
 
 		//fetch all data of users joins with roles,cities,countries,states 
 		$this->data['all_users'] =   select(TBL_USERS,
-											TBL_USERS.'.id,'.TBL_USERS.'.username,'.TBL_CITIES.'.city_name,'.TBL_STATES.'.state_name,
+											TBL_USERS.'.id,'.TBL_USERS.'.user_status,'.TBL_USERS.'.username,'.TBL_CITIES.'.city_name,'.TBL_STATES.'.state_name,
 											'.TBL_USERS.'.role_id,'.TBL_ROLES.'.role_name,'.TBL_STUDENT_ACADEMIC_INFO.'.course_id,'.TBL_COURSES.'.course_name,
-											'.TBL_CLASSROOMS.'.class_name',
+											'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link',
 											$where,
 											array(
 												'limit'=>$config['per_page'],
@@ -127,17 +124,21 @@ class User extends ADMIN_Controller {
 											    			array(
 											    				'table'=>TBL_CLASSROOMS,
 											    				'condition'=>TBL_STUDENT_ACADEMIC_INFO.'.classroom_id='.TBL_CLASSROOMS.'.id'	
-											    				),		
+											    				),
+											    			array(
+											    				'table'=>TBL_USER_PROFILE_PICTURE,
+											    				'condition'=>TBL_USER_PROFILE_PICTURE.'.id='.TBL_USERS.'.id'	
+											    				)			
 												    		)
 												)
 											);
-		
+
 		$this->pagination->initialize($config);
 		
-		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,FALSE,array('limit'=>10));
-		$this->data['courses'] = select(TBL_COURSES,FALSE,FALSE,array('limit'=>10));
-		$this->data['roles'] = select(TBL_ROLES,FALSE,FALSE,array('limit'=>10));
-		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,FALSE,array('limit'=>10));
+		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
 
 		$this->template->load('admin/default','admin/user/view_user',$this->data);
 	}
@@ -207,7 +208,6 @@ class User extends ADMIN_Controller {
 			$this->session->set_flashdata('success', 'Record is Successfully created.');
 			redirect('admin/user');
 		}
-
 	}
 
 	/**
@@ -282,26 +282,38 @@ class User extends ADMIN_Controller {
 				 "role_id"=>$this->input->post("roles"),
 				 "user_status"=>$this->input->post("user_status"),
 				 "about_me"=>$this->input->post("about_me"),
-				 "package_id"=>$this->input->post("package")
+				 "package_id"=>$this->input->post("package"),
+				 'modified_date'=>date('Y-m-d H:i:s',time())
 			);
 	
-			update(TBL_USERS,$id,$data);	// Update data  using common_model.php and cms_helper.php
-
+			update(TBL_USERS,$id,$data);	// Update data using common_model.php and cms_helper.php
 			$this->session->set_flashdata('success', 'Record is Successfully updated.');
 			redirect('admin/user');
 
 		}
-
 	}
 
 	/**
-	 * function Blcked will block user for temporary set database field 'status' of `users` table set to 'blocked' and redirect to user listing page
+	 * function Blocked will block user for temporary set database field 'user_status' of `users` table set to 
+	 * 'blocked' and redirect to user listing page
 	 *
 	 **/
 	
 	public function blocked($id){
-		update(TBL_USERS,$id,array('user_status'=>'blocked'));
+		update(TBL_USERS,$id,array('user_status'=>'blocked','modified_date'=>date('Y-m-d H:i:s',time())));
 		$this->session->set_flashdata('success', 'User is Successfully Blocked.');
+		redirect('admin/user');
+	}
+
+	/**
+	 * function active will activate user for temporary set database field 'user_status' of `users` table set to 
+	 * 'active' and redirect to user listing page
+	 *
+	 **/
+	
+	public function active($id){
+		update(TBL_USERS,$id,array('user_status'=>'active','modified_date'=>date('Y-m-d H:i:s',time())));
+		$this->session->set_flashdata('success', 'User is Successfully Activated.');
 		redirect('admin/user');
 	}
 
@@ -348,10 +360,13 @@ class User extends ADMIN_Controller {
 
 				foreach($all_users as $user){
 
+						$msg_title = $this->input->post('message_title');
+						$msg_text = $this->input->post('message_desc');
+
 						$data = array(
-								'message_text'=>$this->input->post('message_desc'),
+								'message_text'=>$msg_text,
 								'sender_id'=>$this->session->userdata('id'),
-								'message_title'=>$this->input->post('message_title'),
+								'message_title'=>$msg_title,
 								'status'=>'1',
 								'reply_for'=>'0',
 								'created_date'=>date('Y-m-d H:i:s',time()),
@@ -376,22 +391,25 @@ class User extends ADMIN_Controller {
 						// insert data into messages_receiver table using message id from message table
 						insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
 
+						$user_mail = select(TBL_USERS,'email_id',array('where'=>array('id'=>$user)),array('single'=>TRUE));
+
+						if(!empty($user_mail['email_id'])){
+							
+							$this->email->from('admin@admin.com', 'Admin');
+							$this->email->to($user_mail['email_id']);
+							
+							$this->email->subject($msg_title);
+							$this->email->message($msg_text);
+							
+							$this->email->send();
+						}
+
+
 					}
 				}
 
 				$this->session->set_flashdata('success', 'Message has been Successfully sent.');
 				redirect('admin/user');
-
-				// $this->email->from('email@email.com', 'Name');
-				// $this->email->to('someone@example.com');
-				
-				// $this->email->subject('subject');
-				// $this->email->message('message');
-				
-				// $this->email->send();
-				
-				// echo $this->email->print_debugger();
-
 		}
 
 	}
@@ -438,7 +456,7 @@ class User extends ADMIN_Controller {
 		if($this->form_validation->run() == FALSE){
 
 			$this->template->load('admin/default','admin/user/send_messages',$this->data);	
-
+			
 		}else{
 			
 			$all_users = $this->input->post('all_users');
@@ -447,10 +465,13 @@ class User extends ADMIN_Controller {
 
 				foreach($all_users as $user){
 
+						$msg_title = $this->input->post('message_title');
+						$msg_text = $this->input->post('message_desc');
+
 						$data = array(
-								'message_text'=>$this->input->post('message_desc'),
+								'message_text'=>$msg_text,
 								'sender_id'=>$this->session->userdata('id'),
-								'message_title'=>$this->input->post('message_title'),
+								'message_title'=>$msg_title,
 								'status'=>'1',
 								'reply_for'=>'0',
 								'created_date'=>date('Y-m-d H:i:s',time()),
@@ -475,6 +496,19 @@ class User extends ADMIN_Controller {
 						// insert data into messages_receiver table using message id from message table
 						insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
 
+						$user_mail = select(TBL_USERS,'email_id',array('where'=>array('id'=>$user)),array('single'=>TRUE));
+
+						if(!empty($user_mail['email_id'])){
+							
+							$this->email->from('admin@admin.com', 'Admin');
+							$this->email->to($user_mail['email_id']);
+							
+							$this->email->subject($msg_title);
+							$this->email->message($msg_text);
+							
+							$this->email->send();
+						}
+						
 					}
 
 					$this->session->set_flashdata('success', 'Messages has been Successfully sent.');

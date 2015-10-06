@@ -114,7 +114,7 @@
             <!--side left-->
             <div class="sidebar_left_container text-center mCustomScrollbar" data-mcs-theme="minimal"><!-- scrollbar" id="style-3-->
                 <div class="user_profile_img">
-                    <img src="<?php echo UPLOAD_URL.'/'.$this->session->userdata['user']['profile_pic'];?>">
+                    <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$this->session->userdata['user']['profile_pic'];?>">
                 </div>
                 <h4><?php echo $this->session->userdata['user']['full_name'];?></h4>
                 <a href="student/user_account">View Profile</a>
@@ -158,7 +158,7 @@
                         </ul>
                     </li>
                     <li><a href="#"><span class="icon icon_message"></span><span class="badge message_badge">12</span></a></li>
-                    <li><a href="#"><span class="icon icon_request"></span><span class="badge request_badge">07</span></a></li>
+                    <li><a href="/student/studymates_request"><span class="icon icon_request"></span><span class="badge request_badge"><?php echo count_studymate_request($this->session->userdata('user')['id']);?></span></a></li>
                 </ul>
                 <!--//notification-->
                     
@@ -189,7 +189,7 @@
                     <li><a href="/student/home">My Feeds</a></li>
                     <li><a href="#">My Exams</a></li>
                     <li><a href="/student/studymates">Studymates</a></li>
-                    <li><a href="#">My Activities</a></li>
+                    <li><a href="/student/my_activities">My Activities</a></li>
                     <li><a href="/student/notice_board">Notice Board</a></li>
                 </ul>
                 <?php

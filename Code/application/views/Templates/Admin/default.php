@@ -61,7 +61,7 @@
                     <li><a href="#">Exams</a></li>
                 </ul>
             </li>
-            <li><a href="#"><span class="icon icon_menu_group"></span> Groups</a></li>
+            <li><a href="admin/group"><span class="icon icon_menu_group"></span> Groups</a></li>
             <li><a href="#"><span class="icon icon_menu_organize"></span> Organize</a></li>
             <li class="active dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_manage"></span> Manage</a>
@@ -367,8 +367,14 @@
     
 
     <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="assets/js/bootstrap-datepicker.js"></script> 
 
     <script type="text/javascript">
+        
+        $('#birthdate input').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+
         $(function () {
           $('[data-toggle="tooltip"]').tooltip()
         })

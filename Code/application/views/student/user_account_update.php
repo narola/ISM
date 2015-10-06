@@ -137,7 +137,7 @@
                             <div class="col-sm-12"> 
                                        <div class="form-group small_input select">
                                     <select class="form-control" name="country_id" onchange="get_states(this.value)" id="country_id" >
-                                        <option selected disabled>Select Country</option> 
+                                        <option selected value="">Select Country</option> 
                                         <?php 
                                           if(!empty($countries)){ 
                                             foreach($countries as $country) {
@@ -151,7 +151,7 @@
                                         
                                 <div class="form-group small_input select">
                                     <select name="state_id" id="state_id" onchange="get_cities(this.value)" class="form-control">
-                                        <option selected disabled>Select State</option>
+                                        <option selected value="">Select State</option>
                                         <?php 
                                           if(!empty($states)){ 
                                             foreach($states as $state) {
@@ -165,7 +165,7 @@
                                 
                                 <div class="form-group small_input select">
                                     <select name="city_id" id="city_id" class="form-control">
-                                        <option selected disabled>Select City</option>
+                                        <option selected value="">Select City</option>
                                         <?php 
                                           if(!empty($cities)){ 
                                             foreach($cities as $city) {
@@ -337,12 +337,6 @@
                                             <?php echo strip_tags(form_error('program_id'),''); ?>
                                         </div>
                                     </div>
-                                    <script>
-                                        <?php $class = isset($classroom_id) ? $classroom_id : set_value('class_id');?>
-                                        document.getElementById('class_id').value = '<?= $class; ?>';
-                                        <?php $district = isset($district_id) ? $district_id : set_value('district_id');?>
-                                        document.getElementById('district_id').value = '<?= $district; ?>';
-                                    </script>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -388,7 +382,7 @@
                     <div class="col-sm-12 text-center reg_btns">
                     	<input type="hidden" value="" name="todo" id="todo">
                         <a href="<?php echo site_url();?>/student/home" class="btn_black btn">Cancel</a>
-                        <?php if(isset($school_information['is_my_school'])){?>
+                        <?php if(isset($school_information['is_my_school']) && $school_information['is_my_school'] == 1){?>
                             <a disabled data-toggle="tooltip" data-placement="top" title="You have already request for change school" class="btn_black btn btn_green">submit</a>
                         <?php }else{ ?>
                             <input type="submit" name="btnsubmit" class="btn_black btn btn_green" value="Submit">
@@ -460,8 +454,7 @@
                type:'POST',
                data:{country_id:country_id},
                success:function(data){
-                  $('#states_id').html(data);
-                  alert(data);
+                  $('#state_id').html(data);
                }
             });
         }
