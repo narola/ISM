@@ -149,7 +149,7 @@ class Topic extends ADMIN_Controller {
 		$where  = array('where' => array('week_no' => $last_week,
 			'YEAR(created_date)' => $year
 			),
-		// 'where_in'=>array('group_id'=>$unallocated_group_ids)
+		'where_in'=>array('group_id'=>$unallocated_group_ids)
 		);
 		
 
@@ -159,15 +159,15 @@ class Topic extends ADMIN_Controller {
 			);
 		p($last_week_groups);
 
-		foreach ($unallocated_group_ids as $unallocated) {
+		foreach ($unallocated_group_ids as $key => $unallocated) {
+			
 			if(in_array($unallocated, array_column($last_week_groups, 'group_id'))){
+				$last_week_topic = $last_week_groups[$key]['topic_id'];
 				
 			}else{
 				
 			}
 		}
-
-
 		exit;
 
 		

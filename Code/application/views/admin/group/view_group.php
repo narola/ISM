@@ -27,7 +27,7 @@
                         </select>
 	                </div>
 	                <div class="form-group">
-	                    <select class="form-control" onchange="filter_data()" id="year">
+	                    <select class="form-control" onchange="filter_data()" name="year" id="year">
 	                        <option value="">Select Year</option>
 	                        <option value="2015">2015</option>
 	                        <option value="2016">2016</option>
@@ -61,7 +61,7 @@
         <!-- <div class="row div_buttons">
           <div class="col-sm-6">
               <button class="btn btn_black" type="submit">Send Message</button>
-              <a class="btn btn_green" href="<?php echo base_url().'admin/user/add';?>" >Add User</a>
+              <a class="btn btn_green" href="<?php //echo base_url().'admin/user/add';?>" >Add User</a>
             </div>
 
           <div class="col-sm-6 text-right">
@@ -92,14 +92,14 @@
                                 <tr>
                                     <td class="checkbox_td">
                                         <div class="squaredThree">
-                                            <input type="checkbox" value="None" id="squaredThree" name="check">
-                                            <label for="squaredThree"></label>
+                                            <input type="checkbox" value="<?php echo $group['id']; ?>" id="squaredThree_<?php echo $group['id']; ?>" name="group_messages">
+                                            <label for="squaredThree_<?php echo $group['id']; ?>"></label>
                                         </div>
                                     </td>
                                     <td class="username">
                                         <div class="chat_img_holder">
                                             <!-- <img src="../images/group1.jpg"> -->
-                                            <img src="<?php echo 'uploads/user_141/user6_1443673332.jpg'; ?>">
+                                            <img src="<?php echo 'uploads/user_141/user6_1443673332.jpg'; ?>" >
                                         </div>
                                         <h4><span>Group Name : </span> <?php echo $group['group_name'] ?> <span> [<?php echo $group['course_name'] ?>]</span></h4>
                                         <table class="group_members">
@@ -115,11 +115,8 @@
 
                                                 <td>
                                                     <div class="chat_img_holder">
-                                                        <?php if(!empty($member['profile_link'])) { ?>
-                                                        <img src="<?php echo 'uploads/'.$member['profile_link']; ?>">
-                                                        <?php }else{ ?>
-                                                        <img src="<?php echo 'uploads/user_141/user6_1443673332.jpg'; ?>">
-                                                        <?php } ?>
+                                                        <img src="<?php echo 'uploads/'.$member['profile_link']; ?>" 
+                                                        onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                                     </div>
                                                     <p><?php echo character_limiter(ucfirst($member['username']),5); ?> </p>
                                                     <span><?php echo character_limiter(ucfirst($member['school_name']),5); ?></span>
@@ -153,7 +150,7 @@
                                 </tr>    
                             <?php } }else{ ?>
 							
-							<tr> <td colspan="7" class="text-center"><strong>No Data Found. </strong> </td> </tr>		
+							<tr> <td colspan="7" class="text-center"><strong>No Group Found. </strong> </td> </tr>		
 							
                             <?php } ?>
                         </tbody>
@@ -178,13 +175,17 @@
 		
 		var course = $('#course').val();
         var q = $('#q').val();
-
+        var year = $('#year').val();
 		
 		if(course == '' ){ $('#course').removeAttr('name'); }
 		if(q == ''){ $('#q').removeAttr('name'); }
+        if(year == '' ){ $('#year').removeAttr('name'); }
 
 		$('#filter').submit();
 	}
+
+
+
 
 	<?php if(!empty($_GET['course'])) { ?>
 		$('#course').val('<?php echo $_GET["course"];?>');	
@@ -193,6 +194,10 @@
 	<?php if(!empty($_GET['q'])) { ?>
 		$('#q').val('<?php echo $_GET["q"];?>');	
 	<?php } ?>			
+
+    <?php if(!empty($_GET['year'])) { ?>
+        $('#year').val('<?php echo $_GET["year"];?>');    
+    <?php } ?>          
 
 </script>
  
