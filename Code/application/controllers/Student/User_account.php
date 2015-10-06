@@ -382,7 +382,7 @@ class User_account extends CI_Controller {
 		$all_states = select(TBL_STATES,null,array('where'=>array('country_id'=>$country_id)));
 		$new_str = '';
 		
-		$new_str .= '<option selected disabled >Select State</option>';
+		$new_str .= '<option selected>Select State</option>';
 		if(!empty($all_states)){
 			foreach($all_states as $state){
 				$new_str.='<option value="'.$state['id'].'">'.$state['state_name'].'</option>';
@@ -395,10 +395,10 @@ class User_account extends CI_Controller {
 	public function ajax_get_cities(){
 
 		$state_id = $this->input->post('state_id');
-		$all_cities = select(TBL_CITIES,array('where'=>array('state_id'=>$state_id)));
+		$all_cities = select(TBL_CITIES,null,array('where'=>array('state_id'=>$state_id)));
 		$new_str = '';
 
-		$new_str .= '<option selected disabled >Select City</option>';
+		$new_str .= '<option selected>Select City</option>';
 		if(!empty($all_cities)){
 			foreach($all_cities as $city){
 				$new_str.='<option value="'.$city['id'].'">'.$city['city_name'].'</option>';
