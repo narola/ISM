@@ -18,6 +18,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     }
 
     $data = json_decode($message, true);
+    $data['error'] = 'skip';
     $Server->log($data);
     /* For individual chat */
     if ($data['type'] == 'studymate') {
@@ -29,6 +30,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
             if ($user_info != null) {
                 foreach ($Server->wsClients as $id => $client) {
                     if (in_array($Server->wsClients[$id][12], $responce['classmates'])) {
+
                         $res = array(
                             'type' => 'notification',
                             'status' => 'available',
@@ -72,24 +74,25 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
             $responce['message'] = '';
             foreach ($vals['result'] as $key => $value) {
                 $responce['message'] .= ' <div class="result_box">
-                                <h5>'.$value['term'][0].'<span>: '.$value['partofspeech'][0].'</span></h5>'
-                                .'<strong>Definition:</strong><span>' . $value['definition'][0] . '</span>
+                                <h5>' . $value['term'][0] . '<span>: ' . $value['partofspeech'][0] . '</span></h5>'
+                        . '<strong>Definition:</strong><span>' . $value['definition'][0] . '</span>
                                 <h5><span><strong>Example: </strong>' . $value['definition'][0] . '</span></h5>
                             </div>';
-                
             }
         }
-    }else if($data['type'] == 'close_studymate'){
-          $responce = $Server->close_studymate($Server->wsClients[$clientID][12], $data);
+    } else if ($data['type'] == 'close_studymate') {
+        $responce = $Server->close_studymate($Server->wsClients[$clientID][12], $data);
+    } else if ($data['type'] == 'send_studymate_request') {
+        $responce = $Server->send_studymate_request($Server->wsClients[$clientID][12], $data);
     }
-    
-    
-    
-    
-    $check = array('feed_comment', 'like', 'discussion');
+
+
+
+
+    $check = array('feed_comment', 'like');
     if (isset($responce)) {
         $Server->log($responce, false);
-        if ($responce['to'] == 'self') {           
+        if ($responce['to'] == 'self') {
             $Server->wsSend($clientID, json_encode($responce));
         } else {
             if ($responce['type'] == 'studymate') {
@@ -109,6 +112,20 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
             } else if (in_array($responce['type'], $check)) {
                 foreach ($Server->wsClients as $id => $client) {
                     if (in_array($Server->wsClients[$id][12], $responce['allStudyMate'])) {
+                        $Server->wsSend($id, json_encode($responce));
+                    }
+                }
+            } else if ($responce['type'] == 'discussion') {
+                $classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
+                $my_score = $responce['my_score'];
+                $responce['my_score'] = 'skip';
+                foreach ($Server->wsClients as $id => $client) {
+                    if (in_array($Server->wsClients[$id][12], $classmates)) {
+                        if ($id == $clientID) {
+                            $responce['my_score'] = $my_score;
+                        }else{
+                             $responce['my_score'] = 'skip';
+                        }
                         $Server->wsSend($id, json_encode($responce));
                     }
                 }
@@ -133,6 +150,7 @@ function wsOnClose($clientID, $status) {
                 $res = array(
                     'type' => 'notification',
                     'status' => 'available',
+                    'error' => 'skip',
                     'live_status' => false,
                     'user_id' => $user_info['id'],
                     'profile_link' => $user_info['profile_link'],

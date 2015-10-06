@@ -86,33 +86,13 @@
 <?php
                 } ?>  
             </div>
-
-
             <div class="toolkit">
                 <div class="row toolkit_header">
                     <div class="col-sm-12">
                         <h3><span>My Toolkit</span></h3>
                     </div>
                 </div>
-                <!--calc-->
- <!-- <div style="border:1px solid;padding-top:10px;text-align:center;"> -->
-                    
-                    
-                  <!-- </div> -->
-                  </p>
-
                 <div class="calculator row " id="accordian_calc">
-                    
-
-                    <div class="dictionary_div">
-                        <div class="form-group no_effect search_input">
-                            <input class="form-control" type="text" placeholder="Search" data-type="search-dictionary">
-                            <a href="javascript:void(0);" class="fa fa-search" data-type="search-dictionary"></a>
-                        </div>
-                        <div class="dictionary_result mCustomScrollbar" data-mcs-theme="minimal-dark">
-                        </div>
-                        
-                    </div>
                 </div>
                 <!--white board-->
                 <div class="white_board">
@@ -134,31 +114,50 @@
                 <!--//white board-->
                 <!--Explore-->
                 <div class="explore">
+                    <input class="form-control" type="text" placeholder="Search Dictionary.." data-type="Explore.." name="q">
+                    <script>
+  (function() {
+    var cx = '007609917801302826443:7ujqmpmhwx8';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:search></gcse:search>
                 </div>
                 <!--//Explore-->
                 <!--dictionary-->
                 <div class="dictionary">
+                    <div class="dictionary_div">
+                        <div class="form-group no_effect search_input">
+                            <input class="form-control" type="text" placeholder="Search Dictionary.." data-type="search-dictionary">
+                            <a href="javascript:void(0);" class="fa fa-search" data-type="search-dictionary"></a>
+                        </div>
+                        <div class="dictionary_result mCustomScrollbar" data-mcs-theme="minimal-dark">
+                        </div>
+                    </div>
                 </div>
                 <!--//dictionary-->
-                
                 <!--tabs-->
                 <div class="toolkit_tabs">
                     <ul>
-                        <li id="calc_tab" class="active"><a href="#">Calculator</a></li>
-                        <li id="white_board_tab"><a href="#">White board</a></li>
-                        <li id="explore_tab"><a href="#">Explore</a></li>
-                        <li id="dictionary_tab"><a href="#">Dictionary</a></li>
+                        <li id="calc_tab" class="active"><a href="javascript:void(0);">Calculator</a></li>
+                        <li id="white_board_tab"><a href="javascript:void(0);">White board</a></li>
+                        <li id="explore_tab"><a href="javascript:void(0);">Explore</a></li>
+                        <li id="dictionary_tab"><a href="javascript:void(0);">Dictionary</a></li>
                     </ul>
                 </div>
                 <!--//tabs-->
             </div>
-
             <div class="sidebar_right_container sidebar_right_container2 tut_right_bar mCustomScrollbar" data-mcs-theme="minimal-dark">
                 <div class="col-sm-12 time_chart">
                     <div class="box">
                         <div class="box_body">
                             <div class="item_chart css">
-                                
                                 <h2>2:15<small>min</small><span>Remaining</span></h2>
                                 <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg">
                                  <g>

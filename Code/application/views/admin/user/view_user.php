@@ -135,7 +135,10 @@
                                 </div>
                               </td>
                               <td class="username">
-                                  <div class="chat_img_holder"><img src="<?php echo base_url().'assets'; ?>/images/user3.jpg"></div>
+                                  <div class="chat_img_holder">
+                                        <img src="<?php echo base_url().'assets'; ?>/uploads/$user['profile_link']"
+                                        onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                  </div>
                                   <h4><?php echo ucfirst($user['username']); ?></h4>
                                   <?php if($user['user_status']=='active'){ 
                                         echo '<p class="active">Active Today</p>'; 
