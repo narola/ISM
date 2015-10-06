@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label> Select Users </label>
+                            <label> Select Users   </label>
 
                             <select name="all_users[]" class="js-example-basic-single form-control" multiple="multiple">
 
@@ -51,8 +51,7 @@
                                             if(!empty($users)){ foreach($users as $user) {
                                                   if($user['rid']==$role['id']) {  
                                          ?>
-                                           <option value="<?php echo $user['id'] ?>" <?php echo set_select('all_users', $user['id']); ?>
-                                               <?php if(in_array($user['id'],$post_users) && isset($post_users)){ echo "selected='selected'"; } ?>  >
+                                           <option value="<?php echo $user['id'] ?>" <?php echo set_select('all_users', $user['id']); ?> >
                                                 <?php echo ucfirst($user['username']); ?>
                                             </option> 
                                         <?php } } }?>
@@ -63,8 +62,8 @@
                             
                         </div>
 
-                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('all_users'),''))){ echo 'hide';} ?>">
-                          <?php echo strip_tags(form_error('all_users'),'') ; ?>
+                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('all_users[]'),''))){ echo 'hide';} ?>">
+                          <?php echo strip_tags(form_error('all_users[]'),'') ; ?>
                         </div>
                         <?php $error = $this->session->flashdata('error'); ?>
   

@@ -245,18 +245,21 @@ class User extends ADMIN_Controller {
 			}
 
 			if($this->data['user']['email_id'] !== $email){
-				$email_rule = 'trim|required|is_unique[users.email_id]';
+				$email_rule = 'trim|is_unique[users.email_id]|valid_email';
 			}else{
 				$email_rule = 'trim|valid_email';
 			}
 
 		}else{
 			$user_rule = 'trim|required|alpha_numeric';
-			$email_rule = 'trim|required|valid_email';
+			$email_rule = 'trim|valid_email';
 		}
 
 		$this->form_validation->set_rules('username', 'User Name', $user_rule);
-		$this->form_validation->set_rules('email_id', 'Email', $email_rule);	
+		$this->form_validation->set_rules('email_id', 'Email', $email_rule);
+		$this->form_validation->set_rules('first_name', 'First Name', 'trim|alpha_numeric_spaces');
+		$this->form_validation->set_rules('last_name', 'Last Name', 'trim|alpha_numeric_spaces');	
+		$this->form_validation->set_rules('full_name', 'Full Name', 'trim|alpha_numeric_spaces');	
 
 		if($this->form_validation->run() == FALSE){
 
@@ -350,7 +353,7 @@ class User extends ADMIN_Controller {
 											)
 									);	
 
-		$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
+		$this->form_validation->set_rules('all_users', 'Users', 'trim|required');	
 		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
 		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
 
@@ -400,6 +403,10 @@ class User extends ADMIN_Controller {
 
 						if(!empty($user_mail['email_id'])){
 							
+							$config = mail_config(); // set configuration for email from email_helper.php
+							
+							$this->email->initialize($config);
+							$this->load->library('email', $config);	
 							$this->email->from('admin@admin.com', 'Admin');
 							$this->email->to($user_mail['email_id']);
 							
@@ -408,8 +415,6 @@ class User extends ADMIN_Controller {
 							
 							$this->email->send();
 						}
-
-
 					}
 				}
 
@@ -428,11 +433,14 @@ class User extends ADMIN_Controller {
 			if(isset($_POST['all_users'])){
 				$this->data['post_users'] = $this->input->post('all_users[]');
 				$this->data['my_cnt'] = 1;
+				$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
 			}elseif(isset($_POST['message_title'])){
 				$this->data['my_cnt'] = 1;
+				$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
 			}else{
 				$this->data['post_users'] = $this->input->post('users');
 				$this->data['my_cnt'] = 0;	
+				$this->form_validation->set_rules('all_users[]', 'Users', 'trim');		
 			}
 
 		}else{
@@ -459,7 +467,6 @@ class User extends ADMIN_Controller {
 
 		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
 
-		$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
 		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
 		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
 
@@ -529,6 +536,7 @@ class User extends ADMIN_Controller {
 				}		
 			}
 		}
+
 
 	// ---------------------------- User Module END --------------------------------------------
 
