@@ -47,7 +47,7 @@ class User extends ADMIN_Controller {
 
 			$str =  trim($str,'&');
 
-			$config['base_url']	 = base_url().'admin/user/index?'.$str;
+			if(!empty($str)) { $config['base_url']	 = base_url().'admin/user/index?'.$str; }else{ $config['base_url'] = base_url().'admin/user/index';  }
 			$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
 			$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'	
 	
@@ -232,7 +232,9 @@ class User extends ADMIN_Controller {
 	    $this->data['cities'] = select(TBL_CITIES,FALSE,array('where'=>array('state_id'=>$this->data['user']['state_id'])));
 		$this->data['roles'] = select(TBL_ROLES);
 		$this->data['packages'] = select(TBL_MEMBERSHIP_PACKAGE);
-		
+		$this->data['cur_url'] = $this->session->userdata('cur_url');
+		$this->data['prev_url'] = $this->session->userdata('prev_url');
+
 		if($_POST){
 			
 			$username = $this->input->post('username');

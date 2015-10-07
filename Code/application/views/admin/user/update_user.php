@@ -184,7 +184,8 @@
                     </div>
 
                     <div class="box_footer">
-                    	<button type="submit" class="btn btn_green">Save</button>
+                    	<button type="submit" class="btn btn_green">Save <?php echo $prev_url; ?> </button>
+
                         <a href="<?php echo base_url().'admin/user'; ?>" class="btn btn_black">Cancel</a>
                     </div>
 
