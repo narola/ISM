@@ -511,6 +511,14 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -764,6 +772,14 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
+
             
 // work out hash to use in Sec-WebSocket-Accept reply header
         $hash = base64_encode(sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
@@ -886,10 +902,12 @@ class PHPWebSocket {
         return $this->wsSendClientMessage($clientID, $binary ? self::WS_OPCODE_BINARY : self::WS_OPCODE_TEXT, $message);
     }
 
-    function log($message, $status = true) {
+    function log($message, $status = 0) {
         $re = 'Request';
-        if ($status == false) {
+        if ($status == 1) {
             $re = 'Responce';
+        }else if($status == 2){
+            $re = 'System Info';
         }
         echo "\n---------------------------------------- Time: " . date("H:m:s") . " ($re)\n\n";
         if (is_array($message)) {
@@ -1299,7 +1317,7 @@ class PHPWebSocket {
                         break;
                     }
                 }
-                
+
                 $query = "INSERT INTO `ism`.`tutorial_group_discussion` (`id`, `group_id`, `topic_id`, `sender_id`, `comment_score`, `message`, `message_type`, `message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, $score,'" . $data['message'] . "', '', '', $is_active, '', '', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
                 $x = mysqli_query($link, $query);
                 $data['disscusion_id'] = mysqli_insert_id($link);
@@ -1313,10 +1331,8 @@ class PHPWebSocket {
                         $query = "UPDATE `tutorial_group_topic_allocation` SET `group_score` = `group_score` + $add_to_group WHERE `group_id` = " . $rows['group_id'] . " AND `topic_id` = " . $rows['topic_id'] . " AND `week_no` = " . $c_week;
                         mysqli_query($link, $query);
                     }
-                    $this->log("Score :- ".$score);
                     $query = "UPDATE `tutorial_group_member_score` SET `score` = `score` + $score WHERE `topic_id` = " . $rows['topic_id'] . " AND member_id =" . $rows['member_id'];
                     mysqli_query($link, $query);
-                    $this->log($query);
                 } else {
                     $data['to'] = 'self';
                     $data['error'] = 'Unable to save your message! Try again!';
@@ -1333,7 +1349,6 @@ class PHPWebSocket {
                 $data['error'] = 'No topic allocated! or Discussion time is over!';
             }
         }
-        $this->log("User UD :".$userId);
         $data['allStudyMate'] = $this->class_mate_list($userId);
         return array_merge($data, $this->get_client_info($userId));
     }
@@ -1413,37 +1428,80 @@ class PHPWebSocket {
     }
 
     /**
-     * 	This function will return true if called within active hours.
-     * 	return  true/false or null 
+     * 	This function will return remaining seconds of active hours.
+     * 	return  int 
      * 	@author = Sandip Gopani (SAG)
      */
-    function active_hours() {
+    function active_hours($status = 0) {        
         $link = $this->db();
         $starttime = $endtime = null;
         $output = 0;
         $currenttime = getdate(); // Get an array of current time
-        // Store current hours and minutes
-        $currenttime = (string) $currenttime['hours'] . ':' . $currenttime['minutes'];
 
+        if ($currenttime['hours'] < 10) {
+            $currenttime['hours'] = '0' . $currenttime['hours'];
+        }
+        if ($currenttime['minutes'] < 10) {
+            $currenttime['minutes'] = '0' . $currenttime['minutes'];
+        }
+
+        if ($currenttime['seconds'] < 10) {
+            $currenttime['seconds'] = '0' . $currenttime['seconds'];
+        }
+
+        // Store current hours and minutes
+        $c_full_time = $currenttime['hours'] . ':' . $currenttime['minutes'] . ':' . $currenttime['seconds'];
         $query = "SELECT `ac`.`config_value`, `ac`.`config_key` FROM `admin_config` `ac` WHERE `ac`.`config_key` = 'activeHoursStartTime' OR  `ac`.`config_key` = 'activeHoursEndTime'";
         $row = mysqli_query($link, $query);
         if (mysqli_num_rows($row) == 2) {
             while ($rows = mysqli_fetch_assoc($row)) {
+                $time_part = explode(':', $rows['config_value']);
+                if (!isset($time_part[2])) {
+                    $time_part[2] = '00';
+                } else if ($time_part[2] < 10 && strlen($time_part[2]) == 1)  {
+                    $time_part[2] = '0' . $time_part[2];
+                }
+
+                if ($time_part[0] < 10  && strlen($time_part[0]) == 1 ) {
+                    $time_part[0] = '0' . $time_part[0];
+                }
+
+                if ($time_part[1] < 10  && strlen($time_part[1]) == 1) {
+                    $time_part[1] = '0' . $time_part[1];
+                }
+
                 if ($rows['config_key'] == 'activeHoursStartTime') {
+
                     // Asign time and remove seconds from value incase added by admin ( e.g  11:30:54 will become 11:30 ). Same with else part
-                    $starttime = explode(':', $rows['config_value'])[0] . ':' . explode(':', $rows['config_value'])[1];
+                    $starttime = implode(':', $time_part);
+                    
                 } else {
-                    $endtime = explode(':', $rows['config_value'])[0] . ':' . explode(':', $rows['config_value'])[1];
+                    $endtime = implode(':', $time_part);
+                    
                 }
             }
+            if($status == 2)
+            $this->log("Current Time: " . $c_full_time ."\n\nStart Time: ".$starttime."\n\nEnd Time: ".$endtime,2);
             if ($starttime !== null && $endtime !== null) {
                 // Convert to date time
-                $cur = DateTime::createFromFormat('H:i', $currenttime);
-                $start = DateTime::createFromFormat('H:i', $starttime);
-                $end = DateTime::createFromFormat('H:i', $endtime);
-                // Check current time is between $starttime and $endtime
-                if ($cur > $start && $cur < $end) {
-                    $output = $this->dateDiff($endtime . ':00', $currenttime . ':' . getdate()['seconds']);
+                $cur = DateTime::createFromFormat('H:i:s', $c_full_time);
+                $start = DateTime::createFromFormat('H:i:s', $starttime);
+                $end = DateTime::createFromFormat('H:i:s', $endtime);
+                
+                if ($status == 1) {
+                    if ($cur < $start) {
+                        $output = $this->dateDiff($c_full_time, $starttime);
+                    } else if ($cur > $end) {
+                        $output = $this->dateDiff('00:00:00', $starttime);
+                        $output += $this->dateDiff($c_full_time, '24:00:00');
+                    }
+                } else if($status == 2){
+                      $output = $this->dateDiff($starttime,$endtime);
+                }else {
+                    // Check current time is between $starttime and $endtime
+                    if ($cur > $start && $cur < $end) {
+                        $output = $this->dateDiff($endtime, $c_full_time);
+                    }
                 }
             }
         }
@@ -1481,10 +1539,9 @@ class PHPWebSocket {
         $link = $this->db();
         $studymate = $this->class_mate_list($userid, false);
         // if (sizeof($studymate) > 0) {
-        $this->log($studymate);
+
         $query = "SELECT id FROM studymates_request where request_from_mate_id=" . $userid . " and request_to_mate_id=" . $data['studymate_id'] . " and status IN (0,2)";
         $rows = mysqli_query($link, $query);
-        // $this->log(mysqli_error($link));
         $row_cnt = mysqli_num_rows($rows);
         if ($row_cnt > 0) {
             $data['to'] = 'self';
@@ -1525,6 +1582,29 @@ class PHPWebSocket {
             // }
         }
         return $data;
+    }
+
+    function view_all_comment_activities($user_id, $data) {
+        $link = $this->db();
+        $query = "SELECT *,u.full_name FROM feed_comment left join user_profile_picture on comment_by=user_id LEFT JOIN users u on u.id = comment_by where comment_by=".$user_id.' and feed_id='.$data['comment_id'];
+            $row = mysqli_query($link,$query);
+            if(mysqli_num_rows($row)>0){
+                $all=array();
+                while($rows = mysqli_fetch_assoc($row)){
+                    $all[] = $rows['comment'];
+                    $link = $rows['profile_link'];
+                    $name = $rows['full_name'];
+                }      
+                $data['comment'] = $all;
+                $data['profile'] = $link;
+                $data['name'] = $name;
+            }
+            else{
+                $data['to'] = 'self';
+                $data['error'] = 'Please don\'t modify data manually.';
+            }
+            return $data;
+
     }
 
 }

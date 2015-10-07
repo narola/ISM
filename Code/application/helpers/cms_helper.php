@@ -194,7 +194,7 @@ function dateDiff($time1, $time2) {
 *	return  true/false or null 
 *	@author = Sandip Gopani (SAG)
 */
-function active_hours(){
+function active_hours($status = true){
 	$CI =& get_instance();
 		// Get active hours time from DB
 		$active = $CI->common_model->sql_select(
@@ -203,33 +203,68 @@ function active_hours(){
 			"ac.config_key = 'activeHoursStartTime' OR ac.config_key = 'activeHoursEndTime'"
 			);
 		
-		$starttime = $endtime = null;
-		$output = 0;
-		$currenttime = getdate(); // Get an array of current time
+		 $starttime = $endtime = null;
+        $output = 0;
+        $currenttime = getdate(); // Get an array of current time
 
-		// Store current hours and minutes
-		$currenttime = (string)$currenttime['hours'].':'.$currenttime['minutes'];
+        if ($currenttime['hours'] < 10) {
+            $currenttime['hours'] = '0' . $currenttime['hours'];
+        }
+        if ($currenttime['minutes'] < 10) {
+            $currenttime['minutes'] = '0' . $currenttime['minutes'];
+        }
+
+        if ($currenttime['seconds'] < 10) {
+            $currenttime['seconds'] = '0' . $currenttime['seconds'];
+        }
+
+        // Store current hours and minutes
+        $c_full_time = $currenttime['hours'] . ':' . $currenttime['minutes'] . ':' . $currenttime['seconds'];
 
 		foreach($active as $key => $value){
-			if($value['config_key'] == 'activeHoursStartTime'){
-				// Asign time and remove seconds from value incase added by admin ( e.g  11:30:54 will become 11:30 ). Same with else part
-				$starttime = explode(':',$value['config_value'])[0].':'.explode(':',$value['config_value'])[1]; 
-			}else{
-				$endtime = explode(':',$value['config_value'])[0].':'.explode(':',$value['config_value'])[1]; 
-			}
-		}
-		if($starttime !== null && $endtime !== null){
+			 $time_part = explode(':', $value['config_value']);
+                if (!isset($time_part[2])) {
+                    $time_part[2] = '00';
+                } else if ($time_part[2] < 10 && strlen($time_part[2]) == 1)  {
+                    $time_part[2] = '0' . $time_part[2];
+                }
 
-			// Convert to date time
-			$cur = DateTime::createFromFormat('H:i', $currenttime);
-			$start = DateTime::createFromFormat('H:i', $starttime);
-			$end = DateTime::createFromFormat('H:i', $endtime);
+                if ($time_part[0] < 10  && strlen($time_part[0]) == 1 ) {
+                    $time_part[0] = '0' . $time_part[0];
+                }
 
-			// Check current time is between $starttime and $endtime
-			if ($cur > $start && $cur < $end){
-			   $output = dateDiff($endtime.':00', $currenttime.':'.getdate()['seconds']);
-			}
+                if ($time_part[1] < 10  && strlen($time_part[1]) == 1) {
+                    $time_part[1] = '0' . $time_part[1];
+                }
+
+                if ($value['config_key'] == 'activeHoursStartTime') {
+
+                    // Asign time and remove seconds from value incase added by admin ( e.g  11:30:54 will become 11:30 ). Same with else part
+                    $starttime = implode(':', $time_part);
+                } else {
+                    $endtime = implode(':', $time_part);
+                }
 		}
+		if ($starttime !== null && $endtime !== null) {
+                // Convert to date time
+                $cur = DateTime::createFromFormat('H:i:s', $c_full_time);
+                $start = DateTime::createFromFormat('H:i:s', $starttime);
+                $end = DateTime::createFromFormat('H:i:s', $endtime);
+                
+                if ($status == false) {
+                    if ($cur < $start) {
+                        $output = $this->dateDiff($c_full_time, $starttime);
+                    } else if ($cur > $end) {
+                        $output = $this->dateDiff('00:00:00', $starttime);
+                        $output += $this->dateDiff($c_full_time, '24:00:00');
+                    }
+                } else {
+                    // Check current time is between $starttime and $endtime
+                    if ($cur > $start && $cur < $end) {
+                        $output = dateDiff($endtime, $c_full_time);
+                    }
+                }
+            }
 		return $output;
 	}
 

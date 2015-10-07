@@ -2536,3 +2536,9 @@ svg {
 	width:84px;
 	height:84px;	
 }
+#circle_process canvas{
+    position: relative;
+    top: 2px;
+    left: 2px;
+    transform: rotate(90deg);
+}
