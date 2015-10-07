@@ -19,7 +19,7 @@
     <link href="assets/css/select2.css" rel="stylesheet">
     <!-- Select2 CSS END -->
 
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="assets/css/jquery-ui.css">
     <!--fonts-->
     <link href='assets/css/fonts.css' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
