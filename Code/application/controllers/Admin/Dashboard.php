@@ -158,13 +158,44 @@ class Dashboard extends ADMIN_Controller {
 			$class_name = select(TBL_CLASSROOMS,'class_name',array('where'=>array('id'=>$classroom_id)),array('single'=>TRUE));
 			$school_name = select(TBL_SCHOOLS,'school_name',array('where'=>array('id'=>$school_id)),array('single'=>TRUE));
 
+			/*Setting for PHPExcel Set Heading for spreadsheet*/
+
+			//load our new PHPExcel library
+			$this->load->library('excel');
+			ob_end_clean();
+			//activate worksheet number 1
+			$this->excel->setActiveSheetIndex(0);
+			//name the worksheet
+			$this->excel->getActiveSheet()->setTitle('test worksheet');
+			//set cell A1 content with some text
+			$this->excel->getActiveSheet()->setCellValue('A1', 'Number');
+			//set cell A1 content with some text
+			$this->excel->getActiveSheet()->setCellValue('B1', 'Username');
+			//set cell A1 content with some text
+			$this->excel->getActiveSheet()->setCellValue('C1', 'Passowrd');
+
+			$this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+			$this->excel->getActiveSheet()->getStyle('B1')->getFont()->setBold(true);
+			$this->excel->getActiveSheet()->getStyle('C1')->getFont()->setBold(true);
+
+			$this->excel->getActiveSheet()->getStyle("A1:C1")->getFont()->setSize(14);
+			
+			$this->excel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+			$this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+			$this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+
+			$this->excel->getActiveSheet()->freezePane('A2'); //Freeze panel Above of A2 row
+			
+			$cnt = 2;
+
 			//No of Credentials loop will run if that username does not exist in users.username table.field
 			for ($i=0; $i < $no_of_credentials; $i++) { 
 
 				$usrename_str 	= 	'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 				$username 		=	substr(str_shuffle($usrename_str),0,10);
-				$password_str 	=	'abcdefghijklmnopqrstuvwxyz1234567890';	 
-				$password 		=	$this->encrypt->encode(substr(str_shuffle($password_str),0,8));
+				$password_str 	=	'abcdefghijklmnopqrstuvwxyz1234567890';
+				$pass_generated = 	 substr(str_shuffle($password_str),0,8);
+				$password 		=	$this->encrypt->encode($pass_generated);
 				
 				$data = array('username'=>$username);
 				
@@ -175,6 +206,7 @@ class Dashboard extends ADMIN_Controller {
 				if(sizeof($find_credentials)>0 || sizeof($find_user) > 0){
 					//if data found in users or auto_generated_credentials table then it will decrease $i value and continue 
 					$i--;
+					$cnt--;
 					continue;
 					
 				}else{
@@ -196,37 +228,27 @@ class Dashboard extends ADMIN_Controller {
 						);
 
 					insert(TBL_AUTO_GENERATED_CREDENTIAL,$data); // insert data into database using common_model.php and cms_helper.php
+
+					$this->excel->getActiveSheet()->setCellValue('A'.$cnt, $cnt-1);
+					$this->excel->getActiveSheet()->setCellValue('B'.$cnt, $username);
+					$this->excel->getActiveSheet()->setCellValue('C'.$cnt, $pass_generated);
+					
+					// $this->excel->getActiveSheet()->getColumnDimension('A'.$cnt)->setWidth(10);
+					// $this->excel->getActiveSheet()->getColumnDimension('B'.$cnt)->setWidth(10);
+					// $this->excel->getActiveSheet()->getColumnDimension('C'.$cnt)->setWidth(10);
+
+					$cnt++;
+
  				}
 			} // End Of For Loop	
 
-			// find no of entries whose school,role,course and classroom are same 
-			$count_query= select(TBL_AUTO_GENERATED_CREDENTIAL,'username,password',array('where'=>array('school_id'=>$school_id,
-																'role_id'=>$role_id,'classroom_id'=> $classroom_id,'course_id'=> $course_id)),array('count'=>TRUE));
-
-			//If data exists for same school,course,classroom,and role if not exits then IF Cond.. otherwise ELSE Cond..
-			if($count_query == $no_of_credentials){
-				$csv_query = $this->db->query("SELECT username,password FROM ".TBL_AUTO_GENERATED_CREDENTIAL." WHERE school_id='$school_id' AND 
-										role_id='$role_id' AND classroom_id='$classroom_id' AND course_id='$course_id' ");
-			}else{
-				
-				$offset = $count_query - $no_of_credentials; 
-				$limit =  $no_of_credentials; 
-
-				$csv_query = $this->db->query("SELECT username,password FROM ".TBL_AUTO_GENERATED_CREDENTIAL." WHERE school_id='$school_id' AND 
-										role_id='$role_id' AND classroom_id='$classroom_id' AND course_id='$course_id' LIMIT $offset,$limit ");
-			}
-
-			$data =  csv_from_results($csv_query);  // function in cms_helper.php used to generate only text accordingly comma saperated value
-			$path = $_SERVER['DOCUMENT_ROOT'].'/csv/myfile.csv';
-
-			if ( !write_file($path, $data) ){
-			  	show_404();
-			}
-
-			$data = file_get_contents($path);
-			force_download($school_name['school_name'].'.csv',$data);
+			$filename=$school_name['school_name'].'.xls'; //save our workbook as this file name
 			
-			redirect('admin/auto_generated_credentials');
+			header('Content-Type: application/vnd.ms-excel'); //mime type
+            header('Content-Disposition: attachment;filename="' . $filename . '"'); //tell browser what's the file name
+            header('Cache-Control: max-age=0'); //no cache
+            $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+            $objWriter->save('php://output'); 
 
 		} // End else consdition
 	}

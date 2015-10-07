@@ -5,8 +5,8 @@
 		<div class="row page_header">
     	<div class="col-sm-12">
         	<ol class="breadcrumb">
-              <li><a href="#">Admin</a></li>                          
-              <li><a href="#">Users</a></li>
+              <li><a href="">Manage</a></li>                          
+              <li><a href="admin/user">Users</a></li>
               <li class="active">Update User</li>
             </ol>
         </div>
@@ -21,7 +21,7 @@
     	<div class="col-sm-12 new_message">
         	<div class="box exam_card">
             	<div class="box_header">
-                	<h3>Add User</h3>
+                	<h3>Update User</h3>
                 </div>
                 <form method="post">
                     <div class="box_body">
@@ -40,15 +40,21 @@
                             <input type="text" class="form-control" name="first_name" value="<?php echo $user['first_name']; ?>" >
                         </div>
 
+                        <?php echo myform_error('first_name'); ?>
+
                         <div class="form-group">
                             <label>Last Name</label>
                             <input type="text" class="form-control" name="last_name"  value="<?php echo $user['last_name']; ?>" >
                         </div>
 
+                        <?php echo myform_error('last_name'); ?>
+
                         <div class="form-group">
                             <label>Full Name</label>
                             <input type="text" class="form-control" name="full_name"  value="<?php echo $user['full_name']; ?>" >
                         </div>
+
+                        <?php echo myform_error('full_name'); ?>
 
                         <div class="form-group">
                             <label>Email ID</label>

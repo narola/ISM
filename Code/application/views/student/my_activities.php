@@ -4,138 +4,159 @@
                     <div class="box_body">
                         <div class="col-sm-12 border-left">
                             <!--october-->
-                            <div class="divide_discussion">                    
-                                <hr><h4>October 2015</h4>
-                            </div>
-                            <div class="clearfix"></div>
-                            <!--activity-1-->
-                            <div class="topic_allocated">
-                                <h4 class="activity_heading">Topic Allocated</h4>
-                                <table class="table">
-                                    <tr>
-                                        <th colspan="2">Inertia</th>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Discussion</strong><p>29 Comments</p></td>
-                                        <td><strong>Examination - Quiz</strong><p>Score :  215</p></td>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2">momentum</th>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Discussion</strong><p>36 Comments</p></td>
-                                        <td><strong>Examination - Quiz</strong><p>Score :  150</p></td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="clearfix"></div>
-                            <!--activity-2-->
-                            <div class="studymate_with">
-                                <h4 class="activity_heading">Became studymate with</h4>
-                                <div class="study_mate">
-                                    <div class="mate_user_img">
-                                        <img src="assets/images/user1.jpg" class="mCS_img_loaded">
-                                    </div>
-                                    <h4>Adam Rose</h4>
-                                    <p>Student from Lourdes convents</p>
-                                    <p>Live in Ghana</p>
-                                    <a href="#">Following 34 Authers</a>
-                                </div>
-                            </div>                                                     
-                            <!--activity-3-->
-                            <div class="status_like">
-                                <h4 class="activity_heading">Liked status of <span class="txt_green">Emma Gray</span></h4>
-                                <div class="feed_text">                                               
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esse et eum facilis impedit officiis omnis optio, placeat, quia quo reprehenderit sunt velit? Asperiores cumque deserunt eveniet hic reprehenderit sit, ut voluptatum?</p>
-                                    <a href="#" class="like_btn"><span class="icon icon_thumb_0"></span>23</a>
-                                    <a href="#" class="comment_btn"><span class="icon icon_comment"></span>07</a>
-                                    <a href="#">View All</a>
-                                    <div class="dropdown tag_user" style="display: inline-block;">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Emma Mall</a></li>
-                                            <li><a href="#">Gill Christ</a></li>
-                                            <li><a href="#">Adam Stranger</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <!--september-->
-                            <div class="divide_discussion">                    
-                                <hr><h4>September 2015</h4>
-                            </div>
-                            <div class="clearfix"></div>
-                            <!--activity-4-->
-                            <div class="commented_on">
-                                <h4 class="activity_heading">Commented on</h4>
-                                <div class="feeds">
-                                    <div class="user_small_img">
-                                        <img src="assets/images/user6.jpg">
-                                    </div>
-                                    <div class="feed_text">
-                                        <h4>John Gray</h4>
-                                        <span class="date">Sept 1, 2015</span>
-                                        <div class="clearfix"></div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esse et eum facilis impedit officiis omnis optio, placeat, quia quo reprehenderit sunt velit? Asperiores cumque deserunt eveniet hic reprehenderit sit, ut voluptatum?</p>
-                                        <div class="shared_images">
-                                            <div><img src="assets/images/shared1.jpg"></div>
-                                            <div><img src="assets/images/shared2.jpg"></div>
+                            <?php
+                                if(isset($my_month)){
+                                    ;
+                                    for ($i = count($my_month)-1;$i >= 0;$i--) {
+                                        $value = $my_month[$i];
+                                        // exit;
+                                    ?>
+                                        <div class="divide_discussion">                    
+                                            <hr><h4><?php echo date("F Y",strtotime($value));?></h4>
                                         </div>
                                         <div class="clearfix"></div>
-                                        <a href="#" class="like_btn"><span class="icon icon_thumb"></span>54</a>
-                                        <a href="#" class="comment_btn"><span class="icon icon_comment"></span>12</a>
-                                        <a href="#">View All</a>
-                                        <div class="dropdown tag_user" style="display: inline-block;">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="#">Emma Mall</a></li>
-                                                <li><a href="#">Gill Christ</a></li>
-                                                <li><a href="#">Adam Stranger</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <!--comment-->
-                                    <div class="comment">
-                                        <div class="user_small_img user_comment">
-                                            <img src="assets/images/user3.jpg">
-                                        </div>
-                                        <div class="notification_txt">
-                                            <p><a href="#" class="noti_username">Adam Stranger</a> What time did it finish?</p>
-                                            <span class="noti_time">1 Day</span>                            
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--August-->
-                            <div class="divide_discussion">                    
-                                <hr><h4>August 2015</h4>
-                            </div>
-                            <div class="clearfix"></div>
-                            <!--activity-5-->
-                            <div class="status_like">
-                                <h4 class="activity_heading">Status updated</h4>
-                                <div class="feed_text">                                               
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esse et eum facilis impedit officiis omnis optio, placeat, quia quo reprehenderit sunt velit? Asperiores cumque deserunt eveniet hic reprehenderit sit, ut voluptatum?</p>
-                                    <a href="#" class="like_btn"><span class="icon icon_thumb_0"></span>23</a>
-                                    <a href="#" class="comment_btn"><span class="icon icon_comment"></span>07</a>
-                                    <a href="#">View All</a>
-                                    <div class="dropdown tag_user" style="display: inline-block;">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Emma Mall</a></li>
-                                            <li><a href="#">Gill Christ</a></li>
-                                            <li><a href="#">Adam Stranger</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                                        <?php
+                                        if(isset($my_activities['studymates']) && sizeof($my_activities['studymates']) > 0){
+                                            foreach ($my_activities['studymates'] as $key => $studymate_value) {
+                                                if($value ==  date('Y-m',strtotime($studymate_value['created_date']))){
+                                            ?>
+                                                <div class="studymate_with">
+                                                    <h4 class="activity_heading">Became studymate with</h4>
+                                                    <div class="study_mate">
+                                                        <div class="mate_user_img">
+                                                            <img src="<?php echo UPLOAD_URL.'/'.$studymate_value['profile_link'];?>" class="mCS_img_loaded">
+                                                        </div>
+                                                        <h4><?php echo $studymate_value['full_name'];?></h4>
+                                                        <p><?php echo $studymate_value['school_name'];?></p>
+                                                        <p>Live in Ghana</p>
+                                                        <a href="#">Following 34 Authers</a>
+                                                    </div>
+                                                </div>   
+                                            <?php
+                                                }
+                                            }
+                                        }
+                                        if(isset($my_activities['like']) && sizeof($my_activities['like']) > 0){
+                                            foreach ($my_activities['like'] as $key => $like_value) {
+                                                if($value ==  date('Y-m',strtotime($like_value['created_date']))){
+                                            ?>
+                                            <div class="status_like">
+                                                <h4 class="activity_heading">Liked status of <span class="txt_green"><?php echo $like_value['post_username'];?></span></h4>
+                                                <div class="feed_text">                                               
+                                                    <p><?php echo $like_value['feed_text'];?></p>
+                                                    <!-- <a href="#" class="like_btn"><span class="icon icon_thumb_0"></span>
+                                                        <?php echo $like_value['totlike'];?>
+                                                    </a>
+                                                    <a href="#" class="comment_btn"><span class="icon icon_comment"></span>
+                                                        <?php echo $like_value['totcomment'];?>
+                                                    </a> -->
+                                                    <!-- <a <hr>ef="#">View All</a> -->
+                                                    <!-- <div class="dropdown tag_user" style="display: inline-block;">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#">Emma Mall</a></li>
+                                                            <li><a href="#">Gill Christ</a></li>
+                                                            <li><a href="#">Adam Stranger</a></li>
+                                                        </ul>
+                                                    </div> -->
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <?php
+                                                }
+                                            }   
+                                        }
+                                        if(isset($my_activities['comment']) && sizeof($my_activities['comment'])>0){
+                                            foreach ($my_activities['comment'] as $key => $comment_value) {
+                                                if($value ==  date('Y-m',strtotime($comment_value['created_date']))){
+                                            ?>
+                                                 <div class="commented_on">
+                                                    <h4 class="activity_heading">Commented on</h4>
+                                                    <div class="feeds">
+                                                        <div class="user_small_img">
+                                                            <img src="<?php echo UPLOAD_URL.'/'.$comment_value['profile_link'];?>">
+                                                        </div>
+                                                        <div class="feed_text">
+                                                            <h4><?php echo $comment_value['full_name'];?></h4>
+                                                            <span class="date">Sept 1, 2015</span>
+                                                            <div class="clearfix"></div>
+                                                            <p><?php echo $comment_value['feed_text'];?></p>
+                                                            <div class="shared_images">
+                                                                <div><img src="assets/images/shared1.jpg"></div>
+                                                                <div><img src="assets/images/shared2.jpg"></div>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                           <!--  <a href="#" class="like_btn"><span class="icon icon_thumb"></span>
+                                                                <?php echo $comment_value['totlike'];?>
+                                                            </a>
+                                                            <a href="#" class="comment_btn"><span class="icon icon_comment"></span>
+                                                                <?php echo $comment_value['totcomment'];?>
+                                                            </a> -->
+                                                            <a href="javascript:void(0);" data-type="view-all-comment-activities" data-id="<?php echo $comment_value['id'];?>">View All</a>
+                                                            <!-- <div class="dropdown tag_user" style="display: inline-block;">
+                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
+                                                                <ul class="dropdown-menu">
+                                                                    <li><a href="#">Emma Mall</a></li>
+                                                                    <li><a href="#">Gill Christ</a></li>
+                                                                    <li><a href="#">Adam Stranger</a></li>
+                                                                </ul>
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <!--comment-->
+                                                        <div class="comment">
+                                                            <div class="user_small_img user_comment">
+                                                                <img src="<?php echo UPLOAD_URL.'/'.$this->session->userdata('user')['profile_pic'];?>">
+                                                            </div>
+                                                            <div class="notification_txt">
+                                                                <p><a href="#" class="noti_username"><?php echo $this->session->userdata('user')['full_name'];?></a> <?php echo $comment_value['comment'];?><?php echo $comment_value['id'];?></p>
+                                                                <span class="noti_time">1 Day</span>                            
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php
+                                                }
+                                            }
+                                        }
+                                        if(isset($my_activities['post']) && sizeof($my_activities['post'])>0){
+                                            foreach ($my_activities['post'] as $key => $post_value) {
+                                                if($value ==  date('Y-m',strtotime($post_value['created_date']))){
+                                            ?>
+                                                <div class="status_like">
+                                                    <h4 class="activity_heading">Status updated</h4>
+                                                    <div class="feed_text">                                               
+                                                        <p><?php echo $post_value['feed_text'];?></p>
+                                                        <!-- <a href="#" class="like_btn"><span class="icon icon_thumb_0"></span><?php echo $post_value['totlike'];?></a>
+                                                        <a href="#" class="comment_btn"><span class="icon icon_comment"></span><?php echo $post_value['totcomment'];?></a> -->
+                                                       <!--  <a href="#">View All</a>
+                                                        <div class="dropdown tag_user" style="display: inline-block;">
+                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a href="#">Emma Mall</a></li>
+                                                                <li><a href="#">Gill Christ</a></li>
+                                                                <li><a href="#">Adam Stranger</a></li>
+                                                            </ul>
+                                                        </div>-->
+                                                    </div> 
+                                                </div>                
+                                            <?php
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ?>
+                            
                         </div>
                         <div class="clearfix"></div>
                         <div class="text-center">
-                            <a href="#" class="search_result_label">View More</a>
+                            <form action="" method="post">
+                                <input type="hidden" name="load_more" value="<?php echo $value;?>"> 
+                                <!-- <a href="#" class="search_result_label">View More</a> -->
+                                <input type="submit" class="btn btn_green no-margin" value="View More">
+                            </form>
                         </div>
                         
                     </div>

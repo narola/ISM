@@ -13,7 +13,7 @@
               <div class="form-group three_inputs select">
                   <label>Select School </label>
                   <select class="form-control js-example-basic-single" id="school_id" name="school_id">
-                     <option selected value=""> Select School</option>
+                     <option  selected value=""> Select School</option>
                       <?php 
                           if(!empty($schools)) {
                             foreach($schools as $school) { 
@@ -127,7 +127,7 @@
                 </div>
 
                 <button class="btn btn_red" type="submit">Confirm & Generate</button>
-                <button class="btn btn_black_normal">Cancle</button>
+                <button class="btn btn_black_normal" type="reset">Cancel</button>
 
             </div>
           </div>
