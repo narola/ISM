@@ -259,7 +259,8 @@ class User extends ADMIN_Controller {
 		$this->form_validation->set_rules('email_id', 'Email', $email_rule);
 		$this->form_validation->set_rules('first_name', 'First Name', 'trim|alpha_numeric_spaces');
 		$this->form_validation->set_rules('last_name', 'Last Name', 'trim|alpha_numeric_spaces');	
-		$this->form_validation->set_rules('full_name', 'Full Name', 'trim|alpha_numeric_spaces');	
+		$this->form_validation->set_rules('full_name', 'Full Name', 'trim|alpha_numeric_spaces');
+		$this->form_validation->set_rules('contact_number', 'Full Name', 'trim|alpha_numeric_spaces');	
 
 		if($this->form_validation->run() == FALSE){
 
