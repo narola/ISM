@@ -68,14 +68,6 @@
                       <label>Notice</label>
                       <textarea class="form-control" name="notice"><?php echo $notice['notice']; ?></textarea>
                   </div>
-                  <div class="form-group">
-                      <label>Status</label>
-                      
-                     <!--  <input type="radio" name="status" value="active" <?php if($notice['status']=='active'){ echo "checked"; } ?>   > Active
-                      <input type="radio" name="status" value="inactive"  <?php if($notice['status']=='inactive'){ echo "checked"; } ?>> Inactive
-                      <input type="radio" name="status" value="archive" <?php if($notice['status']=='archive'){ echo "checked"; } ?> > Archive -->
-                        
-                  </div>
                   
                   <div class="form-group">
                         <div class="circleThree">
@@ -91,7 +83,7 @@
                             <label for="circleThree2"></label>
                             <span>Archive</span>
                         </div>
-                    </div>  
+                  </div>  
 
                 </div>
                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('notice'),''))){ echo 'hide';} ?>">
