@@ -86,7 +86,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->send_studymate_request($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'view-all-comment-activities') {
         $responce = $Server->view_all_comment_activities($Server->wsClients[$clientID][12], $data);
-    } else if ($data['type'] == 'time_request'){
+    } else if ($data['type'] == 'time_request' ||  $data['type'] == 'time_start_request'){
         $responce = $data;
     }
 
@@ -96,6 +96,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 
         $responce['time_to_left'] = $Server->active_hours();
          $responce['total_active_time'] = $Server->active_hours(2);
+         $responce['total_deactive_time'] = $Server->active_hours(3);
         $responce['time_to_start'] = 0;
         if ($responce['time_to_left'] == 0) {
              $responce['time_to_start'] = $Server->active_hours(1);

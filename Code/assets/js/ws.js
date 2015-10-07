@@ -201,6 +201,12 @@ if ("WebSocket" in window)
                 time_count = obj.total_active_time;
                 max_count = obj.total_active_time;
                 counter = setInterval(timer, 1000);
+        }else if(obj.type == 'time_start_request'){
+
+             time_count_out = obj.total_deactive_time;
+             max_count_out = obj.total_deactive_time;
+             counter_out = setInterval(timeout_timer, 1000);
+             
         }else if(obj.type == "view-all-comment-activities"){
             str = '';
               

@@ -1497,6 +1497,9 @@ class PHPWebSocket {
                     }
                 } else if($status == 2){
                       $output = $this->dateDiff($starttime,$endtime);
+                }else if($status == 3){
+                     $output = $this->dateDiff('00:00:00', $starttime);
+                        $output += $this->dateDiff($endtime, '24:00:00');
                 }else {
                     // Check current time is between $starttime and $endtime
                     if ($cur > $start && $cur < $end) {

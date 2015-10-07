@@ -231,6 +231,7 @@ if(time_count > 0){
 function timer()
 {
   time_count=time_count-1;
+  $('#time_counter').html(toHHMMSS(time_count));
   if(time_count >= 0){
         anima = (((max_count - time_count) * 100)/max_count)/100;
         $('#circle_process').circleProgress('value', anima);
@@ -238,6 +239,8 @@ function timer()
   if (time_count <= 0)
   { 
    // $('#circle_process').circleProgress({ value: 0.0 });
+ws.send('{"type":"time_start_request","from":"' + wp + '","to":"self","error":""}');
+
     clearInterval(counter);
     $("#time_over").fadeIn(300).delay(2000).fadeOut(300);
     $("#remain_id").fadeOut(300);
@@ -246,6 +249,6 @@ function timer()
   }else if($("#remain_id").is(":hidden")){
     $("#remain_id").fadeIn(300);
   }
-    $('#time_counter').html(toHHMMSS(time_count));
+    
 }
 </script>
