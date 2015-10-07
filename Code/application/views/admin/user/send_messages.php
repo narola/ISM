@@ -37,6 +37,13 @@
 
                         </div>
 
+                        <?php $msgerror = $this->session->flashdata('msgerror'); ?>
+  
+                        <div class="alert alert-danger <?php if(empty(strip_tags($msgerror,''))){ echo 'hide';} ?>">
+                            <?php echo strip_tags($msgerror) ; ?>
+                        </div>
+
+
                         <div class="form-group">
                             <label> Select Users   </label>
 
@@ -65,11 +72,8 @@
                         <div class="alert alert-danger <?php if(empty(strip_tags(form_error('all_users[]'),''))){ echo 'hide';} ?>">
                           <?php echo strip_tags(form_error('all_users[]'),'') ; ?>
                         </div>
-                        <?php $error = $this->session->flashdata('error'); ?>
-  
-                        <div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
-                            <?php echo strip_tags($error) ; ?>
-                        </div>
+
+                        <?php echo flashMessage(TRUE,FALSE); ?>
 
                         <div class="form-group">
                         	<label>Title </label>

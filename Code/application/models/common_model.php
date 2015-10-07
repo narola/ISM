@@ -177,6 +177,49 @@ function class_mate_list($user_id, $append = true) {
 		return $this->sql_select(TBL_STUDYMATES_REQUEST,null,array('where'=>array('request_to_mate_id'=> $user_id,'status'=>0)),array('count'=>true));
 	}
 
+	function studymates_info($user_id){
+    $studymates = studymates($user_id,false);
+    // Get Classmates details
+    $where = array('where_in' => array('u.id' =>  $studymates));
+    $options = array('join' => array(
+        array(
+          'table' => TBL_USER_PROFILE_PICTURE.' upp',
+          'condition' => 'upp.user_id = u.id'
+        )
+      ),
+    );
+
+    return select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,  (SELECT count(*) FROM `user_chat` `uc` WHERE `uc`.`sender_id` = `u`.`id` AND `uc`.`receiver_id` = '.$user_id.' AND `uc`.`received_status` = 0) as `unread_msg`',$where,$options);
+}
+
+function active_chat($user_id){
+	/* Get user id of active chat window */
+		$active_chat_id = get_cookie('active');
+		$data = array();
+		if(!empty($active_chat_id)){
+			$options = array('join' => array(
+				array(
+					'table' => TBL_USER_PROFILE_PICTURE.' upp',
+					'condition' => 'upp.user_id = u.id'
+					)
+				),
+			'single' => true
+			);
+			$data['user'] = select(
+				TBL_USERS.' u',
+				'u.id, u.full_name,upp.profile_link',
+				array('where' => array('u.id' => $active_chat_id)),
+				$options
+				);
+			$data['comment'] = array_reverse (select(
+				TBL_USER_CHAT. ' uc',
+				'uc.id,uc.sender_id,uc.receiver_id,uc.message',
+				"(uc.sender_id = $active_chat_id AND uc.receiver_id = $user_id) OR (uc.sender_id = $user_id AND uc.receiver_id = $active_chat_id) ",
+				array('limit' => 10,'order_by' => 'uc.id DESC')));
+		}
+		return $data;
+		}
+
 }
 
 /* End of file Common_model.php */

@@ -35,51 +35,6 @@ function file_name($name = null){
 	return $name;
 }
 
-
-/**
-   * Generate CSV from a query result object
-   *
-   * @param object  $query    Query result object
-   * @param string  $delim    Delimiter (default: ,)
-   * @param string  $newline  Newline character (default: \n)
-   * @param string  $enclosure  Enclosure (default: ")
-   * @return  string
-   * @author Virendra Patel - Sparks ID-VPA  ( Reference - Codeigniter From dbutil Class system\database\DB_utility.php:)
-   */
-
-function csv_from_results($query, $delim = ',', $newline = "\n", $enclosure = '')
-{
-    $CI =& get_instance();
-
-    if ( ! is_object($query) OR ! method_exists($query, 'list_fields')){
-      show_error('You must submit a valid result object');
-    }
-
-    $out = '';
-    
-    // First generate the headings from the table column names
-    $out .= $enclosure.str_replace($enclosure, $enclosure.$enclosure, "Number").$enclosure.$delim;
-
-    foreach ($query->list_fields() as $name){
-      $out .= $enclosure.str_replace($enclosure, $enclosure.$enclosure, $name).$enclosure.$delim;
-    }
-
-    $out = substr($out, 0, -strlen($delim)).$newline;
-
-    // Next blast through the result array and build out the rows
-    $cnt = 1;
-    while ($row = $query->unbuffered_row('array'))
-    {
-      $out .= $enclosure.str_replace($enclosure, $enclosure.$enclosure, $cnt).$enclosure.$delim;
-      $out .= $enclosure.str_replace($enclosure, $enclosure.$enclosure, $row['username']).$enclosure.$delim;
-      $out .= $enclosure.str_replace($enclosure, $enclosure.$enclosure, $CI->encrypt->decode($row['password'])).$enclosure.$delim;
-      $out = substr($out, 0, -strlen($delim)).$newline;
-      $cnt++;
-    }
-    
-    return $out;
-}
-
 /**
  * function will return alert box with alert alert-danger class and mostly used for indivisual error in form validation
  * @return String
@@ -414,4 +369,16 @@ function online(){
 function count_studymate_request($userid){
   $CI =& get_instance();
   return $CI->common_model->count_studymate_request($userid);
+}
+
+function studymates_info(){
+  $CI =& get_instance();
+  $user_id = $CI->session->userdata('user')['id'];
+ return $CI->common_model->studymates_info($user_id);
+}
+
+function active_chat(){
+  $CI =& get_instance();
+   $user_id = $CI->session->userdata('user')['id'];
+  return $CI->common_model->active_chat($user_id);
 }

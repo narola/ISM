@@ -166,7 +166,7 @@
                         <a href="#"><span class="icon icon_ques"></span>Questionaries</a>
                     </li>
                     <li>
-                        <a href="admin/auto_generated_credentials"><span class="icon icon_credencial"></span>Generate Credencials</a>
+                        <a href="admin/auto_generated_credentials"><span class="icon icon_credencial"></span>Generate Credentials</a>
                     </li>
                 </ul>
                 <a href="admin/logout" class="logout"><span class="icon icon_logout"></span>LogOut</a>

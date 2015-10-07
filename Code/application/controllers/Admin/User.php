@@ -262,14 +262,14 @@ class User extends ADMIN_Controller {
 		$this->form_validation->set_rules('first_name', 'First Name', 'trim|alpha_numeric_spaces');
 		$this->form_validation->set_rules('last_name', 'Last Name', 'trim|alpha_numeric_spaces');	
 		$this->form_validation->set_rules('full_name', 'Full Name', 'trim|alpha_numeric_spaces');
-		$this->form_validation->set_rules('contact_number', 'Full Name', 'trim|alpha_numeric_spaces');	
+		$this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|numeric');	
 
 		if($this->form_validation->run() == FALSE){
 
 			$this->template->load('admin/default','admin/user/update_user',$this->data);
 
 		}else{
-			
+
 			$bdate = $this->input->post("birthdate");
 			if(!empty($bdate)){ $bdate = $this->input->post("birthdate"); }else{ $bdate = "0000-00-00"; }
 
@@ -481,12 +481,31 @@ class User extends ADMIN_Controller {
 			
 			$all_users = $this->input->post('all_users');
 
+			$msg_title = $this->input->post('message_title');
+			$msg_text = $this->input->post('message_desc');
+
+			$db_template = select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
+
+			 
+			$cnt = 0;
+			if(isset($_POST['save_template'])){
+				foreach($db_template as $db_temp){
+					echo $db_temp['message_title'].'<br/>';
+					if($db_temp['message_title'] === $msg_title){
+						$cnt++;
+					}
+				}
+			}
+
+			if($cnt != 0){
+				$this->session->set_flashdata('msgerror', 'Message template should be Unique.');
+				redirect('admin/user/send_messages');
+			}
+			
+
 			if(!empty($all_users)){			
 
 				foreach($all_users as $user){
-
-						$msg_title = $this->input->post('message_title');
-						$msg_text = $this->input->post('message_desc');
 
 						$data = array(
 								'message_text'=>$msg_text,

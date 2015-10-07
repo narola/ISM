@@ -202,6 +202,134 @@
             </div>
             <!--//side left-->
             <?php echo $body; ?>
+
+            <?php if(!isset($hide_right_bar)){  ?>
+            <!-- Right Bar -->
+             <div class="sidebar_right_container sidebar_right_container2 mCustomScrollbar" data-mcs-theme="minimal-dark"><!--scrollbar" id="style-3-->
+                
+                <!--high score board-->
+                <div class="score box">
+                    <div class="box_header">
+                        <h3>High Scores</h3>
+                    </div>
+                    <div class="score_div">
+                        <h5>Science</h5>
+                        <!--item1-->
+                        <div class="score_item">
+                            <div class="score_img">
+                                <img src="assets/images/user5.jpg">
+                            </div>
+                            <div class="score_descrip">
+                                <p class="score_name">Adam Stranger</p>
+                                <p>St. Xeviers</p>
+                                <p>F.Y. CS</p>
+                            </div>
+                            <div class="score_points">
+                                <p>Score</p>
+                                <p class="score_number">500</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <!--item2-->
+                        <div class="score_item">
+                            <div class="score_img">
+                                <img src="assets/images/user3.jpg">
+                            </div>
+                            <div class="score_descrip">
+                                <p class="score_name">Matt Larner</p>
+                                <p>St. Mary</p>
+                                <p>F.Y. CS</p>
+                            </div>
+                            <div class="score_points">
+                                <p>Score</p>
+                                <p class="score_number">487</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                       
+                    </div>
+                    <div class="score_div">
+                        <h5>Arts</h5>
+                        <!--item1-->
+                        <div class="score_item">
+                            <div class="score_img">
+                                <img src="assets/images/user5.jpg">
+                            </div>
+                            <div class="score_descrip">
+                                <p class="score_name">Adam Stranger</p>
+                                <p>St. Xeviers</p>
+                                <p>F.Y. CS</p>
+                            </div>
+                            <div class="score_points">
+                                <p>Score</p>
+                                <p class="score_number">500</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <!--item2-->
+                        <div class="score_item">
+                            <div class="score_img">
+                                <img src="assets/images/user3.jpg">
+                            </div>
+                            <div class="score_descrip">
+                                <p class="score_name">Matt Larner</p>
+                                <p>St. Mary</p>
+                                <p>F.Y. CS</p>
+                            </div>
+                            <div class="score_points">
+                                <p>Score</p>
+                                <p class="score_number">487</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--//high score board-->
+                <!--Suggested Studymates-->                
+                <!--//suggested Studymates-->
+                <!--STM-->
+                <div class="stm">
+                    <div class="box_header">
+                        <h3>Studymates <span> STM</span></h3>
+                    </div>
+                    <div class="stm_list mCustomScrollbar" data-mcs-theme="minimal-dark">
+                        <?php
+                        $class = studymates_info();
+                       // p($classmates,true);
+                        if(isset($class) > 0){
+                            foreach($class as $key => $value){
+                                $u = 'offline';
+                                
+                                ?>
+                                <div class="stm_item <?php echo $u; ?>" data-id="<?php echo $value['id']; ?>">
+                                    <a id="mate_list" href="javascript:void(0);" data-id="<?php echo $value['id']; ?>">
+
+                                    <div class="stm_user_img">
+                                        <img src="/<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                                    </div>
+                                    <span class="badge message_badge"><?php if($value['unread_msg'] > 0) echo $value['unread_msg']; ?></span>
+                                    <p><?php echo $value['full_name']; ?></p>
+                                    </a>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <?php 
+                            }  
+                        }?>
+                     </div>       
+                     <div class="text-center">
+                        <button class="btn_find_studymates btn btn_blue">Find more Studymates</button>
+                    </div>            
+                </div>
+                <!--//STM-->
+                
+            </div>
+                <!--//STM-->
+                
+            </div>
+            <!-- //Right Bar -->
+            <?php  } ?>
         </div>
     </div>
 
@@ -209,6 +337,48 @@
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
       <p></p>
     </div>
+
+<!--chat-->
+            <div class="chat_container" id = 'chat_container'>
+                 <?php 
+                 $active_c = active_chat();
+                 if(isset($active_c) && !empty($active_c)){
+                ?>
+                <div class="chat active" data-id="<?php echo $active_c['user']['id'] ?>">
+                    <div class="chat_header">
+                        <div class="chat_img_holder">
+                            <img src="<?php echo UPLOAD_URL.'/'.$active_c['user']['profile_link']; ?>"></div>
+                            <p class="chat_name"><?php echo $active_c['user']['full_name'] ?></p>
+                            <a href="#">
+                                <span class="icon icon_option"></span>
+                            </a>
+                        </div>
+                        <div class="chat_text mCustomScrollbar" data-mcs-position="bottom">
+                            <?php
+                            foreach($active_c['comment'] as $value)
+                                if($value['sender_id'] == $active_c['user']['id']){
+                            ?>
+                                <div class="from"><p><?php echo $value['message']; ?></p></div>
+                            <?php
+                                }else{
+                            ?>
+                                <div class="to"><p><?php echo $value['message']; ?></p></div>
+                            <?php
+                                }
+                             ?>
+
+                        </div>
+                        <input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="<?php echo $active_c['user']['id'] ?>">
+                        <a href="#" class="icon icon_emoji"></a>
+                        <a href="#" class="icon icon_pin"></a>
+                        <input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="<?php echo $active_c['user']['id'] ?>">
+                    </div>
+                <?php } ?>
+            </div>
+
+
+            <!--//chat-->
+
 <?php if(isset($menu) && $menu == 'week'){ ?>
 <script type="text/javascript">
         jQuery(document).ready(function() {

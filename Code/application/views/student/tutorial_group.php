@@ -67,9 +67,6 @@
                         
                     	<div class="option_bar" data-type="discussion-submit">
                         	<a href="#" class="icon icon_pin"></a>
-                        	<a href="#" class="icon icon_image"></a>
-                            <a href="#" class="icon icon_mic"></a>
-                            <a href="#" class="icon icon_link"></a>
                             <button class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
                         </div>
                     	<textarea placeholder="SAY IT" data-type="discussion"></textarea>

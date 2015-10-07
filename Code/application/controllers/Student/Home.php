@@ -16,7 +16,8 @@ class Home extends CI_Controller {
 	{
 
 		$user_id = $this->session->userdata('user')['id'];
-		$data['title'] = 'ISM - Home';		
+		$data['title'] = 'ISM - Home';
+		$data['hide_right_bar'] = true;		
 		// Get Post feed with comment 
 		$options =	array(
 						'join'	=>	array(

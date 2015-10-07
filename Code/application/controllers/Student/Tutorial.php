@@ -17,6 +17,7 @@ class Tutorial extends ISM_Controller {
 	public function index(){
 			
 			$data = array();
+			$data['hide_right_bar'] = true;	
 			$data['weekday'] = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
 			$data['user_id'] = $user_id = $this->session->userdata('user')['id'];
 			$is_active = false;
