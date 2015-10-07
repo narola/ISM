@@ -5,7 +5,7 @@
 		<div class="row page_header">
     	<div class="col-sm-12">
         	<ol class="breadcrumb">
-              <li><a href="">Manage</a></li>                          
+              <li><a href="admin/user">Manage</a></li>                          
               <li><a href="admin/user">Users</a></li>
               <li class="active">Update User</li>
             </ol>
@@ -28,7 +28,8 @@
                     	
                         <div class="form-group">
                         	<label>Username</label>
-                            <input type="text" class="form-control" name="username" value="<?php echo $user['username']; ?>" >
+                            <input type="text" class="form-control" name="username" 
+                                   value="<?php  echo set_value("username") == false ? $user["username"] : set_value("username"); ?>" >
                         </div>
 
                         <div class="alert alert-danger <?php if(empty(strip_tags(form_error('username'),''))){ echo 'hide';} ?>">
@@ -37,38 +38,43 @@
 
                         <div class="form-group">
                             <label>First Name</label>
-                            <input type="text" class="form-control" name="first_name" value="<?php echo $user['first_name']; ?>" >
+                            <input type="text" class="form-control" name="first_name" 
+                            value="<?php  echo set_value("first_name") == false ? $user["first_name"] : set_value("first_name"); ?>" >
                         </div>
 
                         <?php echo myform_error('first_name'); ?>
 
                         <div class="form-group">
                             <label>Last Name</label>
-                            <input type="text" class="form-control" name="last_name"  value="<?php echo $user['last_name']; ?>" >
+                            <input type="text" class="form-control" name="last_name"  
+                            value="<?php  echo set_value("last_name") == false ? $user["last_name"] : set_value("last_name"); ?>" >
                         </div>
 
                         <?php echo myform_error('last_name'); ?>
 
                         <div class="form-group">
                             <label>Full Name</label>
-                            <input type="text" class="form-control" name="full_name"  value="<?php echo $user['full_name']; ?>" >
+                            <input type="text" class="form-control" name="full_name"  
+                            value="<?php  echo set_value("full_name") == false ? $user["full_name"] : set_value("full_name"); ?>" >
                         </div>
 
                         <?php echo myform_error('full_name'); ?>
 
                         <div class="form-group">
                             <label>Email ID</label>
-                            <input type="text" class="form-control" name="email_id" value="<?php echo $user['email_id']; ?>"  >
+                            <input type="text" class="form-control" name="email_id" 
+                            value="<?php  echo set_value("email_id") == false ? $user["email_id"] : set_value("email_id"); ?>"  >
                         </div>
 
-                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('email_id'),''))){ echo 'hide';} ?>">
-                          <?php echo strip_tags(form_error('email_id'),'') ; ?>
-                        </div>
+                        <?php echo myform_error('email_id'); ?>
 
                         <div class="form-group">
                             <label>Contact Number</label>
-                            <input type="text" class="form-control" name="contact_number" value="<?php echo $user['contact_number']; ?>" >
+                            <input type="text" class="form-control" name="contact_number" 
+                            value="<?php  echo set_value("contact_number") == false ? $user["contact_number"] : set_value("contact_number"); ?>" >
                         </div>
+
+                        <?php echo myform_error('contact_number');  ?>
 
                         <div class="form-group">
                             <label>Home Address</label>
@@ -133,6 +139,8 @@
                             </div> 
                         </div>
 
+                        <?php echo myform_error('birthdate'); ?>
+
                         <div class="form-group">
                             <label>Gender</label>
                             <input type="radio" name="gender" <?php if($user['gender'] == 'male'){ echo 'checked'; } ?> value="male">Male
@@ -146,7 +154,7 @@
                                   if(!empty($roles)){ 
                                     foreach($roles as $role) {
                                   ?> 
-                                <option value="<?php echo $role['id']; ?>"> <?php echo $role['role_name']; ?></option>
+                                <option value="<?php echo $role['id']; ?>"> <?php echo ucfirst($role['role_name']); ?></option>
                                 <?php }  }else{ ?>
                                 <option > No Country</option>
                                 <?php } ?>
@@ -184,9 +192,9 @@
                     </div>
 
                     <div class="box_footer">
-                    	<button type="submit" class="btn btn_green">Save <?php echo $prev_url; ?> </button>
+                    	<button type="submit" class="btn btn_green">Save</button>
 
-                        <a href="<?php echo base_url().'admin/user'; ?>" class="btn btn_black">Cancel</a>
+                        <a href="<?php echo base_url().$prev_url; ?>" class="btn btn_black">Cancel</a>
                     </div>
 
                 </form>   
