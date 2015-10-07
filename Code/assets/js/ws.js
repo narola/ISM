@@ -95,7 +95,7 @@ if ("WebSocket" in window)
 
     ws.onopen = function ()
     {
-        ws.send('{"type":"con","from":"' + wp + '","to":"self","error":""}');
+        ws.send('{"type":"con","from":"' + wp + '","to":"self"}');
     };
 
     ws.onmessage = function (evt)
@@ -104,7 +104,6 @@ if ("WebSocket" in window)
         if(obj.error != 'skip'){
             $(".alert_notification p").html(obj.error);
             $(".alert_notification").show().delay(3000).fadeOut();
-
         }
 
         if(obj.time_to_left == 0 && obj.time_to_start > 0){
@@ -121,10 +120,15 @@ if ("WebSocket" in window)
                     $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p></div>");
                 }
             if( $('#chat_container .chat.active').data('id') != obj.from && wp != obj.from){
-                
+                var request = {
+                    type: 'set_unread',
+                    to:'none',
+                    insert_id:obj.insert_id
+                };
+             ws.send(JSON.stringify(request));
                 var ac = $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="'+obj.from+'"]');
                 $('.stm_list .mCustomScrollBox .mCSB_container').prepend('<div class="'+ac.attr('class')+'" data-id="'+obj.from+'">'+ac.remove().html()+'</div>');
-            
+                
                 var c =  $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="'+obj.from+'"] a span.badge');
                 var count = c.text();
                 if(count == '' || count == 0 || count == '' || count == 'undefined'){
@@ -134,17 +138,18 @@ if ("WebSocket" in window)
            }  
             
         } else if (obj.type == 'con') {
-            
-        } else if (obj.type == 'notification') {
-            if (obj.status == 'available') {
-                set_status(obj.user_id, obj.live_status);
-            }
-        } else if (obj.type == 'online_users') {
-            var theString = obj.message;
+            var theString = obj.online_user;
             $.each(theString.split("-"), function (index, id) {
                 $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('offline').addClass('online');
+                    if(start_timer == true){
+                        $('.tut_group .box_footer[data-id="'+id+'"] p').html('Online');
+                        $('.tut_group .box_body[data-id="'+id+'"] a').removeClass('icon_call_user').addClass('icon_call_user_disable');
+                    }
+                
             });
-        }else if(obj.type == 'get_latest_message'){
+        } else if (obj.type == 'notification') {
+                set_status(obj.user_id, obj.live_status);
+        } else if(obj.type == 'get_latest_message'){
             $('.chat[data-id="' + obj.my_id + '"] .chat_text #mCSB_5 #mCSB_5_container').html(obj.message);
         }else if(obj.type == 'post'){
            // if(obj.id != wp){
@@ -206,7 +211,7 @@ if ("WebSocket" in window)
              time_count_out = obj.total_deactive_time;
              max_count_out = obj.total_deactive_time;
              counter_out = setInterval(timeout_timer, 1000);
-             
+
         }else if(obj.type == "view-all-comment-activities"){
             str = '';
               
@@ -250,43 +255,33 @@ $(document).on('keypress', 'input[data-type="chat"]', function (e) {
 /* Check user is online or not */
 
 function set_status(id, status) {
-    var value = $.cookie('status');
-    var regex = new RegExp("-" + id + "-", "g");
-    if (value == 'undefind' || value == '' || value == null) {
-        if (status == true) {
-            $.cookie('status', "-" + id + "-");
-        } else {
-            $.cookie('status', "-");
-        }
-    }
+   
     var ac = $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="'+id+'"]');
-    if (value.indexOf("-" + id + "-") > -1) {
         if (status == false) {
-
-            value = value.replace(regex, '-');
-            $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('online').addClass('offline');
-            if(wp != id)
-            $('.stm_list .mCustomScrollBox .mCSB_container').append('<div class="'+ac.attr('class')+'" data-id="'+id+'">'+ac.remove().html()+'</div>');     
             
-        }
-    } else {
-        if (status == true) {
-            value = value + id + "-";
+            $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('online').addClass('offline');
+            if(wp != id){
+                $('.stm_list .mCustomScrollBox .mCSB_container').append('<div class="'+ac.attr('class')+'" data-id="'+id+'">'+ac.remove().html()+'</div>');
+                if(start_timer == true){
+                    $('.tut_group .box_footer[data-id="'+id+'"] p').html('Offline');
+                    $('.tut_group .box_body[data-id="'+id+'"] a').removeClass('icon_call_user_disable').addClass('icon_call_user');
+                }
+            }
+        }else {
             $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('offline').addClass('online');
-            if(wp != id)
+            if(wp != id){
             $('.stm_list .mCustomScrollBox .mCSB_container').prepend('<div class="'+ac.attr('class')+'" data-id="'+id+'">'+ac.remove().html()+'</div>');
+           if(start_timer == true){
+                    $('.tut_group .box_footer[data-id="'+id+'"] p').html('Online');
+                    $('.tut_group .box_body[data-id="'+id+'"] a').removeClass('icon_call_user').addClass('icon_call_user_disable');
+                }
+            }
         }
-    }
-    $.cookie('status', value);
 }
 
-function active_check(id) {
-    $.cookie('active', id);
-}
 
 $(document).on('click', '#mate_list', function () {
-    active_check($(this).attr('data-id'));
-    var cookie = $.cookie('active');
+    $.cookie('active', $(this).attr('data-id'));
     var str = '';
     var id = $(this).data('id');
     var len = $('.chat_container .chat').length;
@@ -411,6 +406,7 @@ function generate_post(obj,status){
     }
      $("#all_feed .box.feeds[data-id='"+obj.post_id+"']").fadeOut(0).fadeIn(400);
 }
+
 
 /* Generate HTML block of feed comment. */
 function generate_comment(obj){

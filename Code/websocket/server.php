@@ -25,24 +25,16 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->single_chat($clientID, $data);
     } else if ($data['type'] == 'con') {
         $responce = $Server->sync($clientID, $data);
-        if ($responce['error'] == '') {
-            $user_info = $Server->get_client_info($Server->wsClients[$clientID][12]);
-            if ($user_info != null) {
-                foreach ($Server->wsClients as $id => $client) {
-                    if (in_array($Server->wsClients[$id][12], $responce['classmates'])) {
-
-                        $res = array(
-                            'type' => 'notification',
-                            'status' => 'available',
-                            'live_status' => true,
-                            'user_id' => $user_info['id'],
-                            'profile_link' => $user_info['profile_link'],
-                            'message' => "<b>" . $user_info['full_name'] . "</b> is now online!"
-                        );
-                        $Server->wsSend($id, json_encode($res));
-                    }
-                }
-                $Server->wsSend($id, json_encode(array('type' => 'online_users', 'message' => $Server->check_online_classmate($Server->wsClients[$clientID][12]))));
+        $classMate = $Server->class_mate_list($Server->wsClients[$clientID][12]);
+        foreach ($Server->wsClients as $id => $client) {
+            if (in_array($Server->wsClients[$id][12], $classMate)) {
+                $res = array(
+                    'type' => 'notification',
+                    'error' => 'skip',
+                    'live_status' => true,
+                    'user_id' => $Server->wsClients[$clientID][12]
+                ); 
+                $Server->wsSend($id, json_encode($res));
             }
         }
     } else if ($data['type'] == 'get_latest_message') {
@@ -86,20 +78,21 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->send_studymate_request($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'view-all-comment-activities') {
         $responce = $Server->view_all_comment_activities($Server->wsClients[$clientID][12], $data);
-    } else if ($data['type'] == 'time_request' ||  $data['type'] == 'time_start_request'){
+    } else if ($data['type'] == 'time_request' || $data['type'] == 'time_start_request') {
         $responce = $data;
+    } else if($data['type'] == 'set_unread'){
+        $Server->set_unread($data);
     }
-
 
     $check = array('feed_comment', 'like');
     if (isset($responce)) {
 
         $responce['time_to_left'] = $Server->active_hours();
-         $responce['total_active_time'] = $Server->active_hours(2);
-         $responce['total_deactive_time'] = $Server->active_hours(3);
+        $responce['total_active_time'] = $Server->active_hours(2);
+        $responce['total_deactive_time'] = $Server->active_hours(3);
         $responce['time_to_start'] = 0;
         if ($responce['time_to_left'] == 0) {
-             $responce['time_to_start'] = $Server->active_hours(1);
+            $responce['time_to_start'] = $Server->active_hours(1);
         }
         $Server->log($responce, 1);
         if ($responce['to'] == 'self') {
@@ -152,26 +145,17 @@ function wsOnOpen($clientID) {
 // when a client closes or lost connection
 function wsOnClose($clientID, $status) {
     global $Server;
-    $user_info = $Server->get_client_info($Server->wsClients[$clientID][12]);
-    $classMate = $Server->class_mate_list($Server->wsClients[$clientID][12]);
-    if ($user_info != null) {
-        foreach ($Server->wsClients as $id => $client) {
-            if (in_array($Server->wsClients[$id][12], $classMate)) {
-                $res = array(
-                    'type' => 'notification',
-                    'status' => 'available',
-                    'error' => 'skip',
-                    'live_status' => false,
-                    'user_id' => $user_info['id'],
-                    'profile_link' => $user_info['profile_link'],
-                    'message' => "<b>" . $user_info['full_name'] . "</b> is now offline!",
-                    'online_users' => $Server->check_online_classmate($Server->wsClients[$clientID][12])
-                );
-                $Server->wsSend($id, json_encode($res));
-            }
+    $classMate = $Server->class_mate_list($Server->wsClients[$clientID][12],false);
+    foreach ($Server->wsClients as $id => $client) {
+        if (in_array($Server->wsClients[$id][12], $classMate)) {
+            $res = array(
+                'type' => 'notification',
+                'error' => 'skip',
+                'live_status' => false,
+                'user_id' => $Server->wsClients[$clientID][12]
+            );
+            $Server->wsSend($id, json_encode($res));
         }
-    } else {
-        $Server->log("Null got");
     }
 }
 

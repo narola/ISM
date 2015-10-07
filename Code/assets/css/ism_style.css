@@ -1225,6 +1225,7 @@ p.chat_name {
     padding-top: 15px;
 	height: 220px;
 	overflow: auto;
+	background-color: #fff;
 }
 .chat_text .mCSB_scrollTools {
 	width: 10px;
@@ -1534,7 +1535,7 @@ ul.exams_holder li a:after{
 	position: absolute;
     margin: 0;
     transform: rotate(-90deg);
-    top: 300px;
+    top: 510px;
     left: -10px;
 }
 ul.tut_weekdays {

@@ -415,3 +415,15 @@ function count_studymate_request($userid){
   $CI =& get_instance();
   return $CI->common_model->count_studymate_request($userid);
 }
+
+function studymates_info(){
+  $CI =& get_instance();
+  $user_id = $CI->session->userdata('user')['id'];
+ return $CI->common_model->studymates_info($user_id);
+}
+
+function active_chat(){
+  $CI =& get_instance();
+   $user_id = $CI->session->userdata('user')['id'];
+  return $CI->common_model->active_chat($user_id);
+}

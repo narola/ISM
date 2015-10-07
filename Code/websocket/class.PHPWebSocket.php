@@ -971,7 +971,9 @@ class PHPWebSocket {
                     }
 
                     $query = "INSERT INTO `ism`.`user_chat` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`, `media_type`, `received_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (NULL, $from, $to, '$msg', NULL, NULL, $received_status, CURRENT_TIMESTAMP, '0', 'yes')";
+                    
                     $x = mysqli_query($link, $query);
+                    $data['insert_id'] = mysqli_insert_id($link);
                     if (!$x) {
                         $data['to'] = 'self';
                         $data['error'] = 'Unable to save message.! Please try again.';
@@ -1002,7 +1004,7 @@ class PHPWebSocket {
         if ($this->wsClients[$clientID][13] == 0) {
             $this->wsClients[$clientID][12] = $data['from'];
             $this->wsClients[$clientID][13] ++;
-            $data['classmates'] = $this->class_mate_list($data['from']);
+            $data['online_user'] = $this->check_online_classmate($data['from']);
         } else {
             $data['to'] = 'self';
             $data['error'] = 'Manual Modification not allowed!';
@@ -1070,7 +1072,7 @@ class PHPWebSocket {
      * @author Sandip Gopani (SAG)
      */
     function check_online_classmate($id) {
-        $all = $this->class_mate_list($id);
+        $all = $this->class_mate_list($id,false);
         $online = array();
         foreach ($this->wsClients as $id => $value) {
             if (in_array($value[12], $all)) {
@@ -1607,7 +1609,14 @@ class PHPWebSocket {
                 $data['error'] = 'Please don\'t modify data manually.';
             }
             return $data;
-
+    }
+    
+    function set_unread($data = null){
+        if(is_array($data) && $data != null){
+            $link = $this->db();
+            $query = "UPDATE `user_chat` SET `received_status` = 0 WHERE `id` = ".$data['insert_id'];
+            mysqli_query($link,$query);
+        }
     }
 
 }

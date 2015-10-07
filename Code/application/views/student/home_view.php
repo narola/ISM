@@ -295,7 +295,6 @@
                                         else
                                             $class = '';
 
-
                                     ?>
                                         <div class="item<?php echo $class;?>">
                                           <!--card-->
@@ -373,42 +372,4 @@
                 
             </div>
             <!--//side right-->
-            <!--chat-->
-            <div class="chat_container" id = 'chat_container'>
-                 <?php
-                 if(isset($active_chat) && !empty($active_chat)){
-                ?>
-                <div class="chat active" data-id="<?php echo $active_chat['user']['id'] ?>">
-                    <div class="chat_header">
-                        <div class="chat_img_holder">
-                            <img src="<?php echo UPLOAD_URL.'/'.$active_chat['user']['profile_link']; ?>"></div>
-                            <p class="chat_name"><?php echo $active_chat['user']['full_name'] ?></p>
-                            <a href="#">
-                                <span class="icon icon_option"></span>
-                            </a>
-                        </div>
-                        <div class="chat_text mCustomScrollbar" data-mcs-position="bottom">
-                            <?php
-                            foreach($active_chat['comment'] as $value)
-                                if($value['sender_id'] == $active_chat['user']['id']){
-                            ?>
-                                <div class="from"><p><?php echo $value['message']; ?></p></div>
-                            <?php
-                                }else{
-                            ?>
-                                <div class="to"><p><?php echo $value['message']; ?></p></div>
-                            <?php
-                                }
-                             ?>
-
-                        </div>
-                        <input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="<?php echo $active_chat['user']['id'] ?>">
-                        <a href="#" class="icon icon_emoji"></a>
-                        <a href="#" class="icon icon_pin"></a>
-                        <input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="<?php echo $active_chat['user']['id'] ?>">
-                    </div>
-                <?php } ?>
-            </div>
-
-
-            <!--//chat-->
+            
