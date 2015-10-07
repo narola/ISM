@@ -31,7 +31,7 @@
                     ?>
                             <div class="box feeds" data-id="<?php echo $value['fid']; ?>">
                                 <div class="user_small_img">
-                                    <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                                    <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                 </div>
                                 <div class="feed_text">
                                     <h4><?php echo $value['full_name'];?></h4>
@@ -80,7 +80,7 @@
 
                                             <div class="comment <?= 'post'.$j;?>" style="display:<?= $display;?>">
                                                 <div class="user_small_img user_comment">
-                                                    <img src="<?php echo UPLOAD_URL.'/'.$com['profile_link'];?>">
+                                                    <img src="<?php echo UPLOAD_URL.'/'.$com['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                                 </div>
                                                 <div class="notification_txt">
                                                     <p><a href="#" class="noti_username"><?php echo $com['full_name'];?></a> <?php echo $com['comment'];?></p>

@@ -14,7 +14,6 @@ class Login extends CI_Controller {
     /* --For Login */
 
     public function index() {
-
         $remember_me = get_cookie('Remember_me');
         /* 	If Remember_key Cookie exists in browser then it wil fetch data using it's value and 
           set sessin data and force login student */
@@ -36,6 +35,7 @@ class Login extends CI_Controller {
 
         	$group_id   =   $this->session->userdata('user')['group_id']; 
             $count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id,'joining_status'=>'1')),array('count'=>TRUE));
+            
             if($count_member == 5)
                 redirect('student/home');
             else
@@ -55,14 +55,12 @@ class Login extends CI_Controller {
             $username = $this->input->post('username');
             $password = $this->input->post('password');
 
-
             if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
                 $fetch_data = select(TBL_USERS,null, array('where'=>array('email_id' => $username)),1);
             } else {
 
                 $fetch_data = select(TBL_USERS,null, array('where'=>array('username' => $username)),1);
             }
-
          
             if (!empty($fetch_data)) {
                 
@@ -88,8 +86,11 @@ class Login extends CI_Controller {
                     // $this->session->set_userdata($array);
 
                     $this->set_session($fetch_data['id']);
-                    
+                      
+            
+
                     $role = $fetch_data['role_id'];
+
                     switch ($role) {
                         case '2':
                             $group_id   =   $this->session->userdata('user')['group_id']; 
@@ -107,7 +108,7 @@ class Login extends CI_Controller {
                             break;
                     }
                 } else {
-                    $this->session->set_flashdata('msg', 'Invalid Username or Password.');
+                    $this->session->set_flashdata('error', 'Invalid Username or Password.');
                     redirect('login');
                 }
             } else {

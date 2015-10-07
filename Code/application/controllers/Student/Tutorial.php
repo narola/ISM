@@ -14,7 +14,6 @@ class Tutorial extends ISM_Controller {
 	    parent::__construct();
 	}
 	
-
 	public function index(){
 			
 			$data = array();
