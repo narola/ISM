@@ -24,7 +24,7 @@
                                                     <h4 class="activity_heading">Became studymate with</h4>
                                                     <div class="study_mate">
                                                         <div class="mate_user_img">
-                                                            <img src="<?php echo UPLOAD_URL.'/'.$studymate_value['profile_link'];?>" class="mCS_img_loaded">
+                                                            <img src="<?php echo UPLOAD_URL.'/'.$studymate_value['profile_link'];?>" class="mCS_img_loaded" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                                         </div>
                                                         <h4><?php echo $studymate_value['full_name'];?></h4>
                                                         <p><?php echo $studymate_value['school_name'];?></p>
@@ -74,7 +74,7 @@
                                                     <h4 class="activity_heading">Commented on</h4>
                                                     <div class="feeds">
                                                         <div class="user_small_img">
-                                                            <img src="<?php echo UPLOAD_URL.'/'.$comment_value['profile_link'];?>">
+                                                            <img src="<?php echo UPLOAD_URL.'/'.$comment_value['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                                         </div>
                                                         <div class="feed_text">
                                                             <h4><?php echo $comment_value['full_name'];?></h4>
@@ -104,15 +104,16 @@
                                                         </div>
                                                         <div class="clearfix"></div>
                                                         <!--comment-->
-                                                        <div class="comment">
+                                                        <div class="comment" data-id="<?php echo $comment_value['id'];?>">
                                                             <div class="user_small_img user_comment">
-                                                                <img src="<?php echo UPLOAD_URL.'/'.$this->session->userdata('user')['profile_pic'];?>">
+                                                                <img src="<?php echo UPLOAD_URL.'/'.$this->session->userdata('user')['profile_pic'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                                             </div>
                                                             <div class="notification_txt">
-                                                                <p><a href="#" class="noti_username"><?php echo $this->session->userdata('user')['full_name'];?></a> <?php echo $comment_value['comment'];?><?php echo $comment_value['id'];?></p>
+                                                                <p><a href="#" class="noti_username"><?php echo $this->session->userdata('user')['full_name'];?></a> <?php echo $comment_value['comment'];?></p>
                                                                 <span class="noti_time">1 Day</span>                            
                                                             </div>
                                                             <div class="clearfix"></div>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -153,7 +154,7 @@
                         <div class="clearfix"></div>
                         <div class="text-center">
                             <form action="" method="post">
-                                <input type="hidden" name="load_more" value="<?php echo $value;?>"> 
+                                <input type="hidden" name="load_more" value="<?php echo isset($value)?$value:'';?>"> 
                                 <!-- <a href="#" class="search_result_label">View More</a> -->
                                 <input type="submit" class="btn btn_green no-margin" value="View More">
                             </form>

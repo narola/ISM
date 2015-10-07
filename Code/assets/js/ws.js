@@ -135,6 +135,22 @@ if ("WebSocket" in window)
             $('.suggested_mates_card .mate_descrip button[data-id="'+obj.studymate_id+'"]').removeClass('btn_green').attr('disabled',true).addClass('btn_black_normal').html('Request Already Sent');
 
         }
+        else if(obj.type == "view-all-comment-activities"){
+            str = '';
+              
+            $.each(obj.comment, function (index, comment) {
+                str += '<div class="user_small_img user_comment">';
+                str += '<img src="uploads/'+obj.profile+'" onerror="this.src=\'assets/images/avatar.png\'">';
+                str += '</div><div class="notification_txt">';
+                str += '<p><a href="#" class="noti_username">'+obj.name+'</a> '+comment+'</p>';
+                str += '<span class="noti_time">1 Day</span>';
+                str += '</div>';
+                str += '<div class="clearfix"></div>';
+                
+            });
+            
+            $('.commented_on .feeds .comment[data-id="'+obj.comment_id+'"]').html(str);
+        }
         else {
             alert('Message Not Catched!!');
         }
