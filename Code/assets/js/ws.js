@@ -560,7 +560,7 @@ $(document).on('keypress','input[data-type="search-dictionary"], a[data-type="se
 });
 
 $(document).on('click','button[data-type="studyment-request"]',function(e){
-   var request = {
+    var request = {
         type: 'send_studymate_request',
         to: 'self',
         studymate_id: $(this).attr('data-id'),
@@ -570,10 +570,21 @@ $(document).on('click','button[data-type="studyment-request"]',function(e){
 });
 
 $(document).on('click','a[data-type="view-all-comment-activities"]',function(e){
-   var request = {
+    var request = {
         type: 'view-all-comment-activities',
         to: 'self',
         comment_id: $(this).attr('data-id'),
+        error : ''
+    };
+    ws.send(JSON.stringify(request)); 
+});
+
+$(document).on('click','#action-box button[data-type = "decline-request"]',function(e){
+    var request = {
+        type: 'decline-request',
+        sub_type : $(this).attr('data-type'),
+        to: 'self',
+        studymate_id: $(this).attr('data-id'),
         error : ''
     };
     ws.send(JSON.stringify(request)); 

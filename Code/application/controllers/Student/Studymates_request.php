@@ -17,11 +17,17 @@ class Studymates_request extends ISM_Controller {
 		$data['title'] = 'ISM - MY Studymate Requests';
 		$user_group_id = $this->session->userdata('user')['group_id'];
 		$user_id = $this->session->userdata('user')['id'];
+		
+		/*----get studymate list-----*/
+		$my_studymates = studymates($user_id,false);
+		if(!sizeof($my_studymates) > 0)
+			$my_studymates = array('');
+
 		/*----get studymate request list----*/
 		$options = array('join' => array(
 							array(
 								'table' => TBL_USERS.' u',
-								'condition' => 'u.id = s.request_to_mate_id'
+								'condition' => 'u.id = s.request_from_mate_id'
 							),
 							array(
 								'table' => TBL_STUDENT_ACADEMIC_INFO.' si',
@@ -37,13 +43,10 @@ class Studymates_request extends ISM_Controller {
 							)
 						)
 					);
-		$where = array('where'=>array('s.request_from_mate_id'=>$user_id));
-		$data['studymate_request'] = select(TBL_STUDYMATES_REQUEST.' s','sl.school_name,u.full_name,p.profile_link',$where,$options);
+		$where = array('where'=>array('s.request_to_mate_id'=>$user_id),'where_not_in'=>array('u.id'=>$my_studymates));
+		$data['studymate_request'] = select(TBL_STUDYMATES_REQUEST.' s','sl.school_name,u.full_name,p.profile_link,u.id',$where,$options);
 		
-		/*----get studymate list-----*/
-		$my_studymates = studymates($user_id,false);
-		if(!sizeof($my_studymates) > 0)
-			$my_studymates = array('');
+		
 
 		/*----get recommended studymate list---*/
 		$where = array('where' => array('m.group_id'=>$user_group_id,'in1.user_id !=' => $user_id),'where_not_in'=>array('in1.user_id' => $my_studymates));

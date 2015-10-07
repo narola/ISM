@@ -19,6 +19,7 @@ class my_activities extends ISM_Controller {
 		$user_id = $this->session->userdata('user')['id'];
 		$created_date = $this->session->userdata('user')['created_date'];
 
+		/*------ Get current month to user registration month-------*/
 		$begin = new DateTime($created_date);
 		$end = new DateTime(date('Y-m-d'));
 		$date_array = array();
@@ -28,6 +29,8 @@ class my_activities extends ISM_Controller {
 		}
 
 		$month = array();
+
+		/*----find current month and if request to view more append one month in descending form---*/
 		$month[] = date('m',strtotime(date('Y-m-d')));
 		$load_more = $this->input->post('load_more');
 		if($load_more != '')
@@ -44,14 +47,10 @@ class my_activities extends ISM_Controller {
 					)
 				);
 		$select = 't.topic_name,ga.created_date';
-
 		$data['my_activities']['topic_allcated'] = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' ga',$select,$where,$option);
-		// p($data['my_activities']['studymates'],true);
-		// $topic_allcated
 
-		/*--------Get my activities---------*/
+		/*--------Get my studymates---------*/
 		$studymate = studymates($user_id,false);
-		// p($studymate);
 		$where = array('where_in'=>array('u.id'=>$studymate),'where_in' => array('date_format(sm.created_date,"%m")' => $month));
 		$option = array('join'=>
 					array(
@@ -79,9 +78,8 @@ class my_activities extends ISM_Controller {
 				);
 		$select='u.full_name,sm.mate_of ,sm2.mate_id,if(sm.created_date is null,sm2.created_date,sm.created_date) as created_date,s.school_name,p.profile_link';
 		$data['my_activities']['studymates'] = select(TBL_USERS.' u',$select,$where,$option);
-		// qry();
-		// p($data['my_activities'],true);
 
+		/*--------Get my like feed----------*/
 		$where = array('where' => array('like.like_by'=>$user_id),'where_in' => array('date_format(like.created_date,"%m")' => $month));
 		$options = array('join' =>
 						array(
@@ -98,12 +96,9 @@ class my_activities extends ISM_Controller {
 						'order_by' => 'like.created_date DESC'
 					);
 		$select = 'upost.full_name as post_username,like_feed.feed_text,like.created_date,(select count(*) from feed_like where feed_id = like_feed.id) as totlike,(select count(*) from feed_comment where feed_id = like_feed.id) as totcomment';
+		$data['my_activities']['like'] = select(TBL_FEED_LIKE.' like',$select,$where,$options);		
 
-		
-		$data['my_activities']['like'] = select(TBL_FEED_LIKE.' like',$select,$where,$options);
-
-		
-
+		/*-------Get my comment----------*/
 		$where = array('where' => array('comment.comment_by'=>$user_id),'where_in' => array('date_format(comment.created_date,"%m")' => $month));
 		$options = array('join' =>
 						array(
@@ -125,21 +120,16 @@ class my_activities extends ISM_Controller {
 						'group_by' => 'comment_feed.id'
 					);
 		$select = 'u.full_name,u.id,comment_feed.feed_text,p.profile_link,comment.comment,comment.created_date,(select count(*) from feed_like where feed_id = comment_feed.id) as totlike,(select count(*) from feed_comment where feed_id = comment_feed.id) as totcomment,comment_feed.id';
-	
 		$data['my_activities']['comment'] = select(TBL_FEED_COMMENT.' comment',$select,$where,$options);
 
+		/*-------Get my post--------*/
 		$where = array('where' => array('post.feed_by'=>$user_id),'where_in' => array('date_format(post.created_date,"%m")' => $month));
-		$options = array(
-						'order_by' => 'post.created_date DESC'
-					);
+		$options = array('order_by' => 'post.created_date DESC');
 		$select = 'post.feed_text,(select count(*) from feed_like where feed_id = post.id) as totlike,(select count(*) from feed_comment where feed_id = post.id) as totcomment,post.created_date';
-		
 		$data['my_activities']['post'] = select(TBL_FEEDS.' post',$select,$where,$options);
+		
 		$data['my_month'] = $date_array;
-		// p($data['my_month'],true);
-			
-		// qry();
-		// p($data['my_activities'],true);
+		
 		$this->template->load('student/default','student/my_activities',$data);
 	}
 }
