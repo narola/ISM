@@ -1158,7 +1158,6 @@ textarea.post_input{
     z-index: 1;
 	bottom: 0;
     width: 250px;
-    height: 500px;
     position: absolute;
     right: 31%
 }
@@ -2535,4 +2534,10 @@ svg {
 .commented_on .user_small_img{
 	width:84px;
 	height:84px;	
+}
+#circle_process canvas{
+    position: relative;
+    top: 2px;
+    left: 2px;
+    transform: rotate(90deg);
 }

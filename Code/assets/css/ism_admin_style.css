@@ -1080,7 +1080,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .admin_controls div.upload{
 	color:#ff6b6b;
 }
-.btn_red_big, .btn_red_big:focus {
+.btn_red_big, .btn_red_big:focus, .btn_red_big:hover {
     background-color: #ff6b6b;
     color: #fff;
     width: 250px;
@@ -1095,5 +1095,75 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     background-color: rgba(255,107,107,0.1) !important;
     border-color: rgba(255,107,107,0.5) !important;
 }
+.btn_switch{
+	height:40px;
+}
+.general_cred .admin_controls input.form-control{
+	margin-right:0;
+}
+.admin_controls .dob{
+	margin-right:0;
+	width:50%;
+}
+.admin_controls .dob label{
+    font-weight: normal;
+}
+.admin_controls .dob input[type=checkbox]{
+	margin-top:10px;
+	margin-right:5px;
+}
+.admin_controls .padding_r15_.dob:after{
+	right:30px;	
+}
+#cke_editor2 {
 
-
+}
+.btn_group .btn{
+	text-transform:uppercase;
+}
+.option_radio{
+	border:1px solid rgba(0,0,0,0.1);
+	background-color:#f7f7f7;
+    box-shadow: inset 0px 3px 7px -2px rgba(0,0,0,0.1);
+	padding:15px;
+}
+.general_cred .option_radio label, .general_cred .btn_switch label {
+	display:inline-block;
+	font-weight:600;
+}
+.option_radio .check_div{
+	float:right;
+}
+.check_div label:last-child{
+	margin-left:10px;
+}
+.option_radio>div{
+	padding-bottom:10px;
+}
+.option_radio>div:last-child{
+	padding-bottom:0;	
+}
+.btn_switch label{
+	margin:10px 0;
+}
+.switch_btns {
+	float:right;
+    display: inline-block;
+    padding: 4px;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 5px;
+    background-color: #ddd;
+    box-shadow: inset 0px 3px 16px -2px rgba(0,0,0,0.2);
+	background-image:url(../images/add_exam_bg.png);
+}
+.switch_btns .btn {
+    width: 80px;
+    padding: 3px;
+}
+.switch_btns .no_btn{
+	background-color:transparent;
+	border:none;
+	color:#333;
+	font-weight:600;
+	outline:none;
+}
