@@ -32,8 +32,23 @@ class my_activities extends ISM_Controller {
 		$load_more = $this->input->post('load_more');
 		if($load_more != '')
 			$month[] = date('m',strtotime($load_more));
-		// echo $month;
-		// exit;
+		
+		/*---------Get topic allocated------*/
+		$where = array('where' => array('ga.group_id' => $user_group_id),'where_in' => array('date_format(ga.created_date,"%m")' => $month));
+		$option= array('join' =>
+					array(
+						array(
+							'table' => TBL_TOPICS.' t',
+							'condition' => 't.id = ga.topic_id'
+						)
+					)
+				);
+		$select = 't.topic_name,ga.created_date';
+
+		$data['my_activities']['topic_allcated'] = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' ga',$select,$where,$option);
+		// p($data['my_activities']['studymates'],true);
+		// $topic_allcated
+
 		/*--------Get my activities---------*/
 		$studymate = studymates($user_id,false);
 		// p($studymate);
