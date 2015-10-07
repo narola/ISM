@@ -59,12 +59,12 @@
                 <div class="row">
                		<!--input-->
                     <div class="col-sm-12 input">
-                    	<?php if($time == 0){ ?>
-                        <div class="alert alert-danger alert-dismissible" role="alert">
+                    	<?php $cls = ""; if($time > 0){ $cls = "style='display:none'";  }?>
+                        <div id="time_over" class="alert alert-danger alert-dismissible" role="alert" <?php echo $cls; ?> >
                           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                           Active hours are finished!
                         </div>
-                        <?php } ?>
+                        
                     	<div class="option_bar" data-type="discussion-submit">
                         	<a href="#" class="icon icon_pin"></a>
                         	<a href="#" class="icon icon_image"></a>
@@ -158,14 +158,9 @@
                     <div class="box">
                         <div class="box_body">
                             <div class="item_chart css">
-                                <h2>2:15<small>min</small><span>Remaining</span></h2>
-                                <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg">
-                                 <g>
-                                  <title>Layer 1</title>
-                                  <circle id="circle" r="69.85699" cy="81" cx="81" stroke-width="15" stroke="#333" fill="none"></circle>
-                                  <circle id="circle" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="15" stroke="#1bc4a3" fill="none"></circle>
-                                 </g>
-                                </svg>
+                                <h2 id="time_counter">00:00:00</h2>
+                                <span id="remain_id" style="display:none">Remaining</span>
+                                <div id="circle_process"></div>
                                 <h4 class="group_score">Group Score : <span id="group_score_count" ><?php echo $topic['group_score']; ?></span></h4>
                             </div>
                         </div>
@@ -206,3 +201,54 @@
                     <!--//group--> 
                 </div>
             </div>
+
+            <script>
+
+
+/* Convert Seconds into toHHMMSS */
+function toHHMMSS (sec) {
+    var sec_num = parseInt(sec, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+
+    var time  = hours+':'+minutes+':'+seconds;
+    return time;
+}
+
+var time_count = "<?php echo $time; ?>";
+var max_count = "<?php echo $time; ?>";
+start_timer = true;
+var counter;
+if(time_count > 0){
+    counter = setInterval(timer, 1000);
+}
+
+function timer()
+{
+  time_count=time_count-1;
+  $('#time_counter').html(toHHMMSS(time_count));
+  if(time_count >= 0){
+        anima = (((max_count - time_count) * 100)/max_count)/100;
+        $('#circle_process').circleProgress('value', anima);
+  }
+  if (time_count <= 0)
+  { 
+   // $('#circle_process').circleProgress({ value: 0.0 });
+ws.send('{"type":"time_start_request","from":"' + wp + '","to":"self","error":""}');
+
+    clearInterval(counter);
+    $("#time_over").fadeIn(300).delay(2000).fadeOut(300);
+    $("#remain_id").fadeOut(300);
+    return;
+
+  }else if($("#remain_id").is(":hidden")){
+    $("#remain_id").fadeIn(300);
+  }
+    
+}
+</script>

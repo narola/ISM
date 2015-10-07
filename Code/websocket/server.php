@@ -84,14 +84,24 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->close_studymate($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'send_studymate_request') {
         $responce = $Server->send_studymate_request($Server->wsClients[$clientID][12], $data);
+    } else if ($data['type'] == 'view-all-comment-activities') {
+        $responce = $Server->view_all_comment_activities($Server->wsClients[$clientID][12], $data);
+    } else if ($data['type'] == 'time_request' ||  $data['type'] == 'time_start_request'){
+        $responce = $data;
     }
-
-
 
 
     $check = array('feed_comment', 'like');
     if (isset($responce)) {
-        $Server->log($responce, false);
+
+        $responce['time_to_left'] = $Server->active_hours();
+         $responce['total_active_time'] = $Server->active_hours(2);
+         $responce['total_deactive_time'] = $Server->active_hours(3);
+        $responce['time_to_start'] = 0;
+        if ($responce['time_to_left'] == 0) {
+             $responce['time_to_start'] = $Server->active_hours(1);
+        }
+        $Server->log($responce, 1);
         if ($responce['to'] == 'self') {
             $Server->wsSend($clientID, json_encode($responce));
         } else {
@@ -123,8 +133,8 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                     if (in_array($Server->wsClients[$id][12], $classmates)) {
                         if ($id == $clientID) {
                             $responce['my_score'] = $my_score;
-                        }else{
-                             $responce['my_score'] = 'skip';
+                        } else {
+                            $responce['my_score'] = 'skip';
                         }
                         $Server->wsSend($id, json_encode($responce));
                     }

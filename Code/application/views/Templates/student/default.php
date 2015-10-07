@@ -30,12 +30,13 @@
     </script>-->
     <script>
     var wp = "<?php echo $this->session->userdata('user')['id']; ?>";
-   
+    var start_timer = false;
     </script>
      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="assets/js/jquery-1.11.3.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="assets/js/bootstrap.min.js"></script> 
+    <script src="assets/js/circle-progress.js"></script> 
     <!--scroll-->
     <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
      <?php flashMessage($this->session->flashdata('success'),$this->session->flashdata('error')); ?>

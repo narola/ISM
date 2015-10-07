@@ -1,6 +1,53 @@
+
+var time_count_out = 0
+var max_count_out = 0;
+var counter_out;
+
+function timeout_timer()
+{
+  time_count_out=time_count_out-1;
+  console.log("Remainnig Seconds :"+time_count_out);
+  if(time_count_out == 900){
+    console.log("15 minutes notification.");
+      $(".alert_notification p").html("Active hours will start within <b>15 minutes.</b>");
+      $(".alert_notification").show().delay(5000).fadeOut();
+  }else if(time_count_out == 300){
+    console.log("5 minutes notification.");
+      $(".alert_notification p").html("Active hours will start within <b>5 minutes.</b>");
+      $(".alert_notification").show().delay(5000).fadeOut();
+  }else if(time_count_out == 60){
+    console.log("1 minutes notification.");
+     $(".alert_notification p").html("Active hours will start within <b>1 minute.</b>");
+     $(".alert_notification").show().delay(5000).fadeOut();
+  }else if (time_count_out <= 0)
+  { 
+    if(start_timer == true){
+        console.log("Timer Started...");
+        ws.send('{"type":"time_request","from":"' + wp + '","to":"self","error":""}');
+    }else{
+        $(".alert_notification p").html("Active hours started.");
+        $(".alert_notification").show().delay(5000).fadeOut();
+    }
+
+    clearInterval(counter_out);
+    return;
+  }
+}
+
 $(document).ready(function () {
 
-    /* Handle multiple chat window. */
+     $('#circle_process').circleProgress({
+        value: 0.00,
+        size: 156,
+        fill: {
+            color: '#1bc4a3'
+        },
+        emptyFill : '#000',
+        thickness : 15,
+        animation:{ duration: 500 } 
+    });
+
+/* Handle multiple chat window. */
     $(document).on('click', '.chat .chat_header', function () {
         if ($(this).parent().hasClass('passive')) {
             if ($(this).parent().hasClass('chat_3')) {
@@ -15,6 +62,8 @@ $(document).ready(function () {
             $(this).parent().removeClass().addClass('active').addClass('chat');
         }
     });
+
+
 
 /* Validate length of selected file. */
     var _URL = window.URL || window.webkitURL;
@@ -38,6 +87,7 @@ $(document).ready(function () {
 
 
 });
+
 /* Check wheather web socket is supported by browser. */
 if ("WebSocket" in window)
 {
@@ -56,6 +106,14 @@ if ("WebSocket" in window)
             $(".alert_notification").show().delay(3000).fadeOut();
 
         }
+
+        if(obj.time_to_left == 0 && obj.time_to_start > 0){
+            time_count_out = obj.time_to_start;
+            max_count_out = obj.time_to_start;
+            counter_out=setInterval(timeout_timer, 1000);
+        }
+
+
         if (obj.type == 'studymate') {
                 if (wp == obj.from) {
                     $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p></div>");
@@ -102,6 +160,11 @@ if ("WebSocket" in window)
             $('button[data-type="load_more"]').attr('data-start',obj.start);
             $('button[data-type="load_more"]').prop('disabled', false);
         }else if(obj.type == 'discussion'){
+            if(obj.time_to_left > 0){
+                clearInterval(counter);
+                time_count = obj.time_to_left;
+                counter = setInterval(timer, 1000);
+            }
             generate_cm(obj);
         }else if(obj.type == 'like'){
             if(wp == obj.id){
@@ -133,9 +196,18 @@ if ("WebSocket" in window)
         else if(obj.type == "send_studymate_request"){
             $('.mCSB_container .three_tabs .badge').html(obj.count);
             $('.suggested_mates_card .mate_descrip button[data-id="'+obj.studymate_id+'"]').removeClass('btn_green').attr('disabled',true).addClass('btn_black_normal').html('Request Already Sent');
+        }else if(obj.type == 'time_request'){
+                clearInterval(counter);
+                time_count = obj.total_active_time;
+                max_count = obj.total_active_time;
+                counter = setInterval(timer, 1000);
+        }else if(obj.type == 'time_start_request'){
 
-        }
-        else if(obj.type == "view-all-comment-activities"){
+             time_count_out = obj.total_deactive_time;
+             max_count_out = obj.total_deactive_time;
+             counter_out = setInterval(timeout_timer, 1000);
+             
+        }else if(obj.type == "view-all-comment-activities"){
             str = '';
               
             $.each(obj.comment, function (index, comment) {
@@ -496,7 +568,6 @@ $(document).on('click','button[data-type="studyment-request"]',function(e){
     };
     ws.send(JSON.stringify(request)); 
 });
-
 
 $(document).on('click','a[data-type="view-all-comment-activities"]',function(e){
    var request = {
