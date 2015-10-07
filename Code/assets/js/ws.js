@@ -201,7 +201,23 @@ if ("WebSocket" in window)
                 time_count = obj.total_active_time;
                 max_count = obj.total_active_time;
                 counter = setInterval(timer, 1000);
-        }else{
+        }else if(obj.type == "view-all-comment-activities"){
+            str = '';
+              
+            $.each(obj.comment, function (index, comment) {
+                str += '<div class="user_small_img user_comment">';
+                str += '<img src="uploads/'+obj.profile+'" onerror="this.src=\'assets/images/avatar.png\'">';
+                str += '</div><div class="notification_txt">';
+                str += '<p><a href="#" class="noti_username">'+obj.name+'</a> '+comment+'</p>';
+                str += '<span class="noti_time">1 Day</span>';
+                str += '</div>';
+                str += '<div class="clearfix"></div>';
+                
+            });
+            
+            $('.commented_on .feeds .comment[data-id="'+obj.comment_id+'"]').html(str);
+        }
+        else {
             alert('Message Not Catched!!');
         }
     };
@@ -356,7 +372,7 @@ function generate_post(obj,status){
     }
     str = '<div class="box feeds" data-id="'+obj.post_id+'">';
     str += '<div class="user_small_img">';
-    str += '<img src="uploads/'+obj.profile_link+'">';
+    str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+obj.profile_link+'">';
     str += '</div>';
     str += '<div class="feed_text">';
     str += '<h4>'+obj.full_name+'</h4>';
@@ -547,4 +563,12 @@ $(document).on('click','button[data-type="studyment-request"]',function(e){
     ws.send(JSON.stringify(request)); 
 });
 
-
+$(document).on('click','a[data-type="view-all-comment-activities"]',function(e){
+   var request = {
+        type: 'view-all-comment-activities',
+        to: 'self',
+        comment_id: $(this).attr('data-id'),
+        error : ''
+    };
+    ws.send(JSON.stringify(request)); 
+});

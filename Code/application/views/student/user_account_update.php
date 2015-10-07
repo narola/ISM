@@ -338,6 +338,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                   <script>
+                                        
+                                        <?php $district = isset($district_id) ? $district_id : set_value('district_id');?>
+                                        document.getElementById('district_id').value = '<?= $district; ?>';
+                                    </script>
                             </div>
                             <div class="clearfix"></div>
                         </div>

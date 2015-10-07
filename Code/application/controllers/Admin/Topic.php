@@ -134,6 +134,8 @@ class Topic extends ADMIN_Controller {
 
 		$allocated_group_ids = array_column($allocated_groups, 'group_id');
 		
+		p($allocated_group_ids);
+
 		$where  = array('where_not_in' => array('id' => $allocated_group_ids),
 			'where'=> array('is_completed'=>1)) ;
 
@@ -152,11 +154,11 @@ class Topic extends ADMIN_Controller {
 		'where_in'=>array('group_id'=>$unallocated_group_ids)
 		);
 		
-
 		$last_week_groups = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' tut_topic',
 			'tut_topic.group_id,tut_topic.topic_id',
 			$where
 			);
+		
 		p($last_week_groups);
 
 		foreach ($unallocated_group_ids as $key => $unallocated) {
@@ -211,7 +213,7 @@ class Topic extends ADMIN_Controller {
 			'id'=>'archive_'.$topic_id
 			);
 		echo json_encode($response);
-		exit; 
+		exit;
 	}
 
 

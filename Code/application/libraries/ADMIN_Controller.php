@@ -7,10 +7,23 @@ class ADMIN_Controller extends CI_Controller {
 		
 		parent::__construct();
 		
-		$this->load->model(array('common_model'));	
-		
+		$cur_url = $this->session->userdata('cur_url'); 
+	 	$prev_url = $this->session->userdata('prev_url'); 
+	 		
+		if(empty($cur_url) && empty($prev_url)){
+			
+			$this->session->set_userdata( array('cur_url'=>$this->input->server('REQUEST_URI')) );
+			$this->session->set_userdata( array('prev_url'=>'test') );
+		}
+
+		if(!empty($cur_url) && $this->input->server('REQUEST_URI') != $cur_url ){
+			
+			$this->session->set_userdata( array('cur_url'=>$this->input->server('REQUEST_URI')) );
+			$this->session->set_userdata( array('prev_url'=>$cur_url) );	
+		}
+
 		$exceptional_url = array('admin','admin/logout');
-		
+
 		if(in_array(uri_string(), $exceptional_url) == FALSE && is_loggedin_admin() == FALSE){
 
 			if(is_loggedin() == TRUE){

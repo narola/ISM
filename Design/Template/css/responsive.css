@@ -387,8 +387,10 @@
 	.search_bar .form-control {
     	width: 58%;
 	}
+	.btn_switch{
+		padding-right: 15px !important;
+	}
 }
-
 @media (max-width:980px){
 	.login_background {
 		background-image:url(../images/login_bg_tab.jpg);
@@ -473,7 +475,14 @@
 	.three_inputs .form-control {
     	width: 91%;
 	}
+	.padding_r15_, .btn_switch {
+		padding: 0 !important;
+	}
+	.box_body .padding_r15_.select::after {
+    	right: 15px;
+	}
 }
+
 @media (max-width:800px){
 	.login_background {
 		background-size:auto;

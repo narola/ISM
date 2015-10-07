@@ -36,7 +36,6 @@ function file_name($name = null){
 }
 
 
-
 /**
    * Generate CSV from a query result object
    *

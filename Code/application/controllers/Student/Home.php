@@ -3,7 +3,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Home extends ISM_Controller {
+class Home extends CI_Controller {
 
 	
 
@@ -84,9 +84,12 @@ class Home extends ISM_Controller {
 		}
 		
 		$data['feed'] = $final_feed;
-
+		if(!studymates($user_id,false) > 0 )
+			$studymates = array('');
+		else
+			$studymates = studymates($user_id,false);
  		// Get Classmates details
-		$where = array('where_in' => array('u.id' =>  studymates($user_id,false)));
+		$where = array('where_in' => array('u.id' =>  $studymates));
 		$options = array('join' => array(
 				array(
 					'table' => TBL_USER_PROFILE_PICTURE.' upp',

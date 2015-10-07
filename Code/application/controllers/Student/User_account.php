@@ -109,15 +109,27 @@ class User_account extends CI_Controller {
 				$birthdate = null;
 			else
 				$birthdate = $this->input->post("birthdate");
+			if($this->input->post("country_id") == '')
+				$country = null;
+			else
+				$country = $this->input->post("country_id");
+			if($this->input->post("state_id") == '')
+				$state_id = null;
+			else
+				$state_id = $this->input->post("state_id");
+			if($this->input->post("city_id") == '')
+				$city_id = null;
+			else
+				$city_id = $this->input->post("city_id");
 			$data_student = array(
 				"full_name"			=>	$this->input->post("full_name"),
 				"email_id"			=>	$this->input->post("email_id"),
 				"gender"			=>	$this->input->post("gender"),
 				"contact_number"	=>	$this->input->post("contact_number"),
 				"home_address"		=>	$this->input->post("home_address"),
-				"country_id"		=>	$this->input->post("country_id"),
-				"state_id"			=>	$this->input->post("state_id"),
-				"city_id"			=>	$this->input->post("city_id"),
+				"country_id"		=>	$country,
+				"state_id"			=>	$state_id,
+				"city_id"			=>	$city_id,
 				"username"			=>	$this->input->post("username"),
 				"birthdate"			=>	$birthdate,
 				"password"			=>	$this->encrypt->encode($this->input->post("new_password")),
@@ -134,13 +146,12 @@ class User_account extends CI_Controller {
 					$data_student['password']	=	$this->encrypt->encode($this->input->post('cur_password'));
 				}
 				update(TBL_USERS,array('id'=>$uid),$data_student);
-
 				/*---update acedemic detail--*/
 				$data_academic	=	array(
 						'classroom_id'=>$this->input->post('class_id')
 					);
 				update(TBL_STUDENT_ACADEMIC_INFO,array('user_id'=>$uid),$data_academic);
-
+				
 				/*--upadate profile picture*/
 				
 				$path = "uploads/user_".$uid;
@@ -210,6 +221,7 @@ class User_account extends CI_Controller {
 				/*-----------user academic detail--------------*/
 				
 				if(!empty($this->input->post('todo'))){
+
 					$data_academic = array(
 						'user_id' => $insertid,
 						'school_id'=>$this->input->post('school_id'),
