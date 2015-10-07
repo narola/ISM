@@ -306,7 +306,7 @@ function generate_post(obj,status){
     }
     str = '<div class="box feeds" data-id="'+obj.post_id+'">';
     str += '<div class="user_small_img">';
-    str += '<img src="uploads/'+obj.profile_link+'">';
+    str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+obj.profile_link+'">';
     str += '</div>';
     str += '<div class="feed_text">';
     str += '<h4>'+obj.full_name+'</h4>';
