@@ -1225,6 +1225,7 @@ p.chat_name {
     padding-top: 15px;
 	height: 220px;
 	overflow: auto;
+	background-color: #fff;
 }
 .chat_text .mCSB_scrollTools {
 	width: 10px;
@@ -2544,4 +2545,24 @@ svg {
     top: 2px;
     left: 2px;
     transform: rotate(90deg);
+}
+.emoticons{
+	bottom: 50px;
+    height: 130px;
+    position: fixed;
+    width: 260px;
+    overflow: auto;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,0.2);
+    box-shadow: 0 0 3px 1px rgba(0,0,0,0.1);
+    right: 610px;
+    z-index: 1;
+	display:none;
+}
+.studymate_with .date, .status_like .date{
+    float: right;
+    font-style: italic;
+    opacity: 0.4;
+	font-weight:normal;
+    font-size: 12px;
 }

@@ -691,14 +691,36 @@
                         <div class="to"><p>Will do tonight</p></div>
                     </div>
                     <input type="text" class="chat_input" placeholder="Say It">
-					<a href="#" class="icon icon_emoji"></a>
+					<a href="#" class="icon icon_emoji" id="btn_emoticons"></a>
                     <a href="#" class="icon icon_pin"></a>
                     <input type="file" class="chat_pin">
                 </div>
             </div>
             <!--//chat-->
-            <div class="emoticons">
-            	
+            <div class="emoticons mCustomScrollbar" data-mcs-theme="minimal-dark">
+            	<a href="#"><span class="icon icon_1"></span></a>                
+            	<a href="#"><span class="icon icon_2"></span></a>
+            	<a href="#"><span class="icon icon_3"></span></a>
+            	<a href="#"><span class="icon icon_4"></span></a>
+            	<a href="#"><span class="icon icon_5"></span></a>
+            	<a href="#"><span class="icon icon_6"></span></a>
+            	<a href="#"><span class="icon icon_7"></span></a>
+            	<a href="#"><span class="icon icon_8"></span></a>
+            	<a href="#"><span class="icon icon_9"></span></a>
+            	<a href="#"><span class="icon icon_10"></span></a>
+            	<a href="#"><span class="icon icon_11"></span></a>
+            	<a href="#"><span class="icon icon_12"></span></a>
+            	<a href="#"><span class="icon icon_13"></span></a>
+            	<a href="#"><span class="icon icon_14"></span></a>
+            	<a href="#"><span class="icon icon_15"></span></a>
+            	<a href="#"><span class="icon icon_16"></span></a>
+            	<a href="#"><span class="icon icon_17"></span></a>
+            	<a href="#"><span class="icon icon_18"></span></a>
+            	<a href="#"><span class="icon icon_19"></span></a>
+            	<a href="#"><span class="icon icon_20"></span></a>
+            	<a href="#"><span class="icon icon_21"></span></a>
+            	<a href="#"><span class="icon icon_22"></span></a>
+            	<a href="#"><span class="icon icon_23"></span></a>
             </div>
         </div>
     </div>
@@ -730,7 +752,12 @@
 					jQuery(this).parent().addClass('chat');
 				}
 			});
-			
+			jQuery('#btn_emoticons').click(function(){
+				jQuery('.emoticons').css('display','block');
+			});
+			jQuery('.emoticons .icon').click(function(){
+				jQuery('.emoticons').css('display','none');
+			});
 			
         });
 	</script>

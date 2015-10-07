@@ -330,5 +330,100 @@
 .icon_zip_active{
     background-position: -944px -155px;
 }
+.icon_1,
+.icon_2,
+.icon_3,
+.icon_4,
+.icon_5,
+.icon_6,
+.icon_7,
+.icon_8,
+.icon_9,
+.icon_10,
+.icon_11,
+.icon_12,
+.icon_13,
+.icon_14,
+.icon_15,
+.icon_16,
+.icon_17,
+.icon_18,
+.icon_19,
+.icon_20,
+.icon_21,
+.icon_22,
+.icon_23{
+	background-image:url(../images/emoticons.png);
+	margin:5px;
+}
+.icon_1{
+	background-position:-8px -2px;
+}
+.icon_2{
+	background-position:-45px -2px;
+}
+.icon_3{
+	background-position:-85px -2px;
+}
+.icon_4{
+	background-position:-124px -2px;
+}
+.icon_5{
+	background-position:-163px -2px;
+}
+.icon_6{
+	background-position:-202px -2px;
+}
+.icon_7{
+	background-position:-242px -2px;
+}
+.icon_8{
+	background-position:-280px -2px;
+}
+.icon_9{
+	background-position:-8px -37px;
+}
+.icon_10{
+	background-position:-47px -37px;
+}
+.icon_11{
+	background-position:-86px -37px;
+}
+.icon_12{
+	background-position:-125px -37px;
+}
+.icon_13{
+	background-position:-163px -37px;
+}
+.icon_14{
+	background-position:-202px -37px;
+}
+.icon_15{
+	background-position:-242px -37px;
+}
+.icon_16{
+	background-position:-280px -37px;
+}
+.icon_17{
+	background-position:-7px -76px;
+}
+.icon_18{
+	background-position:-47px -76px;
+}
+.icon_19{
+	background-position:-87px -76px;
+}
+.icon_20{
+	background-position:-123px -76px;
+}
+.icon_21{
+	background-position:-164px -76px;
+}
+.icon_22{
+	background-position:-202px -76px;
+}
+.icon_23{
+	background-position:-242px -76px;
+}
 /*--------------icon---------------*/
 
