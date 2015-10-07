@@ -2320,7 +2320,7 @@ svg {
 .study_mate .form-group>.form-control{
 	border-radius:4px;	
 }
-.study_mate .btn_green{
+.study_mate .btn_green, .study_mate .btn_black_normal{
 	height:40px;
 }
 .ol:before{
@@ -2458,10 +2458,14 @@ svg {
 	background-color:#fff;
 	margin-left:0;
 	top:-7px;
+	color:#1bc4a3;
 }
 .activities .divide_discussion{
 	text-align:left;
     position: relative;
+}
+.activities .divide_discussion hr{
+    border-color: #1bc4a3;
 }
 .activities .divide_discussion h4:before {
     content: "";
@@ -2541,4 +2545,24 @@ svg {
     top: 2px;
     left: 2px;
     transform: rotate(90deg);
+}
+.emoticons{
+	bottom: 50px;
+    height: 130px;
+    position: fixed;
+    width: 260px;
+    overflow: auto;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,0.2);
+    box-shadow: 0 0 3px 1px rgba(0,0,0,0.1);
+    right: 610px;
+    z-index: 1;
+	display:none;
+}
+.studymate_with .date, .status_like .date{
+    float: right;
+    font-style: italic;
+    opacity: 0.4;
+	font-weight:normal;
+    font-size: 12px;
 }
