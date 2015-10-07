@@ -86,6 +86,8 @@ class Home extends CI_Controller {
 		$data['feed'] = $final_feed;
 		if(!studymates($user_id,false) > 0 )
 			$studymates = array('');
+		else
+			$studymates = studymates($user_id,false);
  		// Get Classmates details
 		$where = array('where_in' => array('u.id' =>  $studymates));
 		$options = array('join' => array(
