@@ -753,7 +753,13 @@
 				}
 			});
 			jQuery('#btn_emoticons').click(function(){
-				jQuery('.emoticons').css('display','block');
+				if(jQuery('.emoticons').css('display')=='none'){
+					jQuery('.emoticons').css('display','block');
+				}
+				else{
+					jQuery('.emoticons').css('display','none');
+				}
+				
 			});
 			jQuery('.emoticons .icon').click(function(){
 				jQuery('.emoticons').css('display','none');
