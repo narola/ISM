@@ -113,7 +113,7 @@ class Topic extends ADMIN_Controller {
 	/**
 	* ajax function to allocate topic to groups 
 	*/
-	public function allocate(){
+	public function allocate($id = null){
 
 		$ddate = date('Y', time());
 		
@@ -133,20 +133,22 @@ class Topic extends ADMIN_Controller {
 
 		$allocated_group_ids = array_column($allocated_groups, 'group_id');
 		
-		echo 'assigned for the current week<br/>';
-		p($allocated_group_ids);
+		// echo 'assigned for the current week<br/>';
+		// p($allocated_group_ids);
 
 		$where  = array('where_not_in' => array('id' => $allocated_group_ids),
-			'where'=> array('is_completed'=>1)) ;
+			'where'=> array('is_completed'=>1,
+				'group_type'=>'tutorial group'
+				)) ;
 
 		$unallocated_groups = select(TBL_TUTORIAL_GROUPS.' grp',
 			'grp.id',
 			$where
 			);
 		$unallocated_group_ids = array_column($unallocated_groups, 'id');
-
-		echo 'other than assigned<br/>';
-		p($unallocated_group_ids);
+		// echo 'other than assigned<br/>';
+		// p($unallocated_group_ids);
+		echo current($unallocated_group_ids);
 
 		$last_week = $week-1;
 		$where  = array('where' => array('week_no' => $last_week,
@@ -160,24 +162,83 @@ class Topic extends ADMIN_Controller {
 			$where
 			);
 		
-		echo 'assigned last week<br/>';
-		p($last_week_groups);
+		// echo 'assigned last week<br/>';
+		// p($last_week_groups);
 
 		foreach ($unallocated_group_ids as $unallocated) {
 			// echo 'out '.$key." ".$unallocated;
 			if(in_array($unallocated, array_column($last_week_groups, 'group_id'))){
+
 				$key = array_search($unallocated, array_column($last_week_groups, 'group_id'));
 				$last_week_topic = $last_week_groups[$key]['topic_id'];
 				$where = array('where' => array('id'=>$last_week_topic));
 				$subject = select(TBL_TUTORIAL_TOPIC.' tut_topic',
-				'tut_topic.subject_id',
-					$where
+				'tut_topic.subject_id,tut_topic.classroom_id',
+					$where, array('single'=>true)
 				);
-				echo 'subject ids<br/>';
-				p($subject);
+				// echo 'subject ids<br/>';
+				// p($subject);
+				$where = array('where'=>array('subject_id'=>$subject['subject_id'],
+					));
+				$course = select(TBL_COURSE_SUBJECT.' tut_course',
+				'tut_course.course_id',
+					$where, array('single'=>true)
+				);
+
+
+				$where = array('where'=>array('course_id'=>$course['course_id'],
+												'subject_id !='=>$subject['subject_id']
+					));
+
+				$options = array('order_by'=>'RAND()','single'=>true,'limit'=>1);
+				$random_subject = select(TBL_COURSE_SUBJECT.' tut_course',
+				'tut_course.subject_id',
+					$where, $options
+				);
+
+				$random_subject_id = $random_subject['subject_id'];
+				
+
 			}else{
-					
+
+				$where = array('where'=>array('group_id'=>$unallocated));
+
+				$options = array('limit'=>1,'single'=>true);
+				$group_member = select(TBL_TUTORIAL_GROUP_MEMBER.' tut_grp_member',
+				'tut_grp_member.user_id',
+					$where, $options
+				);
+				
+				$where = array('where'=>array('user_id'=>$group_member['user_id']));
+
+				$options = array('single'=>true);
+				$course_info = select(TBL_STUDENT_ACADEMIC_INFO.' tut_stud_info',
+				'tut_stud_info.course_id',
+					$where, $options
+				);
+				
+				$where = array('where'=>array('course_id'=>$course['course_id']
+					));
+
+				$options = array('order_by'=>'RAND()','single'=>true,'limit'=>1);
+				$random_subject_info = select(TBL_COURSE_SUBJECT.' tut_course',
+				'tut_course.subject_id',
+					$where, $options
+				);
+
+				$random_subject_id = $random_subject_info['subject_id'];
+
 			}
+			$where = array('where'=>array('subject_id'=>$random_subject_id));
+
+				$options = array('order_by'=>'RAND()','limit'=>3);
+				$random_topics = select(TBL_TUTORIAL_TOPIC.' tut_topic',
+				'tut_topic.id',
+					$where, $options
+				);
+				$random_topic_ids = array_column($random_topics,'id');
+				echo 'unallocated: '.$unallocated.'<br/>';
+				p($random_topic_ids);
 		}
 		exit;
 

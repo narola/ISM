@@ -14,6 +14,9 @@ class User_account extends CI_Controller {
 	    $this->data[] = array();
 	    if(!empty($this->session->userdata('user')) && $this->session->userdata('user')['membercount'] != 5)
 	    	redirect('student/group_allocation');
+	    if(empty($this->session->userdata('user')) && empty($this->session->userdata('credential_user')))
+	    	redirect('login/logout');
+
 	}
 
 	public function index()
@@ -25,6 +28,7 @@ class User_account extends CI_Controller {
 			
 			$this->set_session($this->session->userdata('user')['id']);
 			$user_session	= 	$this->session->userdata('user');
+
 			$this->data['full_name']	= $user_session['full_name'];
 			$this->data['email_id']		= $user_session['email_id'];
 			$this->data['gender']		= $user_session['gender'];
@@ -38,7 +42,9 @@ class User_account extends CI_Controller {
 			$this->data['academic_year']= $user_session['academic_year'];
 			$this->data['course_name']	= $user_session['course_name'];
 			$this->data['classroom_id']	= $user_session['classroom_id'];
-			$this->data['district_id']	= 1;
+			$this->data['class_name']	= $user_session['class_name'];
+			$this->data['district_id']	= $user_session['district_id'];
+			$this->data['district_name']	= $user_session['district_name'];
 			$this->data['username']		= $user_session['username'];
 			$this->data['password']		= $this->encrypt->decode($user_session['password']);
 			$this->data['profile_pic']	= $user_session['profile_pic'];
@@ -56,24 +62,37 @@ class User_account extends CI_Controller {
 		$this->data['program'] 		= 	select(TBL_COURSES);
 		$this->data['districts'] 		= 	select(TBL_DISTRICTS);
 		$this->data['school_information'] = select(TBL_AUTO_GENERATED_CREDENTIAL.' a',
-	    		's.id as school_id,a.classroom_id as class_id,a.course_id as program,s.district_id,a.is_my_school',	
+	    		's.id as school_id,a.classroom_id as class_id,a.course_id as program,s.district_id,a.is_my_school,s.school_name,c.course_name,cl.class_name,d.district_name,a.academic_year',	
 	    		array('where' => array('a.username' => $this->session->userdata('credential_user'))),
 		    		array( 'join' => array(
 		    			array(
 		    				'table' => TBL_SCHOOLS.' s',
 		    				'condition' => 's.id = a.school_id'
-		    			)),
+		    			),
+		    			array(
+		    				'table' => TBL_COURSES.' c',
+		    				'condition' => 'c.id = a.course_id'
+		    			),
+		    			array(
+		    				'table' => TBL_CLASSROOMS.' cl',
+		    				'condition' => 'cl.id = a.classroom_id'
+		    			),
+		    			array(
+		    				'table' => TBL_DISTRICTS.' d',
+		    				'condition' => 's.district_id = d.id'
+		    			)
+
+		    			),
 		    		'single' => 1
 		    		));
-		
 		$this->form_validation->set_rules('username', 'Username', 'trim|required|callback_check_user');
 		$this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|regex_match[/^[0-9().-]+$/]');
 		
 		if(isset($this->session->userdata('user')['id'])){
 			$this->form_validation->set_rules('new_password', 'New Password', 'trim|exact_length[8]');
 			$this->form_validation->set_rules('con_password', 'Confirm Password', 'trim|matches[new_password]');
-			$this->form_validation->set_rules('class_id', 'Class', 'trim|required');
-			$this->form_validation->set_rules('district_id', 'District', 'trim|required');
+			// $this->form_validation->set_rules('class_id', 'Class', 'trim|required');
+			// $this->form_validation->set_rules('district_id', 'District', 'trim|required');
 			$this->form_validation->set_rules('cur_password', 'Current Password', 'trim|required');
 
 		}
@@ -82,13 +101,13 @@ class User_account extends CI_Controller {
 			$this->form_validation->set_rules('con_password', 'Confirm Password', 'trim|required|matches[new_password]');
 			$this->form_validation->set_rules('cur_password', 'Current Password', 'trim|required|callback_check_current_password');
 			$todo 	= 	$this->input->post('todo',TRUE);
-			if($todo == 'enabled'){
-				$this->form_validation->set_rules('school_id', 'School', 'trim|required');
-				$this->form_validation->set_rules('class_id', 'Class', 'trim|required');
-				$this->form_validation->set_rules('year_id', 'Year', 'trim|required');
-				$this->form_validation->set_rules('district_id', 'District', 'trim|required');
-				$this->form_validation->set_rules('program_id', 'Program/Course', 'trim|required');
-			}
+			// if($todo == 'enabled'){
+			// 	$this->form_validation->set_rules('school_id', 'School', 'trim|required');
+			// 	$this->form_validation->set_rules('class_id', 'Class', 'trim|required');
+			// 	$this->form_validation->set_rules('year_id', 'Year', 'trim|required');
+			// 	$this->form_validation->set_rules('district_id', 'District', 'trim|required');
+			// 	$this->form_validation->set_rules('program_id', 'Program/Course', 'trim|required');
+			// }
 		}
 		
 		/*---send request for change school detail ------*/
@@ -97,9 +116,10 @@ class User_account extends CI_Controller {
 		{
 			$this->send_mail($this->session->userdata('credential_user'));
 		}
-
-		$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|is_unique[users.email_id]|callbach_check_email');
-		$this->form_validation->set_rules('reg[birthdate]', 'Date of birth', 'regex_match[(0[1-9]|1[0-9]|2[0-9]|3(0|1))-(0[1-9]|1[0-2])-\d{4}]');
+		// p($_POST,true);
+		$this->form_validation->set_rules('email_id', 'Email', 'trim|valid_email|required|callback_check_email');
+		$this->form_validation->set_rules('full_name', 'Full name', 'trim|required|callback_check_full_name');
+		$this->form_validation->set_rules('birthdate', 'Date of birth', 'trim|callback_check_birth_date');
 					
 		if($this->form_validation->run() == FALSE){
 			$this->load->view('student/user_account_update',$this->data);
@@ -134,7 +154,8 @@ class User_account extends CI_Controller {
 				"birthdate"			=>	$birthdate,
 				"password"			=>	$this->encrypt->encode($this->input->post("new_password")),
 				"created_date"		=>	date('Y-m-d H:i:s',time()),
-				"modified_date"		=>	date('Y-m-d H:i:s',time())
+				"modified_date"		=>	date('Y-m-d H:i:s',time()),
+				"user_status"		=>	'active'
 			);
 			if(isset($this->session->userdata('user')['id'])){
 				$uid = 	$this->session->userdata('user')['id'];
@@ -146,11 +167,12 @@ class User_account extends CI_Controller {
 					$data_student['password']	=	$this->encrypt->encode($this->input->post('cur_password'));
 				}
 				update(TBL_USERS,array('id'=>$uid),$data_student);
+				
 				/*---update acedemic detail--*/
-				$data_academic	=	array(
-						'classroom_id'=>$this->input->post('class_id')
-					);
-				update(TBL_STUDENT_ACADEMIC_INFO,array('user_id'=>$uid),$data_academic);
+				// $data_academic	=	array(
+				// 		'classroom_id'=>$this->input->post('class_id')
+				// 	);
+				// update(TBL_STUDENT_ACADEMIC_INFO,array('user_id'=>$uid),$data_academic);
 				
 				/*--upadate profile picture*/
 				
@@ -215,7 +237,7 @@ class User_account extends CI_Controller {
 				
 				/*------update auto credential when once user can filup form----*/
 				
-				$update_data = array('status' => 1 );
+				$update_data = array('status' => 0 );
 				update(TBL_AUTO_GENERATED_CREDENTIAL,$id,$update_data);
 				
 				/*-----------user academic detail--------------*/
@@ -440,7 +462,7 @@ class User_account extends CI_Controller {
 	/*--check email exist or not------------------*/
 	public function check_email()
 	{
-		$found	=	select(TBL_USERS,array('where'=>array('email_id' => $this->input->post('email_id',TRUE))));
+		$found	=	select(TBL_USERS,null,array('where'=>array('email_id' => $this->input->post('email_id',TRUE))));
 		if(sizeof($found) > 0){
 			$this->form_validation->set_message('check_email', 'Email Already Exist');
 			return FALSE;
@@ -448,6 +470,34 @@ class User_account extends CI_Controller {
 		else{
 			return TRUE;
 		}
+	}
+
+	/*---check full name is valid or not------*/
+	public function check_full_name(){
+		$full_name = $this->input->post('full_name',TRUE);
+		if(preg_match('/^[a-z0-9 .\-]+$/i', $full_name))
+		{
+			return TRUE;	
+		}
+		else
+		{
+			$this->form_validation->set_message('check_full_name', 'Invalid Full Name');
+			return FALSE;	
+		}
+	}
+
+	public function check_birth_date(){
+		$birthdate = $this->input->post('birthdate',TRUE);
+		if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$birthdate)){
+			if($birthdate == '0000-00-00')
+				$this->form_validation->set_message('check_birth_date', 'Invalid Birth Of Date');
+			else
+				return TRUE;
+		}
+		else{
+			$this->form_validation->set_message('check_birth_date', 'Invalid Birth Of Date');
+			return FALSE;
+		}	
 	}
 
 	/*--check current password is valid or not------*/
@@ -468,7 +518,7 @@ class User_account extends CI_Controller {
 
 	public function set_session($userid){
          $users = select(TBL_USERS.' u',
-                'u.*,s.district_id,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id,co.course_name,si.academic_year,si.course_id,si.classroom_id,si.school_id,(select count(*) cnt from tutorial_group_member where group_id = gu.id) as membercount',   
+                'u.*,s.district_id,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id,co.course_name,si.academic_year,si.course_id,si.classroom_id,si.school_id,(select count(*) cnt from tutorial_group_member where group_id = gu.id) as membercount,cl.class_name,s.district_id,d.district_name',   
                 array('where'   =>  array('u.id' => $userid)),
                 array('join'    =>    
                    array(
@@ -508,7 +558,15 @@ class User_account extends CI_Controller {
                         array(
                             'table' => TBL_COURSES.' co',
                             'condition' => 'si.course_id = co.id'
-                            )
+                            ),
+                        array(
+                            'table' => TBL_CLASSROOMS.' cl',
+                            'condition' => 'cl.id = si.classroom_id'
+                            ),
+                        array(
+                        	'table' => TBL_DISTRICTS.' d',
+                        	'condition' => 'd.id = s.district_id'
+                        	)
                         )
                     )
                 );
@@ -524,7 +582,7 @@ class User_account extends CI_Controller {
     public function send_mail($username){
     	update(TBL_AUTO_GENERATED_CREDENTIAL,array('username'=>$username),array('is_my_school'=>1));
 		$message = $this->input->post('message');
-		$email_id = $this->input->post('email');
+		$email_id = $this->input->post('email_id');
 		$configs = mail_config();
         $this->load->library('email', $configs);
         $this->email->initialize($configs);
