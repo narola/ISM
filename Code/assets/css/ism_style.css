@@ -2575,3 +2575,11 @@ svg {
 	font-weight:normal;
     font-size: 12px;
 }
+.reg_bg .form-group .label_form{
+	font-size: 15px;
+    font-weight: normal;
+    display: block;
+    padding: 9px 0px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    margin: 0;
+}
