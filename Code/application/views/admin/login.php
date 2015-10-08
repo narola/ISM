@@ -34,8 +34,6 @@
 
                     <?php $error = $this->session->flashdata('error'); ?>
   
-                          
-
                     <form class="login_form" method="POST">
                         <div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
                                   <?php echo strip_tags($error) ; ?>

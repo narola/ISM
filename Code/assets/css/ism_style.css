@@ -790,6 +790,7 @@ textarea.post_input{
 }
 .feed_text .like_btn, .feed_text .comment_btn{
 	color:#333;
+	cursor: default;
 }
 .feed_text a:last-child{
 	margin:0;

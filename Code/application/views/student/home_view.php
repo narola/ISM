@@ -9,8 +9,7 @@
                     <textarea id="feed_post" type="text" class="form-control post_input" placeholder="SAY IT" ></textarea>
                     <a href="#" class="icon icon_emoji"></a>
                     <div class="box_header">
-                        <a href="#" class="icon icon_pin"><input type="file"></a>
-                        <a href="#" class="icon icon_image"><input type="file"></a>
+                        <a href="javascript:void(0);" class="icon icon_pin"><input  id="feed_file_share" type="file" data-id="feed"></a>
                         <div class="dropdown" style="display: inline-block;">
                             <a href="#" class="dropdown-toggle icon icon_user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -52,7 +51,7 @@
                                             }
                                         ?>    
                                         <span><?php echo $value['tot_like'];?></span></a>
-                                    <a href="#" class="comment_btn"><span class="icon icon_comment"></span><?php echo $value['tot_comment'];?></a>
+                                    <a href="javascript:void(0);" class="comment_btn"><span class="icon icon_comment"></span><?php echo $value['tot_comment'];?></a>
                                     <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
                                     <div class="dropdown tag_user" style="display: inline-block;">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>

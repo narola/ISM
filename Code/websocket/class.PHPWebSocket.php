@@ -524,6 +524,13 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -697,6 +704,13 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
+
+
+
+
 
 
 
@@ -1101,26 +1115,43 @@ class PHPWebSocket {
      */
     function get_latest_msg($data = null, $userID) {
 
-        $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message` FROM `" . TBL_USER_CHAT . "` `uc` WHERE (`uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` = $userID) OR (`uc`.`sender_id` = $userID AND `uc`.`receiver_id` = " . $data['my_id'] . ") ORDER BY `uc`.`id` DESC LIMIT 10";
+        $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message`,`uc`.`media_link`,`uc`.`media_type` FROM `" . TBL_USER_CHAT . "` `uc` WHERE (`uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` = $userID) OR (`uc`.`sender_id` = $userID AND `uc`.`receiver_id` = " . $data['my_id'] . ") ORDER BY `uc`.`id` DESC LIMIT 10";
         $link = $this->db();
         mysqli_query($link, "UPDATE `" . TBL_USER_CHAT . "` `uc` SET  `uc`.`received_status` = 1  WHERE `uc`.`received_status` = 0 AND `uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` =" . $userID);
         $row = mysqli_query($link, $query);
         $result = array();
+        $check_type = array(
+            'image/png',
+            'image/jpg',
+            'image/jpeg',
+            'image/gif'
+        );
         while ($rows = mysqli_fetch_assoc($row)) {
+
             $result[] = array(
                 'sender_id' => $rows['sender_id'],
                 'receiver_id' => $rows['receiver_id'],
-                'message' => $rows['message']
+                'message' => $rows['message'],
+                'media_link' => $rows['media_link'],
+                'media_type' => $rows['media_type']
             );
         }
         //  $result = array_reverse($result);
         $html = '';
         foreach ($result as $value)
-            if ($value['sender_id'] == $data['my_id']) {
-                $html .= '<div class="from"><p>' . $value['message'] . '</p></div>';
+            $message = $value['message'];
+        if ($message == null) {
+            if (in_array($value['media_type'], $check_type)) {
+                $message = '<a href="uploads/' . $value['media_link'] . '"  target="_BLANK"><img src="uploads/' . $value['media_link'] . '" width="50" height="50" /></a>';
             } else {
-                $html .= '<div class="to"><p>' . $value['message'] . '</p></div>';
+                $message = '<a href="uploads/' . $value['media_link'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50" /></a>';
             }
+        }
+        if ($value['sender_id'] == $data['my_id']) {
+            $html .= '<div class="from"><p>' . $message . '</p></div>';
+        } else {
+            $html .= '<div class="to"><p>' . $message . '</p></div>';
+        }
         $data['message'] = $html;
         return $data;
     }
@@ -1673,6 +1704,11 @@ class PHPWebSocket {
         return $data;
     }
 
+    /**
+     * Check weather user is online or not.
+     * @param type $user_id
+     * @return boolean
+     */
     function online_status($user_id) {
         $status = false;
         foreach ($this->wsClients as $id => $client) {
@@ -1684,12 +1720,75 @@ class PHPWebSocket {
         return $status;
     }
 
+    /**
+     * Single user chat for images.sss
+     * @param type $user_id
+     * @param type $data
+     */
     function save_sent_file($user_id, $data = null) {
-        $output_file = 'D://upload/'.$data['name'];
-        echo substr($data['data'], 0,20);
-        file_put_contents($output_file,  base64_decode($data['data']));
-      //  echo $data['data_type'];
-        // return $data;
+        $time = time();
+        $link = $this->db();
+        $output_file = dirname(__DIR__) . "\\uploads\\user_" . $user_id;
+        if (!file_exists($output_file)) {
+            mkdir($output_file, 0777);
+        }
+        $output_file .= '\sentFiles';
+        if (!file_exists($output_file)) {
+            mkdir($output_file, 0777);
+        }
+        $data['webpath'] = 'user_' . $user_id . '/sentFiles/' . $time . '_' . $data['name'];
+        $output_file .= '\\' . $time . '_' . $data['name'];
+
+
+        if ($user_id != $data['to']) {  // User cannot send messages to self
+            $all = $this->class_mate_list($user_id);
+            if (in_array($data['to'], $all)) {
+                $received_status = 0;
+                foreach ($this->wsClients as $id => $client) {
+                    if ($this->wsClients[$id][12] == $data['to']) {
+                        $received_status = 1;
+                        break;
+                    }
+                }
+
+                $query = "INSERT INTO `ism`.`" . TBL_USER_CHAT . "` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`,"
+                        . " `media_type`, `received_status`, `created_date`, `is_delete`, `is_testdata`) "
+                        . "VALUES (NULL, $user_id," . $data['to'] . ", NULL, '" . $data['webpath'] . "', '" . $data['data_type'] . "', $received_status, CURRENT_TIMESTAMP, '0', 'yes')";
+
+                $x = mysqli_query($link, $query);
+                $data['insert_id'] = mysqli_insert_id($link);
+
+                file_put_contents($output_file, base64_decode($data['data']));
+                if (!$x) {
+                    $data['to'] = 'self';
+                    $data['error'] = 'Unable to save message.! Please try again.';
+                }
+            } else {
+                $data['to'] = 'self';
+                $data['error'] = 'Please do not modify things manually!';
+            }
+        } else {
+            $data['to'] = 'self';
+            $data['error'] = 'You cannot send messages to self!';
+        }
+
+        if (isset($data['data'])) {
+            unset($data['data']);
+        }
+        $check_type = array(
+            'image/png',
+            'image/jpg',
+            'image/jpeg',
+            'image/gif'
+        );
+        if(in_array($data['data_type'], $check_type)){
+            $data['message'] = '<a href="uploads/' . $data['webpath'] . '"  target="_BLANK"><img src="uploads/' . $data['webpath'] . '" width="50" height="50"></a>';
+        }else{
+            $data['message'] = '<a href="uploads/' . $data['webpath'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50"></a>';
+        }
+        $data['type'] = 'studymate';
+        $data['from'] = $user_id;
+        return $data;
     }
 
 }
