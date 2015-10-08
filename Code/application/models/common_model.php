@@ -213,7 +213,7 @@ function active_chat($user_id){
 				);
 			$data['comment'] = select(
 				TBL_USER_CHAT. ' uc',
-				'uc.id,uc.sender_id,uc.receiver_id,uc.message',
+				'uc.id,uc.sender_id,uc.receiver_id,uc.message,uc.media_link,uc.media_type',
 				"(uc.sender_id = $active_chat_id AND uc.receiver_id = $user_id) OR (uc.sender_id = $user_id AND uc.receiver_id = $active_chat_id) ",
 				array('limit' => 10,'order_by' => 'uc.id DESC'));
 		}

@@ -355,28 +355,45 @@
                         </div>
                         <div class="chat_text mCustomScrollbar" data-mcs-position="bottom">
                             <?php
-                            foreach($active_c['comment'] as $value)
+                            if(isset($active_c['comment'] ) && !empty($active_c['comment'] )){
+                                $check_type = array(
+                                    'image/png',
+                                    'image/jpg',
+                                    'image/jpeg',
+                                    'image/gif'
+                                    );
+                            foreach($active_c['comment'] as $value){
+                                $mess = $value['message'];
+                            
+                            if($mess == null || $mess == ''){
+                                if(in_array($value['media_type'], $check_type)){
+                                $mess = '<a href="uploads/'.$value['media_link'].'"  target="_BLANK"><img src="uploads/'.$value['media_link'].'" width="50" height="50" /></a>';
+                                }else{
+                                $mess = '<a href="uploads/'.$value['media_link'].'"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50" /></a>';
+                                }
+                            }
                                 if($value['sender_id'] == $active_c['user']['id']){
                             ?>
-                                <div class="from"><p><?php echo $value['message']; ?></p></div>
+                                <div class="from"><p><?php echo  $mess; ?></p></div>
                             <?php
                                 }else{
                             ?>
-                                <div class="to"><p><?php echo $value['message']; ?></p></div>
+                                <div class="to"><p><?php echo  $mess; ?></p></div>
                             <?php
                                 }
+                            }
+                        }
                              ?>
 
                         </div>
+                        <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">
                         <input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="<?php echo $active_c['user']['id'] ?>">
                         <a href="#" class="icon icon_emoji"></a>
                         <a href="#" class="icon icon_pin"></a>
-                        <input type="file" id="chat_upload" class="chat_pin" data-type="chat" data-id="<?php echo $active_c['user']['id'] ?>">
+                        <input type="file" id="chat_file_share" class="chat_pin" data-type="single_chat_file" data-id="<?php echo $active_c['user']['id'] ?>">
                     </div>
                 <?php } ?>
             </div>
-
-
             <!--//chat-->
 
 <?php if(isset($menu) && $menu == 'week'){ ?>
