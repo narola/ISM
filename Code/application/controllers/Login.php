@@ -133,7 +133,7 @@ class Login extends CI_Controller {
     public function set_session($userid){
 
         $users = select(TBL_USERS.' u',
-                'u.*,s.district_id,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id,co.course_name,si.academic_year,si.course_id,si.classroom_id,si.school_id,(select count(*) cnt from tutorial_group_member where group_id = gu.id) as membercount',   
+                'u.*,s.district_id,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id,co.course_name,si.academic_year,si.course_id,si.classroom_id,si.school_id,(select count(*) cnt from tutorial_group_member where group_id = gu.id) as membercount,cl.class_name,s.district_id,d.district_name',   
                 array('where'   =>  array('u.id' => $userid)),
                 array('join'    =>    
                    array(
@@ -173,6 +173,14 @@ class Login extends CI_Controller {
                         array(
                             'table' => TBL_COURSES.' co',
                             'condition' => 'si.course_id = co.id'
+                            ),
+                        array(
+                            'table' => TBL_CLASSROOMS.' cl',
+                            'condition' => 'cl.id = si.classroom_id'
+                            ),
+                        array(
+                            'table' => TBL_DISTRICTS.' d',
+                            'condition' => 'd.id = s.district_id'
                             )
                         )
                     )
