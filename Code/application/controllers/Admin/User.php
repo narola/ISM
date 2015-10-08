@@ -264,7 +264,7 @@ class User extends ADMIN_Controller {
 		$this->form_validation->set_rules('last_name', 'Last Name', 'trim|alpha_numeric_spaces');	
 		$this->form_validation->set_rules('full_name', 'Full Name', 'trim|alpha_numeric_spaces');
 		$this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|numeric');	
-		$this->form_validation->set_rules('birthdate', 'Birthdate', 'required|callback_valid_date');
+		$this->form_validation->set_rules('birthdate', 'Birthdate', 'required|trim|callback_valid_date');
 
 		if($this->form_validation->run() == FALSE){
 
