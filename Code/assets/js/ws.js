@@ -66,27 +66,42 @@ $(document).ready(function () {
 
 
 /* Validate length of selected file. */
-    var _URL = window.URL || window.webkitURL;
-    $("#chat_upload").change(function (e) {
-        if (this.files[0].size <= 1024 * 1024 * 10) {
+            var handleFileSelect = function(evt) {
+                var files = evt.target.files;
+                var file = files[0];
+                var type_of_data =  this.files[0].type;
+                var file_name =  this.files[0].name;
+                if (this.files[0].size <= 1024 * 1024 * 10) {
+                if (files && file) {
+                    var reader = new FileReader();
+                    reader.onload = function(readerEvt) {
+                        var binaryString = readerEvt.target.result;
+                        console.log(btoa(binaryString));
+                        var request = {
+                            type :'single_chat_file',
+                            name : file_name,
+                            data_type : type_of_data,
+                            data : btoa(binaryString),
+                            to   : $(this).data('id')
+                        }
+                        ws.send(JSON.stringify(request));
 
-        } else {
-            alert('');
-        }
-        alert(this.files[0].size);
-        var file, img;
-        if ((file = this.files[0])) {
-            img = new Image();
-            img.onload = function () {
-                alert(this.width + " " + this.height);
+                    };
+                        reader.readAsBinaryString(file);
+                    } 
+                }else {
+                    alert('Max file upload limit 10MB!');
+                } 
             };
-            img.src = _URL.createObjectURL(file);
-        }
+
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                document.getElementById('chat_upload').addEventListener('change', handleFileSelect, false);
+            } else {
+                alert('The File APIs are not fully supported in this browser.');
+            }    
+              
     });
 
-
-
-});
 
 /* Check wheather web socket is supported by browser. */
 if ("WebSocket" in window)
@@ -115,9 +130,9 @@ if ("WebSocket" in window)
 
         if (obj.type == 'studymate') {
                 if (wp == obj.from) {
-                    $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p></div>");
+                    $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').prepend("<div class='to'><p>" + obj.message + "</p></div>");
                 } else {
-                    $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p></div>");
+                    $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').prepend("<div class='from'><p>" + obj.message + "</p></div>");
                 }
             if( $('#chat_container .chat.active').data('id') != obj.from && wp != obj.from){
                 var request = {
@@ -150,7 +165,7 @@ if ("WebSocket" in window)
         } else if (obj.type == 'notification') {
                 set_status(obj.user_id, obj.live_status);
         } else if(obj.type == 'get_latest_message'){
-            $('.chat[data-id="' + obj.my_id + '"] .chat_text #mCSB_5 #mCSB_5_container').html(obj.message);
+            $('.chat[data-id="' + obj.my_id + '"] .chat_text .mCustomScrollBox .mCSB_container').html(obj.message);
         }else if(obj.type == 'post'){
            // if(obj.id != wp){
                 $('.alert_notification p').html("New feed from <b>"+obj.full_name+"</b>").show();
@@ -339,15 +354,6 @@ $(document).on('click', '#mate_list', function () {
     }
 
     if (is_needed == true) {
-
-        var request = {
-            type: 'get_latest_message',
-            to: 'self',
-            my_id: id
-        };
-
-        ws.send(JSON.stringify(request));
-
         str += '<div class="chat active" data-id="' + id + '">';
         str += '<div class="chat_header"><div class="chat_img_holder">';
         str += '<img src="' + $(this).children('div').children('img').attr('src') + '">';
@@ -363,7 +369,14 @@ $(document).on('click', '#mate_list', function () {
         $("#chat_container .chat[data-id='"+id+"'] .chat_text")
         .mCustomScrollbar({
             theme:"minimal-dark"
-        });
+        }).delay(300);
+         var request = {
+            type: 'get_latest_message',
+            to: 'self',
+            my_id: id
+        };
+
+        ws.send(JSON.stringify(request));
     } else {
         $(".chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
     }

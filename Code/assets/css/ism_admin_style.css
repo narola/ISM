@@ -1222,6 +1222,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .group_perf_member{
 	padding:15px;
+	border-bottom:1px solid rgba(0,0,0,0.1);
 }
 .group_perf_member .username .chat_img_holder {
     height: 70px;
@@ -1236,7 +1237,6 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     padding-top: 3px;
 }
 .group_perf_member .username{
-	border-bottom:1px solid rgba(0,0,0,0.1);
 	padding-bottom:15px;
 }
 .group_performance_2{
@@ -1249,4 +1249,18 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .group_performance_3 .box_header{
 	border-left: 1px solid rgba(0,0,0,0.1);
+}
+.group_perf_member .group_total_points,
+.group_perf_member .group_rank{
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+}
+.group_perf_member .group_score{
+	padding:0;
+}
+.group_member_wrapper>.group_perf_member:nth-child(odd){
+	background-color:#fff;
+}
+.group_member_wrapper>.group_perf_member:nth-child(even){
+	background-color:#f7f7f7;
 }

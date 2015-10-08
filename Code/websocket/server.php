@@ -19,7 +19,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 
     $data = json_decode($message, true);
     $data['error'] = 'skip';
-    $Server->log($data);
+   // $Server->log($data);
     /* For individual chat */
     if ($data['type'] == 'studymate') {
         $responce = $Server->single_chat($clientID, $data);
@@ -82,6 +82,10 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $data;
     } else if($data['type'] == 'set_unread'){
         $Server->set_unread($data);
+    } else if ($data['type'] == 'decline-request'){
+         $responce = $Server->accept_decline_request($Server->wsClients[$clientID][12],$data);
+    } else if($data['type'] == 'single_chat_file'){
+        $responcsse = $Server->save_sent_file($Server->wsClients[$clientID][12],$data);
     }
 
     $check = array('feed_comment', 'like');

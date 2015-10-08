@@ -45,7 +45,7 @@
                         <div class="form-group">
                             <label> Select Users </label>
 
-                            <select name="all_users[]" class="js-example-basic-single form-control" multiple="multiple">
+                            <select name="all_users[]" id="all_users" class="js-example-basic-single form-control" multiple="multiple">
 
                                 <?php
                                 if(!empty($roles)) {
@@ -95,7 +95,7 @@
                     </div>
                     <div class="box_footer">
                     	<button class="btn btn_green" type="submit">Send</button>
-                        <input type="checkbox" name="save_template" value="1" id="save_template">
+                        <input type="checkbox" name="save_template" value="1" id="save_template" id="save_template">
                         <label class="save_box"></label>
                         <label for="save_template">Save in Templates</label>
                         <a href="<?php echo base_url().$prev_url; ?>" class='btn btn_black'>Cancel</a>
@@ -112,6 +112,27 @@
     
   $(document).ready(function() {
       $(".js-example-basic-single").select2();
+    });
+
+
+   $('#save_template').change(function() {
+        
+        var msg_title = $('#message_title').val();
+
+        $.ajax({
+            url: '<?php echo base_url()."common/check_template_unique";?>',
+            type:'post',
+            data:{msg_title:msg_title},
+            success:function(data){
+                
+                if(data == 0){
+                    $('#save_template').attr('checked',false);
+                }else{
+                    $('#save_template').attr('checked',true);
+                }
+            }
+        });
+
     });
 
     function get_message_template(msg_id){
