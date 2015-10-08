@@ -185,6 +185,11 @@ class Dashboard extends ADMIN_Controller {
 			$this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
 
 			$this->excel->getActiveSheet()->freezePane('A2'); //Freeze panel Above of A2 row
+
+			$this->excel->getActiveSheet()->getStyle('A1:C1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+			$this->excel->getActiveSheet()->getRowDimension('1')->setRowHeight(20);
+			$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(100);
 			
 			$cnt = 2;
 
@@ -232,11 +237,8 @@ class Dashboard extends ADMIN_Controller {
 					$this->excel->getActiveSheet()->setCellValue('A'.$cnt, $cnt-1);
 					$this->excel->getActiveSheet()->setCellValue('B'.$cnt, $username);
 					$this->excel->getActiveSheet()->setCellValue('C'.$cnt, $pass_generated);
-					
-					// $this->excel->getActiveSheet()->getColumnDimension('A'.$cnt)->setWidth(10);
-					// $this->excel->getActiveSheet()->getColumnDimension('B'.$cnt)->setWidth(10);
-					// $this->excel->getActiveSheet()->getColumnDimension('C'.$cnt)->setWidth(10);
-
+					$this->excel->getActiveSheet()->getStyle('A'.$cnt.':C'.$cnt)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+					$this->excel->getActiveSheet()->getRowDimension($cnt)->setRowHeight(17); //set Height After first Row
 					$cnt++;
 
  				}

@@ -20,7 +20,7 @@
                     	<h3>Send New Message</h3>
                     </div>
                     <div class="box_body">
-                    	<div class="form-group">
+                    	<div class="form-group" id="msg_template">
                             <label>Select Template</label>
                             <select class="form-control js-example-basic-single" onclick="get_message_template(this.value)" >
                                 <option value="" > No Template </option>
@@ -35,6 +35,8 @@
                             </select>
 
                         </div>
+
+                        <div class="alert alert-danger hide" id="msg_temp">Message Template should be unique. </div>
 
                         <?php $msgerror = $this->session->flashdata('msgerror'); ?>
   
@@ -78,7 +80,8 @@
 
                         <div class="form-group">
                         	<label>Title</label>
-                            <input type="text" class="form-control" name="message_title" id="message_title" value="<?php echo set_value('message_title'); ?>" >
+                            <input type="text" class="form-control" name="message_title" onkeyup="check_template_unique()"
+                            id="message_title" value="<?php echo set_value('message_title'); ?>" >
                         </div>
 
                         <div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_title'),''))){ echo 'hide';} ?>">
@@ -95,7 +98,7 @@
                     </div>
                     <div class="box_footer">
                     	<button class="btn btn_green" type="submit">Send</button>
-                        <input type="checkbox" name="save_template" value="1" id="save_template" id="save_template">
+                        <input type="checkbox" name="save_template" value="1" id="save_template">
                         <label class="save_box"></label>
                         <label for="save_template">Save in Templates</label>
                         <a href="<?php echo base_url().$prev_url; ?>" class='btn btn_black'>Cancel</a>
@@ -126,14 +129,42 @@
             success:function(data){
                 
                 if(data == 0){
-                    $('#save_template').attr('checked',false);
-                }else{
                     $('#save_template').attr('checked',true);
+                }else{
+                     $("#msg_temp").removeClass('hide');
+                    $('#save_template').attr('checked',false);
                 }
             }
         });
 
     });
+
+    function check_template_unique(){
+
+        var msg_title = $('#message_title').val();
+
+        if($('#save_template').attr('checked')){
+
+            $.ajax({
+                url: '<?php echo base_url()."common/check_template_unique";?>',
+                type:'post',
+                data:{msg_title:msg_title},
+                success:function(data){
+                    
+                    if(data == 0){
+                        $("#msg_temp").addClass('hide');
+                        $('#save_template').attr('checked',true);
+                    }else{
+                        $("#msg_temp").removeClass('hide');
+                        $('#save_template').attr('checked',false);
+                    }
+                }
+            });
+
+        }else{
+            $("#msg_temp").addClass('hide'); 
+        }
+    }
 
     function get_message_template(msg_id){
         
@@ -146,6 +177,7 @@
                     data = data.split('###');
                     $('#message_title').val(data[0]);
                     $('#message_desc').val(data[1]); 
+                    $('#save_template').attr('checked',false);
                 }
             });
         }else{

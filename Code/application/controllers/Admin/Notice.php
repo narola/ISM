@@ -11,11 +11,33 @@ class Notice extends ADMIN_Controller {
 	{
 		parent::__construct();
 		$this->data['page_title'] = 'Notice';
+		$this->data['cur_url'] = $this->session->userdata('cur_url');
+		$this->data['prev_url'] = $this->session->userdata('prev_url');
 	}
 
 	//  List All noticeboard view,delete,add,and change into archive notice
 	public function index()
 	{
+
+		if($_POST){
+			
+			$bulk_notices = $this->input->post('notices_bulk');
+			$bulk_action = $this->input->post('bulk_action');
+
+			if(!empty($bulk_notices)){
+
+				foreach($bulk_notices as $b_notice){
+					update(TBL_NOTICEBOARD,$b_notice,array('is_delete'=>TRUE));	
+				}	
+				$this->session->set_flashdata('success', 'Notices are successfully deleted.');
+				redirect('admin/notice');
+			}else{
+				$this->session->set_flashdata('error', 'No Notices Selected for Bulkaction.');
+				redirect('admin/notice');
+			}
+
+		}
+
 		if( !empty($_GET['role']) || !empty($_GET['status']) || !empty($_GET['classroom']) ){
 
 			if( !empty($_GET['role']) ) { $role = $this->input->get('role'); }	
@@ -111,7 +133,7 @@ class Notice extends ADMIN_Controller {
 		$this->data['templates'] = select(TBL_NOTICEBOARD,false,array('where'=>array('is_template'=>TRUE,'is_delete'=>FALSE)));
 		$this->data['classrooms'] = select(TBL_CLASSROOMS);
 
-		$this->form_validation->set_rules('notice_title', 'Notice Title', 'trim|required');
+		$this->form_validation->set_rules('notice_title', 'Notice Title', 'trim|required|alpha_numeric_spaces');
 		$this->form_validation->set_rules('notice', 'Notice Description', 'trim|required');
 		$this->form_validation->set_rules('role_id', 'Role', 'trim|required');
 		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim');
@@ -165,7 +187,7 @@ class Notice extends ADMIN_Controller {
 
 			insert(TBL_NOTICEBOARD_VIEWER,$noticeboard_viewer);
 			$this->session->set_flashdata('success', 'Data is Successfully created.');
-			redirect('admin/notice');
+			redirect($this->data['prev_url']);
 		}
 	}
 
@@ -191,7 +213,7 @@ class Notice extends ADMIN_Controller {
 						  				)
 						  			));		
 
-		$this->form_validation->set_rules('notice_title', 'Notice Title', 'trim|required');
+		$this->form_validation->set_rules('notice_title', 'Notice Title', 'trim|required|alpha_numeric_spaces');
 		$this->form_validation->set_rules('notice', 'Notice Description', 'trim|required');
 		$this->form_validation->set_rules('role_id', 'Role', 'trim|required');
 		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim');
@@ -222,8 +244,7 @@ class Notice extends ADMIN_Controller {
 								);
 			update(TBL_NOTICEBOARD_VIEWER,$notice_viewer_id,$notice_viewer_data);
 			$this->session->set_flashdata('success', 'Data is Successfully Updated.');
-			redirect('admin/notice');
-			//redirect('','refresh');
+			redirect($this->data['prev_url']);
 		}
 	}
 
@@ -232,7 +253,7 @@ class Notice extends ADMIN_Controller {
 
 		update(TBL_NOTICEBOARD,$id,array('is_delete'=>TRUE));
 		$this->session->set_flashdata('success', 'Data is Successfully Deleted.');
-		redirect('admin/notice');	
+		redirect($this->data['prev_url']);	
 	}
 
 	//Admin can cange status of Notice Active to Archive
@@ -245,7 +266,7 @@ class Notice extends ADMIN_Controller {
 			update(TBL_NOTICEBOARD,$id,array('status'=>'archive'));	
 			$this->session->set_flashdata('success', "Data's Status has been added to Archive.");
 		}
-		redirect('admin/notice');	
+		redirect($this->data['prev_url']);	
 	}
 	
 }

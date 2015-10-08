@@ -23,9 +23,8 @@
                   
                   <div class="form-group">
                       <label> Templates </label>
-                       <select name="roles" class="form-control" onchange="get_notice_template(this.value)">
-                          <option selected disabled> Select Template</option>
-                          <option value="">No Template</option>
+                       <select name="roles" class="form-control js-example-basic-single" onchange="get_notice_template(this.value)">
+                          <option selected value="">No Template</option>
                           <?php 
                               if(!empty($templates)) {
                                 foreach($templates as $template) { 
@@ -124,7 +123,7 @@
                 <div class="box_footer">
                   <button type="submit" class="btn btn_green">Save</button>
                   <input type="checkbox" name="is_template" id="is_template" value="1"><label class="save_box"></label><label for="is_template">Save in Templates</label>
-                  <button class="btn btn_black">Cancel</button>
+                  <a href="<?php echo $prev_url; ?>" class="btn btn_black">Cancel</a>
                 </div>
             </div>
           </form>
@@ -135,6 +134,11 @@
 <!--//main-->
 
 <script type="text/javascript">
+    
+      $(document).ready(function() {
+            $(".js-example-basic-single").select2();
+      });
+
 
     function get_notice_template(notice_id){
         
