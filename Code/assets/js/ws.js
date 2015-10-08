@@ -224,7 +224,7 @@ if ("WebSocket" in window)
             if(obj.error == ''){
                 $('.studyamte_list .mCustomScrollBox  .mCSB_container  .study_mate[data-id="'+obj.studymate_id+'"]').fadeOut(300);
             }
-            $('#mCSB_2 #mCSB_2_container div[data-id="'+obj.studymate_id+'"]').remove().html();
+            
 
         }else if(obj.type == "dictionary"){
             $('.dictionary_result .mCustomScrollBox .mCSB_container').html(obj.message);
@@ -641,7 +641,6 @@ $(document).on('click','a[data-type="view-all-comment-activities"]',function(e){
 });
 
 $(document).on('click','button[data-type = "decline-request"]',function(e){
-    alert('hi');
     var request = {
         type: 'decline-request',
         sub_type : $(this).data('subtype'),
