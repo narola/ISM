@@ -1210,6 +1210,7 @@ textarea.post_input{
 	width:100%;
 	height:auto;
 	position:relative;
+    z-index: 1;
 }
 p.chat_name {
     font-weight: 500;
@@ -1302,6 +1303,7 @@ input.chat_input {
 }
 .chat_text {
     padding-top: 15px;
+	padding-bottom: 5px;
 }
 .chat_text div{
 	width:100%;
@@ -2582,4 +2584,8 @@ svg {
     padding: 9px 0px;
     border-bottom: 1px solid rgba(0,0,0,0.1);
     margin: 0;
+}
+.chat .chat_loading{
+    position: relative;
+    bottom: 15px;
 }
