@@ -207,6 +207,7 @@
     	$('#filter').submit();
     }
 
+
 	<?php if(!empty($_GET['role'])) { ?>
 		$('#role').val('<?php echo $_GET["role"];?>');	
 	<?php } ?>

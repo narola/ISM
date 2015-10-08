@@ -4,8 +4,8 @@
 		<div class="row page_header">
     	<div class="col-sm-12">
         	<ol class="breadcrumb">
-              <li><a href="Group.html">Group</a></li>                          
-              <li><a href="#">Manage Group</a></li>
+              <li><a href="admin/user">Manage</a></li>                          
+              <li><a href="admin/user">User</a></li>
               <li class="active">Send Message</li>
             </ol>
         </div>

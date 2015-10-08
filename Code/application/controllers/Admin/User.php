@@ -341,7 +341,7 @@ class User extends ADMIN_Controller {
 		$this->data['u'] =select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>true));
 		$this->data['templates'] =select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
 		$this->data['users'] =select(TBL_USERS,
-									TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
+									TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name,'.TBL_ROLES.'.id as rid',
 									 array(
 									 		'where'=>array(TBL_USERS.'.is_delete'=>FALSE),
 									 		'where_not_in'=>array(TBL_USERS.'.user_status'=>array('blocked'))
@@ -360,7 +360,8 @@ class User extends ADMIN_Controller {
 			$this->form_validation->set_rules('all_users', 'Users', 'trim|required');		
 		}										
 
-		
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+
 		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required|alpha_numeric_spaces');	
 		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
 
