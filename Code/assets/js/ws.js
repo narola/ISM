@@ -207,6 +207,7 @@ if ("WebSocket" in window)
             if(obj.error == ''){
                 $('.studyamte_list .mCustomScrollBox  .mCSB_container  .study_mate[data-id="'+obj.studymate_id+'"]').fadeOut(300);
             }
+            $('#mCSB_2 #mCSB_2_container div[data-id="'+obj.studymate_id+'"]').remove().html();
 
         }else if(obj.type == "dictionary"){
             $('.dictionary_result .mCustomScrollBox .mCSB_container').html(obj.message);

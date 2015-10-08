@@ -462,7 +462,11 @@ class User_account extends CI_Controller {
 	/*--check email exist or not------------------*/
 	public function check_email()
 	{
-		$found	=	select(TBL_USERS,null,array('where'=>array('email_id' => $this->input->post('email_id',TRUE))));
+		if($this->session->userdata('user')['id'] != '')
+			$where = array('where'=>array('email_id' => $this->input->post('email_id',TRUE),'id !='=>$this->session->userdata('user')['id']));
+		else
+			$where = array('where'=>array('email_id' => $this->input->post('email_id',TRUE)));
+		$found	=	select(TBL_USERS,null,$where);
 		if(sizeof($found) > 0){
 			$this->form_validation->set_message('check_email', 'Email Already Exist');
 			return FALSE;
