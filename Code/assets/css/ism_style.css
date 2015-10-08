@@ -1209,6 +1209,7 @@ textarea.post_input{
 .chat_img_holder img{
 	width:100%;
 	height:auto;
+	position:relative;
 }
 p.chat_name {
     font-weight: 500;
@@ -2497,20 +2498,28 @@ svg {
     left: -15px;
     top: 7px;
 }
-.topic_allocated .table{
+.topic_allocated>.topic_div{
 	border:1px solid rgba(0,0,0,0.1);
+    margin-bottom: 15px;
 }
-.topic_allocated .table>tbody>tr>th{
+.topic_allocated>div>h4{
 	background-color:#f2f2f2;
 	color:#1bc4a3;
 	font-weight:600;
 	text-transform:uppercase;
+	padding: 6px 15px;
+    margin: 0;
 }
-.topic_allocated .table p{
-	font-size:14px;
+.topic_allocated p{
+	font-size:13px;
 	margin:0;
 }
-.topic_allocated .table>tbody>tr>td:first-child{
+.topic_div>div>div{
+	width:50%;
+	float:left;
+	padding:5px 15px;
+}
+.topic_allocated .topic_div>div>div:first-child{
 	border-right:1px solid rgba(0,0,0,0.07);
 }
 .studymate_with .study_mate{

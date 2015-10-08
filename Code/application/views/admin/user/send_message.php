@@ -4,14 +4,13 @@
 		<div class="row page_header">
     	<div class="col-sm-12">
         	<ol class="breadcrumb">
-              <li><a href="Group.html">Group</a></li>                          
-              <li><a href="#">Manage Group</a></li>
+              <li><a href="admin/user">Manage</a></li>                          
+              <li><a href="admin/user">User</a></li>
               <li class="active">Send Message</li>
             </ol>
         </div>
     </div>
     <!--//breadcrumb-->
-    
     <!--message-->
    	<div class="row">
     	<div class="col-sm-12 new_message">
@@ -37,19 +36,34 @@
 
                         </div>
 
+                        <?php $msgerror = $this->session->flashdata('msgerror'); ?>
+  
+                        <div class="alert alert-danger <?php if(empty(strip_tags($msgerror,''))){ echo 'hide';} ?>">
+                            <?php echo strip_tags($msgerror) ; ?>
+                        </div>
+
                         <div class="form-group">
                             <label> Select Users </label>
 
                             <select name="all_users[]" class="js-example-basic-single form-control" multiple="multiple">
 
-                                <?php 
-                                if(!empty($users)) {
-                                    foreach($users as $user){
+                                <?php
+                                if(!empty($roles)) {
+                                    foreach($roles as $role){
                                      ?>
-                                    <option value="<?php echo $user['id'] ?>" 
-                                        <?php if($user['username'] == $u['username']){ echo "selected='selected'"; } ?>>
-                                        <?php echo $user['username']; ?>
-                                    </option>            
+                                     <optgroup label="<?php echo ucfirst($role['role_name']); ?>">
+                                        <?php 
+                                            if(!empty($users)){ foreach($users as $user) {
+                                                  if($user['rid']==$role['id']) {  
+                                         ?>
+                                           <option value="<?php echo $user['id'] ?>" 
+                                            <?php echo set_select('all_users', $user['id']); 
+                                            if($user['username'] == $u['username']){ echo "selected='selected'"; } ?>
+                                            >
+                                                <?php echo ucfirst($user['username']); ?>
+                                            </option> 
+                                        <?php } } }?>
+                                     </optgroup>            
                                 <?php } } ?>
 
                             </select>
@@ -59,11 +73,8 @@
                         <div class="alert alert-danger <?php if(empty(strip_tags(form_error('all_users'),''))){ echo 'hide';} ?>">
                           <?php echo strip_tags(form_error('all_users'),'') ; ?>
                         </div>
-                        <?php $error = $this->session->flashdata('error'); ?>
-  
-                        <div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
-                            <?php echo strip_tags($error) ; ?>
-                        </div>
+                        
+                        <?php echo flashMessage(TRUE,FALSE); ?>
 
                         <div class="form-group">
                         	<label>Title</label>
@@ -87,7 +98,7 @@
                         <input type="checkbox" name="save_template" value="1" id="save_template">
                         <label class="save_box"></label>
                         <label for="save_template">Save in Templates</label>
-                        <a href="<?php echo base_url().'admin/user'; ?>" class='btn btn_black'>Cancel</a>
+                        <a href="<?php echo base_url().$prev_url; ?>" class='btn btn_black'>Cancel</a>
                     </div>
                 </form>
             </div>

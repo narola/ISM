@@ -8,8 +8,11 @@ class User extends ADMIN_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+
 		$this->load->helper(array('csv','file'));		
 		$this->load->library(array('zip'));
+		$this->data['cur_url'] = $this->session->userdata('cur_url');
+		$this->data['prev_url'] = $this->session->userdata('prev_url');
 	}
 
 	// ---------------------------- User Module Start --------------------------------------------
@@ -232,9 +235,7 @@ class User extends ADMIN_Controller {
 	    $this->data['cities'] = select(TBL_CITIES,FALSE,array('where'=>array('state_id'=>$this->data['user']['state_id'])));
 		$this->data['roles'] = select(TBL_ROLES);
 		$this->data['packages'] = select(TBL_MEMBERSHIP_PACKAGE);
-		$this->data['cur_url'] = $this->session->userdata('cur_url');
-		$this->data['prev_url'] = $this->session->userdata('prev_url');
-
+		
 		if($_POST){
 			
 			$username = $this->input->post('username');
@@ -340,7 +341,7 @@ class User extends ADMIN_Controller {
 		$this->data['u'] =select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>true));
 		$this->data['templates'] =select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
 		$this->data['users'] =select(TBL_USERS,
-									TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
+									TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name,'.TBL_ROLES.'.id as rid',
 									 array(
 									 		'where'=>array(TBL_USERS.'.is_delete'=>FALSE),
 									 		'where_not_in'=>array(TBL_USERS.'.user_status'=>array('blocked'))
@@ -354,10 +355,14 @@ class User extends ADMIN_Controller {
 													)
 												)
 											)
-									);	
+									);
+		if(count($this->input->post('all_users')) == 0){
+			$this->form_validation->set_rules('all_users', 'Users', 'trim|required');		
+		}										
 
-		$this->form_validation->set_rules('all_users', 'Users', 'trim|required');	
-		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+
+		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required|alpha_numeric_spaces');	
 		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
 
 		if($this->form_validation->run() == FALSE){
@@ -367,12 +372,30 @@ class User extends ADMIN_Controller {
 
 			$all_users = $this->input->post('all_users');
 
+			$msg_title = $this->input->post('message_title');
+			$msg_text = $this->input->post('message_desc');
+
+			$db_template = select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
+
+			 
+			$cnt = 0;
+			if(isset($_POST['save_template'])){
+				foreach($db_template as $db_temp){
+					
+					if($db_temp['message_title'] === $msg_title){
+						$cnt++;
+					}
+				}
+			}
+
+			if($cnt != 0){
+				$this->session->set_flashdata('msgerror', 'Message template should be Unique.');
+				redirect('admin/user/send_message/'.$id);
+			}
+
 			if(!empty($all_users)){			
 
 				foreach($all_users as $user){
-
-						$msg_title = $this->input->post('message_title');
-						$msg_text = $this->input->post('message_desc');
 
 						$data = array(
 								'message_text'=>$msg_text,
@@ -422,7 +445,7 @@ class User extends ADMIN_Controller {
 				}
 
 				$this->session->set_flashdata('success', 'Message has been Successfully sent.');
-				redirect('admin/user');
+				redirect($this->data['prev_url']);
 		}
 
 	}
@@ -441,6 +464,7 @@ class User extends ADMIN_Controller {
 				$this->data['my_cnt'] = 1;
 				$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
 			}else{
+				$this->data['post_users'] = array();
 				$this->data['post_users'] = $this->input->post('users');
 				$this->data['my_cnt'] = 0;	
 				$this->form_validation->set_rules('all_users[]', 'Users', 'trim');		
@@ -470,7 +494,7 @@ class User extends ADMIN_Controller {
 
 		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
 
-		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
+		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required|alpha_numeric_spaces');	
 		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
 
 		if($this->form_validation->run() == FALSE){

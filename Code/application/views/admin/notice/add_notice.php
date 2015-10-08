@@ -35,6 +35,12 @@
                               
                        </select> 
                   </div>
+                  
+                    <?php $msgerror = $this->session->flashdata('msgerror'); ?>
+  
+                    <div class="alert alert-danger <?php if(empty(strip_tags($msgerror,''))){ echo 'hide';} ?>">
+                        <?php echo strip_tags($msgerror) ; ?>
+                    </div>  
                           
                   <div class="form-group">
                       <label> Roles </label>
@@ -90,6 +96,30 @@
                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('notice'),''))){ echo 'hide';} ?>">
                     <?php echo strip_tags(form_error('notice'),'') ; ?>
                 </div>
+
+                 <div class="form-group">
+                      <label>Status</label>
+                     
+                        
+                  </div>
+
+
+                <div class="form-group">
+                    <div class="circleThree">
+                        <input type="radio" value="active" id="circleThree" checked="checked"  name="status">
+                        <label for="circleThree"></label>
+                        <span> Active </span>
+                   
+                        <input type="radio" value="inactive" id="circleThree1" name="status">
+                        <label for="circleThree1"></label>
+                        <span>Inactive</span>
+
+                        <input type="radio" value="archive" id="circleThree2" name="status">
+                        <label for="circleThree2"></label>
+                        <span>Archive</span>
+                    </div>
+                </div>
+
 
                 <div class="box_footer">
                   <button type="submit" class="btn btn_green">Save</button>

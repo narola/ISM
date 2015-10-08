@@ -120,13 +120,30 @@ class Notice extends ADMIN_Controller {
 			$this->template->load('admin/default','admin/notice/add_notice',$this->data);	
 		}else{
 
+			$db_template = select(TBL_NOTICEBOARD,FALSE,array('where'=>array('is_template'=>'1')));
+			$notice_title = $this->input->post('notice_title');
+
+			$cnt = 0;
+			if(isset($_POST['is_template'])){
+				foreach($db_template as $db_temp){
+					if($db_temp['notice_title'] == $notice_title){
+						$cnt++;
+					}
+				}
+			}
+			
+			if($cnt != 0){
+				$this->session->set_flashdata('msgerror', 'Notice template should be Unique.');
+				redirect('admin/notice/add');
+			}
+
 			$posted_by = $this->session->userdata('id'); 
 			
 			$data = array(
-					'notice_title'=>$this->input->post('notice_title'),
+					'notice_title'=>$notice_title,
 					'notice'=>$this->input->post('notice'),
 					'posted_by'=>$posted_by,
-					'status'=>TRUE,
+					'status'=>$this->input->post('status'),
 					'created_date'=>date('Y-m-d H:i:s',time()),
 					'modified_date'=>'0000-00-00 00:00:00',
 					'is_template'=>$this->input->post('is_template'),

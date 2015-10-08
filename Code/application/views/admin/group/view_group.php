@@ -184,7 +184,18 @@
 		$('#filter').submit();
 	}
 
-
+    $( "#filter" ).submit(function( event ) {
+      
+        var course = $('#course').val();
+        var q = $('#q').val();
+        var year = $('#year').val();
+        
+        if(course == '' ){ $('#course').removeAttr('name'); }
+        if(q == ''){ $('#q').removeAttr('name'); }
+        if(year == '' ){ $('#year').removeAttr('name'); }
+        
+    });
+    
 
 
 	<?php if(!empty($_GET['course'])) { ?>
