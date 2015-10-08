@@ -59,7 +59,7 @@ class User_account extends CI_Controller {
 		$this->data['program'] 		= 	select(TBL_COURSES);
 		$this->data['districts'] 		= 	select(TBL_DISTRICTS);
 		$this->data['school_information'] = select(TBL_AUTO_GENERATED_CREDENTIAL.' a',
-	    		's.id as school_id,a.classroom_id as class_id,a.course_id as program,s.district_id,a.is_my_school,s.school_name,c.course_name,cl.class_name,d.district_name',	
+	    		's.id as school_id,a.classroom_id as class_id,a.course_id as program,s.district_id,a.is_my_school,s.school_name,c.course_name,cl.class_name,d.district_name,a.academic_year',	
 	    		array('where' => array('a.username' => $this->session->userdata('credential_user'))),
 		    		array( 'join' => array(
 		    			array(
@@ -82,7 +82,6 @@ class User_account extends CI_Controller {
 		    			),
 		    		'single' => 1
 		    		));
-		
 		$this->form_validation->set_rules('username', 'Username', 'trim|required|callback_check_user');
 		$this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|regex_match[/^[0-9().-]+$/]');
 		
@@ -151,7 +150,8 @@ class User_account extends CI_Controller {
 				"birthdate"			=>	$birthdate,
 				"password"			=>	$this->encrypt->encode($this->input->post("new_password")),
 				"created_date"		=>	date('Y-m-d H:i:s',time()),
-				"modified_date"		=>	date('Y-m-d H:i:s',time())
+				"modified_date"		=>	date('Y-m-d H:i:s',time()),
+				"user_status"		=>	'active'
 			);
 			if(isset($this->session->userdata('user')['id'])){
 				$uid = 	$this->session->userdata('user')['id'];
@@ -233,7 +233,7 @@ class User_account extends CI_Controller {
 				
 				/*------update auto credential when once user can filup form----*/
 				
-				$update_data = array('status' => 1 );
+				$update_data = array('status' => 0 );
 				update(TBL_AUTO_GENERATED_CREDENTIAL,$id,$update_data);
 				
 				/*-----------user academic detail--------------*/

@@ -105,7 +105,7 @@ class Login extends CI_Controller {
                 }
             } else {
 
-                $auto_generated_data = select(TBL_AUTO_GENERATED_CREDENTIAL,null, array('where' => array('username' => $username)),1);
+                $auto_generated_data = select(TBL_AUTO_GENERATED_CREDENTIAL,null, array('where' => array('username' => $username,'status'=>1)),1);
 
                 if (!empty($auto_generated_data)) {
                     $user_pass = $auto_generated_data['password']; /* Data from database */

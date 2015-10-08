@@ -221,7 +221,7 @@
                                     </div>
                                     <div class="form-group small_input">
                                         <label>District of School</label>
-                                        <label class="label_form"><?php echo isset($school_information['district_name'])?$school_information['district_name']:$district_name;?></label>
+                                        <label class="label_form"><?php if(isset($school_information['district_name'])){ echo $school_information['district_name'];}else{if($district_name == '') echo '';else $district_name ;}?></label>
                                     </div>
                                     <div class="form-group small_input ">
                                         <label>Program / Course</label>
