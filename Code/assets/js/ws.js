@@ -242,6 +242,38 @@ if ("WebSocket" in window)
             });
             
             $('.commented_on .feeds .comment[data-id="'+obj.comment_id+'"]').html(str);
+        }else if(obj.type == "decline-request"){
+            
+            if(obj.sub_type == 'accept-request'){
+                if(obj.is_online == true)
+                    status = 'online';
+                else
+                    status = 'offline';
+                str = '';
+                str += '<div class="stm_item '+status+'" data-id="'+obj.studymate_id+'" onerror="this.src=\'assets/images/avatar.png\'">';
+                str += '<a href="javascript:void(0);" id="mate-list" data-id="'+obj.studymate_id+'">';
+                str += '<div class="stm_user_img"><img src="uploads/'+obj.profile+'"></div>';
+                str += '<p>'+obj.full_name+'</p></a>';
+                str += '<div class="clearfix"></div></div>'
+                $('.stm_list #mCSB_5 #mCSB_5_container').append(str);
+            }
+            if(obj.sub_type == 'decline-request'){
+               // cnt = $('.box_body #carousel-studymate .carousel-inner #active-recomonded .suggested_mates_card').length;
+               str = '';
+                str += '<div class="suggested_mates_card">'
+                str += '<div class="mate_user_img"><img src="uploads/'+obj.profile+'" onerror="this.src=\'assets/images/avatar.png\'"></div>';
+                str += '<div class="mate_descrip"><p class="mate_name">'+obj.full_name+'</p>';
+                str += '<p class="mate_following">Folowing 34 Authers</p>';
+                str += '<p>'+obj.school_name+'</p>';
+                str += '<p>'+obj.course_name+'</p><button class="btn btn_green" data-id="'+obj.studymate_id+'" data-type="studyment-request">Add Studymates</button></div></div>';
+                $('.box_body #carousel-studymate .carousel-inner #active-recomonded').append(str);
+            }  
+            $('.box_body div[data-id="'+obj.studymate_id+'"]').remove().html();
+            cnt = $('.box_body #my_request').length;
+            if(cnt == 0)
+            {
+                $('#my_request_box').html('<div class="study_mate"><h3>No more studymate request</h3></div>');
+            }    
         }
         else {
             alert('Message Not Catched!!');
@@ -569,7 +601,7 @@ $(document).on('keypress','input[data-type="search-dictionary"], a[data-type="se
 });
 
 $(document).on('click','button[data-type="studyment-request"]',function(e){
-   var request = {
+    var request = {
         type: 'send_studymate_request',
         to: 'self',
         studymate_id: $(this).attr('data-id'),
@@ -579,10 +611,22 @@ $(document).on('click','button[data-type="studyment-request"]',function(e){
 });
 
 $(document).on('click','a[data-type="view-all-comment-activities"]',function(e){
-   var request = {
+    var request = {
         type: 'view-all-comment-activities',
         to: 'self',
         comment_id: $(this).attr('data-id'),
+        error : ''
+    };
+    ws.send(JSON.stringify(request)); 
+});
+
+$(document).on('click','button[data-type = "decline-request"]',function(e){
+    alert('hi');
+    var request = {
+        type: 'decline-request',
+        sub_type : $(this).data('subtype'),
+        to: 'self',
+        studymate_id: $(this).data('id'),
         error : ''
     };
     ws.send(JSON.stringify(request)); 

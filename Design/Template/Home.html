@@ -690,6 +690,7 @@
                     	<div class="to"><p>Not yet.</p></div>
                         <div class="to"><p>Will do tonight</p></div>
                     </div>
+                    <img class="chat_loading" src="images/progress_bar_sm.gif">
                     <input type="text" class="chat_input" placeholder="Say It">
 					<a href="#" class="icon icon_emoji" id="btn_emoticons"></a>
                     <a href="#" class="icon icon_pin"></a>
@@ -753,7 +754,13 @@
 				}
 			});
 			jQuery('#btn_emoticons').click(function(){
-				jQuery('.emoticons').css('display','block');
+				if(jQuery('.emoticons').css('display')=='none'){
+					jQuery('.emoticons').css('display','block');
+				}
+				else{
+					jQuery('.emoticons').css('display','none');
+				}
+				
 			});
 			jQuery('.emoticons .icon').click(function(){
 				jQuery('.emoticons').css('display','none');

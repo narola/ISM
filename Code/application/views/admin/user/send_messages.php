@@ -4,8 +4,8 @@
 		<div class="row page_header">
     	<div class="col-sm-12">
         	<ol class="breadcrumb">
-              <li><a href="Group.html">Group</a></li>                          
-              <li><a href="#">Manage Group</a></li>
+              <li><a href="admin/user">Manage</a></li>                          
+              <li><a href="admin/user">User</a></li>
               <li class="active">Send Message</li>
             </ol>
         </div>
@@ -58,7 +58,13 @@
                                             if(!empty($users)){ foreach($users as $user) {
                                                   if($user['rid']==$role['id']) {  
                                          ?>
-                                           <option value="<?php echo $user['id'] ?>" <?php echo set_select('all_users', $user['id']); ?> >
+                                           <option value="<?php echo $user['id'] ?>" 
+                                            <?php echo set_select('all_users', $user['id']); ?> 
+                                             <?php 
+                                                if(isset($post_users) && !empty($post_users)){ 
+                                                    if(in_array($user['id'],$post_users)){ echo "selected='selected'"; } 
+                                                } ?>                                                       
+                                            >
                                                 <?php echo ucfirst($user['username']); ?>
                                             </option> 
                                         <?php } } }?>
@@ -97,7 +103,7 @@
                         <input type="checkbox" name="save_template" value="1" id="save_template">
                         <label class="save_box"></label>
                         <label for="save_template">Save in Templates</label>
-                        <a href="<?php echo base_url().'admin/user'; ?>" class='btn btn_black'>Cancel</a>
+                        <a href="<?php echo base_url().$prev_url; ?>" class='btn btn_black'>Cancel</a>
                     </div>
                 </form>
             </div>

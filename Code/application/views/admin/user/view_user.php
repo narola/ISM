@@ -50,7 +50,7 @@
                               if(!empty($roles)){ 
                                 foreach($roles as $role) {
                                 ?>
-                                <option value="<?php echo $role['id']; ?>"><?php echo $role['role_name']; ?></option>  
+                                <option value="<?php echo $role['id']; ?>"><?php echo ucfirst($role['role_name']); ?></option>  
                             <?php }  } ?>
                         </select>
 	                </div>
@@ -128,9 +128,7 @@
                           <tr>
                               <td class="checkbox_td">
                                 <div class="squaredThree">
-                                    <!-- Checkboxes for User and it will disabled for if user is admin because admin cant sent messages to admin  -->
-                                    <input type="checkbox" <?php if($user['role_id']=='1'){ echo 'disabled'; } ?> 
-                                    value="<?php echo $user['id']; ?>" id="squaredThree_<?php echo $user['id']; ?>" name="users[]"> 
+                                    <input type="checkbox" value="<?php echo $user['id']; ?>" id="squaredThree_<?php echo $user['id']; ?>" name="users[]"> 
                                     <label for="squaredThree_<?php echo $user['id']; ?>"></label>
                                 </div>
                               </td>
@@ -208,6 +206,7 @@
 
     	$('#filter').submit();
     }
+
 
 	<?php if(!empty($_GET['role'])) { ?>
 		$('#role').val('<?php echo $_GET["role"];?>');	

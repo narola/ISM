@@ -22,7 +22,6 @@ class Topic extends ADMIN_Controller {
 	public function lists(){
 
 		$this->load->library('pagination');
-		
 		$role = $this->input->get('role');
 		$subject  = $this->input->get('subject');
 		$where['where']['tut_topic.is_delete']=0;
@@ -134,6 +133,7 @@ class Topic extends ADMIN_Controller {
 
 		$allocated_group_ids = array_column($allocated_groups, 'group_id');
 		
+		echo 'assigned for the current week<br/>';
 		p($allocated_group_ids);
 
 		$where  = array('where_not_in' => array('id' => $allocated_group_ids),
@@ -145,6 +145,7 @@ class Topic extends ADMIN_Controller {
 			);
 		$unallocated_group_ids = array_column($unallocated_groups, 'id');
 
+		echo 'other than assigned<br/>';
 		p($unallocated_group_ids);
 
 		$last_week = $week-1;
@@ -159,15 +160,23 @@ class Topic extends ADMIN_Controller {
 			$where
 			);
 		
+		echo 'assigned last week<br/>';
 		p($last_week_groups);
 
-		foreach ($unallocated_group_ids as $key => $unallocated) {
-			
+		foreach ($unallocated_group_ids as $unallocated) {
+			// echo 'out '.$key." ".$unallocated;
 			if(in_array($unallocated, array_column($last_week_groups, 'group_id'))){
+				$key = array_search($unallocated, array_column($last_week_groups, 'group_id'));
 				$last_week_topic = $last_week_groups[$key]['topic_id'];
-				
+				$where = array('where' => array('id'=>$last_week_topic));
+				$subject = select(TBL_TUTORIAL_TOPIC.' tut_topic',
+				'tut_topic.subject_id',
+					$where
+				);
+				echo 'subject ids<br/>';
+				p($subject);
 			}else{
-				
+					
 			}
 		}
 		exit;

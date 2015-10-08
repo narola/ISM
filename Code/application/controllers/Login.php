@@ -40,7 +40,8 @@ class Login extends CI_Controller {
                 redirect('student/home');
             else
                 redirect('login/welcome');
-        }elseif($loggedin_admin == TRUE){
+        }
+        elseif($loggedin_admin == TRUE){
             redirect('admin/user');
         }
 
@@ -48,24 +49,23 @@ class Login extends CI_Controller {
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
-
             $this->load->view('login/login');
-        } else {
-
+        } 
+        else{
             $username = $this->input->post('username');
             $password = $this->input->post('password');
 
             if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
                 $fetch_data = select(TBL_USERS,null, array('where'=>array('email_id' => $username)),1);
-            } else {
-
+            } 
+            else{
                 $fetch_data = select(TBL_USERS,null, array('where'=>array('username' => $username)),1);
             }
          
             if (!empty($fetch_data)) {
-                
                 $db_pass = $this->encrypt->decode($fetch_data['password']);
-                if ($db_pass === $password && $fetch_data['role_id'] != 1 && $fetch_data['is_delete'] == 0) {
+                if ($db_pass === $password && $fetch_data['role_id'] != 1 && $fetch_data['is_delete'] == 0 && $fetch_data['user_status'] == 'active') {
+                    
                     /* If remember Me Checkbox is clicked */
                     /* Set Cookie IF Start */
                     if (isset($_POST['remember'])) {
@@ -77,18 +77,7 @@ class Login extends CI_Controller {
                         $this->input->set_cookie($cookie);
                     } /* Set Cookie IF END */
 
-                    // $array = array(
-                    //     'id' => $fetch_data['id'],
-                    //     'role' => $role_data['role_name'],
-                    //     'loggedin' => TRUE
-                    // );
-
-                    // $this->session->set_userdata($array);
-
                     $this->set_session($fetch_data['id']);
-                      
-            
-
                     $role = $fetch_data['role_id'];
 
                     switch ($role) {
@@ -97,7 +86,6 @@ class Login extends CI_Controller {
                             if($this->session->userdata('user')['group_id'] != ''){
                                 $count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id,'joining_status'=>'1')),array('count'=>TRUE));
                                 if($count_member == 5){
-                                    //generate websocket cookie
                                     redirect('student/home');
                                 }
                                 else
@@ -107,8 +95,12 @@ class Login extends CI_Controller {
                         default:
                             break;
                     }
-                } else {
-                    $this->session->set_flashdata('error', 'Invalid Username or Password.');
+                } 
+                else{
+                    if($fetch_data['user_status'] == 'blocked')
+                        $this->session->set_flashdata('error', 'You are blocked by admin.');
+                    else
+                        $this->session->set_flashdata('error', 'Invalid Username or Password.');
                     redirect('login');
                 }
             } else {
@@ -209,7 +201,7 @@ class Login extends CI_Controller {
         }
         else
         {
-            $this->session->set_flashdata('msg', 'Please Click On Verfication Link in Your Email');
+            $this->session->set_flashdata('error', 'Please click on verfication link in your email');
             redirect('login');
         }
     }
@@ -236,7 +228,7 @@ class Login extends CI_Controller {
             $where = array('where'  =>  array('u.email_id' => $emailid));
             $chkdata = select(TBL_USERS.' u','f.token,f.complete_date',$where,$options);
             if(empty($chkdata['complete_date']) && $chkdata['token'] != ''){
-                $this->session->set_flashdata('error', 'Request Alredy Sended Please Check It');
+                $this->session->set_flashdata('error', 'Request alredy sended please check it');
                 redirect('login');  
             }    
 
@@ -275,7 +267,7 @@ class Login extends CI_Controller {
             
         }
         else{
-            $this->form_validation->set_message('check_email', 'Invalid Email Address');
+            $this->form_validation->set_message('check_email', 'Invalid email address');
             return FALSE;
         }
     }
@@ -289,7 +281,7 @@ class Login extends CI_Controller {
             $complete_date = $token_result['complete_date'];
             if(!empty($complete_date))
             {
-                $this->session->set_flashdata('error', 'Your Password Already Changed Please Login');
+                $this->session->set_flashdata('error', 'Your password already changed please login');
                 redirect('login');
             }   
             $inserted_date = date($token_result['created_date'],strtotime("+30 minutes"));
@@ -298,7 +290,7 @@ class Login extends CI_Controller {
             $formatDate = date("Y-m-d H:i:s", $futureDate);
             if(strtotime(date('Y-m-d H:i:s')) > strtotime($formatDate))
             {   
-                $this->session->set_flashdata('error', 'Your Request Is Expired Please Try Again');
+                $this->session->set_flashdata('error', 'Your request is expired please try again');
                 redirect('login/forgot_password');
             }
             else{
@@ -326,10 +318,10 @@ class Login extends CI_Controller {
                 $password_data = array('password' => $this->encrypt->encode($this->input->post('new_password',TRUE)));
                 update(TBL_USERS,$user_id,$password_data);
                 update(TBL_USER_FORGOT_PASSWORD,array('token'=>$token),array('complete_date'=>date('Y-m-d H:i:s')));
-                $this->session->set_flashdata('error', 'Your Password Successfully Changed');
+                $this->session->set_flashdata('error', 'Your password successfully changed');
                 redirect('login');
             }else{
-                $this->session->set_flashdata('error', 'Invalid Request Try Again');
+                $this->session->set_flashdata('error', 'Invalid request try again');
                 redirect('login/forgot_password');
             }
         }
