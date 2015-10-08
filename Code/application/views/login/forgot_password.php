@@ -34,7 +34,7 @@
                             <?php echo strip_tags(form_error('emailid'),''); ?>
                         </div>
                         <div class=" alert alert-danger <?php if(empty($this->session->flashdata('msg'))){ echo 'hide';} ?>">
-                            <?php echo $this->session->flashdata('msg');?>
+                            <?php echo $this->session->flashdata('error');?>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn_black">Submit

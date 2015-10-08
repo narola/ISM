@@ -201,7 +201,7 @@ class Login extends CI_Controller {
         }
         else
         {
-            $this->session->set_flashdata('msg', 'Please Click On Verfication Link in Your Email');
+            $this->session->set_flashdata('error', 'Please click on verfication link in your email');
             redirect('login');
         }
     }
@@ -228,7 +228,7 @@ class Login extends CI_Controller {
             $where = array('where'  =>  array('u.email_id' => $emailid));
             $chkdata = select(TBL_USERS.' u','f.token,f.complete_date',$where,$options);
             if(empty($chkdata['complete_date']) && $chkdata['token'] != ''){
-                $this->session->set_flashdata('error', 'Request Alredy Sended Please Check It');
+                $this->session->set_flashdata('error', 'Request alredy sended please check it');
                 redirect('login');  
             }    
 
@@ -267,7 +267,7 @@ class Login extends CI_Controller {
             
         }
         else{
-            $this->form_validation->set_message('check_email', 'Invalid Email Address');
+            $this->form_validation->set_message('check_email', 'Invalid email address');
             return FALSE;
         }
     }
@@ -281,7 +281,7 @@ class Login extends CI_Controller {
             $complete_date = $token_result['complete_date'];
             if(!empty($complete_date))
             {
-                $this->session->set_flashdata('error', 'Your Password Already Changed Please Login');
+                $this->session->set_flashdata('error', 'Your password already changed please login');
                 redirect('login');
             }   
             $inserted_date = date($token_result['created_date'],strtotime("+30 minutes"));
@@ -290,7 +290,7 @@ class Login extends CI_Controller {
             $formatDate = date("Y-m-d H:i:s", $futureDate);
             if(strtotime(date('Y-m-d H:i:s')) > strtotime($formatDate))
             {   
-                $this->session->set_flashdata('error', 'Your Request Is Expired Please Try Again');
+                $this->session->set_flashdata('error', 'Your request is expired please try again');
                 redirect('login/forgot_password');
             }
             else{
@@ -318,10 +318,10 @@ class Login extends CI_Controller {
                 $password_data = array('password' => $this->encrypt->encode($this->input->post('new_password',TRUE)));
                 update(TBL_USERS,$user_id,$password_data);
                 update(TBL_USER_FORGOT_PASSWORD,array('token'=>$token),array('complete_date'=>date('Y-m-d H:i:s')));
-                $this->session->set_flashdata('error', 'Your Password Successfully Changed');
+                $this->session->set_flashdata('error', 'Your password successfully changed');
                 redirect('login');
             }else{
-                $this->session->set_flashdata('error', 'Invalid Request Try Again');
+                $this->session->set_flashdata('error', 'Invalid request try again');
                 redirect('login/forgot_password');
             }
         }
