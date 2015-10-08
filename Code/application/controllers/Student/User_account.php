@@ -14,6 +14,9 @@ class User_account extends CI_Controller {
 	    $this->data[] = array();
 	    if(!empty($this->session->userdata('user')) && $this->session->userdata('user')['membercount'] != 5)
 	    	redirect('student/group_allocation');
+	    if(empty($this->session->userdata('user')) && empty($this->session->userdata('credential_user')))
+	    	redirect('login/logout');
+
 	}
 
 	public function index()
@@ -113,9 +116,10 @@ class User_account extends CI_Controller {
 		{
 			$this->send_mail($this->session->userdata('credential_user'));
 		}
-
-		$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|is_unique[users.email_id]|callbach_check_email');
-		$this->form_validation->set_rules('reg[birthdate]', 'Date of birth', 'regex_match[(0[1-9]|1[0-9]|2[0-9]|3(0|1))-(0[1-9]|1[0-2])-\d{4}]');
+		// p($_POST,true);
+		$this->form_validation->set_rules('email_id', 'Email', 'trim|valid_email|required|callback_check_email');
+		$this->form_validation->set_rules('full_name', 'Full name', 'trim|required|callback_check_full_name');
+		$this->form_validation->set_rules('birthdate', 'Date of birth', 'trim|callback_check_birth_date');
 					
 		if($this->form_validation->run() == FALSE){
 			$this->load->view('student/user_account_update',$this->data);
@@ -458,7 +462,7 @@ class User_account extends CI_Controller {
 	/*--check email exist or not------------------*/
 	public function check_email()
 	{
-		$found	=	select(TBL_USERS,array('where'=>array('email_id' => $this->input->post('email_id',TRUE))));
+		$found	=	select(TBL_USERS,null,array('where'=>array('email_id' => $this->input->post('email_id',TRUE))));
 		if(sizeof($found) > 0){
 			$this->form_validation->set_message('check_email', 'Email Already Exist');
 			return FALSE;
@@ -466,6 +470,34 @@ class User_account extends CI_Controller {
 		else{
 			return TRUE;
 		}
+	}
+
+	/*---check full name is valid or not------*/
+	public function check_full_name(){
+		$full_name = $this->input->post('full_name',TRUE);
+		if(preg_match('/^[a-z0-9 .\-]+$/i', $full_name))
+		{
+			return TRUE;	
+		}
+		else
+		{
+			$this->form_validation->set_message('check_full_name', 'Invalid Full Name');
+			return FALSE;	
+		}
+	}
+
+	public function check_birth_date(){
+		$birthdate = $this->input->post('birthdate',TRUE);
+		if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$birthdate)){
+			if($birthdate == '0000-00-00')
+				$this->form_validation->set_message('check_birth_date', 'Invalid Birth Of Date');
+			else
+				return TRUE;
+		}
+		else{
+			$this->form_validation->set_message('check_birth_date', 'Invalid Birth Of Date');
+			return FALSE;
+		}	
 	}
 
 	/*--check current password is valid or not------*/
@@ -550,7 +582,7 @@ class User_account extends CI_Controller {
     public function send_mail($username){
     	update(TBL_AUTO_GENERATED_CREDENTIAL,array('username'=>$username),array('is_my_school'=>1));
 		$message = $this->input->post('message');
-		$email_id = $this->input->post('email');
+		$email_id = $this->input->post('email_id');
 		$configs = mail_config();
         $this->load->library('email', $configs);
         $this->email->initialize($configs);

@@ -74,8 +74,14 @@
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Full Name" name="full_name" value="<?php echo isset($full_name)?$full_name : set_value('full_name');?>">
                                 </div>
+                                <div class="alert alert-danger <?php if(empty(strip_tags(form_error('full_name'),''))){ echo 'hide';} ?>">
+                                    <?php echo strip_tags(form_error('full_name'),'') ; ?>
+                                </div>
                                 <div class="form-group">
                                     <input type="email" class="form-control" placeholder="Email Address" name="email_id" value="<?php echo isset($email_id)?$email_id : set_value('email_id');?>">
+                                </div>
+                                <div class="alert alert-danger <?php if(empty(strip_tags(form_error('email_id'),''))){ echo 'hide';} ?>">
+                                    <?php echo strip_tags(form_error('email_id'),'') ; ?>
                                 </div>
                                 <div class="form-group select">
                                     <select class="form-control" name="gender" id="gender">
