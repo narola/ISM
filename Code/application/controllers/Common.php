@@ -71,6 +71,16 @@ class Common extends CI_Controller {
 		echo $new_str;
 	}
 
+	public function check_template_unique(){
+		$msg_title = $this->input->post('msg_title');
+		$data = select(TBL_MESSAGES,FALSE,array('where'=>array('message_title'=>$msg_title,'is_template'=>'1')));
+		if(!empty($data)){
+			echo "1"; // Find Template in database Return 1
+		}else{
+			echo "0";  // Can't Find template in database and Return 0
+		}
+	}
+
 }
 
 /* End of file common.php */

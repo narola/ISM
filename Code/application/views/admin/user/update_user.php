@@ -135,8 +135,10 @@
                         <div class="form-group dob">
                         
                            <div data-date-format="dd-mm-yyyy" data-date="12-02-2012" id="birthdate" class="input-append date">
-                                <input type="text" name="birthdate" placeholder="Date of Birth" value="<?php echo $user['birthdate']; ?>" class="form-control">
+                                <input type="text" name="birthdate" placeholder="Date of Birth" 
+                                value=" <?php  echo set_value("birthdate") == false ? $user["birthdate"] : set_value("birthdate"); ?>" class="form-control">
                             </div> 
+
                         </div>
 
                         <?php echo myform_error('birthdate'); ?>
@@ -165,7 +167,7 @@
                             <label>User Status</label>
                             <select name="user_status" class="form-control" id="user_status" >
                                 <option value="active" >Active</option>
-                                <option value="block" >Block</option>
+                                <option value="blocked" >Block</option>
                                 <option value="inactive">Inactive</option>
                             </select>
                         </div>
