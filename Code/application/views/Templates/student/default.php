@@ -347,7 +347,7 @@
                 <div class="chat active" data-id="<?php echo $active_c['user']['id'] ?>">
                     <div class="chat_header">
                         <div class="chat_img_holder">
-                            <img src="<?php echo UPLOAD_URL.'/'.$active_c['user']['profile_link']; ?>"></div>
+                            <img src="<?php echo UPLOAD_URL.'/'.$active_c['user']['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'"></div>
                             <p class="chat_name"><?php echo $active_c['user']['full_name'] ?></p>
                             <a href="#">
                                 <span class="icon icon_option"></span>

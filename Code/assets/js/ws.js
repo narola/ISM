@@ -228,7 +228,7 @@ if ("WebSocket" in window)
             
             $('.commented_on .feeds .comment[data-id="'+obj.comment_id+'"]').html(str);
         }else if(obj.type == "decline-request"){
-            alert(obj.sub_type);
+            
             if(obj.sub_type == 'accept-request'){
                 if(obj.is_online == true)
                     status = 'online';
@@ -241,23 +241,24 @@ if ("WebSocket" in window)
                 str += '<p>'+obj.full_name+'</p></a>';
                 str += '<div class="clearfix"></div></div>'
                 $('.stm_list #mCSB_5 #mCSB_5_container').append(str);
-                $('.box_body div[data-id="'+obj.studymate_id+'"]').remove().html();
-                cnt = $('.box_body #my_request').length;
-                if(cnt == 0)
-                {
-                    $('#my_request_box').html('<div class="study_mate"><h3>No more study_mate request</h3></div>');
-                } 
             }
             if(obj.sub_type == 'decline-request'){
-                str = '';
+               // cnt = $('.box_body #carousel-studymate .carousel-inner #active-recomonded .suggested_mates_card').length;
+               str = '';
                 str += '<div class="suggested_mates_card">'
-                str += '<div class="mate_user_img"><img src="images/user6.jpg"></div>';
-                str += '<div class="mate_descrip"><p class="mate_name">Adam Stranger</p>';
+                str += '<div class="mate_user_img"><img src="uploads/'+obj.profile+'" onerror="this.src=\'assets/images/avatar.png\'"></div>';
+                str += '<div class="mate_descrip"><p class="mate_name">'+obj.full_name+'</p>';
                 str += '<p class="mate_following">Folowing 34 Authers</p>';
-                str += '<p>Student from St.Xeviers</p>';
-                str += '<p>F.Y. CS</p><button class="btn btn_green">Add Studymates</button></div></div>';
-                $('.box_body #carousel-studymate .carousel-inner .item').append(str);
-            }     
+                str += '<p>'+obj.school_name+'</p>';
+                str += '<p>'+obj.course_name+'</p><button class="btn btn_green" data-id="'+obj.studymate_id+'" data-type="studyment-request">Add Studymates</button></div></div>';
+                $('.box_body #carousel-studymate .carousel-inner #active-recomonded').append(str);
+            }  
+            $('.box_body div[data-id="'+obj.studymate_id+'"]').remove().html();
+            cnt = $('.box_body #my_request').length;
+            if(cnt == 0)
+            {
+                $('#my_request_box').html('<div class="study_mate"><h3>No more studymate request</h3></div>');
+            }    
         }
         else {
             alert('Message Not Catched!!');

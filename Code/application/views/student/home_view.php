@@ -300,7 +300,7 @@
                                           <!--card-->
                                             <div class="suggested_mates_card">
                                                 <div class="mate_user_img">
-                                                    <img src="<?php echo base_url();?>assets/images/user7.jpg">
+                                                    <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                                 </div>
                                                 <div class="mate_descrip">
                                                     <p class="mate_name"><?php echo $value['full_name'];?></p>
@@ -331,7 +331,7 @@
                           </a>
                         </div>                        
                         
-                        <button class="btn btn_blue">Find More studymates</button>
+                        <a href="student/studymates_request" class="btn btn_blue">Find More studymates</a>
                     </div>
                 </div>
                 <!--//suggested Studymates-->
@@ -353,7 +353,7 @@
                                     <a id="mate_list" href="javascript:void(0);" data-id="<?php echo $value['id']; ?>">
 
                                     <div class="stm_user_img">
-                                        <img src="/<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                                        <img src="/<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                     </div>
                                     <span class="badge message_badge"><?php if($value['unread_msg'] > 0) echo $value['unread_msg']; ?></span>
                                     <p><?php echo $value['full_name']; ?></p>

@@ -10,6 +10,8 @@ class Home extends CI_Controller {
 	public function __construct()
 	{
 	    parent::__construct();
+	    if($this->session->userdata('user')['id'] == '')
+	    	redirect('login/logout');
 	}
 
 	public function index()
@@ -128,9 +130,9 @@ class Home extends CI_Controller {
 		}
 
 		//----Get Suggested studymates
-
+		$my_studymates = studymates($user_id,false);
 		$user_group_id = $this->session->userdata('user')['group_id'];
-		$where = array('where' => array('m.group_id'=>$user_group_id));
+		$where = array('where' => array('m.group_id'=>$user_group_id,'in1.user_id !=' => $user_id),'where_not_in'=>array('in1.user_id' => $my_studymates));
 		$options = array('join' => array(
 					array(
 						'table' => TBL_STUDENT_ACADEMIC_INFO.' in',
@@ -154,9 +156,13 @@ class Home extends CI_Controller {
 						'table' => TBL_COURSES.' c',
 						'condition' => 'c.id = in1.course_id'
 					),
+					array(
+						'table' => TBL_USER_PROFILE_PICTURE.' pi',
+						'condition' => 'pi.user_id = u.id'
+					),
 				)
 			);
-		$data['suggested_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name',$where,$options);
+		$data['suggested_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,pi.profile_link',$where,$options);
 		$this->template->load('student/default','student/home_view',$data);
 	}
 

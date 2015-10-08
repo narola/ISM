@@ -40,7 +40,8 @@ class Login extends CI_Controller {
                 redirect('student/home');
             else
                 redirect('login/welcome');
-        }elseif($loggedin_admin == TRUE){
+        }
+        elseif($loggedin_admin == TRUE){
             redirect('admin/user');
         }
 
@@ -48,24 +49,23 @@ class Login extends CI_Controller {
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
-
             $this->load->view('login/login');
-        } else {
-
+        } 
+        else{
             $username = $this->input->post('username');
             $password = $this->input->post('password');
 
             if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
                 $fetch_data = select(TBL_USERS,null, array('where'=>array('email_id' => $username)),1);
-            } else {
-
+            } 
+            else{
                 $fetch_data = select(TBL_USERS,null, array('where'=>array('username' => $username)),1);
             }
          
             if (!empty($fetch_data)) {
-                
                 $db_pass = $this->encrypt->decode($fetch_data['password']);
-                if ($db_pass === $password && $fetch_data['role_id'] != 1 && $fetch_data['is_delete'] == 0) {
+                if ($db_pass === $password && $fetch_data['role_id'] != 1 && $fetch_data['is_delete'] == 0 && $fetch_data['user_status'] == 'active') {
+                    
                     /* If remember Me Checkbox is clicked */
                     /* Set Cookie IF Start */
                     if (isset($_POST['remember'])) {
@@ -77,18 +77,7 @@ class Login extends CI_Controller {
                         $this->input->set_cookie($cookie);
                     } /* Set Cookie IF END */
 
-                    // $array = array(
-                    //     'id' => $fetch_data['id'],
-                    //     'role' => $role_data['role_name'],
-                    //     'loggedin' => TRUE
-                    // );
-
-                    // $this->session->set_userdata($array);
-
                     $this->set_session($fetch_data['id']);
-                      
-            
-
                     $role = $fetch_data['role_id'];
 
                     switch ($role) {
@@ -97,7 +86,6 @@ class Login extends CI_Controller {
                             if($this->session->userdata('user')['group_id'] != ''){
                                 $count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id,'joining_status'=>'1')),array('count'=>TRUE));
                                 if($count_member == 5){
-                                    //generate websocket cookie
                                     redirect('student/home');
                                 }
                                 else
@@ -107,8 +95,12 @@ class Login extends CI_Controller {
                         default:
                             break;
                     }
-                } else {
-                    $this->session->set_flashdata('error', 'Invalid Username or Password.');
+                } 
+                else{
+                    if($fetch_data['user_status'] == 'blocked')
+                        $this->session->set_flashdata('error', 'You are blocked by admin.');
+                    else
+                        $this->session->set_flashdata('error', 'Invalid Username or Password.');
                     redirect('login');
                 }
             } else {

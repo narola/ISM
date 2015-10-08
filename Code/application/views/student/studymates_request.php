@@ -125,7 +125,12 @@
             <!--//item1-->
         <?php
                 }
-            } 
+        }
+        else{
+            ?>
+            <div class="study_mate"><h3>No more studymate request</h3></div>
+        <?php
+        } 
         ?>
     </div>
 </div>
@@ -142,7 +147,7 @@
                 <?php 
                     if(isset($recommended_studymates)){
                 ?>
-                    <div class="item active">
+                    <div class="item active" id="active-recommended">
                     <?php
                         $i = 1;
                         foreach ($recommended_studymates as $key => $value) {

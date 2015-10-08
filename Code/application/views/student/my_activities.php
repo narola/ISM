@@ -22,15 +22,14 @@
                                             <?php if($t == 0) { ?>
                                                 <h4 class="activity_heading">Topic Allocated</h4>
                                             <?php } ?>
-                                            <table class="table">
-                                                <tr>
-                                                    <th colspan="2"><?php echo $topic_allcated_value['topic_name'];?></th>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Discussion</strong><p>29 Comments</p></td>
-                                                    <td><strong>Examination - Quiz</strong><p>Score :  215</p></td>
-                                                </tr>
-                                            </table>
+                                            <div class="topic_div">
+                                                <h4><?php echo $topic_allcated_value['topic_name'];?></h4>
+                                                <div>
+                                                    <div><strong>Discussion</strong><p>29 Comments</p></div>
+                                                    <div><strong>Examination - Quiz</strong><p>Score :  215</p></div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
                                         </div>
                                 <?php
                                         $t++;
