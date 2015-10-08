@@ -99,14 +99,14 @@
     <div class="box_header">
         <h3>Studymate Requests</h3>
     </div>
-    <div class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark">
+    <div id="my_request_box" class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark">
        <?php
         if(isset($studymate_request) && sizeof($studymate_request) > 0){
             foreach ($studymate_request as $key => $value) {
              
        ?>
             <!--item1-->
-            <div class="study_mate">
+            <div class="study_mate" id="my_request" data-id="<?php echo $value['id'];?>">
                 <div class="col-lg-9 col-md-8 col-sm-7">
                     <div class="mate_user_img">
                         <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
@@ -117,8 +117,8 @@
                     <a href="#">Following 34 Authers</a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-5" id="action-box">
-                    <button class="btn btn_green btn-block" data-type="accept-request" data-id="<?php echo $value['id'];?>">Confirm Request</button>
-                    <button class="btn btn_black_normal btn-block" data-type="decline-request" data-id="<?php echo $value['id'];?>">Decline Request</button>
+                    <button class="btn btn_green btn-block" data-subtype="accept-request" data-type="decline-request" data-id="<?php echo $value['id'];?>">Confirm Request</button>
+                    <button class="btn btn_black_normal btn-block" data-subtype="decline-request" data-type="decline-request" data-id="<?php echo $value['id'];?>">Decline Request</button>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -203,205 +203,3 @@
 </div>
 <!--//suggestion-->
 </div>
-
-
-
- <!--side right-->
-<div class="sidebar_right_container sidebar_right_container2 mCustomScrollbar" data-mcs-theme="minimal-dark"><!--scrollbar" id="style-3-->
-    
-    <!--high score board-->
-    <div class="score box">
-        <div class="box_header">
-            <h3>High Scores</h3>
-        </div>
-        <div class="score_div">
-            <h5>Science</h5>
-            <!--item1-->
-            <div class="score_item">
-                <div class="score_img">
-                    <img src="assets/images/user5.jpg">
-                </div>
-                <div class="score_descrip">
-                    <p class="score_name">Adam Stranger</p>
-                    <p>St. Xeviers</p>
-                    <p>F.Y. CS</p>
-                </div>
-                <div class="score_points">
-
-                    <p>Score</p>
-                    <p class="score_number">500</p>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <!--item2-->
-            <div class="score_item">
-                <div class="score_img">
-                    <img src="assets/images/user3.jpg">
-                </div>
-                <div class="score_descrip">
-                    <p class="score_name">Matt Larner</p>
-                    <p>St. Mary</p>
-                    <p>F.Y. CS</p>
-                </div>
-                <div class="score_points">
-                    <p>Score</p>
-                    <p class="score_number">487</p>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-           
-        </div>
-        <div class="score_div">
-            <h5>Arts</h5>
-            <!--item1-->
-            <div class="score_item">
-                <div class="score_img">
-                    <img src="assets/images/user5.jpg">
-                </div>
-                <div class="score_descrip">
-                    <p class="score_name">Adam Stranger</p>
-                    <p>St. Xeviers</p>
-                    <p>F.Y. CS</p>
-                </div>
-                <div class="score_points">
-                    <p>Score</p>
-                    <p class="score_number">500</p>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <!--item2-->
-            <div class="score_item">
-                <div class="score_img">
-                    <img src="assets/images/user3.jpg">
-                </div>
-                <div class="score_descrip">
-                    <p class="score_name">Matt Larner</p>
-                    <p>St. Mary</p>
-                    <p>F.Y. CS</p>
-                </div>
-                <div class="score_points">
-                    <p>Score</p>
-                    <p class="score_number">487</p>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            
-        </div>
-        <div class="clearfix"></div>
-    </div>
-    <!--//high score board-->
-    <!--Suggested Studymates-->                
-    <!--//suggested Studymates-->
-    <!--STM-->
-    <div class="stm">
-        <div class="box_header">
-            <h3>Studymates <span> STM</span></h3>
-        </div>
-        <div class="stm_list mCustomScrollbar" data-mcs-theme="minimal-dark">
-            <!--stm1-->
-            <div class="stm_item online">
-                <a href="#">
-                <div class="stm_user_img">
-                    <img src="assets/images/user1.jpg">
-                </div>
-                <p>Mary Watson</p>
-                </a>
-                <div class="clearfix"></div>
-            </div>
-            <!--stm1-->
-            <div class="stm_item online">
-                <a href="#">
-                <div class="stm_user_img">
-                    <img src="assets/images/user2.jpg">
-                </div>
-                <p>Adam Rose</p>
-                </a>
-                <div class="clearfix"></div>
-            </div>
-            <!--stm1-->
-            <div class="stm_item online">
-                <a href="#">
-                <div class="stm_user_img">
-                    <img src="assets/images/user3.jpg">
-                </div>
-                <p>John Smith</p>
-                </a>
-                <div class="clearfix"></div>
-            </div>
-            <!--stm1-->
-            <div class="stm_item online">
-                <a href="#">
-                <div class="stm_user_img">
-                    <img src="assets/images/user4.jpg">
-                </div>
-                <p>Adam Stranger</p>
-                </a>
-                <div class="clearfix"></div>
-            </div>
-            <!--stm1-->
-            <div class="stm_item online">
-                <a href="#">
-                <div class="stm_user_img">
-                    <img src="assets/images/user1.jpg">
-                </div>
-                <p>Mary Watson</p>
-                </a>
-                <div class="clearfix"></div>
-            </div>
-            <!--stm1-->
-            <div class="stm_item online">
-                <a href="#">
-                <div class="stm_user_img">
-                    <img src="assets/images/user2.jpg">
-                </div>
-                <p>Adam Rose</p>
-                </a>
-                <div class="clearfix"></div>
-            </div>                    
-            <!--stm1-->
-            <div class="stm_item offline">
-                <a href="#">
-                <div class="stm_user_img">
-                    <img src="assets/images/user5.jpg">
-                </div>
-                <p>Dean Winchester</p>
-                </a>
-                <div class="clearfix"></div>
-            </div>
-            <!--stm1-->
-            <div class="stm_item offline">
-                <a href="#">
-                <div class="stm_user_img">
-                    <img src="assets/images/user6.jpg">
-                </div>
-                <p>Sam Winchester</p>
-                </a>
-                <div class="clearfix"></div>
-            </div>
-            <!--stm1-->
-            <div class="stm_item offline">
-                <a href="#">
-                <div class="stm_user_img">
-                    <img src="assets/images/user7.jpg">
-                </div>
-                <p>Lucifer Dey</p>
-                </a>
-                <div class="clearfix"></div>
-            </div>
-            <!--stm1-->
-            <div class="stm_item offline">
-                <a href="#">
-                <div class="stm_user_img">
-                    <img src="assets/images/avatar.png">
-                </div>
-                <p>Ronald Weasley</p>
-                </a>
-                <div class="clearfix"></div>
-            </div> 
-         </div>       
-                    
-    </div>
-    <!--//STM-->
-    
-</div>
-<!--//side right-->
