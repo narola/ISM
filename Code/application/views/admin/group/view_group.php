@@ -102,7 +102,7 @@
                                     <td class="username">
                                         <div class="chat_img_holder">
                                             <!-- <img src="../images/group1.jpg"> -->
-                                            <img src="<?php echo 'uploads/user_141/user6_1443673332.jpg'; ?>" >
+                                            <img src="<?php echo 'uploads/user_141/user6_14436733csdfs32.jpg'; ?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" >
                                         </div>
                                         <h4><span>Group Name : </span> <?php echo $group['group_name'] ?> <span> [<?php echo $group['course_name'] ?>]</span></h4>
                                         <table class="group_members">

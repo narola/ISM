@@ -107,8 +107,8 @@
                                 class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="Edit"></a>
                            <!-- To use ZeroClipboard set parameter for button  data-clipboard-target="ID TO COPY TEXT" find notice_text_1 id -->
                             <button id="notice_<?php echo $notice['id']; ?>" class="btn btn-link icon icon_copy_color"  
-                                data-clipboard-target="notice_text_<?php echo $notice['id']; ?>" 
-                                data-toggle="tooltip" data-placement="bottom" title="Copy">
+                                data-clipboard-target="notice_text_<?php echo $notice['id']; ?>" onclick="submit_bulk_form(1)"
+                                data-toggle="tooltip" data-placement="bottom" title="Copy" > 
                             </button>
                             <a href="<?php echo base_url().'admin/notice/delete/'.$notice['id']; ?>" 
                                 onclick="return confirm('Are you sure to delete this data ?')" 
@@ -181,9 +181,14 @@ if(!empty($notices)) {
 <script type="text/javascript">
     
     function submit_bulk_form(data){
+        
         if(data == 'delete'){
             $('#bulk_notice').submit();
         }
+
+        $( "#bulk_notice" ).submit(function( event ) {
+          event.preventDefault();
+        });
     }     
 
      <?php 

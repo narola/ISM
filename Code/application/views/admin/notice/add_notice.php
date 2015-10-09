@@ -78,7 +78,7 @@
                     
                   <div class="form-group">
                       <label>Notice Title</label>
-                        <input type="text" class="form-control" id="notice_title" name="notice_title">
+                        <input type="text" class="form-control" id="notice_title" value="<?php echo set_value('notice_title'); ?>" name="notice_title">
                   </div>
 
                   <div class="alert alert-danger <?php if(empty(strip_tags(form_error('notice_title'),''))){ echo 'hide';} ?>">
@@ -87,7 +87,7 @@
 
                   <div class="form-group">
                       <label>Notice</label>
-                      <textarea class="form-control" name="notice" id="notice"></textarea>
+                      <textarea class="form-control" name="notice" id="notice"><?php echo set_value('notice'); ?></textarea>
                   </div>
 
                 </div>
@@ -96,14 +96,8 @@
                     <?php echo strip_tags(form_error('notice'),'') ; ?>
                 </div>
 
-                 <div class="form-group">
-                      <label>Status</label>
-                     
-                        
-                  </div>
-
-
-                <div class="form-group">
+                <div class="form-group text-left">
+                    
                     <div class="circleThree">
                         <input type="radio" value="active" id="circleThree" checked="checked"  name="status">
                         <label for="circleThree"></label>

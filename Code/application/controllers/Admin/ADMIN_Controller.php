@@ -37,4 +37,4 @@ class ADMIN_Controller extends CI_Controller {
 }
 
 /* End of file ADMIN_Controller.php */
-/* Location: ./application/libraries/ADMIN_Controller.php */
+/* Location: ./application/controller/Admin/ADMIN_Controller.php */
