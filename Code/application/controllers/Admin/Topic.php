@@ -121,18 +121,18 @@ class Topic extends ADMIN_Controller {
 		$week = $date->format("W");
 		
 
-		// if($_POST){
+		if($_POST){
 
-		// 	$gid = $this->input->post('group_id');
-		// 	$tid = $this->input->post('topic_id');
-		// 	$tutorial_data = array('group_id'=>gid,'interface_type'=>'','date_day'=>'','week_no'=>$week,'status'=>'',
-		// 						   'topic_id'=>$tid,'group_score'=>'','created_date'=>date('Y-m-d H:i:s'),
-		// 						   'modified_date'=>'0000-00-00 00:00:00','is_delete'=>'0','is_testdata'=>'yes');
-		// 	insert(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,$tutorial_data);
-		// 	$this->session->set_flashdata('success', 'Topic has beed allocated to group.');
-		// 	redirect('admin/topic/allocate');
+			$gid = $this->input->post('group_id');
+			$tid = $this->input->post('topic_id');
+			$tutorial_data = array('group_id'=>$gid,'interface_type'=>'','date_day'=>'','week_no'=>$week,'status'=>'',
+								   'topic_id'=>$tid,'group_score'=>0,'created_date'=>date('Y-m-d H:i:s'),
+								   'modified_date'=>'0000-00-00 00:00:00','is_delete'=>'0','is_testdata'=>'yes');
+			insert(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,$tutorial_data);
+			$this->session->set_flashdata('success', 'Topic has beed allocated to group.');
+			redirect('admin/topic/allocate');
 
-		// }
+		}
 
 		$date1 = new DateTime('2015-09-24 10:18:40');
 		$year = $date1->format('Y');
@@ -156,11 +156,10 @@ class Topic extends ADMIN_Controller {
 				TBL_TUTORIAL_GROUPS.'.group_type'=>'tutorial group'
 				)) ;
 
-		/*$unallocated_groups = select(TBL_TUTORIAL_GROUPS.' grp',
-			'grp.id',
+		/*$unallocated_groups = select(TBL_TUTORIAL_GROUPS,
+			TBL_TUTORIAL_GROUPS.'.id',
 			$where
 			);*/
-
 		$unallocated_groups = select(TBL_TUTORIAL_GROUPS,
 											TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
 											TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
@@ -196,8 +195,8 @@ class Topic extends ADMIN_Controller {
 												)
 											);
 	
-	// qry();	
-	// p($unallocated_groups,true);
+	//qry();	
+	//p($unallocated_groups,true);
 
 	$this->data['groups'] = $unallocated_groups;
 
@@ -242,7 +241,7 @@ class Topic extends ADMIN_Controller {
 
 
 		// echo 'other than assigned<br/>';
-		// p($unallocated_group_ids);
+		// p($unallocated_group_ids, true);
 
 		if($unallocated == null){
 			$unallocated = current($unallocated_group_ids);
@@ -433,6 +432,29 @@ class Topic extends ADMIN_Controller {
 	*/
 	public function add(){
 
+		if($_POST){
+
+			$data=array(
+				 "topic_name"=>$this->input->post("topic_name"),
+				 "parent_id"=>0,
+				 "topic_description"=>$this->input->post("topic_desc"),
+				 "subject_id"=>$this->input->post("subjects"),
+				 "evaluation_keywords"=>$this->input->post("keywords"),
+				 "created_by"=>109,
+				 "classroom_id"=>2,
+				 "allocation_count"=>0,
+				 "status"=>"",
+				 "topic_day"=>"Mon",
+				 "created_date"=>date('Y-m-d H:i:s'),
+				 "modified_date"=>date('Y-m-d H:i:s'),
+				 "is_delete"=>0,
+				 "is_archived"=>0,
+				 "is_testdata"=>'yes',
+				);
+			insert(TBL_TUTORIAL_TOPIC,$data);
+			$this->session->set_flashdata('success','Topic has been created.');
+			redirect('admin/topic/lists');
+		}
 		$this->data['courses'] = select(TBL_COURSES,FALSE,FALSE,null);
 		$this->data['page_title'] = 'Add New Topic';
 		$this->template->load('admin/default','admin/topic/add', $this->data);

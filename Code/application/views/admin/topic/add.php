@@ -17,7 +17,7 @@
                         <h3>Add New Topic</h3>
                     </div>
                     <div class="box_body">  
-                        
+                        <form method="post">
                         <div class="form-group select col-sm-6 no-padding half_size">
                             <select class="form-control" name="course_id" onchange="get_subjects(this.value)" id="course_id">
                                 <option>Select Course</option>
@@ -54,6 +54,7 @@
                             <button class="btn btn_black_normal" type="reset">Cancel</button>
                         </div>
                         <div class="clearfix"></div>
+                    </form>
                      </div>
                      
                     

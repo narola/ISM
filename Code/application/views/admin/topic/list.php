@@ -10,7 +10,7 @@
                         </ol>
                     </div>
                     <div class="col-sm-4 text-right">
-                    	<button class="btn btn_green add_topic">Add New Topic</button>
+                    	<a href="admin/topic/add" class="btn btn_green add_topic">Add New Topic</a>
                     </div>
                 </div>
                 <!--//breadcrumb-->
@@ -47,6 +47,7 @@
                     </div>
                 </div>
             </form>
+            <?php echo flashMessage(true,false); ?>
                 <!--//filter-->
                 <!--topics-->
                 <div class="row">
@@ -68,7 +69,7 @@
                                 	<h3>Assigned By : <span><?php echo ucfirst($topic['first_name']).' '.ucfirst($topic['last_name']); ?></span></h3>
                                 </div>
                                 <div class="col-sm-12 topic_description">
-                                	<p><?php echo word_limiter($topic['topic_description'],50); ?></p>
+                                	<p><?php echo word_limiter(htmlentities($topic['topic_description'],50)); ?></p>
                                 </div>
                                 <div class="col-sm-12">
                                 	<span class="label label_black">Allocated <?php echo $topic['allocation_count']; ?> times</span>
