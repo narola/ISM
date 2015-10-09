@@ -63,7 +63,7 @@
                 <!--//main box-->
             </div>
             <!--//main-->
-                <script src="http://cdn.ckeditor.com/4.5.3/standard/ckeditor.js"></script>
+                <script src="assets/js/ckeditor.js"></script>
     
     <script>
         // Replace the <textarea id="editor1"> with a CKEditor
