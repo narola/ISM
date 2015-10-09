@@ -94,7 +94,7 @@
                     <?php
                         }
                         else{
-                             echo '<h3>No Studymate Found...</h3>';
+                           //  echo '<h3>No Studymate Found...</h3>';
                         }
                     ?>            
                 </div>

@@ -43,7 +43,7 @@ class Studymates_request extends ISM_Controller {
 							)
 						)
 					);
-		$where = array('where'=>array('s.request_to_mate_id'=>$user_id),'where_not_in'=>array('u.id'=>$my_studymates));
+		$where = array('where'=>array('s.request_to_mate_id'=>$user_id),'where_in'=>array('s.status'=>array(0,2)),'where_not_in'=>array('u.id'=>$my_studymates));
 		$data['studymate_request'] = select(TBL_STUDYMATES_REQUEST.' s','sl.school_name,u.full_name,p.profile_link,u.id',$where,$options);
 		
 		

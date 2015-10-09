@@ -150,19 +150,22 @@
                               <td> <?php echo ucfirst($user['city_name']); ?> </td>
                               <td><?php echo ucfirst($user['role_name']); ?></td>
                               <td>
-                                  <a href="#" class="icon icon_timeline"></a>
-                                  <a href="#" class="icon icon_books"></a>
-                                  <a href="#" class="icon icon_performance"></a>
+                                  <a href="#" class="icon icon_timeline" data-toggle="tooltip" data-placement="bottom" title="Timeline"></a>
+                                  <a href="#" class="icon icon_books" data-toggle="tooltip" data-placement="bottom" title="Books"></a>
+                                  <a href="#" class="icon icon_performance" data-toggle="tooltip" data-placement="bottom" title="Performance"></a>
                                   <?php if($user['user_status'] == 'blocked') { ?>  
                                   <a href="<?php echo base_url().'admin/user/active/'.$user['id']; ?>" 
-                                    onclick="return confirm('Activate User ?');" class="icon icon_user"></a>
+                                    onclick="return confirm('Activate User ?');" class="icon icon_user" data-toggle="tooltip" data-placement="bottom" title="Active" ></a>
                                   <?php }else{ ?>   
                                   <a href="<?php echo base_url().'admin/user/blocked/'.$user['id']; ?>" 
-                                    onclick="return confirm('Blocked User ?');" class="icon icon_blockuser"></a>  
+                                    onclick="return confirm('Blocked User ?');" class="icon icon_blockuser" data-toggle="tooltip" data-placement="bottom" title="Block"></a>  
                                   <?php } ?>
-                                  <a href="#" class="icon icon_mail"></a>
-                                  <a href="<?php echo base_url().'admin/user/send_message/'.$user['id']; ?>" class="icon icon_chat"></a>
-                                  <a href="<?php echo base_url().'admin/user/update/'.$user['id']; ?>" class="icon icon_edit"> </a>
+                                  <a href="#" class="icon icon_mail" data-toggle="tooltip" data-placement="bottom"  
+                                  data-toggle="tooltip" data-placement="bottom" title="Mail"></a>
+                                  <a href="<?php echo base_url().'admin/user/send_message/'.$user['id']; ?>" class="icon icon_chat" 
+                                    data-toggle="tooltip" data-placement="bottom" title="Chat"></a>
+                                  <a href="<?php echo base_url().'admin/user/update/'.$user['id']; ?>" class="icon icon_edit"
+                                    data-toggle="tooltip" data-placement="bottom" title="Edit"> </a>
                               </td>
                             </tr>
                             <?php } }else{ ?>

@@ -96,7 +96,7 @@
                                 </script>    
                                 <div class="form-group dob">
                                     <div class="input-append date" id="birthdate" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                        <input type="text" class="form-control" placeholder="Date of Birth" name="birthdate" value="<?php echo isset($birthdate)?$birthdate:set_value('birthdate');?>">
+                                        <input type="text" class="form-control" placeholder="Date of Birth" name="birthdate" id='dp' value="<?php echo isset($birthdate)?$birthdate:set_value('birthdate');?>">
                                     </div>
                                 </div>
                                 <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('birthdate'),''))){ echo 'hide';} ?>">
@@ -227,18 +227,13 @@
                                     </div>
                                     <div class="form-group small_input">
                                         <label>District of School</label>
-                                        <label class="label_form"><?php if(isset($school_information['district_name'])){ echo $school_information['district_name'];}else{if($district_name == '') echo '';else $district_name ;}?></label>
+                                        <label class="label_form"><?php if(isset($school_information['district_name'])){ echo $school_information['district_name'];}else{if($district_name == '') echo '&nbsp;';else echo $district_name ;}?></label>
                                     </div>
                                     <div class="form-group small_input ">
                                         <label>Program / Course</label>
                                         <label class="label_form"><?php echo isset($school_information['course_name'])?$school_information['course_name']:$course_name;?></label>
                                     </div>
                                 </div>
-                                   <script>
-                                        
-                                        <?php $district = isset($district_id) ? $district_id : set_value('district_id');?>
-                                        document.getElementById('district_id').value = '<?= $district; ?>';
-                                    </script>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -411,6 +406,7 @@
 
 
 </script>
+
 
 </body>
 </html>

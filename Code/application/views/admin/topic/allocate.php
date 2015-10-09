@@ -44,162 +44,68 @@
                             </div>
                             <div class="box_body topic_groups">
                             	<table class="table table-striped table_group">
-                                	<tr>
-                                    	<td class="username">
-                                       		<div class="chat_img_holder"><img src="../images/group1.jpg"></div>
-                                        	<h4><span>Group Name : </span> Venice Beauty <span> [Coumputer Science F.Y.]</span></h4>
+                                    <?php
+                                    if(!empty($groups)){ 
+                                        foreach ($groups as $group) { ?>
+                                            <tr>
+                                        <td class="username">
+                                            <div class="chat_img_holder"><img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="../images/group1.jpg"></div>
+                                            <a href="<?php echo 'admin/topic/allocate/'.$group['id'] ?>"><h4><span>Group Name : </span> <?php echo $group['group_name']; ?> <span> [<?php echo $group['course_name']; ?>]</span></h4></a>
                                             <table class="group_members">
-                                           		<tbody>
+                                                <tbody>
+                                                   <?php
+                                            
+                                                    if(!empty($all_groups_members)) {
+                                                        $cnt = 0;
+                                                        foreach($all_groups_members as $member) {
+                                                            if( $member['gid'] == $group['id']){
+                                                                if($cnt == 0){ echo '<tr>'; }
+                                                                if($cnt == 3){ echo '<tr>'; }
+                                                     ?>
+
+                                                        <td>
+                                                            <div class="chat_img_holder">
+                                                                <img src="<?php echo 'uploads/'.$member['profile_link']; ?>" 
+                                                                onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                                            </div>
+                                                            <p><?php echo character_limiter(ucfirst($member['username']),5); ?> </p>
+                                                            <span><?php echo character_limiter(ucfirst($member['school_name']),5); ?></span>
+                                                        </td>
+
+                                                        <?php 
+                                                            if($cnt == 2){ echo '</tr>'; } 
+                                                            if($cnt == 4){ echo '<td></td></tr>'; } 
+                                                            $cnt++;
+                                                        } 
+                                                    } // End of foreach Loop
+                                                    
+                                                }  // End of If condition ?>
+                                                    <?php if($cnt == 0) { ?>
                                                     <tr>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user1.jpg"></div>
-                                                            <p>Mary Watson</p>
-                                                            <span>St. Xeviers</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user2.jpg"></div>
-                                                            <p>Matt Lerner</p>
-                                                            <span>LMSH B.</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user3.jpg"></div>
-                                                            <p>Adam Stranger</p>
-                                                            <span>SD Public C</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user4.jpg"></div>
-                                                            <p>Matt Lerner</p>
-                                                            <span>LMSH B.</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user5.jpg"></div>
-                                                            <p>Adam Stranger</p>
-                                                            <span>SD Public C</span>
-                                                        </td>
-                                                        <td></td>
-                                                    </tr>
-                                           		</tbody>
-                                           	</table> 
+                                                        <td> No Members Found. </td>
+                                                    </tr>    
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table> 
                                             <div class="group_score">
-                                            	<hr>
+                                                <hr>
                                                 <div>
-                                                	<h2 class="group_total_points">5000</h2>
+                                                    <h2 class="group_total_points">5000</h2>
                                                     <p>Score</p>
                                                 </div>
                                                 <div>
-                                                	<h2 class="group_rank">04</h2>
+                                                    <h2 class="group_rank">04</h2>
                                                     <p>Exams</p>
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>                                        
                                         </td>
                                     </tr>
-                                    <tr>
-                                    	<td class="username">
-                                       		<div class="chat_img_holder"><img src="../images/group2.jpg"></div>
-                                        	<h4><span>Group Name : </span> AllRounders <span> [Coumputer Science F.Y.]</span></h4>
-                                            <table class="group_members">
-                                           		<tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user1.jpg"></div>
-                                                            <p>Mary Watson</p>
-                                                            <span>St. Xeviers</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user2.jpg"></div>
-                                                            <p>Matt Lerner</p>
-                                                            <span>LMSH B.</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user3.jpg"></div>
-                                                            <p>Adam Stranger</p>
-                                                            <span>SD Public C</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user4.jpg"></div>
-                                                            <p>Matt Lerner</p>
-                                                            <span>LMSH B.</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user5.jpg"></div>
-                                                            <p>Adam Stranger</p>
-                                                            <span>SD Public C</span>
-                                                        </td>
-                                                        <td></td>
-                                                    </tr>
-                                           		</tbody>
-                                           	</table>  
-                                            <div class="group_score">
-                                            	<hr>
-                                                <div>
-                                                	<h2 class="group_total_points">5000</h2>
-                                                    <p>Score</p>
-                                                </div>
-                                                <div>
-                                                	<h2 class="group_rank">04</h2>
-                                                    <p>Exams</p>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                            </div>                                           
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                    	<td class="username">
-                                       		<div class="chat_img_holder"><img src="../images/group2.jpg"></div>
-                                        	<h4><span>Group Name : </span> AllRounders <span> [Coumputer Science F.Y.]</span></h4>
-                                            <table class="group_members">
-                                           		<tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user1.jpg"></div>
-                                                            <p>Mary Watson</p>
-                                                            <span>St. Xeviers</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user2.jpg"></div>
-                                                            <p>Matt Lerner</p>
-                                                            <span>LMSH B.</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user3.jpg"></div>
-                                                            <p>Adam Stranger</p>
-                                                            <span>SD Public C</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user4.jpg"></div>
-                                                            <p>Matt Lerner</p>
-                                                            <span>LMSH B.</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user5.jpg"></div>
-                                                            <p>Adam Stranger</p>
-                                                            <span>SD Public C</span>
-                                                        </td>
-                                                        <td></td>
-                                                    </tr>
-                                           		</tbody>
-                                           	</table>  
-                                            <div class="group_score">
-                                            	<hr>
-                                                <div>
-                                                	<h2 class="group_total_points">5000</h2>
-                                                    <p>Score</p>
-                                                </div>
-                                                <div>
-                                                	<h2 class="group_rank">04</h2>
-                                                    <p>Exams</p>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                            </div>                                           
-                                        </td>
-                                    </tr>
+                                   <?php     }
+                                    }
+                                     ?>
+
+                                
                                 </table>
                             </div>
                         </div>
@@ -211,48 +117,28 @@
                             </div>
                              <div class="box_body topic_groups">
                             	<table class="table table-striped table_group">
-                                	<tr>
-                                    	<td class="recommended">
-                                        	<h4>Vertebrates & bones<span>Subject : Biology</span></h4>
-                                        	<ul>
-                                           		<li><p>Describe the type of bones and disuss about the category and subcategories of each of theme<p></li>
-                                                <li><p>List of Definition</p></li>
-                                                <li><p>Find medical techniques for related disease</p></li>
-                                           	</ul>
+                                    <?php if(!empty($recommended_topics)){
+                                        foreach ($recommended_topics as $topic) { ?>
+                                            <tr>
+                                        <td class="recommended">
+                                            <h4><?php echo $topic['topic_name']; ?><span>Subject : <?php echo $topic['subject_name']; ?></span></h4>
+                                            <ul>
+                                                <li><p><?php echo $topic['topic_description']; ?></p></li>
+                                            </ul>
                                             <div class="recom_action">
-                                            	<a href="#" class="icon icon_delete_color"></a>
-                                                <button class="btn btn_blue">Allocate</button>
+                                                <a href="#" class="icon icon_delete_color"></a>
+                                                <form method="post" action="admin/topic/allocate">
+                                                        <input type="hidden" name="group_id" value="<?php echo $unallocated_group; ?>">
+                                                        <input type="hidden" name="topic_id" value="<?php echo $topic['id']; ?>">
+                                                    <button class="btn btn_blue">Allocate</button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                    	<td class="recommended">
-                                        	<h4>Vertebrates & bones<span>Subject : Biology</span></h4>
-                                        	<ul>
-                                           		<li><p>Describe the type of bones and disuss about the category and subcategories of each of theme<p></li>
-                                                <li><p>List of Definition</p></li>
-                                                <li><p>Find medical techniques for related disease</p></li>
-                                           	</ul>
-                                            <div class="recom_action">
-                                            	<a href="#" class="icon icon_delete_color"></a>
-                                                <button class="btn btn_blue">Allocate</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                    	<td class="recommended">
-                                        	<h4>Vertebrates & bones<span>Subject : Biology</span></h4>
-                                        	<ul>
-                                           		<li><p>Describe the type of bones and disuss about the category and subcategories of each of theme<p></li>
-                                                <li><p>List of Definition</p></li>
-                                                <li><p>Find medical techniques for related disease</p></li>
-                                           	</ul>
-                                            <div class="recom_action">
-                                            	<a href="#" class="icon icon_delete_color"></a>
-                                                <button class="btn btn_blue">Allocate</button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                     <?php   }
+                                    }
+                                     ?>
+                                	
                                 </table>
                             </div>
                         </div>

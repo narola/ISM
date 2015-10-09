@@ -1,4 +1,3 @@
-
 <!--main-->
 <div class="col-sm-7 main main2">
 	<!--breadcrumb-->
@@ -81,7 +80,7 @@
                             <textarea class="form-control" name="home_address"><?php echo $user['home_address']; ?></textarea>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group select">
                             <label>Country</label>
                             <select class="form-control " name="country" onchange="get_states(this.value)" id="country_id">
                                 <option selected disabled>Select Country</option> 
@@ -143,11 +142,18 @@
 
                         <?php echo myform_error('birthdate'); ?>
 
-                        <div class="form-group">
-                            <label>Gender</label>
-                            <input type="radio" name="gender" <?php if($user['gender'] == 'male'){ echo 'checked'; } ?> value="male">Male
-                            <input type="radio" name="gender" <?php if($user['gender'] == 'female'){ echo 'checked'; } ?> value="female">Female
+                        <div class="circleThree">
+                            <input type="radio" name = "gender" value="male" <?php if($user['gender'] == 'male'){ echo 'checked'; } ?> 
+                            id="circleThree" name="check">
+                            <label for="circleThree"></label>
+                            <span>Male</span>
+                       
+                            <input type="radio" name="gender" value="female" <?php if($user['gender'] == 'female'){ echo 'checked'; } ?> 
+                            id="circleThree1" name="check">
+                            <label for="circleThree1"></label>
+                            <span>Female</span>
                         </div>
+
                         
                         <div class="form-group" >
                             <label>Roles</label>
