@@ -4,8 +4,8 @@
                 <div class="row page_header">
                     <div class="col-sm-12">
                         <ol class="breadcrumb">
-                          <li><a href="#">Manage</a></li>                          
-                          <li><a href="#">Topic</a></li>
+                          <li><a href="admin/user">Manage</a></li>                          
+                          <li><a href="admin/topic/lists">Topic</a></li>
                           <li class="active">Add Topic</li>
                         </ol>
                     </div>
@@ -17,42 +17,41 @@
                         <h3>Add New Topic</h3>
                     </div>
                     <div class="box_body">  
+                        
                         <div class="form-group select col-sm-6 no-padding half_size">
-                            <select class="form-control">
-                                <option>Year</option>
-                                <option>2015</option>
+                            <select class="form-control" name="course_id" onchange="get_subjects(this.value)" id="course_id">
+                                <option>Select Course</option>
+                                <?php 
+                                  if(!empty($courses)){ 
+                                    foreach($courses as $course) {
+                                  ?> 
+                                <option value="<?php echo $course['id']; ?>"> <?php echo $course['course_name']; ?></option>
+                                <?php }  }else{ ?>
+                                <option > No Course</option>
+                                <?php } ?>
                             </select>
                             <a href="#" class="icon icon_add_small"></a>
                         </div>
                         <div class="form-group select col-sm-6 no-padding half_size">
-                            <select class="form-control">
-                                <option>Subject</option>
-                                <option>2015</option>
-                            </select>
-                            <a href="#" class="icon icon_add_small"></a>
-                        </div>
-                        <div class="form-group select col-sm-6 no-padding half_size">
-                            <select class="form-control">
-                                <option>Course</option>
-                                <option>2015</option>
+                            <select class="form-control" name="subjects" id="subject_id">
+                                <option>Select Subject</option>
                             </select>
                             <a href="#" class="icon icon_add_small"></a>
                         </div>
                         <div class="form-group col-sm-6 no-padding half_size">
-                            <input type="text" class="form-control" placeholder="Topic">
+                            <div class="form-group col-sm-12 no-padding half_size"><input name="topic_name" type="text" class="form-control" placeholder="Topic"></div>
+                            <div class="form-group col-sm-12 no-padding half_size"><label>Keywords for Evaluations</label>
+                            <textarea name="keywords" class="form-control"></textarea></div>
                         </div>
                         <div class="form-group col-sm-6 no-padding half_size">
                             <label>Text Description</label>
-                            <textarea name="editor1" id="editor1" class="form-control"></textarea>
+                            <textarea name="topic_desc" id="editor1" class="form-control"></textarea>
                         </div>
-                        <div class="form-group col-sm-6 no-padding half_size">
-                            <label>Keywords for Evaluations</label>
-                            <textarea class="form-control"></textarea>
-                        </div>
+                       
                         <div class="col-sm-12 text-center btn_group">
-                            <button class="btn btn_green">Save</button>
-                            <button class="btn btn_red">Save & Add More</button>
-                            <button class="btn btn_black_normal">Cancle</button>
+                            <button class="btn btn_green" type="submit" name="save">Save</button>
+                            <button class="btn btn_red" type="submit" name="save_more">Save & Add More</button>
+                            <button class="btn btn_black_normal" type="reset">Cancel</button>
                         </div>
                         <div class="clearfix"></div>
                      </div>
@@ -90,6 +89,17 @@
         
             config.removeButtons = 'Source,Save,Templates,Cut,Undo,Find,SelectAll,Scayt,Form,NewPage,Preview,Print,PasteText,Paste,Copy,Redo,Replace,PasteFromWord,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,BidiLtr,BidiRtl,Language,Anchor,Unlink,Link,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Format,Styles,TextColor,BGColor,ShowBlocks,Maximize,About';
         };
+
+        function get_subjects(course_id){
+            $.ajax({
+               url:'<?php echo base_url()."admin/topic/ajax_get_subjects"; ?>',
+               type:'POST',
+               data:{course_id:course_id},
+               success:function(data){
+                  $('#subject_id').html(data);
+               }
+            });
+      }
     </script>
     <script>
         $(function () {
