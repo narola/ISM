@@ -33,9 +33,12 @@
 	                        <option value="2016">2016</option>
 	                    </select>
 	                </div>
-	                <div class="form-group">
-	                    <input type="text" name="q" id="q" class="form-control">
-	                </div>
+	                
+                    <div class="form-group no_effect search_input">
+                        <input type="text" name="q" id="q" class="form-control" placeholder="Type Group name." >
+                        <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                    </div>
+
 	            </div>
 	        </div>
             

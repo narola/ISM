@@ -120,6 +120,20 @@ class Topic extends ADMIN_Controller {
 		$date = new DateTime($ddate);
 		$week = $date->format("W");
 		
+
+		// if($_POST){
+
+		// 	$gid = $this->input->post('group_id');
+		// 	$tid = $this->input->post('topic_id');
+		// 	$tutorial_data = array('group_id'=>gid,'interface_type'=>'','date_day'=>'','week_no'=>$week,'status'=>'',
+		// 						   'topic_id'=>$tid,'group_score'=>'','created_date'=>date('Y-m-d H:i:s'),
+		// 						   'modified_date'=>'0000-00-00 00:00:00','is_delete'=>'0','is_testdata'=>'yes');
+		// 	insert(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,$tutorial_data);
+		// 	$this->session->set_flashdata('success', 'Topic has beed allocated to group.');
+		// 	redirect('admin/topic/allocate');
+
+		// }
+
 		$date1 = new DateTime('2015-09-24 10:18:40');
 		$year = $date1->format('Y');
 
@@ -133,8 +147,9 @@ class Topic extends ADMIN_Controller {
 
 		$allocated_group_ids = array_column($allocated_groups, 'group_id');
 		
-		// echo 'assigned for the current week<br/>';
-		// p($allocated_group_ids);
+        // echo 'assigned for the current week<br/>';
+		
+		p($allocated_group_ids);
 
 		$where  = array('where_not_in' => array(TBL_TUTORIAL_GROUPS.'.id' => $allocated_group_ids),
 			'where'=> array(TBL_TUTORIAL_GROUPS.'.is_completed'=>1,
@@ -149,7 +164,7 @@ class Topic extends ADMIN_Controller {
 		$unallocated_groups = select(TBL_TUTORIAL_GROUPS,
 											TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
 											TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
-											TBL_COURSES.'.id as course_id',
+											TBL_COURSES.'.id as course_id,'.TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name',
 											$where,
 											array(
 												//'limit'=>$config['per_page'],
@@ -172,17 +187,26 @@ class Topic extends ADMIN_Controller {
 											    			array(
 											    				'table' => TBL_COURSES,
 											    				'condition' => TBL_COURSES.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.course_id',
-											    				)
+											    				),
+											    			array(
+											    				'table' => TBL_SCHOOLS,
+											    				'condition' => TBL_SCHOOLS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.school_id',
+											    				),
 											    			)
 												)
 											);
-		
-	// p($unallocated_groups);
+	
+	// qry();	
+	p($unallocated_groups,true);
+
 	$this->data['groups'] = $unallocated_groups;
-		/*//fetch all data of group right joins with tutorial group members
+
+
+		//fetch all data of group right joins with tutorial group members
 		$this->data['all_groups_members'] =   select(TBL_TUTORIAL_GROUPS,
 											TBL_TUTORIAL_GROUP_MEMBER.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.id as gid,'.
-											TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name,'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link,'.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
+											TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name,'.TBL_CLASSROOMS.'.class_name,'.
+											TBL_USER_PROFILE_PICTURE.'.profile_link,'.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
 											FALSE,
 											array(
 												'join' =>  array(
@@ -212,18 +236,19 @@ class Topic extends ADMIN_Controller {
 											    				)
 											    			)
 												)
-											);*/
+											);
 
 		$unallocated_group_ids = array_column($unallocated_groups, 'id');
 
 
 		// echo 'other than assigned<br/>';
-		// p($unallocated_group_ids);
+		p($unallocated_group_ids);
 
 		if($unallocated == null){
 			$unallocated = current($unallocated_group_ids);
 		}
-		echo $unallocated;
+		
+		$this->data['unallocated_group'] = $unallocated;
 
 		$last_week = $week-1;
 		$where  = array('where' => array('tut_topic.week_no' => $last_week,
@@ -231,13 +256,13 @@ class Topic extends ADMIN_Controller {
 			),
 		'where_in'=>array('tut_topic.group_id'=> $unallocated_group_ids)
 		);
-		
+		p($where);
 		$last_week_groups = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' tut_topic',
 			'tut_topic.group_id,tut_topic.topic_id',
 			$where
 			);
 		
-		// echo 'assigned last week<br/>';
+			// echo 'assigned last week<br/>';
 		// p($last_week_groups);
 
 		//foreach ($unallocated_group_ids as $unallocated) {
@@ -401,6 +426,14 @@ class Topic extends ADMIN_Controller {
 			);
 		echo json_encode($response);
 		exit;
+	}
+
+	/**
+	* function to add new topic
+	*/
+	public function add(){
+		$this->data['page_title'] = 'Add New Topic';
+		$this->template->load('admin/default','admin/topic/add', $this->data);
 	}
 
 

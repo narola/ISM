@@ -49,40 +49,42 @@
                                         foreach ($groups as $group) { ?>
                                             <tr>
                                         <td class="username">
-                                            <div class="chat_img_holder"><img src="../images/group1.jpg"></div>
+                                            <div class="chat_img_holder"><img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="../images/group1.jpg"></div>
                                             <a href="<?php echo 'admin/topic/allocate/'.$group['id'] ?>"><h4><span>Group Name : </span> <?php echo $group['group_name']; ?> <span> [<?php echo $group['course_name']; ?>]</span></h4></a>
                                             <table class="group_members">
                                                 <tbody>
+                                                   <?php
+                                            
+                                                    if(!empty($all_groups_members)) {
+                                                        $cnt = 0;
+                                                        foreach($all_groups_members as $member) {
+                                                            if( $member['gid'] == $group['id']){
+                                                                if($cnt == 0){ echo '<tr>'; }
+                                                                if($cnt == 3){ echo '<tr>'; }
+                                                     ?>
+
+                                                        <td>
+                                                            <div class="chat_img_holder">
+                                                                <img src="<?php echo 'uploads/'.$member['profile_link']; ?>" 
+                                                                onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                                            </div>
+                                                            <p><?php echo character_limiter(ucfirst($member['username']),5); ?> </p>
+                                                            <span><?php echo character_limiter(ucfirst($member['school_name']),5); ?></span>
+                                                        </td>
+
+                                                        <?php 
+                                                            if($cnt == 2){ echo '</tr>'; } 
+                                                            if($cnt == 4){ echo '<td></td></tr>'; } 
+                                                            $cnt++;
+                                                        } 
+                                                    } // End of foreach Loop
+                                                    
+                                                }  // End of If condition ?>
+                                                    <?php if($cnt == 0) { ?>
                                                     <tr>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user1.jpg"></div>
-                                                            <p>Mary Watson</p>
-                                                            <span>St. Xeviers</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user2.jpg"></div>
-                                                            <p>Matt Lerner</p>
-                                                            <span>LMSH B.</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user3.jpg"></div>
-                                                            <p>Adam Stranger</p>
-                                                            <span>SD Public C</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user4.jpg"></div>
-                                                            <p>Matt Lerner</p>
-                                                            <span>LMSH B.</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="chat_img_holder"><img src="../images/user5.jpg"></div>
-                                                            <p>Adam Stranger</p>
-                                                            <span>SD Public C</span>
-                                                        </td>
-                                                        <td></td>
-                                                    </tr>
+                                                        <td> No Members Found. </td>
+                                                    </tr>    
+                                                    <?php } ?>
                                                 </tbody>
                                             </table> 
                                             <div class="group_score">
@@ -125,7 +127,11 @@
                                             </ul>
                                             <div class="recom_action">
                                                 <a href="#" class="icon icon_delete_color"></a>
-                                                <button class="btn btn_blue">Allocate</button>
+                                                <form method="post" action="admin/topic/allocate">
+                                                        <input type="hidden" name="group_id" value="<?php echo $unallocated_group; ?>">
+                                                        <input type="hidden" name="topic_id" value="<?php echo $topic['id']; ?>">
+                                                    <button class="btn btn_blue">Allocate</button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>

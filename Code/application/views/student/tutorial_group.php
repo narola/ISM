@@ -135,6 +135,7 @@
                             <a href="javascript:void(0);" class="fa fa-search" data-type="search-dictionary"></a>
                         </div>
                         <div class="dictionary_result mCustomScrollbar" data-mcs-theme="minimal-dark">
+                        sdfsd
                         </div>
                     </div>
                 </div>
