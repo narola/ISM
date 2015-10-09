@@ -1219,6 +1219,21 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .group_member_wrapper{
 	border-right: 1px solid rgba(0,0,0,0.1);
+	height:100vh;
+	overflow:hidden;
+	background-color: #fff;
+}
+.allocate_topic_wrapper{
+	height:100vh;
+	overflow:hidden;
+	background-color:#fff;	
+}
+.performance_div{
+	height:100vh;
+	overflow:hidden;
+	background-color:#fff;
+	border-left: 1px solid rgba(0,0,0,0.1);
+	
 }
 .group_perf_member{
 	padding:15px;
@@ -1258,10 +1273,10 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .group_perf_member .group_score{
 	padding:0;
 }
-.group_member_wrapper>.group_perf_member:nth-child(odd){
+.group_member_wrapper .group_perf_member:nth-child(odd){
 	background-color:#fff;
 }
-.group_member_wrapper>.group_perf_member:nth-child(even){
+.group_member_wrapper .group_perf_member:nth-child(even){
 	background-color:#f7f7f7;
 }
 .allocated_topics{
@@ -1300,10 +1315,10 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .month_wise{
 	border-bottom:1px solid rgba(0,0,0,1);
 }
-.month_wise:nth-child(2){
+.month_wise:nth-child(1){
 	border-color:#4294d0;
 }
-.month_wise:nth-child(3){
+.month_wise:nth-child(2){
 	border-color:#27ae60;
 }
 .month_name {
@@ -1325,9 +1340,60 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .month_name{
 	background-color:#1bc4a3;
 }
-.month_wise:nth-child(2) .month_name{
+.month_wise:nth-child(1) .month_name{
 	background-color:#4294d0;
 }
-.month_wise:nth-child(3) .month_name{
+.month_wise:nth-child(2) .month_name{
 	background-color:#27ae60;
+}
+/*.group_member_wrapper:before {
+    content: "";
+    position: absolute;
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    left: 100%;
+    top: 0;
+    border-right: 1px solid rgba(0,0,0,0.1);
+    border-left: 1px solid rgba(0,0,0,0.1);
+}*/
+.performance_wrapper{
+	background-color:#fff;
+	/*border-left:1px solid rgba(0,0,0,0.1);*/
+	border-bottom:1px solid rgba(0,0,0,0.1);
+	overflow:hidden;
+}
+#performance_graph{
+	overflow: hidden;
+	margin-left: -12px;
+}
+#performance_graph>.highcharts-container>svg>text[text-anchor=end]{
+	display:none;
+}
+#performance_graph .highcharts-drilldown-data-label{
+	display:none;
+}
+.allocated_teachers{
+	background-color:#fff;
+	/*border-left:1px solid rgba(0,0,0,0.1);*/
+	padding:4px 15px;
+}
+.allocated_teachers .stm_item:last-child{
+	border-bottom:none;
+}
+.allocated_teachers .stm_item p{
+	color:#333;
+	margin:0;
+}
+.allocated_teachers .stm_item p:last-child{
+	opacity:0.4;
+    position: absolute;
+    right: 0;
+    bottom: 15px;
+}
+.allocated_teachers .stm_item p.teacher_name{
+	color:#ff6b6b;
+}
+.performance_div .box_header{
+	border-left:none;
 }

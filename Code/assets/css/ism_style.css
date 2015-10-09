@@ -790,7 +790,6 @@ textarea.post_input{
 }
 .feed_text .like_btn, .feed_text .comment_btn{
 	color:#333;
-	cursor: default;
 }
 .feed_text a:last-child{
 	margin:0;
@@ -1989,7 +1988,7 @@ ul.tut_weekdays {
 	font-family:Arial, Helvetica, sans-serif;
 	font-size:18px;
 }
-svg {
+.time_chart svg {
     transform: rotate(-90deg);
 }
 .circle_animation {

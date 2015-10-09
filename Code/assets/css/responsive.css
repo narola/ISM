@@ -359,9 +359,13 @@
 	.sidebar_shrink, .sidebar_shrink .logout{
 		width:7%;
 	}
-	.main_wide {
+	/*.main_wide {
     	margin-left: 7%;
     	width: 93%;
+	}*/
+	.main_wide {
+    	margin-left: 14%;
+    	width: 86%;
 	}
 	.main_wide .filter .form-group{
 		width:32.2%;
@@ -390,6 +394,15 @@
 	.btn_switch{
 		padding-right: 15px !important;
 	}
+	.allocated_teachers .stm_item p:last-child{
+		position:relative;
+		left:19%;
+		bottom:auto;
+	}
+	.group_perf_member .username .chat_img_holder {
+    	float: left;
+	}
+	
 }
 @media (max-width:980px){
 	.login_background {
@@ -590,6 +603,16 @@
 	}
 	.search_bar .form-control {
     	width: 46%;
+	}
+	.allocated_topics .exam_type, .allocated_topics .exam_cat{
+		width:100%;
+		float:none;
+	}
+	.allocated_topics .exam_type{
+		border:none;
+		padding-bottom:5px;
+		margin-bottom:5px;
+		border-bottom:1px solid rgba(0,0,0,0.1);
 	}
 }
 @media (max-width:768px){

@@ -1988,7 +1988,7 @@ ul.tut_weekdays {
 	font-family:Arial, Helvetica, sans-serif;
 	font-size:18px;
 }
-svg {
+.time_chart svg {
     transform: rotate(-90deg);
 }
 .circle_animation {
