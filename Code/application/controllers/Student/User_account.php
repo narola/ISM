@@ -153,8 +153,6 @@ class User_account extends CI_Controller {
 				"username"			=>	$this->input->post("username"),
 				"birthdate"			=>	$birthdate,
 				"password"			=>	$this->encrypt->encode($this->input->post("new_password")),
-				"created_date"		=>	date('Y-m-d H:i:s',time()),
-				"modified_date"		=>	date('Y-m-d H:i:s',time()),
 				"user_status"		=>	'active'
 			);
 			if(isset($this->session->userdata('user')['id'])){
@@ -166,6 +164,7 @@ class User_account extends CI_Controller {
 					unset($data_student['password']);
 					$data_student['password']	=	$this->encrypt->encode($this->input->post('cur_password'));
 				}
+				$data_student["modified_date"] = date('Y-m-d H:i:s',time());
 				update(TBL_USERS,array('id'=>$uid),$data_student);
 				
 				/*---update acedemic detail--*/
@@ -230,6 +229,7 @@ class User_account extends CI_Controller {
 				$password = $this->encrypt->decode($old_result['password']);
 				$id = $old_result['id'];
 				$data_student["role_id"] = $old_result['role_id'];
+				$data_student["created_date"] = date('Y-m-d H:i:s',time());
 				/*-----------user detail-----------*/
 				
 				
