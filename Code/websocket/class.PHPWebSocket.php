@@ -535,6 +535,7 @@ class PHPWebSocket {
 
 
 
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -708,6 +709,7 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
 
 
 
@@ -1807,10 +1809,11 @@ class PHPWebSocket {
      * @param type $user_id
      * @param array $data
      */
-    function save_sent_topic_file($user_id, $data = null) {
+    function save_sent_topic_file($userId, $data = null) {
+        $data['active_count'] = $data['group_score'] = $data['my_score'] = 'skip';
         $time = time();
         $link = $this->db();
-        $output_file = dirname(__DIR__) . "\\uploads\\user_" . $user_id;
+        $output_file = dirname(__DIR__) . "\\uploads\\user_" . $userId;
         if (!file_exists($output_file)) {
             mkdir($output_file, 0777);
         }
@@ -1818,7 +1821,7 @@ class PHPWebSocket {
         if (!file_exists($output_file)) {
             mkdir($output_file, 0777);
         }
-        $data['webpath'] = 'user_' . $user_id . '/sentFiles/' . $time . '_' . $data['name'];
+        $data['webpath'] = 'user_' . $userId . '/sentFiles/' . $time . '_' . $data['name'];
         $output_file .= '\\' . $time . '_' . $data['name'];
 
         if (is_array($data) && !empty($data)) {
@@ -1835,6 +1838,7 @@ class PHPWebSocket {
             $query = "SELECT `tm`.`id` as member_id,`tg`.`topic_id`, `tm`.`group_id` FROM  `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `tg` "
                     . "LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER . "` `tm` ON `tm`.`group_id` = `tg`.`group_id` "
                     . "WHERE `tm`.`user_id` = $userId AND `tg`.`week_no` = $c_week LIMIT 1";
+
             $row = mysqli_query($link, $query);
             if (mysqli_num_rows($row) == 1) {
                 $rows = mysqli_fetch_assoc($row);
@@ -1843,12 +1847,27 @@ class PHPWebSocket {
                         . "(`id`, `group_id`, `topic_id`, `sender_id`, `comment_score`, `message`, `message_type`, "
                         . "`message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, "
                         . "`is_delete`, `is_testdata`) VALUES "
-                        . "(NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, 0,null, '', '', 0, '".$data['webpath']."', '".$data['data_type']."', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
+                        . "(NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, 0,'', '', '', 0, '" . $data['webpath'] . "', '" . $data['data_type'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
                 $x = mysqli_query($link, $query);
+                
                 $data['disscusion_id'] = mysqli_insert_id($link);
                 file_put_contents($output_file, base64_decode($data['data']));
+                unset($data['data']);
+                $check_type = array(
+                    'image/png',
+                    'image/jpg',
+                    'image/jpeg',
+                    'image/gif'
+                );
+                if (in_array($data['data_type'], $check_type)) {
+                    $data['message'] = '<a href="uploads/' . $data['webpath'] . '"  target="_BLANK"><img src="uploads/' . $data['webpath'] . '" width="50" height="50"></a>';
+                } else {
+                    $data['message'] = '<a href="uploads/' . $data['webpath'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50"></a>';
+                }
             }
         }
+        $data['type'] = 'discussion';
+        $data['to'] = 'all';
         $data['allStudyMate'] = $this->class_mate_list($userId);
         return array_merge($data, $this->get_client_info($userId));
     }

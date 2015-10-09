@@ -45,7 +45,25 @@
                                 </div>
                                 <div class="admin_question">
                                     <h4><?php echo $v['full_name']; ?><span><?php echo date_format( date_create($v['created_date']), 'M d Y g:i a'); ?></span></h4>
-                                    <p><?php echo $v['message']; ?></p>
+                                    <p><?php 
+                                      $check_type = array(
+                                        'image/png',
+                                        'image/jpg',
+                                        'image/jpeg',
+                                        'image/gif'
+                                    );
+                                      if($v['message'] == '' || $v['message'] == null){
+                                        if (in_array($v['media_type'], $check_type)) {
+                                     echo '<a href="uploads/' . $v['media_link'] . '"  target="_BLANK"><img src="uploads/' . $v['media_link'] . '" width="50" height="50"></a>';
+                                    } else {
+                                        echo '<a href="uploads/' . $v['media_link'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50"></a>';
+                                        }
+                                      }else{
+                                        echo $v['message'];
+                                      }
+                                
+                                      ?>
+                                </p>
                                 </div>
                             </div>
                             <?php
@@ -64,9 +82,8 @@
                           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                           Active hours are finished!
                         </div>
-                        
                     	<div class="option_bar" data-type="discussion-submit">
-                        	<a href="#" class="icon icon_pin"></a>
+                        	<a href="javascript:void(0);" class="icon icon_pin"><input id="group_file_share" type="file" data-type="topic_file" data-id="topic"></a>
                             <button class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
                         </div>
                     	<textarea placeholder="SAY IT" data-type="discussion"></textarea>
