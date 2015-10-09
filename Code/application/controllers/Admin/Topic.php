@@ -403,5 +403,13 @@ class Topic extends ADMIN_Controller {
 		exit;
 	}
 
+	/**
+	* function to add new topic
+	*/
+	public function add(){
+		$this->data['page_title'] = 'Add New Topic';
+		$this->template->load('admin/default','admin/topic/add', $this->data);
+	}
+
 
 }

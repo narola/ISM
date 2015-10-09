@@ -94,7 +94,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="admin/topic/allocate">Allocate Topics</a></li>
                         <li><a href="admin/topic/lists">List of Topics</a></li>
-                        <li><a href="#">Add New Topic</a></li>
+                        <li><a href="admin/topic/add">Add New Topic</a></li>
                     </ul>
                 </li>
               </ul>
