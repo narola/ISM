@@ -4,8 +4,8 @@
       <div class="row page_header">
           <div class="col-sm-12">
               <ol class="breadcrumb">
-                  <li><a href="#">Manage</a></li>
-                  <li class="active">User</li>
+                  <li><a href="admin/group">Manage</a></li>
+                  <li class="active">Group</li>
                 </ol>
             </div>
         </div>

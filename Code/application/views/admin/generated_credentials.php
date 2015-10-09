@@ -144,7 +144,10 @@
     });
 
     function reset_form(){
-            $('#school_id').val('');
+        
+        $('#school_id option:first-child').attr("selected", "selected");
+        $('#select2-chosen-1').html('Select School');
+        $("div.alert").remove();
     }
 
     function success_credential(){
@@ -174,6 +177,7 @@
             $('#role_id_new').html(role_name);
             $('#course_id_new').html(course_name);
             $('#school_id_new').html(school_name);
+            $("div.alert").remove();
 
         }
         

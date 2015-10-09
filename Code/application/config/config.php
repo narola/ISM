@@ -5,7 +5,9 @@ function __autoload($classname){
 
 	if(strpos('CI_', $classname) == FALSE){
 
-		$path =APPPATH.'libraries\\'.$classname.'.php';
+		//$path =APPPATH.'libraries\\'.$classname.'.php';
+
+		$path =APPPATH.'controllers\admin\\'.$classname.'.php';
 
 		if(file_exists($path) && is_file($path)){
 			require_once($path);

@@ -4,8 +4,8 @@
   <div class="row page_header">
       <div class="col-sm-12">
           <ol class="breadcrumb">
-              <li><a href="#">Admin</a></li>                          
-              <li><a href="#">Manage Notices</a></li>
+              <li><a href="admin/notice">Admin</a></li>                          
+              <li><a href="admin/notice">Manage Notices</a></li>
               <li class="active">Add Notice</li>
             </ol>
         </div>
