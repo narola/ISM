@@ -152,7 +152,7 @@
                               <td>
                                   <a href="#" class="icon icon_timeline" data-toggle="tooltip" data-placement="bottom" title="Timeline"></a>
                                   <a href="#" class="icon icon_books" data-toggle="tooltip" data-placement="bottom" title="Books"></a>
-                                  <a href="#" class="icon icon_performance" data-toggle="tooltip" data-placement="bottom" title="Performance"></a>
+                                  <a href="admin/user/activity/<?php echo $user['id'];?>" class="icon icon_performance" data-toggle="tooltip" data-placement="bottom" title="Performance"></a>
                                   <?php if($user['user_status'] == 'blocked') { ?>  
                                   <a href="<?php echo base_url().'admin/user/active/'.$user['id']; ?>" 
                                     onclick="return confirm('Activate User ?');" class="icon icon_user" data-toggle="tooltip" data-placement="bottom" title="Active" ></a>
@@ -163,7 +163,7 @@
                                   <a href="#" class="icon icon_mail" data-toggle="tooltip" data-placement="bottom"  
                                   data-toggle="tooltip" data-placement="bottom" title="Mail"></a>
                                   <a href="<?php echo base_url().'admin/user/send_message/'.$user['id']; ?>" class="icon icon_chat" 
-                                    data-toggle="tooltip" data-placement="bottom" title="Chat"></a>
+                                    data-toggle="tooltip" data-placement="bottom" title="Message"></a>
                                   <a href="<?php echo base_url().'admin/user/update/'.$user['id']; ?>" class="icon icon_edit"
                                     data-toggle="tooltip" data-placement="bottom" title="Edit"> </a>
                               </td>

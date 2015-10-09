@@ -149,7 +149,7 @@ class Topic extends ADMIN_Controller {
 		
         // echo 'assigned for the current week<br/>';
 		
-		p($allocated_group_ids);
+		// p($allocated_group_ids);
 
 		$where  = array('where_not_in' => array(TBL_TUTORIAL_GROUPS.'.id' => $allocated_group_ids),
 			'where'=> array(TBL_TUTORIAL_GROUPS.'.is_completed'=>1,
@@ -197,7 +197,7 @@ class Topic extends ADMIN_Controller {
 											);
 	
 	// qry();	
-	p($unallocated_groups,true);
+	// p($unallocated_groups,true);
 
 	$this->data['groups'] = $unallocated_groups;
 
@@ -242,7 +242,7 @@ class Topic extends ADMIN_Controller {
 
 
 		// echo 'other than assigned<br/>';
-		p($unallocated_group_ids);
+		// p($unallocated_group_ids);
 
 		if($unallocated == null){
 			$unallocated = current($unallocated_group_ids);
@@ -256,7 +256,7 @@ class Topic extends ADMIN_Controller {
 			),
 		'where_in'=>array('tut_topic.group_id'=> $unallocated_group_ids)
 		);
-		p($where);
+		
 		$last_week_groups = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' tut_topic',
 			'tut_topic.group_id,tut_topic.topic_id',
 			$where
@@ -432,8 +432,37 @@ class Topic extends ADMIN_Controller {
 	* function to add new topic
 	*/
 	public function add(){
+
+		$this->data['courses'] = select(TBL_COURSES,FALSE,FALSE,null);
 		$this->data['page_title'] = 'Add New Topic';
 		$this->template->load('admin/default','admin/topic/add', $this->data);
+	}
+
+	public function ajax_get_subjects(){
+		$course_id = $this->input->post('course_id');
+		
+		$subjects = select(TBL_COURSE_SUBJECT,TBL_COURSE_SUBJECT.'.subject_id,sub.subject_name ',
+			array('where'=>array('course_id'=>$course_id)),
+				array(
+					'join'=>array(
+								array(
+					    				'table' => TBL_SUBJECTS.' sub',
+					    				'condition' => 'sub.id = '.TBL_COURSE_SUBJECT.'.subject_id',
+									)
+								)
+					)
+			);
+
+		
+		$new_str = '';
+		
+		$new_str .= '<option selected disabled >Select Subject</option>';
+		if(!empty($subjects)){
+			foreach($subjects as $subject){
+				$new_str.='<option value="'.$subject['subject_id'].'">'.$subject['subject_name'].'</option>';
+			}	
+		}
+		echo $new_str;
 	}
 
 

@@ -142,7 +142,7 @@ class Notice extends ADMIN_Controller {
 			$this->template->load('admin/default','admin/notice/add_notice',$this->data);	
 		}else{
 
-			$db_template = select(TBL_NOTICEBOARD,FALSE,array('where'=>array('is_template'=>'1')));
+			$db_template = select(TBL_NOTICEBOARD,FALSE,array('where'=>array('is_template'=>'1','is_delete'=>'0')));
 			$notice_title = $this->input->post('notice_title');
 
 			$cnt = 0;
