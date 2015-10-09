@@ -150,6 +150,9 @@ class Dashboard extends ADMIN_Controller {
 			$role_id = $this->input->post('role_id');
 			$course_id = $this->input->post('course_id');
 			$classroom_id = $this->input->post('classroom_id');
+			$year_id = $this->input->post('year_id');
+			$next_year = $year_id+1;
+			$year = "$year_id-$next_year";
 			$no_of_credentials	=	$this->input->post('no_of_credentials',TRUE);
 
 			// Fetch role name,course name,classroom name,school name from diffetent table using cms_helper.php and common_model.php
@@ -226,7 +229,7 @@ class Dashboard extends ADMIN_Controller {
 							'modified_date'=>'0000-00-00 00:00:00',
 							'classroom_id'=> $classroom_id,
 							'course_id'=> $course_id,
-							'academic_year'=>'',
+							'academic_year'=>$year,
 							'is_delete'=>FALSE,
 							'is_my_school'=>FALSE,
 							'is_testdata'=>'yes'

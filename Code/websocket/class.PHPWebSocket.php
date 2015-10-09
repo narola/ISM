@@ -531,6 +531,10 @@ class PHPWebSocket {
 
 
 
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -704,6 +708,10 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
+
 
 
 
@@ -1138,19 +1146,20 @@ class PHPWebSocket {
         }
         //  $result = array_reverse($result);
         $html = '';
-        foreach ($result as $value)
+        foreach ($result as $value) {
             $message = $value['message'];
-        if ($message == null) {
-            if (in_array($value['media_type'], $check_type)) {
-                $message = '<a href="uploads/' . $value['media_link'] . '"  target="_BLANK"><img src="uploads/' . $value['media_link'] . '" width="50" height="50" /></a>';
-            } else {
-                $message = '<a href="uploads/' . $value['media_link'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50" /></a>';
+            if ($message == null) {
+                if (in_array($value['media_type'], $check_type)) {
+                    $message = '<a href="uploads/' . $value['media_link'] . '"  target="_BLANK"><img src="uploads/' . $value['media_link'] . '" width="50" height="50" /></a>';
+                } else {
+                    $message = '<a href="uploads/' . $value['media_link'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50" /></a>';
+                }
             }
-        }
-        if ($value['sender_id'] == $data['my_id']) {
-            $html .= '<div class="from"><p>' . $message . '</p></div>';
-        } else {
-            $html .= '<div class="to"><p>' . $message . '</p></div>';
+            if ($value['sender_id'] == $data['my_id']) {
+                $html .= '<div class="from"><p>' . $message . '</p></div>';
+            } else {
+                $html .= '<div class="to"><p>' . $message . '</p></div>';
+            }
         }
         $data['message'] = $html;
         return $data;
@@ -1286,7 +1295,7 @@ class PHPWebSocket {
         if (is_array($data) && !empty($data)) {
 
 
-            // Get score related configuration from admin_config table. And stored into $config variable.
+            // Get  score related configuration from admin_config table. And stored into $config variable.
             $query = "select `ac`.`config_key`,`ac`.`config_value` FROM `" . TBL_ADMIN_CONFIG . "` `ac` WHERE `ac`.`config_key` IN('activeHrFirstCommentScore','activeHoursFirstCommentCount','nonActivehoursScore','spamWordDeduction','activeHoursCommentScore','groupScoreFromIndividual')";
             $row = mysqli_query($link, $query);
             $config = array();
@@ -1346,6 +1355,8 @@ class PHPWebSocket {
                                 $score = $config['activeHrFirstCommentScore'];
                             }
                         }
+                    } else {
+                        $score = $config['nonActivehoursScore'];
                     }
                 } else {
                     $score = 0;
@@ -1614,7 +1625,7 @@ class PHPWebSocket {
                     $data['to'] = 'self';
                     $data['error'] = 'Unable to save message.! Please try again.';
                 } else {
-                    $query = "SELECT count(*) as cnt FROM " . TBL_STUDYMATES_REQUEST . " where request_to_mate_id =" . $data['studymate_id'];
+                    $query = "SELECT count(*) as cnt FROM " . TBL_STUDYMATES_REQUEST . " where request_from_mate_id =" . $data['studymate_id'] . " status = 0";
                     $rows = mysqli_query($link, $query);
                     $row = mysqli_fetch_assoc($rows);
                     $data['count'] = $row['cnt'];
@@ -1670,7 +1681,7 @@ class PHPWebSocket {
                     $data['to'] = 'self';
                     $data['error'] = 'Unable to save message.! Please try again.';
                 }
-                $query = 'UPDATE ' . TBL_STUDYMATES_REQUEST . ' SET status = 1 WHERE request_from_mate_id=' . $data['studymate_id'] . ' and request_to_mate_id=' . $user_id;
+                $query = 'UPDATE ' . TBL_STUDYMATES_REQUEST . ' SET status = 1,is_delete = 1 WHERE request_from_mate_id=' . $data['studymate_id'] . ' and request_to_mate_id=' . $user_id;
                 $x = mysqli_query($link, $query);
                 if (!$x) {
                     $data['to'] = 'self';
@@ -1781,14 +1792,65 @@ class PHPWebSocket {
             'image/jpeg',
             'image/gif'
         );
-        if(in_array($data['data_type'], $check_type)){
+        if (in_array($data['data_type'], $check_type)) {
             $data['message'] = '<a href="uploads/' . $data['webpath'] . '"  target="_BLANK"><img src="uploads/' . $data['webpath'] . '" width="50" height="50"></a>';
-        }else{
+        } else {
             $data['message'] = '<a href="uploads/' . $data['webpath'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50"></a>';
         }
         $data['type'] = 'studymate';
         $data['from'] = $user_id;
         return $data;
+    }
+
+    /**
+     * Save file send from Topic discussion
+     * @param type $user_id
+     * @param array $data
+     */
+    function save_sent_topic_file($user_id, $data = null) {
+        $time = time();
+        $link = $this->db();
+        $output_file = dirname(__DIR__) . "\\uploads\\user_" . $user_id;
+        if (!file_exists($output_file)) {
+            mkdir($output_file, 0777);
+        }
+        $output_file .= '\sentFiles';
+        if (!file_exists($output_file)) {
+            mkdir($output_file, 0777);
+        }
+        $data['webpath'] = 'user_' . $user_id . '/sentFiles/' . $time . '_' . $data['name'];
+        $output_file .= '\\' . $time . '_' . $data['name'];
+
+        if (is_array($data) && !empty($data)) {
+
+            $data['time_to_left'] = $this->active_hours();
+            $data['message'] = null;
+            $link = $this->db();
+
+
+            $day = getdate();
+            $c_week = ceil($day['yday'] / 7);
+            $current_date = $day['year'] . '-' . $day['mon'] . '-' . $day['mday'];
+
+            $query = "SELECT `tm`.`id` as member_id,`tg`.`topic_id`, `tm`.`group_id` FROM  `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `tg` "
+                    . "LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER . "` `tm` ON `tm`.`group_id` = `tg`.`group_id` "
+                    . "WHERE `tm`.`user_id` = $userId AND `tg`.`week_no` = $c_week LIMIT 1";
+            $row = mysqli_query($link, $query);
+            if (mysqli_num_rows($row) == 1) {
+                $rows = mysqli_fetch_assoc($row);
+
+                $query = "INSERT INTO `ism`.`" . TBL_TUTORIAL_GROUP_DISCUSSION . "` "
+                        . "(`id`, `group_id`, `topic_id`, `sender_id`, `comment_score`, `message`, `message_type`, "
+                        . "`message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, "
+                        . "`is_delete`, `is_testdata`) VALUES "
+                        . "(NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, 0,null, '', '', 0, '".$data['webpath']."', '".$data['data_type']."', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
+                $x = mysqli_query($link, $query);
+                $data['disscusion_id'] = mysqli_insert_id($link);
+                file_put_contents($output_file, base64_decode($data['data']));
+            }
+        }
+        $data['allStudyMate'] = $this->class_mate_list($userId);
+        return array_merge($data, $this->get_client_info($userId));
     }
 
 }

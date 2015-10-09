@@ -182,6 +182,7 @@
                     data = data.split('###');
                     $('#message_title').val(data[0]);
                     $('#message_desc').val(data[1]); 
+                    $('#save_template').attr('checked',false);
                 }
             });
         }else{

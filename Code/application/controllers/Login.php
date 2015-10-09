@@ -84,7 +84,8 @@ class Login extends CI_Controller {
                         case '2':
                             $group_id   =   $this->session->userdata('user')['group_id']; 
                             if($this->session->userdata('user')['group_id'] != ''){
-                                $count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id,'joining_status'=>'1')),array('count'=>TRUE));
+                                $count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id)),array('count'=>TRUE));
+                                
                                 if($count_member == 5){
                                     redirect('student/home');
                                 }
@@ -298,6 +299,8 @@ class Login extends CI_Controller {
             $formatDate = date("Y-m-d H:i:s", $futureDate);
             if(strtotime(date('Y-m-d H:i:s')) > strtotime($formatDate))
             {   
+                $update_array = array('complete_date'=>date('Y-m-d',time()));
+                update(TBL_USER_FORGOT_PASSWORD,array('id'=>$token_result['id']),$update_array);
                 $this->session->set_flashdata('error', 'Your request is expired please try again');
                 redirect('login/forgot_password');
             }
