@@ -78,7 +78,7 @@ class Studymates extends ISM_Controller {
 					),
 					array(
 						'table' => TBL_STUDYMATES_REQUEST.' sr',
-						'condition' => 'sr.request_from_mate_id='.$user_id.' and sr.request_to_mate_id = in1.user_id'
+						'condition' => 'sr.request_from_mate_id='.$user_id.' and sr.request_to_mate_id = in1.user_id and sr.status not in(1)'
 					),
 					
 				),

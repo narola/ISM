@@ -178,7 +178,12 @@ function class_mate_list($user_id, $append = true) {
 	}
 
 	function studymates_info($user_id){
+    
     $studymates = studymates($user_id,false);
+    if(empty($studymates))
+    	$studymates = array('');
+    else
+    	$studymates = studymates($user_id,false);
     // Get Classmates details
     $where = array('where_in' => array('u.id' =>  $studymates));
     $options = array('join' => array(
@@ -213,7 +218,7 @@ function active_chat($user_id){
 				);
 			$data['comment'] = select(
 				TBL_USER_CHAT. ' uc',
-				'uc.id,uc.sender_id,uc.receiver_id,uc.message',
+				'uc.id,uc.sender_id,uc.receiver_id,uc.message,uc.media_link,uc.media_type',
 				"(uc.sender_id = $active_chat_id AND uc.receiver_id = $user_id) OR (uc.sender_id = $user_id AND uc.receiver_id = $active_chat_id) ",
 				array('limit' => 10,'order_by' => 'uc.id DESC'));
 		}

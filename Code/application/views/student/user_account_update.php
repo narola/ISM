@@ -74,8 +74,14 @@
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Full Name" name="full_name" value="<?php echo isset($full_name)?$full_name : set_value('full_name');?>">
                                 </div>
+                                <div class="alert alert-danger <?php if(empty(strip_tags(form_error('full_name'),''))){ echo 'hide';} ?>">
+                                    <?php echo strip_tags(form_error('full_name'),'') ; ?>
+                                </div>
                                 <div class="form-group">
                                     <input type="email" class="form-control" placeholder="Email Address" name="email_id" value="<?php echo isset($email_id)?$email_id : set_value('email_id');?>">
+                                </div>
+                                <div class="alert alert-danger <?php if(empty(strip_tags(form_error('email_id'),''))){ echo 'hide';} ?>">
+                                    <?php echo strip_tags(form_error('email_id'),'') ; ?>
                                 </div>
                                 <div class="form-group select">
                                     <select class="form-control" name="gender" id="gender">
@@ -90,7 +96,7 @@
                                 </script>    
                                 <div class="form-group dob">
                                     <div class="input-append date" id="birthdate" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                        <input type="text" class="form-control" placeholder="Date of Birth" name="birthdate" value="<?php echo isset($birthdate)?$birthdate:set_value('birthdate');?>">
+                                        <input type="text" class="form-control" placeholder="Date of Birth" name="birthdate" id='dp' value="<?php echo isset($birthdate)?$birthdate:set_value('birthdate');?>">
                                     </div>
                                 </div>
                                 <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('birthdate'),''))){ echo 'hide';} ?>">
@@ -202,147 +208,32 @@
                                     <a href="#sample" data-toggle="modal">Click Here</a> if it’s not your school.</p>
                                
                                 <div class="school_info">
-                                    <div class="form-group small_input <?php echo isset($display)?$display:'select';?>">
-                                        <label for="">School Name</label>
-                                        <select  class="form-control" name="school_id" id="school_id"  disabled style="display:<?php echo isset($display)?$display:'';?>">
-                                            <option value="">Select School</option>
-                                            <?php 
-                                              if(!empty($schools)){ 
-                                                foreach($schools as $school) {
-                                                    if($school_information['school_id'] == $school['id']){
-                                              ?> 
-                                                    <option value="<?php echo $school['id'];?>" selected>
-                                                        <?php echo $school['school_name']; ?>
-                                                    </option>
-                                                <?php }else{?>
-                                                        <option value="<?php echo $school['id'];?>">
-                                                            <?php echo $school['school_name']; ?>
-                                                        </option>
-                                            <?php }}}else{?>
-                                                <option value="">No School</option>
-                                            <?php } ?>
-                                        </select>
-                                        
-                                            <?php echo isset($school_name)?'<br>'.$school_name:'';?>
-                                        
-                                        <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('school_id'),''))){ echo 'hide';} ?>">
-                                        <?php echo strip_tags(form_error('school_id'),''); ?>
-                                        </div>
-                                    </div>
-                                                                       
-                                    <div class="form-group small_input select">
-                                        <label for="">Class</label>
-                                        <select class="form-control" name='class_id' id="class_id" <?php echo isset($disabled)?'':'disabled';?>>
-                                            <option value="">Select Class</option>
-                                        <?php 
-                                          if(!empty($class)){ 
-                                            foreach($class as $c) {
-                                                if($school_information['class_id'] == $c['id']){
-                                          ?> 
-                                                <option value="<?php echo $c['id'];?>" selected>
-                                                    <?php echo $c['class_name']; ?>
-                                                </option>
-                                            <?php }else{?>
-                                                    <option value="<?php echo $c['id'];?>">
-                                                        <?php echo $c['class_name']; ?>
-                                                    </option>
-                                        <?php }}}else{?>
-                                            <option value="">No Class</option>
-                                        <?php } ?>
-                                        </select>
-                                        <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('class_id'),''))){ echo 'hide';} ?>">
-                                            <?php echo strip_tags(form_error('class_id'),''); ?>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group small_input <?php echo isset($display)?$display:'select';?>">
-                                        <label for="">Academic Year</label>
-                                        <select class="form-control" name="year_id" id="year_id" disabled style="display:<?php echo isset($display)?$display:'';?>">
-                                            <option value="">Select Year</option>
-                                            <option value="2015-2016" selected>2015-2016</option>
-                                        <?php 
-                                          if(!empty($years)){ 
-                                            foreach($years as $year) {
-                                                if($school_information['year_id'] == $year['id']){
-                                          ?> 
-                                                <option value="<?php echo $year['id'];?>" selected>
-                                                    <?php echo $year['year']; ?>
-                                                </option>
-                                            <?php }else{?>
-                                                    <option value="<?php echo $year['id'];?>">
-                                                        <?php echo $year['year']; ?>
-                                                    </option>
-                                        <?php }}}else{?>
-                                            <!-- <option value="">No Year</option> -->
-                                        <?php } ?>
-                                        </select>
-                                        <?php echo isset($academic_year)?'<br>'.$academic_year:'';?>
-                                        <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('year_id'),''))){ echo 'hide';} ?>">
-                                            <?php echo strip_tags(form_error('year_id'),''); ?>
-                                        </div>
-                                    </div>
-                                    
                                     <div class="form-group small_input">
-                                        <label for="">Region of School</label>
-                                        <input name="region" type="text" class="form-control" placeholder="Region of School">
+                                        <label>School Name</label>
+                                        <label class="label_form"><?php echo isset($school_information['school_name'])?$school_information['school_name']:$school_name;?></label>
                                     </div>
-                                    <div class="form-group small_input select">
-                                        <label for="">District of School</label>
-                                        <!-- <input type="text" class="form-control" placeholder="District of School"> -->
-                                        <select class="form-control" name="district_id" id="district_id" <?php echo isset($disabled)?'':'disabled';?>>
-                                        <option value="">Select District</option>
-                                        <?php 
-                                          if(!empty($districts)){ 
-                                            foreach($districts as $district) {
-                                                if($school_information['district_id'] == $district['id']){
-                                          ?> 
-                                                <option value="<?php echo $district['id'];?>" selected>
-                                                    <?php echo $district['district_name']; ?>
-                                                </option>
-                                            <?php }else{?>
-                                                    <option value="<?php echo $district['id'];?>">
-                                                        <?php echo $district['district_name']; ?>
-                                                    </option>
-                                        <?php }}}else{?>
-                                            <option value="">No District</option>
-                                        <?php } ?>
-                                        </select>
-                                        <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('district_id'),''))){ echo 'hide';} ?>">
-                                            <?php echo strip_tags(form_error('district_id'),''); ?>
-                                        </div>
+                                    <div class="form-group small_input">
+                                        <label>Class</label>
+                                        <label class="label_form"><?php echo isset($school_information['class_name'])?$school_information['class_name']:$class_name;?></label>
                                     </div>
-                                    
-                                    <div class="form-group small_input <?php echo isset($display)?$display:'select';?>">
-                                        <label for="">Program / Course</label>
-                                        <select class="form-control" disabled name="program_id" id="program_id" style="display:<?php echo isset($display)?$display:'';?>">
-                                        <option value="">Select Program/Coures</option>
-                                        <?php 
-                                          if(!empty($program)){ 
-                                            foreach($program as $p) {
-                                                if($school_information['program'] == $p['id']){
-                                          ?> 
-                                                <option value="<?php echo $p['id'];?>" selected>
-                                                    <?php echo $p['course_name']; ?>
-                                                </option>
-                                            <?php }else{?>
-                                                <option value="<?php echo $p['id'];?>">
-                                                    <?php echo $p['course_name']; ?>
-                                                </option>
-                                        <?php }}}else{?>
-                                            <option value="">No Program/Coures</option>
-                                        <?php } ?>
-                                        </select>
-                                        <?php echo isset($course_name)?'<br>'.$course_name:'';?>
-                                        <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('program_id'),''))){ echo 'hide';} ?>">
-                                            <?php echo strip_tags(form_error('program_id'),''); ?>
-                                        </div>
+                                    <div class="form-group small_input">
+                                        <label>Academic Year</label>
+                                        <label class="label_form"><?php echo isset($school_information['academic_year'])?$school_information['academic_year']:$academic_year;?></label>
+                                    </div>
+                                    <div class="form-group small_input">
+                                        <label>Region of School</label>
+                                        <label class="label_form">&nbsp;</label>
+                                        
+                                    </div>
+                                    <div class="form-group small_input">
+                                        <label>District of School</label>
+                                        <label class="label_form"><?php if(isset($school_information['district_name'])){ echo $school_information['district_name'];}else{if($district_name == '') echo '&nbsp;';else echo $district_name ;}?></label>
+                                    </div>
+                                    <div class="form-group small_input ">
+                                        <label>Program / Course</label>
+                                        <label class="label_form"><?php echo isset($school_information['course_name'])?$school_information['course_name']:$course_name;?></label>
                                     </div>
                                 </div>
-                                   <script>
-                                        
-                                        <?php $district = isset($district_id) ? $district_id : set_value('district_id');?>
-                                        document.getElementById('district_id').value = '<?= $district; ?>';
-                                    </script>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -515,6 +406,7 @@
 
 
 </script>
+
 
 </body>
 </html>

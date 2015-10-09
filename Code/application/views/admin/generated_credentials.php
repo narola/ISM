@@ -127,7 +127,7 @@
                 </div>
 
                 <button class="btn btn_red" type="submit">Confirm & Generate</button>
-                <button class="btn btn_black_normal" type="reset">Cancel</button>
+                <button class="btn btn_black_normal" type="reset" onclick="reset_form()">Cancel</button>
 
             </div>
           </div>
@@ -142,6 +142,10 @@
     $(document).ready(function() {
       $(".js-example-basic-single").select2({ placeholder: "Select a school"});
     });
+
+    function reset_form(){
+            $('#school_id').val('');
+    }
 
     function success_credential(){
         

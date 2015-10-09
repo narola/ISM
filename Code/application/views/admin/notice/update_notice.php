@@ -93,7 +93,7 @@
                   <button type="submit" class="btn btn_green">Update</button>
                   <input type="checkbox" name="is_template" id="is_template" <?php if(!empty($notice['is_template'])){ echo "checked"; }?> value="1">
                   <label class="save_box"></label><label for="is_template">Save in Templates</label>
-                  <button class="btn btn_black">Cancel</button>
+                  <a href="<?php echo $prev_url; ?>" class="btn btn_black">Cancel</a>
                 </div>
             </div>
           </form>
@@ -104,6 +104,13 @@
 <!--//main-->
 
 <script type="text/javascript">
+
+  $(document).ready(function() {
+      $(".js-example-basic-single").select2();
+    });
+
+
+  
     $('#role_id').val('<?php echo $notice["role_id"] ?>');
     $('#classroom_id').val('<?php echo $notice["classroom_id"] ?>');
 </script>

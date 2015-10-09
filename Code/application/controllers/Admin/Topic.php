@@ -113,18 +113,32 @@ class Topic extends ADMIN_Controller {
 	/**
 	* ajax function to allocate topic to groups 
 	*/
-	public function allocate(){
+	public function allocate($unallocated = null){
 
 		$ddate = date('Y', time());
 		
 		$date = new DateTime($ddate);
 		$week = $date->format("W");
 		
+
+		// if($_POST){
+
+		// 	$gid = $this->input->post('group_id');
+		// 	$tid = $this->input->post('topic_id');
+		// 	$tutorial_data = array('group_id'=>gid,'interface_type'=>'','date_day'=>'','week_no'=>$week,'status'=>'',
+		// 						   'topic_id'=>$tid,'group_score'=>'','created_date'=>date('Y-m-d H:i:s'),
+		// 						   'modified_date'=>'0000-00-00 00:00:00','is_delete'=>'0','is_testdata'=>'yes');
+		// 	insert(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,$tutorial_data);
+		// 	$this->session->set_flashdata('success', 'Topic has beed allocated to group.');
+		// 	redirect('admin/topic/allocate');
+
+		// }
+
 		$date1 = new DateTime('2015-09-24 10:18:40');
 		$year = $date1->format('Y');
 
-		$where['where']['week_no'] = $week;
-		$where['where']['YEAR(created_date)'] = $year;
+		$where['where']['tut_topic.week_no'] = $week;
+		$where['where']['YEAR(tut_topic.created_date)'] = $year;
 
 		$allocated_groups = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' tut_topic',
 			'tut_topic.group_id',
@@ -133,55 +147,244 @@ class Topic extends ADMIN_Controller {
 
 		$allocated_group_ids = array_column($allocated_groups, 'group_id');
 		
-		echo 'assigned for the current week<br/>';
+        // echo 'assigned for the current week<br/>';
+		
 		p($allocated_group_ids);
 
-		$where  = array('where_not_in' => array('id' => $allocated_group_ids),
-			'where'=> array('is_completed'=>1)) ;
+		$where  = array('where_not_in' => array(TBL_TUTORIAL_GROUPS.'.id' => $allocated_group_ids),
+			'where'=> array(TBL_TUTORIAL_GROUPS.'.is_completed'=>1,
+				TBL_TUTORIAL_GROUPS.'.group_type'=>'tutorial group'
+				)) ;
 
-		$unallocated_groups = select(TBL_TUTORIAL_GROUPS.' grp',
+		/*$unallocated_groups = select(TBL_TUTORIAL_GROUPS.' grp',
 			'grp.id',
 			$where
-			);
+			);*/
+
+		$unallocated_groups = select(TBL_TUTORIAL_GROUPS,
+											TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
+											TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
+											TBL_COURSES.'.id as course_id,'.TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name',
+											$where,
+											array(
+												//'limit'=>$config['per_page'],
+												//'offset'=>$offset,
+												'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
+												'join' =>  array(
+											    			array(
+											    				'table' => TBL_TUTORIAL_GROUP_MEMBER,
+											    				'condition' => TBL_TUTORIAL_GROUPS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.group_id',
+											    				'join'=>'right'
+											    				),
+											    			array(
+											    				'table' => TBL_USERS,
+											    				'condition' => TBL_USERS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
+											    				),
+											    			array(
+											    				'table' => TBL_STUDENT_ACADEMIC_INFO,
+											    				'condition' => TBL_USERS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.user_id',
+											    				),
+											    			array(
+											    				'table' => TBL_COURSES,
+											    				'condition' => TBL_COURSES.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.course_id',
+											    				),
+											    			array(
+											    				'table' => TBL_SCHOOLS,
+											    				'condition' => TBL_SCHOOLS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.school_id',
+											    				),
+											    			)
+												)
+											);
+	
+	// qry();	
+	p($unallocated_groups,true);
+
+	$this->data['groups'] = $unallocated_groups;
+
+
+		//fetch all data of group right joins with tutorial group members
+		$this->data['all_groups_members'] =   select(TBL_TUTORIAL_GROUPS,
+											TBL_TUTORIAL_GROUP_MEMBER.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.id as gid,'.
+											TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name,'.TBL_CLASSROOMS.'.class_name,'.
+											TBL_USER_PROFILE_PICTURE.'.profile_link,'.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
+											FALSE,
+											array(
+												'join' =>  array(
+											    			array(
+											    				'table' => TBL_TUTORIAL_GROUP_MEMBER,
+											    				'condition' => TBL_TUTORIAL_GROUPS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.group_id',
+											    				),
+											    			array(
+											    				'table' => TBL_USERS,
+											    				'condition' => TBL_USERS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
+											    				),
+											    			array(
+											    				'table' => TBL_STUDENT_ACADEMIC_INFO,
+											    				'condition' => TBL_USERS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.user_id',
+											    				),
+											    			array(
+											    				'table' => TBL_SCHOOLS,
+											    				'condition' => TBL_SCHOOLS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.school_id',
+											    				),
+											    			array(
+											    				'table' => TBL_CLASSROOMS,
+											    				'condition' => TBL_CLASSROOMS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.classroom_id',
+											    				),
+											    			array(
+											    				'table'=>TBL_USER_PROFILE_PICTURE,
+											    				'condition'=>TBL_USER_PROFILE_PICTURE.'.id='.TBL_TUTORIAL_GROUP_MEMBER.'.user_id'
+											    				)
+											    			)
+												)
+											);
+
 		$unallocated_group_ids = array_column($unallocated_groups, 'id');
 
-		echo 'other than assigned<br/>';
+
+		// echo 'other than assigned<br/>';
 		p($unallocated_group_ids);
 
-		$last_week = $week-1;
-		$where  = array('where' => array('week_no' => $last_week,
-			'YEAR(created_date)' => $year
-			),
-		'where_in'=>array('group_id'=>$unallocated_group_ids)
-		);
+		if($unallocated == null){
+			$unallocated = current($unallocated_group_ids);
+		}
 		
+		$this->data['unallocated_group'] = $unallocated;
+
+		$last_week = $week-1;
+		$where  = array('where' => array('tut_topic.week_no' => $last_week,
+			'YEAR(tut_topic.created_date)' => $year
+			),
+		'where_in'=>array('tut_topic.group_id'=> $unallocated_group_ids)
+		);
+		p($where);
 		$last_week_groups = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' tut_topic',
 			'tut_topic.group_id,tut_topic.topic_id',
 			$where
 			);
 		
-		echo 'assigned last week<br/>';
-		p($last_week_groups);
+			// echo 'assigned last week<br/>';
+		// p($last_week_groups);
 
-		foreach ($unallocated_group_ids as $unallocated) {
+		//foreach ($unallocated_group_ids as $unallocated) {
 			// echo 'out '.$key." ".$unallocated;
+
 			if(in_array($unallocated, array_column($last_week_groups, 'group_id'))){
+
 				$key = array_search($unallocated, array_column($last_week_groups, 'group_id'));
 				$last_week_topic = $last_week_groups[$key]['topic_id'];
-				$where = array('where' => array('id'=>$last_week_topic));
+				$where = array('where' => array('tut_topic.id'=>$last_week_topic));
 				$subject = select(TBL_TUTORIAL_TOPIC.' tut_topic',
 				'tut_topic.subject_id',
-					$where
+					$where, array('single'=>true)
 				);
-				echo 'subject ids<br/>';
-				p($subject);
-			}else{
-					
-			}
-		}
-		exit;
+				// echo 'subject ids<br/>';
+				// p($subject);
+				$where = array('where'=>array('tut_course.subject_id'=>$subject['subject_id'],
+					));
+				$course = select(TBL_COURSE_SUBJECT.' tut_course',
+				'tut_course.course_id',
+					$where, array('single'=>true)
+				);
+				// p($course);
 
-		
+				$where = array('where'=>array('tut_course.course_id'=>$course['course_id']
+												// 'tut_course.subject_id !='=>$subject['subject_id']
+					));
+
+				$options = array('order_by'=>'RAND()','single'=>true,'limit'=>1,
+					'join' =>  array(
+					    			array(
+					    				'table' => TBL_TUTORIAL_TOPIC.' tut_topic',
+					    				'condition' => 'tut_topic.subject_id = tut_course.subject_id',
+										)
+								)
+							);
+
+				$random_subject = select(TBL_COURSE_SUBJECT.' tut_course',
+				'tut_course.subject_id',
+					$where, $options
+				);
+
+				// echo 'subject';
+				// p($random_subject);
+				$random_subject_id = $random_subject['subject_id'];
+				
+
+			}else{
+				
+				$where = array('where'=>array('tut_grp_member.group_id'=>$unallocated));
+
+				$options = array('limit'=>1,'single'=>true);
+				$group_member = select(TBL_TUTORIAL_GROUP_MEMBER.' tut_grp_member',
+				'tut_grp_member.user_id',
+					$where, $options
+				);
+				
+				$where = array('where'=>array('tut_stud_info.user_id'=>$group_member['user_id']));
+
+				$options = array('single'=>true);
+				$course_info = select(TBL_STUDENT_ACADEMIC_INFO.' tut_stud_info',
+				'tut_stud_info.course_id',
+					$where, $options
+				);
+				// p($course_info);
+				$where = array('where'=>array('tut_course.course_id'=>$course_info['course_id']
+					));
+
+				$options = array('order_by'=>'RAND()','single'=>true,'limit'=>1,
+					'join' =>  array(
+					    			array(
+					    				'table' => TBL_TUTORIAL_TOPIC.' tut_topic',
+					    				'condition' => 'tut_topic.subject_id = tut_course.subject_id',
+										)
+								)
+							);
+
+				$random_subject_info = select(TBL_COURSE_SUBJECT.' tut_course',
+				'tut_course.subject_id',
+					$where, $options
+				);
+				
+				// p($random_subject_info);
+				$random_subject_id = $random_subject_info['subject_id'];
+
+			}
+			$where = array('where'=>array('tut_topic.subject_id'=>$random_subject_id));
+
+				// $options = array('order_by'=>'RAND()','limit'=>3);
+				/*$random_topics = select(TBL_TUTORIAL_TOPIC.' tut_topic',
+				'tut_topic.id',
+					$where, $options
+				);*/
+				$this->data['recommended_topics'] = select(TBL_TUTORIAL_TOPIC.' tut_topic',
+											'tut_topic.id,tut_topic.topic_name,tut_topic.is_archived,tut_topic.status,tut_topic.topic_description,tut_topic.allocation_count,tut_topic.classroom_id,tut_topic.subject_id, tut_topic.created_by,sub.subject_name,class.class_name',
+											$where,
+											array(
+												'limit'=>3,
+												'order_by'=>'RAND()',
+												'join' =>  array(
+											    			array(
+											    				'table' => TBL_SUBJECTS.' sub',
+											    				'condition' => 'sub.id = tut_topic.subject_id',
+																),
+											    			array(
+											    				'table' => TBL_CLASSROOMS.' class',
+											    				'condition' => 'class.id = tut_topic.classroom_id',
+																),
+											    			
+											    			
+												    		),
+												// 'group_by'=>'tut_topic.id'
+												)
+											);
+
+				//$random_topic_ids = array_column($random_topics,'id');
+				// echo 'unallocated: '.$unallocated.'<br/>';
+				//p($random_topic_ids);
+				// p($this->data);
+		//}
+		// exit;
+
 		$this->data['page_title'] = 'Allocate Topic';
 		$this->template->load('admin/default','admin/topic/allocate', $this->data);
 	}
@@ -223,6 +426,14 @@ class Topic extends ADMIN_Controller {
 			);
 		echo json_encode($response);
 		exit;
+	}
+
+	/**
+	* function to add new topic
+	*/
+	public function add(){
+		$this->data['page_title'] = 'Add New Topic';
+		$this->template->load('admin/default','admin/topic/add', $this->data);
 	}
 
 

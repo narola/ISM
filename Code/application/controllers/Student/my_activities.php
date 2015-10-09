@@ -21,13 +21,12 @@ class my_activities extends ISM_Controller {
 
 		/*------ Get current month to user registration month-------*/
 		$begin = new DateTime($created_date);
-		$end = new DateTime(date('Y-m-d'));
+		$end = new DateTime(date('Y-m-d H:i:s'));
 		$date_array = array();
 		while ($begin <= $end) {
 			$date_array[] = $begin->format('Y-m');
 			$begin->modify('first day of next month');
 		}
-
 		$month = array();
 
 		/*----find current month and if request to view more append one month in descending form---*/
@@ -129,7 +128,6 @@ class my_activities extends ISM_Controller {
 		$data['my_activities']['post'] = select(TBL_FEEDS.' post',$select,$where,$options);
 		
 		$data['my_month'] = $date_array;
-		
 		$this->template->load('student/default','student/my_activities',$data);
 	}
 }

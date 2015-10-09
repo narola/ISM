@@ -131,6 +131,11 @@ class Home extends CI_Controller {
 
 		//----Get Suggested studymates
 		$my_studymates = studymates($user_id,false);
+		if(empty($my_studymates))
+			$my_studymates = array('');
+		else
+			$my_studymates = studymates($user_id,false);
+
 		$user_group_id = $this->session->userdata('user')['group_id'];
 		$where = array('where' => array('m.group_id'=>$user_group_id,'in1.user_id !=' => $user_id),'where_not_in'=>array('in1.user_id' => $my_studymates));
 		$options = array('join' => array(

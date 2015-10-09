@@ -37,6 +37,8 @@
 
                         </div>
 
+                        <div class="alert alert-danger hide" id="msg_temp">Message Template should be unique. </div>
+
                         <?php $msgerror = $this->session->flashdata('msgerror'); ?>
   
                         <div class="alert alert-danger <?php if(empty(strip_tags($msgerror,''))){ echo 'hide';} ?>">
@@ -83,7 +85,8 @@
 
                         <div class="form-group">
                         	<label>Title </label>
-                            <input type="text" class="form-control" name="message_title" id="message_title" value="<?php echo set_value('message_title'); ?>" >
+                            <input type="text" class="form-control" name="message_title" onkeyup="check_template_unique()"
+                            id="message_title" value="<?php echo set_value('message_title'); ?>" >
                         </div>
     
                         <div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_title'),'')) || $my_cnt == 0 ){ echo 'hide';} ?>">
@@ -119,6 +122,55 @@
       $(".js-example-basic-single").select2();
     });
 
+  $('#save_template').change(function() {
+        
+        var msg_title = $('#message_title').val();
+
+        $.ajax({
+            url: '<?php echo base_url()."common/check_template_unique";?>',
+            type:'post',
+            data:{msg_title:msg_title},
+            success:function(data){
+                
+                if(data == 0){
+                    $('#save_template').attr('checked',true);
+                }else{
+                     $("#msg_temp").removeClass('hide');
+                    $('#save_template').attr('checked',false);
+                }
+            }
+        });
+
+    });
+
+    function check_template_unique(){
+
+        var msg_title = $('#message_title').val();
+
+        if($('#save_template').attr('checked')){
+
+            $.ajax({
+                url: '<?php echo base_url()."common/check_template_unique";?>',
+                type:'post',
+                data:{msg_title:msg_title},
+                success:function(data){
+                    
+                    if(data == 0){
+                        $("#msg_temp").addClass('hide');
+                        $('#save_template').attr('checked',true);
+                    }else{
+                        $("#msg_temp").removeClass('hide');
+                        $('#save_template').attr('checked',false);
+                    }
+                }
+            });
+
+        }else{
+            $("#msg_temp").addClass('hide'); 
+        }
+    }
+
+
     function get_message_template(msg_id){
         
         if(msg_id != ''){
@@ -130,6 +182,7 @@
                     data = data.split('###');
                     $('#message_title').val(data[0]);
                     $('#message_desc').val(data[1]); 
+                    $('#save_template').attr('checked',false);
                 }
             });
         }else{

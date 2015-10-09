@@ -47,13 +47,17 @@
     <!--noticeboard-->
 
     <div class="padding_b30">
-
-    	<div class="col-sm-2 col-sm-offset-10">
+     
+     <form method="post" id="bulk_notice" >
+        <div class="col-sm-10 text-left">
+            <?php echo flashMessage(TRUE,TRUE); ?>
+        </div>    
+    	<div class="col-sm-2">
             <div class="box_body bulk_action">
                 <div class="form-group select">
-                    <select class="form-control">
-                        <option>Bulk Action</option>
-                        <option>Delete</option>
+                    <select class="form-control" name="bulk_action" onchange="submit_bulk_form(this.value)"> 
+                        <option value="">Bulk Action</option>
+                        <option value="delete" >Delete</option>
                     </select>
                 </div>
             </div>
@@ -68,13 +72,14 @@
             </div>
         </div>
      
+     
      <?php 
         if(!empty($notices)) { 
             foreach($notices as $notice) {
             ?>   
 
-      <div class="col-lg-4 col-md-6">                     
-          <div class="box notice shadow_effect">
+         <div class="col-lg-4 col-md-6">                     
+            <div class="box notice shadow_effect">
                 <a href="#myModal_<?php echo $notice['id']; ?>" data-toggle="modal">
                     <div class="notice_header">
                         <h3>
@@ -94,7 +99,7 @@
                               onclick="return confirm('Are you sure to add this data to archive?')" 
                               data-toggle="tooltip" data-placement="bottom" title="Archive"></a> 
                             <?php }else{ ?>
-                            <a href="<?php echo base_url().'admin/notice/archive/'.$notice['id'].'/1'; ?>" class="icon icon_zip_color"
+                            <a href="<?php echo base_url().'admin/notice/archive/'.$notice['id'].'/1'; ?>" class="icon icon_zip_active"
                               onclick="return confirm('Are you sure to add this data to active?')" 
                               data-toggle="tooltip" data-placement="bottom" title="Archived"></a>
                             <?php } ?>
@@ -108,16 +113,27 @@
                             <a href="<?php echo base_url().'admin/notice/delete/'.$notice['id']; ?>" 
                                 onclick="return confirm('Are you sure to delete this data ?')" 
                                 class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="Delete" ></a>
-                            <input type="checkbox"><label class="save_box"></label>
+                            
+                            <input type="checkbox" name="notices_bulk[]" value="<?php echo $notice['id']; ?>"><label class="save_box"></label>
                         </div>
                     </div>
                 </a>
             </div>                        
-        </div>
+         </div>
        
        <?php } }else{ ?> 
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="box add_notice shadow_effect text-center">
+                <a href="#">
+                   <h2>  No Notice Found. </h2>
+                </a>
+            </div>
+        </div>
 
        <?php } ?>
+    
+    </form>
 
         <div class="clearfix"></div>
         <div class="text-center ">
@@ -157,11 +173,19 @@ if(!empty($notices)) {
 </div>
     <!-- /.modal -->
 
-   <?php } } ?> 
+   <?php } }else{ ?> 
+
+   <?php  } ?>
 
 
 <script type="text/javascript">
     
+    function submit_bulk_form(data){
+        if(data == 'delete'){
+            $('#bulk_notice').submit();
+        }
+    }     
+
      <?php 
     if(!empty($notices)) { 
         foreach($notices as $notice) {
