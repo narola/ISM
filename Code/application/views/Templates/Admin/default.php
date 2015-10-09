@@ -1,3 +1,6 @@
+<?php
+    $url = uri_string();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,10 +64,23 @@
                     <li><a href="#">Exams</a></li>
                 </ul>
             </li>
-            <li><a href="admin/group"><span class="icon icon_menu_group"></span> Groups</a></li>
+            <li class="<?php if(in_array($url,array('admin/group'))){ echo 'active'; }?>" ><a href="admin/group"><span class="icon icon_menu_group"></span> Groups</a></li>
             <li><a href="#"><span class="icon icon_menu_organize"></span> Organize</a></li>
-            <li class="active dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_manage"></span> Manage</a>
+            <li class="
+                <?php 
+                    if(in_array($url,array('admin/user','admin/topic/allocate','admin/topic/lists')))
+                        { 
+                            echo 'active'; 
+                        }else{
+
+                           if (strlen(strstr($url,'admin/user'))>0) {
+                                echo 'active';
+                            }
+                        }
+                    ?> dropdown">
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <span class="icon icon_menu_manage"></span> Manage
+               </a>
               <ul class="dropdown-menu">
                 <li><a href="#">Book</a></li>
                 <li><a href="#">Auther</a></li>
@@ -159,13 +175,13 @@
                 	<li>
                         <a href="#"><span class="icon icon_banner"></span>Banners</a>
                     </li>                	
-                	<li>
+                	<li class="<?php if(in_array($url,array('admin/notice'))){ echo 'active'; }?>">
                         <a href="admin/notice"><span class="icon icon_notice"></span>Notice Board</a>
                     </li>
                     <li>
                         <a href="#"><span class="icon icon_ques"></span>Questionaries</a>
                     </li>
-                    <li>
+                    <li class="<?php if(in_array($url,array('admin/auto_generated_credentials'))){ echo 'active'; }?>" >
                         <a href="admin/auto_generated_credentials"><span class="icon icon_credencial"></span>Generate Credentials</a>
                     </li>
                 </ul>
