@@ -45,7 +45,7 @@
                         </div>
                         <div class="user_profile_info">
                             <h1>Welcome To ISM</h1>
-                            <h2><?php echo $this->session->userdata('user')['first_name'].' '.$this->session->userdata('user')['last_name']; ?></h2>
+                            <h2><?php echo $this->session->userdata('user')['full_name']; ?></h2>
                             <h4><?php echo $this->session->userdata('user')['school_name'];?></h4>
                             <h4><?php echo $this->session->userdata('user')['academic_year'].', '.$this->session->userdata('user')['course_name'];?></h4>
                         </div>

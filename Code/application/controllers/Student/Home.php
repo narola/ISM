@@ -203,6 +203,7 @@ class Home extends CI_Controller {
 	
 		//  Handle post request to join group
 		if($this->input->server('REQUEST_METHOD') == 'POST'){
+			
 			update(TBL_TUTORIAL_GROUP_MEMBER,array('user_id'=>$this->session->userdata('user')['id']), array('joining_status' => 1));
 			// If loggedin user accept group and all other members also accepted group then rerirect to "student/home" 
 			if(select(TBL_TUTORIAL_GROUP_MEMBER,null,$where,array('count' => true)) == 5){
@@ -248,6 +249,7 @@ class Home extends CI_Controller {
 				    			array(
 				    				'table' => TBL_TUTORIAL_GROUP_MEMBER.' tm',
 				    				'condition' => 'tm.user_id = u.id',
+				    				'join' => 'join'
 				    				),
 					    		array(
 				    				'table' => TBL_STUDENT_ACADEMIC_INFO.' si',

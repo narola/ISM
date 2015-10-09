@@ -356,6 +356,7 @@ class User_account extends CI_Controller {
 	           	if(sizeof($exist_members)>0){
 	               	foreach ($exist_members as $key => $value) {
 	               		$grade_array	=	explode(',',$value['grade']);
+	               		
 	               		if(in_array($school_grade, $grade_array)){
 	           			 	$group_data =	array(
 	           					'group_name'		=>	$group_name,
@@ -492,15 +493,20 @@ class User_account extends CI_Controller {
 
 	public function check_birth_date(){
 		$birthdate = $this->input->post('birthdate',TRUE);
-		if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$birthdate)){
-			if($birthdate == '0000-00-00')
-				$this->form_validation->set_message('check_birth_date', 'Invalid Birth Of Date');
-			else
-				return TRUE;
+		if($birthdate != ''){
+			if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$birthdate)){
+				if($birthdate == '0000-00-00')
+					$this->form_validation->set_message('check_birth_date', 'Invalid Date');
+				else
+					return TRUE;
+			}
+			else{
+				$this->form_validation->set_message('check_birth_date', 'Invalid Date');
+				return FALSE;
+			}
 		}
 		else{
-			$this->form_validation->set_message('check_birth_date', 'Invalid Birth Of Date');
-			return FALSE;
+			return TRUE;
 		}	
 	}
 

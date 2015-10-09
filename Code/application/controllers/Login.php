@@ -298,6 +298,8 @@ class Login extends CI_Controller {
             $formatDate = date("Y-m-d H:i:s", $futureDate);
             if(strtotime(date('Y-m-d H:i:s')) > strtotime($formatDate))
             {   
+                $update_array = array('complete_date'=>date('Y-m-d',time()));
+                update(TBL_USER_FORGOT_PASSWORD,array('id'=>$token_result['id']),$update_array);
                 $this->session->set_flashdata('error', 'Your request is expired please try again');
                 redirect('login/forgot_password');
             }

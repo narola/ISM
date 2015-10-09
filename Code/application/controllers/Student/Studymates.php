@@ -16,6 +16,7 @@ class Studymates extends ISM_Controller {
 		$data['title'] = 'ISM - MY Studymates';
 		$user_group_id = $this->session->userdata('user')['group_id'];
 		$user_id = $this->session->userdata('user')['id'];
+		$course_id = $this->session->userdata('user')['course_id'];
 		
 		/*----get studymate list-----*/
 		$my_studymates = studymates($user_id,false);
@@ -48,7 +49,7 @@ class Studymates extends ISM_Controller {
 			$my_studymates = array('');
 		}
 		/*----get recommended studymate list---*/
-		$where = array('where' => array('m.group_id'=>$user_group_id,'in1.user_id !=' => $user_id),'where_not_in'=>array('in1.user_id' => $my_studymates));
+		$where = array('where' => array('m.group_id'=>$user_group_id,'in1.user_id !=' => $user_id,'in1.course_id'=>$course_id),'where_not_in'=>array('in1.user_id' => $my_studymates));
 		$options = array('join' => array(
 					array(
 						'table' => TBL_STUDENT_ACADEMIC_INFO.' in',
@@ -85,7 +86,6 @@ class Studymates extends ISM_Controller {
 		'group_by' => 'in1.user_id'
 			);
 		$data['recommended_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,p.profile_link,sr.id as srid',$where,$options);
-
 		$this->template->load('student/default','student/studymates',$data);
 	}
 }
