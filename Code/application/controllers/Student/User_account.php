@@ -345,7 +345,7 @@ class User_account extends CI_Controller {
 	   							'group_by'=>'tm.group_id'
 	   						);
 	           	$exist_members 	= 	select(TBL_STUDENT_ACADEMIC_INFO.' i','i.user_id,tm.group_id,group_concat(s.school_grade) as grade,i.course_id',$where,$options);
-
+	           	// qry(true);
 	           	/*----Auto generated group name------*/	
 
 	           	$options			=	array('order_by'=>'RAND()','limit'=>1,'single'=>1); 	
@@ -356,7 +356,7 @@ class User_account extends CI_Controller {
 	           	if(sizeof($exist_members)>0){
 	               	foreach ($exist_members as $key => $value) {
 	               		$grade_array	=	explode(',',$value['grade']);
-	               		
+
 	               		if(in_array($school_grade, $grade_array)){
 	           			 	$group_data =	array(
 	           					'group_name'		=>	$group_name,

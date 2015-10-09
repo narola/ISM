@@ -84,7 +84,8 @@ class Login extends CI_Controller {
                         case '2':
                             $group_id   =   $this->session->userdata('user')['group_id']; 
                             if($this->session->userdata('user')['group_id'] != ''){
-                                $count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id,'joining_status'=>'1')),array('count'=>TRUE));
+                                $count_member = select(TBL_TUTORIAL_GROUP_MEMBER,null,array('where'=>array('group_id'=>$group_id)),array('count'=>TRUE));
+                                
                                 if($count_member == 5){
                                     redirect('student/home');
                                 }
