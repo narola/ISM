@@ -85,21 +85,12 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     } else if ($data['type'] == 'decline-request') {
         $responce = $Server->accept_decline_request($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'single_chat_file') {
-        /*   $part1 = array(
-          'type' => 'file_notification',
-          'to' => $data['to'],
-          'error' => 'skip',
-          );
-          $part2 = $Server->get_client_info($data['to']);
-          $final = array_merge($part1,$part2);
-
-          foreach ($Server->wsClients as $id => $client) {
-          if ($data['to'] == $Server->wsClients[$id][12]) {
-          $Server->wsSend($id, json_encode($final));
-          }
-          }
-         */
         $responce = $Server->save_sent_file($Server->wsClients[$clientID][12], $data);
+        if (isset($data['data'])) {
+            unset($data['data']);
+        }
+    } else if ($data['type'] == 'topic_file') {
+        $responce = $Server->save_sent_topic_file($Server->wsClients[$clientID][12], $data);
         if (isset($data['data'])) {
             unset($data['data']);
         }
