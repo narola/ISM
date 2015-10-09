@@ -2589,3 +2589,9 @@ svg {
     position: relative;
     bottom: 15px;
 }
+.option_bar input[type="file"] {
+    opacity: 0;
+    width: 25px;
+    height: 26px;
+    overflow: hidden;
+}

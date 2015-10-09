@@ -1264,3 +1264,70 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .group_member_wrapper>.group_perf_member:nth-child(even){
 	background-color:#f7f7f7;
 }
+.allocated_topics{
+	background-color:#fff;
+    padding: 15px 15px 15px 40px;
+    position: relative;
+}
+.allocated_topics .exams_holder{
+	border:1px solid rgba(0,0,0,0.1);
+	background-color:#f5f5f5;
+    margin-bottom: 15px;
+}
+.allocated_topics .exams_holder:last-child{
+	margin-bottom:0;
+}
+.allocated_topics .type_holder{
+	border:none;
+	box-shadow:none;
+}
+.allocated_topics .type_holder p{
+	margin:0;
+}
+.allocated_topics .exams_holder .exam_year p{
+	text-transform:uppercase;
+	font-size:18px;
+	font-weight:600;
+}
+.allocated_topics .exams_holder .exam_year{
+	text-align:left;
+}
+.allocated_topics .exam_type>p, 
+.allocated_topics .exam_cat>p{
+	font-size:14px;	
+	font-weight:600;
+}
+.month_wise{
+	border-bottom:1px solid rgba(0,0,0,1);
+}
+.month_wise:nth-child(2){
+	border-color:#4294d0;
+}
+.month_wise:nth-child(3){
+	border-color:#27ae60;
+}
+.month_name {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    width: 25px;
+}
+.month_name span{
+	color:#fff;	
+	transform: rotate(-90deg);
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    width: 25px;
+    text-transform: uppercase;	
+}
+.month_name{
+	background-color:#1bc4a3;
+}
+.month_wise:nth-child(2) .month_name{
+	background-color:#4294d0;
+}
+.month_wise:nth-child(3) .month_name{
+	background-color:#27ae60;
+}
