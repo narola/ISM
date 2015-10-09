@@ -127,11 +127,11 @@
                                             </ul>
                                             <div class="recom_action">
                                                 <a href="#" class="icon icon_delete_color"></a>
-                                                <form action="admin/topic/allocate">
-                                                    <input type="hidden" name="group_id">
-                                                    <input type="hidden" name="topic_id" value="<?php echo $topic['id']; ?>">
-                                                <button class="btn btn_blue">Allocate</button>
-                                            </form>
+                                                <form method="post" action="admin/topic/allocate">
+                                                        <input type="hidden" name="group_id" value="<?php echo $unallocated_group; ?>">
+                                                        <input type="hidden" name="topic_id" value="<?php echo $topic['id']; ?>">
+                                                    <button class="btn btn_blue">Allocate</button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>
