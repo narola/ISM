@@ -149,7 +149,7 @@ class Topic extends ADMIN_Controller {
 		$unallocated_groups = select(TBL_TUTORIAL_GROUPS,
 											TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
 											TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
-											TBL_COURSES.'.id as course_id',
+											TBL_COURSES.'.id as course_id,'.TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name',
 											$where,
 											array(
 												//'limit'=>$config['per_page'],
@@ -172,17 +172,26 @@ class Topic extends ADMIN_Controller {
 											    			array(
 											    				'table' => TBL_COURSES,
 											    				'condition' => TBL_COURSES.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.course_id',
-											    				)
+											    				),
+											    			array(
+											    				'table' => TBL_SCHOOLS,
+											    				'condition' => TBL_SCHOOLS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.school_id',
+											    				),
 											    			)
 												)
 											);
-		
-	// p($unallocated_groups);
+	
+	// qry();	
+	// p($unallocated_groups,true);
+
 	$this->data['groups'] = $unallocated_groups;
-		/*//fetch all data of group right joins with tutorial group members
+
+
+		//fetch all data of group right joins with tutorial group members
 		$this->data['all_groups_members'] =   select(TBL_TUTORIAL_GROUPS,
 											TBL_TUTORIAL_GROUP_MEMBER.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.id as gid,'.
-											TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name,'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link,'.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
+											TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name,'.TBL_CLASSROOMS.'.class_name,'.
+											TBL_USER_PROFILE_PICTURE.'.profile_link,'.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
 											FALSE,
 											array(
 												'join' =>  array(
@@ -212,7 +221,7 @@ class Topic extends ADMIN_Controller {
 											    				)
 											    			)
 												)
-											);*/
+											);
 
 		$unallocated_group_ids = array_column($unallocated_groups, 'id');
 
