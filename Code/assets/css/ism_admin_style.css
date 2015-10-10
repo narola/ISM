@@ -614,10 +614,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     margin-right: 5px;
     border-radius: 2px;
 }
-.topic_content .btn-group {
-    width: 220px;
-	float:right;
-}
+.topic_content .btn-group { width: 220px;float:right; margin:0 20px 0 0; position:relative; }
 .topic_content .btn-group .btn-default, .topic_content .btn-group .btn-default:hover, .topic_content .btn-group .btn-default:focus{
 	width:87%;
 	background-color:#fff;
@@ -1397,3 +1394,13 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .performance_div .box_header{
 	border-left:none;
 }
+.topic_loader{
+    margin-left: 28px;
+    margin-top: 10px;	
+}
+.status_loader{
+  position: absolute;
+  right: -20px;
+  top: 10px;
+}
+
