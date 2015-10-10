@@ -1450,3 +1450,21 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     padding: 7px;
     text-align: center;
 }
+.admin_activities .divide_discussion h4{
+	color:#ff6b6b;
+}
+.admin_activities .divide_discussion hr {
+    border-color: #ff6b6b;
+}
+.activities .divide_discussion h4:before{
+	background-color:#ff6b6b;
+}
+.admin_activities .topic_allocated>div>h4{
+	color:#ff6b6b;	
+}
+.admin_activities .box_body a {
+    color: #ff6b6b;
+}
+.admin_activities .tag_user .caret {
+    border-top-color: #ff6b6b;
+}
