@@ -347,6 +347,8 @@
     height: 65px;
     width: 65px;
     border: 3px solid rgba(0,0,0,0.1);
+	position: relative;
+    z-index: 1;
 }
 .group_members{
 	width:100%;
@@ -922,6 +924,10 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .topic_groups .table>tbody>tr>td.username{
 	padding:0;
 }
+.topic_groups .table>tbody>tr>td.username.active{
+	/*border: 3px solid #4294d0;*/
+	background-color:transparent;
+}
 .topic_groups .table_group .username>.chat_img_holder{
 	margin:10px;
 	float: left;
@@ -931,8 +937,27 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     margin-top: 10px;
     font-size: 14px;
 }
+.topic_groups .table_group .username a{
+	color:#333;
+	text-decoration:none;
+}
 .topic_groups .table_group .username h4 {
-    margin: 20px 0px;
+    padding: 22px 0px;
+    margin: 0;
+}
+.topic_groups .table_group .username.active h4{
+    background-color: #ff6b6b;
+	position: relative;
+	color: #fff;
+} 
+.topic_groups .table_group .username.active h4:after {
+    content: "";
+    position: absolute;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #ff6b6b;
+    right: -10px;
+    top: 39%;
 }
 .allocate_topic .box_header {
     box-shadow: 0px 3px 6px -1px rgba(0,0,0,0.1);
