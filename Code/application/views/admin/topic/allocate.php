@@ -48,7 +48,7 @@
                                     if(!empty($groups)){ 
                                         foreach ($groups as $group) { ?>
                                             <tr>
-                                        <td class="username">
+                                        <td class="username <?php echo ($unallocated_group == $group['id']) ? 'active' : ''; ?>">
                                             <div class="chat_img_holder"><img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="../images/group1.jpg"></div>
                                             <a href="<?php echo 'admin/topic/allocate/'.$group['id'] ?>"><h4><span>Group Name : </span> <?php echo $group['group_name']; ?> <span> [<?php echo $group['course_name']; ?>]</span></h4></a>
                                             <table class="group_members">
