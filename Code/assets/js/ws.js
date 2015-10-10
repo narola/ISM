@@ -27,7 +27,7 @@ function remainning_time_timer()
   }
 }
 
-var time_count_out = 0
+var time_count_out = 0;
 var max_count_out = 0;
 var counter_out;
 

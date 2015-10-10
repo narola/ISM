@@ -433,6 +433,9 @@ class PHPWebSocket {
             return false; // close socket, as no mask bit was sent from the client
 
 
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -606,6 +609,9 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
 
 
             
@@ -806,6 +812,8 @@ class PHPWebSocket {
                             . "VALUES (NULL, $from, $to, '$msg', NULL, NULL, $received_status, CURRENT_TIMESTAMP, '0', 'yes')";
                     $x = mysqli_query($link, $query);
                     $data['insert_id'] = mysqli_insert_id($link);
+                    
+                    // Check wheather data saved in database or not.
                     if (!$x) {
                         $data['to'] = 'self';
                         $data['error'] = 'Unable to save message.! Please try again.';
@@ -978,7 +986,67 @@ class PHPWebSocket {
      * @return Array
      * @author Sandip Gopani (SAG)
      */
-    function classmate_post($user_id, $data = null) {
+    
+      function classmate_post($user_id, $data = null) {
+        
+        $studymate_id = $this->class_mate_list($user_id);
+        if (is_array($data) && !empty($data)) {
+            $link = $this->db();
+            $msg = mysqli_escape_string($link, $data['message']); // Feed or comment
+            $query = "INSERT INTO `feeds`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$user_id,'$msg','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
+            $x = mysqli_query($link, $query);
+            $data['post_id'] = mysqli_insert_id($link);
+            $data['tot_like'] = 0;
+            $data['tot_comment'] = 0;
+            if (!$x) {
+                $data['to'] = 'self';
+                $data['error'] = 'Unable to save message.! Please try again.';
+            }
+            if($data['post_id'] != ''){
+                $data['tagged_id'] = (array)  explode(',', $data['tagged_id']);
+                if(is_array($data['tagged_id'])){
+                    $tagged_array = array();
+                    $str = '';
+                    $i = 0;
+                    foreach ($data['tagged_id'] as $key => $value) {
+                        if(in_array($value, $studymate_id)){
+                            if($i == 0)
+                                $str .= "(NULL,".$value.",".$data['post_id'].",CURRENT_TIMESTAMP,0,'yes')";
+                            else
+                                $str .= ",(NULL,".$value.",".$data['post_id'].",CURRENT_TIMESTAMP,0,'yes')";
+                            $tagged_array[] = $value;
+                            $i++;
+                        }
+                    }
+                    $query = "INSERT INTO `feeds_tagged_user`(`id`, `user_id`, `feed_id`, `created_date`, `is_delete`, `is_testdata`) VALUES $str";
+                    $x = mysqli_query($link, $query);
+                    if(is_array($tagged_array))
+                        $t = implode(',', $tagged_array);
+                    else
+                        $t = '0';
+                    $query = "SELECT id,full_name from users where id in(".$t.")";
+                    $rows = mysqli_query($link, $query);
+                    $tagged_detail = array();
+                    $i = 0;
+                    while ($row = mysqli_fetch_assoc($rows)) {
+                        $tagged_detail[$i]['full_name'] = $row['full_name'];    
+                        $tagged_detail[$i]['id'] = $row['id'];
+                        $i++;
+                    }
+                    $data['tagged_id'] = $tagged_array;
+                    $data['tagged_detail'] = $tagged_detail;
+                }
+                else{
+                    $data['to'] = 'self';
+                    $data['error'] = 'Unable to save message.! Please try again.';       
+                }
+            }
+        }
+        //return $data;
+        return array_merge($data, $this->get_client_info($user_id));
+    }
+
+    /*function classmate_post($user_id, $data = null) {
         if (is_array($data) && !empty($data)) {
             $link = $this->db();
             $msg = mysqli_escape_string($link, $data['message']); // Feed or comment
@@ -993,7 +1061,7 @@ class PHPWebSocket {
             }
         }
         return array_merge($data, $this->get_client_info($user_id));
-    }
+    }*/
 
     /**
      * Save feed comment
@@ -1055,23 +1123,30 @@ class PHPWebSocket {
         }
         return $data;
     }
-/**
- * 
- * @param type $user_id
- * @param type $data
- * @return type
- */
+
+    /**
+     * 
+     * @param int $user_id
+     * @param array $data
+     * @return array
+     */
     function post_like_unlike($user_id, $data) {
         $link = $this->db();
         $query = "SELECT `f`.`feed_by` FROM `" . TBL_FEEDS . "` `f` WHERE `f`.`id` = " . $data['fid'] . " LIMIT 1";
         $row = mysqli_query($link, $query);
+
+        // Check Feed must exist on which user is going to like.
         if (mysqli_num_rows($row) == 1) {
             $rows = mysqli_fetch_assoc($row);
             $data['allStudyMate'] = $this->class_mate_list($rows['feed_by']);
+
+            // Check user can only like /dislike those post which is added by his classmates.
             if (in_array($user_id, $data['allStudyMate'])) {
                 $query = "SELECT * FROM " . TBL_FEED_LIKE . " WHERE feed_id =" . $data['fid'] . " and like_by=" . $user_id;
                 $row = mysqli_query($link, $query);
                 $row_cnt = $row->num_rows;
+
+                // Check feed is already liked or not.
                 if ($row_cnt > 0) {
                     $dt = mysqli_fetch_assoc($row);
                     if ($dt['is_delete'] == 0) {
@@ -1134,6 +1209,8 @@ class PHPWebSocket {
             $row = mysqli_query($link, $query);
 
             $score = 0;
+
+            // Check topic is must allocated to group with perticular week. 
             if (mysqli_num_rows($row) == 1) {
                 $rows = mysqli_fetch_assoc($row);
                 $is_active = 0;
@@ -1144,6 +1221,8 @@ class PHPWebSocket {
                 $consecutvie = 0;
                 $allow_score = true;
                 $i = 1;
+
+                // Check for consecutive post.
                 while ($rowq = mysqli_fetch_assoc($row)) {
                     if ($rowq['sender_id'] == $userId) {
                         if ($rowq['comment_score'] == 0) {
@@ -1159,7 +1238,7 @@ class PHPWebSocket {
                     }
                     $i++;
                 }
-
+                // Allowed only if post is not consecutive.
                 if ($allow_score == true) {
                     // Check comment is in active hours.
                     if ($data['time_to_left'] > 0) {
@@ -1186,6 +1265,7 @@ class PHPWebSocket {
                 $query = "SELECT * FROM `" . TBL_WORD_WATCH . "` `ww`";
                 $row = mysqli_query($link, $query);
                 while ($rowq = mysqli_fetch_assoc($row)) {
+                    // Check wherer spam word exist.
                     if (in_array($rowq['word'], $words)) {
                         $score -= $config['spamWordDeduction'];
                         $data['error'] = 'Spam words found. <b>' . $config['spamWordDeduction'] . ' points</b> diducted!';
@@ -1206,6 +1286,8 @@ class PHPWebSocket {
                         $query = "UPDATE `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` SET `group_score` = `group_score` + $add_to_group WHERE `group_id` = " . $rows['group_id'] . " AND `topic_id` = " . $rows['topic_id'] . " AND `week_no` = " . $c_week;
                         mysqli_query($link, $query);
                     }
+
+                    // Update user score.
                     $query = "UPDATE `" . TBL_TUTORIAL_GROUP_MEMBER_SCORE . "` SET `score` = `score` + $score WHERE `topic_id` = " . $rows['topic_id'] . " AND member_id =" . $rows['member_id'];
                     mysqli_query($link, $query);
                 } else {
@@ -1213,6 +1295,7 @@ class PHPWebSocket {
                     $data['error'] = 'Unable to save your message! Try again!';
                 }
 
+                // Select latest user score and group score.
                 $query = "SELECT `ts`.`score` as `my_score`,(SELECT SUM(group_score) FROM " . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . " WHERE group_id = " . $rows['group_id'] . ") as group_score,(SELECT count(`td`.`id`) FROM `" . TBL_TUTORIAL_GROUP_DISCUSSION . "` `td` WHERE `td`.`group_id` = " . $rows['group_id'] . " AND `td`.`topic_id` = " . $rows['topic_id'] . " AND in_active_hours = 1) as active_count  FROM `" . TBL_TUTORIAL_TOPIC . "` `t` LEFT JOIN `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `ta` ON `ta`.`topic_id` = `t`.`id` LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER . "` `tm` ON `tm`.`group_id` = `ta`.`group_id` LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER_SCORE . "` `ts` ON `ts`.`member_id` = `tm`.`id` LEFT JOIN `" . TBL_USERS . "` `u` ON `u`.`id` = `t`.`created_by` LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `up` ON `up`.`user_id` = `u`.`id` WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' AND `ta`.`week_no` = $c_week AND `tm`.`user_id` = '$userId'";
                 $row = mysqli_query($link, $query);
                 $rows = mysqli_fetch_assoc($row);
@@ -1384,6 +1467,12 @@ class PHPWebSocket {
         return $output;
     }
 
+    /**
+     * 
+     * @param type $data
+     * @return type
+     * @author Kamlesh Pokiya (KAP), Sandip Gopani (SAG)
+     */
     function dictionary($data = null) {
         if (is_array($data)) {
             $curl_handle = curl_init();
@@ -1393,11 +1482,17 @@ class PHPWebSocket {
             $buffer = curl_exec($curl_handle);
             curl_close($curl_handle);
             $data['message'] = $buffer;
-
             return $data;
         }
     }
 
+    /**
+     * Remove user from studymates
+     * @param type $userid
+     * @param type $data
+     * @return array
+     * @author kamlesh Pokiya (KAP), Sandip Gopani (SAG)
+     */
     function close_studymate($userid, $data) {
         $link = $this->db();
         $query = "UPDATE " . TBL_STUDYMATES . " SET is_delete = 1 where (mate_id = " . $userid . " and mate_of=" . $data['studymate_id'] . ") or (mate_of = " . $userid . " and mate_id = " . $data['studymate_id'] . ")";
@@ -1410,6 +1505,13 @@ class PHPWebSocket {
         return $data;
     }
 
+    /**
+     * Send studymate request.
+     * @param type $userid
+     * @param type $data
+     * @return string
+     * @author Kamlesh Pokiya (KAP), Sandip Gopani(SAG)
+     */
     function send_studymate_request($userid, $data) {
 
         $link = $this->db();
@@ -1419,6 +1521,8 @@ class PHPWebSocket {
         $query = "SELECT id FROM " . TBL_STUDYMATES_REQUEST . " where request_from_mate_id=" . $userid . " and request_to_mate_id=" . $data['studymate_id'] . " and status IN (0,2)";
         $rows = mysqli_query($link, $query);
         $row_cnt = mysqli_num_rows($rows);
+
+        // Studymates request is send or not.
         if ($row_cnt > 0) {
             $data['to'] = 'self';
             $data['error'] = 'Syudymates request already sent!. You can\'t send again';
@@ -1438,7 +1542,7 @@ class PHPWebSocket {
             while ($row = mysqli_fetch_assoc($rows)) {
                 $all[] = $row['user_id'];
             }
-
+            // Check both request sender and receiver must mathing same studymate list (e.g request receiver must within senders studymates.)
             if (in_array($data['studymate_id'], $all)) {
                 $query = "INSERT INTO `" . TBL_STUDYMATES_REQUEST . "`(`id`, `request_from_mate_id`, `request_to_mate_id`, `status`, `created_date`, `is_delete`, `is_testdata`) VALUES (NULL,$userid," . $data['studymate_id'] . ",0,CURRENT_TIMESTAMP,0,'yes')";
                 $x = mysqli_query($link, $query);
@@ -1460,6 +1564,13 @@ class PHPWebSocket {
         return $data;
     }
 
+    /**
+     * 
+     * @param type $user_id
+     * @param type $data
+     * @return array
+     * @author Kamlesh Pokiya (KAP), Sandip Gopani (SAG)
+     */
     function view_all_comment_activities($user_id, $data) {
         $link = $this->db();
         $query = "SELECT *,u.full_name FROM " . TBL_FEED_COMMENT . " left join " . TBL_USER_PROFILE_PICTURE . " on comment_by=user_id LEFT JOIN " . TBL_USERS . " u on u.id = comment_by where comment_by=" . $user_id . ' and feed_id=' . $data['comment_id'];
@@ -1481,6 +1592,11 @@ class PHPWebSocket {
         return $data;
     }
 
+    /**
+     * Set message status as unread.
+     * @param array $data
+     * @author Sandip Gopani (SAG)
+     */
     function set_unread($data = null) {
         if (is_array($data) && $data != null) {
             $link = $this->db();
@@ -1489,6 +1605,12 @@ class PHPWebSocket {
         }
     }
 
+    /**
+     * Accept or decline studymates request.
+     * @param int $user_id
+     * @param array $data
+     * @return array
+     */
     function accept_decline_request($user_id, $data) {
         $link = $this->db();
         $data['is_online'] = $this->online_status($data['studymate_id']);
@@ -1538,8 +1660,9 @@ class PHPWebSocket {
 
     /**
      * Check weather user is online or not.
-     * @param type $user_id
+     * @param int $user_id
      * @return boolean
+     * @author Sandip Gopani (SAG)
      */
     function online_status($user_id) {
         $status = false;
@@ -1554,8 +1677,8 @@ class PHPWebSocket {
 
     /**
      * Single user chat for images
-     * @param type $user_id
-     * @param type $data
+     * @param int $user_id
+     * @param array $data
      * @Author Sandip Gopani (SAG)
      */
     function save_sent_file($user_id, $data = null) {
@@ -1572,8 +1695,8 @@ class PHPWebSocket {
         $data['webpath'] = 'user_' . $user_id . '/sentFiles/' . $time . '_' . $data['name'];
         $output_file .= '\\' . $time . '_' . $data['name'];
 
-
-        if ($user_id != $data['to']) {  // User cannot send messages to self
+        // User cannot send messages to self
+        if ($user_id != $data['to']) {
             $all = $this->class_mate_list($user_id);
             if (in_array($data['to'], $all)) {
                 $received_status = 0;
@@ -1614,11 +1737,14 @@ class PHPWebSocket {
             'image/jpeg',
             'image/gif'
         );
+
+        // If sent file is image than image is displayed otherwise default image is displayed for other file.
         if (in_array($data['data_type'], $check_type)) {
             $data['message'] = '<a href="uploads/' . $data['webpath'] . '"  target="_BLANK"><img src="uploads/' . $data['webpath'] . '" width="50" height="50"></a>';
         } else {
             $data['message'] = '<a href="uploads/' . $data['webpath'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50"></a>';
         }
+
         $data['type'] = 'studymate';
         $data['from'] = $user_id;
         return $data;
@@ -1635,6 +1761,7 @@ class PHPWebSocket {
         $time = time();
         $link = $this->db();
         $output_file = dirname(__DIR__) . "\\uploads\\user_" . $userId;
+        // Check directory is exist. If not exist than created.
         if (!file_exists($output_file)) {
             mkdir($output_file, 0777);
         }
@@ -1661,6 +1788,8 @@ class PHPWebSocket {
                     . "WHERE `tm`.`user_id` = $userId AND `tg`.`week_no` = $c_week LIMIT 1";
 
             $row = mysqli_query($link, $query);
+
+            // Check topic must exist for send file.
             if (mysqli_num_rows($row) == 1) {
                 $rows = mysqli_fetch_assoc($row);
 
@@ -1672,14 +1801,21 @@ class PHPWebSocket {
                 $x = mysqli_query($link, $query);
 
                 $data['disscusion_id'] = mysqli_insert_id($link);
+
+                //save sent file.
                 file_put_contents($output_file, base64_decode($data['data']));
+
+                // Unset file data.
                 unset($data['data']);
+
                 $check_type = array(
                     'image/png',
                     'image/jpg',
                     'image/jpeg',
                     'image/gif'
                 );
+
+                // If sent file is image than image is displayed otherwise default image is displayed for other file.
                 if (in_array($data['data_type'], $check_type)) {
                     $data['message'] = '<a href="uploads/' . $data['webpath'] . '"  target="_BLANK"><img src="uploads/' . $data['webpath'] . '" width="50" height="50"></a>';
                 } else {

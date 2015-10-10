@@ -486,6 +486,21 @@ class Topic extends ADMIN_Controller {
 		}
 		echo $new_str;
 	}
+    /**
+	* ajax function to delete the topic 
+	*/
+	public function delete_topic(){
+		$topic_id = $this->input->post('topic_id');
+        $is_delete = 1;
+		$data=array(
+				 "is_delete"=> $is_delete
+				 );
+		update('topics',$topic_id,$data);	// Update data  using common_model.php and cms_helper.php
+		
+		$response = array('is_delete'=>$is_delete,'id'=>'delete_'.$topic_id);
+		echo json_encode($response);
+		exit; 
 
+	}
 
 }
