@@ -342,7 +342,7 @@
             <div class="chat_container" id = 'chat_container'>
                  <?php 
                  $active_c = active_chat();
-                 if(isset($active_c) && !empty($active_c)){
+                 if(isset($active_c) && !empty($active_c) && $this->session->userdata('user')['id'] != $active_c){
                 ?>
                 <div class="chat active" data-id="<?php echo $active_c['user']['id'] ?>">
                     <div class="chat_header">
