@@ -129,7 +129,7 @@
                 <ul class="three_tabs">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span><span class="badge bell_badge">03</span></a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" id="notification-panel">
                             <li><a href="#">
                                 <div class="user_small_img"><img src="assets/images/user2.jpg"></div>
                                 <div class="notification_txt">
