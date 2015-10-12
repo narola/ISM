@@ -1064,7 +1064,7 @@ textarea.post_input{
 	outline:none;
 }
 .stm{
-	border-left:1px solid rgba(0,0,0,0.1);
+	/*border-left:1px solid rgba(0,0,0,0.1);*/
 }
 .stm .box_header{
 	background-color:#323941;
@@ -2669,4 +2669,35 @@ textarea {
 }
 .instruction .txt_green{
 	text-transform:uppercase;
+}
+/*404*/
+.back_hang{
+	position:relative;
+}
+.hanging{
+    position: absolute;
+    top: 60px;
+    left: 35%;
+}
+.back_hang:before{
+	top: 60px;
+    left: 35%;
+	content:"";
+	height:130px;
+	width:450px;
+	background-image:url(../images/hanging.png);
+	background-repeat:no-repeat;
+	position:absolute;
+}
+.anim_swing{
+	margin-right:20px;
+	-webkit-perspective: 500px; /* Chrome, Safari, Opera  */
+    perspective: 500px;
+	animation:swing 1s linear infinite alternate;
+	-webkit-animation:swing 1s linear infinite alternate;
+}
+@keyframes swing{
+	0%{transform:rotate(3deg);}
+	50%{transform:rotate(0deg);}
+	100%{transform:rotate(-3deg);}
 }
