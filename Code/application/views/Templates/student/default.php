@@ -16,6 +16,10 @@
     <!--fonts-->
     <link href='assets/css/fonts.css' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+      <!-- Select2 CSS Start -->
+    <link href="assets/css/select2-bootstrap.css" rel="stylesheet">    
+    <link href="assets/css/select2.css" rel="stylesheet">
+
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -73,6 +77,8 @@
             }
         }
 </script>
+    <script src="assets/js/select2.min.js"></script> <!-- Select2 JS -->
+
 </head>
 
 <body>

@@ -224,7 +224,6 @@ if ("WebSocket" in window)
             if(obj.error == ''){
                 $('.studyamte_list .mCustomScrollBox  .mCSB_container  .study_mate[data-id="'+obj.studymate_id+'"]').fadeOut(300);
             }
-            
 
         }else if(obj.type == "dictionary"){
             $('.dictionary_result .mCustomScrollBox .mCSB_container').html(obj.message);
@@ -292,7 +291,45 @@ if ("WebSocket" in window)
             {
                 $('#my_request_box').html('<div class="study_mate"><h3>No more studymate request</h3></div>');
             }    
-        }else if(obj.type == 'file_notification'){
+        }
+        else if(obj.type == 'get_studymate_name'){
+            var i = 0;
+            var j = 0;
+            var k = 0;
+            str = '';
+            ids = '';
+            len = obj.student_detail.length;
+            $.each(obj.student_detail, function (index, list) {
+                if(len == 1){
+                    str += '<b>with</b> : <label class="label label_name"><a href="#">'+ list.name + '</a></label>';
+                }
+                else if(len == 2){
+                    if(i == 0)
+                        str += 'with <label class="label label_name"><a href="#">'+list.name +'</a></label>';
+                    else
+                        str += 'and <label class="label label_name"><a href="#">'+list.name +'</a></label>';
+                    i++;
+                }
+                else if(len > 2){
+                    if(j == 0)
+                        str += 'with <label class="label label_name"><a href="#" >'+list.name +'</a></label>';
+                    else{
+                        l = parseInt(len) - parseInt(1);
+                        if(k == 0){
+                            str += 'and <label class="label label_name"><a>'+ l +' more</a>';
+                            str += '</label>';
+                            k++;
+                        }
+                    }
+                    j++;
+                }
+                ids += list.id;    
+
+            });
+            $('#tagged-users').html(str);
+            $('#tagged-users-id').val(ids);
+        }
+        else if(obj.type == 'file_notification'){
         }else {
             alert('Message Not Catched!!');
         }
@@ -410,6 +447,7 @@ $(document).on('click','button[data-type="post"]',function(){
         var request = {
             type:'post',
             to: 'all',
+            tagged_id : $('#tagged-users-id').val(),
             message: $('#feed_post').val()
         };
         ws.send(JSON.stringify(request));
@@ -442,6 +480,22 @@ function generate_post(obj,status){
     str += '</div>';
     str += '<div class="feed_text">';
     str += '<h4>'+obj.full_name+'</h4>';
+
+    len = obj.tagged_detail.length;
+    if(len > 0){
+        name = '';
+        j = 0;
+        $.each(obj.tagged_detail, function (index, list) {
+                if(j == 0){
+                    name += '&nbsp; with <label class="label label_name">'+list.full_name+'</label>';
+                }
+                else{
+                    name += 'and <label class="label label_name">'+list.full_name+'<label>';
+                }
+            j++;
+        });
+    }
+    str += '<span>'+name+'</span>';
     str += '<span class="date">Sep 28, 2015</span>';
     str += '<div class="clearfix"></div>';
     str += '<pre>'+obj.message+'</pre>';
@@ -646,6 +700,16 @@ $(document).on('click','button[data-type = "decline-request"]',function(e){
         sub_type : $(this).data('subtype'),
         to: 'self',
         studymate_id: $(this).data('id'),
+        error : ''
+    };
+    ws.send(JSON.stringify(request)); 
+});
+
+$(document).on('change', '#select-tag-user', function(e){
+    var request = {
+        type: 'get_studymate_name',
+        to: 'self',
+        studymate_id: e.val,
         error : ''
     };
     ws.send(JSON.stringify(request)); 

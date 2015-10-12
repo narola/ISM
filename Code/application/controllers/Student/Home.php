@@ -16,7 +16,7 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
-
+		
 		$user_id = $this->session->userdata('user')['id'];
 		$data['title'] = 'ISM - Home';
 		$data['hide_right_bar'] = true;		
@@ -55,53 +55,65 @@ class Home extends CI_Controller {
 		if(sizeof($feed_ids)>0)
 		{	
 
-		//---find feeds commentss
-		$options = array(
-				'join' => array(
-					array(
-						'table' => TBL_USERS.' u', 
-						'condition'=>'u.id = fc.comment_by'
-					),
-					array(
-							'table'=>TBL_USER_PROFILE_PICTURE.' p',
-							'condition' => 'u.id = p.user_id'	
+			//---find tagged user
+
+			$options = array(
+					'join' => array(
+						array(
+							'table' => TBL_USERS.' u',
+							'condition' => 'u.id = t.user_id'
+						)
 					)
-				)
-			);	
-		
-		$where 	= array('where'=>array('fc.is_delete'=> 0),'where_in'=> array('feed_id'=>$feed_ids));
-		$comment = select(TBL_FEED_COMMENT.' fc','feed_id,comment,u.full_name,p.profile_link',$where,$options);
-		
-		//----merge feeds and comment in single array			
-		$final_feed = array();
-		foreach ($data_array as $key => $value) {
-			$final_feed[$key] = $value;
-			$found_comment = array();
-			foreach ($comment as $key1 => $value1) {
-				if($value1['feed_id'] == $value['fid'])
-                {
-                    $found_comment[] = $value1;
-                } 
+				);
+			$data['tagged'] = select(TBL_FEEDS_TAGGED_USER.' t','u.id,u.full_name,t.feed_id',array('where_in'=>array('feed_id'=>$feed_ids)),$options);
+			
+			//---find feeds commentss
+			$options = array(
+					'join' => array(
+						array(
+							'table' => TBL_USERS.' u', 
+							'condition'=>'u.id = fc.comment_by'
+						),
+						array(
+								'table'=>TBL_USER_PROFILE_PICTURE.' p',
+								'condition' => 'u.id = p.user_id'	
+						)
+					)
+				);	
+			
+			$where 	= array('where'=>array('fc.is_delete'=> 0),'where_in'=> array('feed_id'=>$feed_ids));
+			$comment = select(TBL_FEED_COMMENT.' fc','feed_id,comment,u.full_name,p.profile_link',$where,$options);
+			
+			//----merge feeds and comment in single array			
+			$final_feed = array();
+			foreach ($data_array as $key => $value) {
+				$final_feed[$key] = $value;
+				$found_comment = array();
+				foreach ($comment as $key1 => $value1) {
+					if($value1['feed_id'] == $value['fid'])
+	                {
+	                    $found_comment[] = $value1;
+	                } 
+				}
+				$final_feed[$key]['comment'] = $found_comment;
 			}
-			$final_feed[$key]['comment'] = $found_comment;
+			
+			$data['feed'] = $final_feed;
+			if(!studymates($user_id,false) > 0 )
+				$studymates = array('');
+			else
+				$studymates = studymates($user_id,false);
+	 		// Get Classmates details
+			$where = array('where_in' => array('u.id' =>  $studymates));
+			$options = array('join' => array(
+					array(
+						'table' => TBL_USER_PROFILE_PICTURE.' upp',
+						'condition' => 'upp.user_id = u.id'
+					)
+				),
+			);
+			$data['classmates'] = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,  (SELECT count(*) FROM `user_chat` `uc` WHERE `uc`.`sender_id` = `u`.`id` AND `uc`.`receiver_id` = '.$user_id.' AND `uc`.`received_status` = 0) as `unread_msg`',$where,$options);
 		}
-		
-		$data['feed'] = $final_feed;
-		if(!studymates($user_id,false) > 0 )
-			$studymates = array('');
-		else
-			$studymates = studymates($user_id,false);
- 		// Get Classmates details
-		$where = array('where_in' => array('u.id' =>  $studymates));
-		$options = array('join' => array(
-				array(
-					'table' => TBL_USER_PROFILE_PICTURE.' upp',
-					'condition' => 'upp.user_id = u.id'
-				)
-			),
-		);
-		$data['classmates'] = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,  (SELECT count(*) FROM `user_chat` `uc` WHERE `uc`.`sender_id` = `u`.`id` AND `uc`.`receiver_id` = '.$user_id.' AND `uc`.`received_status` = 0) as `unread_msg`',$where,$options);
-	}
 		/* Get all online users */
         $data['online'] = online();
 
@@ -130,6 +142,7 @@ class Home extends CI_Controller {
 		}
 
 		//----Get Suggested studymates
+
 		$my_studymates = studymates($user_id,false);
 		if(empty($my_studymates))
 			$my_studymates = array('');
@@ -168,6 +181,8 @@ class Home extends CI_Controller {
 				)
 			);
 		$data['suggested_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,pi.profile_link',$where,$options);
+
+		$data['my_studymates'] = select(TBL_USERS.' u',null,array('where_in'=>array('id'=>$my_studymates)));
 		$this->template->load('student/default','student/home_view',$data);
 	}
 

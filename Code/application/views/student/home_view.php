@@ -2,12 +2,30 @@
     function showall(id){
         $('.post'+id).show();
     }
+    
 </script>
  <!--main-->
             <div class="col-sm-7 main">
                 <div class="box">
                     <textarea id="feed_post" type="text" class="form-control post_input" placeholder="SAY IT" ></textarea>
                     <a href="#" class="icon icon_emoji"></a>
+                    <br>
+                    <div class="form-group">
+                        <div id="tagged-users">
+                        </div>
+                        <br>
+                        <input type="hidden" id="tagged-users-id">
+                        <select name="all_users[]" id="select-tag-user" class="js-example-basic-single form-control" multiple="multiple">
+                            <?php
+                            if(!empty($my_studymates)) {
+                                foreach($my_studymates as $list){
+                                 ?>
+                                    <option value="<?php echo $list['id'] ?>">
+                                        <?php echo ucfirst($list['full_name']); ?>
+                                    </option> 
+                            <?php } } ?>
+                        </select>
+                    </div>
                     <div class="box_header">
                         <a href="javascript:void(0);" class="icon icon_pin"><input  id="feed_file_share" type="file" data-id="feed"></a>
                         <div class="dropdown" style="display: inline-block;">
@@ -21,6 +39,7 @@
                         <button data-type="post" class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
                     </div>
                 </div>
+                
                 <!--feed box-->
                 <div id="all_feed">
                     <?php 
@@ -371,4 +390,11 @@
                 
             </div>
             <!--//side right-->
-            
+            <script type="text/javascript">
+             
+             $(document).ready(function() {
+                $(".js-example-basic-single").select2();
+            });
+           
+            </script>
+
