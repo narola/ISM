@@ -47,7 +47,7 @@
                                     foreach($users as $user){
                                      ?>
                                     <option value="<?php echo $user['id'] ?>" 
-                                        <?php if($user['username'] == $u['username']){ echo "selected='selected'"; } ?>>
+                                        <?php if(in_array($user['id'],$group_members)){ echo "selected='selected'"; } ?>>
                                         <?php echo $user['username']; ?>
                                     </option>            
                                 <?php } } ?>

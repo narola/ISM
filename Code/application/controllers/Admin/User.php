@@ -41,7 +41,7 @@ class User extends ADMIN_Controller {
 			if(!empty($role)){ $where['where']['role_id'] = $role ; $str .= '&role='.$role; }	
 			if(!empty($course)){  $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.course_id'] = $course; $str .='&course='.$course; }
 			if(!empty($school)){  $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.school_id'] = $school; $str .='&school='.$school; }
-			if(!empty($classroom)){ $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.classroom_id'] = $classroom; $str .= '&$classroom='.$classroom;  }
+			if(!empty($classroom)){ $where['where'][TBL_STUDENT_ACADEMIC_INFO.'.classroom_id'] = $classroom; $str .= '&classroom='.$classroom;  }
 			if(!empty($year)){ 
 								$next_year=$year+1; $academic_year = "$year-$next_year";    // find next year and create string like 2015-2016
 								$where['where'][TBL_STUDENT_ACADEMIC_INFO.'.academic_year'] = $academic_year; $str .='&year='.$year;  
