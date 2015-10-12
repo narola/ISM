@@ -1430,3 +1430,12 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .admin_activities .tag_user .caret {
     border-top-color: #ff6b6b;
 }
+.topic_loader{
+	margin-left: 28px;
+    margin-top: 10px;
+}
+.status_loader
+{
+    float: right;
+    margin: 10px -13px 0px 0px;
+}

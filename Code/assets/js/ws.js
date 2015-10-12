@@ -64,7 +64,7 @@ function timeout_timer()
 
 $(document).ready(function () {
 
-     $('#circle_process').circleProgress({
+    $('#circle_process').circleProgress({
         value: 0.00,
         size: 156,
         fill: {
@@ -75,7 +75,7 @@ $(document).ready(function () {
         animation:{ duration: 500 } 
     });
 
-/* Handle multiple chat window. */
+    /* Handle multiple chat window. */
     $(document).on('click', '.chat .chat_header', function () {
         if ($(this).parent().hasClass('passive')) {
             if ($(this).parent().hasClass('chat_3')) {
@@ -92,58 +92,57 @@ $(document).ready(function () {
     });
 
 
-/* Validate length of selected file. */
-            var handleFileSelect = function(evt) {
-                var files = evt.target.files;
-                var file = files[0];
-                var user = $(this).data('id');
-                var type = $(this).data('type');
-                var type_of_data =  this.files[0].type;
-                var file_name =  this.files[0].name;
+    /* Validate length of selected file. */
+    var handleFileSelect = function(evt) {
+        var files = evt.target.files;
+        var file = files[0];
+        var user = $(this).data('id');
+        var type = $(this).data('type');
+        var type_of_data =  this.files[0].type;
+        var file_name =  this.files[0].name;
 
-                if(user != 'feed' && user != 'topic'){
-                    $('.chat[data-id="'+user+'"] .chat_loading').fadeIn(300);
-                }
+        if(user != 'feed' && user != 'topic'){
+            $('.chat[data-id="'+user+'"] .chat_loading').fadeIn(300);
+        }
 
-                if (this.files[0].size <= 1024 * 1024 * 10) {
-                if (files && file) {
-                    var reader = new FileReader();
-                    reader.onload = function(readerEvt) {
-                        var binaryString = readerEvt.target.result;
-                        console.log(btoa(binaryString));
-                        var request = {
-                            type : type,
-                            name : file_name,
-                            data_type : type_of_data,
-                            data : btoa(binaryString),
-                            to   : user
-                        }
-                        ws.send(JSON.stringify(request));
+        if (this.files[0].size <= 1024 * 1024 * 10) {
+            if (files && file) {
+                var reader = new FileReader();
+                reader.onload = function(readerEvt) {
+                    var binaryString = readerEvt.target.result;
+                    console.log(btoa(binaryString));
+                    var request = {
+                        type : type,
+                        name : file_name,
+                        data_type : type_of_data,
+                        data : btoa(binaryString),
+                        to   : user
+                    }
+                    ws.send(JSON.stringify(request));
+                };
+                reader.readAsBinaryString(file);
+            } 
+        }else {
+            alert('Max file upload limit 10MB!');
+        } 
+    };
 
-                    };
-                        reader.readAsBinaryString(file);
-                    } 
-                }else {
-                    alert('Max file upload limit 10MB!');
-                } 
-            };
-
-            if (window.File && window.FileReader && window.FileList && window.Blob) {
-                if($('#chat_file_share').length > 0){
-                    document.getElementById('chat_file_share').addEventListener('change', handleFileSelect, false);
-                }
-                if($('#feed_file_share').length > 0){
-                    document.getElementById('feed_file_share').addEventListener('change', handleFileSelect, false);
-                }
-                if($('#group_file_share').length > 0){
-                     document.getElementById('group_file_share').addEventListener('change', handleFileSelect, false);
-                }
-               
-            } else {
-                alert('The File APIs are not fully supported in this browser.');
-            }    
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+        if($('#chat_file_share').length > 0){
+            document.getElementById('chat_file_share').addEventListener('change', handleFileSelect, false);
+        }
+        if($('#feed_file_share').length > 0){
+            document.getElementById('feed_file_share').addEventListener('change', handleFileSelect, false);
+        }
+        if($('#group_file_share').length > 0){
+             document.getElementById('group_file_share').addEventListener('change', handleFileSelect, false);
+        }
+       
+    } else {
+        alert('The File APIs are not fully supported in this browser.');
+    }    
               
-    });
+});
 
 
 /* Check wheather web socket is supported by browser. */
@@ -330,32 +329,42 @@ if ("WebSocket" in window)
             var k = 0;
             str = '';
             ids = '';
+            other_name = '';
             len = obj.student_detail.length;
             $.each(obj.student_detail, function (index, list) {
                 if(len == 1){
                     str += '<b>with</b> : <label class="label label_name"><a href="#">'+ list.name + '</a></label>';
+                    ids += list.id;
                 }
                 else if(len == 2){
-                    if(i == 0)
+                    if(i == 0){
                         str += 'with <label class="label label_name"><a href="#">'+list.name +'</a></label>';
-                    else
+                        ids += list.id;
+                    }else{
                         str += 'and <label class="label label_name"><a href="#">'+list.name +'</a></label>';
+                        ids += ','+list.id;
+                    }
                     i++;
                 }
                 else if(len > 2){
-                    if(j == 0)
+                    
+                    if(j == 0){
                         str += 'with <label class="label label_name"><a href="#" >'+list.name +'</a></label>';
-                    else{
+                        ids += list.id;
+                    }else{
+                        other_name += list.name+'<div class=\'clearfix\'></div>';
                         l = parseInt(len) - parseInt(1);
-                        if(k == 0){
-                            str += 'and <label class="label label_name"><a>'+ l +' more</a>';
+                        if(j == l){
+
+                            str += 'and <label class="label label_name">';
+                            str += '<a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover1" title="Other Tagged" data-content="'+other_name+'">'+ l +' more</a>';
                             str += '</label>';
-                            k++;
                         }
+                        ids += ','+list.id;    
                     }
+
                     j++;
                 }
-                ids += list.id;    
 
             });
             $('#tagged-users').html(str);
@@ -516,18 +525,38 @@ function generate_post(obj,status){
     len = obj.tagged_detail.length;
     if(len > 0){
         name = '';
+        i = 0;
         j = 0;
+        k = 0;
         $.each(obj.tagged_detail, function (index, list) {
-                if(j == 0){
-                    name += '&nbsp; with <label class="label label_name">'+list.full_name+'</label>';
+                if(len == 1){
+                    name += '<b>with</b> : <label class="label label_name"><a href="#">'+ list.full_name + '</a></label>';
                 }
-                else{
-                    name += 'and <label class="label label_name">'+list.full_name+'<label>';
+                else if(len == 2){
+                    if(i == 0){
+                        name += 'with <label class="label label_name"><a href="#">'+list.full_name +'</a></label>';
+                    }else{
+                        name += 'and <label class="label label_name"><a href="#">'+list.full_name +'</a></label>';
+                    }
+                    i++;
                 }
-            j++;
-        });
-    }
+                else if(len > 2){
+                    if(j == 0){
+                        name += 'with <label class="label label_name"><a href="#" >'+list.full_name +'</a></label>';
+                    }else{
+                        l = parseInt(len) - parseInt(1);
+                        if(k == 0){
+                            name += 'and <label class="label label_name"><a>'+ l +' more</a>';
+                            name += '</label>';
+                            k++;
+                        }
+                    }
+                    j++;
+                }
+            });
     str += '<span>'+name+'</span>';
+    }
+    
     str += '<span class="date">Sep 28, 2015</span>';
     str += '<div class="clearfix"></div>';
     str += '<pre>'+obj.message+'</pre>';
@@ -556,6 +585,12 @@ function generate_post(obj,status){
         $("#all_feed").append(str);
     }
      $("#all_feed .box.feeds[data-id='"+obj.post_id+"']").fadeOut(0).fadeIn(400);
+
+    $.each(obj.comment, function (index, comment_list){
+        generate_comment(comment_list);
+    });
+
+    $('#notification-panel').prepend('sscscs');
 }
 
 
@@ -738,11 +773,16 @@ $(document).on('click','button[data-type = "decline-request"]',function(e){
 });
 
 $(document).on('change', '#select-tag-user', function(e){
-    var request = {
+    if(e.val != ''){
+        var request = {
         type: 'get_studymate_name',
         to: 'self',
         studymate_id: e.val,
         error : ''
-    };
-    ws.send(JSON.stringify(request)); 
+        };
+        ws.send(JSON.stringify(request)); 
+    }
+    else{
+        $('#tagged-users').html('');
+    }
 });
