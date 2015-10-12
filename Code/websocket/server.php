@@ -94,6 +94,8 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         if (isset($data['data'])) {
             unset($data['data']);
         }
+    } else if ($data['type'] == 'get_studymate_name'){
+        $responce = $Server->get_studymate_name($data);
     }
     $Server->log($data);
     $check = array('feed_comment', 'like');

@@ -1,5 +1,33 @@
+/* Give notification for remainning active hours time. */
 
-var time_count_out = 0
+var remainning_time = 0;
+var remainning_counter;
+function remainning_time_timer()
+{
+  remainning_time=remainning_time-1;
+  console.log("Remainnig Seconds to complete: "+remainning_time);
+  if(remainning_time == 900){
+      $(".alert_notification p").html("Active hours will <b>finish</b> within <b>15 minutes.</b>");
+      $(".alert_notification").show().delay(5000).fadeOut();
+  }else if(remainning_time == 300){
+    console.log("5 minutes notification.");
+      $(".alert_notification p").html("Active hours will <b>finish</b> within <b>5 minutes.</b>");
+      $(".alert_notification").show().delay(5000).fadeOut();
+  }else if(remainning_time == 60){
+    console.log("1 minutes notification.");
+     $(".alert_notification p").html("Active hours will <b>finish</b> within <b>1 minute.</b>");
+     $(".alert_notification").show().delay(5000).fadeOut();
+  }else if (remainning_time <= 0)
+  { 
+    $(".alert_notification p").html("Active hours <b>finished.</b>");
+    $(".alert_notification").show().delay(5000).fadeOut();
+      
+    clearInterval(remainning_counter);
+    return;
+  }
+}
+
+var time_count_out = 0;
 var max_count_out = 0;
 var counter_out;
 
@@ -62,7 +90,6 @@ $(document).ready(function () {
             $(this).parent().removeClass().addClass('active').addClass('chat');
         }
     });
-
 
 
 /* Validate length of selected file. */
@@ -179,6 +206,11 @@ if ("WebSocket" in window)
                     }
                 
             });
+
+            if(obj.time_to_left > 0){
+                remainning_time  = obj.time_to_left;
+                remainning_counter = setInterval(remainning_time_timer, 1000);
+            }
         } else if (obj.type == 'notification') {
                 set_status(obj.user_id, obj.live_status);
         } else if(obj.type == 'get_latest_message'){

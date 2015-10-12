@@ -68,7 +68,11 @@
 .icon_erase,
 .icon_clear,
 .icon_add_small,
-.icon_zip_active{
+.icon_zip_active,
+.icon_thumb_0_red,
+.icon_thumb_red,
+.icon_comment_red,
+.icon_user_2_red{
 	background-image:url(../images/icon-set.png);
 	background-position:0 0;
 }
@@ -133,7 +137,11 @@
 .icon_thumb_0,
 .icon_thumb,
 .icon_comment,
-.icon_user_2{
+.icon_user_2,
+.icon_thumb_0_red,
+.icon_thumb_red,
+.icon_comment_red,
+.icon_user_2_red{
 	width:20px;
 	height:20px;
 	margin-right:2px;
@@ -149,6 +157,18 @@
 }
 .icon_user_2{
 	background-position:-59px -30px;
+}
+.icon_thumb_0_red{
+	background-position:-79px -200px;
+}
+.icon_thumb_red{
+	background-position:-96px -200px;
+}
+.icon_comment_red{
+	background-position:-38px -200px;
+}
+.icon_user_2_red{
+	background-position:-59px -200px;
 }
 .icon_emoji{
 	background-position:-387px 0;

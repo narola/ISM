@@ -132,6 +132,7 @@
                                     <label for="squaredThree_<?php echo $user['id']; ?>"></label>
                                 </div>
                               </td>
+                              
                               <td class="username">
                                   <div class="chat_img_holder">
                                         <img src="<?php echo base_url().'assets'; ?>/uploads/$user['profile_link']"

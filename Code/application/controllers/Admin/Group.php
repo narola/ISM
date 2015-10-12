@@ -10,6 +10,8 @@ class Group extends ADMIN_Controller {
 		parent::__construct();
 		$this->load->helper(array('file'));		
 		$this->load->library(array('zip','pagination'));
+		$this->data['cur_url'] = $this->session->userdata('cur_url');
+		$this->data['prev_url'] = $this->session->userdata('prev_url');
 	}
 
 	// ---------------------------- Group Module Start --------------------------------------------
@@ -21,6 +23,9 @@ class Group extends ADMIN_Controller {
 	 
 	public function index() {
 		
+		if($_POST){
+			die('HHHH');
+		}
 		$this->data['page_title'] = 'Groups';
 		
 		if(!empty($_GET['course']) ||  !empty($_GET['year']) ||  !empty($_GET['q']) ){
@@ -215,9 +220,8 @@ class Group extends ADMIN_Controller {
 
 	/**
 	 * function send_message will used to send message from admin to other user tables-(messages,messages_receiver) 
-	 *	admin can send messages to one or more than one Group Members at a time
+	 *	admin can send messages to one or more than one users at a time
 	 **/
-
 	public function send_message($id){
 		
 		$this->data['page_title'] = 'User Send Message';
@@ -226,11 +230,23 @@ class Group extends ADMIN_Controller {
 			redirect('admin');
 		 }
 
-		$this->data['u'] =select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>true));
+		$group_members = select(TBL_TUTORIAL_GROUP_MEMBER,FALSE,array('where'=>array('group_id'=>$id)));
+
+		$my_users = array();
+
+		foreach( $group_members as $members){	
+			array_push($my_users,$members['user_id']);
+		}
+
+		$this->data['group_members'] = $my_users;
+		
 		$this->data['templates'] =select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
 		$this->data['users'] =select(TBL_USERS,
-									TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
-									 array('where_not_in'=>array(TBL_USERS.'.role_id'=>array('1'))),
+									TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name,'.TBL_ROLES.'.id as rid',
+									 array(
+									 		'where'=>array(TBL_USERS.'.is_delete'=>FALSE),
+									 		'where_not_in'=>array(TBL_USERS.'.user_status'=>array('blocked'))
+									 	  ),
 									 array(
 										'order_by'=>TBL_USERS.'.username',
 										'join'=>array(
@@ -240,26 +256,57 @@ class Group extends ADMIN_Controller {
 													)
 												)
 											)
-									);	
+									);
 
-		$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
-		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
+		if(count($this->input->post('all_users')) == 0){
+			$this->form_validation->set_rules('all_users', 'Users', 'trim|required');		
+		}										
+
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+
+		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required|alpha_numeric_spaces');	
 		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
 
 		if($this->form_validation->run() == FALSE){
 			
-			$this->template->load('admin/default','admin/user/send_message',$this->data);
+			$this->template->load('admin/default','admin/group/send_message',$this->data);
 		}else{
 
 			$all_users = $this->input->post('all_users');
+
+			$msg_title = $this->input->post('message_title');
+			$msg_text = $this->input->post('message_desc');
+
+			$db_template = select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
+
+			 
+			$cnt = 0;
+			if(isset($_POST['save_template'])){
+				foreach($db_template as $db_temp){
+					
+					if($db_temp['message_title'] === $msg_title){
+						$cnt++;
+					}
+				}
+			}
+
+			if($cnt != 0){
+				$this->session->set_flashdata('msgerror', 'Message template should be Unique.');
+				redirect('admin/user/send_message/'.$id);
+			}
+			
+			$template_counter = 0;
 
 			if(!empty($all_users)){			
 
 				foreach($all_users as $user){
 
-						$msg_title = $this->input->post('message_title');
-						$msg_text = $this->input->post('message_desc');
-
+						if(isset($_POST['save_template']) && $template_counter != 1 ){
+							$template_counter = 1;
+							$template = '1';
+						}else{
+							$template = '0';
+						}
 						$data = array(
 								'message_text'=>$msg_text,
 								'sender_id'=>$this->session->userdata('id'),
@@ -268,7 +315,7 @@ class Group extends ADMIN_Controller {
 								'reply_for'=>'0',
 								'created_date'=>date('Y-m-d H:i:s',time()),
 								'modified_date'=>'0000-00-00 00:00:00',
-								'is_template'=>$this->input->post('save_template'),
+								'is_template'=>$template,
 								'is_delete'=>'0',
 								'is_testdata'=>'yes'
 							);
@@ -292,6 +339,10 @@ class Group extends ADMIN_Controller {
 
 						if(!empty($user_mail['email_id'])){
 							
+							$config = mail_config(); // set configuration for email from email_helper.php
+							
+							$this->email->initialize($config);
+							$this->load->library('email', $config);	
 							$this->email->from('admin@admin.com', 'Admin');
 							$this->email->to($user_mail['email_id']);
 							
@@ -300,33 +351,36 @@ class Group extends ADMIN_Controller {
 							
 							$this->email->send();
 						}
-
 					}
 				}
 
 				$this->session->set_flashdata('success', 'Message has been Successfully sent.');
-				redirect('admin/user');
-
-				
-
+				redirect($this->data['prev_url']);
 		}
 
 	}
 
 	public function send_messages(){
 		
+		p($_POST);
 		$this->data['page_title'] = 'Users Send Messages';
-
+		die('123');
 		if($_POST){
 			
+			p($_POST,true);
+
 			if(isset($_POST['all_users'])){
 				$this->data['post_users'] = $this->input->post('all_users[]');
 				$this->data['my_cnt'] = 1;
+				$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
 			}elseif(isset($_POST['message_title'])){
 				$this->data['my_cnt'] = 1;
+				$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
 			}else{
+				$this->data['post_users'] = array();
 				$this->data['post_users'] = $this->input->post('users');
 				$this->data['my_cnt'] = 0;	
+				$this->form_validation->set_rules('all_users[]', 'Users', 'trim');		
 			}
 
 		}else{
@@ -335,8 +389,11 @@ class Group extends ADMIN_Controller {
 
 		$this->data['templates'] =select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
 		$this->data['users'] =select(TBL_USERS,
-									TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name',
-									 array('where_not_in'=>array(TBL_USERS.'.role_id'=>array('1'))),
+									 TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name,'.TBL_ROLES.'.id as rid',
+									 array(
+									 		'where'=>array(TBL_USERS.'.is_delete'=>FALSE),
+									 		'where_not_in'=>array(TBL_USERS.'.user_status'=>array('blocked'))
+									 	  ),
 									 array(
 										'order_by'=>TBL_USERS.'.username',
 										'join'=>array(
@@ -348,31 +405,62 @@ class Group extends ADMIN_Controller {
 											)
 									);
 
-		$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
-		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required');	
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+
+		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required|alpha_numeric_spaces');	
 		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
 
 		if($this->form_validation->run() == FALSE){
 
-			$this->template->load('admin/default','admin/user/send_messages',$this->data);	
+			$this->template->load('admin/default','admin/group/send_messages',$this->data);	
 			
 		}else{
 			
 			$all_users = $this->input->post('all_users');
 
+			$msg_title = $this->input->post('message_title');
+			$msg_text = $this->input->post('message_desc');
+
+			$db_template = select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
+
+			 
+			$cnt = 0;
+			if(isset($_POST['save_template'])){
+				foreach($db_template as $db_temp){
+					echo $db_temp['message_title'].'<br/>';
+					if($db_temp['message_title'] === $msg_title){
+						$cnt++;
+					}
+				}
+			}
+
+			if($cnt != 0){
+				$this->session->set_flashdata('msgerror', 'Message template should be Unique.');
+				redirect('admin/user/send_messages');
+			}
+			
+			$template_counter = 0;	
+
 			if(!empty($all_users)){			
 
 				foreach($all_users as $user){
 
+						if(isset($_POST['save_template']) && $template_counter != 1 ){
+							$template_counter = 1;
+							$template = '1';
+						}else{
+							$template = '0';
+						}
+
 						$data = array(
-								'message_text'=>$this->input->post('message_desc'),
+								'message_text'=>$msg_text,
 								'sender_id'=>$this->session->userdata('id'),
-								'message_title'=>$this->input->post('message_title'),
+								'message_title'=>$msg_title,
 								'status'=>'1',
 								'reply_for'=>'0',
 								'created_date'=>date('Y-m-d H:i:s',time()),
 								'modified_date'=>'0000-00-00 00:00:00',
-								'is_template'=>$this->input->post('save_template'),
+								'is_template'=>$template,
 								'is_delete'=>'0',
 								'is_testdata'=>'yes'
 							);
@@ -392,14 +480,31 @@ class Group extends ADMIN_Controller {
 						// insert data into messages_receiver table using message id from message table
 						insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
 
+						$user_mail = select(TBL_USERS,'email_id',array('where'=>array('id'=>$user)),array('single'=>TRUE));
+
+						if(!empty($user_mail['email_id'])){
+							
+							$config = mail_config();
+							
+							$this->email->initialize($config);
+							$this->load->library('email', $config);	
+							$this->email->from('admin@admin.com', 'Admin');
+							$this->email->to($user_mail['email_id']);
+							
+							$this->email->subject($msg_title);
+							$this->email->message($msg_text);
+							
+							$this->email->send();
+						}
 					}
 
 					$this->session->set_flashdata('success', 'Messages has been Successfully sent.');
-					redirect('admin/user');
+					redirect($this->data['prev_url']);
 				}		
 			}
 		}
-	
+
+
 
 	// ---------------------------- Group Module END --------------------------------------------
 

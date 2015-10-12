@@ -69,21 +69,8 @@
 	background-image:url(../images/icon-set.png);
     background-position: 3px -93px;
 }
-
-.page_header{
-	background-color:#fff;
-	box-shadow:0px 3px 9px -2px rgba(0,0,0,0.2);
-}
-.page_header .breadcrumb{
-	background-color:transparent;
-	margin:9px 0;
-}
-
 .breadcrumb>li>a{
 	color:#ff6b6b;
-}
-.breadcrumb>li{
-	font-weight:600;
 }
 .filter .form-group {
     width: 18.8%;
@@ -360,6 +347,8 @@
     height: 65px;
     width: 65px;
     border: 3px solid rgba(0,0,0,0.1);
+	position: relative;
+    z-index: 1;
 }
 .group_members{
 	width:100%;
@@ -935,6 +924,10 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .topic_groups .table>tbody>tr>td.username{
 	padding:0;
 }
+.topic_groups .table>tbody>tr>td.username.active{
+	/*border: 3px solid #4294d0;*/
+	background-color:transparent;
+}
 .topic_groups .table_group .username>.chat_img_holder{
 	margin:10px;
 	float: left;
@@ -944,8 +937,27 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     margin-top: 10px;
     font-size: 14px;
 }
+.topic_groups .table_group .username a{
+	color:#333;
+	text-decoration:none;
+}
 .topic_groups .table_group .username h4 {
-    margin: 20px 0px;
+    padding: 22px 0px;
+    margin: 0;
+}
+.topic_groups .table_group .username.active h4{
+    background-color: #ff6b6b;
+	position: relative;
+	color: #fff;
+} 
+.topic_groups .table_group .username.active h4:after {
+    content: "";
+    position: absolute;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #ff6b6b;
+    right: -10px;
+    top: 39%;
 }
 .allocate_topic .box_header {
     box-shadow: 0px 3px 6px -1px rgba(0,0,0,0.1);
@@ -956,7 +968,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .topic_groups .group_members{
     border-top: 1px solid rgba(0,0,0,0.1);
-    box-shadow: 0px -2px 1px 0px rgba(0,0,0,0.05);
+    /*box-shadow: 0px -2px 1px 0px rgba(0,0,0,0.05);*/
 }
 .group_score>div:nth-child(3), .group_score>div:nth-child(2){
 	width:50%;
@@ -1396,4 +1408,63 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .performance_div .box_header{
 	border-left:none;
+}
+.allocate_topic .box{
+    box-shadow: 0 0 4px 1px rgba(0,0,0,0.07);
+    border: 1px solid rgba(0,0,0,0.2);
+}
+/*question_bank*/
+.question_bank .general_cred{
+	background-color:transparent;
+	padding:0 15px 0 0;
+}
+.question_bank .box{
+	box-shadow: 0 0 4px 1px rgba(0,0,0,0.07);
+    border: 1px solid rgba(0,0,0,0.2);
+}
+.question_bank .box_header{
+	padding:7px 8px;
+}
+.question_bank .box_header .form-control{
+	padding:6px;
+}
+.question_bank .search_link{
+	width:32px;
+	-webkit-filter:brightness(0);
+	-moz-filter:brightness(0);
+	filter:brightness(0);
+}
+.question_bank .box{
+	margin:15px 0 0;
+}
+.question_bank .box_body{
+	padding:0;
+}
+.black_header h4{
+	margin:0;
+	color:#fff;
+	text-transform:uppercase;	
+}
+.black_header{
+	background-color:#323941;
+    padding: 7px;
+    text-align: center;
+}
+.admin_activities .divide_discussion h4{
+	color:#ff6b6b;
+}
+.admin_activities .divide_discussion hr {
+    border-color: #ff6b6b;
+}
+.activities .divide_discussion h4:before{
+	background-color:#ff6b6b;
+}
+.admin_activities .topic_allocated>div>h4{
+	color:#ff6b6b;	
+}
+.admin_activities .box_body a {
+    color: #ff6b6b;
+}
+.admin_activities .tag_user .caret {
+    border-top-color: #ff6b6b;
 }
