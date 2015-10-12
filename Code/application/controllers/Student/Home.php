@@ -16,7 +16,6 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
-		
 		$user_id = $this->session->userdata('user')['id'];
 		$data['title'] = 'ISM - Home';
 		$data['hide_right_bar'] = true;		
@@ -65,7 +64,7 @@ class Home extends CI_Controller {
 						)
 					)
 				);
-			$data['tagged'] = select(TBL_FEEDS_TAGGED_USER.' t','u.id,u.full_name,t.feed_id',array('where_in'=>array('feed_id'=>$feed_ids)),$options);
+			$tagged = select(TBL_FEEDS_TAGGED_USER.' t','u.id,u.full_name,t.feed_id',array('where_in'=>array('feed_id'=>$feed_ids)),$options);
 			
 			//---find feeds commentss
 			$options = array(
@@ -83,22 +82,28 @@ class Home extends CI_Controller {
 			
 			$where 	= array('where'=>array('fc.is_delete'=> 0),'where_in'=> array('feed_id'=>$feed_ids));
 			$comment = select(TBL_FEED_COMMENT.' fc','feed_id,comment,u.full_name,p.profile_link',$where,$options);
-			
-			//----merge feeds and comment in single array			
+
+			//----merge feeds and comment,tagged user in single array			
 			$final_feed = array();
 			foreach ($data_array as $key => $value) {
 				$final_feed[$key] = $value;
-				$found_comment = array();
+				$found_comment = $found_tagged = array();
 				foreach ($comment as $key1 => $value1) {
-					if($value1['feed_id'] == $value['fid'])
-	                {
+					if($value1['feed_id'] == $value['fid']){
 	                    $found_comment[] = $value1;
 	                } 
 				}
+				foreach ($tagged as $tag_key => $tag_value) {
+					if($tag_value['feed_id'] == $value['fid']){
+						$found_tagged[] = $tag_value;
+					}
+				}
 				$final_feed[$key]['comment'] = $found_comment;
+				$final_feed[$key]['tagged']  = $found_tagged;
 			}
 			
 			$data['feed'] = $final_feed;
+
 			if(!studymates($user_id,false) > 0 )
 				$studymates = array('');
 			else
