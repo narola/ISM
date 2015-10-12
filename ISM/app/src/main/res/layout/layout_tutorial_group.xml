@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#F5F5F5"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/custom_actionbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_gray2"
+        android:orientation="horizontal">
+
+        <com.ism.helper.CircleImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/d15sp"
+            android:src="@drawable/userdp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/d25sp"
+            android:paddingBottom="@dimen/d25sp"
+
+            android:paddingLeft="@dimen/d5sp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="0sp"
+                android:text="Welcome to ISM"
+                android:id="@+id/tg_txt_welcometoism"
+                android:textColor="@color/color_white"
+                android:textSize="28sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="0sp"
+                android:id="@+id/tg_txt_username"
+                android:text="John Samuel"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/d25sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="0sp"
+                android:id="@+id/tg_txt_schoolname"
+                android:text="High School"
+                android:textColor="#ADB0B5"
+                android:textSize="@dimen/d20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="0sp"
+                android:id="@+id/tg_txt_yearandcourse"
+                android:text="First year, Computer science"
+                android:textColor="#ADB0B5"
+                android:textSize="@dimen/d20sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10sp"
+        android:id="@+id/tg_txt_yourtutorial_"
+        android:text="Your Tutorial group is as per below"
+        android:gravity="center"
+        android:textColor="@color/color_green"
+        android:textSize="@dimen/d25sp" />
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numColumns="2"
+        android:layout_marginLeft="220sp"
+        android:layout_marginRight="220sp"
+        android:verticalSpacing="30sp"
+        android:layout_alignParentRight="true"
+        android:horizontalSpacing="10sp"
+
+        android:gravity="center_horizontal"
+        android:id="@+id/grid"></GridView>
+    <Button
+        android:id="@+id/tg_btn_accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_edittext"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingBottom="@dimen/d10sp"
+        android:paddingLeft="@dimen/d60sp"
+        android:paddingRight="@dimen/d60sp"
+        android:paddingTop="@dimen/d10sp"
+        android:layout_margin="@dimen/d10sp"
+        android:text="@string/striacceptedgroup"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/d20sp" />
+
+</LinearLayout>

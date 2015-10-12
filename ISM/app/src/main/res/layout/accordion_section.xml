@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainlayout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_highscore_subjectlist">
+
+    <RelativeLayout
+        android:id="@+id/section_content"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0sp"
+        android:layout_marginRight="0sp"
+        android:padding="0sp"
+        android:background="@color/color_white"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+    </RelativeLayout>
+
+</LinearLayout>

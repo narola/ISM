@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:accordion="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    tools:context="com.ism.fragment.NotesFragment">
+
+    <!--<ScrollView-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent" >-->
+
+    <com.ism.helper.AccordionView
+        android:id="@+id/notes_accordion_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#fff5f5f5"
+        android:orientation="vertical"
+        accordion:header_layout_fold_button_id="@id/foldButton"
+        accordion:header_layout_id="@layout/accordion_header"
+        accordion:header_layout_label_id="@id/foldText"
+        accordion:section_bottom="@layout/accordion_footer"
+        accordion:section_container="@layout/accordion_section"
+        accordion:section_container_parent="@id/section_content"
+        accordion:section_headers="@array/accordion_notice"
+        accordion:section_visibility="@array/accordion_notice_visibility">
+
+
+        <LinearLayout
+            android:id="@+id/notes_ll_notice"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/notes_lv_notice"
+                android:layout_width="match_parent"
+                android:layout_height="350sp"
+                 />
+            <TextView
+                android:id="@+id/notes_txt_viewAll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="View all"
+                android:padding="@dimen/d10sp"
+                android:textColor="@color/color_green"
+                android:textSize="@dimen/d20sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/notes_lv_highScore"
+            android:layout_width="match_parent"
+            android:layout_height="350sp"
+            />
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/notes_ll_events"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
+
+            <ListView
+                android:id="@+id/notes_lv_events"
+                android:layout_width="match_parent"
+                android:layout_height="450sp"
+                />
+
+        <!--</LinearLayout>-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Item 4" />-->
+    </com.ism.helper.AccordionView>
+    <!--</ScrollView>-->
+
+
+</RelativeLayout>

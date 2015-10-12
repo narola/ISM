@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/wc_ll_main"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bgwelcom"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/d30sp"
+        android:src="@drawable/welcomism" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/wc_txt_nameyourtutorial_"
+        android:text="@string/strwelcomeline"
+        android:textColor="@color/color_text_light_green"
+        android:textSize="@dimen/d30sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/wc_txt_andwill_"
+        android:text="@string/strwelcomeline2"
+        android:textColor="@color/color_text_light_green"
+        android:textSize="@dimen/d30sp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/d70sp"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="300sp"
+                android:layout_height="1dp"
+                android:layout_marginBottom="2dp"
+                android:background="@color/color_line_green" />
+            <TextView
+                android:layout_width="300sp"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/color_line_green" />
+        </LinearLayout>
+        <com.ism.helper.GIFView
+            android:layout_width="100sp"
+            app:src="@drawable/loading3"
+            android:id="@+id/wc_gif"
+            android:padding="@dimen/d10sp"
+            android:layout_margin="@dimen/d10sp"
+            android:layout_height="100sp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="300sp"
+                android:layout_height="1dp"
+                android:layout_marginBottom="2dp"
+                android:background="@color/color_line_green" />
+
+            <TextView
+                android:layout_width="300sp"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/color_line_green" />
+        </LinearLayout>
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/wc_txt_tutorialgroup_"
+        android:text="@string/strtutorialgroupis5"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/d30sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:id="@+id/wc_txt_selected_"
+            android:text="@string/strselectedstudentsputtogetherto"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d30sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="5sp"
+            android:id="@+id/wc_txt_shareideas"
+            android:text="@string/strshareideas"
+            android:textColor="#81D525"
+            android:textSize="@dimen/d30sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/strcollborate"
+            android:id="@+id/wc_txt_collaborate"
+            android:textColor="#CC89EA"
+            android:textSize="@dimen/d30sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/strand"
+            android:id="@+id/wc_txt_and"
+            android:layout_marginLeft="5sp"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d30sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:id="@+id/wc_txt_doassign"
+            android:layout_marginLeft="5sp"
+            android:text="@string/strdoassignments"
+            android:textColor="#F5A438"
+            android:textSize="@dimen/d30sp" />
+    </LinearLayout>
+
+</LinearLayout>
