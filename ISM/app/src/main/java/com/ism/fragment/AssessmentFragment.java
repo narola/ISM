@@ -12,6 +12,9 @@ import com.ism.HostActivity;
 import com.ism.R;
 import com.ism.interfaces.FragmentListener;
 
+/**
+ * Created by c161 on --/10/15.
+ */
 public class AssessmentFragment extends Fragment {
 
     private static final String TAG = AssessmentFragment.class.getSimpleName();

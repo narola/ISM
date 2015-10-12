@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 
 import com.ism.R;
 
+/**
+ * Created by c161 on 12/10/15.
+ */
 public class TutorialFriFragment extends Fragment {
 
 	private static final String TAG = TutorialFriFragment.class.getSimpleName();

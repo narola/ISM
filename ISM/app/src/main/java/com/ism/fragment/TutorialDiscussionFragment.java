@@ -10,14 +10,17 @@ import android.view.ViewGroup;
 
 import com.ism.R;
 
+/**
+ * Created by c161 on 12/10/15.
+ */
 public class TutorialDiscussionFragment extends Fragment {
 
 	private static final String TAG = TutorialDiscussionFragment.class.getSimpleName();
 
-	private View mView;
+	private View view;
 
 	private static final String ARG_WEEK_DAY = "weekDay";
-	private int mWeekDay;
+	private int weekDay;
 
 	/**
 	 * Use this factory method to create a new instance of
@@ -43,18 +46,18 @@ public class TutorialDiscussionFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			mWeekDay = getArguments().getInt(ARG_WEEK_DAY);
+			weekDay = getArguments().getInt(ARG_WEEK_DAY);
 		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.e(TAG, "onCreateView");
-		mView = inflater.inflate(R.layout.fragment_tutorial_discussion, container, false);
+		view = inflater.inflate(R.layout.fragment_tutorial_discussion, container, false);
 
 		initGlobal();
 
-		return mView;
+		return view;
 	}
 
 	private void initGlobal() {

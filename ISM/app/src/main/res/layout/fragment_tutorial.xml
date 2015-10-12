@@ -6,7 +6,7 @@
     tools:context="com.ism.fragment.TutorialFragment">
 
     <TextView
-        android:id="@+id/text_week_number"
+        android:id="@+id/txt_week_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 	    android:background="@color/bg_tutorial"
@@ -15,14 +15,14 @@
 	    android:gravity="center"/>
 
 	<LinearLayout
-		android:id="@+id/layout_week_days"
+		android:id="@+id/ll_week_days"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
-		android:layout_below="@id/text_week_number">
+		android:layout_below="@id/txt_week_number">
 
 		<TextView
-			android:id="@+id/text_monday"
+			android:id="@+id/txt_monday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -34,7 +34,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:background="@drawable/bg_week_day"/>
 		<TextView
-			android:id="@+id/text_tuesday"
+			android:id="@+id/txt_tuesday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -46,7 +46,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:background="@drawable/bg_week_day"/>
 		<TextView
-			android:id="@+id/text_wednesday"
+			android:id="@+id/txt_wednesday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -58,7 +58,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:background="@drawable/bg_week_day"/>
 		<TextView
-			android:id="@+id/text_thursday"
+			android:id="@+id/txt_thursday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -70,7 +70,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:background="@drawable/bg_week_day"/>
 		<TextView
-			android:id="@+id/text_friday"
+			android:id="@+id/txt_friday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -82,7 +82,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:background="@drawable/bg_week_day"/>
 		<TextView
-			android:id="@+id/text_saturday"
+			android:id="@+id/txt_saturday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -94,7 +94,7 @@
 			android:paddingBottom="@dimen/week_day_padding"
 			android:background="@drawable/bg_week_day"/>
 		<TextView
-			android:id="@+id/text_sunday"
+			android:id="@+id/txt_sunday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -108,9 +108,9 @@
 	</LinearLayout>
 
 	<FrameLayout
-		android:id="@+id/frame_tutorial"
+		android:id="@+id/fl_tutorial"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_below="@id/layout_week_days"></FrameLayout>
+		android:layout_below="@id/ll_week_days"></FrameLayout>
 
 </RelativeLayout>

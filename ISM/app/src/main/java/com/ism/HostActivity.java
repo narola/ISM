@@ -34,46 +34,49 @@ import com.ism.utility.Utility;
 
 import java.util.ArrayList;
 
+/**
+ * Created by c161 on --/10/15.
+ */
 public class HostActivity extends Activity implements FragmentListener {
 
     private static final String TAG = HostActivity.class.getSimpleName();
 
-    private LinearLayout mLayoutControllerLeft;
-    private FrameLayout mLayoutFragmentContainerMain;
-    private FrameLayout mLayoutFragmentContainerRight;
-	private RelativeLayout mLayoutControllerTopMenu;
-	private LinearLayout mLayoutSearch;
-    private ImageView mImageHome;
-    private ImageView mImageTutorial;
-    private ImageView mImageClassroom;
-    private ImageView mImageAssessment;
-    private ImageView mImageDesk;
-    private ImageView mImageReportCard;
-    private ImageView mImageLogOut;
-    private ImageView mImageSearch;
-    private ImageView mImageNotes;
-    private ImageView mImageStudyMates;
-    private ImageView mImageChat;
-    private ImageView mImageMenuBack;
-    private TextView mTextTitle;
-    private TextView mTextOne;
-    private TextView mTextTwo;
-    private TextView mTextThree;
-    private TextView mTextFour;
-    private TextView mTextFive;
-    private TextView mTextAction;
-	private EditText mEditSearch;
-	private Spinner mSpinnerSubmenu;
+    private LinearLayout llControllerLeft;
+    private FrameLayout flFragmentContainerMain;
+    private FrameLayout flFragmentContainerRight;
+	private RelativeLayout rlControllerTopMenu;
+	private LinearLayout llSearch;
+    private ImageView imgHome;
+    private ImageView imgTutorial;
+    private ImageView imgClassroom;
+    private ImageView imgAssessment;
+    private ImageView imgDesk;
+    private ImageView imgReportCard;
+    private ImageView imgLogOut;
+    private ImageView imgSearch;
+    private ImageView imgNotes;
+    private ImageView imgStudyMates;
+    private ImageView imgChat;
+    private ImageView imgMenuBack;
+    private TextView txtTitle;
+    private TextView txtOne;
+    private TextView txtTwo;
+    private TextView txtThree;
+    private TextView txtFour;
+    private TextView txtFive;
+    private TextView txtAction;
+	private EditText etSearch;
+	private Spinner spSubmenu;
 
-	private View.OnClickListener mMenuItemClickListener;
-	private ControllerTopSpinnerAdapter mControllerTopSpinnerAdapter;
+	private View.OnClickListener onClickMenuItem;
+	private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
 
-	private TextView mTextsMenu[];
-	private ArrayList<ControllerTopMenuItem> mControllerTopMenuClassroom;
-	private ArrayList<ControllerTopMenuItem> mControllerTopMenuAssessment;
-	private ArrayList<ControllerTopMenuItem> mControllerTopMenuDesk;
-	private ArrayList<ControllerTopMenuItem> mControllerTopMenuReportCard;
-	private ArrayList<ControllerTopMenuItem> mCurrentControllerTopMenu;
+	private TextView txtsMenu[];
+	private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
+	private ArrayList<ControllerTopMenuItem> controllerTopMenuAssessment;
+	private ArrayList<ControllerTopMenuItem> controllerTopMenuDesk;
+	private ArrayList<ControllerTopMenuItem> controllerTopMenuReportCard;
+	private ArrayList<ControllerTopMenuItem> currentControllerTopMenu;
 
 	public static final int FRAGMENT_HOME = 0;
 	public static final int FRAGMENT_TUTORIAL = 1;
@@ -84,9 +87,9 @@ public class HostActivity extends Activity implements FragmentListener {
 	public static final int FRAGMENT_NOTES = 6;
 	public static final int FRAGMENT_STUDY_MATES = 7;
 	public static final int FRAGMENT_CHAT = 8;
-	public static int sCurrentMainFragment;
-    public static int sCurrentRightFragment;
-	private int mCurrentMainFragmentBg;
+	public static int currentMainFragment;
+    public static int currentRightFragment;
+	private int currentMainFragmentBg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,109 +101,109 @@ public class HostActivity extends Activity implements FragmentListener {
     }
 
     private void inigGlobal() {
-        mLayoutControllerLeft = (LinearLayout) findViewById(R.id.layout_controller_left);
-        mLayoutFragmentContainerMain = (FrameLayout) findViewById(R.id.layout_fragment_container_main);
-        mLayoutFragmentContainerRight = (FrameLayout) findViewById(R.id.layout_fragment_container_right);
-	    mLayoutControllerTopMenu = (RelativeLayout) findViewById(R.id.layout_controller_top_menu);
-	    mLayoutSearch = (LinearLayout) findViewById(R.id.layout_search);
-        mImageHome = (ImageView) findViewById(R.id.image_home);
-        mImageTutorial = (ImageView) findViewById(R.id.image_tutorial);
-        mImageClassroom = (ImageView) findViewById(R.id.image_classroom);
-        mImageAssessment = (ImageView) findViewById(R.id.image_assessment);
-        mImageDesk = (ImageView) findViewById(R.id.image_desk);
-        mImageReportCard = (ImageView) findViewById(R.id.image_reportcard);
-        mImageLogOut = (ImageView) findViewById(R.id.image_logout);
-        mImageSearch = (ImageView) findViewById(R.id.image_search);
-        mImageNotes = (ImageView) findViewById(R.id.image_notes);
-        mImageStudyMates = (ImageView) findViewById(R.id.image_study_mates);
-        mImageChat = (ImageView) findViewById(R.id.image_chat);
-	    mImageMenuBack = (ImageView) findViewById(R.id.image_back);
-	    mTextTitle = (TextView) findViewById(R.id.text_title);
-	    mTextOne = (TextView) findViewById(R.id.text_one);
-	    mTextTwo = (TextView) findViewById(R.id.text_two);
-	    mTextThree = (TextView) findViewById(R.id.text_three);
-	    mTextFour = (TextView) findViewById(R.id.text_four);
-	    mTextFive = (TextView) findViewById(R.id.text_five);
-	    mTextAction = (TextView) findViewById(R.id.text_action);
-	    mEditSearch = (EditText) findViewById(R.id.edit_search);
-	    mSpinnerSubmenu = (Spinner) findViewById(R.id.spinner_submenu);
+	    llControllerLeft = (LinearLayout) findViewById(R.id.ll_controller_left);
+	    flFragmentContainerMain = (FrameLayout) findViewById(R.id.fl_fragment_container_main);
+	    flFragmentContainerRight = (FrameLayout) findViewById(R.id.fl_fragment_container_right);
+	    rlControllerTopMenu = (RelativeLayout) findViewById(R.id.rl_controller_top_menu);
+	    llSearch = (LinearLayout) findViewById(R.id.ll_search);
+        imgHome = (ImageView) findViewById(R.id.img_home);
+        imgTutorial = (ImageView) findViewById(R.id.img_tutorial);
+        imgClassroom = (ImageView) findViewById(R.id.img_classroom);
+        imgAssessment = (ImageView) findViewById(R.id.img_assessment);
+        imgDesk = (ImageView) findViewById(R.id.img_desk);
+        imgReportCard = (ImageView) findViewById(R.id.img_reportcard);
+        imgLogOut = (ImageView) findViewById(R.id.img_logout);
+        imgSearch = (ImageView) findViewById(R.id.img_search);
+        imgNotes = (ImageView) findViewById(R.id.img_notes);
+        imgStudyMates = (ImageView) findViewById(R.id.img_study_mates);
+        imgChat = (ImageView) findViewById(R.id.img_chat);
+	    imgMenuBack = (ImageView) findViewById(R.id.img_back);
+	    txtTitle = (TextView) findViewById(R.id.txt_title);
+	    txtOne = (TextView) findViewById(R.id.txt_one);
+	    txtTwo = (TextView) findViewById(R.id.txt_two);
+	    txtThree = (TextView) findViewById(R.id.txt_three);
+	    txtFour = (TextView) findViewById(R.id.txt_four);
+	    txtFive = (TextView) findViewById(R.id.txt_five);
+	    txtAction = (TextView) findViewById(R.id.txt_action);
+	    etSearch = (EditText) findViewById(R.id.et_search);
+	    spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
 
-	    mTextsMenu = new TextView[]{mTextOne, mTextTwo, mTextThree, mTextFour, mTextFive};
+	    txtsMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
 
         loadFragment(FRAGMENT_TUTORIAL);
         loadFragment(FRAGMENT_CHAT);
 
-	    mControllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(HostActivity.this);
-	    mControllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(HostActivity.this);
-	    mControllerTopMenuDesk = ControllerTopMenuItem.getMenuDesk(HostActivity.this);
-	    mControllerTopMenuReportCard = ControllerTopMenuItem.getMenuReportCard(HostActivity.this);
+	    controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(HostActivity.this);
+	    controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(HostActivity.this);
+	    controllerTopMenuDesk = ControllerTopMenuItem.getMenuDesk(HostActivity.this);
+	    controllerTopMenuReportCard = ControllerTopMenuItem.getMenuReportCard(HostActivity.this);
 
-        mImageHome.setOnClickListener(new View.OnClickListener() {
+        imgHome.setOnClickListener(new View.OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
 		        loadFragment(FRAGMENT_HOME);
 	        }
         });
-        mImageTutorial.setOnClickListener(new View.OnClickListener() {
+        imgTutorial.setOnClickListener(new View.OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
 		        loadFragment(FRAGMENT_TUTORIAL);
 	        }
         });
 
-        mImageClassroom.setOnClickListener(new View.OnClickListener() {
+        imgClassroom.setOnClickListener(new View.OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
 		        loadFragment(FRAGMENT_CLASSROOM);
 	        }
         });
 
-        mImageAssessment.setOnClickListener(new View.OnClickListener() {
+        imgAssessment.setOnClickListener(new View.OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
 		        loadFragment(FRAGMENT_ASSESSMENT);
 	        }
         });
 
-        mImageDesk.setOnClickListener(new View.OnClickListener() {
+        imgDesk.setOnClickListener(new View.OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
 		        loadFragment(FRAGMENT_DESK);
 	        }
         });
 
-        mImageReportCard.setOnClickListener(new View.OnClickListener() {
+        imgReportCard.setOnClickListener(new View.OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
 		        loadFragment(FRAGMENT_REPORT_CARD);
 	        }
         });
 
-        mImageLogOut.setOnClickListener(new View.OnClickListener() {
+        imgLogOut.setOnClickListener(new View.OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
 
 	        }
         });
 
-        mImageSearch.setOnClickListener(new View.OnClickListener() {
+        imgSearch.setOnClickListener(new View.OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
-		        mImageSearch.setActivated(!mImageSearch.isActivated());
-		        if (mEditSearch.getVisibility() == View.VISIBLE) {
-//		            startSlideAnimation(mEditSearch, 0, mEditSearch.getWidth(), 0, 0);
-//		            startSlideAnimation(mImageSearch, -mImageSearch.getWidth(), 0, 0, 0);
-			        mEditSearch.setVisibility(View.GONE);
+		        imgSearch.setActivated(!imgSearch.isActivated());
+		        if (etSearch.getVisibility() == View.VISIBLE) {
+//		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
+//		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
+			        etSearch.setVisibility(View.GONE);
 		        } else {
-			        startSlideAnimation(mEditSearch, mEditSearch.getWidth(), 0, 0, 0);
-			        startSlideAnimation(mImageSearch, mEditSearch.getWidth(), 0, 0, 0);
-			        mEditSearch.setVisibility(View.VISIBLE);
-			        Utility.showSoftKeyboard(mEditSearch, HostActivity.this);
+			        startSlideAnimation(etSearch, etSearch.getWidth(), 0, 0, 0);
+			        startSlideAnimation(imgSearch, etSearch.getWidth(), 0, 0, 0);
+			        etSearch.setVisibility(View.VISIBLE);
+			        Utility.showSoftKeyboard(etSearch, HostActivity.this);
 		        }
 	        }
         });
 
-	    mEditSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+	    etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 		    @Override
 		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 			    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -210,41 +213,41 @@ public class HostActivity extends Activity implements FragmentListener {
 		    }
 	    });
 
-        mImageNotes.setOnClickListener(new View.OnClickListener() {
+        imgNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadFragment(FRAGMENT_NOTES);
             }
         });
 
-        mImageStudyMates.setOnClickListener(new View.OnClickListener() {
+        imgStudyMates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadFragment(FRAGMENT_STUDY_MATES);
             }
         });
 
-        mImageChat.setOnClickListener(new View.OnClickListener() {
+        imgChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadFragment(FRAGMENT_CHAT);
             }
         });
 
-	    mMenuItemClickListener = new View.OnClickListener() {
+	    onClickMenuItem = new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
 			    onMenuItemClick(v);
 		    }
 	    };
 
-	    mImageMenuBack.setOnClickListener(mMenuItemClickListener);
-	    mTextOne.setOnClickListener(mMenuItemClickListener);
-	    mTextTwo.setOnClickListener(mMenuItemClickListener);
-	    mTextThree.setOnClickListener(mMenuItemClickListener);
-	    mTextFour.setOnClickListener(mMenuItemClickListener);
-	    mTextFive.setOnClickListener(mMenuItemClickListener);
-	    mTextAction.setOnClickListener(mMenuItemClickListener);
+	    imgMenuBack.setOnClickListener(onClickMenuItem);
+	    txtOne.setOnClickListener(onClickMenuItem);
+	    txtTwo.setOnClickListener(onClickMenuItem);
+	    txtThree.setOnClickListener(onClickMenuItem);
+	    txtFour.setOnClickListener(onClickMenuItem);
+	    txtFive.setOnClickListener(onClickMenuItem);
+	    txtAction.setOnClickListener(onClickMenuItem);
 
     }
 
@@ -252,31 +255,31 @@ public class HostActivity extends Activity implements FragmentListener {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
-                    getFragmentManager().beginTransaction().replace(R.id.layout_fragment_container_main, HomeFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, HomeFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_TUTORIAL:
-                    getFragmentManager().beginTransaction().replace(R.id.layout_fragment_container_main, TutorialFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_CLASSROOM:
-                    getFragmentManager().beginTransaction().replace(R.id.layout_fragment_container_main, ClassroomFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ClassroomFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_ASSESSMENT:
-                    getFragmentManager().beginTransaction().replace(R.id.layout_fragment_container_main, AssessmentFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AssessmentFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_DESK:
-                    getFragmentManager().beginTransaction().replace(R.id.layout_fragment_container_main, DeskFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, DeskFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_REPORT_CARD:
-                    getFragmentManager().beginTransaction().replace(R.id.layout_fragment_container_main, ReportCardFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ReportCardFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_NOTES:
-                    getFragmentManager().beginTransaction().replace(R.id.layout_fragment_container_right, NotesFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, NotesFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_STUDY_MATES:
-                    getFragmentManager().beginTransaction().replace(R.id.layout_fragment_container_right, StudyMatesFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudyMatesFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_CHAT:
-                    getFragmentManager().beginTransaction().replace(R.id.layout_fragment_container_right, ChatFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, ChatFragment.newInstance()).commit();
                     break;
             }
         } catch (Exception e) {
@@ -289,62 +292,62 @@ public class HostActivity extends Activity implements FragmentListener {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
-                    sCurrentMainFragment = fragment;
-	                mImageHome.setActivated(true);
+	                currentMainFragment = fragment;
+	                imgHome.setActivated(true);
 	                loadControllerTopMenu(null);
-	                mTextTitle.setVisibility(View.GONE);
+	                txtTitle.setVisibility(View.GONE);
                     break;
 	            case FRAGMENT_TUTORIAL:
-		            sCurrentMainFragment = fragment;
-		            mCurrentMainFragmentBg = R.color.bg_tutorial;
-		            mImageTutorial.setActivated(true);
+		            currentMainFragment = fragment;
+		            currentMainFragmentBg = R.color.bg_tutorial;
+		            imgTutorial.setActivated(true);
 		            loadControllerTopMenu(null);
-		            mTextTitle.setText(Html.fromHtml("<font color='#ffffff'>" + getString(R.string.group_name) + "</font><font color='#1BBC9B'>Venice Beauty</font>"));
-		            mTextTitle.setVisibility(View.VISIBLE);
+		            txtTitle.setText(Html.fromHtml("<font color='#ffffff'>" + getString(R.string.group_name) + "</font><font color='#1BBC9B'>Venice Beauty</font>"));
+		            txtTitle.setVisibility(View.VISIBLE);
 		            break;
 	            case FRAGMENT_CLASSROOM:
-		            sCurrentMainFragment = fragment;
-		            mCurrentMainFragmentBg = R.color.bg_classroom;
-		            mImageClassroom.setActivated(true);
-		            mLayoutControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
-		            mTextAction.setTextColor(getResources().getColor(R.color.bg_classroom));
-		            loadControllerTopMenu(mControllerTopMenuClassroom);
+		            currentMainFragment = fragment;
+		            currentMainFragmentBg = R.color.bg_classroom;
+		            imgClassroom.setActivated(true);
+		            rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
+		            txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
+		            loadControllerTopMenu(controllerTopMenuClassroom);
 		            break;
                 case FRAGMENT_ASSESSMENT:
-                    sCurrentMainFragment = fragment;
-	                mCurrentMainFragmentBg = R.color.bg_assessment;
-                    mImageAssessment.setActivated(true);
-	                mLayoutControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_assessment);
-	                mTextAction.setTextColor(getResources().getColor(R.color.bg_assessment));
-	                loadControllerTopMenu(mControllerTopMenuAssessment);
+	                currentMainFragment = fragment;
+	                currentMainFragmentBg = R.color.bg_assessment;
+                    imgAssessment.setActivated(true);
+	                rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_assessment);
+	                txtAction.setTextColor(getResources().getColor(R.color.bg_assessment));
+	                loadControllerTopMenu(controllerTopMenuAssessment);
                     break;
                 case FRAGMENT_DESK:
-                    sCurrentMainFragment = fragment;
-	                mCurrentMainFragmentBg = R.color.bg_desk;
-                    mImageDesk.setActivated(true);
-	                mLayoutControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_desk);
-	                mTextAction.setTextColor(getResources().getColor(R.color.bg_desk));
-	                loadControllerTopMenu(mControllerTopMenuDesk);
+	                currentMainFragment = fragment;
+	                currentMainFragmentBg = R.color.bg_desk;
+                    imgDesk.setActivated(true);
+	                rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_desk);
+	                txtAction.setTextColor(getResources().getColor(R.color.bg_desk));
+	                loadControllerTopMenu(controllerTopMenuDesk);
                     break;
                 case FRAGMENT_REPORT_CARD:
-                    sCurrentMainFragment = fragment;
-	                mCurrentMainFragmentBg = R.color.bg_report_card;
-                    mImageReportCard.setActivated(true);
-	                mLayoutControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_report_card);
-	                mTextAction.setTextColor(getResources().getColor(R.color.bg_report_card));
-	                loadControllerTopMenu(mControllerTopMenuReportCard);
+	                currentMainFragment = fragment;
+	                currentMainFragmentBg = R.color.bg_report_card;
+                    imgReportCard.setActivated(true);
+	                rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_report_card);
+	                txtAction.setTextColor(getResources().getColor(R.color.bg_report_card));
+	                loadControllerTopMenu(controllerTopMenuReportCard);
                     break;
                 case FRAGMENT_NOTES:
-                    sCurrentRightFragment = fragment;
-                    mImageNotes.setActivated(true);
+                    currentRightFragment = fragment;
+                    imgNotes.setActivated(true);
                     break;
                 case FRAGMENT_STUDY_MATES:
-                    sCurrentRightFragment = fragment;
-                    mImageStudyMates.setActivated(true);
+	                currentRightFragment = fragment;
+                    imgStudyMates.setActivated(true);
                     break;
                 case FRAGMENT_CHAT:
-                    sCurrentRightFragment = fragment;
-                    mImageChat.setActivated(true);
+	                currentRightFragment = fragment;
+                    imgChat.setActivated(true);
                     break;
             }
         } catch (Exception e) {
@@ -357,31 +360,31 @@ public class HostActivity extends Activity implements FragmentListener {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
-                    mImageHome.setActivated(false);
+                    imgHome.setActivated(false);
                     break;
                 case FRAGMENT_TUTORIAL:
-                    mImageTutorial.setActivated(false);
+                    imgTutorial.setActivated(false);
                     break;
                 case FRAGMENT_CLASSROOM:
-                    mImageClassroom.setActivated(false);
+                    imgClassroom.setActivated(false);
                     break;
                 case FRAGMENT_ASSESSMENT:
-                    mImageAssessment.setActivated(false);
+                    imgAssessment.setActivated(false);
                     break;
                 case FRAGMENT_DESK:
-                    mImageDesk.setActivated(false);
+                    imgDesk.setActivated(false);
                     break;
                 case FRAGMENT_REPORT_CARD:
-                    mImageReportCard.setActivated(false);
+                    imgReportCard.setActivated(false);
                     break;
                 case FRAGMENT_NOTES:
-                    mImageNotes.setActivated(false);
+                    imgNotes.setActivated(false);
                     break;
                 case FRAGMENT_STUDY_MATES:
-                    mImageStudyMates.setActivated(false);
+                    imgStudyMates.setActivated(false);
                     break;
                 case FRAGMENT_CHAT:
-                    mImageChat.setActivated(false);
+                    imgChat.setActivated(false);
                     break;
             }
         } catch (Exception e) {
@@ -391,25 +394,25 @@ public class HostActivity extends Activity implements FragmentListener {
 
 	private void loadControllerTopMenu(ArrayList<ControllerTopMenuItem> menu) {
 		try {
-			mCurrentControllerTopMenu = menu;
+			currentControllerTopMenu = menu;
 			if (menu == null) {
 				hideControllerTopControls();
-				mLayoutControllerTopMenu.setVisibility(View.GONE);
+				rlControllerTopMenu.setVisibility(View.GONE);
 			} else {
-				mLayoutControllerTopMenu.setVisibility(View.VISIBLE);
-				mTextTitle.setVisibility(View.GONE);
+				rlControllerTopMenu.setVisibility(View.VISIBLE);
+				txtTitle.setVisibility(View.GONE);
 				hideControllerTopControls();
-				for (int i = 0; i < mTextsMenu.length; i++) {
+				for (int i = 0; i < txtsMenu.length; i++) {
 					if (i < menu.size()) {
-						mCurrentControllerTopMenu.get(i).setIsActive(false);
-						mTextsMenu[i].setTextColor(Color.WHITE);
-						mTextsMenu[i].setText(menu.get(i).getMenuItemTitle());
-						startSlideAnimation(mTextsMenu[i], mLayoutControllerTopMenu.getWidth(), 0, 0, 0);
-						mTextsMenu[i].setVisibility(View.VISIBLE);
+						currentControllerTopMenu.get(i).setIsActive(false);
+						txtsMenu[i].setTextColor(Color.WHITE);
+						txtsMenu[i].setText(menu.get(i).getMenuItemTitle());
+						startSlideAnimation(txtsMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
+						txtsMenu[i].setVisibility(View.VISIBLE);
 					} else {
-						mTextsMenu[i].setText("");
-						startSlideAnimation(mTextsMenu[i], 0, mLayoutControllerTopMenu.getWidth(), 0, 0);
-						mTextsMenu[i].setVisibility(View.GONE);
+						txtsMenu[i].setText("");
+						startSlideAnimation(txtsMenu[i], 0, rlControllerTopMenu.getWidth(), 0, 0);
+						txtsMenu[i].setVisibility(View.GONE);
 					}
 				}
 			}
@@ -420,57 +423,57 @@ public class HostActivity extends Activity implements FragmentListener {
 
 	private void onMenuItemClick(View view) {
 		try {
-			if (view == mImageMenuBack) {
+			if (view == imgMenuBack) {
 				hideControllerTopControls();
 
-				for (int i = 0; i < mCurrentControllerTopMenu.size(); i++) {
-					mTextsMenu[i].setTextColor(Color.WHITE);
-					mCurrentControllerTopMenu.get(i).setIsActive(false);
-					startSlideAnimation(mTextsMenu[i], mLayoutControllerTopMenu.getWidth(), 0, 0, 0);
-					mTextsMenu[i].setVisibility(View.VISIBLE);
+				for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+					txtsMenu[i].setTextColor(Color.WHITE);
+					currentControllerTopMenu.get(i).setIsActive(false);
+					startSlideAnimation(txtsMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
+					txtsMenu[i].setVisibility(View.VISIBLE);
 				}
 
-			} else if (view == mTextAction) {
+			} else if (view == txtAction) {
 				Log.e(TAG, "text action");
 			} else {
 				boolean isActive = false;
-				for (int i = 0; i < mCurrentControllerTopMenu.size(); i++) {
-					if (view == mTextsMenu[i] && mCurrentControllerTopMenu.get(i).isActive()) {
+				for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+					if (view == txtsMenu[i] && currentControllerTopMenu.get(i).isActive()) {
 						isActive = true;
 						break;
 					}
 				}
 				if (!isActive) {
-					for (int i = 0; i < mCurrentControllerTopMenu.size(); i++) {
-						if (view == mTextsMenu[i]) {
-							mCurrentControllerTopMenu.get(i).setIsActive(true);
-							mTextsMenu[i].setTextColor(getResources().getColor(mCurrentMainFragmentBg));
+					for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+						if (view == txtsMenu[i]) {
+							currentControllerTopMenu.get(i).setIsActive(true);
+							txtsMenu[i].setTextColor(getResources().getColor(currentMainFragmentBg));
 
-							startSlideAnimation(mImageMenuBack, -1000, 0, 0, 0);
-							mImageMenuBack.setVisibility(View.VISIBLE);
+							startSlideAnimation(imgMenuBack, -1000, 0, 0, 0);
+							imgMenuBack.setVisibility(View.VISIBLE);
 
-							if (mCurrentControllerTopMenu.get(i).getSubMenu() == null) {
-								startSlideAnimation(mTextsMenu[i], -mImageMenuBack.getWidth(), 0, 0, 0);
-								mTextsMenu[i].setVisibility(View.VISIBLE);
+							if (currentControllerTopMenu.get(i).getSubMenu() == null) {
+								startSlideAnimation(txtsMenu[i], -imgMenuBack.getWidth(), 0, 0, 0);
+								txtsMenu[i].setVisibility(View.VISIBLE);
 							} else {
-								mTextsMenu[i].setVisibility(View.GONE);
-								startSlideAnimation(mSpinnerSubmenu, -mImageMenuBack.getWidth(), 0, 0, 0);
-								mSpinnerSubmenu.setVisibility(View.VISIBLE);
-								mControllerTopSpinnerAdapter = new ControllerTopSpinnerAdapter(mCurrentControllerTopMenu.get(i).getSubMenu(), HostActivity.this);
-								mSpinnerSubmenu.setAdapter(mControllerTopSpinnerAdapter);
+								txtsMenu[i].setVisibility(View.GONE);
+								startSlideAnimation(spSubmenu, -imgMenuBack.getWidth(), 0, 0, 0);
+								spSubmenu.setVisibility(View.VISIBLE);
+								adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(i).getSubMenu(), HostActivity.this);
+								spSubmenu.setAdapter(adapterControllerTopSpinner);
 							}
 
-							if (mCurrentControllerTopMenu.get(i).getMenuItemAction() != null) {
-								startSlideAnimation(mTextAction, mLayoutControllerTopMenu.getWidth(), 0, 0, 0);
-								mTextAction.setText(mCurrentControllerTopMenu.get(i).getMenuItemAction());
-								mTextAction.setVisibility(View.VISIBLE);
+							if (currentControllerTopMenu.get(i).getMenuItemAction() != null) {
+								startSlideAnimation(txtAction, rlControllerTopMenu.getWidth(), 0, 0, 0);
+								txtAction.setText(currentControllerTopMenu.get(i).getMenuItemAction());
+								txtAction.setVisibility(View.VISIBLE);
 							} else {
-								mTextAction.setVisibility(View.GONE);
+								txtAction.setVisibility(View.GONE);
 							}
 						} else {
-							mCurrentControllerTopMenu.get(i).setIsActive(false);
-							startSlideAnimation(mTextsMenu[i], 0, mLayoutControllerTopMenu.getWidth(), 0, 0);
-							mTextsMenu[i].setVisibility(View.GONE);
+							currentControllerTopMenu.get(i).setIsActive(false);
+							startSlideAnimation(txtsMenu[i], 0, rlControllerTopMenu.getWidth(), 0, 0);
+							txtsMenu[i].setVisibility(View.GONE);
 						}
 					}
 				}
@@ -481,32 +484,32 @@ public class HostActivity extends Activity implements FragmentListener {
 	}
 
 	private void hideControllerTopControls() {
-		if (mImageMenuBack.getVisibility() == View.VISIBLE) {
+		if (imgMenuBack.getVisibility() == View.VISIBLE) {
 			hideControllerTopBackButton();
 		}
-		if (mTextAction.getVisibility() == View.VISIBLE) {
+		if (txtAction.getVisibility() == View.VISIBLE) {
 			hideControllerTopAction();
 		}
-		if (mSpinnerSubmenu.getVisibility() == View.VISIBLE) {
+		if (spSubmenu.getVisibility() == View.VISIBLE) {
 			hideControllerTopSpinner();
 		}
 	}
 
 	private void hideControllerTopBackButton() {
-		startSlideAnimation(mImageMenuBack, 0, -1000, 0, 0);
-		mImageMenuBack.setVisibility(View.GONE);
+		startSlideAnimation(imgMenuBack, 0, -1000, 0, 0);
+		imgMenuBack.setVisibility(View.GONE);
 	}
 
 	private void hideControllerTopAction() {
-		startSlideAnimation(mTextAction, 0, mLayoutControllerTopMenu.getWidth(), 0, 0);
-		mTextAction.setText("");
-		mTextAction.setVisibility(View.GONE);
+		startSlideAnimation(txtAction, 0, rlControllerTopMenu.getWidth(), 0, 0);
+		txtAction.setText("");
+		txtAction.setVisibility(View.GONE);
 	}
 
 	private void hideControllerTopSpinner() {
-		mSpinnerSubmenu.setAdapter(null);
-		startSlideAnimation(mSpinnerSubmenu, 0, -1000, 0, 0);
-		mSpinnerSubmenu.setVisibility(View.GONE);
+		spSubmenu.setAdapter(null);
+		startSlideAnimation(spSubmenu, 0, -1000, 0, 0);
+		spSubmenu.setVisibility(View.GONE);
 	}
 
 	private void startSlideAnimation(final View view, int fromX, int toX, int fromY, int toY) {

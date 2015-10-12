@@ -1,7 +1,7 @@
 package com.ism.interfaces;
 
 /**
- * Created by Krunal Panchal on 08/10/15.
+ * Created by c161 on 08/10/15.
  */
 public interface FragmentListener {
     public void onFragmentAttached(int fragment);

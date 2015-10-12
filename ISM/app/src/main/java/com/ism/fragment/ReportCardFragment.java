@@ -12,17 +12,20 @@ import com.ism.HostActivity;
 import com.ism.R;
 import com.ism.interfaces.FragmentListener;
 
+/**
+ * Created by c161 on --/10/15.
+ */
 public class ReportCardFragment extends Fragment {
 
     private static final String TAG = ReportCardFragment.class.getSimpleName();
 
-    private View mView;
+    private View view;
 
-    private FragmentListener mFragmentListener;
+    private FragmentListener fragListener;
 
     public static ReportCardFragment newInstance() {
-        ReportCardFragment fragmentReportCard = new ReportCardFragment();
-        return fragmentReportCard;
+        ReportCardFragment fragReportCard = new ReportCardFragment();
+        return fragReportCard;
     }
 
     public ReportCardFragment() {
@@ -31,11 +34,11 @@ public class ReportCardFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_report_card, container, false);
+	    view = inflater.inflate(R.layout.fragment_report_card, container, false);
 
         initGlobal();
 
-        return mView;
+        return view;
     }
 
     private void initGlobal() {
@@ -46,9 +49,9 @@ public class ReportCardFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mFragmentListener = (FragmentListener) activity;
-            if (mFragmentListener != null) {
-                mFragmentListener.onFragmentAttached(HostActivity.FRAGMENT_REPORT_CARD);
+            fragListener = (FragmentListener) activity;
+            if (fragListener != null) {
+                fragListener.onFragmentAttached(HostActivity.FRAGMENT_REPORT_CARD);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -59,13 +62,13 @@ public class ReportCardFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         try {
-            if (mFragmentListener != null) {
-                mFragmentListener.onFragmentDetached(HostActivity.FRAGMENT_REPORT_CARD);
+            if (fragListener != null) {
+                fragListener.onFragmentDetached(HostActivity.FRAGMENT_REPORT_CARD);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
         }
-        mFragmentListener = null;
+        fragListener = null;
     }
 
 }
