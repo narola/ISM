@@ -29,7 +29,8 @@ import com.ism.object.MyTypeFace;
 
 import java.util.ArrayList;
 
-public class NotesFragment extends Fragment {
+public class NotesFragment extends Fragment
+{
 
     private static final String TAG = NotesFragment.class.getSimpleName();
 
