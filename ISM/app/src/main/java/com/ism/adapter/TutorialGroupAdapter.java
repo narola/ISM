@@ -47,11 +47,11 @@ public class TutorialGroupAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             //   LayoutInflater inflater = (LayoutInflater) LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.raw_tutorial_group, parent, false);
-            viewHolder.rawtg_txt_name = (TextView) convertView.findViewById(R.id.rawtg_txt_name);
-            viewHolder.rawtg_txt_address = (TextView) convertView.findViewById(R.id.rawtg_txt_address);
-            viewHolder.rawtg_txt_school = (TextView) convertView.findViewById(R.id.rawtg_txt_school);
-            viewHolder.rawtg_txt_status = (TextView) convertView.findViewById(R.id.rawtg_txt_status);
-            viewHolder.rawtg_img_dp = (ImageView) convertView.findViewById(R.id.rawtg_img_dp);
+            viewHolder.rawtg_txt_name = (TextView) convertView.findViewById(R.id.txt_studentName);
+            viewHolder.rawtg_txt_address = (TextView) convertView.findViewById(R.id.txt_address);
+            viewHolder.rawtg_txt_school = (TextView) convertView.findViewById(R.id.txt_school);
+            viewHolder.rawtg_txt_status = (TextView) convertView.findViewById(R.id.txt_status);
+            viewHolder.rawtg_img_dp = (ImageView) convertView.findViewById(R.id.img_dp);
             MyTypeFace myTypeFace = new MyTypeFace(context);
             viewHolder.rawtg_txt_name.setTypeface(myTypeFace.getRalewayBold());
             viewHolder.rawtg_txt_status.setTypeface(myTypeFace.getRalewaySemiBold());

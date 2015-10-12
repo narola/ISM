@@ -48,12 +48,12 @@ public class EventsAdapter extends BaseAdapter {
         View view = inflater.inflate(R.layout.raw_events, parent, false);
        // if (position <= 4) {
             MyTypeFace myTypeFace = new MyTypeFace(context);
-            TextView raw_txt_eventDate = (TextView) view.findViewById(R.id.raw_txt_eventDate);
-            TextView raw_txt_eventDesc = (TextView) view.findViewById(R.id.raw_txt_eventDesc);
-            TextView raw_txt_eventMonth = (TextView) view.findViewById(R.id.raw_txt_eventMonth);
-            TextView raw_txt_eventName = (TextView) view.findViewById(R.id.raw_txt_eventName);
-            TextView raw_txt_eventYear = (TextView) view.findViewById(R.id.raw_txt_eventYear);
-            TextView raw_txt_eventTime = (TextView) view.findViewById(R.id.raw_txt_eventTime);
+            TextView raw_txt_eventDate = (TextView) view.findViewById(R.id.txt_eventDate);
+            TextView raw_txt_eventDesc = (TextView) view.findViewById(R.id.txt_eventDesc);
+            TextView raw_txt_eventMonth = (TextView) view.findViewById(R.id.txt_eventMonth);
+            TextView raw_txt_eventName = (TextView) view.findViewById(R.id.txt_eventName);
+            TextView raw_txt_eventYear = (TextView) view.findViewById(R.id.txt_eventYear);
+            TextView raw_txt_eventTime = (TextView) view.findViewById(R.id.txt_eventTime);
 
             raw_txt_eventName.setTypeface(myTypeFace.getRalewayBold());
             raw_txt_eventDesc.setTypeface(myTypeFace.getRalewayLight());

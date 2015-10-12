@@ -11,7 +11,7 @@
         android:paddingTop="@dimen/d10sp">
 
         <LinearLayout
-            android:id="@+id/raw_ll_calender"
+            android:id="@+id/ll_calender"
             android:layout_width="90sp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5sp"
@@ -23,7 +23,7 @@
             android:paddingTop="@dimen/d20sp">
 
             <TextView
-                android:id="@+id/raw_txt_eventDate"
+                android:id="@+id/txt_eventDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -38,7 +38,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/raw_txt_eventMonth"
+                    android:id="@+id/txt_eventMonth"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -48,7 +48,7 @@
                     android:textSize="@dimen/d10sp" />
 
                 <TextView
-                    android:id="@+id/raw_txt_eventYear"
+                    android:id="@+id/txt_eventYear"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -59,7 +59,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/raw_txt_eventTime"
+            android:id="@+id/txt_eventTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -74,7 +74,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/raw_txt_eventName"
+        android:id="@+id/txt_eventName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/d5sp"
@@ -85,7 +85,7 @@
         />
 
     <TextView
-        android:id="@+id/raw_txt_eventDesc"
+        android:id="@+id/txt_eventDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/d5sp"

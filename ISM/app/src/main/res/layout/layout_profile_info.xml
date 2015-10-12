@@ -80,7 +80,7 @@
                                     android:textColorHint="@color/color_text_hint" />
 
                                 <EditText
-                                    android:id="@+id/pinfo_et_emailadd"
+                                    android:id="@+id/et_emailAdd"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="@dimen/d5sp"
@@ -99,7 +99,7 @@
 
 
                                 <Spinner
-                                    android:id="@+id/pinfo_sp_gender"
+                                    android:id="@+id/sp_gender"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginRight="@dimen/d5sp"
@@ -110,7 +110,7 @@
                                     android:spinnerMode="dropdown" />
 
                                 <EditText
-                                    android:id="@+id/pinfo_et_cno"
+                                    android:id="@+id/et_cno"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="@dimen/d5sp"
@@ -130,7 +130,7 @@
                                 android:orientation="horizontal">
 
                                 <EditText
-                                    android:id="@+id/pinfo_et_dob"
+                                    android:id="@+id/et_dob"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="@dimen/d5sp"
@@ -141,7 +141,7 @@
                                     android:textColorHint="@color/color_text_hint" />
 
                                 <EditText
-                                    android:id="@+id/pinfo_et_age"
+                                    android:id="@+id/et_age"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="@dimen/d5sp"
@@ -153,7 +153,7 @@
                             </LinearLayout>
 
                             <EditText
-                                android:id="@+id/pinfo_et_homeadd"
+                                android:id="@+id/et_homeAdd"
                                 android:layout_width="match_parent"
                                 android:layout_height="110sp"
                                 android:layout_marginRight="@dimen/d5sp"
@@ -174,7 +174,7 @@
                             android:orientation="vertical">
 
                             <com.ism.helper.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                android:id="@+id/pinfo_img_dp"
+                                android:id="@+id/img_dp"
                                 android:layout_width="200sp"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
@@ -184,7 +184,7 @@
                                 android:src="@drawable/userdp" />
 
                             <TextView
-                                android:id="@+id/pinfo_txt_uploadpic"
+                                android:id="@+id/txt_uploadpic"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1.5"
@@ -210,7 +210,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5sp"
                             android:layout_weight="1"
-                            android:id="@+id/pinfo_sp_city"
+                            android:id="@+id/sp_city"
                             android:background="@drawable/spinner_selector"
                             android:entries="@array/list"
                             android:padding="@dimen/d20sp"

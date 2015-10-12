@@ -47,8 +47,8 @@ public class HighScoreAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView=inflater.inflate(R.layout.raw_high_score,parent,false);
-        TextView raw_txt_highScoreSubject=(TextView)convertView.findViewById(R.id.raw_txt_highScoreSubject);
-        ListView raw_lv_highScoreStudentList=(ListView)convertView.findViewById(R.id.raw_lv_highScoreStudentList);
+        TextView raw_txt_highScoreSubject=(TextView)convertView.findViewById(R.id.txt_highScoreSubject);
+        ListView raw_lv_highScoreStudentList=(ListView)convertView.findViewById(R.id.lv_highScoreStudentList);
         raw_txt_highScoreSubject.setTypeface(new MyTypeFace(context).getRalewayBold());
         raw_txt_highScoreSubject.setText(arrayListSubject.get(position).getSubjectName());
         raw_lv_highScoreStudentList.setAdapter(new HighScoreStudentListAdapter(context,arrayListSubject.get(position).getArrayListStudent()));

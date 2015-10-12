@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/raw_txt_noticeName"
+        android:id="@+id/txt_noticeName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
@@ -16,7 +16,7 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/raw_txt_noticeDesc"
+        android:id="@+id/txt_noticeDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -29,7 +29,7 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/raw_txt_noticeReadMore"
+        android:id="@+id/txt_noticeReadMore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
@@ -41,7 +41,7 @@
         android:visibility="gone" />
 
     <!--<TextView-->
-        <!--android:id="@+id/raw_txt_noticeViewAll"-->
+        <!--android:id="@+id/txt_noticeViewAll"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:gravity="center"-->

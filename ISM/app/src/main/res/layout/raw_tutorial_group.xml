@@ -14,14 +14,14 @@
         android:padding="@dimen/d10sp">
 
         <com.ism.helper.CircleImageView
-            android:id="@+id/rawtg_img_dp"
+            android:id="@+id/img_dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="14"
             android:src="@drawable/userdp" />
 
         <TextView
-            android:id="@+id/rawtg_txt_name"
+            android:id="@+id/txt_studentName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -30,7 +30,7 @@
             android:textSize="@dimen/d15sp" />
 
         <TextView
-            android:id="@+id/rawtg_txt_status"
+            android:id="@+id/txt_status"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -58,7 +58,7 @@
         android:padding="@dimen/d10sp">
 
         <TextView
-            android:id="@+id/rawtg_txt_school"
+            android:id="@+id/txt_school"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -70,7 +70,7 @@
             android:textSize="@dimen/d20sp" />
 
         <TextView
-            android:id="@+id/rawtg_txt_address"
+            android:id="@+id/txt_address"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"

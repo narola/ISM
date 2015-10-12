@@ -33,8 +33,8 @@ public class WelComeActivity extends Activity {
         wc_txt_doassign = (TextView) findViewById(R.id.wc_txt_doassign);
         wc_txt_collaborate = (TextView) findViewById(R.id.wc_txt_collaborate);
         wc_txt_tutorialgroup_ = (TextView) findViewById(R.id.wc_txt_tutorialgroup_);
-        wc_txt_nameyourtutorial_ = (TextView) findViewById(R.id.wc_txt_nameyourtutorial_);
-        wc_txt_andwill_ = (TextView) findViewById(R.id.wc_txt_andwill_);
+        wc_txt_nameyourtutorial_ = (TextView) findViewById(R.id.txt_nameyourtutorial_);
+        wc_txt_andwill_ = (TextView) findViewById(R.id.txt_andwill_);
 
 
         wc_txt_selected_.setTypeface(myTypeFace.getRalewayRegular());
@@ -45,7 +45,7 @@ public class WelComeActivity extends Activity {
         wc_txt_tutorialgroup_.setTypeface(myTypeFace.getRalewayRegular());
         wc_txt_nameyourtutorial_.setTypeface(myTypeFace.getRalewaySemiBold());
         wc_txt_andwill_.setTypeface(myTypeFace.getRalewaySemiBold());
-        wc_ll_main = (LinearLayout) findViewById(R.id.wc_ll_main);
+        wc_ll_main = (LinearLayout) findViewById(R.id.ll_main);
         wc_ll_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

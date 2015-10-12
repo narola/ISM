@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/wc_ll_main"
+    android:id="@+id/ll_main"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bgwelcom"
     android:orientation="vertical">
@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:id="@+id/wc_txt_nameyourtutorial_"
+        android:id="@+id/txt_nameyourtutorial_"
         android:text="@string/strwelcomeline"
         android:textColor="@color/color_text_light_green"
         android:textSize="@dimen/d30sp" />
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:id="@+id/wc_txt_andwill_"
+        android:id="@+id/txt_andwill_"
         android:text="@string/strwelcomeline2"
         android:textColor="@color/color_text_light_green"
         android:textSize="@dimen/d30sp" />
@@ -57,7 +57,7 @@
         <com.ism.helper.GIFView
             android:layout_width="100sp"
             app:src="@drawable/loading3"
-            android:id="@+id/wc_gif"
+            android:id="@+id/gif_book"
             android:padding="@dimen/d10sp"
             android:layout_margin="@dimen/d10sp"
             android:layout_height="100sp" />

@@ -9,7 +9,7 @@
     >
 
     <com.ism.helper.CircleImageView
-        android:id="@+id/raw_img_hignScoredp"
+        android:id="@+id/img_hignScoredp"
         android:layout_width="60sp"
         android:layout_height="60sp"
         android:contentDescription="@string/app_name"
@@ -22,15 +22,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:id="@+id/raw_txt_highScoreStudentName"
+        android:id="@+id/txt_highScoreStudentName"
         android:padding="3sp"
         android:textColor="@color/color_black"
         android:text="name"
         android:layout_marginTop="@dimen/d5sp"
         android:textSize="@dimen/d15sp"
-        android:layout_alignRight="@+id/raw_img_hignScoredp"
+        android:layout_alignRight="@+id/img_hignScoredp"
         android:layout_alignParentRight="true"
-        android:layout_toEndOf="@+id/raw_img_hignScoredp" />
+        android:layout_toEndOf="@+id/img_hignScoredp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -38,12 +38,12 @@
         android:gravity="left"
         android:text="500"
         android:padding="3sp"
-        android:id="@+id/raw_txt_highScoreMarks"
+        android:id="@+id/txt_highScoreMarks"
         android:textColor="@color/color_green"
         android:textSize="@dimen/d20sp"
-        android:layout_below="@+id/raw_txt_highScoreSchoolYearClass"
+        android:layout_below="@+id/txt_highScoreSchoolYearClass"
         android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/raw_img_hignScoredp" />
+        android:layout_toEndOf="@+id/img_hignScoredp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -51,9 +51,9 @@
         android:gravity="left"
         android:padding="3sp"
         android:textColor="@color/color_black"
-        android:id="@+id/raw_txt_highScoreSchoolYearClass"
+        android:id="@+id/txt_highScoreSchoolYearClass"
         android:text="school"
         android:textSize="@dimen/d15sp"
-        android:layout_below="@+id/raw_txt_highScoreStudentName"
-        android:layout_alignStart="@+id/raw_txt_highScoreStudentName" />
+        android:layout_below="@+id/txt_highScoreStudentName"
+        android:layout_alignStart="@+id/txt_highScoreStudentName" />
 </RelativeLayout>

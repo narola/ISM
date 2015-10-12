@@ -76,28 +76,28 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
         pinfo_txt_ifits_ = (TextView) findViewById(R.id.pinfo_txt_ifits_);
         pinfo_txt_clickhere = (TextView) findViewById(R.id.pinfo_txt_clickhere);
         pinfo_txt_youare_ = (TextView) findViewById(R.id.pinfo_txt_youare_);
-        pinfo_sp_gender = (Spinner) findViewById(R.id.pinfo_sp_gender);
+        pinfo_sp_gender = (Spinner) findViewById(R.id.sp_gender);
         pinfo_sp_schoolgender = (Spinner) findViewById(R.id.pinfo_sp_schoolgender);
         pinfo_sp_academicyear = (Spinner) findViewById(R.id.pinfo_sp_academicyear);
-        pinfo_sp_city = (Spinner) findViewById(R.id.pinfo_sp_city);
+        pinfo_sp_city = (Spinner) findViewById(R.id.sp_city);
         pinfo_sp_class = (Spinner) findViewById(R.id.pinfo_sp_class);
         pinfo_sp_country = (Spinner) findViewById(R.id.pinfo_sp_country);
         pinfo_sp_state = (Spinner) findViewById(R.id.pinfo_sp_state);
         pinfo_sp_programcourse = (Spinner) findViewById(R.id.pinfo_sp_programcourse);
-        pinfo_et_age = (EditText) findViewById(R.id.pinfo_et_age);
-        pinfo_et_cno = (EditText) findViewById(R.id.pinfo_et_cno);
+        pinfo_et_age = (EditText) findViewById(R.id.et_age);
+        pinfo_et_cno = (EditText) findViewById(R.id.et_cno);
         pinfo_et_confirmpwd = (EditText) findViewById(R.id.pinfo_et_confirmpwd);
         pinfo_et_currentpwd = (EditText) findViewById(R.id.pinfo_et_currentpwd);
         pinfo_et_districtofschool = (EditText) findViewById(R.id.pinfo_et_districtofschool);
-        pinfo_et_dob = (EditText) findViewById(R.id.pinfo_et_dob);
-        pinfo_et_emailadd = (EditText) findViewById(R.id.pinfo_et_emailadd);
+        pinfo_et_dob = (EditText) findViewById(R.id.et_dob);
+        pinfo_et_emailadd = (EditText) findViewById(R.id.et_emailAdd);
         pinfo_et_fullname = (EditText) findViewById(R.id.pinfo_et_fullname);
-        pinfo_et_homeadd = (EditText) findViewById(R.id.pinfo_et_homeadd);
+        pinfo_et_homeadd = (EditText) findViewById(R.id.et_homeAdd);
         pinfo_et_nameofschool = (EditText) findViewById(R.id.pinfo_et_nameofschool);
         pinfo_et_newpwd = (EditText) findViewById(R.id.pinfo_et_newpwd);
         pinfo_et_username = (EditText) findViewById(R.id.pinfo_et_username);
-        pinfo_txt_uploadpic = (TextView) findViewById(R.id.pinfo_txt_uploadpic);
-        pinfo_img_dp = (ImageView) findViewById(R.id.pinfo_img_dp);
+        pinfo_txt_uploadpic = (TextView) findViewById(R.id.txt_uploadpic);
+        pinfo_img_dp = (ImageView) findViewById(R.id.img_dp);
         pinfo_btn_suumit = (Button) findViewById(R.id.pinfo_btn_suumit);
         pinfo_txt_youare_.setTypeface(myTypeFace.getRalewayThin());
         pinfo_txt_ifits_.setTypeface(myTypeFace.getRalewayThin());
@@ -221,7 +221,7 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
                 Global.myIntent(ProfileInfornation.this, WelComeActivity.class);
             }
             break;
-            case R.id.pinfo_txt_uploadpic: {
+            case R.id.txt_uploadpic: {
                 openGallary();
             }
             break;

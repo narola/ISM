@@ -32,19 +32,19 @@ public class TutorialGroup extends Activity {
 
     private void intitView() {
         MyTypeFace myTypeFace = new MyTypeFace(this);
-        tg_txt_schoolname = (TextView) findViewById(R.id.tg_txt_schoolname);
-        tg_txt_yearandcourse = (TextView) findViewById(R.id.tg_txt_yearandcourse);
-        tg_txt_yourtutorial_ = (TextView) findViewById(R.id.tg_txt_yourtutorial_);
-        tg_txt_welcometoism = (TextView) findViewById(R.id.tg_txt_welcometoism);
-        tg_txt_username = (TextView) findViewById(R.id.tg_txt_username);
-        tg_btn_accept = (Button) findViewById(R.id.tg_btn_accept);
+        tg_txt_schoolname = (TextView) findViewById(R.id.txt_schoolname);
+        tg_txt_yearandcourse = (TextView) findViewById(R.id.txt_yearandcourse);
+        tg_txt_yourtutorial_ = (TextView) findViewById(R.id.txt_yourtutorial_);
+        tg_txt_welcometoism = (TextView) findViewById(R.id.txt_welcometoism);
+        tg_txt_username = (TextView) findViewById(R.id.txt_username);
+        tg_btn_accept = (Button) findViewById(R.id.btn_accept);
         tg_txt_username.setTypeface(myTypeFace.getRalewaySemiBold());
         tg_txt_welcometoism.setTypeface(myTypeFace.getRalewaySemiBold());
         tg_txt_yourtutorial_.setTypeface(myTypeFace.getRalewayBold());
         tg_txt_yearandcourse.setTypeface(myTypeFace.getRalewayRegular());
         tg_txt_schoolname.setTypeface(myTypeFace.getRalewayRegular());
 
-        grid = (GridView) findViewById(R.id.grid);
+        grid = (GridView) findViewById(R.id.gv_groupMember);
         grid.setAdapter(new TutorialGroupAdapter(getApplicationContext()));
 
 	    tg_btn_accept.setOnClickListener(new View.OnClickListener() {
