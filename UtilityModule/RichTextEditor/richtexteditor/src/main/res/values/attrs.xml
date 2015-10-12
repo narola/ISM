@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RichTextEditor">
+        <attr name="placeHolder" format="string" />
+        <attr name="textSizeInPx" format="integer" />
+    </declare-styleable>
+</resources>

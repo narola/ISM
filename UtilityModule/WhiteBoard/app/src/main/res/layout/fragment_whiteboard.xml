@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.narola.c161.whiteboard.view.Whiteboard
+        android:id="@+id/whiteboard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:penThickness="10"
+        app:eraserThickness="10"/>
+
+</LinearLayout>

@@ -1,0 +1,42 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.narola.c161.demodownloadasset.WhiteboardActivity">
+
+    <item
+        android:id="@+id/action_draw"
+        android:title="Draw"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_erase"
+        android:title="Erase"
+        android:orderInCategory="101"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_clear_all"
+        android:title="Clear all"
+        android:orderInCategory="102"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_display_image"
+        android:title="Display image"
+        android:orderInCategory="103"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_pen_thickness"
+        android:title="Toggle pen thickness"
+        android:orderInCategory="104"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_eraser_thickness"
+        android:title="Toggle eraser thickness"
+        android:orderInCategory="105"
+        app:showAsAction="never" />
+
+</menu>

@@ -1,0 +1,20 @@
+<resources>
+    <dimen name="controller_one_height">70dp</dimen>
+    <dimen name="controller_one_button_width">100dp</dimen>
+    <dimen name="controller_one_timer_text_size">20sp</dimen>
+    <dimen name="controller_one_timer_text_margin">30dp</dimen>
+    <dimen name="controller_one_seekbar_margin">10dp</dimen>
+    <dimen name="controller_two_height">70dp</dimen>
+    <dimen name="controller_two_button_width">100dp</dimen>
+    <dimen name="controller_three_height">50dp</dimen>
+    <dimen name="controller_note_height">40dp</dimen>
+    <dimen name="controller_note_button_width">60dp</dimen>
+    <dimen name="new_note_spacing">10dp</dimen>
+    <dimen name="note_editor_button_height">50dp</dimen>
+    <dimen name="button_side_padding">20dp</dimen>
+    <dimen name="video_thumbnail_height">150dp</dimen>
+    <dimen name="video_thumbnail_width">200dp</dimen>
+    <dimen name="item_list_spacing">15dp</dimen>
+    <dimen name="text_size_normal">20sp</dimen>
+    <dimen name="item_list_icon_size">50dp</dimen>
+</resources>

@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="right"
+    android:background="@android:color/black"
+    android:orientation="horizontal"
+    tools:context=".WhiteboardActivity">
+
+    <com.narola.c161.whiteboard.view.Whiteboard
+        android:id="@+id/whiteboard"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <ImageView
+        android:id="@+id/image_whiteboard"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/darker_gray" />
+
+    <fragment
+        android:name="com.narola.c161.whiteboard.fragment.WhiteboardFragment"
+        android:id="@+id/fragment_image"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <FrameLayout
+        android:id="@+id/layout_whiteboard"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"></FrameLayout>
+
+    <!--<com.narola.c161.whiteboard.view.WhiteboardView
+        android:id="@+id/whiteboard_view_ism"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_weight="1"/>-->
+
+</LinearLayout>

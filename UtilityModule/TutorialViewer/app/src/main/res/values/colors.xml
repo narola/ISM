@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_controller_one">#212B33</color>
+    <color name="bg_controller_two_transperant">#64ffffff</color>
+    <color name="text_time">#898B8A</color>
+    <color name="bg_frame_video">#161616</color>
+    <color name="bg_note_editor">#333438</color>
+    <color name="bg_controller_note">#8c8c8c</color>
+    <color name="green">#00AC67</color>
+    <color name="red">#E74F51</color>
+    <color name="blue">#0099CE</color>
+</resources>

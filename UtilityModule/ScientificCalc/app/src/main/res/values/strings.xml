@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">ScientificCalc</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="error">Error</string>
+    <string name="scientific">Scientific</string>
+    <string name="basic">Basic</string>
+
+    <!-- Tags -->
+    <string name="tag_del">C</string>
+    <string name="tag_division">\u00F7</string>
+    <string name="tag_multiply">\u00D7</string>
+    <string name="tag_bracket_open">(</string>
+    <string name="tag_bracket_close">)</string>
+    <string name="tag_ln">ln(</string>
+    <string name="tag_log">log(</string>
+    <string name="tag_ten_raise_x">10^</string>
+    <string name="tag_inverse">(1\u00F7</string>
+    <string name="tag_square">^2</string>
+    <string name="tag_cube">^3</string>
+    <string name="tag_raise_y">^</string>
+    <string name="tag_e_raise_x">e^</string>
+    <string name="tag_fact">!</string>
+    <string name="tag_square_root">\u221A</string>
+    <string name="tag_cube_root">cbrt(</string>
+    <string name="tag_x_root">^(1\u00F7</string>
+    <string name="tag_e">e</string>
+    <string name="tag_sin">sin(</string>
+    <string name="tag_cos">cos(</string>
+    <string name="tag_tan">tan(</string>
+    <string name="tag_pi">\u03C0</string>
+    <string name="tag_sinh">sinh(</string>
+    <string name="tag_cosh">cosh(</string>
+    <string name="tag_tanh">tanh(</string>
+    <string name="tag_equals">=</string>
+    <string name="tag_decimal">.</string>
+    <string name="tag_zero">0</string>
+    <string name="tag_three">3</string>
+    <string name="tag_two">2</string>
+    <string name="tag_one">1</string>
+    <string name="tag_six">6</string>
+    <string name="tag_five">5</string>
+    <string name="tag_four">4</string>
+    <string name="tag_substract">-</string>
+    <string name="tag_nine">9</string>
+    <string name="tag_eight">8</string>
+    <string name="tag_seven">7</string>
+    <string name="tag_addition">+</string>
+    <string name="tag_percentage">%</string>
+    <string name="nan">Not a number</string>
+</resources>
