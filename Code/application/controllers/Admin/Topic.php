@@ -24,14 +24,17 @@ class Topic extends ADMIN_Controller {
 		$this->load->library('pagination');
 		$role = $this->input->get('role');
 		$subject  = $this->input->get('subject');
+		$q  = $this->input->get('q');
 		$where['where']['tut_topic.is_delete']=0;
-		if( !empty($role) || !empty($subject)){
+		if( !empty($role) || !empty($subject) || !empty($q)){
 
 			$str = '';
 
 			if(!empty($role)){ $where['where']['user.role_id'] = $role ; $str .= '&role='.$role; }	
 			
 			if(!empty($subject)){ $where['where']['tut_topic.subject_id'] = $subject; $str .='&subject='.$subject; }
+
+            if(!empty($q)){ $where['like']['tut_topic.topic_name'] = $q; $where['or_like']['tut_topic.topic_description'] = $q;$where['or_like']['tut_topic.evaluation_keywords'] = $q;  $str .='&q='.$q; }
 
 			$str =  trim($str,'&');
 
@@ -495,12 +498,11 @@ class Topic extends ADMIN_Controller {
 		$data=array(
 				 "is_delete"=> $is_delete
 				 );
-		update('topics',$topic_id,$data);	// Update data  using common_model.php and cms_helper.php
+		update('tutorial_topic',$topic_id,$data);	// Update data  using common_model.php and cms_helper.php
 		
 		$response = array('is_delete'=>$is_delete,'id'=>'delete_'.$topic_id);
 		echo json_encode($response);
 		exit; 
-
 	}
 
 }
