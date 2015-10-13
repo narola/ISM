@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <title>ISM Admin | <?php if(!empty($page_title)){ echo $page_title; } ?></title>
-	<meta charset="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="<?php echo base_url();?>" >
@@ -21,17 +21,28 @@
     <link href="assets/css/select2-bootstrap.css" rel="stylesheet">    
     <link href="assets/css/select2.css" rel="stylesheet">
     <!-- Select2 CSS END -->
+    <!-- Tagging Input CSS Start -->
+    <link rel="stylesheet" href="assets/css/bootstrap-tagsinput.css">
+    <!-- Tagging Input CSS END -->
 
     <link rel="stylesheet" href="assets/css/jquery-ui.css">
     <!--fonts-->
     <link href='assets/css/fonts.css' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/datepicker.css">
 
     <script src="assets/js/jquery-1.11.3.min.js"></script>
     <script src="assets/js/jquery-ui.min.js"></script> <!-- jQuery UI JS -->
     <script src="assets/js/bootstrap.min.js"></script> <!-- Bootstap JS -->
     <script src="assets/js/select2.min.js"></script> <!-- Select2 JS -->
+    <script src="assets/js/bootstrap-tagsinput.js"></script> <!-- Input Tagging Feature -->
     <script src="assets/js/ZeroClipboard.min.js"></script>  <!-- For Copy to Clipboard Functionality Refer:http://zeroclipboard.org/ -->
+
+    <!-- Highchart JS Start -->
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/data.js"></script>
+    <script src="http://code.highcharts.com/modules/drilldown.js"></script>
+    <!-- Highchart JS END -->
 
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -57,11 +68,18 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             <li><a href="#"><span class="icon icon_menu_home"></span> Home</a></li>
-            <li class="dropdown">
-            	<a href="Tutorial.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
+            <li class="
+                <?php
+                if(in_array($url,array('admin/exam','admin/exam/add')))
+                        { 
+                            echo 'active'; 
+                        }
+                    ?>
+                dropdown">
+                <a href="Tutorial.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
                 <ul class="dropdown-menu">
                     <li><a href="#">Question Bank</a></li>
-                    <li><a href="#">Exams</a></li>
+                    <li><a href="admin/exam">Exams</a></li>
                 </ul>
             </li>
             <li class="<?php if(in_array($url,array('admin/group'))){ echo 'active'; }?>" ><a href="admin/group"><span class="icon icon_menu_group"></span> Groups</a></li>
@@ -87,13 +105,6 @@
                 <li><a href="#">School</a></li>
                 <li><a href="#">Classroom</a></li>
                 <li><a href="#">Subject</a></li>
-                <li class="dropdown sub_menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Courses</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="admin/course/lists">List of Courses</a></li>
-                        <li><a href="admin/course/add_course">Add New Course</a></li>
-                    </ul>
-                </li>
                 <li><a href="#">Badges</a></li>
                 <li><a href="admin/user">User</a></li>
                 <li class="dropdown sub_menu">
@@ -109,7 +120,7 @@
             <li><a href="#"><span class="icon icon_menu_report"></span> Reports</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-          	<li><a class="" href="#"><span class="icon icon_search"></span></a></li>
+            <li><a class="" href="#"><span class="icon icon_search"></span></a></li>
             <li><a class="" href="#"><span class="icon icon_grid"></span></a></li>
             <li><a class="" href="#"><span class="icon icon_list"></span></a></li>
             <li><a class="" href="#"><span class="icon icon_refresh"></span></a></li>
@@ -119,8 +130,8 @@
     </nav>
     <!--body-->
     <div class="container-fluid">
-    	<div class="row">
-        	<!--side left-->
+        <div class="row">
+            <!--side left-->
             <div class="sidebar_left_container inner_pages inner_pages_admin text-center mCustomScrollbar" data-mcs-theme="minimal"><!-- scrollbar" id="style-3-->
                 <div class="user_profile_img">
                     <img src="assets/images/user1.jpg">
@@ -130,38 +141,38 @@
                 <div class="clearfix"></div>
                 <!--notification-->
                 <ul class="three_tabs">
-                	<li class="dropdown">
-                    	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span><span class="badge bell_badge">03</span></a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span><span class="badge bell_badge">03</span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">
-                            	<div class="user_small_img"><img src="assets/images/user2.jpg"></div>
+                                <div class="user_small_img"><img src="assets/images/user2.jpg"></div>
                                 <div class="notification_txt">
-                                	<p><span class="noti_username">Adam Stranger</span> tagged you in a post</p>
-                                	<span class="noti_time">1 hour ago</span>
+                                    <p><span class="noti_username">Adam Stranger</span> tagged you in a post</p>
+                                    <span class="noti_time">1 hour ago</span>
                                 </div>
                                 <div class="clearfix"></div>
                             </a></li>
                             <li><a href="#">
-                            	<div class="user_small_img"><img src="assets/images/user3.jpg"></div>
+                                <div class="user_small_img"><img src="assets/images/user3.jpg"></div>
                                 <div class="notification_txt">
-                                	<p><span class="noti_username">Matt Larner</span> sent you studymate request</p>
-                                	<span class="noti_time">1 hour ago</span>
+                                    <p><span class="noti_username">Matt Larner</span> sent you studymate request</p>
+                                    <span class="noti_time">1 hour ago</span>
                                 </div>
                                 <div class="clearfix"></div>
                             </a></li>
                             <li><a href="#">
-                            	<div class="user_small_img"><img src="assets/images/user4.jpg"></div>
+                                <div class="user_small_img"><img src="assets/images/user4.jpg"></div>
                                 <div class="notification_txt">
-                                	<p><span class="noti_username">Mary Watson</span> tagged you in a post</p>
-                                	<span class="noti_time">1 hour ago</span>
+                                    <p><span class="noti_username">Mary Watson</span> tagged you in a post</p>
+                                    <span class="noti_time">1 hour ago</span>
                                 </div>
                                 <div class="clearfix"></div>
                             </a></li>
                             <li><a href="#">
-                            	<div class="user_small_img"><img src="assets/images/ISM.jpg"></div>
+                                <div class="user_small_img"><img src="assets/images/ISM.jpg"></div>
                                 <div class="notification_txt">
-                                	<p>Please check the published notice</p>
-                                	<span class="noti_time">1 hour ago</span>
+                                    <p>Please check the published notice</p>
+                                    <span class="noti_time">1 hour ago</span>
                                 </div>
                                 <div class="clearfix"></div>
                             </a></li>
@@ -172,17 +183,17 @@
                 </ul>
                 <!--//notification-->
 
-				<ul class="personal_menu">
-                	<li>
+                <ul class="personal_menu">
+                    <li>
                         <a href="#"><span class="icon icon_feed"></span>Feeds</a>
                     </li><!-- class="active"-->
-                	<li>
+                    <li>
                         <a href="#"><span class="icon icon_spam"></span>Spam<span class="badge message_badge">12</span></a>
                     </li>
-                	<li>
+                    <li>
                         <a href="#"><span class="icon icon_banner"></span>Banners</a>
-                    </li>                	
-                	<li class="<?php if(in_array($url,array('admin/notice','admin/notice/index'))){ echo 'active'; }?>">
+                    </li>                   
+                    <li class="<?php if(in_array($url,array('admin/notice','admin/notice/index'))){ echo 'active'; }?>">
                         <a href="admin/notice"><span class="icon icon_notice"></span>Notice Board</a>
                     </li>
                     <li>
@@ -203,79 +214,79 @@
             
             <!--side right-->
             <div class="sidebar_right_container sidebar_right_container2 sidebar_right_admin mCustomScrollbar" data-mcs-theme="minimal-dark"><!--scrollbar" id="style-3-->
-            	
+                
                 <!--high score board-->
                 <div class="score box">
-                	<div class="box_header">
-                    	<h3>High Scores</h3>
+                    <div class="box_header">
+                        <h3>High Scores</h3>
                     </div>
                     <div class="score_div">
-                    	<h5>Science</h5>
+                        <h5>Science</h5>
                         <!--item1-->
                         <div class="score_item">
-                        	<div class="score_img">
-                            	<img src="assets/images/user5.jpg">
+                            <div class="score_img">
+                                <img src="assets/images/user5.jpg">
                             </div>
                             <div class="score_descrip">
-                            	<p class="score_name">Adam Stranger</p>
+                                <p class="score_name">Adam Stranger</p>
                                 <p>St. Xeviers F.Y. CS</p>
                                 <p>Score</p>
                                 <p class="score_number">500</p>
                             </div>
                             <div class="score_rank">
-                            	<p>1<sup>st</sup></p>
+                                <p>1<sup>st</sup></p>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <!--item2-->
                         <div class="score_item">
-                        	<div class="score_img">
-                            	<img src="assets/images/user3.jpg">
+                            <div class="score_img">
+                                <img src="assets/images/user3.jpg">
                             </div>
                             <div class="score_descrip">
-                            	<p class="score_name">Matt Larner</p>
+                                <p class="score_name">Matt Larner</p>
                                 <p>St. Mary F.Y. CS</p>
                                 <p>Score</p>
                                 <p class="score_number">487</p>
                             </div>
                             <div class="score_rank">
-                            	<p>2<sup>nd</sup></p>
+                                <p>2<sup>nd</sup></p>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                        
                     </div>
                     <div class="score_div">
-                    	<h5>Arts</h5>
+                        <h5>Arts</h5>
                         <!--item1-->
                         <div class="score_item">
-                        	<div class="score_img">
-                            	<img src="assets/images/user5.jpg">
+                            <div class="score_img">
+                                <img src="assets/images/user5.jpg">
                             </div>
                             <div class="score_descrip">
-                            	<p class="score_name">Adam Stranger</p>
+                                <p class="score_name">Adam Stranger</p>
                                 <p>St. Xeviers F.Y. CS</p>
-                            	<p>Score</p>
+                                <p>Score</p>
                                 <p class="score_number">500</p>
                             </div>
                             <div class="score_rank">
-                            	<p>1<sup>st</sup></p>
+                                <p>1<sup>st</sup></p>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <!--item2-->
                         <div class="score_item">
-                        	<div class="score_img">
-                            	<img src="assets/images/user3.jpg">
+                            <div class="score_img">
+                                <img src="assets/images/user3.jpg">
                             </div>
                             <div class="score_descrip">
-                            	<p class="score_name">Matt Larner</p>
+                                <p class="score_name">Matt Larner</p>
                                 <p>St. Mary F.Y. CS</p>
                                 <p>Score</p>
                                 <p class="score_number">487</p>
                             </div>
                             <div class="score_rank">
-                            	<p>2<sup>nd</sup></p>
+                                <p>2<sup>nd</sup></p>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -288,86 +299,86 @@
                 <!--//suggested Studymates-->
                 <!--STM-->
                 <div class="stm">
-                	<div class="box_header">
-                    	<h3>Top Groups</h3>
+                    <div class="box_header">
+                        <h3>Top Groups</h3>
                     </div>
                     <!--item1-->
                         <div class="score_item">
-                        	<div class="score_img">
-                            	<img src="assets/images/group1.jpg">
+                            <div class="score_img">
+                                <img src="assets/images/group1.jpg">
                             </div>
                             <div class="score_descrip">
-                            	<p class="score_name">Venice Beauty</p>
+                                <p class="score_name">Venice Beauty</p>
                                 <p>St. Xeviers F.Y. CS</p>
-                            	<p>Score</p>
+                                <p>Score</p>
                                 <p class="score_number">5000</p>
                             </div>
                             <div class="score_rank">
-                            	<p>1<sup>st</sup></p>
+                                <p>1<sup>st</sup></p>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <!--item2-->
                         <div class="score_item">
-                        	<div class="score_img">
-                            	<img src="assets/images/group2.jpg">
+                            <div class="score_img">
+                                <img src="assets/images/group2.jpg">
                             </div>
                             <div class="score_descrip">
-                            	<p class="score_name">Happy Club</p>
+                                <p class="score_name">Happy Club</p>
                                 <p>St. Mary F.Y. CS</p>
-                            	<p>Score</p>
+                                <p>Score</p>
                                 <p class="score_number">4870</p>
                             </div>
                             <div class="score_rank">
-                            	<p>2<sup>nd</sup></p>
+                                <p>2<sup>nd</sup></p>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <!--item1-->
                         <div class="score_item">
-                        	<div class="score_img">
-                            	<img src="assets/images/group3.jpg">
+                            <div class="score_img">
+                                <img src="assets/images/group3.jpg">
                             </div>
                             <div class="score_descrip">
-                            	<p class="score_name">Rankers</p>
+                                <p class="score_name">Rankers</p>
                                 <p>St. Xeviers F.Y. CS</p>
-                            	<p>Score</p>
+                                <p>Score</p>
                                 <p class="score_number">4700</p>
                             </div>
                             <div class="score_rank">
-                            	<p>3<sup>rd</sup></p>
+                                <p>3<sup>rd</sup></p>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <!--item2-->
                         <div class="score_item">
-                        	<div class="score_img">
-                            	<img src="assets/images/avatar_group.png">
+                            <div class="score_img">
+                                <img src="assets/images/avatar_group.png">
                             </div>
                             <div class="score_descrip">
-                            	<p class="score_name">Allrounders</p>
+                                <p class="score_name">Allrounders</p>
                                 <p>St. Mary F.Y. CS</p>
-                            	<p>Score</p>
+                                <p>Score</p>
                                 <p class="score_number">4690</p>
                             </div>
                             <div class="score_rank">
-                            	<p>4<sup>th</sup></p>
+                                <p>4<sup>th</sup></p>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <!--item2-->
                         <div class="score_item">
-                        	<div class="score_img">
-                            	<img src="assets/images/group1.jpg">
+                            <div class="score_img">
+                                <img src="assets/images/group1.jpg">
                             </div>
                             <div class="score_descrip">
-                            	<p class="score_name">Cool Group</p>
+                                <p class="score_name">Cool Group</p>
                                 <p>St. Mary F.Y. CS</p>
-                            	<p>Score</p>
+                                <p>Score</p>
                                 <p class="score_number">4650</p>
                             </div>
                             <div class="score_rank">
-                            	<p>5<sup>th</sup></p>
+                                <p>5<sup>th</sup></p>
                             </div>
                             <div class="clearfix"></div>
                         </div>
