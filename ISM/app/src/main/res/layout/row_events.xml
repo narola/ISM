@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/d5sp"
+        android:paddingTop="@dimen/d5sp">
+
+        <LinearLayout
+            android:id="@+id/ll_calender"
+            android:layout_width="90sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:background="@drawable/bg_darkgray"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/d10sp"
+            android:paddingLeft="@dimen/d10sp"
+            android:paddingRight="@dimen/d10sp"
+            android:paddingTop="@dimen/d20sp">
+
+            <TextView
+                android:id="@+id/txt_eventDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="10"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/d20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_eventMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:text="OCT"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/d10sp" />
+
+                <TextView
+                    android:id="@+id/txt_eventYear"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="2015"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/d10sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_eventTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="22sp"
+            android:background="@drawable/bg_time"
+            android:gravity="center"
+            android:text="4:00 AM"
+            android:textStyle="bold"
+            android:textSize="10sp"
+            android:textColor="@color/color_white" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txt_eventName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/d5sp"
+        android:text="Conneions 2015-"
+        android:textColor="@color/bg_tutorial"
+        android:textSize="@dimen/d18sp"
+
+        />
+
+    <TextView
+        android:id="@+id/txt_eventDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/d5sp"
+        android:paddingLeft="@dimen/d5sp"
+        android:paddingRight="@dimen/d5sp"
+        android:text="Presentation live chat with Roger Pressman"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/d15sp"
+
+        />
+</LinearLayout>
