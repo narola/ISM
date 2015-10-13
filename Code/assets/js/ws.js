@@ -587,7 +587,7 @@ function generate_post(obj,status){
                 if(j == 0){
                     name += 'with <label class="label label_name">'+list.full_name +'</label>';
                 }else{
-                    other_name += list.name+'<div class=\'clearfix\'></div>';
+                    other_name += list.full_name+'<div class=\'clearfix\'></div>';
                     l = parseInt(len) - parseInt(1);
                     if(j == l){
                         name += 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover2" title="Other Tagged" data-content="'+other_name+'">'+ l +' more</a>';
