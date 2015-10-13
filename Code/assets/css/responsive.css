@@ -47,6 +47,23 @@
     	height: auto;
     	width: 10%
 	}
+	.question_bank .filter .form-group {
+		width: 26%;
+	}
+	.test_sidebar .btn_black{
+		width:100%;
+	}
+	.ques_numbers li {
+		margin: 0 5px 6px 0;
+	}
+	.test_finished svg {
+    	transform: rotate(-90deg) scale(0.8) translateY(-16px);
+	}
+	.test_finished .item_chart:before, .test_finished .item_chart:after{
+		height:108px;
+		width:108px;
+		top:16px;
+	}
 }
 @media (max-width:1280px){
 	.login_background{
@@ -184,6 +201,9 @@
 	}
 	.sidebar_shrink .logout {
     	bottom: 0 !important;
+	}
+	.ques_numbers li {
+    	margin: 0 1px 1px 0;
 	}
 }	
 @media (max-width:1024px){
@@ -402,6 +422,30 @@
 	.group_perf_member .username .chat_img_holder {
     	float: left;
 	}
+	.main_wide .question_bank .filter .form-group {
+	    width: 30%;
+	}
+	.main_wide_2{
+		width:66%;
+	}
+	.test_sidebar{
+		width:34%;
+	}
+	.test_finished svg {
+    	transform: rotate(-90deg) scale(1) translateY(0);
+	}
+	.test_finished .item_chart:before, .test_finished .item_chart:after{
+		height:134px;
+		width:134px;
+		top:3px;
+		left:8px;
+	}
+	.ques_numbers li {
+    	margin: 0 15px 15px 0;
+	}
+	.page_header fieldset{
+		padding:5px;
+	}
 	
 }
 @media (max-width:980px){
@@ -493,6 +537,15 @@
 	}
 	.box_body .padding_r15_.select::after {
     	right: 15px;
+	}	
+	.main_wide .question_bank .filter .form-group {
+	    width: 29.7%;
+	}
+	.preview .question_wrapper .notice_action a {
+    	margin: 10px 3px;
+	}
+	.test_finished .item_chart:before, .test_finished .item_chart:after{
+		left:6px;
 	}
 }
 
@@ -614,6 +667,21 @@
 		margin-bottom:5px;
 		border-bottom:1px solid rgba(0,0,0,0.1);
 	}
+	.question_wrapper .q_info{
+		float:none !important;
+	}
+	.test_finished svg {
+    	transform: rotate(-90deg) scale(0.8) translateY(-16px);
+	}
+	.test_finished .item_chart:before, .test_finished .item_chart:after{
+		height:108px;
+		width:108px;
+		top:16px;
+		left:3px;
+	}
+	.ques_numbers li {
+    	margin: 0 5px 5px 0;
+	}
 }
 @media (max-width:768px){
 	.login_background {
@@ -648,6 +716,12 @@
 	}
 	.main_wide .filter .form-group {
     	width: 31.8%;
+	}
+	.question_bank .box_footer{
+		padding:7px;
+	}
+	.ques_numbers li {
+    	margin: 0 2px 2px 0;
 	}
 }
 @media (max-width:767px){

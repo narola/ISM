@@ -138,7 +138,7 @@
                                         </table>                                            
                                     </td>
                                     <td class="group_rank">01</td>
-                                    <td class="group_points"><p>5500</p><p>4 Assignments</p><p>10 Exams</p></td>
+                                    <td class="group_points"><p><?php if(!empty($group['group_score'])) {echo $group['group_score']; }else{ echo 0; } ?></p><p>4 Assignments</p><p>10 Exams</p></td>
                                     <td>
                                         <a href="#" class="icon icon_timeline"></a>
                                         <a href="#" class="icon icon_books"></a>

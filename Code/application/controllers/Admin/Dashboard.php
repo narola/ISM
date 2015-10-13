@@ -15,6 +15,7 @@ class Dashboard extends ADMIN_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		ob_start();
 		$this->load->helper(array('csv','file','download'));	
 	}
 

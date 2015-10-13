@@ -1017,7 +1017,7 @@ class PHPWebSocket {
                             $i++;
                         }
                     }
-
+                     $query = "INSERT INTO `".TBL_FEEDS_TAGGED_USER."`(`id`, `user_id`, `feed_id`, `created_date`, `is_delete`, `is_testdata`) VALUES $str";
                     $x = mysqli_query($link, $query);
                     if (is_array($tagged_array))
                         $t = implode(',', $tagged_array);
@@ -1044,22 +1044,7 @@ class PHPWebSocket {
         return array_merge($data, $this->get_client_info($user_id));
     }
 
-    /* function classmate_post($user_id, $data = null) {
-      if (is_array($data) && !empty($data)) {
-      $link = $this->db();
-      $msg = mysqli_escape_string($link, $data['message']); // Feed or comment
-      $query = "INSERT INTO `" . TBL_FEEDS . "`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$user_id,'$msg','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
-      $x = mysqli_query($link, $query);
-      $data['post_id'] = mysqli_insert_id($link);
-      $data['tot_like'] = 0;
-      $data['tot_comment'] = 0;
-      if (!$x) {
-      $data['to'] = 'self';
-      $data['error'] = 'Unable to save message.! Please try again.';
-      }
-      }
-      return array_merge($data, $this->get_client_info($user_id));
-      } */
+    
 
     /**
      * Save feed comment
@@ -1770,6 +1755,9 @@ class PHPWebSocket {
             $data['school_name'] = $rows['school_name'];
             $data['course_name'] = $rows['course_name'];
             $data['profile'] = $rows['profile_link'];
+            
+            $data['user_data']  = $this->get_client_info($user_id);
+            
         } else {
             $data['to'] = 'self';
             $data['error'] = 'Please don\'t modify data manually.';

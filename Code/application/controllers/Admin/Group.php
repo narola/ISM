@@ -23,9 +23,6 @@ class Group extends ADMIN_Controller {
 	 
 	public function index() {
 		
-		if($_POST){
-			die('HHHH');
-		}
 		$this->data['page_title'] = 'Groups';
 		
 		if(!empty($_GET['course']) ||  !empty($_GET['year']) ||  !empty($_GET['q']) ){
@@ -87,7 +84,7 @@ class Group extends ADMIN_Controller {
 												)
 											));
 		
-		$config['per_page'] = 15;
+		$config['per_page'] = 12;
 		
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
 	  	$config['full_tag_close'] = '</ul>';
@@ -117,12 +114,13 @@ class Group extends ADMIN_Controller {
 	  	$this->data['all_groups'] =  select(TBL_TUTORIAL_GROUPS,
 											TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
 											TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
-											TBL_COURSES.'.id as course_id',
+											TBL_COURSES.'.id as course_id,'.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.group_score',
 											$where,
 											array(
 												'limit'=>$config['per_page'],
 												'offset'=>$offset,
 												'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
+												'order_by' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.group_score DESC',
 												'join' =>  array(
 											    			array(
 											    				'table' => TBL_TUTORIAL_GROUP_MEMBER,
@@ -140,12 +138,17 @@ class Group extends ADMIN_Controller {
 											    			array(
 											    				'table' => TBL_COURSES,
 											    				'condition' => TBL_COURSES.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.course_id',
+											    				),
+											    			array(
+											    				'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
+											    				'condition' => TBL_TUTORIAL_GROUPS.'.id = '.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.group_id'
 											    				)
 											    			)
 												)
 											);
 		
-	
+		//p($this->data['all_groups'],true);	
+
 		//fetch all data of group right joins with tutorial group members
 		$this->data['all_groups_members'] =   select(TBL_TUTORIAL_GROUPS,
 											TBL_TUTORIAL_GROUP_MEMBER.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.id as gid,'.
@@ -180,18 +183,124 @@ class Group extends ADMIN_Controller {
 											    			)
 												)
 											);
-		
-		// /p($this->data['all_groups_members']);
-		// echo "<br/>------------------------------------------------------------------------<br/>";
-		// p($config['total_rows']);
-
-		//p($this->data['all_groups'],true );
 
 		$this->pagination->initialize($config);
 		
 		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
 		
 		$this->template->load('admin/default','admin/group/view_group',$this->data);
+	}
+
+	public function performance($gid){
+
+		$where['where'][TBL_TUTORIAL_GROUPS.'.id']=$gid;
+
+	 	$this->data['all_groups'] =  select(TBL_TUTORIAL_GROUPS,
+										TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
+										TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
+										TBL_COURSES.'.id as course_id',
+										$where,
+										array(
+											'single'=>TRUE,
+											'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
+											'join' =>  array(
+										    			array(
+										    				'table' => TBL_TUTORIAL_GROUP_MEMBER,
+										    				'condition' => TBL_TUTORIAL_GROUPS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.group_id',
+										    				'join'=>'right'
+										    				),
+										    			array(
+										    				'table' => TBL_USERS,
+										    				'condition' => TBL_USERS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
+										    				),
+										    			array(
+										    				'table' => TBL_STUDENT_ACADEMIC_INFO,
+										    				'condition' => TBL_USERS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.user_id',
+										    				),
+										    			array(
+										    				'table' => TBL_COURSES,
+										    				'condition' => TBL_COURSES.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.course_id',
+										    				)
+										    			)
+											)
+										);
+
+		//fetch all data of group right joins with tutorial group members
+		$this->data['all_groups_members'] =   select(TBL_TUTORIAL_GROUPS,
+											TBL_TUTORIAL_GROUP_MEMBER.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.id as gid,'.
+											TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name,'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link,'.
+											TBL_TUTORIAL_GROUP_MEMBER.'.user_id,'.TBL_USERS.'.created_date,'.TBL_TUTORIAL_GROUP_MEMBER_SCORE.'.score',
+											$where,
+											array(
+												'group_by'=>array(TBL_USERS.'.id'),
+												'join' =>  array(
+											    			array(
+											    				'table' => TBL_TUTORIAL_GROUP_MEMBER,
+											    				'condition' => TBL_TUTORIAL_GROUPS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.group_id',
+											    				),
+											    			array(
+											    				'table' => TBL_USERS,
+											    				'condition' => TBL_USERS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
+											    				),
+											    			array(
+											    				'table' => TBL_STUDENT_ACADEMIC_INFO,
+											    				'condition' => TBL_USERS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.user_id',
+											    				),
+											    			array(
+											    				'table' => TBL_SCHOOLS,
+											    				'condition' => TBL_SCHOOLS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.school_id',
+											    				),
+											    			array(
+											    				'table' => TBL_CLASSROOMS,
+											    				'condition' => TBL_CLASSROOMS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.classroom_id',
+											    				),
+											    			array(
+											    				'table'=>TBL_USER_PROFILE_PICTURE,
+											    				'condition'=>TBL_USER_PROFILE_PICTURE.'.user_id='.TBL_TUTORIAL_GROUP_MEMBER.'.user_id'
+											    				),
+											    			array(
+											    				'table'=>TBL_TUTORIAL_GROUP_MEMBER_SCORE,
+											    				'condition'=>TBL_TUTORIAL_GROUP_MEMBER_SCORE.'.member_id='.TBL_TUTORIAL_GROUP_MEMBER.'.id'
+											    				),
+											    			)
+												)
+											);
+		
+
+		$this->data['all_groups_topics']=select(TBL_TUTORIAL_GROUPS,
+												TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
+												TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.
+												TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.group_score,'.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.topic_id,'.
+												TBL_TUTORIAL_TOPIC.'.topic_name,COUNT('.TBL_TUTORIAL_GROUP_DISCUSSION.'.id) as total',
+												$where,
+												array(
+													'group_by'=>array(TBL_TUTORIAL_TOPIC.'.id'),
+													'join' =>  array(
+																array(
+												    				'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
+												    				'condition' => TBL_TUTORIAL_GROUPS.'.id = '.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.group_id',
+												    				'join'=>'right'
+												    				),
+																array(
+												    				'table' => TBL_TUTORIAL_TOPIC,
+												    				'condition' => TBL_TUTORIAL_TOPIC.'.id = '.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.topic_id',
+												    				),
+																array(
+																	'table'=>TBL_TUTORIAL_GROUP_DISCUSSION,
+																	'condition'=>TBL_TUTORIAL_GROUP_DISCUSSION.'.topic_id='.TBL_TUTORIAL_TOPIC.'.id',
+																	'join'=>'right'
+																	)
+												    			)
+													)
+												);
+
+			// qry();	
+			
+			// p($this->data['all_groups_topics']);
+			// / p($this->data['all_groups_members'],TRUE);
+			// p($this->data['all_groups'],true);	
+
+		$this->template->load('admin/default','admin/group/performance',$this->data);	
 	}
 
 	/**
@@ -362,12 +471,9 @@ class Group extends ADMIN_Controller {
 
 	public function send_messages(){
 		
-		p($_POST);
 		$this->data['page_title'] = 'Users Send Messages';
-		die('123');
+		
 		if($_POST){
-			
-			p($_POST,true);
 
 			if(isset($_POST['all_users'])){
 				$this->data['post_users'] = $this->input->post('all_users[]');
@@ -377,8 +483,23 @@ class Group extends ADMIN_Controller {
 				$this->data['my_cnt'] = 1;
 				$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
 			}else{
+				
 				$this->data['post_users'] = array();
-				$this->data['post_users'] = $this->input->post('users');
+				$groups = $this->input->post('group_messages');
+
+				$my_users = array();
+
+				if(!empty($groups)){
+					foreach($groups as $group){
+						$group_members = select(TBL_TUTORIAL_GROUP_MEMBER,FALSE,array('where'=>array('group_id'=>$group)));
+
+						foreach( $group_members as $members){	
+							array_push($my_users,$members['user_id']);
+						}
+					}
+				}
+
+				$this->data['post_users'] = $my_users;
 				$this->data['my_cnt'] = 0;	
 				$this->form_validation->set_rules('all_users[]', 'Users', 'trim');		
 			}
