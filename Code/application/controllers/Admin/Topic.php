@@ -394,20 +394,34 @@ class Topic extends ADMIN_Controller {
 		exit;
 	}
 
-	/**
+	 /**
 	* function to add new topic
 	*/
 	public function add(){
+		
+		//Validation Set For Add Topic Following fields are required and topic name allow some character only
+		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required|regex_match[/[a-zA-Z& ]$/]', 
+			array('regex_match' => 'The {field} should have only characters,numbers and & special character only.'));
+		$this->form_validation->set_rules('keywords', 'Keywords', 'trim|required');
+		$this->form_validation->set_rules('subjects', 'Subject', 'trim|required');
+		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
 
-		if($_POST){
+		$this->data['courses'] = select(TBL_COURSES); // Fetch All Courses From Database
+		$this->data['page_title'] = 'Add New Topic'; // Set Page Title
+
+		if($this->form_validation->run() == FALSE){
+			
+			$this->template->load('admin/default','admin/topic/add', $this->data);
+
+		}else{
 
 			$data=array(
 				 "topic_name"=>$this->input->post("topic_name"),
 				 "parent_id"=>0,
-				 "topic_description"=>$this->input->post("topic_desc"),
+				 "topic_description"=>htmlentities($this->input->post("topic_desc")),
 				 "subject_id"=>$this->input->post("subjects"),
 				 "evaluation_keywords"=>$this->input->post("keywords"),
-				 "created_by"=>109,
+				 "created_by"=>$this->session->userdata('id'),
 				 "classroom_id"=>2,
 				 "allocation_count"=>0,
 				 "status"=>"",
@@ -418,13 +432,20 @@ class Topic extends ADMIN_Controller {
 				 "is_archived"=>0,
 				 "is_testdata"=>'yes',
 				);
+
 			insert(TBL_TUTORIAL_TOPIC,$data);
+
 			$this->session->set_flashdata('success','Topic has been created.');
-			redirect('admin/topic/lists');
+			
+			if(isset($_POST['save'])){
+				redirect('admin/topic/lists');
+			}else{
+				redirect('admin/topic/add');
+			}
+			
+
 		}
-		$this->data['courses'] = select(TBL_COURSES,FALSE,FALSE,null);
-		$this->data['page_title'] = 'Add New Topic';
-		$this->template->load('admin/default','admin/topic/add', $this->data);
+		
 	}
 
 	public function ajax_get_subjects(){

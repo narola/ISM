@@ -92,10 +92,10 @@
                             <input type="radio" name="is_semester" <?php echo set_radio('is_semester', '0'); ?> value="0">No                          
                         </div>
                     </div>
-
                     <div class="box_footer">
-                        <button type="submit" class="btn btn_green">Save</button>
-                        <button class="btn btn_black">Cancel</button>
+                         <button type="submit" class="btn btn_green">Save</button>
+                        <button type="reset" class="btn btn_red">Reset</button>
+                        <a href="<?php echo base_url().$prev_url; ?>" class='btn btn_black'>Cancel</a>
                     </div>
                 </form>   
             </div>

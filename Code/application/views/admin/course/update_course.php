@@ -42,7 +42,7 @@
 
                         <div class="form-group">
                             <label>Course Details</label>
-                            <textarea class="form-control" name="course_details"><?php  echo set_value("course_details") == false ? $course["course_details"] : set_value("course_details"); ?></textarea>
+                            <textarea class="form-control" name="course_details"><?php echo (set_value("course_details") == false) ? $course["course_details"] : set_value("course_details"); ?></textarea>
                         </div>
 
                         <div class="form-group">
