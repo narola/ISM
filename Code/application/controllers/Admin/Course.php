@@ -172,7 +172,6 @@ class Course extends ADMIN_Controller {
 		$this->form_validation->set_rules('course_degree', 'Course Degree', 'trim|required');
 		$this->form_validation->set_rules('course_category_id', 'Course Degree', 'required|greater_than[0]');
 		
-
 		if($this->form_validation->run() == FALSE){
             $this->template->load('admin/default','admin/course/update_course',$this->data);			
 		}else{            
@@ -184,8 +183,7 @@ class Course extends ADMIN_Controller {
 				 "course_duration"=>$this->input->post("course_duration"),
 				 "course_degree"=>$this->input->post("course_degree"),
 				 "course_category_id"=>$this->input->post("course_category_id"),
-				 "is_semester"=>$this->input->post("is_semester"),
-				 "created_date"=>date('Y-m-d H:i:s'),
+				 "is_semester"=>$this->input->post("is_semester"),				 
 				 "modified_date"=>date('Y-m-d H:i:s'),
 				 "is_delete"=>0				 				
 			);	
