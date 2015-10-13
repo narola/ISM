@@ -43,7 +43,7 @@ class Studymates_request extends ISM_Controller {
 							)
 						)
 					);
-		$where = array('where'=>array('s.request_to_mate_id'=>$user_id),'where_in'=>array('s.status'=>array(0,2)),'where_not_in'=>array('u.id'=>$my_studymates));
+		$where = array('where'=>array('s.request_to_mate_id'=>$user_id,'s.is_delete'=> 0),'where_in'=>array('s.status'=>array(0,2)),'where_not_in'=>array('u.id'=>$my_studymates));
 		$data['studymate_request'] = select(TBL_STUDYMATES_REQUEST.' s','sl.school_name,u.full_name,p.profile_link,u.id',$where,$options);
 		
 		
@@ -79,13 +79,13 @@ class Studymates_request extends ISM_Controller {
 					),
 					array(
 						'table' => TBL_STUDYMATES_REQUEST.' sr',
-						'condition' => 'sr.request_from_mate_id='.$user_id.' and sr.request_to_mate_id = in1.user_id'
+						'condition' => 'sr.request_from_mate_id='.$user_id.' and sr.request_to_mate_id = in1.user_id and sr.is_delete = 0'
 					),
 					
 				),
 		'group_by' => 'in1.user_id'
 			);
-		$data['recommended_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,p.profile_link,sr.id as srid',$where,$options);
+		$data['recommended_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,p.profile_link,sr.id as srid,sr.is_delete',$where,$options);
 
 		$this->template->load('student/default','student/studymates_request',$data);
 	}

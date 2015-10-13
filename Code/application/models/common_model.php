@@ -170,62 +170,90 @@ function class_mate_list($user_id, $append = true) {
     if($append)
     	$all[]=$user_id;
     return $all;
-	}
+}
 
-	function count_studymate_request($user_id){
-				
-		return $this->sql_select(TBL_STUDYMATES_REQUEST,null,array('where'=>array('request_to_mate_id'=> $user_id,'status'=>0)),array('count'=>true));
-	}
+function count_studymate_request($user_id){
+			
+	return $this->sql_select(TBL_STUDYMATES_REQUEST,null,array('where'=>array('request_to_mate_id'=> $user_id,'status'=>0,'is_delete'=>0)),array('count'=>true));
+}
 
-	function studymates_info($user_id){
-    
-    $studymates = studymates($user_id,false);
-    if(empty($studymates))
-    	$studymates = array('');
-    else
-    	$studymates = studymates($user_id,false);
-    // Get Classmates details
-    $where = array('where_in' => array('u.id' =>  $studymates));
-    $options = array('join' => array(
-        array(
-          'table' => TBL_USER_PROFILE_PICTURE.' upp',
-          'condition' => 'upp.user_id = u.id'
-        )
-      ),
-    );
+function studymates_info($user_id){
 
-    return select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,  (SELECT count(*) FROM `user_chat` `uc` WHERE `uc`.`sender_id` = `u`.`id` AND `uc`.`receiver_id` = '.$user_id.' AND `uc`.`received_status` = 0) as `unread_msg`',$where,$options);
+	$studymates = studymates($user_id,false);
+	if(empty($studymates))
+		$studymates = array('');
+	else
+		$studymates = studymates($user_id,false);
+	// Get Classmates details
+	$where = array('where_in' => array('u.id' =>  $studymates));
+	$options = array('join' => array(
+	    array(
+	      'table' => TBL_USER_PROFILE_PICTURE.' upp',
+	      'condition' => 'upp.user_id = u.id'
+	    )
+	  ),
+	);
+
+	return select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,  (SELECT count(*) FROM `user_chat` `uc` WHERE `uc`.`sender_id` = `u`.`id` AND `uc`.`receiver_id` = '.$user_id.' AND `uc`.`received_status` = 0) as `unread_msg`',$where,$options);
 }
 
 function active_chat($user_id){
 	/* Get user id of active chat window */
-		$active_chat_id = get_cookie('active');
-		$data = array();
-		if(!empty($active_chat_id)){
-			$options = array('join' => array(
-				array(
-					'table' => TBL_USER_PROFILE_PICTURE.' upp',
-					'condition' => 'upp.user_id = u.id'
-					)
-				),
-			'single' => true
+	$active_chat_id = get_cookie('active');
+	$data = array();
+	if(!empty($active_chat_id)){
+		$options = array('join' => array(
+			array(
+				'table' => TBL_USER_PROFILE_PICTURE.' upp',
+				'condition' => 'upp.user_id = u.id'
+				)
+			),
+		'single' => true
+		);
+		$data['user'] = select(
+			TBL_USERS.' u',
+			'u.id, u.full_name,upp.profile_link',
+			array('where' => array('u.id' => $active_chat_id)),
+			$options
 			);
-			$data['user'] = select(
-				TBL_USERS.' u',
-				'u.id, u.full_name,upp.profile_link',
-				array('where' => array('u.id' => $active_chat_id)),
-				$options
-				);
-			$data['comment'] = select(
-				TBL_USER_CHAT. ' uc',
-				'uc.id,uc.sender_id,uc.receiver_id,uc.message,uc.media_link,uc.media_type',
-				"(uc.sender_id = $active_chat_id AND uc.receiver_id = $user_id) OR (uc.sender_id = $user_id AND uc.receiver_id = $active_chat_id) ",
-				array('limit' => 10,'order_by' => 'uc.id DESC'));
-		}
-		return $data;
-		}
+		$data['comment'] = select(
+			TBL_USER_CHAT. ' uc',
+			'uc.id,uc.sender_id,uc.receiver_id,uc.message,uc.media_link,uc.media_type',
+			"(uc.sender_id = $active_chat_id AND uc.receiver_id = $user_id) OR (uc.sender_id = $user_id AND uc.receiver_id = $active_chat_id) ",
+			array('limit' => 10,'order_by' => 'uc.id DESC'));
+	}
+	return $data;
+	}
 
+	function get_notification_list($user_id){
+		$options = array('join' =>
+				array(
+					array(
+						'table' => TBL_FEEDS.' f',
+						'condition' => 'f.id = tg.feed_id'
+					),
+					array(
+						'table' => TBL_USERS.' u',
+						'condition' => 'u.id = f.feed_by'
+					),
+					array(
+						'table' => TBL_USER_PROFILE_PICTURE.' p',
+						'condition' => 'u.id = p.user_id'
+					)
+				)
+			);
+		$where = array('where' => array('tg.is_delete'=>0,'tg.is_see'=> 0,'tg.user_id'=>$user_id));
+		$tagged_notification = select(TBL_FEEDS_TAGGED_USER.' tg','u.id,u.full_name,p.profile_link',$where,$options);
+		return $tagged_notification;
+	}
+
+	function count_notification_list($user_id){
+		$where = array('where' => array('tg.is_delete'=>0,'tg.is_see'=> 0,'tg.user_id'=>$user_id));
+		return select(TBL_FEEDS_TAGGED_USER.' tg','u.id,u.full_name,p.profile_link',$where,array('count'=>true));
+	}
 }
+
+
 
 /* End of file Common_model.php */
 /* Location: ./application/models/Common_model.php */

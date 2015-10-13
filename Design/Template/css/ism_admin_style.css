@@ -1390,11 +1390,12 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .question_bank .box_header .form-control{
 	padding:6px;
 }
-.question_bank .search_link{
+.question_bank .filter .form-group.search_link{
 	width:32px;
 	-webkit-filter:brightness(0);
 	-moz-filter:brightness(0);
 	filter:brightness(0);
+	margin-right:5px;
 }
 .question_bank .box{
 	margin:15px 0 0;
@@ -1429,4 +1430,106 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .admin_activities .tag_user .caret {
     border-top-color: #ff6b6b;
+}
+.question_wrapper {
+	position:relative;
+    padding: 5px 20px;
+	border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+.question_wrapper:nth-child(even){
+	background-color:#f7f7f7;
+}
+.question_wrapper:nth-child(odd){
+	background-color:#fff;
+}
+.question_wrapper:last-child{
+	border:none;
+}
+.question_wrapper .notice_action {
+    padding: 0;
+}
+.question_wrapper h5 {
+    text-decoration: underline;
+	font-weight:600;
+}
+.question_wrapper .q_info{
+	display:inline-block;
+	font-size:14px;
+}
+.question_wrapper .ques{
+	font-weight:500;
+}
+.question_wrapper .fa-angle-double-down, .question_wrapper .fa-angle-double-up {
+    font-size: 26px;
+    color: #aaa;
+	position: absolute;
+    right: 30px;
+    bottom:60px;
+	text-decoration:none;
+}
+.notice_action .fa {
+    font-size: 29px;
+    color: #da534f;
+    text-decoration: none;
+}
+.answer_options_div{
+	display:none;
+}
+.answer_options_div ol {
+    list-style-type: upper-alpha;
+    line-height: 2;
+    font-weight: 500;
+    font-size: 15px;
+    padding-left: 30px;
+    margin-bottom: 20px;
+}
+.question_bank .box_footer{
+    background-color: #323941;
+    padding: 15px;
+}
+.question_bank .filter .form-group {
+    width: 20%;
+}
+.question_bank {
+    margin-bottom: 15px;
+}
+.preview .box_header h3 {
+    text-align: center;
+    padding: 8px;
+}
+.preview .answer_options_div{
+	display:block;
+}
+.preview .question_left{
+	float:left;
+	width:88%;
+	border-bottom:none;
+	border-right:1px solid rgba(0,0,0,0.07);
+}
+.preview .notice_action{
+	float:left;
+	border: none;
+	width:12%;
+}
+.preview .question_wrapper .notice_action a {
+    margin: 10px;
+}
+.preview .question_wrapper {
+    padding: 5px 0 5px 20px;
+}
+.question_wrapper .notice_action a {
+    margin: 10px 10px 10px 0;
+}
+.question_bank .col-sm-6.general_cred:first-child:after {
+    content: "";
+    height: 98%;
+    width: 100%;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,0.2);
+    right: -100%;
+    top: 15px;
+}
+.question_bank .preview{
+	padding:0;
 }
