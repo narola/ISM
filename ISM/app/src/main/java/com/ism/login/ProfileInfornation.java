@@ -28,22 +28,22 @@ import java.io.IOException;
  * Created by c162 on 07/10/15.
  */
 public class ProfileInfornation extends Activity implements View.OnClickListener {
-    String TAG = "ProfileInfornation";
-    private Spinner pinfo_sp_gender, pinfo_sp_schoolgender, pinfo_sp_academicyear, pinfo_sp_city, pinfo_sp_class, pinfo_sp_country, pinfo_sp_programcourse, pinfo_sp_state;
+    private static final String TAG = ProfileInfornation.class.getSimpleName();
+    private Spinner spGender, spSchoolgender, spAcademicyear, spCity, spClass, spCountry, spProgramcourse,  spState;
     String strArrGender[] = {"Gender","Female", "Male"};
     String strArrList[] = {"Select","Item1", "Item2"};
     private CustomSpinnerAdapter spinnerAdapter;
     private ArrayAdapter<String> adapter;
-    private Button pinfo_btn_suumit;
-    private TextView pinfo_txt_uploadpic;
-    private ImageView pinfo_img_dp;
+    private Button btnSuumit;
+    private TextView txtUploadpic;
+    private ImageView imgDp;
     private static int RESULT_LOAD_IMAGE = 1;
     private int PICK_IMAGE_REQUEST = 1;
-    private TextView pinfo_txt_youare_;
-    private TextView pinfo_txt_ifits_;
-    private TextView pinfo_txt_clickhere;
-    private EditText pinfo_et_age, pinfo_et_username, pinfo_et_newpwd, pinfo_et_nameofschool, pinfo_et_homeadd, pinfo_et_fullname,
-            pinfo_et_emailadd, pinfo_et_dob, pinfo_et_districtofschool, pinfo_et_currentpwd, pinfo_et_cno, pinfo_et_confirmpwd;
+    private TextView txtYouare;
+    private TextView txtIfits;
+    private TextView txtClickhere;
+    private EditText etAge, etUsername, etNewpwd, etNameofschool, etHomeadd, etFullname,
+            etEmailadd, etDob, etDistrictofschool, etCurrentpwd, etCno,  etConfirmpwd;
     private LayoutInflater mInflator;
     private boolean selected;
 
@@ -57,85 +57,85 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
     }
 
     private void onClicks() {
-        pinfo_sp_gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+         spGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+             @Override
+             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-            }
+             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+             @Override
+             public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+             }
+         });
     }
 
 
     private void intitView() {
         MyTypeFace myTypeFace = new MyTypeFace(this);
-        pinfo_txt_ifits_ = (TextView) findViewById(R.id.pinfo_txt_ifits_);
-        pinfo_txt_clickhere = (TextView) findViewById(R.id.pinfo_txt_clickhere);
-        pinfo_txt_youare_ = (TextView) findViewById(R.id.pinfo_txt_youare_);
-        pinfo_sp_gender = (Spinner) findViewById(R.id.sp_gender);
-        pinfo_sp_schoolgender = (Spinner) findViewById(R.id.pinfo_sp_schoolgender);
-        pinfo_sp_academicyear = (Spinner) findViewById(R.id.pinfo_sp_academicyear);
-        pinfo_sp_city = (Spinner) findViewById(R.id.sp_city);
-        pinfo_sp_class = (Spinner) findViewById(R.id.pinfo_sp_class);
-        pinfo_sp_country = (Spinner) findViewById(R.id.pinfo_sp_country);
-        pinfo_sp_state = (Spinner) findViewById(R.id.pinfo_sp_state);
-        pinfo_sp_programcourse = (Spinner) findViewById(R.id.pinfo_sp_programcourse);
-        pinfo_et_age = (EditText) findViewById(R.id.et_age);
-        pinfo_et_cno = (EditText) findViewById(R.id.et_cno);
-        pinfo_et_confirmpwd = (EditText) findViewById(R.id.pinfo_et_confirmpwd);
-        pinfo_et_currentpwd = (EditText) findViewById(R.id.pinfo_et_currentpwd);
-        pinfo_et_districtofschool = (EditText) findViewById(R.id.pinfo_et_districtofschool);
-        pinfo_et_dob = (EditText) findViewById(R.id.et_dob);
-        pinfo_et_emailadd = (EditText) findViewById(R.id.et_emailAdd);
-        pinfo_et_fullname = (EditText) findViewById(R.id.pinfo_et_fullname);
-        pinfo_et_homeadd = (EditText) findViewById(R.id.et_homeAdd);
-        pinfo_et_nameofschool = (EditText) findViewById(R.id.pinfo_et_nameofschool);
-        pinfo_et_newpwd = (EditText) findViewById(R.id.pinfo_et_newpwd);
-        pinfo_et_username = (EditText) findViewById(R.id.pinfo_et_username);
-        pinfo_txt_uploadpic = (TextView) findViewById(R.id.txt_uploadpic);
-        pinfo_img_dp = (ImageView) findViewById(R.id.img_dp);
-        pinfo_btn_suumit = (Button) findViewById(R.id.pinfo_btn_suumit);
-        pinfo_txt_youare_.setTypeface(myTypeFace.getRalewayThin());
-        pinfo_txt_ifits_.setTypeface(myTypeFace.getRalewayThin());
-        pinfo_txt_clickhere.setTypeface(myTypeFace.getRalewayThin());
-        pinfo_txt_uploadpic.setTypeface(myTypeFace.getRalewayRegular());
-        pinfo_et_age.setTypeface(myTypeFace.getRalewayRegular());
-        pinfo_et_cno.setTypeface(myTypeFace.getRalewayRegular());
-        pinfo_et_confirmpwd.setTypeface(myTypeFace.getRalewayRegular());
-        pinfo_et_currentpwd.setTypeface(myTypeFace.getRalewayRegular());
-        pinfo_et_districtofschool.setTypeface(myTypeFace.getRalewayRegular());
-        pinfo_et_dob.setTypeface(myTypeFace.getRalewayRegular());
-        pinfo_et_emailadd.setTypeface(myTypeFace.getRalewayRegular());
-        pinfo_et_fullname.setTypeface(myTypeFace.getRalewayRegular());
-        pinfo_et_homeadd.setTypeface(myTypeFace.getRalewayRegular());
-        pinfo_et_nameofschool.setTypeface(myTypeFace.getRalewayRegular());
-        pinfo_et_newpwd.setTypeface(myTypeFace.getRalewayRegular());
-        pinfo_et_username.setTypeface(myTypeFace.getRalewayRegular());
+         txtIfits = (TextView) findViewById(R.id.txt_ifits_);
+         txtClickhere = (TextView) findViewById(R.id.txt_clickhere);
+         txtYouare = (TextView) findViewById(R.id.txt_youare_);
+         spGender = (Spinner) findViewById(R.id.sp_gender);
+         spSchoolgender = (Spinner) findViewById(R.id.sp_schoolgender);
+         spAcademicyear = (Spinner) findViewById(R.id.sp_academicyear);
+         spCity = (Spinner) findViewById(R.id.sp_city);
+         spClass = (Spinner) findViewById(R.id.sp_class);
+         spCountry = (Spinner) findViewById(R.id.sp_country);
+         spState = (Spinner) findViewById(R.id.sp_state);
+         spProgramcourse = (Spinner) findViewById(R.id.sp_programcourse);
+         etAge = (EditText) findViewById(R.id.et_age);
+         etCno = (EditText) findViewById(R.id.et_cno);
+         etConfirmpwd = (EditText) findViewById(R.id.et_confirmpwd);
+         etCurrentpwd = (EditText) findViewById(R.id.et_currentpwd);
+         etDistrictofschool = (EditText) findViewById(R.id.et_districtofschool);
+         etDob = (EditText) findViewById(R.id.et_dob);
+         etEmailadd = (EditText) findViewById(R.id.et_emailAdd);
+         etFullname = (EditText) findViewById(R.id.et_fullname);
+         etHomeadd = (EditText) findViewById(R.id.et_homeAdd);
+         etNameofschool = (EditText) findViewById(R.id.et_nameofschool);
+         etNewpwd = (EditText) findViewById(R.id.et_newpwd);
+         etUsername = (EditText) findViewById(R.id.et_username);
+         txtUploadpic = (TextView) findViewById(R.id.txt_uploadpic);
+         imgDp = (ImageView) findViewById(R.id.img_dp);
+         btnSuumit = (Button) findViewById(R.id.btn_suumit);
+         txtYouare.setTypeface(myTypeFace.getRalewayThin());
+         txtIfits.setTypeface(myTypeFace.getRalewayThin());
+         txtClickhere.setTypeface(myTypeFace.getRalewayThin());
+         txtUploadpic.setTypeface(myTypeFace.getRalewayRegular());
+         etAge.setTypeface(myTypeFace.getRalewayRegular());
+         etCno.setTypeface(myTypeFace.getRalewayRegular());
+         etConfirmpwd.setTypeface(myTypeFace.getRalewayRegular());
+         etCurrentpwd.setTypeface(myTypeFace.getRalewayRegular());
+         etDistrictofschool.setTypeface(myTypeFace.getRalewayRegular());
+         etDob.setTypeface(myTypeFace.getRalewayRegular());
+         etEmailadd.setTypeface(myTypeFace.getRalewayRegular());
+         etFullname.setTypeface(myTypeFace.getRalewayRegular());
+         etHomeadd.setTypeface(myTypeFace.getRalewayRegular());
+         etNameofschool.setTypeface(myTypeFace.getRalewayRegular());
+         etNewpwd.setTypeface(myTypeFace.getRalewayRegular());
+         etUsername.setTypeface(myTypeFace.getRalewayRegular());
 
-        // pinfo_sp_gender.setTypeface(myTypeFace.getRalewayRegular());
+        //  spGender.setTypeface(myTypeFace.getRalewayRegular());
 
-        pinfo_txt_uploadpic.setOnClickListener(this);
-        pinfo_btn_suumit.setOnClickListener(this);
+         txtUploadpic.setOnClickListener(this);
+         btnSuumit.setOnClickListener(this);
         spinnerAdapter = new CustomSpinnerAdapter(ProfileInfornation.this, strArrGender);
         selected = false;
         mInflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 //        adapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, strArrGender);
 //        ArrayAdapter.createFromResource(this,
 //                R.array.list, R.layout.custom_spinner);
-//        adapter.setDropDownViewResource(R.layout.raw_spinner);
-//        pinfo_sp_gender.setAdapter(adapter);
-        setUpSpinner(pinfo_sp_academicyear, strArrList);
-        setUpSpinner(pinfo_sp_city, strArrList);
-        setUpSpinner(pinfo_sp_class, strArrList);
-        setUpSpinner(pinfo_sp_programcourse, strArrList);
-        setUpSpinner(pinfo_sp_state, strArrList);
-        setUpSpinner(pinfo_sp_schoolgender, strArrList);
-        setUpSpinner(pinfo_sp_country, strArrList);
-        setUpSpinner(pinfo_sp_gender, strArrGender);
+//        adapter.setDropDownViewResource(R.layout.row_spinner);
+//         spGender.setAdapter(adapter);
+        setUpSpinner(spAcademicyear, strArrList);
+        setUpSpinner(spCity, strArrList);
+        setUpSpinner(spClass, strArrList);
+        setUpSpinner(spProgramcourse, strArrList);
+        setUpSpinner(spState, strArrList);
+        setUpSpinner(spSchoolgender, strArrList);
+        setUpSpinner(spCountry, strArrList);
+        setUpSpinner(spGender, strArrGender);
 
     }
 
@@ -183,7 +183,7 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
                 return v;
             }
         };
-        adapter.setDropDownViewResource(R.layout.raw_spinner);
+        adapter.setDropDownViewResource(R.layout.row_spinner);
         spinner.setAdapter(adapter);
     }
 
@@ -207,7 +207,7 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 // Log.d(TAG, String.valueOf(bitmap));ImageView imageView = (ImageView) findViewById(R.id.imageView);
-                pinfo_img_dp.setImageBitmap(bitmap);
+                 imgDp.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -217,7 +217,7 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.pinfo_btn_suumit: {
+            case R.id.btn_suumit: {
                 Global.myIntent(ProfileInfornation.this, WelComeActivity.class);
             }
             break;

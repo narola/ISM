@@ -45,7 +45,7 @@ public class EventsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = inflater.inflate(R.layout.raw_events, parent, false);
+        View view = inflater.inflate(R.layout.row_events, parent, false);
        // if (position <= 4) {
             MyTypeFace myTypeFace = new MyTypeFace(context);
             TextView raw_txt_eventDate = (TextView) view.findViewById(R.id.txt_eventDate);
@@ -68,8 +68,8 @@ public class EventsAdapter extends BaseAdapter {
 //                raw_txt_noticeDesc.setVisibility(View.VISIBLE);
 //                raw_txt_readmore.setVisibility(View.VISIBLE);
 //                raw_txt_viewAll.setVisibility(View.GONE);
-//                raw_txt_notice.setText(arrayList.get(position).getNoticeName());
-//                raw_txt_noticeDesc.setText(arrayList.get(position).getNoticeDesc());
+//                raw_txt_notice.setText(arrayList.get(position).getStrNoticeName());
+//                raw_txt_noticeDesc.setText(arrayList.get(position).getStrNoticeDesc());
 //            }
 //            if (position == 3) {
 //                raw_txt_notice.setVisibility(View.GONE);

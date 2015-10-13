@@ -4,48 +4,48 @@ package com.ism.model;
  * Created by c162 on 12/10/15.
  */
 public class HighScoreStudentModel {
-    String studentName;
-    String studentMarks;
-    String StudentSchoolYearClass;
-    String StudentDp;
+    String strStudentName;
+    String strStudentMarks;
+    String strStudentSchoolYearClass;
+    String strStudentDp;
 
-    public String getStudentName() {
-        return studentName;
+    public String getStrStudentName() {
+        return strStudentName;
     }
 
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    public void setStrStudentName(String strStudentName) {
+        this.strStudentName = strStudentName;
     }
 
-    public String getStudentMarks() {
-        return studentMarks;
+    public String getStrStudentMarks() {
+        return strStudentMarks;
     }
 
-    public void setStudentMarks(String studentMarks) {
-        this.studentMarks = studentMarks;
+    public void setStrStudentMarks(String strStudentMarks) {
+        this.strStudentMarks = strStudentMarks;
     }
 
-    public String getStudentSchoolYearClass() {
-        return StudentSchoolYearClass;
+    public String getStrStudentSchoolYearClass() {
+        return strStudentSchoolYearClass;
     }
 
-    public void setStudentSchoolYearClass(String studentSchoolYearClass) {
-        StudentSchoolYearClass = studentSchoolYearClass;
+    public void setStrStudentSchoolYearClass(String strStudentSchoolYearClass) {
+        this.strStudentSchoolYearClass = strStudentSchoolYearClass;
     }
 
-    public String getStudentDp() {
-        return StudentDp;
+    public String getStrStudentDp() {
+        return strStudentDp;
     }
 
-    public void setStudentDp(String studentDp) {
-        StudentDp = studentDp;
+    public void setStrStudentDp(String strStudentDp) {
+        this.strStudentDp = strStudentDp;
     }
 
-    public HighScoreStudentModel(String studentName, String studentSchoolYearClass, String studentMarks, String studentDp) {
+    public HighScoreStudentModel(String strStudentName, String strStudentSchoolYearClass, String strStudentMarks, String strStudentDp) {
 
-        this.studentName = studentName;
-        this.studentMarks = studentMarks;
-        StudentSchoolYearClass = studentSchoolYearClass;
-        StudentDp = studentDp;
+        this.strStudentName = strStudentName;
+        this.strStudentMarks = strStudentMarks;
+        this.strStudentSchoolYearClass = strStudentSchoolYearClass;
+        this.strStudentDp = strStudentDp;
     }
 }

@@ -12,7 +12,6 @@
         android:layout_marginRight="0sp"
         android:background="@color/color_white"
         android:gravity="center_horizontal"
-
         android:orientation="horizontal" >
     </RelativeLayout>
 

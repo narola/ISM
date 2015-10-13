@@ -5,11 +5,6 @@ package com.ism.login;
  */
 public class AppConstant {
 
-    public static String userId;
-
-    public static String password;
-
-    public static Boolean isRemember;
 
     //All fonts
 
@@ -32,5 +27,7 @@ public class AppConstant {
     public static final String RalewayThin = "Raleway-Thin.ttf";
     public static final String RalewayThinItalic = "Raleway-ThinItalic.ttf";
 
+    public static final String USERID="USERID";
 
+    public static final String PASSWORD="PASSWORD";
 }

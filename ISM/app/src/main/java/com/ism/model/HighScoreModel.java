@@ -6,15 +6,15 @@ import java.util.ArrayList;
  * Created by c162 on 12/10/15.
  */
 public class HighScoreModel {
-    String subjectName;
+    String strSubjectName;
     ArrayList<HighScoreStudentModel> arrayListStudent=new ArrayList<HighScoreStudentModel>();
 
-    public String getSubjectName() {
-        return subjectName;
+    public String getStrSubjectName() {
+        return strSubjectName;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
+    public void setStrSubjectName(String strSubjectName) {
+        this.strSubjectName = strSubjectName;
     }
 
     public ArrayList<HighScoreStudentModel> getArrayListStudent() {
@@ -25,8 +25,8 @@ public class HighScoreModel {
         this.arrayListStudent = arrayListStudent;
     }
 
-    public HighScoreModel(String subjectName, ArrayList<HighScoreStudentModel> arrayListStudent) {
-        this.subjectName = subjectName;
+    public HighScoreModel(String strSubjectName, ArrayList<HighScoreStudentModel> arrayListStudent) {
+        this.strSubjectName = strSubjectName;
 
         this.arrayListStudent = arrayListStudent;
     }

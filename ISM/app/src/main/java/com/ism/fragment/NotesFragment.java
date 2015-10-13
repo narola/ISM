@@ -29,8 +29,7 @@ import com.ism.object.MyTypeFace;
 
 import java.util.ArrayList;
 
-public class NotesFragment extends Fragment
-{
+public class NotesFragment extends Fragment {
 
     private static final String TAG = NotesFragment.class.getSimpleName();
 
@@ -39,7 +38,7 @@ public class NotesFragment extends Fragment
     private FragmentListener mFragmentListener;
     private AccordionView notes_accordion_view;
     private LinearLayout notes_ll_notice, notes_ll_events;
-    private ListView notice_lv_notice, notice_lv_events,notes_lv_highScore;
+    private ListView notice_lv_notice, notice_lv_events, notes_lv_highScore;
     private boolean moreRecordFound = false;
     private TextView notes_txt_viewAll;
 
@@ -91,17 +90,19 @@ public class NotesFragment extends Fragment
 
         HighScoreModel highScoreModel;
         HighScoreStudentModel highScoreStudentModel;
-        ArrayList<HighScoreStudentModel> arrayListHighScoreStudentList=new ArrayList<>();
-        highScoreStudentModel=new HighScoreStudentModel("Adam Stanger","St. Xaviers FY CS","500","");
+        ArrayList<HighScoreStudentModel> arrayListHighScoreStudentList = new ArrayList<>();
+        highScoreStudentModel = new HighScoreStudentModel("Adam Stanger", "St. Xaviers FY CS", "500", "");
         arrayListHighScoreStudentList.add(highScoreStudentModel);
-        highScoreStudentModel=new HighScoreStudentModel("Adam Stanger","St. Xaviers FY CS","500","");
+        highScoreStudentModel = new HighScoreStudentModel("Adam Stanger", "St. Xaviers FY CS", "500", "");
         arrayListHighScoreStudentList.add(highScoreStudentModel);
-        ArrayList<HighScoreModel> arrayListHighScore=new ArrayList<>();
-        highScoreModel=new HighScoreModel("Maths",arrayListHighScoreStudentList);
+        highScoreStudentModel = new HighScoreStudentModel("Adam Stanger", "St. Xaviers FY CS", "500", "");
+        arrayListHighScoreStudentList.add(highScoreStudentModel);
+        ArrayList<HighScoreModel> arrayListHighScore = new ArrayList<>();
+        highScoreModel = new HighScoreModel("Maths", arrayListHighScoreStudentList);
         arrayListHighScore.add(highScoreModel);
-        highScoreModel=new HighScoreModel("Science",arrayListHighScoreStudentList);
+        highScoreModel = new HighScoreModel("Science", arrayListHighScoreStudentList);
         arrayListHighScore.add(highScoreModel);
-        notes_lv_highScore.setAdapter(new HighScoreAdapter(getActivity(),arrayListHighScore));
+        notes_lv_highScore.setAdapter(new HighScoreAdapter(getActivity(), arrayListHighScore));
 
     }
 
@@ -152,5 +153,6 @@ public class NotesFragment extends Fragment
         }
         mFragmentListener = null;
     }
+
 
 }

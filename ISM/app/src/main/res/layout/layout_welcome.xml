@@ -83,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:id="@+id/wc_txt_tutorialgroup_"
+        android:id="@+id/txt_tutorialgroup_"
         android:text="@string/strtutorialgroupis5"
         android:textColor="@color/color_white"
         android:textSize="@dimen/d30sp" />
@@ -98,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:id="@+id/wc_txt_selected_"
+            android:id="@+id/txt_selected_"
             android:text="@string/strselectedstudentsputtogetherto"
             android:textColor="@color/color_white"
             android:textSize="@dimen/d30sp" />
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginLeft="5sp"
-            android:id="@+id/wc_txt_shareideas"
+            android:id="@+id/txt_shareideas"
             android:text="@string/strshareideas"
             android:textColor="#81D525"
             android:textSize="@dimen/d30sp" />
@@ -124,7 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:text="@string/strcollborate"
-            android:id="@+id/wc_txt_collaborate"
+            android:id="@+id/txt_collaborate"
             android:textColor="#CC89EA"
             android:textSize="@dimen/d30sp" />
         <TextView
@@ -132,7 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:text="@string/strand"
-            android:id="@+id/wc_txt_and"
+            android:id="@+id/txt_and"
             android:layout_marginLeft="5sp"
             android:textColor="@color/color_white"
             android:textSize="@dimen/d30sp" />
@@ -140,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:id="@+id/wc_txt_doassign"
+            android:id="@+id/txt_doassign"
             android:layout_marginLeft="5sp"
             android:text="@string/strdoassignments"
             android:textColor="#F5A438"

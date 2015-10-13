@@ -14,8 +14,9 @@ import com.ism.object.MyTypeFace;
  * Created by c162 on 08/10/15.
  */
 public class WelComeActivity extends Activity {
-    private LinearLayout wc_ll_main;
-    private TextView wc_txt_selected_, wc_txt_shareideas, wc_txt_and, wc_txt_doassign, wc_txt_collaborate, wc_txt_tutorialgroup_, wc_txt_nameyourtutorial_, wc_txt_andwill_;
+    private static final String TAG = WelComeActivity.class.getSimpleName();
+    private LinearLayout llMain;
+    private TextView txtSelected, txtShareideas, txtAnd, txtDoAssign, txtCollaborate, txtTutorialGroup, txtNameyourTutorial, txtAndwill;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,26 +28,26 @@ public class WelComeActivity extends Activity {
 
     private void intitView() {
         MyTypeFace myTypeFace = new MyTypeFace(this);
-        wc_txt_selected_ = (TextView) findViewById(R.id.wc_txt_selected_);
-        wc_txt_shareideas = (TextView) findViewById(R.id.wc_txt_shareideas);
-        wc_txt_and = (TextView) findViewById(R.id.wc_txt_and);
-        wc_txt_doassign = (TextView) findViewById(R.id.wc_txt_doassign);
-        wc_txt_collaborate = (TextView) findViewById(R.id.wc_txt_collaborate);
-        wc_txt_tutorialgroup_ = (TextView) findViewById(R.id.wc_txt_tutorialgroup_);
-        wc_txt_nameyourtutorial_ = (TextView) findViewById(R.id.txt_nameyourtutorial_);
-        wc_txt_andwill_ = (TextView) findViewById(R.id.txt_andwill_);
+        txtSelected = (TextView) findViewById(R.id.txt_selected_);
+        txtShareideas = (TextView) findViewById(R.id.txt_shareideas);
+        txtAnd = (TextView) findViewById(R.id.txt_and);
+        txtDoAssign = (TextView) findViewById(R.id.txt_doassign);
+        txtCollaborate = (TextView) findViewById(R.id.txt_collaborate);
+        txtTutorialGroup = (TextView) findViewById(R.id.txt_tutorialgroup_);
+        txtNameyourTutorial = (TextView) findViewById(R.id.txt_nameyourtutorial_);
+        txtAndwill = (TextView) findViewById(R.id.txt_andwill_);
 
 
-        wc_txt_selected_.setTypeface(myTypeFace.getRalewayRegular());
-        wc_txt_shareideas.setTypeface(myTypeFace.getRalewayRegular());
-        wc_txt_collaborate.setTypeface(myTypeFace.getRalewayRegular());
-        wc_txt_and.setTypeface(myTypeFace.getRalewayRegular());
-        wc_txt_doassign.setTypeface(myTypeFace.getRalewayRegular());
-        wc_txt_tutorialgroup_.setTypeface(myTypeFace.getRalewayRegular());
-        wc_txt_nameyourtutorial_.setTypeface(myTypeFace.getRalewaySemiBold());
-        wc_txt_andwill_.setTypeface(myTypeFace.getRalewaySemiBold());
-        wc_ll_main = (LinearLayout) findViewById(R.id.ll_main);
-        wc_ll_main.setOnClickListener(new View.OnClickListener() {
+        txtSelected.setTypeface(myTypeFace.getRalewayRegular());
+        txtShareideas.setTypeface(myTypeFace.getRalewayRegular());
+        txtCollaborate.setTypeface(myTypeFace.getRalewayRegular());
+        txtAnd.setTypeface(myTypeFace.getRalewayRegular());
+        txtDoAssign.setTypeface(myTypeFace.getRalewayRegular());
+        txtTutorialGroup.setTypeface(myTypeFace.getRalewayRegular());
+        txtNameyourTutorial.setTypeface(myTypeFace.getRalewaySemiBold());
+        txtAndwill.setTypeface(myTypeFace.getRalewaySemiBold());
+        llMain = (LinearLayout) findViewById(R.id.ll_main);
+        llMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Global.myIntent(getApplicationContext(), TutorialGroup.class);

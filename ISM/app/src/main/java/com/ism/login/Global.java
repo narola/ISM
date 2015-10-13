@@ -2,8 +2,6 @@ package com.ism.login;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
-import android.widget.EditText;
 
 /**
  * Created by c162 on 07/10/15.
@@ -15,9 +13,12 @@ public class Global {
         this.context = context;
     }
 
-    public static String USERID="USERID";
+    public static String userId;
 
-    public static String PASSWORD="PASSWORD";
+    public static String password;
+
+    public static Boolean isRemember;
+
 
     public static void myIntent(Context con,Class contextTo ){
         Intent intent=new Intent(con,contextTo);

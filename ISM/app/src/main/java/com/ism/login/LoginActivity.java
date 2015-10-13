@@ -17,17 +17,17 @@ import com.ism.R;
 import com.ism.object.MyTypeFace;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
-
-    TextView login_txt_forgotpwd;
-    TextView login_txt_clickhere;
-    Button login_btn_login;
-    EditText login_et_pwd;
-    EditText login_et_userid;
-    CheckBox login_chk_rememberme;
+    private static final String TAG = LoginActivity.class.getSimpleName();
+    TextView txtForgotpwd;
+    TextView txtClickhere;
+    Button btnLogin;
+    EditText etPwd;
+    EditText etUserid;
+    CheckBox chkRememberme;
     Global global;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    private TextView login_txt_donothave_;
+    private TextView txtDonothave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,35 +44,35 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     private void getIsRemember() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        AppConstant.userId = sharedPreferences.getString(Global.USERID, null);
+        Global.userId = sharedPreferences.getString(AppConstant.USERID, null);
 
-        AppConstant.password = sharedPreferences.getString(Global.PASSWORD, null);
-        if (AppConstant.userId.length() == 0 && AppConstant.password.length() == 0) {
-            login_et_userid.setText(AppConstant.userId);
-            login_et_pwd.setText(AppConstant.password);
+        Global.password = sharedPreferences.getString(AppConstant.PASSWORD, null);
+        if (Global.userId.length() == 0 && Global.password.length() == 0) {
+             etUserid.setText(Global.userId);
+             etPwd.setText(Global.password);
 
         }
     }
 
     private void initView() {
         MyTypeFace myTypeFace = new MyTypeFace(this);
-        login_txt_forgotpwd = (TextView) findViewById(R.id.login_txt_forgotpwd);
-        login_txt_clickhere = (TextView) findViewById(R.id.login_txt_clickhere);
-        login_txt_donothave_ = (TextView) findViewById(R.id.login_txt_donothave_);
-        login_btn_login = (Button) findViewById(R.id.login_btn_login);
-        login_et_pwd = (EditText) findViewById(R.id.login_et_pwd);
-        login_et_userid = (EditText) findViewById(R.id.login_et_userid);
-        login_chk_rememberme = (CheckBox) findViewById(R.id.login_chk_rememberme);
-        login_et_userid.setTypeface(myTypeFace.getRalewayRegular());
-        login_et_pwd.setTypeface(myTypeFace.getRalewayRegular());
-        login_txt_donothave_.setTypeface(myTypeFace.getRalewayRegular());
-        login_txt_clickhere.setTypeface(myTypeFace.getRalewayRegular());
-        login_txt_forgotpwd.setTypeface(myTypeFace.getRalewayRegular());
+         txtForgotpwd = (TextView) findViewById(R.id.txt_forgotpwd);
+         txtClickhere = (TextView) findViewById(R.id.txt_clickhere);
+         txtDonothave = (TextView) findViewById(R.id.txt_donothave_);
+         btnLogin = (Button) findViewById(R.id.btn_login);
+         etPwd = (EditText) findViewById(R.id.et_pwd);
+         etUserid = (EditText) findViewById(R.id.et_userid);
+         chkRememberme = (CheckBox) findViewById(R.id.chk_rememberme);
+         etUserid.setTypeface(myTypeFace.getRalewayRegular());
+         etPwd.setTypeface(myTypeFace.getRalewayRegular());
+         txtDonothave.setTypeface(myTypeFace.getRalewayRegular());
+         txtClickhere.setTypeface(myTypeFace.getRalewayRegular());
+         txtForgotpwd.setTypeface(myTypeFace.getRalewayRegular());
 
-        login_btn_login.setOnClickListener(this);
-        login_txt_clickhere.setOnClickListener(this);
-        login_txt_forgotpwd.setOnClickListener(this);
-        login_chk_rememberme.setOnClickListener(this);
+         btnLogin.setOnClickListener(this);
+         txtClickhere.setOnClickListener(this);
+         txtForgotpwd.setOnClickListener(this);
+         chkRememberme.setOnClickListener(this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
     }
@@ -102,12 +102,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.login_btn_login: {
+            case R.id.btn_login: {
                 validatation();
 
             }
             break;
-            case R.id.login_chk_rememberme: {
+            case R.id.chk_rememberme: {
                 // isRemember();
 
             }
@@ -117,33 +117,33 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     private void validatation() {
-//        if (login_et_userid.getText().toString().length() == 0) {
-//            login_et_userid.requestFocus();
-//            login_et_userid.setError(Html.fromHtml("<font color='red'>Field should not be blank.</font>"));
+//        if ( etUserid.getText().toString().length() == 0) {
+//             etUserid.requestFocus();
+//             etUserid.setError(Html.fromHtml("<font color='red'>Field should not be blank.</font>"));
 //
-//        } else if (login_et_pwd.getText().toString().length() == 0) {
-//            login_et_pwd.requestFocus();
-//            login_et_pwd.setError(Html.fromHtml("<font color='red'>Field should not be blank.</font>"));
+//        } else if ( etPwd.getText().toString().length() == 0) {
+//             etPwd.requestFocus();
+//             etPwd.setError(Html.fromHtml("<font color='red'>Field should not be blank.</font>"));
 //
 //        } else {
         //isRemember();
-        login_et_userid.setText("");
-        login_et_pwd.setText("");
+         etUserid.setText("");
+         etPwd.setText("");
         global.myIntent(this, ProfileInfornation.class);
         // }
     }
 
     private void isRemember() {
-        if (login_chk_rememberme.isChecked()) {
+        if ( chkRememberme.isChecked()) {
 
             editor = sharedPreferences.edit();
-            editor.putString(Global.USERID, login_et_userid.getText().toString());
-            editor.putString(Global.PASSWORD, login_et_pwd.getText().toString());
+            editor.putString(AppConstant.USERID, etUserid.getText().toString());
+            editor.putString(AppConstant.PASSWORD, etPwd.getText().toString());
             editor.commit();
         } else {
             editor = sharedPreferences.edit();
-            editor.putString(Global.USERID, "");
-            editor.putString(Global.PASSWORD, "");
+            editor.putString(AppConstant.USERID, "");
+            editor.putString(AppConstant.PASSWORD, "");
             editor.commit();
         }
 

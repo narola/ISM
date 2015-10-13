@@ -46,7 +46,7 @@ public class TutorialGroupAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             //   LayoutInflater inflater = (LayoutInflater) LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.raw_tutorial_group, parent, false);
+            convertView = inflater.inflate(R.layout.row_tutorial_group, parent, false);
             viewHolder.rawtg_txt_name = (TextView) convertView.findViewById(R.id.txt_studentName);
             viewHolder.rawtg_txt_address = (TextView) convertView.findViewById(R.id.txt_address);
             viewHolder.rawtg_txt_school = (TextView) convertView.findViewById(R.id.txt_school);

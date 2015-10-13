@@ -46,16 +46,16 @@ public class HighScoreStudentListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = inflater.inflate(R.layout.raw_highscore_sublist, parent, false);
-        TextView raw_txt_highScoreStudentName = (TextView) convertView.findViewById(R.id.raw_txt_highScoreStudentName);
-        TextView raw_txt_highScoreSchoolYearClass = (TextView) convertView.findViewById(R.id.raw_txt_highScoreSchoolYearClass);
-        TextView raw_txt_highScoreMarks = (TextView) convertView.findViewById(R.id.raw_txt_highScoreMarks);
+        convertView = inflater.inflate(R.layout.row_highscore_sublist, parent, false);
+        TextView raw_txt_highScoreStudentName = (TextView) convertView.findViewById(R.id.txt_highScoreStudentName);
+        TextView raw_txt_highScoreSchoolYearClass = (TextView) convertView.findViewById(R.id.txt_highScoreSchoolYearClass);
+        TextView raw_txt_highScoreMarks = (TextView) convertView.findViewById(R.id.txt_highScoreMarks);
         raw_txt_highScoreStudentName.setTypeface(new MyTypeFace(context).getRalewayRegular());
         raw_txt_highScoreSchoolYearClass.setTypeface(new MyTypeFace(context).getRalewayThin());
         raw_txt_highScoreMarks.setTypeface(new MyTypeFace(context).getRalewayMedium());
-        raw_txt_highScoreStudentName.setText(arrayList.get(position).getStudentName());
-        raw_txt_highScoreSchoolYearClass.setText(arrayList.get(position).getStudentSchoolYearClass());
-        raw_txt_highScoreMarks.setText(arrayList.get(position).getStudentMarks());
+        raw_txt_highScoreStudentName.setText(arrayList.get(position).getStrStudentName());
+        raw_txt_highScoreSchoolYearClass.setText(arrayList.get(position).getStrStudentSchoolYearClass());
+        raw_txt_highScoreMarks.setText(arrayList.get(position).getStrStudentMarks());
 
         return convertView;
     }

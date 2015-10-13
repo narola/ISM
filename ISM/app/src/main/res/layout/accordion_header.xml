@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:accordion="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/mainlayout"
+    android:id="@+id/ll_mainlayout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white">
@@ -24,7 +24,7 @@
         <!-- paddingRight added to center text correctly -->
 
         <TextView
-            android:id="@+id/foldText"
+            android:id="@+id/txt_headerName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="left"

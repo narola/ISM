@@ -45,12 +45,12 @@ public class NoticeAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = inflater.inflate(R.layout.raw_notice, parent, false);
+        View view = inflater.inflate(R.layout.row_notice, parent, false);
    // if(position<=2){
         MyTypeFace myTypeFace=new MyTypeFace(context);
-        TextView raw_txt_notice = (TextView) view.findViewById(R.id.raw_txt_noticeName);
-        TextView raw_txt_noticeDesc = (TextView) view.findViewById(R.id.raw_txt_noticeDesc);
-        TextView raw_txt_readmore = (TextView) view.findViewById(R.id.raw_txt_noticeReadMore);
+        TextView raw_txt_notice = (TextView) view.findViewById(R.id.txt_noticeName);
+        TextView raw_txt_noticeDesc = (TextView) view.findViewById(R.id.txt_noticeDesc);
+        TextView raw_txt_readmore = (TextView) view.findViewById(R.id.txt_noticeReadMore);
      //   TextView raw_txt_viewAll = (TextView) view.findViewById(R.id.raw_txt_noticeViewAll);
         raw_txt_notice.setTypeface(myTypeFace.getRalewayBold());
         raw_txt_noticeDesc.setTypeface(myTypeFace.getRalewayThin());
@@ -63,8 +63,8 @@ public class NoticeAdapter extends BaseAdapter {
             raw_txt_noticeDesc.setVisibility(View.VISIBLE);
             raw_txt_readmore.setVisibility(View.VISIBLE);
           //  raw_txt_viewAll.setVisibility(View.GONE);
-            raw_txt_notice.setText(arrayList.get(position).getNoticeName());
-            raw_txt_noticeDesc.setText(arrayList.get(position).getNoticeDesc());
+            raw_txt_notice.setText(arrayList.get(position).getStrNoticeName());
+            raw_txt_noticeDesc.setText(arrayList.get(position).getStrNoticeDesc());
         //}
 //        if (position==2){
 //            raw_txt_notice.setVisibility(View.GONE);

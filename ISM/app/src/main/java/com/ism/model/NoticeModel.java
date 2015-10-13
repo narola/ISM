@@ -4,27 +4,27 @@ package com.ism.model;
  * Created by c162 on 10/10/15.
  */
 public class NoticeModel {
-    String noticeName;
-    String noticeDesc;
+    String strNoticeName;
+    String strNoticeDesc;
 
-    public String getNoticeName() {
-        return noticeName;
+    public String getStrNoticeName() {
+        return strNoticeName;
     }
 
-    public NoticeModel(String noticeName, String noticeDesc) {
-        this.noticeName = noticeName;
-        this.noticeDesc = noticeDesc;
+    public NoticeModel(String strNoticeName, String strNoticeDesc) {
+        this.strNoticeName = strNoticeName;
+        this.strNoticeDesc = strNoticeDesc;
     }
 
-    public void setNoticeName(String noticeName) {
-        this.noticeName = noticeName;
+    public void setStrNoticeName(String strNoticeName) {
+        this.strNoticeName = strNoticeName;
     }
 
-    public String getNoticeDesc() {
-        return noticeDesc;
+    public String getStrNoticeDesc() {
+        return strNoticeDesc;
     }
 
-    public void setNoticeDesc(String noticeDesc) {
-        this.noticeDesc = noticeDesc;
+    public void setStrNoticeDesc(String strNoticeDesc) {
+        this.strNoticeDesc = strNoticeDesc;
     }
 }

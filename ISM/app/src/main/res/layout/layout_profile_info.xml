@@ -69,7 +69,7 @@
                                 android:orientation="horizontal">
 
                                 <EditText
-                                    android:id="@+id/pinfo_et_fullname"
+                                    android:id="@+id/et_fullname"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="@dimen/d5sp"
@@ -220,7 +220,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5sp"
-                            android:id="@+id/pinfo_sp_state"
+                            android:id="@+id/sp_state"
                             android:layout_weight="1"
                             android:background="@drawable/spinner_selector"
                             android:entries="@array/list" />
@@ -229,7 +229,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:id="@+id/pinfo_sp_country"
+                            android:id="@+id/sp_country"
                             android:background="@drawable/spinner_selector"
                             android:entries="@array/list"
                             android:padding="@dimen/d20sp" />
@@ -275,7 +275,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/pinfo_txt_youare_"
+                            android:id="@+id/txt_youare_"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -288,7 +288,7 @@
                             android:textSize="@dimen/d18sp" />
 
                         <TextView
-                            android:id="@+id/pinfo_txt_clickhere"
+                            android:id="@+id/txt_clickhere"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -303,7 +303,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/pinfo_txt_ifits_"
+                            android:id="@+id/txt_ifits_"
                             android:gravity="center"
                             android:paddingBottom="@dimen/d10sp"
                             android:paddingLeft="0dp"
@@ -322,7 +322,7 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/pinfo_et_nameofschool"
+                            android:id="@+id/et_nameofschool"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5sp"
@@ -333,7 +333,7 @@
                             android:textColorHint="@color/color_text_hint" />
 
                         <Spinner
-                            android:id="@+id/pinfo_sp_class"
+                            android:id="@+id/sp_class"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5sp"
@@ -343,7 +343,7 @@
                             android:padding="@dimen/d20sp" />
 
                         <Spinner
-                            android:id="@+id/pinfo_sp_academicyear"
+                            android:id="@+id/sp_academicyear"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5sp"
@@ -365,13 +365,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5sp"
                             android:layout_weight="1"
-                            android:id="@+id/pinfo_sp_schoolgender"
+                            android:id="@+id/sp_schoolgender"
                             android:background="@drawable/spinner_selector"
                             android:entries="@array/list"
                             android:padding="@dimen/d20sp" />
 
                         <EditText
-                            android:id="@+id/pinfo_et_districtofschool"
+                            android:id="@+id/et_districtofschool"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginRight="@dimen/d5sp"
@@ -382,7 +382,7 @@
                             android:textColorHint="@color/color_text_hint" />
 
                         <Spinner
-                            android:id="@+id/pinfo_sp_programcourse"
+                            android:id="@+id/sp_programcourse"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5sp"
@@ -431,7 +431,7 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/pinfo_et_username"
+                            android:id="@+id/et_username"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5sp"
@@ -442,7 +442,7 @@
                             android:textColorHint="@color/color_text_hint" />
 
                         <EditText
-                            android:id="@+id/pinfo_et_currentpwd"
+                            android:id="@+id/et_currentpwd"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5sp"
@@ -461,7 +461,7 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/pinfo_et_newpwd"
+                            android:id="@+id/et_newpwd"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginRight="@dimen/d5sp"
@@ -472,7 +472,7 @@
                             android:textColorHint="@color/color_text_hint" />
 
                         <EditText
-                            android:id="@+id/pinfo_et_confirmpwd"
+                            android:id="@+id/et_confirmpwd"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginRight="@dimen/d5sp"
@@ -494,7 +494,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/pinfo_btn_cancel"
+                    android:id="@+id/btn_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/d10sp"
@@ -509,7 +509,7 @@
                     android:textSize="@dimen/d20sp" />
 
                 <Button
-                    android:id="@+id/pinfo_btn_suumit"
+                    android:id="@+id/btn_suumit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d10sp"

@@ -18,10 +18,10 @@
         android:orientation="vertical"
         accordion:header_layout_fold_button_id="@id/foldButton"
         accordion:header_layout_id="@layout/accordion_header"
-        accordion:header_layout_label_id="@id/foldText"
+        accordion:header_layout_label_id="@id/txt_headerName"
         accordion:section_bottom="@layout/accordion_footer"
         accordion:section_container="@layout/accordion_section"
-        accordion:section_container_parent="@id/section_content"
+        accordion:section_container_parent="@id/rl_section_content"
         accordion:section_headers="@array/accordion_notice"
         accordion:section_visibility="@array/accordion_notice_visibility">
 
@@ -36,14 +36,15 @@
                 android:id="@+id/notes_lv_notice"
                 android:layout_width="match_parent"
                 android:layout_height="350sp"
-                 />
+                android:padding="@dimen/d5sp" />
+
             <TextView
                 android:id="@+id/notes_txt_viewAll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="View all"
                 android:padding="@dimen/d10sp"
+                android:text="View all"
                 android:textColor="@color/color_green"
                 android:textSize="@dimen/d20sp"
                 android:visibility="gone" />
@@ -53,20 +54,21 @@
         <ListView
             android:id="@+id/notes_lv_highScore"
             android:layout_width="match_parent"
-            android:layout_height="350sp"
+            android:layout_height="410sp"
+            android:background="@drawable/bg_highscore_subjectlist"
             />
 
         <!--<LinearLayout-->
-            <!--android:id="@+id/notes_ll_events"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="vertical">-->
+        <!--android:id="@+id/notes_ll_events"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
 
-            <ListView
-                android:id="@+id/notes_lv_events"
-                android:layout_width="match_parent"
-                android:layout_height="450sp"
-                />
+        <ListView
+            android:id="@+id/notes_lv_events"
+            android:layout_width="match_parent"
+            android:layout_height="460sp"
+            android:padding="@dimen/d5sp" />
 
         <!--</LinearLayout>-->
 
