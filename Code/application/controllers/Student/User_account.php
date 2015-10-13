@@ -85,6 +85,7 @@ class User_account extends CI_Controller {
 		    			),
 		    		'single' => 1
 		    		));
+		// qry(true);
 		$this->form_validation->set_rules('username', 'Username', 'trim|required|callback_check_user');
 		$this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|regex_match[/^[0-9().-]+$/]');
 		
@@ -269,6 +270,7 @@ class User_account extends CI_Controller {
 					$course_id	= 	$query_result['program'];
 					$school_id	=	$query_result['school_id'];
 					$class_id	=	$query_result['class_id'];
+					$academic_year	=	$query_result['academic_year'];
 					insert(TBL_STUDENT_ACADEMIC_INFO,$data_academic);
 				}
 
@@ -277,7 +279,7 @@ class User_account extends CI_Controller {
 				$path = "uploads/user_".$insertid;
 
 				/*----create the folder if it's not already exists--*/
-				
+
 				if(!empty($_FILES['profile_image_1']['name'])){
 			    if(!is_dir($path)){
 			      	mkdir($path,0755,TRUE);
@@ -338,63 +340,90 @@ class User_account extends CI_Controller {
 	   									'condition'=>'tm.user_id = i.user_id'
 	   								),
 	   								array(
-	   									'table'=>TBL_TUTORIAL_GROUPS.' tg',
-	   									'condition'=>'tm.group_id = tg.id'
-	   								),
-	   								array(
-	   									'table'=>TBL_SCHOOLS.' s',
-	   									'condition'=>'i.school_id = s.id'
-	   								)	
+	   									'table' => TBL_TUTORIAL_GROUPS.' tg',
+	   									'condition' => 'tg.id = tm.group_id'
+	   								)
 	   							),
-	   							'group_by'=>'tm.group_id'
+	   							'group_by' => 'tm.group_id'
 	   						);
-	           	$exist_members 	= 	select(TBL_STUDENT_ACADEMIC_INFO.' i','i.user_id,tm.group_id,group_concat(s.school_grade) as grade,i.course_id',$where,$options);
+	           	$exist_members 	= 	select(TBL_STUDENT_ACADEMIC_INFO.' i','tm.group_id as group_id',$where,$options);
 
-	           	/*----Auto generated group name------*/	
+	           	//--find all group are match with my crieteria
 
-	           	$options			=	array('order_by'=>'RAND()','limit'=>1,'single'=>1); 	
-	           	$found_group_name 	=	select(TBL_GROUP_NAMES,'group_name',null,$options);
-	           	$course_name		=	select(TBL_COURSES,'course_name',array('where'=>array('id'=>$course_id)),1);
-	           	$group_name 		=	$found_group_name['group_name'].'-'.$course_name['course_name'];
+	           	$my_group_id = array();
+	           	foreach ($exist_members as $key => $value) {
+	           		$my_group_id[] = $value['group_id'];
+	           	}
 
-	           	if(sizeof($exist_members)>0){
-	               	foreach ($exist_members as $key => $value) {
+	           	if(sizeof($my_group_id) > 0){
+	           	
+		           	//--find all schools grade that are joined with founded groups 
+		           	
+		           	$options = array('join' => array(
+		           						array('table' => TBL_STUDENT_ACADEMIC_INFO.' i','condition' => 'i.user_id = tm.user_id'),
+		           						array('table' => TBL_SCHOOLS.' s','condition' => 'i.school_id = s.id')
+		           					),
+		           				'group_by' => 'tm.group_id'
+		           				);
+		           	$where = array('where_in' => array('tm.group_id' => $my_group_id));
+		           	$get_school_info = select(TBL_TUTORIAL_GROUP_MEMBER.' tm','tm.group_id, group_concat(s.school_grade) as grade',$where,$options);
+
+		           	/*----Auto generated group name------*/	
+
+		           	$options			=	array('order_by'=>'RAND()','limit'=>1,'single'=>1); 	
+		           	$found_group_name 	=	select(TBL_GROUP_NAMES,'group_name',null,$options);
+		           	$course_name		=	select(TBL_COURSES,'course_name',array('where'=>array('id'=>$course_id)),1);
+		           	$group_name 		=	$found_group_name['group_name'].'-'.$course_name['course_name'];
+		        }
+	           	if(sizeof($get_school_info)>0){
+
+	               //--find group where grade is instead of my grade 
+
+	           		$found_grade = '';
+
+	               	foreach ($get_school_info as $key => $value) {
 	               		$grade_array	=	explode(',',$value['grade']);
-
 	               		if(in_array($school_grade, $grade_array)){
-	           			 	$group_data =	array(
-	           					'group_name'		=>	$group_name,
-	           					'group_type'		=>	'tutorial group',
-	           					'group_status'		=>	0
-	           				);
-	           				$groupid 	=	insert(TBL_TUTORIAL_GROUPS,$group_data);
-	           				$group_member_data	=	array(
-	           					'group_id'			=> 	$groupid,
-	           					'user_id'			=>	$insertid,
-	           					'joining_status'	=>	0
-	           				);
-	           				insert(TBL_TUTORIAL_GROUP_MEMBER,$group_member_data);
-	                        redirect('login/welcome');
+	               			$found_grade = true;//--found
 	               		}
 	               		else{
-
-	           			  	$group_member_data	=	array(
-		                   		'group_id'			=> 	$value['group_id'],
-		                   		'user_id'			=>	$insertid,
-		                   		'joining_status'	=>	0,
-		                   	);
-		                   	insert(TBL_TUTORIAL_GROUP_MEMBER,$group_member_data);
-							$member_count	=	count($grade_array)+1;
-							if($member_count == 5){
-								$is_completed	=  array('is_completed' => 1);
-								$where	=	array('id' => $value['group_id']);
-								update(TBL_TUTORIAL_GROUPS,$where,$is_completed);
-							}
-							redirect('login/welcome');
+	               			$found_grade = false;//--not found	
+	               			$found_group_id = $value['group_id']; 
 	               		}
 	               	}
+
+	               	if($found_grade == true){//--when found then create new group
+           			 	$group_data =	array(
+           					'group_name'		=>	$group_name,
+           					'group_type'		=>	'tutorial group',
+           					'group_status'		=>	0
+           				);
+           				$groupid 	=	insert(TBL_TUTORIAL_GROUPS,$group_data);
+           				$group_member_data	=	array(
+           					'group_id'			=> 	$groupid,
+           					'user_id'			=>	$insertid,
+           					'joining_status'	=>	0
+           				);
+           				insert(TBL_TUTORIAL_GROUP_MEMBER,$group_member_data);
+                        redirect('login/welcome');
+	               	}
+	               	else if($found_grade == false){//--when not found then use exist group
+           			  	$group_member_data	=	array(
+	                   		'group_id'			=> 	$found_group_id,
+	                   		'user_id'			=>	$insertid,
+	                   		'joining_status'	=>	0,
+	                   	);
+	                   	insert(TBL_TUTORIAL_GROUP_MEMBER,$group_member_data);
+						$member_count	=	count($grade_array)+1;
+						if($member_count == 5){
+							$is_completed	=  array('is_completed' => 1);
+							$where	=	array('id' => $value['group_id']);
+							update(TBL_TUTORIAL_GROUPS,$where,$is_completed);
+						}
+						redirect('login/welcome');
+	               	}
 	           	}
-	           	else{
+	           	else{//--if no any records with our crieteria then creat new one group
 	       			$group_data =	array(
 	   					'group_name'		=>	$group_name,
 	   					'group_type'		=>	'tutorial group',

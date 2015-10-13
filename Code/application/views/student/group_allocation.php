@@ -69,7 +69,6 @@
                                         <img src="<?php echo base_url()?>uploads/<?php echo isset($users[$i]['profile_pic'])?$users[$i]['profile_pic']:''?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                     </div>
                                     <h3><?php echo isset($users[$i]['full_name'])?$users[$i]['full_name']:'';?></h3>
-                                    <p class="active">Member Since 2 Weeks</p>
                                 </div>
                                 <div class="col-sm-8 member_info">
                                     <h3><?php echo isset($users[$i]['school_name'])?$users[$i]['school_name']:'';?></h3>
@@ -107,17 +106,24 @@
                 </div>
             </footer>
 		</div>
-
+        <div class="alert alert_notification alert-dismissible" role="alert" id="himsg">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <p><?php echo $this->session->flashdata('success');echo $this->session->flashdata('error'); ?></p>
+        </div>
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="assets/js/jquery-1.11.3.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="assets/js/bootstrap.min.js"></script> 
         <!--scroll-->
         <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-         <?php flashMessage($this->session->flashdata('success'),$this->session->flashdata('error')); ?>
+         
          <script>setTimeout(
               function() 
-              {  $(".alert-dismissible").hide(500);
+              {  $("#himsg").fadeOut(500);
+              }, 3000);
+            setTimeout(
+              function() 
+              {  $("#alert-dismissible").fadeOut(500);
               }, 3000);
          </script>
     </body>
