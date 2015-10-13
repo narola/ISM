@@ -16,7 +16,7 @@ import com.ism.interfaces.FragmentListener;
 /**
  * Created by c161 on --/10/15.
  */
-public class TutorialFragment extends Fragment {
+public class TutorialFragment extends Fragment implements TutorialDiscussionFragment.TutorialDiscussionFragmentListener {
 
     private static final String TAG = TutorialFragment.class.getSimpleName();
 
@@ -33,7 +33,7 @@ public class TutorialFragment extends Fragment {
 	private TextView txtWeekDays[];
 
     private FragmentListener fragListener;
-    private View.OnClickListener onWeekDayClickListener;
+    private View.OnClickListener listenerOnWeekDayClick;
 	private TutorialDiscussionFragment fragTutorialDiscussion;
 
 	public static final int MON = 0;
@@ -44,8 +44,8 @@ public class TutorialFragment extends Fragment {
 	public static final int FRAGMENT_FRI = 1;
 	public static final int FRAGMENT_SAT = 2;
 	public static final int FRAGMENT_SUN = 3;
-	private static int intCurrentFragment;
-	private static int intCurrentDay;
+	private static int intCurrentFragment = -1;
+	private static int intCurrentDay = -1;
 
     public static TutorialFragment newInstance() {
         TutorialFragment fragmentTutorial = new TutorialFragment();
@@ -78,7 +78,7 @@ public class TutorialFragment extends Fragment {
 	    txtWeekDays = new TextView[]{ txtMonday, txtTuesday, txtWednesday, txtThursday, txtFriday, txtSaturday, txtSunday};
 	    txtWeekNumber.setText("Week 1");
 
-	    onWeekDayClickListener = new View.OnClickListener() {
+	    listenerOnWeekDayClick = new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
 			    switch (v.getId()) {
@@ -118,15 +118,15 @@ public class TutorialFragment extends Fragment {
 		    }
 	    };
 
-	    txtMonday.setOnClickListener(onWeekDayClickListener);
-	    txtTuesday.setOnClickListener(onWeekDayClickListener);
-	    txtWednesday.setOnClickListener(onWeekDayClickListener);
-	    txtThursday.setOnClickListener(onWeekDayClickListener);
-	    txtFriday.setOnClickListener(onWeekDayClickListener);
-	    txtSaturday.setOnClickListener(onWeekDayClickListener);
-	    txtSunday.setOnClickListener(onWeekDayClickListener);
+	    txtMonday.setOnClickListener(listenerOnWeekDayClick);
+	    txtTuesday.setOnClickListener(listenerOnWeekDayClick);
+	    txtWednesday.setOnClickListener(listenerOnWeekDayClick);
+	    txtThursday.setOnClickListener(listenerOnWeekDayClick);
+	    txtFriday.setOnClickListener(listenerOnWeekDayClick);
+	    txtSaturday.setOnClickListener(listenerOnWeekDayClick);
+	    txtSunday.setOnClickListener(listenerOnWeekDayClick);
 
-	    txtMonday.performClick();
+	    txtFriday.performClick();
     }
 
 	private void setWeekDaySelection(TextView textSelectedWeekDay) {
@@ -145,7 +145,7 @@ public class TutorialFragment extends Fragment {
 				case FRAGMENT_DISCUSSION:
 					if (intCurrentFragment == FRAGMENT_DISCUSSION) {
 						if (fragTutorialDiscussion != null) {
-							fragTutorialDiscussion.changeDay(intCurrentDay);
+							fragTutorialDiscussion.setDay(intCurrentDay);
 						}
 					} else {
 						fragTutorialDiscussion = TutorialDiscussionFragment.newInstance(intCurrentDay);
@@ -153,15 +153,16 @@ public class TutorialFragment extends Fragment {
 					}
 					break;
 				case FRAGMENT_FRI:
-//					getChildFragmentManager().beginTransaction().replace(R.id.frame_tutorial, TutorialFragment.newInstance()).commit();
+					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance("")).commit();
 					break;
 				case FRAGMENT_SAT:
-//					getChildFragmentManager().beginTransaction().replace(R.id.frame_tutorial, ClassroomFragment.newInstance()).commit();
+					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ClassroomFragment.newInstance()).commit();
 					break;
 				case FRAGMENT_SUN:
-//					getChildFragmentManager().beginTransaction().replace(R.id.frame_tutorial, AssessmentFragment.newInstance()).commit();
+					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, AssessmentFragment.newInstance()).commit();
 					break;
 			}
+			intCurrentFragment = fragment;
 		} catch (Exception e) {
 			Log.e(TAG, "loadFragment Exception : " + e.toString());
 		}
@@ -192,5 +193,10 @@ public class TutorialFragment extends Fragment {
         }
         fragListener = null;
     }
+
+	@Override
+	public void onDayChanged(int day) {
+
+	}
 
 }

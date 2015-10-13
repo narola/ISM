@@ -1,7 +1,6 @@
 package com.ism.fragment;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,16 +19,8 @@ public class TutorialDiscussionFragment extends Fragment {
 	private View view;
 
 	private static final String ARG_WEEK_DAY = "weekDay";
-	private int weekDay;
+	private int intWeekDay;
 
-	/**
-	 * Use this factory method to create a new instance of
-	 * this fragment using the provided parameters.
-	 *
-	 * @param weekDay Parameter 1.
-	 * @return A new instance of fragment TutorialDiscussionFragment.
-	 */
-	// TODO: Rename and change types and number of parameters
 	public static TutorialDiscussionFragment newInstance(int weekDay) {
 		TutorialDiscussionFragment fragment = new TutorialDiscussionFragment();
 		Bundle args = new Bundle();
@@ -42,17 +33,20 @@ public class TutorialDiscussionFragment extends Fragment {
 		// Required empty public constructor
 	}
 
+	public interface TutorialDiscussionFragmentListener {
+		public void onDayChanged(int day);
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			weekDay = getArguments().getInt(ARG_WEEK_DAY);
+			intWeekDay = getArguments().getInt(ARG_WEEK_DAY);
 		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Log.e(TAG, "onCreateView");
 		view = inflater.inflate(R.layout.fragment_tutorial_discussion, container, false);
 
 		initGlobal();
@@ -61,16 +55,11 @@ public class TutorialDiscussionFragment extends Fragment {
 	}
 
 	private void initGlobal() {
-
+		setDay(intWeekDay);
 	}
 
-	public void changeDay(int day) {
-		Log.e(TAG, "dayChanged : " + day);
+	public void setDay(int day) {
+		intWeekDay = day;
 	}
 
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		Log.e(TAG, "onAttach to : " + context.getPackageName());
-	}
 }

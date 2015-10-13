@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#1BC4A2</color>
-    <color name="colorPrimaryDark">#1BC4A2</color>
+    <color name="colorPrimaryDark">#14987d</color>
     <color name="colorAccent">#1BC4A2</color>
 
     <color name="bg_controller_top_light">#2A343E</color>
     <color name="bg_controller_top_medium">#262E39</color>
     <color name="bg_controller_top_dark">#232A34</color>
+    <color name="bg_app_dark">#323941</color>
     <color name="shadow_divider_light">#38414A</color>
     <color name="shadow_divider_dark">#161B21</color>
     <color name="bg_logout">#1BC4A3</color>
@@ -18,6 +19,7 @@
     <color name="bg_controller_left_light">#303940</color>
     <color name="bg_controller_left_medium">#29323A</color>
     <color name="bg_controller_left_dark">#212B33</color>
+    <color name="border_gray">#DDDDDD</color>
 
 
 
