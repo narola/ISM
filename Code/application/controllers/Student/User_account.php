@@ -253,6 +253,8 @@ class User_account extends CI_Controller {
 					);
 					$course_id	= 	$this->input->post('program_id');
 					$school_id	=	$this->input->post('school_id');
+					$class_id	=	$this->input->post('class_id');
+					$academic_year	=	$this->input->post('year_id');
 					insert(TBL_STUDENT_ACADEMIC_INFO,$data_academic);
 				}
 				else{
@@ -261,11 +263,12 @@ class User_account extends CI_Controller {
 						'user_id' => $insertid,
 						'school_id'=>$query_result['school_id'],
 						'classroom_id'=>$query_result['class_id'],
-						'academic_year'=>'2015-2016',
+						'academic_year'=>$query_result['academic_year'],
 						'course_id'=>$query_result['program']
 					);
 					$course_id	= 	$query_result['program'];
 					$school_id	=	$query_result['school_id'];
+					$class_id	=	$query_result['class_id'];
 					insert(TBL_STUDENT_ACADEMIC_INFO,$data_academic);
 				}
 
@@ -274,6 +277,7 @@ class User_account extends CI_Controller {
 				$path = "uploads/user_".$insertid;
 
 				/*----create the folder if it's not already exists--*/
+				
 				if(!empty($_FILES['profile_image_1']['name'])){
 			    if(!is_dir($path)){
 			      	mkdir($path,0755,TRUE);
@@ -326,7 +330,7 @@ class User_account extends CI_Controller {
 	           	
 	           	/*------------group allocation--------------------*/
 	           	
-	           	$where 	=	array('where'=>array('i.school_id !='=>$school_id,'i.course_id'=>$course_id,'tg.is_completed'=>'0'));
+	           	$where 	=	array('where'=>array('i.school_id !='=>$school_id,'i.course_id'=>$course_id,'tg.is_completed'=>'0','i.classroom_id'=>$class_id,'i.academic_year'=>$academic_year));
 	           	$options	=	array('join'=>
 	   							array(
 	   								array(
@@ -345,7 +349,7 @@ class User_account extends CI_Controller {
 	   							'group_by'=>'tm.group_id'
 	   						);
 	           	$exist_members 	= 	select(TBL_STUDENT_ACADEMIC_INFO.' i','i.user_id,tm.group_id,group_concat(s.school_grade) as grade,i.course_id',$where,$options);
-	           	// qry(true);
+
 	           	/*----Auto generated group name------*/	
 
 	           	$options			=	array('order_by'=>'RAND()','limit'=>1,'single'=>1); 	

@@ -87,6 +87,13 @@
                 <li><a href="#">School</a></li>
                 <li><a href="#">Classroom</a></li>
                 <li><a href="#">Subject</a></li>
+                <li class="dropdown sub_menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Courses</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="admin/course/lists">List of Courses</a></li>
+                        <li><a href="admin/course/add_course">Add New Course</a></li>
+                    </ul>
+                </li>
                 <li><a href="#">Badges</a></li>
                 <li><a href="admin/user">User</a></li>
                 <li class="dropdown sub_menu">

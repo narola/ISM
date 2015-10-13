@@ -17,13 +17,12 @@
                             </div>
                             <h4><?php echo $value['full_name'];?></h4>
                             <p>Student from <?php echo $value['school_name'];?></p>
-                            
-                            <a href="#">Following 34 Authers</a>
+                            <a href="#"></a>
                         </div>
                         <div class="col-lg-3 col-md-4 col-sm-5">
                             <button class="btn btn_green btn-block">View Profile</button>
                             <div class="form-group select">
-                                <select class="form-control" name="action" id="action_studymate" data-id="<?php echo $value['user_id'];?>">
+                                <select class="form-control" name="action" id="action_studymate" data-name="<?php echo $value['full_name'];?>" data-id="<?php echo $value['user_id'];?>" data-school="<?php echo $value['full_name'];?>" data-profile="<?php echo $value['profile_link'];?>" data-course="<?php echo $value['course_name'];?>">
                                     <option value="0">Studymates</option>
                                     <option value="1">Remove Studymate</option>
                                 </select>
@@ -57,9 +56,9 @@
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
                     <?php 
-                        if(isset($recommended_studymates)){
+                        if(isset($recommended_studymates) && sizeof($recommended_studymates) > 0){
                     ?>
-                        <div class="item active">
+                        <div class="item active" id="active-recomonded">
                         <?php
                             $i = 1;
                             foreach ($recommended_studymates as $key => $value) {
@@ -94,12 +93,12 @@
                     <?php
                         }
                         else{
-                           //  echo '<h3>No Studymate Found...</h3>';
+                            echo '<h3>No Studymate Found...</h3>';
                         }
                     ?>            
                 </div>
                 <?php 
-                    if(isset($recommended_studymates)){
+                    if(isset($recommended_studymates) && sizeof($recommended_studymates) > 0){
                 ?>
                     <!-- Controls -->
                     <a class="left carousel-control" href="#carousel-studymate" role="button" data-slide="prev">
@@ -125,15 +124,15 @@
 
 <!-- Modal -->
 <div class="modal fade" id="close_mate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document" style="width:500px;margin-top:220px;">
+    <div class="modal-dialog" role="document" style="width:600px;margin-top:220px;">
         <div class="modal-content">
             <div class="modal-header notice_header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">CONFIRMATION FORM</h4>
-                <small>Sep 7, 2015</small>
+                <small><?php echo date("d F Y",strtotime(date('Y-m-d')));?></small>
             </div>
             <div class="modal-body">
-                <p><code><h4>Are sure for want to remove from studymates list?</h4></code></p>
+                <code style="font-size:large;">Are sure for want to remove <b data-type="close-studymate-name" data-id="remove-name"></b> from studymates list?</code>
                     <h4 class="notice_by"><button class="btn btn_black_normal" data-type="close-studymate">OK</button></h4>
                 <div class="clearfix"></div>
             </div>

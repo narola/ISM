@@ -262,7 +262,15 @@ if ("WebSocket" in window)
 
         }
         else if(obj.type == "send_studymate_request"){
-            $('.mCSB_container .three_tabs .badge').html(obj.count);
+            
+            if(obj.studymate_id == wp){
+                cnt = $('.mCSB_container .three_tabs #study_request_cnt').html();
+                if(cnt == 0 || cnt == '')
+                    cnt = 1;
+                else 
+                    cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() + 1;
+                $('.mCSB_container .three_tabs #study_request_cnt').html(cnt);
+            }            
             $('.suggested_mates_card .mate_descrip button[data-id="'+obj.studymate_id+'"]').removeClass('btn_green').attr('disabled',true).addClass('btn_black_normal').html('Request Already Sent');
         }else if(obj.type == 'time_request'){
                 clearInterval(counter);
@@ -286,12 +294,11 @@ if ("WebSocket" in window)
                 str += '<span class="noti_time">1 Day</span>';
                 str += '</div>';
                 str += '<div class="clearfix"></div>';
-                
             });
             
             $('.commented_on .feeds .comment[data-id="'+obj.comment_id+'"]').html(str);
         }else if(obj.type == "decline-request"){
-            
+            notification_str ='';
             if(obj.sub_type == 'accept-request'){
                 if(obj.is_online == true)
                     status = 'online';
@@ -304,6 +311,33 @@ if ("WebSocket" in window)
                 str += '<p>'+obj.full_name+'</p></a>';
                 str += '<div class="clearfix"></div></div>'
                 $('.stm_list #mCSB_5 #mCSB_5_container').append(str);
+
+                if(wp == obj.studymate_id){
+                    notification_str += '<li><a href="#">';
+                    notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+obj.user_data.profile_link+'"></div>';
+                    notification_str += '<div class="notification_txt">';
+                    notification_str += '<p><span class="noti_username">'+obj.user_data.full_name+'</span> your friend request has been accepted</p>';
+                    notification_str += '<span class="noti_time">1 hour ago</span></div>';
+                    notification_str += '<div class="clearfix"></div>';
+                    notification_str += '</a></li>';
+                    $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
+                    $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
+                    cnt = $('.mCSB_container .three_tabs #study_request_cnt').html();
+                    if(cnt == '' || cnt == 0)
+                        cnt = 1;
+                    else
+                        cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() + 1;
+                    $('.mCSB_container .three_tabs .bell_badge').html(cnt);
+                }
+                if(obj.user_data.id == wp){
+                    cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() - 1;
+                    if(cnt == '' || cnt == 0)
+                        $('.mCSB_container .three_tabs #study_request_cnt').remove().html();
+                    else{
+                        cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() - 1;
+                        $('.mCSB_container .three_tabs .bell_badge').html(cnt);
+                    }
+                }
             }
             if(obj.sub_type == 'decline-request'){
                // cnt = $('.box_body #carousel-studymate .carousel-inner #active-recomonded .suggested_mates_card').length;
@@ -493,6 +527,8 @@ $(document).on('click','button[data-type="post"]',function(){
         };
         ws.send(JSON.stringify(request));
         $('#feed_post').val('');
+        $('#selection-box').hide();
+        $('#tag_or_not').val('no'); 
     }
 });
 
@@ -506,6 +542,11 @@ $(document).on('keypress','#all_feed .box.feeds .write_comment input[data-type="
         };
         ws.send(JSON.stringify(request));
         $(this).val('');
+        // alert(wp +'=='+ $(this).data('id'));
+        // if(wp == $(this).data('id')){
+            cnt = $('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)').html();
+            $('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)').html(parseInt(cnt) + 1);
+        // }
      }
 });
 
@@ -523,39 +564,64 @@ function generate_post(obj,status){
     str += '<h4>'+obj.full_name+'</h4>';
 
     len = obj.tagged_detail.length;
-    if(len > 0){
+        if(len > 0){
         name = '';
         i = 0;
         j = 0;
         k = 0;
+        other_name = '';
+        notification_str = '';
         $.each(obj.tagged_detail, function (index, list) {
-                if(len == 1){
-                    name += '<b>with</b> : <label class="label label_name"><a href="#">'+ list.full_name + '</a></label>';
+            if(len == 1){
+                name += '<b>with</b> : <label class="label label_name">'+ list.full_name + '</label>';
+            }
+            else if(len == 2){
+                if(i == 0){
+                    name += 'with <label class="label label_name">'+list.full_name +'</label>';
+                }else{
+                    name += 'and <label class="label label_name">'+list.full_name +'</label>';
                 }
-                else if(len == 2){
-                    if(i == 0){
-                        name += 'with <label class="label label_name"><a href="#">'+list.full_name +'</a></label>';
-                    }else{
-                        name += 'and <label class="label label_name"><a href="#">'+list.full_name +'</a></label>';
+                i++;
+            }
+            else if(len > 2){
+                if(j == 0){
+                    name += 'with <label class="label label_name">'+list.full_name +'</label>';
+                }else{
+                    other_name += list.full_name+'<div class=\'clearfix\'></div>';
+                    l = parseInt(len) - parseInt(1);
+                    if(j == l){
+                        name += 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover2" title="Other Tagged" data-content="'+other_name+'">'+ l +' more</a>';
+                        name += '</label>';
                     }
-                    i++;
                 }
-                else if(len > 2){
-                    if(j == 0){
-                        name += 'with <label class="label label_name"><a href="#" >'+list.full_name +'</a></label>';
-                    }else{
-                        l = parseInt(len) - parseInt(1);
-                        if(k == 0){
-                            name += 'and <label class="label label_name"><a>'+ l +' more</a>';
-                            name += '</label>';
-                            k++;
-                        }
-                    }
-                    j++;
+                j++;
+            }
+            notification_str += '<li><a href="#">';
+            notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+obj.profile_link+'"></div>';
+            notification_str += '<div class="notification_txt">';
+            notification_str += '<p><span class="noti_username">'+obj.full_name+'</span> tagged you in a post</p>';
+            notification_str += '<span class="noti_time">1 hour ago</span></div>';
+            notification_str += '<div class="clearfix"></div>';
+            notification_str += '</a></li>';
+            if(wp == list.id){
+                $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
+
+                $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
+            
+
+                notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
+                if(notification_length == 0 ){
+                    notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">No more notification</div></li>');
+                    $('.mCSB_container .three_tabs .dropdown .badge').html(0);
                 }
-            });
-    str += '<span>'+name+'</span>';
-    }
+                else{
+                    $('.mCSB_container .three_tabs .dropdown .badge').html(notification_length);
+                }
+            }
+
+        });
+        str += '<span>'+name+'</span>';
+        }
     
     str += '<span class="date">Sep 28, 2015</span>';
     str += '<div class="clearfix"></div>';
@@ -585,12 +651,13 @@ function generate_post(obj,status){
         $("#all_feed").append(str);
     }
      $("#all_feed .box.feeds[data-id='"+obj.post_id+"']").fadeOut(0).fadeIn(400);
+     if(typeof(obj.comment) != 'undefined'){
+        $.each(obj.comment, function (index, comment_list){
+            generate_comment(comment_list);
+        });
+     }
+        
 
-    $.each(obj.comment, function (index, comment_list){
-        generate_comment(comment_list);
-    });
-
-    $('#notification-panel').prepend('sscscs');
 }
 
 
@@ -709,9 +776,9 @@ if (nav.length) {
 $(document).on('change', '#action_studymate', function(){
     val = $(this).val();
     if(val == 1){
-        $('button[data-type="close-studymate"]').attr('data-id',$(this).data('id'));   
+        $('button[data-type="close-studymate"]').attr('data-course',$(this).data('course')).attr('data-name',$(this).data('name')).attr('data-id',$(this).data('id')).attr('data-school',$(this).data('school')).attr('data-profile',$(this).data('profile'));   
+        $('b[data-type="close-studymate-name"]').html($(this).data('name'));   
         $('#close_mate').modal('show');
-           
     }
 });
 
@@ -723,6 +790,15 @@ $(document).on('click','button[data-type="close-studymate"]',function(e){
         studymate_id: $(this).attr('data-id')
     };
     ws.send(JSON.stringify(request));
+    $('#mCSB_2 #mCSB_2_container div[data-id="'+$(this).attr('data-id')+'"]').remove().html();
+    str = '';
+    str += '<div class="suggested_mates_card">'
+    str += '<div class="mate_user_img"><img src="uploads/'+$(this).attr('data-profile')+'" onerror="this.src=\'assets/images/avatar.png\'"></div>';
+    str += '<div class="mate_descrip"><p class="mate_name">'+$(this).attr('data-name')+'</p>';
+    str += '<p class="mate_following">Folowing 34 Authers</p>';
+    str += '<p>'+$(this).attr('data-school')+'</p>';
+    str += '<p>'+$(this).attr('data-course')+'</p><button class="btn btn_green" data-id="'+$(this).attr('data-id')+'" data-type="studyment-request">Add Studymates</button></div></div>';
+    $('.box_body #carousel-studymate .carousel-inner #active-recomonded').append(str);
 });
 
 /* Send Request to search from dictionary... */
@@ -744,7 +820,7 @@ $(document).on('keypress','input[data-type="search-dictionary"], a[data-type="se
 $(document).on('click','button[data-type="studyment-request"]',function(e){
     var request = {
         type: 'send_studymate_request',
-        to: 'self',
+        to: $(this).attr('data-id'),
         studymate_id: $(this).attr('data-id'),
         error : ''
     };
@@ -765,7 +841,7 @@ $(document).on('click','button[data-type = "decline-request"]',function(e){
     var request = {
         type: 'decline-request',
         sub_type : $(this).data('subtype'),
-        to: 'self',
+        to: $(this).data('id'),
         studymate_id: $(this).data('id'),
         error : ''
     };
@@ -781,6 +857,7 @@ $(document).on('click','button[data-type="save_and_next"]',function(e){
     ws.send(JSON.stringify(request)); 
 
 });
+
 $(document).on('change', '#select-tag-user', function(e){
     if(e.val != ''){
         var request = {

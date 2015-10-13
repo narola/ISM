@@ -2713,7 +2713,7 @@ textarea {
 	width:80%;
     padding-top: 60px;
 	margin-left:0;
-	height: 100vh;
+	min-height: 100vh;
 }
 .not_found{
 	margin-top:70px;
@@ -2960,7 +2960,7 @@ textarea {
 	content:"";
 	height:100%;
 	width:100%;
-	background:linear-gradient(transparent 48%, #666 50%, rgba(28,35,45,0.3) 51%, rgba(28,35,45,0.2) 67%, transparent 100%);
+	background:linear-gradient(transparent 48%, #666 50%, rgba(28,35,45,0.3) 51%, rgba(28,35,45,0.2) 58%, transparent 100%);
 	position:absolute;
 	top: 0;
     left: 0;
@@ -2974,4 +2974,99 @@ textarea {
 .colon{
 	font-size:41px;
 	padding: 0 1px;	
+}
+.test_sidebar .box{
+	border:none;
+    margin-bottom: 0;
+}
+.test_sidebar .box_body{
+	padding:25px;
+}
+ul.ques_numbers {
+    list-style: none;
+}
+.ques_numbers li {
+    float: left;
+    margin: 0 15px 15px 0;
+}
+.ques_numbers li:nth-child(5n){
+	margin-right:0;
+}
+.ques_numbers>li>a {
+    background-color: #d8dddf;
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    color: #fff;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+	font-weight:600;
+    padding: 7px 0;
+    text-align: center;
+	text-decoration:none;
+    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.5);
+	position:relative;
+}
+.ques_numbers>li.answered>a,
+.ques_numbers>li.review_later>a,
+.ques_numbers>li.skipped>a{
+	background-color:#323941;
+}
+.ques_numbers>li.review_later>a>span{
+    display:none;
+}
+.ques_numbers>li.review_later>a:before{
+	content:"\f024";
+	font-family:FontAwesome;
+	color:#1bc4a3;
+}
+.ques_numbers>li.skipped>a:before{
+	content:"";
+	position:absolute;
+	height:36px;
+	width:36px;
+	border-radius:50%;
+	border:3px solid #1bc4a3;
+	top: 2px;
+    left: 2px;
+}
+.ques_numbers>li.current>a{
+	background-color:#1bc4a3;
+}
+.legends .ques_numbers li {
+    float: none;
+	font-size: 16px;
+    font-weight: 500;
+    background-color: #f5f5f5;
+    padding: 7px;
+    margin: 0 0 10px 0;
+    border-radius: 6px;
+}
+.legends h4{
+	text-transform:uppercase;
+}
+.legends .ques_numbers>li>a {
+    box-shadow: none;
+    margin-right: 10px;
+    vertical-align: middle;
+    height: 25px;
+    width: 25px;
+}
+.legends .ques_numbers>li.skipped>a:before {
+    height: 21px;
+    width: 21px;
+}
+.legends .ques_numbers>li.review_later>a{
+	padding:0;
+}
+.legends {
+    margin: 20px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding-bottom: 20px;
+}
+.link_disable {
+    pointer-events: none;
+    cursor: not-allowed !important;
+    color: #999 !important;
+	font-weight:500;
 }
