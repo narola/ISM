@@ -192,7 +192,7 @@ class Topic extends ADMIN_Controller {
 												)
 											);
 	
-	
+	// p($unallocated_groups, true);
 	$this->data['groups'] = $unallocated_groups;
 
 
