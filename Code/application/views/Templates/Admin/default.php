@@ -84,7 +84,7 @@
               <ul class="dropdown-menu">
                 <li><a href="#">Book</a></li>
                 <li><a href="#">Auther</a></li>
-                <li><a href="#">School</a></li>
+                <li><a href="admin/school">School</a></li>
                 <li><a href="#">Classroom</a></li>
                 <li><a href="#">Subject</a></li>
                 <li><a href="#">Badges</a></li>

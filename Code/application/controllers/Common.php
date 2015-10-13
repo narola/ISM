@@ -11,7 +11,7 @@ class Common extends CI_Controller {
 	public function ajax_get_states(){
 		
 		$country_id = $this->input->post('country_id');
-		$all_states = select(TBL_STATES,FALSE,array('where'=>array('country_id'=>$country_id)));
+		$all_states = select(TBL_STATES,FALSE,array('where'=>array('country_id'=>$country_id),'order_by'=>'state_name'));
 		$new_str = '';
 		
 		$new_str .= '<option selected disabled >Select State</option>';
@@ -26,7 +26,7 @@ class Common extends CI_Controller {
 	public function ajax_get_cities(){
 
 		$state_id = $this->input->post('state_id');
-		$all_cities = select(TBL_CITIES,FALSE,array('where'=>array('state_id'=>$state_id)));
+		$all_cities = select(TBL_CITIES,FALSE,array('where'=>array('state_id'=>$state_id),'order_by'=>'city_name'));
 		$new_str = '';
 
 		$new_str .= '<option selected disabled >Select City</option>';
@@ -41,7 +41,7 @@ class Common extends CI_Controller {
 	public function ajax_get_districts(){
 
 		$city_id = $this->input->post('city_id');
-		$all_districts = select(TBL_DISTRICTS,FALSE,array('where'=>array('city_id'=>$city_id)));
+		$all_districts = select(TBL_DISTRICTS,FALSE,array('where'=>array('city_id'=>$city_id),'order_by'=>'district_name'));
 		$new_str = '';
 
 		$new_str .= '<option selected disabled > Select District </option>';
