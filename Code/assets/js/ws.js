@@ -527,7 +527,8 @@ $(document).on('click','button[data-type="post"]',function(){
         };
         ws.send(JSON.stringify(request));
         $('#feed_post').val('');
-
+        $('#selection-box').hide();
+        $('#tag_or_not').val('no'); 
     }
 });
 
@@ -541,6 +542,11 @@ $(document).on('keypress','#all_feed .box.feeds .write_comment input[data-type="
         };
         ws.send(JSON.stringify(request));
         $(this).val('');
+        // alert(wp +'=='+ $(this).data('id'));
+        // if(wp == $(this).data('id')){
+            cnt = $('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)').html();
+            $('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)').html(parseInt(cnt) + 1);
+        // }
      }
 });
 
@@ -567,19 +573,19 @@ function generate_post(obj,status){
         notification_str = '';
         $.each(obj.tagged_detail, function (index, list) {
             if(len == 1){
-                name += '<b>with</b> : <label class="label label_name"><a href="#">'+ list.full_name + '</a></label>';
+                name += '<b>with</b> : <label class="label label_name">'+ list.full_name + '</label>';
             }
             else if(len == 2){
                 if(i == 0){
-                    name += 'with <label class="label label_name"><a href="#">'+list.full_name +'</a></label>';
+                    name += 'with <label class="label label_name">'+list.full_name +'</label>';
                 }else{
-                    name += 'and <label class="label label_name"><a href="#">'+list.full_name +'</a></label>';
+                    name += 'and <label class="label label_name">'+list.full_name +'</label>';
                 }
                 i++;
             }
             else if(len > 2){
                 if(j == 0){
-                    name += 'with <label class="label label_name"><a href="#" >'+list.full_name +'</a></label>';
+                    name += 'with <label class="label label_name">'+list.full_name +'</label>';
                 }else{
                     other_name += list.name+'<div class=\'clearfix\'></div>';
                     l = parseInt(len) - parseInt(1);
@@ -841,15 +847,6 @@ $(document).on('click','button[data-type = "decline-request"]',function(e){
     };
     ws.send(JSON.stringify(request)); 
 });
-
-$(document).on('click','button[data-type="save_and_next"]',function(e){
-    var request = {
-        type: 'exam_answer',
-        qustion_id : $(this).data('qid'),
-        to: 'self'
-    };
-    ws.send(JSON.stringify(request)); 
-
 
 $(document).on('change', '#select-tag-user', function(e){
     if(e.val != ''){

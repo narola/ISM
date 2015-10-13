@@ -23,7 +23,7 @@
     $(document).on('click','[data-toggle="popover1"]',function(){
         $('[data-toggle="popover1"]').popover('show');
     });
-    
+
     $(document).on('click','[data-toggle="popover2"]',function(){
         $('[data-toggle="popover2"]').popover('show');
     });
@@ -138,7 +138,8 @@
                                 }
                             ?>    
                             <span><?php echo $value['tot_like'];?></span></a>
-                        <a href="javascript:void(0);" class="comment_btn"><span class="icon icon_comment"></span><?php echo $value['tot_comment'];?></a>
+                        <a href="javascript:void(0);" class="comment_btn" data-id="<?php echo $value['fid'];?>"><span class="icon icon_comment"></span>
+                            <span><?php echo $value['tot_comment'];?></span></a>
                         <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
                         <div class="dropdown tag_user" style="display: inline-block;">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
