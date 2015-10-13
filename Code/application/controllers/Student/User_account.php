@@ -253,6 +253,7 @@ class User_account extends CI_Controller {
 					);
 					$course_id	= 	$this->input->post('program_id');
 					$school_id	=	$this->input->post('school_id');
+					$school_id	=	$this->input->post('class_id');
 					insert(TBL_STUDENT_ACADEMIC_INFO,$data_academic);
 				}
 				else{
@@ -345,7 +346,7 @@ class User_account extends CI_Controller {
 	   							'group_by'=>'tm.group_id'
 	   						);
 	           	$exist_members 	= 	select(TBL_STUDENT_ACADEMIC_INFO.' i','i.user_id,tm.group_id,group_concat(s.school_grade) as grade,i.course_id',$where,$options);
-	           	// qry(true);
+
 	           	/*----Auto generated group name------*/	
 
 	           	$options			=	array('order_by'=>'RAND()','limit'=>1,'single'=>1); 	

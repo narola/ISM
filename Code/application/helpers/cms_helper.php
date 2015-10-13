@@ -371,6 +371,16 @@ function count_studymate_request($userid){
   return $CI->common_model->count_studymate_request($userid);
 }
 
+function notification_list($userid){
+  $CI =& get_instance();
+  return $CI->common_model->get_notification_list($userid); 
+}
+
+function count_notification_list($userid){
+  $CI =& get_instance();
+  return $CI->common_model->count_notification_list($userid); 
+}
+
 function studymates_info(){
   $CI =& get_instance();
   $user_id = $CI->session->userdata('user')['id'];

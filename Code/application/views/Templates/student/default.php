@@ -128,44 +128,56 @@
                 <!--notification-->
                 <ul class="three_tabs">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span><span class="badge bell_badge">03</span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span>
+                        <?php $noti_cnt = count_notification_list($this->session->userdata('user')['id']);
+                            //if($noti_cnt > 0){
+                        ?>
+                            <span class="badge bell_badge"><?php echo $noti_cnt;?></span>
+                        <?php //} ?>
+                        </a>
                         <ul class="dropdown-menu" id="notification-panel">
-                            <li><a href="#">
-                                <div class="user_small_img"><img src="assets/images/user2.jpg"></div>
-                                <div class="notification_txt">
-                                    <p><span class="noti_username">Adam Stranger</span> tagged you in a post</p>
-                                    <span class="noti_time">1 hour ago</span>
-                                </div>
-                                <div class="clearfix"></div>
-                            </a></li>
-                            <li><a href="#">
-                                <div class="user_small_img"><img src="assets/images/user3.jpg"></div>
-                                <div class="notification_txt">
-                                    <p><span class="noti_username">Matt Larner</span> sent you studymate request</p>
-                                    <span class="noti_time">1 hour ago</span>
-                                </div>
-                                <div class="clearfix"></div>
-                            </a></li>
-                            <li><a href="#">
-                                <div class="user_small_img"><img src="assets/images/user4.jpg"></div>
-                                <div class="notification_txt">
-                                    <p><span class="noti_username">Mary Watson</span> tagged you in a post</p>
-                                    <span class="noti_time">1 hour ago</span>
-                                </div>
-                                <div class="clearfix"></div>
-                            </a></li>
-                            <li><a href="#">
-                                <div class="user_small_img"><img src="assets/images/ISM.jpg"></div>
-                                <div class="notification_txt">
-                                    <p>Please check the published notice</p>
-                                    <span class="noti_time">1 hour ago</span>
-                                </div>
-                                <div class="clearfix"></div>
-                            </a></li>
+                            <?php 
+                                $notification_list = notification_list($this->session->userdata('user')['id']);
+                                if(sizeof($notification_list) > 0 ){
+                                    foreach ($notification_list as $key => $value) {
+                                        ?>
+                                        <li>
+                                            <a href="#">
+                                            <div class="user_small_img">
+                                                <img onerror="this.src='assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                                            </div>
+                                            <div class="notification_txt">
+                                                <p><span class="noti_username"><?php echo $value['full_name']?></span> tagged you in a post</p>
+                                                <span class="noti_time">1 hour ago</span>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            </a>
+                                        </li>
+                                        <?php
+                                    }
+                                }
+                                else{
+                                    ?>
+                                    <li id="no-more-notification">
+                                        <div class="notification_txt">
+                                            No more notification
+                                        </div>
+                                    </li>
+                                    <?php
+                                }
+                            ?>
                         </ul>
                     </li>
                     <li><a href="#"><span class="icon icon_message"></span><span class="badge message_badge">12</span></a></li>
-                    <li><a href="/student/studymates_request"><span class="icon icon_request"></span><span class="badge request_badge"><?php echo count_studymate_request($this->session->userdata('user')['id']);?></span></a></li>
+                    <li><a href="/student/studymates_request"><span class="icon icon_request"></span>
+                        <?php 
+                            $request_cnt = count_studymate_request($this->session->userdata('user')['id']);
+                            //if($request_cnt > 0){
+                        ?>
+                            <span class="badge request_badge" id="study_request_cnt"><?php echo $request_cnt;?></span>
+                        <?php //} ?>
+                        </a>
+                    </li>
                 </ul>
                 <!--//notification-->
                     

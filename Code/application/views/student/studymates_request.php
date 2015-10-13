@@ -165,7 +165,7 @@
                                 <p class="mate_following">Folowing 34 Authers</p>
                                 <p><?php echo $value['school_name'];?></p>
                                 <p><?php echo $value['course_name'];?></p>
-                                <?php if($value['srid'] != ''){?>
+                                <?php if($value['srid'] != '' && $value['is_delete'] == 0){?>
                                 <button class="btn btn_black_normal" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>" disabled>Request Already Sent</button>
                                 <?php }else{ ?>
                                 <button class="btn btn_green" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>">Add Studymates</button>

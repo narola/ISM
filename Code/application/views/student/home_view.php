@@ -23,6 +23,10 @@
     $(document).on('click','[data-toggle="popover1"]',function(){
         $('[data-toggle="popover1"]').popover('show');
     });
+    
+    $(document).on('click','[data-toggle="popover2"]',function(){
+        $('[data-toggle="popover2"]').popover('show');
+    });
 
     $(document).on('click','[data-toggle="popover"]',function(){
         $('[data-toggle="popover"]').popover('show');

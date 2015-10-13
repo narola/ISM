@@ -1,11 +1,7 @@
-
-
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Home extends CI_Controller {
-
-	
 
 	public function __construct()
 	{
@@ -19,7 +15,9 @@ class Home extends CI_Controller {
 		$user_id = $this->session->userdata('user')['id'];
 		$data['title'] = 'ISM - Home';
 		$data['hide_right_bar'] = true;		
+		
 		// Get Post feed with comment 
+		
 		$options =	array(
 						'join'	=>	array(
 							array(
@@ -46,6 +44,7 @@ class Home extends CI_Controller {
 		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.posted_on,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link,l.is_delete as my_like',$where,$options);
 		
 		//---find feeds
+		
 		$feed_ids = array();
 		foreach ($result_feed as $key => $value) {
 			$feed_ids[] = $value['fid'];
@@ -53,9 +52,8 @@ class Home extends CI_Controller {
 		}	
 		if(sizeof($feed_ids)>0)
 		{	
-
 			//---find tagged user
-
+			
 			$options = array(
 					'join' => array(
 						array(
@@ -67,6 +65,7 @@ class Home extends CI_Controller {
 			$tagged = select(TBL_FEEDS_TAGGED_USER.' t','u.id,u.full_name,t.feed_id',array('where_in'=>array('feed_id'=>$feed_ids)),$options);
 			
 			//---find feeds commentss
+			
 			$options = array(
 					'join' => array(
 						array(
@@ -84,6 +83,7 @@ class Home extends CI_Controller {
 			$comment = select(TBL_FEED_COMMENT.' fc','feed_id,comment,u.full_name,p.profile_link',$where,$options);
 
 			//----merge feeds and comment,tagged user in single array			
+			
 			$final_feed = array();
 			foreach ($data_array as $key => $value) {
 				$final_feed[$key] = $value;
@@ -108,7 +108,9 @@ class Home extends CI_Controller {
 				$studymates = array('');
 			else
 				$studymates = studymates($user_id,false);
+
 	 		// Get Classmates details
+			
 			$where = array('where_in' => array('u.id' =>  $studymates));
 			$options = array('join' => array(
 					array(
@@ -119,10 +121,13 @@ class Home extends CI_Controller {
 			);
 			$data['classmates'] = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,  (SELECT count(*) FROM `user_chat` `uc` WHERE `uc`.`sender_id` = `u`.`id` AND `uc`.`receiver_id` = '.$user_id.' AND `uc`.`received_status` = 0) as `unread_msg`',$where,$options);
 		}
+
 		/* Get all online users */
+        
         $data['online'] = online();
 
 		/* Get user id of active chat window */
+		
 		$active_chat_id = get_cookie('active');
 		if(!empty($active_chat_id)){
 			$options = array('join' => array(
@@ -188,6 +193,10 @@ class Home extends CI_Controller {
 		$data['suggested_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,pi.profile_link',$where,$options);
 
 		$data['my_studymates'] = select(TBL_USERS.' u',null,array('where_in'=>array('id'=>$my_studymates)));
+		
+		//--remove tagged user notification list as already seen
+		update(TBL_FEEDS_TAGGED_USER,array('user_id'=>$user_id),array('is_see'=>1));
+
 		$this->template->load('student/default','student/home_view',$data);
 	}
 
