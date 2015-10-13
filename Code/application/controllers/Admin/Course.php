@@ -8,6 +8,7 @@ class Course extends ADMIN_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+        $this->data['prev_url'] = $this->session->userdata('prev_url');
     }
 	 /**
       * Function for list all Courses
