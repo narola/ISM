@@ -27,19 +27,19 @@
 
 
         <LinearLayout
-            android:id="@+id/notes_ll_notice"
+            android:id="@+id/ll_notice"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ListView
-                android:id="@+id/notes_lv_notice"
+                android:id="@+id/lv_notice"
                 android:layout_width="match_parent"
                 android:layout_height="350sp"
                 android:padding="@dimen/d5sp" />
 
             <TextView
-                android:id="@+id/notes_txt_viewAll"
+                android:id="@+id/txt_viewAll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -52,7 +52,7 @@
         </LinearLayout>
 
         <ListView
-            android:id="@+id/notes_lv_highScore"
+            android:id="@+id/lv_highScore"
             android:layout_width="match_parent"
             android:layout_height="410sp"
             android:background="@drawable/bg_highscore_subjectlist"
@@ -65,7 +65,7 @@
         <!--android:orientation="vertical">-->
 
         <ListView
-            android:id="@+id/notes_lv_events"
+            android:id="@+id/lv_events"
             android:layout_width="match_parent"
             android:layout_height="460sp"
             android:padding="@dimen/d5sp" />

@@ -12,17 +12,20 @@ import com.ism.HostActivity;
 import com.ism.R;
 import com.ism.interfaces.FragmentListener;
 
+/**
+ * Created by c161 on --/10/15.
+ */
 public class StudyMatesFragment extends Fragment {
 
     private static final String TAG = StudyMatesFragment.class.getSimpleName();
 
-    private View mView;
+    private View view;
 
-    private FragmentListener mFragmentListener;
+    private FragmentListener fragListener;
 
     public static StudyMatesFragment newInstance() {
-        StudyMatesFragment fragmentStudyMates = new StudyMatesFragment();
-        return fragmentStudyMates;
+        StudyMatesFragment fragStudyMates = new StudyMatesFragment();
+        return fragStudyMates;
     }
 
     public StudyMatesFragment() {
@@ -31,11 +34,11 @@ public class StudyMatesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_study_mates, container, false);
+	    view = inflater.inflate(R.layout.fragment_study_mates, container, false);
 
         initGlobal();
 
-        return mView;
+        return view;
     }
 
     private void initGlobal() {
@@ -46,9 +49,9 @@ public class StudyMatesFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mFragmentListener = (FragmentListener) activity;
-            if (mFragmentListener != null) {
-                mFragmentListener.onFragmentAttached(HostActivity.FRAGMENT_STUDY_MATES);
+            fragListener = (FragmentListener) activity;
+            if (fragListener != null) {
+                fragListener.onFragmentAttached(HostActivity.FRAGMENT_STUDY_MATES);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -59,13 +62,13 @@ public class StudyMatesFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         try {
-            if (mFragmentListener != null) {
-                mFragmentListener.onFragmentDetached(HostActivity.FRAGMENT_STUDY_MATES);
+            if (fragListener != null) {
+                fragListener.onFragmentDetached(HostActivity.FRAGMENT_STUDY_MATES);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
         }
-        mFragmentListener = null;
+        fragListener = null;
     }
 
 }

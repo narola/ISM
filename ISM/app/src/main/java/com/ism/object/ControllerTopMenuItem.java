@@ -8,49 +8,49 @@ import com.ism.R;
 import java.util.ArrayList;
 
 /**
- * Created by Krunal Panchal on 09/10/15.
+ * Created by c161 on 09/10/15.
  */
 public class ControllerTopMenuItem {
 
 	private static final String TAG = ControllerTopMenuItem.class.getSimpleName();
 
-	private String menuItemTitle;
-	private String menuItemAction;
-	private ArrayList<String> subMenu;
+	private String strMenuItemTitle;
+	private String strMenuItemAction;
+	private ArrayList<String> arrListSubMenu;
 	private boolean isActive;
 
 	public ControllerTopMenuItem() {
 
 	}
 
-	public ControllerTopMenuItem(String menuItemTitle, String menuItemAction, ArrayList<String> subMenu) {
-		this.menuItemTitle = menuItemTitle;
-		this.menuItemAction = menuItemAction;
-		this.subMenu = subMenu;
+	public ControllerTopMenuItem(String strMenuItemTitle, String strMenuItemAction, ArrayList<String> arrListSubMenu) {
+		this.strMenuItemTitle = strMenuItemTitle;
+		this.strMenuItemAction = strMenuItemAction;
+		this.arrListSubMenu = arrListSubMenu;
 	}
 
 	public String getMenuItemTitle() {
-		return menuItemTitle;
+		return strMenuItemTitle;
 	}
 
-	public void setMenuItemTitle(String menuItemTitle) {
-		this.menuItemTitle = menuItemTitle;
+	public void setMenuItemTitle(String strMenuItemTitle) {
+		this.strMenuItemTitle = strMenuItemTitle;
 	}
 
 	public String getMenuItemAction() {
-		return menuItemAction;
+		return strMenuItemAction;
 	}
 
-	public void setMenuItemAction(String menuItemAction) {
-		this.menuItemAction = menuItemAction;
+	public void setMenuItemAction(String strMenuItemAction) {
+		this.strMenuItemAction = strMenuItemAction;
 	}
 
 	public ArrayList<String> getSubMenu() {
-		return subMenu;
+		return arrListSubMenu;
 	}
 
-	public void setSubMenu(ArrayList<String> subMenu) {
-		this.subMenu = subMenu;
+	public void setSubMenu(ArrayList<String> arrListSubMenu) {
+		this.arrListSubMenu = arrListSubMenu;
 	}
 
 	public boolean isActive() {

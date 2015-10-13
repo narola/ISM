@@ -13,25 +13,28 @@ import com.ism.HostActivity;
 import com.ism.R;
 import com.ism.interfaces.FragmentListener;
 
+/**
+ * Created by c161 on --/10/15.
+ */
 public class TutorialFragment extends Fragment {
 
     private static final String TAG = TutorialFragment.class.getSimpleName();
 
-    private View mView;
-	private TextView mTextWeekNumber;
-	private TextView mTextMonday;
-	private TextView mTextTuesday;
-	private TextView mTextWednesday;
-	private TextView mTextThursday;
-	private TextView mTextFriday;
-	private TextView mTextSaturday;
-	private TextView mTextSunday;
+    private View view;
+	private TextView txtWeekNumber;
+	private TextView txtMonday;
+	private TextView txtTuesday;
+	private TextView txtWednesday;
+	private TextView txtThursday;
+	private TextView txtFriday;
+	private TextView txtSaturday;
+	private TextView txtSunday;
 
-	private TextView mTextWeekDays[];
+	private TextView txtWeekDays[];
 
-    private FragmentListener mFragmentListener;
-    private View.OnClickListener mOnWeekDayClickListener;
-	private TutorialDiscussionFragment mTutorialDiscussionFragment;
+    private FragmentListener fragListener;
+    private View.OnClickListener onWeekDayClickListener;
+	private TutorialDiscussionFragment fragTutorialDiscussion;
 
 	public static final int MON = 0;
 	public static final int TUE = 1;
@@ -41,8 +44,8 @@ public class TutorialFragment extends Fragment {
 	public static final int FRAGMENT_FRI = 1;
 	public static final int FRAGMENT_SAT = 2;
 	public static final int FRAGMENT_SUN = 3;
-	private static int mCurrentFragment;
-	private static int mCurrentDay;
+	private static int intCurrentFragment;
+	private static int intCurrentDay;
 
     public static TutorialFragment newInstance() {
         TutorialFragment fragmentTutorial = new TutorialFragment();
@@ -55,83 +58,83 @@ public class TutorialFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_tutorial, container, false);
+	    view = inflater.inflate(R.layout.fragment_tutorial, container, false);
 
         initGlobal();
 
-        return mView;
+        return view;
     }
 
     private void initGlobal() {
-	    mTextWeekNumber = (TextView) mView.findViewById(R.id.text_week_number);
-	    mTextMonday = (TextView) mView.findViewById(R.id.text_monday);
-	    mTextTuesday = (TextView) mView.findViewById(R.id.text_tuesday);
-	    mTextWednesday = (TextView) mView.findViewById(R.id.text_wednesday);
-	    mTextThursday = (TextView) mView.findViewById(R.id.text_thursday);
-	    mTextFriday = (TextView) mView.findViewById(R.id.text_friday);
-	    mTextSaturday = (TextView) mView.findViewById(R.id.text_saturday);
-	    mTextSunday = (TextView) mView.findViewById(R.id.text_sunday);
+	    txtWeekNumber = (TextView) view.findViewById(R.id.txt_week_number);
+	    txtMonday = (TextView) view.findViewById(R.id.txt_monday);
+	    txtTuesday = (TextView) view.findViewById(R.id.txt_tuesday);
+	    txtWednesday = (TextView) view.findViewById(R.id.txt_wednesday);
+	    txtThursday = (TextView) view.findViewById(R.id.txt_thursday);
+	    txtFriday = (TextView) view.findViewById(R.id.txt_friday);
+	    txtSaturday = (TextView) view.findViewById(R.id.txt_saturday);
+	    txtSunday = (TextView) view.findViewById(R.id.txt_sunday);
 
-	    mTextWeekDays = new TextView[]{mTextMonday, mTextTuesday, mTextWednesday, mTextThursday, mTextFriday, mTextSaturday, mTextSunday};
-	    mTextWeekNumber.setText("Week 1");
+	    txtWeekDays = new TextView[]{ txtMonday, txtTuesday, txtWednesday, txtThursday, txtFriday, txtSaturday, txtSunday};
+	    txtWeekNumber.setText("Week 1");
 
-	    mOnWeekDayClickListener = new View.OnClickListener() {
+	    onWeekDayClickListener = new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
 			    switch (v.getId()) {
-				    case R.id.text_monday:
-					    setWeekDaySelection(mTextMonday);
-					    mCurrentDay = MON;
+				    case R.id.txt_monday:
+					    setWeekDaySelection(txtMonday);
+					    intCurrentDay = MON;
 						loadFragment(FRAGMENT_DISCUSSION);
 					    break;
-				    case R.id.text_tuesday:
-					    setWeekDaySelection(mTextTuesday);
-					    mCurrentDay = TUE;
+				    case R.id.txt_tuesday:
+					    setWeekDaySelection(txtTuesday);
+					    intCurrentDay = TUE;
 					    loadFragment(FRAGMENT_DISCUSSION);
 					    break;
-				    case R.id.text_wednesday:
-					    setWeekDaySelection(mTextWednesday);
-					    mCurrentDay = WED;
+				    case R.id.txt_wednesday:
+					    setWeekDaySelection(txtWednesday);
+					    intCurrentDay = WED;
 					    loadFragment(FRAGMENT_DISCUSSION);
 					    break;
-				    case R.id.text_thursday:
-					    setWeekDaySelection(mTextThursday);
-					    mCurrentDay = THU;
+				    case R.id.txt_thursday:
+					    setWeekDaySelection(txtThursday);
+					    intCurrentDay = THU;
 					    loadFragment(FRAGMENT_DISCUSSION);
 					    break;
-				    case R.id.text_friday:
-					    setWeekDaySelection(mTextFriday);
+				    case R.id.txt_friday:
+					    setWeekDaySelection(txtFriday);
 					    loadFragment(FRAGMENT_FRI);
 					    break;
-				    case R.id.text_saturday:
-					    setWeekDaySelection(mTextSaturday);
+				    case R.id.txt_saturday:
+					    setWeekDaySelection(txtSaturday);
 					    loadFragment(FRAGMENT_SAT);
 					    break;
-				    case R.id.text_sunday:
-					    setWeekDaySelection(mTextSunday);
+				    case R.id.txt_sunday:
+					    setWeekDaySelection(txtSunday);
 					    loadFragment(FRAGMENT_SUN);
 					    break;
 			    }
 		    }
 	    };
 
-	    mTextMonday.setOnClickListener(mOnWeekDayClickListener);
-	    mTextTuesday.setOnClickListener(mOnWeekDayClickListener);
-	    mTextWednesday.setOnClickListener(mOnWeekDayClickListener);
-	    mTextThursday.setOnClickListener(mOnWeekDayClickListener);
-	    mTextFriday.setOnClickListener(mOnWeekDayClickListener);
-	    mTextSaturday.setOnClickListener(mOnWeekDayClickListener);
-	    mTextSunday.setOnClickListener(mOnWeekDayClickListener);
+	    txtMonday.setOnClickListener(onWeekDayClickListener);
+	    txtTuesday.setOnClickListener(onWeekDayClickListener);
+	    txtWednesday.setOnClickListener(onWeekDayClickListener);
+	    txtThursday.setOnClickListener(onWeekDayClickListener);
+	    txtFriday.setOnClickListener(onWeekDayClickListener);
+	    txtSaturday.setOnClickListener(onWeekDayClickListener);
+	    txtSunday.setOnClickListener(onWeekDayClickListener);
 
-	    mTextMonday.performClick();
+	    txtMonday.performClick();
     }
 
 	private void setWeekDaySelection(TextView textSelectedWeekDay) {
-		for (int i = 0; i < mTextWeekDays.length; i++) {
-			if (textSelectedWeekDay != mTextWeekDays[i]) {
-				mTextWeekDays[i].setEnabled(true);
+		for (int i = 0; i < txtWeekDays.length; i++) {
+			if (textSelectedWeekDay != txtWeekDays[i]) {
+				txtWeekDays[i].setEnabled(true);
 			} else {
-				mTextWeekDays[i].setEnabled(false);
+				txtWeekDays[i].setEnabled(false);
 			}
 		}
 	}
@@ -140,13 +143,13 @@ public class TutorialFragment extends Fragment {
 		try {
 			switch (fragment) {
 				case FRAGMENT_DISCUSSION:
-					if (mCurrentFragment == FRAGMENT_DISCUSSION) {
-						if (mTutorialDiscussionFragment != null) {
-							mTutorialDiscussionFragment.changeDay(mCurrentDay);
+					if (intCurrentFragment == FRAGMENT_DISCUSSION) {
+						if (fragTutorialDiscussion != null) {
+							fragTutorialDiscussion.changeDay(intCurrentDay);
 						}
 					} else {
-						mTutorialDiscussionFragment = TutorialDiscussionFragment.newInstance(mCurrentDay);
-						getChildFragmentManager().beginTransaction().replace(R.id.frame_tutorial, mTutorialDiscussionFragment).commit();
+						fragTutorialDiscussion = TutorialDiscussionFragment.newInstance(intCurrentDay);
+						getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, fragTutorialDiscussion).commit();
 					}
 					break;
 				case FRAGMENT_FRI:
@@ -168,9 +171,9 @@ public class TutorialFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mFragmentListener = (FragmentListener) activity;
-            if (mFragmentListener != null) {
-                mFragmentListener.onFragmentAttached(HostActivity.FRAGMENT_TUTORIAL);
+            fragListener = (FragmentListener) activity;
+            if (fragListener != null) {
+                fragListener.onFragmentAttached(HostActivity.FRAGMENT_TUTORIAL);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -181,13 +184,13 @@ public class TutorialFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         try {
-            if (mFragmentListener != null) {
-                mFragmentListener.onFragmentDetached(HostActivity.FRAGMENT_TUTORIAL);
+            if (fragListener != null) {
+                fragListener.onFragmentDetached(HostActivity.FRAGMENT_TUTORIAL);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
         }
-        mFragmentListener = null;
+        fragListener = null;
     }
 
 }
