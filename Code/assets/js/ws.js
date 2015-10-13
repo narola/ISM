@@ -307,7 +307,7 @@ if ("WebSocket" in window)
             }
             if(obj.sub_type == 'decline-request'){
                // cnt = $('.box_body #carousel-studymate .carousel-inner #active-recomonded .suggested_mates_card').length;
-               str = '';
+                str = '';
                 str += '<div class="suggested_mates_card">'
                 str += '<div class="mate_user_img"><img src="uploads/'+obj.profile+'" onerror="this.src=\'assets/images/avatar.png\'"></div>';
                 str += '<div class="mate_descrip"><p class="mate_name">'+obj.full_name+'</p>';
@@ -780,7 +780,7 @@ $(document).on('click','button[data-type="save_and_next"]',function(e){
     };
     ws.send(JSON.stringify(request)); 
 
-
+});
 $(document).on('change', '#select-tag-user', function(e){
     if(e.val != ''){
         var request = {

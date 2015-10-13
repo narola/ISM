@@ -178,12 +178,28 @@
                             <p>Week 1</p>                   
                         </div>
                         <ul class="tut_weekdays">
-                            <li><a href="#Monday">Monday</a></li>
-                            <li><a href="#Tuesday">Tuesday</a></li>
-                            <li><a href="#Wednesday">Wednesday</a></li>
-                            <li><a href="#">Thursday</a></li>
-                            <li><a href="#">Friday</a></li>
-                            <li><a href="#">Saturday</a></li>
+                        <?php
+                            foreach ($weekday as $key => $value) {
+                            if($key <= 5 ){
+                                $url = 'javascript:void(0);';
+                                $active = '';
+                               if($key+1 <= $current_weekday){
+                                 $url = '#'.$value;
+                               }else{
+
+                               }
+                               if($key+1 == $current_weekday){
+                                $active = 'class="active search_result_label"';
+                               }
+                               
+                               echo '<li><a href="'.$url.'" '.$active.'>'.$value.'</a></li>';
+                                }
+                            }
+
+                         ?>
+
+
+                           
                         </ul>
                         <div class="clearfix"></div>
                     </div>
