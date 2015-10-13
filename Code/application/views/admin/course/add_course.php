@@ -29,58 +29,47 @@
                         <div class="form-group">
                             <label>Course Name</label>
                             <input type="text" class="form-control" name="course_name" value="<?php echo set_value("course_name"); ?>">
-                        </div>
-                        <div class="alert alert-danger <?php if (empty(strip_tags(form_error('course_name'), ''))) {echo 'hide';} ?>">
-                            <?php echo strip_tags(form_error('course_name'), ''); ?>
-                        </div>
+                        </div>                        
+                        <?php echo myform_error('course_name'); ?>
 
                         <div class="form-group">
                             <label>Course Nickname</label>
                             <input type="text" class="form-control" name="course_nickname" value="<?php echo set_value("course_nickname"); ?>">
                         </div>
-                        <div class="alert alert-danger <?php if (empty(strip_tags(form_error('course_nickname'), ''))) {echo 'hide';} ?>">
-                            <?php echo strip_tags(form_error('course_nickname'), ''); ?>
-                        </div>
+                        <?php echo myform_error('course_nickname'); ?>
 
                         <div class="form-group">
                             <label>Course Details</label>
                             <textarea class="form-control" name="course_details"></textarea>
                         </div>
 
-
                         <div class="form-group">
                             <label>Course Type</label>
-                             <select class="form-control " name="course_category_id" id="course_category_id">
+                             <select class="form-control " name="course_type" id="course_category_id">
                                 <option selected disabled>Select course Type</option> 
                                  <?php 
-                                  if(!empty($course_type)){ 
-                                    foreach($course_type as $type) {
+                                  if(!empty($course_types)){ 
+                                    foreach($course_types as $type) {
                                   ?> 
-                                <option value="<?php echo $type; ?>"> <?php echo $type; ?></option>
+                                <option value="<?php echo $type; ?>" <?php echo set_select('course_type',$type); ?>> <?php echo $type; ?></option>
                                 <?php }  }else{ ?>
                                 <option > No Course Type</option>
                                 <?php } ?>
                             </select>
                         </div>
-                        <div class="alert alert-danger <?php if (empty(strip_tags(form_error('course_type'), ''))) {echo 'hide';} ?>">
-                            <?php echo strip_tags(form_error('course_type'), ''); ?>
-                        </div>
+                        <?php echo myform_error('course_type'); ?>
                         
                         <div class="form-group">
                             <label>Course Duration</label>
                             <input type="text" class="form-control" name="course_duration" value="<?php echo set_value("course_duration"); ?>">
-                        </div>
-                        <div class="alert alert-danger <?php if (empty(strip_tags(form_error('course_duration'), ''))) {echo 'hide';} ?>">
-                            <?php echo strip_tags(form_error('course_duration'), ''); ?>
-                        </div>
+                        </div>                        
+                        <?php echo myform_error('course_duration'); ?>
                         
                         <div class="form-group">
                             <label>Course Degree</label>
                             <input type="text" class="form-control" name="course_degree" value="<?php echo set_value("course_degree"); ?>">
-                        </div>
-                        <div class="alert alert-danger <?php if (empty(strip_tags(form_error('course_degree'), ''))) {echo 'hide';} ?>">
-                            <?php echo strip_tags(form_error('course_degree'), ''); ?>
-                        </div>
+                        </div>                       
+                        <?php echo myform_error('course_degree'); ?>
 
                         <div class="form-group ">
                             <select class="form-control " name="course_category_id" id="course_category_id">
@@ -89,20 +78,18 @@
                                   if(!empty($course_category)){ 
                                     foreach($course_category as $category) {
                                   ?> 
-                                <option value="<?php echo $category['id']; ?>"> <?php echo $category['course_category_name']; ?></option>
+                                <option value="<?php echo $category['id']; ?>" <?php echo set_select('course_category_id',$category['id']); ?>> <?php echo $category['course_category_name']; ?></option>
                                 <?php }  }else{ ?>
                                 <option > No Course Category</option>
                                 <?php } ?>
                             </select>
                         </div>                        
-                        <div class="alert alert-danger <?php if (empty(strip_tags(form_error('course_category_id'), ''))) {echo 'hide';} ?>">
-                            <?php echo strip_tags(form_error('course_category_id'), ''); ?>
-                        </div>
+                        <?php echo myform_error('course_category_id'); ?>
                         
                         <div class="form-group">
                             <label>Is Semester</label>
-                            <input type="radio" name="is_semester" <?php echo set_radio('is_semester', 'male', TRUE); ?> value="1">Yes
-                            <input type="radio" name="is_semester" <?php echo set_radio('is_semester', 'female'); ?> value="0">No
+                            <input type="radio" name="is_semester" <?php echo set_radio('is_semester', '1', TRUE); ?> value="1">Yes
+                            <input type="radio" name="is_semester" <?php echo set_radio('is_semester', '0'); ?> value="0">No                          
                         </div>
                     </div>
 

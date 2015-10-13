@@ -115,14 +115,14 @@ class Course extends ADMIN_Controller {
     {
         $this->data['page_title'] = 'Course Add';
         $this->data['course_category'] = select(TBL_COURSE_CATEGORY,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
-        $this->data['course_type'] = array('University','Primary','Secondary','Higher Secondary');
+        $this->data['course_types'] = array('University','Primary','Secondary','Higher Secondary');
         
         $this->form_validation->set_rules('course_name', 'Course Name', 'trim|required');
 		$this->form_validation->set_rules('course_nickname', 'Course Nickname', 'trim|required');	
-		$this->form_validation->set_rules('course_type', 'Course Type', 'trim|required');	
+		$this->form_validation->set_rules('course_type', 'Course Type', 'trim|required');
 		$this->form_validation->set_rules('course_duration', 'Course Duration', 'trim|required');
 		$this->form_validation->set_rules('course_degree', 'Course Degree', 'trim|required');
-		$this->form_validation->set_rules('course_category_id', 'Course Degree', 'required|greater_than[0]');
+		$this->form_validation->set_rules('course_category_id', 'Course Degree', 'required');
 		
 
 		if($this->form_validation->run() == FALSE){
