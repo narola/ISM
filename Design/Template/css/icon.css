@@ -72,7 +72,8 @@
 .icon_thumb_0_red,
 .icon_thumb_red,
 .icon_comment_red,
-.icon_user_2_red{
+.icon_user_2_red,
+.icon_hand{
 	background-image:url(../images/icon-set.png);
 	background-position:0 0;
 }
@@ -444,6 +445,9 @@
 }
 .icon_23{
 	background-position:-242px -76px;
+}
+.icon_hand{
+	background-position:-119px -194px;
 }
 /*--------------icon---------------*/
 

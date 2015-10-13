@@ -1,4 +1,3 @@
-
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -24,6 +23,7 @@ class Tutorial extends ISM_Controller {
 			$data['title'] = 'ISM - Group Tutorial';
 			$data['active_comment'] = 0;
 			$data['menu'] = 'week';
+
 			// Store remaining reconds of active time or 0 if inactive hours.
 			$data['time'] = active_hours();
 			if($data['time'] > 0){
@@ -32,8 +32,13 @@ class Tutorial extends ISM_Controller {
 
 			// Get Current week no.
 			$data['current_weekday'] = getdate()['wday'];
-			$c_week = ceil(getdate()['yday']/7);
-			
+			if($data['current_weekday'] > 1){
+				redirect('student/exam');
+				exit;
+			}
+			$date = new DateTime(date("Y-m-d H:i:s"));
+			$c_week = $date->format("W");
+			$year = date("Y");
 
 			// Get current topic data from DB
 			$data['topic']  = select(
@@ -46,7 +51,7 @@ class Tutorial extends ISM_Controller {
 				(SELECT SUM(group_score) FROM '.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' WHERE group_id = tm.group_id) as group_score,
 				up.profile_link,
 				u.full_name',
-				array('where' => array('ta.group_id' => $this->session->userdata('user')['group_id'],'ta.week_no' => $c_week,'tm.user_id' => $user_id  )),
+				array('where' => array('ta.group_id' => $this->session->userdata('user')['group_id'],'ta.week_no' => $c_week,'tm.user_id' => $user_id ,'YEAR(`ta`.`created_date`)' => $year )),
 				array('join' => array(
 					array(
 						'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' ta',
@@ -146,6 +151,80 @@ class Tutorial extends ISM_Controller {
 			 //p($data,true);
 			$this->template->load('student/default','student/tutorial_group',$data);
 	}	
+	/**
+	*	Attempt exam.
+	*   @autor Sandip Gopani
+	*/
+	public function exam(){
+		$data['menu'] = 'week';
+		$data['current_weekday'] = getdate()['wday'];
+		$data['user_id'] = $user_id = $this->session->userdata('user')['id'];
+		$data['weekday'] = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
+		$data['user_id'] = $user_id = $this->session->userdata('user')['id'];
+	    $data['title'] = 'ISM - Exam';
+	    $data['examstatus'] = 0;    // 0 = Not statred, 1 = started, 2 = finished
+	    $data['current_weekday'] = getdate()['wday'];
+	    $data['error'] = null;
+		$date = new DateTime(date("Y-m-d H:i:s"));
+		$c_week = $date->format("W");
+		$year = date("Y");
+
+		// Check topic and exam allocated for current week and get exam info.
+	    $data['exam']  = select(
+				TBL_TUTORIAL_TOPIC.' t',
+				't.id,
+				t.topic_name,
+				t.topic_description,
+				t.created_date,
+				te.exam_id,
+				ss.created_date',
+				array('where' => array('ta.group_id' => $this->session->userdata('user')['group_id'],'ta.week_no' => $c_week,'tm.user_id' => $user_id,'YEAR(`ta`.`created_date`)' => $year  )),
+				array('join' => array(
+					array(
+						'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' ta',
+						'condition' => 'ta.topic_id = t.id'
+						),
+					array(
+						'table' => TBL_TUTORIAL_GROUP_MEMBER.' tm',
+						'condition' => 'tm.group_id = ta.group_id'
+						),
+					array(
+						'table' => TBL_TUTORIAL_TOPIC_EXAM.' te',
+						'condition' => 'te.tutorial_topic_id = ta.topic_id'
+						),
+					array(
+						'table' => TBL_STUDENT_EXAM_SCORE. ' ss',
+						'condition' => 'ss.exam_id = te.exam_id AND ss.user_id = '.$user_id
+						)
+					),
+				'single' => true
+				)
+			); 
+	     $data['exam']['created_date'] = '2015-10-12'; 
+	   
+	    $current_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+	    if(isset($data['exam']) && !empty($data['exam'])){
+	    	if(isset($data['exam']['created_date'])){
+	    		if($data['exam']['created_date'] != '' && $data['exam']['created_date'] != null){
+	    			$exam_start_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d',  strtotime($data['exam']['created_date'])));
+	    			if($exam_start_date < $current_date){
+	    				$data['is_exam_finished'] = TRUE;
+	    			}
+	    			$data['is_exam_started'] = TRUE;
+	    		}
+	    	}
+	    }else{
+	    	$data['error'] = 'Exam or Topic is not allocated for current week!';
+	    }
+
+
+	    if($data['is_exam_started'] == TRUE){
+	    	// Get exam status if exam is already started.
+	    }
+
+		p($data,true);
+		$this->template->load('student/default','student/exam',$data);
+	}
 
 
 }
