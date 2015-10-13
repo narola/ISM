@@ -41,8 +41,8 @@
                                 </select>
                     </div>
                         <div class="form-group no_effect search_input">
-                        	<input class="form-control" type="text" placeholder="Search">
-                            <a href="#" class="fa fa-search"></a>
+                        	<input class="form-control" name="q" id="q" type="text" placeholder="Search">
+                            <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
                         </div>
                     </div>
                 </div>
@@ -81,12 +81,13 @@
                                       <button type="button" class="set_status_<?php echo $topic['id']; ?> btn btn-default"><?php echo ($topic['status']) ? $topic['status'] : 'Select Status'; ?></button>
                                       <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="caret"></span>
-                                      </button>
+                                      </button>                                    
                                       <ul class="dropdown-menu" data-topic="<?php echo $topic['id']; ?>">
                                         <li><a class="status" id="Approve">Approve</a></li>
                                         <li><a class="status" id="Inappropriate">Inappropriate</a></li>
                                         <li><a class="status" id="Pending">Pending</a></li>
                                       </ul>
+                                      <i class="fa fa-refresh fa-spin status_loader" id="status_loader_<?php echo $topic['id'];?>" style="display:none"></i>
                                     </div>
                                 
                                     
@@ -94,7 +95,7 @@
                             </div>
                             <div class="topic_action">
                            		<a data-toggle="tooltip" data-placement="right" data-original-title="Edit" class="icon icon_edit"></a>
-                                <a data-toggle="tooltip" status="<?php echo $topic['is_archived']; ?>" id="archive_<?php echo $topic['id']; ?>" data-placement="right" data-original-title="Archive" class="archive icon <?php echo ($topic['is_archived']==0) ? 'icon_zip' : 'icon_zip_active'; ?>"></a>
+                                <a data-toggle="tooltip" status="<?php echo $topic['is_archived']; ?>" id="archive_<?php echo $topic['id']; ?>" data-placement="right" data-original-title="Archive" class="archive icon <?php echo ($topic['is_archived']==0) ? 'icon_zip' : 'icon_zip_active'; ?>"> <i id="archived_loader_<?php echo $topic['id']; ?>" class="fa fa-refresh fa-spin topic_loader" style="display:none;"></i></a>
                                 <a data-toggle="tooltip" id="delete_<?php echo $topic['id']; ?>" data-placement="right" data-original-title="Delete" class="delete icon icon_delete"></a>
                                 <a data-toggle="tooltip" class="fa fa-angle-double-down"></a>                                
                             </div>
@@ -112,22 +113,50 @@
                 </nav>
                     </div>
                 </div>
-                <!--//topics-->
-			</div>
+                <!--//topics-->                
+            </div>
             <!--//main-->
-            <script type="text/javascript">
+            <!-- Modal -->
+            <div class="modal fade" id="close_mate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document" style="width:500px;margin-top:220px;">
+                    <div class="modal-content">
+                        <div class="modal-header notice_header text-center">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">CONFIRMATION FORM</h4>
+                            <small>Sep 7, 2015</small>
+                        </div>
+                        <div class="modal-body">
+                            <p><code><h4>Are sure for want to remove from Topic list?</h4></code></p>
+                                <h4 class="notice_by"><button class="btn btn_black_normal" data-id="" data-type="close-topic">OK</button></h4>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<script type="text/javascript">
     
     function filter_data(){
-
         var role = $('#role').val();
         var subject = $('#subject').val();
+        var q = $('#q').val();
         
         if(role == '' ){ $('#role').removeAttr('name'); }
         if(subject == '' ){ $('#subject').removeAttr('name'); }
+        if(q == ''){ $('#q').removeAttr('name'); }
         
         $('#filter').submit();
-
     }
+    $( "#filter" ).submit(function() {
+        var role = $('#role').val();
+        var subject = $('#subject').val();
+        var q = $('#q').val();
+        
+        if(role == '' ){ $('#role').removeAttr('name'); }
+        if(subject == '' ){ $('#subject').removeAttr('name'); }
+        if(q == ''){ $('#q').removeAttr('name'); }
+        
+    });
+
     <?php if(!empty($_GET['role'])) { ?>
         $('#role').val('<?php echo $_GET["role"];?>');  
     <?php } ?>
@@ -135,10 +164,14 @@
     <?php if(!empty($_GET['subject'])) { ?>
         $('#subject').val('<?php echo $_GET["subject"];?>');  
     <?php } ?>
-    
+
+    <?php if(!empty($_GET['q'])) { ?>
+		$('#q').val('<?php echo $_GET["q"];?>');	
+    <?php } ?>	
     $("a.status").click(function(){
         var id = $(this).attr('id');
-        var topic_id = $(this).parents('ul').data('topic');
+        var topic_id = $(this).parents('ul').data('topic');        
+        $("#status_loader_"+topic_id).show();
         $.ajax({
            url:'<?php echo base_url()."admin/topic/set_topic_status"; ?>',
            dataType: "JSON",
@@ -146,15 +179,17 @@
            data:{status:id, topic_id:topic_id},
            success:function(data){
                 $("button."+data.html).html(data.topic_status);
+                $("#status_loader_"+topic_id).hide();
             }
         });
     });
 
-    $("a.archive").click(function(){
+    $("a.archive").click(function(){ 
         var str_id = $(this).attr('id');
         var split_id = str_id.split("_");
         var is_archive = $(this).attr('status');
         var topic_id = split_id[1];
+        $("#archived_loader_" + topic_id).show();
         $.ajax({
            url:'<?php echo base_url()."admin/topic/archive_topic"; ?>',
            dataType: "JSON",
@@ -173,7 +208,30 @@
                     $(".topic_action a#"+response.id).removeClass("icon_zip_active").addClass("icon_zip");
                     $(".topic_action a#"+response.id).attr('data-original-title', 'Archive');
                 }
+                $("#archived_loader_" + topic_id).hide();
             }
         });
-    })
+    });
+
+     $("a.delete").click(function(){
+        var str_id = $(this).attr('id');
+        var split_id = str_id.split("_");
+        var topic_id = split_id[1];        
+        $('button[data-type="close-topic"]').attr('data-id',topic_id); 
+        $('#close_mate').modal('show');      
+    });
+    
+    $(document).on('click','button[data-type="close-topic"]',function(e){
+        var topic_id = $(this).attr('data-id');
+        $.ajax({
+               url:'<?php echo base_url()."admin/topic/delete_topic"; ?>',
+               dataType: "JSON",
+               type:'POST',
+               data:{topic_id:topic_id},
+               success:function(data){
+                   $('#close_mate').modal('hide');      
+                   $('#'+data.id).closest('div[class^="box"]').slideUp("slow", function() { $('#'+data.id).closest('div[class^="box"]')});               
+                }
+       });
+    });
 </script>
