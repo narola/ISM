@@ -13,30 +13,30 @@ import com.ism.R;
 import java.util.ArrayList;
 
 /**
- * Created by Krunal Panchal on 09/10/15.
+ * Created by c161 on 09/10/15.
  */
 public class ControllerTopSpinnerAdapter extends BaseAdapter {
 
 	private static final String TAG = ControllerTopSpinnerAdapter.class.getSimpleName();
 
-	private ArrayList<String> mMenu;
-	private Context mContext;
-	private LayoutInflater mInflater;
+	private ArrayList<String> arrListMenu;
+	private Context context;
+	private LayoutInflater inflater;
 
 	public ControllerTopSpinnerAdapter(ArrayList<String> menu, Context context) {
-		this.mMenu = menu;
-		this.mContext = context;
-		this.mInflater = LayoutInflater.from(mContext);
+		this.arrListMenu = menu;
+		this.context = context;
+		this.inflater = LayoutInflater.from(context);
 	}
 
 	@Override
 	public int getCount() {
-		return mMenu.size();
+		return arrListMenu.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mMenu.get(position);
+		return arrListMenu.get(position);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ControllerTopSpinnerAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.list_item_simple_dark, parent, false);
+			convertView = inflater.inflate(R.layout.list_item_simple_dark, parent, false);
 			holder = new ViewHolder();
 			holder.textTitle = (TextView) convertView.findViewById(R.id.text);
 			convertView.setTag(holder);
@@ -57,7 +57,7 @@ public class ControllerTopSpinnerAdapter extends BaseAdapter {
 		}
 
 		try {
-			holder.textTitle.setText(mMenu.get(position));
+			holder.textTitle.setText(arrListMenu.get(position));
 			/*if (position == 0) {
 				convertView.setBackgroundResource(R.drawable.bg_controller_top);
 			} else {

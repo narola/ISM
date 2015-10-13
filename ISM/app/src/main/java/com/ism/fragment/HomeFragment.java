@@ -16,13 +16,13 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
 
-    private View mView;
+    private View view;
 
-    private FragmentListener mFragmentListener;
+    private FragmentListener fragListener;
 
     public static HomeFragment newInstance() {
-        HomeFragment fragmentHome = new HomeFragment();
-        return fragmentHome;
+        HomeFragment fragHome = new HomeFragment();
+        return fragHome;
     }
 
     public HomeFragment() {
@@ -31,11 +31,11 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_home, container, false);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
 
         initGlobal();
 
-        return mView;
+        return view;
     }
 
     private void initGlobal() {
@@ -46,9 +46,9 @@ public class HomeFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mFragmentListener = (FragmentListener) activity;
-            if (mFragmentListener != null) {
-                mFragmentListener.onFragmentAttached(HostActivity.FRAGMENT_HOME);
+            fragListener = (FragmentListener) activity;
+            if (fragListener != null) {
+                fragListener.onFragmentAttached(HostActivity.FRAGMENT_HOME);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -59,13 +59,13 @@ public class HomeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         try {
-            if (mFragmentListener != null) {
-                mFragmentListener.onFragmentDetached(HostActivity.FRAGMENT_HOME);
+            if (fragListener != null) {
+                fragListener.onFragmentDetached(HostActivity.FRAGMENT_HOME);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
         }
-        mFragmentListener = null;
+        fragListener = null;
     }
 
 }
