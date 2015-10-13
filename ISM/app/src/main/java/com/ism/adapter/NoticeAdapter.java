@@ -54,7 +54,7 @@ public class NoticeAdapter extends BaseAdapter {
      //   TextView raw_txt_viewAll = (TextView) view.findViewById(R.id.raw_txt_noticeViewAll);
         raw_txt_notice.setTypeface(myTypeFace.getRalewayBold());
         raw_txt_noticeDesc.setTypeface(myTypeFace.getRalewayThin());
-        raw_txt_readmore.setTypeface(myTypeFace.getRalewayThin());
+        raw_txt_readmore.setTypeface(myTypeFace.getRalewayLight());
        // raw_txt_viewAll.setTypeface(myTypeFace.getRalewayRegular());
 
       //  if(position<2) {

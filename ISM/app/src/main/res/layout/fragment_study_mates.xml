@@ -1,14 +1,30 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.ism.fragment.StudyMatesFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="StudyMatesFragment" />
+        android:orientation="horizontal">
 
-</RelativeLayout>
+        <com.ism.helper.CircleImageView
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:src="@drawable/userdp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ADAM ROSS"
+                android:textAllCaps="true"
+                android:textSize="@dimen/d20sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

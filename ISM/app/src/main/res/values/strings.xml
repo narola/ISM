@@ -166,5 +166,7 @@
 		<!--<item>0</item>-->
 	</integer-array>
 
-
+	<!--Create post-->
+<string name="strpost">Post</string>
+	<string name="strcreatepost">Create Post</string>
 </resources>

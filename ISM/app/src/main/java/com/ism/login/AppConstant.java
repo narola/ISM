@@ -1,5 +1,9 @@
 package com.ism.login;
 
+import android.os.Environment;
+
+import java.io.File;
+
 /**
  * Created by c162 on 07/10/15.
  */
@@ -30,4 +34,6 @@ public class AppConstant {
     public static final String USERID="USERID";
 
     public static final String PASSWORD="PASSWORD";
+
+    public static final String imageCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Images";
 }

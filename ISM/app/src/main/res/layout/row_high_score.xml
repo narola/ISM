@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200sp"
+    android:layout_height="220sp"
     android:orientation="vertical">
 
     <TextView
@@ -24,7 +24,7 @@
     <ListView
         android:id="@+id/lv_highScoreStudentList"
         android:layout_width="match_parent"
-        android:layout_height="300sp"
+        android:layout_height="330sp"
          />
     <!--<ListView-->
     <!--android:id="@+id/raw_lv_highScoreStudentList"-->

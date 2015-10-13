@@ -16,6 +16,9 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.object.MyTypeFace;
 
+/**
+ * Created by c162 on 07/10/15.
+ */
 public class LoginActivity extends Activity implements View.OnClickListener {
     private static final String TAG = LoginActivity.class.getSimpleName();
     TextView txtForgotpwd;

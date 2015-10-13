@@ -56,11 +56,11 @@ public class EventsAdapter extends BaseAdapter {
             TextView raw_txt_eventTime = (TextView) view.findViewById(R.id.txt_eventTime);
 
             raw_txt_eventName.setTypeface(myTypeFace.getRalewayBold());
-            raw_txt_eventDesc.setTypeface(myTypeFace.getRalewayLight());
-            raw_txt_eventMonth.setTypeface(myTypeFace.getRalewayBold());
-            raw_txt_eventDate.setTypeface(myTypeFace.getRalewayBold());
+            raw_txt_eventDesc.setTypeface(myTypeFace.getRalewayThin());
+           // raw_txt_eventMonth.setTypeface(myTypeFace.getRalewayExtraBold());
+           // raw_txt_eventDate.setTypeface(myTypeFace.getRalewayExtraBold());
           //  raw_txt_eventTime.setTypeface(myTypeFace.getRalewayBold());
-            raw_txt_eventYear.setTypeface(myTypeFace.getRalewayBold());
+           // raw_txt_eventYear.setTypeface(myTypeFace.getRalewayExtraBold());
 
 //            if (position < 3) {
 //

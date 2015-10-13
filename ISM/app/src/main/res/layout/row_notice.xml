@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="160sp"
+
     android:background="@color/color_white"
     android:orientation="vertical">
 
@@ -19,35 +20,37 @@
         android:id="@+id/txt_noticeDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/d5sp"
+        android:layout_marginRight="@dimen/d5sp"
         android:ellipsize="end"
         android:lines="5"
-        android:paddingLeft="@dimen/d5sp"
-        android:paddingRight="5dp"
+        android:paddingLeft="@dimen/d10sp"
+        android:paddingRight="10sp"
         android:text=""
-        android:textColor="@color/color_dark_gray"
-        android:textSize="@dimen/d15sp"
+        android:textColor="@color/color_black"
+        android:textSize="16sp"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/txt_noticeReadMore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/d5sp"
         android:gravity="right"
         android:padding="5dp"
         android:text="Read more"
         android:textColor="@color/color_green"
-
         android:textSize="@dimen/d15sp"
         android:visibility="gone" />
 
     <!--<TextView-->
-        <!--android:id="@+id/txt_noticeViewAll"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:gravity="center"-->
-        <!--android:text="View all"-->
-        <!--android:padding="@dimen/d10sp"-->
-        <!--android:textColor="@color/color_green"-->
-        <!--android:textSize="@dimen/d20sp"-->
-        <!--android:visibility="gone" />-->
+    <!--android:id="@+id/txt_noticeViewAll"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center"-->
+    <!--android:text="View all"-->
+    <!--android:padding="@dimen/d10sp"-->
+    <!--android:textColor="@color/color_green"-->
+    <!--android:textSize="@dimen/d20sp"-->
+    <!--android:visibility="gone" />-->
 </LinearLayout>

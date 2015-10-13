@@ -22,7 +22,6 @@
     <color name="border_gray">#DDDDDD</color>
 
 
-
     <!-- Arti -->
     <color name="color_green">#1BBC9B</color>
     <color name="color_transparent_white">#70ffffff</color>
@@ -37,7 +36,13 @@
     <color name="color_text_light_green">#B5D8DC</color>
     <color name="color_line_green">#758886</color>
     <color name="color_actionbar">#232A34</color>
-    <color name="color_gray2">#323941</color>
+    <color name="color_gray_profilemenu">#323941</color>
     <color name="color_blue">#ff3295ff</color>
     <color name="color_light_green">#d820ba83</color>
+
+    <!--profile menu shadow colors-->
+    <color name="color_layer1">#242A31</color>
+    <color name="color_layer2">#31363C</color>
+    <color name="color_layer3">#3C434A</color>
+    <color name="color_layer4">#383F47</color>
 </resources>
