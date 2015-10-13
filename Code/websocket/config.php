@@ -10,6 +10,27 @@ $db = array(
     'database' => 'ISM'
 );
 
+/**
+ * Print data
+ * @param Mixed $message
+ * @param Mixed $status
+ */
+function pr($message, $status = 0) {
+        $re = 'Request';
+        if ($status == 1) {
+            $re = 'Responce';
+        } else if ($status == 2) {
+            $re = 'System Info';
+        }
+        
+        echo "\n---------------------------------------- Time: " . date("H:m:s") . " ($re)\n\n";
+        if (is_array($message)) {
+            print_r($message);
+        } else {
+            echo $message;
+        }
+    }
+
 /* DB table name constants */
 define('TBL_ADMIN_CONFIG','admin_config');
 define('TBL_ANSWER_CHOICES','answer_choices');

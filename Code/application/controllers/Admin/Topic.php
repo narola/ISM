@@ -24,14 +24,17 @@ class Topic extends ADMIN_Controller {
 		$this->load->library('pagination');
 		$role = $this->input->get('role');
 		$subject  = $this->input->get('subject');
+		$q  = $this->input->get('q');
 		$where['where']['tut_topic.is_delete']=0;
-		if( !empty($role) || !empty($subject)){
+		if( !empty($role) || !empty($subject) || !empty($q)){
 
 			$str = '';
 
 			if(!empty($role)){ $where['where']['user.role_id'] = $role ; $str .= '&role='.$role; }	
 			
 			if(!empty($subject)){ $where['where']['tut_topic.subject_id'] = $subject; $str .='&subject='.$subject; }
+
+            if(!empty($q)){ $where['like']['tut_topic.topic_name'] = $q; $where['or_like']['tut_topic.topic_description'] = $q;$where['or_like']['tut_topic.evaluation_keywords'] = $q;  $str .='&q='.$q; }
 
 			$str =  trim($str,'&');
 
@@ -115,12 +118,12 @@ class Topic extends ADMIN_Controller {
 	*/
 	public function allocate($unallocated = null){
 
-		$ddate = date('Y', time());
-		
-		$date = new DateTime($ddate);
+		// get the current week of the current year
+		$year = date('Y', time());
+		$date = new DateTime($year);
 		$week = $date->format("W");
 		
-
+		// save the allocated topic in db
 		if($_POST){
 
 			$gid = $this->input->post('group_id');
@@ -134,9 +137,7 @@ class Topic extends ADMIN_Controller {
 
 		}
 
-		$date1 = new DateTime('2015-09-24 10:18:40');
-		$year = $date1->format('Y');
-
+		
 		$where['where']['tut_topic.week_no'] = $week;
 		$where['where']['YEAR(tut_topic.created_date)'] = $year;
 
@@ -147,19 +148,15 @@ class Topic extends ADMIN_Controller {
 
 		$allocated_group_ids = array_column($allocated_groups, 'group_id');
 		
-        // echo 'assigned for the current week<br/>';
-		
-		// p($allocated_group_ids);
-
-		$where  = array('where_not_in' => array(TBL_TUTORIAL_GROUPS.'.id' => $allocated_group_ids),
-			'where'=> array(TBL_TUTORIAL_GROUPS.'.is_completed'=>1,
+       //p($allocated_group_ids,true);
+		$where  = array('where'=> array(TBL_TUTORIAL_GROUPS.'.is_completed'=>1,
 				TBL_TUTORIAL_GROUPS.'.group_type'=>'tutorial group'
 				)) ;
 
-		/*$unallocated_groups = select(TBL_TUTORIAL_GROUPS,
-			TBL_TUTORIAL_GROUPS.'.id',
-			$where
-			);*/
+		if(!empty($allocated_group_ids)){
+			$where['where_not_in'] = array(TBL_TUTORIAL_GROUPS.'.id' => $allocated_group_ids);
+		}
+
 		$unallocated_groups = select(TBL_TUTORIAL_GROUPS,
 											TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
 											TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
@@ -195,9 +192,7 @@ class Topic extends ADMIN_Controller {
 												)
 											);
 	
-	//qry();	
-	//p($unallocated_groups,true);
-
+	
 	$this->data['groups'] = $unallocated_groups;
 
 
@@ -240,9 +235,7 @@ class Topic extends ADMIN_Controller {
 		$unallocated_group_ids = array_column($unallocated_groups, 'id');
 
 
-		// echo 'other than assigned<br/>';
-		// p($unallocated_group_ids, true);
-
+	
 		if($unallocated == null){
 			$unallocated = current($unallocated_group_ids);
 		}
@@ -261,12 +254,7 @@ class Topic extends ADMIN_Controller {
 			$where
 			);
 		
-			// echo 'assigned last week<br/>';
-		// p($last_week_groups);
-
-		//foreach ($unallocated_group_ids as $unallocated) {
-			// echo 'out '.$key." ".$unallocated;
-
+	
 			if(in_array($unallocated, array_column($last_week_groups, 'group_id'))){
 
 				$key = array_search($unallocated, array_column($last_week_groups, 'group_id'));
@@ -276,15 +264,12 @@ class Topic extends ADMIN_Controller {
 				'tut_topic.subject_id',
 					$where, array('single'=>true)
 				);
-				// echo 'subject ids<br/>';
-				// p($subject);
 				$where = array('where'=>array('tut_course.subject_id'=>$subject['subject_id'],
 					));
 				$course = select(TBL_COURSE_SUBJECT.' tut_course',
 				'tut_course.course_id',
 					$where, array('single'=>true)
 				);
-				// p($course);
 
 				$where = array('where'=>array('tut_course.course_id'=>$course['course_id']
 												// 'tut_course.subject_id !='=>$subject['subject_id']
@@ -304,10 +289,7 @@ class Topic extends ADMIN_Controller {
 					$where, $options
 				);
 
-				// echo 'subject';
-				// p($random_subject);
 				$random_subject_id = $random_subject['subject_id'];
-				
 
 			}else{
 				
@@ -326,7 +308,6 @@ class Topic extends ADMIN_Controller {
 				'tut_stud_info.course_id',
 					$where, $options
 				);
-				// p($course_info);
 				$where = array('where'=>array('tut_course.course_id'=>$course_info['course_id']
 					));
 
@@ -343,18 +324,11 @@ class Topic extends ADMIN_Controller {
 				'tut_course.subject_id',
 					$where, $options
 				);
-				
-				// p($random_subject_info);
 				$random_subject_id = $random_subject_info['subject_id'];
 
 			}
 			$where = array('where'=>array('tut_topic.subject_id'=>$random_subject_id));
 
-				// $options = array('order_by'=>'RAND()','limit'=>3);
-				/*$random_topics = select(TBL_TUTORIAL_TOPIC.' tut_topic',
-				'tut_topic.id',
-					$where, $options
-				);*/
 				$this->data['recommended_topics'] = select(TBL_TUTORIAL_TOPIC.' tut_topic',
 											'tut_topic.id,tut_topic.topic_name,tut_topic.is_archived,tut_topic.status,tut_topic.topic_description,tut_topic.allocation_count,tut_topic.classroom_id,tut_topic.subject_id, tut_topic.created_by,sub.subject_name,class.class_name',
 											$where,
@@ -373,16 +347,9 @@ class Topic extends ADMIN_Controller {
 											    			
 											    			
 												    		),
-												// 'group_by'=>'tut_topic.id'
 												)
 											);
 
-				//$random_topic_ids = array_column($random_topics,'id');
-				// echo 'unallocated: '.$unallocated.'<br/>';
-				//p($random_topic_ids);
-				// p($this->data);
-		//}
-		// exit;
 
 		$this->data['page_title'] = 'Allocate Topic';
 		$this->template->load('admin/default','admin/topic/allocate', $this->data);
@@ -495,12 +462,11 @@ class Topic extends ADMIN_Controller {
 		$data=array(
 				 "is_delete"=> $is_delete
 				 );
-		update('topics',$topic_id,$data);	// Update data  using common_model.php and cms_helper.php
+		update('tutorial_topic',$topic_id,$data);	// Update data  using common_model.php and cms_helper.php
 		
 		$response = array('is_delete'=>$is_delete,'id'=>'delete_'.$topic_id);
 		echo json_encode($response);
 		exit; 
-
 	}
 
 }

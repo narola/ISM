@@ -41,8 +41,8 @@
                                 </select>
                     </div>
                         <div class="form-group no_effect search_input">
-                        	<input class="form-control" type="text" placeholder="Search">
-                            <a href="#" class="fa fa-search"></a>
+                        	<input class="form-control" name="q" id="q" type="text" placeholder="Search">
+                            <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
                         </div>
                     </div>
                 </div>
@@ -113,40 +113,50 @@
                 </nav>
                     </div>
                 </div>
-                <!--//topics-->
-                
-                <!-- Modal -->
-                <div class="modal fade" id="close_mate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog" role="document" style="width:500px;margin-top:220px;">
-                        <div class="modal-content">
-                            <div class="modal-header notice_header text-center">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">CONFIRMATION FORM</h4>
-                                <small>Sep 7, 2015</small>
-                            </div>
-                            <div class="modal-body">
-                                <p><code><h4>Are sure for want to remove from studymates list?</h4></code></p>
-                                    <h4 class="notice_by"><button class="btn btn_black_normal" data-type="close-studymate">OK</button></h4>
-                                <div class="clearfix"></div>
-                            </div>
+                <!--//topics-->                
+            </div>
+            <!--//main-->
+            <!-- Modal -->
+            <div class="modal fade" id="close_mate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document" style="width:500px;margin-top:220px;">
+                    <div class="modal-content">
+                        <div class="modal-header notice_header text-center">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">CONFIRMATION FORM</h4>
+                            <small>Sep 7, 2015</small>
+                        </div>
+                        <div class="modal-body">
+                            <p><code><h4>Are sure for want to remove from Topic list?</h4></code></p>
+                                <h4 class="notice_by"><button class="btn btn_black_normal" data-id="" data-type="close-topic">OK</button></h4>
+                            <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
-			</div>
-            <!--//main-->
-            <script type="text/javascript">
+            </div>
+<script type="text/javascript">
     
     function filter_data(){
-
         var role = $('#role').val();
         var subject = $('#subject').val();
+        var q = $('#q').val();
         
         if(role == '' ){ $('#role').removeAttr('name'); }
         if(subject == '' ){ $('#subject').removeAttr('name'); }
+        if(q == ''){ $('#q').removeAttr('name'); }
         
         $('#filter').submit();
-
     }
+    $( "#filter" ).submit(function() {
+        var role = $('#role').val();
+        var subject = $('#subject').val();
+        var q = $('#q').val();
+        
+        if(role == '' ){ $('#role').removeAttr('name'); }
+        if(subject == '' ){ $('#subject').removeAttr('name'); }
+        if(q == ''){ $('#q').removeAttr('name'); }
+        
+    });
+
     <?php if(!empty($_GET['role'])) { ?>
         $('#role').val('<?php echo $_GET["role"];?>');  
     <?php } ?>
@@ -154,7 +164,10 @@
     <?php if(!empty($_GET['subject'])) { ?>
         $('#subject').val('<?php echo $_GET["subject"];?>');  
     <?php } ?>
-    
+
+    <?php if(!empty($_GET['q'])) { ?>
+		$('#q').val('<?php echo $_GET["q"];?>');	
+    <?php } ?>	
     $("a.status").click(function(){
         var id = $(this).attr('id');
         var topic_id = $(this).parents('ul').data('topic');        
@@ -203,17 +216,22 @@
      $("a.delete").click(function(){
         var str_id = $(this).attr('id');
         var split_id = str_id.split("_");
-        var topic_id = split_id[1];
-      $("#delete_loader_" + topic_id).show();
-         //$('#close_mate').modal('show');
+        var topic_id = split_id[1];        
+        $('button[data-type="close-topic"]').attr('data-id',topic_id); 
+        $('#close_mate').modal('show');      
+    });
+    
+    $(document).on('click','button[data-type="close-topic"]',function(e){
+        var topic_id = $(this).attr('data-id');
         $.ajax({
-           url:'<?php echo base_url()."admin/topic/delete_topic"; ?>',
-           dataType: "JSON",
-           type:'POST',
-           data:{topic_id:topic_id},
-           success:function(data){
-               $('#'+data.id).closest('div[class^="box"]').slideUp("slow", function() { $('#'+data.id).closest('div[class^="box"]')});               
-            }
-        });
+               url:'<?php echo base_url()."admin/topic/delete_topic"; ?>',
+               dataType: "JSON",
+               type:'POST',
+               data:{topic_id:topic_id},
+               success:function(data){
+                   $('#close_mate').modal('hide');      
+                   $('#'+data.id).closest('div[class^="box"]').slideUp("slow", function() { $('#'+data.id).closest('div[class^="box"]')});               
+                }
+       });
     });
 </script>

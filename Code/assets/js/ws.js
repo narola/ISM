@@ -842,6 +842,15 @@ $(document).on('click','button[data-type = "decline-request"]',function(e){
     ws.send(JSON.stringify(request)); 
 });
 
+$(document).on('click','button[data-type="save_and_next"]',function(e){
+    var request = {
+        type: 'exam_answer',
+        qustion_id : $(this).data('qid'),
+        to: 'self'
+    };
+    ws.send(JSON.stringify(request)); 
+
+
 $(document).on('change', '#select-tag-user', function(e){
     if(e.val != ''){
         var request = {

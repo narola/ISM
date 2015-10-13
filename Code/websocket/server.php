@@ -11,14 +11,17 @@ require 'class.PHPWebSocket.php';
 // when a client sends data to the server
 function wsOnMessage($clientID, $message, $messageLength, $binary) {
     global $Server;
+
     $ip = long2ip($Server->wsClients[$clientID][6]);
     if ($messageLength == 0) {
         $Server->wsClose($clientID);
         return;
     }
 
-    $data = json_decode($message, true);
-    $data['error'] = 'skip';
+    $datas = json_decode($message, true);
+    $datas['error'] = 'skip';
+    pr($datas);
+    $data = array_merge($datas, $Server->active_hours());
 
     /* For individual chat */
     if ($data['type'] == 'studymate') {
@@ -94,21 +97,12 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         if (isset($data['data'])) {
             unset($data['data']);
         }
-    } else if ($data['type'] == 'get_studymate_name'){
+    } else if ($data['type'] == 'get_studymate_name') {
         $responce = $Server->get_studymate_name($data);
     }
-    $Server->log($data);
     $check = array('feed_comment', 'like');
     if (isset($responce)) {
-
-        $responce['time_to_left'] = $Server->active_hours();
-        $responce['total_active_time'] = $Server->active_hours(2);
-        $responce['total_deactive_time'] = $Server->active_hours(3);
-        $responce['time_to_start'] = 0;
-        if ($responce['time_to_left'] == 0) {
-            $responce['time_to_start'] = $Server->active_hours(1);
-        }
-        $Server->log($responce, 1);
+        pr($responce, 1);
         if ($responce['to'] == 'self') {
             $Server->wsSend($clientID, json_encode($responce));
         } else {
@@ -144,6 +138,14 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                             $responce['my_score'] = 'skip';
                         }
                         $Server->wsSend($id, json_encode($responce));
+                    }
+                }
+            } else if ($responce['type'] == 'send_studymate_request' || $responce['type'] == 'decline-request') {
+                foreach ($Server->wsClients as $id => $client) {
+                    if ($Server->wsClients[$id][12] == $responce['to']) {
+                        $Server->wsSend($id, json_encode($responce));
+                        $Server->wsSend($clientID, json_encode($responce));
+                        break;
                     }
                 }
             }
