@@ -27,14 +27,14 @@
 	                </div>
 	                <div class="form-group">
 	                   <select class="form-control" name="course" onchange="filter_data()" id="course" >
-	                                <option value="">Select Course</option>
-	                                <?php 
-	                                  if(!empty($courses)){ 
-	                                    foreach($courses as $course) {
-	                                    ?>
-	                                    <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>  
-	                                <?php }  } ?>
-	                            </select>
+                            <option value="">Select Course</option>
+                            <?php 
+                              if(!empty($courses)){ 
+                                foreach($courses as $course) {
+                                ?>
+                                <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>  
+                            <?php }  } ?>
+                        </select>
 	                </div>
 	                <div class="form-group">
 	                    <select class="form-control" name="year" onchange="filter_data()" id="year">

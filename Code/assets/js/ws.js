@@ -1,3 +1,6 @@
+
+
+
 /* Exam time information and notification. */
 var exam_time_to_start;
 var exam_total_active_time;
@@ -10,6 +13,15 @@ function exam_started_timer()
 {
   exam_time_to_left = exam_time_to_left - 1;
   console.log("Exam remaing time: "+exam_time_to_left);
+  if(exam_time_to_left >= 0 && $('#exam_status').length > 0){
+            $('#exam_status h4[data-type="exam_sts_msg"] span:nth-child(1)').html('Exam will finish within : ');
+            $('#exam_status h4[data-type="exam_sts_msg"] span:nth-child(2)').html(toHHMMSS(exam_time_to_left));
+            if(is_exam_finished == false){
+            $('#exam_status h4:nth-child(2)').html('[ Exam already started ]');
+            }else{
+                $('#exam_status h4:nth-child(2)').html('[ You have already attended exam! ]');
+            }
+  }
   if(exam_time_to_left == 900){
       $(".alert_notification p").html("Exam time will <b>finish</b> within <b>15 minutes.</b>");
       $(".alert_notification").show().delay(5000).fadeOut();
@@ -35,7 +47,18 @@ function exam_started_timer()
 function exam_will_start_timer()
 {
   exam_time_to_start = exam_time_to_start - 1;
-  console.log("Exam will start: "+exam_time_to_start);
+  console.log("Exam will start: "+ exam_time_to_start);
+  if(exam_time_to_start >= 0 && $('#exam_status').length > 0){
+           
+           $('#exam_status h4[data-type="exam_sts_msg"] span:nth-child(1)').html('Exam will start within : ');
+            $('#exam_status h4[data-type="exam_sts_msg"] span:nth-child(2)').html(toHHMMSS(exam_time_to_start));
+            if(is_exam_finished == false){
+            $('#exam_status h4:nth-child(2)').html('');
+            }else{
+                $('#exam_status h4:nth-child(2)').html('[ You have already attended exam! ]');
+            }
+  }
+
   if(exam_time_to_start == 900){
       $(".alert_notification p").html("Exam time will <b>start</b> within <b>15 minutes.</b>");
       $(".alert_notification").show().delay(5000).fadeOut();
@@ -944,4 +967,14 @@ $(document).on('change', '#select-tag-user', function(e){
     else{
         $('#tagged-users').html('');
     }
+});
+
+$(document).on('click','button[data-type="exam_start_request"]',function(){
+        $(this).attr('disabled','disabled');
+        var request = {
+        type: 'exam_start_request',
+        to: 'self',
+        };
+
+        ws.send(JSON.stringify(request));
 });

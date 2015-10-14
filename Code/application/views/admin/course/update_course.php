@@ -104,7 +104,7 @@
 
                     <div class="box_footer">
                         <button type="submit" class="btn btn_green">Update</button>
-                        <button class="btn btn_black">Cancel</button>
+                         <a href="<?php echo base_url().$prev_url; ?>" class='btn btn_black'>Cancel</a>
                     </div>
 
                 </form>   

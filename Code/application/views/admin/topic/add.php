@@ -33,7 +33,6 @@
                         <?php } ?>
                     </select>
                     <a href="#" class="icon icon_add_small"></a>
-                    <?php echo myform_error('course_id'); ?>
                 </div>
                 
                 <div class="form-group select col-sm-6 no-padding half_size">

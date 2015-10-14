@@ -443,6 +443,18 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -628,6 +640,18 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
             
 // work out hash to use in Sec-WebSocket-Accept reply header
         $hash = base64_encode(sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
@@ -749,7 +773,6 @@ class PHPWebSocket {
     function wsSend($clientID, $message, $binary = false) {
         return $this->wsSendClientMessage($clientID, $binary ? self::WS_OPCODE_BINARY : self::WS_OPCODE_TEXT, $message);
     }
-
 
     function bind($type, $func) {
         if (!isset($this->wsOnEvents[$type]))
@@ -1017,7 +1040,7 @@ class PHPWebSocket {
                             $i++;
                         }
                     }
-                     $query = "INSERT INTO `".TBL_FEEDS_TAGGED_USER."`(`id`, `user_id`, `feed_id`, `created_date`, `is_delete`, `is_testdata`) VALUES $str";
+                    $query = "INSERT INTO `" . TBL_FEEDS_TAGGED_USER . "`(`id`, `user_id`, `feed_id`, `created_date`, `is_delete`, `is_testdata`) VALUES $str";
                     $x = mysqli_query($link, $query);
                     if (is_array($tagged_array))
                         $t = implode(',', $tagged_array);
@@ -1043,8 +1066,6 @@ class PHPWebSocket {
         //return $data;
         return array_merge($data, $this->get_client_info($user_id));
     }
-
-    
 
     /**
      * Save feed comment
@@ -1529,8 +1550,10 @@ class PHPWebSocket {
                 $Eend = DateTime::createFromFormat('H:i:s', $examEnd);
 
                 if ($cur < $Estart) {
+                    $output['exam_st'] = 'pending';
                     $output['exam_time_to_start'] = $this->dateDiff($c_full_time, $examStart);
                 } else if ($cur > $Eend) {
+                    $output['exam_st'] = 'finished';
                     $output['exam_time_to_start'] = $this->dateDiff('00:00:00', $examStart) + $this->dateDiff($c_full_time, '24:00:00');
                 }
 
@@ -1539,6 +1562,7 @@ class PHPWebSocket {
 
                 // Check current time is between $starttime and $endtime
                 if ($cur > $Estart && $cur < $Eend) {
+                    $output['exam_st'] = 'started';
                     $output['exam_time_to_left'] = $this->dateDiff($examEnd, $c_full_time);
                 }
             }
@@ -1547,7 +1571,7 @@ class PHPWebSocket {
     }
 
     /**
-     * 
+     * get information of word.
      * @param type $data
      * @return type
      * @author Kamlesh Pokiya (KAP), Sandip Gopani (SAG)
@@ -1640,7 +1664,7 @@ class PHPWebSocket {
                     $data['error'] = 'Unable to save message.! Please try again.';
                 } else {
                     $query = "SELECT count(*) as cnt FROM " . TBL_STUDYMATES_REQUEST . " "
-                            ."WHERE request_from_mate_id =" . $data['studymate_id'] . " AND status = 0";
+                            . "WHERE request_from_mate_id =" . $data['studymate_id'] . " AND status = 0";
 
                     $rows = mysqli_query($link, $query);
                     echo mysqli_error($link);
@@ -1754,9 +1778,8 @@ class PHPWebSocket {
             $data['school_name'] = $rows['school_name'];
             $data['course_name'] = $rows['course_name'];
             $data['profile'] = $rows['profile_link'];
-            
-            $data['user_data']  = $this->get_client_info($user_id);
-            
+
+            $data['user_data'] = $this->get_client_info($user_id);
         } else {
             $data['to'] = 'self';
             $data['error'] = 'Please don\'t modify data manually.';
@@ -1963,14 +1986,65 @@ class PHPWebSocket {
         }
         return $data;
     }
-    
+
+    /**
+     * Check user is allowed to give exam or not. 
+     * @param type $userID
+     * @param type $data
+     * @return string
+     */
+    function exam_request($userID, $data = null) {
+        if (is_array($data) && $data != null) {
+            $link = $this->db();
+            $data['exam_status'] = 0;    // 0 = Not statred, 1 = started, 2 = finished
+            $date = new DateTime(date("Y-m-d H:i:s"));
+            $c_week = $date->format("W");
+            $year = date("Y");
+
+            $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
+                    . "FROM `tutorial_topic` `t` "
+                    . "LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` "
+                    . "LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` "
+                    . "LEFT JOIN `tutorial_topic_exam` `te` ON `te`.`tutorial_topic_id` = `ta`.`topic_id` "
+                    . "LEFT JOIN `student_exam_score` `ss` ON `ss`.`exam_id` = `te`.`exam_id` AND `ss`.`user_id` = $userID "
+                    . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' LIMIT 1";
+            $row = mysqli_query($link, $query);
+
+            if (mysqli_num_rows($row) == 1) {
+                $data['exam'] = mysqli_fetch_assoc($row);
+                $current_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+                if (isset($data['exam']) && !empty($data['exam'])) {
+                    if (isset($data['exam']['created_date'])) {
+                        if ($data['exam']['created_date'] != '' && $data['exam']['created_date'] != null) {
+                            $exam_start_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d', strtotime($data['exam']['created_date'])));
+                            if ($exam_start_date < $current_date) {
+                                $data['exam_status'] = 2;
+                            } else if ($exam_start_date == $current_date) {
+                                if ($data['exam_st'] == 'finished') {
+                                    $data['exam_status'] = 2;
+                                } else if ($data['exam_st'] == 'started') {
+                                    $data['exam_status'] = 1;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    $data['error'] = 'Exam or Topic is not allocated for current week!';
+                }
+            } else {
+                $data['error'] = 'No topic & exam allocated to you!';
+            }
+        }
+        return $data;
+    }
+
     /**
      * Save answer sent by user and give next question.
      * @param int $userID
      * @param array $data
      * @author Sandip Gopani(SAG)
      */
-    function save_answer($userID,$data){
+    function save_answer($userID, $data) {
         
     }
 
