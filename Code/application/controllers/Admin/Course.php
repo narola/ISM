@@ -74,7 +74,7 @@ class Course extends ADMIN_Controller {
 		//fetch all data of course
 		$this->data['all_courses'] =   select(TBL_COURSES,
 											TBL_COURSES.'.id,'.TBL_COURSES.'.course_name,'.TBL_COURSES.'.course_nickname,'.TBL_COURSES.'.course_details,'.TBL_COURSES.'.course_type,
-											'.TBL_COURSES.'.course_duration,'.TBL_COURSES.'.course_degree,'.TBL_COURSE_CATEGORY.'.id,'.TBL_COURSE_CATEGORY.'.course_category_name',											
+											'.TBL_COURSES.'.course_duration,'.TBL_COURSES.'.course_degree,'.TBL_COURSE_CATEGORY.'.id AS course_category_id,'.TBL_COURSE_CATEGORY.'.course_category_name',											
 											$where,
 											array(
 												'limit'=>$config['per_page'],
@@ -85,8 +85,8 @@ class Course extends ADMIN_Controller {
 											    				'condition' => TBL_COURSE_CATEGORY.'.id = '.TBL_COURSES.'.course_category_id'
 																))
 												)
-											);
-
+											);                                            
+      
 		$this->pagination->initialize($config);
 
 		$this->data['course_category'] = select(TBL_COURSE_CATEGORY,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));

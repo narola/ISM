@@ -4,9 +4,11 @@ $url = uri_string();
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>ISM Admin | <?php if (!empty($page_title)) {
-    echo $page_title;
-} ?></title>
+        <title>ISM Admin | <?php
+            if (!empty($page_title)) {
+                echo $page_title;
+            }
+            ?></title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -79,17 +81,21 @@ $url = uri_string();
                             dropdown">
                             <a href="Tutorial.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Question Bank</a></li>
+                                <li><a href="admin/question/set">Question Bank</a></li>
                                 <li><a href="admin/exam">Exams</a></li>
                             </ul>
                         </li>
-                        <li class="<?php if (in_array($url, array('admin/group'))) {
+                        <li class="<?php
+                        if (in_array($url, array('admin/group'))) {
                             echo 'active';
-                        } ?>" ><a href="admin/group"><span class="icon icon_menu_group"></span> Groups</a></li>
+                        }
+                        ?>" ><a href="admin/group"><span class="icon icon_menu_group"></span> Groups</a></li>
                         <li><a href="#"><span class="icon icon_menu_organize"></span> Organize</a></li>
                         <li class="
                         <?php
-                        if (in_array($url, array('admin/user', 'admin/topic/allocate', 'admin/topic/lists', 'admin/school', 'admin/school/add'))) {
+                        if (in_array($url, array('admin/user', 'admin/topic/allocate',
+                                    'admin/topic/lists', 'admin/school', 'admin/school/add',
+                                    'admin/classroom', 'admin/classroom/add'))) {
                             echo 'active';
                         } else {
 
@@ -97,6 +103,7 @@ $url = uri_string();
                                 echo 'active';
                             }
                         }
+
                         ?> dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 <span class="icon icon_menu_manage"></span> Manage
@@ -104,9 +111,22 @@ $url = uri_string();
                             <ul class="dropdown-menu">
                                 <li><a href="#">Book</a></li>
                                 <li><a href="#">Auther</a></li>
-                                <li><a href="admin/school">School</a></li>
-                                <li><a href="#">Classroom</a></li>
-                                <li><a href="#">Subject</a></li>
+                                <li><a href="admin/school">School</a></li>                                
+                               <li class="dropdown sub_menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Subjects</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="admin/subject/lists">List of Subjects</a></li>
+                                        <li><a href="admin/subject/add_subject">Add New Subject</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown sub_menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Courses</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="admin/course/lists">List of Courses</a></li>
+                                        <li><a href="admin/course/add_course">Add New Course</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="admin/classroom">Classroom</a></li>
                                 <li><a href="#">Badges</a></li>
                                 <li><a href="admin/user">User</a></li>
                                 <li class="dropdown sub_menu">
@@ -195,19 +215,24 @@ $url = uri_string();
                         <li>
                             <a href="#"><span class="icon icon_banner"></span>Banners</a>
                         </li>                   
-                        <li class="<?php if (in_array($url, array('admin/notice', 'admin/notice/index'))) {
+                        <li class="<?php
+                        if (in_array($url, array('admin/notice', 'admin/notice/index'))) {
                             echo 'active';
-                        } ?>">
+                        }
+                        ?>">
                             <a href="admin/notice"><span class="icon icon_notice"></span>Notice Board</a>
                         </li>
                         <li>
                             <a href="#"><span class="icon icon_ques"></span>Questionaries</a>
                         </li>
-                        <li class="<?php if (in_array($url, array('admin/auto_generated_credentials'))) {
+                        <li class="<?php
+                        if (in_array($url, array('admin/auto_generated_credentials'))) {
                             echo 'active';
-                        } ?>" >
+                        }
+                        ?>" >
                             <a href="admin/auto_generated_credentials"><span class="icon icon_credencial"></span>Generate Credentials</a>
                         </li>
+
                     </ul>
                     <a href="admin/logout" class="logout"><span class="icon icon_logout"></span>LogOut</a>
                     <p class="copyright">©2015 ISM | All Rights Reserved.</p>
@@ -215,7 +240,7 @@ $url = uri_string();
                 <!--//side left-->
 
 
-<?php echo $body; ?> 
+                <?php echo $body; ?> 
 
 
                 <!--side right-->
