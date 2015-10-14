@@ -113,7 +113,6 @@ $url = uri_string();
                                 <li><a href="admin/school">School</a></li>
                                 <li><a href="admin/classroom">Classroom</a></li>
                                 <li><a href="admin/course/lists">Course</a></li>
-                                <li><a href="#">Classroom</a></li>
                                 <li><a href="#">Subject</a></li>
                                 <li><a href="#">Badges</a></li>
                                 <li><a href="admin/user">User</a></li>
