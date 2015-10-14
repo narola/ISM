@@ -1429,7 +1429,7 @@ input.chat_input {
 .exam_banner{
 	background-color:#1bc4a3;
 	background-image:url(../images/exam_bg.png);
-	padding:20px 0;
+	padding:15px 0;
 }
 .main2{
 	padding-top:60px;
@@ -1448,11 +1448,11 @@ input.chat_input {
     padding: 10px 15px;
 }
 .banner_text{
-    height: 130px;
-    width: 130px;
+    height: 160px;
+    width: 160px;
     background-color: #fff;
     border-radius: 50%;
-    padding: 18px;
+    padding: 30px 0;
     margin: 0 auto;
     text-align: center;
 }
@@ -1462,7 +1462,8 @@ input.chat_input {
 	text-transform:uppercase;
 }
 .banner_text h3:first-child{
-    margin: 16px 0 6px;
+	display:inline-block;
+    margin: 16px 0 8px;
 	color:#1bc4a3;
 	border-bottom:1px solid #1bc4a3;
 }
@@ -2618,7 +2619,7 @@ ul.tut_weekdays {
 	margin-top:15px;
 }
 .instruction .box_body{
-	padding:30px 30px 15px;
+	padding:30px 15px 15px;
 }
 textarea {
     resize: none;
@@ -2666,6 +2667,7 @@ textarea {
 	text-transform:uppercase;
 	width:150px;
 	font-weight:600;
+	color: #fff;
 }
 .instruction .txt_green{
 	text-transform:uppercase;
@@ -3069,4 +3071,12 @@ ul.ques_numbers {
     cursor: not-allowed !important;
     color: #999 !important;
 	font-weight:500;
+}
+.padding_t15{
+	padding-top:15px;
+}
+.instruction h4 span{
+    font-family: sans-serif;
+    font-size: 20px;
+    vertical-align: middle;
 }

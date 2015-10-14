@@ -15,6 +15,7 @@ class Dashboard extends ADMIN_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		
 		$this->load->helper(array('csv','file','download'));	
 	}
 
@@ -253,7 +254,9 @@ class Dashboard extends ADMIN_Controller {
             header('Content-Disposition: attachment;filename="' . $filename . '"'); //tell browser what's the file name
             header('Cache-Control: max-age=0'); //no cache
             $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
-            $objWriter->save('php://output'); 
+            ob_start();
+		    $objWriter->save('php://output'); 
+		    $excelOutput = ob_get_clean();
 
 		} // End else consdition
 	}

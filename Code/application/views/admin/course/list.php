@@ -1,4 +1,5 @@
-<!--main-->
+<!--main-->           
+            <?php echo flashMessage(true,false); ?>
             <div class="col-sm-7 main main2">
             	<!--breadcrumb-->
            		<div class="row page_header">
@@ -12,7 +13,7 @@
                     <div class="col-sm-4 text-right">
                     	<a href="admin/course/add_course" class="btn btn_green add_topic">Add New Course</a>
                     </div>
-                </div>
+                </div>               
                 <!--//breadcrumb-->
                 <!--filter-->
                 <form method="get" id="filter">
@@ -35,8 +36,7 @@
                         </div>
                     </div>
                 </div>
-            </form>
-            <?php echo flashMessage(true,false); ?>
+            </form>           
                 <!--//filter-->
                 <!--topics-->
                 <div class="row">

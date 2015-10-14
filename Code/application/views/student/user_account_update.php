@@ -39,8 +39,7 @@
                 reader.onload = function (e) {
                     $('#blah')
                         .attr('src', e.target.result)
-                        .width(150)
-                        .height(200);
+                        .attr('style','border-radius:50%;width:200px;height:200px;');
                 };
 
                 reader.readAsDataURL(input.files[0]);
@@ -151,7 +150,7 @@
                                     }
                                 ?>
                                 <div class="upload">
-                                	<input type="file" name="profile_image_1">
+                                	<input type="file" name="profile_image_1" onchange="readURL(this);">
                                     <span>Upload Profile Picture</span>
                                 </div>
                             </div>

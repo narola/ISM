@@ -1,53 +1,172 @@
-<?php  $this->load->view('admin/include/header');  ?>
-	
+<!--main-->
+<div class="col-sm-7 main main2">
+    <!--breadcrumb-->
+    <div class="row page_header">
+        <div class="col-sm-8">
+            <ol class="breadcrumb">
+                <li><a href="#">Manage</a></li>
+                <li class="active">Schools</li>
+            </ol>
+        </div>
+        <div class="col-sm-4 text-right">
+            <a class="btn btn_green add_topic" href="<?php echo base_url() . 'admin/school/add'; ?>" >Add New School</a>
+        </div>
+    </div>
+    <!--//breadcrumb-->
+    <!--filter-->
+    <form method="get" id="filter">
+        <div class="row filter">
 
-  <?php $error = $this->session->flashdata('error'); ?>
-  
-  <div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
-          <?php echo strip_tags($error) ; ?>
-  </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <select class="form-control" name="school_grade" onchange="filter_data()" id="school_grade">
+                        <option value="">Select Grade</option>
+                        <?php
+                        if (!empty($school_grade)) {
+                            foreach ($school_grade as $grade) {
+                                ?>
+                                <option value="<?php echo $grade['school_grade']; ?>" ><?php echo $grade['school_grade']; ?></option>  
+                                <?php
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
 
-  <?php $success = $this->session->flashdata('success'); ?>
-  
-  <div class="alert alert-success <?php if(empty(strip_tags($success,''))){ echo 'hide';} ?>">
-          <?php echo strip_tags($success) ; ?>
-  </div> 
+                <div class="form-group no_effect search_input">
+                    <input type="text" name="q" id="q" class="form-control" placeholder="Search" >
+                    <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                </div>
+            </div>
+        </div>
+    </form>	
 
-  <a href="<?php echo base_url().'admin/add_school'; ?>" class="btn btn-info">  Add School</a>
-  <h3> All Schools </h3>			
+    <?php $success = $this->session->flashdata('success'); ?>
 
-  
-  <hr/>	
-  
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>School Name</th>
-        <th>School Grade</th>
-        <th>Principal Name</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php
-        if(!empty($all_schools)){
-           foreach($all_schools as $school) { 
-       ?>
-      <tr>
-        <td><?php echo $school['school_name']; ?></td>
-        <td><?php echo $school['school_grade']; ?></td>
-        <td><?php echo $school['principal_name']; ?></td>
-        <td>
-            <a href="<?php echo base_url().'admin/update_school/'.$school['id']; ?>" class="btn btn-success"> Edit </a>
-            <a href="<?php echo base_url().'admin/delete_school/'.$school['id']; ?>" class="btn btn-danger" 
-              onclick="return confirm('Are you sure to delete this data ?')" > Delete </a>
-        </td>
-      </tr>
+    <div class="alert alert-success <?php
+    if (empty(strip_tags($success, ''))) {
+        echo 'hide';
+    }
+    ?>">
+             <?php echo strip_tags($success); ?>
+    </div>
 
-      <?php } } ?>
+    <?php $error = $this->session->flashdata('error'); ?>
 
-    </tbody>
-  </table>
+    <div class="alert alert-danger <?php
+    if (empty(strip_tags($error, ''))) {
+        echo 'hide';
+    }
+    ?>">
+             <?php echo strip_tags($error); ?>
+    </div>
+
+    <!--//filter-->
+
+    <!--row table-->
+    <div class="row tabel_view">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table_user">
+                    <thead>
+                        <tr>
+                            <th style="width: 240px;">School Name</th>
+                            <th>Principal Name</th>
+                            <th>Grade</th>
+                            <th>Address</th>
+                            <th>Contacts</th>
+                            <th style="width:70px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if (!empty($all_schools)) {
+
+                            foreach ($all_schools as $school) {
+                                ?>
+                                <tr>
+                                    <td class="username">
+
+                                        <h4><?php echo ucfirst($school['school_name']); ?></h4>
+                                        <p class="active"><?php echo ucfirst($school['school_type']); ?></p>
+                                    </td>
+
+                                    <td><?php echo ucfirst($school['principal_name']); ?></td>
+                                    <td> <?php echo ucfirst($school['school_grade']); ?> </td>
+                                    <td> 
+                                        <?php
+                                        echo ucfirst($school['address']) . ", " .
+                                        ucfirst($school['city_name']) . ", " .
+                                        ucfirst($school['state_name']) . ", " .
+                                        ucfirst($school['country_name']);
+                                        ?> 
+                                    </td>
+                                    <td>
+                                        <?php echo ucfirst($school['school_contact_no1']); ?>
+                                        <br/>
+                                        <?php echo ucfirst($school['school_contact_no2']); ?>
+                                    </td>
+                                    <td>
+                                        <a href="<?php echo base_url() . 'admin/school/update/' . $school['id']; ?>" class="icon icon_edit"
+                                           data-toggle="tooltip" data-placement="bottom" title="Edit"> </a>
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+                        } else {
+                            ?>
+
+                            <tr> <td colspan="7" class="text-center"><strong>No Data Found. </strong> </td> </tr>		
+
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+            <nav  class="text-center">
+
+                <?php echo $this->pagination->create_links(); ?>
+
+            </nav>
+        </div>
+    </div>
+
+    <!--//row table-->
+</div>
+<!--//main-->
+
+<script type="text/javascript">
+
+    function filter_data() {
+        var q = $('#q').val();
+        var school_grade = $('#school_grade').val();
+        if (q == '') {
+            $('#q').removeAttr('name');
+        }
+
+        if (school_grade == '') {
+            $('#school_grade').removeAttr('name');
+        }
+        $('#filter').submit();
+    }
+
+    $("#filter").submit(function (event) {
+        var q = $('#q').val();
+        var school_grade = $('#school_grade').val();
+        if (q == '') {
+            $('#q').removeAttr('name');
+        }
+        if (school_grade == '') {
+            $('#school_grade').removeAttr('name');
+        }
+    });
+
+<?php if (!empty($_GET['q'])) { ?>
+        $('#q').val('<?php echo $_GET["q"]; ?>');
+<?php } ?>
+
+<?php if (!empty($_GET['school_grade'])) { ?>
+        $('#school_grade').val('<?php echo $_GET["school_grade"]; ?>');
+<?php } ?>
 
 
-<?php $this->load->view('admin/include/footer'); ?>
+</script>

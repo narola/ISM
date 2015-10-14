@@ -254,7 +254,7 @@ if ("WebSocket" in window)
                 if(count == '' || count == 0 || count == '' || count == 'undefined'){
                     count = 0;
                 }
-                c.html(++count);              
+                c.html(++count);
            }  
             
         } else if (obj.type == 'con') {
