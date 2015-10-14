@@ -137,7 +137,7 @@ class Subject extends ADMIN_Controller {
                             update(TBL_SUBJECTS,$insertid,$data_subject_image);                        
 					}					
 				}   
-                exit;
+              
 			$this->session->set_flashdata('success', 'Record is Successfully created.');
 			redirect('admin/subject/lists');
 		}
