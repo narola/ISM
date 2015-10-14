@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class my_activities extends ISM_Controller {
+class My_activities extends ISM_Controller {
 
 	/*	Student My Activities.
 	*	@Auther : Kamlesh Pokiya (KAP). 
