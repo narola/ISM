@@ -195,8 +195,25 @@ class Home extends CI_Controller {
 		$data['my_studymates'] = select(TBL_USERS.' u',null,array('where_in'=>array('id'=>$my_studymates)));
 		
 		//--remove tagged user notification list as already seen
+
 		update(TBL_FEEDS_TAGGED_USER,array('user_id'=>$user_id),array('is_see'=>1));
 
+		//--Latest three notice sended via admin
+		$classroom_id = $this->session->userdata('user')['classroom_id'];
+		$role_id = $this->session->userdata('user')['role_id'];
+		$where  = "(v.classroom_id is null or v.classroom_id =".$classroom_id.") and n.is_delete = 0 and n.status='active'";
+		$option = array('join' => 
+					array(
+						array(
+							'table' => TBL_NOTICEBOARD.' n',
+							'condition' => 'v.notice_id = n.id'
+						)
+					),
+					'order_by' => 'v.id DESC',
+					'limit' => 3
+				);
+		$data['my_latest_notice'] = select(TBL_NOTICEBOARD_VIEWER.' v','n.notice_title,notice',$where,$option);
+		
 		$this->template->load('student/default','student/home_view',$data);
 	}
 

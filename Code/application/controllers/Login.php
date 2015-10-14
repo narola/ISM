@@ -218,7 +218,7 @@ class Login extends CI_Controller {
     public function check_email()
     {
         $emailid    =   $this->input->post('emailid',TRUE);
-        $data       =   array('where'   =>  array('email_id' => $emailid));
+        $data       =   array('where'   =>  array('email_id' => $emailid,'is_delete'=>0));
         $get_data   =   select(TBL_USERS,null,$data,1);
         if(sizeof($get_data)>0){
             $options = array(
@@ -266,9 +266,60 @@ class Login extends CI_Controller {
             $msg = '';
             $msg .='<html>';
             $msg .='<head><title></title></head>';
-            $msg .= '<a href="http://ism/login/change?id='.$encoded_mail.'">Change Password</a>';
+            $msg .='<body style="background-color:#f5f5f5; background: repeating-linear-gradient(90deg, #eee, #fff 8px); color:#333; font-family:Tahoma, Geneva, sans-serif;">
+                <table align="center" style="width: 600px;">
+                    <tr>
+                        <td style="text-align:center; padding: 35px 0;"><img alt="ISM" height="70px" src="../images/logo.png"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table style="padding: 15px; width:100%;background-color: #fff;border: 1px solid rgba(0,0,0,0.1);">
+                                <tr>
+                                    <td style="text-align: center;border-bottom: 1px solid rgba(0,0,0,0.1);">
+                                        <h2 style="color: #1bc4a3; margin:10px 0;">Reset Password</h2>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Please click on blow link within 30 minute for reset your password.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td style="width:160px;"></td>
+                                                <td><p style="margin: 0 0 10px;">Username : <strong>'.$get_data['username'].'</strong></p></td>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border-bottom: 1px solid rgba(0,0,0,0.1);">
+                                        <table width="100%">
+                                            <tr>
+                                                <td style="width:160px;"></td>
+                                                <td><p style="margin: 0 0 20px;">Email : <strong>'.$get_data['email_id'].'</strong></p></td>
+                                                <td></td>
+                                            </tr>
+                                        </table>                            
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="background-color:#1bc4a3; text-align:center; padding: 12px; margin:15px 0; border-radius: 5px;">
+                                            <a href="http://ism/login/change?id='.$encoded_mail.'" style="color:#fff; text-decoration:none; font-weight:bold; text-transform:uppercase;">Reset Your Password</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </body>';
             $msg .='</html>';
-            $this->email->subject('Reset Password');
+            $this->email->subject('ISM - Reset Password');
             $this->email->message($msg);
             $this->email->send();
             $this->email->print_debugger();

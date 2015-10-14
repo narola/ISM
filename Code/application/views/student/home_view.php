@@ -217,20 +217,37 @@
     
       <!-- Wrapper for slides -->
       <div class="carousel-inner" role="listbox">
+        <?php 
+            if(isset($my_latest_notice) && sizeof($my_latest_notice)>0){
+                $i = 0;
+                foreach ($my_latest_notice as $key => $value) {
+                    if($i == 0){
+                        echo '<div class="item active">';
+                    }
+                    else{
+                        echo '<div class="item">';
+                    }
+        ?>
+            <img src="<?php echo base_url();?>assets/images/blackboard.jpg" alt="blackboard">
+                <div class="carousel-caption">
+                    <p class="noti_username"><?php echo $value['notice_title'];?></p>
+                    <p style="color:#fff;font-size:small;"><?php echo $value['notice'];?><br><span style="float:right">-ISM Admin</span></p>
+                </div>
+            </div>
+        <?php
+                $i++;
+                }
+            }
+            else{
+        ?>
         <div class="item active">
           <img src="<?php echo base_url();?>assets/images/blackboard.jpg" alt="blackboard">
           <div class="carousel-caption">
-            <p class="noti_username">TEST BANNER</p>
-            <p style="color:#fff;">for Notice & ISM Ads</p>
+            <p class="noti_username">No notice for you</p>
+            <p style="color:#fff;font-size:large">- ISM Admin,  </p>
           </div>
         </div>
-        <div class="item">
-          <img src="<?php echo base_url();?>assets/images/blackboard.jpg" alt="blackboard">
-          <div class="carousel-caption">
-            <p class="noti_username">TEST BANNER</p>
-            <p style="color:#fff;">for Notice & ISM Ads</p>
-          </div>
-        </div>
+        <?php } ?>
       </div>
     
       <!-- Controls -->

@@ -32,7 +32,7 @@ class My_exam extends ISM_Controller {
 								'condition'	=>  's.id = c.subject_id'
 							),
 							array(
-								'table' => '(select e.subject_id,count(*) as cnt from exams e left join student_exam_score sc on e.id = sc.exam_id where sc.user_id = 138) st',
+								'table' => '(select e.subject_id,count(*) as cnt from exams e left join student_exam_score sc on e.id = sc.exam_id where sc.user_id = '.$user_id.' and e.is_delete = 0) st',
 								'condition' => 'st.subject_id = s.id'
 							)
 						)
@@ -43,7 +43,7 @@ class My_exam extends ISM_Controller {
 		// p($data['subject_list'],true);
 		/*---get my exam list---*/
 
-		$where = array('where'=>array('e.classroom_id' => $classroom_id,'sc.exam_status'=>'finished','sc.user_id'=>$user_id));
+		$where = array('where'=>array('e.classroom_id' => $classroom_id,'sc.exam_status'=>'finished','sc.user_id'=>$user_id,'sc.is_delete' => 0,'e.is_delete' => 0));
 		$option =  array( 'join' =>
 						array(
 							array(

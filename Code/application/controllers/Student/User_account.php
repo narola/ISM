@@ -623,24 +623,60 @@ class User_account extends CI_Controller {
 
 
     public function send_mail($username){
+    	
     	update(TBL_AUTO_GENERATED_CREDENTIAL,array('username'=>$username),array('is_my_school'=>1));
 		$message = $this->input->post('message');
-		$email_id = $this->input->post('email_id');
+		$email_id = $this->input->post('request_email');
 		$configs = mail_config();
         $this->load->library('email', $configs);
         $this->email->initialize($configs);
         $this->email->from('kap.narola@narolainfotech.com', 'Kamlesh Pokiya');
         $this->email->to($email_id);
+        // $encoded_mail = urlencode($token);
         $msg = '';
         $msg .='<html>';
         $msg .='<head><title></title></head>';
-        $msg .= '<body>Dear Admin,<p>'.$message.'</p><body>';
+        $msg .='<body style="background-color:#f5f5f5; background: repeating-linear-gradient(90deg, #eee, #fff 8px); color:#333; font-family:Tahoma, Geneva, sans-serif;">
+            <table align="center" style="width: 600px;">
+                <tr>
+                    <td style="text-align:center; padding: 35px 0;"><img alt="ISM" height="70px" src="../images/logo.png"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <table style="padding: 15px; width:100%;background-color: #fff;border: 1px solid rgba(0,0,0,0.1);">
+                	<tr>
+                    	<td style="text-align: center;border-bottom: 1px solid rgba(0,0,0,0.1);">
+                        	<h4 style="color: #1bc4a3; margin:10px 0;">Change School Detail Request</h4>
+                        </td>
+                    </tr>                   
+                    <tr>
+                    	<td style="border-bottom: 1px solid rgba(0,0,0,0.1); padding: 20px 0;">
+                        	<table width="100%">
+                            	<tr>
+                                	<td style="width:160px;">
+                                    	Hello,<br><br>
+                                        <b style="font-size:small;">Email : '.$email_id.'</b><br>
+                                        <b style="font-size:small;">Username : '.$username.'</b><br>
+                                        <p>'.$message.'</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>                    
+                    <tr>
+                    	<td>
+                        	<span style="font-size:x-small;">©2015 ISM. All Rights Reserved.</span>   
+                        </td>
+                    </tr>
+                </table>
+                    </td>
+                </tr>
+            </table>
+        </body>';
         $msg .='</html>';
-        $this->email->subject('Reset Password');
+        $this->email->subject('ISM - Change School Detail');
         $this->email->message($msg);
         $this->email->send();
-        $this->email->print_debugger();
-		$this->session->set_flashdata('success','Your request successfully send...');
-		redirect('student/user_account');	
+        $this->email->print_debugger();	
     }
 }

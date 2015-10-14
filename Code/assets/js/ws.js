@@ -698,7 +698,7 @@ function generate_post(obj,status){
     
     str += '<span class="date">Sep 28, 2015</span>';
     str += '<div class="clearfix"></div>';
-    str += '<pre>'+obj.message+'</pre>';
+    str += '<p>'+obj.message+'</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="'+obj.post_id+'"><span class="icon icon_thumb'+cls+'"></span>'+obj.tot_like+'</a>';
     str += '<a href="javascript:void(0);" class="comment_btn"><span class="icon icon_comment"></span>'+obj.tot_comment+'</a>';
     str += '<div class="dropdown tag_user" style="display: inline-block;">';
