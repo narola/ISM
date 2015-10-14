@@ -79,7 +79,7 @@ $url = uri_string();
                             dropdown">
                             <a href="Tutorial.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Question Bank</a></li>
+                                <li><a href="admin/question/set">Question Bank</a></li>
                                 <li><a href="admin/exam">Exams</a></li>
                             </ul>
                         </li>
@@ -105,6 +105,7 @@ $url = uri_string();
                                 <li><a href="#">Book</a></li>
                                 <li><a href="#">Auther</a></li>
                                 <li><a href="admin/school">School</a></li>
+                                <li><a href="admin/course/lists">Course</a></li>
                                 <li><a href="#">Classroom</a></li>
                                 <li><a href="#">Subject</a></li>
                                 <li><a href="#">Badges</a></li>
