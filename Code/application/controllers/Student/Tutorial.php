@@ -14,8 +14,8 @@ class Tutorial extends ISM_Controller {
 	}
 	
 	public function index(){
-			
 			$data = array();
+			$data['timing'] = active_hours();
 			$data['hide_right_bar'] = true;	
 			$data['weekday'] = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
 			$data['user_id'] = $user_id = $this->session->userdata('user')['id'];
@@ -25,15 +25,15 @@ class Tutorial extends ISM_Controller {
 			$data['menu'] = 'week';
 
 			// Store remaining reconds of active time or 0 if inactive hours.
-			$data['time'] = active_hours();
+			$data['time'] = $data['timing']['time_to_left'];
 			if($data['time'] > 0){
 				$is_active = true;
 			}
 
 			// Get Current week no.
 			$data['current_weekday'] = getdate()['wday'];
-			if($data['current_weekday'] > 1){
-				redirect('student/exam');
+			if($data['current_weekday'] >= 4){
+				//redirect('student/exam');
 				exit;
 			}
 			$date = new DateTime(date("Y-m-d H:i:s"));
@@ -150,7 +150,8 @@ class Tutorial extends ISM_Controller {
 				);
 			 //p($data,true);
 			$this->template->load('student/default','student/tutorial_group',$data);
-	}	
+	}
+		
 	/**
 	*	Attempt exam.
 	*   @autor Sandip Gopani
@@ -162,17 +163,22 @@ class Tutorial extends ISM_Controller {
 		$data['weekday'] = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
 		$data['user_id'] = $user_id = $this->session->userdata('user')['id'];
 	    $data['title'] = 'ISM - Exam';
-	    $data['examstatus'] = 0;    // 0 = Not statred, 1 = started, 2 = finished
+	    $data['exam_status'] = 0;    // 0 = Not statred, 1 = started, 2 = finished
 	    $data['current_weekday'] = getdate()['wday'];
 	    $data['error'] = null;
 		$date = new DateTime(date("Y-m-d H:i:s"));
 		$c_week = $date->format("W");
 		$year = date("Y");
 
+		// Check week day is thursday, friday or saturday
+		if($data['current_weekday'] <= 3){
+			//redirect('student/tutorial');
+		}
+
 		// Check topic and exam allocated for current week and get exam info.
 	    $data['exam']  = select(
 				TBL_TUTORIAL_TOPIC.' t',
-				't.id,
+				'ta.topic_id,
 				t.topic_name,
 				t.topic_description,
 				t.created_date,
@@ -200,30 +206,38 @@ class Tutorial extends ISM_Controller {
 				'single' => true
 				)
 			); 
-	     $data['exam']['created_date'] = '2015-10-12'; 
-	   
+	     $data['exam']['created_date'] = '2015-10-14'; 
 	    $current_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+	    $current_time = DateTime::createFromFormat('Y-m-d', date('Y-m-d H:i:s'));
 	    if(isset($data['exam']) && !empty($data['exam'])){
 	    	if(isset($data['exam']['created_date'])){
 	    		if($data['exam']['created_date'] != '' && $data['exam']['created_date'] != null){
 	    			$exam_start_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d',  strtotime($data['exam']['created_date'])));
+	    			$exam_start_time = DateTime::createFromFormat('Y-m-d', date('Y-m-d',  strtotime($data['exam']['created_date'])));
+	    			
 	    			if($exam_start_date < $current_date){
-	    				$data['is_exam_finished'] = TRUE;
+	    				$data['exam_status'] = 2;
+	    			}else if($exam_start_date == $current_date ){
+	    				if($this->active_h['exam_st'] == 'finished'){
+	    					$data['exam_status'] = 2;
+	    				}else if($this->active_h['exam_st'] == 'started'){
+	    					$data['exam_status'] = 1;
+	    				}
 	    			}
-	    			$data['is_exam_started'] = TRUE;
+	    			
 	    		}
 	    	}
 	    }else{
 	    	$data['error'] = 'Exam or Topic is not allocated for current week!';
 	    }
 
-
-	    if($data['is_exam_started'] == TRUE){
+	    if($data['exam_status'] == 1){
 	    	// Get exam status if exam is already started.
+
 	    }
 
-		p($data,true);
-		$this->template->load('student/default','student/exam',$data);
+	//	p($data,true);
+		$this->template->load('student/default','student/exam_instruction',$data);
 	}
 
 

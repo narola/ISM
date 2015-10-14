@@ -1,164 +1,248 @@
-<?php $this->load->view('admin/include/header'); ?>
-  
-  <h3>Add Student </h3>     
 
-  <hr/> 
+<!--main-->
+<div class="col-sm-7 main main2">
+    <!--breadcrumb-->
+    <div class="row page_header">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)">Manage</a></li>                          
+                <li><a href="admin/school">Schools</a></li>
+                <li class="active">Edit School</li>
+            </ol>
+        </div>
+    </div>
+    <!--//breadcrumb-->
+    <!--filter-->
 
-  <form role="form" method="POST">
-      
-      <h5>School Name</h5>
-      <input type="text" name="school_name" value="<?php echo  $school_data['school_name']; ?>" class="form-control" />
+    <!--//filter-->
 
-      <div class="alert alert-danger <?php if(empty(strip_tags(form_error('school_name'),''))){ echo 'hide';} ?>">
-          <?php echo strip_tags(form_error('school_name'),'') ; ?>
-      </div>
+    <!--message-->
+    <div class="row">
+        <div class="col-sm-12 new_message">
+            <div class="box exam_card">
+                <div class="box_header">
+                    <h3>Edit School</h3>
+                </div>
+                <form method="post">
+                    <div class="box_body ">
 
-      <h5>Principal Name</h5>
-      <input type="text" name="principal_name" value="<?php echo  $school_data['principal_name']; ?>" class="form-control" />
+                        <div class="form-group">
+                            <label>School name</label>
+                            <input type="text" class="form-control" name="schoolname" 
+                                   value="<?php echo set_value("school_name") == false ? $school["school_name"] : set_value("school_name"); ?>">
+                        </div>
+                        <?php echo myform_error('schoolname'); ?>
 
-      <div class="alert alert-danger <?php if(empty(strip_tags(form_error('principal_name'),''))){ echo 'hide';} ?>">
-          <?php echo strip_tags(form_error('principal_name'),'') ; ?>
-      </div>
+                        <div class="form-group">
+                            <label>School Nickname</label>
+                            <input type="text" class="form-control" name="school_nickname" 
+                                   value="<?php echo set_value("school_nickname") == false ? $school["school_nickname"] : set_value("school_nickname"); ?>">
+                        </div>
 
-      <h5>Home address</h5>
-      <textarea name="address"><?php echo  $school_data['address']; ?></textarea>
+                        <div class="form-group">
+                            <label>School Code</label>
+                            <input type="school_code" class="form-control" name="school_code" 
+                                   value="<?php echo set_value("school_code") == false ? $school["school_code"] : set_value("school_code"); ?>">
+                        </div>
+                        <?php echo myform_error('school_code'); ?>
 
-      <h5>School Grade</h5>
-      <select name="school_grade" id="school_grade" >
-        <option selected disabled>Select School Grade</option> 
-        <option  value="A" > A </option> 
-        <option  value="B" > B </option> 
-        <option  value="C" > C </option> 
-        <option  value="D" > D </option> 
-        <option  value="E" > E </option> 
-      </select>
+                        <div class="form-group">
+                            <label>School Type</label>
+                            <select class="form-control " name="school_type" id="school_type">
+                                <option value="co-education" <?php echo set_select("school_type", "co-education"); ?>>Co-Education</option>
+                                <option value="girls" <?php echo set_select("school_type", "girls"); ?>>Girls</option>
+                                <option value="boys" <?php echo set_select("school_type", "boys"); ?>>Boys</option>
+                            </select>
+                        </div>
 
-      <div class="alert alert-danger <?php if(empty(strip_tags(form_error('school_grade'),''))){ echo 'hide';} ?>">
-          <?php echo strip_tags(form_error('school_grade'),'') ; ?>
-      </div>
+                        <div class="form-group">
+                            <label>Principal Name</label>
+                            <input type="text" class="form-control" name="principal_name" 
+                                   value="<?php echo set_value("principal_name") == false ? $school["principal_name"] : set_value("principal_name"); ?>">
+                        </div>
+                        <?php echo myform_error('principal_name'); ?>
 
-      <h5>Country</h5>
-      <select name="country" onchange="get_states(this.value)" id="country_id" >
-        <option selected disabled>Select Country</option> 
-        <?php 
-          if(!empty($countries)){ 
-            foreach($countries as $country) {
-          ?> 
-        <option value="<?php echo $country['id']; ?>"> <?php echo $country['country_name']; ?></option>
-        <?php }  }else{ ?>
-        <option > No Country</option>
-        <?php } ?>
-      </select>
+                        <div class="form-group">
+                            <label>School Email Id</label>
+                            <input type="text" class="form-control" name="school_email_id" 
+                                   value="<?php echo set_value("school_email_id") == false ? $school["school_email_id"] : set_value("school_email_id"); ?>">
+                        </div>
+                        <?php echo myform_error('school_email_id'); ?>
 
-      <div class="alert alert-danger <?php if(empty(strip_tags(form_error('country'),''))){ echo 'hide';} ?>">
-          <?php echo strip_tags(form_error('country'),'') ; ?>
-      </div>
+                        <div class="form-group">
+                            <label>Contact Number-1</label>
+                            <input type="text" class="form-control" name="contact_1" 
+                                   value="<?php echo set_value("school_contact_no1") == false ? $school["school_contact_no1"] : set_value("school_contact_no1"); ?>">
+                        </div>
+                        <?php echo myform_error('contact_1'); ?>
 
-      <h5>State</h5>
-      <select name="state" id="states_id" onchange="get_cities(this.value)">
-        <option selected disabled>Select State</option> 
-        <?php 
-          if(!empty($states)){ 
-            foreach($states as $state) {
-          ?> 
-        <option value="<?php echo $state['id']; ?>"> <?php echo $state['state_name']; ?></option>
-        <?php }  }else{ ?>
-        <option > No States</option>
-        <?php } ?>
-      </select>
+                        <div class="form-group">
+                            <label>Contact Number-2</label>
+                            <input type="text" class="form-control" name="contact_2" 
+                                   value="<?php echo set_value("school_contact_no2") == false ? $school["school_contact_no2"] : set_value("school_contact_no2"); ?>">
+                        </div>
 
-      <div class="alert alert-danger <?php if(empty(strip_tags(form_error('state'),''))){ echo 'hide';} ?>">
-          <?php echo strip_tags(form_error('state'),'') ; ?>
-      </div>
+                        <div class="form-group">
+                            <label>School Grade</label>
+                            <select class="form-control " name="grade" id="grade">
+                                <option value="A" <?php echo set_select("grade", "A"); ?>>A</option>
+                                <option value="B" <?php echo set_select("grade", "B"); ?>>B</option>
+                                <option value="C" <?php echo set_select("grade", "C"); ?>>C</option>
+                                <option value="D" <?php echo set_select("grade", "D"); ?>>D</option>
+                                <option value="E" <?php echo set_select("grade", "E"); ?>>E</option>
+                            </select>
+                        </div>
 
-      <h5>City</h5>
-      <select name="city" id="city_id" onchange="get_districts(this.value)" >
-        <option selected disabled>Select City</option>
-        <?php 
-          if(!empty($cities)){ 
-            foreach($cities as $city) {
-          ?> 
-        <option value="<?php echo $city['id']; ?>"> <?php echo $city['city_name']; ?></option>
-        <?php }  }else{ ?>
-        <option > No City</option>
-        <?php } ?>
-      </select>
+                        <div class="form-group">
+                            <label>School Mode</label>
+                            <select class="form-control " name="mode" id="mode">
+                                <option value="day" <?php echo set_select("mode", "day"); ?>>Day</option>
+                                <option value="day/boarding" <?php echo set_select("mode", "day/boarding"); ?>>Day/Boarding</option>
+                                <option value="day/hostel" <?php echo set_select("grade", "day/hostel"); ?>>Day/Hostel</option>
+                            </select>
+                        </div>
 
-      <div class="alert alert-danger <?php if(empty(strip_tags(form_error('city'),''))){ echo 'hide';} ?>">
-          <?php echo strip_tags(form_error('city'),'') ; ?>
-      </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input type="text" class="form-control" name="address" 
+                                   value="<?php echo set_value("address") == false ? $school["address"] : set_value("address"); ?>">
+                        </div>
 
-      <h5>District</h5>
-      <select name="district" id="district_id">
-        <option selected disabled>Select District</option>
-        <?php 
-          if(!empty($districts)){ 
-            foreach($districts as $district) {
-          ?> 
-        <option value="<?php echo $district['id']; ?>"> <?php echo $district['district_name']; ?></option>
-        <?php }  }else{ ?>
-        <option > No City</option>
-        <?php } ?>
-      </select>
+                        <div class="form-group select">
+                            <label>Country</label>
+                            <select class="form-control " name="country" onchange="get_states(this.value)" id="country_id">
+                                <option selected disabled>Select Country</option> 
+                                <?php
+                                if (!empty($countries)) {
+                                    foreach ($countries as $country) {
+                                        ?> 
+                                        <option value="<?php echo $country['id']; ?>"> <?php echo $country['country_name']; ?></option>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <option > No Country</option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <?php echo myform_error('country'); ?>
+                        <!-- </div> -->
 
-      <div class="alert alert-danger <?php if(empty(strip_tags(form_error('district'),''))){ echo 'hide';} ?>">
-          <?php echo strip_tags(form_error('district'),'') ; ?>
-      </div>
+                        <div class="form-group" >
+                            <label>State</label>
+                            <select class="form-control" name="state" id="states_id" onchange="get_cities(this.value)" >
+                                <option selected disabled>Select State</option>
+                                <?php
+                                if (!empty($states)) {
 
-      <br/><br/>
+                                    foreach ($states as $state) {
+                                        ?> 
+                                        <option value="<?php echo $state['id']; ?>"> <?php echo $state['state_name']; ?></option>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <option > No States</option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <?php echo myform_error('state'); ?>
 
-    <button type="submit" class="btn btn-default">Submit</button>
-  
-  </form>
+                        <div class="form-group">
+                            <label>City</label>
+                            <select class="form-control" name="city" id="city_id">
+                                <option disabled>Select City</option>
+                                <?php
+                                if (!empty($cities)) {
+                                    foreach ($cities as $city) {
+                                        ?> 
+                                        <option value="<?php echo $city['id']; ?>"> <?php echo $city['city_name']; ?></option>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <option > No City</option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <?php echo myform_error('city'); ?>
+
+                        <div class="form-group">
+                            <label>District</label>
+                            <select class="form-control" name="district" id="district_id">
+                                <option disabled>Select District</option>
+                                <?php
+                                if (!empty($districts)) {
+                                    foreach ($districts as $district) {
+                                        ?> 
+                                        <option value="<?php echo $district['id']; ?>"> <?php echo $district['district_name']; ?></option>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <option value="0"> No District</option>
+                                <?php } ?>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="box_footer">
+                        <button type="submit" class="btn btn_green">Save</button>
+                        <button class="btn btn_black">Cancel</button>
+                    </div>
+
+                </form>   
+
+            </div>
+        </div>
+    </div>
+    <!--//mesage-->
+</div>
+<!--//main-->
 
 <script type="text/javascript">
-  
-  $('#country_id').val('<?php echo $school_data["country_id"]; ?>');
-  $('#states_id').val('<?php echo $school_data["state_id"]; ?>');
-  $('#city_id').val('<?php echo $school_data["city_id"]; ?>');
-  $('#district_id').val('<?php echo $school_data["district_id"]; ?>');  
-  $('#school_grade').val('<?php echo $school_data["school_grade"]; ?>');
-
-  function get_states(country_id){
-    $.ajax({
-       url:'<?php echo base_url()."admin/ajax_get_states"; ?>',
-       type:'POST',
-       data:{country_id:country_id},
-       success:function(data){
-
-          $('#states_id').html('');
-          $('#states_id').html(data);
-          $('#city_id').html('<option selected disabled >Select City</option>');
-          $('#district_id').html('<option selected disabled >Select District</option>');
-       }
-    });
-   }
-
-   function get_cities(state_id){
-    $.ajax({
-       url:'<?php echo base_url()."admin/ajax_get_cities"; ?>',
-       type:'POST',
-       data:{state_id:state_id},
-       success:function(data){
-
-          $('#city_id').html(data);
-          $('#district_id').html('<option selected disabled >Select District</option>');
-       }
-    });
-   }
-
-  function get_districts(city_id){
-    $.ajax({
-       url:'<?php echo base_url()."admin/ajax_get_districts"; ?>',
-       type:'POST',
-       data:{city_id:city_id},
-       success:function(data){
-          $('#district_id').html(data);
-       }
-    });
-  }
-
-</script>
+    $('#country_id').val('<?php echo $school["country_id"]; ?>');
+    $('#states_id').val('<?php echo $school["state_id"]; ?>');
+    $('#city_id').val('<?php echo $school["city_id"]; ?>');
+    $('#district_id').val('<?php echo $school["district_id"]; ?>');
+    $('#school_type').val('<?php echo $school["school_type"]; ?>');
+    $('#grade').val('<?php echo $school["school_grade"]; ?>');
+    $('#mode').val('<?php echo $school["school_mode"]; ?>');
 
 
-<?php $this->load->view('admin/include/footer'); ?>
+    function get_states(country_id) {
+        $.ajax({
+            url: '<?php echo base_url() . "common/ajax_get_states"; ?>',
+            type: 'POST',
+            data: {country_id: country_id},
+            success: function (data) {
+                $('#states_id').html(data);
+                $('#city_id').html('<option> Select City </option>');
+            }
+        });
+    }
+
+    function get_cities(state_id) {
+        $.ajax({
+            url: '<?php echo base_url() . "common/ajax_get_cities"; ?>',
+            type: 'POST',
+            data: {state_id: state_id},
+            success: function (data) {
+                $('#city_id').html(data);
+            }
+        });
+    }
+
+    function get_districts(city_id) {
+        $.ajax({
+            url: '<?php echo base_url() . "common/ajax_get_districts"; ?>',
+            type: 'POST',
+            data: {city_id: city_id},
+            success: function (data) {
+                $('#district_id').html(data);
+            }
+        });
+    }
+
+</script>         

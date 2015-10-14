@@ -203,7 +203,7 @@
 
                                }
                                if($key+1 == $current_weekday){
-                                $active = 'class="active search_result_label"';
+                                $active = 'class="active"';
                                }
                                
                                echo '<li><a href="'.$url.'" '.$active.'>'.$value.'</a></li>';

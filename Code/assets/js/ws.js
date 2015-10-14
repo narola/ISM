@@ -1,5 +1,67 @@
-/* Give notification for remainning active hours time. */
+/* Exam time information and notification. */
+var exam_time_to_start;
+var exam_total_active_time;
+var exam_total_deactive_time;
+var exam_time_to_left;
+var exam_started;
+var exam_will_start;
 
+function exam_started_timer()
+{
+  exam_time_to_left = exam_time_to_left - 1;
+  console.log("Exam remaing time: "+exam_time_to_left);
+  if(exam_time_to_left == 900){
+      $(".alert_notification p").html("Exam time will <b>finish</b> within <b>15 minutes.</b>");
+      $(".alert_notification").show().delay(5000).fadeOut();
+  }else if(exam_time_to_left == 300){
+    console.log("5 minutes notification.");
+      $(".alert_notification p").html("Exam time will <b>finish</b> within <b>5 minutes.</b>");
+      $(".alert_notification").show().delay(5000).fadeOut();
+  }else if(exam_time_to_left == 60){
+    console.log("1 minutes notification.");
+     $(".alert_notification p").html("Exam time will <b>finish</b> within <b>1 minute.</b>");
+     $(".alert_notification").show().delay(5000).fadeOut();
+  }else if (exam_time_to_left <= 0)
+  { 
+    $(".alert_notification p").html("<b>Exam time finished..</b>");
+    $(".alert_notification").show().delay(5000).fadeOut();
+    exam_time_to_start = exam_total_deactive_time;
+    exam_will_start = setInterval(exam_will_start_timer, 1000);
+    clearInterval(exam_started);
+    return;
+  }
+}
+
+function exam_will_start_timer()
+{
+  exam_time_to_start = exam_time_to_start - 1;
+  console.log("Exam will start: "+exam_time_to_start);
+  if(exam_time_to_start == 900){
+      $(".alert_notification p").html("Exam time will <b>start</b> within <b>15 minutes.</b>");
+      $(".alert_notification").show().delay(5000).fadeOut();
+  }else if(exam_time_to_start == 300){
+    console.log("5 minutes notification.");
+      $(".alert_notification p").html("Exam time will <b>start</b> within <b>5 minutes.</b>");
+      $(".alert_notification").show().delay(5000).fadeOut();
+  }else if(exam_time_to_start == 60){
+    console.log("1 minutes notification.");
+     $(".alert_notification p").html("Exam time will <b>start</b> within <b>1 minute.</b>");
+     $(".alert_notification").show().delay(5000).fadeOut();
+  }else if (exam_time_to_start <= 0)
+  { 
+    $(".alert_notification p").html("<b>Exam time Started..</b>");
+    $(".alert_notification").show().delay(5000).fadeOut();
+    
+    exam_time_to_left = exam_total_active_time;
+    exam_started = setInterval(exam_started_timer, 1000);
+
+    clearInterval(exam_will_start);
+    return;
+  }
+}
+
+
+/* Give notification for remainning active hours time. */
 var remainning_time = 0;
 var remainning_counter;
 function remainning_time_timer()
@@ -196,6 +258,17 @@ if ("WebSocket" in window)
            }  
             
         } else if (obj.type == 'con') {
+            exam_time_to_start = obj.exam_time_to_start;
+            exam_total_active_time = obj.exam_total_active_time;
+            exam_total_deactive_time = obj.exam_total_deactive_time;
+            exam_time_to_left = obj.exam_time_to_left;
+
+            if(exam_time_to_start == 0 && exam_time_to_left > 0){
+                exam_started = setInterval(exam_started_timer, 1000);
+            }else if(exam_time_to_start > 0 && exam_time_to_left == 0){
+                exam_will_start = setInterval(exam_will_start_timer, 1000);
+            }
+
             var theString = obj.online_user;
             $.each(theString.split("-"), function (index, id) {
                 $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('offline').addClass('online');
@@ -448,8 +521,8 @@ function set_status(id, status) {
         }else {
             $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('offline').addClass('online');
             if(wp != id){
-            $('.stm_list .mCustomScrollBox .mCSB_container').prepend('<div class="'+ac.attr('class')+'" data-id="'+id+'">'+ac.remove().html()+'</div>');
-           if(start_timer == true){
+                $('.stm_list .mCustomScrollBox .mCSB_container').prepend('<div class="'+ac.attr('class')+'" data-id="'+id+'">'+ac.remove().html()+'</div>');
+                if(start_timer == true){
                     $('.tut_group .box_footer[data-id="'+id+'"] p').html('Online');
                     $('.tut_group .box_body[data-id="'+id+'"] a').removeClass('icon_call_user').addClass('icon_call_user_disable');
                 }
