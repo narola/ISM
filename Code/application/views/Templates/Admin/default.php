@@ -31,13 +31,14 @@ $url = uri_string();
         <!--fonts-->
         <link href='assets/css/fonts.css' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-        <link rel="stylesheet" href="assets/css/datepicker.css">
+        <link rel="stylesheet" href="assets/css/datepicker.css"> <!-- Bootstrap DatePicker CSS -->
 
         <script src="assets/js/jquery-1.11.3.min.js"></script>
         <script src="assets/js/jquery-ui.min.js"></script> <!-- jQuery UI JS -->
         <script src="assets/js/bootstrap.min.js"></script> <!-- Bootstap JS -->
         <script src="assets/js/select2.min.js"></script> <!-- Select2 JS -->
         <script src="assets/js/bootstrap-tagsinput.js"></script> <!-- Input Tagging Feature -->
+        <script src="assets/js/bootstrap-datepicker.js"></script>  <!-- Bootstrap DatePicker Script  -->
         <script src="assets/js/ZeroClipboard.min.js"></script>  <!-- For Copy to Clipboard Functionality Refer:http://zeroclipboard.org/ -->
 
         <!-- Highchart JS Start -->
@@ -407,9 +408,32 @@ $url = uri_string();
 
 
         <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script src="assets/js/bootstrap-datepicker.js"></script> 
+        
 
         <script type="text/javascript">
+
+            $(function () {
+              $('[data-toggle="popover"]').popover();
+            });
+
+            jQuery(document).ready(function(){
+            jQuery('.exam_year .icon_option_dark').click(function(){
+                if(jQuery(this).parent().children('.popover').css('display')=='block'){
+                    jQuery(this).parent().children('.popover').css('display','none');
+                }
+                else{
+                    jQuery(this).parent().children('.popover').css('display','block');
+                };
+            });
+            jQuery('.switch_btns .btn').click(function(){
+                if(jQuery(this).hasClass('no_btn')){
+                    jQuery('.switch_btns .btn').removeClass('btn_red');                 
+                    jQuery('.switch_btns .btn').addClass('no_btn');
+                    jQuery(this).addClass('btn_red');
+                    jQuery(this).removeClass('no_btn');                 
+                };
+            });
+        });
 
             $('#birthdate input').datepicker({
                 format: 'yyyy-mm-dd'

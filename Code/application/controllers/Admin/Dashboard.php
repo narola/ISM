@@ -254,9 +254,8 @@ class Dashboard extends ADMIN_Controller {
             header('Content-Disposition: attachment;filename="' . $filename . '"'); //tell browser what's the file name
             header('Cache-Control: max-age=0'); //no cache
             $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
-            ob_start();
-		    $objWriter->save('php://output'); 
-		    $excelOutput = ob_get_clean();
+            $objWriter->save('php://output'); 
+		    
 
 		} // End else consdition
 	}
