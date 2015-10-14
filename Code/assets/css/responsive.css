@@ -1,7 +1,14 @@
 @charset "utf-8";
 /* CSS Document */
 @media (max-width:1920px){
-	
+	.add_question_wrapper .select .form-control {
+		width: 77%;
+	}
+}
+@media (max-width:1600px){
+	.add_question_wrapper .select .form-control {
+		width: 72%;
+	}
 }
 @media (max-width:1366px){
 	.box_body .age{
@@ -63,6 +70,9 @@
 		height:108px;
 		width:108px;
 		top:16px;
+	}
+	.add_question_wrapper .select .form-control {
+		width: 67%;
 	}
 }
 @media (max-width:1280px){
@@ -204,6 +214,9 @@
 	}
 	.ques_numbers li {
     	margin: 0 1px 1px 0;
+	}
+	.add_question_wrapper .select .form-control {
+		width: 64%;
 	}
 }	
 @media (max-width:1024px){
@@ -446,7 +459,19 @@
 	.page_header fieldset{
 		padding:5px;
 	}
-	
+	.add_question_wrapper .icon {
+		margin: 0 0 10px 5px;
+	}
+	.add_question_wrapper .select .form-control {
+		margin-left: 5px;
+		width: 56%;
+	}
+	.add_question_wrapper + .box_footer .btn{
+		float:none !important;
+		display:block;
+		width:100%;
+		margin-top:5px;
+	}
 }
 @media (max-width:980px){
 	.login_background {
@@ -546,6 +571,9 @@
 	}
 	.test_finished .item_chart:before, .test_finished .item_chart:after{
 		left:6px;
+	}
+	.add_question_wrapper .select .form-control {
+		width: 54%;
 	}
 }
 
@@ -681,6 +709,22 @@
 	}
 	.ques_numbers li {
     	margin: 0 5px 5px 0;
+	}
+	.add_question_wrapper .icon {
+		margin: 0 0 10px -5px;
+	}
+	.add_question_wrapper .select .form-control {
+		margin-left: 0;
+		width: 100%;
+	}
+	.general_cred .box_body.add_question_wrapper .select:after{
+		top:35px;
+	}
+	.upload_ques_img{
+		height:180px;
+	}
+	.box_body.add_question_wrapper .inner_txtarea textarea.form-control{
+		height:100px;
 	}
 }
 @media (max-width:768px){
