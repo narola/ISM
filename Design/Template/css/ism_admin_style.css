@@ -1493,7 +1493,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .question_bank {
     margin-bottom: 15px;
 }
-.preview .box_header h3 {
+.question_bank .box_header h3 {
     text-align: center;
     padding: 8px;
 }
@@ -1532,4 +1532,64 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .question_bank .preview{
 	padding:0;
+}
+.box_body.add_question_wrapper {
+    padding: 15px 0;
+}
+.box_body.add_question_wrapper textarea.form-control {
+    height: 100px;
+}
+.add_question_wrapper .select label{
+	display:inline-block;
+}
+.add_question_wrapper .select .form-control{
+	width: 72%;
+    display: inline-block;
+    margin-left: 11px;
+}
+.upload_question{
+	text-align: right;
+    padding-left: 0;	
+}
+.add_question_wrapper .icon {
+    margin: 0 0 10px 10px;
+}
+.upload_ques_img{
+	height: 155px;
+    background-image: url(../images/question_image.png);
+    background-repeat: no-repeat;
+    border: 1px solid rgba(0,0,0,0.1);
+    background-position: center;
+}
+.upload_ques_img input[type=file]{
+	opacity: 0;
+    height: 100%;
+    width: 100%;
+}
+.box_body .add_answer{
+    background-color: #f0f0f0;
+    box-shadow: none;
+    border: 1px dashed rgba(0,0,0,0.7);
+}
+.inner_txtarea {
+    margin-top: 15px;
+}
+.inner_txtarea .box_header {
+    padding: 0px;
+    border: 1px solid rgba(0,0,0,0.07);
+}
+.inner_txtarea .box_header h3 {
+    font-size: 15px;
+    padding: 10px;
+}
+.box_body.add_question_wrapper .inner_txtarea textarea.form-control {
+    box-shadow: none;
+    border-top: none;
+    height: 200px;
+}
+.add_question_wrapper + .box_footer .btn_red.pull-right{
+    margin-right: 10px;
+}
+.add_question_wrapper .btn_green {
+	width:130px;
 }
