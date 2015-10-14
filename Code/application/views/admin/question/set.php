@@ -28,7 +28,7 @@
                                 </div>
                                 <div class="form-group">
                                     <select class="form-control">
-                                        <option>Exam Type</option>
+                                        <option>Topic</option>
                                     </select>
                                 </div>
                                 <div class="form-group no_effect search_link text-right">
@@ -39,7 +39,7 @@
                             <!--box_body-->
                             <div class="box_body">
                            		<div class="black_header">	
-                                	<h4>Questiona Bank</h4>
+                                	<h4>Question Bank</h4>
                                 </div>
                                 <div class="question_list">
                                 	<!--q1-->
