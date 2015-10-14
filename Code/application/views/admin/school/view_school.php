@@ -16,7 +16,23 @@
     <!--filter-->
     <form method="get" id="filter">
         <div class="row filter">
+
             <div class="col-sm-12">
+                <div class="form-group">
+                    <select class="form-control" name="school_grade" onchange="filter_data()" id="school_grade">
+                        <option value="">Select Grade</option>
+                        <?php
+                        if (!empty($school_grade)) {
+                            foreach ($school_grade as $grade) {
+                                ?>
+                                <option value="<?php echo $grade['school_grade']; ?>" ><?php echo $grade['school_grade']; ?></option>  
+                                <?php
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+
                 <div class="form-group no_effect search_input">
                     <input type="text" name="q" id="q" class="form-control" placeholder="Search" >
                     <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
@@ -59,7 +75,7 @@
                             <th>Grade</th>
                             <th>Address</th>
                             <th>Contacts</th>
-                            <th style="width:110px;">Actions</th>
+                            <th style="width:70px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -91,15 +107,6 @@
                                         <?php echo ucfirst($school['school_contact_no2']); ?>
                                     </td>
                                     <td>
-
-                                        <?php if ($school['is_delete'] == '0') { ?>  
-                                            <a href="<?php echo base_url() . 'admin/school/active/' . $school['id']; ?>" 
-                                               onclick="return confirm('Activate User ?');" class="icon icon_user" data-toggle="tooltip" data-placement="bottom" title="Active" ></a>
-                                           <?php } else { ?>   
-                                            <a href="<?php echo base_url() . 'admin/school/blocked/' . $school['id']; ?>" 
-                                               onclick="return confirm('Blocked User ?');" class="icon icon_blockuser" data-toggle="tooltip" data-placement="bottom" title="Block"></a>  
-                                           <?php } ?>
-
                                         <a href="<?php echo base_url() . 'admin/school/update/' . $school['id']; ?>" class="icon icon_edit"
                                            data-toggle="tooltip" data-placement="bottom" title="Edit"> </a>
                                     </td>
@@ -131,21 +138,35 @@
 
     function filter_data() {
         var q = $('#q').val();
+        var school_grade = $('#school_grade').val();
         if (q == '') {
             $('#q').removeAttr('name');
+        }
+
+        if (school_grade == '') {
+            $('#school_grade').removeAttr('name');
         }
         $('#filter').submit();
     }
 
     $("#filter").submit(function (event) {
         var q = $('#q').val();
+        var school_grade = $('#school_grade').val();
         if (q == '') {
             $('#q').removeAttr('name');
+        }
+        if (school_grade == '') {
+            $('#school_grade').removeAttr('name');
         }
     });
 
 <?php if (!empty($_GET['q'])) { ?>
         $('#q').val('<?php echo $_GET["q"]; ?>');
 <?php } ?>
+
+<?php if (!empty($_GET['school_grade'])) { ?>
+        $('#school_grade').val('<?php echo $_GET["school_grade"]; ?>');
+<?php } ?>
+
 
 </script>
