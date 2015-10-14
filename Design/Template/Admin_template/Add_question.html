@@ -169,10 +169,10 @@
                                     </div>
                                     <div class="form-group select">
                                     	<label class="txt_red">Question Type</label>
-                                        <select class="form-control">
-                                        	<option>Text</option>
-                                        	<option>Paragraph Text</option>
-                                            <option>Multiple Choice</option>
+                                        <select class="form-control" id="question_type">
+                                        	<option value="text">Text</option>
+                                        	<option selected  value="paragraph">Paragraph Text</option>
+                                            <option value="mcq">Multiple Choice</option>
                                         </select>
                                     </div>
                                 </div>
@@ -184,11 +184,34 @@
                                     	<input type="file">
                                     </div>
                                 </div>
-                                <div class="col-sm-12">
+                                
+                                <div class="col-sm-12" id="replacing_div1">
+                                	<div class="form-group">
+                                        <input type="text" class="form-control add_answer" placeholder="Their Short Answer">
+                                    </div>
+                                    <button class="btn_green btn">Done</button>
+                                </div>
+                                <div class="col-sm-12" id="replacing_div2">
                                 	<div class="form-group">
                                         <textarea class="form-control add_answer" placeholder="Their Longer Answer"></textarea>
                                     </div>
                                     <button class="btn_green btn">Done</button>
+                                </div>
+                                <div class="col-sm-12" id="replacing_div3">
+                                	<div class="form-group">
+                                        <input type="radio"><input type="text" class="form-control" placeholder="Question 1">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="radio"><input type="text" class="form-control" placeholder="Question 1"><a href="#" class="icon icon_add_small"></a>
+                                    </div>                                    
+                                    <div class="form-group">
+                                    	<label class="txt_red">Question Tags</label>
+                                        <div class="tag_container">
+                                        	<h3><label class="label label-default">Biology</label></h3>
+                                            <h3><label class="label label-primary">Vertebrates</label></h3>
+                                            <input type="text">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-sm-12 col-md-6 inner_txtarea">
                                 	<div class="box_header">
@@ -297,5 +320,28 @@
     <script src="../js/bootstrap.min.js"></script> 
     <!--scroll-->
     <script src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script>
+	$(function() {		 
+		$('#question_type').change(function(){
+			if($('#question_type').val() == 'text') {
+				$('#replacing_div1').show();
+				$('#replacing_div2').hide();
+				$('#replacing_div3').hide();
+			}
+			if($('#question_type').val() == 'paragraph') {
+				$('#replacing_div2').show();
+				$('#replacing_div1').hide();
+				$('#replacing_div3').hide();
+			}
+			if($('#question_type').val() == 'mcq') {
+				$('#replacing_div3').show();
+				$('#replacing_div2').hide();
+				$('#replacing_div1').hide();
+			}			
+		});
+	});
+	
+	
+	</script>
 </body>
 </html>

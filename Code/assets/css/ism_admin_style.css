@@ -771,8 +771,8 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .general_cred .box_body .form-control:focus, 
 .admin_controls .form-control:focus {
-    border-color: rgba(255,107,107,0.2);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(255,107,107,0.2);
+	border-color: rgba(255,107,107,0.2);
+	box-shadow: inset 0px 1px 1px rgba(0,0,0,.075),0 0 8px rgba(255,107,107,0.2);
 }
 .three_inputs {
     width: 32.3%;
@@ -1566,9 +1566,10 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     height: 100%;
     width: 100%;
 }
-.box_body .add_answer{
+.general_cred .box_body .add_answer{
     background-color: #f0f0f0;
     box-shadow: none;
+	width:100%;
     border: 1px dashed rgba(0,0,0,0.7);
 }
 .inner_txtarea {
@@ -1592,4 +1593,42 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .add_question_wrapper .btn_green {
 	width:130px;
+}
+#replacing_div1{
+	display:none;
+}
+#replacing_div2{
+	
+}
+#replacing_div3{
+	display:none;
+}
+#replacing_div3 input[type=radio]{
+	margin-right:5px;
+}
+.general_cred #replacing_div3 input.form-control {
+    width: 90%;
+	margin:0;
+}
+#replacing_div3 .icon{
+    margin: 0 0 0 15px;
+}
+#replacing_div3 label {
+    display: inline-block;
+	margin-bottom:2px;
+}
+.tag_container {
+    width: 82%;
+    margin-left: 10px;
+    padding: 5px;
+    border: 1px solid rgba(0,0,0,0.1);
+    display: inline-block;
+}
+.tag_container h3 {
+    display: inline-block;
+    margin: 0;
+}
+.tag_container input[type=text]{
+	border: none;
+    outline: none;
 }

@@ -99,7 +99,10 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         }
     } else if ($data['type'] == 'get_studymate_name') {
         $responce = $Server->get_studymate_name($data);
+    } else if($data['type'] == 'exam_start_request'){
+        $responce = $Server->exam_request($Server->wsClients[$clientID][12], $data);
     }
+    
     $check = array('feed_comment', 'like');
     if (isset($responce)) {
         pr($responce, 1);

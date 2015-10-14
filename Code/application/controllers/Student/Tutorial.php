@@ -181,7 +181,6 @@ class Tutorial extends ISM_Controller {
 				'ta.topic_id,
 				t.topic_name,
 				t.topic_description,
-				t.created_date,
 				te.exam_id,
 				ss.created_date',
 				array('where' => array('ta.group_id' => $this->session->userdata('user')['group_id'],'ta.week_no' => $c_week,'tm.user_id' => $user_id,'YEAR(`ta`.`created_date`)' => $year  )),
@@ -203,17 +202,18 @@ class Tutorial extends ISM_Controller {
 						'condition' => 'ss.exam_id = te.exam_id AND ss.user_id = '.$user_id
 						)
 					),
-				'single' => true
+				'single' => true,
+				'limit' => 1
 				)
-			); 
-	     $data['exam']['created_date'] = '2015-10-14'; 
+			);
+
 	    $current_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
-	    $current_time = DateTime::createFromFormat('Y-m-d', date('Y-m-d H:i:s'));
+	    //$current_time = DateTime::createFromFormat('Y-m-d', date('Y-m-d H:i:s'));
 	    if(isset($data['exam']) && !empty($data['exam'])){
 	    	if(isset($data['exam']['created_date'])){
 	    		if($data['exam']['created_date'] != '' && $data['exam']['created_date'] != null){
 	    			$exam_start_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d',  strtotime($data['exam']['created_date'])));
-	    			$exam_start_time = DateTime::createFromFormat('Y-m-d', date('Y-m-d',  strtotime($data['exam']['created_date'])));
+	    			//$exam_start_time = DateTime::createFromFormat('Y-m-d', date('Y-m-d',  strtotime($data['exam']['created_date'])));
 	    			
 	    			if($exam_start_date < $current_date){
 	    				$data['exam_status'] = 2;
@@ -231,12 +231,6 @@ class Tutorial extends ISM_Controller {
 	    	$data['error'] = 'Exam or Topic is not allocated for current week!';
 	    }
 
-	    if($data['exam_status'] == 1){
-	    	// Get exam status if exam is already started.
-
-	    }
-
-	//	p($data,true);
 		$this->template->load('student/default','student/exam_instruction',$data);
 	}
 
