@@ -35,6 +35,29 @@
     <script>
     var wp = "<?php echo $this->session->userdata('user')['id']; ?>";
     var start_timer = false;
+    var is_exam_finished = false;
+    <?php if(isset($exam_status) && $exam_status == 2){
+        ?>
+        is_exam_finished = true;
+        <?php
+    }  ?>
+
+
+/* Convert Seconds into toHHMMSS */
+function toHHMMSS (sec) {
+
+    var sec_num = parseInt(sec, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+
+    var time  = hours+':'+minutes+':'+seconds;
+    return time;
+}
     </script>
      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="assets/js/jquery-1.11.3.min.js"></script>
