@@ -1448,11 +1448,11 @@ input.chat_input {
     padding: 10px 15px;
 }
 .banner_text{
-    height: 160px;
-    width: 160px;
+    height: 130px;
+    width: 130px;
     background-color: #fff;
     border-radius: 50%;
-    padding: 30px 0;
+    padding: 18px 0;
     margin: 0 auto;
     text-align: center;
 }
