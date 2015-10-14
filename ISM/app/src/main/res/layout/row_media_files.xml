@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150sp"
+    android:layout_height="150sp"
+    android:padding="@dimen/d10sp"
+    android:background="@drawable/bg_highscore_subjectlist"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_highscore_subjectlist">
+
+        <ImageView
+            android:id="@+id/img_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+        <VideoView
+            android:id="@+id/video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/img_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/img_seleceted_close"
+        android:layout_width="20sp"
+        android:layout_height="20sp"
+        android:layout_alignRight="@+id/rl_image"
+        android:layout_alignTop="@+id/rl_image"
+        android:src="@drawable/ic_launcher" />
+
+</RelativeLayout>
