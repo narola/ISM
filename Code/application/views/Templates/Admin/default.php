@@ -4,9 +4,11 @@ $url = uri_string();
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>ISM Admin | <?php if (!empty($page_title)) {
-    echo $page_title;
-} ?></title>
+        <title>ISM Admin | <?php
+            if (!empty($page_title)) {
+                echo $page_title;
+            }
+            ?></title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -83,13 +85,17 @@ $url = uri_string();
                                 <li><a href="admin/exam">Exams</a></li>
                             </ul>
                         </li>
-                        <li class="<?php if (in_array($url, array('admin/group'))) {
+                        <li class="<?php
+                        if (in_array($url, array('admin/group'))) {
                             echo 'active';
-                        } ?>" ><a href="admin/group"><span class="icon icon_menu_group"></span> Groups</a></li>
+                        }
+                        ?>" ><a href="admin/group"><span class="icon icon_menu_group"></span> Groups</a></li>
                         <li><a href="#"><span class="icon icon_menu_organize"></span> Organize</a></li>
                         <li class="
                         <?php
-                        if (in_array($url, array('admin/user', 'admin/topic/allocate', 'admin/topic/lists', 'admin/school', 'admin/school/add'))) {
+                        if (in_array($url, array('admin/user', 'admin/topic/allocate',
+                                    'admin/topic/lists', 'admin/school', 'admin/school/add',
+                                    'admin/classroom', 'admin/classroom/add'))) {
                             echo 'active';
                         } else {
 
@@ -105,7 +111,7 @@ $url = uri_string();
                                 <li><a href="#">Book</a></li>
                                 <li><a href="#">Auther</a></li>
                                 <li><a href="admin/school">School</a></li>
-                                <li><a href="#">Classroom</a></li>
+                                <li><a href="admin/classroom">Classroom</a></li>
                                 <li><a href="#">Subject</a></li>
                                 <li><a href="#">Badges</a></li>
                                 <li><a href="admin/user">User</a></li>
@@ -195,17 +201,21 @@ $url = uri_string();
                         <li>
                             <a href="#"><span class="icon icon_banner"></span>Banners</a>
                         </li>                   
-                        <li class="<?php if (in_array($url, array('admin/notice', 'admin/notice/index'))) {
+                        <li class="<?php
+                        if (in_array($url, array('admin/notice', 'admin/notice/index'))) {
                             echo 'active';
-                        } ?>">
+                        }
+                        ?>">
                             <a href="admin/notice"><span class="icon icon_notice"></span>Notice Board</a>
                         </li>
                         <li>
                             <a href="#"><span class="icon icon_ques"></span>Questionaries</a>
                         </li>
-                        <li class="<?php if (in_array($url, array('admin/auto_generated_credentials'))) {
+                        <li class="<?php
+                        if (in_array($url, array('admin/auto_generated_credentials'))) {
                             echo 'active';
-                        } ?>" >
+                        }
+                        ?>" >
                             <a href="admin/auto_generated_credentials"><span class="icon icon_credencial"></span>Generate Credentials</a>
                         </li>
                     </ul>
