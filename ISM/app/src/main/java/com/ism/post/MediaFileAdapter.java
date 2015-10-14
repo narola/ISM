@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.VideoView;
 
 import com.ism.R;
 
@@ -44,7 +43,6 @@ public class MediaFileAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.row_media_files, parent, false);
-        if (arrayList.get(position).getStrFileType().equals("image")) {
             ImageView imageView = (ImageView) convertView.findViewById(R.id.img_image);
             imageView.setVisibility(View.VISIBLE);
 //            if (arrayList.get(position).getBitmap().equals(null)) {
@@ -58,16 +56,6 @@ public class MediaFileAdapter extends BaseAdapter {
             imageView.setImageBitmap(arrayList.get(position).getBitmap());
         //}
             //imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.logo));
-        } else if (arrayList.get(position).getStrFileType().equals("video")) {
-            VideoView imageView = (VideoView) convertView.findViewById(R.id.video);
-            imageView.setVisibility(View.VISIBLE);
-            //imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.logo));
-        } else if (arrayList.get(position).getStrFileType().equals("audio")) {
-
-            ImageView imageView = (ImageView) convertView.findViewById(R.id.img_image);
-            imageView.setVisibility(View.VISIBLE);
-            imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.logo));
-        }
         return convertView;
     }
 }

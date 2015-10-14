@@ -2,11 +2,13 @@ package com.ism.post;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -168,14 +170,17 @@ public class CreatePostActivity extends Activity {
 
         } else if (requestCode == MEDIA_TYPE_VIDEO && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                Log.d(TAG, String.valueOf(bitmap));
-                addImage(bitmap);
+                //int id = **"The Video's ID"**
+                ContentResolver crThumb = getContentResolver();
+                BitmapFactory.Options options=new BitmapFactory.Options();
+                options.inSampleSize = 1;
+                Bitmap curThumb = MediaStore.Video.Thumbnails.getThumbnail(crThumb, 1, MediaStore.Video.Thumbnails.MICRO_KIND, options);
+
+               // bitmap = MediaStore.Video.Media.getBitmap(getContentResolver(), uri);
+              //  Log.d(TAG, String.valueOf(bitmap));
+                addImage(curThumb);
                 // imgDp.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
         } else if (requestCode == CAPTURE_VIDEO_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Log.i("", "" + data
                     .getData());
