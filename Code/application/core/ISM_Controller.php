@@ -3,12 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ISM_Controller extends CI_Controller {
 
+	var $active_h = array();
+
 	public function __construct(){
 		
 		parent::__construct();
 		
 		$this->load->model(array('common_model'));	
-		
+		$this->active_h = active_hours();
 		$exceptional_url = array('student/logout','student/forgot_password','student/reset_password',
 								'student/group_allocation');
 		
