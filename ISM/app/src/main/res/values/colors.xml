@@ -23,7 +23,8 @@
 
 
     <!-- Arti -->
-    <color name="color_green">#1BBC9B</color>
+    <color name="color_green">#1BC4A2</color>
+    <color name="color_green_dark">#14987d</color>
     <color name="color_transparent_white">#70ffffff</color>
     <color name="color_white">#ffffff</color>
     <color name="color_black">#000000</color>

@@ -79,7 +79,7 @@ public class QuestionObjective {
 		try {
 			ArrayList<QuestionObjective> questionObjectives = new ArrayList<QuestionObjective>();
 
-			for (int i = 0; i < 15; i++) {
+			for (int i = 0; i < 5; i++) {
 				ArrayList<Option> options = new ArrayList<Option>();
 				for (int j = 0; j < 4; j++) {
 					options.add(new Option("O" + j, "Option text " + j, j == 3 ? true : false, false));
@@ -87,7 +87,23 @@ public class QuestionObjective {
 				questionObjectives.add(new QuestionObjective("Q" + i, "Question text " + i, options));
 			}
 
-			for (int i = 0; i < 5; i++) {
+			for (int i = 5; i < 10; i++) {
+				ArrayList<Option> options = new ArrayList<Option>();
+				for (int j = 0; j < 6; j++) {
+					options.add(new Option("O" + j, "Option text " + j, j == 2 ? true : false, false));
+				}
+				questionObjectives.add(new QuestionObjective("Q" + i, "Question text " + i, options));
+			}
+
+			for (int i = 10; i < 15; i++) {
+				ArrayList<Option> options = new ArrayList<Option>();
+				for (int j = 0; j < 4; j++) {
+					options.add(new Option("O" + j, "Option text " + j, j == 3 ? true : false, false));
+				}
+				questionObjectives.add(new QuestionObjective("Q" + i, "Question text " + i, options));
+			}
+
+			for (int i = 15; i < 20; i++) {
 				ArrayList<Option> options = new ArrayList<Option>();
 				for (int j = 0; j < 6; j++) {
 					options.add(new Option("O" + j, "Option text " + j, j == 2 ? true : false, false));

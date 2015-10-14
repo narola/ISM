@@ -1,6 +1,7 @@
 package com.ism.exam.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.exam.R;
+import com.ism.exam.TestActivity;
+import com.ism.exam.adapter.QuestionPaletteAdapter;
 import com.ism.exam.model.Option;
 import com.ism.exam.model.QuestionObjective;
 
@@ -49,6 +52,7 @@ public class ExamFragment extends Fragment {
 
 	private RadioButton rbOptions[];
 
+	private QuestionPaletteAdapter adpQuestionPalette;
 	private ArrayList<QuestionObjective> arrListQuestions;
 
 	private static final String ARG_PARAM1 = "param1";
@@ -56,6 +60,7 @@ public class ExamFragment extends Fragment {
 	private int intAssessmentNo;
 	private String strSubject;
 	private int intCurrentQuestionIndex = 0;
+	private boolean isOptionsLoading = false;
 
 	public static ExamFragment newInstance(String param1) {
 		ExamFragment fragment = new ExamFragment();
@@ -141,14 +146,15 @@ public class ExamFragment extends Fragment {
 		btnClearResponse.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				rgOptions.clearCheck();
 			}
 		});
 
 		btnSkip.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				Intent intentTest = new Intent(getActivity(), TestActivity.class);
+				startActivity(intentTest);
 			}
 		});
 
@@ -160,6 +166,48 @@ public class ExamFragment extends Fragment {
 					loadQuestion(++intCurrentQuestionIndex);
 				} else if (intCurrentQuestionIndex == arrListQuestions.size() - 1) {
 					loadFirstFlaggedQuestion();
+				}
+			}
+		});
+
+		rgOptions.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				if (!isOptionsLoading) {
+					boolean isChecked = false;
+					switch (checkedId) {
+						case R.id.rb_op1:
+							isChecked = rbOption1.isChecked();
+							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(0).setIsSelected(isChecked);
+							Log.e(TAG, "checked1 : " + isChecked);
+							break;
+						case R.id.rb_op2:
+							isChecked = rbOption2.isChecked();
+							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(1).setIsSelected(isChecked);
+							Log.e(TAG, "checked2 : " + isChecked);
+							break;
+						case R.id.rb_op3:
+							isChecked = rbOption3.isChecked();
+							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(2).setIsSelected(isChecked);
+							Log.e(TAG, "checked3 : " + isChecked);
+							break;
+						case R.id.rb_op4:
+							isChecked = rbOption4.isChecked();
+							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(3).setIsSelected(isChecked);
+							Log.e(TAG, "checked4 : " + isChecked);
+							break;
+						case R.id.rb_op5:
+							isChecked = rbOption5.isChecked();
+							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(4).setIsSelected(isChecked);
+							Log.e(TAG, "checked5 : " + isChecked);
+							break;
+						case R.id.rb_op6:
+							isChecked = rbOption6.isChecked();
+							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(5).setIsSelected(isChecked);
+							Log.e(TAG, "checked6 : " + isChecked);
+							break;
+					}
+					arrListQuestions.get(intCurrentQuestionIndex).setIsAnswered(isChecked);
 				}
 			}
 		});
@@ -186,14 +234,18 @@ public class ExamFragment extends Fragment {
 			intCurrentQuestionIndex = questionIndex;
 			txtQuestion.setText(arrListQuestions.get(intCurrentQuestionIndex).getQuestion());
 			ArrayList<Option> options = arrListQuestions.get(intCurrentQuestionIndex).getOptions();
+			isOptionsLoading = true;
+			rgOptions.clearCheck();
 			for (int i = 0; i < 6; i++) {
 				if (i < options.size()) {
 					rbOptions[i].setVisibility(View.VISIBLE);
 					rbOptions[i].setText(options.get(i).getOption());
+					rbOptions[i].setChecked(options.get(i).isSelected());
 				} else {
 					rbOptions[i].setVisibility(View.GONE);
 				}
 			}
+			isOptionsLoading = false;
 			if (intCurrentQuestionIndex == arrListQuestions.size() - 1) {
 				btnSaveNNext.setText(R.string.save);
 			} else {
