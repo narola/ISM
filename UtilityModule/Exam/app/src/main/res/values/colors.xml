@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="colorPrimary">#1BC4A2</color>
+	<color name="colorPrimaryDark">#14987d</color>
+	<color name="colorAccent">#1BC4A2</color>
+
+    <color name="color_graylight">#F5F5F5</color>
+    <color name="bg_app_dark">#323941</color>
+    <color name="color_green">#1BBC9B</color>
+    <color name="border_gray">#DDDDDD</color>
+    <color name="bg_tutorial">#DA534F</color>
+</resources>
