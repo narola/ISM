@@ -19,6 +19,9 @@ import com.ism.utility.FontUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Created by c162 on 07/10/15.
+ */
 
 public class AccordionView extends LinearLayout {
 

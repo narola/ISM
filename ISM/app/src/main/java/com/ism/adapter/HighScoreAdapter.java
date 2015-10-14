@@ -1,6 +1,8 @@
 package com.ism.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,11 +49,13 @@ public class HighScoreAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView=inflater.inflate(R.layout.row_high_score,parent,false);
-        TextView raw_txt_highScoreSubject=(TextView)convertView.findViewById(R.id.txt_highScoreSubject);
-        ListView raw_lv_highScoreStudentList=(ListView)convertView.findViewById(R.id.lv_highScoreStudentList);
-        raw_txt_highScoreSubject.setTypeface(new MyTypeFace(context).getRalewayRegular());
-        raw_txt_highScoreSubject.setText(arrayListSubject.get(position).getStrSubjectName());
-        raw_lv_highScoreStudentList.setAdapter(new HighScoreStudentListAdapter(context,arrayListSubject.get(position).getArrayListStudent()));
+        TextView txt_highScoreSubject=(TextView)convertView.findViewById(R.id.txt_highScoreSubject);
+        ListView lv_highScoreStudentList=(ListView)convertView.findViewById(R.id.lv_highScoreStudentList);
+        txt_highScoreSubject.setTypeface(new MyTypeFace(context).getRalewayRegular());
+        txt_highScoreSubject.setText(arrayListSubject.get(position).getStrSubjectName());
+        lv_highScoreStudentList.setAdapter(new HighScoreStudentListAdapter(context, arrayListSubject.get(position).getArrayListStudent()));
+        lv_highScoreStudentList.setDivider(new ColorDrawable(Color.parseColor("#f4f4f4")));
+        lv_highScoreStudentList.setDividerHeight(1);
         return convertView;
     }
 }

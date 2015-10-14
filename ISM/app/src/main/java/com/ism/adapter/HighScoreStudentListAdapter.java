@@ -52,7 +52,7 @@ public class HighScoreStudentListAdapter extends BaseAdapter {
         TextView raw_txt_highScoreMarks = (TextView) convertView.findViewById(R.id.txt_highScoreMarks);
         raw_txt_highScoreStudentName.setTypeface(new MyTypeFace(context).getRalewayRegular());
         raw_txt_highScoreSchoolYearClass.setTypeface(new MyTypeFace(context).getRalewayThin());
-        raw_txt_highScoreMarks.setTypeface(new MyTypeFace(context).getRalewayMedium());
+        raw_txt_highScoreMarks.setTypeface(new MyTypeFace(context).getRalewayBold());
         raw_txt_highScoreStudentName.setText(arrayList.get(position).getStrStudentName());
         raw_txt_highScoreSchoolYearClass.setText(arrayList.get(position).getStrStudentSchoolYearClass());
         raw_txt_highScoreMarks.setText(arrayList.get(position).getStrStudentMarks());

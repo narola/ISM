@@ -79,7 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/d5sp"
-        android:text="Conneions 2015-"
+        android:text="Connexions 2015-"
         android:textColor="@color/bg_tutorial"
         android:textSize="@dimen/d18sp"
 
@@ -94,7 +94,7 @@
         android:paddingRight="@dimen/d5sp"
         android:text="Presentation live chat with Roger Pressman"
         android:textColor="@color/color_black"
-        android:textSize="@dimen/d15sp"
+        android:textSize="@dimen/d18sp"
 
         />
 </LinearLayout>

@@ -30,10 +30,8 @@ import java.util.ArrayList;
 
 /**
  * Created by c161 on --/10/15.
- *
  */
-public class NotesFragment extends Fragment
-{
+public class NotesFragment extends Fragment {
 
     private static final String TAG = NotesFragment.class.getSimpleName();
 
@@ -70,7 +68,7 @@ public class NotesFragment extends Fragment
         ArrayList<NoticeModel> arrayListNotice = new ArrayList<NoticeModel>();
         model = new NoticeModel("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years.");
         arrayListNotice.add(model);
-        model = new NoticeModel("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years.");
+        model = new NoticeModel("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years. Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years.");
         arrayListNotice.add(model);
         lvNotice.setAdapter(new NoticeAdapter(getActivity(), arrayListNotice));
         if (arrayListNotice.size() == 1)
@@ -89,39 +87,34 @@ public class NotesFragment extends Fragment
         //notes_ll_events.addView(lvEvents);
 
         //HIGH SCORE
-
         HighScoreModel highScoreModel;
         HighScoreStudentModel highScoreStudentModel;
-        ArrayList<HighScoreStudentModel> arrayListHighScoreStudentList=new ArrayList<>();
-        highScoreStudentModel=new HighScoreStudentModel("Adam Stanger","St. Xaviers FY CS","500","");
+        ArrayList<HighScoreStudentModel> arrayListHighScoreStudentList = new ArrayList<>();
+        highScoreStudentModel = new HighScoreStudentModel("Adam Stanger", "St. Xaviers FY CS", "500", "");
         arrayListHighScoreStudentList.add(highScoreStudentModel);
-        highScoreStudentModel=new HighScoreStudentModel("Adam Stanger","St. Xaviers FY CS","500","");
+        highScoreStudentModel = new HighScoreStudentModel("Adam Stanger", "St. Xaviers FY CS", "500", "");
         arrayListHighScoreStudentList.add(highScoreStudentModel);
-        ArrayList<HighScoreModel> arrayListHighScore=new ArrayList<>();
-        highScoreModel=new HighScoreModel("Maths",arrayListHighScoreStudentList);
+        ArrayList<HighScoreModel> arrayListHighScore = new ArrayList<>();
+        highScoreModel = new HighScoreModel("Maths", arrayListHighScoreStudentList);
         arrayListHighScore.add(highScoreModel);
-        highScoreModel=new HighScoreModel("Science",arrayListHighScoreStudentList);
+        highScoreModel = new HighScoreModel("Science", arrayListHighScoreStudentList);
         arrayListHighScore.add(highScoreModel);
-        lvHighScore.setAdapter(new HighScoreAdapter(getActivity(),arrayListHighScore));
+        lvHighScore.setAdapter(new HighScoreAdapter(getActivity(), arrayListHighScore));
 
     }
 
     private void initGlobal(View v) {
-        accordionNotes = (AccordionView) v.findViewById(R.id.notes_accordion_view);
+        accordionNotes = (AccordionView) v.findViewById(R.id.accordion_view_chat);
         //NOTICE
-        //  notes_ll_notice = (LinearLayout) v.findViewById(R.id.notes_ll_notice);
         lvNotice = (ListView) v.findViewById(R.id.lv_notice);
         lvNotice.setDivider(new ColorDrawable(Color.parseColor("#f4f4f4")));
         lvNotice.setDividerHeight(2);
         txtViewAll = (TextView) v.findViewById(R.id.txt_viewAll);
-        txtViewAll.setTypeface(new MyTypeFace(getActivity()).getRalewayRegular());
+        txtViewAll.setTypeface(new MyTypeFace(getActivity()).getRalewaySemiBold());
         //EVENTS
-        // notes_ll_events = (LinearLayout) v.findViewById(R.id.notes_ll_events);
         lvEvents = (ListView) v.findViewById(R.id.lv_events);
         lvEvents.setDivider(new ColorDrawable(Color.parseColor("#f4f4f4")));
         lvEvents.setDividerHeight(2);
-//        lvEvents.setText("Hello");
-//        lvEvents.setTextColor(Color.BLACK);
 
         //HIGH SCORE
         lvHighScore = (ListView) v.findViewById(R.id.lv_highScore);

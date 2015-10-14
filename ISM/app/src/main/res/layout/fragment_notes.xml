@@ -6,12 +6,9 @@
     android:background="@color/color_white"
     tools:context="com.ism.fragment.NotesFragment">
 
-    <!--<ScrollView-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="fill_parent" >-->
 
     <com.ism.helper.AccordionView
-        android:id="@+id/notes_accordion_view"
+        android:id="@+id/accordion_view_chat"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="#fff5f5f5"
@@ -54,30 +51,18 @@
         <ListView
             android:id="@+id/lv_highScore"
             android:layout_width="match_parent"
-            android:layout_height="410sp"
+            android:layout_height="450sp"
             android:background="@drawable/bg_highscore_subjectlist"
             />
 
-        <!--<LinearLayout-->
-        <!--android:id="@+id/notes_ll_events"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical">-->
-
-        <ListView
+              <ListView
             android:id="@+id/lv_events"
             android:layout_width="match_parent"
-            android:layout_height="460sp"
+            android:layout_height="480sp"
             android:padding="@dimen/d5sp" />
 
-        <!--</LinearLayout>-->
 
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Item 4" />-->
     </com.ism.helper.AccordionView>
-    <!--</ScrollView>-->
 
 
 </RelativeLayout>
