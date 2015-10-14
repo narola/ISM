@@ -104,7 +104,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
               <ul class="dropdown-menu">
-                <li><a href="#">My Assessment</a></li>
+                <li><a href="/student/my_exam">My Exam</a></li>
                 <li><a href="#">My Scoreboard</a></li>
               </ul>
             </li>
@@ -168,7 +168,9 @@
                             ?>
                         </ul>
                     </li>
-                    <li><a href="#"><span class="icon icon_message"></span><span class="badge message_badge">12</span></a></li>
+                    <li><a href="#">
+                        <span class="icon icon_message"></span>
+                        <span class="badge message_badge" id="my_message_cnt">0</span></a></li>
                     <li><a href="/student/studymates_request"><span class="icon icon_request"></span>
                         <?php 
                             $request_cnt = count_studymate_request($this->session->userdata('user')['id']);
@@ -201,7 +203,7 @@
 
                                }
                                if($key+1 == $current_weekday){
-                                $active = 'class="active search_result_label"';
+                                $active = 'class="active"';
                                }
                                
                                echo '<li><a href="'.$url.'" '.$active.'>'.$value.'</a></li>';
@@ -222,7 +224,7 @@
                 ?>
                  <ul class="personal_menu">
                     <li><a href="/student/home">My Feeds</a></li>
-                    <li><a href="#">My Exams</a></li>
+                    <li><a href="/student/my_exam">My Exams</a></li>
                     <li><a href="/student/studymates">Studymates</a></li>
                     <li><a href="/student/my_activities">My Activities</a></li>
                     <li><a href="/student/notice_board">Notice Board</a></li>

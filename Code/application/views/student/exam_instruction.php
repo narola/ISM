@@ -22,7 +22,13 @@
 							<li>5 You must score 80% to pass this test.</li>
                         </ol>
                         <div class="text-center">
-                        	<button class="btn btn_green">Start Exam <span class="fa fa-chevron-right"></span></button>
+                            <?php
+                                if($exam_status !== 2){
+                                ?>
+                                    <button class="btn btn_green">Start Exam <span class="fa fa-chevron-right"></span></button>
+                                <?php
+                                }
+                            ?>
                         </div>
                     </div>
                 </div>

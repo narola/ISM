@@ -1537,7 +1537,6 @@ class PHPWebSocket {
                 $output['exam_total_active_time'] = $this->dateDiff($examStart, $examEnd);
                 $output['exam_total_deactive_time'] = $this->dateDiff('00:00:00', $examStart) + $this->dateDiff($examEnd, '24:00:00');
 
-
                 // Check current time is between $starttime and $endtime
                 if ($cur > $Estart && $cur < $Eend) {
                     $output['exam_time_to_left'] = $this->dateDiff($examEnd, $c_full_time);

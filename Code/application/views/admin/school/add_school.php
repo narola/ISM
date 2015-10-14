@@ -34,12 +34,12 @@
 
                         <div class="form-group">
                             <label>School Nickname</label>
-                            <input type="text" class="form-control" name="school_nickname" >
+                            <input type="text" class="form-control" name="school_nickname" value="<?php echo set_value("school_nickname"); ?>">
                         </div>
 
                         <div class="form-group">
                             <label>School Code</label>
-                            <input type="school_code" class="form-control" name="school_code"  >
+                            <input type="school_code" class="form-control" name="school_code" value="<?php echo set_value("school_code"); ?>" >
                         </div>
                         <?php echo myform_error('school_code'); ?>
 
@@ -90,9 +90,8 @@
                             <label>School Mode</label>
                             <select class="form-control " name="mode" id="mode">
                                 <option value="day" <?php echo set_select("mode", "day"); ?>>Day</option>
-                                <option value="morning" <?php echo set_select("mode", "morning"); ?>>Morning</option>
-                                <option value="afternoon" <?php echo set_select("grade", "afternoon"); ?>>Afternoon</option>
-                                <option value="evening" <?php echo set_select("grade", "evening"); ?>>Evening</option>
+                                <option value="day/boarding" <?php echo set_select("mode", "day/boarding"); ?>>Day/Boarding</option>
+                                <option value="day/hostel" <?php echo set_select("grade", "day/hostel"); ?>>Day/Hostel</option>
                             </select>
                         </div>
 
@@ -114,7 +113,7 @@
                                     }
                                 } else {
                                     ?>
-                                    <option > No Country</option>
+                                    <option value="0"> No Country</option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -144,15 +143,6 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label>School Status</label>
-                            <select name="school_status" class="form-control">
-                                <option value="active"> Active </option>
-                                <option value="block"> Block </option>
-                                <option value="inactive"> Inactive </option>
-                            </select>
-                        </div>
-
                     </div>
 
                     <div class="box_footer">
@@ -171,14 +161,6 @@
 
 <script type="text/javascript">
 
-    $(function () {
-        $("#datepicker").datepicker({
-            changeMonth: true,
-            changeYear: true,
-            yearRange: '1990:' + new Date().getFullYear(),
-            dateFormat: 'yy-mm-dd'
-        });
-    });
 
     function get_states(country_id) {
         $.ajax({
