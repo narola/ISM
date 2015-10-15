@@ -117,7 +117,8 @@ class Subject extends ADMIN_Controller {
             $path = "uploads/subjects";
           
             if(!empty($_FILES['subject_image']['name'])){
-                $name = '_dev_'.$insertid.$_FILES['subject_image']['name'];                
+                $ext 	= pathinfo($_FILES['subject_image']['name'], PATHINFO_EXTENSION);
+                $name = '_dev_'.$insertid.date('ymdhis').'.'.$ext;          
 				$config['upload_path']	 	= $path;
 				$config['allowed_types'] 	= 'gif|jpg|png';
 				$config['max_size']  		= '1000000000';	
@@ -128,8 +129,7 @@ class Subject extends ADMIN_Controller {
 						$file_upload_error = strip_tags($this->upload->display_errors(),'');
 						$file_required_error = "You did not select a file to upload.";
 						if($file_upload_error !== $file_required_error){
-							$error_count++;
-							$this->session->set_flashdata('error_profile', $file_upload_error);
+							$error_count++;							
 						}						
 					}
 					else{                       
@@ -137,8 +137,12 @@ class Subject extends ADMIN_Controller {
                             update(TBL_SUBJECTS,$insertid,$data_subject_image);                        
 					}					
 				}   
-              
-			$this->session->set_flashdata('success', 'Record is Successfully created.');
+              if($error_count > 0){
+                  $message  = 'Record is Successfully created but please upload valid file.';
+              }else{
+                  $message = 'Record is Successfully created.';
+              }
+			$this->session->set_flashdata('success',$message );
 			redirect('admin/subject/lists');
 		}
     }
@@ -185,16 +189,20 @@ class Subject extends ADMIN_Controller {
 						$file_upload_error = strip_tags($this->upload->display_errors(),'');
 						$file_required_error = "You did not select a file to upload.";
 						if($file_upload_error !== $file_required_error){
-							$error_count++;
-							$this->session->set_flashdata('error_profile', $file_upload_error);
-						}						
+							$error_count++;							
+						}	
 					}
 					else{             
                             $data_subject_image = array('subject_image'=>'subjects/'.$name);
                             update(TBL_SUBJECTS,$id,$data_subject_image);                        
 					}
-		    }           
-			$this->session->set_flashdata('success', 'Record is Successfully updated.');
+		    }          
+            if($error_count > 0){
+                  $message  = 'Record is Successfully updated but please upload valid file.';
+              }else{
+                  $message = 'Record is Successfully created.';
+              }
+			$this->session->set_flashdata('success', $message);
 			redirect('admin/subject/lists');
         }       
     }
