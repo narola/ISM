@@ -627,11 +627,12 @@ class User_account extends CI_Controller {
     	update(TBL_AUTO_GENERATED_CREDENTIAL,array('username'=>$username),array('is_my_school'=>1));
 		$message = $this->input->post('message');
 		$email_id = $this->input->post('request_email');
+		$name = $this->input->post('request_name');
 		$configs = mail_config();
         $this->load->library('email', $configs);
         $this->email->initialize($configs);
-        $this->email->from('kap.narola@narolainfotech.com', 'Kamlesh Pokiya');
-        $this->email->to($email_id);
+        $this->email->from($email_id,$name );
+        $this->email->to('kap.narola@narolainfotech.com');
         // $encoded_mail = urlencode($token);
         $msg = '';
         $msg .='<html>';
@@ -655,9 +656,9 @@ class User_account extends CI_Controller {
                             	<tr>
                                 	<td style="width:160px;">
                                     	Hello,<br><br>
-                                        <b style="font-size:small;">Email : '.$email_id.'</b><br>
-                                        <b style="font-size:small;">Username : '.$username.'</b><br>
-                                        <p>'.$message.'</p>
+                                        <b style="font-size:x-small;">Email : '.$email_id.'</b><br>
+                                        <b style="font-size:x-small;">Username : '.$username.'</b><br>
+                                        <pre>'.$message.'</pre>
                                     </td>
                                 </tr>
                             </table>
@@ -677,6 +678,8 @@ class User_account extends CI_Controller {
         $this->email->subject('ISM - Change School Detail');
         $this->email->message($msg);
         $this->email->send();
-        $this->email->print_debugger();	
+        $this->email->print_debugger();
+        $this->session->set_flashdata('success', 'Your request submitted successfully.');
+        redirect('student/user_account');
     }
 }

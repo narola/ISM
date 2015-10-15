@@ -320,9 +320,19 @@
                     <div class="modal-body">
                         <form class="form-horizontal" action="" onsubmit="return send_email();" method="post">
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">Name :</label>
+                                <div class="col-sm-7">
+                                    <input type="text" required class="form-control" id="request_name" name="request_name" placeholder="Name">
+                                    <br>
+                                    <div class="alert alert-danger" style="display:none" id="err3">
+                                        Name field is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">Email</label>
                                 <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="email" name="request_email" placeholder="Email">
+                                    <input type="email" required class="form-control" id="request_email" name="request_email" placeholder="Email">
                                     <br>
                                     <div class="alert alert-danger" style="display:none" id="err1">
                                         Email field is required
@@ -332,7 +342,7 @@
                             <div class="form-group">
                                 <label for="inputPassword" class="col-sm-2 control-label">Message</label>
                                 <div class="col-sm-10">
-                                   <textarea class="form-control" placeholder="Write school information..." name="message" id="message" rows="7"></textarea>
+                                   <textarea required class="form-control" placeholder="Write school information..." name="message" id="message" rows="7"></textarea>
                                    <br>
                                     <div class="alert alert-danger" style="display:none" id="err2">
                                         Message field is required
@@ -393,23 +403,45 @@
             format: 'yyyy-mm-dd'
         });
 
-        function send_email(){
-            email = $('#email').val();
+        $('#request_name').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z\\b ]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str) || e.keyCode === 9) {
+                return true;
+            }
+
+            e.preventDefault();
+            return false;
+        });
+       function send_email(){
+
+            email = $('#request_email').val();
             message = $('#message').val();
+            name = $('#request_name').val();
        
-            if(email == '' && message == ''){
+            if(email == '' && message == '' && name == ''){
                 $('#err2').show();
                 $('#err1').show();   
+                $('#err3').show();   
             }
-            else if(message == '' && email != ''){
+            else if(message == '' && email != '' && name != ''){
                 $('#err2').show();
                 $('#err1').hide();
+                $('#err3').hide();
             }
-            else if(email == '' && message != ''){
+            else if(email == '' && message != '' && name != ''){
                 $('#err1').show();
                 $('#err2').hide();
+                $('#err3').hide();
+            }
+            else if(name == '' && email != '' && message !=''){
+                $('#err3').show();
+                $('#err2').hide();
+                $('#err1').hide();   
+                
             }
             else {
+          
                 return true;
             } 
             return false;
