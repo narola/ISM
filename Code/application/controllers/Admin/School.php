@@ -176,6 +176,9 @@ class School extends ADMIN_Controller {
         $this->form_validation->set_rules('school_email_id', 'Email', 'trim|required|valid_email|is_unique[schools.school_email_id]');
         $this->form_validation->set_rules('contact_1', 'School contact no-1', 'trim|required|regex_match[/[0-9-]$/]', array('regex_match' => 'The {field} should have only numbers and - special character only.'));
         $this->form_validation->set_rules('contact_2', 'School contact no-2', 'trim|regex_match[/[0-9-]$/]', array('regex_match' => 'The {field} should have only numbers and - special character only.'));
+        $this->form_validation->set_rules('country', 'Country', 'trim|required');
+        $this->form_validation->set_rules('state', 'State', 'trim|required');
+        $this->form_validation->set_rules('city', 'City', 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
 
@@ -255,6 +258,9 @@ class School extends ADMIN_Controller {
         $this->form_validation->set_rules('school_email_id', 'Email', $email_rule);
         $this->form_validation->set_rules('contact_1', 'School contact no-1', 'trim|required|regex_match[/[0-9-]$/]', array('regex_match' => 'The {field} should have only numbers and - special character only.'));
         $this->form_validation->set_rules('contact_2', 'School contact no-2', 'trim|regex_match[/[0-9-]$/]', array('regex_match' => 'The {field} should have only numbers and - special character only.'));
+        $this->form_validation->set_rules('country', 'Country', 'trim|required');
+        $this->form_validation->set_rules('state', 'State', 'trim|required');
+        $this->form_validation->set_rules('city', 'City', 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
 
