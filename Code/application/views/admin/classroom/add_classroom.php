@@ -28,13 +28,13 @@
 
                         <div class="form-group">
                             <label>Class name</label>
-                            <input type="text" class="form-control" name="class_name" value="<?php echo set_value("class_name"); ?>">
+                            <input type="text" class="form-control" maxlength="15" name="class_name" value="<?php echo set_value("class_name"); ?>">
                         </div>
                         <?php echo myform_error('class_name'); ?>
 
                         <div class="form-group">
                             <label>Class Nickname</label>
-                            <input type="text" class="form-control" name="class_nickname" value="<?php echo set_value("class_nickname"); ?>">
+                            <input type="text" class="form-control" name="class_nickname" maxlength="10" value="<?php echo set_value("class_nickname"); ?>">
                         </div>
 
                         <div class="form-group ">
@@ -59,7 +59,7 @@
 
                     <div class="box_footer">
                         <button type="submit" class="btn btn_green">Save</button>
-                        <button class="btn btn_black">Cancel</button>
+                        <a href="<?php echo base_url() . $prev_url; ?>" class='btn btn_black'>Cancel</a>
                     </div>
 
                 </form>   

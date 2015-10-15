@@ -81,6 +81,7 @@
                             <input type="text" class="form-control" name="contact_2" 
                                    value="<?php echo set_value("school_contact_no2") == false ? $school["school_contact_no2"] : set_value("school_contact_no2"); ?>">
                         </div>
+                        <?php echo myform_error('contact_2'); ?>
 
                         <div class="form-group">
                             <label>School Grade</label>
@@ -189,7 +190,7 @@
 
                     <div class="box_footer">
                         <button type="submit" class="btn btn_green">Save</button>
-                        <button class="btn btn_black">Cancel</button>
+                        <a href="<?php echo base_url() . $prev_url; ?>" class='btn btn_black'>Cancel</a>
                     </div>
 
                 </form>   

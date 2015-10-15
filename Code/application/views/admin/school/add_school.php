@@ -39,7 +39,7 @@
 
                         <div class="form-group">
                             <label>School Code</label>
-                            <input type="school_code" class="form-control" name="school_code" value="<?php echo set_value("school_code"); ?>" >
+                            <input type="text" class="form-control" name="school_code" value="<?php echo set_value("school_code"); ?>" >
                         </div>
                         <?php echo myform_error('school_code'); ?>
 
@@ -74,6 +74,7 @@
                             <label>Contact Number-2</label>
                             <input type="text" class="form-control" name="contact_2" value="<?php echo set_value("contact_2"); ?>">
                         </div>
+                        <?php echo myform_error('contact_2'); ?>
 
                         <div class="form-group">
                             <label>School Grade</label>
@@ -147,7 +148,7 @@
 
                     <div class="box_footer">
                         <button type="submit" class="btn btn_green">Save</button>
-                        <button class="btn btn_black">Cancel</button>
+                        <a href="<?php echo base_url() . $prev_url; ?>" class='btn btn_black'>Cancel</a>
                     </div>
 
                 </form>   
