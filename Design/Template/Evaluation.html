@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>ISM | Scoreboard</title>
+    <title>ISM | Evaluation</title>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1"><title>Login</title>
@@ -123,95 +123,52 @@
             <!--main-->
             <div class="col-sm-7 main main2">
             	<!--breadcrumb-->
-                <div class="row page_header">
-                	<div class="col-sm-12">
-                    	<fieldset>
-                          <legend>ISM Mock Test</legend>                          
-                          <h4 class="txt_green">Organic Chemistry Test Evaluation</h4>
-                        </fieldset>
+                <div class="row page_header exam_evalue_header">
+                	<!--header -left-->
+                    <div class="col-md-6 col-sm-12">
+                    	<div class="row">
+                        	<div class="col-sm-12 text-center">
+                            	<h3 class="txt_green text-uppercase"><strong>Organic Chemistry Part - I</strong></h3>
+                            </div>
+                            <div class="col-sm-6"><p class="txt_grey"><i>Duration : 120 mins</i></p></div>
+                            <div class="col-sm-6 text-right"><p class="txt_grey"><i>Exam Type : ISM</i></p></div>
+                        </div>
+					</div>
+                    <!--header -right-->
+                    <div class="col-md-6 col-sm-12 mark_scored">
+                    	<div class="row">
+                        	<div class="col-sm-6 text-center">
+								<h4>Mark Scored : <span class="txt_green">68%</span></h4>
+                            </div>
+                            <div class="col-sm-6 text-right no-padding">
+                            	<div><p>Correct Answers : <span class="txt_blue">20</span></p></div>
+                                <div><p>Incorrect Answers : <span class="txt_brightred">10</span></p></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!--//breadcrumb-->
-                <!--score-->
-                <div class="row">
-                	<div class="col-sm-12 text-center">
-                    	<h1 class="big_score">Your Score Is : <span>68%</span></h1>
-                    </div>
-                    
-                </div>
-                <div class="row evaluation">
-                	<div class="col-sm-12 col-md-6">
+                <!--answers-->
+                <div class="row answers">
+                	<div class="col-md-6 col-sm-12">
                     	<div class="box">
-                        	<div>
-                            	<p>Correnct Answers :  <span class="txt_green">16</span></p>
+                        	<div class="box_header">
+                            	<h5 class="txt_green">Question: 1</h5>
                             </div>
-                            <div>
-                            	<p>Incorrenct Answers :  <span class="txt_brightred">04</span></p>
-                            </div>
-                            <div>
-                            	<p>Unattempted Questions :  <span class="txt_yellow">05</span></p>
-                            </div>
-                            <div>
-                            	<p>Total Time Spent :  <span class="txt_grey"><span class="fa fa-clock-o"></span>25 min</span></p>
-                            </div>
-                            <div >
-                            	<button class="btn btn-block btn_green">Click Here to View Answers</button> 
-                            </div>
-                            <div class="score_publish">
-                            	<span>Make My Score Public?</span><span><button class="btn btn_green">Yes</button><button class="btn btn_black_normal">No</button></span>
-                                <div class="clearfix"></div>
+                            <div class="box_body">
+                            	<p class="ques">When parallel meet which effect occurs?</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6">
+                    <div class="col-md-6 col-sm-12">
                     	<div class="box">
-                        	<!--1-->
-                            <div>
-                            	<p>Organic Chemistry - I</p>
-                                <div class="progress">
-                                  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                    <span class="sr-only">80% Complete (success)</span>
-                                  </div>
-                                </div>
-                            </div>
-                            <!--2-->
-                            <div>
-                            	<p>Organic Chemistry - II</p>
-                                <div class="progress">
-                                  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
-                                    <span class="sr-only">75% Complete (success)</span>
-                                  </div>
-                                </div>
-                            </div>
-                            <!--3-->
-                            <div>
-                            	<p>ELements</p>
-                                <div class="progress">
-                                  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                    <span class="sr-only">60% Complete (success)</span>
-                                  </div>
-                                </div>
-                            </div>
-                            <!--4-->
-                            <div>
-                            	<p>Nolecules</p>
-                                <div class="progress">
-                                  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" style="width: 68%">
-                                    <span class="sr-only">68% Complete (success)</span>
-                                  </div>
-                                </div>
-                            </div>
-                            <div >
-                            	<a href="Evaluation.html" class="btn btn-block btn_black_normal">View Evaluation</a> 
-                            </div>
                         </div>
                     </div>
                 </div>
-                <!--//score-->
-                
+                <!--//answers-->
             </div>
             <!--//main-->
-            <!--side right-->
+             <!--side right-->
             <div class="sidebar_right_container sidebar_right_container2 mCustomScrollbar" data-mcs-theme="minimal-dark"><!--scrollbar" id="style-3-->
             	
                 <!--high score board-->
@@ -408,8 +365,8 @@
             </div>
             <!--//side right-->
         </div>
-	</div>
-    <!--//body-->
+    </div>
+   	<!--//body-->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery-1.11.3.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

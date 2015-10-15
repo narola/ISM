@@ -5,12 +5,15 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1"><title>Login</title>
+    <!--switch-->
+    <link href="../css/bootstrap-switch.css" rel="stylesheet">
 	<link href="../css/bootstrap.min.css" rel="stylesheet">
     <!--custom css-->
     <link href="../css/ism_style.css" rel="stylesheet">
     <link href="../css/ism_admin_style.css" rel="stylesheet">
     <link href="../css/responsive.css" rel="stylesheet">
     <link href="../css/icon.css" rel="stylesheet">
+    
     <!--scroll-->
     <link href="../css/jquery.mCustomScrollbar.css" rel="stylesheet">
     <!--fonts-->
@@ -184,11 +187,13 @@
                         </div>   
                         <div class="form-group col-sm-12 col-md-6 col-lg-4 btn_switch no-padding">
                         	<label>Exam For : </label>
-                            <div class="switch_btns">
+                            <input type="checkbox" name="subject" checked data-handle-width="100">
+                            <!--<div class="switch_btns">
                             	<button class="btn btn_red">Subject</button>                                
                             	<button class="btn no_btn">Topic</button>
-                            </div>
+                            </div>-->
                         </div> 
+                        
                         <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
                             <select class="form-control">
                                 <option>Academic Year</option>
@@ -479,6 +484,9 @@
 					jQuery(this).removeClass('no_btn');					
 				};
 			});
+			$("[name='subject']").bootstrapSwitch();
+			$('.bootstrap-switch-handle-on').text('Subject');
+			$('.bootstrap-switch-handle-off').text('Topic');
         });
 	</script>
     
@@ -490,7 +498,7 @@
 		// instance, using default configuration.
 		CKEDITOR.replace( 'editor2' );
 		<!--ckeditor-->
-			CKEDITOR.editorConfig = function( config ) {
+			/*CKEDITOR.editorConfig = function( config ) {
 			config.toolbarGroups = [
 				{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
 				{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
@@ -509,7 +517,9 @@
 			];
 		
 			config.removeButtons = 'Source,Save,Templates,Cut,Undo,Find,SelectAll,Scayt,Form,NewPage,Preview,Print,PasteText,Paste,Copy,Redo,Replace,PasteFromWord,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,BidiLtr,BidiRtl,Language,Anchor,Unlink,Link,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Format,Styles,TextColor,BGColor,ShowBlocks,Maximize,About';
-		};
+		};*/
 	</script>
+    <!--switch-->
+    <script src="../js/bootstrap-switch.js"></script>
 </body>
 </html>

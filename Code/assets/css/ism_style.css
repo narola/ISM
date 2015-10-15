@@ -3143,6 +3143,7 @@ ul.ques_numbers {
 }
 .evaluation .btn-block.btn_green, .evaluation .btn-block.btn_black_normal {
 	font-weight: 500;
+	text-transform:none;
     font-size: 16px;
     padding: 10px;
 }
@@ -3169,4 +3170,38 @@ ul.ques_numbers {
 	background-color:#1bc4a3;
 	box-shadow: 0px 5px 5px 0px rgba(255,255,255,0.3) inset;
 	-webkit-box-shadow: 0px 5px 5px 0px rgba(255,255,255,0.3) inset;
+}
+.mark_scored{
+	font-weight:600;
+}
+.mark_scored h4{
+	text-transform:none;
+	margin: 32px 0;
+    font-size: 18px;
+}
+.mark_scored span{
+	font-family:Arial, Helvetica, sans-serif;
+}
+.mark_scored .col-sm-6:first-child{
+	border-left:1px solid rgba(0,0,0,0.1);
+	border-right:1px solid rgba(0,0,0,0.1);
+}
+.mark_scored .col-sm-6:last-child>div {
+    padding: 9px 15px;
+}
+.mark_scored .col-sm-6:last-child>div:first-child{
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.mark_scored p{
+	margin:0;
+	font-size:16px;
+}
+.answers .box{
+	margin-top:15px;
+}
+.answers>.col-md-6:first-child{
+	padding-right:7px;
+}
+.answers>.col-md-6:last-child{
+	padding-left:7px;
 }

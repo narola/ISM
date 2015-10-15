@@ -1038,7 +1038,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 	background-color:#ff6b6b;
 }
 .admin_controls .dob:after{
-    background-position: 23px 242px;
+    background-position: -477px -159px;
 }
 .admin_controls .squaredThree label, 
 .admin_controls .circleThree label{
@@ -1631,4 +1631,27 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .tag_container input[type=text]{
 	border: none;
     outline: none;
+}
+.bootstrap-switch{
+    margin-left: 16px;
+	border:1px solid rgba(0,0,0,0.2);
+}
+.bootstrap-switch:focus, .bootstrap-switch.bootstrap-switch-focused{
+	border-color: rgba(255,107,107,0.2);
+    box-shadow: inset 0px 1px 1px rgba(0,0,0,.075),0 0 8px rgba(255,107,107,0.2);
+}
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary, 
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary{
+	background-color:#ff6b6b;
+}
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default,
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default{
+	background-color:#ff6b6b;
+	color:#fff;	
+}
+.bootstrap-switch .bootstrap-switch-label{
+	background-color:#ddd;
+	/*background-color: #ddd;
+    box-shadow: inset 0px 3px 16px -2px rgba(0,0,0,0.2);*/
+    background-image: url(../images/add_exam_bg.png);
 }
