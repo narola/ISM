@@ -16,25 +16,37 @@
                     	<!--box-->
                         <div class="box">
                             <div class="box_header filter">
+                                <form method="post">
                                 <div class="form-group">
-                                    <select class="form-control">
-                                        <option>Course</option>
+                                    <select class="form-control" name="course_id" onchange="get_classes(this.value)" id="course_id">
+                                        <option value=''>Course</option>
+                                        <?php if(!empty($courses)){ 
+                                            foreach ($courses as $course) { ?>
+                                                <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>        
+                                        <?php } 
+                                    }?>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <select class="form-control">
-                                        <option>Subject</option>
+                                    <select class="form-control" name="classroom_id" onchange="get_subjects(this.value)" id="classroom_id">
+                                        <option value=''>Classroom</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <select class="form-control">
-                                        <option>Topic</option>
+                                    <select class="form-control" name="subject_id" onchange="get_topics(this.value)" id="subject_id">
+                                        <option value=''>Subject</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" name="topic_id" id="topic_id" >
+                                        <option value=''>Topic</option>
                                     </select>
                                 </div>
                                 <div class="form-group no_effect search_link text-right">
-                                    <a href="#" class="icon icon_search"></a>
+                                    <button class="btn btn-link icon icon_search" type="submit"></button>
                                 </div>
                                 <div class="clearfix"></div>
+                            </form>
                             </div>
                             <!--box_body-->
                             <div class="box_body">
@@ -195,3 +207,37 @@
                 <!--main content-->                
 			</div>
             <!--//main-->
+            <script type="text/javascript">
+            function get_classes(course_id){
+                $.ajax({
+                   url:'<?php echo base_url()."admin/question/ajax_get_classrooms"; ?>',
+                   type:'POST',
+                   data:{course_id:course_id},
+                   success:function(data){
+                      $("#classroom_id").html(data);
+                   }
+                });
+          }
+
+          function get_subjects(classroom_id){
+                $.ajax({
+                   url:'<?php echo base_url()."admin/question/ajax_get_subjects"; ?>',
+                   type:'POST',
+                   data:{classroom_id:classroom_id},
+                   success:function(data){
+                      $("#subject_id").html(data);
+                   }
+                });
+          }
+
+          function get_topics(subject_id){
+                $.ajax({
+                   url:'<?php echo base_url()."admin/question/ajax_get_topics"; ?>',
+                   type:'POST',
+                   data:{subject_id:subject_id},
+                   success:function(data){
+                      $("#topic_id").html(data);
+                   }
+                });
+          }
+            </script>

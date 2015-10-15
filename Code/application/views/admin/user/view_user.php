@@ -162,7 +162,12 @@
                                      class="icon icon_blockuser" data-toggle="tooltip" data-placement="bottom" title="Block"></a>  
                                   <?php } ?>
 
+
                                   <a href="#" class="icon icon_mail" data-toggle="tooltip" data-placement="bottom" title="Mail"></a>
+
+
+                                  <!-- <a href="#" class="icon icon_mail" data-toggle="tooltip" data-placement="bottom"  
+                                  data-toggle="tooltip" data-placement="bottom" title="Mail"></a> -->
 
                                   <a href="<?php echo base_url().'admin/user/send_message/'.$user['id']; ?>" class="icon icon_chat" 
                                     data-toggle="tooltip" data-placement="bottom" title="Message"></a>
@@ -215,7 +220,6 @@
             
         });
     } 
-
 
     function filter_data(){
     	

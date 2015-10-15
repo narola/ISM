@@ -53,6 +53,21 @@ class Common extends CI_Controller {
         echo $new_str;
     }
 
+    public function ajax_get_classrooms() {
+
+        $course_id = $this->input->post('course_id');
+        $all_classrooms = select(TBL_CLASSROOMS, FALSE, array('where' => array('course_id' => $course_id)), array('order_by' => 'class_name'));
+        $new_str = '';
+
+        $new_str .= '<option selected disabled > Select Classroom </option>';
+        if (!empty($all_classrooms)) {
+            foreach ($all_classrooms as $class) {
+                $new_str.='<option value="' . $class['id'] . '">' . $class['class_name'] . '</option>';
+            }
+        }
+        echo $new_str;
+    }
+
     public function template_notice() {
 
         $notice_id = $this->input->post('notice_id');
