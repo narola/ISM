@@ -17,22 +17,33 @@ class Question extends ADMIN_Controller {
 	public function set(){
 
 		if($_POST){
-			p($_POST,true);
+			
 			$course_id = $this->input->post('course_id');
 			$classroom_id = $this->input->post('classroom_id');
 			$subject_id = $this->input->post('subject_id');
 			$tutorial_topic_id = $this->input->post('topic_id');
-
 			
+			$where = array();
+
+
+
+			if($classroom_id !='' && $subject_id=='' && $tutorial_topic_id == ''){
+				$where = array(TBL_QUESTIONS.'.classroom_id'=>$classroom_id);
+			}else if($classroom_id !='' && $subject_id != '' && $tutorial_topic_id == ''){
+				$where = array(TBL_QUESTIONS.'.subject_id'=>$subject_id);
+			}else if($classroom_id !='' && $subject_id != '' && $tutorial_topic_id != ''){
+				$where = array(TBL_TUTORIAL_GROUP_QUESTION.'tutorial_topic_id'=>$tutorial_topic_id);
+			}
+
 			$questions = select(TBL_QUESTIONS,
-								TBL_QUESTIONS.'.question_text',
-								TBL_SUBJECTS.'.subject_name',
+								TBL_QUESTIONS.'.question_text,'.
+								TBL_SUBJECTS.'.subject_name,'.
 								TBL_USERS.'.full_name',
-			array('where'=>array('tutorial_topic_id'=>$tutorial_topic_id)),
+			array('where'=>$where),
 				array(
 					'join'=>array(
 						array(
-		    				'table' => TBL_QUESTIONS,
+		    				'table' => TBL_TUTORIAL_GROUP_QUESTION,
 		    				'condition' => TBL_QUESTIONS.'.id = '.TBL_TUTORIAL_GROUP_QUESTION.'.question_id',
 							),
 						array(
@@ -43,12 +54,11 @@ class Question extends ADMIN_Controller {
 		    				'table' => TBL_USERS,
 		    				'condition' => TBL_USERS.'.id = '.TBL_QUESTIONS.'.question_creator_id',
 							),
-						)
+						),
 					)
 				);
-			p($questions,true);
-
-
+			
+			$this->data['questions'] = $questions;
 
 		}
 
@@ -71,7 +81,7 @@ class Question extends ADMIN_Controller {
 		
 		$new_str = '';
 		
-		$new_str .= '<option selected disabled >Classroom</option>';
+		$new_str .= '<option selected value="">Classroom</option>';
 		if(!empty($classrooms)){
 			foreach($classrooms as $classroom){
 				$new_str.='<option value="'.$classroom['id'].'">'.$classroom['class_name'].'</option>';
@@ -102,7 +112,7 @@ class Question extends ADMIN_Controller {
 		
 		$new_str = '';
 		
-		$new_str .= '<option selected disabled >Subject</option>';
+		$new_str .= '<option selected value="">Subject</option>';
 		if(!empty($subjects)){
 			foreach($subjects as $subject){
 				$new_str.='<option value="'.$subject['subject_id'].'">'.$subject['subject_name'].'</option>';
@@ -125,7 +135,7 @@ class Question extends ADMIN_Controller {
 		
 		$new_str = '';
 		
-		$new_str .= '<option selected disabled >Topic</option>';
+		$new_str .= '<option selected value="">Topic</option>';
 		if(!empty($topics)){
 			foreach($topics as $topic){
 				$new_str.='<option value="'.$topic['id'].'">'.$topic['topic_name'].'</option>';

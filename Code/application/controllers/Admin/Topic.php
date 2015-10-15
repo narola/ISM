@@ -266,14 +266,12 @@ class Topic extends ADMIN_Controller {
 				);
 				$where = array('where'=>array('tut_course.subject_id'=>$subject['subject_id'],
 					));
-				$course = select(TBL_COURSE_SUBJECT.' tut_course',
-				'tut_course.course_id',
+				$classroom = select(TBL_COURSE_SUBJECT.' tut_course',
+				'tut_course.classroom_id',
 					$where, array('single'=>true)
 				);
 
-				$where = array('where'=>array('tut_course.course_id'=>$course['course_id']
-												// 'tut_course.subject_id !='=>$subject['subject_id']
-					));
+				$where = array('where'=>array('tut_course.classroom_id'=>$classroom['classroom_id']));
 
 				$options = array('order_by'=>'RAND()','single'=>true,'limit'=>1,
 					'join' =>  array(

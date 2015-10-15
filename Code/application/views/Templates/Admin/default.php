@@ -75,7 +75,7 @@ $url = uri_string();
                         <li><a href="#"><span class="icon icon_menu_home"></span> Home</a></li>
                         <li class="
                         <?php
-                        if (in_array($url, array('admin/exam', 'admin/exam/add'))) {
+                        if (in_array($url, array('admin/exam', 'admin/exam/add','admin/question/set'))) {
                             echo 'active';
                         }
                         ?>
