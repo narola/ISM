@@ -20,6 +20,29 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link rel="icon" type="image/png" href="assets/images/graduate.png" sizes="32x32" />
+    <script>
+        function send_email(){
+            email = $('#email').val();
+            message = $('#message').val();
+       
+            if(email == '' && message == ''){
+                $('#err2').show();
+                $('#err1').show();   
+            }
+            else if(message == '' && email != ''){
+                $('#err2').show();
+                $('#err1').hide();
+            }
+            else if(email == '' && message != ''){
+                $('#err1').show();
+                $('#err2').hide();
+            }
+            else {
+                return true;
+            } 
+            return false;
+        }
+    </script>
 </head>
 	
 <body class="login_background">
@@ -59,13 +82,58 @@
                     </form>
                     <div class="login_links">
                     	<a href="login/forgot_password">Forgot Password</a>
-                        <p>Do Not Have Credencials, <a href="#">Click Here</a></p>
+                        <p>Do Not Have Credencials, <a href="#sample" data-toggle="modal">Click Here</a></p>
                     </div>
                 </div>
                 <div class="clearfix"></div>
             </div>
         </div>
     </div>
+    <!-- Modal -->
+        <div class="modal fade" id="sample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header notice_header text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">REQUEST FORM</h4>
+                        <small><?php echo date("d F Y",strtotime(date('Y-m-d')));?></small>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" action="" onsubmit="return send_email();" method="post">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" id="email" name="request_email" placeholder="Email">
+                                    <br>
+                                    <div class="alert alert-danger" style="display:none" id="err1">
+                                        Email field is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword" class="col-sm-2 control-label">Message</label>
+                                <div class="col-sm-10">
+                                   <textarea class="form-control" placeholder="Write school information..." name="message" id="message" rows="7"></textarea>
+                                   <br>
+                                    <div class="alert alert-danger" style="display:none" id="err2">
+                                        Message field is required
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <input type="hidden" name="send_request" value="change">
+                                    <input type="submit" class="btn btn_black_normal" value="SEND REQUEST">
+                                </div>
+                            </div>
+                        </form>
+                        <h4 class="notice_by">ISM Admin<span></span></h4>
+                        <div class="clearfix"></div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    <!-- /.modal -->
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="assets/js/jquery-1.11.3.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

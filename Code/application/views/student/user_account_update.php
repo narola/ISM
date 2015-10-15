@@ -315,7 +315,7 @@
                     <div class="modal-header notice_header text-center">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">REQUEST FORM</h4>
-                        <small>Sep 7, 2015</small>
+                        <small><?php echo date("d F Y",strtotime(date('Y-m-d')));?></small>
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" action="" onsubmit="return send_email();" method="post">
@@ -332,7 +332,7 @@
                             <div class="form-group">
                                 <label for="inputPassword" class="col-sm-2 control-label">Message</label>
                                 <div class="col-sm-10">
-                                   <textarea class="form-control" placeholder="Write school information..." name="message" id="message"></textarea>
+                                   <textarea class="form-control" placeholder="Write school information..." name="message" id="message" rows="7"></textarea>
                                    <br>
                                     <div class="alert alert-danger" style="display:none" id="err2">
                                         Message field is required
@@ -346,7 +346,7 @@
                                 </div>
                             </div>
                         </form>
-                        <h4 class="notice_by">Gilbert Addoh<span>ISM Admin</span></h4>
+                        <h4 class="notice_by">ISM Admin<span></span></h4>
                         <div class="clearfix"></div>
                   </div>
                 </div>

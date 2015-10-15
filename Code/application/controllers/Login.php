@@ -387,6 +387,11 @@ class Login extends CI_Controller {
             }
         }
     }  
+    
+    /*-----Do not have credentials----*/
+    public function request_for_credentials(){
+
+    }
 
     /*----Load welcome page---*/
     public function welcome()
