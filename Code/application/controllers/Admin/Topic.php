@@ -303,10 +303,10 @@ class Topic extends ADMIN_Controller {
 
 				$options = array('single'=>true);
 				$course_info = select(TBL_STUDENT_ACADEMIC_INFO.' tut_stud_info',
-				'tut_stud_info.course_id',
+				'tut_stud_info.classroom_id',
 					$where, $options
 				);
-				$where = array('where'=>array('tut_course.course_id'=>$course_info['course_id']
+				$where = array('where'=>array('tut_course.classroom_id'=>$course_info['classroom_id']
 					));
 
 				$options = array('order_by'=>'RAND()','single'=>true,'limit'=>1,
