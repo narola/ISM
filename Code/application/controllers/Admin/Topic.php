@@ -488,4 +488,9 @@ class Topic extends ADMIN_Controller {
 		exit; 
 	}
 
+	public function next_phase(){
+		$this->data['page_title'] = 'Coming Soon';
+		$this->template->load('admin/default','admin/next_phase', $this->data);
+	}
+
 }
