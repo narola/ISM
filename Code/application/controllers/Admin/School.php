@@ -169,6 +169,9 @@ class School extends ADMIN_Controller {
         $this->data['countries'] = select(TBL_COUNTRIES, "", array('order_by' => 'country_name'));
 
         $this->form_validation->set_rules('schoolname', 'School Name', 'trim|required|is_unique[schools.school_name]');
+        $this->form_validation->set_rules('contact_1', 'School contact no-1', 'trim|required|regex_match[/[0-9-]$/]', array('regex_match' => 'The {field} should have only numbers and - special character only.'));
+        $this->form_validation->set_rules('contact_2', 'School contact no-2', 'trim|regex_match[/[0-9-]$/]', array('regex_match' => 'The {field} should have only numbers and - special character only.'));
+        $this->form_validation->set_rules('school_code', 'School Code', 'trim|numeric');
         $this->form_validation->set_rules('school_email_id', 'Email', 'trim|valid_email|is_unique[schools.school_email_id]');
 
         if ($this->form_validation->run() == FALSE) {
@@ -227,6 +230,7 @@ class School extends ADMIN_Controller {
             $schoolname = $this->input->post('schoolname');
             $school_email_id = $this->input->post('school_email_id');
 
+
             if ($this->data['school']['school_name'] !== $schoolname) {
                 $school_rule = 'trim|required|is_unique[schools.school_name]';
             } else {
@@ -243,6 +247,9 @@ class School extends ADMIN_Controller {
             $email_rule = 'trim|valid_email';
         }
 
+        $this->form_validation->set_rules('contact_1', 'School contact no-1', 'trim|required|regex_match[/[0-9-]$/]', array('regex_match' => 'The {field} should have only numbers and - special character only.'));
+        $this->form_validation->set_rules('contact_2', 'School contact no-2', 'trim|regex_match[/[0-9-]$/]', array('regex_match' => 'The {field} should have only numbers and - special character only.'));
+        $this->form_validation->set_rules('school_code', 'School Code', 'trim|numeric');
         $this->form_validation->set_rules('schoolname', 'School Name', $school_rule);
         $this->form_validation->set_rules('school_email_id', 'Email', $email_rule);
 
