@@ -16,4 +16,7 @@
 	<string name="legend">Legend:</string>
 	<string name="end_test">End test</string>
 	<string name="current_question">Current Question</string>
+	<string name="answered">Answered</string>
+	<string name="not_answered">Not Answered</string>
+	<string name="skipped">Skipped</string>
 </resources>

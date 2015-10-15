@@ -52,34 +52,28 @@ public class ExamFragment extends Fragment {
 
 	private RadioButton rbOptions[];
 
+	private ExamListener listenerExam;
 	private QuestionPaletteAdapter adpQuestionPalette;
 	private ArrayList<QuestionObjective> arrListQuestions;
 
-	private static final String ARG_PARAM1 = "param1";
-	private String mParam1;
 	private int intAssessmentNo;
 	private String strSubject;
 	private int intCurrentQuestionIndex = 0;
 	private boolean isOptionsLoading = false;
 
-	public static ExamFragment newInstance(String param1) {
+	public interface ExamListener {
+		public void questionsFetched(ArrayList<QuestionObjective> questions, ExamFragment examFragment);
+		public void onQuestionSet(int position);
+	}
+
+	public static ExamFragment newInstance(ExamListener examListener) {
 		ExamFragment fragment = new ExamFragment();
-		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		fragment.setArguments(args);
+		fragment.setListenerExam(examListener);
 		return fragment;
 	}
 
 	public ExamFragment() {
 		// Required empty public constructor
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-		}
 	}
 
 	@Override
@@ -121,6 +115,9 @@ public class ExamFragment extends Fragment {
 		wvInstructions.getSettings().setJavaScriptEnabled(true);
 
 		arrListQuestions = QuestionObjective.getQuestions();
+		if (listenerExam != null) {
+			listenerExam.questionsFetched(arrListQuestions, this);
+		}
 
 		btnStartTest.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -135,8 +132,9 @@ public class ExamFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				arrListQuestions.get(intCurrentQuestionIndex).setIsReviewLater(true);
+				arrListQuestions.get(intCurrentQuestionIndex).setIsSkipped(false);
 				if (intCurrentQuestionIndex < arrListQuestions.size() - 1) {
-					loadQuestion(++intCurrentQuestionIndex);
+					setQuestion(++intCurrentQuestionIndex);
 				} else {
 					loadFirstFlaggedQuestion();
 				}
@@ -153,17 +151,21 @@ public class ExamFragment extends Fragment {
 		btnSkip.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intentTest = new Intent(getActivity(), TestActivity.class);
-				startActivity(intentTest);
+				arrListQuestions.get(intCurrentQuestionIndex).setIsSkipped(true);
+				arrListQuestions.get(intCurrentQuestionIndex).setIsReviewLater(false);
+				if (intCurrentQuestionIndex < arrListQuestions.size() - 1) {
+					setQuestion(++intCurrentQuestionIndex);
+				} else {
+					loadFirstFlaggedQuestion();
+				}
 			}
 		});
 
 		btnSaveNNext.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (arrListQuestions.get(intCurrentQuestionIndex).isAnswered()
-						&& intCurrentQuestionIndex < arrListQuestions.size() - 1) {
-					loadQuestion(++intCurrentQuestionIndex);
+				if (intCurrentQuestionIndex < arrListQuestions.size() - 1) {
+					setQuestion(++intCurrentQuestionIndex);
 				} else if (intCurrentQuestionIndex == arrListQuestions.size() - 1) {
 					loadFirstFlaggedQuestion();
 				}
@@ -217,7 +219,7 @@ public class ExamFragment extends Fragment {
 	private void loadFirstFlaggedQuestion() {
 		for (int i = 0; i < arrListQuestions.size(); i++) {
 			if (arrListQuestions.get(i).isReviewLater()) {
-				loadQuestion(i);
+				setQuestion(i);
 				break;
 			}
 		}
@@ -226,10 +228,10 @@ public class ExamFragment extends Fragment {
 	private void startTest() {
 		txtHeader.setText("01:00");
 		txtInstruct.setText(R.string.choose_answer);
-		loadQuestion(intCurrentQuestionIndex);
+		setQuestion(intCurrentQuestionIndex);
 	}
 
-	private void loadQuestion(int questionIndex) {
+	public void setQuestion(int questionIndex) {
 		try {
 			intCurrentQuestionIndex = questionIndex;
 			txtQuestion.setText(arrListQuestions.get(intCurrentQuestionIndex).getQuestion());
@@ -251,9 +253,14 @@ public class ExamFragment extends Fragment {
 			} else {
 				btnSaveNNext.setText(R.string.save_n_next);
 			}
+			listenerExam.onQuestionSet(questionIndex);
 		} catch (Exception e) {
-			Log.e(TAG, "loadQuestion Exception : " + e.toString());
+			Log.e(TAG, "setQuestion Exception : " + e.toString());
 		}
+	}
+
+	public void setListenerExam(ExamListener examListener) {
+		listenerExam = examListener;
 	}
 
 }

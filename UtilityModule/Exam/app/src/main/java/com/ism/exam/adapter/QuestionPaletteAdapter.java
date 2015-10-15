@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.ism.exam.R;
+import com.ism.exam.fragment.ExamFragment;
 import com.ism.exam.model.QuestionObjective;
 
 import java.util.ArrayList;
@@ -21,14 +22,22 @@ public class QuestionPaletteAdapter extends BaseAdapter {
 
 	private static final String TAG = QuestionPaletteAdapter.class.getSimpleName();
 
+	private ExamFragment fragExam;
 	private ArrayList<QuestionObjective> arrListQuestions;
 	private Context context;
 	private LayoutInflater inflater;
+	private int intCurrentPosition;
 
-	public QuestionPaletteAdapter(Context context, ArrayList<QuestionObjective> arrListQuestions) {
+	public QuestionPaletteAdapter(Context context, ArrayList<QuestionObjective> arrListQuestions, ExamFragment examFragment) {
 		this.context = context;
 		this.arrListQuestions = arrListQuestions;
+		this.fragExam = examFragment;
 		inflater = LayoutInflater.from(this.context);
+	}
+
+	public void setQuestion(int position) {
+		intCurrentPosition = position;
+		notifyDataSetChanged();
 	}
 
 	@Override
@@ -47,7 +56,7 @@ public class QuestionPaletteAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.grid_item_question_palette, parent, false);
@@ -60,10 +69,11 @@ public class QuestionPaletteAdapter extends BaseAdapter {
 
 		try {
 			holder.txtQuestionNo.setText(position + 1 + "");
-			if (position == 4) {
+			if (position == intCurrentPosition) {
 				holder.txtQuestionNo.setBackgroundResource(R.drawable.ic_current);
 			} else if (arrListQuestions.get(position).isReviewLater()) {
 				holder.txtQuestionNo.setBackgroundResource(R.drawable.ic_review);
+				holder.txtQuestionNo.setText("");
 			} else if (arrListQuestions.get(position).isSkipped()) {
 				holder.txtQuestionNo.setBackgroundResource(R.drawable.ic_skip);
 			} else if (arrListQuestions.get(position).isAnswered()) {
@@ -71,6 +81,13 @@ public class QuestionPaletteAdapter extends BaseAdapter {
 			} else {
 				holder.txtQuestionNo.setBackgroundResource(R.drawable.ic_not_answered);
 			}
+
+			convertView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					fragExam.setQuestion(position);
+				}
+			});
 		} catch (Exception e) {
 			Log.e(TAG, "getView Exception : " + e.toString());
 		}

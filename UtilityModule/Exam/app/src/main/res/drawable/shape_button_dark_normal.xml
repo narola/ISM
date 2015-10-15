@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+	<!-- "background shadow" -->
+	<item>
+		<shape android:shape="rectangle" >
+			<solid android:color="#000000" />
+			<corners android:radius="@dimen/button_dark_corner_radius" />
+		</shape>
+	</item>
+	<!-- background color -->
+	<item
+		android:bottom="@dimen/button_dark_border_width"
+		android:left="@dimen/button_dark_border_width"
+		android:right="@dimen/button_dark_border_width"
+		android:top="@dimen/button_dark_border_width">
+		<shape android:shape="rectangle" >
+			<solid android:color="@color/bg_app_dark" />
+			<corners android:radius="@dimen/button_dark_corner_radius" />
+		</shape>
+	</item>
+	<!-- over top shadow -->
+	<item
+		android:bottom="@dimen/button_dark_border_width"
+		android:left="@dimen/button_dark_border_width"
+		android:right="@dimen/button_dark_border_width"
+		android:top="@dimen/button_dark_border_width">
+		<shape android:shape="rectangle" >
+			<gradient
+				android:angle="270"
+				android:startColor="@color/button_dark_start"
+				android:centerColor="@color/button_dark_end"
+				android:endColor="@color/button_dark_end"
+				android:centerY="0.15"
+				android:type="linear" />
+			<corners android:radius="@dimen/button_dark_corner_radius" />
+		</shape>
+	</item>
+</layer-list>

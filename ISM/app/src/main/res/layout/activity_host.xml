@@ -166,6 +166,7 @@
 		        android:padding="10dp"
 		        android:inputType="text"
 		        android:imeOptions="actionSearch"
+                android:textColorHint="@color/color_graylight"
 		        android:hint="@string/hint_search"
 		        android:textColor="@color/colorPrimary"
 		        android:visibility="gone"/>
