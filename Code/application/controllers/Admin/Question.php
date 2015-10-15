@@ -16,6 +16,7 @@ class Question extends ADMIN_Controller {
 	*/
 	public function set(){
 
+			$where = array();
 		if($_POST){
 			
 			$course_id = $this->input->post('course_id');
@@ -23,7 +24,6 @@ class Question extends ADMIN_Controller {
 			$subject_id = $this->input->post('subject_id');
 			$tutorial_topic_id = $this->input->post('topic_id');
 			
-			$where = array();
 
 
 
@@ -35,7 +35,9 @@ class Question extends ADMIN_Controller {
 				$where = array(TBL_TUTORIAL_GROUP_QUESTION.'.tutorial_topic_id'=>$tutorial_topic_id);
 			}
 
+		}
 			$questions = select(TBL_QUESTIONS,
+								TBL_QUESTIONS.'.id,'.
 								TBL_QUESTIONS.'.question_text,'.
 								TBL_SUBJECTS.'.subject_name,'.
 								TBL_USERS.'.full_name',
@@ -47,8 +49,12 @@ class Question extends ADMIN_Controller {
 		    				'condition' => TBL_QUESTIONS.'.id = '.TBL_TUTORIAL_GROUP_QUESTION.'.question_id',
 							),
 						array(
+		    				'table' => TBL_TUTORIAL_TOPIC,
+		    				'condition' => TBL_TUTORIAL_TOPIC.'.id = '.TBL_TUTORIAL_GROUP_QUESTION.'.tutorial_topic_id',
+							),
+						array(
 		    				'table' => TBL_SUBJECTS,
-		    				'condition' => TBL_SUBJECTS.'.id = '.TBL_QUESTIONS.'.subject_id',
+		    				'condition' => TBL_SUBJECTS.'.id = '.TBL_TUTORIAL_TOPIC.'.subject_id',
 							),
 						array(
 		    				'table' => TBL_USERS,
@@ -57,15 +63,26 @@ class Question extends ADMIN_Controller {
 						),
 					)
 				);
-			p($questions,true);
+
+			foreach ($questions as $key=>$question) {
+				$choices = select(TBL_ANSWER_CHOICES,
+								TBL_ANSWER_CHOICES.'.id,'.
+								TBL_ANSWER_CHOICES.'.choice_text,',
+								// TBL_ANSWER_CHOICES.'.question_id',
+								array('where'=>array(TBL_ANSWER_CHOICES.'.question_id'=>$question['id'])),
+								null
+								);
+
+				$questions[$key]['choices']=array_column($choices,'choice_text');
+											}
+			// p($questions,true);
 			$this->data['questions'] = $questions;
 
 
 
-		}
-
 		$this->data['page_title'] = 'Set Question';
 		$where = array('where'=>array('is_delete'=>0));
+
 		$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null);
 		$this->template->load('admin/default','admin/question/set',$this->data);
 	}
