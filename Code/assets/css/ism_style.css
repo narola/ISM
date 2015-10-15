@@ -2209,9 +2209,9 @@ ul.tut_weekdays {
 	font-size:13px;
 }
 .notice_description p {
-    border-bottom: 1px solid rgba(0,0,0,0.07);
-    padding-bottom: 15px;
-	margin-bottom:15px;
+    /*border-bottom: 1px solid rgba(0,0,0,0.07);
+    padding-bottom: 15px;*/
+	padding-bottom:10px;
 }
 .label_name {
     background-color: rgba(27,196,163,0.1);
@@ -2225,7 +2225,7 @@ ul.tut_weekdays {
 .more_tagged, .more_tagged:hover{
 	color:#1bc4a3;
 }
-.notice_content .fa-angle-double-down{
+.notice_content .fa-angle-double-down, .notice_content .fa-angle-double-up{
 	font-size: 28px;
     color: #666;
     display: inline-block;
@@ -3246,4 +3246,12 @@ ul.ques_numbers {
 }
 .ques_num:last-child .box_body{
 	border-bottom:none;
+}
+.notice_description {
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    margin: 0 15px 15px;
+    padding: 0 0 15px;
+    width: auto;
+    height: 70px;
+	overflow:hidden;
 }
