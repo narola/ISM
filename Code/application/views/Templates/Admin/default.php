@@ -96,7 +96,9 @@ $url = uri_string();
                         <?php
                         if (in_array($url, array('admin/user', 'admin/topic/allocate',
                                     'admin/topic/lists', 'admin/school', 'admin/school/add',
-                                    'admin/classroom', 'admin/classroom/add'))) {
+                                    'admin/classroom', 'admin/classroom/add',
+                                    'admin/subject/lists', 'admin/subject/add_subject',
+                                ))) {
                             echo 'active';
                         } else {
 
@@ -104,7 +106,6 @@ $url = uri_string();
                                 echo 'active';
                             }
                         }
-
                         ?> dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 <span class="icon icon_menu_manage"></span> Manage
@@ -113,7 +114,7 @@ $url = uri_string();
                                 <li><a href="#">Book</a></li>
                                 <li><a href="#">Auther</a></li>
                                 <li><a href="admin/school">School</a></li>                                
-                               <li class="dropdown sub_menu">
+                                <li class="dropdown sub_menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Subjects</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="admin/subject/lists">List of Subjects</a></li>
@@ -217,9 +218,9 @@ $url = uri_string();
                             <a href="#"><span class="icon icon_banner"></span>Banners</a>
                         </li>                   
                         <li class="<?php
-                        if (in_array($url, array('admin/notice', 'admin/notice/index'))) {
-                            echo 'active';
-                        }
+                            if (in_array($url, array('admin/notice', 'admin/notice/index'))) {
+                                echo 'active';
+                            }
                         ?>">
                             <a href="admin/notice"><span class="icon icon_notice"></span>Notice Board</a>
                         </li>
@@ -433,32 +434,34 @@ $url = uri_string();
 
 
         <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-        
+
 
         <script type="text/javascript">
 
             $(function () {
-              $('[data-toggle="popover"]').popover();
+                $('[data-toggle="popover"]').popover();
             });
 
-            jQuery(document).ready(function(){
-            jQuery('.exam_year .icon_option_dark').click(function(){
-                if(jQuery(this).parent().children('.popover').css('display')=='block'){
-                    jQuery(this).parent().children('.popover').css('display','none');
-                }
-                else{
-                    jQuery(this).parent().children('.popover').css('display','block');
-                };
+            jQuery(document).ready(function () {
+                jQuery('.exam_year .icon_option_dark').click(function () {
+                    if (jQuery(this).parent().children('.popover').css('display') == 'block') {
+                        jQuery(this).parent().children('.popover').css('display', 'none');
+                    }
+                    else {
+                        jQuery(this).parent().children('.popover').css('display', 'block');
+                    }
+                    ;
+                });
+                jQuery('.switch_btns .btn').click(function () {
+                    if (jQuery(this).hasClass('no_btn')) {
+                        jQuery('.switch_btns .btn').removeClass('btn_red');
+                        jQuery('.switch_btns .btn').addClass('no_btn');
+                        jQuery(this).addClass('btn_red');
+                        jQuery(this).removeClass('no_btn');
+                    }
+                    ;
+                });
             });
-            jQuery('.switch_btns .btn').click(function(){
-                if(jQuery(this).hasClass('no_btn')){
-                    jQuery('.switch_btns .btn').removeClass('btn_red');                 
-                    jQuery('.switch_btns .btn').addClass('no_btn');
-                    jQuery(this).addClass('btn_red');
-                    jQuery(this).removeClass('no_btn');                 
-                };
-            });
-        });
 
             $('#birthdate input').datepicker({
                 format: 'yyyy-mm-dd'
