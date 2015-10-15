@@ -28,18 +28,21 @@ class Question extends ADMIN_Controller {
 
 
 			if($classroom_id !='' && $subject_id=='' && $tutorial_topic_id == ''){
-				$where = array(TBL_QUESTIONS.'.classroom_id'=>$classroom_id);
+				$where['where'][TBL_QUESTIONS.'.classroom_id']=$classroom_id;
 			}else if($classroom_id !='' && $subject_id != '' && $tutorial_topic_id == ''){
-				$where = array(TBL_QUESTIONS.'.subject_id'=>$subject_id);
+				$where['where'][TBL_QUESTIONS.'.classroom_id']=$classroom_id;
+				$where['where'][TBL_QUESTIONS.'.subject_id']=$subject_id;
 			}else if($classroom_id !='' && $subject_id != '' && $tutorial_topic_id != ''){
-				$where = array(TBL_TUTORIAL_GROUP_QUESTION.'.tutorial_topic_id'=>$tutorial_topic_id);
+				$where['where'][TBL_QUESTIONS.'.classroom_id']=$classroom_id;
+				$where['where'][TBL_QUESTIONS.'.subject_id']=$subject_id;
+				$where['where'][TBL_TUTORIAL_GROUP_QUESTION.'.tutorial_topic_id']=$tutorial_topic_id;
 			}
-
+			p($where);
 			$questions = select(TBL_QUESTIONS,
 								TBL_QUESTIONS.'.question_text,'.
 								TBL_SUBJECTS.'.subject_name,'.
 								TBL_USERS.'.full_name',
-			array('where'=>$where),
+			$where,
 				array(
 					'join'=>array(
 						array(
@@ -53,14 +56,11 @@ class Question extends ADMIN_Controller {
 						array(
 		    				'table' => TBL_USERS,
 		    				'condition' => TBL_USERS.'.id = '.TBL_QUESTIONS.'.question_creator_id',
-							),
-						array(
-		    				'table' => TBL_ANSWER_CHOICES,
-		    				'condition' => TBL_ANSWER_CHOICES.'.question_id = '.TBL_QUESTIONS.'.id',
-							),
-						),
+							)
+						)
 					)
 				);
+			qry();
 			p($questions,true);
 			$this->data['questions'] = $questions;
 
