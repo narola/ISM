@@ -32,7 +32,7 @@ class Question extends ADMIN_Controller {
 			}else if($classroom_id !='' && $subject_id != '' && $tutorial_topic_id == ''){
 				$where = array(TBL_QUESTIONS.'.subject_id'=>$subject_id);
 			}else if($classroom_id !='' && $subject_id != '' && $tutorial_topic_id != ''){
-				$where = array(TBL_TUTORIAL_GROUP_QUESTION.'tutorial_topic_id'=>$tutorial_topic_id);
+				$where = array(TBL_TUTORIAL_GROUP_QUESTION.'.tutorial_topic_id'=>$tutorial_topic_id);
 			}
 
 			$questions = select(TBL_QUESTIONS,
@@ -54,11 +54,17 @@ class Question extends ADMIN_Controller {
 		    				'table' => TBL_USERS,
 		    				'condition' => TBL_USERS.'.id = '.TBL_QUESTIONS.'.question_creator_id',
 							),
+						array(
+		    				'table' => TBL_ANSWER_CHOICES,
+		    				'condition' => TBL_ANSWER_CHOICES.'.question_id = '.TBL_QUESTIONS.'.id',
+							),
 						),
 					)
 				);
-			
+			p($questions,true);
 			$this->data['questions'] = $questions;
+
+
 
 		}
 

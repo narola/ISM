@@ -282,7 +282,7 @@ class Topic extends ADMIN_Controller {
 								)
 							);
 
-				$random_subject = select(TBL_COURSE_SUBJECT.' tut_course',
+			$random_subject = select(TBL_COURSE_SUBJECT.' tut_course',
 				'tut_course.subject_id',
 					$where, $options
 				);
