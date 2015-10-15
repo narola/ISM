@@ -28,18 +28,18 @@
 
                         <div class="form-group">
                             <label>School name</label>
-                            <input type="text" class="form-control" name="schoolname" value="<?php echo set_value("schoolname"); ?>">
+                            <input type="text" class="form-control" maxlength="100" name="schoolname" value="<?php echo set_value("schoolname"); ?>">
                         </div>
                         <?php echo myform_error('schoolname'); ?>
 
                         <div class="form-group">
                             <label>School Nickname</label>
-                            <input type="text" class="form-control" name="school_nickname" value="<?php echo set_value("school_nickname"); ?>">
+                            <input type="text" class="form-control" maxlength="20"  name="school_nickname" value="<?php echo set_value("school_nickname"); ?>">
                         </div>
 
                         <div class="form-group">
                             <label>School Code</label>
-                            <input type="text" class="form-control" name="school_code" value="<?php echo set_value("school_code"); ?>" >
+                            <input type="text" class="form-control" maxlength="10"  name="school_code" value="<?php echo set_value("school_code"); ?>" >
                         </div>
                         <?php echo myform_error('school_code'); ?>
 
@@ -54,25 +54,25 @@
 
                         <div class="form-group">
                             <label>Principal Name</label>
-                            <input type="text" class="form-control" name="principal_name" value="<?php echo set_value("principal_name"); ?>">
+                            <input type="text" class="form-control" maxlength="50"  name="principal_name" value="<?php echo set_value("principal_name"); ?>">
                         </div>
                         <?php echo myform_error('principal_name'); ?>
 
                         <div class="form-group">
                             <label>School Email Id</label>
-                            <input type="text" class="form-control" name="school_email_id" value="<?php echo set_value("school_email_id"); ?>">
+                            <input type="text" class="form-control" maxlength="100" name="school_email_id" value="<?php echo set_value("school_email_id"); ?>">
                         </div>
                         <?php echo myform_error('school_email_id'); ?>
 
                         <div class="form-group">
                             <label>Contact Number-1</label>
-                            <input type="text" class="form-control" name="contact_1" value="<?php echo set_value("contact_1"); ?>">
+                            <input type="text" class="form-control" maxlength="20" name="contact_1" value="<?php echo set_value("contact_1"); ?>">
                         </div>
                         <?php echo myform_error('contact_1'); ?>
 
                         <div class="form-group">
                             <label>Contact Number-2</label>
-                            <input type="text" class="form-control" name="contact_2" value="<?php echo set_value("contact_2"); ?>">
+                            <input type="text" class="form-control" maxlength="20" name="contact_2" value="<?php echo set_value("contact_2"); ?>">
                         </div>
                         <?php echo myform_error('contact_2'); ?>
 
@@ -98,7 +98,7 @@
 
                         <div class="form-group">
                             <label>Address</label>
-                            <input type="text" class="form-control" name="address" value="<?php echo set_value("address"); ?>">
+                            <input type="text" class="form-control" maxlength="100" name="address" value="<?php echo set_value("address"); ?>">
                         </div>
 
                         <!-- <div class="row filter"> -->

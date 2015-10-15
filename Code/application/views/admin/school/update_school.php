@@ -28,20 +28,20 @@
 
                         <div class="form-group">
                             <label>School name</label>
-                            <input type="text" class="form-control" name="schoolname" 
+                            <input type="text" class="form-control" name="schoolname" maxlength="100" 
                                    value="<?php echo set_value("school_name") == false ? $school["school_name"] : set_value("school_name"); ?>">
                         </div>
                         <?php echo myform_error('schoolname'); ?>
 
                         <div class="form-group">
                             <label>School Nickname</label>
-                            <input type="text" class="form-control" name="school_nickname" 
+                            <input type="text" class="form-control" name="school_nickname" maxlength="20" 
                                    value="<?php echo set_value("school_nickname") == false ? $school["school_nickname"] : set_value("school_nickname"); ?>">
                         </div>
 
                         <div class="form-group">
                             <label>School Code</label>
-                            <input type="school_code" class="form-control" name="school_code" 
+                            <input type="school_code" class="form-control" name="school_code" maxlength="10" 
                                    value="<?php echo set_value("school_code") == false ? $school["school_code"] : set_value("school_code"); ?>">
                         </div>
                         <?php echo myform_error('school_code'); ?>
@@ -57,28 +57,28 @@
 
                         <div class="form-group">
                             <label>Principal Name</label>
-                            <input type="text" class="form-control" name="principal_name" 
+                            <input type="text" class="form-control" name="principal_name" maxlength="50" 
                                    value="<?php echo set_value("principal_name") == false ? $school["principal_name"] : set_value("principal_name"); ?>">
                         </div>
                         <?php echo myform_error('principal_name'); ?>
 
                         <div class="form-group">
                             <label>School Email Id</label>
-                            <input type="text" class="form-control" name="school_email_id" 
+                            <input type="text" class="form-control" name="school_email_id" maxlength="100" 
                                    value="<?php echo set_value("school_email_id") == false ? $school["school_email_id"] : set_value("school_email_id"); ?>">
                         </div>
                         <?php echo myform_error('school_email_id'); ?>
 
                         <div class="form-group">
                             <label>Contact Number-1</label>
-                            <input type="text" class="form-control" name="contact_1" 
+                            <input type="text" class="form-control" name="contact_1" maxlength="20" 
                                    value="<?php echo set_value("school_contact_no1") == false ? $school["school_contact_no1"] : set_value("school_contact_no1"); ?>">
                         </div>
                         <?php echo myform_error('contact_1'); ?>
 
                         <div class="form-group">
                             <label>Contact Number-2</label>
-                            <input type="text" class="form-control" name="contact_2" 
+                            <input type="text" class="form-control" name="contact_2" maxlength="20" 
                                    value="<?php echo set_value("school_contact_no2") == false ? $school["school_contact_no2"] : set_value("school_contact_no2"); ?>">
                         </div>
                         <?php echo myform_error('contact_2'); ?>
