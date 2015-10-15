@@ -117,7 +117,8 @@
                                 if (!empty($countries)) {
                                     foreach ($countries as $country) {
                                         ?> 
-                                        <option value="<?php echo $country['id']; ?>"> <?php echo $country['country_name']; ?></option>
+                                        <option value="<?php echo $country['id']; ?>" <?php echo set_select("country", $country['id']); ?>>
+                                            <?php echo $country['country_name']; ?></option>
                                         <?php
                                     }
                                 } else {
@@ -138,7 +139,8 @@
 
                                     foreach ($states as $state) {
                                         ?> 
-                                        <option value="<?php echo $state['id']; ?>"> <?php echo $state['state_name']; ?></option>
+                                        <option value="<?php echo $state['id']; ?>" <?php echo set_select("state", $state['id']); ?>>
+                                            <?php echo $state['state_name']; ?></option>
                                         <?php
                                     }
                                 } else {
@@ -151,13 +153,14 @@
 
                         <div class="form-group">
                             <label>City</label>
-                            <select class="form-control" name="city" id="city_id">
+                            <select class="form-control" name="city" id="city_id" onchange="get_districts(this.value)">
                                 <option disabled>Select City</option>
                                 <?php
                                 if (!empty($cities)) {
                                     foreach ($cities as $city) {
                                         ?> 
-                                        <option value="<?php echo $city['id']; ?>"> <?php echo $city['city_name']; ?></option>
+                                        <option value="<?php echo $city['id']; ?>" <?php echo set_select("city", $city['id']); ?>>
+                                            <?php echo $city['city_name']; ?></option>
                                         <?php
                                     }
                                 } else {
@@ -176,7 +179,8 @@
                                 if (!empty($districts)) {
                                     foreach ($districts as $district) {
                                         ?> 
-                                        <option value="<?php echo $district['id']; ?>"> <?php echo $district['district_name']; ?></option>
+                                        <option value="<?php echo $district['id']; ?>" <?php echo set_select("district", $district['id']); ?>>
+                                            <?php echo $district['district_name']; ?></option>
                                         <?php
                                     }
                                 } else {
@@ -190,6 +194,7 @@
 
                     <div class="box_footer">
                         <button type="submit" class="btn btn_green">Save</button>
+                        <button type="button" class="btn btn_red" onClick="window.location.reload();">Reset</button>
                         <a href="<?php echo base_url() . $prev_url; ?>" class='btn btn_black'>Cancel</a>
                     </div>
 
