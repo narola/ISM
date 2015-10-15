@@ -3205,3 +3205,45 @@ ul.ques_numbers {
 .answers>.col-md-6:last-child{
 	padding-left:7px;
 }
+.answers .box_header{
+	background-color:#fafafa;
+	border-bottom:1px solid rgba(0,0,0,0.07); 
+}
+.answers .box_header h5{
+	margin:0;
+	text-transform:uppercase;
+	font-weight:600;	
+}
+.answers .box_header h5>span{
+	font-family:Arial, Helvetica, sans-serif;
+}
+.answers .box_body{
+	padding:15px;
+	border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+.answers .ques{
+	padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    font-weight: 500;
+    margin-bottom: 12px;
+	font-size:16px;
+}
+.answers p {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+.answers .box_body h5{
+	padding-top:10px;
+	border-top:1px solid rgba(0,0,0,0.07);
+	font-weight:600;
+}
+.no_solution:after{
+	content:"No Solution";
+	font-weight:700;
+	color:#CCC;
+	text-align: center;
+    display: block;
+}
+.ques_num:last-child .box_body{
+	border-bottom:none;
+}
