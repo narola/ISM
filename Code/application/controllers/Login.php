@@ -14,6 +14,16 @@ class Login extends CI_Controller {
     /* --For Login */
 
     public function index() {
+
+        /*--- send request for credentials ---*/
+        $request_change = $this->input->post('send_request');
+        if($request_change == 'change')
+        {
+            // $this->request_for_credentials();
+
+        }
+
+
         $remember_me = get_cookie('Remember_me');
         /* 	If Remember_key Cookie exists in browser then it wil fetch data using it's value and 
           set sessin data and force login student */
@@ -390,7 +400,62 @@ class Login extends CI_Controller {
     
     /*-----Do not have credentials----*/
     public function request_for_credentials(){
-
+        
+        $message = $this->input->post('message');
+        $email_id = $this->input->post('request_email');
+        $name = $this->input->post('request_name');
+        $configs = mail_config();
+        $this->load->library('email', $configs);
+        $this->email->initialize($configs);
+        $this->email->from($email_id, $name);
+        $this->email->to('kap.narola@narolainfotech.com');
+        // $encoded_mail = urlencode($token);
+        $msg = '';
+        $msg .='<html>';
+        $msg .='<head><title></title></head>';
+        $msg .='<body style="background-color:#f5f5f5; background: repeating-linear-gradient(90deg, #eee, #fff 8px); color:#333; font-family:Tahoma, Geneva, sans-serif;">
+            <table align="center" style="width: 600px;">
+                <tr>
+                    <td style="text-align:center; padding: 35px 0;"><img alt="ISM" height="70px" src="../images/logo.png"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <table style="padding: 15px; width:100%;background-color: #fff;border: 1px solid rgba(0,0,0,0.1);">
+                    <tr>
+                        <td style="text-align: center;border-bottom: 1px solid rgba(0,0,0,0.1);">
+                            <h4 style="color: #1bc4a3; margin:10px 0;">Request for credentials</h4>
+                        </td>
+                    </tr>                   
+                    <tr>
+                        <td style="border-bottom: 1px solid rgba(0,0,0,0.1); padding: 20px 0;">
+                            <table width="100%">
+                                <tr>
+                                    <td style="width:160px;">
+                                        Hello,<br><br>
+                                        <b style="font-size:x-small;">Email : '.$email_id.'</b><br>
+                                        <pre>'.$message.'</pre>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <td>
+                            <span style="font-size:x-small;">©2015 ISM. All Rights Reserved.</span>   
+                        </td>
+                    </tr>
+                </table>
+                    </td>
+                </tr>
+            </table>
+        </body>';
+        $msg .='</html>';
+        $this->email->subject('ISM - Request For Credentials');
+        $this->email->message($msg);
+        $this->email->send();
+        $this->email->print_debugger();
+        $this->session->set_flashdata('error', 'Your request submitted successfully.');
+        redirect('login');
     }
 
     /*----Load welcome page---*/

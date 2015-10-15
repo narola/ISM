@@ -25,9 +25,8 @@
     <![endif]-->
     <link rel="icon" type="image/png" href="../images/graduate_admin.png" sizes="32x32" />
 </head>
-
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top navbar_admin">
+	    <nav class="navbar navbar-default navbar-fixed-top navbar_admin">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -144,141 +143,15 @@
             </div>
             <!--//side left-->
             <!--main-->
-            <div class="col-sm-7 main main2 general_cred">
-            	<!--breadcrumb-->
-           		<div class="row page_header">
-                	<div class="col-sm-12">
-                    	<ol class="breadcrumb">
-                          <li><a href="#">Assessment</a></li>
-                          <li><a href="#">Exams</a></li>
-                          <li class="active">Add Exam</li>
-                        </ol>
-                    </div>
+            <div class="col-sm-7 main main2 phase_2 text-center">
+            	<div class="logo_holder">
+                	<img src="../images/logo_login_admin.png">
                 </div>
-                <!--//breadcrumb-->
-               
-                <!--exam box-->	
-                <div class="box add_exam_form">
-                    <div class="box_header">
-                        <h3><span class="icon icon_info"></span>Exam Details</h3>
-                    </div>
-                    <div class="box_body">	
-                        <div class="form-group col-sm-12 col-md-6 col-lg-8 padding_r15_">
-                            <input type="text" class="form-control" placeholder="Exam Name">
-                        </div>                     
-                        <div class="form-group col-sm-12 col-md-6 col-lg-4 select no-padding">
-                            <select class="form-control">
-                                <option>Course Name</option>
-                                <option>MS</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-sm-12 col-md-6 col-lg-4 select padding_r15_">
-                            <select class="form-control">
-                                <option>Subject Name</option>
-                                <option>Chemistry</option>
-                                <option>Physics</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-sm-12 col-md-6 col-lg-4 select padding_r15_">
-                            <select class="form-control">
-                                <option>Passing Percentage</option>
-                                <option>80%</option>
-                            </select>
-                        </div>   
-                        <div class="form-group col-sm-12 col-md-6 col-lg-4 btn_switch no-padding">
-                        	<label>Exam For : </label>
-                            <input type="checkbox" name="subject" checked data-handle-width="100">
-                            <!--<div class="switch_btns">
-                            	<button class="btn btn_red">Subject</button>                                
-                            	<button class="btn no_btn">Topic</button>
-                            </div>-->
-                        </div> 
-                        
-                        <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
-                            <select class="form-control">
-                                <option>Academic Year</option>
-                                <option>2015</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
-                            <select class="form-control">
-                                <option>Exam Type</option>
-                                <option>Subject</option>
-                                <option>Topic</option>
-                            </select>
-                        </div>                    
-                        <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
-                            <select class="form-control">
-                                <option>Exam Duration (MIN)</option>
-                                <option>30 min</option>
-                                <option>1 Hour</option>
-                            </select>
-                        </div>  
-                        <div class="form-group col-sm-12 col-md-6 col-lg-3 select no-padding">
-                            <select class="form-control">
-                                <option>Attemp Count</option>
-                                <option>1</option>
-                                <option>2</option>
-                            </select>
-                        </div>  
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="box_header">
-                        <h3><span class="icon icon_info"></span>Exam Schedule</h3>
-                    </div>
-                    <div class="box_body admin_controls">	
-                        <div class="form-group dob col-sm-6 padding_r15_">
-                            <input type="text" class="form-control" placeholder="DD-MM-YYYY">
-                            <label><input type="checkbox">Notify Student Via SMS</label>
-                        </div>
-                        <div class="form-group dob col-sm-6 no-padding">
-                            <input type="text" class="form-control" placeholder="DD-MM-YYYY">
-                            <label><input type="checkbox">Notify Student Via SMS</label>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="box_header">
-                        <h3><span class="icon icon_info"></span>Exam Instruction</h3>
-                    </div>
-                    <div class="box_body">
-                    	<div class="form-group col-md-6 col-lg-8 padding_r15_">
-                        	<textarea name="editor2" id="editor2" class="form-control"></textarea>
-                    	</div>
-                        <div class="form-group col-md-6 col-lg-4 option_radio">
-                        	<div>
-                            	<label>Declare Results</label>
-                                <div class="check_div">
-                                    <label><input type="radio" name="1"> Yes</label>
-                                    <label><input type="radio" name="1"> No</label>
-								</div>
-                            </div>
-                            <div>
-                            	<label>Negative Marking</label>
-                                <div class="check_div">
-                                    <label><input type="radio" name="2"> Yes</label>
-                                    <label><input type="radio" name="2"> No</label>
-								</div>
-                            </div>
-                            <div>
-                            	<label>Random Questions</label>
-                                <div class="check_div">
-                                    <label><input type="radio" name="3"> Yes</label>
-                                    <label><input type="radio" name="3"> No</label>
-								</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 text-center btn_group">
-                        	<button class="btn btn_green">Save</button>
-                        	<button class="btn btn_red">Set Question</button>
-                        	<button class="btn btn_black_normal">Cancle</button>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-                <!--//exam box-->
+            	<h2>Feature Coming in phase 2</h2>
+                <p>We are working hard to make ISM the best system. ISM has many more to come.</p>
 			</div>
             <!--//main-->
-             <!--side right-->
+            <!--side right-->
             <div class="sidebar_right_container sidebar_right_container2 sidebar_right_admin mCustomScrollbar" data-mcs-theme="minimal-dark">			<!--scrollbar" id="style-3-->
             	
                 <!--high score board-->
@@ -363,6 +236,7 @@
                 <!--//high score board-->
                 <!--Suggested Studymates-->                
                 <!--//suggested Studymates-->
+
                 <!--STM-->
                 <div class="stm">
                 	<div class="box_header">
@@ -463,63 +337,5 @@
     <script src="../js/bootstrap.min.js"></script> 
     <!--scroll-->
     <script src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script>
-		$(function () {
-		  $('[data-toggle="popover"]').popover()
-		})
-		jQuery(document).ready(function(){
-            jQuery('.exam_year .icon_option_dark').click(function(){
-				if(jQuery(this).parent().children('.popover').css('display')=='block'){
-					jQuery(this).parent().children('.popover').css('display','none');
-				}
-				else{
-					jQuery(this).parent().children('.popover').css('display','block');
-				};
-			});
-			jQuery('.switch_btns .btn').click(function(){
-				if(jQuery(this).hasClass('no_btn')){
-					jQuery('.switch_btns .btn').removeClass('btn_red');					
-					jQuery('.switch_btns .btn').addClass('no_btn');
-					jQuery(this).addClass('btn_red');
-					jQuery(this).removeClass('no_btn');					
-				};
-			});
-			$("[name='subject']").bootstrapSwitch();
-			$('.bootstrap-switch-handle-on').text('Subject');
-			$('.bootstrap-switch-handle-off').text('Topic');
-        });
-	</script>
-    
-    <!--ckeditor-->
-    <script src="http://cdn.ckeditor.com/4.5.3/full/ckeditor.js"></script>
-    
-    <script>
-		// Replace the <textarea id="editor1"> with a CKEditor
-		// instance, using default configuration.
-		CKEDITOR.replace( 'editor2' );
-		<!--ckeditor-->
-			/*CKEDITOR.editorConfig = function( config ) {
-			config.toolbarGroups = [
-				{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-				{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-				{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-				{ name: 'forms', groups: [ 'forms' ] },
-				'/',
-				{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-				{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-				{ name: 'links', groups: [ 'links' ] },
-				{ name: 'insert', groups: [ 'insert' ] },
-				{ name: 'styles', groups: [ 'styles' ] },
-				{ name: 'colors', groups: [ 'colors' ] },
-				{ name: 'tools', groups: [ 'tools' ] },
-				{ name: 'others', groups: [ 'others' ] },
-				{ name: 'about', groups: [ 'about' ] }
-			];
-		
-			config.removeButtons = 'Source,Save,Templates,Cut,Undo,Find,SelectAll,Scayt,Form,NewPage,Preview,Print,PasteText,Paste,Copy,Redo,Replace,PasteFromWord,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,BidiLtr,BidiRtl,Language,Anchor,Unlink,Link,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Format,Styles,TextColor,BGColor,ShowBlocks,Maximize,About';
-		};*/
-	</script>
-    <!--switch-->
-    <script src="../js/bootstrap-switch.js"></script>
 </body>
 </html>

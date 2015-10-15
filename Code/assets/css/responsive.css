@@ -80,6 +80,12 @@
 	.general_cred #replacing_div3 input.form-control {
 		width: 89%;
 	}
+	.bootstrap-switch{
+		width:200px !important;
+	}
+	.bootstrap-switch .bootstrap-switch-label{
+		width:75px !important;
+	}
 }
 @media (max-width:1280px){
 	.login_background{
@@ -229,6 +235,21 @@
 	}
 	.tag_container {
 		width: 77%;
+	}
+	.bootstrap-switch{
+		width:180px !important;
+	}
+	.bootstrap-switch .bootstrap-switch-label{
+		width:78px !important;
+	}
+	.bootstrap-switch .bootstrap-switch-handle-on, .bootstrap-switch .bootstrap-switch-handle-off{
+		width:100px !important;
+	}
+	.score_descrip {
+		width: 75%;
+	}
+	.phase_2 h2::after, .phase_2 h2::before{
+		width:200px;
 	}
 }	
 @media (max-width:1024px){
@@ -490,6 +511,21 @@
 	.tag_container {
 		width: 70%;
 	}
+	.bootstrap-switch {
+    	width: 178px !important;
+	}
+	.sidebar_right_admin .score_rank {
+    	margin-left: 0;
+	}
+	.phase_2 h2::after, .phase_2 h2::before{
+		width:100px;
+	}
+	.phase_2 h2::after{
+		margin-left:15px;
+	}
+	.phase_2 h2::before{
+		margin-right:15px;
+	}
 }
 @media (max-width:980px){
 	.login_background {
@@ -596,6 +632,18 @@
 	.tag_container {
 		margin: 0;
 		width: 100%;
+	}
+	.evaluation > .col-md-6:first-child {
+    	padding-right: 15px;
+	}
+	.evaluation > .col-md-6:last-child {
+		padding-left: 15px;
+	}
+	.answers > .col-md-6:first-child {
+	    padding-right: 15px;
+	}
+	.answers > .col-md-6:last-child {
+		padding-left: 15px;
 	}
 }
 
@@ -750,6 +798,12 @@
 	}
 	.general_cred #replacing_div3 input.form-control {
     	width: 79%;
+	}
+	.phase_2 p{
+		width:auto;
+	}
+	.phase_2 h2:after, .phase_2 h2:before{
+		width:30px;
 	}
 }
 @media (max-width:768px){

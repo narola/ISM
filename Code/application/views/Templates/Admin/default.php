@@ -143,12 +143,12 @@ $url = uri_string();
                         </li>
                         <li><a href="#"><span class="icon icon_menu_report"></span> Reports</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                    <!-- <ul class="nav navbar-nav navbar-right">
                         <li><a class="" href="#"><span class="icon icon_search"></span></a></li>
                         <li><a class="" href="#"><span class="icon icon_grid"></span></a></li>
                         <li><a class="" href="#"><span class="icon icon_list"></span></a></li>
                         <li><a class="" href="#"><span class="icon icon_refresh"></span></a></li>
-                    </ul>
+                    </ul> -->
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
