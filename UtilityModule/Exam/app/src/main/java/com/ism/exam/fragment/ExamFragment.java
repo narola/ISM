@@ -1,8 +1,10 @@
 package com.ism.exam.fragment;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +17,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.exam.R;
-import com.ism.exam.TestActivity;
 import com.ism.exam.adapter.QuestionPaletteAdapter;
 import com.ism.exam.model.Option;
 import com.ism.exam.model.QuestionObjective;
+import com.ism.exam.utility.Utility;
 
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by c161 on 13/10/15.
@@ -52,28 +55,42 @@ public class ExamFragment extends Fragment {
 
 	private RadioButton rbOptions[];
 
+	private CountDownTimer timerExam;
 	private ExamListener listenerExam;
 	private QuestionPaletteAdapter adpQuestionPalette;
 	private ArrayList<QuestionObjective> arrListQuestions;
 
+	private static final String ARG_MINUTE = "examMinutes";
 	private int intAssessmentNo;
+	private int intExamDurationMinutes;
 	private String strSubject;
 	private int intCurrentQuestionIndex = 0;
 	private boolean isOptionsLoading = false;
 
 	public interface ExamListener {
-		public void questionsFetched(ArrayList<QuestionObjective> questions, ExamFragment examFragment);
+		public void startTest(ArrayList<QuestionObjective> questions, ExamFragment examFragment);
 		public void onQuestionSet(int position);
 	}
 
-	public static ExamFragment newInstance(ExamListener examListener) {
+	public static ExamFragment newInstance(ExamListener examListener, int examMinutes) {
 		ExamFragment fragment = new ExamFragment();
 		fragment.setListenerExam(examListener);
+		Bundle args = new Bundle();
+		args.putInt(ARG_MINUTE, examMinutes);
+		fragment.setArguments(args);
 		return fragment;
 	}
 
 	public ExamFragment() {
 		// Required empty public constructor
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			intExamDurationMinutes = getArguments().getInt(ARG_MINUTE);
+		}
 	}
 
 	@Override
@@ -115,9 +132,6 @@ public class ExamFragment extends Fragment {
 		wvInstructions.getSettings().setJavaScriptEnabled(true);
 
 		arrListQuestions = QuestionObjective.getQuestions();
-		if (listenerExam != null) {
-			listenerExam.questionsFetched(arrListQuestions, this);
-		}
 
 		btnStartTest.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -136,7 +150,7 @@ public class ExamFragment extends Fragment {
 				if (intCurrentQuestionIndex < arrListQuestions.size() - 1) {
 					setQuestion(++intCurrentQuestionIndex);
 				} else {
-					loadFirstFlaggedQuestion();
+					endTest();
 				}
 			}
 		});
@@ -156,7 +170,7 @@ public class ExamFragment extends Fragment {
 				if (intCurrentQuestionIndex < arrListQuestions.size() - 1) {
 					setQuestion(++intCurrentQuestionIndex);
 				} else {
-					loadFirstFlaggedQuestion();
+					endTest();
 				}
 			}
 		});
@@ -164,10 +178,12 @@ public class ExamFragment extends Fragment {
 		btnSaveNNext.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				arrListQuestions.get(intCurrentQuestionIndex).setIsSkipped(false);
+				arrListQuestions.get(intCurrentQuestionIndex).setIsReviewLater(false);
 				if (intCurrentQuestionIndex < arrListQuestions.size() - 1) {
 					setQuestion(++intCurrentQuestionIndex);
 				} else if (intCurrentQuestionIndex == arrListQuestions.size() - 1) {
-					loadFirstFlaggedQuestion();
+					endTest();
 				}
 			}
 		});
@@ -181,32 +197,26 @@ public class ExamFragment extends Fragment {
 						case R.id.rb_op1:
 							isChecked = rbOption1.isChecked();
 							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(0).setIsSelected(isChecked);
-							Log.e(TAG, "checked1 : " + isChecked);
 							break;
 						case R.id.rb_op2:
 							isChecked = rbOption2.isChecked();
 							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(1).setIsSelected(isChecked);
-							Log.e(TAG, "checked2 : " + isChecked);
 							break;
 						case R.id.rb_op3:
 							isChecked = rbOption3.isChecked();
 							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(2).setIsSelected(isChecked);
-							Log.e(TAG, "checked3 : " + isChecked);
 							break;
 						case R.id.rb_op4:
 							isChecked = rbOption4.isChecked();
 							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(3).setIsSelected(isChecked);
-							Log.e(TAG, "checked4 : " + isChecked);
 							break;
 						case R.id.rb_op5:
 							isChecked = rbOption5.isChecked();
 							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(4).setIsSelected(isChecked);
-							Log.e(TAG, "checked5 : " + isChecked);
 							break;
 						case R.id.rb_op6:
 							isChecked = rbOption6.isChecked();
 							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(5).setIsSelected(isChecked);
-							Log.e(TAG, "checked6 : " + isChecked);
 							break;
 					}
 					arrListQuestions.get(intCurrentQuestionIndex).setIsAnswered(isChecked);
@@ -216,19 +226,59 @@ public class ExamFragment extends Fragment {
 
 	}
 
-	private void loadFirstFlaggedQuestion() {
-		for (int i = 0; i < arrListQuestions.size(); i++) {
-			if (arrListQuestions.get(i).isReviewLater()) {
-				setQuestion(i);
-				break;
+	private void startTest() {
+		timerExam = new CountDownTimer( intExamDurationMinutes * 60 * 1000, 1000) {
+			@Override
+			public void onTick(long millisUntilFinished) {
+				txtHeader.setText(Utility.stringForTime((int) millisUntilFinished));
 			}
+
+			@Override
+			public void onFinish() {
+				end();
+			}
+		};
+		timerExam.start();
+		txtInstruct.setText(R.string.choose_answer);
+		if (listenerExam != null) {
+			listenerExam.startTest(arrListQuestions, this);
+		}
+		setQuestion(intCurrentQuestionIndex);
+	}
+
+	private void end() {
+		try {
+			timerExam.cancel();
+			getFragmentManager().beginTransaction().replace(R.id.fl_exam, ResultFragment.newInstance(arrListQuestions)).commit();
+		} catch (Exception e) {
+			Log.e(TAG, "end Exception : " + e.toString());
 		}
 	}
 
-	private void startTest() {
-		txtHeader.setText("01:00");
-		txtInstruct.setText(R.string.choose_answer);
-		setQuestion(intCurrentQuestionIndex);
+	public void endTest() {
+		boolean isUncomplete = false;
+		for (int i = 0; i < arrListQuestions.size(); i++) {
+			if (arrListQuestions.get(i).isReviewLater() || arrListQuestions.get(i).isSkipped() || !arrListQuestions.get(i).isAnswered()) {
+				isUncomplete = true;
+				break;
+			}
+		}
+		String msg = isUncomplete ? getResources().getString(R.string.msg_end_test_unanswered) : getResources().getString(R.string.msg_end_test);
+		String negativeText = isUncomplete ? getResources().getString(R.string.attend) : getResources().getString(R.string.cancel);
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(msg)
+				.setPositiveButton(R.string.end_test, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						end();
+					}
+				}).setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+					}
+				});
+		builder.create().show();
 	}
 
 	public void setQuestion(int questionIndex) {
@@ -253,7 +303,9 @@ public class ExamFragment extends Fragment {
 			} else {
 				btnSaveNNext.setText(R.string.save_n_next);
 			}
-			listenerExam.onQuestionSet(questionIndex);
+			if (listenerExam != null) {
+				listenerExam.onQuestionSet(questionIndex);
+			}
 		} catch (Exception e) {
 			Log.e(TAG, "setQuestion Exception : " + e.toString());
 		}
