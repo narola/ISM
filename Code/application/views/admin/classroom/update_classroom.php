@@ -61,6 +61,7 @@
 
                     <div class="box_footer">
                         <button type="submit" class="btn btn_green">Save</button>
+                        <button type="button" class="btn btn_red" onClick="window.location.reload();">Reset</button>
                         <a href="<?php echo base_url() . $prev_url; ?>" class='btn btn_black'>Cancel</a>
                     </div>
 
