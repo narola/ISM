@@ -42,6 +42,8 @@
                         <option value="">Sort By</option>
                         <option value="name_asc">Name Ascending</option>
                         <option value="name_desc">Name Descending</option>
+                        <option value="latest">Latest First</option>
+                        <option value="older">Older First</option>
                     </select>
                 </div>
 

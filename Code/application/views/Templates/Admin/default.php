@@ -15,6 +15,7 @@ $url = uri_string();
         <base href="<?php echo base_url(); ?>" >
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">
         <!--custom css-->
+        <link href="assets/css/bootstrap-switch.css" rel="stylesheet">
         <link href="assets/css/ism_style.css" rel="stylesheet">
         <link href="assets/css/ism_admin_style.css" rel="stylesheet">
         <link href="assets/css/responsive.css" rel="stylesheet">
@@ -34,14 +35,19 @@ $url = uri_string();
         <link href='assets/css/fonts.css' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/datepicker.css"> <!-- Bootstrap DatePicker CSS -->
-
+        <link rel="stylesheet" href="assets/css/bootstrap-timepicker.min.css"> <!-- Bootstrap TimePicker CSS -->
+    
         <script src="assets/js/jquery-1.11.3.min.js"></script>
         <script src="assets/js/jquery-ui.min.js"></script> <!-- jQuery UI JS -->
         <script src="assets/js/bootstrap.min.js"></script> <!-- Bootstap JS -->
         <script src="assets/js/select2.min.js"></script> <!-- Select2 JS -->
         <script src="assets/js/bootstrap-tagsinput.js"></script> <!-- Input Tagging Feature -->
         <script src="assets/js/bootstrap-datepicker.js"></script>  <!-- Bootstrap DatePicker Script  -->
+        <script src="assets/js/bootstrap-timepicker.min.js"></script>  <!-- Bootstrap TimePicker Script  -->
         <script src="assets/js/ZeroClipboard.min.js"></script>  <!-- For Copy to Clipboard Functionality Refer:http://zeroclipboard.org/ -->
+        <script src="assets/js/bootbox.min.js"></script> <!-- Bootstrap Alert,Dialog Box Script  -->
+        <script src="assets/js/bootstrap-switch.js"></script>  <!-- Bootstrap Switch Script  -->
+        
 
         <!-- Highchart JS Start -->
         <script src="http://code.highcharts.com/highcharts.js"></script>
@@ -442,23 +448,27 @@ $url = uri_string();
             });
 
             jQuery(document).ready(function(){
-            jQuery('.exam_year .icon_option_dark').click(function(){
-                if(jQuery(this).parent().children('.popover').css('display')=='block'){
-                    jQuery(this).parent().children('.popover').css('display','none');
-                }
-                else{
-                    jQuery(this).parent().children('.popover').css('display','block');
-                };
+            
+                // jQuery('.exam_year .icon_option_dark').click(function(){
+                //     if(jQuery(this).parent().children('.popover').css('display')=='block'){
+                //         jQuery(this).parent().children('.popover').css('display','none');
+                //     }
+                //     else{
+                //         jQuery(this).parent().children('.popover').css('display','block');
+                //     };
+                // });
+
+                // jQuery('.switch_btns .btn').click(function(){
+                //     if(jQuery(this).hasClass('no_btn')){
+                //         jQuery('.switch_btns .btn').removeClass('btn_red');                 
+                //         jQuery('.switch_btns .btn').addClass('no_btn');
+                //         jQuery(this).addClass('btn_red');
+                //         jQuery(this).removeClass('no_btn');                 
+                //     };
+                // });
+
+                
             });
-            jQuery('.switch_btns .btn').click(function(){
-                if(jQuery(this).hasClass('no_btn')){
-                    jQuery('.switch_btns .btn').removeClass('btn_red');                 
-                    jQuery('.switch_btns .btn').addClass('no_btn');
-                    jQuery(this).addClass('btn_red');
-                    jQuery(this).removeClass('no_btn');                 
-                };
-            });
-        });
 
             $('#birthdate input').datepicker({
                 format: 'yyyy-mm-dd'

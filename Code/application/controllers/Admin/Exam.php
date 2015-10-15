@@ -1,7 +1,7 @@
 <?php 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Exam extends CI_Controller {
+class Exam extends ADMIN_Controller {
 
 	public $data = array();
 
@@ -37,6 +37,8 @@ class Exam extends CI_Controller {
 
 			if($order == 'name_asc'){ $order = "exam.exam_name asc"; $str.='&order='.$order;  }
 			if($order == 'name_desc'){ $order = "exam.exam_name desc"; $str.='&order='.$order; }
+			if($order == 'latest'){ $order = "exam.created_date asc"; $str.='&order='.$order; }
+			if($order == 'older'){ $order = "exam.created_date desc"; $str.='&order='.$order; }
 			
 			$str =  trim($str,'&');
 
@@ -135,14 +137,53 @@ class Exam extends CI_Controller {
 		$this->form_validation->set_rules('exam_name', 'Exam Name', 'trim|required');
 		$this->form_validation->set_rules('course_id', 'Course Name', 'trim|required');
 		$this->form_validation->set_rules('subject_id', 'Subject Name', 'trim|required');
+		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required');
 		$this->form_validation->set_rules('pass_percentage', 'Passing Percentage', 'trim|required');
+		$this->form_validation->set_rules('exam_category', 'Exam Category', 'trim|required');
+		$this->form_validation->set_rules('duration', 'Exam duration', 'trim|required');
+		$this->form_validation->set_rules('attempt_count', 'Attempt Count', 'trim|required');
+		$this->form_validation->set_rules('start_date', 'Start Exam Date', 'trim|required|callback_valid_date');
+
 
 		if($this->form_validation->run() == FALSE){
 			$this->template->load('admin/default','admin/exam/add_exam',$this->data);
 		}else{
+			
+			if(isset($_POST['exam_type'])){
+				$exam_type = 'subject';
+			}else{	
+				$exam_type = 'topic';
+			}
 
+			$exam_data=array(
+					'exam_name'=>$this->input->post('exam_name'),
+					'classroom_id'=>$this->input->post('classroom_id'),
+					'subject_id'=>$this->input->post('subject_id'),
+					'exam_type'=>$exam_type,
+					'exam_category'=>$this->input->post('exam_category'),
+					'pass_percentage'=>$this->input->post('pass_percentage'),
+					'duration'=>$this->input->post('duration'),
+					'attempt_count'=>$this->input->post('attempt_count'),
+					'instructions' => htmlspecialchars($this->input->post('instructions')),
+					'negative_marking'=>$this->input->post('negative_marking'),
+					'random_question'=>$this->input->post('random_question'),
+					'declare_results'=>$this->input->post('declare_results')
+				);
+
+			$exam_id = insert(TBL_EXAMS,$exam_data); // Insert Data into database and return Inserted ID using common_model.php and cms_helper.php
+
+			$exam_schedule = array(
+					'exam_id'=>$exam_id,
+					'start_date'=>$this->input->post('start_date'),
+					'start_time'=>$this->input->post('start_time'),
+					'school_classroom_id'=>'1'
+				);
+
+			insert(TBL_EXAM_SCHEDULE,$exam_schedule);
+
+			p($_POST);
+			p($exam_data);
 		}
-
 		
 	}
 
@@ -157,6 +198,19 @@ class Exam extends CI_Controller {
 	{
 
 	}
+
+	public function valid_date($date){
+
+		if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$date))
+	    {
+	        return true;
+	    }else{
+	    	$this->form_validation->set_message('valid_date','The Start Exam date is not valid.');
+	        return false;
+	    }
+
+	}
+
 }
 
 /* End of file Exam.php */
