@@ -4,7 +4,10 @@
     package="com.ism">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT"/>
+<!--<<<<<<< HEAD-->
+    <!--<uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT"/>-->
+<!--=======-->
+<!--&gt;>>>>>> e9e1fefa83c14e2ab2721254abf5a4a8c2d4fc20-->
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -47,18 +50,18 @@
         <activity
             android:name=".HostActivity"
             android:screenOrientation="landscape">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN"/>-->
-            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".post.CreatePostActivity"
             android:screenOrientation="landscape">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
     </application>
 

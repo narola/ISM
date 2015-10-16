@@ -31,4 +31,10 @@
     <dimen name="d90sp">90sp</dimen>
     <dimen name="d120sp">120sp</dimen>
     <dimen name="d130sp">130sp</dimen>
+
+    <dimen name="exam_padding">20dp</dimen>
+    <dimen name="button_corner_radius">5dp</dimen>
+    <dimen name="button_margin_exam">7dp</dimen>
+    <dimen name="button_padding_exam">20dp</dimen>
+    <dimen name="button_height">42dp</dimen>
 </resources>

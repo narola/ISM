@@ -1,0 +1,318 @@
+package com.ism.exam.fragment;
+
+import android.app.AlertDialog;
+import android.app.Fragment;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.ism.exam.R;
+import com.ism.exam.adapter.QuestionPaletteAdapter;
+import com.ism.exam.model.Option;
+import com.ism.exam.model.QuestionObjective;
+import com.ism.exam.utility.Utility;
+
+import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
+
+/**
+ * Created by c161 on 13/10/15.
+ */
+public class ExamFragment extends Fragment {
+
+	private static final String TAG = ExamFragment.class.getSimpleName();
+
+	private View view;
+	private RelativeLayout rlInstruction;
+	private RelativeLayout rlQuestion;
+	private TextView txtHeader;
+	private TextView txtInstruct;
+	private TextView txtSubject;
+	private TextView txtQuestion;
+	private RadioGroup rgOptions;
+	private RadioButton rbOption1;
+	private RadioButton rbOption2;
+	private RadioButton rbOption3;
+	private RadioButton rbOption4;
+	private RadioButton rbOption5;
+	private RadioButton rbOption6;
+	private WebView wvInstructions;
+	private Button btnStartTest;
+	private Button btnReviewLater;
+	private Button btnClearResponse;
+	private Button btnSkip;
+	private Button btnSaveNNext;
+
+	private RadioButton rbOptions[];
+
+	private CountDownTimer timerExam;
+	private ExamListener listenerExam;
+	private QuestionPaletteAdapter adpQuestionPalette;
+	private ArrayList<QuestionObjective> arrListQuestions;
+
+	private static final String ARG_MINUTE = "examMinutes";
+	private int intAssessmentNo;
+	private int intExamDurationMinutes;
+	private String strSubject;
+	private int intCurrentQuestionIndex = 0;
+	private boolean isOptionsLoading = false;
+
+	public interface ExamListener {
+		public void startTest(ArrayList<QuestionObjective> questions, ExamFragment examFragment);
+		public void onQuestionSet(int position);
+	}
+
+	public static ExamFragment newInstance(ExamListener examListener, int examMinutes) {
+		ExamFragment fragment = new ExamFragment();
+		fragment.setListenerExam(examListener);
+		Bundle args = new Bundle();
+		args.putInt(ARG_MINUTE, examMinutes);
+		fragment.setArguments(args);
+		return fragment;
+	}
+
+	public ExamFragment() {
+		// Required empty public constructor
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			intExamDurationMinutes = getArguments().getInt(ARG_MINUTE);
+		}
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.fragment_exam, container, false);
+
+		initGlobal();
+
+		return view;
+	}
+
+	private void initGlobal() {
+		rlInstruction = (RelativeLayout) view.findViewById(R.id.rl_instruction);
+		rlQuestion = (RelativeLayout) view.findViewById(R.id.rl_question);
+		txtHeader = (TextView) view.findViewById(R.id.txt_header);
+		txtInstruct = (TextView) view.findViewById(R.id.txt_instruct);
+		txtSubject = (TextView) view.findViewById(R.id.txt_subject);
+		txtQuestion = (TextView) view.findViewById(R.id.txt_question);
+		rgOptions = (RadioGroup) view.findViewById(R.id.rg_options);
+		rbOption1 = (RadioButton) view.findViewById(R.id.rb_op1);
+		rbOption2 = (RadioButton) view.findViewById(R.id.rb_op2);
+		rbOption3 = (RadioButton) view.findViewById(R.id.rb_op3);
+		rbOption4 = (RadioButton) view.findViewById(R.id.rb_op4);
+		rbOption5 = (RadioButton) view.findViewById(R.id.rb_op5);
+		rbOption6 = (RadioButton) view.findViewById(R.id.rb_op6);
+		wvInstructions = (WebView) view.findViewById(R.id.wv_instruction);
+		btnStartTest = (Button) view.findViewById(R.id.btn_start_test);
+		btnReviewLater = (Button) view.findViewById(R.id.btn_review_later);
+		btnClearResponse = (Button) view.findViewById(R.id.btn_clear_response);
+		btnSkip = (Button) view.findViewById(R.id.btn_skip);
+		btnSaveNNext = (Button) view.findViewById(R.id.btn_save_n_next);
+
+		rbOptions = new RadioButton[]{rbOption1, rbOption2, rbOption3, rbOption4, rbOption5, rbOption6};
+
+		txtHeader.setText(getString(R.string.read_instructions));
+		txtInstruct.setText(getString(R.string.assessment_no) + intAssessmentNo);
+		txtSubject.setText(strSubject);
+		wvInstructions.loadUrl("");
+		wvInstructions.getSettings().setJavaScriptEnabled(true);
+
+		arrListQuestions = QuestionObjective.getQuestions();
+
+		btnStartTest.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				rlInstruction.setVisibility(View.GONE);
+				rlQuestion.setVisibility(View.VISIBLE);
+				startTest();
+			}
+		});
+
+		btnReviewLater.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				arrListQuestions.get(intCurrentQuestionIndex).setIsReviewLater(true);
+				arrListQuestions.get(intCurrentQuestionIndex).setIsSkipped(false);
+				if (intCurrentQuestionIndex < arrListQuestions.size() - 1) {
+					setQuestion(++intCurrentQuestionIndex);
+				} else {
+					endTest();
+				}
+			}
+		});
+
+		btnClearResponse.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				rgOptions.clearCheck();
+			}
+		});
+
+		btnSkip.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				arrListQuestions.get(intCurrentQuestionIndex).setIsSkipped(true);
+				arrListQuestions.get(intCurrentQuestionIndex).setIsReviewLater(false);
+				if (intCurrentQuestionIndex < arrListQuestions.size() - 1) {
+					setQuestion(++intCurrentQuestionIndex);
+				} else {
+					endTest();
+				}
+			}
+		});
+
+		btnSaveNNext.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				arrListQuestions.get(intCurrentQuestionIndex).setIsSkipped(false);
+				arrListQuestions.get(intCurrentQuestionIndex).setIsReviewLater(false);
+				if (intCurrentQuestionIndex < arrListQuestions.size() - 1) {
+					setQuestion(++intCurrentQuestionIndex);
+				} else if (intCurrentQuestionIndex == arrListQuestions.size() - 1) {
+					endTest();
+				}
+			}
+		});
+
+		rgOptions.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				if (!isOptionsLoading) {
+					boolean isChecked = false;
+					switch (checkedId) {
+						case R.id.rb_op1:
+							isChecked = rbOption1.isChecked();
+							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(0).setIsSelected(isChecked);
+							break;
+						case R.id.rb_op2:
+							isChecked = rbOption2.isChecked();
+							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(1).setIsSelected(isChecked);
+							break;
+						case R.id.rb_op3:
+							isChecked = rbOption3.isChecked();
+							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(2).setIsSelected(isChecked);
+							break;
+						case R.id.rb_op4:
+							isChecked = rbOption4.isChecked();
+							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(3).setIsSelected(isChecked);
+							break;
+						case R.id.rb_op5:
+							isChecked = rbOption5.isChecked();
+							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(4).setIsSelected(isChecked);
+							break;
+						case R.id.rb_op6:
+							isChecked = rbOption6.isChecked();
+							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(5).setIsSelected(isChecked);
+							break;
+					}
+					arrListQuestions.get(intCurrentQuestionIndex).setIsAnswered(isChecked);
+				}
+			}
+		});
+
+	}
+
+	private void startTest() {
+		timerExam = new CountDownTimer( intExamDurationMinutes * 60 * 1000, 1000) {
+			@Override
+			public void onTick(long millisUntilFinished) {
+				txtHeader.setText(Utility.stringForTime((int) millisUntilFinished));
+			}
+
+			@Override
+			public void onFinish() {
+				end();
+			}
+		};
+		timerExam.start();
+		txtInstruct.setText(R.string.choose_answer);
+		if (listenerExam != null) {
+			listenerExam.startTest(arrListQuestions, this);
+		}
+		setQuestion(intCurrentQuestionIndex);
+	}
+
+	private void end() {
+		try {
+			timerExam.cancel();
+			getFragmentManager().beginTransaction().replace(R.id.fl_exam, ResultFragment.newInstance(arrListQuestions)).commit();
+		} catch (Exception e) {
+			Log.e(TAG, "end Exception : " + e.toString());
+		}
+	}
+
+	public void endTest() {
+		boolean isUncomplete = false;
+		for (int i = 0; i < arrListQuestions.size(); i++) {
+			if (arrListQuestions.get(i).isReviewLater() || arrListQuestions.get(i).isSkipped() || !arrListQuestions.get(i).isAnswered()) {
+				isUncomplete = true;
+				break;
+			}
+		}
+		String msg = isUncomplete ? getResources().getString(R.string.msg_end_test_unanswered) : getResources().getString(R.string.msg_end_test);
+		String negativeText = isUncomplete ? getResources().getString(R.string.attend) : getResources().getString(R.string.cancel);
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(msg)
+				.setPositiveButton(R.string.end_test, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						end();
+					}
+				}).setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+					}
+				});
+		builder.create().show();
+	}
+
+	public void setQuestion(int questionIndex) {
+		try {
+			intCurrentQuestionIndex = questionIndex;
+			txtQuestion.setText(arrListQuestions.get(intCurrentQuestionIndex).getQuestion());
+			ArrayList<Option> options = arrListQuestions.get(intCurrentQuestionIndex).getOptions();
+			isOptionsLoading = true;
+			rgOptions.clearCheck();
+			for (int i = 0; i < 6; i++) {
+				if (i < options.size()) {
+					rbOptions[i].setVisibility(View.VISIBLE);
+					rbOptions[i].setText(options.get(i).getOption());
+					rbOptions[i].setChecked(options.get(i).isSelected());
+				} else {
+					rbOptions[i].setVisibility(View.GONE);
+				}
+			}
+			isOptionsLoading = false;
+			if (intCurrentQuestionIndex == arrListQuestions.size() - 1) {
+				btnSaveNNext.setText(R.string.save);
+			} else {
+				btnSaveNNext.setText(R.string.save_n_next);
+			}
+			if (listenerExam != null) {
+				listenerExam.onQuestionSet(questionIndex);
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "setQuestion Exception : " + e.toString());
+		}
+	}
+
+	public void setListenerExam(ExamListener examListener) {
+		listenerExam = examListener;
+	}
+
+}

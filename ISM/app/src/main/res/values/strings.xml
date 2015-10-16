@@ -129,9 +129,11 @@
 	<string name="saturday">Saturday</string>
 	<string name="sunday">Sunday</string>
 	<string name="hint_search">Search</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="review_later">Review later</string>
+	<string name="clear_response">Clear response</string>
+	<string name="skip">Skip</string>
+	<string name="save_n_next">Save and next</string>
+	<string name="start_test">Start test</string>
 
 
 	<!--Arti-->

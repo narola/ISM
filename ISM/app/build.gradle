@@ -5,7 +5,11 @@ android {
     buildToolsVersion "23.0.1"
     defaultConfig {
         applicationId "com.ism"
+<<<<<<< HEAD
         minSdkVersion 17
+=======
+        minSdkVersion 21
+>>>>>>> e9e1fefa83c14e2ab2721254abf5a4a8c2d4fc20
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"

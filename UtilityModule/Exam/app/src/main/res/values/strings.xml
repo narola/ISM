@@ -1,0 +1,25 @@
+<resources>
+	<string name="app_name">Exam</string>
+	<string name="review_later">Review Later</string>
+	<string name="clear_response">Clear response</string>
+	<string name="skip">Skip</string>
+	<string name="save_n_next">Save and next</string>
+	<string name="start_test">Start test</string>
+
+	<string name="read_instructions">Please Read Instructions Carefully</string>
+	<string name="assessment_no">Assessment No:</string>
+	<string name="choose_answer">Choose the correct answer for your Quesiton</string>
+	<string name="save">Save</string>
+	<string name="question_palette">Question palette</string>
+	<string name="legend">Legend:</string>
+	<string name="end_test">End test</string>
+	<string name="current_question">Current Question</string>
+	<string name="answered">Answered</string>
+	<string name="not_answered">Not Answered</string>
+	<string name="skipped">Skipped</string>
+	<string name="tutorial_group">Tutorial Group</string>
+	<string name="msg_end_test_unanswered">There are still some flagged, skipped or unattended questions.\n\nDo you want to attend them?</string>
+	<string name="msg_end_test">End test?</string>
+	<string name="cancel">Cancel</string>
+	<string name="attend">Attend</string>
+</resources>
