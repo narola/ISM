@@ -118,9 +118,9 @@
 	#carousel-noticeboard{
 		width:315px;
 	}
-	.carousel-caption {
+	/*.carousel-caption {
     	font-size: 18px;
-	}
+	}*/
 	.stm_list {
     	max-height: 422px;
 	}
@@ -276,10 +276,10 @@
 	#carousel-noticeboard{
 		width:240px;
 	}
-	.carousel-caption {
+	/*.carousel-caption {
 	    font-size: 15px;
 		bottom: 0;
-	}
+	}*/
 	.suggested_mates{
 		display:none;
 	}
@@ -679,9 +679,9 @@
 	.logout .icon_logout{
 		margin-right:2px;
 	}
-	.carousel-caption {
+	/*.carousel-caption {
     	bottom: -26px;
-	}
+	}*/
 	.score_descrip {
     	padding: 0;
     	width: 100%;
