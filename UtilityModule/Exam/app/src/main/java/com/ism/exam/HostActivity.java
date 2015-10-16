@@ -24,7 +24,6 @@ public class HostActivity extends Activity {
 
 	private void initGlobal() {
 		getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamHostFragment.newInstance()).commit();
-		getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, QuestionPaletteFragment.newInstance()).commit();
 	}
 
 }

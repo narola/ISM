@@ -16,17 +16,17 @@
         <com.ism.helper.CircleImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="@dimen/d15sp"
+            android:padding="@dimen/d15dp"
             android:src="@drawable/userdp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="@dimen/d25sp"
-            android:paddingBottom="@dimen/d25sp"
+            android:paddingTop="@dimen/d25dp"
+            android:paddingBottom="@dimen/d25dp"
 
-            android:paddingLeft="@dimen/d5sp">
+            android:paddingLeft="@dimen/d5dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                 android:id="@+id/txt_username"
                 android:text="John Samuel"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/d25sp" />
+                android:textSize="@dimen/d25dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                 android:id="@+id/txt_schoolname"
                 android:text="High School"
                 android:textColor="#ADB0B5"
-                android:textSize="@dimen/d20sp" />
+                android:textSize="@dimen/d20dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                 android:id="@+id/txt_yearandcourse"
                 android:text="First year, Computer science"
                 android:textColor="#ADB0B5"
-                android:textSize="@dimen/d20sp" />
+                android:textSize="@dimen/d20dp" />
 
         </LinearLayout>
     </LinearLayout>
@@ -74,7 +74,7 @@
         android:text="Your Tutorial group is as per below"
         android:gravity="center"
         android:textColor="@color/color_green"
-        android:textSize="@dimen/d25sp" />
+        android:textSize="@dimen/d25dp" />
     <GridView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -93,13 +93,13 @@
         android:background="@drawable/background_edittext_teacher"
         android:layout_gravity="center"
         android:gravity="center"
-        android:paddingBottom="@dimen/d10sp"
-        android:paddingLeft="@dimen/d60sp"
-        android:paddingRight="@dimen/d60sp"
-        android:paddingTop="@dimen/d10sp"
-        android:layout_margin="@dimen/d10sp"
+        android:paddingBottom="@dimen/d10dp"
+        android:paddingLeft="@dimen/d60dp"
+        android:paddingRight="@dimen/d60dp"
+        android:paddingTop="@dimen/d10dp"
+        android:layout_margin="@dimen/d10dp"
         android:text="@string/striacceptedgroup"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/d20sp" />
+        android:textSize="@dimen/d20dp" />
 
 </LinearLayout>

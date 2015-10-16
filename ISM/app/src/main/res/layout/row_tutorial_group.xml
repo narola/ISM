@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="7"
         android:orientation="vertical"
-        android:padding="@dimen/d10sp">
+        android:padding="@dimen/d10dp">
 
         <com.ism.helper.CircleImageView
             android:id="@+id/img_dp"
@@ -27,7 +27,7 @@
             android:gravity="center"
             android:text="Adam Stanger"
             android:textColor="#7A7A7A"
-            android:textSize="@dimen/d15sp" />
+            android:textSize="@dimen/d15dp" />
 
         <TextView
             android:id="@+id/txt_status"
@@ -42,10 +42,10 @@
     <TextView
         android:layout_width="1.5dp"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/d10sp"
-        android:layout_marginLeft="@dimen/d10sp"
-        android:layout_marginRight="@dimen/d10sp"
-        android:layout_marginTop="@dimen/d10sp"
+        android:layout_marginBottom="@dimen/d10dp"
+        android:layout_marginLeft="@dimen/d10dp"
+        android:layout_marginRight="@dimen/d10dp"
+        android:layout_marginTop="@dimen/d10dp"
 
         android:background="#EAEAEA" />
 
@@ -55,7 +55,7 @@
         android:layout_gravity="center"
         android:layout_weight="4"
         android:orientation="vertical"
-        android:padding="@dimen/d10sp">
+        android:padding="@dimen/d10dp">
 
         <TextView
             android:id="@+id/txt_school"
@@ -64,10 +64,10 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="left"
-            android:padding="@dimen/d5sp"
+            android:padding="@dimen/d5dp"
             android:text="SD. Public School"
             android:textColor="#5a5a5a"
-            android:textSize="@dimen/d20sp" />
+            android:textSize="@dimen/d20dp" />
 
         <TextView
             android:id="@+id/txt_address"
@@ -77,9 +77,9 @@
             android:layout_marginBottom="5sp"
             android:layout_weight="1"
             android:gravity="left"
-            android:padding="@dimen/d5sp"
+            android:padding="@dimen/d5dp"
             android:text="1665 US-45 BYP, Jackson, T8 3805, United States."
             android:textColor="#7b7b7b"
-            android:textSize="@dimen/d20sp" />
+            android:textSize="@dimen/d20dp" />
     </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/bg_highscore_subject"
     android:orientation="vertical">
 
@@ -16,7 +16,7 @@
             android:layout_weight="2"
             android:background="@color/bg_controller_top_dark"
             android:gravity="center"
-            android:padding="@dimen/d5sp"
+            android:padding="@dimen/d5dp"
             android:text="@string/strcancel"
             android:textAllCaps="true"
             android:textColor="@color/color_white" />
@@ -27,7 +27,7 @@
             android:layout_weight="0.5"
             android:background="@color/color_white"
             android:gravity="center"
-            android:padding="@dimen/d5sp"
+            android:padding="@dimen/d5dp"
             android:text="@string/strcreatepost"
             android:textAllCaps="true"
             android:textColor="@color/color_green" />
@@ -38,7 +38,7 @@
             android:layout_weight="2"
             android:background="@color/bg_controller_top_dark"
             android:gravity="center"
-            android:padding="@dimen/d5sp"
+            android:padding="@dimen/d5dp"
             android:text="@string/strpost"
             android:textAllCaps="true"
             android:textColor="@color/color_white" />
@@ -56,10 +56,11 @@
             android:id="@+id/et_posttext"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="5sp"
             android:layout_weight="0.6"
             android:background="@drawable/bg_highscore_subjectlist"
             android:gravity="top|left"
-            android:hint="SAY IT" android:layout_margin="5sp"
+            android:hint="SAY IT"
             android:inputType="textMultiLine"
             android:padding="5sp"
             android:text=""
@@ -69,64 +70,107 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_marginBottom="@dimen/d5dp"
             android:layout_marginTop="5sp"
+            android:layout_weight="4"
             android:gravity="center"
-            android:layout_marginBottom="@dimen/d5sp"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/img_image"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_highscore_subjectlist"
-                android:padding="@dimen/d5sp"
+                android:padding="@dimen/d5dp"
                 android:src="@drawable/ic_launcher" />
 
             <ImageView
                 android:id="@+id/img_audio"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_highscore_subjectlist"
-                android:padding="@dimen/d5sp"
+                android:padding="@dimen/d5dp"
                 android:src="@drawable/ic_launcher" />
 
             <ImageView
                 android:id="@+id/video"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_highscore_subjectlist"
-                android:padding="@dimen/d5sp"
+                android:padding="@dimen/d5dp"
                 android:src="@drawable/ic_launcher" />
 
             <ImageView
                 android:id="@+id/img_smiley"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_highscore_subjectlist"
-                android:padding="@dimen/d5sp"
+                android:padding="@dimen/d5dp"
                 android:src="@drawable/ic_launcher" />
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_audio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/d5dp"
+            android:background="@color/color_text_hint"
+            android:padding="@dimen/d5dp"
+            android:text="Record"
+            android:textColor="@color/color_gray" />
+
+        <TextView
+            android:id="@+id/txt_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/d5dp"
+            android:padding="@dimen/d5dp"
+            android:text="00:00:00"
+            android:textColor="@color/color_green" />
+
+        <TextView
+            android:id="@+id/txt_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/d5dp"
+            android:background="@color/color_text_hint"
+            android:padding="@dimen/d5dp"
+            android:text="Stop"
+            android:textColor="@color/color_gray"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/d5sp"
+        android:layout_margin="@dimen/d5dp"
+        android:visibility="gone"
         android:background="@drawable/bg_highscore_subjectlist"
-        android:orientation="horizontal"
-        android:padding="@dimen/d5sp">
+        android:orientation="vertical"
+        android:padding="@dimen/d5dp">
 
         <com.ism.helper.HorizontalListView
-
             android:id="@+id/lv_mediafiles"
             android:layout_width="match_parent"
             android:layout_height="165sp"
-            android:padding="@dimen/d5sp" />
+            android:padding="@dimen/d5dp"
+            android:visibility="visible" />
+
 
     </LinearLayout>
 </LinearLayout>

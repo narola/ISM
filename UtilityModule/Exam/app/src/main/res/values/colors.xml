@@ -5,9 +5,13 @@
 	<color name="colorAccent">#1BC4A2</color>
 
     <color name="color_graylight">#F5F5F5</color>
+    <color name="notation_not_answered">#D8DDE0</color>
     <color name="bg_app_dark">#323941</color>
 	<color name="color_green">#1BC4A2</color>
 	<color name="color_green_dark">#14987d</color>
     <color name="border_gray">#DDDDDD</color>
     <color name="bg_tutorial">#DA534F</color>
+
+	<color name="button_dark_start">#99CCCCCC</color>
+	<color name="button_dark_end">#00000000</color>
 </resources>

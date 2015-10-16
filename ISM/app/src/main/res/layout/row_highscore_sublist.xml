@@ -14,7 +14,7 @@
         android:layout_height="60sp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/userdp"
-        android:layout_margin="@dimen/d5sp"
+        android:layout_margin="@dimen/d5dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
@@ -26,7 +26,7 @@
         android:padding="3sp"
         android:textColor="@color/color_black"
         android:text="name"
-        android:layout_marginTop="@dimen/d5sp"
+        android:layout_marginTop="@dimen/d5dp"
         android:textSize="16sp"
         android:layout_alignRight="@+id/img_hignScoredp"
         android:layout_alignParentRight="true"
@@ -40,7 +40,7 @@
         android:padding="3sp"
         android:id="@+id/txt_highScoreMarks"
         android:textColor="@color/color_green"
-        android:textSize="@dimen/d20sp"
+        android:textSize="@dimen/d20dp"
         android:layout_below="@+id/txt_highScoreSchoolYearClass"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/img_hignScoredp" />
