@@ -151,9 +151,9 @@
                               <td> <?php echo ucfirst($user['city_name']); ?> </td>
                               <td><?php echo ucfirst($user['role_name']); ?></td>
                               <td>
-                                  <a href="#" class="icon icon_timeline" data-toggle="tooltip" data-placement="bottom" title="Timeline"></a>
-                                  <a href="#" class="icon icon_books" data-toggle="tooltip" data-placement="bottom" title="Books"></a>
-                                  <a href="admin/user/activity/<?php echo $user['id'];?>" class="icon icon_performance" data-toggle="tooltip" data-placement="bottom" title="Performance"></a>
+                                  <a href="admin/user/activity/<?php echo $user['id'];?>" class="icon icon_timeline" data-toggle="tooltip" data-placement="bottom" title="Timeline"></a>
+                                  <a href="admin/user/books" class="icon icon_books" data-toggle="tooltip" data-placement="bottom" title="Books"></a>
+                                  <a href="admin/user/performance" class="icon icon_performance" data-toggle="tooltip" data-placement="bottom" title="Performance"></a>
                                   <?php if($user['user_status'] == 'blocked') { ?>  
                                   <a href="<?php echo base_url().'admin/user/active/'.$user['id']; ?>" 
                                     onclick="return confirm('Activate User ?');" class="icon icon_user" data-toggle="tooltip" data-placement="bottom" title="Active" ></a>

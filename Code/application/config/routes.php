@@ -71,6 +71,8 @@ $route['admin/badges'] = "admin/topic/next_phase";
 $route['admin/questionaries'] = "admin/topic/next_phase";
 $route['admin/notifications'] = "admin/topic/next_phase";
 $route['admin/messages'] = "admin/topic/next_phase";
+$route['admin/user/performance'] = "admin/topic/next_phase";
+$route['admin/user/books'] = "admin/topic/next_phase";
 
 $route['admin/(:any)'] = "admin/$1"; 
 $route['admin/(:any)/(:any)'] = "admin/$1/$2"; 
