@@ -132,7 +132,7 @@ class User extends ADMIN_Controller {
 											    				),
 											    			array(
 											    				'table'=>TBL_USER_PROFILE_PICTURE,
-											    				'condition'=>TBL_USER_PROFILE_PICTURE.'.id='.TBL_USERS.'.id'	
+											    				'condition'=>TBL_USER_PROFILE_PICTURE.'.user_id='.TBL_USERS.'.id'	
 											    				)			
 												    		)
 												)
@@ -140,10 +140,10 @@ class User extends ADMIN_Controller {
 
 		$this->pagination->initialize($config);
 		
-		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
-		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
-		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
-		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)));
+		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)));
 
 		$this->template->load('admin/default','admin/user/view_user',$this->data);
 	}
@@ -740,7 +740,7 @@ class User extends ADMIN_Controller {
 		$data['my_activities']['post'] = select(TBL_FEEDS.' post',$select,$where,$options);
 		
 		$data['my_month'] = $date_array;
-		$this->template->load('admin/default','student/my_activities',$data);
+		$this->template->load('admin/default','admin/user/my_activities',$data);
 	}	
 			
 	// ---------------------------- User Module END --------------------------------------------

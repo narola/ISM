@@ -135,8 +135,8 @@
                               
                               <td class="username">
                                   <div class="chat_img_holder">
-                                        <img src="<?php echo base_url().'assets'; ?>/uploads/$user['profile_link']"
-                                        onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                        <img src="<?php echo base_url().'uploads/'.$user['profile_link']; ?>"
+                                       onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                   </div>
                                   <h4><?php echo ucfirst($user['username']); ?></h4>
                                   <?php if($user['user_status']=='active'){ 
@@ -151,20 +151,28 @@
                               <td> <?php echo ucfirst($user['city_name']); ?> </td>
                               <td><?php echo ucfirst($user['role_name']); ?></td>
                               <td>
-                                  <a href="#" class="icon icon_timeline" data-toggle="tooltip" data-placement="bottom" title="Timeline"></a>
-                                  <a href="#" class="icon icon_books" data-toggle="tooltip" data-placement="bottom" title="Books"></a>
-                                  <a href="admin/user/activity/<?php echo $user['id'];?>" class="icon icon_performance" data-toggle="tooltip" data-placement="bottom" title="Performance"></a>
+                                  <a href="admin/user/activity/<?php echo $user['id'];?>" class="icon icon_timeline" data-toggle="tooltip" data-placement="bottom" title="Timeline"></a>
+                                  <a href="admin/user/books" class="icon icon_books" data-toggle="tooltip" data-placement="bottom" title="Books"></a>
+                                  <a href="admin/user/performance" class="icon icon_performance" data-toggle="tooltip" data-placement="bottom" title="Performance"></a>
+
                                   <?php if($user['user_status'] == 'blocked') { ?>  
                                   <a href="<?php echo base_url().'admin/user/active/'.$user['id']; ?>" 
-                                    onclick="return confirm('Activate User ?');" class="icon icon_user" data-toggle="tooltip" data-placement="bottom" title="Active" ></a>
+                                    onclick="return active_user(this.href,event)" class="icon icon_user" data-toggle="tooltip" data-placement="bottom" title="Active" ></a>
                                   <?php }else{ ?>   
-                                  <a href="<?php echo base_url().'admin/user/blocked/'.$user['id']; ?>" 
-                                    onclick="return confirm('Blocked User ?');" class="icon icon_blockuser" data-toggle="tooltip" data-placement="bottom" title="Block"></a>  
+                                  <a href="<?php echo base_url().'admin/user/blocked/'.$user['id']; ?>" onclick="return block_user(this.href,event)"
+                                     class="icon icon_blockuser" data-toggle="tooltip" data-placement="bottom" title="Block"></a>  
                                   <?php } ?>
-                                  <a href="#" class="icon icon_mail" data-toggle="tooltip" data-placement="bottom"  
-                                  data-toggle="tooltip" data-placement="bottom" title="Mail"></a>
+
+
+                                  <a href="#" class="icon icon_mail" data-toggle="tooltip" data-placement="bottom" title="Mail"></a>
+
+
+                                  <!-- <a href="#" class="icon icon_mail" data-toggle="tooltip" data-placement="bottom"  
+                                  data-toggle="tooltip" data-placement="bottom" title="Mail"></a> -->
+
                                   <a href="<?php echo base_url().'admin/user/send_message/'.$user['id']; ?>" class="icon icon_chat" 
                                     data-toggle="tooltip" data-placement="bottom" title="Message"></a>
+
                                   <a href="<?php echo base_url().'admin/user/update/'.$user['id']; ?>" class="icon icon_edit"
                                     data-toggle="tooltip" data-placement="bottom" title="Edit"> </a>
                               </td>
@@ -191,7 +199,29 @@
     <!--//main-->
 
 <script type="text/javascript">
-	
+    
+    function block_user(href,event){
+         event.preventDefault();
+         bootbox.confirm("Block User?", function(confirmed) {
+            
+            if(confirmed){
+                window.location.href=href;
+            }
+            
+        });
+    } 
+
+    function active_user(href,event){
+         event.preventDefault();
+         bootbox.confirm("Activate User?", function(confirmed) {
+            
+            if(confirmed){
+                window.location.href=href;
+            }
+            
+        });
+    } 
+
     function filter_data(){
     	
     	var role = $('#role').val();
@@ -210,7 +240,6 @@
 
     	$('#filter').submit();
     }
-
 
 	<?php if(!empty($_GET['role'])) { ?>
 		$('#role').val('<?php echo $_GET["role"];?>');	

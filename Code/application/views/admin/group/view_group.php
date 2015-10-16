@@ -35,7 +35,7 @@
 	                </div>
 	                
                     <div class="form-group no_effect search_input">
-                        <input type="text" name="q" id="q" class="form-control" placeholder="Type Group name." >
+                        <input type="text" name="q" id="q" class="form-control" placeholder="Type Group/Member Name." >
                         <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
                     </div>
 
@@ -61,10 +61,14 @@
     
         <form method="post" action="<?php echo base_url().'admin/group/send_messages'; ?>"  >  <!-- Form Start -->
             
+            <div class="row div_buttons">
+                 <div class="col-sm-6" style="z-index:9999">
+                    <input type="submit" class="btn btn_black" value="Send Messages">    
+                </div> 
+            </div>
+
             <!-- <input type="text" name="test">  -->
-            <div class="col-sm-6" style="z-index:9999">
-                <input type="submit" class="btn btn_black" value="Send Messages">    
-            </div> 
+            
             
         <!--//button-div-->
         <!--row table-->
@@ -140,12 +144,18 @@
                                     <td class="group_rank">01</td>
                                     <td class="group_points"><p><?php if(!empty($group['group_score'])) {echo $group['group_score']; }else{ echo 0; } ?></p><p>4 Assignments</p><p>10 Exams</p></td>
                                     <td>
-                                        <a href="#" class="icon icon_timeline"></a>
-                                        <a href="#" class="icon icon_books"></a>
-                                        <a href="#" class="icon icon_performance"></a>
-                                        <a href="#" class="icon icon_blockuser"></a>
-                                        <a href="#" class="icon icon_mail"></a>
-                                        <a href="<?php echo base_url().'admin/group/send_message/'.$group['id']; ?>" class="icon icon_chat"></a>
+                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Timeline" class="icon icon_timeline"></a>
+                                        
+                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Books" class="icon icon_books"></a>
+                                        
+                                        <a href="<?php echo base_url().'admin/group/performance/'.$group['id']; ?>" data-toggle="tooltip" data-placement="bottom" title="Performance" class="icon icon_performance"></a>
+                                        
+                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Block Group"  class="icon icon_blockuser"></a>
+                                        
+                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Main"  class="icon icon_mail"></a>
+                                        
+                                        <a href="<?php echo base_url().'admin/group/send_message/'.$group['id']; ?>" title="Message"
+                                        data-toggle="tooltip" data-placement="bottom"  class="icon icon_chat"></a>
                                     </td>
                                 </tr>    
                             <?php } }else{ ?>

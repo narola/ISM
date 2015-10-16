@@ -30,7 +30,7 @@
                             </select>
                         </div>
                         <div class="form-group no_effect text-right">
-                        	<button class="btn btn_green add_topic no-margin">Add New Topic</button>
+                            <a href="admin/topic/add" class="btn btn_green add_topic">Add New Topic</a>
                         </div>
                     </div>
                 </div>

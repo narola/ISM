@@ -164,13 +164,12 @@
                         <div class="form-group">
                             <label>District</label>
                             <select class="form-control" name="district" id="district_id">
-                                <option disabled>Select District</option>
+                                <option disabled value="0">Select District</option>
                                 <option value="0"> No District</option>
                                 <?php
                                 if (!empty($districts)) {
                                     foreach ($districts as $district) {
                                         ?> 
-
                                         <option value="<?php echo $district['id']; ?>" <?php echo set_select('district', $district['id']); ?>> <?php echo $district['district_name']; ?></option>
                                         <?php
                                     }

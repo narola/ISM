@@ -42,6 +42,8 @@
                         <option value="">Sort By</option>
                         <option value="name_asc">Name Ascending</option>
                         <option value="name_desc">Name Descending</option>
+                        <option value="latest">Latest First</option>
+                        <option value="older">Older First</option>
                     </select>
                 </div>
 
@@ -49,10 +51,21 @@
                     <input type="text" name="q" id="q" class="form-control" placeholder="Type Exam name." >
                     <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
                 </div>
+                
+                
 
             </div>
+
+            <br/>
+            <br/>
+            <div class="col-sm-10 text-left">
+                <?php echo flashMessage(TRUE,FALSE); ?>
+                <?php echo flashMessage(FALSE,TRUE); ?>
+            </div>
+
         </div>
     </form>
+    
     <!--//filter-->
     <!--exam box-->	
     <div class="padding_b30">
@@ -71,21 +84,29 @@
          ?>
     	<div class="col-sm-12 col-md-6 col-lg-3">
          <div class="box exam_card admin_exam">
-            <div class="box_header text-center maths">
+            <!--  class="maths" -->
+            <div class="box_header text-center" 
+                <?php if(!empty($exam['subject_image'])) {?>
+                style="background-image: url(<?php echo base_url().'uploads/'.$exam['subject_image'];?>);"
+                <?php }else{?>
+                style="background-image: url(<?php echo base_url().'uploads/subjects/_dev_8GKA-Objectives.png';?>);"
+                <?php }?>
+                
+                >
                 <div class="color_wrapper"></div>
                 <h3><?php echo ucfirst($exam['exam_name']); ?></h3>                            
             </div>
             <div class="exams_holder">
             	<div class="exam_year">
                 	<p>Year : <span>Second Year CS</span></p>
-                    <a href="#" class="icon icon_option_dark"></a>
+                    <a style="cursor:pointer;" class="icon icon_option_dark"></a>
                     <div class="popover right" role="tooltip">
                         <div class="arrow"></div>
                         <div class="popover-content">
                             <ul>
                                 <li><a href="#">Copy Exam</a></li>
                                 <li><a href="#">View Details</a></li>
-                                <li><a href="#">Edit Exam</a></li>
+                                <li><a href="admin/exam/update/<?php echo $exam['id']; ?>">Edit Exam</a></li>
                             </ul>
                         </div>
                     </div>                                
@@ -133,6 +154,24 @@
 
         $('#filter').submit();
     }
+
+
+    $( "#filter" ).submit(function( event ) {
+      
+        var exam_type = $('#exam_type').val();
+        var subject = $('#subject').val();
+        var topic = $('#topic').val();
+        var q = $('#q').val();
+        var order = $('#order').val();
+
+        if(exam_type == '' ){ $('#exam_type').removeAttr('name'); }
+        if(subject == '' ){ $('#subject').removeAttr('name'); }
+        if(topic == '' ){ $('#topic').removeAttr('name'); }
+        if(q == '') { $('#q').removeAttr('name'); }
+        if(order == ''){  $('#order').removeAttr('name'); }
+        
+    });
+
 
 
     <?php if(!empty($_GET['exam_type'])) { ?>

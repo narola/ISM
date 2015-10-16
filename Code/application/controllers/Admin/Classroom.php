@@ -121,7 +121,7 @@ class Classroom extends ADMIN_Controller {
                 )
         );
 
-        $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => FALSE)), array('limit' => 10));
+        $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => FALSE)));
         $this->pagination->initialize($config);
 
         $this->template->load('admin/default', 'admin/classroom/view_classroom', $this->data);

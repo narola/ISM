@@ -4,7 +4,7 @@
 		<div class="row page_header">
     	<div class="col-sm-12">
         	<ol class="breadcrumb">
-              <li><a href="#">Groups</a></li> 
+              <li><a href="admin/group">Groups</a></li> 
               <li class="active">Group Performance</li>
             </ol>                  
         </div>

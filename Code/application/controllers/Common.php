@@ -53,6 +53,21 @@ class Common extends CI_Controller {
         echo $new_str;
     }
 
+    public function ajax_get_classrooms() {
+
+        $course_id = $this->input->post('course_id');
+        $all_classrooms = select(TBL_CLASSROOMS, FALSE, array('where' => array('course_id' => $course_id)), array('order_by' => 'class_name'));
+        $new_str = '';
+
+        $new_str .= '<option selected disabled > Select Classroom </option>';
+        if (!empty($all_classrooms)) {
+            foreach ($all_classrooms as $class) {
+                $new_str.='<option value="' . $class['id'] . '">' . $class['class_name'] . '</option>';
+            }
+        }
+        echo $new_str;
+    }
+
     public function template_notice() {
 
         $notice_id = $this->input->post('notice_id');
@@ -79,6 +94,49 @@ class Common extends CI_Controller {
         } else {
             echo "0";  // Can't Find template in database and Return 0
         }
+    }
+
+    public function fetch_classroom(){
+
+        $course_id = $this->input->post('course_id');
+        $all_classrooms = select(TBL_CLASSROOMS, FALSE, array('where' => array('course_id' => $course_id)), array('order_by' => 'class_name'));
+        $new_str = '';
+
+        $new_str .= '<option selected disabled > Select Classroom </option>';
+        if (!empty($all_classrooms)) {
+            foreach ($all_classrooms as $classroom) {
+                $new_str.='<option value="' . $classroom['id'] . '">' . $classroom['class_name'] . '</option>';
+            }
+        }
+        echo $new_str;
+    }
+
+    public function fetch_subject(){
+
+        $class_id = $this->input->post('class_id');
+       
+        $all_subjects = select(
+                               TBL_SUBJECTS.' as subjects', 
+                               "subjects.id,subjects.subject_name", 
+                               array('where' => array('c_sub.classroom_id' => $class_id)), 
+                               array(
+                                    'join'=>array(
+                                                array(
+                                                    'table'=>TBL_COURSE_SUBJECT.' c_sub',
+                                                    'condition'=> 'subjects.id=c_sub.subject_id'
+                                                    )
+                                    )
+                                )
+                           );
+        $new_str = '';
+
+        $new_str .= '<option selected disabled > Select Classroom </option>';
+        if (!empty($all_subjects)) {
+            foreach ($all_subjects as $subject) {
+                $new_str.='<option value="' . $subject['id'] . '">' . $subject['subject_name'] . '</option>';
+            }
+        }
+        echo $new_str;
     }
 
 }

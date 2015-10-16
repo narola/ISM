@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>ISM | Scoreboard</title>
+    <title>ISM | Classroom Exams</title>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1"><title>Login</title>
@@ -21,8 +21,9 @@
     <![endif]-->
     <link rel="icon" type="image/png" href="images/graduate.png" sizes="32x32" />
 </head>
+
 <body>
-	<nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -112,8 +113,8 @@
 				<ul class="personal_menu">
                 	<li><a href="My_feeds.html">My Feeds</a></li>
                 	<li class="active"><a href="My_exam.html">My Exams</a></li>
-                	<li><a href="Studymates.html">Studymates</a></li>
-                	<li><a href="My_activity.html">My Activities</a></li>
+                	<li><a href="#">Studymates</a></li>
+                	<li><a href="#">My Activities</a></li>
                 	<li><a href="Notice_board.html">Notice Board</a></li>
                 </ul>
                 <a href="Login.html" class="logout"><span class="icon icon_logout"></span>LogOut</a>
@@ -122,94 +123,136 @@
             <!--//side left-->
             <!--main-->
             <div class="col-sm-7 main main2">
-            	<!--breadcrumb-->
-                <div class="row page_header">
-                	<div class="col-sm-12">
-                    	<fieldset>
-                          <legend>ISM Mock Test</legend>                          
-                          <h4 class="txt_green">Organic Chemistry Test Evaluation</h4>
-                        </fieldset>
-                    </div>
-                </div>
-                <!--//breadcrumb-->
-                <!--score-->
-                <div class="row">
-                	<div class="col-sm-12 text-center">
-                    	<h1 class="big_score">Your Score Is : <span>68%</span></h1>
-                    </div>
-                    
-                </div>
-                <div class="row evaluation">
-                	<div class="col-sm-12 col-md-6">
-                    	<div class="box">
-                        	<div>
-                            	<p>Correnct Answers :  <span class="txt_green">16</span></p>
-                            </div>
-                            <div>
-                            	<p>Incorrenct Answers :  <span class="txt_brightred">04</span></p>
-                            </div>
-                            <div>
-                            	<p>Unattempted Questions :  <span class="txt_yellow">05</span></p>
-                            </div>
-                            <div>
-                            	<p>Total Time Spent :  <span class="txt_grey"><span class="fa fa-clock-o"></span>25 min</span></p>
-                            </div>
-                            <div >
-                            	<button class="btn btn-block btn_green">Click Here to View Answers</button> 
-                            </div>
-                            <div class="score_publish">
-                            	<span>Make My Score Public?</span><span><button class="btn btn_green">Yes</button><button class="btn btn_black_normal">No</button></span>
-                                <div class="clearfix"></div>
-                            </div>
+            	<!--banner-->
+            	 <div class="row exam_banner">
+                 	<div class="col-sm-12 text-center">
+                    	<div class="banner_text">
+                            <h3>Class</h3>
+                            <h3>XII<br>Science</h3>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6">
-                    	<div class="box">
-                        	<!--1-->
-                            <div>
-                            	<p>Organic Chemistry - I</p>
-                                <div class="progress">
-                                  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                    <span class="sr-only">80% Complete (success)</span>
-                                  </div>
-                                </div>
-                            </div>
-                            <!--2-->
-                            <div>
-                            	<p>Organic Chemistry - II</p>
-                                <div class="progress">
-                                  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
-                                    <span class="sr-only">75% Complete (success)</span>
-                                  </div>
-                                </div>
-                            </div>
-                            <!--3-->
-                            <div>
-                            	<p>ELements</p>
-                                <div class="progress">
-                                  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                    <span class="sr-only">60% Complete (success)</span>
-                                  </div>
-                                </div>
-                            </div>
-                            <!--4-->
-                            <div>
-                            	<p>Nolecules</p>
-                                <div class="progress">
-                                  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" style="width: 68%">
-                                    <span class="sr-only">68% Complete (success)</span>
-                                  </div>
-                                </div>
-                            </div>
-                            <div >
-                            	<a href="Evaluation.html" class="btn btn-block btn_black_normal">View Evaluation</a> 
-                            </div>
+                 </div>   
+                 <!--//banner-->
+                 <!--filter-->
+                 <div class="row">
+                 	<div class="col-sm-12 filter exam_filter">
+                    	<div class="form-group">
+                            <select class="form-control">
+                                <option>Subject</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>Topic</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>Exam Type</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>WASSCE Year</option>
+                            </select>
                         </div>
                     </div>
-                </div>
-                <!--//score-->
-                
-            </div>
+                 </div>	
+                 <!--//filetr-->
+                 <!--exams-->
+                 <div  class="row">
+                 	<div class="col-sm-12 exams_wrapper">
+                    	<!--card1-->
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                             <div class="box exam_card">
+                                <div class="box_header exam_chem">
+                                	<div class="color_wrapper"></div>
+                                    <h3>Chemistry</h3>                            
+                                    <a href="#" class="icon icon_option no-margin"></a>  
+                                    <label class="label label_black">15 Exams</label>
+                                    <div class="user_profile_img">
+                                        <img src="images/user7.jpg">
+                                    </div>                                     
+                                    <div class="clearfix"></div>                    
+                                </div>
+                                <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
+                                    <li><a href="#">Organic - I</a></li>
+                                    <li><a href="#">Biomass</a></li>
+                                    <li><a href="#">Chemical Component</a></li>
+                                    <li><a href="#">Fuel</a></li>
+                                    <li><a href="#">Organic - II</a></li>
+                                </ul>
+                             </div>
+                         </div>
+                        <!--//card1-->
+                        <!--card1-->
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                             <div class="box exam_card">
+                                <div class="box_header exam_phy">
+                                	<div class="color_wrapper"></div>
+                                    <h3>Physics</h3>                            
+                                    <a href="#" class="icon icon_option no-margin"></a>  
+                                    <label class="label label_black">03 Exams</label>
+                                    <div class="user_profile_img">
+                                        <img src="images/user6.jpg">
+                                    </div>                                     
+                                    <div class="clearfix"></div>                    
+                                </div>
+                                <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
+                                    <li><a href="#">Organic - I</a></li>
+                                    <li><a href="#">Biomass</a></li>
+                                    <li><a href="#">Chemical Component</a></li>
+                                    
+                                </ul>
+                             </div>
+                         </div>
+                        <!--//card1-->
+                        <!--card1-->
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                             <div class="box exam_card">
+                                <div class="box_header exam_math">
+                                	<div class="color_wrapper"></div>
+                                    <h3>Maths</h3>                            
+                                    <a href="#" class="icon icon_option no-margin"></a>  
+                                    <label class="label label_black">01 Exams</label>
+                                    <div class="user_profile_img">
+                                        <img src="images/user7.jpg">
+                                    </div>                                     
+                                    <div class="clearfix"></div>                    
+                                </div>
+                                <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
+                                    <li><a href="#">Organic - I</a></li>
+                                    
+                                </ul>
+                             </div>
+                         </div>
+                        <!--//card1-->
+                        <!--card1-->
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                             <div class="box exam_card">
+                                <div class="box_header exam_lang">
+                                	<div class="color_wrapper"></div>
+                                    <h3>Language</h3>                            
+                                    <a href="#" class="icon icon_option no-margin"></a>  
+                                    <label class="label label_black">04 Exams</label>
+                                    <div class="user_profile_img">
+                                        <img src="images/user7.jpg">
+                                    </div>                                     
+                                    <div class="clearfix"></div>                    
+                                </div>
+                                <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
+                                    <li><a href="#">Organic - I</a></li>
+                                    <li><a href="#">Biomass</a></li>
+                                    <li><a href="#">Chemical Component</a></li>
+                                    <li><a href="#">Fuel</a></li>
+                                </ul>
+                             </div>
+                         </div>
+                        <!--//card1-->
+                    </div>
+                 </div>
+                 <!--//exams-->
+			</div>
             <!--//main-->
             <!--side right-->
             <div class="sidebar_right_container sidebar_right_container2 mCustomScrollbar" data-mcs-theme="minimal-dark"><!--scrollbar" id="style-3-->
@@ -403,13 +446,15 @@
                             <div class="clearfix"></div>
                         </div> 
                      </div>       
+                                
                 </div>
                 <!--//STM-->
+                
             </div>
             <!--//side right-->
         </div>
-	</div>
-    <!--//body-->
+    </div>
+    <!--//body-->    
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery-1.11.3.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
