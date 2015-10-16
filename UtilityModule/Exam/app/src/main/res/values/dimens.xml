@@ -21,4 +21,8 @@
 
     <dimen name="button_dark_corner_radius">5dp</dimen>
     <dimen name="button_dark_border_width">2dp</dimen>
+	<dimen name="score_text_padding">20dp</dimen>
+	<dimen name="score_spacing">10dp</dimen>
+	<dimen name="score_spacing_double">20dp</dimen>
+	<dimen name="score_text">18sp</dimen>
 </resources>

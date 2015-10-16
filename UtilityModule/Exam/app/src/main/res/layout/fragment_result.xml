@@ -26,22 +26,26 @@
 	<LinearLayout
 		android:id="@+id/ll_instruct"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="match_parent"
 		android:layout_below="@id/txt_score"
 		android:layout_marginLeft="@dimen/result_padding"
 		android:layout_marginRight="@dimen/result_padding"
 		android:layout_marginTop="@dimen/exam_padding"
+		android:paddingBottom="@dimen/exam_padding"
 		android:orientation="horizontal"
-		android:gravity="center"
+		android:gravity="center_horizontal"
 		android:weightSum="2">
 
 		<RelativeLayout
-			android:id="@+id/layout_score"
+			android:id="@+id/rl_score"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:background="@drawable/bgwhite_bordergray"
-			android:padding="1dp"
+			android:paddingTop="1dp"
+			android:paddingRight="1dp"
+			android:paddingLeft="1dp"
+			android:paddingBottom="@dimen/score_spacing"
 			android:layout_marginRight="@dimen/result_padding">
 
 			<TextView
@@ -49,8 +53,21 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:background="@drawable/bg_white_border_bottom"
+				android:textAllCaps="true"
+				android:textSize="@dimen/score_text"
 				android:text="@string/correct_answers"
-				android:padding="10dp"/>
+				android:padding="@dimen/score_text_padding"/>
+
+			<TextView
+				android:id="@+id/txt_correct_value"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:background="@drawable/bg_white_border_bottom"
+				android:layout_alignParentRight="true"
+				android:gravity="right"
+				android:textSize="@dimen/score_text"
+				android:textColor="@color/color_green"
+				android:padding="@dimen/score_text_padding"/>
 
 			<TextView
 				android:id="@+id/txt_incorrect"
@@ -58,15 +75,176 @@
 				android:layout_height="wrap_content"
 				android:layout_below="@id/txt_correct"
 				android:background="@drawable/bg_white_border_bottom"
+				android:textAllCaps="true"
+				android:textSize="@dimen/score_text"
 				android:text="@string/incorrect_answers"
-				android:padding="10dp"/>
+				android:padding="@dimen/score_text_padding"/>
+
+			<TextView
+				android:id="@+id/txt_incorrect_value"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/txt_correct"
+				android:background="@drawable/bg_white_border_bottom"
+				android:layout_alignParentRight="true"
+				android:textSize="@dimen/score_text"
+				android:textColor="@color/color_red"
+				android:padding="@dimen/score_text_padding"/>
+
+			<TextView
+				android:id="@+id/txt_unattempted"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/txt_incorrect"
+				android:background="@drawable/bg_white_border_bottom"
+				android:textAllCaps="true"
+				android:textSize="@dimen/score_text"
+				android:text="@string/unattempted_questions"
+				android:padding="@dimen/score_text_padding"/>
+
+			<TextView
+				android:id="@+id/txt_unattempted_value"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/txt_incorrect"
+				android:background="@drawable/bg_white_border_bottom"
+				android:layout_alignParentRight="true"
+				android:textSize="@dimen/score_text"
+				android:textColor="@color/color_yellow"
+				android:padding="@dimen/score_text_padding"/>
+
+			<TextView
+				android:id="@+id/txt_time_spent"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/txt_unattempted"
+				android:background="@drawable/bg_white_border_bottom"
+				android:textAllCaps="true"
+				android:textSize="@dimen/score_text"
+				android:text="@string/total_time_spent"
+				android:padding="@dimen/score_text_padding"/>
+
+			<TextView
+				android:id="@+id/txt_time_spent_value"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/txt_unattempted"
+				android:background="@drawable/bg_white_border_bottom"
+				android:layout_alignParentRight="true"
+				android:drawableLeft="@drawable/ic_clock"
+				android:textSize="@dimen/score_text"
+				android:padding="@dimen/score_text_padding"/>
+
+			<Button
+				android:id="@+id/btn_answers"
+				android:layout_width="match_parent"
+				android:layout_height="50dp"
+				android:layout_below="@id/txt_time_spent_value"
+				android:layout_marginTop="@dimen/score_spacing"
+				android:layout_marginBottom="@dimen/score_spacing"
+				android:layout_marginLeft="@dimen/score_spacing_double"
+				android:layout_marginRight="@dimen/score_spacing_double"
+				android:background="@drawable/bg_button_green"
+				android:textSize="@dimen/d18sp"
+				android:text="@string/click_view_answers"
+				android:textColor="@android:color/white"/>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="2dp"
+				android:background="@color/color_graylight"
+				android:layout_below="@id/btn_answers"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="@dimen/button_height"
+				android:layout_marginTop="@dimen/score_spacing"
+				android:gravity="center_vertical"
+				android:paddingLeft="@dimen/score_text_padding"
+				android:layout_below="@id/btn_answers"
+				android:textSize="@dimen/d18sp"
+				android:text="@string/make_score_public"
+				android:textColor="@color/bg_app_dark"/>
+
+			<Button
+				android:id="@+id/btn_yes"
+				android:layout_width="wrap_content"
+				android:layout_height="@dimen/button_height"
+				android:layout_marginTop="@dimen/score_spacing"
+				android:background="@drawable/bg_button_green"
+				android:layout_below="@id/btn_answers"
+				android:layout_toLeftOf="@+id/btn_no"
+				android:layout_marginRight="@dimen/score_spacing_double"
+				android:text="@string/yes"
+				android:textSize="@dimen/d18sp"
+				android:textColor="@android:color/white"/>
+
+			<Button
+				android:id="@+id/btn_no"
+				android:layout_width="wrap_content"
+				android:layout_height="@dimen/button_height"
+				android:layout_marginTop="@dimen/score_spacing"
+				android:background="@drawable/bg_button_dark_solid"
+				android:layout_below="@id/btn_answers"
+				android:layout_alignParentRight="true"
+				android:layout_marginRight="@dimen/score_spacing_double"
+				android:text="@string/no"
+				android:textSize="@dimen/d18sp"
+				android:textColor="@android:color/white"/>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="2dp"
+				android:background="@color/color_graylight"
+				android:layout_marginTop="@dimen/score_spacing"
+				android:layout_below="@id/btn_yes"/>
+
+			<Button
+				android:id="@+id/btn_view_evaluation"
+				android:layout_width="match_parent"
+				android:layout_height="50dp"
+				android:layout_below="@id/btn_yes"
+				android:layout_marginTop="@dimen/score_spacing_double"
+				android:layout_marginLeft="@dimen/score_spacing_double"
+				android:layout_marginRight="@dimen/score_spacing_double"
+				android:background="@drawable/bg_button_blue"
+				android:textSize="@dimen/d18sp"
+				android:text="@string/view_evaluation"
+				android:textColor="@android:color/white"/>
+
 		</RelativeLayout>
 
 		<RelativeLayout
-			android:id="@+id/layout_graph"
+			android:id="@+id/rl_graph"
 			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"></RelativeLayout>
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:background="@drawable/bgwhite_bordergray"
+			android:paddingTop="1dp"
+			android:paddingLeft="1dp"
+			android:paddingRight="1dp"
+			android:visibility="gone"
+			android:paddingBottom="@dimen/score_spacing_double">
+
+			<ListView
+				android:id="@+id/lv_result_graph"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_above="@+id/btn_view_evaluation_graph"></ListView>
+
+			<Button
+				android:id="@+id/btn_view_evaluation_graph"
+				android:layout_width="match_parent"
+				android:layout_height="50dp"
+				android:layout_alignParentBottom="true"
+				android:layout_marginTop="@dimen/score_spacing_double"
+				android:layout_marginLeft="@dimen/score_spacing_double"
+				android:layout_marginRight="@dimen/score_spacing_double"
+				android:background="@drawable/bg_button_dark_solid"
+				android:textSize="@dimen/d18sp"
+				android:text="@string/view_evaluation"
+				android:textColor="@android:color/white"/>
+		</RelativeLayout>
 
 	</LinearLayout>
 

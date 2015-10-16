@@ -142,7 +142,8 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	private void end() {
 		try {
 			timerExam.cancel();
-			fragExam.getFragmentManager().beginTransaction().replace(R.id.fl_exam, ResultFragment.newInstance(arrListQuestions)).commit();
+			fragExam.getFragmentManager().beginTransaction().replace(R.id.fl_exam, ResultFragment.newInstance(arrListQuestions, true)).commit();
+			getFragmentManager().beginTransaction().remove(this).commit();
 		} catch (Exception e) {
 			Log.e(TAG, "end Exception : " + e.toString());
 		}
