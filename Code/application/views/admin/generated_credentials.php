@@ -5,7 +5,7 @@
         <form method="post" onsubmit="return success_credential()" >
 
           <div class="box_header">
-            <h3>General Credencials</h3>
+            <h3>General Credentials</h3>
           </div>
 
           <div class="box_body">  

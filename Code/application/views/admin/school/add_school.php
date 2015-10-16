@@ -28,18 +28,18 @@
 
                         <div class="form-group">
                             <label>School name</label>
-                            <input type="text" class="form-control" name="schoolname" value="<?php echo set_value("schoolname"); ?>">
+                            <input type="text" class="form-control" maxlength="100" name="schoolname" value="<?php echo set_value("schoolname"); ?>">
                         </div>
                         <?php echo myform_error('schoolname'); ?>
 
                         <div class="form-group">
                             <label>School Nickname</label>
-                            <input type="text" class="form-control" name="school_nickname" value="<?php echo set_value("school_nickname"); ?>">
+                            <input type="text" class="form-control" maxlength="20"  name="school_nickname" value="<?php echo set_value("school_nickname"); ?>">
                         </div>
 
                         <div class="form-group">
                             <label>School Code</label>
-                            <input type="school_code" class="form-control" name="school_code" value="<?php echo set_value("school_code"); ?>" >
+                            <input type="text" class="form-control" maxlength="10"  name="school_code" value="<?php echo set_value("school_code"); ?>" >
                         </div>
                         <?php echo myform_error('school_code'); ?>
 
@@ -54,26 +54,27 @@
 
                         <div class="form-group">
                             <label>Principal Name</label>
-                            <input type="text" class="form-control" name="principal_name" value="<?php echo set_value("principal_name"); ?>">
+                            <input type="text" class="form-control" maxlength="50"  name="principal_name" value="<?php echo set_value("principal_name"); ?>">
                         </div>
                         <?php echo myform_error('principal_name'); ?>
 
                         <div class="form-group">
                             <label>School Email Id</label>
-                            <input type="text" class="form-control" name="school_email_id" value="<?php echo set_value("school_email_id"); ?>">
+                            <input type="text" class="form-control" maxlength="100" name="school_email_id" value="<?php echo set_value("school_email_id"); ?>">
                         </div>
                         <?php echo myform_error('school_email_id'); ?>
 
                         <div class="form-group">
                             <label>Contact Number-1</label>
-                            <input type="text" class="form-control" name="contact_1" value="<?php echo set_value("contact_1"); ?>">
+                            <input type="text" class="form-control" maxlength="20" name="contact_1" value="<?php echo set_value("contact_1"); ?>">
                         </div>
                         <?php echo myform_error('contact_1'); ?>
 
                         <div class="form-group">
                             <label>Contact Number-2</label>
-                            <input type="text" class="form-control" name="contact_2" value="<?php echo set_value("contact_2"); ?>">
+                            <input type="text" class="form-control" maxlength="20" name="contact_2" value="<?php echo set_value("contact_2"); ?>">
                         </div>
+                        <?php echo myform_error('contact_2'); ?>
 
                         <div class="form-group">
                             <label>School Grade</label>
@@ -97,7 +98,7 @@
 
                         <div class="form-group">
                             <label>Address</label>
-                            <input type="text" class="form-control" name="address" value="<?php echo set_value("address"); ?>">
+                            <input type="text" class="form-control" maxlength="100" name="address" value="<?php echo set_value("address"); ?>">
                         </div>
 
                         <!-- <div class="row filter"> -->
@@ -108,7 +109,8 @@
                                 if (!empty($countries)) {
                                     foreach ($countries as $country) {
                                         ?> 
-                                        <option value="<?php echo $country['id']; ?>"> <?php echo $country['country_name']; ?></option>
+                                        <option value="<?php echo $country['id']; ?>" <?php echo set_select('country', $country['id']); ?>> 
+                                            <?php echo $country['country_name']; ?></option>
                                         <?php
                                     }
                                 } else {
@@ -123,15 +125,38 @@
                         <div class="form-group" >
                             <label>State</label>
                             <select class="form-control" name="state" id="states_id" onchange="get_cities(this.value)" >
-                                <option selected disabled>Select State</option> 
+                                <option selected disabled>Select State</option>
+                                <?php
+                                if (!empty($states)) {
+
+                                    foreach ($states as $state) {
+                                        ?> 
+                                        <option value="<?php echo $state['id']; ?>" <?php echo set_select('state', $state['id']); ?>> <?php echo $state['state_name']; ?></option>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <option > No States</option>
+                                <?php } ?>
                             </select>
                         </div>
                         <?php echo myform_error('state'); ?>
 
                         <div class="form-group">
                             <label>City</label>
-                            <select class="form-control" name="city" id="city_id" onchange="get_districts(this.value)">
-                                <option selected disabled>Select City</option> 
+                            <select class="form-control" name="city" id="city_id" onchange="get_districts(this.value)" >
+                                <option disabled>Select City</option>
+                                <?php
+                                if (!empty($cities)) {
+                                    foreach ($cities as $city) {
+                                        ?> 
+                                        <option value="<?php echo $city['id']; ?>" <?php echo set_select('city', $city['id']); ?>> <?php echo $city['city_name']; ?></option>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <option > No City</option>
+                                <?php } ?>
                             </select>
                         </div>
                         <?php echo myform_error('city'); ?>
@@ -139,7 +164,19 @@
                         <div class="form-group">
                             <label>District</label>
                             <select class="form-control" name="district" id="district_id">
-                                <option selected disabled>Select District</option> 
+                                <option disabled value="0">Select District</option>
+                                <option value="0"> No District</option>
+                                <?php
+                                if (!empty($districts)) {
+                                    foreach ($districts as $district) {
+                                        ?> 
+                                        <option value="<?php echo $district['id']; ?>" <?php echo set_select('district', $district['id']); ?>> <?php echo $district['district_name']; ?></option>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <option value="0"> No District</option>
+                                <?php } ?>
                             </select>
                         </div>
 
@@ -147,7 +184,8 @@
 
                     <div class="box_footer">
                         <button type="submit" class="btn btn_green">Save</button>
-                        <button class="btn btn_black">Cancel</button>
+                        <button type="reset" class="btn btn_red">Reset</button>
+                        <a href="<?php echo base_url() . $prev_url; ?>" class='btn btn_black'>Cancel</a>
                     </div>
 
                 </form>   

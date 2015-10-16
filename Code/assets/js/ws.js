@@ -458,7 +458,10 @@ if ("WebSocket" in window)
             {
                 $('#my_request_box').html('<div class="study_mate"><h3>No more studymate request</h3></div>');
             }    
+
         }else if(obj.type == 'get_studymate_name'){
+          $("#tagged-users").show();
+
             var i = 0;
             var j = 0;
             var k = 0;
@@ -468,15 +471,15 @@ if ("WebSocket" in window)
             len = obj.student_detail.length;
             $.each(obj.student_detail, function (index, list) {
                 if(len == 1){
-                    str += '<b>with</b> : <label class="label label_name"><a href="#">'+ list.name + '</a></label>';
+                    str += '&nbsp;with : <label class="label label_name">'+ list.name + '</label>';
                     ids += list.id;
                 }
                 else if(len == 2){
                     if(i == 0){
-                        str += 'with <label class="label label_name"><a href="#">'+list.name +'</a></label>';
+                        str += '&nbsp;with <label class="label label_name">'+list.name +'</label>';
                         ids += list.id;
                     }else{
-                        str += 'and <label class="label label_name"><a href="#">'+list.name +'</a></label>';
+                        str += '&nbsp;and <label class="label label_name">'+list.name +'</label>';
                         ids += ','+list.id;
                     }
                     i++;
@@ -484,7 +487,7 @@ if ("WebSocket" in window)
                 else if(len > 2){
                     
                     if(j == 0){
-                        str += 'with <label class="label label_name"><a href="#" >'+list.name +'</a></label>';
+                        str += '&nbsp;with <label class="label label_name">'+list.name +'</label>';
                         ids += list.id;
                     }else{
                         other_name += list.name+'<div class=\'clearfix\'></div>';
@@ -646,6 +649,8 @@ $(document).on('click','button[data-type="post"]',function(){
         ws.send(JSON.stringify(request));
         $('#feed_post').val('');
         $('#selection-box').hide();
+        $(".js-example-basic-single").select2("val","");
+        $("#tagged-users").hide();
         $('#tag_or_not').val('no'); 
     }
 });
@@ -743,7 +748,7 @@ function generate_post(obj,status){
     
     str += '<span class="date">Sep 28, 2015</span>';
     str += '<div class="clearfix"></div>';
-    str += '<pre>'+obj.message+'</pre>';
+    str += '<p>'+obj.message+'</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="'+obj.post_id+'"><span class="icon icon_thumb'+cls+'"></span>'+obj.tot_like+'</a>';
     str += '<a href="javascript:void(0);" class="comment_btn"><span class="icon icon_comment"></span>'+obj.tot_comment+'</a>';
     str += '<div class="dropdown tag_user" style="display: inline-block;">';

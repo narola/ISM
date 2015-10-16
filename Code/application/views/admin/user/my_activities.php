@@ -186,7 +186,7 @@
                 <form action="" method="post">
                     <input type="hidden" name="load_more" value="<?php echo isset($value)?$value:'';?>"> 
                     <!-- <a href="#" class="search_result_label">View More</a> -->
-                    <input type="submit" class="btn btn_green no-margin" value="View More">
+                    <input type="submit" class="btn btn_red no-margin" value="View More">
                 </form>
             </div>
 

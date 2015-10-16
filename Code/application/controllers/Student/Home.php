@@ -12,7 +12,15 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
-		$user_id = $this->session->userdata('user')['id'];
+		$user_data = $this->session->userdata('user');
+		$user_id = $user_data['id'];
+		$user_group_id = $user_data['group_id'];
+		$my_studymates = studymates($user_id,false);
+		if(sizeof($my_studymates) > 0)
+			$my_studymates = studymates($user_id,false);
+		else
+			$my_studymates = array('');
+
 		$data['title'] = 'ISM - Home';
 		$data['hide_right_bar'] = true;		
 		
@@ -153,13 +161,7 @@ class Home extends CI_Controller {
 
 		//----Get Suggested studymates
 
-		$my_studymates = studymates($user_id,false);
-		if(empty($my_studymates))
-			$my_studymates = array('');
-		else
-			$my_studymates = studymates($user_id,false);
-
-		$user_group_id = $this->session->userdata('user')['group_id'];
+		/*----get recommended studymate list---*/
 		$where = array('where' => array('m.group_id'=>$user_group_id,'in1.user_id !=' => $user_id),'where_not_in'=>array('in1.user_id' => $my_studymates));
 		$options = array('join' => array(
 					array(
@@ -185,18 +187,41 @@ class Home extends CI_Controller {
 						'condition' => 'c.id = in1.course_id'
 					),
 					array(
-						'table' => TBL_USER_PROFILE_PICTURE.' pi',
-						'condition' => 'pi.user_id = u.id'
+						'table' => TBL_USER_PROFILE_PICTURE.' p',
+						'condition' => 'u.id = p.user_id'
 					),
-				)
+					array(
+						'table' => TBL_STUDYMATES_REQUEST.' sr',
+						'condition' => 'sr.request_from_mate_id='.$user_id.' and sr.request_to_mate_id = in1.user_id and sr.is_delete = 0'
+					),
+					
+				),
+		'group_by' => 'in1.user_id'
 			);
-		$data['suggested_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,pi.profile_link',$where,$options);
+		$data['suggested_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,p.profile_link,sr.id as srid,sr.is_delete',$where,$options);
 
 		$data['my_studymates'] = select(TBL_USERS.' u',null,array('where_in'=>array('id'=>$my_studymates)));
 		
 		//--remove tagged user notification list as already seen
+
 		update(TBL_FEEDS_TAGGED_USER,array('user_id'=>$user_id),array('is_see'=>1));
 
+		//--Latest three notice sended via admin
+		$classroom_id = $this->session->userdata('user')['classroom_id'];
+		$role_id = $this->session->userdata('user')['role_id'];
+		$where  = "(v.classroom_id is null or v.classroom_id =".$classroom_id.") and n.is_delete = 0 and n.status='active'";
+		$option = array('join' => 
+					array(
+						array(
+							'table' => TBL_NOTICEBOARD.' n',
+							'condition' => 'v.notice_id = n.id'
+						)
+					),
+					'order_by' => 'v.id DESC',
+					'limit' => 3
+				);
+		$data['my_latest_notice'] = select(TBL_NOTICEBOARD_VIEWER.' v','n.notice_title,notice',$where,$option);
+		
 		$this->template->load('student/default','student/home_view',$data);
 	}
 

@@ -15,6 +15,7 @@ $url = uri_string();
         <base href="<?php echo base_url(); ?>" >
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">
         <!--custom css-->
+        <link href="assets/css/bootstrap-switch.css" rel="stylesheet">
         <link href="assets/css/ism_style.css" rel="stylesheet">
         <link href="assets/css/ism_admin_style.css" rel="stylesheet">
         <link href="assets/css/responsive.css" rel="stylesheet">
@@ -33,14 +34,20 @@ $url = uri_string();
         <!--fonts-->
         <link href='assets/css/fonts.css' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-        <link rel="stylesheet" href="assets/css/datepicker.css">
-
+        <link rel="stylesheet" href="assets/css/datepicker.css"> <!-- Bootstrap DatePicker CSS -->
+        <link rel="stylesheet" href="assets/css/bootstrap-timepicker.min.css"> <!-- Bootstrap TimePicker CSS -->
+    
         <script src="assets/js/jquery-1.11.3.min.js"></script>
         <script src="assets/js/jquery-ui.min.js"></script> <!-- jQuery UI JS -->
         <script src="assets/js/bootstrap.min.js"></script> <!-- Bootstap JS -->
         <script src="assets/js/select2.min.js"></script> <!-- Select2 JS -->
         <script src="assets/js/bootstrap-tagsinput.js"></script> <!-- Input Tagging Feature -->
+        <script src="assets/js/bootstrap-datepicker.js"></script>  <!-- Bootstrap DatePicker Script  -->
+        <script src="assets/js/bootstrap-timepicker.min.js"></script>  <!-- Bootstrap TimePicker Script  -->
         <script src="assets/js/ZeroClipboard.min.js"></script>  <!-- For Copy to Clipboard Functionality Refer:http://zeroclipboard.org/ -->
+        <script src="assets/js/bootbox.min.js"></script> <!-- Bootstrap Alert,Dialog Box Script  -->
+        <script src="assets/js/bootstrap-switch.js"></script>  <!-- Bootstrap Switch Script  -->
+        
 
         <!-- Highchart JS Start -->
         <script src="http://code.highcharts.com/highcharts.js"></script>
@@ -74,15 +81,15 @@ $url = uri_string();
                         <li><a href="#"><span class="icon icon_menu_home"></span> Home</a></li>
                         <li class="
                         <?php
-                        if (in_array($url, array('admin/exam', 'admin/exam/add'))) {
+                        if (in_array($url, array('admin/exam', 'admin/exam/add','admin/question/set'))) {
                             echo 'active';
                         }
                         ?>
                             dropdown">
                             <a href="Tutorial.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
                             <ul class="dropdown-menu">
-                                <li><a href="admin/question/set">Question Bank</a></li>
-                                <li><a href="admin/exam">Exams</a></li>
+                                <li <?php echo ($url == 'admin/question/set') ? 'class="active"' : ''; ?> ><a href="admin/question/set">Question Bank</a></li>
+                                <li <?php echo ($url == 'admin/exam') ? 'class="active"' : ''; ?>><a href="admin/exam">Exams</a></li>
                             </ul>
                         </li>
                         <li class="<?php
@@ -90,12 +97,14 @@ $url = uri_string();
                             echo 'active';
                         }
                         ?>" ><a href="admin/group"><span class="icon icon_menu_group"></span> Groups</a></li>
-                        <li><a href="#"><span class="icon icon_menu_organize"></span> Organize</a></li>
+                        <li><a href="admin/organize"><span class="icon icon_menu_organize"></span> Organize</a></li>
                         <li class="
                         <?php
                         if (in_array($url, array('admin/user', 'admin/topic/allocate',
                                     'admin/topic/lists', 'admin/school', 'admin/school/add',
-                                    'admin/classroom', 'admin/classroom/add'))) {
+                                    'admin/classroom', 'admin/classroom/add',
+                                    'admin/subject/lists', 'admin/subject/add_subject',
+                                ))) {
                             echo 'active';
                         } else {
 
@@ -103,50 +112,49 @@ $url = uri_string();
                                 echo 'active';
                             }
                         }
-
                         ?> dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 <span class="icon icon_menu_manage"></span> Manage
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Book</a></li>
-                                <li><a href="#">Auther</a></li>
-                                <li><a href="admin/school">School</a></li>                                
-                               <li class="dropdown sub_menu">
+                                <li <?php echo ($url == 'admin/books') ? 'class="active"' : ''; ?>><a href="admin/books">Book</a></li>
+                                <li <?php echo ($url == 'admin/author') ? 'class="active"' : ''; ?>><a href="admin/author">Author</a></li>
+                                <li <?php echo ($url == 'admin/school') ? 'class="active"' : ''; ?>><a href="admin/school">School</a></li>                                
+                                <li class="<?php echo ($url == 'admin/subjects/lists' || $url == 'admin/subjects/add_subject' ) ? 'active' : ''; ?> dropdown sub_menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Subjects</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="admin/subject/lists">List of Subjects</a></li>
-                                        <li><a href="admin/subject/add_subject">Add New Subject</a></li>
+                                        <li <?php echo ($url == 'admin/subjects/lists') ? 'class="active"' : ''; ?>><a href="admin/subject/lists">List of Subjects</a></li>
+                                        <li <?php echo ($url == 'admin/subjects/add_subject') ? 'class="active"' : ''; ?>><a href="admin/subject/add_subject">Add New Subject</a></li>
                                     </ul>
                                 </li>
-                                <li class="dropdown sub_menu">
+                                <li class="<?php echo ($url == 'admin/course/lists' || $url == 'admin/course/add_course' ) ? 'active' : ''; ?> dropdown sub_menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Courses</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="admin/course/lists">List of Courses</a></li>
-                                        <li><a href="admin/course/add_course">Add New Course</a></li>
+                                        <li <?php echo ($url == 'admin/course/lists') ? 'class="active"' : ''; ?>><a href="admin/course/lists">List of Courses</a></li>
+                                        <li <?php echo ($url == 'admin/course/add_course') ? 'class="active"' : ''; ?>><a href="admin/course/add_course">Add New Course</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="admin/classroom">Classroom</a></li>
-                                <li><a href="#">Badges</a></li>
-                                <li><a href="admin/user">User</a></li>
-                                <li class="dropdown sub_menu">
+                                <li <?php echo ($url == 'admin/classroom') ? 'class="active"' : ''; ?>><a href="admin/classroom">Classroom</a></li>
+                                <li <?php echo ($url == 'admin/badges') ? 'class="active"' : ''; ?>><a href="admin/badges">Badges</a></li>
+                                <li <?php echo ($url == 'admin/user') ? 'class="active"' : ''; ?>><a href="admin/user">User</a></li>
+                                <li class="<?php echo ($url == 'admin/topic/allocate' || $url == 'admin/topic/lists' || $url == 'admin/topic/add') ? 'active' : ''; ?> dropdown sub_menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Topics</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="admin/topic/allocate">Allocate Topics</a></li>
-                                        <li><a href="admin/topic/lists">List of Topics</a></li>
-                                        <li><a href="admin/topic/add">Add New Topic</a></li>
+                                        <li <?php echo ($url == 'admin/topic/allocate') ? 'class="active"' : ''; ?>><a href="admin/topic/allocate">Allocate Topics</a></li>
+                                        <li <?php echo ($url == 'admin/topic/lists') ? 'class="active"' : ''; ?>><a href="admin/topic/lists">List of Topics</a></li>
+                                        <li <?php echo ($url == 'admin/topic/add') ? 'class="active"' : ''; ?>><a href="admin/topic/add">Add New Topic</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
                         <li><a href="#"><span class="icon icon_menu_report"></span> Reports</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                    <!-- <ul class="nav navbar-nav navbar-right">
                         <li><a class="" href="#"><span class="icon icon_search"></span></a></li>
                         <li><a class="" href="#"><span class="icon icon_grid"></span></a></li>
                         <li><a class="" href="#"><span class="icon icon_list"></span></a></li>
                         <li><a class="" href="#"><span class="icon icon_refresh"></span></a></li>
-                    </ul>
+                    </ul> -->
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
@@ -164,7 +172,7 @@ $url = uri_string();
                     <!--notification-->
                     <ul class="three_tabs">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span><span class="badge bell_badge">03</span></a>
+                            <a href="admin/notifications" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span><span class="badge bell_badge">03</span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">
                                         <div class="user_small_img"><img src="assets/images/user2.jpg"></div>
@@ -200,30 +208,30 @@ $url = uri_string();
                                     </a></li>
                             </ul>
                         </li>
-                        <li><a href="#"><span class="icon icon_message"></span><span class="badge message_badge">12</span></a></li>
+                        <li><a href="admin/messages"><span class="icon icon_message"></span><span class="badge message_badge">12</span></a></li>
 
                     </ul>
                     <!--//notification-->
 
                     <ul class="personal_menu">
                         <li>
-                            <a href="#"><span class="icon icon_feed"></span>Feeds</a>
+                            <a href="admin/feeds"><span class="icon icon_feed"></span>Feeds</a>
                         </li><!-- class="active"-->
                         <li>
-                            <a href="#"><span class="icon icon_spam"></span>Spam<span class="badge message_badge">12</span></a>
+                            <a href="admin/spam"><span class="icon icon_spam"></span>Spam<span class="badge message_badge">12</span></a>
                         </li>
                         <li>
-                            <a href="#"><span class="icon icon_banner"></span>Banners</a>
+                            <a href="admin/banners"><span class="icon icon_banner"></span>Banners</a>
                         </li>                   
                         <li class="<?php
-                        if (in_array($url, array('admin/notice', 'admin/notice/index'))) {
-                            echo 'active';
-                        }
+                            if (in_array($url, array('admin/notice', 'admin/notice/index'))) {
+                                echo 'active';
+                            }
                         ?>">
                             <a href="admin/notice"><span class="icon icon_notice"></span>Notice Board</a>
                         </li>
                         <li>
-                            <a href="#"><span class="icon icon_ques"></span>Questionaries</a>
+                            <a href="admin/questionaries"><span class="icon icon_ques"></span>Questionaries</a>
                         </li>
                         <li class="<?php
                         if (in_array($url, array('admin/auto_generated_credentials'))) {
@@ -432,17 +440,65 @@ $url = uri_string();
 
 
         <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script src="assets/js/bootstrap-datepicker.js"></script> 
+
 
         <script type="text/javascript">
+
+            $(function () {
+                $('[data-toggle="popover"]').popover();
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+
+
+                //  jQuery(document).ready(function(){
+            
+                // jQuery('.exam_year .icon_option_dark').click(function(){
+                //     if(jQuery(this).parent().children('.popover').css('display')=='block'){
+                //         jQuery(this).parent().children('.popover').css('display','none');
+                //     }
+                //     else{
+                //         jQuery(this).parent().children('.popover').css('display','block');
+                //     };
+                // });
+
+                // jQuery('.switch_btns .btn').click(function(){
+                //     if(jQuery(this).hasClass('no_btn')){
+                //         jQuery('.switch_btns .btn').removeClass('btn_red');                 
+                //         jQuery('.switch_btns .btn').addClass('no_btn');
+                //         jQuery(this).addClass('btn_red');
+                //         jQuery(this).removeClass('no_btn');                 
+                //     };
+                // });
+
+              
+            jQuery(document).ready(function () {
+                jQuery('.exam_year .icon_option_dark').click(function () {
+                    if (jQuery(this).parent().children('.popover').css('display') == 'block') {
+                        jQuery(this).parent().children('.popover').css('display', 'none');
+                    }
+                    else {
+                        jQuery(this).parent().children('.popover').css('display', 'block');
+                    }
+                    ;
+                });
+                jQuery('.switch_btns .btn').click(function () {
+                    if (jQuery(this).hasClass('no_btn')) {
+                        jQuery('.switch_btns .btn').removeClass('btn_red');
+                        jQuery('.switch_btns .btn').addClass('no_btn');
+                        jQuery(this).addClass('btn_red');
+                        jQuery(this).removeClass('no_btn');
+                    }
+                    ;
+                });
+            });
 
             $('#birthdate input').datepicker({
                 format: 'yyyy-mm-dd'
             });
 
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
+            // $(function () {
+                
+            // });
         </script>
 
     </body>

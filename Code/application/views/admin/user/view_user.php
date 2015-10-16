@@ -27,22 +27,22 @@
 	                </div>
 	                <div class="form-group">
 	                   <select class="form-control" name="course" onchange="filter_data()" id="course" >
-	                                <option value="">Select Course</option>
-	                                <?php 
-	                                  if(!empty($courses)){ 
-	                                    foreach($courses as $course) {
-	                                    ?>
-	                                    <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>  
-	                                <?php }  } ?>
-	                            </select>
+                            <option value="">Select Course</option>
+                            <?php 
+                              if(!empty($courses)){ 
+                                foreach($courses as $course) {
+                                ?>
+                                <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>  
+                            <?php }  } ?>
+                        </select>
 	                </div>
-	                <div class="form-group">
+	                <!-- <div class="form-group">
 	                    <select class="form-control" name="year" onchange="filter_data()" id="year">
 	                        <option value="">Select Year</option>
 	                        <option value="2015">2015</option>
 	                        <option value="2016">2016</option>
 	                    </select>
-	                </div>
+	                </div> -->
 	                <div class="form-group">
 	                    <select class="form-control" name="role" id="role" onchange="filter_data()">
                             <option value="">Select Role</option>
@@ -65,11 +65,11 @@
                             <?php }  } ?>
                         </select>
 	                </div>
-
-                    <!-- <div class="form-group">
-                        <input type="text" name="q" onkeyup="filter_data()" id="q" id="">
-                    </div> -->
-
+                    
+                    <div class="form-group no_effect search_input">
+                        <input type="text" name="q" id="q" class="form-control" placeholder="Type User Name." >
+                        <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                    </div>
 	            </div>
 	        </div>
             
@@ -135,8 +135,8 @@
                               
                               <td class="username">
                                   <div class="chat_img_holder">
-                                        <img src="<?php echo base_url().'assets'; ?>/uploads/$user['profile_link']"
-                                        onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                        <img src="<?php echo base_url().'uploads/'.$user['profile_link']; ?>"
+                                       onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                   </div>
                                   <h4><?php echo ucfirst($user['username']); ?></h4>
                                   <?php if($user['user_status']=='active'){ 
@@ -151,20 +151,28 @@
                               <td> <?php echo ucfirst($user['city_name']); ?> </td>
                               <td><?php echo ucfirst($user['role_name']); ?></td>
                               <td>
-                                  <a href="#" class="icon icon_timeline" data-toggle="tooltip" data-placement="bottom" title="Timeline"></a>
-                                  <a href="#" class="icon icon_books" data-toggle="tooltip" data-placement="bottom" title="Books"></a>
-                                  <a href="admin/user/activity/<?php echo $user['id'];?>" class="icon icon_performance" data-toggle="tooltip" data-placement="bottom" title="Performance"></a>
+                                  <a href="admin/user/activity/<?php echo $user['id'];?>" class="icon icon_timeline" data-toggle="tooltip" data-placement="bottom" title="Timeline"></a>
+                                  <a href="admin/user/books" class="icon icon_books" data-toggle="tooltip" data-placement="bottom" title="Books"></a>
+                                  <a href="admin/user/performance" class="icon icon_performance" data-toggle="tooltip" data-placement="bottom" title="Performance"></a>
+
                                   <?php if($user['user_status'] == 'blocked') { ?>  
                                   <a href="<?php echo base_url().'admin/user/active/'.$user['id']; ?>" 
-                                    onclick="return confirm('Activate User ?');" class="icon icon_user" data-toggle="tooltip" data-placement="bottom" title="Active" ></a>
+                                    onclick="return active_user(this.href,event)" class="icon icon_user" data-toggle="tooltip" data-placement="bottom" title="Active" ></a>
                                   <?php }else{ ?>   
-                                  <a href="<?php echo base_url().'admin/user/blocked/'.$user['id']; ?>" 
-                                    onclick="return confirm('Blocked User ?');" class="icon icon_blockuser" data-toggle="tooltip" data-placement="bottom" title="Block"></a>  
+                                  <a href="<?php echo base_url().'admin/user/blocked/'.$user['id']; ?>" onclick="return block_user(this.href,event)"
+                                     class="icon icon_blockuser" data-toggle="tooltip" data-placement="bottom" title="Block"></a>  
                                   <?php } ?>
-                                  <a href="#" class="icon icon_mail" data-toggle="tooltip" data-placement="bottom"  
-                                  data-toggle="tooltip" data-placement="bottom" title="Mail"></a>
+
+
+                                  <a href="#" class="icon icon_mail" data-toggle="tooltip" data-placement="bottom" title="Mail"></a>
+
+
+                                  <!-- <a href="#" class="icon icon_mail" data-toggle="tooltip" data-placement="bottom"  
+                                  data-toggle="tooltip" data-placement="bottom" title="Mail"></a> -->
+
                                   <a href="<?php echo base_url().'admin/user/send_message/'.$user['id']; ?>" class="icon icon_chat" 
                                     data-toggle="tooltip" data-placement="bottom" title="Message"></a>
+
                                   <a href="<?php echo base_url().'admin/user/update/'.$user['id']; ?>" class="icon icon_edit"
                                     data-toggle="tooltip" data-placement="bottom" title="Edit"> </a>
                               </td>
@@ -191,7 +199,29 @@
     <!--//main-->
 
 <script type="text/javascript">
-	
+    
+    function block_user(href,event){
+         event.preventDefault();
+         bootbox.confirm("Block User?", function(confirmed) {
+            
+            if(confirmed){
+                window.location.href=href;
+            }
+            
+        });
+    } 
+
+    function active_user(href,event){
+         event.preventDefault();
+         bootbox.confirm("Activate User?", function(confirmed) {
+            
+            if(confirmed){
+                window.location.href=href;
+            }
+            
+        });
+    } 
+
     function filter_data(){
     	
     	var role = $('#role').val();
@@ -206,11 +236,29 @@
     	if(year == '' ){ $('#year').removeAttr('name'); }
     	if(course == '' ){ $('#course').removeAttr('name'); }
     	if(classroom == ''){ $('#classroom').removeAttr('name'); }
-        //if(q == ''){ $('#q').removeAttr('name');}else{  setTimeout(function() { $('#filter').submit(); }, 1000); }
+        if(q == ''){ $('#q').removeAttr('name');}
 
     	$('#filter').submit();
     }
 
+    $( "#filter" ).submit(function( event ) {
+      
+        var role = $('#role').val();
+        var school = $('#school').val();
+        var year = $('#year').val();
+        var course = $('#course').val();
+        var classroom = $('#classroom').val();
+        var q = $('#q').val();
+
+        if(role == '' ){ $('#role').removeAttr('name'); }
+        if(school == '' ){ $('#school').removeAttr('name'); }
+        if(year == '' ){ $('#year').removeAttr('name'); }
+        if(course == '' ){ $('#course').removeAttr('name'); }
+        if(classroom == ''){ $('#classroom').removeAttr('name'); }
+        if(q == ''){ $('#q').removeAttr('name');}
+        
+    });
+    
 
 	<?php if(!empty($_GET['role'])) { ?>
 		$('#role').val('<?php echo $_GET["role"];?>');	

@@ -60,6 +60,20 @@ $route['admin/dashboard'] = "admin/dashboard/dashboard";
 $route['admin/auto_generated_credentials'] = "admin/dashboard/auto_generated_credentials";
 $route['admin/logout'] = "admin/dashboard/logout"; 
 
+//routs for next phase
+$route['admin/feeds'] = "admin/topic/next_phase";
+$route['admin/spam'] = "admin/topic/next_phase";
+$route['admin/banners'] = "admin/topic/next_phase";
+$route['admin/books'] = "admin/topic/next_phase";
+$route['admin/organize'] = "admin/topic/next_phase";
+$route['admin/author'] = "admin/topic/next_phase";
+$route['admin/badges'] = "admin/topic/next_phase";
+$route['admin/questionaries'] = "admin/topic/next_phase";
+$route['admin/notifications'] = "admin/topic/next_phase";
+$route['admin/messages'] = "admin/topic/next_phase";
+$route['admin/user/performance'] = "admin/topic/next_phase";
+$route['admin/user/books'] = "admin/topic/next_phase";
+
 $route['admin/(:any)'] = "admin/$1"; 
 $route['admin/(:any)/(:any)'] = "admin/$1/$2"; 
 $route['admin/(:any)/(:any)/(:any)'] = "admin/$1/$2/$3"; 

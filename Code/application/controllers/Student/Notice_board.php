@@ -57,11 +57,12 @@ class Notice_board extends ISM_Controller {
 		// echo $page;
 		// exit;
 		$classroom_id 	=	$this->session->userdata('user')['classroom_id'];
+		$role_id 	=	$this->session->userdata('user')['role_id'];
 		// p($id,TRUE);
 		if($txt_search != '')
-			$where 	= 	"(nv.classroom_id is null or nv.classroom_id =".$classroom_id.") and n.is_delete = 0 and (n.notice_title like '%".$txt_search."%' or n.notice like '%".$txt_search."%')";
+			$where 	= 	"(nv.classroom_id is null or nv.classroom_id =".$classroom_id.") and n.is_delete = 0 and n.status='active' and nv.role_id = ".$role_id." and (n.notice_title like '%".$txt_search."%' or n.notice like '%".$txt_search."%')";
 		else
-			$where 	= 	"(nv.classroom_id is null or nv.classroom_id =".$classroom_id.") and n.is_delete = 0";
+			$where 	= 	"(nv.classroom_id is null or nv.classroom_id =".$classroom_id.") and n.is_delete = 0 and n.status='active' and nv.role_id =".$role_id;
 		$option	=	array('join' => 
 							array(
 								array(

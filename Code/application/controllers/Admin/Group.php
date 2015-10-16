@@ -153,7 +153,6 @@ class Group extends ADMIN_Controller {
                 )
         );
 
-        //p($this->data['all_groups'],true);	
         //fetch all data of group right joins with tutorial group members
         $this->data['all_groups_members'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUP_MEMBER . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.id as gid,' .
                 TBL_USERS . '.username,' . TBL_SCHOOLS . '.school_name,' . TBL_CLASSROOMS . '.class_name,' . TBL_USER_PROFILE_PICTURE . '.profile_link,' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id', FALSE, array(
@@ -180,16 +179,14 @@ class Group extends ADMIN_Controller {
                 ),
                 array(
                     'table' => TBL_USER_PROFILE_PICTURE,
-                    'condition' => TBL_USER_PROFILE_PICTURE . '.id=' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id'
+                    'condition' => TBL_USER_PROFILE_PICTURE . '.user_id=' . TBL_USERS . '.id'
                 )
             )
                 )
         );
 
         $this->pagination->initialize($config);
-
         $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => FALSE)), array('limit' => 10));
-
         $this->template->load('admin/default', 'admin/group/view_group', $this->data);
     }
 
@@ -300,10 +297,11 @@ class Group extends ADMIN_Controller {
      * 'blocked' and redirect to user listing page
      *
      * */
+
     public function blocked($id) {
-        update(TBL_USERS, $id, array('user_status' => 'blocked', 'modified_date' => date('Y-m-d H:i:s', time())));
-        $this->session->set_flashdata('success', 'User is Successfully Blocked.');
-        redirect('admin/user');
+        update(TBL_TUTORIAL_GROUPS, $id, array('group_status' => 'blocked', 'modified_date' => date('Y-m-d H:i:s', time())));
+        $this->session->set_flashdata('success', 'Group is Successfully Blocked.');
+        redirect('admin/group');
     }
 
     /**
@@ -312,9 +310,9 @@ class Group extends ADMIN_Controller {
      *
      * */
     public function active($id) {
-        update(TBL_USERS, $id, array('user_status' => 'active', 'modified_date' => date('Y-m-d H:i:s', time())));
-        $this->session->set_flashdata('success', 'User is Successfully Activated.');
-        redirect('admin/user');
+         update(TBL_TUTORIAL_GROUPS, $id, array('group_status' => 'active', 'modified_date' => date('Y-m-d H:i:s', time())));
+        $this->session->set_flashdata('success', 'Group is Successfully Blocked.');
+        redirect('admin/group');
     }
 
     /**

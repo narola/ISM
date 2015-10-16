@@ -24,7 +24,7 @@ class My_exam extends ISM_Controller {
 		$classroom_id = $user_data['classroom_id'];
 		$user_id = $user_data['id'];
 
-		$where	=	array('where' => array('c.course_id' => $course_id,'c.classroom_id' => $classroom_id));
+		$where	=	array('where' => array('c.classroom_id' => $classroom_id));
 		$option	= 	array('join' => 
 						array(
 							array(
@@ -32,18 +32,16 @@ class My_exam extends ISM_Controller {
 								'condition'	=>  's.id = c.subject_id'
 							),
 							array(
-								'table' => '(select e.subject_id,count(*) as cnt from exams e left join student_exam_score sc on e.id = sc.exam_id where sc.user_id = 138) st',
+								'table' => '(select e.subject_id,count(*) as cnt,TRUNCATE((sc.correct_answers * 100) / (select count(*) as totquestion from exam_question where exam_id = e.id),2) as percentage from '.TBL_EXAMS.' e left join '.TBL_STUDENT_EXAM_SCORE.' sc on e.id = sc.exam_id where sc.user_id = '.$user_id.' and e.is_delete = 0) st',
 								'condition' => 'st.subject_id = s.id'
 							)
 						)
 					);
-		$data['subject_list'] = select(TBL_COURSE_SUBJECT.' c','s.id,s.subject_name,st.cnt',$where,$option);
-		// qry();		
+		$data['subject_list'] = select(TBL_COURSE_SUBJECT.' c','s.id,s.subject_name,st.cnt,st.percentage',$where,$option);
+		// qry();
+		// p($data['subject_list'],TRUE);
 
-		// p($data['subject_list'],true);
-		/*---get my exam list---*/
-
-		$where = array('where'=>array('e.classroom_id' => $classroom_id,'sc.exam_status'=>'finished','sc.user_id'=>$user_id));
+		$where = array('where'=>array('e.classroom_id' => $classroom_id,'sc.exam_status'=>'finished','sc.user_id'=>$user_id,'sc.is_delete' => 0,'e.is_delete' => 0));
 		$option =  array( 'join' =>
 						array(
 							array(

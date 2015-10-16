@@ -17,6 +17,17 @@
         }
 
     });
+
+    $(document).on('click','a[data-type="tag-again"]',function(e){
+        
+        show = $('#all_feed .box div[data-id="'+$(this).data('id')+'"]').is(":visible"); 
+        
+        if(show)
+            $('#all_feed .box div[data-id="'+$(this).data('id')+'"]').hide();
+        else
+            $('#all_feed .box div[data-id="'+$(this).data('id')+'"]').show();
+    });
+
     $('#element').popover('show');
 
         
@@ -36,7 +47,7 @@
  <!--main-->
 <div class="col-sm-7 main">
     <div class="box">
-        <textarea id="feed_post" type="text" class="form-control post_input" placeholder="SAY IT" ></textarea>
+        <textarea id="feed_post" type="text" class="form-control post_input" placeholder="SAY IT"></textarea>
         <a href="#" class="icon icon_emoji"></a>
         <div class="form-group" id="tag-box">
             <div id="tagged-users" style="margin-bottom:10px;">
@@ -57,7 +68,9 @@
             </div>
         </div>
         <div class="box_header">
-            <a href="javascript:void(0);" class="icon icon_pin"><input  id="feed_file_share" type="file" data-id="feed"></a>
+            <a href="javascript:void(0);" class="icon icon_pin">
+                <input  id="feed_file_share" type="file" data-id="feed">
+            </a>
             <div class="dropdown" style="display: inline-block;">
                 <a href="javascript:void(0);" id="show-tag-user" class="dropdown-toggle icon icon_user" aria-haspopup="true" aria-expanded="true"><span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -77,7 +90,7 @@
                 $j = 1;
                 foreach ($feed as $key => $value) {
         ?>
-                <div class="box feeds" data-id="<?php echo $value['fid']; ?>">
+                <div class="box feeds" data-id="<?php echo $value['fid'];?>">
                     <div class="user_small_img">
                         <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                     </div>
@@ -101,11 +114,12 @@
                                             }
                                             else{
                                                 echo 'and <label class="label label_name">'.$t_value['full_name'].'</label>';
-                                            }   
+                                            } 
+                                            $t_j++;  
                                         }
                                         if($t_count > 2){
                                             if($t_i == 0){
-                                                echo '&nbsp;with <label class="label label_name">'.$t_value['full_name'].'</label>';   
+                                                echo '&nbsp;with<label class="label label_name">'.$t_value['full_name'].'</label>';   
                                             }
                                             else{
                                                 $l = $t_count - 1;
@@ -142,7 +156,7 @@
                             <span><?php echo $value['tot_comment'];?></span></a>
                         <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
                         <div class="dropdown tag_user" style="display: inline-block;">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="<?php echo $value['fid'];?>" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Emma Mall</a></li>
                                 <li><a href="#">Gill Christ</a></li>
@@ -150,7 +164,19 @@
                             </ul>
                         </div>
                     </div>
-                
+                    <div style="float:right;display:none;" id="show-again" data-id="<?php echo $value['fid'];?>">
+                        <select style="width:200px;"name="all_users[]" id="select-tag-user" class="js-example-basic-single form-control" multiple="multiple">
+                            <?php
+                            if(!empty($my_studymates)) {
+                                foreach($my_studymates as $list){
+                                 ?>
+                                    <option value="<?php echo $list['id'] ?>">
+                                        <?php echo ucfirst($list['full_name']); ?>
+                                    </option> 
+                            <?php } } ?>
+                        </select>
+                        <a href="">Tag New</a>
+                    </div>
                     <div class="clearfix"></div>
                     <!--comment-->
                     <div id="feed_comments">
@@ -217,20 +243,37 @@
     
       <!-- Wrapper for slides -->
       <div class="carousel-inner" role="listbox">
+        <?php 
+            if(isset($my_latest_notice) && sizeof($my_latest_notice)>0){
+                $i = 0;
+                foreach ($my_latest_notice as $key => $value) {
+                    if($i == 0){
+                        echo '<div class="item active">';
+                    }
+                    else{
+                        echo '<div class="item">';
+                    }
+        ?>
+            <img src="<?php echo base_url();?>assets/images/blackboard.jpg" alt="blackboard">
+                <div class="carousel-caption">
+                    <p class="noti_username"><?php echo $value['notice_title'];?></p>
+                    <p style="color:#fff;font-size:small;"><?php echo $value['notice'];?><br><span style="float:right">-ISM Admin</span></p>
+                </div>
+            </div>
+        <?php
+                $i++;
+                }
+            }
+            else{
+        ?>
         <div class="item active">
           <img src="<?php echo base_url();?>assets/images/blackboard.jpg" alt="blackboard">
           <div class="carousel-caption">
-            <p class="noti_username">TEST BANNER</p>
-            <p style="color:#fff;">for Notice & ISM Ads</p>
+            <p class="noti_username">No notice for you</p>
+            <p style="color:#fff;font-size:large">- ISM Admin,  </p>
           </div>
         </div>
-        <div class="item">
-          <img src="<?php echo base_url();?>assets/images/blackboard.jpg" alt="blackboard">
-          <div class="carousel-caption">
-            <p class="noti_username">TEST BANNER</p>
-            <p style="color:#fff;">for Notice & ISM Ads</p>
-          </div>
-        </div>
+        <?php } ?>
       </div>
     
       <!-- Controls -->
@@ -395,7 +438,11 @@
                                         <p>Live in Ghana</p>
                                         <p>Student from <?php echo $value['school_name'];?></p>
                                         <p><?php echo $value['course_name'];?></p>
-                                        <button class="btn btn_green">Add Studymates</button>
+                                        <?php if($value['srid'] != '' && $value['is_delete'] == 0){?>
+                                        <button class="btn btn_black_normal" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>" disabled>Request Already Sent</button>
+                                        <?php }else{ ?>
+                                        <button class="btn btn_green" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>">Add Studymates</button>
+                                        <?php } ?>
                                     </div>
                                 </div>
                                 <!--//card-->
