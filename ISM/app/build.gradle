@@ -17,6 +17,13 @@ android {
         }
     }
     productFlavors {
+        teacher_module {
+            minSdkVersion 21
+            applicationId 'com.ism.teacher'
+            targetSdkVersion 23
+            versionCode 1
+            versionName '1.0'
+        }
     }
 }
 
