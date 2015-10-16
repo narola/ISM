@@ -1,6 +1,3 @@
-
-
-
 /* Exam time information and notification. */
 var exam_time_to_start;
 var exam_total_active_time;
@@ -13,6 +10,14 @@ function exam_started_timer()
 {
   exam_time_to_left = exam_time_to_left - 1;
   console.log("Exam remaing time: "+exam_time_to_left);
+  if($('.clock_wrapper .clock .clock_block h1').length > 1){
+        var x = toHHMMSS(exam_time_to_left);
+        var res = x.split(":");
+        console.log(res[1]);
+        $('.clock_wrapper .clock:nth-child(1) .clock_block h1').html(res[0]);
+        $('.clock_wrapper .clock:nth-child(3) .clock_block h1').html(res[1]);
+
+   }
   if(exam_time_to_left >= 0 && $('#exam_status').length > 0){
             $('#exam_status h4[data-type="exam_sts_msg"] span:nth-child(1)').html('Exam will finish within : ');
             $('#exam_status h4[data-type="exam_sts_msg"] span:nth-child(2)').html(toHHMMSS(exam_time_to_left));
@@ -72,6 +77,7 @@ function exam_will_start_timer()
      $(".alert_notification").show().delay(5000).fadeOut();
   }else if (exam_time_to_start <= 0)
   { 
+    $('button[data-type="exam_start_request"]').removeAttr('disabled');
     $(".alert_notification p").html("<b>Exam time Started..</b>");
     $(".alert_notification").show().delay(5000).fadeOut();
     
@@ -452,8 +458,7 @@ if ("WebSocket" in window)
             {
                 $('#my_request_box').html('<div class="study_mate"><h3>No more studymate request</h3></div>');
             }    
-        }
-        else if(obj.type == 'get_studymate_name'){
+        }else if(obj.type == 'get_studymate_name'){
             var i = 0;
             var j = 0;
             var k = 0;
@@ -499,8 +504,25 @@ if ("WebSocket" in window)
             });
             $('#tagged-users').html(str);
             $('#tagged-users-id').val(ids);
-        }
-        else if(obj.type == 'file_notification'){
+        }else if(obj.type == 'file_notification'){
+        }else if(obj.type == 'question_responce'){
+          
+          $('button[data-type="clear_responce"]').removeAttr('disabled');
+          $('button[data-type="question_responce"]').removeAttr('disabled');
+        }else if(obj.type == 'get_question'){
+          $('#q_no').html(obj.qno);
+          $('button[data-type="question_responce"]').attr('data-id',obj.new_question.qid);
+          $('#time_spent').html('00:00');
+          $('.question.text-center p').html(obj.new_question.question);
+          $('.ans_options').html('');
+           $.each(obj.new_question.answer, function (index, list){
+            $('.ans_options').append('<label><input type="radio" name="option" data-id="'+list.id+'">'+list.choice+'</label>'); 
+         });
+
+        }else if(obj.type == 'exam_start_request'){
+            if(obj.exam_st == 'started'){
+              location.href = '/student/exam';
+            }
         }else {
             alert('Message Not Catched!!');
         }
@@ -857,7 +879,7 @@ $(document).on('click','a[data-type="feed-like"]',function(e){
 });
 
 /* Weekday scroll in tutorial group. */
-$(document).on('click','.tut_weekdays li a', function(e) {
+$(document).on('click','.tut_weekdays li a[data-type="s"]', function(e) {
     var nav = $(this).attr('href');
      e.preventDefault();
 if (nav.length) {
@@ -978,3 +1000,42 @@ $(document).on('click','button[data-type="exam_start_request"]',function(){
 
         ws.send(JSON.stringify(request));
 });
+
+/* Clear selection */
+$(document).on('click','button[data-type="clear_responce"]',function(){
+  exam_choice = 0;
+  $('.ans_options label input[name="option"]').attr('checked',false);
+});
+
+/* set answer */
+$(document).on('click','.ans_options label input[name="option"]',function(){
+    exam_choice = $(this).data('id');
+});
+
+/* Next question */
+$(document).on('click','button[data-type="question_responce"]',function(){
+  $('button[data-type="clear_responce"]').attr('disabled','disabled');
+  $('button[data-type="question_responce"]').attr('disabled','disabled');
+
+  var request = {
+    type : 'question_responce',
+    to   : 'self',
+    question: $(this).attr('data-id'),
+    answer : exam_choice,
+    status :$(this).attr('data-status')
+  }
+  
+  ws.send(JSON.stringify(request));
+});
+
+$(document).on('click','a[data-type="get_question"]',function(){
+  var request = {
+    type : 'get_question',
+    to   : 'self',
+    question_no: $(this).data('id'),
+    qno : $(this).data('no')
+  }
+ ws.send(JSON.stringify(request));
+
+});
+

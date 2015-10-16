@@ -33,8 +33,8 @@ class Tutorial extends ISM_Controller {
 			// Get Current week no.
 			$data['current_weekday'] = getdate()['wday'];
 			if($data['current_weekday'] >= 4){
-				//redirect('student/exam');
-				exit;
+				//redirect('student/exam-instruction');
+				//exit;
 			}
 			$date = new DateTime(date("Y-m-d H:i:s"));
 			$c_week = $date->format("W");
@@ -122,6 +122,7 @@ class Tutorial extends ISM_Controller {
 				}
 
 			}
+
 			$data['online'] = online();
 			// Get information of all group members
 			$data['member'] = select(
@@ -148,15 +149,10 @@ class Tutorial extends ISM_Controller {
 						)
 					)
 				);
-			 //p($data,true);
 			$this->template->load('student/default','student/tutorial_group',$data);
 	}
 		
-	/**
-	*	Attempt exam.
-	*   @autor Sandip Gopani
-	*/
-	public function exam(){
+	function exam_status(){
 		$data['menu'] = 'week';
 		$data['current_weekday'] = getdate()['wday'];
 		$data['user_id'] = $user_id = $this->session->userdata('user')['id'];
@@ -206,7 +202,7 @@ class Tutorial extends ISM_Controller {
 				'limit' => 1
 				)
 			);
-
+	   
 	    $current_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
 	    //$current_time = DateTime::createFromFormat('Y-m-d', date('Y-m-d H:i:s'));
 	    if(isset($data['exam']) && !empty($data['exam'])){
@@ -231,8 +227,98 @@ class Tutorial extends ISM_Controller {
 	    	$data['error'] = 'Exam or Topic is not allocated for current week!';
 	    }
 
+	    return $data;
+	}
+
+	/**
+	*	Attempt exam (Exam instruction).
+	*   @autor Sandip Gopani
+	*/
+	public function exam(){
+		$data = $this->exam_status();
+
 		$this->template->load('student/default','student/exam_instruction',$data);
 	}
 
+
+
+	function exam_start(){
+			
+
+		$data = $this->exam_status();
+		$data['user_id'] = $user_id = $this->session->userdata('user')['id'];
+		$data['hide_right_bar'] = true;	
+		$data['left_menu'] = false;
+
+		// Check score entry in DB
+		$count = select(
+			TBL_STUDENT_EXAM_SCORE. ' ss',
+			'ss.id',
+			"ss.user_id = '".$data['user_id']."' AND ss.exam_id = '".$data['exam']['exam_id']."'",
+			array('count' => true)
+			);
+		
+
+		if($data['exam_status'] != 1 || $count == 0){
+			redirect('student/exam-instruction');
+		}
+
+		if(isset($data['exam']['topic_id']) && isset($data['exam']['exam_id'])){
+			
+			$question_info = select(
+				TBL_STUDENT_EXAM_SCORE. ' ss',
+				'GROUP_CONCAT(eq.question_id) as question_id, count(eq.question_id) as total_question, (SELECT GROUP_CONCAT(`srq`.`question_id`) FROM '.TBL_STUDENT_EXAM_RESPONSE.' `srq` 
+					WHERE `srq`.`exam_id` = `ss`.`exam_id` AND `srq`.`user_id` = `ss`.`user_id`) as attemped_question',
+				array('where' => array('ss.exam_id' => $data['exam']['exam_id'],'ss.user_id' =>$data['user_id'] )),
+				array('join' => array(
+						array(
+						'table' => TBL_EXAM_QUESTION. ' eq',
+						'condition' => 'eq.exam_id = ss.exam_id'
+						)),
+				'single' => true
+					)
+			);
+			$data['attempted_question'] = select(TBL_STUDENT_EXAM_RESPONSE.' ser',
+				'ser.id,ser.question_id,ser.answer_status',
+				array('where' => array(
+					'ser.exam_id' => $data['exam']['exam_id'],
+					'ser.user_id' => $data['user_id'] ))
+				);
+			$new = explode(",",$question_info['question_id']);
+			$data['answered_question'] = explode(",",$question_info['attemped_question']);
+			$data['current_no'] = count($data['attempted_question']) + 1;
+
+			// Randomely stored question ids.
+			shuffle($new);
+			if(!$this->session->userdata('exam_question')){
+			 	$this->session->set_userdata('exam_question',$new);
+			}
+			$data['question_id'] = $this->session->userdata('exam_question');
+
+			/* Get random question */
+			$data['current_question'] = select(TBL_QUESTIONS. ' q',
+				'q.question_text,q.id',
+				'q.id = '.$data['question_id'][$data['current_no'] - 1].' ',
+				array('limit' => 1,
+				'single' => 1
+				)
+				);
+
+			/* Get Choises of current question */
+			$data['question_choices'] = array();
+			if(isset($data['current_question']) && !empty($data['current_question'])){
+			$data['question_choices'] = select(
+				TBL_ANSWER_CHOICES. ' ac',
+				'ac.id,ac.question_id,ac.choice_text',
+				'ac.question_id = '.$data['current_question']['id'],
+				array('order_by' => 'RAND()')
+				);
+			}
+		}else{
+			$data['error'] = 'Topic or Exam is not allocated for this week!';
+		}
+		// p($data,true);
+		$this->template->load('student/default','student/exam_question_answer',$data);
+	}
 
 }

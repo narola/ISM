@@ -188,4 +188,5 @@ define('TBL_TUTORIAL_GROUP_MEMBER_SCORE','tutorial_group_member_score');
 define('TBL_USERS','users');
 define('TBL_WORD_WATCH','word_watch');
 define('TBL_TUTORIAL_TOPIC_EXAM','tutorial_topic_exam');
+define('TBL_EXAM_QUESTION','exam_question');
 
