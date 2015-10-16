@@ -22,4 +22,8 @@
 	<string name="msg_end_test">End test?</string>
 	<string name="cancel">Cancel</string>
 	<string name="attend">Attend</string>
+	<string name="active_comments">Active Comments :</string>
+	<string name="my_score">My Score :</string>
+	<string name="correct_answers">Correct Answers :</string>
+	<string name="incorrect_answers">Incorrect Answers :</string>
 </resources>

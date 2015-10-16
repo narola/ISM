@@ -4,6 +4,7 @@
     <dimen name="d18sp">18sp</dimen>
     <dimen name="d20sp">20sp</dimen>
     <dimen name="exam_padding">20dp</dimen>
+    <dimen name="result_padding">20dp</dimen>
     <dimen name="button_margin_exam">7dp</dimen>
     <dimen name="button_padding_exam">20dp</dimen>
     <dimen name="button_height">42dp</dimen>

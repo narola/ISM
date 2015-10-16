@@ -2,9 +2,11 @@ package com.ism.exam.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ism.exam.R;
 import com.ism.exam.model.QuestionObjective;
@@ -19,6 +21,8 @@ public class ResultFragment extends Fragment {
 	private static final String TAG = ResultFragment.class.getSimpleName();
 
 	private View view;
+
+	private TextView txtScore;
 
 	private ArrayList<QuestionObjective> arrListQuestions;
 
@@ -42,6 +46,9 @@ public class ResultFragment extends Fragment {
 	}
 
 	private void initGlobal() {
+		txtScore = (TextView) view.findViewById(R.id.txt_score);
+
+		txtScore.setText(Html.fromHtml("<font color='#323941'>YOUR SCORE IS : </font><font color='#1BC4A2'>" + 75 + "%</font>"));
 
 	}
 

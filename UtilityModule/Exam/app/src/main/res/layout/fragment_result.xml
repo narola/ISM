@@ -1,11 +1,73 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             android:background="@color/color_graylight"
              tools:context="com.ism.exam.fragment.ResultFragment">
 
 	<TextView
+		android:id="@+id/txt_header"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"/>
+		android:layout_height="60dp"
+		android:background="@drawable/bg_exam_header"
+		android:padding="15dp"
+		android:textColor="@color/bg_app_dark"
+		android:textSize="@dimen/d18sp"/>
 
-</FrameLayout>
+	<TextView
+		android:id="@+id/txt_score"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/txt_header"
+		android:layout_marginTop="@dimen/exam_padding"
+		android:gravity="center"
+		android:textSize="40sp"/>
+
+	<LinearLayout
+		android:id="@+id/ll_instruct"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/txt_score"
+		android:layout_marginLeft="@dimen/result_padding"
+		android:layout_marginRight="@dimen/result_padding"
+		android:layout_marginTop="@dimen/exam_padding"
+		android:orientation="horizontal"
+		android:gravity="center"
+		android:weightSum="2">
+
+		<RelativeLayout
+			android:id="@+id/layout_score"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:background="@drawable/bgwhite_bordergray"
+			android:padding="1dp"
+			android:layout_marginRight="@dimen/result_padding">
+
+			<TextView
+				android:id="@+id/txt_correct"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@drawable/bg_white_border_bottom"
+				android:text="@string/correct_answers"
+				android:padding="10dp"/>
+
+			<TextView
+				android:id="@+id/txt_incorrect"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/txt_correct"
+				android:background="@drawable/bg_white_border_bottom"
+				android:text="@string/incorrect_answers"
+				android:padding="10dp"/>
+		</RelativeLayout>
+
+		<RelativeLayout
+			android:id="@+id/layout_graph"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"></RelativeLayout>
+
+	</LinearLayout>
+
+</RelativeLayout>
