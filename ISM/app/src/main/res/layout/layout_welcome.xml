@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/d30sp"
+        android:layout_margin="@dimen/d30dp"
         android:src="@drawable/welcomism" />
 
     <TextView
@@ -21,7 +21,7 @@
         android:id="@+id/txt_nameyourtutorial_"
         android:text="@string/strwelcomeline"
         android:textColor="@color/color_text_light_green"
-        android:textSize="@dimen/d30sp" />
+        android:textSize="@dimen/d30dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,11 +30,11 @@
         android:id="@+id/txt_andwill_"
         android:text="@string/strwelcomeline2"
         android:textColor="@color/color_text_light_green"
-        android:textSize="@dimen/d30sp" />
+        android:textSize="@dimen/d30dp" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/d70sp"
+        android:layout_margin="@dimen/d70dp"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
@@ -58,8 +58,8 @@
             android:layout_width="100sp"
             app:src="@drawable/loading3"
             android:id="@+id/gif_book"
-            android:padding="@dimen/d10sp"
-            android:layout_margin="@dimen/d10sp"
+            android:padding="@dimen/d10dp"
+            android:layout_margin="@dimen/d10dp"
             android:layout_height="100sp" />
         <LinearLayout
             android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
         android:id="@+id/txt_tutorialgroup_"
         android:text="@string/strtutorialgroupis5"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/d30sp" />
+        android:textSize="@dimen/d30dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -101,7 +101,7 @@
             android:id="@+id/txt_selected_"
             android:text="@string/strselectedstudentsputtogetherto"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/d30sp" />
+            android:textSize="@dimen/d30dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
             android:id="@+id/txt_shareideas"
             android:text="@string/strshareideas"
             android:textColor="#81D525"
-            android:textSize="@dimen/d30sp" />
+            android:textSize="@dimen/d30dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -126,7 +126,7 @@
             android:text="@string/strcollborate"
             android:id="@+id/txt_collaborate"
             android:textColor="#CC89EA"
-            android:textSize="@dimen/d30sp" />
+            android:textSize="@dimen/d30dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
             android:id="@+id/txt_and"
             android:layout_marginLeft="5sp"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/d30sp" />
+            android:textSize="@dimen/d30dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
             android:layout_marginLeft="5sp"
             android:text="@string/strdoassignments"
             android:textColor="#F5A438"
-            android:textSize="@dimen/d30sp" />
+            android:textSize="@dimen/d30dp" />
     </LinearLayout>
 
 </LinearLayout>
