@@ -21,7 +21,7 @@ class My_evaluation extends ISM_Controller {
 
 	public function index()
 	{
-		
+		$data = array();
 		$this->template->load('student/default','student/my_evaluation',$data);
 	}
 }
