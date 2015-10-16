@@ -99,14 +99,14 @@
             <div class="exams_holder">
             	<div class="exam_year">
                 	<p>Year : <span>Second Year CS</span></p>
-                    <a href="#" class="icon icon_option_dark"></a>
+                    <a style="cursor:pointer;" class="icon icon_option_dark"></a>
                     <div class="popover right" role="tooltip">
                         <div class="arrow"></div>
                         <div class="popover-content">
                             <ul>
                                 <li><a href="#">Copy Exam</a></li>
                                 <li><a href="#">View Details</a></li>
-                                <li><a href="#">Edit Exam</a></li>
+                                <li><a href="admin/exam/update/<?php echo $exam['id']; ?>">Edit Exam</a></li>
                             </ul>
                         </div>
                     </div>                                

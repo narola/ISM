@@ -8,8 +8,8 @@ class Exam extends ADMIN_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		//Load Dependencies
-
+		$this->data['cur_url'] = $this->session->userdata('cur_url');
+		$this->data['prev_url'] = $this->session->userdata('prev_url');
 	}
 
 	// List all your items
@@ -156,7 +156,7 @@ class Exam extends ADMIN_Controller {
 			}else{	
 				$exam_type = 'topic';
 			}
-			p($_POST,true);
+
 			$exam_data=array(
 					'exam_name'=>$this->input->post('exam_name'),
 					'classroom_id'=>$this->input->post('classroom_id'),
@@ -191,9 +191,9 @@ class Exam extends ADMIN_Controller {
 	}
 
 	//Update one item
-	public function update( $id = NULL )
-	{
+	public function update( $id = NULL ){
 
+		$this->template->load('admin/default','admin/exam/edit_exam',$this->data);	
 	}
 
 	//Delete one item

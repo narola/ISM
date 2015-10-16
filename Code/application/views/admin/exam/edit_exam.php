@@ -5,8 +5,8 @@
     	<div class="col-sm-12">
         	<ol class="breadcrumb">
               <li><a href="#">Assessment</a></li>
-              <li><a href="#">Exams</a></li>
-              <li class="active">Add Exam</li>
+              <li><a href="admin/exam">Exams</a></li>
+              <li class="active">Edit Exam</li>
             </ol>
         </div>
     </div>
@@ -158,7 +158,7 @@
                 <div class="col-sm-12 text-center btn_group">
                     <input type="hidden" value="save" name="button_type">
                 	<button class="btn btn_green" value="save">Save</button>
-                	<button class="btn btn_red" on value="set_question">Set Question</button>
+                	<button class="btn btn_red" value="set_question">Set Question</button>
                 	<a href="<?php echo $prev_url; ?>" class="btn btn_black_normal">Cancel</a>
                 </div>
                 <div class="clearfix"></div>
