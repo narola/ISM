@@ -740,7 +740,7 @@ class User extends ADMIN_Controller {
 		$data['my_activities']['post'] = select(TBL_FEEDS.' post',$select,$where,$options);
 		
 		$data['my_month'] = $date_array;
-		$this->template->load('admin/default','student/my_activities',$data);
+		$this->template->load('admin/default','admin/user/my_activities',$data);
 	}	
 			
 	// ---------------------------- User Module END --------------------------------------------
