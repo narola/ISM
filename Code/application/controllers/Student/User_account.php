@@ -308,7 +308,7 @@ class User_account extends CI_Controller {
 						$data = array('upload_data' => $this->upload->data());
 						$student_profile = "user_".$insertid.'/'.$data['upload_data']['file_name'];
 					}
-					crop(UPLOAD_URL.'/'.$student_profile,150,150);
+					crop(UPLOAD_URL.'/'.$student_profile,200,200);
 				}
 
 				/*-----------user profile pic detail--------------*/

@@ -23,14 +23,14 @@
                             if(isset($my_exam) && sizeof($my_exam)>0 && $value['cnt'] > 0){
                                 foreach ($my_exam as $key => $e_value){ 
                                     if($e_value['id'] == $value['id']){ ?>
-                                        <li><a href="#">
+                                        <li><a href="student/my_scoreboard/index/<?php echo $value['id'];?>">
                                         <?php 
                                             if(strlen($e_value['exam_name']) > 30)
                                                 echo substr($e_value['exam_name'],0, 30).'.....';
                                             else
                                                 echo $e_value['exam_name'];
                                         ?>  
-                                        <span class="result">88%</span></a>
+                                        <span class="result"><?php echo $value['percentage'];?>%</span></a>
                                         </li>
                                     <?php }
                                 } 

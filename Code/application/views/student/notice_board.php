@@ -56,10 +56,7 @@
                         <p><?php echo $value['notice'];?></p>
                     </div>
                     <div class="col-sm-12">
-                        <span class="label label_name">Adam Ross</span>
-                        <span class="label label_name">John Stranger</span>
-                        <span class="label label_name">Ron Weasley</span>   
-                        <a href="#" class="more_tagged">12 more</a> 
+                       
                         <a href="#" class="fa fa-angle-double-down"></a>                            
                     </div>
                 </div>                            

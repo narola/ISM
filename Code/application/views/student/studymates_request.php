@@ -128,7 +128,7 @@
         }
         else{
             ?>
-            <div class="study_mate"><h3>No more studymate request</h3></div>
+            <div class="study_mate"><h4>No more studymate request</h4></div>
         <?php
         } 
         ?>

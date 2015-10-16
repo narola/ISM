@@ -454,6 +454,8 @@ if ("WebSocket" in window)
             }    
         }
         else if(obj.type == 'get_studymate_name'){
+          $("#tagged-users").show();
+
             var i = 0;
             var j = 0;
             var k = 0;
@@ -463,15 +465,15 @@ if ("WebSocket" in window)
             len = obj.student_detail.length;
             $.each(obj.student_detail, function (index, list) {
                 if(len == 1){
-                    str += '<b>with</b> : <label class="label label_name"><a href="#">'+ list.name + '</a></label>';
+                    str += '&nbsp;with : <label class="label label_name">'+ list.name + '</label>';
                     ids += list.id;
                 }
                 else if(len == 2){
                     if(i == 0){
-                        str += 'with <label class="label label_name"><a href="#">'+list.name +'</a></label>';
+                        str += '&nbsp;with <label class="label label_name">'+list.name +'</label>';
                         ids += list.id;
                     }else{
-                        str += 'and <label class="label label_name"><a href="#">'+list.name +'</a></label>';
+                        str += '&nbsp;and <label class="label label_name">'+list.name +'</label>';
                         ids += ','+list.id;
                     }
                     i++;
@@ -479,7 +481,7 @@ if ("WebSocket" in window)
                 else if(len > 2){
                     
                     if(j == 0){
-                        str += 'with <label class="label label_name"><a href="#" >'+list.name +'</a></label>';
+                        str += '&nbsp;with <label class="label label_name">'+list.name +'</label>';
                         ids += list.id;
                     }else{
                         other_name += list.name+'<div class=\'clearfix\'></div>';
@@ -624,6 +626,8 @@ $(document).on('click','button[data-type="post"]',function(){
         ws.send(JSON.stringify(request));
         $('#feed_post').val('');
         $('#selection-box').hide();
+        $(".js-example-basic-single").select2("val","");
+        $("#tagged-users").hide();
         $('#tag_or_not').val('no'); 
     }
 });
