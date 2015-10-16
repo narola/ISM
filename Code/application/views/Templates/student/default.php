@@ -34,6 +34,7 @@
     </script>-->
     <script>
     var wp = "<?php echo $this->session->userdata('user')['id']; ?>";
+    var exam_choice = 0;
     var start_timer = false;
     var is_exam_finished = false;
     <?php if(isset($exam_status) && $exam_status == 2){
@@ -50,12 +51,13 @@ function toHHMMSS (sec) {
     var hours   = Math.floor(sec_num / 3600);
     var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
     var seconds = sec_num - (hours * 3600) - (minutes * 60);
+    var x = parseInt(minutes += (parseInt(hours*60)));
 
     if (hours   < 10) {hours   = "0"+hours;}
     if (minutes < 10) {minutes = "0"+minutes;}
     if (seconds < 10) {seconds = "0"+seconds;}
-
-    var time  = hours+':'+minutes+':'+seconds;
+    if (x < 10) {x = "0"+x;}
+    var time  = x+':'+seconds;
     return time;
 }
     </script>
@@ -141,6 +143,7 @@ function toHHMMSS (sec) {
     <!--body-->
     <div class="container-fluid">
         <div class="row">
+            <?php if(!isset($left_menu)){ ?>
             <!--side left-->
             <div class="sidebar_left_container text-center mCustomScrollbar" data-mcs-theme="minimal"><!-- scrollbar" id="style-3-->
                 <div class="user_profile_img">
@@ -217,19 +220,21 @@ function toHHMMSS (sec) {
                         <ul class="tut_weekdays">
                         <?php
                             foreach ($weekday as $key => $value) {
+                            $d = '';
                             if($key <= 5 ){
                                 $url = 'javascript:void(0);';
                                 $active = '';
-                               if($key+1 <= $current_weekday){
+                               if($key+1 <= 3){
+                                $d = 'data-type="s"';
                                  $url = '#'.$value;
                                }else{
-
+                                    $url = "/student/exam-instruction";
                                }
                                if($key+1 == $current_weekday){
                                 $active = 'class="active"';
                                }
                                
-                               echo '<li><a href="'.$url.'" '.$active.'>'.$value.'</a></li>';
+                               echo '<li><a '.$d.' href="'.$url.'" '.$active.'>'.$value.'</a></li>';
                                 }
                             }
 
@@ -260,7 +265,7 @@ function toHHMMSS (sec) {
                 <p class="copyright">©2015 ISM | All Rights Reserved.</p>
             </div>
             <!--//side left-->
-            <?php echo $body; ?>
+            <?php } echo $body; ?>
 
             <?php if(!isset($hide_right_bar)){  ?>
             <!-- Right Bar -->

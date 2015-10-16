@@ -156,9 +156,9 @@
                     </div>
                 </div>
                 <div class="col-sm-12 text-center btn_group">
-                    <input type="hidden" value="save" name="button_type">
-                	<button class="btn btn_green" value="save">Save</button>
-                	<button class="btn btn_red" on value="set_question">Set Question</button>
+                    <input type="hidden" value="save" id="button_type" name="button_type">
+                	<button class="btn btn_green" onclick="set_hidden('save')" >Save</button>
+                	<button class="btn btn_red" onclick="set_hidden('set_ques')">Set Question</button>
                 	<a href="<?php echo $prev_url; ?>" class="btn btn_black_normal">Cancel</a>
                 </div>
                 <div class="clearfix"></div>
@@ -171,6 +171,16 @@
 <script src="http://cdn.ckeditor.com/4.5.3/standard/ckeditor.js"></script>
 
 <script type="text/javascript">
+
+    function set_hidden(button_data){
+        
+        if(button_data == 'save'){
+            $('#button_type').val('save');
+        }else{
+            $('#button_type').val('set');
+        }
+
+    }
     
     $(document).ready(function() {
         $(".myselect").select2();
@@ -182,7 +192,7 @@
             showMeridian:false    
          });
 
-         $("[name='exam_type']").bootstrapSwitch();
+        $("[name='exam_type']").bootstrapSwitch();
         $('.bootstrap-switch-handle-on').text('Subject');
         $('.bootstrap-switch-handle-off').text('Topic');
     });

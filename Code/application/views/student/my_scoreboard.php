@@ -16,7 +16,6 @@
                     <div class="col-sm-12 text-center">
                         <h1 class="big_score">Your Score Is : <span><?php echo $my_scoreboard['percentage'];?>%</span></h1>
                     </div>
-                    
                 </div>
                 <div class="row evaluation">
                     <div class="col-sm-12 col-md-6">
@@ -46,41 +45,43 @@
                         <div class="box">
                             <!--1-->
                             <div>
-                                <p>Organic Chemistry - I</p>
+                                <!-- <p>Organic Chemistry - I</p> -->
                                 <div class="progress">
                                   <div id="test" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 0">
                                     <span class="sr-only">80% Complete (success)</span>
                                   </div>
                                 </div>
                             </div>
+                           
                             <!--2-->
-                            <div>
+                            <!-- <div>
                                 <p>Organic Chemistry - II</p>
                                 <div class="progress">
                                   <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                     <span class="sr-only">75% Complete (success)</span>
                                   </div>
                                 </div>
-                            </div>
+                            </div> -->
+                           
                             <!--3-->
-                            <div>
+                            <!-- <div>
                                 <p>ELements</p>
                                 <div class="progress">
                                   <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
                                     <span class="sr-only">60% Complete (success)</span>
                                   </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <!--4-->
-                            <div>
+                            <!-- <div>
                                 <p>Nolecules</p>
                                 <div class="progress">
                                   <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
                                     <span class="sr-only">68% Complete (success)</span>
                                   </div>
                                 </div>
-                            </div>
-                            <div >
+                            </div> -->
+                            <div>
                                 <button class="btn btn-block btn_black_normal">View Evaluation</button> 
                             </div>
                         </div>

@@ -3083,6 +3083,9 @@ ul.ques_numbers {
     font-size: 20px;
     vertical-align: middle;
 }
+canvas{
+    transform: rotate(90deg);
+	}
 .big_score{
 	font-size:45px;
 	font-weight:bold;
@@ -3355,6 +3358,7 @@ ul.ques_numbers {
 .profile>.box{
 	margin-top:15px;
 }
+
 .profile .box_body{
 	padding:15px;
 }
@@ -3438,3 +3442,8 @@ ul.ques_numbers {
 	font-size:14px;
 	margin-bottom:0;
 }
+
+.txt_white{
+	color:#fff;
+}
+

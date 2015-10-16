@@ -297,10 +297,11 @@ class Group extends ADMIN_Controller {
      * 'blocked' and redirect to user listing page
      *
      * */
+
     public function blocked($id) {
-        update(TBL_USERS, $id, array('user_status' => 'blocked', 'modified_date' => date('Y-m-d H:i:s', time())));
-        $this->session->set_flashdata('success', 'User is Successfully Blocked.');
-        redirect('admin/user');
+        update(TBL_TUTORIAL_GROUPS, $id, array('group_status' => 'blocked', 'modified_date' => date('Y-m-d H:i:s', time())));
+        $this->session->set_flashdata('success', 'Group is Successfully Blocked.');
+        redirect('admin/group');
     }
 
     /**
@@ -309,9 +310,9 @@ class Group extends ADMIN_Controller {
      *
      * */
     public function active($id) {
-        update(TBL_USERS, $id, array('user_status' => 'active', 'modified_date' => date('Y-m-d H:i:s', time())));
-        $this->session->set_flashdata('success', 'User is Successfully Activated.');
-        redirect('admin/user');
+         update(TBL_TUTORIAL_GROUPS, $id, array('group_status' => 'active', 'modified_date' => date('Y-m-d H:i:s', time())));
+        $this->session->set_flashdata('success', 'Group is Successfully Blocked.');
+        redirect('admin/group');
     }
 
     /**

@@ -79,7 +79,8 @@ $route['admin/(:any)/(:any)'] = "admin/$1/$2";
 $route['admin/(:any)/(:any)/(:any)'] = "admin/$1/$2/$3"; 
 
 $route['student/tutorial'] = "student/tutorial";
-$route['student/exam'] = "student/tutorial/exam";
+$route['student/exam-instruction'] = "student/tutorial/exam";
+$route['student/exam'] = "student/tutorial/exam_start";
 $route['student/group_allocation'] = "student/home/group_allocation";
 $route['student/(:any)'] = "student/$1";
 $route['teacher/(:any)'] = "teacher/$1";

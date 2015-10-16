@@ -36,13 +36,13 @@
                             <?php }  } ?>
                         </select>
 	                </div>
-	                <div class="form-group">
+	                <!-- <div class="form-group">
 	                    <select class="form-control" name="year" onchange="filter_data()" id="year">
 	                        <option value="">Select Year</option>
 	                        <option value="2015">2015</option>
 	                        <option value="2016">2016</option>
 	                    </select>
-	                </div>
+	                </div> -->
 	                <div class="form-group">
 	                    <select class="form-control" name="role" id="role" onchange="filter_data()">
                             <option value="">Select Role</option>
@@ -65,11 +65,11 @@
                             <?php }  } ?>
                         </select>
 	                </div>
-
-                    <!-- <div class="form-group">
-                        <input type="text" name="q" onkeyup="filter_data()" id="q" id="">
-                    </div> -->
-
+                    
+                    <div class="form-group no_effect search_input">
+                        <input type="text" name="q" id="q" class="form-control" placeholder="Type User Name." >
+                        <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                    </div>
 	            </div>
 	        </div>
             
@@ -236,10 +236,29 @@
     	if(year == '' ){ $('#year').removeAttr('name'); }
     	if(course == '' ){ $('#course').removeAttr('name'); }
     	if(classroom == ''){ $('#classroom').removeAttr('name'); }
-        //if(q == ''){ $('#q').removeAttr('name');}else{  setTimeout(function() { $('#filter').submit(); }, 1000); }
+        if(q == ''){ $('#q').removeAttr('name');}
 
     	$('#filter').submit();
     }
+
+    $( "#filter" ).submit(function( event ) {
+      
+        var role = $('#role').val();
+        var school = $('#school').val();
+        var year = $('#year').val();
+        var course = $('#course').val();
+        var classroom = $('#classroom').val();
+        var q = $('#q').val();
+
+        if(role == '' ){ $('#role').removeAttr('name'); }
+        if(school == '' ){ $('#school').removeAttr('name'); }
+        if(year == '' ){ $('#year').removeAttr('name'); }
+        if(course == '' ){ $('#course').removeAttr('name'); }
+        if(classroom == ''){ $('#classroom').removeAttr('name'); }
+        if(q == ''){ $('#q').removeAttr('name');}
+        
+    });
+    
 
 	<?php if(!empty($_GET['role'])) { ?>
 		$('#role').val('<?php echo $_GET["role"];?>');	
