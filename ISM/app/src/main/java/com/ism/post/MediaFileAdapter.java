@@ -1,14 +1,21 @@
 package com.ism.post;
 
 import android.content.Context;
+import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.util.Log;
 import com.ism.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +25,8 @@ public class MediaFileAdapter extends BaseAdapter {
     private final LayoutInflater inflater;
     ArrayList<MediaFilesModel> arrayList = new ArrayList<>();
     Context context;
-
+    MediaPlayer mediaPlayer=new MediaPlayer();
+    MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
     public MediaFileAdapter(ArrayList<MediaFilesModel> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
@@ -43,19 +51,64 @@ public class MediaFileAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.row_media_files, parent, false);
-            ImageView imageView = (ImageView) convertView.findViewById(R.id.img_image);
-            imageView.setVisibility(View.VISIBLE);
-//            if (arrayList.get(position).getBitmap().equals(null)) {
-//                Picasso.with(context)
-//                        .load(new File(AppConstant.imageCapturePath + File.separator + arrayList.get(position).getStrFile()))
-//                        .error(R.drawable.ic_launcher)
-//                        .placeholder(R.drawable.ic_launcher)
-//                        .into(imageView);
-//            }
-//            else{
+        RelativeLayout rlMain = (RelativeLayout) convertView.findViewById(R.id.rl_image);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.img_image);
+        TextView videoIndicator = (TextView) convertView.findViewById(R.id.txt_video);
+        imageView.setVisibility(View.VISIBLE);
+        Log.e("File", "" + arrayList.get(position).getUriFile());
+        if (arrayList.get(position).getStrFileType().equals("isImage")) {
             imageView.setImageBitmap(arrayList.get(position).getBitmap());
-        //}
-            //imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.logo));
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+
+                public void onClick(View v) {
+                    Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if (arrayList.get(position).getStrFileType().equals("isVideo")) {
+            imageView.setImageBitmap(arrayList.get(position).getBitmap());
+            MediaPlayer mediaPlayer=new MediaPlayer();
+            try {
+                mediaPlayer.setDataSource(context, Uri.fromFile(arrayList.get(position).getUriFile()));
+                Log.i("TV",mediaPlayer.getDuration()+"");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//                       try {
+//                mediaPlayer.setDataSource(context, arrayList.get(position).getUriFile());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+           videoIndicator.setText(mediaPlayer.getDuration()+"");
+            videoIndicator.setVisibility(View.VISIBLE);
+
+        } else if (arrayList.get(position).getStrFileType().equals("isAudio")) {
+            MediaPlayer mediaPlayer=new MediaPlayer();
+            try {
+                mediaPlayer.setDataSource(context, Uri.fromFile(arrayList.get(position).getUriFile()));
+                mediaPlayer.getDuration();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//
+//            try {
+//                mediaPlayer.setDataSource(context, arrayList.get(position).getUriFile());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+         videoIndicator.setText(mediaPlayer.getDuration()+"");
+            videoIndicator.setVisibility(View.VISIBLE);
+            imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.ic_launcher));
+        }
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return convertView;
     }
 }
