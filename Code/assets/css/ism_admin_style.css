@@ -948,15 +948,6 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .group_score{
 	padding:10px;
 }
-.group_score>div>h2{
-	margin:0;
-}
-.group_score>div>p{
-	margin:0 0 5px;
-	text-transform:uppercase;
-	font-weight:600;
-	font-size:13px;
-}
 .topic_groups .table_group>tbody>tr{
 	border-bottom: 1px solid rgba(0,0,0,0.1);
 }
