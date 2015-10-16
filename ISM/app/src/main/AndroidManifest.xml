@@ -4,10 +4,7 @@
     package="com.ism">
 
     <uses-permission android:name="android.permission.CAMERA" />
-<!--<<<<<<< HEAD-->
-    <!--<uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT"/>-->
-<!--=======-->
-<!--&gt;>>>>>> e9e1fefa83c14e2ab2721254abf5a4a8c2d4fc20-->
+    <uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT"/>
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -29,11 +26,11 @@
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN"/>-->
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
 
-            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+            <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".login.ProfileInfornation"
@@ -50,10 +47,10 @@
         <activity
             android:name=".HostActivity"
             android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".post.CreatePostActivity"

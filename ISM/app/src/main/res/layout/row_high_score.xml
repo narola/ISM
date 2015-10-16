@@ -10,11 +10,11 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_highscore_subject"
         android:gravity="center"
-        android:padding="@dimen/d5sp"
+        android:padding="@dimen/d5dp"
         android:text="Subject"
         android:textAllCaps="true"
         android:textColor="#313131"
-        android:textSize="@dimen/d20sp" />
+        android:textSize="@dimen/d20dp" />
 
     <!--<TextView-->
         <!--android:layout_width="match_parent"-->

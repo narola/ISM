@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="ADAM ROSS"
                 android:textAllCaps="true"
-                android:textSize="@dimen/d20sp"/>
+                android:textSize="@dimen/d20dp"/>
         </LinearLayout>
     </LinearLayout>
 

@@ -6,6 +6,6 @@
     android:ems="5"
     android:gravity="left"
     android:background="@color/color_white"
-    android:padding="@dimen/d10sp"
+    android:padding="@dimen/d10dp"
     android:textSize="18sp"
     android:paddingLeft="0sp" />

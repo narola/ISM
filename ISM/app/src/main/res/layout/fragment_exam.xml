@@ -13,7 +13,7 @@
 		android:padding="15dp"
 		android:text="Please Read Instructions Carefully"
 		android:textColor="@color/bg_app_dark"
-		android:textSize="@dimen/d18sp"/>
+		android:textSize="@dimen/d18dp"/>
 
 	<LinearLayout
 		android:id="@+id/ll_instruct"
@@ -35,7 +35,7 @@
 			android:layout_marginRight="10dp"
 			android:text="Assessment No : 30"
 			android:textColor="@android:color/white"
-			android:textSize="@dimen/d18sp"/>
+			android:textSize="@dimen/d18dp"/>
 
 		<TextView
 			android:id="@+id/txt_subject"
@@ -44,7 +44,7 @@
 			android:layout_gravity="center_vertical"
 			android:text="ORGANIC CHEMISTRY"
 			android:textColor="@android:color/white"
-			android:textSize="@dimen/d20sp"
+			android:textSize="@dimen/d20dp"
 			android:textStyle="bold"/>
 	</LinearLayout>
 
@@ -119,14 +119,14 @@
 					android:paddingLeft="30dp"
 					android:paddingRight="30dp"
 					android:text="When parallel elements meet, which reaction occurs?\nline 2\nQuestion line 3\n\n\n\nHello"
-					android:textSize="@dimen/d20sp"/>
+					android:textSize="@dimen/d20dp"/>
 
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="30dp"
 					android:text="Options:"
-					android:textSize="@dimen/d18sp"
+					android:textSize="@dimen/d18dp"
 					android:textStyle="bold"/>
 
 				<RadioGroup
@@ -146,7 +146,7 @@
 						android:button="@drawable/bg_rb"
 						android:padding="5dp"
 						android:text="Option 1"
-						android:textSize="@dimen/d18sp"/>
+						android:textSize="@dimen/d18dp"/>
 
 					<RadioButton
 						android:id="@+id/rb_op2"
@@ -155,7 +155,7 @@
 						android:button="@drawable/bg_rb"
 						android:padding="5dp"
 						android:text="Option 2"
-						android:textSize="@dimen/d18sp"/>
+						android:textSize="@dimen/d18dp"/>
 
 					<RadioButton
 						android:id="@+id/rb_op3"
@@ -164,7 +164,7 @@
 						android:button="@drawable/bg_rb"
 						android:padding="5dp"
 						android:text="Option 3"
-						android:textSize="@dimen/d18sp"/>
+						android:textSize="@dimen/d18dp"/>
 
 					<RadioButton
 						android:id="@+id/rb_op4"
@@ -173,7 +173,7 @@
 						android:button="@drawable/bg_rb"
 						android:padding="5dp"
 						android:text="Option 4"
-						android:textSize="@dimen/d18sp"/>
+						android:textSize="@dimen/d18dp"/>
 
 					<RadioButton
 						android:id="@+id/rb_op5"
@@ -182,7 +182,7 @@
 						android:button="@drawable/bg_rb"
 						android:padding="5dp"
 						android:text="Option 5"
-						android:textSize="@dimen/d18sp"/>
+						android:textSize="@dimen/d18dp"/>
 
 					<RadioButton
 						android:id="@+id/rb_op6"
@@ -191,7 +191,7 @@
 						android:button="@drawable/bg_rb"
 						android:padding="5dp"
 						android:text="Option 6"
-						android:textSize="@dimen/d18sp"/>
+						android:textSize="@dimen/d18dp"/>
 				</RadioGroup>
 			</LinearLayout>
 		</ScrollView>
@@ -214,7 +214,7 @@
 				android:paddingRight="@dimen/button_padding_exam"
 				android:text="@string/review_later"
 				android:textColor="@android:color/white"
-				android:textSize="@dimen/d18sp"/>
+				android:textSize="@dimen/d18dp"/>
 
 			<Button
 				android:id="@+id/btn_clear_response"
@@ -227,7 +227,7 @@
 				android:paddingRight="@dimen/button_padding_exam"
 				android:text="@string/clear_response"
 				android:textColor="@android:color/white"
-				android:textSize="@dimen/d18sp"/>
+				android:textSize="@dimen/d18dp"/>
 
 			<Button
 				android:id="@+id/btn_skip"
@@ -239,7 +239,7 @@
 				android:paddingRight="@dimen/button_padding_exam"
 				android:text="@string/skip"
 				android:textColor="@android:color/white"
-				android:textSize="@dimen/d18sp"/>
+				android:textSize="@dimen/d18dp"/>
 
 			<Button
 				android:id="@+id/btn_save_n_next"
@@ -253,7 +253,7 @@
 				android:paddingRight="@dimen/button_padding_exam"
 				android:text="@string/save_n_next"
 				android:textColor="@android:color/white"
-				android:textSize="@dimen/d18sp"/>
+				android:textSize="@dimen/d18dp"/>
 		</RelativeLayout>
 	</RelativeLayout>
 
