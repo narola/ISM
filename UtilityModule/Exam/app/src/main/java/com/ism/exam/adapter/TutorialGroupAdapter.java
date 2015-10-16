@@ -62,7 +62,7 @@ public class TutorialGroupAdapter extends BaseAdapter {
 		}
 
 		try {
-			holder.txtName.setText(Html.fromHtml("<font color='#333333'>" + arrListMembers.get(position).getName() + "</font><font color='#595959'> + " + arrListMembers.get(position).getSchoolName() + "</font>"));
+			holder.txtName.setText(Html.fromHtml("<font color='#333333' size='8'>" + arrListMembers.get(position).getName() + "</font><font color='#595959' size='15'> + " + arrListMembers.get(position).getSchoolName() + "</font>"));
 		} catch (Exception e) {
 			Log.e(TAG, "getView Exception : " + e.toString());
 		}
