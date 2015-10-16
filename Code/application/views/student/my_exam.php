@@ -35,7 +35,7 @@
                                     <?php }
                                 } 
                             }else{
-                                echo '<li class="text-center"><hr>No exam<hr></li>';
+                                echo '<li class="text-center"><hr><code><b style="font-size:large;">No exams</b></code><hr></li>';
                             }
                         ?>
                     </ul>

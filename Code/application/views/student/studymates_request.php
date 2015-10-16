@@ -111,7 +111,7 @@
                     <div class="mate_user_img">
                         <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                     </div>
-                    <h4><?php echo $value['full_name'];?><?php echo $value['id'];?></h4>
+                    <h4><?php echo $value['full_name'];?></h4>
                     <p><?php echo $value['school_name'];?></p>
                     <p>Live in Ghana</p>
                     <a href="#">Following 34 Authers</a>
