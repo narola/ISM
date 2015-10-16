@@ -266,14 +266,12 @@ class Topic extends ADMIN_Controller {
 				);
 				$where = array('where'=>array('tut_course.subject_id'=>$subject['subject_id'],
 					));
-				$course = select(TBL_COURSE_SUBJECT.' tut_course',
-				'tut_course.course_id',
+				$classroom = select(TBL_COURSE_SUBJECT.' tut_course',
+				'tut_course.classroom_id',
 					$where, array('single'=>true)
 				);
 
-				$where = array('where'=>array('tut_course.course_id'=>$course['course_id']
-												// 'tut_course.subject_id !='=>$subject['subject_id']
-					));
+				$where = array('where'=>array('tut_course.classroom_id'=>$classroom['classroom_id']));
 
 				$options = array('order_by'=>'RAND()','single'=>true,'limit'=>1,
 					'join' =>  array(
@@ -284,7 +282,7 @@ class Topic extends ADMIN_Controller {
 								)
 							);
 
-				$random_subject = select(TBL_COURSE_SUBJECT.' tut_course',
+			$random_subject = select(TBL_COURSE_SUBJECT.' tut_course',
 				'tut_course.subject_id',
 					$where, $options
 				);
@@ -305,10 +303,10 @@ class Topic extends ADMIN_Controller {
 
 				$options = array('single'=>true);
 				$course_info = select(TBL_STUDENT_ACADEMIC_INFO.' tut_stud_info',
-				'tut_stud_info.course_id',
+				'tut_stud_info.classroom_id',
 					$where, $options
 				);
-				$where = array('where'=>array('tut_course.course_id'=>$course_info['course_id']
+				$where = array('where'=>array('tut_course.classroom_id'=>$course_info['classroom_id']
 					));
 
 				$options = array('order_by'=>'RAND()','single'=>true,'limit'=>1,
@@ -488,6 +486,11 @@ class Topic extends ADMIN_Controller {
 		$response = array('is_delete'=>$is_delete,'id'=>'delete_'.$topic_id);
 		echo json_encode($response);
 		exit; 
+	}
+
+	public function next_phase(){
+		$this->data['page_title'] = 'Coming Soon';
+		$this->template->load('admin/default','admin/next_phase', $this->data);
 	}
 
 }

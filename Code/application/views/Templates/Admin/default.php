@@ -81,7 +81,7 @@ $url = uri_string();
                         <li><a href="#"><span class="icon icon_menu_home"></span> Home</a></li>
                         <li class="
                         <?php
-                        if (in_array($url, array('admin/exam', 'admin/exam/add'))) {
+                        if (in_array($url, array('admin/exam', 'admin/exam/add','admin/question/set'))) {
                             echo 'active';
                         }
                         ?>
@@ -97,7 +97,7 @@ $url = uri_string();
                             echo 'active';
                         }
                         ?>" ><a href="admin/group"><span class="icon icon_menu_group"></span> Groups</a></li>
-                        <li><a href="#"><span class="icon icon_menu_organize"></span> Organize</a></li>
+                        <li><a href="admin/organize"><span class="icon icon_menu_organize"></span> Organize</a></li>
                         <li class="
                         <?php
                         if (in_array($url, array('admin/user', 'admin/topic/allocate',
@@ -117,8 +117,8 @@ $url = uri_string();
                                 <span class="icon icon_menu_manage"></span> Manage
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Book</a></li>
-                                <li><a href="#">Auther</a></li>
+                                <li><a href="admin/books">Book</a></li>
+                                <li><a href="admin/author">Auther</a></li>
                                 <li><a href="admin/school">School</a></li>                                
                                 <li class="dropdown sub_menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Subjects</a>
@@ -135,7 +135,7 @@ $url = uri_string();
                                     </ul>
                                 </li>
                                 <li><a href="admin/classroom">Classroom</a></li>
-                                <li><a href="#">Badges</a></li>
+                                <li><a href="admin/badges">Badges</a></li>
                                 <li><a href="admin/user">User</a></li>
                                 <li class="dropdown sub_menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Topics</a>
@@ -172,7 +172,7 @@ $url = uri_string();
                     <!--notification-->
                     <ul class="three_tabs">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span><span class="badge bell_badge">03</span></a>
+                            <a href="admin/notifications" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span><span class="badge bell_badge">03</span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">
                                         <div class="user_small_img"><img src="assets/images/user2.jpg"></div>
@@ -208,20 +208,20 @@ $url = uri_string();
                                     </a></li>
                             </ul>
                         </li>
-                        <li><a href="#"><span class="icon icon_message"></span><span class="badge message_badge">12</span></a></li>
+                        <li><a href="admin/messages"><span class="icon icon_message"></span><span class="badge message_badge">12</span></a></li>
 
                     </ul>
                     <!--//notification-->
 
                     <ul class="personal_menu">
                         <li>
-                            <a href="#"><span class="icon icon_feed"></span>Feeds</a>
+                            <a href="admin/feeds"><span class="icon icon_feed"></span>Feeds</a>
                         </li><!-- class="active"-->
                         <li>
-                            <a href="#"><span class="icon icon_spam"></span>Spam<span class="badge message_badge">12</span></a>
+                            <a href="admin/spam"><span class="icon icon_spam"></span>Spam<span class="badge message_badge">12</span></a>
                         </li>
                         <li>
-                            <a href="#"><span class="icon icon_banner"></span>Banners</a>
+                            <a href="admin/banners"><span class="icon icon_banner"></span>Banners</a>
                         </li>                   
                         <li class="<?php
                             if (in_array($url, array('admin/notice', 'admin/notice/index'))) {
@@ -231,7 +231,7 @@ $url = uri_string();
                             <a href="admin/notice"><span class="icon icon_notice"></span>Notice Board</a>
                         </li>
                         <li>
-                            <a href="#"><span class="icon icon_ques"></span>Questionaries</a>
+                            <a href="admin/questionaries"><span class="icon icon_ques"></span>Questionaries</a>
                         </li>
                         <li class="<?php
                         if (in_array($url, array('admin/auto_generated_credentials'))) {
