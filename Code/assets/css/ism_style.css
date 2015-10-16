@@ -1448,24 +1448,27 @@ input.chat_input {
     padding: 10px 15px;
 }
 .banner_text{
-    height: 130px;
-    width: 130px;
+    height: 150px;
+    width: 150px;
     background-color: #fff;
     border-radius: 50%;
-    padding: 18px 0;
+    padding: 22px 0;
     margin: 0 auto;
     text-align: center;
+	box-shadow: 0 0 10px 0px rgba(0,0,0,0.4);
 }
 .banner_text h3{
 	margin:0;
-    font-weight: 500;
+	font-weight:600;
 	text-transform:uppercase;
 }
 .banner_text h3:first-child{
+    padding-bottom: 5px;
 	display:inline-block;
     margin: 16px 0 8px;
 	color:#1bc4a3;
-	border-bottom:1px solid #1bc4a3;
+	border-bottom:1px solid #ddd;
+	font-weight:500;
 }
 .box.exam_card {
     margin: 30px 0 0;
@@ -1790,7 +1793,7 @@ ul.tut_weekdays {
 .pagination_admin.pagination>li:last-child>a, .pagination_admin.pagination>li:last-child>span {
     margin-left: 10px;
 }
-.pagination_admin>li.active>a, .pagination_admin>li.active>a:hover{
+.pagination_admin.pagination>li.active>a, .pagination_admin.pagination>li.active>a:hover{
 	background-color:#323941;
 	border: 1px solid #f5f5f5;
 }
@@ -3254,4 +3257,98 @@ ul.ques_numbers {
     width: auto;
     height: 70px;
 	overflow:hidden;
+}
+
+/*exam page*/
+.exam_filter{
+	padding:15px 0 15px 15px !important;
+	background-color:#f9f9f9;
+    box-shadow: 0 1px 15px 1px rgba(0,0,0,0.2);
+}
+.exam_filter>.form-group{
+	width: 25% !important;
+    padding-right: 15px;
+    margin-bottom: 0 !important;
+    float: left;
+}
+.exam_filter>.form-group:before{
+	right:15px;
+}
+.exam_filter>.form-group:after{
+	right:28px;
+}
+.exams_wrapper .box_header{
+	height:100px;
+	background-size:cover;
+	background-position:center;
+}
+.exams_wrapper .user_profile_img{
+    bottom: -20px;
+	margin: 0;
+    position: absolute;
+    height: 85px;
+    width: 85px;
+    right: 30px;
+    box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.7);
+    border: none;
+}
+.label_black{
+    background-color: #323941;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+}
+.exams_wrapper .label_black{
+    position: absolute;
+    left: 15px;
+    bottom: 15px;
+    margin: 0;
+}
+.exams_wrapper .exam_chem{
+	background-image:url(../images/front_exam1.jpg);
+}
+.exams_wrapper .exam_phy{
+	background-image:url(../images/front_exam2.jpg);
+}
+.exams_wrapper .exam_math{
+	background-image:url(../images/front_exam3.jpg);
+}
+.exams_wrapper .exam_lang{
+	background-image:url(../images/front_exam4.jpg);
+}
+.exams_wrapper .exam_chem>.color_wrapper{
+	background-color:#ffba00;
+}
+.exams_wrapper .exam_phy>.color_wrapper{
+	background-color:#ff4b42;
+}
+.exams_wrapper .exam_math>.color_wrapper{
+	background-color:#03e2e1;
+}
+.exams_wrapper .exam_lang>.color_wrapper{
+	background-color:#1bc4a3;
+}
+.exams_wrapper .color_wrapper{
+	position:absolute;
+	width:100%;
+	top:0;
+	left:0;
+	opacity:0.7;
+	bottom:-1px;
+}
+.exams_wrapper {
+    padding: 30px 15px 0;
+}
+.exams_wrapper .exam_card{
+	margin-bottom:30px;
+	margin-top:0;
+}
+.exams_wrapper .exam_card .box_header h3{
+	position:relative;
+	color:#fff;
+    text-shadow: 0 0 5px rgba(0,0,0,0.4);
+}
+.exams_wrapper ul.exams_holder {
+    padding-top: 10px;
+	height:172px;
 }
