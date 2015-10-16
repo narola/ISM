@@ -88,8 +88,8 @@ $url = uri_string();
                             dropdown">
                             <a href="Tutorial.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
                             <ul class="dropdown-menu">
-                                <li><a href="admin/question/set">Question Bank</a></li>
-                                <li><a href="admin/exam">Exams</a></li>
+                                <li <?php echo ($url == 'admin/question/set') ? 'class="active"' : ''; ?> ><a href="admin/question/set">Question Bank</a></li>
+                                <li <?php echo ($url == 'admin/exam') ? 'class="active"' : ''; ?>><a href="admin/exam">Exams</a></li>
                             </ul>
                         </li>
                         <li class="<?php
@@ -117,32 +117,32 @@ $url = uri_string();
                                 <span class="icon icon_menu_manage"></span> Manage
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="admin/books">Book</a></li>
-                                <li><a href="admin/author">Auther</a></li>
-                                <li><a href="admin/school">School</a></li>                                
-                                <li class="dropdown sub_menu">
+                                <li <?php echo ($url == 'admin/books') ? 'class="active"' : ''; ?>><a href="admin/books">Book</a></li>
+                                <li <?php echo ($url == 'admin/author') ? 'class="active"' : ''; ?>><a href="admin/author">Author</a></li>
+                                <li <?php echo ($url == 'admin/school') ? 'class="active"' : ''; ?>><a href="admin/school">School</a></li>                                
+                                <li class="<?php echo ($url == 'admin/subjects/lists' || $url == 'admin/subjects/add_subject' ) ? 'active' : ''; ?> dropdown sub_menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Subjects</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="admin/subject/lists">List of Subjects</a></li>
-                                        <li><a href="admin/subject/add_subject">Add New Subject</a></li>
+                                        <li <?php echo ($url == 'admin/subjects/lists') ? 'class="active"' : ''; ?>><a href="admin/subject/lists">List of Subjects</a></li>
+                                        <li <?php echo ($url == 'admin/subjects/add_subject') ? 'class="active"' : ''; ?>><a href="admin/subject/add_subject">Add New Subject</a></li>
                                     </ul>
                                 </li>
-                                <li class="dropdown sub_menu">
+                                <li class="<?php echo ($url == 'admin/course/lists' || $url == 'admin/course/add_course' ) ? 'active' : ''; ?> dropdown sub_menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Courses</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="admin/course/lists">List of Courses</a></li>
-                                        <li><a href="admin/course/add_course">Add New Course</a></li>
+                                        <li <?php echo ($url == 'admin/course/lists') ? 'class="active"' : ''; ?>><a href="admin/course/lists">List of Courses</a></li>
+                                        <li <?php echo ($url == 'admin/course/add_course') ? 'class="active"' : ''; ?>><a href="admin/course/add_course">Add New Course</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="admin/classroom">Classroom</a></li>
-                                <li><a href="admin/badges">Badges</a></li>
-                                <li><a href="admin/user">User</a></li>
-                                <li class="dropdown sub_menu">
+                                <li <?php echo ($url == 'admin/classroom') ? 'class="active"' : ''; ?>><a href="admin/classroom">Classroom</a></li>
+                                <li <?php echo ($url == 'admin/badges') ? 'class="active"' : ''; ?>><a href="admin/badges">Badges</a></li>
+                                <li <?php echo ($url == 'admin/user') ? 'class="active"' : ''; ?>><a href="admin/user">User</a></li>
+                                <li class="<?php echo ($url == 'admin/topic/allocate' || $url == 'admin/topic/lists' || $url == 'admin/topic/add') ? 'active' : ''; ?> dropdown sub_menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Topics</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="admin/topic/allocate">Allocate Topics</a></li>
-                                        <li><a href="admin/topic/lists">List of Topics</a></li>
-                                        <li><a href="admin/topic/add">Add New Topic</a></li>
+                                        <li <?php echo ($url == 'admin/topic/allocate') ? 'class="active"' : ''; ?>><a href="admin/topic/allocate">Allocate Topics</a></li>
+                                        <li <?php echo ($url == 'admin/topic/lists') ? 'class="active"' : ''; ?>><a href="admin/topic/lists">List of Topics</a></li>
+                                        <li <?php echo ($url == 'admin/topic/add') ? 'class="active"' : ''; ?>><a href="admin/topic/add">Add New Topic</a></li>
                                     </ul>
                                 </li>
                             </ul>

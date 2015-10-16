@@ -1706,3 +1706,6 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .score_descrip p:last-child, .score_descrip p:nth-last-child(2){
 	display:inline-block;	
 }
+.navbar-nav li>.dropdown-menu>li.active>a{
+	color:#ff6b6b;
+}

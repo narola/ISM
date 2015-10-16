@@ -3352,3 +3352,7 @@ ul.ques_numbers {
     padding-top: 10px;
 	height:172px;
 }
+.navbar-nav li>.dropdown-menu>li.active>a{
+	color:#1bc4a3;
+	background-color:#232a34;
+}

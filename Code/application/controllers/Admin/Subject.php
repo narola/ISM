@@ -269,7 +269,7 @@ class Subject extends ADMIN_Controller {
             if ($error_count > 0) {
                 $message = 'Record is Successfully updated but please upload valid file.';
             } else {
-                $message = 'Record is Successfully created.';
+                $message = 'Record is Successfully updated.';
             }
             $this->session->set_flashdata('success', $message);
             redirect('admin/subject/lists');
