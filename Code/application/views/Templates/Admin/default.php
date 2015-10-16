@@ -446,10 +446,11 @@ $url = uri_string();
 
             $(function () {
                 $('[data-toggle="popover"]').popover();
+                $('[data-toggle="tooltip"]').tooltip();
             });
 
 
-            jQuery(document).ready(function(){
+                //  jQuery(document).ready(function(){
             
                 // jQuery('.exam_year .icon_option_dark').click(function(){
                 //     if(jQuery(this).parent().children('.popover').css('display')=='block'){
@@ -495,9 +496,9 @@ $url = uri_string();
                 format: 'yyyy-mm-dd'
             });
 
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
+            // $(function () {
+                
+            // });
         </script>
 
     </body>

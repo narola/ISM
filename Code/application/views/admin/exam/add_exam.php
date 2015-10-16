@@ -156,8 +156,9 @@
                     </div>
                 </div>
                 <div class="col-sm-12 text-center btn_group">
-                	<button class="btn btn_green">Save</button>
-                	<button class="btn btn_red">Set Question</button>
+                    <input type="hidden" value="save" name="button_type">
+                	<button class="btn btn_green" value="save">Save</button>
+                	<button class="btn btn_red" value="set_question">Set Question</button>
                 	<button class="btn btn_black_normal">Cancle</button>
                 </div>
                 <div class="clearfix"></div>

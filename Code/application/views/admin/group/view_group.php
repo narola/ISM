@@ -35,7 +35,7 @@
 	                </div>
 	                
                     <div class="form-group no_effect search_input">
-                        <input type="text" name="q" id="q" class="form-control" placeholder="Type Group name." >
+                        <input type="text" name="q" id="q" class="form-control" placeholder="Type Group/Member Name." >
                         <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
                     </div>
 

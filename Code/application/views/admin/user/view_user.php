@@ -135,8 +135,8 @@
                               
                               <td class="username">
                                   <div class="chat_img_holder">
-                                        <img src="<?php echo base_url().'assets'; ?>/uploads/$user['profile_link']"
-                                        onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                        <img src="<?php echo base_url().'uploads/'.$user['profile_link']; ?>"
+                                       onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                   </div>
                                   <h4><?php echo ucfirst($user['username']); ?></h4>
                                   <?php if($user['user_status']=='active'){ 
@@ -151,9 +151,9 @@
                               <td> <?php echo ucfirst($user['city_name']); ?> </td>
                               <td><?php echo ucfirst($user['role_name']); ?></td>
                               <td>
-                                  <a href="#" class="icon icon_timeline" data-toggle="tooltip" data-placement="bottom" title="Timeline"></a>
+                                  <a href="admin/user/activity/<?php echo $user['id'];?>" class="icon icon_timeline" data-toggle="tooltip" data-placement="bottom" title="Timeline"></a>
                                   <a href="#" class="icon icon_books" data-toggle="tooltip" data-placement="bottom" title="Books"></a>
-                                  <a href="admin/user/activity/<?php echo $user['id'];?>" class="icon icon_performance" data-toggle="tooltip" data-placement="bottom" title="Performance"></a>
+                                  <a href="#" class="icon icon_performance" data-toggle="tooltip" data-placement="bottom" title="Performance"></a>
                                   <?php if($user['user_status'] == 'blocked') { ?>  
                                   <a href="<?php echo base_url().'admin/user/active/'.$user['id']; ?>" 
                                     onclick="return active_user(this.href,event)" class="icon icon_user" data-toggle="tooltip" data-placement="bottom" title="Active" ></a>

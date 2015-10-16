@@ -106,7 +106,7 @@ class Exam extends ADMIN_Controller {
 	  	$this->data['all_exams'] = select(
 	  									 TBL_EXAMS." exam",
 	  									 "exam.id,exam.exam_name,exam.classroom_id,exam.subject_id,exam.exam_type,exam.exam_category,exam.exam_mode,
-	  									 exam.attempt_count,sub.subject_name",
+	  									 exam.attempt_count,sub.subject_name,sub.subject_image",
 	  									 $where,
 	  									 array(
 	  									 		'order_by'=>$order,
@@ -120,7 +120,9 @@ class Exam extends ADMIN_Controller {
 	  									 				)
 	  									 	)
 	  									 );
-	  	
+
+	  // /	p($this->data['all_exams'],true);
+
 	  	$this->data['all_subjects'] = select(TBL_SUBJECTS); // Fetch All Subjects 
 	  	$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC); //Fetch All Topics
 
@@ -134,7 +136,7 @@ class Exam extends ADMIN_Controller {
 		$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
 		$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)));		
 
-		$this->form_validation->set_rules('exam_name', 'Exam Name', 'trim|required');
+		$this->form_validation->set_rules('exam_name', 'Exam Name', 'trim|required|is_unique['.TBL_EXAMS.'.exam_name]');
 		$this->form_validation->set_rules('course_id', 'Course Name', 'trim|required');
 		$this->form_validation->set_rules('subject_id', 'Subject Name', 'trim|required');
 		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required');
@@ -154,7 +156,7 @@ class Exam extends ADMIN_Controller {
 			}else{	
 				$exam_type = 'topic';
 			}
-
+			p($_POST,true);
 			$exam_data=array(
 					'exam_name'=>$this->input->post('exam_name'),
 					'classroom_id'=>$this->input->post('classroom_id'),
@@ -181,10 +183,11 @@ class Exam extends ADMIN_Controller {
 
 			insert(TBL_EXAM_SCHEDULE,$exam_schedule);
 
-			p($_POST);
-			p($exam_data);
+			$this->session->set_flashdata('success', 'Exam has been Successfully Created');
+
+			redirect('admin/exam');
+
 		}
-		
 	}
 
 	//Update one item

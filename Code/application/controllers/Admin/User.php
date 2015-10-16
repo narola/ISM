@@ -132,7 +132,7 @@ class User extends ADMIN_Controller {
 											    				),
 											    			array(
 											    				'table'=>TBL_USER_PROFILE_PICTURE,
-											    				'condition'=>TBL_USER_PROFILE_PICTURE.'.id='.TBL_USERS.'.id'	
+											    				'condition'=>TBL_USER_PROFILE_PICTURE.'.user_id='.TBL_USERS.'.id'	
 											    				)			
 												    		)
 												)
