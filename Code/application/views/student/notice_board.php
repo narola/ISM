@@ -56,12 +56,12 @@
                         <p><?php echo $value['notice'];?></p>
                     </div>
                     <div class="col-sm-12">
-                       
-                        <a href="#" class="fa fa-angle-double-down"></a>                            
+                        <a href="javascript:void(0);" id="expand_notice" class="fa fa-angle-double-down"></a>                            
                     </div>
                 </div>                            
                 <div class="clearfix"></div>
             </div>
+
             <?php
                     }
                 }
@@ -87,3 +87,26 @@
     </div>
 </div>
 <!--//main-->
+<script type="text/javascript">
+        $(document).ready(function() {
+            $('.notice_content #expand_notice').click(function(){
+                if($(this).hasClass('fa-angle-double-down')){
+                    var ph = $(this).parent().parent('.notice_content').children('.notice_description').children().height();
+                    /*$(this).parent().parent('.notice_content').children('.notice_description').css('height','auto');*/
+                    $(this).parent().parent('.notice_content').children('.notice_description').animate( 
+                        { height: ph}, 
+                        { queue:false, duration:300 });
+                    $(this).removeClass('fa-angle-double-down');
+                    $(this).addClass('fa-angle-double-up');
+                }
+                else{
+                    /*$(this).parent().parent('.notice_content').children('.notice_description').css('height','80px');*/
+                    $(this).parent().parent('.notice_content').children('.notice_description').animate( 
+                        { height: "70px"}, 
+                        { queue:false, duration:300 });
+                    $(this).removeClass('fa-angle-double-up');
+                    $(this).addClass('fa-angle-double-down');
+                }
+            });
+        });
+    </script>
