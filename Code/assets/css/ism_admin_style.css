@@ -1152,7 +1152,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     z-index: -1;
 }
 .banner_admin>.col-sm-12>div{
-	width:500px;
+	width:520px;
 	margin:0 auto;
 }
 .banner_group_name{
@@ -1696,7 +1696,4 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .score_descrip p:last-child, .score_descrip p:nth-last-child(2){
 	display:inline-block;	
-}
-.navbar-nav li>.dropdown-menu>li.active>a{
-	color:#ff6b6b;
 }

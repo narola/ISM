@@ -894,7 +894,13 @@ textarea.post_input{
 }
 .carousel-caption{
 	/*bottom:30px;*/
-	font-size: 20px;
+	position:absolute;
+	height:100%;
+	width:100%;
+	top:0;
+	left:0;
+	padding:15px;
+	font-size: 15px;
 }
 .carousel-indicators li, .carousel-indicators .active{
 	border:none;
@@ -3083,9 +3089,6 @@ ul.ques_numbers {
     font-size: 20px;
     vertical-align: middle;
 }
-canvas{
-    transform: rotate(90deg);
-}
 .big_score{
 	font-size:45px;
 	font-weight:bold;
@@ -3355,7 +3358,6 @@ canvas{
     padding-top: 10px;
 	height:172px;
 }
-
 .profile>.box{
 	margin-top:15px;
 }
@@ -3442,8 +3444,6 @@ canvas{
 	font-size:14px;
 	margin-bottom:0;
 }
-.navbar-nav li>.dropdown-menu>li.active>a{
-	color:#1bc4a3;
-	background-color:#232a34;
-
+.txt_white{
+	color:#fff;
 }
