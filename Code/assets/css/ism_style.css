@@ -3260,21 +3260,21 @@ ul.ques_numbers {
 }
 
 /*exam page*/
-.exam_filter{
+.exams_filter{
 	padding:15px 0 15px 15px !important;
 	background-color:#f9f9f9;
     box-shadow: 0 1px 15px 1px rgba(0,0,0,0.2);
 }
-.exam_filter>.form-group{
+.exams_filter>.form-group{
 	width: 25% !important;
     padding-right: 15px;
     margin-bottom: 0 !important;
     float: left;
 }
-.exam_filter>.form-group:before{
+.exams_filter>.form-group:before{
 	right:15px;
 }
-.exam_filter>.form-group:after{
+.exams_filter>.form-group:after{
 	right:28px;
 }
 .exams_wrapper .box_header{
