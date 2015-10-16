@@ -6,7 +6,6 @@ android {
     defaultConfig {
         applicationId "com.ism"
         minSdkVersion 21
-        minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -18,6 +17,13 @@ android {
         }
     }
     productFlavors {
+        teacher_module {
+            minSdkVersion 21
+            applicationId 'com.ism.teacher'
+            targetSdkVersion 23
+            versionCode 1
+            versionName '1.0'
+        }
     }
 }
 
