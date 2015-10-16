@@ -156,6 +156,8 @@ class Exam extends ADMIN_Controller {
 			}else{	
 				$exam_type = 'topic';
 			}
+			
+			$button_type = $this->input->post('button_type');
 
 			$exam_data=array(
 					'exam_name'=>$this->input->post('exam_name'),
@@ -181,11 +183,14 @@ class Exam extends ADMIN_Controller {
 					'school_classroom_id'=>'1'
 				);
 
-			insert(TBL_EXAM_SCHEDULE,$exam_schedule);
+			$id = insert(TBL_EXAM_SCHEDULE,$exam_schedule);
 
-			$this->session->set_flashdata('success', 'Exam has been Successfully Created');
-
-			redirect('admin/exam');
+			if($button_type == 'set'){
+				redirect('admin/question/set?exam='.$id);	
+			}else{
+				$this->session->set_flashdata('success', 'Exam has been Successfully Created');
+				redirect('admin/exam');	
+			}
 
 		}
 	}

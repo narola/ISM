@@ -150,7 +150,13 @@
                                         
                                         <a href="<?php echo base_url().'admin/group/performance/'.$group['id']; ?>" data-toggle="tooltip" data-placement="bottom" title="Performance" class="icon icon_performance"></a>
                                         
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Block Group"  class="icon icon_blockuser"></a>
+                                         <?php if($group['group_status'] == 'blocked') { ?>  
+                                          <a href="<?php echo base_url().'admin/group/active/'.$group['id']; ?>" 
+                                            onclick="return active_user(this.href,event)" class="icon icon_user" data-toggle="tooltip" data-placement="bottom" title="Active" ></a>
+                                          <?php }else{ ?>   
+                                          <a href="<?php echo base_url().'admin/group/blocked/'.$group['id']; ?>" onclick="return block_user(this.href,event)"
+                                             class="icon icon_blockuser" data-toggle="tooltip" data-placement="bottom" title="Block"></a>  
+                                          <?php } ?>
                                         
                                         <a href="#" data-toggle="tooltip" data-placement="bottom" title="Main"  class="icon icon_mail"></a>
                                         
@@ -181,6 +187,29 @@
 
 <script type="text/javascript">
 	
+    function block_user(href,event){
+         event.preventDefault();
+         bootbox.confirm("Block Group?", function(confirmed) {
+            
+            if(confirmed){
+                window.location.href=href;
+            }
+            
+        });
+    } 
+
+    function active_user(href,event){
+         event.preventDefault();
+         bootbox.confirm("Activate Group?", function(confirmed) {
+            
+            if(confirmed){
+                window.location.href=href;
+            }
+            
+        });
+    } 
+
+
 	function filter_data(){
 		
 		var course = $('#course').val();

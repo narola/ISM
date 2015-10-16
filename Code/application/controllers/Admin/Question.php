@@ -16,16 +16,14 @@ class Question extends ADMIN_Controller {
 	*/
 	public function set(){
 
-			$where = array();
+		$where = array();
+
 		if($_POST){
 			
 			$course_id = $this->input->post('course_id');
 			$classroom_id = $this->input->post('classroom_id');
 			$subject_id = $this->input->post('subject_id');
 			$tutorial_topic_id = $this->input->post('topic_id');
-			
-
-
 
 			if($classroom_id !='' && $subject_id=='' && $tutorial_topic_id == ''){
 				$where = array(TBL_QUESTIONS.'.classroom_id'=>$classroom_id);
@@ -36,6 +34,7 @@ class Question extends ADMIN_Controller {
 			}
 
 		}
+		
 			$questions = select(TBL_QUESTIONS,
 								TBL_QUESTIONS.'.id,'.
 								TBL_QUESTIONS.'.question_text,'.
@@ -43,6 +42,7 @@ class Question extends ADMIN_Controller {
 								TBL_USERS.'.full_name',
 			array('where'=>$where),
 				array(
+					'group_by'=>TBL_QUESTIONS.'.id,',
 					'join'=>array(
 						array(
 		    				'table' => TBL_TUTORIAL_GROUP_QUESTION,
@@ -74,6 +74,7 @@ class Question extends ADMIN_Controller {
 								);
 
 				$questions[$key]['choices']=array_column($choices,'choice_text');
+
 											}
 			// p($questions,true);
 			$this->data['questions'] = $questions;
@@ -84,6 +85,7 @@ class Question extends ADMIN_Controller {
 		$where = array('where'=>array('is_delete'=>0));
 
 		$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null);
+		$this->data['exams'] = select(TBL_EXAMS,FALSE,$where);	
 		$this->template->load('admin/default','admin/question/set',$this->data);
 	}
 
@@ -161,5 +163,29 @@ class Question extends ADMIN_Controller {
 			}	
 		}
 		echo $new_str;
+	}
+
+	public function set_question(){
+
+		$qid = $this->input->post('qid');
+		$eid = $this->input->post('eid');
+		$fetch_data = select(TBL_EXAM_QUESTION,FALSE,array('where'=>array('exam_id'=>$eid,'question_id'=>$qid)));
+		//p($fetch_data);
+		if(empty($fetch_data)){
+			
+			$data = array(
+				'exam_id'=>$eid,
+				'question_id'=>$qid
+			);
+
+			insert(TBL_EXAM_QUESTION,$data);
+
+			echo json_encode(array('res'=>1)); 
+		}else{
+			echo json_encode(array('res'=>0)); 
+		}
+		
+
+		//$data
 	}
 }
