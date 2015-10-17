@@ -142,6 +142,10 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	private void end() {
 		try {
 			timerExam.cancel();
+			for (int i = 0; i < arrListQuestions.size(); i++) {
+				arrListQuestions.get(i).setIsReviewLater(false);
+				arrListQuestions.get(i).setIsSkipped(false);
+			}
 			fragExam.getFragmentManager().beginTransaction().replace(R.id.fl_exam, ResultFragment.newInstance(arrListQuestions, true)).commit();
 			getFragmentManager().beginTransaction().remove(this).commit();
 		} catch (Exception e) {
