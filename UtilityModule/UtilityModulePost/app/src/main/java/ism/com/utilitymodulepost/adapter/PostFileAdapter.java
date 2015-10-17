@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.util.ArrayList;
 
 import ism.com.utilitymodulepost.R;
@@ -29,7 +29,7 @@ public class PostFileAdapter extends BaseAdapter {
     private final LayoutInflater inflater;
     ArrayList<PostFileModel> arrayList = new ArrayList<>();
     Context context;
-    MediaPlayer mediaPlayer=new MediaPlayer();
+    MediaPlayer mediaPlayer = new MediaPlayer();
     MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
     private Bitmap bitmap;
 
@@ -64,15 +64,19 @@ public class PostFileAdapter extends BaseAdapter {
         imageView.setVisibility(View.VISIBLE);
         Log.e("File", "" + arrayList.get(position).getStrFilePath());
         if (arrayList.get(position).getStrFileType().equals("image")) {
-            if (arrayList.get(position).getStrFilePath()!=null) {
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(arrayList.get(position).getStrFilePath())) ;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                imageView.setImageBitmap(bitmap);
+            if (arrayList.get(position).getStrFilePath() != null) {
+                Picasso.with(context)
+                        .load(new File( arrayList.get(position).getStrFilePath()))
+                        .error(R.drawable.img_addd_file)
+                        .placeholder(R.drawable.img_addd_file)
+                        .into(imageView);
+                // bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(arrayList.get(position).getStrFilePath()));
+                Log.e("Bitmap", "" + bitmap);
+
+                // imageView.setImageBitmap(bitmap);
                 txtClose.setVisibility(View.VISIBLE);
             }
+            
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
 
@@ -91,12 +95,12 @@ public class PostFileAdapter extends BaseAdapter {
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
-            videoIndicator.setText(mediaPlayer.getDuration()+"");
+            videoIndicator.setText(mediaPlayer.getDuration() + "");
             videoIndicator.setVisibility(View.VISIBLE);
 
         } else if (arrayList.get(position).getStrFileType().equals("isAudio")) {
             txtClose.setVisibility(View.VISIBLE);
-            MediaPlayer mediaPlayer=new MediaPlayer();
+            MediaPlayer mediaPlayer = new MediaPlayer();
 //            try {
 //                mediaPlayer.setDataSource(context, Uri.fromFile(arrayList.get(position).getUriFile()));
 //                mediaPlayer.getDuration();
@@ -110,7 +114,7 @@ public class PostFileAdapter extends BaseAdapter {
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
-            videoIndicator.setText(mediaPlayer.getDuration()+"");
+            videoIndicator.setText(mediaPlayer.getDuration() + "");
             videoIndicator.setVisibility(View.VISIBLE);
             imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.ic_launcher));
         }

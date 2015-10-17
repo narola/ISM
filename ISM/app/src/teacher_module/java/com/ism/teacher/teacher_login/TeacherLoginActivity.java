@@ -5,10 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 
 import com.ism.R;
 import com.ism.login.Global;
-import com.ism.login.ProfileInfornation;
 
 
 /**
@@ -18,7 +19,10 @@ public class TeacherLoginActivity extends Activity implements View.OnClickListen
 
 
     Global global;
-    Button btn_login;
+    Button btnLogin;
+    EditText etTeacherUserid, etTeacherPassword;
+    CheckBox chkRememberme;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +37,18 @@ public class TeacherLoginActivity extends Activity implements View.OnClickListen
 
     private void initView() {
 
-        btn_login=(Button)findViewById(R.id.btn_login);
-        btn_login.setOnClickListener(this);
+        btnLogin =(Button)findViewById(R.id.btn_login);
+        etTeacherUserid =(EditText)findViewById(R.id.et_teacher_userid);
+        etTeacherPassword =(EditText)findViewById(R.id.et_teacher_password);
+        chkRememberme =(CheckBox)findViewById(R.id.chk_rememberme);
+
+        btnLogin.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
 
-        if(view==btn_login)
+        if(view== btnLogin)
         {
             global.myIntent(this, TeacherProfileInformation.class);
         }
