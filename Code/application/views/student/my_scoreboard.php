@@ -57,5 +57,5 @@
 <script>
     $(".progress-bar").animate({
     width: "<?php echo $my_scoreboard['percentage'];?>%"
-}, 2500);
+}, 500);
 </script>

@@ -24,8 +24,8 @@ class My_scoreboard extends ISM_Controller {
 		$data['title'] = 'ISM - MY Scoreboard';
 
 		$user_data = $this->session->userdata('user');
-		echo $userid = $user_data['id'];
-		// exit;
+		$userid = $user_data['id'];
+
 		$where 	= array('where' => array('e.id' => $this->examid,'sc.user_id' => $userid));
 		$option = array('join' => 
 					array(
