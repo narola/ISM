@@ -17,6 +17,7 @@ public class QuestionObjective {
 	private boolean isSkipped;
 	private boolean isReviewLater;
 	private boolean isAnswered;
+	private boolean isCorrect;
 
 	public QuestionObjective() {
 	}
@@ -73,6 +74,14 @@ public class QuestionObjective {
 
 	public void setIsAnswered(boolean isAnswered) {
 		this.isAnswered = isAnswered;
+	}
+
+	public boolean isCorrect() {
+		return isCorrect;
+	}
+
+	public void setIsCorrect(boolean isCorrect) {
+		this.isCorrect = isCorrect;
 	}
 
 	public static ArrayList<QuestionObjective> getQuestions() {

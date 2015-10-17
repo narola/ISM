@@ -3,6 +3,7 @@ package com.ism.exam.fragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +92,8 @@ public class ResultFragment extends Fragment {
 
 		txtScore.setText(Html.fromHtml("<font color='#323941'>YOUR SCORE IS : </font><font color='#1BC4A2'>" + 75 + "%</font>"));
 
+		calculateScore();
+
 		btnViewAnswers.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -132,6 +135,30 @@ public class ResultFragment extends Fragment {
 			lvGraph.setAdapter(adpScore);
 		}
 
+	}
+
+	private void calculateScore() {
+		try {
+			int correct = 0;
+			int incorrect = 0;
+			int unattempted = 0;
+			for (int i = 0; i < arrListQuestions.size(); i++) {
+				if (arrListQuestions.get(i).isAnswered()) {
+					if (arrListQuestions.get(i).isCorrect()) {
+						correct++;
+					} else {
+						incorrect++;
+					}
+				} else {
+					unattempted++;
+				}
+			}
+			txtCorrectAnswers.setText(correct + "");
+			txtIncorrectAnswers.setText(incorrect + "");
+			txtUnattemptedAnswers.setText(unattempted + "");
+		} catch (Exception e) {
+			Log.e(TAG, "calculateScore Exception : " + e.toString());
+		}
 	}
 
 	public void setQuestion(ArrayList<QuestionObjective> questions) {

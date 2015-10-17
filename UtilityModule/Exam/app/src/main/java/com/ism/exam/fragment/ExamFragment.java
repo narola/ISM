@@ -201,27 +201,27 @@ public class ExamFragment extends Fragment {
 					switch (checkedId) {
 						case R.id.rb_op1:
 							isChecked = rbOption1.isChecked();
-							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(0).setIsSelected(isChecked);
+							saveAnswer(0, isChecked);
 							break;
 						case R.id.rb_op2:
 							isChecked = rbOption2.isChecked();
-							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(1).setIsSelected(isChecked);
+							saveAnswer(1, isChecked);
 							break;
 						case R.id.rb_op3:
 							isChecked = rbOption3.isChecked();
-							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(2).setIsSelected(isChecked);
+							saveAnswer(2, isChecked);
 							break;
 						case R.id.rb_op4:
 							isChecked = rbOption4.isChecked();
-							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(3).setIsSelected(isChecked);
+							saveAnswer(3, isChecked);
 							break;
 						case R.id.rb_op5:
 							isChecked = rbOption5.isChecked();
-							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(4).setIsSelected(isChecked);
+							saveAnswer(4, isChecked);
 							break;
 						case R.id.rb_op6:
 							isChecked = rbOption6.isChecked();
-							arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(5).setIsSelected(isChecked);
+							saveAnswer(5, isChecked);
 							break;
 					}
 					arrListQuestions.get(intCurrentQuestionIndex).setIsAnswered(isChecked);
@@ -229,6 +229,13 @@ public class ExamFragment extends Fragment {
 			}
 		});
 
+	}
+
+	private void saveAnswer(int optionPosition, boolean isChecked) {
+		arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(optionPosition).setIsSelected(isChecked);
+		arrListQuestions.get(intCurrentQuestionIndex).setIsCorrect(
+				arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(optionPosition).isAnswer()
+						&& arrListQuestions.get(intCurrentQuestionIndex).getOptions().get(optionPosition).isSelected());
 	}
 
 	private void startTest() {
@@ -239,41 +246,6 @@ public class ExamFragment extends Fragment {
 		}
 		setQuestion(intCurrentQuestionIndex);
 	}
-
-	/*private void end() {
-		try {
-			timerExam.cancel();
-			getFragmentManager().beginTransaction().replace(R.id.fl_exam, ResultFragment.newInstance(arrListQuestions)).commit();
-		} catch (Exception e) {
-			Log.e(TAG, "end Exception : " + e.toString());
-		}
-	}
-
-	public void endTest() {
-		boolean isUncomplete = false;
-		for (int i = 0; i < arrListQuestions.size(); i++) {
-			if (arrListQuestions.get(i).isReviewLater() || arrListQuestions.get(i).isSkipped() || !arrListQuestions.get(i).isAnswered()) {
-				isUncomplete = true;
-				break;
-			}
-		}
-		String msg = isUncomplete ? getResources().getString(R.string.msg_end_test_unanswered) : getResources().getString(R.string.msg_end_test);
-		String negativeText = isUncomplete ? getResources().getString(R.string.attend) : getResources().getString(R.string.cancel);
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setMessage(msg)
-				.setPositiveButton(R.string.end_test, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						end();
-					}
-				}).setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-
-					}
-				});
-		builder.create().show();
-	}*/
 
 	public void setQuestion(int questionIndex) {
 		try {
