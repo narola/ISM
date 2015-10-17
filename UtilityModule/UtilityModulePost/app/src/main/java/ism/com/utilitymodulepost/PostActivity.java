@@ -3,7 +3,6 @@ package ism.com.utilitymodulepost;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,10 +17,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,9 +46,11 @@ public class PostActivity extends Activity implements View.OnClickListener {
     private LinearLayout llImage;
     private LinearLayout llChooseImg, llCaptureImg;
     public static int MEDIA_TYPE_IMAGE = 100;
-    public static int CAPTURE_IMAGE = 200; public static int CAPTURE_VIDEO = 400;
+    public static int CAPTURE_IMAGE = 200;
+    public static int CAPTURE_VIDEO = 400;
     private String mFileName;
-
+    private Uri uriFile;
+    private PostFileAdapter postFileAdapter=new PostFileAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +135,7 @@ public class PostActivity extends Activity implements View.OnClickListener {
             Toast.makeText(getApplicationContext(), "Images", Toast.LENGTH_SHORT).show();
             hideKeyboard();
 
+
         } else if (v == imgAudio) {
             toolSelected(v);
             Toast.makeText(getApplicationContext(), "Audio", Toast.LENGTH_SHORT).show();
@@ -150,8 +149,8 @@ public class PostActivity extends Activity implements View.OnClickListener {
         } else if (v == llChooseImg) {
 
             OpenImageGallery();
-        }else if (v == llCaptureImg) {
-                 captureImage();
+        } else if (v == llCaptureImg) {
+            captureImage();
         }
     }
 
@@ -159,35 +158,27 @@ public class PostActivity extends Activity implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == MEDIA_TYPE_IMAGE && resultCode==RESULT_OK) {
+        if (requestCode == MEDIA_TYPE_IMAGE && resultCode == RESULT_OK) {
             Toast.makeText(getApplicationContext(), "Select Image", Toast.LENGTH_SHORT).show();
             String path = data.getData().toString();
-            Log.i("path", path + "");
-            model = new PostFileModel("image", path);
+            Uri uri=data.getData();
+            Log.i("uri", uri + "");
+            if(arrayList.size()==0){
+                model = new PostFileModel("image", uri);
+                arrayList.add(model);
+            }
+            model = new PostFileModel("image", uri);
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
             // adapter.notifyDataSetChanged();
-        }else if(requestCode==CAPTURE_IMAGE && resultCode==RESULT_OK){
+        } else if (requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK) {
             Toast.makeText(getApplicationContext(), "Select Image", Toast.LENGTH_SHORT).show();
-                  ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            Uri fileUri = getOutputMediaFileUri(CAPTURE_IMAGE);
-            Bitmap bitmap=(Bitmap)data.getExtras().get("data");
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            File file = getOutputMediaFile(CAPTURE_IMAGE);
-            try {
-                file.createNewFile();
-                FileOutputStream fo = new FileOutputStream(file);
-                fo.write(bytes.toByteArray());
-                fo.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            if(arrayList.size()==0){
+                model = new PostFileModel("image", uriFile);
+                arrayList.add(model);
             }
-            String path=file.getPath();
-           // String path = data.getData().toString();
-            Log.i("path", path + "");
-            model = new PostFileModel("image", path);
+            model = new PostFileModel("image", uriFile);
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
@@ -200,11 +191,18 @@ public class PostActivity extends Activity implements View.OnClickListener {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), MEDIA_TYPE_IMAGE);
     }
+
     private void captureImage() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
+        uriFile = getOutputMediaFileUri(CAPTURE_IMAGE);
+        // set the isImage file name
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriFile);
+        // set the isVideo isImage quality to high
+        // start the Video Capture Intent
         startActivityForResult(intent, CAPTURE_IMAGE);
     }
+
     public void toolSelected(View v) {
         imgImage.setBackground(getResources().getDrawable(R.drawable.bg_icon));
         imgKeyboard.setBackground(getResources().getDrawable(R.drawable.bg_icon));
@@ -219,6 +217,7 @@ public class PostActivity extends Activity implements View.OnClickListener {
 //        }
 
     }
+
     /**
      * Creating file uri to store isImage/isVideo
      */

@@ -1,13 +1,15 @@
 package ism.com.utilitymodulepost.model;
 
+import android.net.Uri;
+
 /**
  * Created by c162 on 16/10/15.
  */
 public class PostFileModel  {
     String strFileType;
-    String strFilePath;
+    Uri strFilePath;
 
-    public PostFileModel(String strFileType, String strFilePath) {
+    public PostFileModel(String strFileType, Uri strFilePath) {
         this.strFileType = strFileType;
         this.strFilePath = strFilePath;
     }
@@ -20,11 +22,11 @@ public class PostFileModel  {
         this.strFileType = strFileType;
     }
 
-    public String getStrFilePath() {
+    public Uri getStrFilePath() {
         return strFilePath;
     }
 
-    public void setStrFilePath(String strFilePath) {
+    public void setStrFilePath(Uri strFilePath) {
         this.strFilePath = strFilePath;
     }
 }

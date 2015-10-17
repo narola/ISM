@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import ism.com.utilitymodulepost.R;
@@ -26,7 +25,7 @@ import ism.com.utilitymodulepost.model.PostFileModel;
  * Created by c162 on 16/10/15.
  */
 public class PostFileAdapter extends BaseAdapter {
-    private final LayoutInflater inflater;
+    private  LayoutInflater inflater;
     ArrayList<PostFileModel> arrayList = new ArrayList<>();
     Context context;
     MediaPlayer mediaPlayer = new MediaPlayer();
@@ -37,6 +36,14 @@ public class PostFileAdapter extends BaseAdapter {
         this.arrayList = arrayList;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
+    }
+
+    public PostFileAdapter() {
+       // this.inflater = LayoutInflater.from(context);
+    }
+
+    public ArrayList<PostFileModel> getArrayList() {
+        return arrayList;
     }
 
     @Override
@@ -60,23 +67,33 @@ public class PostFileAdapter extends BaseAdapter {
         RelativeLayout rlMain = (RelativeLayout) convertView.findViewById(R.id.rl_image);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.img_image);
         TextView videoIndicator = (TextView) convertView.findViewById(R.id.txt_video);
-        ImageView txtClose = (ImageView) convertView.findViewById(R.id.img_cancel);
+        ImageView imgClose = (ImageView) convertView.findViewById(R.id.img_cancel);
+        ImageView imgAdd = (ImageView) convertView.findViewById(R.id.img_add);
         imageView.setVisibility(View.VISIBLE);
         Log.e("File", "" + arrayList.get(position).getStrFilePath());
-        if (arrayList.get(position).getStrFileType().equals("image")) {
+        if (position==0){
+            imgAdd.setVisibility(View.VISIBLE);
+            Picasso.with(context)
+                    .load(R.drawable.img_addd_file)
+                    .error(R.drawable.ic_launcher)
+                    .placeholder(R.drawable.selector_loading)
+                    .into(imgAdd);
+        }
+        else if (arrayList.get(position).getStrFileType().equals("image")) {
             if (arrayList.get(position).getStrFilePath() != null) {
+                //  Uri uri = Uri.fromFile(new File(arrayList.get(position).getStrFilePath()));
+
                 Picasso.with(context)
-                        .load(new File( arrayList.get(position).getStrFilePath()))
-                        .error(R.drawable.img_addd_file)
-                        .placeholder(R.drawable.img_addd_file)
+                        .load(arrayList.get(position).getStrFilePath())
+                        .error(R.drawable.ic_launcher)
+                        .placeholder(R.drawable.selector_loading)
                         .into(imageView);
                 // bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(arrayList.get(position).getStrFilePath()));
-                Log.e("Bitmap", "" + bitmap);
 
                 // imageView.setImageBitmap(bitmap);
-                txtClose.setVisibility(View.VISIBLE);
+                imgClose.setVisibility(View.VISIBLE);
             }
-            
+
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
 
@@ -86,7 +103,7 @@ public class PostFileAdapter extends BaseAdapter {
             });
         } else if (arrayList.get(position).getStrFileType().equals("isVideo")) {
 //            imageView.setImageBitmap(arrayList.get(position).getBitmap());
-//            txtClose.setVisibility(View.VISIBLE);
+//            imgClose.setVisibility(View.VISIBLE);
 //            MediaPlayer mediaPlayer=new MediaPlayer();
 //            try {
 //                mediaPlayer.setDataSource(context, Uri.fromFile(arrayList.get(position).getUriFile()));
@@ -99,7 +116,7 @@ public class PostFileAdapter extends BaseAdapter {
             videoIndicator.setVisibility(View.VISIBLE);
 
         } else if (arrayList.get(position).getStrFileType().equals("isAudio")) {
-            txtClose.setVisibility(View.VISIBLE);
+            imgClose.setVisibility(View.VISIBLE);
             MediaPlayer mediaPlayer = new MediaPlayer();
 //            try {
 //                mediaPlayer.setDataSource(context, Uri.fromFile(arrayList.get(position).getUriFile()));
@@ -124,10 +141,11 @@ public class PostFileAdapter extends BaseAdapter {
                 Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
             }
         });
-        txtClose.setOnClickListener(new View.OnClickListener() {
+        imgClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 arrayList.remove(position);
+                notifyDataSetChanged();
             }
         });
         return convertView;
