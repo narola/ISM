@@ -46,60 +46,102 @@
             android:orientation="vertical">
 
             <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/line_gray" />
+
+            <ImageView
                 android:id="@+id/img_keyboard"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="#343D42"
                 android:padding="5dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/img_keyboard" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/line_gray" />
 
             <ImageView
                 android:id="@+id/img_link"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="#343D42"
                 android:padding="5dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/img_link" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/line_gray" />
 
             <ImageView
                 android:id="@+id/img_image"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="#343D42"
                 android:padding="5dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/img_image" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/line_gray" />
 
             <ImageView
                 android:id="@+id/img_video"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="#343D42"
                 android:padding="5dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/img_video" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/line_gray" />
 
             <ImageView
                 android:id="@+id/img_audio"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="#343D42"
                 android:padding="5dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/img_audio" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/line_gray" />
 
             <ImageView
                 android:id="@+id/img_tool"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="#343D42"
                 android:padding="5dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/img_tools" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/line_gray" />
 
             <ImageView
                 android:id="@+id/img_emoticons"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="#343D42"
                 android:padding="5dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/img_emoticons" />
         </LinearLayout>
 
     </RelativeLayout>
