@@ -1,6 +1,8 @@
 package com.ism.exam.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,7 +64,10 @@ public class TutorialGroupAdapter extends BaseAdapter {
 		}
 
 		try {
-			holder.txtName.setText(Html.fromHtml("<font color='#333333'>" + arrListMembers.get(position).getName() + "</font><font color='#595959'> + " + arrListMembers.get(position).getSchoolName() + "</font>"));
+			holder.txtName.setText(Html.fromHtml("<font color='#333333'>" + arrListMembers.get(position).getName() + "</font><br/><small><font color='#AEAEAE'>" + arrListMembers.get(position).getSchoolName() + "</font></small>"));
+//			Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.userdp);
+//			holder.imgDp.setImageBitmap(bitmap);
+//			holder.imgDp.setImageResource(R.drawable.userdp);
 		} catch (Exception e) {
 			Log.e(TAG, "getView Exception : " + e.toString());
 		}

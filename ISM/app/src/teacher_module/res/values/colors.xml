@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Teacher Login-->
+    <color name="color_teacher_login">#FE84C1</color>
+    <color name="color_teacher_headers">#D5DBDF</color>
+
+</resources>

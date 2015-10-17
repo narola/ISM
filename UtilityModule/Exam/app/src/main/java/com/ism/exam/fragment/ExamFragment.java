@@ -55,7 +55,6 @@ public class ExamFragment extends Fragment {
 
 	private RadioButton rbOptions[];
 
-	private CountDownTimer timerExam;
 	private ExamListener listenerExam;
 	private QuestionPaletteAdapter adpQuestionPalette;
 	private ArrayList<QuestionObjective> arrListQuestions;
@@ -150,7 +149,9 @@ public class ExamFragment extends Fragment {
 				if (intCurrentQuestionIndex < arrListQuestions.size() - 1) {
 					setQuestion(++intCurrentQuestionIndex);
 				} else {
-					endTest();
+					if (listenerExam != null) {
+						listenerExam.onQuestionSet(-1);
+					}
 				}
 			}
 		});
@@ -170,7 +171,9 @@ public class ExamFragment extends Fragment {
 				if (intCurrentQuestionIndex < arrListQuestions.size() - 1) {
 					setQuestion(++intCurrentQuestionIndex);
 				} else {
-					endTest();
+					if (listenerExam != null) {
+						listenerExam.onQuestionSet(-1);
+					}
 				}
 			}
 		});
@@ -183,7 +186,9 @@ public class ExamFragment extends Fragment {
 				if (intCurrentQuestionIndex < arrListQuestions.size() - 1) {
 					setQuestion(++intCurrentQuestionIndex);
 				} else if (intCurrentQuestionIndex == arrListQuestions.size() - 1) {
-					endTest();
+					if (listenerExam != null) {
+						listenerExam.onQuestionSet(-1);
+					}
 				}
 			}
 		});
@@ -227,18 +232,7 @@ public class ExamFragment extends Fragment {
 	}
 
 	private void startTest() {
-		timerExam = new CountDownTimer( intExamDurationMinutes * 60 * 1000, 1000) {
-			@Override
-			public void onTick(long millisUntilFinished) {
-				txtHeader.setText(Utility.stringForTime((int) millisUntilFinished));
-			}
-
-			@Override
-			public void onFinish() {
-				end();
-			}
-		};
-		timerExam.start();
+		txtHeader.setText(Utility.stringForTime(intExamDurationMinutes * 60 * 1000));
 		txtInstruct.setText(R.string.choose_answer);
 		if (listenerExam != null) {
 			listenerExam.startTest(arrListQuestions, this);
@@ -246,7 +240,7 @@ public class ExamFragment extends Fragment {
 		setQuestion(intCurrentQuestionIndex);
 	}
 
-	private void end() {
+	/*private void end() {
 		try {
 			timerExam.cancel();
 			getFragmentManager().beginTransaction().replace(R.id.fl_exam, ResultFragment.newInstance(arrListQuestions)).commit();
@@ -279,7 +273,7 @@ public class ExamFragment extends Fragment {
 					}
 				});
 		builder.create().show();
-	}
+	}*/
 
 	public void setQuestion(int questionIndex) {
 		try {
@@ -313,6 +307,10 @@ public class ExamFragment extends Fragment {
 
 	public void setListenerExam(ExamListener examListener) {
 		listenerExam = examListener;
+	}
+
+	public int getExamDurationMinutes() {
+		return intExamDurationMinutes;
 	}
 
 }

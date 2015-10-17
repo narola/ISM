@@ -22,4 +22,15 @@
 	<string name="msg_end_test">End test?</string>
 	<string name="cancel">Cancel</string>
 	<string name="attend">Attend</string>
+	<string name="active_comments">Active Comments :</string>
+	<string name="my_score">My Score :</string>
+	<string name="correct_answers">Correct Answers :</string>
+	<string name="incorrect_answers">Incorrect Answers :</string>
+	<string name="unattempted_questions">Unattempted Questions :</string>
+	<string name="total_time_spent">Total Time Spent :</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="click_view_answers">Click Here to View Answers</string>
+	<string name="make_score_public">Make My Score Public?</string>
+	<string name="view_evaluation">View Evaluation</string>
 </resources>

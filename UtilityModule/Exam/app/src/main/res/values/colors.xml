@@ -7,9 +7,14 @@
     <color name="color_graylight">#F5F5F5</color>
     <color name="notation_not_answered">#D8DDE0</color>
     <color name="bg_app_dark">#323941</color>
+    <color name="bg_button_dark_pressed">#131619</color>
+    <color name="bg_button_blue_normal">#4294D0</color>
+    <color name="bg_button_blue_pressed">#26699b</color>
 	<color name="color_green">#1BC4A2</color>
 	<color name="color_green_dark">#14987d</color>
-    <color name="border_gray">#DDDDDD</color>
+	<color name="color_red">#FF4A3F</color>
+	<color name="color_yellow">#FEBA01</color>
+	<color name="border_gray">#DDDDDD</color>
     <color name="bg_tutorial">#DA534F</color>
 
 	<color name="button_dark_start">#99CCCCCC</color>
