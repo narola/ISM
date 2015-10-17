@@ -255,7 +255,7 @@
                     }
         ?>
             <img src="<?php echo base_url();?>assets/images/blackboard.jpg" alt="blackboard">
-                <div class="carousel-caption">
+                <div class="carousel-caption mCustomScrollbar" data-mcs-theme="minimal-dark">
                     <p class="noti_username"><?php echo $value['notice_title'];?></p>
                     <p style="txt_white"><?php echo $value['notice'];?><br><span style="float:right">-ISM Admin</span></p>
                 </div>

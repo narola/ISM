@@ -31,61 +31,50 @@
         <?php 
             if(isset($my_evaluation)){
                 $cnt = count($my_evaluation)/2;
-                $i = 0;
+                $i = 1;
                 $k = 0;
+                $total_rows = count($my_evaluation);
+                $half = round($total_rows/2);
                 foreach ($my_evaluation as $key => $value) {
-                    if($i == 0){
-                    ?>
-                        <div class="col-md-6 col-sm-12">
-                        <div class="box">
-                    <?php
+                    if($i == 1){
+                        echo '<div class="col-md-6 col-sm-12"><div class="box">';
                     }
-                    if($i == $cnt && $k == 0){
                     ?>
-                        <div class="col-md-6 col-sm-12">
-                        <div class="box">
-                    <?php
-                    }
-                    if($i < $cnt){
-                    ?>       
                         <div class="ques_num">
                             <div class="box_header">
-                                <h5 class="txt_green">Question: <span>1</span></h5>
+                                <h5 class="txt_green">Question:  <span><?= $i?></span></h5>
                             </div>
                             <div class="box_body">
-                                <p class="ques">When parallel meet which effect occurs?</p>
+                                <p class="ques"><?php echo $value['question_text'];?></p>
                                 <!--answers-->
                                 <div class="row">
                                     <div class="col-lg-4 col-sm-6">
                                         <p>Your Answer:</p>
                                     </div>
                                     <div class="col-lg-8 col-sm-6">
-                                        <p>Raywander Effect</p>
+                                        <p><?php echo $value['your_ans'];?></p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
                                         <p>Correct Answer:</p>
                                     </div>
                                     <div class="col-lg-8 col-sm-6">
-                                        <p>Tindal Effect</p>
+                                        <p><?php echo $value['correct_ans'];?></p>
                                     </div>
                                 </div>
                                 <h5>Solution:</h5>
                                 <div class="solution no_solution">
                                 </div>
                             </div>
-                        </div>  
-                    <?php
-                        $i++;
+                        </div>
+                    <?php 
+                    if($i == $half){
+                        echo '</div></div><div class="col-md-6 col-sm-12"><div class="box">';
                     }
-                    if($i == $cnt){
+                    if($i == $total_rows){
                         echo '</div></div>';
                     }
 
-                    if($i == $cnt && $k <= $cnt){
-                        echo 'hi';
-                    }
-
-                        
+                      $i++;      
                 }
             } 
         ?>
