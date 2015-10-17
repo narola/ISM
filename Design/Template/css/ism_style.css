@@ -3447,3 +3447,28 @@ ul.ques_numbers {
 .txt_white{
 	color:#fff;
 }
+.filter .form-group.data_range:after, .filter .form-group.data_range:before{
+	content:none;
+}
+.tabs_studymate .btn{
+	border-radius: 0;
+    font-weight: 600;
+    height: 50px;
+    background-color: #fff;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+.tabs_studymate .btn:first-child{
+    border-right: 1px solid rgba(0,0,0,0.1);
+}
+.my_studymates{
+
+}
+.search_studymates{
+	display:none;
+}
+.tabs_studymate .btn.active{
+	border-bottom:2px solid #da534f;
+	outline:none;
+	color:#da534f;
+}
