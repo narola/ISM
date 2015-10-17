@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_graylight"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.ism.login.ProfileInfornation">
 
     <include layout="@layout/custom_actionbar" />
 
@@ -34,6 +36,7 @@
                     android:background="@color/color_green"
                     android:drawableLeft="@drawable/profileinfo"
                     android:drawablePadding="@dimen/d5dp"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/d10dp"
                     android:text="@string/strprofileinformation"
                     android:textColor="@color/color_white"
@@ -167,6 +170,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/ll_imageProfile"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="2.5"
@@ -206,30 +210,30 @@
                         android:weightSum="3">
 
                         <Spinner
+                            android:id="@+id/sp_city"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:id="@+id/sp_city"
                             android:background="@drawable/spinner_selector"
                             android:entries="@array/list"
                             android:padding="@dimen/d20dp"
                             android:spinnerMode="dropdown" />
 
                         <Spinner
+                            android:id="@+id/sp_state"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
-                            android:id="@+id/sp_state"
                             android:layout_weight="1"
                             android:background="@drawable/spinner_selector"
                             android:entries="@array/list" />
 
                         <Spinner
+                            android:id="@+id/sp_country"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:id="@+id/sp_country"
                             android:background="@drawable/spinner_selector"
                             android:entries="@array/list"
                             android:padding="@dimen/d20dp" />
@@ -253,6 +257,7 @@
                     android:background="@color/color_green"
                     android:drawableLeft="@drawable/schoolinfo"
                     android:drawablePadding="@dimen/d5dp"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/d10dp"
                     android:text="@string/strschoolinformation"
                     android:textColor="@color/color_white"
@@ -301,9 +306,9 @@
                             android:textSize="@dimen/d18dp" />
 
                         <TextView
+                            android:id="@+id/txt_ifits_"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/txt_ifits_"
                             android:gravity="center"
                             android:paddingBottom="@dimen/d10dp"
                             android:paddingLeft="0dp"
@@ -361,11 +366,11 @@
                         android:orientation="horizontal">
 
                         <Spinner
+                            android:id="@+id/sp_schoolgender"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:id="@+id/sp_schoolgender"
                             android:background="@drawable/spinner_selector"
                             android:entries="@array/list"
                             android:padding="@dimen/d20dp" />
@@ -411,6 +416,7 @@
                     android:background="@color/color_green"
                     android:drawableLeft="@drawable/manageaccount"
                     android:drawablePadding="@dimen/d5dp"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/d10dp"
                     android:text="@string/strmanageaccount"
                     android:textColor="@color/color_white"

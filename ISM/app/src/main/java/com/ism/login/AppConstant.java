@@ -1,6 +1,9 @@
 package com.ism.login;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Environment;
+import android.view.inputmethod.InputMethodManager;
 
 import java.io.File;
 
@@ -38,4 +41,16 @@ public class AppConstant {
     public static final String imageCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Images";
     public static final String videoCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
     public static final String audioCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Audios";
+    /**
+     * Hide Keyboard
+     *
+     * @param mContext
+     */
+    public static void hideKeyboard(Context mContext) {
+
+        InputMethodManager imm = (InputMethodManager) mContext
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(((Activity) mContext).getWindow()
+                .getCurrentFocus().getWindowToken(), 0);
+    }
 }

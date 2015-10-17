@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="100sp"
-    android:layout_height="100sp"
-    android:padding="@dimen/d10dp"
-
+    android:layout_width="130sp"
+    android:layout_height="130sp"
+    android:padding="10dp"
+    android:gravity="center"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -45,17 +45,26 @@
         android:layout_alignBottom="@+id/rl_image"
         android:drawableLeft="@drawable/ic_launcher" />
 
-    <TextView
-        android:id="@+id/txt_close"
-        android:layout_width="20sp"
-        android:layout_height="20sp"
-        android:background="@color/bg_tutorial"
-        android:text="X"
+    <ImageView
+        android:id="@+id/img_cancel"
+        android:layout_width="15sp"
+        android:layout_height="15sp"
+        android:padding="10dp"
+        android:background="@drawable/img_cancel"
         android:visibility="gone"
         android:gravity="center"
-        android:textColor="@color/color_white"
         android:layout_alignRight="@+id/rl_image"
         android:layout_alignTop="@+id/rl_image"
         />
-
+    <ImageView
+        android:id="@+id/img_edit"
+        android:layout_width="20sp"
+        android:layout_height="20sp"
+        android:padding="5dp"
+        android:background="@drawable/img_edit"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_alignRight="@+id/rl_image"
+        android:layout_alignBottom="@+id/rl_image"
+        />
 </RelativeLayout>
