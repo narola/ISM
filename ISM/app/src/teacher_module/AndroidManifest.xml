@@ -21,6 +21,7 @@
         </activity>
 
         <activity android:name="com.ism.teacher.teacher_login.TeacherProfileInformation"/>
+        <activity android:name="com.ism.teacher.teacher_login.TeacherHomeActivity"/>
 
     </application>
 
