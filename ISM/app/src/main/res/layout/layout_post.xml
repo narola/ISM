@@ -1,17 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="2">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@drawable/backgroundbtnlogin"
-        android:text="POST"
-        android:id="@+id/btn_post"
-        android:textColor="@color/color_white"
-        android:textSize="20sp" />
+    <!--<Button-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:background="@drawable/backgroundbtnlogin"-->
+    <!--android:text="POST"-->
+    <!--android:id="@+id/btn_post"-->
+    <!--android:textColor="@color/color_white"-->
+    <!--android:textSize="20sp" />-->
+    <RelativeLayout
+        android:id="@+id/ll_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
-</RelativeLayout>
+        <EditText
+            android:id="@+id/et_comment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_white"
+            android:gravity="top|left"
+            android:hint="SAY IT"
+            android:padding="10dp" />
+
+        <LinearLayout
+            android:layout_width="85dp"
+            android:layout_height="match_parent"
+            android:layout_alignRight="@+id/et_comment"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_keyboard"
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#212A33"
+                android:gravity="center"
+                android:text="Keyboard"
+                android:textColor="@color/color_white" />
+
+            <TextView
+                android:id="@+id/txt_link"
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#212A33"
+                android:gravity="center"
+                android:text="Link"
+                android:textColor="@color/color_white" />
+
+            <TextView
+                android:id="@+id/txt_image"
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#212A33"
+                android:gravity="center"
+                android:text="Image"
+                android:textColor="@color/color_white" />
+
+            <TextView
+                android:id="@+id/txt_video"
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#212A33"
+                android:gravity="center"
+                android:text="Video"
+                android:textColor="@color/color_white" />
+
+            <TextView
+                android:id="@+id/txt_audio"
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#212A33"
+                android:gravity="center"
+                android:text="Audio"
+                android:textColor="@color/color_white" />
+
+            <TextView
+                android:id="@+id/txt_tool"
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#212A33"
+                android:gravity="center"
+                android:text="Tools"
+                android:textColor="@color/color_white" />
+
+            <TextView
+                android:id="@+id/txt_emoticons"
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#212A33"
+                android:gravity="center"
+                android:text="Emoticons"
+                android:textColor="@color/color_white" />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#EDEEF2"
+        android:gravity="center_vertical|center_horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_audio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/imgrecordaudio"
+                android:text=""
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txt_capture_video"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/d10dp"
+                android:drawableLeft="@drawable/img_capturevideo"
+                android:gravity="center"
+                android:padding="@dimen/d20dp"
+                android:text="Capture video using camera"
+                android:textSize="18sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/txt_choose_video"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/d10dp"
+                android:drawableLeft="@drawable/img_choose_video"
+                android:gravity="center"
+                android:padding="@dimen/d20dp"
+                android:text="Choose video from gallery"
+                android:textSize="18sp"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txt_capture_image"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/d10dp"
+                android:drawableLeft="@drawable/img_capturevideo"
+                android:gravity="center"
+                android:padding="@dimen/d20dp"
+                android:text="Capture image using camera"
+                android:textSize="18sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/txt_choose_image"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/d10dp"
+                android:drawableLeft="@drawable/img_choose_video"
+                android:gravity="center"
+                android:padding="@dimen/d20dp"
+
+                android:text="Choose image from gallery"
+                android:textSize="18sp"
+                android:visibility="visible" />
+        </LinearLayout>
+        <com.ism.helper.HorizontalListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/d10dp"
+            android:id="@+id/lv_postfiles"
+            />
+    </RelativeLayout>
+</LinearLayout>

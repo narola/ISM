@@ -26,4 +26,5 @@ public class Global {
         con.startActivity(intent);
 
     }
+
 }

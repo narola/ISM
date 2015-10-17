@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -46,6 +47,7 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
             etEmailadd, etDob, etDistrictofschool, etCurrentpwd, etCno,  etConfirmpwd;
     private LayoutInflater mInflator;
     private boolean selected;
+    LinearLayout llImageUpload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +97,7 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
          etHomeadd = (EditText) findViewById(R.id.et_homeAdd);
          etNameofschool = (EditText) findViewById(R.id.et_nameofschool);
          etNewpwd = (EditText) findViewById(R.id.et_newpwd);
+        llImageUpload=(LinearLayout)findViewById(R.id.ll_imageProfile);
          etUsername = (EditText) findViewById(R.id.et_username);
          txtUploadpic = (TextView) findViewById(R.id.txt_uploadpic);
          imgDp = (ImageView) findViewById(R.id.img_dp);
@@ -118,7 +121,7 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
 
         //  spGender.setTypeface(myTypeFace.getRalewayRegular());
 
-         txtUploadpic.setOnClickListener(this);
+         llImageUpload.setOnClickListener(this);
          btnSuumit.setOnClickListener(this);
         spinnerAdapter = new CustomSpinnerAdapter(ProfileInfornation.this, strArrGender);
         selected = false;
@@ -221,7 +224,7 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
                 Global.myIntent(ProfileInfornation.this, WelComeActivity.class);
             }
             break;
-            case R.id.txt_uploadpic: {
+            case R.id.ll_imageProfile: {
                 openGallary();
             }
             break;

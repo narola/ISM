@@ -39,6 +39,7 @@ public class ExamHostFragment extends Fragment {
 	    QuestionPaletteFragment fragmentQuestionsPalette = QuestionPaletteFragment.newInstance();
 	    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, fragmentQuestionsPalette).commit();
 	    getChildFragmentManager().beginTransaction().replace(R.id.fl_exam, ExamFragment.newInstance(fragmentQuestionsPalette, 60)).commit();
+//	    getChildFragmentManager().beginTransaction().replace(R.id.fl_exam, ResultFragment.newInstance(null, true)).commit();
     }
 
 }

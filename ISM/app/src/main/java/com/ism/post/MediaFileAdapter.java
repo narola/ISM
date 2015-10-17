@@ -49,15 +49,19 @@ public class MediaFileAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.row_media_files, parent, false);
         RelativeLayout rlMain = (RelativeLayout) convertView.findViewById(R.id.rl_image);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.img_image);
         TextView videoIndicator = (TextView) convertView.findViewById(R.id.txt_video);
+        TextView txtClose = (TextView) convertView.findViewById(R.id.txt_close);
         imageView.setVisibility(View.VISIBLE);
         Log.e("File", "" + arrayList.get(position).getUriFile());
         if (arrayList.get(position).getStrFileType().equals("isImage")) {
-            imageView.setImageBitmap(arrayList.get(position).getBitmap());
+            if (arrayList.get(position).getBitmap()!=null) {
+                imageView.setImageBitmap(arrayList.get(position).getBitmap());
+                txtClose.setVisibility(View.VISIBLE);
+            }
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
 
@@ -67,6 +71,7 @@ public class MediaFileAdapter extends BaseAdapter {
             });
         } else if (arrayList.get(position).getStrFileType().equals("isVideo")) {
             imageView.setImageBitmap(arrayList.get(position).getBitmap());
+            txtClose.setVisibility(View.VISIBLE);
             MediaPlayer mediaPlayer=new MediaPlayer();
             try {
                 mediaPlayer.setDataSource(context, Uri.fromFile(arrayList.get(position).getUriFile()));
@@ -75,15 +80,11 @@ public class MediaFileAdapter extends BaseAdapter {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//                       try {
-//                mediaPlayer.setDataSource(context, arrayList.get(position).getUriFile());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
            videoIndicator.setText(mediaPlayer.getDuration()+"");
-            videoIndicator.setVisibility(View.VISIBLE);
+           videoIndicator.setVisibility(View.VISIBLE);
 
         } else if (arrayList.get(position).getStrFileType().equals("isAudio")) {
+            txtClose.setVisibility(View.VISIBLE);
             MediaPlayer mediaPlayer=new MediaPlayer();
             try {
                 mediaPlayer.setDataSource(context, Uri.fromFile(arrayList.get(position).getUriFile()));
@@ -98,7 +99,7 @@ public class MediaFileAdapter extends BaseAdapter {
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
-         videoIndicator.setText(mediaPlayer.getDuration()+"");
+            videoIndicator.setText(mediaPlayer.getDuration()+"");
             videoIndicator.setVisibility(View.VISIBLE);
             imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.ic_launcher));
         }
@@ -108,7 +109,12 @@ public class MediaFileAdapter extends BaseAdapter {
                 Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
             }
         });
-
+txtClose.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        arrayList.remove(position);
+    }
+});
         return convertView;
     }
 }

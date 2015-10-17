@@ -45,13 +45,17 @@
         android:layout_alignBottom="@+id/rl_image"
         android:drawableLeft="@drawable/ic_launcher" />
 
-    <ImageView
-        android:id="@+id/img_seleceted_close"
+    <TextView
+        android:id="@+id/txt_close"
         android:layout_width="20sp"
         android:layout_height="20sp"
-
+        android:background="@color/bg_tutorial"
+        android:text="X"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textColor="@color/color_white"
         android:layout_alignRight="@+id/rl_image"
         android:layout_alignTop="@+id/rl_image"
-        android:src="@drawable/ic_launcher" />
+        />
 
 </RelativeLayout>
