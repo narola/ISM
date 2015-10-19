@@ -1697,3 +1697,133 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .score_descrip p:last-child, .score_descrip p:nth-last-child(2){
 	display:inline-block;	
 }
+.range_picker {
+    position: relative;
+	width: 33%;
+    margin-left: 10px;
+}
+.range_picker:after {
+    content: "";
+    width: 34px;
+    height: 34px;
+    background-color: #ff6b6b;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.range_picker a {
+    filter: brightness(3);
+	-moz-filter:brightness(3);
+    -webkit-filter: brightness(3);
+    position: absolute;
+    top: 4px;
+    right: -4px;
+    z-index: 1;
+}
+.data_range label, .data_range div{
+	float:left;
+}
+.filter .form-group.data_range:after, .filter .form-group.data_range:before{
+	content:none;
+}
+.filter.report_filter .form-group.data_range {
+    width: 30%;
+}
+.report_filter .form-group {
+    width: 16%;
+}
+.range_picker:last-child:before{
+	content:"-";
+	position: absolute;
+    left: -7px;
+    top: 7px;
+}
+.data_range label {
+    margin: 5px 0;
+}
+.performance_wrapper h3 {
+    background-color: #d6dbdf;
+    padding: 10px;
+    font-weight: 500;
+    margin: 0;
+}
+#performance_graph_1,
+#performance_graph_2,
+#performance_graph_3{
+    position: relative;
+    left: -7px;
+}
+.reports .performance_wrapper{
+	border-right:1px solid rgba(0,0,0,0.1);
+    height: 450px;
+	overflow:hidden;
+}
+#performance_graph_1>.highcharts-container>svg>text[text-anchor=end],
+#performance_graph_2>.highcharts-container>svg>text[text-anchor=end],
+#performance_graph_3>.highcharts-container>svg>text[text-anchor=end]{
+	display:none;
+}
+#performance_graph_1 .highcharts-drilldown-data-label,
+#performance_graph_2 .highcharts-drilldown-data-label,
+#performance_graph_3 .highcharts-drilldown-data-label{
+	display:none;
+}
+#performance_graph_1 .highcharts-series>rect:first-child,
+#performance_graph_2 .highcharts-series>rect:first-child,
+#performance_graph_3 .highcharts-series>rect:first-child{
+	fill:#f7a0be;
+}
+#performance_graph_1 .highcharts-series>rect:first-child:hover,
+#performance_graph_2 .highcharts-series>rect:first-child:hover,
+#performance_graph_3 .highcharts-series>rect:first-child:hover{
+	fill:#f595b6;
+}
+#performance_graph_1 .highcharts-series>rect:nth-child(2),
+#performance_graph_2 .highcharts-series>rect:nth-child(2),
+#performance_graph_3 .highcharts-series>rect:nth-child(2){
+	fill:#6ed2e2;
+}
+#performance_graph_1 .highcharts-series>rect:nth-child(2):hover,
+#performance_graph_2 .highcharts-series>rect:nth-child(2):hover,
+#performance_graph_3 .highcharts-series>rect:nth-child(2):hover{
+	fill:#58c7d9;
+}
+#performance_graph_1 .highcharts-series>rect:nth-child(3),
+#performance_graph_2 .highcharts-series>rect:nth-child(3),
+#performance_graph_3 .highcharts-series>rect:nth-child(3){
+	fill:#f0e190;
+}
+#performance_graph_1 .highcharts-series>rect:nth-child(3):hover,
+#performance_graph_2 .highcharts-series>rect:nth-child(3):hover,
+#performance_graph_3 .highcharts-series>rect:nth-child(3):hover{
+	fill:#efdd7c;
+}
+#performance_graph_1 .highcharts-series>rect:nth-child(5),
+#performance_graph_2 .highcharts-series>rect:nth-child(5),
+#performance_graph_3 .highcharts-series>rect:nth-child(5){
+	fill:#b25d7c;
+}
+#performance_graph_1 .highcharts-series>rect:nth-child(5):hover,
+#performance_graph_2 .highcharts-series>rect:nth-child(5):hover,
+#performance_graph_3 .highcharts-series>rect:nth-child(5):hover{
+	fill:#af5073;
+}
+.reports .performance_wrapper .highcharts-xaxis-labels>text{
+	text-decoration:none !important;
+	font-weight:normal !important;
+}
+.top_ranking{
+	background-color:#f7f7f7;
+	height:100%;
+    padding: 30px;
+	overflow:auto;
+}
+.table-bordered>tbody>tr>th, .table-bordered>thead>tr>th {
+    border: 1px solid #ccc;
+    background-color: #f2f2f2;
+}
+.table-bordered>tbody>tr>td, .table-bordered>thead>tr>td{
+	background-color:#fff;
+}

@@ -3447,9 +3447,6 @@ ul.ques_numbers {
 .txt_white{
 	color:#fff;
 }
-.filter .form-group.data_range:after, .filter .form-group.data_range:before{
-	content:none;
-}
 .tabs_studymate .btn{
 	border-radius: 0;
     font-weight: 600;

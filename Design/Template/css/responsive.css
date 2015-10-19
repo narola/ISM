@@ -86,6 +86,12 @@
 	.bootstrap-switch .bootstrap-switch-label{
 		width:75px !important;
 	}
+	.range_picker{
+		width:31%;
+	}
+	.filter.report_filter .form-group {
+		width: 15.8%;
+	}
 }
 @media (max-width:1280px){
 	.login_background{
@@ -250,6 +256,12 @@
 	}
 	.phase_2 h2::after, .phase_2 h2::before{
 		width:200px;
+	}
+	.range_picker {
+    	width: 29%;
+	}
+	.filter.report_filter .form-group {
+		width: 15.7%;
 	}
 }	
 @media (max-width:1024px){
@@ -529,6 +541,19 @@
 	.basic_info {
     	margin-left: 105px;
 	}
+	.filter.report_filter .form-group {
+		width: 32%;
+	}
+	.range_picker {
+		width: 47%;
+		margin-bottom:15px;
+	}
+	.range_picker:last-child{
+    	margin-left: 95px;		
+	}
+	.filter.report_filter .form-group.data_range {
+    	margin-bottom: 0;
+    }
 }
 @media (max-width:980px){
 	.login_background {
@@ -810,6 +835,19 @@
 	}
 	.basic_info {
     	margin: 100px 0 0;
+	}
+	.filter.report_filter .form-group {
+    	width: 31%;
+	}
+	.data_range label {
+		font-size: 12px;
+		font-weight: normal;
+	}
+	.range_picker {
+		width: 42%;
+	}
+	.range_picker:last-child {
+		margin-left: 80px;
 	}
 }
 @media (max-width:768px){
