@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>ISM | Classroom Exams</title>
+    <title>ISM | Student Profile</title>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1"><title>Login</title>
@@ -21,9 +21,8 @@
     <![endif]-->
     <link rel="icon" type="image/png" href="images/graduate.png" sizes="32x32" />
 </head>
-
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
+	    <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -33,7 +32,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"><img src="images/site_logo.png"></a>
+          <a class="navbar-brand" href="Home.html"><img src="images/site_logo.png"></a>
         </div>
     
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -41,11 +40,11 @@
           <ul class="nav navbar-nav">
             <li><a href="Home.html"><span class="icon icon_menu_home"></span> Home</a></li>
             <li><a href="Tutorial.html"><span class="icon icon_menu_tut"></span> Tutorial</a></li>
-            <li><a href="#"><span class="icon icon_menu_class"></span> Classroom</a></li>
+            <li><a href="Class_exam.html"><span class="icon icon_menu_class"></span> Classroom</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
               <ul class="dropdown-menu">
-                <li><a href="#">My Assessment</a></li>
+                <li><a href="My_exam.html">My Assessment</a></li>
                 <li><a href="Score_board.html">My Scoreboard</a></li>
               </ul>
             </li>
@@ -112,7 +111,7 @@
                 <!--//notification-->
 				<ul class="personal_menu">
                 	<li><a href="My_feeds.html">My Feeds</a></li>
-                	<li class="active"><a href="My_exam.html">My Exams</a></li>
+                	<li><a href="My_exam.html">My Exams</a></li>
                 	<li><a href="#">Studymates</a></li>
                 	<li><a href="#">My Activities</a></li>
                 	<li><a href="Notice_board.html">Notice Board</a></li>
@@ -122,151 +121,69 @@
             </div>
             <!--//side left-->
             <!--main-->
-            <div class="col-sm-7 main main2">
-            	<!--banner-->
-            	 <div class="row exam_banner">
-                 	<div class="col-sm-12 text-center">
-                    	<div class="banner_text">
-                            <h3>Class</h3>
-                            <h3>XII<br>Science</h3>
+            <div class="col-sm-7 main main2 profile">
+            	<!--basic info-->
+                <div class="box">
+                    <div class="box_body">
+                        <div class="user_profile_img">
+                            <img src="images/user1.jpg">
+                        </div>
+                        <div class="basic_info">
+	                        <button class="btn btn_green pull-right">Add Studymate</button>
+                            <button class="btn btn_black_normal pull-right">View Studymates</button>
+                        	<h3 class="txt_green text-uppercase">Adam Rose</h3>
+                            <p><span class="fa fa-map-marker"></span>From Ghana</p>
+                            <p><span class="fa fa-graduation-cap"></span>Bachelors of Science, Computer Science [F.Y.]</p>                            
+                            <p><span class="fa fa-university"></span>Stanford University</p>
+                            <a href="#"><span class="fa fa-bookmark"></span>Following 12 Authers</a>
+                            <p><span class="fa fa-birthday-cake"></span>March 21, 1992</p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <!--points-->
+                <div class="box">
+                	<div class="box_body">
+                    	<div class="group_score">
+                            <div>
+                                <h2 class="group_total_points">1000</h2>
+                                <p>Score</p>
+                            </div>
+                            <div>
+                                <h2 class="group_rank">04</h2>
+                                <p>Exams</p>
+                            </div>
+                            <div>
+                            	<h2 class="group_assign">45</h2>
+                                <p>Assignments</p>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
                     </div>
-                 </div>   
-                 <!--//banner-->
-                 <!--filter-->
-                 <div class="row">
-                 	<div class="col-sm-12 filter exams_filter">
-                    	<div class="form-group">
-                            <select class="form-control">
-                                <option>Subject</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control">
-                                <option>Topic</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control">
-                                <option>Exam Type</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control">
-                                <option>WASSCE Year</option>
-                            </select>
-                        </div>
+                </div>
+                <!--about me-->
+                <div class="box about_me">
+                	<div class="box_body">
+                    	<h3 class="txt_green">About Me</h3>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the .</p><br>
+                        <p>Dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy</p>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                     </div>
-                 </div>	
-                 <!--//filetr-->
-                 <!--exams-->
-                 <div  class="row">
-                 	<div class="col-sm-12 exams_wrapper">
-                    	<!--card1-->
-                        <div class="col-sm-12 col-md-6 col-lg-4">
-                             <div class="box exam_card">
-                                <div class="box_header exam_chem">
-                                	<div class="exam_img_holder">
-                                    	<img src="images/front_exam1.jpg">
-                                    </div>
-                                	<div class="color_wrapper"></div>
-                                    <h3>Chemistry</h3>                            
-                                    <a href="#" class="icon icon_option no-margin"></a>  
-                                    <label class="label label_black">15 Exams</label>
-                                    <div class="user_profile_img">
-                                        <img src="images/user7.jpg">
-                                    </div>                                     
-                                    <div class="clearfix"></div>                    
-                                </div>
-                                <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
-                                    <li><a href="#">Organic - I</a></li>
-                                    <li><a href="#">Biomass</a></li>
-                                    <li><a href="#">Chemical Component</a></li>
-                                    <li><a href="#">Fuel</a></li>
-                                    <li><a href="#">Organic - II</a></li>
-                                </ul>
-                             </div>
-                         </div>
-                        <!--//card1-->
-                        <!--card1-->
-                        <div class="col-sm-12 col-md-6 col-lg-4">
-                             <div class="box exam_card">
-                                <div class="box_header exam_phy">
-                                	<div class="exam_img_holder">
-                                    	<img src="images/front_exam2.jpg">
-                                    </div>
-                                	<div class="color_wrapper"></div>
-                                    <h3>Physics</h3>                            
-                                    <a href="#" class="icon icon_option no-margin"></a>  
-                                    <label class="label label_black">03 Exams</label>
-                                    <div class="user_profile_img">
-                                        <img src="images/user6.jpg">
-                                    </div>                                     
-                                    <div class="clearfix"></div>                    
-                                </div>
-                                <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
-                                    <li><a href="#">Organic - I</a></li>
-                                    <li><a href="#">Biomass</a></li>
-                                    <li><a href="#">Chemical Component</a></li>
-                                    
-                                </ul>
-                             </div>
-                         </div>
-                        <!--//card1-->
-                        <!--card1-->
-                        <div class="col-sm-12 col-md-6 col-lg-4">
-                             <div class="box exam_card">
-                                <div class="box_header exam_math">
-                                	<div class="exam_img_holder">
-                                    	<img src="images/front_exam3.jpg">
-                                    </div>
-                                	<div class="color_wrapper"></div>
-                                    <h3>Maths</h3>                            
-                                    <a href="#" class="icon icon_option no-margin"></a>  
-                                    <label class="label label_black">01 Exams</label>
-                                    <div class="user_profile_img">
-                                        <img src="images/user7.jpg">
-                                    </div>                                     
-                                    <div class="clearfix"></div>                    
-                                </div>
-                                <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
-                                    <li><a href="#">Organic - I</a></li>
-                                    
-                                </ul>
-                             </div>
-                         </div>
-                        <!--//card1-->
-                        <!--card1-->
-                        <div class="col-sm-12 col-md-6 col-lg-4">
-                             <div class="box exam_card">
-                                <div class="box_header exam_lang">
-                                	<div class="exam_img_holder">
-                                    	<img src="images/front_exam4.jpg">
-                                    </div>
-                                	<div class="color_wrapper"></div>
-                                    <h3>Language</h3>                            
-                                    <a href="#" class="icon icon_option no-margin"></a>  
-                                    <label class="label label_black">04 Exams</label>
-                                    <div class="user_profile_img">
-                                        <img src="images/user7.jpg">
-                                    </div>                                     
-                                    <div class="clearfix"></div>                    
-                                </div>
-                                <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
-                                    <li><a href="#">Organic - I</a></li>
-                                    <li><a href="#">Biomass</a></li>
-                                    <li><a href="#">Chemical Component</a></li>
-                                    <li><a href="#">Fuel</a></li>
-                                </ul>
-                             </div>
-                         </div>
-                        <!--//card1-->
+                </div>
+                <!--photos-->
+                <div class="box about_me">
+                	<div class="box_body">
+                    	<h3 class="txt_green">Photos</h3>
+                        <div class="shared_images">
+                        	<div><img src="images/shared1.jpg"></div>
+                            <div><img src="images/shared2.jpg"></div>
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
-                 </div>
-                 <!--//exams-->
+                </div>
 			</div>
             <!--//main-->
-            <!--side right-->
+             <!--side right-->
             <div class="sidebar_right_container sidebar_right_container2 mCustomScrollbar" data-mcs-theme="minimal-dark"><!--scrollbar" id="style-3-->
             	
                 <!--high score board-->
@@ -466,7 +383,7 @@
             <!--//side right-->
         </div>
     </div>
-    <!--//body-->    
+    <!--//body-->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery-1.11.3.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

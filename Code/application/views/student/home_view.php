@@ -106,11 +106,11 @@
                                     $t_count = count($value['tagged']);
                                     foreach ($value['tagged'] as $t_key => $t_value) {
                                         if($t_count == 1){
-                                            echo '&nbsp;with <label class="label label_name">'.$t_value['full_name'].'</label>';
+                                            echo '&nbsp;tagged <label class="label label_name">'.$t_value['full_name'].'</label>';
                                         }
                                         if($t_count == 2){
                                             if($t_j == 0){
-                                                echo '&nbsp;with <label class="label label_name">'.$t_value['full_name'].'</label>';    
+                                                echo '&nbsp;tagged <label class="label label_name">'.$t_value['full_name'].'</label>';    
                                             }
                                             else{
                                                 echo 'and <label class="label label_name">'.$t_value['full_name'].'</label>';
@@ -119,7 +119,7 @@
                                         }
                                         if($t_count > 2){
                                             if($t_i == 0){
-                                                echo '&nbsp;with<label class="label label_name">'.$t_value['full_name'].'</label>';   
+                                                echo '&nbsp;tagged <label class="label label_name">'.$t_value['full_name'].'</label>';   
                                             }
                                             else{
                                                 $l = $t_count - 1;
@@ -255,9 +255,9 @@
                     }
         ?>
             <img src="<?php echo base_url();?>assets/images/blackboard.jpg" alt="blackboard">
-                <div class="carousel-caption">
+                <div class="carousel-caption mCustomScrollbar" data-mcs-theme="minimal-dark">
                     <p class="noti_username"><?php echo $value['notice_title'];?></p>
-                    <p style="color:#fff;font-size:small;"><?php echo $value['notice'];?><br><span style="float:right">-ISM Admin</span></p>
+                    <p style="txt_white"><?php echo $value['notice'];?><br><span style="float:right">-ISM Admin</span></p>
                 </div>
             </div>
         <?php

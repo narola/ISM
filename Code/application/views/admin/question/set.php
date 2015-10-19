@@ -1,5 +1,5 @@
 <!--main-->
-    <div class="col-sm-7 main main2 main_wide">
+    <div class="col-sm-7 main main2 main_wide" >
     	<!--breadcrumb-->
    		<div class="row page_header">
         	<div class="col-sm-12">
@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="form-group">
-                            <select class="form-control" name="exam_id" id="exam_id">
+                            <select class="form-control" name="exam_id" id="exam_id" onchange="fetch_question(this.value)">
                                 <option value=''>Exams</option>
                                 <?php if(!empty($exams)){ 
                                     foreach ($exams as $exam) { ?>
@@ -122,57 +122,9 @@
                     </div>
                     <!--box_body-->
                     <div class="box_body">
-                   		
-                        <div class="question_list">
-                        	<?php /*<!--q1-->
-                             <div class="question_wrapper">
-                            	<div class="question_left">                                    
-                                    <h5 class="txt_red">Question <span>1</span></h5>                                       
-                                    <p class="ques">In which of the following forms do the cells in Clamydomonas, Volvox and Spirogyra exist respectively?</p>
-                                    <div class="answer_options_div">
-                                        <ol>
-                                            <li>Single, colony and filament</li>
-                                            <li>Single, filament and colony</li>
-                                            <li>Filament, part of living organism and filament</li>
-                                            <li>Single, part of living organism and filament</li>
-                                        </ol>
-                                    </div>
-                                </div>
-                                <div class="notice_action">  
-                                	<a href="#" class="icon icon_hand" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Move"></a>                                          
-                                    <a href="#" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
-                                    <a href="#" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
-                                    <a href="#" class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
-                                    
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <!--//q1-->
-                            <!--q2-->
-                            <div class="question_wrapper">
-                            	<div class="question_left">
-                                    <h5 class="txt_red">Question <span>2</span></h5>                                        
-                                    <p class="ques">In which of the following forms do the cells in Clamydomonas, Volvox and Spirogyra exist respectively?</p>
-                                    <div class="answer_options_div">
-                                        <ol>
-                                            <li>Single, colony and filament</li>
-                                            <li>Single, filament and colony</li>
-                                            <li>Filament, part of living organism and filament</li>
-                                            <li>Single, part of living organism and filament</li>
-                                        </ol>
-                                    </div>
-                                </div>
-                                <div class="notice_action">                                            
-                                    <a href="#" class="icon icon_hand" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Move"></a>
-                                    <a href="#" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
-                                    <a href="#" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
-                                    <a href="#" class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
-                                    
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <!--//q2-->
-                            */ ?>
+                   		<!-- All Question Lists are display Here. -->
+                        <div class="question_list" id='question_list'>
+                        	
                         </div>
                    	</div>
                     <!--//box-body-->
@@ -191,8 +143,26 @@
     //   $("select").select2();
     // });
 
-    function set_question(qid){
+    // eid=Exam ID  qid=Question ID
+    function fetch_question(eid){
         
+        $('input:checkbox').removeAttr('checked');
+
+        if(eid != ''){
+            $.ajax({
+                url:'<?php echo base_url()."admin/exam/fetch_question"; ?>',
+                type:'POST',
+                dataType:'JSON',
+                data:{eid:eid},
+                success:function(data){
+                    $('#question_list').html(data.new_str);
+                }    
+            });
+        }
+    }
+
+    function set_question(qid){
+
         var data = $('#check_'+qid).is(":checked");
         var eid = $('#exam_id').val();
         
@@ -211,24 +181,64 @@
                    success:function(data){
                     
                     if(data.res == 1){
-                     
+
+                        //Show Notofication on your right-bottom side
+                        $(".alert_notification p").html("Question has Been set.");
+                        $(".alert_notification").show().delay(500).fadeOut();
+
+                        //IF - Question  
+                        if(data.count == 1){
+                            $('#question_list').empty();
+                            $('#question_list').html(data.new_str);
+                        }else{
+                            $('#question_list').append(data.new_str);
+                        }
                     }
 
                     if(data.res == 0){
-                        
                         bootbox.alert("Question already added to this exam.");
-
                         $('#check_'+qid).prop('checked',false);
                     }
 
                    }
                 });
-
             }
-
         }
     }
 
+    function delete_question(href,event,remove_div){
+        event.preventDefault();
+         bootbox.confirm("Delete Question?", function(confirmed) {
+            
+            if(confirmed){
+                //window.location.href=href;
+                $.ajax({
+                    url:href,
+                    type:"post",
+                    success:function(data){
+                        var total_div = $('#question_list > div').length;
+                        
+                        $('#que_div_'+remove_div).remove();                        
+                        
+                        //$('#exam_quest_2').html(3);
+                        
+                        total_div = parseInt(total_div);
+
+                        for(var i=1;i<=total_div;i++){
+                            
+                            var span_id = '#exam_quest_'+i;
+                            alert(span_id);
+                            //$('#question_list > #exam_quest_'+i).html(i);
+                            $('#question_list >'+span_id).html(i);
+
+                        }
+                        
+                    }
+                });
+            }
+            
+        });
+    }
 
     function get_classes(course_id){
         $.ajax({
@@ -241,7 +251,7 @@
               $('#topic_id').val('');
            }
         });
-  }
+    }
 
   function get_subjects(classroom_id){
         $.ajax({
@@ -296,4 +306,5 @@ jQuery(document).ready(function() {
         };              
     });
 });
+
 </script>

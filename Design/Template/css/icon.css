@@ -449,5 +449,14 @@
 .icon_hand{
 	background-position:-119px -194px;
 }
+.icon_calendar, .icon_calendar_red{
+    height: 24px;
+    width: 24px;
+    background-image: url(../images/icon-set.png);
+    background-position: -96px 0px;
+}
+.icon_calendar_red{
+    background-position: -477px -159px;
+}
 /*--------------icon---------------*/
 

@@ -243,7 +243,7 @@ class Home extends CI_Controller {
 				),
 			1
 			);
-
+		
 		// No. of users who accept group join request.
 		$total_joined = select(
 			TBL_TUTORIAL_GROUP_MEMBER,

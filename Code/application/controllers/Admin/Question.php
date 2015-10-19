@@ -89,6 +89,14 @@ class Question extends ADMIN_Controller {
 		$this->template->load('admin/default','admin/question/set',$this->data);
 	}
 
+	public function add(){
+		
+		$this->data['page_tite'] = 'Add Question';
+		$this->template->load('admin/default','admin/question/add',$this->data);
+
+	}
+
+
 	/*
 	* function to get the classrooms through the course.
 	*/
@@ -169,8 +177,9 @@ class Question extends ADMIN_Controller {
 
 		$qid = $this->input->post('qid');
 		$eid = $this->input->post('eid');
+
 		$fetch_data = select(TBL_EXAM_QUESTION,FALSE,array('where'=>array('exam_id'=>$eid,'question_id'=>$qid)));
-		//p($fetch_data);
+
 		if(empty($fetch_data)){
 			
 			$data = array(
@@ -180,7 +189,87 @@ class Question extends ADMIN_Controller {
 
 			insert(TBL_EXAM_QUESTION,$data);
 
-			echo json_encode(array('res'=>1)); 
+			$count = count(select(TBL_EXAM_QUESTION,FALSE,array('where'=>array('exam_id'=>$eid))));
+			
+			$where = array(TBL_QUESTIONS.'.id' => $qid,TBL_EXAM_QUESTION.'.exam_id'=>$eid,TBL_EXAM_QUESTION.'.question_id'=>$qid,);
+
+			$questions = select(TBL_QUESTIONS,
+								TBL_QUESTIONS.'.id,'.
+								TBL_QUESTIONS.'.question_text,'.
+								TBL_SUBJECTS.'.subject_name,'.
+								TBL_EXAM_QUESTION.'.id as exam_ques_id,'.
+								TBL_USERS.'.full_name',
+								array('where'=>$where),
+								array(
+									'group_by'=>TBL_QUESTIONS.'.id,',
+									'join'=>array(
+										array(
+						    				'table' => TBL_TUTORIAL_GROUP_QUESTION,
+						    				'condition' => TBL_QUESTIONS.'.id = '.TBL_TUTORIAL_GROUP_QUESTION.'.question_id',
+											),
+										array(
+						    				'table' => TBL_TUTORIAL_TOPIC,
+						    				'condition' => TBL_TUTORIAL_TOPIC.'.id = '.TBL_TUTORIAL_GROUP_QUESTION.'.tutorial_topic_id',
+											),
+										array(
+						    				'table' => TBL_SUBJECTS,
+						    				'condition' => TBL_SUBJECTS.'.id = '.TBL_TUTORIAL_TOPIC.'.subject_id',
+											),
+										array(
+						    				'table' => TBL_USERS,
+						    				'condition' => TBL_USERS.'.id = '.TBL_QUESTIONS.'.question_creator_id',
+											),
+										array(
+						    				'table' => TBL_EXAM_QUESTION,
+						    				'condition' => TBL_EXAM_QUESTION.'.question_id = '.TBL_QUESTIONS.'.id',
+											)
+										),
+									)
+						);
+
+
+			 foreach ($questions as $key=>$question) {
+				
+				$choices = select(TBL_ANSWER_CHOICES,
+								TBL_ANSWER_CHOICES.'.id,'.
+								TBL_ANSWER_CHOICES.'.choice_text,',
+								// TBL_ANSWER_CHOICES.'.question_id',
+								array('where'=>array(TBL_ANSWER_CHOICES.'.question_id'=>$question['id'])),
+								null
+								);
+
+			 	$questions[$key]['choices']=array_column($choices,'choice_text');
+
+			 }
+
+			 $new_str = '';
+			 foreach( $questions as $question) {
+
+						$new_str.='<div class="question_wrapper" id="que_div_'.$count.'">
+		                    <div class="question_left">
+		                        <h5 class="txt_red">Question <span id="exam_quest_'.$count.'">'.$count.'</span></h5>                                        
+		                        <p class="ques">'.$question["question_text"].'</p>
+		                        <div class="answer_options_div">
+		                            <ol>';
+		                            	foreach($question['choices'] as $choice) {
+		                                	$new_str .='<li>'.$choice.'</li>';
+		                                }	
+
+		                     $new_str .='</ol>
+		                        </div>
+		                    </div>
+		                    <div class="notice_action">                                            
+		                        <a href="#" class="icon icon_hand" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Move"></a>
+		                        <a href="#" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
+		                        <a href="#" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
+		                        <a href="'.base_url().'admin/question/delete_question/'.$question['exam_ques_id'].'" onclick="delete_question(this.href,event,'.$count.')" 
+		                        class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
+		                    </div>
+		                    <div class="clearfix"></div>
+		                </div>';
+	            	}
+
+			echo json_encode(array('res'=>1,'new_str'=>$new_str,'count'=>$count)); 
 		}else{
 			echo json_encode(array('res'=>0)); 
 		}
@@ -188,4 +277,11 @@ class Question extends ADMIN_Controller {
 
 		//$data
 	}
+
+	public function delete_question($id){
+		//$id=$this->input->post('id');
+		delete(TBL_EXAM_QUESTION,$id);
+		echo '1';
+	}
+
 }

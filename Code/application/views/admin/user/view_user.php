@@ -164,9 +164,6 @@
                                   <?php } ?>
 
 
-                                  <a href="#" class="icon icon_mail" data-toggle="tooltip" data-placement="bottom" title="Mail"></a>
-
-
                                   <!-- <a href="#" class="icon icon_mail" data-toggle="tooltip" data-placement="bottom"  
                                   data-toggle="tooltip" data-placement="bottom" title="Mail"></a> -->
 
@@ -240,7 +237,7 @@
 
     	$('#filter').submit();
     }
-
+    
     $( "#filter" ).submit(function( event ) {
       
         var role = $('#role').val();

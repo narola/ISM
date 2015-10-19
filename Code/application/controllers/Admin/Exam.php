@@ -146,7 +146,6 @@ class Exam extends ADMIN_Controller {
 		$this->form_validation->set_rules('attempt_count', 'Attempt Count', 'trim|required');
 		$this->form_validation->set_rules('start_date', 'Start Exam Date', 'trim|required|callback_valid_date');
 
-
 		if($this->form_validation->run() == FALSE){
 			$this->template->load('admin/default','admin/exam/add_exam',$this->data);
 		}else{
@@ -198,13 +197,123 @@ class Exam extends ADMIN_Controller {
 	//Update one item
 	public function update( $id = NULL ){
 
+		$this->data['exam']	=select(TBL_EXAMS,FALSE,array('where'=>array('id'=>$id)));
+		
+		$this->data['exam_schedule']	=select(TBL_EXAM_SCHEDULE,FALSE,array('where'=>array('exam_id'=>$id)));
+
+		p($this->data,true);
+
 		$this->template->load('admin/default','admin/exam/edit_exam',$this->data);	
+
 	}
 
 	//Delete one item
 	public function delete( $id = NULL )
 	{
 
+	}
+
+	public function fetch_question(){
+	 
+		$eid = $this->input->post('eid');
+		
+		if(!empty($eid)) {
+
+			$where = array(TBL_EXAM_QUESTION.'.exam_id'=>$eid,TBL_EXAM_QUESTION.'.exam_id'=>$eid);	
+			$questions = select(TBL_QUESTIONS,
+									TBL_QUESTIONS.'.id,'.
+									TBL_QUESTIONS.'.question_text,'.
+									TBL_SUBJECTS.'.subject_name,'.
+									TBL_EXAM_QUESTION.'.id as exam_ques_id,'.
+									TBL_USERS.'.full_name',
+				array('where'=>$where),
+					array(
+						'group_by'=>TBL_QUESTIONS.'.id,',
+						'join'=>array(
+							array(
+			    				'table' => TBL_TUTORIAL_GROUP_QUESTION,
+			    				'condition' => TBL_QUESTIONS.'.id = '.TBL_TUTORIAL_GROUP_QUESTION.'.question_id',
+								),
+							array(
+			    				'table' => TBL_TUTORIAL_TOPIC,
+			    				'condition' => TBL_TUTORIAL_TOPIC.'.id = '.TBL_TUTORIAL_GROUP_QUESTION.'.tutorial_topic_id',
+								),
+							array(
+			    				'table' => TBL_SUBJECTS,
+			    				'condition' => TBL_SUBJECTS.'.id = '.TBL_TUTORIAL_TOPIC.'.subject_id',
+								),
+							array(
+			    				'table' => TBL_USERS,
+			    				'condition' => TBL_USERS.'.id = '.TBL_QUESTIONS.'.question_creator_id',
+								),
+							array(
+			    				'table' => TBL_EXAM_QUESTION,
+			    				'condition' => TBL_EXAM_QUESTION.'.question_id = '.TBL_QUESTIONS.'.id',
+								)
+							),
+						)
+					);
+
+				foreach ($questions as $key=>$question) {
+					$choices = select(TBL_ANSWER_CHOICES,
+									TBL_ANSWER_CHOICES.'.id,'.
+									TBL_ANSWER_CHOICES.'.choice_text,',
+									// TBL_ANSWER_CHOICES.'.question_id',
+									array('where'=>array(TBL_ANSWER_CHOICES.'.question_id'=>$question['id'])),
+									null
+									);
+
+					$questions[$key]['choices']=array_column($choices,'choice_text');
+
+					}
+
+					$this->data['questions'] = $questions;
+
+					$new_str = '';
+					$cnt = 1;
+					foreach( $questions as $question) {
+
+						$new_str.='<div class="question_wrapper" id="que_div_'.$cnt.'">
+		                    <div class="question_left">
+		                        <h5 class="txt_red">Question <span id="exam_quest_'.$cnt.'">'.$cnt.'</span></h5>                                        
+		                        <p class="ques">'.$question["question_text"].'</p>
+		                        <div class="answer_options_div">
+		                            <ol>';
+		                            	foreach($question['choices'] as $choice) {
+		                                	$new_str .='<li>'.$choice.'</li>';
+		                                }	
+
+		                     $new_str .='</ol>
+		                        </div>
+		                    </div>
+		                    <div class="notice_action">                                            
+		                        <a href="#" class="icon icon_hand" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Move"></a>
+		                        <a href="#" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
+		                        <a href="#" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
+		                        <a href="'.base_url().'admin/question/delete_question/'.$question['exam_ques_id'].'" onclick="delete_question(this.href,event,'.$cnt.')" 
+		                        class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
+		                    </div>
+		                    <div class="clearfix"></div>
+		                </div>';
+		                $cnt++;
+	            	}
+	            	
+	            if($new_str == ''){
+	            	echo '<div class="question_wrapper">
+		                    <div class="question_left">
+		                        <h5 class="txt_red"><span></span></h5>                                        
+		                        <p class="ques"> No Question Set For This Exm.</p>
+		                        <div class="answer_options_div">
+		                        </div>
+		                    </div>
+		                    <div class="clearfix"></div>
+		                </div>';
+	            }else{
+	            	echo json_encode(array('new_str'=>$new_str,'count'=>$cnt)); 
+	            }
+            }else{
+            	echo 'NO_EXAM_ID'; 
+           }       
 	}
 
 	public function valid_date($date){
