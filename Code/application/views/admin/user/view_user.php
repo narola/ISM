@@ -240,7 +240,7 @@
 
     	$('#filter').submit();
     }
-
+    
     $( "#filter" ).submit(function( event ) {
       
         var role = $('#role').val();
