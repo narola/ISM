@@ -41,16 +41,19 @@ public class ResultFragment extends Fragment {
 	private Button btnViewEvaluationGraph;
 	private ListView lvGraph;
 
-	private static final String SHOW_GRAPH = "showGraph";
+	private static final String ARG_SHOW_GRAPH = "showGraph";
+	private static final String ARG_TIME_SPENT = "timeSpent";
 	private boolean isShowGraph;
+	private int intTimeSpent;
 
 	private ArrayList<QuestionObjective> arrListQuestions;
 
-	public static ResultFragment newInstance(ArrayList<QuestionObjective> questions, boolean showGraph) {
+	public static ResultFragment newInstance(ArrayList<QuestionObjective> questions, boolean showGraph, int timeSpent) {
 		ResultFragment fragment = new ResultFragment();
 		fragment.setQuestion(questions);
 		Bundle args = new Bundle();
-		args.putBoolean(SHOW_GRAPH, showGraph);
+		args.putBoolean(ARG_SHOW_GRAPH, showGraph);
+		args.putInt(ARG_TIME_SPENT, timeSpent);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -63,7 +66,8 @@ public class ResultFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			isShowGraph = getArguments().getBoolean(SHOW_GRAPH);
+			isShowGraph = getArguments().getBoolean(ARG_SHOW_GRAPH);
+			intTimeSpent = getArguments().getInt(ARG_TIME_SPENT);
 		}
 	}
 
@@ -90,9 +94,10 @@ public class ResultFragment extends Fragment {
 		btnViewEvaluationGraph = (Button) view.findViewById(R.id.btn_view_evaluation_graph);
 		lvGraph = (ListView) view.findViewById(R.id.lv_result_graph);
 
-		txtScore.setText(Html.fromHtml("<font color='#323941'>YOUR SCORE IS : </font><font color='#1BC4A2'>" + 75 + "%</font>"));
+		txtScore.setText(Html.fromHtml("<font color='#323941'>" + getString(R.string.your_score_is) + "</font><font color='#1BC4A2'>" + 75 + "%</font>"));
 
 		calculateScore();
+		txtTotalTimeSpent.setText(intTimeSpent + " min");
 
 		btnViewAnswers.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -131,6 +136,7 @@ public class ResultFragment extends Fragment {
 
 		if (isShowGraph) {
 			rlResultGraph.setVisibility(View.VISIBLE);
+			btnViewEvaluation.setVisibility(View.GONE);
 			SubjectScoreAdapter adpScore = new SubjectScoreAdapter(getActivity(), SubjectScore.getSubjectScore());
 			lvGraph.setAdapter(adpScore);
 		}

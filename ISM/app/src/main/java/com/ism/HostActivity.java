@@ -130,7 +130,7 @@ public class HostActivity extends Activity implements FragmentListener {
 
 	    txtsMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
 
-        loadFragment(FRAGMENT_TUTORIAL);
+        loadFragment(FRAGMENT_HOME);
         loadFragment(FRAGMENT_CHAT);
 
 	    controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(HostActivity.this);
@@ -256,6 +256,7 @@ public class HostActivity extends Activity implements FragmentListener {
             switch (fragment) {
                 case FRAGMENT_HOME:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, HomeFragment.newInstance()).commit();
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ClassroomFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_TUTORIAL:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance()).commit();

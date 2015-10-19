@@ -39,13 +39,10 @@
 		<RelativeLayout
 			android:id="@+id/rl_score"
 			android:layout_width="0dp"
-			android:layout_height="match_parent"
+			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:background="@drawable/bgwhite_bordergray"
-			android:paddingTop="1dp"
-			android:paddingRight="1dp"
-			android:paddingLeft="1dp"
-			android:paddingBottom="@dimen/score_spacing"
+			android:padding="1dp"
 			android:layout_marginRight="@dimen/result_padding">
 
 			<TextView
@@ -134,7 +131,8 @@
 				android:layout_below="@id/txt_unattempted"
 				android:layout_alignParentRight="true"
 				android:drawableLeft="@drawable/ic_clock"
-				android:textSize="@dimen/score_text"
+				android:drawablePadding="5dp"
+				android:textSize="@dimen/score_title_text"
 				android:paddingRight="@dimen/score_text_padding"
 				android:paddingTop="16dp"/>
 
@@ -210,6 +208,7 @@
 				android:layout_marginTop="@dimen/score_spacing_double"
 				android:layout_marginLeft="@dimen/score_spacing_double"
 				android:layout_marginRight="@dimen/score_spacing_double"
+				android:layout_marginBottom="@dimen/score_spacing"
 				android:background="@drawable/bg_button_blue"
 				android:textSize="@dimen/d18sp"
 				android:text="@string/view_evaluation"
