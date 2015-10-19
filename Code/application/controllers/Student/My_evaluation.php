@@ -61,7 +61,8 @@ class My_evaluation extends ISM_Controller {
 				);
 
 
-		$data['my_evaluation'] = select(TBL_EXAM_QUESTION.' eq','eq.question_id,q.question_text,ac.choice_text as correct_ans,ac2.choice_text as your_ans',$where,$option);
+		$data['my_evaluation'] = select(TBL_EXAM_QUESTION.' eq','sr.choice_id,
+			eq.question_id,q.question_text,ac.choice_text as correct_ans,ac2.choice_text as your_ans',$where,$option);
 		// p($data['my_evaluation'],true);
 		
 		$this->template->load('student/default','student/my_evaluation',$data);

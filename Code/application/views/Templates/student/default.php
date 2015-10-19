@@ -125,12 +125,12 @@ function toHHMMSS (sec) {
           <ul class="nav navbar-nav">
             <li class="active"><a href="/student/home"><span class="icon icon_menu_home"></span> Home</a></li>
             <li><a href="student/tutorial"><span class="icon icon_menu_tut"></span> Tutorial</a></li>
-            <li><a href="#"><span class="icon icon_menu_class"></span> Classroom</a></li>
+            <li><a href="student/my_classroom_exam"><span class="icon icon_menu_class"></span> Classroom</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
               <ul class="dropdown-menu">
                 <li><a href="/student/my_exam">My Exam</a></li>
-                <li><a href="#">My Scoreboard</a></li>
+                <!-- <li><a href="#">My Scoreboard</a></li> -->
               </ul>
             </li>
           </ul>

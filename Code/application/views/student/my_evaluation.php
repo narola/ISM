@@ -52,7 +52,7 @@
                                         <p>Your Answer:</p>
                                     </div>
                                     <div class="col-lg-8 col-sm-6">
-                                        <p><?php echo $value['your_ans'];?></p>
+                                        <p><?php if($value['your_ans'] == '')echo '-';else $value['your_ans'];?></p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
                                         <p>Correct Answer:</p>

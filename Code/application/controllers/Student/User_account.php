@@ -368,14 +368,16 @@ class User_account extends CI_Controller {
 		           	$where = array('where_in' => array('tm.group_id' => $my_group_id));
 		           	$get_school_info = select(TBL_TUTORIAL_GROUP_MEMBER.' tm','tm.group_id, group_concat(s.school_grade) as grade',$where,$options);
 
-		           	/*----Auto generated group name------*/	
-
-		           	$options			=	array('order_by'=>'RAND()','limit'=>1,'single'=>1); 	
-		           	$found_group_name 	=	select(TBL_GROUP_NAMES,'group_name',null,$options);
-		           	$course_name		=	select(TBL_COURSES,'course_name',array('where'=>array('id'=>$course_id)),1);
-		           	$group_name 		=	$found_group_name['group_name'].'-'.$course_name['course_name'];
 		        }
-	           	if(sizeof($get_school_info)>0){
+
+	           	/*----Auto generated group name------*/	
+
+	           	$options			=	array('order_by'=>'RAND()','limit'=>1,'single'=>1); 	
+	           	$found_group_name 	=	select(TBL_GROUP_NAMES,'group_name',null,$options);
+	           	$course_name		=	select(TBL_COURSES,'course_name',array('where'=>array('id'=>$course_id)),1);
+	           	$group_name 		=	$found_group_name['group_name'].'-'.$course_name['course_name'];
+
+	           	if(isset($get_school_info)>0){
 
 	               //--find group where grade is instead of my grade 
 
@@ -395,8 +397,7 @@ class User_account extends CI_Controller {
 	               	if($found_grade == true){//--when found then create new group
            			 	$group_data =	array(
            					'group_name'		=>	$group_name,
-           					'group_type'		=>	'tutorial group',
-           					'group_status'		=>	0
+           					'group_type'		=>	'tutorial group'
            				);
            				$groupid 	=	insert(TBL_TUTORIAL_GROUPS,$group_data);
            				$group_member_data	=	array(
@@ -426,8 +427,7 @@ class User_account extends CI_Controller {
 	           	else{//--if no any records with our crieteria then creat new one group
 	       			$group_data =	array(
 	   					'group_name'		=>	$group_name,
-	   					'group_type'		=>	'tutorial group',
-	   					'group_status'		=>	0
+	   					'group_type'		=>	'tutorial group'
 	   				);
 	   				$groupid 	=	insert(TBL_TUTORIAL_GROUPS,$group_data);
 	   				$group_member_data	=	array(
