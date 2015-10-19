@@ -1,7 +1,6 @@
 package com.ism.exam.view;
 
 import android.content.Context;
-import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ProgressBar;
@@ -10,8 +9,6 @@ import android.widget.TextView;
 
 import com.ism.exam.R;
 import com.ism.exam.utility.Utility;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by c161 on 19/10/15.

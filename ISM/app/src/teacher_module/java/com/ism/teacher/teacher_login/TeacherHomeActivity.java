@@ -281,7 +281,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_CLASSROOM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ClassroomFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ClassroomFragment.newInstance(FRAGMENT_CLASSROOM)).commit();
                     break;
                 case FRAGMENT_ASSESSMENT:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AssessmentFragment.newInstance()).commit();
