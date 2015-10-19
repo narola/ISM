@@ -48,7 +48,9 @@
             <div class="col-sm-12 col-md-6 col-lg-4">
                  <div class="box exam_card">
                     <div class="box_header exam_chem">
-                        <div class="color_wrapper"></div>
+                        <div class="exam_img_holder">
+                            <img src="<?php echo UPLOAD_URL.'/'.$value['subject_image'];?>">
+                        </div>
                         <h3><?php echo $value['subject_name'];?></h3>                            
                         <a href="#" class="icon icon_option no-margin"></a>  
                         <label class="label label_black">15 Exams</label>
@@ -62,7 +64,7 @@
                             foreach ($my_exam as $exam_value) {
                                 if($exam_value['subject_id'] == $value['subject_id']){
                                     if($exam_value['per'] != ''){
-                                        $url = '/evaluation';
+                                        $url = 'student/my_scoreboard/index/'.$exam_value['exam_id'];
                                         $percentage = $exam_value['per'];
                                     }
                                     else{
@@ -70,7 +72,7 @@
                                         $percentage = '';
                                     }
                         ?>
-                            <li><a href="#">
+                            <li><a href="<?php echo $url;?>">
                                 <?php 
                                     if(strlen($exam_value['exam_name']) > 30)
                                         echo substr($exam_value['exam_name'],0, 30).'.....';

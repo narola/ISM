@@ -16,14 +16,14 @@ class My_exam extends ISM_Controller {
 	{
 		$data['title'] = 'ISM - MY Exam';
 
-		/*---get student course name---*/
+		//	get student detail
 		$user_data = $this->session->userdata('user');
-		// p($user_data,'true');
 		$data['my_course_name'] = $user_data['course_name'];
 		$course_id = $user_data['course_id'];
 		$classroom_id = $user_data['classroom_id'];
 		$user_id = $user_data['id'];
 
+		//	get attampted exam list with result
 		$where	=	array('where' => array('c.classroom_id' => $classroom_id));
 		$option	= 	array('join' => 
 						array(
@@ -38,9 +38,8 @@ class My_exam extends ISM_Controller {
 						)
 					);
 		$data['subject_list'] = select(TBL_COURSE_SUBJECT.' c','s.id,s.subject_name,st.cnt,st.percentage',$where,$option);
-		// qry();
-		// p($data['subject_list'],TRUE);
 
+		//	get student classroom subject detail
 		$where = array('where'=>array('e.classroom_id' => $classroom_id,'sc.exam_status'=>'finished','sc.user_id'=>$user_id,'sc.is_delete' => 0,'e.is_delete' => 0));
 		$option =  array( 'join' =>
 						array(
@@ -56,8 +55,7 @@ class My_exam extends ISM_Controller {
 					);
 		$select = 'e.exam_name,s.id,s.subject_name';
 		$data['my_exam'] = select(TBL_STUDENT_EXAM_SCORE.' sc',$select,$where,$option);
-		// qry();		
-		// p($data['my_exam'],true);
+		
 		$this->template->load('student/default','student/my_exam',$data);
 	}
 }
