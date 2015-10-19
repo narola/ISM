@@ -92,6 +92,9 @@
 	.filter.report_filter .form-group {
 		width: 15.8%;
 	}
+	.filter.group_report_filter .form-group.data_range {
+	    width: 40%;
+	}
 }
 @media (max-width:1280px){
 	.login_background{
@@ -554,6 +557,22 @@
 	.filter.report_filter .form-group.data_range {
     	margin-bottom: 0;
     }
+	.group_member_report > div:nth-child(even) {
+    	padding: 15px 0 0 0;
+	}
+	.group_member_report > div:nth-child(odd) {
+    	padding: 15px 15px 0 0;
+	}
+	.group_report_filter .range_picker:last-child {
+    	margin-left:10px;
+	}
+	.filter.group_report_filter .form-group.data_range {
+    	width: 50%;
+	}
+	.group_report_filter .range_picker {
+		margin-bottom: 0;
+		width: 30%;
+	}
 }
 @media (max-width:980px){
 	.login_background {
@@ -672,6 +691,10 @@
 	}
 	.answers > .col-md-6:last-child {
 		padding-left: 15px;
+	}
+	.group_member_report > div:nth-child(even),
+	.group_member_report > div:nth-child(odd) {
+    	padding: 15px 0 0 0;
 	}
 }
 
