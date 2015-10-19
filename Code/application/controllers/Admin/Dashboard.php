@@ -126,10 +126,10 @@ class Dashboard extends ADMIN_Controller {
 		
 		$this->data['page_title'] = 'Auto Generated Credentials';
 
-		$this->data['schools'] = select(TBL_SCHOOLS);
-		$this->data['roles'] = select(TBL_ROLES);
-		$this->data['courses'] = select(TBL_COURSES);
-		$this->data['classrooms'] = select(TBL_CLASSROOMS);
+		$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0)));
+		$this->data['roles'] = select(TBL_ROLES,false,array('where'=>array('is_delete'=>0)));
+		$this->data['courses'] = select(TBL_COURSES,false,array('where'=>array('is_delete'=>0)));
+		$this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>0)));
 
 		$this->data['cur_year'] = date('Y');
 		$this->data['next_year'] = date('Y')+1;

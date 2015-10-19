@@ -433,6 +433,15 @@ $url = uri_string();
         </div>
         <!--//body-->
 
+        <div class="alert alert_notification alert-dismissible" role="alert" style="display: none;">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <p></p>
+        </div>
+        
+        <script type="text/javascript">
+            // $(".alert_notification p").html("Exam time will <b>finish</b> within <b>1 minute.</b>");
+            // $(".alert_notification").show().delay(5000).fadeOut();
+         </script>    
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 

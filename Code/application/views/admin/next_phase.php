@@ -3,7 +3,7 @@
             	<div class="logo_holder">
                 	<img src="assets/images/logo_login_admin.png">
                 </div>
-            	<h2>Feature Coming in phase 2</h2>
+            	<h2>Feature Coming Soon</h2>
                 <p>We are working hard to make ISM the best system. ISM has many more to come.</p>
 			</div>
             <!--//main-->
