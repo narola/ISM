@@ -191,12 +191,13 @@ class Question extends ADMIN_Controller {
 
 			$count = count(select(TBL_EXAM_QUESTION,FALSE,array('where'=>array('exam_id'=>$eid))));
 			
-			$where = array(TBL_QUESTIONS.'.id' => $qid);
+			$where = array(TBL_QUESTIONS.'.id' => $qid,TBL_EXAM_QUESTION.'.exam_id'=>$eid,TBL_EXAM_QUESTION.'.question_id'=>$qid,);
 
 			$questions = select(TBL_QUESTIONS,
 								TBL_QUESTIONS.'.id,'.
 								TBL_QUESTIONS.'.question_text,'.
 								TBL_SUBJECTS.'.subject_name,'.
+								TBL_EXAM_QUESTION.'.id as exam_ques_id,'.
 								TBL_USERS.'.full_name',
 								array('where'=>$where),
 								array(
@@ -218,6 +219,10 @@ class Question extends ADMIN_Controller {
 						    				'table' => TBL_USERS,
 						    				'condition' => TBL_USERS.'.id = '.TBL_QUESTIONS.'.question_creator_id',
 											),
+										array(
+						    				'table' => TBL_EXAM_QUESTION,
+						    				'condition' => TBL_EXAM_QUESTION.'.question_id = '.TBL_QUESTIONS.'.id',
+											)
 										),
 									)
 						);
@@ -240,9 +245,9 @@ class Question extends ADMIN_Controller {
 			 $new_str = '';
 			 foreach( $questions as $question) {
 
-						$new_str.='<div class="question_wrapper">
+						$new_str.='<div class="question_wrapper" id="que_div_'.$count.'">
 		                    <div class="question_left">
-		                        <h5 class="txt_red">Question <span>'.$count.'</span></h5>                                        
+		                        <h5 class="txt_red">Question <span id="exam_quest_'.$count.'">'.$count.'</span></h5>                                        
 		                        <p class="ques">'.$question["question_text"].'</p>
 		                        <div class="answer_options_div">
 		                            <ol>';
@@ -257,8 +262,8 @@ class Question extends ADMIN_Controller {
 		                        <a href="#" class="icon icon_hand" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Move"></a>
 		                        <a href="#" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
 		                        <a href="#" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
-		                        <a href="#" class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
-		                        
+		                        <a href="'.base_url().'admin/question/delete_question/'.$question['exam_ques_id'].'" onclick="delete_question(this.href,event,'.$count.')" 
+		                        class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
 		                    </div>
 		                    <div class="clearfix"></div>
 		                </div>';
@@ -272,4 +277,11 @@ class Question extends ADMIN_Controller {
 
 		//$data
 	}
+
+	public function delete_question($id){
+		//$id=$this->input->post('id');
+		delete(TBL_EXAM_QUESTION,$id);
+		echo '1';
+	}
+
 }

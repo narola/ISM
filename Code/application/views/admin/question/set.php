@@ -122,12 +122,9 @@
                     </div>
                     <!--box_body-->
                     <div class="box_body">
-                   		
+                   		<!-- All Question Lists are display Here. -->
                         <div class="question_list" id='question_list'>
                         	
-
-                            
-                            
                         </div>
                    	</div>
                     <!--//box-body-->
@@ -155,17 +152,14 @@
             $.ajax({
                 url:'<?php echo base_url()."admin/exam/fetch_question"; ?>',
                 type:'POST',
+                dataType:'JSON',
                 data:{eid:eid},
                 success:function(data){
-                    $('#question_list').html(data);
+                    $('#question_list').html(data.new_str);
                 }    
             });
         }
-
     }
-
-    // $(".alert_notification p").html("Exam time will <b>finish</b> within <b>1 minute.</b>");
-    // $(".alert_notification").show().delay(5000).fadeOut();
 
     function set_question(qid){
 
@@ -188,35 +182,63 @@
                     
                     if(data.res == 1){
 
+                        //Show Notofication on your right-bottom side
                         $(".alert_notification p").html("Question has Been set.");
                         $(".alert_notification").show().delay(500).fadeOut();
 
+                        //IF - Question  
                         if(data.count == 1){
-                            
                             $('#question_list').empty();
                             $('#question_list').html(data.new_str);
                         }else{
-                            alert('else');
                             $('#question_list').append(data.new_str);
                         }
-                           
                     }
 
                     if(data.res == 0){
-                        
                         bootbox.alert("Question already added to this exam.");
-
                         $('#check_'+qid).prop('checked',false);
                     }
 
                    }
                 });
-
             }
-
         }
     }
 
+    function delete_question(href,event,remove_div){
+        event.preventDefault();
+         bootbox.confirm("Delete Question?", function(confirmed) {
+            
+            if(confirmed){
+                //window.location.href=href;
+                $.ajax({
+                    url:href,
+                    type:"post",
+                    success:function(data){
+                        var total_div = $('#question_list > div').length;
+                        
+                        $('#que_div_'+remove_div).remove();                        
+                        
+                        //$('#exam_quest_2').html(3);
+                        
+                        total_div = parseInt(total_div);
+
+                        for(var i=1;i<=total_div;i++){
+                            
+                            var span_id = '#exam_quest_'+i;
+                            alert(span_id);
+                            //$('#question_list > #exam_quest_'+i).html(i);
+                            $('#question_list >'+span_id).html(i);
+
+                        }
+                        
+                    }
+                });
+            }
+            
+        });
+    }
 
     function get_classes(course_id){
         $.ajax({
@@ -229,7 +251,7 @@
               $('#topic_id').val('');
            }
         });
-  }
+    }
 
   function get_subjects(classroom_id){
         $.ajax({
@@ -284,4 +306,5 @@ jQuery(document).ready(function() {
         };              
     });
 });
+
 </script>
