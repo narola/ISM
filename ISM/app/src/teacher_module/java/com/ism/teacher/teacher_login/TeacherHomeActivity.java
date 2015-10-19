@@ -1,4 +1,4 @@
-package com.ism.teacher.teacher_login;
+package com.ism.author.author_login;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -28,9 +28,6 @@ import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.TutorialFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.ControllerTopMenuItem;
-import com.ism.teacher.teacher_fragments.TeacherChatFragment;
-import com.ism.teacher.teacher_fragments.UpcomingEventsFragment;
-import com.ism.teacher.teacher_fragments.UserProfileFragment;
 import com.ism.utility.Utility;
 
 import java.util.ArrayList;

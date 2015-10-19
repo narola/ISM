@@ -15,7 +15,7 @@ import com.ism.login.Global;
 /**
  * Created by c75 on 15/10/15.
  */
-public class TeacherLoginActivity extends Activity implements View.OnClickListener {
+public class AuthorLoginActivity extends Activity implements View.OnClickListener {
 
 
     Global global;
@@ -48,10 +48,10 @@ public class TeacherLoginActivity extends Activity implements View.OnClickListen
     @Override
     public void onClick(View view) {
 
-        if(view== btnLogin)
-        {
-            global.myIntent(this, TeacherProfileInformation.class);
-        }
+//        if(view== btnLogin)
+//        {
+//            global.myIntent(this, TeacherProfileInformation.class);
+//        }
 
     }
 }
