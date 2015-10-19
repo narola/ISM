@@ -273,6 +273,7 @@ class Home extends CI_Controller {
 
 		//  Redirect User to /home. if all members of group acceptted join request.
 		if($user_group_info['joining_status'] == 1  &&  $total_joined == 5){
+			$this->set_session($this->session->userdata('user')['id']);
 			redirect('student/home');
 		
 		}else if($user_group_info['joining_status'] != 1){   // if loggedin user not accepted group
