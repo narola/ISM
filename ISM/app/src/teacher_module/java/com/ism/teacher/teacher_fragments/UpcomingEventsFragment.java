@@ -13,21 +13,21 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ism.HostActivity;
 import com.ism.R;
 import com.ism.adapter.EventsAdapter;
 import com.ism.adapter.HighScoreAdapter;
 import com.ism.adapter.NoticeAdapter;
-import com.ism.teacher.helper.AccordionView;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.EventsModel;
 import com.ism.model.HighScoreModel;
 import com.ism.model.HighScoreStudentModel;
 import com.ism.model.NoticeModel;
 import com.ism.object.MyTypeFace;
+import com.ism.teacher.helper.AccordionView;
 import com.ism.teacher.teacher_login.TeacherHomeActivity;
 
 import java.util.ArrayList;
+
 
 /**
  * Created by c161 on --/10/15.

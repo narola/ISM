@@ -68,18 +68,10 @@ public class PostFileAdapter extends BaseAdapter {
         ImageView imageView = (ImageView) convertView.findViewById(R.id.img_image);
         TextView videoIndicator = (TextView) convertView.findViewById(R.id.txt_video);
         ImageView imgClose = (ImageView) convertView.findViewById(R.id.img_cancel);
-        ImageView imgAdd = (ImageView) convertView.findViewById(R.id.img_add);
+       ImageView imgPlay = (ImageView) convertView.findViewById(R.id.img_play);
         imageView.setVisibility(View.VISIBLE);
         Log.e("File", "" + arrayList.get(position).getStrFilePath());
-        if (position==0){
-            imgAdd.setVisibility(View.VISIBLE);
-            Picasso.with(context)
-                    .load(R.drawable.img_addd_file)
-                    .error(R.drawable.ic_launcher)
-                    .placeholder(R.drawable.selector_loading)
-                    .into(imgAdd);
-        }
-        else if (arrayList.get(position).getStrFileType().equals("image")) {
+     if (arrayList.get(position).getStrFileType().equals("image")) {
             if (arrayList.get(position).getStrFilePath() != null) {
                 //  Uri uri = Uri.fromFile(new File(arrayList.get(position).getStrFilePath()));
 
@@ -91,7 +83,7 @@ public class PostFileAdapter extends BaseAdapter {
                 // bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(arrayList.get(position).getStrFilePath()));
 
                 // imageView.setImageBitmap(bitmap);
-                imgClose.setVisibility(View.VISIBLE);
+
             }
 
             imageView.setOnClickListener(new View.OnClickListener() {
@@ -101,40 +93,24 @@ public class PostFileAdapter extends BaseAdapter {
                     Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
                 }
             });
-        } else if (arrayList.get(position).getStrFileType().equals("isVideo")) {
-//            imageView.setImageBitmap(arrayList.get(position).getBitmap());
-//            imgClose.setVisibility(View.VISIBLE);
-//            MediaPlayer mediaPlayer=new MediaPlayer();
-//            try {
-//                mediaPlayer.setDataSource(context, Uri.fromFile(arrayList.get(position).getUriFile()));
-//                Log.i("TV",mediaPlayer.getDuration()+"");
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+        } else if (arrayList.get(position).getStrFileType().equals("video")) {
+         MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+         mMediaMetadataRetriever.setDataSource(context, arrayList.get(position).getStrFilePath());
+         bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+         imageView.setImageBitmap(bitmap);
             videoIndicator.setText(mediaPlayer.getDuration() + "");
             videoIndicator.setVisibility(View.VISIBLE);
+            imgPlay.setVisibility(View.VISIBLE);
 
-        } else if (arrayList.get(position).getStrFileType().equals("isAudio")) {
+
+        } else if (arrayList.get(position).getStrFileType().equals("audio")) {
             imgClose.setVisibility(View.VISIBLE);
             MediaPlayer mediaPlayer = new MediaPlayer();
-//            try {
-//                mediaPlayer.setDataSource(context, Uri.fromFile(arrayList.get(position).getUriFile()));
-//                mediaPlayer.getDuration();
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            try {
-//                mediaPlayer.setDataSource(context, arrayList.get(position).getUriFile());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
             videoIndicator.setText(mediaPlayer.getDuration() + "");
             videoIndicator.setVisibility(View.VISIBLE);
-            imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.ic_launcher));
+            imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.audioplay));
         }
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,6 +124,7 @@ public class PostFileAdapter extends BaseAdapter {
                 notifyDataSetChanged();
             }
         });
+        imgClose.setVisibility(View.VISIBLE);
         return convertView;
     }
 }

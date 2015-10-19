@@ -178,7 +178,7 @@
                             android:orientation="vertical">
 
                             <com.ism.helper.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                android:id="@+id/img_dp"
+                                android:id="@+id/img_dp_post_creator"
                                 android:layout_width="200sp"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"

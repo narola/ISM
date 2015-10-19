@@ -1,4 +1,4 @@
-package ism.com.utilitymodulepost;
+package com.ism.teacher.teacher_fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -8,33 +8,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by c162 on 16/10/15.
- */
-public class AudioFragment extends Fragment {
-    public static final String TAG=AudioFragment.class.getSimpleName();
-    private View view;
-    FragmentListener fragListener;
+import com.ism.R;
+import com.ism.interfaces.FragmentListener;
+import com.ism.teacher.teacher_login.TeacherHomeActivity;
 
-    public static AudioFragment newInstance() {
-        AudioFragment fragAudio = new AudioFragment();
-        return fragAudio;
+/**
+ * Created by c161 on --/10/15.
+ */
+public class TeacherHomeFragment extends Fragment {
+
+    private static final String TAG = TeacherHomeFragment.class.getSimpleName();
+
+    private View rootview;
+
+
+    private FragmentListener fragListener;
+
+    public static TeacherHomeFragment newInstance() {
+        TeacherHomeFragment fragTeacherHome = new TeacherHomeFragment();
+        return fragTeacherHome;
     }
 
-    public AudioFragment() {
+    public TeacherHomeFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_audio, container, false);
+        rootview = inflater.inflate(R.layout.row_teacher_post, container, false);
 
-        initGlobal();
+        //initGlobal(rootview);
 
-        return view;
-    }
+        Log.e(TAG,"called");
+        return rootview;
 
-    private void initGlobal() {
 
     }
 
@@ -44,7 +51,7 @@ public class AudioFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(PostActivity.FRAGMENT_AUDIO);
+                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_TEACHER_HOME);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -56,11 +63,12 @@ public class AudioFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(PostActivity.FRAGMENT_AUDIO);
+                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_TEACHER_HOME);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
     }
+
 }
