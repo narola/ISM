@@ -126,7 +126,7 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 	    txtSaturday.setOnClickListener(listenerOnWeekDayClick);
 	    txtSunday.setOnClickListener(listenerOnWeekDayClick);
 
-	    txtFriday.performClick();
+	    txtMonday.performClick();
     }
 
 	private void setWeekDaySelection(TextView textSelectedWeekDay) {
@@ -156,10 +156,10 @@ public class TutorialFragment extends Fragment implements TutorialDiscussionFrag
 					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ExamFragment.newInstance("")).commit();
 					break;
 				case FRAGMENT_SAT:
-					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ClassroomFragment.newInstance()).commit();
+//					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, ClassroomFragment.newInstance()).commit();
 					break;
 				case FRAGMENT_SUN:
-					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, AssessmentFragment.newInstance()).commit();
+//					getChildFragmentManager().beginTransaction().replace(R.id.fl_tutorial, AssessmentFragment.newInstance()).commit();
 					break;
 			}
 			intCurrentFragment = fragment;

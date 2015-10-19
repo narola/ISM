@@ -22,6 +22,7 @@ import com.ism.exam.adapter.TutorialGroupAdapter;
 import com.ism.exam.model.QuestionObjective;
 import com.ism.exam.model.TutorialGroupMember;
 import com.ism.exam.utility.Utility;
+import com.ism.exam.view.TimerView;
 
 import java.util.ArrayList;
 
@@ -36,12 +37,12 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	private RelativeLayout rlQuestionPalette;
 	private ListView lvTutorialGroup;
 	private TextView txtTitle;
-	private TextView txtTimeRemaining;
 	private TextView txtGroupScore;
 	private TextView txtActiveComments;
 	private TextView txtMyScore;
 	private GridView gridQuestion;
 	private Button btnEndTest;
+	private TimerView timerViewExam;
 
 	private CountDownTimer timerExam;
 	private ExamFragment fragExam;
@@ -50,7 +51,8 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	private TutorialGroupAdapter adpTutorialGroup;
 	private ArrayList<TutorialGroupMember> arrListMembers;
 
-	private int intExamDurationMinutes;
+	private int intTimeLeft;
+	private int intExamDurationMilli;
 
 	public static QuestionPaletteFragment newInstance() {
 		QuestionPaletteFragment fragment = new QuestionPaletteFragment();
@@ -74,19 +76,18 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 		rlQuestionPalette = (RelativeLayout) view.findViewById(R.id.rl_question_palette);
 		lvTutorialGroup = (ListView) view.findViewById(R.id.lv_tutorial_group);
 		txtTitle = (TextView) view.findViewById(R.id.txt_title);
-		txtTimeRemaining = (TextView) view.findViewById(R.id.txt_time_remaining);
 		txtGroupScore = (TextView) view.findViewById(R.id.txt_group_score);
 		txtActiveComments = (TextView) view.findViewById(R.id.txt_active_comments_value);
 		txtMyScore = (TextView) view.findViewById(R.id.txt_my_score_value);
 		gridQuestion = (GridView) view.findViewById(R.id.grid_question_no);
 		btnEndTest = (Button) view.findViewById(R.id.btn_end_test);
+		timerViewExam = (TimerView) view.findViewById(R.id.timer_exam);
 
 		arrListMembers = TutorialGroupMember.getTutorialGroupMembers();
 		adpTutorialGroup = new TutorialGroupAdapter(getActivity(), arrListMembers);
 		lvTutorialGroup.setAdapter(adpTutorialGroup);
 
 		txtGroupScore.setText(Html.fromHtml("<small><font color='#7B7B7B'>GROUP SCORE : </font></small><b><font color='#1BC4A2'>" + 5000 + "</font><b/>"));
-//		txtGroupScore.setText(Html.fromHtml("<font color='#7B7B7B'>Group Score : </font><b><font color='#1BC4A2'>" + 5000 + "</font><b/>"));
 		txtActiveComments.setText("55");
 		txtMyScore.setText("2458");
 
@@ -102,16 +103,18 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 	@Override
 	public void startTest(ArrayList<QuestionObjective> questions, ExamFragment examFragment) {
 		try {
-			intExamDurationMinutes = examFragment.getExamDurationMinutes();
-			timerExam = new CountDownTimer( intExamDurationMinutes * 60 * 1000, 1000) {
+			intExamDurationMilli = examFragment.getExamDurationMinutes() * 60 * 1000;
+			timerViewExam.setTotalTimeMin(examFragment.getExamDurationMinutes());
+			timerExam = new CountDownTimer( intExamDurationMilli, 1000) {
 				@Override
 				public void onTick(long millisUntilFinished) {
-					txtTimeRemaining.setText(Utility.stringForTime((int) millisUntilFinished) + " Remaining");
+					intTimeLeft = (int) millisUntilFinished;
+					timerViewExam.setTimeMilli(intTimeLeft);
 				}
 
 				@Override
 				public void onFinish() {
-					txtTimeRemaining.setText("Time is up");
+					timerViewExam.setTimeMilli(0);
 					end();
 				}
 			};
@@ -146,7 +149,8 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 				arrListQuestions.get(i).setIsReviewLater(false);
 				arrListQuestions.get(i).setIsSkipped(false);
 			}
-			fragExam.getFragmentManager().beginTransaction().replace(R.id.fl_exam, ResultFragment.newInstance(arrListQuestions, true)).commit();
+			int timeSpent = (intExamDurationMilli - intTimeLeft) / 60000;
+			fragExam.getFragmentManager().beginTransaction().replace(R.id.fl_exam, ResultFragment.newInstance(arrListQuestions, fragExam.isShowGraph(), timeSpent)).commit();
 			getFragmentManager().beginTransaction().remove(this).commit();
 		} catch (Exception e) {
 			Log.e(TAG, "end Exception : " + e.toString());

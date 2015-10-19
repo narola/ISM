@@ -33,4 +33,6 @@
 	<string name="click_view_answers">Click Here to View Answers</string>
 	<string name="make_score_public">Make My Score Public?</string>
 	<string name="view_evaluation">View Evaluation</string>
+	<string name="remaining">Remaining</string>
+	<string name="your_score_is">"YOUR SCORE IS : "</string>
 </resources>
