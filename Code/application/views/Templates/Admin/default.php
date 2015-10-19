@@ -214,13 +214,25 @@ $url = uri_string();
                     <!--//notification-->
 
                     <ul class="personal_menu">
-                        <li>
+                        <li class="<?php
+                            if (in_array($url, array('admin/feeds'))) {
+                                echo 'active';
+                            }
+                        ?>">
                             <a href="admin/feeds"><span class="icon icon_feed"></span>Feeds</a>
                         </li><!-- class="active"-->
-                        <li>
+                        <li class="<?php
+                            if (in_array($url, array('admin/spam'))) {
+                                echo 'active';
+                            }
+                        ?>">
                             <a href="admin/spam"><span class="icon icon_spam"></span>Spam<span class="badge message_badge">12</span></a>
                         </li>
-                        <li>
+                        <li class="<?php
+                            if (in_array($url, array('admin/banners'))) {
+                                echo 'active';
+                            }
+                        ?>">
                             <a href="admin/banners"><span class="icon icon_banner"></span>Banners</a>
                         </li>                   
                         <li class="<?php
@@ -230,7 +242,11 @@ $url = uri_string();
                         ?>">
                             <a href="admin/notice"><span class="icon icon_notice"></span>Notice Board</a>
                         </li>
-                        <li>
+                        <li class="<?php
+                            if (in_array($url, array('admin/questionaries'))) {
+                                echo 'active';
+                            }
+                        ?>">
                             <a href="admin/questionaries"><span class="icon icon_ques"></span>Questionaries</a>
                         </li>
                         <li class="<?php
