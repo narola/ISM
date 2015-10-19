@@ -39,12 +39,17 @@
      <!--exams-->
      <div  class="row">
         <div class="col-sm-12 exams_wrapper">
+            <?php
+                if(isset($my_subject)){
+                    foreach ($my_subject as $key => $value) {
+                        
+            ?>
             <!--card1-->
             <div class="col-sm-12 col-md-6 col-lg-4">
                  <div class="box exam_card">
                     <div class="box_header exam_chem">
                         <div class="color_wrapper"></div>
-                        <h3>Chemistry</h3>                            
+                        <h3><?php echo $value['subject_name'];?></h3>                            
                         <a href="#" class="icon icon_option no-margin"></a>  
                         <label class="label label_black">15 Exams</label>
                         <!-- <div class="user_profile_img">
@@ -53,79 +58,39 @@
                         <div class="clearfix"></div>                    
                     </div>
                     <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
-                        <li><a href="#">Organic - I</a></li>
-                        <li><a href="#">Biomass</a></li>
-                        <li><a href="#">Chemical Component</a></li>
-                        <li><a href="#">Fuel</a></li>
-                        <li><a href="#">Organic - II</a></li>
+                        <?php 
+                            foreach ($my_exam as $exam_value) {
+                                if($exam_value['subject_id'] == $value['subject_id']){
+                                    if($exam_value['per'] != ''){
+                                        $url = '/evaluation';
+                                        $percentage = $exam_value['per'];
+                                    }
+                                    else{
+                                        $url = '/evaluation';   
+                                        $percentage = '';
+                                    }
+                        ?>
+                            <li><a href="#">
+                                <?php 
+                                    if(strlen($exam_value['exam_name']) > 30)
+                                        echo substr($exam_value['exam_name'],0, 30).'.....';
+                                    else
+                                        echo $exam_value['exam_name'];
+                                ?>
+                                <span class="result"><?php if($percentage != '')echo $percentage.'%';?></span>
+                            </a></li>
+                        <?php 
+                                }
+                            }
+                        ?>
                     </ul>
                  </div>
              </div>
             <!--//card1-->
-            <!--card1-->
-            <div class="col-sm-12 col-md-6 col-lg-4">
-                 <div class="box exam_card">
-                    <div class="box_header exam_phy">
-                        <div class="color_wrapper"></div>
-                        <h3>Physics</h3>                            
-                        <a href="#" class="icon icon_option no-margin"></a>  
-                        <label class="label label_black">03 Exams</label>
-                        <div class="user_profile_img">
-                            <img src="images/user6.jpg">
-                        </div>                                     
-                        <div class="clearfix"></div>                    
-                    </div>
-                    <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
-                        <li><a href="#">Organic - I</a></li>
-                        <li><a href="#">Biomass</a></li>
-                        <li><a href="#">Chemical Component</a></li>
-                        
-                    </ul>
-                 </div>
-             </div>
-            <!--//card1-->
-            <!--card1-->
-            <div class="col-sm-12 col-md-6 col-lg-4">
-                 <div class="box exam_card">
-                    <div class="box_header exam_math">
-                        <div class="color_wrapper"></div>
-                        <h3>Maths</h3>                            
-                        <a href="#" class="icon icon_option no-margin"></a>  
-                        <label class="label label_black">01 Exams</label>
-                        <div class="user_profile_img">
-                            <img src="images/user7.jpg">
-                        </div>                                     
-                        <div class="clearfix"></div>                    
-                    </div>
-                    <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
-                        <li><a href="#">Organic - I</a></li>
-                        
-                    </ul>
-                 </div>
-             </div>
-            <!--//card1-->
-            <!--card1-->
-            <div class="col-sm-12 col-md-6 col-lg-4">
-                 <div class="box exam_card">
-                    <div class="box_header exam_lang">
-                        <div class="color_wrapper"></div>
-                        <h3>Language</h3>                            
-                        <a href="#" class="icon icon_option no-margin"></a>  
-                        <label class="label label_black">04 Exams</label>
-                        <div class="user_profile_img">
-                            <img src="images/user7.jpg">
-                        </div>                                     
-                        <div class="clearfix"></div>                    
-                    </div>
-                    <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
-                        <li><a href="#">Organic - I</a></li>
-                        <li><a href="#">Biomass</a></li>
-                        <li><a href="#">Chemical Component</a></li>
-                        <li><a href="#">Fuel</a></li>
-                    </ul>
-                 </div>
-             </div>
-            <!--//card1-->
+            <?php 
+                    }
+                }
+            ?>
         </div>
      </div>
      <!--//exams-->

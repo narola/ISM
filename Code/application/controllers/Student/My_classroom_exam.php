@@ -29,7 +29,7 @@ class My_classroom_exam extends ISM_Controller {
 			);
 		
 		$where = array('where' => array('cs.classroom_id' => $user_classroom));
-		$data['my_subject'] = select(TBL_COURSE_SUBJECT.' cs','s.subject_name,s.id,s.subject_image',$where,$option);
+		$data['my_subject'] = select(TBL_COURSE_SUBJECT.' cs','s.subject_name,s.id AS subject_id,s.subject_image',$where,$option);
 		
 		$where = array('where' => array('e.classroom_id' => $user_classroom,'e.is_delete' => 0));
 		$option = array('join' =>
