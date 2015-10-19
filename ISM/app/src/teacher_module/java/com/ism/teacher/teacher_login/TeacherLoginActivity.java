@@ -50,7 +50,7 @@ public class TeacherLoginActivity extends Activity implements View.OnClickListen
 
         if(view== btnLogin)
         {
-            global.myIntent(this, TeacherProfileInformation.class);
+            global.myIntent(this, com.ism.teacher.teacher_login.TeacherProfileInformation.class);
         }
 
     }

@@ -19,7 +19,13 @@
             android:scaleType="fitXY"
             android:layout_centerInParent="true"
             android:visibility="gone" />
-
+        <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/img_play"
+            android:layout_height="wrap_content"
+            android:src="@drawable/audio_play"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
         <!--<VideoView-->
             <!--android:id="@+id/video"-->
             <!--android:layout_width="wrap_content"-->
