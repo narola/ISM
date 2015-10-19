@@ -5,6 +5,18 @@ var exam_total_deactive_time;
 var exam_time_to_left;
 var exam_started;
 var exam_will_start;
+var time_status = 1;
+var time_spent_per_question = 0;
+var time_spent = setInterval(time_spent_counter, 1000);;
+
+function time_spent_counter()
+{
+  time_spent_per_question++;
+  $('#time_spent').html(toHHMMSS(time_spent_per_question));
+}
+
+
+
 
 function exam_started_timer()
 {
@@ -254,7 +266,8 @@ if ("WebSocket" in window)
             $(".alert_notification").show().delay(3000).fadeOut();
         }
 
-        if(obj.time_to_left == 0 && obj.time_to_start > 0){
+        if(obj.time_to_left == 0 && obj.time_to_start > 0 && time_status == 1){
+          time_status = 0;
             time_count_out = obj.time_to_start;
             max_count_out = obj.time_to_start;
             counter_out=setInterval(timeout_timer, 1000);
@@ -509,9 +522,32 @@ if ("WebSocket" in window)
             $('#tagged-users-id').val(ids);
         }else if(obj.type == 'file_notification'){
         }else if(obj.type == 'question_responce'){
-          
+          time_spent_per_question = 0;
+          $('.ques_numbers li[data-id="'+obj.question+'"]').attr('class',obj.status);
           $('button[data-type="clear_responce"]').removeAttr('disabled');
           $('button[data-type="question_responce"]').removeAttr('disabled');
+
+          if(obj.qno > 0){
+            $('#q_no').html(obj.qno);
+            $('button[data-type="question_responce"]').attr('data-id',obj.qid);
+            $('#time_spent').html('00:00');
+            $('.question.text-center p').html(obj.question);
+            $('.ans_options').html('');
+            $.each(obj.answer, function (index, list){
+              $('.ans_options').append('<label><input type="radio" name="option" data-id="'+list.id+'">'+list.choice+'</label>'); 
+            });
+          }
+
+          if($('ul.ques_numbers li[data-id="'+obj.qid+'"]').next().length == 0){
+          //alert("f");
+          /* $('button[data-type="question_responce"]').attr('data-type','end_test');
+           $('button[data-type="question_responce"]').html('Next <span class="fa fa-chevron-right"></span>');
+*/
+          }
+          $('ul.ques_numbers li[data-id="'+obj.question_id+'"]').attr('class',obj.status).data('class',obj.status);
+          $('ul.ques_numbers li[data-id="'+obj.qid+'"]').attr('class','current').data('class','current');
+
+
         }else if(obj.type == 'get_question'){
           $('#q_no').html(obj.qno);
           $('button[data-type="question_responce"]').attr('data-id',obj.new_question.qid);
@@ -1021,11 +1057,23 @@ $(document).on('click','.ans_options label input[name="option"]',function(){
 $(document).on('click','button[data-type="question_responce"]',function(){
   $('button[data-type="clear_responce"]').attr('disabled','disabled');
   $('button[data-type="question_responce"]').attr('disabled','disabled');
+  var question_id = $(this).attr('data-id');
+  var next_question = 0;
+  var next_question_no = 0;
 
+if($('ul.ques_numbers li[data-id="'+question_id+'"]').next().length  == 1){
+  next_question = $('ul.ques_numbers li[data-id="'+question_id+'"]').next().data('id');
+  next_question_no = $('ul.ques_numbers li[data-id="'+question_id+'"]').next().children('a').data('no');
+}
+  
+  
   var request = {
     type : 'question_responce',
     to   : 'self',
-    question: $(this).attr('data-id'),
+    time : time_spent_per_question,
+    question_id: question_id,
+    qno: next_question_no,
+    next: next_question,
     answer : exam_choice,
     status :$(this).attr('data-status')
   }

@@ -106,9 +106,11 @@
                     <div class="box_body">
                         <ul class="ques_numbers">
                             <?php foreach($question_id as $key => $value){
+
                                 $cls = '';
                                     foreach($attempted_question as $k => $v){
                                         if($value == $v['question_id']){
+                                            $estatus = $v['answer_status'];
                                             if($v['answer_status'] == 'A'){
                                                 $cls = 'answered';
                                             }else if($v['answer_status'] == 'R'){
@@ -123,7 +125,7 @@
                                         $cls = 'current';
                                     }
                                 ?>
-                                <li class="<?php echo $cls; ?>" data-id="<?php echo $value; ?>"><a data-no="<?php echo $key+1; ?>" data-type="get_question" href="javascript:void(0)" data-id="<?php echo $value; ?>"><span><?php echo $key+1; ?></span></a></li>
+                                <li data-class = "<?php echo $cls; ?>" class="<?php echo $cls; ?>" data-id="<?php echo $value; ?>"><a data-no="<?php echo $key+1; ?>" data-type="get_question" href="javascript:void(0)" data-id="<?php echo $value; ?>"><span><?php echo $key+1; ?></span></a></li>
                                 <?php
                             } ?>                            
 

@@ -236,7 +236,7 @@ class Tutorial extends ISM_Controller {
 	*/
 	public function exam(){
 		$data = $this->exam_status();
-
+		
 		$this->template->load('student/default','student/exam_instruction',$data);
 	}
 
@@ -291,6 +291,17 @@ class Tutorial extends ISM_Controller {
 			// Randomely stored question ids.
 			shuffle($new);
 			if(!$this->session->userdata('exam_question')){
+
+				if(count($data['answered_question']) > 0){
+					foreach($new as $key => $value){
+						if(in_array($value,$data['answered_question'])){
+								unset($new[$key]);
+						}
+					}
+					
+					$new = array_merge($data['answered_question'],$new);
+				}
+
 			 	$this->session->set_userdata('exam_question',$new);
 			}
 			$data['question_id'] = $this->session->userdata('exam_question');
