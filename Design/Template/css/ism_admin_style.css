@@ -1751,7 +1751,9 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 #performance_graph_1,
 #performance_graph_2,
-#performance_graph_3{
+#performance_graph_3,
+#performance_graph_4,
+#performance_graph_5{
     position: relative;
     left: -7px;
 }
@@ -1760,54 +1762,34 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     height: 450px;
 	overflow:hidden;
 }
-#performance_graph_1>.highcharts-container>svg>text[text-anchor=end],
-#performance_graph_2>.highcharts-container>svg>text[text-anchor=end],
-#performance_graph_3>.highcharts-container>svg>text[text-anchor=end]{
+.highcharts-container>svg>text[text-anchor=end]{
 	display:none;
 }
-#performance_graph_1 .highcharts-drilldown-data-label,
-#performance_graph_2 .highcharts-drilldown-data-label,
-#performance_graph_3 .highcharts-drilldown-data-label{
+.highcharts-container .highcharts-drilldown-data-label{
 	display:none;
 }
-#performance_graph_1 .highcharts-series>rect:first-child,
-#performance_graph_2 .highcharts-series>rect:first-child,
-#performance_graph_3 .highcharts-series>rect:first-child{
+.highcharts-container .highcharts-series>rect:first-child{
 	fill:#f7a0be;
 }
-#performance_graph_1 .highcharts-series>rect:first-child:hover,
-#performance_graph_2 .highcharts-series>rect:first-child:hover,
-#performance_graph_3 .highcharts-series>rect:first-child:hover{
+.highcharts-container .highcharts-series>rect:first-child:hover{
 	fill:#f595b6;
 }
-#performance_graph_1 .highcharts-series>rect:nth-child(2),
-#performance_graph_2 .highcharts-series>rect:nth-child(2),
-#performance_graph_3 .highcharts-series>rect:nth-child(2){
+.highcharts-container .highcharts-series>rect:nth-child(2){
 	fill:#6ed2e2;
 }
-#performance_graph_1 .highcharts-series>rect:nth-child(2):hover,
-#performance_graph_2 .highcharts-series>rect:nth-child(2):hover,
-#performance_graph_3 .highcharts-series>rect:nth-child(2):hover{
+.highcharts-container .highcharts-series>rect:nth-child(2):hover{
 	fill:#58c7d9;
 }
-#performance_graph_1 .highcharts-series>rect:nth-child(3),
-#performance_graph_2 .highcharts-series>rect:nth-child(3),
-#performance_graph_3 .highcharts-series>rect:nth-child(3){
+.highcharts-container .highcharts-series>rect:nth-child(3){
 	fill:#f0e190;
 }
-#performance_graph_1 .highcharts-series>rect:nth-child(3):hover,
-#performance_graph_2 .highcharts-series>rect:nth-child(3):hover,
-#performance_graph_3 .highcharts-series>rect:nth-child(3):hover{
+.highcharts-container .highcharts-series>rect:nth-child(3):hover{
 	fill:#efdd7c;
 }
-#performance_graph_1 .highcharts-series>rect:nth-child(5),
-#performance_graph_2 .highcharts-series>rect:nth-child(5),
-#performance_graph_3 .highcharts-series>rect:nth-child(5){
+.highcharts-container .highcharts-series>rect:nth-child(5){
 	fill:#b25d7c;
 }
-#performance_graph_1 .highcharts-series>rect:nth-child(5):hover,
-#performance_graph_2 .highcharts-series>rect:nth-child(5):hover,
-#performance_graph_3 .highcharts-series>rect:nth-child(5):hover{
+.highcharts-container .highcharts-series>rect:nth-child(5):hover{
 	fill:#af5073;
 }
 .reports .performance_wrapper .highcharts-xaxis-labels>text{
@@ -1826,4 +1808,51 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .table-bordered>tbody>tr>td, .table-bordered>thead>tr>td{
 	background-color:#fff;
+}
+.group_reports .performance_wrapper{
+	border:1px solid rgba(0,0,0,0.15);
+	height:415px;
+}
+.performance_wrapper .mate_user_img{
+	width:70px;
+	height:70px;
+    margin: 10px;
+    float: left;
+}
+.performance_wrapper p{
+	margin:0;
+}
+.personal_score{
+	padding:0 30px 0 0;
+	font-size:16px;
+	font-weight:600;
+}
+.personal_score p{
+	margin-top:10px;
+}
+.performance_wrapper .row{
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+.group_reports #performance_graph_1,
+.group_reports #performance_graph_2,
+.group_reports #performance_graph_3,
+.group_reports #performance_graph_4,
+.group_reports #performance_graph_5{
+	transform: scale(1,0.8);
+    top: -35px;
+}
+.group_reports{
+	margin-bottom:30px;
+}
+.group_member_report>div{
+	padding:15px 15px 0 0;
+}
+.group_member_report>div:nth-child(3n){
+	padding:15px 0 0 0;
+}
+.filter.group_report_filter .form-group.data_range {
+    width: 30%;
+}
+.group_report_filter .form-group {
+    width: 16%;
 }

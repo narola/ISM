@@ -158,7 +158,7 @@
                 <div class="col-sm-12 text-center btn_group">
                     <input type="hidden" value="save" id="button_type" name="button_type">
                 	<button class="btn btn_green" onclick="set_hidden('save')" >Save</button>
-                	<button class="btn btn_red" onclick="set_hidden('set_ques')">Set Question</button>
+                	<button class="btn btn_red" onclick="set_hidden('set_ques')">Save & Set Question</button>
                 	<a href="<?php echo $prev_url; ?>" class="btn btn_black_normal">Cancel</a>
                 </div>
                 <div class="clearfix"></div>
@@ -184,6 +184,7 @@
     
     $(document).ready(function() {
         $(".myselect").select2();
+
          $('#timepicker1').timepicker({ 
             defaultTime: 'value',
             minuteStep: 1,
@@ -206,7 +207,7 @@
             success:function(data){
                 $('#classroom_id').html(data);
             }
-
+            
         });
     }
 
