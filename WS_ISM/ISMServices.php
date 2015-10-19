@@ -24,11 +24,9 @@ $logger -> Log($debug, 'Service :', $_REQUEST['Service']);
 
 switch ($_REQUEST['Service'])
 {
-    /*********************  User Functions ******************************/
-    case "AddProfile":
-    case "AuthenticateUser":
+    /*********************  Profile Functions ******************************/
+       case "AuthenticateUser":
     {
-   // echo "Hello";
   	 include_once 'ProfileFunctions.php';
      $profile = new ProfileFunctions();
      $data = $profile -> call_service($_REQUEST['Service'], $postData);
