@@ -29,79 +29,88 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/txt_username_post_creator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/d10dp"
+                android:padding="@dimen/d10sp"
                 android:text="Emma Mall"
                 android:textColor="@color/color_black"
-                android:textSize="@dimen/d25dp" />
+                android:textSize="@dimen/d25sp" />
 
             <TextView
+                android:id="@+id/txt_post_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="4"
-                android:padding="@dimen/d10dp"
+                android:padding="@dimen/d10sp"
                 android:text="@string/strsentence"
                 android:textColor="@color/color_gray"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
+            <!-- comment like/dislike section-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:id="@+id/img_like_post"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
                     android:padding="@dimen/d5dp"
                     android:src="@drawable/like" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/txt_post_like_counter"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
                     android:padding="@dimen/d10dp"
                     android:text="23"
                     android:textColor="@color/color_black"
-                    android:textSize="@dimen/d18dp" />
+                    android:textSize="@dimen/d18sp" />
 
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:id="@+id/img_comments"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
                     android:padding="@dimen/d5dp"
                     android:src="@drawable/comment" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/txt_post_comments_counter"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
                     android:padding="@dimen/d10dp"
                     android:text="7"
                     android:textColor="@color/color_black"
-                    android:textSize="@dimen/d18dp" />
+                    android:textSize="@dimen/d18sp" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/txt_view_all_comments"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
                     android:padding="@dimen/d10dp"
                     android:text="View All"
-                    android:textColor="@color/color_green"
-                    android:textSize="@dimen/d18dp" />
+                    android:textColor="@color/color_pink"
+                    android:textSize="@dimen/d18sp" />
 
-                <ImageView
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
-                    android:padding="@dimen/d5dp"
-                    android:src="@drawable/friend" />
+                    android:layout_gravity="right">
+
+                    <ImageView
+                        android:id="@+id/img_post_option"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:padding="@dimen/d5dp"
+                        android:src="@drawable/friend" />
+                </RelativeLayout>
+
 
             </LinearLayout>
         </LinearLayout>
@@ -113,7 +122,6 @@
         android:layout_width="match_parent"
         android:layout_height="100sp"
         android:layout_marginLeft="@dimen/d15dp"
-
         android:layout_marginRight="@dimen/d15dp" />
 
     <EditText
@@ -124,8 +132,8 @@
         android:layout_marginLeft="@dimen/d15dp"
         android:layout_marginRight="@dimen/d15dp"
         android:layout_marginTop="@dimen/d10dp"
-        android:background="@drawable/selector"
+        android:background="@drawable/edittext_shadow_selector"
         android:hint="@string/strwriteyourcommenthere"
-        android:padding="15sp"
+        android:padding="@dimen/d15dp"
         android:textColorHint="@color/color_text_hint" />
 </LinearLayout>

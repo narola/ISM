@@ -51,7 +51,7 @@ public class TutorialGroupAdapter extends BaseAdapter {
             viewHolder.rawtg_txt_address = (TextView) convertView.findViewById(R.id.txt_address);
             viewHolder.rawtg_txt_school = (TextView) convertView.findViewById(R.id.txt_school);
             viewHolder.rawtg_txt_status = (TextView) convertView.findViewById(R.id.txt_status);
-            viewHolder.rawtg_img_dp = (ImageView) convertView.findViewById(R.id.img_dp);
+            viewHolder.rawtg_img_dp = (ImageView) convertView.findViewById(R.id.img_dp_post_creator);
             MyTypeFace myTypeFace = new MyTypeFace(context);
             viewHolder.rawtg_txt_name.setTypeface(myTypeFace.getRalewayBold());
             viewHolder.rawtg_txt_status.setTypeface(myTypeFace.getRalewaySemiBold());

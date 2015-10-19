@@ -14,7 +14,7 @@
         android:padding="@dimen/d10dp">
 
         <com.ism.helper.CircleImageView
-            android:id="@+id/img_dp"
+            android:id="@+id/img_dp_post_creator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="14"
