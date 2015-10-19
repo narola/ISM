@@ -39,7 +39,7 @@
 		<RelativeLayout
 			android:id="@+id/rl_score"
 			android:layout_width="0dp"
-			android:layout_height="wrap_content"
+			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:background="@drawable/bgwhite_bordergray"
 			android:paddingTop="1dp"
@@ -62,13 +62,13 @@
 				android:id="@+id/txt_correct_value"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:background="@drawable/bg_white_border_bottom"
 				android:layout_alignParentRight="true"
 				android:gravity="right"
 				android:textSize="@dimen/score_text"
 				android:textColor="@color/color_green"
 				android:textStyle="bold"
-				android:padding="@dimen/score_text_padding"/>
+				android:paddingRight="@dimen/score_text_padding"
+				android:paddingTop="16dp"/>
 
 			<TextView
 				android:id="@+id/txt_incorrect"
@@ -86,12 +86,12 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/txt_correct"
-				android:background="@drawable/bg_white_border_bottom"
 				android:layout_alignParentRight="true"
 				android:textSize="@dimen/score_text"
 				android:textColor="@color/color_red"
 				android:textStyle="bold"
-				android:padding="@dimen/score_text_padding"/>
+				android:paddingRight="@dimen/score_text_padding"
+				android:paddingTop="16dp"/>
 
 			<TextView
 				android:id="@+id/txt_unattempted"
@@ -109,12 +109,12 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/txt_incorrect"
-				android:background="@drawable/bg_white_border_bottom"
 				android:layout_alignParentRight="true"
 				android:textSize="@dimen/score_text"
 				android:textStyle="bold"
 				android:textColor="@color/color_yellow"
-				android:padding="@dimen/score_text_padding"/>
+				android:paddingRight="@dimen/score_text_padding"
+				android:paddingTop="16dp"/>
 
 			<TextView
 				android:id="@+id/txt_time_spent"
@@ -132,17 +132,17 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/txt_unattempted"
-				android:background="@drawable/bg_white_border_bottom"
 				android:layout_alignParentRight="true"
 				android:drawableLeft="@drawable/ic_clock"
 				android:textSize="@dimen/score_text"
-				android:padding="@dimen/score_text_padding"/>
+				android:paddingRight="@dimen/score_text_padding"
+				android:paddingTop="16dp"/>
 
 			<Button
 				android:id="@+id/btn_answers"
 				android:layout_width="match_parent"
 				android:layout_height="50dp"
-				android:layout_below="@id/txt_time_spent_value"
+				android:layout_below="@id/txt_time_spent"
 				android:layout_marginTop="@dimen/score_spacing"
 				android:layout_marginBottom="@dimen/score_spacing"
 				android:layout_marginLeft="@dimen/score_spacing_double"

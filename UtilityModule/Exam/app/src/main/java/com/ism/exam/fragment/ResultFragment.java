@@ -142,15 +142,17 @@ public class ResultFragment extends Fragment {
 			int correct = 0;
 			int incorrect = 0;
 			int unattempted = 0;
-			for (int i = 0; i < arrListQuestions.size(); i++) {
-				if (arrListQuestions.get(i).isAnswered()) {
-					if (arrListQuestions.get(i).isCorrect()) {
-						correct++;
+			if (arrListQuestions != null) {
+				for (int i = 0; i < arrListQuestions.size(); i++) {
+					if (arrListQuestions.get(i).isAnswered()) {
+						if (arrListQuestions.get(i).isCorrect()) {
+							correct++;
+						} else {
+							incorrect++;
+						}
 					} else {
-						incorrect++;
+						unattempted++;
 					}
-				} else {
-					unattempted++;
 				}
 			}
 			txtCorrectAnswers.setText(correct + "");
