@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.ism.author.author_login.AuthorLoginActivity"
+            android:name="com.ism.teacher.teacher_login.TeacherLoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -20,8 +20,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.ism.author.author_login.TeacherProfileInformation"/>
-        <activity android:name="com.ism.author.author_login.TeacherHomeActivity"/>
+        <activity android:name="com.ism.teacher.teacher_login.TeacherProfileInformation"/>
+        <activity android:name="com.ism.teacher.teacher_login.TeacherHomeActivity"/>
 
     </application>
 

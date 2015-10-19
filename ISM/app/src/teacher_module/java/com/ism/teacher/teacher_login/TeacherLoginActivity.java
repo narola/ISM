@@ -1,4 +1,4 @@
-package com.ism.author.author_login;
+package com.ism.teacher.teacher_login;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -29,7 +29,7 @@ public class TeacherLoginActivity extends Activity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.activity_author_login);
+        setContentView(R.layout.activity_teacher_login);
         global = new Global(this);
         initView();
 
@@ -50,7 +50,7 @@ public class TeacherLoginActivity extends Activity implements View.OnClickListen
 
         if(view== btnLogin)
         {
-            global.myIntent(this, TeacherProfileInformation.class);
+            global.myIntent(this, com.ism.teacher.teacher_login.TeacherProfileInformation.class);
         }
 
     }

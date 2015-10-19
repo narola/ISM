@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:background="@drawable/backgroundlogin"
     android:gravity="center"
-    tools:context="com.ism.author.au">
+    tools:context="com.ism.author.author_login.AuthorLoginActivity">
 
     <LinearLayout
-        android:layout_width="500sp"
+        android:layout_width="@dimen/login_box_width"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/d60dp"
         android:layout_marginLeft="@dimen/d60dp"

@@ -4,12 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 
 import com.ism.R;
-import com.ism.login.Global;
 
 
 /**
@@ -18,10 +14,10 @@ import com.ism.login.Global;
 public class AuthorLoginActivity extends Activity implements View.OnClickListener {
 
 
-    Global global;
-    Button btnLogin;
-    EditText etTeacherUserid, etTeacherPassword;
-    CheckBox chkRememberme;
+//    Global global;
+//    Button btnLogin;
+//    EditText etTeacherUserid, etTeacherPassword;
+//    CheckBox chkRememberme;
 
 
     @Override
@@ -30,19 +26,19 @@ public class AuthorLoginActivity extends Activity implements View.OnClickListene
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_author_login);
-        global = new Global(this);
-        initView();
+//        global = new Global(this);
+//        initView();
 
     }
 
     private void initView() {
 
-        btnLogin =(Button)findViewById(R.id.btn_login);
-        etTeacherUserid =(EditText)findViewById(R.id.et_teacher_userid);
-        etTeacherPassword =(EditText)findViewById(R.id.et_teacher_password);
-        chkRememberme =(CheckBox)findViewById(R.id.chk_rememberme);
-
-        btnLogin.setOnClickListener(this);
+//        btnLogin =(Button)findViewById(R.id.btn_login);
+//        etTeacherUserid =(EditText)findViewById(R.id.et_teacher_userid);
+//        etTeacherPassword =(EditText)findViewById(R.id.et_teacher_password);
+//        chkRememberme =(CheckBox)findViewById(R.id.chk_rememberme);
+//
+//        btnLogin.setOnClickListener(this);
     }
 
     @Override

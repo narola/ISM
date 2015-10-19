@@ -1,4 +1,4 @@
-package com.ism.author.author_login;
+package com.ism.teacher.teacher_login;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -28,6 +28,8 @@ import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.TutorialFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.ControllerTopMenuItem;
+import com.ism.teacher.teacher_fragments.TeacherChatFragment;
+import com.ism.teacher.teacher_fragments.UpcomingEventsFragment;
 import com.ism.utility.Utility;
 
 import java.util.ArrayList;
@@ -291,7 +293,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, TeacherChatFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_USER_PROFILE:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, UserProfileFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, com.ism.teacher.teacher_fragments.UpcomingEventsFragment.newInstance()).commit();
                     break;
             }
         } catch (Exception e) {
