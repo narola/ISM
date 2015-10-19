@@ -89,6 +89,14 @@ class Question extends ADMIN_Controller {
 		$this->template->load('admin/default','admin/question/set',$this->data);
 	}
 
+	public function add(){
+		
+		$this->data['page_tite'] = 'Add Question';
+		$this->template->load('admin/default','admin/question/add',$this->data);
+
+	}
+
+
 	/*
 	* function to get the classrooms through the course.
 	*/

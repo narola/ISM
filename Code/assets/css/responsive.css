@@ -118,9 +118,9 @@
 	#carousel-noticeboard{
 		width:315px;
 	}
-	.carousel-caption {
+	/*.carousel-caption {
     	font-size: 18px;
-	}
+	}*/
 	.stm_list {
     	max-height: 422px;
 	}
@@ -276,10 +276,10 @@
 	#carousel-noticeboard{
 		width:240px;
 	}
-	.carousel-caption {
+	/*.carousel-caption {
 	    font-size: 15px;
 		bottom: 0;
-	}
+	}*/
 	.suggested_mates{
 		display:none;
 	}
@@ -526,6 +526,9 @@
 	.phase_2 h2::before{
 		margin-right:15px;
 	}
+	.basic_info {
+    	margin-left: 105px;
+	}
 }
 @media (max-width:980px){
 	.login_background {
@@ -676,9 +679,9 @@
 	.logout .icon_logout{
 		margin-right:2px;
 	}
-	.carousel-caption {
+	/*.carousel-caption {
     	bottom: -26px;
-	}
+	}*/
 	.score_descrip {
     	padding: 0;
     	width: 100%;
@@ -804,6 +807,9 @@
 	}
 	.phase_2 h2:after, .phase_2 h2:before{
 		width:30px;
+	}
+	.basic_info {
+    	margin: 100px 0 0;
 	}
 }
 @media (max-width:768px){

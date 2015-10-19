@@ -60,7 +60,7 @@
                     </form>
                     <div class="login_links">
                     	<a href="login/forgot_password">Forgot Password</a>
-                        <p>Do Not Have Credenctials, <a href="#sample" data-toggle="modal">Click Here</a></p>
+                        <p>Do Not Have Credentials, <a href="#sample" data-toggle="modal">Click Here</a></p>
                     </div>
                 </div>
                 <div class="clearfix"></div>

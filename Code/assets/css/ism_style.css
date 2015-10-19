@@ -894,7 +894,13 @@ textarea.post_input{
 }
 .carousel-caption{
 	/*bottom:30px;*/
-	font-size: 20px;
+	position:absolute;
+	height:100%;
+	width:100%;
+	top:0;
+	left:0;
+	padding:15px;
+	font-size: 15px;
 }
 .carousel-indicators li, .carousel-indicators .active{
 	border:none;
@@ -3352,7 +3358,117 @@ ul.ques_numbers {
     padding-top: 10px;
 	height:172px;
 }
-.navbar-nav li>.dropdown-menu>li.active>a{
-	color:#1bc4a3;
-	background-color:#232a34;
+.profile>.box{
+	margin-top:15px;
+}
+.profile .box_body{
+	padding:15px;
+}
+.profile .user_profile_img{
+	margin:0;
+	float:left;
+	border-color:rgba(0,0,0,0.1);
+	margin-right:15px;
+}
+.basic_info p{
+	margin-bottom:5px;
+}
+.basic_info h3{
+	margin-top:10px;
+}
+.basic_info a{
+	display:block;
+	margin-bottom:5px;
+	font-size:16px;
+}
+.basic_info .btn_black_normal{
+	margin-right:5px;
+}
+.basic_info span.fa {
+    width: 20px;
+    text-align: center;
+    margin-right: 10px;
+}
+.basic_info{
+	margin-left: 160px;	
+}
+.profile .group_score>div:nth-child(2), .profile .group_score>div:nth-child(1), .profile .group_score>div:nth-child(3){
+	width:33.33%;
+	float:left;
+	text-align:center;
+}
+.profile .group_score hr {
+    margin: 0 0 10px;
+	border-color: rgba(0,0,0,0.1);
+}
+.profile .group_score>div:nth-child(1), .profile .group_score>div:nth-child(2){
+	border-right: 1px solid rgba(0,0,0,0.1);
+}
+.group_score>div>h2{
+	margin:0;
+}
+.group_score>div>p{
+	margin:0 0 5px;
+	text-transform:uppercase;
+	font-weight:600;
+	font-size:13px;
+}
+.profile .group_total_points {
+    font-size: 28px;
+    font-weight: 700;
+    color: #da534f;
+    font-family: sans-serif;
+    vertical-align: middle;
+}
+.profile .group_rank {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1bc4a3;
+    font-family: sans-serif;
+    vertical-align: middle;
+}
+.profile .group_assign{
+	font-size: 28px;
+    font-weight: 700;
+    color: #4294d0;
+    font-family: sans-serif;
+    vertical-align: middle;
+}
+.profile .about_me h3{
+	margin-top:0;
+	border-bottom:1px solid rgba(0,0,0,0.07);
+	padding-bottom:5px;
+	margin-bottom:15px;
+}
+.profile .about_me p{
+	font-size:14px;
+	margin-bottom:0;
+}
+.txt_white{
+	color:#fff;
+}
+.filter .form-group.data_range:after, .filter .form-group.data_range:before{
+	content:none;
+}
+.tabs_studymate .btn{
+	border-radius: 0;
+    font-weight: 600;
+    height: 50px;
+    background-color: #fff;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+.tabs_studymate .btn:first-child{
+    border-right: 1px solid rgba(0,0,0,0.1);
+}
+.my_studymates{
+
+}
+.search_studymates{
+	display:none;
+}
+.tabs_studymate .btn.active{
+	border-bottom:2px solid #da534f;
+	outline:none;
+	color:#da534f;
 }

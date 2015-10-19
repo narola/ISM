@@ -38,7 +38,7 @@
                         <div class="text-center">
                             <?php
                             $dis = ''; 
-                            if($exam_status !== 1 ){
+                            if($this->active_h['exam_st'] != 'started' ){
                                 $dis = 'disabled';
                             }
                             //if($exam_status !== 2){
