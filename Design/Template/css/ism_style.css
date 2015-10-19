@@ -3109,7 +3109,7 @@ ul.ques_numbers {
 	font-weight:500;
 }
 .evaluation .box{
-	min-height:392px;
+	min-height:375px;
 }
 .evaluation{
     font-size: 14px;
@@ -3285,8 +3285,8 @@ ul.ques_numbers {
 }
 .exams_wrapper .box_header{
 	height:100px;
-	background-size:cover;
-	background-position:center;
+	/*background-size:cover;
+	background-position:center;*/
 }
 .exams_wrapper .user_profile_img{
     bottom: -20px;
@@ -3310,17 +3310,28 @@ ul.ques_numbers {
     bottom: 15px;
     margin: 0;
 }
+.exam_img_holder{
+	height:100%;
+	width:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	overflow:hidden;
+}
+.exam_img_holder img{
+	width:100%;
+}
 .exams_wrapper .exam_chem{
-	background-image:url(../images/front_exam1.jpg);
+	/*background-image:url(../images/front_exam1.jpg);*/
 }
 .exams_wrapper .exam_phy{
-	background-image:url(../images/front_exam2.jpg);
+	/*background-image:url(../images/front_exam2.jpg);*/
 }
 .exams_wrapper .exam_math{
-	background-image:url(../images/front_exam3.jpg);
+	/*background-image:url(../images/front_exam3.jpg);*/
 }
 .exams_wrapper .exam_lang{
-	background-image:url(../images/front_exam4.jpg);
+	/*background-image:url(../images/front_exam4.jpg);*/
 }
 .exams_wrapper .exam_chem>.color_wrapper{
 	background-color:#ffba00;
@@ -3446,9 +3457,6 @@ ul.ques_numbers {
 }
 .txt_white{
 	color:#fff;
-}
-.filter .form-group.data_range:after, .filter .form-group.data_range:before{
-	content:none;
 }
 .tabs_studymate .btn{
 	border-radius: 0;
