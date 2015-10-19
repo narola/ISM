@@ -196,7 +196,6 @@
                 android:drawableLeft="@drawable/img_choose_video"
                 android:gravity="center"
                 android:padding="@dimen/d20dp"
-
                 android:text="Choose image from gallery"
                 android:textSize="18sp"
                 android:visibility="visible" />

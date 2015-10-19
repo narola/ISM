@@ -108,7 +108,7 @@ public class HostActivity extends Activity implements FragmentListener {
 	    llSearch = (LinearLayout) findViewById(R.id.ll_search);
         imgHome = (ImageView) findViewById(R.id.img_home);
         imgTutorial = (ImageView) findViewById(R.id.img_tutorial);
-        imgClassroom = (ImageView) findViewById(R.id.img_classroom);
+        imgClassroom = (ImageView) findViewById(R.id.img_office);
         imgAssessment = (ImageView) findViewById(R.id.img_assessment);
         imgDesk = (ImageView) findViewById(R.id.img_desk);
         imgReportCard = (ImageView) findViewById(R.id.img_reportcard);

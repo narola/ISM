@@ -49,7 +49,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     private LinearLayout llSearch;
     private ImageView imgHome;
     private ImageView imgTutorial;
-    private ImageView imgClassroom;
+    private ImageView imgOffice;
     private ImageView imgAssessment;
     private ImageView imgDesk;
     private ImageView imgReportCard;
@@ -114,7 +114,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         llSearch = (LinearLayout) findViewById(R.id.ll_search);
         imgHome = (ImageView) findViewById(R.id.img_home);
         imgTutorial = (ImageView) findViewById(R.id.img_tutorial);
-        imgClassroom = (ImageView) findViewById(R.id.img_classroom);
+        imgOffice = (ImageView) findViewById(R.id.img_office);
         imgAssessment = (ImageView) findViewById(R.id.img_assessment);
         imgDesk = (ImageView) findViewById(R.id.img_desk);
         imgReportCard = (ImageView) findViewById(R.id.img_reportcard);
@@ -136,9 +136,6 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
 
         txtsMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
 
-
-
-
         //   loadFragment(FRAGMENT_CHAT);
 
         controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(TeacherHomeActivity.this);
@@ -159,7 +156,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
             }
         });
 
-        imgClassroom.setOnClickListener(new View.OnClickListener() {
+        imgOffice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadFragment(FRAGMENT_CLASSROOM);
@@ -232,14 +229,12 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
             @Override
             public void onClick(View v) {
                 loadFragment(FRAGMENT_USER_PROFILE);
-//                 loadFragment(FRAGMENT_TEACHER_CHAT);
             }
         });
 
         imgChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // loadFragment(FRAGMENT_CHAT);
                 loadFragment(FRAGMENT_TEACHER_CHAT);
             }
         });
@@ -330,7 +325,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                 case FRAGMENT_CLASSROOM:
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_classroom;
-                    imgClassroom.setActivated(true);
+                    imgOffice.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
                     txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
                     loadControllerTopMenu(controllerTopMenuClassroom);
@@ -404,7 +399,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     imgTutorial.setActivated(false);
                     break;
                 case FRAGMENT_CLASSROOM:
-                    imgClassroom.setActivated(false);
+                    imgOffice.setActivated(false);
                     break;
                 case FRAGMENT_ASSESSMENT:
                     imgAssessment.setActivated(false);
