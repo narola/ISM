@@ -32,7 +32,7 @@ class My_exam extends ISM_Controller {
 								'condition'	=>  's.id = c.subject_id'
 							),
 							array(
-								'table' => '(select e.subject_id,count(*) as cnt,TRUNCATE((sc.correct_answers * 100) / (select count(*) as totquestion from exam_question where exam_id = e.id),2) as percentage from '.TBL_EXAMS.' e left join '.TBL_STUDENT_EXAM_SCORE.' sc on e.id = sc.exam_id where sc.user_id = '.$user_id.' and e.is_delete = 0) st',
+								'table' => '(select e.subject_id,count(*) as cnt,TRUNCATE((sc.correct_answers * 100) / (select count(*) as totquestion from exam_question where exam_id = e.id),2) as percentage from '.TBL_EXAMS.' e left join '.TBL_STUDENT_EXAM_SCORE.' sc on e.id = sc.exam_id where sc.user_id = '.$user_id.' and e.is_delete = 0 and sc.exam_status="finished") st',
 								'condition' => 'st.subject_id = s.id'
 							)
 						)
@@ -55,7 +55,8 @@ class My_exam extends ISM_Controller {
 					);
 		$select = 'e.exam_name,s.id,s.subject_name';
 		$data['my_exam'] = select(TBL_STUDENT_EXAM_SCORE.' sc',$select,$where,$option);
-		
+		// p($data['subject_list']);
+		// p($data['my_exam'],true);
 		$this->template->load('student/default','student/my_exam',$data);
 	}
 }

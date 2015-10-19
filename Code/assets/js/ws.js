@@ -562,7 +562,13 @@ if ("WebSocket" in window)
             if(obj.exam_st == 'started'){
               location.href = '/student/exam';
             }
-        }else {
+        }
+        else if(obj.type == 'class_exam_start_request'){
+            if(obj.class_exam_status == 'started'){
+                location.href = '/student/class_exam';
+            }
+        }
+        else {
             alert('Message Not Catched!!');
         }
     };
@@ -1091,4 +1097,16 @@ $(document).on('click','a[data-type="get_question"]',function(){
  ws.send(JSON.stringify(request));
 
 });
+
+$(document).on('click','button[data-type="class_exam_start_request"]',function(){
+        $(this).attr('disabled','disabled');
+        var request = {
+        type: 'class_exam_start_request',
+        to: 'self',
+        exam_id: $(this).data('id')
+        };
+
+        ws.send(JSON.stringify(request));
+});
+
 

@@ -49,7 +49,7 @@
                  <div class="box exam_card">
                     <div class="box_header exam_chem">
                         <div class="exam_img_holder">
-                            <img src="<?php echo UPLOAD_URL.'/'.$value['subject_image'];?>">
+                            <img src="<?php echo UPLOAD_URL.'/'.$value['subject_image'];?>" onerror="this.src='<?php echo UPLOAD_URL;?>/subjects/_dev_6GKA-Objectives-copy.png'">
                         </div>
                         <h3><?php echo $value['subject_name'];?></h3>                            
                         <a href="#" class="icon icon_option no-margin"></a>  
@@ -68,16 +68,16 @@
                                         $percentage = $exam_value['per'];
                                     }
                                     else{
-                                        $url = '/evaluation';   
+                                        $url = 'student/class-exam-instruction/'.$exam_value['exam_id'];   
                                         $percentage = '';
                                     }
                         ?>
                             <li><a href="<?php echo $url;?>">
                                 <?php 
                                     if(strlen($exam_value['exam_name']) > 30)
-                                        echo substr($exam_value['exam_name'],0, 30).'.....';
+                                        echo substr($exam_value['exam_name'],0, 30).'.....'.$exam_value['exam_id'];
                                     else
-                                        echo $exam_value['exam_name'];
+                                        echo $exam_value['exam_name'].$exam_value['exam_id'];
                                 ?>
                                 <span class="result"><?php if($percentage != '')echo $percentage.'%';?></span>
                             </a></li>
