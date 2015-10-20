@@ -105,6 +105,10 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->save_answer($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'get_question') {
         $responce = $Server->get_question($Server->wsClients[$clientID][12], $data);
+    } else if($data['type'] == 'class_exam_start_request'){
+        $responce = $Server->check_exam($Server->wsClients[$clientID][12], $data);
+    }else if($data['type'] == 'end_exam'){
+        $responce = $Server->end_exam($Server->wsClients[$clientID][12], $data);
     }
 
     $check = array('feed_comment', 'like');

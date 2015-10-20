@@ -476,6 +476,14 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -649,6 +657,14 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
+
+
+
+
+
 
 
 
@@ -2102,6 +2118,7 @@ class PHPWebSocket {
                     $data['status'] = 'A';
                 }
             }
+            
             $link = $this->db();
             $date = new DateTime(date("Y-m-d H:i:s"));
             $c_week = $date->format("W");
@@ -2123,27 +2140,22 @@ class PHPWebSocket {
                         . "AND `sr`.`exam_id` = " . $data['exam']['exam_id'] . " "
                         . "AND `sr`.`question_id` = " . $data['question_id'] . " ";
                 $row = mysqli_query($link, $query);
-                if (mysqli_num_rows($row) == 1) {
-                    $query = "UPDATE `student_exam_response` `sr` "
-                            . " INNER JOIN `answer_choices` `ac` ON `ac`.`id` = `sr`.`choice_id`"
-                            . " SET `sr`.`choice_id` = " . $data['answer'] . ","
-                            . " `sr`.`answer_status` = '" . $data['status'] . "',"
-                            . " `sr`.`response_duration` = ".$data['time'].", "
-                            . " `sr`.`is_right` = `ac`.`is_right` "
-                            . " WHERE  `sr`.`user_id` = $userID "
-                            . " AND `sr`.`exam_id` = " . $data['exam']['exam_id'] . " "
-                            . " AND `sr`.`question_id` = " . $data['question_id'] . " ";
-                    echo $query;
-                 /*   $query = "UPDATE `ism`.`student_exam_response` `sr`"
-                            . "SET `choice_id` = " . $data['answer'] . ", `answer_status` = '" . $data['status'] . "', `responce_duration` = ".$data['time']." "
-                            . "WHERE  `sr`.`user_id` = $userID "
-                            . "AND `sr`.`exam_id` = " . $data['exam']['exam_id'] . " "
-                            . "AND `sr`.`question_id` = " . $data['question_id'] . " ";*/
-                } else {
-                    $query = "INSERT INTO `ism`.`student_exam_response` "
-                            . "(`id`, `user_id`, `exam_id`, `question_id`, `choice_id`, `answer_status`, `answer_text`, `is_right`, `response_duration`, `created_date`, `modified_date`, `is_delete`, `is_testdata`)"
-                            . " VALUES  SELECT NULL, '$userID', " . $data['exam']['exam_id'] . ", '" . $data['question_id'] . "', '" . $data['answer'] . "', '" . $data['status'] . "', NULL, `sr`.`is_right`, ".$data['time'].", CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes' FROM  `sr`.`` ";
-                }
+
+                $query = "SELECT `is_right` FROM `answer_choices`  WHERE `id` = " . $data['answer'];
+                $roq = mysqli_query($link, $query);
+                $roqs = mysqli_fetch_assoc($roq);
+                
+                    if (mysqli_num_rows($row) == 1) {
+                        $query = "UPDATE `ism`.`student_exam_response` `sr`"
+                                . "SET `choice_id` = " . $data['answer'] . ", `answer_status` = '" . $data['status'] . "', `response_duration` = " . $data['time'] . ",`is_right` = " . $roqs['is_right'] . " "
+                                . "WHERE  `sr`.`user_id` = $userID "
+                                . "AND `sr`.`exam_id` = " . $data['exam']['exam_id'] . " "
+                                . "AND `sr`.`question_id` = " . $data['question_id'] . " ";
+                    } else {
+                        $query = "INSERT INTO `ism`.`student_exam_response` "
+                                . "(`id`, `user_id`, `exam_id`, `question_id`, `choice_id`, `answer_status`, `answer_text`, `is_right`, `response_duration`, `created_date`, `modified_date`, `is_delete`, `is_testdata`)"
+                                . " VALUES (NULL, '$userID', " . $data['exam']['exam_id'] . ", '" . $data['question_id'] . "', '" . $data['answer'] . "', '" . $data['status'] . "', NULL, " . $roqs['is_right'] . ", " . $data['time'] . ", CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes') ";
+                    }
 
                 if (isset($data['status'])) {
                     if ($data['status'] == 'A') {
@@ -2159,7 +2171,6 @@ class PHPWebSocket {
 
 
                 $x = mysqli_query($link, $query);
-                echo "Error:- ".mysqli_errno($link);
                 if (!$x) {
                     pr(mysqli_error($link));
                 }
@@ -2169,13 +2180,24 @@ class PHPWebSocket {
         } else {
             $data['error'] = 'You are not allowed to give answer. Exam is either finished or not started!!';
         }
-        if($data['next'] !== 0){
+        if ($data['next'] !== 0) {
             $data['question_no'] = $data['next'];
-            $data = array_merge($data, $this->get_question($userID,$data,true) );
+            $data = array_merge($data, $this->get_question($userID, $data, true));
         }
-        
-        
-        
+
+        /* Update total_score. */
+
+        $query = "select count(*) total,"
+                . " sum(case WHEN is_right = 0 THEN 1 ELSE 0 end) incorrect,"
+                . " sum(case WHEN is_right = 1 THEN 1 ELSE 0 end) correct,"
+                . " sum(response_duration) time_spent FROM `student_exam_response` WHERE `exam_id` = " . $data['exam']['exam_id'] . "  AND `user_id` = " . $userID . " ";
+
+        $row = mysqli_query($link, $query);
+        $rows = mysqli_fetch_assoc($row);
+
+        $query = 'UPDATE `student_exam_score` SET `correct_answers` = ' . $rows['correct'] . ' , `incorrect_answers`=  ' . $rows['incorrect'] . ', `total_time_spent` = ' . $rows['time_spent'] . ' WHERE `user_id` = ' . $userID . ' AND `exam_id` = ' . $data['exam']['exam_id'] . ' ';
+        mysqli_query($link, $query);
+
         return $data;
     }
 
@@ -2199,20 +2221,27 @@ class PHPWebSocket {
             if (mysqli_num_rows($row) == 1) {
                 $data['exam'] = mysqli_fetch_assoc($row);
 
-                $query = "SELECT `q`.`id` as `qid`, `q`.`question_text`, `ac`.`id`, `ac`.`choice_text` "
+                $query = "SELECT `ser`.`choice_id` ,`q`.`id` as `qid`, `q`.`question_text`, `ac`.`id`, `ac`.`choice_text` "
                         . "FROM `answer_choices` `ac` "
+                        . " LEFT JOIN `student_exam_response` `ser` ON `ser`.`question_id` = `ac`.`question_id` AND `ser`.`exam_id` = " . $data['exam']['exam_id'] . " AND `ser`.`user_id` = $userID "
                         . "JOIN `questions` `q` ON `ac`.`question_id` = `q`.`id` "
                         . "WHERE `ac`.`question_id` = " . $data['question_no'] . " ORDER BY RAND()";
                 $row = mysqli_query($link, $query);
+                echo mysqli_error($link);
                 $result = array(
                     'question' => null,
                     'qid' => null,
-                    'answer' => null
+                    'answer' => null,
+                    'choice_id' => 'skip'
                 );
-                
+
                 while ($rows = mysqli_fetch_assoc($row)) {
                     $result['question'] = htmlentities($rows['question_text']);
                     $result['qid'] = $rows['qid'];
+                    if ($rows['choice_id'] != '' || $rows['choice_id'] != null) {
+
+                        $result['choice_id'] = $rows['choice_id'];
+                    }
                     $result['answer'][] = array(
                         'id' => $rows['id'],
                         'choice' => htmlentities($rows['choice_text'])
@@ -2220,14 +2249,63 @@ class PHPWebSocket {
                 }
             }
         }
-        
-        
+
+
         $data['new_question'] = $result;
         if ($only_question == true) {
-            return  $data['new_question'];
+            return $data['new_question'];
         } else {
             return $data;
         }
+    }
+
+    function check_exam($userid,$data){
+        $query = "select * from student_academic_info si left join exams e on e.classroom_id = si.classroom_id where e.id = ".$data['exam_id']." and si.user_id =".$userid." and e.exam_type != 'tutorial'";
+        $link = $this->db();
+        
+        $rows = mysqli_query($link,$query);
+        if(mysqli_num_rows($rows) > 0){
+            $row = mysqli_fetch_assoc($rows);
+            $data['class_exam_status'] = 'started';
+            $query = "INSERT INTO `student_exam_score`( `user_id`, `exam_id`, `attempt_count`, `correct_answers`, `incorrect_answers`, `total_time_spent`, `evaluation_privacy`, `exam_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (".$userid.",".$data['exam_id'].",0,0,0,0,0,'started',CURRENT_TIMESTAMP,0,'yes')";
+            $x = mysqli_query($link,$query);
+            if(!$x){
+                $data['to'] = 'self';
+                $data['error'] = 'Unable to save message.! Please try again.';
+            }
+        }
+        else{
+            $data['to'] = 'self';
+            $data['error'] = 'Please don\'t modify data manually.';
+        }
+        return $data;
+    }
+
+    function end_exam($userID, $data = null) {
+
+        if ($data != null && is_array($data)) {
+            $link = $this->db();
+            $data['new_question'] = 'skip';
+            $date = new DateTime(date("Y-m-d H:i:s"));
+            $c_week = $date->format("W");
+            $year = date("Y");
+            $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
+                    . "FROM `tutorial_topic` `t` "
+                    . "LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` "
+                    . "LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` "
+                    . "LEFT JOIN `tutorial_topic_exam` `te` ON `te`.`tutorial_topic_id` = `ta`.`topic_id` "
+                    . "LEFT JOIN `student_exam_score` `ss` ON `ss`.`exam_id` = `te`.`exam_id` AND `ss`.`user_id` = $userID "
+                    . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' LIMIT 1";
+
+            $row = mysqli_query($link, $query);
+            if (mysqli_num_rows($row) == 1) {
+                $exam = mysqli_fetch_assoc($row);
+                $data['redirect'] = '/student/my_scoreboard/index/'.$exam['exam_id'];
+                $query = "UPDATE `student_exam_score` `te` SET `te`.`exam_status` = 'finished', `te`.`exam_endtime` = CURRENT_TIMESTAMP WHERE `te`.`user_id` = $userID AND `te`.`exam_id` = ".$exam['exam_id'];
+                mysqli_query($link, $query);
+            }
+        }
+        return $data;
     }
 
 }
