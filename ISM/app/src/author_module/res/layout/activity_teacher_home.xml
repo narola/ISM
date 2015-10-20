@@ -224,7 +224,7 @@
             android:layout_weight="1"
             android:scaleType="centerInside"
             android:background="@drawable/bg_controller_left_button_assessment"
-            android:src="@drawable/image_classroom"/>
+            android:src="@drawable/image_office"/>
 
         <ImageView
             android:id="@+id/img_assessment"

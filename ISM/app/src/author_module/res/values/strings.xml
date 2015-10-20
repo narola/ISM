@@ -1,7 +1,7 @@
 <resources>
 
 
-    <string name="app_name">ISM</string>
+    <string name="app_name">ISM Author</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
@@ -17,6 +17,53 @@
     <string name="strforgotpwd"><u>Forgot Password</u></string>
     <string name="strdonothavecredentials">Do Not Have Credentials, </string>
     <string name="strclickhereu"><u>Click Here</u></string>
+    <string name="title_activity_author_profile_information">AuthorProfileInformationActivity
+    </string>
+
+
+    <!--Profile Info-->
+    <string name="strprofileinformation">PROFILE INFORMATION</string>
+    <string name="stremailaddress">Email Address</string>
+    <string name="strgender">Gender</string>
+    <string name="strfullname">Full Name</string>
+    <string name="strhomeaddress">Home Address</string>
+    <string name="strstate">State</string>
+    <string name="strcity">City</string>
+    <string name="strcountry">Country</string>
+    <string name="strdateofbirth">Date of Birth</string>
+    <string name="strcontactnumber">Contact Number</string>
+    <string name="strage">Age</string>
+    <string name="struploadprofilepicture">UPLOAD PROFILE PICTURE</string>
+
+    <string name="strschoolinformation">SCHOOL INFORMATION</string>
+    <string name="stryouareregisteredforfollowingschool">You are registered for following school.</string>
+    <string name="strifitisnotyourschool">If it\'s not your school.</string>
+    <string name="strnameofschool">Name of School</string>
+    <string name="strclass">Class</string>
+    <string name="stracademicyear">Academic Year</string>
+    <string name="strdistrictofschool">District of School</string>
+    <string name="strprogramcourse">Program/ Course</string>
+    <string name="strclickhere">Click Here</string>
+
+    <string name="strmanageaccount">MANAGE ACCOUNT</string>
+    <string name="strusername">Username</string>
+    <string name="strcurrentpwd">Current Password</string>
+    <string name="strnewpwd">New Password</string>
+    <string name="strconfirmpwd">Confirm Password</string>
+    <string name="strsubmit">Submit</string>
+    <string name="strcancel">Cancel</string>
+
+    <string-array name="list">
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+    </string-array>
+    <string name="title_activity_author_host">AuthorHostActivity</string>
+
+    <!--NewsFeed -->
 
 
 </resources>
