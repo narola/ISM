@@ -236,7 +236,7 @@ class Tutorial extends ISM_Controller {
 	*/
 	public function exam(){
 		$data = $this->exam_status();
-		
+
 		$this->template->load('student/default','student/exam_instruction',$data);
 	}
 
@@ -254,7 +254,7 @@ class Tutorial extends ISM_Controller {
 		$count = select(
 			TBL_STUDENT_EXAM_SCORE. ' ss',
 			'ss.id',
-			"ss.user_id = '".$data['user_id']."' AND ss.exam_id = '".$data['exam']['exam_id']."'",
+			"ss.user_id = '".$data['user_id']."' AND ss.exam_id = '".$data['exam']['exam_id']."' AND ss.exam_status != 'finished' ",
 			array('count' => true)
 			);
 		
@@ -285,21 +285,20 @@ class Tutorial extends ISM_Controller {
 					'ser.user_id' => $data['user_id'] ))
 				);
 			$new = explode(",",$question_info['question_id']);
-			$data['answered_question'] = explode(",",$question_info['attemped_question']);
 			$data['current_no'] = count($data['attempted_question']) + 1;
-
+			if(count($data['attempted_question']) == count($new)){
+				$data['current_no'] = 1;
+			}
 			// Randomely stored question ids.
 			shuffle($new);
 			if(!$this->session->userdata('exam_question')){
-
-				if(count($data['answered_question']) > 0){
+				if(count($data['attempted_question']) > 0){
 					foreach($new as $key => $value){
-						if(in_array($value,$data['answered_question'])){
+						if(in_array($value,$data['attempted_question'])){
 								unset($new[$key]);
 						}
 					}
-					
-					$new = array_merge($data['answered_question'],$new);
+					$new = array_merge($data['attempted_question'],$new);
 				}
 
 			 	$this->session->set_userdata('exam_question',$new);

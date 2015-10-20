@@ -533,35 +533,54 @@ if ("WebSocket" in window)
             $('#time_spent').html('00:00');
             $('.question.text-center p').html(obj.question);
             $('.ans_options').html('');
+             var chk = '';
             $.each(obj.answer, function (index, list){
-              $('.ans_options').append('<label><input type="radio" name="option" data-id="'+list.id+'">'+list.choice+'</label>'); 
+               chk = ''; 
+            if(obj.choice_id == list.id ){
+                chk = 'checked';
+            }
+              $('.ans_options').append('<label><input '+chk+' type="radio" name="option" data-id="'+list.id+'">'+list.choice+'</label>'); 
             });
           }
 
           if($('ul.ques_numbers li[data-id="'+obj.qid+'"]').next().length == 0){
-          //alert("f");
-          /* $('button[data-type="question_responce"]').attr('data-type','end_test');
-           $('button[data-type="question_responce"]').html('Next <span class="fa fa-chevron-right"></span>');
-*/
+           $('button[data-status="next"]').html(' Save ');
           }
           $('ul.ques_numbers li[data-id="'+obj.question_id+'"]').attr('class',obj.status).data('class',obj.status);
-          $('ul.ques_numbers li[data-id="'+obj.qid+'"]').attr('class','current').data('class','current');
+          $('ul.ques_numbers li[data-id="'+obj.qid+'"]').attr('class','current');
 
 
         }else if(obj.type == 'get_question'){
+
+          $('ul.ques_numbers li[class="current"]').attr('class', $('ul.ques_numbers li[class="current"]').data('class'));
+          $('ul.ques_numbers li[data-id="'+obj.new_question.qid+'"]').attr('class','current');
+          
           $('#q_no').html(obj.qno);
           $('button[data-type="question_responce"]').attr('data-id',obj.new_question.qid);
           $('#time_spent').html('00:00');
           $('.question.text-center p').html(obj.new_question.question);
           $('.ans_options').html('');
+            var chk = '';
            $.each(obj.new_question.answer, function (index, list){
-            $('.ans_options').append('<label><input type="radio" name="option" data-id="'+list.id+'">'+list.choice+'</label>'); 
+                chk = ''; 
+            if(obj.new_question.choice_id == list.id ){
+                chk = 'checked';
+            }
+            $('.ans_options').append('<label><input '+chk+' type="radio" name="option" data-id="'+list.id+'">'+list.choice+'</label>'); 
          });
+
+           if($('ul.ques_numbers li[data-id="'+obj.new_question.qid+'"]').next().length == 0){
+              $('button[data-status="next"]').html(' Save ');
+          }else{
+            $('button[data-status="next"]').html('Next <span class="fa fa-chevron-right"></span>');
+          }
 
         }else if(obj.type == 'exam_start_request'){
             if(obj.exam_st == 'started'){
               location.href = '/student/exam';
             }
+        }else if(obj.type == 'end_exam'){
+            location.href= obj.redirect;
         }else {
             alert('Message Not Catched!!');
         }
@@ -1089,6 +1108,12 @@ $(document).on('click','a[data-type="get_question"]',function(){
     qno : $(this).data('no')
   }
  ws.send(JSON.stringify(request));
-
 });
 
+$(document).on('click','button[data-type="end_exam"]',function(){
+  var request = {
+    type : 'end_exam',
+    to   : 'self'
+  }
+ ws.send(JSON.stringify(request));
+});
