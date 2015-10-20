@@ -201,7 +201,7 @@ public class AccordionView extends LinearLayout {
             if (i == 3) {
                 headers[i].setBackgroundColor(getResources().getColor(R.color.color_blue));
             } else {
-                headers[i].setBackgroundColor(getResources().getColor(R.color.color_pink));
+                headers[i].setBackgroundColor(getResources().getColor(R.color.color_blue));
 
             }
             section.addView(headers[i]);
