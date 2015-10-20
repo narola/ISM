@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-<item android:state_focused="true" android:drawable="@drawable/shadow_pink"> </item>
+<item android:state_focused="true" android:drawable="@drawable/shadow_blue"> </item>
     <!--<item android:state_focused="true"  android:drawable="@drawable/shadow_green"></item>-->
     <!--<item android:state_focused="false" android:drawable="@drawable/shadow_gray"></item>-->
     <!--<item android:state_enabled="true" android:state_window_focused="true" android:state_activated="true" android:drawable="@drawable/shadow_green" ></item>-->

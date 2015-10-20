@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:accordion="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    tools:context="com.ism.fragment.NotesFragment">
+
+
+    <com.ism.author.helper.AccordionView
+        android:id="@+id/accordion_view_chat"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#fff5f5f5"
+        android:orientation="vertical"
+        accordion:header_layout_fold_button_id="@id/foldButton"
+        accordion:header_layout_id="@layout/accordion_header"
+        accordion:header_layout_label_id="@id/txt_headerName"
+        accordion:section_bottom="@layout/accordion_footer"
+        accordion:section_container="@layout/accordion_section"
+        accordion:section_container_parent="@id/rl_section_content"
+        accordion:section_headers="@array/accordion_notice"
+        accordion:section_visibility="@array/accordion_notice_visibility"
+
+        >
+
+        <LinearLayout
+            android:id="@+id/ll_notice"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/lv_notice"
+                android:layout_width="match_parent"
+                android:layout_height="350sp"
+                android:padding="@dimen/d5dp" />
+
+            <TextView
+                android:id="@+id/txt_viewAll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/d10dp"
+                android:text="View all"
+                android:textColor="@color/color_green"
+                android:textSize="@dimen/d20dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lv_highScore"
+            android:layout_width="match_parent"
+            android:layout_height="450sp"
+            android:background="@drawable/bg_highscore_subjectlist" />
+
+        <ListView
+            android:id="@+id/lv_events"
+            android:layout_width="match_parent"
+            android:layout_height="480sp"
+            android:padding="@dimen/d5dp" />
+
+
+    </com.ism.author.helper.AccordionView>
+
+
+</RelativeLayout>

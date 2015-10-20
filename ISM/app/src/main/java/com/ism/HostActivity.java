@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
 import com.ism.fragment.AssessmentFragment;
 import com.ism.fragment.ChatFragment;
+import com.ism.fragment.ClassWallFragment;
 import com.ism.fragment.ClassroomFragment;
 import com.ism.fragment.DeskFragment;
 import com.ism.fragment.HomeFragment;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
  */
 public class HostActivity extends Activity implements FragmentListener {
 
-    private static final String TAG = HostActivity.class.getSimpleName();
+    private static final String TAG = HostActivity.class.getName();
 
     private LinearLayout llControllerLeft;
     private FrameLayout flFragmentContainerMain;
@@ -70,6 +71,7 @@ public class HostActivity extends Activity implements FragmentListener {
 
 	private View.OnClickListener onClickMenuItem;
 	private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
+	private HostListener listenerHost;
 
 	private TextView txtsMenu[];
 	private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
@@ -90,6 +92,10 @@ public class HostActivity extends Activity implements FragmentListener {
 	public static int currentMainFragment;
     public static int currentRightFragment;
 	private int currentMainFragmentBg;
+
+	public interface HostListener {
+		public void onControllerMenuItemClicked(int position);
+	}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +136,7 @@ public class HostActivity extends Activity implements FragmentListener {
 
 	    txtsMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
 
-        loadFragment(FRAGMENT_TUTORIAL);
+        loadFragment(FRAGMENT_HOME);
         loadFragment(FRAGMENT_CHAT);
 
 	    controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(HostActivity.this);
@@ -255,13 +261,18 @@ public class HostActivity extends Activity implements FragmentListener {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, HomeFragment.newInstance()).commit();
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, HomeFragment.newInstance()).commit();
+	                ClassroomFragment homeFragment = ClassroomFragment.newInstance(FRAGMENT_HOME);
+	                listenerHost = homeFragment;
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, homeFragment).commit();
                     break;
                 case FRAGMENT_TUTORIAL:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_CLASSROOM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ClassroomFragment.newInstance()).commit();
+	                ClassroomFragment classroomFragment = ClassroomFragment.newInstance(FRAGMENT_CLASSROOM);
+	                listenerHost = classroomFragment;
+	                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, classroomFragment).commit();
                     break;
                 case FRAGMENT_ASSESSMENT:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AssessmentFragment.newInstance()).commit();
@@ -469,6 +480,13 @@ public class HostActivity extends Activity implements FragmentListener {
 								txtAction.setVisibility(View.VISIBLE);
 							} else {
 								txtAction.setVisibility(View.GONE);
+							}
+
+							/**
+							 * Menu item click event
+							 */
+							if (listenerHost != null) {
+								listenerHost.onControllerMenuItemClicked(i);
 							}
 						} else {
 							currentControllerTopMenu.get(i).setIsActive(false);

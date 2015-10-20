@@ -24,6 +24,13 @@ android {
             versionCode 1
             versionName '1.0'
         }
+        author_module {
+            minSdkVersion 21
+            applicationId 'com.ism.author'
+            targetSdkVersion 23
+            versionCode 1
+            versionName '1.0'
+        }
     }
 }
 
@@ -33,4 +40,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.android.support:support-annotations:23.0.1'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
 }
