@@ -1132,7 +1132,10 @@ $(document).on('click','button[data-type="class_exam_start_request"]',function()
     ws.send(JSON.stringify(request));
 });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ca04ecaa27771599b16d2cbf6d29b73e1ea37b07
 $(document).on('click','a[data-type="tag-user-again"]',function(){
   
   var request = {
@@ -1143,3 +1146,7 @@ $(document).on('click','a[data-type="tag-user-again"]',function(){
   }
   ws.send(JSON.stringify(request));
 });
+<<<<<<< HEAD
+=======
+
+>>>>>>> ca04ecaa27771599b16d2cbf6d29b73e1ea37b07

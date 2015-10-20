@@ -14,7 +14,9 @@ class Login extends CI_Controller {
     /* --For Login */
 
     public function index() {
-
+        // echo $this->encrypt->encode('narola21');
+        // echo $this->encrypt->decode('vxbhjXDuOZ8uncgNP7ykB2UvgLr5Q9SU31K6z+JGMYfREqZTYyr1f5E20k7jMTxNILaWMK0ImrNVS1GGn6gshA==');
+        // exit;
         /*--- send request for credentials ---*/
         $request_change = $this->input->post('send_request');
         if($request_change == 'change')
@@ -74,6 +76,7 @@ class Login extends CI_Controller {
          
             if (!empty($fetch_data)) {
                 $db_pass = $this->encrypt->decode($fetch_data['password']);
+// exit;
                 if ($db_pass === $password && $fetch_data['role_id'] != 1 && $fetch_data['is_delete'] == 0 && $fetch_data['user_status'] == 'active') {
                     
                     /* If remember Me Checkbox is clicked */
