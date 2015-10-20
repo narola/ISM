@@ -482,6 +482,9 @@ public class HostActivity extends Activity implements FragmentListener {
 								txtAction.setVisibility(View.GONE);
 							}
 
+							/**
+							 * Menu item click event
+							 */
 							if (listenerHost != null) {
 								listenerHost.onControllerMenuItemClicked(i);
 							}

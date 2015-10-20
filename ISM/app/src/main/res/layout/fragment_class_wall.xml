@@ -4,11 +4,9 @@
              android:layout_height="match_parent"
              tools:context="com.ism.fragment.ClassWallFragment">
 
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textSize="30sp"
-		android:layout_centerInParent="true"
-		android:text="ClassWall"/>
+	<RecyclerView
+		android:id="@+id/recycler_post"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"></RecyclerView>
 
 </RelativeLayout>
