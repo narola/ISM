@@ -79,7 +79,7 @@ class My_classroom_exam extends ISM_Controller {
 		// 	redirect('student/exam-instruction');
 		// }
 		$exam_id = $this->session->userdata('class_examid');
-		
+		$data['exam_id'] = $exam_id;
 		if(isset($exam_id)){
 			
 			$question_info = select(
@@ -95,32 +95,37 @@ class My_classroom_exam extends ISM_Controller {
 				'single' => true
 					)
 			);
+
 			$data['attempted_question'] = select(TBL_STUDENT_EXAM_RESPONSE.' ser',
 				'ser.id,ser.question_id,ser.answer_status',
 				array('where' => array(
 					'ser.exam_id' => $exam_id,
 					'ser.user_id' => $data['user_id'] ))
 				);
-			$new = explode(",",$question_info['question_id']);
-			$data['answered_question'] = explode(",",$question_info['attemped_question']);
-			$data['current_no'] = count($data['attempted_question']) + 1;
 
+			$new = explode(",",$question_info['question_id']);
+			//$data['answered_question'] = explode(",",$question_info['attemped_question']);
+			
+			$data['current_no'] = count($data['attempted_question']) + 1;
+			
 			// Randomely stored question ids.
 			shuffle($new);
 			if(!$this->session->userdata('exam_question')){
 
-				if(count($data['answered_question']) > 0){
+				if(count($data['attemped_question']) > 0 && $data['attemped_question'] != ''){
 					foreach($new as $key => $value){
-						if(in_array($value,$data['answered_question'])){
+						if(in_array($value,$data['attemped_question'])){
 								unset($new[$key]);
 						}
 					}
 					
-					$new = array_merge($data['answered_question'],$new);
+					$new = array_merge($data['attemped_question'],$new);
 				}
-
+				// p($data['answered_question']);
 			 	$this->session->set_userdata('exam_question',$new);
 			}
+
+
 			$data['question_id'] = $this->session->userdata('exam_question');
 
 			/* Get random question */
@@ -145,7 +150,7 @@ class My_classroom_exam extends ISM_Controller {
 		}else{
 			$data['error'] = 'Topic or Exam is not allocated for this week!';
 		}
-
+		// p($data,true);
 		$this->template->load('student/default','student/class_exam_question_answer',$data);
 
 	}
