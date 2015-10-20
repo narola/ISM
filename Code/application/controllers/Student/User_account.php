@@ -381,20 +381,31 @@ class User_account extends CI_Controller {
 
 	               //--find group where grade is instead of my grade 
 
-	           		$found_grade = false;
-
+	           		$found_group_id = null;
 	               	foreach ($get_school_info as $key => $value) {
-	               		$found_group_id = $value['group_id']; 
 	               		$grade_array	=	explode(',',$value['grade']);
-	               		if(in_array($school_grade, $grade_array)){
-	               			$found_grade = true;//--found
+	               		//-- find grade not exist
+	               		if(!in_array($school_grade, $grade_array)){
+		               			$found_group_id = $value['group_id'];
+		               			$group_member_data	=	array(
+		                   		'group_id'			=> 	$found_group_id,
+		                   		'user_id'			=>	$insertid,
+		                   		'joining_status'	=>	0,
+		                   	);
+		                   	insert(TBL_TUTORIAL_GROUP_MEMBER,$group_member_data);
+							$member_count	=	count($grade_array)+1;
+							if($member_count == 5){
+								$is_completed	=  array('is_completed' => 1);
+								$where	=	array('id' => $value['group_id']);
+								update(TBL_TUTORIAL_GROUPS,$where,$is_completed);
+							}
+						
 	               			break;
 	               		}
-
 	               	}
 
-	               	if($found_grade == true){//--when found then create new group
-           			 	$group_data =	array(
+	               	if($found_group_id == null){
+	               		$group_data =	array(
            					'group_name'		=>	$group_name,
            					'group_type'		=>	'tutorial group'
            				);
@@ -405,23 +416,8 @@ class User_account extends CI_Controller {
            					'joining_status'	=>	0
            				);
            				insert(TBL_TUTORIAL_GROUP_MEMBER,$group_member_data);
-                        redirect('login/welcome');
 	               	}
-	               	else if($found_grade == false){//--when not found then use exist group
-           			  	$group_member_data	=	array(
-	                   		'group_id'			=> 	$found_group_id,
-	                   		'user_id'			=>	$insertid,
-	                   		'joining_status'	=>	0,
-	                   	);
-	                   	insert(TBL_TUTORIAL_GROUP_MEMBER,$group_member_data);
-						$member_count	=	count($grade_array)+1;
-						if($member_count == 5){
-							$is_completed	=  array('is_completed' => 1);
-							$where	=	array('id' => $value['group_id']);
-							update(TBL_TUTORIAL_GROUPS,$where,$is_completed);
-						}
-						redirect('login/welcome');
-	               	}
+	               	redirect('login/welcome');
 	           	}
 	           	else{//--if no any records with our crieteria then creat new one group
 	       			$group_data =	array(
