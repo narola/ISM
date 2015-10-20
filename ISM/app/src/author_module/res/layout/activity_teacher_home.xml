@@ -188,7 +188,7 @@
             android:layout_toLeftOf="@+id/img_chat"
             android:scaleType="centerInside"
             android:background="@drawable/bg_left_controller_top_button"
-            android:src="@drawable/image_study_mates" />
+            android:src="@drawable/image_teacher_profile" />
 
         <ImageView
             android:id="@+id/img_chat"
@@ -262,7 +262,7 @@
             android:layout_height="@dimen/controller_left_width"
             android:scaleType="centerInside"
             android:src="@drawable/ic_logout"
-            android:background="@color/color_pink" />
+            android:background="@color/color_blue" />
     </LinearLayout>
 
     <FrameLayout

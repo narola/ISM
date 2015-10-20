@@ -1,5 +1,4 @@
-package com.ism.teacher.teacher_fragments;
-
+package com.ism.teacher.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -11,38 +10,39 @@ import android.view.ViewGroup;
 
 import com.ism.R;
 import com.ism.interfaces.FragmentListener;
-import com.ism.teacher.teacher_login.TeacherHomeActivity;
+import com.ism.teacher.login.TeacherHomeActivity;
+
 
 /**
  * Created by c161 on --/10/15.
  */
-public class TeacherChatFragment extends Fragment {
+public class UserProfileFragment extends Fragment {
 
-    private static final String TAG = TeacherChatFragment.class.getSimpleName();
+    private static final String TAG = UserProfileFragment.class.getSimpleName();
 
-    private View view;
+    private View rootview;
+
 
     private FragmentListener fragListener;
 
-    public static TeacherChatFragment newInstance() {
-        TeacherChatFragment fragChat = new TeacherChatFragment();
+    public static UserProfileFragment newInstance() {
+        UserProfileFragment fragChat = new UserProfileFragment();
         return fragChat;
     }
 
-    public TeacherChatFragment() {
+    public UserProfileFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_teacher_chat, container, false);
+        rootview = inflater.inflate(R.layout.fragment_teacher_profile, container, false);
 
-        initGlobal();
-        Log.e(TAG, "called");
-        return view;
-    }
+        //initGlobal(rootview);
 
-    private void initGlobal() {
+        Log.e(TAG,"called");
+        return rootview;
+
 
     }
 
@@ -52,7 +52,7 @@ public class TeacherChatFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_TEACHER_CHAT);
+                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_USER_PROFILE);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -64,7 +64,7 @@ public class TeacherChatFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_TEACHER_CHAT);
+                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_USER_PROFILE);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());

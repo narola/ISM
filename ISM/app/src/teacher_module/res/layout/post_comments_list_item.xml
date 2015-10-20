@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical">-->
 
     <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/d15dp"
@@ -36,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/d5dp"
                 android:text="Adam Stanger"
-                android:textColor="@color/color_pink"
+                android:textColor="@color/color_blue"
                 android:textSize="@dimen/d15sp" />
 
             <TextView
@@ -70,4 +71,4 @@
 
     </RelativeLayout>
 
-</LinearLayout>
+<!--</LinearLayout>-->

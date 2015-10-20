@@ -103,7 +103,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginRight="@dimen/d5dp"
                                     android:layout_weight="1"
-                                    android:background="@drawable/spinner_selector_pink"
+                                    android:background="@drawable/spinner_selector_blue"
                                     android:padding="@dimen/d20dp"
                                     android:spinnerMode="dropdown" />
 
@@ -159,7 +159,7 @@
                                 android:gravity="center"
                                 android:padding="@dimen/d10dp"
                                 android:text="@string/struploadprofilepicture"
-                                android:textColor="@color/color_pink"
+                                android:textColor="@color/color_blue"
                                 android:textSize="@dimen/d18sp" />
                         </LinearLayout>
 
@@ -260,7 +260,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector_pink"
+                            android:background="@drawable/spinner_selector_blue"
                             android:entries="@array/list"
                             android:padding="@dimen/d20dp" />
 
@@ -270,7 +270,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector_pink"
+                            android:background="@drawable/spinner_selector_blue"
                             android:entries="@array/list"
                             android:padding="@dimen/d20dp" />
 
@@ -288,7 +288,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector_pink"
+                            android:background="@drawable/spinner_selector_blue"
                             android:entries="@array/list"
                             android:padding="@dimen/d20dp" />
 
@@ -299,7 +299,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector_pink"
+                            android:background="@drawable/spinner_selector_blue"
                             android:entries="@array/list"
                             android:padding="@dimen/d20dp" />
                     </LinearLayout>

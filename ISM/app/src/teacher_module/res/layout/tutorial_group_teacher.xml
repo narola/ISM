@@ -7,7 +7,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:gravity="center"
+        android:padding="30dp">
 
         <com.ism.helper.CircleImageView
             android:id="@+id/img_dp_group"
@@ -73,7 +74,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/d20dp">
 
         <LinearLayout
             android:id="@+id/ll_first_three_students"
@@ -114,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:padding="@dimen/d5dp"
                         android:text="Adam Stanger"
-                        android:textColor="@color/color_pink"
+                        android:textColor="@color/color_blue"
                         android:textSize="@dimen/d15sp" />
 
                     <TextView
@@ -162,7 +164,7 @@
                         android:layout_height="wrap_content"
                         android:padding="@dimen/d5dp"
                         android:text="Michael Clarke"
-                        android:textColor="@color/color_pink"
+                        android:textColor="@color/color_blue"
                         android:textSize="@dimen/d15sp" />
 
                     <TextView
@@ -211,7 +213,7 @@
                         android:layout_height="wrap_content"
                         android:padding="@dimen/d5dp"
                         android:text="Michael Clarke"
-                        android:textColor="@color/color_pink"
+                        android:textColor="@color/color_blue"
                         android:textSize="@dimen/d15sp" />
 
                     <TextView
@@ -269,7 +271,7 @@
                         android:layout_height="wrap_content"
                         android:padding="@dimen/d5dp"
                         android:text="Adam Stanger"
-                        android:textColor="@color/color_pink"
+                        android:textColor="@color/color_blue"
                         android:textSize="@dimen/d15sp" />
 
                     <TextView
@@ -317,7 +319,7 @@
                         android:layout_height="wrap_content"
                         android:padding="@dimen/d5dp"
                         android:text="Michael Clarke"
-                        android:textColor="@color/color_pink"
+                        android:textColor="@color/color_blue"
                         android:textSize="@dimen/d15sp" />
 
                     <TextView
@@ -341,7 +343,7 @@
         android:id="@+id/txt_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:gravity="center"
         android:padding="@dimen/d5dp"
         android:text="@string/str_teacher_tutorial_label"

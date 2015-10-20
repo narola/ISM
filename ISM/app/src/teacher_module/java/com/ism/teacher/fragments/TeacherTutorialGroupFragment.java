@@ -1,4 +1,4 @@
-package com.ism.teacher.teacher_fragments;
+package com.ism.teacher.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -10,32 +10,33 @@ import android.view.ViewGroup;
 
 import com.ism.R;
 import com.ism.interfaces.FragmentListener;
-import com.ism.teacher.teacher_login.TeacherHomeActivity;
+import com.ism.teacher.login.TeacherHomeActivity;
+
 
 /**
  * Created by c161 on --/10/15.
  */
-public class TeacherHomeFragment extends Fragment {
+public class TeacherTutorialGroupFragment extends Fragment {
 
-    private static final String TAG = TeacherHomeFragment.class.getSimpleName();
+    private static final String TAG = TeacherTutorialGroupFragment.class.getSimpleName();
 
     private View rootview;
 
 
     private FragmentListener fragListener;
 
-    public static TeacherHomeFragment newInstance() {
-        TeacherHomeFragment fragTeacherHome = new TeacherHomeFragment();
-        return fragTeacherHome;
+    public static TeacherTutorialGroupFragment newInstance() {
+        TeacherTutorialGroupFragment fragChat = new TeacherTutorialGroupFragment();
+        return fragChat;
     }
 
-    public TeacherHomeFragment() {
+    public TeacherTutorialGroupFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootview = inflater.inflate(R.layout.row_teacher_post, container, false);
+        rootview = inflater.inflate(R.layout.tutorial_group_teacher, container, false);
 
         //initGlobal(rootview);
 
@@ -51,7 +52,7 @@ public class TeacherHomeFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_TEACHER_HOME);
+                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_USER_PROFILE);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -63,7 +64,7 @@ public class TeacherHomeFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_TEACHER_HOME);
+                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_USER_PROFILE);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());

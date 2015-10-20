@@ -1,4 +1,4 @@
-package com.ism.teacher.teachers_adapter;
+package com.ism.teacher.adapters;
 
 import android.app.Activity;
 import android.content.Context;

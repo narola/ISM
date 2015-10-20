@@ -1,4 +1,4 @@
-package com.ism.teacher.teacher_post;
+package com.ism.teacher.post;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -1,4 +1,5 @@
-package com.ism.teacher.teacher_fragments;
+package com.ism.teacher.fragments;
+
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -10,39 +11,38 @@ import android.view.ViewGroup;
 
 import com.ism.R;
 import com.ism.interfaces.FragmentListener;
-import com.ism.teacher.teacher_login.TeacherHomeActivity;
-
+import com.ism.teacher.login.TeacherHomeActivity;
 
 /**
  * Created by c161 on --/10/15.
  */
-public class TeacherTutorialGroupFragment extends Fragment {
+public class TeacherChatFragment extends Fragment {
 
-    private static final String TAG = TeacherTutorialGroupFragment.class.getSimpleName();
+    private static final String TAG = TeacherChatFragment.class.getSimpleName();
 
-    private View rootview;
-
+    private View view;
 
     private FragmentListener fragListener;
 
-    public static TeacherTutorialGroupFragment newInstance() {
-        TeacherTutorialGroupFragment fragChat = new TeacherTutorialGroupFragment();
+    public static TeacherChatFragment newInstance() {
+        TeacherChatFragment fragChat = new TeacherChatFragment();
         return fragChat;
     }
 
-    public TeacherTutorialGroupFragment() {
+    public TeacherChatFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootview = inflater.inflate(R.layout.tutorial_group_teacher, container, false);
+        view = inflater.inflate(R.layout.fragment_teacher_chat, container, false);
 
-        //initGlobal(rootview);
+        initGlobal();
+        Log.e(TAG, "called");
+        return view;
+    }
 
-        Log.e(TAG,"called");
-        return rootview;
-
+    private void initGlobal() {
 
     }
 
@@ -52,7 +52,7 @@ public class TeacherTutorialGroupFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_USER_PROFILE);
+                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_TEACHER_CHAT);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -64,7 +64,7 @@ public class TeacherTutorialGroupFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_USER_PROFILE);
+                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_TEACHER_CHAT);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
