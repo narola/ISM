@@ -1132,7 +1132,6 @@ $(document).on('click','button[data-type="class_exam_start_request"]',function()
     ws.send(JSON.stringify(request));
 });
 
-<<<<<<< HEAD
 $(document).on('click','a[data-type="tag-user-again"]',function(){
   
   var request = {
@@ -1143,5 +1142,4 @@ $(document).on('click','a[data-type="tag-user-again"]',function(){
   }
   ws.send(JSON.stringify(request));
 });
-=======
->>>>>>> 01942016bb34e43730d8ddba0d04ec639be9606d
+
