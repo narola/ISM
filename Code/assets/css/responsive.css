@@ -573,6 +573,12 @@
 		margin-bottom: 0;
 		width: 30%;
 	}
+	.group_mates .stm_item .stm_user_img{
+		float:none;
+	}
+	.group_mates .stm_item.online p::after, .group_mates .stm_item.offline p::after{
+		top:-25px;
+	}
 }
 @media (max-width:980px){
 	.login_background {
