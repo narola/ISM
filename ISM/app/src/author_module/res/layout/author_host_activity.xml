@@ -177,9 +177,46 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_controller_left_button_assessment"
+            android:background="@drawable/bg_controller_left_button_books"
             android:scaleType="centerInside"
             android:src="@drawable/image_office" />
+
+
+        <ImageView
+            android:id="@+id/img_edit_profile_home"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_controller_left_button_books"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_home" />
+
+        <ImageView
+            android:id="@+id/img_edit_profile_tutorial"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_controller_left_button_books"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_tutorial" />
+
+        <ImageView
+            android:id="@+id/img_edit_profile_classroom"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_controller_left_button_books"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_classroom" />
+
+        <ImageView
+            android:id="@+id/img_edit_profile_assesment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_controller_left_button_books"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_assessment" />
 
 
         <ImageView
