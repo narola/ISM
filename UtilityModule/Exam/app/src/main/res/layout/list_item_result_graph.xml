@@ -24,5 +24,6 @@
         android:layout_marginTop="45dp"
         android:layout_marginLeft="@dimen/score_spacing_double"
         android:layout_marginRight="@dimen/score_spacing_double"
+        android:progressDrawable="@drawable/bg_progress_score"
 	    style="?android:attr/progressBarStyleHorizontal"/>
 </RelativeLayout>

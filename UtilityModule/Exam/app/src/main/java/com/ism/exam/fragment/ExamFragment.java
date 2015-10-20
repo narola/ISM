@@ -60,22 +60,25 @@ public class ExamFragment extends Fragment {
 	private ArrayList<QuestionObjective> arrListQuestions;
 
 	private static final String ARG_MINUTE = "examMinutes";
+	private static final String ARG_SHOW_GRAPH = "showGraph";
 	private int intAssessmentNo;
 	private int intExamDurationMinutes;
 	private String strSubject;
 	private int intCurrentQuestionIndex = 0;
 	private boolean isOptionsLoading = false;
+	private boolean isShowGraph = false;
 
 	public interface ExamListener {
 		public void startTest(ArrayList<QuestionObjective> questions, ExamFragment examFragment);
 		public void onQuestionSet(int position);
 	}
 
-	public static ExamFragment newInstance(ExamListener examListener, int examMinutes) {
+	public static ExamFragment newInstance(ExamListener examListener, int examMinutes, boolean showGraph) {
 		ExamFragment fragment = new ExamFragment();
 		fragment.setListenerExam(examListener);
 		Bundle args = new Bundle();
 		args.putInt(ARG_MINUTE, examMinutes);
+		args.putBoolean(ARG_SHOW_GRAPH, showGraph);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -89,6 +92,7 @@ public class ExamFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			intExamDurationMinutes = getArguments().getInt(ARG_MINUTE);
+			isShowGraph = getArguments().getBoolean(ARG_SHOW_GRAPH);
 		}
 	}
 
@@ -279,6 +283,10 @@ public class ExamFragment extends Fragment {
 
 	public void setListenerExam(ExamListener examListener) {
 		listenerExam = examListener;
+	}
+
+	public boolean isShowGraph() {
+		return isShowGraph;
 	}
 
 	public int getExamDurationMinutes() {

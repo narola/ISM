@@ -1,4 +1,4 @@
-package com.ism.teacher.teacher_login;
+package com.ism.teacher.login;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -134,7 +134,7 @@ public class TeacherProfileInformation extends Activity implements View.OnClickL
                 if (position == 0) {
                     ((TextView) v).setTextColor(getResources().getColorStateList(
                             R.color.color_white));
-                    ((TextView) v).setBackgroundColor(getResources().getColor(R.color.color_pink));
+                    ((TextView) v).setBackgroundColor(getResources().getColor(R.color.color_blue));
                     ((TextView) v).setEnabled(false);
 
                     ((TextView) v).setOnClickListener(null);

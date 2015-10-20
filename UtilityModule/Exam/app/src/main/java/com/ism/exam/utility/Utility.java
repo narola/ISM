@@ -26,4 +26,9 @@ public class Utility {
 		}
 	}
 
+	public static String formatNumber(int number) {
+		mFormatBuilder.setLength(0);
+		return mFormatter.format("%02d", number).toString();
+	}
+
 }

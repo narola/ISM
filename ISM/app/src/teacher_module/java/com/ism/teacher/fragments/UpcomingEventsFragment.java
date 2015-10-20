@@ -1,4 +1,4 @@
-package com.ism.teacher.teacher_fragments;
+package com.ism.teacher.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -24,7 +24,7 @@ import com.ism.model.HighScoreStudentModel;
 import com.ism.model.NoticeModel;
 import com.ism.object.MyTypeFace;
 import com.ism.teacher.helper.AccordionView;
-import com.ism.teacher.teacher_login.TeacherHomeActivity;
+import com.ism.teacher.login.TeacherHomeActivity;
 
 import java.util.ArrayList;
 

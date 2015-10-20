@@ -1,4 +1,4 @@
-package com.ism.teacher.teacher_login;
+package com.ism.teacher.login;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -50,7 +50,7 @@ public class TeacherLoginActivity extends Activity implements View.OnClickListen
 
         if(view== btnLogin)
         {
-            global.myIntent(this, com.ism.teacher.teacher_login.TeacherProfileInformation.class);
+            global.myIntent(this, com.ism.teacher.login.TeacherProfileInformation.class);
         }
 
     }

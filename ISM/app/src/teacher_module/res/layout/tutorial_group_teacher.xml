@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="30dp">
+
+        <com.ism.helper.CircleImageView
+            android:id="@+id/img_dp_group"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/d15dp"
+            android:contentDescription="@string/app_name"
+            android:padding="@dimen/d10dp"
+            android:src="@drawable/userdp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/d15dp"
+            android:layout_toRightOf="@+id/img_dp_group"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_group_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d5dp"
+                android:text="Group Name: Venice Beauty"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/d25sp" />
+
+            <TextView
+                android:id="@+id/txt_course_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d5dp"
+                android:text="(Comnputer Science FY)"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/d18sp" />
+
+            <TextView
+                android:id="@+id/txt_group_scores"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d5dp"
+                android:text="Group Scores"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/d18sp" />
+
+            <TextView
+                android:id="@+id/txt_group_rank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d5dp"
+                android:text="Group Rank"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/d18sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!-- top section over-->
+
+    <!-- All five students-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/d20dp">
+
+        <LinearLayout
+            android:id="@+id/ll_first_three_students"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_marginRight="@dimen/d15dp"
+                android:layout_weight="1">
+
+                <com.ism.helper.CircleImageView
+                    android:id="@+id/img_dp_first"
+                    android:layout_width="@dimen/d50dp"
+                    android:layout_height="@dimen/d50dp"
+                    android:layout_margin="@dimen/d15dp"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/d10dp"
+                    android:src="@drawable/userdp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/d10dp"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:layout_marginRight="@dimen/d15dp"
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:layout_toRightOf="@+id/img_dp_first"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_username_first"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/d5dp"
+                        android:text="Adam Stanger"
+                        android:textColor="@color/color_blue"
+                        android:textSize="@dimen/d15sp" />
+
+                    <TextView
+                        android:id="@+id/txt_schoolname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/d5dp"
+                        android:text="St Xaviers A"
+                        android:textColor="@color/color_black"
+                        android:textSize="@dimen/d15sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_marginRight="@dimen/d15dp"
+                android:layout_weight="1">
+
+                <com.ism.helper.CircleImageView
+                    android:id="@+id/img_dp_commenter"
+                    android:layout_width="@dimen/d50dp"
+                    android:layout_height="@dimen/d50dp"
+                    android:layout_margin="@dimen/d15dp"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/d10dp"
+                    android:src="@drawable/userdp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/d10dp"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:layout_marginRight="@dimen/d15dp"
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:layout_toRightOf="@+id/img_dp_commenter"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_username_second"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/d5dp"
+                        android:text="Michael Clarke"
+                        android:textColor="@color/color_blue"
+                        android:textSize="@dimen/d15sp" />
+
+                    <TextView
+                        android:id="@+id/txt_schoolname_second"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/d5dp"
+                        android:text="St Xaviers B"
+                        android:textColor="@color/color_black"
+                        android:textSize="@dimen/d15sp" />
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_marginRight="@dimen/d15dp"
+                android:layout_weight="1">
+
+                <com.ism.helper.CircleImageView
+                    android:id="@+id/img_dp_third"
+                    android:layout_width="@dimen/d50dp"
+                    android:layout_height="@dimen/d50dp"
+                    android:layout_margin="@dimen/d15dp"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/d10dp"
+                    android:src="@drawable/userdp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/d10dp"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:layout_marginRight="@dimen/d15dp"
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:layout_toRightOf="@+id/img_dp_third"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_username_third"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/d5dp"
+                        android:text="Michael Clarke"
+                        android:textColor="@color/color_blue"
+                        android:textSize="@dimen/d15sp" />
+
+                    <TextView
+                        android:id="@+id/txt_schoolname_third"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/d5dp"
+                        android:text="St Xaviers B"
+                        android:textColor="@color/color_black"
+                        android:textSize="@dimen/d15sp" />
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_last_two_students"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_marginRight="@dimen/d15dp"
+                android:layout_weight="1">
+
+                <com.ism.helper.CircleImageView
+                    android:id="@+id/img_dp_fourth"
+                    android:layout_width="@dimen/d50dp"
+                    android:layout_height="@dimen/d50dp"
+                    android:layout_margin="@dimen/d15dp"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/d10dp"
+                    android:src="@drawable/userdp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/d10dp"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:layout_marginRight="@dimen/d15dp"
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:layout_toRightOf="@+id/img_dp_fourth"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_username_fourth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/d5dp"
+                        android:text="Adam Stanger"
+                        android:textColor="@color/color_blue"
+                        android:textSize="@dimen/d15sp" />
+
+                    <TextView
+                        android:id="@+id/txt_schoolname_fourth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/d5dp"
+                        android:text="St Xaviers A"
+                        android:textColor="@color/color_black"
+                        android:textSize="@dimen/d15sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_marginRight="@dimen/d15dp"
+                android:layout_weight="1">
+
+                <com.ism.helper.CircleImageView
+                    android:id="@+id/img_dp_fifth"
+                    android:layout_width="@dimen/d50dp"
+                    android:layout_height="@dimen/d50dp"
+                    android:layout_margin="@dimen/d15dp"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/d10dp"
+                    android:src="@drawable/userdp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/d10dp"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:layout_marginRight="@dimen/d15dp"
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:layout_toRightOf="@+id/img_dp_fifth"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_username_fifth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/d5dp"
+                        android:text="Michael Clarke"
+                        android:textColor="@color/color_blue"
+                        android:textSize="@dimen/d15sp" />
+
+                    <TextView
+                        android:id="@+id/txt_schoolname_fifth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/d5dp"
+                        android:text="St Xaviers B"
+                        android:textColor="@color/color_black"
+                        android:textSize="@dimen/d15sp" />
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:padding="@dimen/d5dp"
+        android:text="@string/str_teacher_tutorial_label"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/d20sp" />
+
+    <Button
+        android:id="@+id/btn_schedule_exam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@color/color_blue"
+        android:padding="10dp"
+        android:text="Schedule Exam"
+        android:textColor="@color/color_white" />
+
+</LinearLayout>

@@ -8,7 +8,7 @@
                 android:left="1px"
                 android:right="1px"
                 android:top="1px" />
-            <solid android:color="#00FE84C1" />
+            <solid android:color="#0041B1E3" />
             <size android:height="@dimen/d50dp"/>
 
         </shape>
@@ -20,7 +20,7 @@
                 android:left="1px"
                 android:right="1px"
                 android:top="1px" />
-            <solid android:color="#10FE84C1" />
+            <solid android:color="#1041B1E3" />
             <size android:height="@dimen/d50dp"/>
 
         </shape>
@@ -32,7 +32,7 @@
                 android:left="1px"
                 android:right="1px"
                 android:top="1px" />
-            <solid android:color="#20FE84C1" />
+            <solid android:color="#2041B1E3" />
             <size android:height="@dimen/d50dp"/>
 
         </shape>
@@ -44,7 +44,7 @@
                 android:left="1px"
                 android:right="1px"
                 android:top="1px" />
-            <solid android:color="#30FE84C1" />
+            <solid android:color="#3041B1E3" />
             <size android:height="@dimen/d50dp"/>
 
         </shape>
@@ -56,7 +56,7 @@
                 android:left="1px"
                 android:right="1px"
                 android:top="1px" />
-            <solid android:color="#20FE84C1" />
+            <solid android:color="#2041B1E3" />
             <size android:height="@dimen/d50dp"/>
 
         </shape>

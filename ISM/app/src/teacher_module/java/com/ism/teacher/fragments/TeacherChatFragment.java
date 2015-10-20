@@ -1,4 +1,4 @@
-package com.ism.teacher.teacher_fragments;
+package com.ism.teacher.fragments;
 
 
 import android.app.Activity;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.ism.R;
 import com.ism.interfaces.FragmentListener;
-import com.ism.teacher.teacher_login.TeacherHomeActivity;
+import com.ism.teacher.login.TeacherHomeActivity;
 
 /**
  * Created by c161 on --/10/15.

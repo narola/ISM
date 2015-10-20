@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@drawable/bg_teacher_login">
 
     <LinearLayout
         android:layout_width="500sp"
@@ -19,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/d40sp"
             android:layout_marginTop="@dimen/d40sp"
-            android:src="@drawable/ismtitle" />
+            android:src="@drawable/ism_title_blue" />
 
         <EditText
             android:id="@+id/et_teacher_userid"
@@ -59,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/d20sp"
-            android:button="@drawable/custom_checkbox"
+            android:button="@drawable/custom_checkbox_blue"
             android:checked="true"
             android:padding="@dimen/d10sp"
             android:text="@string/strrememberme"

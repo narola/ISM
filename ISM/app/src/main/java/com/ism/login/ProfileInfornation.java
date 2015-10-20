@@ -100,7 +100,7 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
         llImageUpload=(LinearLayout)findViewById(R.id.ll_imageProfile);
          etUsername = (EditText) findViewById(R.id.et_username);
          txtUploadpic = (TextView) findViewById(R.id.txt_uploadpic);
-         imgDp = (ImageView) findViewById(R.id.img_dp);
+         imgDp = (ImageView) findViewById(R.id.img_dp_post_creator);
          btnSuumit = (Button) findViewById(R.id.btn_suumit);
          txtYouare.setTypeface(myTypeFace.getRalewayThin());
          txtIfits.setTypeface(myTypeFace.getRalewayThin());
