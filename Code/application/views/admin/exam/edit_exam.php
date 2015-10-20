@@ -1,18 +1,18 @@
 <!--main-->
 <div class="col-sm-7 main main2 general_cred">
-	<!--breadcrumb-->
-		<div class="row page_header">
-    	<div class="col-sm-12">
-        	<ol class="breadcrumb">
+    <!--breadcrumb-->
+        <div class="row page_header">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
               <li><a href="#">Assessment</a></li>
-              <li><a href="admin/exam">Exams</a></li>
-              <li class="active">Edit Exam</li>
+              <li><a href="#">Exams</a></li>
+              <li class="active">Add Exam</li>
             </ol>
         </div>
     </div>
     <!--//breadcrumb-->
    
-    <!--exam box-->	
+    <!--exam box--> 
     <div class="box add_exam_form">
         <div class="box_header">
             <h3><span class="icon icon_info"></span>Exam Details</h3>
@@ -26,7 +26,8 @@
             <div class="box_body">
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-8 padding_r15_">
-                    <input type="text" class="form-control" name="exam_name" value="<?php echo set_value('exam_name'); ?>" placeholder="Exam Name">
+                    <input type="text" class="form-control" name="exam_name" 
+                    value="<?php  echo set_value("exam_name") == false ? $exam["exam_name"] : set_value("exam_name"); ?>" placeholder="Exam Name">
                 </div>                     
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 select no-padding">
@@ -61,7 +62,7 @@
                 
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 btn_switch no-padding">
                     <label>Exam Type : </label>
-                    <input type="checkbox" name="exam_type" checked data-handle-width="100" data-size="mini">
+                    <input type="checkbox" name="exam_type" <?php if($exam['exam_type']=='subject'){ echo 'checked';  } ?> data-handle-width="100" data-size="mini">
                 </div>
                     
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
@@ -109,7 +110,7 @@
             <div class="box_header">
                 <h3><span class="icon icon_info"></span>Exam Schedule</h3>
             </div>
-            <div class="box_body admin_controls">	
+            <div class="box_body admin_controls">   
 
                <div data-date-format="dd-mm-yyyy" data-date="12-02-2012"  class="form-group dob col-sm-6 padding_r15_">
                     <input type="text" name="start_date" id="start_date" placeholder="Exam Start"  class="form-control ">
@@ -129,37 +130,43 @@
                 <h3><span class="icon icon_info"></span>Exam Instruction</h3>
             </div>
             <div class="box_body">
-            	<div class="form-group col-md-6 col-lg-8 padding_r15_">
-                	<textarea name="instructions" id="editor1" class="form-control"></textarea>
-            	</div>
+                <div class="form-group col-md-6 col-lg-8 padding_r15_">
+                    <textarea name="instructions" id="editor1" class="form-control"></textarea>
+                </div>
                 <div class="form-group col-md-6 col-lg-4 option_radio">
-                	<div>
-                    	<label>Declare Results</label>
+                    <div>
+                        <label>Declare Results</label>
                         <div class="check_div">
-                            <label><input type="radio" name="declare_results" value="yes"> Yes</label>
-                            <label><input type="radio" name="declare_results" checked="checked" value="no" > No</label>
-    					</div>
+                            <label><input type="radio" name="declare_results" 
+                                <?php if($exam['declare_results'] == 'yes'){ echo 'checked="checked"'; } ?> value="yes"> Yes</label>
+                            <label><input type="radio" name="declare_results" 
+                            <?php if($exam['declare_results'] == 'no'){ echo 'checked="checked"'; } ?> value="no" > No</label>
+                        </div>
                     </div>
                     <div>
-                    	<label>Negative Marking</label>
+                        <label>Negative Marking</label>
                         <div class="check_div">
-                            <label><input type="radio" name="negative_marking" value="yes" > Yes</label>
-                            <label><input type="radio" name="negative_marking" checked="checked" value="no" > No</label>
-    					</div>
+                            <label><input type="radio" name="negative_marking" 
+                                <?php if($exam['negative_marking'] == 'yes'){ echo 'checked="checked"'; } ?> value="yes" > Yes</label>
+                            <label><input type="radio" name="negative_marking" 
+                            <?php if($exam['negative_marking'] == 'no'){ echo 'checked="checked"'; } ?>  value="no" > No</label>
+                        </div>
                     </div>
                     <div>
-                    	<label>Random Questions</label>
+                        <label>Random Questions</label>
                         <div class="check_div">
-                            <label><input type="radio" name="random_question" value="yes" > Yes</label>
-                            <label><input type="radio" name="random_question" checked="checked" value="no" > No</label>
-    					</div>
+                            <label><input type="radio" name="random_question" 
+                                <?php if($exam['random_question'] == 'yes'){ echo 'checked="checked"'; } ?> value="yes" > Yes</label>
+                            <label><input type="radio" name="random_question" 
+                            <?php if($exam['random_question'] == 'no'){ echo 'checked="checked"'; } ?>  value="no" > No</label>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-12 text-center btn_group">
-                    <input type="hidden" value="save" name="button_type">
-                	<button class="btn btn_green" value="save">Save</button>
-                	<button class="btn btn_red" value="set_question">Set Question</button>
-                	<a href="<?php echo $prev_url; ?>" class="btn btn_black_normal">Cancel</a>
+                    <input type="hidden" value="save" id="button_type" name="button_type">
+                    <button class="btn btn_green" onclick="set_hidden('save')" >Save</button>
+                    <button class="btn btn_red" onclick="set_hidden('set_ques')">Save & Set Question</button>
+                    <a href="<?php echo $prev_url; ?>" class="btn btn_black_normal">Cancel</a>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -172,8 +179,22 @@
 
 <script type="text/javascript">
     
+    $('#classroom_id').val('<?php echo $exam["classroom_id"]; ?>');
+    $('#subject_id').val('<?php echo $exam["subject_id"]; ?>');
+
+    function set_hidden(button_data){
+
+        if(button_data == 'save'){
+            $('#button_type').val('save');
+        }else{
+            $('#button_type').val('set');
+        }
+    }
+    
     $(document).ready(function() {
+       
         $(".myselect").select2();
+
          $('#timepicker1').timepicker({ 
             defaultTime: 'value',
             minuteStep: 1,
@@ -182,7 +203,7 @@
             showMeridian:false    
          });
 
-         $("[name='exam_type']").bootstrapSwitch();
+        $("[name='exam_type']").bootstrapSwitch();
         $('.bootstrap-switch-handle-on').text('Subject');
         $('.bootstrap-switch-handle-off').text('Topic');
     });
@@ -196,7 +217,7 @@
             success:function(data){
                 $('#classroom_id').html(data);
             }
-
+            
         });
     }
 

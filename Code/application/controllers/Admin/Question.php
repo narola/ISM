@@ -92,7 +92,18 @@ class Question extends ADMIN_Controller {
 	public function add(){
 		
 		$this->data['page_tite'] = 'Add Question';
-		$this->template->load('admin/default','admin/question/add',$this->data);
+
+		$this->form_validation->set_rules('question_text', 'Question Text', 'trim|required');
+
+		if($this->form_validation->run() == FALSE){
+
+			$this->template->load('admin/default','admin/question/add',$this->data);
+			
+		}else{
+
+		}
+
+		
 
 	}
 

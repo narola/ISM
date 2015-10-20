@@ -197,13 +197,87 @@ class Exam extends ADMIN_Controller {
 	//Update one item
 	public function update( $id = NULL ){
 
-		$this->data['exam']	=select(TBL_EXAMS,FALSE,array('where'=>array('id'=>$id)));
-		
-		$this->data['exam_schedule']	=select(TBL_EXAM_SCHEDULE,FALSE,array('where'=>array('exam_id'=>$id)));
+		$this->data['exam']	= select(
+									 TBL_EXAMS.' exam',
+									 'exam.id,exam.exam_name,exam.exam_type,exam.exam_category,exam.pass_percentage,exam.duration,
+									  exam.attempt_count,exam.instructions,exam.negative_marking,exam.random_question,exam.declare_results,
+									  '.TBL_EXAM_SCHEDULE.'.start_date,'.TBL_EXAM_SCHEDULE.'.start_time',
+									 array('where'=>array('exam.id'=>$id)),
+									 array(
+									 		'single'=>TRUE,
+									 		'join'=>array(
+										 				array(
+										 						'table'=>TBL_EXAM_SCHEDULE,
+										 						'condition'=>TBL_EXAM_SCHEDULE.'.exam_id=exam.id'
+										 					)
+									 			       )
+									 	  	)
+									);
 
-		p($this->data,true);
+		$this->data['exam_schedule']	=select(TBL_EXAM_SCHEDULE,FALSE,array('where'=>array('exam_id'=>$id)),array('single'=>TRUE));
 
-		$this->template->load('admin/default','admin/exam/edit_exam',$this->data);	
+		$this->data['all_subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>FALSE)));
+		$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+		$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)));		
+
+
+		$this->form_validation->set_rules('exam_name', 'Exam Name', 'trim|required|is_unique['.TBL_EXAMS.'.exam_name]');
+		$this->form_validation->set_rules('course_id', 'Course Name', 'trim|required');
+		$this->form_validation->set_rules('subject_id', 'Subject Name', 'trim|required');
+		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required');
+		$this->form_validation->set_rules('pass_percentage', 'Passing Percentage', 'trim|required');
+		$this->form_validation->set_rules('exam_category', 'Exam Category', 'trim|required');
+		$this->form_validation->set_rules('duration', 'Exam duration', 'trim|required');
+		$this->form_validation->set_rules('attempt_count', 'Attempt Count', 'trim|required');
+		$this->form_validation->set_rules('start_date', 'Start Exam Date', 'trim|required|callback_valid_date');
+
+		if($this->form_validation->run() == FALSE){
+			$this->template->load('admin/default','admin/exam/edit_exam',$this->data);
+		}else{
+			
+			if(isset($_POST['exam_type'])){
+				$exam_type = 'subject';
+			}else{	
+				$exam_type = 'topic';
+			}
+			
+			$button_type = $this->input->post('button_type');
+
+			$exam_data=array(
+					'exam_name'=>$this->input->post('exam_name'),
+					'classroom_id'=>$this->input->post('classroom_id'),
+					'subject_id'=>$this->input->post('subject_id'),
+					'exam_type'=>$exam_type,
+					'exam_category'=>$this->input->post('exam_category'),
+					'pass_percentage'=>$this->input->post('pass_percentage'),
+					'duration'=>$this->input->post('duration'),
+					'attempt_count'=>$this->input->post('attempt_count'),
+					'instructions' => htmlspecialchars($this->input->post('instructions')),
+					'negative_marking'=>$this->input->post('negative_marking'),
+					'random_question'=>$this->input->post('random_question'),
+					'declare_results'=>$this->input->post('declare_results')
+				);
+
+			$exam_id = update(TBL_EXAMS,$id,$exam_data); // Insert Data into database and return Inserted ID using common_model.php and cms_helper.php
+
+			$exam_schedule = array(
+					'exam_id'=>$exam_id,
+					'start_date'=>$this->input->post('start_date'),
+					'start_time'=>$this->input->post('start_time'),
+					'school_classroom_id'=>'1'
+				);
+
+			$id = insert(TBL_EXAM_SCHEDULE,$exam_schedule);
+
+			if($button_type == 'set'){
+				redirect('admin/question/set?exam='.$id);	
+			}else{
+				$this->session->set_flashdata('success', 'Exam has been Successfully Updated.');
+				redirect('admin/exam');	
+			}
+
+		}
+
 
 	}
 

@@ -211,29 +211,31 @@
          bootbox.confirm("Delete Question?", function(confirmed) {
             
             if(confirmed){
-                //window.location.href=href;
+                
                 $.ajax({
                     url:href,
                     type:"post",
                     success:function(data){
-                        var total_div = $('#question_list > div').length;
                         
                         $('#que_div_'+remove_div).remove();                        
-                        
-                        //$('#exam_quest_2').html(3);
-                        
+                        var total_div = $('#question_list > div').length;
                         total_div = parseInt(total_div);
-
-                        for(var i=1;i<=total_div;i++){
-                            
-                            var span_id = '#exam_quest_'+i;
-                            alert(span_id);
-                            //$('#question_list > #exam_quest_'+i).html(i);
-                            $('#question_list >'+span_id).html(i);
-
-                        }
                         
-                    }
+                        // to reset the question numbers
+                        //@nv       
+                        $($("#question_list .question_wrapper").get().reverse()).each(function() {
+                                
+                                var id = 'que_div_'+total_div;
+                                var span = 'exam_quest_'+total_div;
+                                $(this).attr('id',id);
+                       
+                                $(this).find('h5.txt_red > span').attr('id',span);
+                                $(this).find('h5.txt_red > span').text(total_div);
+                                total_div--;
+
+                        });
+                     }
+                        
                 });
             }
             
