@@ -23,7 +23,8 @@ class Group extends ADMIN_Controller {
     public function index() {
 
         $this->data['page_title'] = 'Groups';
-
+        $where['where'][TBL_TUTORIAL_GROUPS . '.is_completed'] = 1;
+        $where['where'][TBL_TUTORIAL_GROUPS . '.is_delete'] = 0;
         if (!empty($_GET['course']) || !empty($_GET['year']) || !empty($_GET['q'])) {
 
             if (!empty($_GET['course'])) {
@@ -60,7 +61,6 @@ class Group extends ADMIN_Controller {
             $config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
             $offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'	
         } else {
-            $where = null;
             $config['base_url'] = base_url() . 'admin/group/index';
             $offset = $this->uri->segment(4);
         }
@@ -121,7 +121,7 @@ class Group extends ADMIN_Controller {
         $config['last_tag_close'] = '</li>';
 
         $this->data['all_groups'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
-                TBL_TUTORIAL_GROUPS . '.group_status,' . TBL_TUTORIAL_GROUPS . '.is_completed,' . TBL_COURSES . '.course_name,' .
+                TBL_TUTORIAL_GROUPS . '.group_status,' . TBL_TUTORIAL_GROUPS . '.is_completed,'. TBL_TUTORIAL_GROUPS . '.is_delete,' . TBL_COURSES . '.course_name,' .
                 TBL_COURSES . '.id as course_id,' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score', $where, array(
             'limit' => $config['per_page'],
             'offset' => $offset,
