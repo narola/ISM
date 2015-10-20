@@ -20,14 +20,16 @@ import com.ism.object.MyTypeFace;
  * Created by c162 on 07/10/15.
  */
 public class LoginActivity extends Activity implements View.OnClickListener {
+
     private static final String TAG = LoginActivity.class.getSimpleName();
-    TextView txtForgotpwd;
-    TextView txtClickhere;
-    Button btnLogin;
-    EditText etPwd;
-    EditText etUserid;
-    CheckBox chkRememberme;
-    Global global;
+
+    private TextView txtForgotpwd;
+    private TextView txtClickhere;
+    private Button btnLogin;
+    private EditText etPwd;
+    private EditText etUserid;
+    private CheckBox chkRememberme;
+    private Global global;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private TextView txtDonothave;
@@ -41,7 +43,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         initView();
 
         //  getIsRemember();
-
 
     }
 

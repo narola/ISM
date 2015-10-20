@@ -1,14 +1,12 @@
 package com.ism.fragment;
 
-import android.app.Activity;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ism.HostActivity;
 import com.ism.R;
 
 public class ClassWallFragment extends Fragment {
@@ -16,7 +14,7 @@ public class ClassWallFragment extends Fragment {
 	private static final String TAG = ClassWallFragment.class.getSimpleName();
 
 	private View view;
-
+	private RecyclerView recyclerPost;
 
 	public static ClassWallFragment newInstance() {
 		ClassWallFragment fragment = new ClassWallFragment();
