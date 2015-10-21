@@ -627,7 +627,7 @@ class User_account extends CI_Controller {
         $this->load->library('email', $configs);
         $this->email->initialize($configs);
         $this->email->from($email_id,$name );
-        $this->email->to('kap.narola@narolainfotech.com');
+        $this->email->to('bkh.narola@narolainfotech.com');
         // $encoded_mail = urlencode($token);
         $msg = '';
         $msg .='<html>';
