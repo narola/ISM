@@ -1064,7 +1064,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     border-color: rgba(255,107,107,0.5) !important;
 }
 .btn_switch{
-	height:40px;
+	height:65px;
 }
 .general_cred .admin_controls input.form-control{
 	margin-right:0;
@@ -1073,7 +1073,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 	margin-right:0;
 	width:50%;
 }
-.admin_controls .dob label{
+.admin_controls .dob input+label{
     font-weight: normal;
 }
 .admin_controls .dob input[type=checkbox]{
@@ -1097,7 +1097,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .general_cred .option_radio label, .general_cred .btn_switch label {
 	display:inline-block;
-	font-weight:600;
+	/*font-weight:600;*/
 }
 .option_radio .check_div{
 	float:right;
@@ -1112,7 +1112,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 	padding-bottom:0;	
 }
 .btn_switch label{
-	margin:10px 0;
+	/*margin:10px 0;*/
 }
 .switch_btns {
 	float:right;
@@ -1625,7 +1625,8 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     outline: none;
 }
 .bootstrap-switch{
-    margin-left: 16px;
+    /*margin-left: 16px;*/
+	margin-top:2px;
 	border:1px solid rgba(0,0,0,0.2);
 }
 .bootstrap-switch:focus, .bootstrap-switch.bootstrap-switch-focused{
@@ -2024,4 +2025,10 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
     opacity: 1;
+}
+.general_cred .add_exam_form .select:after{
+	top: 35px;
+}
+.add_exam_form .box_body .dob:after{
+	top:32px;
 }
