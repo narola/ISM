@@ -76,7 +76,8 @@
 .icon_hand,
 .icon_single_user,
 .icon_blockgroup,
-.icon_group{
+.icon_group,
+.icon_forward{
 	background-image:url(../images/icon-set.png);
 	background-position:0 0;
 }
@@ -471,6 +472,9 @@
 .icon_group{
 	background-position: -248px -194px;
     width: 36px;
+}
+.icon_forward{
+	background-position: -293px -197px;
 }
 /*--------------icon---------------*/
 
