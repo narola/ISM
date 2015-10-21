@@ -308,9 +308,11 @@ class Group extends ADMIN_Controller {
      * function active will activate user for temporary set database field 'user_status' of `users` table set to 
      * 'active' and redirect to user listing page
      *
-     * */
+     *
+    */
+
     public function active($id) {
-         update(TBL_TUTORIAL_GROUPS, $id, array('group_status' => 'active', 'modified_date' => date('Y-m-d H:i:s', time())));
+        update(TBL_TUTORIAL_GROUPS, $id, array('group_status' => 'active', 'modified_date' => date('Y-m-d H:i:s', time())));
         $this->session->set_flashdata('success', 'Group is Successfully Blocked.');
         redirect('admin/group');
     }
@@ -506,7 +508,7 @@ class Group extends ADMIN_Controller {
                 )
         );
 
-        $this->data['roles'] = select(TBL_ROLES, FALSE, array('where' => array('is_delete' => FALSE)), array('limit' => 10));
+        $this->data['roles'] = select(TBL_ROLES, FALSE, array('where' => array('is_delete' => FALSE)));
 
         $this->form_validation->set_rules('message_title', 'Message Title', 'trim|required|alpha_numeric_spaces');
         $this->form_validation->set_rules('message_desc', 'Message', 'trim|required');

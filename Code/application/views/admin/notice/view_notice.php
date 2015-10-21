@@ -96,11 +96,11 @@
                         <div class="notice_action">
                             <?php if(in_array($notice['status'],array('active','inactive'))) { ?>
                             <a href="<?php echo base_url().'admin/notice/archive/'.$notice['id']; ?>" class="icon icon_zip_color"
-                              onclick="return confirm('Are you sure to add this data to archive?')" 
+                              onclick="return archive_add_notice(this.href,event)" 
                               data-toggle="tooltip" data-placement="bottom" title="Archive"></a> 
                             <?php }else{ ?>
                             <a href="<?php echo base_url().'admin/notice/archive/'.$notice['id'].'/1'; ?>" class="icon icon_zip_active"
-                              onclick="return confirm('Are you sure to add this data to active?')" 
+                              onclick="return archive_remove_notice(this.href,event)" 
                               data-toggle="tooltip" data-placement="bottom" title="Archived"></a>
                             <?php } ?>
                             <a href="<?php echo base_url().'admin/notice/update/'.$notice['id']; ?>" 
@@ -111,7 +111,7 @@
                                 data-toggle="tooltip" data-placement="bottom" title="Copy" > 
                             </button>
                             <a href="<?php echo base_url().'admin/notice/delete/'.$notice['id']; ?>" 
-                                onclick="return confirm('Are you sure to delete this data ?')" 
+                                 onclick="return delete_notice(this.href,event)"
                                 class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="Delete" ></a>
                             
                             <input type="checkbox" name="notices_bulk[]" value="<?php echo $notice['id']; ?>"><label class="save_box"></label>
@@ -179,7 +179,40 @@ if(!empty($notices)) {
 
 
 <script type="text/javascript">
-    
+        
+    function delete_notice(href,event){
+         event.preventDefault();
+         bootbox.confirm("Delete Notice?", function(confirmed) {
+            
+            if(confirmed){
+                window.location.href=href;
+            }
+            
+        });
+    }  
+
+    function archive_add_notice(href,event){
+         event.preventDefault();
+         bootbox.confirm("Add to Archive this Notice?", function(confirmed) {
+            
+            if(confirmed){
+                window.location.href=href;
+            }
+            
+        });
+    }  
+
+    function archive_remove_notice(href,event){
+         event.preventDefault();
+         bootbox.confirm("Delete Notice from Archive?", function(confirmed) {
+            
+            if(confirmed){
+                window.location.href=href;
+            }
+            
+        });
+    }  
+
     function submit_bulk_form(data){
         
         if(data == 'delete'){

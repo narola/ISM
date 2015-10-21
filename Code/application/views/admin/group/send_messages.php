@@ -55,7 +55,7 @@
                                             <?php echo set_select('all_users', $user['id']); ?> 
                                              <?php 
                                                 if(isset($post_users) && !empty($post_users)){ 
-                                                    if(in_array($user['id'],$post_users)){ echo "selected='selected'"; } 
+                                                    if(in_array($user['id'],$post_users)){ echo "selected='selected'"; } else { echo "disabled='disabled'"; }
                                                 } ?>                                                       
                                             >
                                                 <?php echo ucfirst($user['username']); ?>
