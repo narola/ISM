@@ -231,6 +231,7 @@ $(document).ready(function () {
     };
 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
+
         if($('#chat_file_share').length > 0){
             document.getElementById('chat_file_share').addEventListener('change', handleFileSelect, false);
         }
@@ -270,6 +271,7 @@ if ("WebSocket" in window)
           setTimeout( function(){    location.reload(); }, 3000);
        
         }
+
         if(obj.redirect != 'skip'){
           console.log(obj);
            location.href = obj.redirect;
@@ -302,7 +304,8 @@ if ("WebSocket" in window)
                 
                 var c =  $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="'+obj.from+'"] a span.badge');
                 var count = c.text();
-                if(count == '' || count == 0 || count == '' || count == 'undefined'){
+
+                if(count == '' || count == 0 || count == 'undefined'){
                     count = 0;
                 }
                 c.html(++count);
@@ -394,7 +397,7 @@ if ("WebSocket" in window)
                 else 
                     cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() + 1;
                 $('.mCSB_container .three_tabs #study_request_cnt').html(cnt);
-            }            
+            }
             $('.suggested_mates_card .mate_descrip button[data-id="'+obj.studymate_id+'"]').removeClass('btn_green').attr('disabled',true).addClass('btn_black_normal').html('Request Already Sent');
         }else if(obj.type == 'time_request'){
                 clearInterval(counter);
@@ -891,9 +894,7 @@ function generate_post(obj,status){
     str += '<div class="clearfix"></div>';
     str += '<div id="feed_comments"></div>';
     str += '<div class="write_comment box_body">';
-    str += '<input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="'+obj.post_id+'">';                 
-    str += '<a class="icon icon_image"></a>';
-    str += '<input type="file">';
+    str += '<input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="'+obj.post_id+'">';
     str += '</div>';
     str += '</div>';
     if(status == true){
@@ -921,7 +922,7 @@ function generate_comment(obj){
     str += '</div>';
     str += '<div class="notification_txt">';
     str += '<p><a href="#" class="noti_username">'+obj.full_name+'</a>&nbsp;&nbsp;'+obj.message+'</p>';
-    str += '<span class="noti_time">1 Day</span> ';                          
+    str += '<span class="noti_time">1 sec ago</span> ';                          
     str += '</div>';
     str += '<div class="clearfix"></div>';
     str += '</div>';

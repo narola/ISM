@@ -49,7 +49,7 @@ class Home extends CI_Controller {
 					);  
 
 		$where = array('where'=>array('f.is_delete'=> 0),'where_in'=>array('f.feed_by'=>studymates($user_id)));
-		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.posted_on,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link,l.is_delete as my_like',$where,$options);
+		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.posted_on,f.created_date,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link,l.is_delete as my_like',$where,$options);
 		
 		//---find feeds
 		
@@ -88,7 +88,7 @@ class Home extends CI_Controller {
 				);	
 			
 			$where 	= array('where'=>array('fc.is_delete'=> 0),'where_in'=> array('feed_id'=>$feed_ids));
-			$comment = select(TBL_FEED_COMMENT.' fc','feed_id,comment,u.full_name,p.profile_link',$where,$options);
+			$comment = select(TBL_FEED_COMMENT.' fc','feed_id,comment,fc.created_date,u.full_name,p.profile_link',$where,$options);
 
 			//----merge feeds and comment,tagged user in single array			
 			
@@ -96,21 +96,50 @@ class Home extends CI_Controller {
 			foreach ($data_array as $key => $value) {
 				$final_feed[$key] = $value;
 				$found_comment = $found_tagged = array();
+
 				foreach ($comment as $key1 => $value1) {
 					if($value1['feed_id'] == $value['fid']){
 	                    $found_comment[] = $value1;
 	                } 
 				}
+
 				foreach ($tagged as $tag_key => $tag_value) {
 					if($tag_value['feed_id'] == $value['fid']){
 						$found_tagged[] = $tag_value;
 					}
 				}
+
 				$final_feed[$key]['comment'] = $found_comment;
 				$final_feed[$key]['tagged']  = $found_tagged;
+				$final_feed[$key]['images']  = array();
+
 			}
 			
 			$data['feed'] = $final_feed;
+
+			$feed_ids = array();
+			foreach ($data['feed'] as $key => $value) {
+				$feed_ids[] = $value['fid'];
+			}
+
+
+			$data['feed_images'] = select(
+				TBL_FEED_IMAGE,
+				'feed_id, image_link',
+				array(
+					'where_in' => array( 'feed_id' => $feed_ids)
+					)
+				);
+
+			foreach ($data['feed'] as $key => $value) {
+					foreach($data['feed_images'] as $k => $v){
+						if($v['feed_id'] == $value['fid']){
+							$data['feed'][$key]['images'][] = $v['image_link'];
+							unset($data['feed_images'][$k]);
+						}
+					}
+			}
+
 
 			if(!studymates($user_id,false) > 0 )
 				$studymates = array('');
@@ -118,7 +147,6 @@ class Home extends CI_Controller {
 				$studymates = studymates($user_id,false);
 
 	 		// Get Classmates details
-			
 			$where = array('where_in' => array('u.id' =>  $studymates));
 			$options = array('join' => array(
 					array(
@@ -150,7 +178,7 @@ class Home extends CI_Controller {
 				TBL_USERS.' u',
 				'u.id, u.full_name,upp.profile_link',
 				array('where' => array('u.id' => $active_chat_id)),
-				$options
+					$options
 				);
 			$data['active_chat']['comment'] = array_reverse (select(
 				TBL_USER_CHAT. ' uc',
@@ -211,17 +239,17 @@ class Home extends CI_Controller {
 		$role_id = $this->session->userdata('user')['role_id'];
 		$where  = "(v.classroom_id is null or v.classroom_id =".$classroom_id.") and n.is_delete = 0 and n.status='active'";
 		$option = array('join' => 
-					array(
 						array(
-							'table' => TBL_NOTICEBOARD.' n',
-							'condition' => 'v.notice_id = n.id'
-						)
-					),
-					'order_by' => 'v.id DESC',
-					'limit' => 3
-				);
+							array(
+								'table' => TBL_NOTICEBOARD.' n',
+								'condition' => 'v.notice_id = n.id'
+							)
+						),
+						'order_by' => 'v.id DESC',
+						'limit' => 3
+					);
 		$data['my_latest_notice'] = select(TBL_NOTICEBOARD_VIEWER.' v','n.notice_title,notice',$where,$option);
-		
+		//p($data,true);
 		$this->template->load('student/default','student/home_view',$data);
 	}
 
@@ -231,6 +259,7 @@ class Home extends CI_Controller {
 	* This function will used to load group_allocation page and confirm join group.
 	* Author - Sandip Gopani (SAG)
 	*/
+
 	public function group_allocation(){
 		$data = array(); 
 		// Get latest info of logged in USER.  Becasue logged in user may chaged related data after login.
