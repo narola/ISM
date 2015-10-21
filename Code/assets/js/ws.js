@@ -484,12 +484,12 @@ if ("WebSocket" in window)
             len = obj.student_detail.length;
             $.each(obj.student_detail, function (index, list) {
                 if(len == 1){
-                    str += '&nbsp;with : <label class="label label_name">'+ list.name + '</label>';
+                    str += '&nbsp;tagged : <label class="label label_name">'+ list.name + '</label>';
                     ids += list.id;
                 }
                 else if(len == 2){
                     if(i == 0){
-                        str += '&nbsp;with <label class="label label_name">'+list.name +'</label>';
+                        str += '&nbsp;tagged <label class="label label_name">'+list.name +'</label>';
                         ids += list.id;
                     }else{
                         str += '&nbsp;and <label class="label label_name">'+list.name +'</label>';
@@ -500,7 +500,7 @@ if ("WebSocket" in window)
                 else if(len > 2){
                     
                     if(j == 0){
-                        str += '&nbsp;with <label class="label label_name">'+list.name +'</label>';
+                        str += '&nbsp;tagged <label class="label label_name">'+list.name +'</label>';
                         ids += list.id;
                     }else{
                         other_name += list.name+'<div class=\'clearfix\'></div>';
@@ -585,7 +585,66 @@ if ("WebSocket" in window)
             if(obj.class_exam_status == 'started'){
                 location.href = '/student/class_exam';
             }
-        }else {
+        }
+        else if(obj.type == 'tag-user-again'){
+            var i = 0;
+            var j = 0;
+            var k = 0;
+            str = '';
+            ids = '';
+            other_name = '';
+            len = obj.already_available_tagged_detail.length;
+            $.each(obj.already_available_tagged_detail, function (index, list) {
+                if(len == 1){
+                    str += '&nbsp;tagged : <label class="label label_name">'+ list.full_name + '</label>';
+                    ids += list.id;
+                }
+                else if(len == 2){
+                    if(i == 0){
+                        str += '&nbsp;tagged <label class="label label_name">'+list.full_name +'</label>';
+                        ids += list.id;
+                    }else{
+                        str += '&nbsp;and <label class="label label_name">'+list.full_name +'</label>';
+                        ids += ','+list.id;
+                    }
+                    i++;
+                }
+                else if(len > 2){
+                    
+                    if(j == 0){
+                        str += '&nbsp;tagged <label class="label label_name">'+list.full_name +'</label>';
+                        ids += list.id;
+                    }else{
+                        other_name += list.full_name+'<div class=\'clearfix\'></div>';
+                        l = parseInt(len) - parseInt(1);
+                        if(j == l){
+
+                            str += 'and <label class="label label_name">';
+                            str += '<a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover1" title="Other Tagged" data-content="'+other_name+'">'+ l +' more</a>';
+                            str += '</label>';
+                        }
+                        ids += ','+list.id;    
+                    }
+
+                    j++;
+                }
+              });
+           
+            $('#all_feed div.box.feeds[data-id="'+obj.fid+'"] .feed_text span[data-id="'+obj.fid+'"]').html(str);
+            already = '';
+            i = 0;
+            $.each(obj.already_tagged_detail, function (index, list) {
+              if(i == 0)
+                already += list.full_name;
+              else
+                already += '<br>'+ list.full_name;
+              i++;
+            });
+
+              $(".alert_notification p").html(already+ ' are already tagged');
+              $(".alert_notification").show().delay(50000).fadeOut();
+        }
+        else {
             alert('Message Not Catched!!');
         }
     };
@@ -755,11 +814,11 @@ function generate_post(obj,status){
         notification_str = '';
         $.each(obj.tagged_detail, function (index, list) {
             if(len == 1){
-                name += '<b>with</b> : <label class="label label_name">'+ list.full_name + '</label>';
+                name += '&nbsp;tagged : <label class="label label_name">'+ list.full_name + '</label>';
             }
             else if(len == 2){
                 if(i == 0){
-                    name += 'with <label class="label label_name">'+list.full_name +'</label>';
+                    name += 'tagged <label class="label label_name">'+list.full_name +'</label>';
                 }else{
                     name += 'and <label class="label label_name">'+list.full_name +'</label>';
                 }
@@ -767,7 +826,7 @@ function generate_post(obj,status){
             }
             else if(len > 2){
                 if(j == 0){
-                    name += 'with <label class="label label_name">'+list.full_name +'</label>';
+                    name += 'tagged <label class="label label_name">'+list.full_name +'</label>';
                 }else{
                     other_name += list.full_name+'<div class=\'clearfix\'></div>';
                     l = parseInt(len) - parseInt(1);
@@ -1133,11 +1192,11 @@ $(document).on('click','button[data-type="class_exam_start_request"]',function()
 });
 
 $(document).on('click','a[data-type="tag-user-again"]',function(){
-  
+  alert($('#select-tag-user-again[data-id="'+$(this).data('id')+'"]').val());
   var request = {
     type : 'tag-user-again',
     to   : 'all',
-    tagged_id: $('#select-tag-user-again').val(),
+    tagged_id: $('#select-tag-user-again[data-id="'+$(this).data('id')+'"]').val(),
     fid : $(this).data('id')
   }
   ws.send(JSON.stringify(request));
