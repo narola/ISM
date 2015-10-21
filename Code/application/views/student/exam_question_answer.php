@@ -40,10 +40,10 @@
                             <div class="clearfix"></div>
                             <!--box_body-->
                             <div class="box_footer">
-                            	<button class="btn btn_green" data-type="question_responce" data-status="R" data-id="<?php echo $current_question['id'] ?>">Review Later</button>
+                            	<button class="btn btn_green" data-change="yes" data-type="question_responce" data-status="R" data-id="<?php echo $current_question['id'] ?>">Review Later</button>
                                 <button class="btn btn_green" data-type="clear_responce">Clear Responce</button>
-                                <button class="btn btn_green" data-type="question_responce" data-status="S" data-id="<?php echo $current_question['id'] ?>" >Skip</button>
-                                <button class="btn btn_green" data-type="question_responce" data-status="next" data-id="<?php echo $current_question['id'] ?>" >Next<span class="fa fa-chevron-right"></span></button>
+                                <button class="btn btn_green" data-change="yes" data-type="question_responce" data-status="S" data-id="<?php echo $current_question['id'] ?>" >Skip</button>
+                                <button class="btn btn_green" data-change="yes" data-type="question_responce" data-status="next" data-id="<?php echo $current_question['id'] ?>" >Next<span class="fa fa-chevron-right"></span></button>
                                 
                             </div>
                         </div>                        
@@ -79,14 +79,14 @@
                         <!--wrapper-->
                         <div class="clock_wrapper">
                         	<div class="clock">
-                            	<div class="clock_block">
+                            	<div class="clock_block tls">
 	                                <h1>00</h1>
                                 </div>
                                 <p>Min</p>
                             </div>
                             <div class="colon">:</div>
                             <div class="clock">
-                            	<div class="clock_block">
+                            	<div class="clock_block tls">
 	                                <h1>00</h1>
                                 </div>
                                 <p>Sec</p>
@@ -145,7 +145,7 @@
                         </div>
                         <!--//legends-->
                         <div class="text-center">
-                        	<button data-type="end_exam" class="btn btn_black" >End Test</button>
+                        	<button data-type="end_exam" data-change="yes" class="btn btn_black" >End Test</button>
                         </div>
                     </div>
                 </div>
