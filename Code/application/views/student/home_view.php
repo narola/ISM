@@ -165,7 +165,7 @@
                         </div>
                     </div>
                     <div style="float:right;display:none;" id="show-again" data-id="<?php echo $value['fid'];?>">
-                        <select style="width:200px;"name="all_users[]" id="select-tag-user" class="js-example-basic-single form-control" multiple="multiple">
+                        <select style="width:200px;"name="all_users_again[]" id="select-tag-user-again" class="js-example-basic-single form-control" multiple="multiple">
                             <?php
                             if(!empty($my_studymates)) {
                                 foreach($my_studymates as $list){
@@ -175,7 +175,7 @@
                                     </option> 
                             <?php } } ?>
                         </select>
-                        <a href="">Tag New</a>
+                        <a href="javascript:void(0);" class="btn btn_black_normal" data-type="tag-user-again" data-id="<?php echo $value['fid'];?>">Tag New</a>
                     </div>
                     <div class="clearfix"></div>
                     <!--comment-->
@@ -256,7 +256,7 @@
         ?>
             <img src="<?php echo base_url();?>assets/images/blackboard.jpg" alt="blackboard">
                 <div class="carousel-caption mCustomScrollbar" data-mcs-theme="minimal-dark">
-                    <p class="noti_username"><?php echo $value['notice_title'];?></p>
+                    <p class="noti_username" style="font-size:large;"><?php echo $value['notice_title'];?></p>
                     <p style="txt_white"><?php echo $value['notice'];?><br><span style="float:right">-ISM Admin</span></p>
                 </div>
             </div>
@@ -405,6 +405,8 @@
         </div>
         <div class="suggested_mates_holder text-center">
             <div id="carousel-studymate" class="carousel slide" data-ride="carousel">
+                <?php if(isset($suggested_studymates) && sizeof($suggested_studymates) > 0){ ?>
+
               <!-- Indicators -->
               <ol class="carousel-indicators">
                 <li data-target="#carousel-studymate" data-slide-to="0" class="active"></li>
@@ -417,7 +419,7 @@
               <div class="carousel-inner" role="listbox">
                 
                 <?php 
-                    if(isset($suggested_studymates)){
+                    
                         $i = 1;
                         foreach ($suggested_studymates as $key => $value) {
                             if($i == 1)
@@ -450,7 +452,6 @@
                         <?php
                         $i++;
                         }
-                    }
                 ?>
               </div>
             
@@ -463,6 +464,7 @@
                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
               </a>
+              <?php } else { echo '<code>No more studymates</code>';} ?>
             </div>                        
             
             <a href="student/studymates_request" class="btn btn_blue">Find More studymates</a>

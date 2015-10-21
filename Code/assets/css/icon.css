@@ -73,7 +73,10 @@
 .icon_thumb_red,
 .icon_comment_red,
 .icon_user_2_red,
-.icon_hand{
+.icon_hand,
+.icon_single_user,
+.icon_blockgroup,
+.icon_group{
 	background-image:url(../images/icon-set.png);
 	background-position:0 0;
 }
@@ -457,6 +460,17 @@
 }
 .icon_calendar_red{
     background-position: -477px -159px;
+}
+.icon_single_user{
+	background-position:-210px -194px;
+}
+.icon_blockgroup{
+    background-position: -164px -194px;
+    width: 36px;
+}
+.icon_group{
+	background-position: -248px -194px;
+    width: 36px;
 }
 /*--------------icon---------------*/
 

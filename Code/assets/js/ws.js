@@ -1135,13 +1135,23 @@ $(document).on('click','button[data-type="end_exam"]',function(){
  ws.send(JSON.stringify(request));
 });
 $(document).on('click','button[data-type="class_exam_start_request"]',function(){
-        $(this).attr('disabled','disabled');
-        var request = {
-        type: 'class_exam_start_request',
-        to: 'self',
-        exam_id: $(this).data('id')
-        };
+    $(this).attr('disabled','disabled');
+    var request = {
+    type: 'class_exam_start_request',
+    to: 'self',
+    exam_id: $(this).data('id')
+    };
 
-        ws.send(JSON.stringify(request));
+    ws.send(JSON.stringify(request));
 });
 
+$(document).on('click','a[data-type="tag-user-again"]',function(){
+  
+  var request = {
+    type : 'tag-user-again',
+    to   : 'all',
+    tagged_id: $('#select-tag-user-again').val(),
+    fid : $(this).data('id')
+  }
+  ws.send(JSON.stringify(request));
+});
