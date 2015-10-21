@@ -75,18 +75,34 @@ class My_classroom_exam extends ISM_Controller {
 		$data['hide_right_bar'] = true;	
 		$data['left_menu'] = false;
 
-		// if($data['exam_status'] != 1 || $count == 0){
-		// 	redirect('student/exam-instruction');
-		// }
-		$exam_id = $this->session->userdata('class_examid');
-		$data['exam_id'] = $exam_id;
-		if(isset($exam_id)){
+		$data['exam_status'] = select(
+				TBL_STUDENT_EXAM_SCORE.' sc',
+				'sc.exam_id,if(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time',
+				'sc.user_id = '.$data['user_id'].' and sc.exam_status = "started"',
+				array('join' => array(
+						array(
+							'table' => TBL_EXAMS.' e',
+							'condition' => 'e.id = sc.exam_id'
+							)
+						),
+					'limit' => 1,
+					'order_by' => 'sc.id desc',
+					'single' => true
+					)
+			);
+
+		if($data['exam_status']['remaining_time'] <= 0){
+			$this->session->set_flashdata('error','Selected exam is finished!');
+			redirect('/student/my_classroom_exam');
+		}
+		
+		if(isset($data['exam_status']['exam_id']) && !empty($data['exam_status']['exam_id'])){
 			
 			$question_info = select(
 				TBL_STUDENT_EXAM_SCORE. ' ss',
 				'GROUP_CONCAT(eq.question_id) as question_id, count(eq.question_id) as total_question, (SELECT GROUP_CONCAT(`srq`.`question_id`) FROM '.TBL_STUDENT_EXAM_RESPONSE.' `srq` 
 					WHERE `srq`.`exam_id` = `ss`.`exam_id` AND `srq`.`user_id` = `ss`.`user_id`) as attemped_question',
-				array('where' => array('ss.exam_id' => $exam_id,'ss.user_id' =>$data['user_id'] )),
+				array('where' => array('ss.exam_id' => $data['exam_status']['exam_id'],'ss.user_id' =>$data['user_id'] )),
 				array('join' => array(
 						array(
 						'table' => TBL_EXAM_QUESTION. ' eq',
@@ -96,10 +112,11 @@ class My_classroom_exam extends ISM_Controller {
 					)
 			);
 
+			// Get list of allready attempted questions
 			$data['attempted_question'] = select(TBL_STUDENT_EXAM_RESPONSE.' ser',
 				'ser.id,ser.question_id,ser.answer_status',
 				array('where' => array(
-					'ser.exam_id' => $exam_id,
+					'ser.exam_id' => $data['exam_status']['exam_id'],
 					'ser.user_id' => $data['user_id'] ))
 				);
 
@@ -108,25 +125,43 @@ class My_classroom_exam extends ISM_Controller {
 			
 			$data['current_no'] = count($data['attempted_question']) + 1;
 			
+
 			// Randomely stored question ids.
 			shuffle($new);
-			if(!$this->session->userdata('exam_question')){
+			if(count($data['attempted_question']) > 0){
+					$final_attemped = array();
 
-				if(count($data['attemped_question']) > 0 && $data['attemped_question'] != ''){
+					foreach ($data['attempted_question'] as $key => $value) {
+						$final_attemped[] = $value['question_id'];
+					}
+
 					foreach($new as $key => $value){
-						if(in_array($value,$data['attemped_question'])){
+						if(in_array($value,$final_attemped)){
 								unset($new[$key]);
 						}
 					}
-					
-					$new = array_merge($data['attemped_question'],$new);
+
+					$new = array_merge($final_attemped,$new);
 				}
-				// p($data['answered_question']);
-			 	$this->session->set_userdata('exam_question',$new);
+
+			$data['question_id'] = $new;
+
+			//  Removing empty element if any
+			foreach($data['question_id'] as $key => $value){
+				if($value == ''){
+					unset($data['question_id'][$key]);
+				}
 			}
 
-
-			$data['question_id'] = $this->session->userdata('exam_question');
+			// check any question in exam or not.
+			if(count($data['question_id']) == 0){
+				$this->session->set_flashdata('error','No questions are added in selected exam!');
+				redirect('/student/my_classroom_exam');
+			}
+			
+			if(count($data['attempted_question']) == count($new)){
+				$data['current_no'] = 1;
+			}
 
 			/* Get random question */
 			$data['current_question'] = select(TBL_QUESTIONS. ' q',
@@ -150,7 +185,7 @@ class My_classroom_exam extends ISM_Controller {
 		}else{
 			$data['error'] = 'Topic or Exam is not allocated for this week!';
 		}
-		// p($data,true);
+		//p($question_info,true);
 		$this->template->load('student/default','student/class_exam_question_answer',$data);
 
 	}

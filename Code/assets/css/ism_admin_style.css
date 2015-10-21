@@ -1802,11 +1802,11 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     padding: 30px;
 	overflow:auto;
 }
-.table-bordered>tbody>tr>th, .table-bordered>thead>tr>th {
+.performance_wrapper .table-bordered>tbody>tr>th, .performance_wrapper .table-bordered>thead>tr>th {
     border: 1px solid #ccc;
     background-color: #f2f2f2;
 }
-.table-bordered>tbody>tr>td, .table-bordered>thead>tr>td{
+.performance_wrapper .table-bordered>tbody>tr>td, .performance_wrapper .table-bordered>thead>tr>td{
 	background-color:#fff;
 }
 .group_reports .performance_wrapper{
@@ -1894,4 +1894,78 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 
 .navbar_admin .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover{
 	color:#ff6b6b;
+}
+.student_report{
+	font-weight:500;
+}
+.student_report .performance_wrapper{
+	z-index:-1;
+}
+.student_report .table{
+	margin:0;
+    border-left: none;
+	border-right:none;
+}
+.student_report .table_user>thead>tr>th{
+	text-align:center;
+	vertical-align:middle;
+}
+.student_report .table_user>thead>tr>th>p{
+	margin:0;
+}
+.table_remarks{
+	background-color:#fff;
+}
+.table_remarks input[type=text]{
+	width:100%;
+	height:100%;
+	border:none;
+	outline:none;
+}
+.table_report>.table>thead>tr>th{
+	width:75px;
+}
+.table_remarks>tbody>tr>td:first-child{
+	color:#999;
+	font-weight:600;
+}
+.group_mates .search_input input[type=text]{
+	background:transparent;
+	border:none;
+	outline:none;
+	box-shadow:none;
+}
+.group_mates .box_header{
+	background-color:#ff6b6b;
+}
+.group_mates .box{
+	border:none;
+	margin:0;
+}
+.group_mates .box_body {
+    padding: 0 10px;
+	font-weight:500;
+	height:72vh;
+	overflow:auto;
+}
+.group_mates .stm_item.online p,
+.group_mates .stm_item.offline p {
+    margin: 5px 0 2px;
+	color:#333;
+}
+.group_mates .stm_item.online span,
+.group_mates .stm_item.offline span{
+	font-size:12px;
+	color:#333;
+}
+.group_mates {
+    border-right: 1px solid rgba(0,0,0,.1);
+}
+.table_report .table>tbody>tr>td:first-child,
+.table_report .table>thead>tr>th:first-child{
+	border-left:none;
+}
+.table_report .table>tbody>tr>td:last-child,
+.table_report .table>thead>tr>th:last-child{
+	border-right:none;
 }

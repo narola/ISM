@@ -26,8 +26,8 @@ function exam_started_timer()
         var x = toHHMMSS(exam_time_to_left);
         var res = x.split(":");
         console.log(res[1]);
-        $('.clock_wrapper .clock:nth-child(1) .clock_block h1').html(res[0]);
-        $('.clock_wrapper .clock:nth-child(3) .clock_block h1').html(res[1]);
+        $('.clock_wrapper .clock:nth-child(1) .clock_block.tls h1').html(res[0]);
+        $('.clock_wrapper .clock:nth-child(3) .clock_block.tls h1').html(res[1]);
 
    }
   if(exam_time_to_left >= 0 && $('#exam_status').length > 0){
@@ -264,6 +264,15 @@ if ("WebSocket" in window)
         if(obj.error != 'skip'){
             $(".alert_notification p").html(obj.error);
             $(".alert_notification").show().delay(3000).fadeOut();
+        }
+
+        if(obj.reload == 'yes'){
+          setTimeout( function(){    location.reload(); }, 3000);
+       
+        }
+        if(obj.redirect != 'skip'){
+          console.log(obj);
+           location.href = obj.redirect;
         }
 
         if(obj.time_to_left == 0 && obj.time_to_start > 0 && time_status == 1){
@@ -538,6 +547,7 @@ if ("WebSocket" in window)
                chk = ''; 
             if(obj.choice_id == list.id ){
                 chk = 'checked';
+                exam_choice = list.id;
             }
               $('.ans_options').append('<label><input '+chk+' type="radio" name="option" data-id="'+list.id+'">'+list.choice+'</label>'); 
             });
@@ -551,7 +561,6 @@ if ("WebSocket" in window)
 
 
         }else if(obj.type == 'get_question'){
-
           $('ul.ques_numbers li[class="current"]').attr('class', $('ul.ques_numbers li[class="current"]').data('class'));
           $('ul.ques_numbers li[data-id="'+obj.new_question.qid+'"]').attr('class','current');
           
@@ -565,6 +574,7 @@ if ("WebSocket" in window)
                 chk = ''; 
             if(obj.new_question.choice_id == list.id ){
                 chk = 'checked';
+                exam_choice = list.id;
             }
             $('.ans_options').append('<label><input '+chk+' type="radio" name="option" data-id="'+list.id+'">'+list.choice+'</label>'); 
          });
@@ -580,7 +590,7 @@ if ("WebSocket" in window)
               location.href = '/student/exam';
             }
         }else if(obj.type == 'end_exam'){
-            location.href= obj.redirect;
+           
         }else if(obj.type == 'class_exam_start_request'){
             if(obj.class_exam_status == 'started'){
                 location.href = '/student/class_exam';
@@ -1156,11 +1166,13 @@ if($('ul.ques_numbers li[data-id="'+question_id+'"]').next().length  == 1){
     question_id: question_id,
     qno: next_question_no,
     next: next_question,
+    exam_type: $(this).data('change'),
     answer : exam_choice,
     status :$(this).attr('data-status')
   }
   
   ws.send(JSON.stringify(request));
+  exam_choice = 0;
 });
 
 $(document).on('click','a[data-type="get_question"]',function(){
@@ -1176,7 +1188,8 @@ $(document).on('click','a[data-type="get_question"]',function(){
 $(document).on('click','button[data-type="end_exam"]',function(){
   var request = {
     type : 'end_exam',
-    to   : 'self'
+    to   : 'self',
+    exam_type: $(this).data('change'),
   }
  ws.send(JSON.stringify(request));
 });

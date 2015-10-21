@@ -244,7 +244,6 @@ class Tutorial extends ISM_Controller {
 
 	function exam_start(){
 			
-
 		$data = $this->exam_status();
 		$data['user_id'] = $user_id = $this->session->userdata('user')['id'];
 		$data['hide_right_bar'] = true;	
@@ -275,8 +274,8 @@ class Tutorial extends ISM_Controller {
 						'table' => TBL_EXAM_QUESTION. ' eq',
 						'condition' => 'eq.exam_id = ss.exam_id'
 						)),
-				'single' => true
-					)
+					'single' => true
+				)
 			);
 			$data['attempted_question'] = select(TBL_STUDENT_EXAM_RESPONSE.' ser',
 				'ser.id,ser.question_id,ser.answer_status',
@@ -291,27 +290,29 @@ class Tutorial extends ISM_Controller {
 			}
 			// Randomely stored question ids.
 			shuffle($new);
-			if(!$this->session->userdata('exam_question')){
+			
 				if(count($data['attempted_question']) > 0){
+					$final_attemped = array();
+					foreach ($data['attempted_question'] as $key => $value) {
+						$final_attemped[] = $value['question_id'];
+					}
 					foreach($new as $key => $value){
-						if(in_array($value,$data['attempted_question'])){
+						if(in_array($value,$final_attemped)){
 								unset($new[$key]);
 						}
 					}
-					$new = array_merge($data['attempted_question'],$new);
+					$new = array_merge($final_attemped,$new);
 				}
 
-			 	$this->session->set_userdata('exam_question',$new);
-			}
-			$data['question_id'] = $this->session->userdata('exam_question');
+			$data['question_id'] = $new;
 
 			/* Get random question */
 			$data['current_question'] = select(TBL_QUESTIONS. ' q',
-				'q.question_text,q.id',
-				'q.id = '.$data['question_id'][$data['current_no'] - 1].' ',
-				array('limit' => 1,
-				'single' => 1
-				)
+					'q.question_text,q.id',
+					'q.id = '.$data['question_id'][$data['current_no'] - 1].' ',
+					array('limit' => 1,
+					'single' => 1
+					)
 				);
 
 			/* Get Choises of current question */
@@ -327,7 +328,7 @@ class Tutorial extends ISM_Controller {
 		}else{
 			$data['error'] = 'Topic or Exam is not allocated for this week!';
 		}
-		// p($data,true);
+		//p($data,true);
 		$this->template->load('student/default','student/exam_question_answer',$data);
 	}
 

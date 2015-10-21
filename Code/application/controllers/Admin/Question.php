@@ -93,20 +93,27 @@ class Question extends ADMIN_Controller {
 		
 		$this->data['page_tite'] = 'Add Question';
 
+		$tags = select(TBL_TAGS,FALSE,array('where'=>array('is_delete'=>'0')));
+		
+		$new_str = '';
+
+		foreach($tags as $tag){
+			$new_str .=$tag['tag_name'].',';
+		}
+
+		$data['tags'] = trim($new_str,',');
+		
 		$this->form_validation->set_rules('question_text', 'Question Text', 'trim|required');
 
 		if($this->form_validation->run() == FALSE){
 
 			$this->template->load('admin/default','admin/question/add',$this->data);
-			
+
 		}else{
 
 		}
 
-		
-
 	}
-
 
 	/*
 	* function to get the classrooms through the course.

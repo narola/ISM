@@ -19,10 +19,10 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     }
 
     $datas = json_decode($message, true);
-    $datas['error'] = 'skip';
+    $datas['error'] =  $datas['redirect'] = 'skip';
     pr($datas);
     $data = array_merge($datas, $Server->active_hours());
-
+    $data['reload'] = 'no';
     /* For individual chat */
     if ($data['type'] == 'studymate') {
         $responce = $Server->single_chat($clientID, $data);
@@ -34,6 +34,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                 $res = array(
                     'type' => 'notification',
                     'error' => 'skip',
+                    'redirect' => 'skip',
                     'live_status' => true,
                     'user_id' => $Server->wsClients[$clientID][12]
                 );
@@ -109,6 +110,8 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->check_exam($Server->wsClients[$clientID][12], $data);
     }else if($data['type'] == 'end_exam'){
         $responce = $Server->end_exam($Server->wsClients[$clientID][12], $data);
+    }else if($data['type'] == 'tag-user-again'){
+        $responce = $Server->tag_again($Server->wsClients[$clientID][12], $data);        
     }
 
     $check = array('feed_comment', 'like');
@@ -159,6 +162,13 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                         break;
                     }
                 }
+            }else if ($responce['type'] == 'tag-user-again') {
+                foreach ($Server->wsClients as $id => $client) {
+                    if (in_array($Server->wsClients[$id][12], $responce['tagged_id'])) {
+                        $Server->wsSend($id, json_encode($responce));
+                    }
+                }
+                $Server->wsSend($clientID, json_encode($responce));
             }
         }
     }
@@ -178,6 +188,7 @@ function wsOnClose($clientID, $status) {
             $res = array(
                 'type' => 'notification',
                 'error' => 'skip',
+                'redirect' => 'skip',
                 'live_status' => false,
                 'user_id' => $Server->wsClients[$clientID][12]
             );
