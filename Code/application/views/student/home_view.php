@@ -73,11 +73,6 @@
             </a>
             <div class="dropdown" style="display: inline-block;">
                 <a href="javascript:void(0);" id="show-tag-user" class="dropdown-toggle icon icon_user" aria-haspopup="true" aria-expanded="true"><span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Emma Mall</a></li>
-                    <li><a href="#">Gill Christ</a></li>
-                    <li><a href="#">Adam Stranger</a></li>
-                </ul>
             </div>
             <button data-type="post" class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
         </div>
@@ -157,11 +152,6 @@
                         <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
                         <div class="dropdown tag_user" style="display: inline-block;">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="<?php echo $value['fid'];?>" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Emma Mall</a></li>
-                                <li><a href="#">Gill Christ</a></li>
-                                <li><a href="#">Adam Stranger</a></li>
-                            </ul>
                         </div>
                     </div>
                     <div style="float:right;display:none;" id="show-again" data-id="<?php echo $value['fid'];?>">

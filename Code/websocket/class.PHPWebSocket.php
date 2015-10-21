@@ -1145,6 +1145,21 @@ class PHPWebSocket {
                     }
                     $data['tagged_id'] = $tagged_array;
                     $data['tagged_detail'] = $tagged_detail;
+                    $studymates = $this->class_mate_list($user_id);
+                    if(is_array($studymates)){
+                        $studymates = implode(',', $studymates);
+                        $query = 'SELECT u.id,u.full_name FROM  users u where u.id in('. $studymates.')';
+                        $rows = mysqli_query($link, $query);
+                        $i = 0;
+                        $studymates_detail = array();
+                        while ($row = mysqli_fetch_assoc($rows)) {
+                            $studymates_detail[$i]['full_name'] = $row['full_name'];
+                            $studymates_detail[$i]['id'] = $row['id'];
+                            $i++;
+                        }
+                        $data['studymates_detail'] = $studymates_detail;
+                    }
+                $data['current_date'] = date("M j, Y",strtotime(date('Y-m-d')));    
                 } else {
                     $data['to'] = 'self';
                     $data['error'] = 'Unable to save message.! Please try again.';
@@ -2482,6 +2497,8 @@ class PHPWebSocket {
                 }
 
                 $data['already_available_tagged_detail'] = $available_user;
+
+
             } else {
 
                 $data['to'] = 'self';
@@ -2491,7 +2508,8 @@ class PHPWebSocket {
             $data['to'] = 'self';
             $data['error'] = 'Please don\'t modify data manually.';
         }
-        return $data;
+
+        return array_merge($data, $this->get_client_info($user_id));
     }
 
     /**
