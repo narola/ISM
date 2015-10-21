@@ -104,8 +104,7 @@
                         <div class="arrow"></div>
                         <div class="popover-content">
                             <ul>
-                                <li><a href="#">Copy Exam</a></li>
-                                <li><a href="#">View Details</a></li>
+                                <li><a href="admin/exam/copy/<?php echo $exam['id']; ?>">Copy Exam</a></li>
                                 <li><a href="admin/exam/update/<?php echo $exam['id']; ?>">Edit Exam</a></li>
                             </ul>
                         </div>
