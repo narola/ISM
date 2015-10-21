@@ -99,14 +99,9 @@
 
 
 	<!--welcome-->
-	<string name="strwelcomeline">John, Your tutorial group being processed </string>
-	<string name="strwelcomeline2">and will be available to you for confirmation.</string>
-	<string name="strtutorialgroupis5">Tutorial group is 5 members group of randomly</string>
-	<string name="strselectedstudentsputtogetherto">selected students, put together to </string>
-	<string name="strshareideas">share ideas,</string>
-	<string name="strcollborate">collaborate</string>
-	<string name="strand">and</string>
-	<string name="strdoassignments">do assignments.</string>
+	<string name="strwelcomeline"><b>John,</b> Your tutorial group being processed \n and will be available to you for confirmation </string>
+	<string name="strtutorialgroupis5">Tutorial group is 5 members group of randomly \n selected students, put together to <font color="#81D525">share ideas,</font>\n<font color="#81D525">collaborate</font> and <font color="#81D525">do assignments.</font></string>
+
 
 
 

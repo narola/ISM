@@ -133,7 +133,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         //isRemember();
          etUserid.setText("");
          etPwd.setText("");
-        global.myIntent(this, ProfileInfornation.class);
+        global.myIntent(this, ProfileInformationActivity.class);
         // }
     }
 

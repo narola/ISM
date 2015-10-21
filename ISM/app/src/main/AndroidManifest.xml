@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.ProfileInfornation"
+            android:name=".login.ProfileInformationActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -41,7 +41,7 @@
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".login.TutorialGroup"
+            android:name=".login.AcceptTutorialGroupActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape" />
         <activity
