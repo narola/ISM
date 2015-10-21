@@ -283,12 +283,13 @@ class Group extends ADMIN_Controller {
             )
                 )
         );
-
-        // qry();	
-        // p($this->data['all_groups_topics']);
-        // / p($this->data['all_groups_members'],TRUE);
-        // p($this->data['all_groups'],true);	
-
+/*$where = "`".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`group_id` = $gid AND `".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`created_date` >= DATE_SUB(NOW(), INTERVAL 6 month)";
+                                
+        $group_performance = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_id,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".topic_id,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_score,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".created_date,",$where,FALSE);
+           foreach ($group_performance as $group) {
+              
+           }
+    p($performance,true);   */   
         $this->template->load('admin/default', 'admin/group/performance', $this->data);
     }
 
@@ -308,9 +309,11 @@ class Group extends ADMIN_Controller {
      * function active will activate user for temporary set database field 'user_status' of `users` table set to 
      * 'active' and redirect to user listing page
      *
-     * */
+     *
+    */
+
     public function active($id) {
-         update(TBL_TUTORIAL_GROUPS, $id, array('group_status' => 'active', 'modified_date' => date('Y-m-d H:i:s', time())));
+        update(TBL_TUTORIAL_GROUPS, $id, array('group_status' => 'active', 'modified_date' => date('Y-m-d H:i:s', time())));
         $this->session->set_flashdata('success', 'Group is Successfully Blocked.');
         redirect('admin/group');
     }
@@ -506,7 +509,7 @@ class Group extends ADMIN_Controller {
                 )
         );
 
-        $this->data['roles'] = select(TBL_ROLES, FALSE, array('where' => array('is_delete' => FALSE)), array('limit' => 10));
+        $this->data['roles'] = select(TBL_ROLES, FALSE, array('where' => array('is_delete' => FALSE)));
 
         $this->form_validation->set_rules('message_title', 'Message Title', 'trim|required|alpha_numeric_spaces');
         $this->form_validation->set_rules('message_desc', 'Message', 'trim|required');

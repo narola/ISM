@@ -16,7 +16,7 @@
    	<div class="row">
     	<div class="col-sm-12 new_message">
         	<div class="box exam_card">
-                <form method="POST">
+                <form method="POST" id="my_form" >
                 	<div class="box_header">
                     	<h3>Send New Message</h3>
                     </div>
@@ -41,16 +41,27 @@
                             <label> Select Users </label>
 
                             <select name="all_users[]" class="js-example-basic-single form-control" multiple="multiple">
+ 
 
-                                <?php 
-                                if(!empty($users)) {
-                                    foreach($users as $user){
+                                <?php
+                                if(!empty($roles)) {
+                                    foreach($roles as $role){
                                      ?>
-                                    <option value="<?php echo $user['id'] ?>" 
-                                        <?php if(in_array($user['id'],$group_members)){ echo "selected='selected'"; } ?>>
-                                        <?php echo $user['username']; ?>
-                                    </option>            
+                                     <optgroup label="<?php echo ucfirst($role['role_name']); ?>">
+                                        <?php 
+                                            if(!empty($users)){ foreach($users as $user) {
+                                                  if($user['rid']==$role['id']) {  
+                                         ?>
+                                           <option value="<?php echo $user['id'] ?>" 
+                                                <?php echo set_select('all_users', $user['id']); ?> 
+                                                <?php if(in_array($user['id'],$group_members)){ echo "selected='selected'"; }else{ echo "disabled='disabled'"; } ?>
+                                            >
+                                                <?php echo ucfirst($user['username']); ?>
+                                            </option> 
+                                        <?php } } }?>
+                                     </optgroup>            
                                 <?php } } ?>
+
 
                             </select>
                             
@@ -83,11 +94,11 @@
                         </div>
                     </div>
                     <div class="box_footer">
-                    	<button class="btn btn_green" type="submit">Send</button>
+                    	<button class="btn btn_green" type="submit" >Send</button>
                         <input type="checkbox" name="save_template" value="1" id="save_template">
                         <label class="save_box"></label>
                         <label for="save_template">Save in Templates</label>
-                        <a href="<?php echo base_url().'admin/user'; ?>" class='btn btn_black'>Cancel</a>
+                        <a href="<?php echo $prev_url; ?>" class='btn btn_black'>Cancel</a>
                     </div>
                 </form>
             </div>
@@ -98,8 +109,8 @@
 <!--//main-->
 
 <script type="text/javascript">
-    
-  $(document).ready(function() {
+
+    $(document).ready(function() {
       $(".js-example-basic-single").select2();
     });
 
