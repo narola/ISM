@@ -175,50 +175,9 @@ class User_account extends CI_Controller {
 				// update(TBL_STUDENT_ACADEMIC_INFO,array('user_id'=>$uid),$data_academic);
 				
 				/*--upadate profile picture*/
+				$this->set_profile($uid);
+				// ----
 				
-				$path = "uploads/user_".$uid;
-
-				if(!empty($_FILES['profile_image_1']['name'])){
-				    if(!is_dir($path)){
-				      	mkdir($path,0755,TRUE);
-				    } 
-				$ext 	= pathinfo($_FILES['profile_image_1']['name'], PATHINFO_EXTENSION);
-				$name 	= str_replace('.'.$ext, '', $_FILES['profile_image_1']['name'].'_'.time()).'.'.$ext;
-				$config['upload_path']	 	= $path;
-				$config['allowed_types'] 	= 'gif|jpg|png';
-				$config['max_size']  		= '1000000000';	
-				$config['file_name'] 		= $name;
-				$error_count = 0;
-				$this->upload->initialize($config);
-				
-					if (!$this->upload->do_upload('profile_image_1')){
-						$file_upload_error = strip_tags($this->upload->display_errors(),'');
-						$file_required_error = "You did not select a file to upload.";
-						if($file_upload_error !== $file_required_error){
-							$error_count++;
-							$this->session->set_flashdata('error_profile', $file_upload_error);
-						}
-						else{
-							$student_profile = '';
-						}
-					}
-					else{
-						$data = array('upload_data' => $this->upload->data());
-						$student_profile = "user_".$uid.'/'.$data['upload_data']['file_name'];
-					}
-				}
-				crop(UPLOAD_URL.'/'.$student_profile,150,150);
-
-				/*-----------user profile pic detail--------------*/
-
-				if(!empty($student_profile)){
-					$data_profile_pic = array(
-						'profile_link'=>$student_profile,
-						"created_date"=>date('Y-m-d H:i:s',time()),
-					 	"modified_date"=>date('Y-m-d H:i:s',time())
-					);
-					update(TBL_USER_PROFILE_PICTURE,array('user_id'=>$uid),$data_profile_pic);
-				}
 				$this->session->set_flashdata('success','Record Updated');
 				redirect('student/user_account');
 
@@ -274,54 +233,7 @@ class User_account extends CI_Controller {
 					insert(TBL_STUDENT_ACADEMIC_INFO,$data_academic);
 				}
 
-				/*----------upload image----------*/
-
-				$path = "uploads/user_".$insertid;
-
-				/*----create the folder if it's not already exists--*/
-
-				if(!empty($_FILES['profile_image_1']['name'])){
-			    if(!is_dir($path)){
-			      	mkdir($path,0755,TRUE);
-			    } 
-				$ext 	= pathinfo($_FILES['profile_image_1']['name'], PATHINFO_EXTENSION);
-				$name 	= str_replace('.'.$ext, '', $_FILES['profile_image_1']['name'].'_'.time()).'.'.$ext;
-				$config['upload_path']	 	= $path;
-				$config['allowed_types'] 	= 'gif|jpg|png';
-				$config['max_size']  		= '1000000000';	
-				$config['file_name'] 		= $name;
-				$error_count = 0;
-				$this->upload->initialize($config);
-				
-					if (!$this->upload->do_upload('profile_image_1')){
-						$file_upload_error = strip_tags($this->upload->display_errors(),'');
-						$file_required_error = "You did not select a file to upload.";
-						if($file_upload_error !== $file_required_error){
-							$error_count++;
-							$this->session->set_flashdata('error_profile', $file_upload_error);
-						}
-						else{
-							$student_profile = '';
-						}
-					}
-					else{
-						$data = array('upload_data' => $this->upload->data());
-						$student_profile = "user_".$insertid.'/'.$data['upload_data']['file_name'];
-					}
-					crop(UPLOAD_URL.'/'.$student_profile,200,200);
-				}
-
-				/*-----------user profile pic detail--------------*/
-
-				if(!empty($student_profile)){
-					$data_profile_pic = array(
-						'user_id' => $insertid,
-						'profile_link'=>$student_profile,
-						"created_date"=>date('Y-m-d H:i:s',time()),
-					 	"modified_date"=>date('Y-m-d H:i:s',time())
-					);
-					insert(TBL_USER_PROFILE_PICTURE,$data_profile_pic);
-				}
+				$this->set_profile($insertid);
 
 				/*---create login session----*/
 	            
@@ -676,5 +588,64 @@ class User_account extends CI_Controller {
         $this->email->print_debugger();
         $this->session->set_flashdata('success', 'Your request submitted successfully.');
         redirect('student/user_account');
+    }
+
+    public function set_profile($uid){
+		$userdata = 	$this->session->userdata('user');
+		$profile_pic = $userdata['profile_pic'];
+    	$path = "uploads/user_".$uid;
+
+		if(!empty($_FILES['profile_image_1']['name'])){
+		    if(!is_dir($path)){
+		      	mkdir($path,0755,TRUE);
+		    } 
+		$ext 	= pathinfo($_FILES['profile_image_1']['name'], PATHINFO_EXTENSION);
+		$name 	= str_replace('.'.$ext, '', $_FILES['profile_image_1']['name'].'_'.time()).'.'.$ext;
+		$config['upload_path']	 	= $path;
+		$config['allowed_types'] 	= 'gif|jpg|png';
+		$config['max_size']  		= '1000000000';	
+		$config['file_name'] 		= $name;
+		$error_count = 0;
+		$this->upload->initialize($config);
+		
+			if (!$this->upload->do_upload('profile_image_1')){
+				$file_upload_error = strip_tags($this->upload->display_errors(),'');
+				$file_required_error = "You did not select a file to upload.";
+				if($file_upload_error !== $file_required_error){
+					$error_count++;
+					$this->session->set_flashdata('error_profile', $file_upload_error);
+				}
+				else{
+					$student_profile = '';
+				}
+			}
+			else{
+				$data = array('upload_data' => $this->upload->data());
+				$student_profile = "user_".$uid.'/'.$data['upload_data']['file_name'];
+			}
+		}
+		crop(UPLOAD_URL.'/'.$student_profile,200,200);
+
+		/*-----------user profile pic detail--------------*/
+
+		if(!empty($student_profile)){
+			if($profile_pic != ''){
+				$data_profile_pic = array(
+					'profile_link'=>$student_profile,
+					"created_date"=>date('Y-m-d H:i:s',time()),
+				 	"modified_date"=>date('Y-m-d H:i:s',time())
+				);
+				update(TBL_USER_PROFILE_PICTURE,array('user_id'=>$uid),$data_profile_pic);
+			}
+			else{
+				$data_profile_pic = array(
+					'user_id' => $uid,
+					'profile_link'=>$student_profile,
+					"created_date"=>date('Y-m-d H:i:s',time()),
+				 	"modified_date"=>date('Y-m-d H:i:s',time())
+				);
+				insert(TBL_USER_PROFILE_PICTURE,$data_profile_pic);
+			}
+		}
     }
 }
