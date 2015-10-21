@@ -498,6 +498,7 @@ class PHPWebSocket {
 
 
 
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -671,6 +672,7 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
 
 
 
@@ -2499,7 +2501,7 @@ class PHPWebSocket {
      * @param type $userID
      * @param type $data
      */
-    function save_feed_file($userID, $data) {
+    function save_feed_file($user_id, $data) {
         $time = time();
         $link = $this->db();
         $output_file = dirname(__DIR__) . "\\uploads\\user_" . $user_id;
@@ -2516,18 +2518,20 @@ class PHPWebSocket {
 
         $studymate_id = $this->class_mate_list($user_id);
         if (is_array($data) && !empty($data)) {
-           
-            $query = "INSERT INTO `feeds`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$user_id,'','".$data['webpath']."','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
+
+            $query = "INSERT INTO `feeds`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$user_id,'','" . $data['webpath'] . "','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
             $x = mysqli_query($link, $query);
             $data['post_id'] = mysqli_insert_id($link);
             $data['tot_like'] = 0;
             $data['tot_comment'] = 0;
             file_put_contents($output_file, base64_decode($data['data']));
+            if (isset($data['data'])) {
+                unset($data['data']);
+            }
             if (!$x) {
                 $data['to'] = 'self';
                 $data['error'] = 'Unable to save message.! Please try again.';
             }
-           
         }
         //return $data;
         return array_merge($data, $this->get_client_info($user_id));

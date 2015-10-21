@@ -69,7 +69,7 @@
         </div>
         <div class="box_header">
             <a href="javascript:void(0);" class="icon icon_pin">
-                <input  id="feed_file_share" type="file" data-id="feed">
+                <input  id="feed_file_share" data-type="feed_file_share" type="file" data-id="feed">
             </a>
             <div class="dropdown" style="display: inline-block;">
                 <a href="javascript:void(0);" id="show-tag-user" class="dropdown-toggle icon icon_user" aria-haspopup="true" aria-expanded="true"><span class="caret"></span></a>
