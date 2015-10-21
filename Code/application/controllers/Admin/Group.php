@@ -283,12 +283,13 @@ class Group extends ADMIN_Controller {
             )
                 )
         );
-
-        // qry();	
-        // p($this->data['all_groups_topics']);
-        // / p($this->data['all_groups_members'],TRUE);
-        // p($this->data['all_groups'],true);	
-
+/*$where = "`".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`group_id` = $gid AND `".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`created_date` >= DATE_SUB(NOW(), INTERVAL 6 month)";
+                                
+        $group_performance = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_id,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".topic_id,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_score,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".created_date,",$where,FALSE);
+           foreach ($group_performance as $group) {
+              
+           }
+    p($performance,true);   */   
         $this->template->load('admin/default', 'admin/group/performance', $this->data);
     }
 
