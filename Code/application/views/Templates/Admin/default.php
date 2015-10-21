@@ -146,7 +146,11 @@ $url = uri_string();
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="#"><span class="icon icon_menu_report"></span> Reports</a></li>
+                        <li class="<?php
+                        if (in_array($url, array('admin/report'))) {
+                            echo 'active';
+                        }
+                        ?>"><a href="admin/report"><span class="icon icon_menu_report"></span> Reports</a></li>
                     </ul>
                     <!-- <ul class="nav navbar-nav navbar-right">
                         <li><a class="" href="#"><span class="icon icon_search"></span></a></li>
