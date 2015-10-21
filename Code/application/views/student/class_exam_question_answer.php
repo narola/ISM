@@ -39,10 +39,10 @@
                     <div class="clearfix"></div>
                     <!--box_body-->
                     <div class="box_footer">
-                    	<button class="btn btn_green" data-type="question_responce" data-status="R" data-id="<?php echo $current_question['id'] ?>">Review Later</button>
+                    	<button class="btn btn_green" data-change="no" data-type="question_responce" data-status="R" data-id="<?php echo $current_question['id'] ?>">Review Later</button>
                         <button class="btn btn_green" data-type="clear_responce">Clear Responce</button>
-                        <button class="btn btn_green" data-type="question_responce" data-status="S" data-id="<?php echo $current_question['id'] ?>" >Skip</button>
-                        <button class="btn btn_green" data-type="question_responce" data-status="next" data-id="<?php echo $current_question['id'] ?>" >Next<span class="fa fa-chevron-right"></span></button>
+                        <button class="btn btn_green" data-change="no" data-type="question_responce" data-status="S" data-id="<?php echo $current_question['id'] ?>" >Skip</button>
+                        <button class="btn btn_green" data-change="no" data-type="question_responce" data-status="next" data-id="<?php echo $current_question['id'] ?>" >Next<span class="fa fa-chevron-right"></span></button>
                         
                     </div>
                 </div>                        
@@ -78,14 +78,14 @@
                 <!--wrapper-->
                 <div class="clock_wrapper">
                 	<div class="clock">
-                    	<div class="clock_block">
+                    	<div class="clock_block cls">
                             <h1>00</h1>
                         </div>
                         <p>Min</p>
                     </div>
                     <div class="colon">:</div>
                     <div class="clock">
-                    	<div class="clock_block">
+                    	<div class="clock_block cls">
                             <h1>00</h1>
                         </div>
                         <p>Sec</p>
@@ -104,31 +104,32 @@
             </div>
             <div class="box_body">
                 <ul class="ques_numbers">
-                    <?php foreach($question_id as $key => $value){
+                            <?php foreach($question_id as $key => $value){
 
-                        $cls = '';
-                            foreach($attempted_question as $k => $v){
-                                if($value == $v['question_id']){
-                                    $estatus = $v['answer_status'];
-                                    if($v['answer_status'] == 'A'){
-                                        $cls = 'answered';
-                                    }else if($v['answer_status'] == 'R'){
-                                        $cls = 'review_later';
-                                    }else if($v['answer_status'] == 'S'){
-                                        $cls = 'skipped';
+                                $data_cls = $cls = '';
+                                    foreach($attempted_question as $k => $v){
+                                        if($value == $v['question_id']){
+                                            $estatus = $v['answer_status'];
+                                            if($v['answer_status'] == 'A'){
+                                               $data_cls =  $cls = 'answered';
+                                            }else if($v['answer_status'] == 'R'){
+                                               $data_cls = $cls = 'review_later';
+                                            }else if($v['answer_status'] == 'S'){
+                                               $data_cls = $cls = 'skipped';
+                                            }
+                                            break;
+                                        }
                                     }
-                                    break;
-                                }
-                            }
-                            if($key+1 == $current_no){
-                                $cls = 'current';
-                            }
-                        ?>
-                        <li data-class = "<?php echo $cls; ?>" class="<?php echo $cls; ?>" data-id="<?php echo $value; ?>"><a data-no="<?php echo $key+1; ?>" data-type="get_question" href="javascript:void(0)" data-id="<?php echo $value; ?>"><span><?php echo $key+1; ?></span></a></li>
-                        <?php
-                    } ?>                            
+                                    if($key+1 == $current_no){
+                                        $cls = 'current';
+                                        $data_cls = '';
+                                    }
+                                ?>
+                                <li data-class = "<?php echo $data_cls; ?>" class="<?php echo $cls; ?>" data-id="<?php echo $value; ?>"><a data-no="<?php echo $key+1; ?>" data-type="get_question" href="javascript:void(0)" data-id="<?php echo $value; ?>"><span><?php echo $key+1; ?></span></a></li>
+                                <?php
+                            } ?>                            
 
-                </ul>
+                        </ul>
                 <div class="clearfix"></div>
                 <!--legends-->
 				<div class="legends">
@@ -143,7 +144,7 @@
                 </div>
                 <!--//legends-->
                 <div class="text-center">
-                	<button class="btn btn_black" >End Test</button>
+                	<button data-type="end_exam" data-change="no" class="btn btn_black" >End Test</button>
                 </div>
             </div>
         </div>
@@ -167,5 +168,27 @@ $(document).ready(function () {
         animation:{ duration: 500 } 
     });
     });
+
+var class_time_to_left = <?php echo $exam_status['remaining_time']; ?>;
+
+var class_time_spent = setInterval(class_time, 1000);;
+
+function class_time()
+{
+  
+    if(class_time_to_left > 0){
+        var x = toHHMMSS(class_time_to_left);
+        var res = x.split(":");
+        $('.clock_wrapper .clock:nth-child(1) .clock_block.cls h1').html(res[0]);
+        $('.clock_wrapper .clock:nth-child(3) .clock_block.cls h1').html(res[1]);
+
+    }else {
+        clearInterval(class_time_spent);
+        $('.clock_wrapper .clock:nth-child(1) .clock_block.cls h1').html('00');
+        $('.clock_wrapper .clock:nth-child(3) .clock_block.cls h1').html('00');
+        return;
+    }
+        class_time_to_left --;
+}
 
 </script>

@@ -26,8 +26,8 @@ function exam_started_timer()
         var x = toHHMMSS(exam_time_to_left);
         var res = x.split(":");
         console.log(res[1]);
-        $('.clock_wrapper .clock:nth-child(1) .clock_block h1').html(res[0]);
-        $('.clock_wrapper .clock:nth-child(3) .clock_block h1').html(res[1]);
+        $('.clock_wrapper .clock:nth-child(1) .clock_block.tls h1').html(res[0]);
+        $('.clock_wrapper .clock:nth-child(3) .clock_block.tls h1').html(res[1]);
 
    }
   if(exam_time_to_left >= 0 && $('#exam_status').length > 0){
@@ -266,6 +266,15 @@ if ("WebSocket" in window)
             $(".alert_notification").show().delay(3000).fadeOut();
         }
 
+        if(obj.reload == 'yes'){
+          setTimeout( function(){    location.reload(); }, 3000);
+       
+        }
+        if(obj.redirect != 'skip'){
+          console.log(obj);
+           location.href = obj.redirect;
+        }
+
         if(obj.time_to_left == 0 && obj.time_to_start > 0 && time_status == 1){
           time_status = 0;
             time_count_out = obj.time_to_start;
@@ -484,12 +493,12 @@ if ("WebSocket" in window)
             len = obj.student_detail.length;
             $.each(obj.student_detail, function (index, list) {
                 if(len == 1){
-                    str += '&nbsp;with : <label class="label label_name">'+ list.name + '</label>';
+                    str += '&nbsp;tagged : <label class="label label_name">'+ list.name + '</label>';
                     ids += list.id;
                 }
                 else if(len == 2){
                     if(i == 0){
-                        str += '&nbsp;with <label class="label label_name">'+list.name +'</label>';
+                        str += '&nbsp;tagged <label class="label label_name">'+list.name +'</label>';
                         ids += list.id;
                     }else{
                         str += '&nbsp;and <label class="label label_name">'+list.name +'</label>';
@@ -500,7 +509,7 @@ if ("WebSocket" in window)
                 else if(len > 2){
                     
                     if(j == 0){
-                        str += '&nbsp;with <label class="label label_name">'+list.name +'</label>';
+                        str += '&nbsp;tagged <label class="label label_name">'+list.name +'</label>';
                         ids += list.id;
                     }else{
                         other_name += list.name+'<div class=\'clearfix\'></div>';
@@ -538,6 +547,7 @@ if ("WebSocket" in window)
                chk = ''; 
             if(obj.choice_id == list.id ){
                 chk = 'checked';
+                exam_choice = list.id;
             }
               $('.ans_options').append('<label><input '+chk+' type="radio" name="option" data-id="'+list.id+'">'+list.choice+'</label>'); 
             });
@@ -551,7 +561,6 @@ if ("WebSocket" in window)
 
 
         }else if(obj.type == 'get_question'){
-
           $('ul.ques_numbers li[class="current"]').attr('class', $('ul.ques_numbers li[class="current"]').data('class'));
           $('ul.ques_numbers li[data-id="'+obj.new_question.qid+'"]').attr('class','current');
           
@@ -565,6 +574,7 @@ if ("WebSocket" in window)
                 chk = ''; 
             if(obj.new_question.choice_id == list.id ){
                 chk = 'checked';
+                exam_choice = list.id;
             }
             $('.ans_options').append('<label><input '+chk+' type="radio" name="option" data-id="'+list.id+'">'+list.choice+'</label>'); 
          });
@@ -580,12 +590,71 @@ if ("WebSocket" in window)
               location.href = '/student/exam';
             }
         }else if(obj.type == 'end_exam'){
-            location.href= obj.redirect;
+           
         }else if(obj.type == 'class_exam_start_request'){
             if(obj.class_exam_status == 'started'){
                 location.href = '/student/class_exam';
             }
-        }else {
+        }
+        else if(obj.type == 'tag-user-again'){
+            var i = 0;
+            var j = 0;
+            var k = 0;
+            str = '';
+            ids = '';
+            other_name = '';
+            len = obj.already_available_tagged_detail.length;
+            $.each(obj.already_available_tagged_detail, function (index, list) {
+                if(len == 1){
+                    str += '&nbsp;tagged : <label class="label label_name">'+ list.full_name + '</label>';
+                    ids += list.id;
+                }
+                else if(len == 2){
+                    if(i == 0){
+                        str += '&nbsp;tagged <label class="label label_name">'+list.full_name +'</label>';
+                        ids += list.id;
+                    }else{
+                        str += '&nbsp;and <label class="label label_name">'+list.full_name +'</label>';
+                        ids += ','+list.id;
+                    }
+                    i++;
+                }
+                else if(len > 2){
+                    
+                    if(j == 0){
+                        str += '&nbsp;tagged <label class="label label_name">'+list.full_name +'</label>';
+                        ids += list.id;
+                    }else{
+                        other_name += list.full_name+'<div class=\'clearfix\'></div>';
+                        l = parseInt(len) - parseInt(1);
+                        if(j == l){
+
+                            str += 'and <label class="label label_name">';
+                            str += '<a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover1" title="Other Tagged" data-content="'+other_name+'">'+ l +' more</a>';
+                            str += '</label>';
+                        }
+                        ids += ','+list.id;    
+                    }
+
+                    j++;
+                }
+              });
+           
+            $('#all_feed div.box.feeds[data-id="'+obj.fid+'"] .feed_text span[data-id="'+obj.fid+'"]').html(str);
+            already = '';
+            i = 0;
+            $.each(obj.already_tagged_detail, function (index, list) {
+              if(i == 0)
+                already += list.full_name;
+              else
+                already += '<br>'+ list.full_name;
+              i++;
+            });
+
+              $(".alert_notification p").html(already+ ' are already tagged');
+              $(".alert_notification").show().delay(50000).fadeOut();
+        }
+        else {
             alert('Message Not Catched!!');
         }
     };
@@ -755,11 +824,11 @@ function generate_post(obj,status){
         notification_str = '';
         $.each(obj.tagged_detail, function (index, list) {
             if(len == 1){
-                name += '<b>with</b> : <label class="label label_name">'+ list.full_name + '</label>';
+                name += '&nbsp;tagged : <label class="label label_name">'+ list.full_name + '</label>';
             }
             else if(len == 2){
                 if(i == 0){
-                    name += 'with <label class="label label_name">'+list.full_name +'</label>';
+                    name += 'tagged <label class="label label_name">'+list.full_name +'</label>';
                 }else{
                     name += 'and <label class="label label_name">'+list.full_name +'</label>';
                 }
@@ -767,7 +836,7 @@ function generate_post(obj,status){
             }
             else if(len > 2){
                 if(j == 0){
-                    name += 'with <label class="label label_name">'+list.full_name +'</label>';
+                    name += 'tagged <label class="label label_name">'+list.full_name +'</label>';
                 }else{
                     other_name += list.full_name+'<div class=\'clearfix\'></div>';
                     l = parseInt(len) - parseInt(1);
@@ -1097,11 +1166,13 @@ if($('ul.ques_numbers li[data-id="'+question_id+'"]').next().length  == 1){
     question_id: question_id,
     qno: next_question_no,
     next: next_question,
+    exam_type: $(this).data('change'),
     answer : exam_choice,
     status :$(this).attr('data-status')
   }
   
   ws.send(JSON.stringify(request));
+  exam_choice = 0;
 });
 
 $(document).on('click','a[data-type="get_question"]',function(){
@@ -1117,7 +1188,8 @@ $(document).on('click','a[data-type="get_question"]',function(){
 $(document).on('click','button[data-type="end_exam"]',function(){
   var request = {
     type : 'end_exam',
-    to   : 'self'
+    to   : 'self',
+    exam_type: $(this).data('change'),
   }
  ws.send(JSON.stringify(request));
 });
@@ -1133,11 +1205,11 @@ $(document).on('click','button[data-type="class_exam_start_request"]',function()
 });
 
 $(document).on('click','a[data-type="tag-user-again"]',function(){
-  
+  alert($('#select-tag-user-again[data-id="'+$(this).data('id')+'"]').val());
   var request = {
     type : 'tag-user-again',
     to   : 'all',
-    tagged_id: $('#select-tag-user-again').val(),
+    tagged_id: $('#select-tag-user-again[data-id="'+$(this).data('id')+'"]').val(),
     fid : $(this).data('id')
   }
   ws.send(JSON.stringify(request));

@@ -484,6 +484,20 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -657,6 +671,20 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1088,17 +1116,19 @@ class PHPWebSocket {
                     $tagged_array = array();
                     $str = '';
                     $i = 0;
+
                     foreach ($data['tagged_id'] as $key => $value) {
                         if (in_array($value, $studymate_id)) {
                             if ($i == 0)
-                                $str .= "(NULL," . $value . "," . $data['post_id'] . ",CURRENT_TIMESTAMP,0,'yes')";
+                                $str .= "(NULL," . $value . "," . $data['post_id'] . ",$user_id,CURRENT_TIMESTAMP,0,'yes')";
                             else
-                                $str .= ",(NULL," . $value . "," . $data['post_id'] . ",CURRENT_TIMESTAMP,0,'yes')";
+                                $str .= ",(NULL," . $value . "," . $data['post_id'] . ",$user_id,CURRENT_TIMESTAMP,0,'yes')";
                             $tagged_array[] = $value;
                             $i++;
                         }
                     }
-                    $query = "INSERT INTO `" . TBL_FEEDS_TAGGED_USER . "`(`id`, `user_id`, `feed_id`, `created_date`, `is_delete`, `is_testdata`) VALUES $str";
+
+                    $query = "INSERT INTO `" . TBL_FEEDS_TAGGED_USER . "`(`id`, `user_id`, `feed_id`,`tagged_by`, `created_date`, `is_delete`, `is_testdata`) VALUES $str";
                     $x = mysqli_query($link, $query);
                     if (is_array($tagged_array))
                         $t = implode(',', $tagged_array);
@@ -1244,34 +1274,44 @@ class PHPWebSocket {
 
             // Check user can only like /dislike those post which is added by his classmates.
             if (in_array($user_id, $data['allStudyMate'])) {
+                echo ' 1';
                 $query = "SELECT * FROM " . TBL_FEED_LIKE . " WHERE feed_id =" . $data['fid'] . " and like_by=" . $user_id;
                 $row = mysqli_query($link, $query);
                 $row_cnt = $row->num_rows;
 
                 // Check feed is already liked or not.
                 if ($row_cnt > 0) {
+                    echo ' 2';
                     $dt = mysqli_fetch_assoc($row);
                     if ($dt['is_delete'] == 0) {
+                        echo ' 3';
                         $query = "update " . TBL_FEED_LIKE . " set is_delete = 1 WHERE feed_id =" . $data['fid'] . " and like_by=" . $user_id;
                         $data['message'] = 'unlike';
                     } else {
+                        echo ' 4';
                         $query = "update " . TBL_FEED_LIKE . " set is_delete = 0 WHERE feed_id =" . $data['fid'] . " and like_by=" . $user_id;
                         $data['message'] = 'like';
                     }
                 } else {
+                    echo ' 5';
                     $query = "INSERT INTO `" . TBL_FEED_LIKE . "`(`id`, `like_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL," . $user_id . "," . $data['fid'] . ",CURRENT_TIMESTAMP,NULL,0,'yes')";
                     $data['message'] = 'like';
                 }
+                echo $query;
+
                 mysqli_query($link, $query);
+                echo mysqli_error($link);
                 $query = 'SELECT count(*) cnt FROM ' . TBL_FEED_LIKE . ' where is_delete = 0  AND feed_id=' . $data['fid'];
                 $row = mysqli_query($link, $query);
                 $d = mysqli_fetch_assoc($row);
                 $data['like_cnt'] = $d['cnt'];
             } else {
+                echo ' 6';
                 $data['to'] = "self";
                 $data['error'] = "You are not authorized to commet on this post.";
             }
         } else {
+            echo ' 7';
             $data['to'] = 'self';
             $data['error'] = 'Unable to Identify post. Please don\'t modify data manually.';
         }
@@ -2110,6 +2150,37 @@ class PHPWebSocket {
      * @author Sandip Gopani(SAG)
      */
     function save_answer($userID, $data) {
+        $left = false;
+        $link = $this->db();
+        $date = new DateTime(date("Y-m-d H:i:s"));
+        $c_week = $date->format("W");
+        $year = date("Y");
+
+        $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
+                . "FROM `tutorial_topic` `t` "
+                . "LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` "
+                . "LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` "
+                . "LEFT JOIN `tutorial_topic_exam` `te` ON `te`.`tutorial_topic_id` = `ta`.`topic_id` "
+                . "LEFT JOIN `student_exam_score` `ss` ON `ss`.`exam_id` = `te`.`exam_id` AND `ss`.`user_id` = $userID "
+                . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' LIMIT 1";
+
+        if ($data['exam_type'] == 'no') {
+            $query = " SELECT sc.exam_id,"
+                    . "IF(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time,sc.created_date,sc.created_date + Interval e.duration minute,e.duration,NOW() "
+                    . "FROM student_exam_score sc LEFT JOIN exams e ON e.id = sc.exam_id WHERE sc.user_id = $userID AND sc.exam_status = 'started' "
+                    . "ORDER BY sc.id DESC LIMIT 1 ";
+        }
+        $row = mysqli_query($link, $query);
+        $data['exam'] = mysqli_fetch_assoc($row);
+
+        if ($data['exam_type'] == 'no') {
+            if ($data['exam']['remaining_time'] <= 0) {
+                $data['exam_st'] = 'finished';
+                $data['redirect'] = '/student/my_classroom_exam';
+            } else {
+                $data['exam_st'] = 'started';
+            }
+        }
         if ($data['exam_st'] == 'started') {
             if ($data['status'] == 'next') {
                 if ($data['answer'] == 0) {
@@ -2118,44 +2189,61 @@ class PHPWebSocket {
                     $data['status'] = 'A';
                 }
             }
-            
-            $link = $this->db();
-            $date = new DateTime(date("Y-m-d H:i:s"));
-            $c_week = $date->format("W");
-            $year = date("Y");
-            $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
-                    . "FROM `tutorial_topic` `t` "
-                    . "LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` "
-                    . "LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` "
-                    . "LEFT JOIN `tutorial_topic_exam` `te` ON `te`.`tutorial_topic_id` = `ta`.`topic_id` "
-                    . "LEFT JOIN `student_exam_score` `ss` ON `ss`.`exam_id` = `te`.`exam_id` AND `ss`.`user_id` = $userID "
-                    . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' LIMIT 1";
-
-            $row = mysqli_query($link, $query);
 
             if (mysqli_num_rows($row) == 1) {
-                $data['exam'] = mysqli_fetch_assoc($row);
-                $query = "SELECT id FROM `ism`.`student_exam_response` `sr` "
-                        . "WHERE `sr`.`user_id` = $userID "
-                        . "AND `sr`.`exam_id` = " . $data['exam']['exam_id'] . " "
-                        . "AND `sr`.`question_id` = " . $data['question_id'] . " ";
-                $row = mysqli_query($link, $query);
 
-                $query = "SELECT `is_right` FROM `answer_choices`  WHERE `id` = " . $data['answer'];
-                $roq = mysqli_query($link, $query);
-                $roqs = mysqli_fetch_assoc($roq);
-                
-                    if (mysqli_num_rows($row) == 1) {
-                        $query = "UPDATE `ism`.`student_exam_response` `sr`"
-                                . "SET `choice_id` = " . $data['answer'] . ", `answer_status` = '" . $data['status'] . "', `response_duration` = " . $data['time'] . ",`is_right` = " . $roqs['is_right'] . " "
-                                . "WHERE  `sr`.`user_id` = $userID "
-                                . "AND `sr`.`exam_id` = " . $data['exam']['exam_id'] . " "
-                                . "AND `sr`.`question_id` = " . $data['question_id'] . " ";
-                    } else {
-                        $query = "INSERT INTO `ism`.`student_exam_response` "
-                                . "(`id`, `user_id`, `exam_id`, `question_id`, `choice_id`, `answer_status`, `answer_text`, `is_right`, `response_duration`, `created_date`, `modified_date`, `is_delete`, `is_testdata`)"
-                                . " VALUES (NULL, '$userID', " . $data['exam']['exam_id'] . ", '" . $data['question_id'] . "', '" . $data['answer'] . "', '" . $data['status'] . "', NULL, " . $roqs['is_right'] . ", " . $data['time'] . ", CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes') ";
+                /* Check question exist in question id. */
+                $query = "SELECT `id` FROM `exam_question` WHERE `exam_id` = " . $data['exam']['exam_id'] . " AND `question_id` = " . $data['question_id'] . " ";
+                $row = mysqli_query($link, $query);
+                if (mysqli_num_rows($row) == 0) {
+                    $data['error'] = 'Please don\'t modify data manually!';
+                    $data['reload'] = 'yes';
+                    $left = true;
+                }
+
+                if ($left == false) {
+                    $query = "SELECT id FROM `ism`.`student_exam_response` `sr` "
+                            . "WHERE `sr`.`user_id` = $userID "
+                            . "AND `sr`.`exam_id` = " . $data['exam']['exam_id'] . " "
+                            . "AND `sr`.`question_id` = " . $data['question_id'] . " ";
+                    $row = mysqli_query($link, $query);
+
+                    $query = "SELECT `is_right` FROM `answer_choices`  WHERE `id` = " . $data['answer'];
+                    $roq = mysqli_query($link, $query);
+                    $roqs = mysqli_fetch_assoc($roq);
+                    if ($roqs['is_right'] != 1) {
+                        $roqs['is_right'] = 0;
                     }
+                    /* Check answer id is within choices id or Not */
+                    $query = "SELECT `id` FROM `answer_choices` WHERE `question_id` = " . $data['question_id'];
+                    $row = mysqli_query($link, $query);
+                    $all_choices = array();
+                    while ($rows = mysqli_fetch_assoc($row)) {
+                        $all_choices[] = $rows['id'];
+                    }
+
+                    if (in_array($data['answer'], $all_choices) || $data['answer'] == 0) {
+                        if (mysqli_num_rows($row) == 1) {
+                            $query = "UPDATE `ism`.`student_exam_response` `sr` "
+                                    . "SET `choice_id` = " . $data['answer'] . ", `answer_status` = '" . $data['status'] . "', `response_duration` = " . $data['time'] . ",`is_right` = " . $roqs['is_right'] . " "
+                                    . "WHERE  `sr`.`user_id` = $userID "
+                                    . "AND `sr`.`exam_id` = " . $data['exam']['exam_id'] . " "
+                                    . "AND `sr`.`question_id` = " . $data['question_id'] . " ";
+                        } else {
+                            $query = "INSERT INTO `ism`.`student_exam_response` "
+                                    . "(`id`, `user_id`, `exam_id`, `question_id`, `choice_id`, `answer_status`, `answer_text`, `is_right`, `response_duration`, `created_date`, `modified_date`, `is_delete`, `is_testdata`)"
+                                    . " VALUES (NULL, '$userID', " . $data['exam']['exam_id'] . ", '" . $data['question_id'] . "', '" . $data['answer'] . "', '" . $data['status'] . "', NULL, " . $roqs['is_right'] . ", " . $data['time'] . ", CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes') ";
+                        }
+                        $x = mysqli_query($link, $query);
+                        if (!$x) {
+                            pr($query);
+                            pr(mysqli_error($link));
+                        }
+                    } else {
+                        $data['error'] = "Please don't modify choices manually!!";
+                        $data['reload'] = 'yes';
+                    }
+                }
 
                 if (isset($data['status'])) {
                     if ($data['status'] == 'A') {
@@ -2167,12 +2255,6 @@ class PHPWebSocket {
                     } else {
                         $data['status'] = '';
                     }
-                }
-
-
-                $x = mysqli_query($link, $query);
-                if (!$x) {
-                    pr(mysqli_error($link));
                 }
             } else {
                 
@@ -2186,18 +2268,18 @@ class PHPWebSocket {
         }
 
         /* Update total_score. */
+        if ($left == false) {
+            $query = "select count(*) total,"
+                    . " sum(case WHEN is_right = 0 THEN 1 ELSE 0 end) incorrect,"
+                    . " sum(case WHEN is_right = 1 THEN 1 ELSE 0 end) correct,"
+                    . " sum(response_duration) time_spent FROM `student_exam_response` WHERE `exam_id` = " . $data['exam']['exam_id'] . "  AND `user_id` = " . $userID . " ";
 
-        $query = "select count(*) total,"
-                . " sum(case WHEN is_right = 0 THEN 1 ELSE 0 end) incorrect,"
-                . " sum(case WHEN is_right = 1 THEN 1 ELSE 0 end) correct,"
-                . " sum(response_duration) time_spent FROM `student_exam_response` WHERE `exam_id` = " . $data['exam']['exam_id'] . "  AND `user_id` = " . $userID . " ";
+            $row = mysqli_query($link, $query);
+            $rows = mysqli_fetch_assoc($row);
 
-        $row = mysqli_query($link, $query);
-        $rows = mysqli_fetch_assoc($row);
-
-        $query = 'UPDATE `student_exam_score` SET `correct_answers` = ' . $rows['correct'] . ' , `incorrect_answers`=  ' . $rows['incorrect'] . ', `total_time_spent` = ' . $rows['time_spent'] . ' WHERE `user_id` = ' . $userID . ' AND `exam_id` = ' . $data['exam']['exam_id'] . ' ';
-        mysqli_query($link, $query);
-
+            $query = 'UPDATE `student_exam_score` SET `correct_answers` = ' . $rows['correct'] . ' , `incorrect_answers`=  ' . $rows['incorrect'] . ', `total_time_spent` = ' . $rows['time_spent'] . ' WHERE `user_id` = ' . $userID . ' AND `exam_id` = ' . $data['exam']['exam_id'] . ' ';
+            mysqli_query($link, $query);
+        }
         return $data;
     }
 
@@ -2259,22 +2341,21 @@ class PHPWebSocket {
         }
     }
 
-    function check_exam($userid,$data){
-        $query = "select * from student_academic_info si left join exams e on e.classroom_id = si.classroom_id where e.id = ".$data['exam_id']." and si.user_id =".$userid." and e.exam_type != 'tutorial'";
+    function check_exam($userid, $data) {
+        $query = "select * from student_academic_info si left join exams e on e.classroom_id = si.classroom_id where e.id = " . $data['exam_id'] . " and si.user_id =" . $userid . " and e.exam_type != 'tutorial'";
         $link = $this->db();
-        
-        $rows = mysqli_query($link,$query);
-        if(mysqli_num_rows($rows) > 0){
+
+        $rows = mysqli_query($link, $query);
+        if (mysqli_num_rows($rows) > 0) {
             $row = mysqli_fetch_assoc($rows);
             $data['class_exam_status'] = 'started';
-            $query = "INSERT INTO `student_exam_score`( `user_id`, `exam_id`, `attempt_count`, `correct_answers`, `incorrect_answers`, `total_time_spent`, `evaluation_privacy`, `exam_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (".$userid.",".$data['exam_id'].",0,0,0,0,0,'started',CURRENT_TIMESTAMP,0,'yes')";
-            $x = mysqli_query($link,$query);
-            if(!$x){
+            $query = "INSERT INTO `student_exam_score`( `user_id`, `exam_id`, `attempt_count`, `correct_answers`, `incorrect_answers`, `total_time_spent`, `evaluation_privacy`, `exam_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (" . $userid . "," . $data['exam_id'] . ",0,0,0,0,0,'started',CURRENT_TIMESTAMP,0,'yes')";
+            $x = mysqli_query($link, $query);
+            if (!$x) {
                 $data['to'] = 'self';
                 $data['error'] = 'Unable to save message.! Please try again.';
             }
-        }
-        else{
+        } else {
             $data['to'] = 'self';
             $data['error'] = 'Please don\'t modify data manually.';
         }
@@ -2289,6 +2370,7 @@ class PHPWebSocket {
             $date = new DateTime(date("Y-m-d H:i:s"));
             $c_week = $date->format("W");
             $year = date("Y");
+
             $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
                     . "FROM `tutorial_topic` `t` "
                     . "LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` "
@@ -2297,15 +2379,167 @@ class PHPWebSocket {
                     . "LEFT JOIN `student_exam_score` `ss` ON `ss`.`exam_id` = `te`.`exam_id` AND `ss`.`user_id` = $userID "
                     . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' LIMIT 1";
 
+            if ($data['exam_type'] == 'no') {
+                $query = " SELECT sc.exam_id,"
+                        . "IF(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time,sc.created_date,sc.created_date + Interval e.duration minute,e.duration,NOW() "
+                        . "FROM student_exam_score sc LEFT JOIN exams e ON e.id = sc.exam_id WHERE sc.user_id = $userID AND sc.exam_status = 'started' "
+                        . "ORDER BY sc.id DESC LIMIT 1 ";
+            }
+
             $row = mysqli_query($link, $query);
             if (mysqli_num_rows($row) == 1) {
                 $exam = mysqli_fetch_assoc($row);
-                $data['redirect'] = '/student/my_scoreboard/index/'.$exam['exam_id'];
-                $query = "UPDATE `student_exam_score` `te` SET `te`.`exam_status` = 'finished', `te`.`exam_endtime` = CURRENT_TIMESTAMP WHERE `te`.`user_id` = $userID AND `te`.`exam_id` = ".$exam['exam_id'];
+                $data['redirect'] = '/student/my_scoreboard/index/' . $exam['exam_id'];
+                $query = "UPDATE `student_exam_score` `te` SET `te`.`exam_status` = 'finished', `te`.`exam_endtime` = CURRENT_TIMESTAMP WHERE `te`.`user_id` = $userID AND `te`.`exam_id` = " . $exam['exam_id'];
                 mysqli_query($link, $query);
             }
         }
         return $data;
+    }
+
+    function tag_again($user_id, $data) {
+        $link = $this->db();
+        $studymate_id = $this->class_mate_list($user_id);
+        $query = "select * from feeds where id=" . $data['fid'];
+        $rows = mysqli_query($link, $query);
+        if (mysqli_num_rows($rows) > 0) {
+            $row = mysqli_fetch_assoc($rows);
+            if (in_array($row['feed_by'], $studymate_id)) {
+                $tagged_array = array();
+                $already_tagged_array = array();
+                $str = '';
+                $i = 0;
+
+                foreach ($data['tagged_id'] as $key => $value) {
+                    $query = "SELECT * FROM feeds_tagged_user where tagged_by=" . $user_id . " and user_id=" . $value . " and feed_id=" . $data['fid'];
+                    $rows = mysqli_query($link, $query);
+                    if (mysqli_num_rows($rows) > 0) {
+                        $already_tagged_array[] = $value;
+                    } else {
+                        if ($i == 0) {
+                            $str .= '(' . $value . ',' . $data["fid"] . ',' . $user_id . ',CURRENT_TIMESTAMP,0,0,"yes")';
+                        } else {
+                            $str .= ',(' . $value . ',' . $data["fid"] . ',' . $user_id . ',CURRENT_TIMESTAMP,0,0,"yes")';
+                        }
+                        $i++;
+                        $tagged_array[] = $value;
+                    }
+                }
+
+                if ($str != '') {
+
+                    $query = "INSERT INTO `feeds_tagged_user`(`user_id`, `feed_id`, `tagged_by`, `created_date`, `is_delete`, `is_see`, `is_testdata`) VALUES $str";
+                    $x = mysqli_query($link, $query);
+                }
+                if (is_array($tagged_array) && sizeof($tagged_array) > 0) {
+                    $t = implode(',', $tagged_array);
+                } else
+                    $t = '0';
+
+                if (is_array($already_tagged_array) && sizeof($already_tagged_array) > 0)
+                    $t2 = implode(',', $already_tagged_array);
+                else
+                    $t2 = '0';
+
+                $query = "SELECT id,full_name from users where id in(" . $t . ")";
+                $rows = mysqli_query($link, $query);
+                $tagged_detail = array();
+                $i = 0;
+
+                while ($row = mysqli_fetch_assoc($rows)) {
+                    $tagged_detail[$i]['full_name'] = $row['full_name'];
+                    $tagged_detail[$i]['id'] = $row['id'];
+                    $i++;
+                }
+
+                $data['tagged_id'] = $tagged_array;
+                $data['tagged_detail'] = $tagged_detail;
+
+                $query = "SELECT id,full_name from users where id in(" . $t2 . ")";
+                $rows = mysqli_query($link, $query);
+                $already_tagged_detail = array();
+                $i = 0;
+
+                while ($row = mysqli_fetch_assoc($rows)) {
+                    $already_tagged_detail[$i]['full_name'] = $row['full_name'];
+                    $already_tagged_detail[$i]['id'] = $row['id'];
+                    $i++;
+                }
+
+
+                $data['already_tagged_id'] = $already_tagged_array;
+                $data['already_tagged_detail'] = $already_tagged_detail;
+
+                $query = 'SELECT u.id,u.full_name FROM feeds_tagged_user f  left join users u on u.id = f.user_id where f.feed_id = ' . $data['fid'];
+                $rows = mysqli_query($link, $query);
+                $available_user = array();
+                $i = 0;
+
+                while ($row = mysqli_fetch_assoc($rows)) {
+                    $available_user[$i]['full_name'] = $row['full_name'];
+                    $available_user[$i]['id'] = $row['id'];
+                    $i++;
+                }
+
+                $data['already_available_tagged_detail'] = $available_user;
+            } else {
+
+                $data['to'] = 'self';
+                $data['error'] = 'Please don\'t modify data manually.';
+            }
+        } else {
+            $data['to'] = 'self';
+            $data['error'] = 'Please don\'t modify data manually.';
+        }
+        return $data;
+    }
+
+    /**
+     * Save file sent from feed.
+     * @param type $userID
+     * @param type $data
+     */
+    function save_feed_file($userID, $data) {
+        $time = time();
+        $link = $this->db();
+        $output_file = dirname(__DIR__) . "\\uploads\\user_" . $user_id;
+        if (!file_exists($output_file)) {
+            mkdir($output_file, 0777);
+        }
+        $output_file .= '\sentFiles';
+        if (!file_exists($output_file)) {
+            mkdir($output_file, 0777);
+        }
+        $data['webpath'] = 'user_' . $user_id . '/sentFiles/' . $time . '_' . $data['name'];
+        $output_file .= '\\' . $time . '_' . $data['name'];
+
+
+        $studymate_id = $this->class_mate_list($user_id);
+        if (is_array($data) && !empty($data)) {
+           
+            $query = "INSERT INTO `feeds`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$user_id,'','".$data['webpath']."','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
+            $x = mysqli_query($link, $query);
+            $data['post_id'] = mysqli_insert_id($link);
+            $data['tot_like'] = 0;
+            $data['tot_comment'] = 0;
+            file_put_contents($output_file, base64_decode($data['data']));
+            if (!$x) {
+                $data['to'] = 'self';
+                $data['error'] = 'Unable to save message.! Please try again.';
+            }
+           
+        }
+        //return $data;
+        return array_merge($data, $this->get_client_info($user_id));
+    }
+
+    /**
+     * Save file sent from feed comment.
+     * @param type $userID
+     * @param type $data
+     */
+    function save_feed_comment_file($userID, $data) {
+        
     }
 
 }

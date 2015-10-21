@@ -39,9 +39,9 @@
         $('[data-toggle="popover2"]').popover('show');
     });
 
-    $(document).on('click','[data-toggle="popover"]',function(){
-        $('[data-toggle="popover"]').popover('show');
-    });
+    $(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
 
 </script>
  <!--main-->
@@ -96,7 +96,7 @@
                     </div>
                     <div class="feed_text">
                         <h4><?php echo $value['full_name'];?></h4>
-                        <span>
+                        <span data-id="<?php echo $value['fid'];?>">
                             <?php
                                 if(isset($value['tagged']) && sizeof($value['tagged'])>0){
                                     $t_j = 0; 
@@ -125,7 +125,7 @@
                                                 $l = $t_count - 1;
                                                 $other_name .= $t_value['full_name'].'<br>'; 
                                                 if($k == $l){
-                                                    echo 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-placement="bottom" data-trigger="focus" data-toggle="popover" title="Other Tagged" data-content="'.$other_name.'">'.$l.' more</a></label>';
+                                                    echo 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-placement="bottom" data-trigger="focus" data-toggle="popover" title="Other Tagged" data-content="'.$other_name.'" onclick="$(\'[data-toggle="popover"]\').popover(\'show\');">'.$l.' more</a></label>';
                                                 }
                                             }
                                             $k++;
@@ -165,7 +165,7 @@
                         </div>
                     </div>
                     <div style="float:right;display:none;" id="show-again" data-id="<?php echo $value['fid'];?>">
-                        <select style="width:200px;"name="all_users_again[]" id="select-tag-user-again" class="js-example-basic-single form-control" multiple="multiple">
+                        <select style="width:200px;"name="all_users_again[]" id="select-tag-user-again" data-id="<?php echo $value['fid'];?>" class="js-example-basic-single form-control" multiple="multiple">
                             <?php
                             if(!empty($my_studymates)) {
                                 foreach($my_studymates as $list){
@@ -232,6 +232,9 @@
 
 <!--side right-->
 <div class="sidebar_right_container mCustomScrollbar" data-mcs-theme="minimal-dark"><!--scrollbar" id="style-3-->
+    
+    
+      <!-- --------------------Here you slider--------------------------- -->
     <!--notice board-->
     <div id="carousel-noticeboard" class="carousel slide" data-ride="carousel">
       <!-- Indicators -->
@@ -240,8 +243,7 @@
         <li data-target="#carousel-noticeboard" data-slide-to="1"></li>
         <li data-target="#carousel-noticeboard" data-slide-to="2"></li>
       </ol>
-    
-      <!-- Wrapper for slides -->
+<!-- Wrapper for slides -->
       <div class="carousel-inner" role="listbox">
         <?php 
             if(isset($my_latest_notice) && sizeof($my_latest_notice)>0){
@@ -275,8 +277,7 @@
         </div>
         <?php } ?>
       </div>
-    
-      <!-- Controls -->
+       <!-- Controls -->
       <a class="left carousel-control" href="#carousel-noticeboard" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
@@ -287,6 +288,7 @@
       </a>
     </div>
     <!--//notice board-->
+     
     <!--high score board-->
     <div class="score box">
         <div class="box_header">

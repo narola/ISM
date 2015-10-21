@@ -31,7 +31,7 @@
                 </div>                     
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 select no-padding">
-                    <select class="form-control myselect" name="course_id" onchange="fetch_classroom(this.value)">
+                    <select class="form-control myselect" name="course_id" id="course_id" onchange="fetch_classroom(this.value)">
                         <option value="">Course Name</option>
                         <?php 
                           if(!empty($all_courses)){ 
@@ -49,24 +49,46 @@
                 
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 select padding_r15_">
                     
-                    <select name="classroom_id" class="form-control" onclick="fetch_subject(this.value)" id="classroom_id">
+                    <select name="classroom_id" class="form-control" onchange="fetch_subject(this.value)" id="classroom_id">
                         <option value="">Select Classroom</option>
+                        <?php 
+                          if(!empty($all_classrooms)){ 
+                            foreach($all_classrooms as $classroom) {
+                          ?> 
+                        <option value="<?php echo $classroom['id']; ?>" > 
+                                <?php echo $classroom['class_name']; ?>
+                        </option>
+
+                        <?php }  }else{ ?>
+                        <option > No Classroom</option>
+                        <?php } ?> 
                     </select>
 
                 </div>
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 select padding_r15_">
                     <select class="form-control" name="subject_id" id="subject_id" >
                         <option value="">Select Subject</option>
+                        <?php 
+                          if(!empty($all_subjects)){ 
+                            foreach($all_subjects as $subject) {
+                          ?> 
+                        <option value="<?php echo $subject['id']; ?>" > 
+                                <?php echo $subject['subject_name']; ?>
+                        </option>
+
+                        <?php }  }else{ ?>
+                        <option > No Subject</option>
+                        <?php } ?>
                     </select>    
                 </div>   
                 
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 btn_switch no-padding">
                     <label>Exam Type : </label>
-                    <input type="checkbox" name="exam_type" <?php if($exam['exam_type']=='subject'){ echo 'checked';  } ?> data-handle-width="100" data-size="mini">
+                    <input type="checkbox" name="exam_type" checked data-handle-width="100" data-size="mini">
                 </div>
                     
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
-                    <select class="form-control" name="pass_percentage">
+                    <select class="form-control" name="pass_percentage" id="pass_percentage">
                         <option value="">Passing Percentage</option>
                         <option value="30" <?php echo set_select('pass_percentage','30'); ?> >30%</option>
                         <option value="40" <?php echo set_select('pass_percentage','40'); ?> >40%</option>
@@ -77,7 +99,7 @@
                 </div>
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
-                    <select class="form-control" name="exam_category">
+                    <select class="form-control" name="exam_category" id="exam_category">
                         <option value="">Exam Category</option>
                         <option value="ISM_Mock" <?php echo set_select('exam_category','ISM_Mock'); ?> >ISM_Mock</option>
                         <option value="WASSCE" <?php echo set_select('exam_category','WASSCE'); ?> >WASSCE</option>
@@ -86,7 +108,7 @@
                     </select>
                 </div>                    
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
-                    <select class="form-control" name="duration">
+                    <select class="form-control" name="duration" id="duration">
                         <option value="">Exam Duration (MIN)</option>
                         <option value="30" <?php echo set_select('duration','30');?> >30 min</option>
                         <option value="60" <?php echo set_select('duration','60');?> >1 Hour</option>
@@ -97,7 +119,7 @@
                     </select>
                 </div>  
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select no-padding">
-                    <select class="form-control" name="attempt_count">
+                    <select class="form-control" name="attempt_count" id="attempt_count">
                         <option value="">Attemp Count</option>
                         <option value="0" <?php echo set_select('attempt_count','0');?> >0</option>
                         <option value="1" <?php echo set_select('attempt_count','1');?> >1</option>
@@ -113,13 +135,15 @@
             <div class="box_body admin_controls">   
 
                <div data-date-format="dd-mm-yyyy" data-date="12-02-2012"  class="form-group dob col-sm-6 padding_r15_">
-                    <input type="text" name="start_date" id="start_date" placeholder="Exam Start"  class="form-control ">
+                    <input type="text" name="start_date" 
+                    value="<?php  echo set_value("start_date") == false ? $exam["start_date"] : set_value("start_date"); ?>" id="start_date" placeholder="Exam Start"  class="form-control ">
                     <!-- <label><input type="checkbox">Notify Student Via SMS</label> -->
                 </div> 
 
                <div class="form-group col-sm-6 padding_r15_">
                    <div class="input-group bootstrap-timepicker">
-                        <input id="timepicker1" name="start_time" type="text" class="form-control input-small">
+                        <input id="timepicker1" name="start_time" type="text" 
+                        value="<?php  echo set_value("start_time") == false ? $exam["start_time"] : set_value("start_time"); ?>"class="form-control input-small">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     </div>
                 </div> 
@@ -131,34 +155,44 @@
             </div>
             <div class="box_body">
                 <div class="form-group col-md-6 col-lg-8 padding_r15_">
-                    <textarea name="instructions" id="editor1" class="form-control"></textarea>
+                    <textarea name="instructions" id="editor1" class="form-control"><?php echo $exam["instructions"]; ?></textarea>
                 </div>
                 <div class="form-group col-md-6 col-lg-4 option_radio">
                     <div>
                         <label>Declare Results</label>
                         <div class="check_div">
-                            <label><input type="radio" name="declare_results" 
-                                <?php if($exam['declare_results'] == 'yes'){ echo 'checked="checked"'; } ?> value="yes"> Yes</label>
-                            <label><input type="radio" name="declare_results" 
-                            <?php if($exam['declare_results'] == 'no'){ echo 'checked="checked"'; } ?> value="no" > No</label>
+                            <label>
+                                    <input type="radio" name="declare_results" 
+                                    <?php if($exam['declare_results'] == 'yes'){ echo 'checked="checked"'; } ?>value="yes"> Yes
+                            </label>
+                            <label>
+                                <input type="radio" name="declare_results"
+                                <?php if($exam['declare_results'] == 'no'){ echo 'checked="checked"'; } ?>  value="no" > No
+                            </label>
                         </div>
                     </div>
                     <div>
                         <label>Negative Marking</label>
                         <div class="check_div">
+                            <label>
+                                <input type="radio" name="negative_marking" 
+                                <?php if($exam['negative_marking'] == 'yes'){ echo 'checked="checked"'; } ?> value="yes" > Yes
+                            </label>
                             <label><input type="radio" name="negative_marking" 
-                                <?php if($exam['negative_marking'] == 'yes'){ echo 'checked="checked"'; } ?> value="yes" > Yes</label>
-                            <label><input type="radio" name="negative_marking" 
-                            <?php if($exam['negative_marking'] == 'no'){ echo 'checked="checked"'; } ?>  value="no" > No</label>
+                                <?php if($exam['negative_marking'] == 'no'){ echo 'checked="checked"'; } ?> value="no" > No</label>
                         </div>
                     </div>
                     <div>
                         <label>Random Questions</label>
                         <div class="check_div">
-                            <label><input type="radio" name="random_question" 
-                                <?php if($exam['random_question'] == 'yes'){ echo 'checked="checked"'; } ?> value="yes" > Yes</label>
-                            <label><input type="radio" name="random_question" 
-                            <?php if($exam['random_question'] == 'no'){ echo 'checked="checked"'; } ?>  value="no" > No</label>
+                            <label>
+                                <input type="radio" name="random_question" 
+                                <?php if($exam['random_question'] == 'yes'){ echo 'checked="checked"'; } ?> value="yes" > Yes
+                            </label>
+                            <label>
+                                <input type="radio" name="random_question" 
+                                <?php if($exam['random_question'] == 'no'){ echo 'checked="checked"'; } ?> value="no" > No
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -175,12 +209,24 @@
     <!--//exam box-->
 </div>
 <!--//main-->
-<script src="http://cdn.ckeditor.com/4.5.3/standard/ckeditor.js"></script>
+<script src="assets/ckeditor_std/ckeditor.js"></script>
+
 
 <script type="text/javascript">
     
-    $('#classroom_id').val('<?php echo $exam["classroom_id"]; ?>');
-    $('#subject_id').val('<?php echo $exam["subject_id"]; ?>');
+    $('#course_id').val('<?php echo $exam["course_id"] ?>');
+    $('#classroom_id').val('<?php echo $exam["classroom_id"] ?>');  
+    $('#subject_id').val('<?php echo $exam["subject_id"] ?>');  
+    $('#pass_percentage').val('<?php echo $exam["pass_percentage"] ?>');  
+    $('#duration').val('<?php echo $exam["duration"] ?>');  
+    $('#attempt_count').val('<?php echo $exam["attempt_count"] ?>');  
+    $('#exam_category').val('<?php echo $exam["exam_category"] ?>');
+    
+    <?php if($exam['exam_type'] == 'subject') { ?>
+        $("[name='exam_type']").prop('checked',true);    
+    <?php }else{ ?>        
+        $("[name='exam_type']").prop('checked',false);    
+    <?php } ?>        
 
     function set_hidden(button_data){
 
@@ -192,7 +238,6 @@
     }
     
     $(document).ready(function() {
-       
         $(".myselect").select2();
 
          $('#timepicker1').timepicker({ 
@@ -216,8 +261,8 @@
             data:{course_id:course_id},
             success:function(data){
                 $('#classroom_id').html(data);
+                $('#subject_id').html('<option value="">Select Subject</option>');
             }
-            
         });
     }
 

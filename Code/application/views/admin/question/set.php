@@ -70,8 +70,6 @@
                             <?php if(!empty($questions)){
                                 $i=1;
                                 foreach ($questions as $question) { ?>
-                                    
-
 
                             <!--q1-->
                             <div class="question_wrapper">
