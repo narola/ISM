@@ -54,11 +54,6 @@ class Exam extends ADMIN_Controller {
 			$offset = $this->uri->segment(4);
 		}
 
-
-
-		//$config['base_url']	 = base_url().'admin/exam/index';
-		// $offset = $this->uri->segment(4);
-
 		$config['num_links'] = 5;
 		$config['total_rows'] = select(TBL_EXAMS." exam",
 	  									 "exam.id,exam.exam_name,exam.classroom_id,exam.subject_id,exam.exam_type,exam.exam_category,exam.exam_mode,

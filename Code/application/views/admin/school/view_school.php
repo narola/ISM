@@ -33,6 +33,16 @@
                     </select>
                 </div>
 
+                <div class="form-group">
+                    <select class="form-control" name="order" id="order" onchange="filter_data()">
+                        <option value="">Sort By</option>
+                        <option value="name_asc">Name Ascending</option>
+                        <option value="name_desc">Name Descending</option>
+                        <option value="latest">Latest First</option>
+                        <option value="older">Older First</option>
+                    </select>
+                </div>
+
                 <div class="form-group no_effect search_input">
                     <input type="text" name="q" id="q" class="form-control" placeholder="Search" >
                     <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
@@ -137,36 +147,41 @@
 <script type="text/javascript">
 
     function filter_data() {
+        
         var q = $('#q').val();
         var school_grade = $('#school_grade').val();
-        if (q == '') {
-            $('#q').removeAttr('name');
-        }
+        var order = $('#order').val();
+        
+        if (q == '') {$('#q').removeAttr('name');}
+        if (school_grade == '') {$('#school_grade').removeAttr('name');}
+        if(order == ''){  $('#order').removeAttr('name'); }
 
-        if (school_grade == '') {
-            $('#school_grade').removeAttr('name');
-        }
         $('#filter').submit();
     }
 
     $("#filter").submit(function (event) {
+        
         var q = $('#q').val();
         var school_grade = $('#school_grade').val();
-        if (q == '') {
-            $('#q').removeAttr('name');
-        }
-        if (school_grade == '') {
-            $('#school_grade').removeAttr('name');
-        }
+        var order = $('#order').val();
+
+        if (q == '') { $('#q').removeAttr('name'); }
+        if (school_grade == '') { $('#school_grade').removeAttr('name'); }
+        if(order == ''){  $('#order').removeAttr('name'); }
+
     });
 
-<?php if (!empty($_GET['q'])) { ?>
-        $('#q').val('<?php echo $_GET["q"]; ?>');
-<?php } ?>
+    <?php if(!empty($_GET['order'])) { ?>
+        $('#order').val('<?php echo $_GET["order"];?>');    
+    <?php } ?> 
 
-<?php if (!empty($_GET['school_grade'])) { ?>
-        $('#school_grade').val('<?php echo $_GET["school_grade"]; ?>');
-<?php } ?>
+    <?php if (!empty($_GET['q'])) { ?>
+            $('#q').val('<?php echo $_GET["q"]; ?>');
+    <?php } ?>
+
+    <?php if (!empty($_GET['school_grade'])) { ?>
+            $('#school_grade').val('<?php echo $_GET["school_grade"]; ?>');
+    <?php } ?>
 
 
 </script>

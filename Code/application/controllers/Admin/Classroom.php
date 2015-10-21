@@ -23,18 +23,29 @@ class Classroom extends ADMIN_Controller {
      * */
     public function index() {
 
+        $order = '';
+        $str = '';
+        $where['where'][TBL_CLASSROOMS . '.is_delete'] = FALSE;
         $this->data['page_title'] = 'Class Rooms';
 
-        if (!empty($_GET['q']) || !empty($_GET['course_name'])) {
-            if (!empty($_GET['q'])) {
+        if (!empty($_GET['q']) || !empty($_GET['course_name']) || !empty($_GET['order']) ) {
+
+            if (!empty($_GET['q']) || !empty($_GET['order']) ) {
                 $q = $this->input->get('q');
+                $order_get = $this->input->get('order');
+
+                if($order_get == 'name_asc'){ $order = TBL_CLASSROOMS.".class_name asc"; $str.='&order=name_asc';  }
+                if($order_get == 'name_desc'){ $order = TBL_CLASSROOMS.".class_name desc"; $str.='&order=name_desc'; }
+                if($order_get == 'latest'){ $order = TBL_CLASSROOMS.".created_date desc"; $str.='&order=latest'; }
+                if($order_get == 'older'){ $order = TBL_CLASSROOMS.".created_date asc"; $str.='&order=older'; } 
+
             }
 
             if (!empty($_GET['course_name'])) {
                 $course_name = $this->input->get('course_name');
             }
 
-            $str = '';
+            
             if (!empty($course_name)) {
                 $where['where'][TBL_CLASSROOMS . '.course_id'] = $course_name;
                 $str .='&course_name=' . $course_name;
@@ -57,9 +68,7 @@ class Classroom extends ADMIN_Controller {
             $config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
             $offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'	
         } else {
-            $where = null;
-            $where['where'][TBL_CLASSROOMS . '.is_delete'] = FALSE;
-
+           
             $config['base_url'] = base_url() . 'admin/classroom/index';
             $offset = $this->uri->segment(4);
         }
@@ -110,18 +119,21 @@ class Classroom extends ADMIN_Controller {
                 . TBL_CLASSROOMS . '.class_nickname,'
                 . TBL_CLASSROOMS . '.is_delete,'
                 . TBL_COURSES . '.course_name', $where, array(
-            'limit' => $config['per_page'],
-            'offset' => $offset,
-            'join' => array(
-                array(
-                    'table' => TBL_COURSES,
-                    'condition' => TBL_COURSES . '.id = ' . TBL_CLASSROOMS . '.course_id'
-                )
-            )
+                'order_by'=>$order,
+                'limit' => $config['per_page'],
+                'offset' => $offset,
+                'join' => array(
+                                array(
+                                    'table' => TBL_COURSES,
+                                    'condition' => TBL_COURSES . '.id = ' . TBL_CLASSROOMS . '.course_id'
+                                )
+                            )
                 )
         );
 
         $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => FALSE)));
+
+
         $this->pagination->initialize($config);
 
         $this->template->load('admin/default', 'admin/classroom/view_classroom', $this->data);
