@@ -69,15 +69,10 @@
         </div>
         <div class="box_header">
             <a href="javascript:void(0);" class="icon icon_pin">
-                <input  id="feed_file_share" type="file" data-id="feed">
+                <input  id="feed_file_share" data-type="feed_file_share" type="file" data-id="feed">
             </a>
             <div class="dropdown" style="display: inline-block;">
                 <a href="javascript:void(0);" id="show-tag-user" class="dropdown-toggle icon icon_user" aria-haspopup="true" aria-expanded="true"><span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Emma Mall</a></li>
-                    <li><a href="#">Gill Christ</a></li>
-                    <li><a href="#">Adam Stranger</a></li>
-                </ul>
             </div>
             <button data-type="post" class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
         </div>
@@ -89,6 +84,12 @@
             if(isset($feed)){
                 $j = 1;
                 foreach ($feed as $key => $value) {
+                    if(count($value['images']) > 0){
+                        foreach($value['images'] as $v){
+                             $value['feed_text'] .= '<a href="'.base_url().'uploads/' . $v . '"  target="_BLANK"><img src="uploads/' . $v . '" width="100" height="70"></a>';
+                        }
+                       
+                    }
         ?>
                 <div class="box feeds" data-id="<?php echo $value['fid'];?>">
                     <div class="user_small_img">
@@ -157,11 +158,6 @@
                         <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
                         <div class="dropdown tag_user" style="display: inline-block;">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="<?php echo $value['fid'];?>" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Emma Mall</a></li>
-                                <li><a href="#">Gill Christ</a></li>
-                                <li><a href="#">Adam Stranger</a></li>
-                            </ul>
                         </div>
                     </div>
                     <div style="float:right;display:none;" id="show-again" data-id="<?php echo $value['fid'];?>">
@@ -197,7 +193,7 @@
                                     </div>
                                     <div class="notification_txt">
                                         <p><a href="#" class="noti_username"><?php echo $com['full_name'];?></a> <?php echo $com['comment'];?></p>
-                                        <span class="noti_time">1 Day</span>                            
+                                        <span class="noti_time"><?php echo get_time_format($com['created_date']); ?></span>                            
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
@@ -211,8 +207,7 @@
                     </div>
                     <div class="write_comment box_body">
                         <input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="<?php echo $value['fid']; ?>">                  
-                        <a class="icon icon_image"></a>
-                        <input type="file">
+                        
                     </div>
                 </div>
                 <?php

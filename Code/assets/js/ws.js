@@ -231,6 +231,7 @@ $(document).ready(function () {
     };
 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
+
         if($('#chat_file_share').length > 0){
             document.getElementById('chat_file_share').addEventListener('change', handleFileSelect, false);
         }
@@ -251,7 +252,7 @@ $(document).ready(function () {
 /* Check wheather web socket is supported by browser. */
 if ("WebSocket" in window)
 {
-    var ws = new WebSocket("ws://192.168.1.124:9300");
+    var ws = new WebSocket("ws://192.168.1.21:9300");
 
     ws.onopen = function ()
     {
@@ -270,6 +271,7 @@ if ("WebSocket" in window)
           setTimeout( function(){    location.reload(); }, 3000);
        
         }
+
         if(obj.redirect != 'skip'){
           console.log(obj);
            location.href = obj.redirect;
@@ -302,7 +304,8 @@ if ("WebSocket" in window)
                 
                 var c =  $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="'+obj.from+'"] a span.badge');
                 var count = c.text();
-                if(count == '' || count == 0 || count == '' || count == 'undefined'){
+
+                if(count == '' || count == 0 || count == 'undefined'){
                     count = 0;
                 }
                 c.html(++count);
@@ -394,7 +397,7 @@ if ("WebSocket" in window)
                 else 
                     cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() + 1;
                 $('.mCSB_container .three_tabs #study_request_cnt').html(cnt);
-            }            
+            }
             $('.suggested_mates_card .mate_descrip button[data-id="'+obj.studymate_id+'"]').removeClass('btn_green').attr('disabled',true).addClass('btn_black_normal').html('Request Already Sent');
         }else if(obj.type == 'time_request'){
                 clearInterval(counter);
@@ -603,6 +606,7 @@ if ("WebSocket" in window)
             str = '';
             ids = '';
             other_name = '';
+            notification_str = '';
             len = obj.already_available_tagged_detail.length;
             $.each(obj.already_available_tagged_detail, function (index, list) {
                 if(len == 1){
@@ -620,7 +624,6 @@ if ("WebSocket" in window)
                     i++;
                 }
                 else if(len > 2){
-                    
                     if(j == 0){
                         str += '&nbsp;tagged <label class="label label_name">'+list.full_name +'</label>';
                         ids += list.id;
@@ -628,19 +631,38 @@ if ("WebSocket" in window)
                         other_name += list.full_name+'<div class=\'clearfix\'></div>';
                         l = parseInt(len) - parseInt(1);
                         if(j == l){
-
                             str += 'and <label class="label label_name">';
                             str += '<a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover1" title="Other Tagged" data-content="'+other_name+'">'+ l +' more</a>';
                             str += '</label>';
                         }
                         ids += ','+list.id;    
                     }
-
                     j++;
+                }
+                notification_str += '<li><a href="#">';
+                notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+obj.profile_link+'"></div>';
+                notification_str += '<div class="notification_txt">';
+                notification_str += '<p><span class="noti_username">'+obj.full_name+'</span> tagged you in a post</p>';
+                notification_str += '<span class="noti_time">Just now</span></div>';
+                notification_str += '<div class="clearfix"></div>';
+                notification_str += '</a></li>';
+                if(wp == list.id){
+                    $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
+                    $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
+                    notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
+                    if(notification_length == 0 ){
+                        notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">No more notification</div></li>');
+                        $('.mCSB_container .three_tabs .dropdown .badge').html(0);
+                    }
+                    else{
+                        $('.mCSB_container .three_tabs .dropdown .badge').html(notification_length);
+                    }
                 }
               });
            
             $('#all_feed div.box.feeds[data-id="'+obj.fid+'"] .feed_text span[data-id="'+obj.fid+'"]').html(str);
+              
+            
             already = '';
             i = 0;
             $.each(obj.already_tagged_detail, function (index, list) {
@@ -650,9 +672,12 @@ if ("WebSocket" in window)
                 already += '<br>'+ list.full_name;
               i++;
             });
-
-              $(".alert_notification p").html(already+ ' are already tagged');
-              $(".alert_notification").show().delay(50000).fadeOut();
+            if(already != ''){
+                if(wp == obj.id){
+                    $(".alert_notification p").html(already+ ' are already tagged');
+                    $(".alert_notification").show().delay(50000).fadeOut();
+                }
+            }
         }
         else {
             alert('Message Not Catched!!');
@@ -815,8 +840,8 @@ function generate_post(obj,status){
     str += '<h4>'+obj.full_name+'</h4>';
 
     len = obj.tagged_detail.length;
-        if(len > 0){
-        name = '';
+    name = '';
+    if(len > 0){
         i = 0;
         j = 0;
         k = 0;
@@ -851,15 +876,12 @@ function generate_post(obj,status){
             notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+obj.profile_link+'"></div>';
             notification_str += '<div class="notification_txt">';
             notification_str += '<p><span class="noti_username">'+obj.full_name+'</span> tagged you in a post</p>';
-            notification_str += '<span class="noti_time">1 hour ago</span></div>';
+            notification_str += '<span class="noti_time">Just now</span></div>';
             notification_str += '<div class="clearfix"></div>';
             notification_str += '</a></li>';
             if(wp == list.id){
                 $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
-
                 $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
-            
-
                 notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
                 if(notification_length == 0 ){
                     notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">No more notification</div></li>');
@@ -869,38 +891,45 @@ function generate_post(obj,status){
                     $('.mCSB_container .three_tabs .dropdown .badge').html(notification_length);
                 }
             }
-
         });
-        str += '<span>'+name+'</span>';
-        }
-    
-    str += '<span class="date">Sep 28, 2015</span>';
+    }
+    str += '<span data-id="'+obj.post_id+'">'+name+'</span>';
+
+    options = '';
+    $.each(obj.studymates_detail, function (index, study_list) {
+        options += '<option value="'+study_list.id+'">'+study_list.full_name+'</option>';
+    });
+
+    str += '<span class="date">'+obj.current_date+'</span>';
     str += '<div class="clearfix"></div>';
     str += '<p>'+obj.message+'</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="'+obj.post_id+'"><span class="icon icon_thumb'+cls+'"></span>'+obj.tot_like+'</a>';
     str += '<a href="javascript:void(0);" class="comment_btn"><span class="icon icon_comment"></span>'+obj.tot_comment+'</a>';
     str += '<div class="dropdown tag_user" style="display: inline-block;">';
-    str += '<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>';
-    str += '<ul class="dropdown-menu">';
-    str += '<li><a href="#">Emma Mall</a></li>';
-    str += '<li><a href="#">Gill Christ</a></li>';
-    str += '<li><a href="#">Adam Stranger</a></li>';
-    str += '</ul>';
+    str += '<a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="'+obj.post_id+'" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>'
     str += '</div>';
+    str += '</div>';
+    str += '<div style="float:right;display:none;" id="show-again" data-id="'+obj.post_id+'">';
+    str += '<select style="width:200px;"name="all_users_again[]" id="'+obj.post_id+'" data-id="'+obj.post_id+'" class="js-example-basic-single form-control" multiple="multiple">';
+    str +=  options;
+    str += '</select>';
+    str += '<a href="javascript:void(0);" class="btn btn_black_normal" data-type="tag-user-again" data-id="'+obj.post_id+'">Tag New</a>';
     str += '</div>';
     str += '<div class="clearfix"></div>';
     str += '<div id="feed_comments"></div>';
     str += '<div class="write_comment box_body">';
-    str += '<input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="'+obj.post_id+'">';                 
-    str += '<a class="icon icon_image"></a>';
-    str += '<input type="file">';
+    str += '<input type="text" class="form-control" placeholder="Write Your Comment Here" data-type="feed_comment" data-id="'+obj.post_id+'">';
     str += '</div>';
     str += '</div>';
+
+    
+
     if(status == true){
         $("#all_feed").prepend(str);
     }else{
         $("#all_feed").append(str);
     }
+    $("#"+obj.post_id).select2();
      $("#all_feed .box.feeds[data-id='"+obj.post_id+"']").fadeOut(0).fadeIn(400);
      if(typeof(obj.comment) != 'undefined'){
         $.each(obj.comment, function (index, comment_list){
@@ -921,7 +950,7 @@ function generate_comment(obj){
     str += '</div>';
     str += '<div class="notification_txt">';
     str += '<p><a href="#" class="noti_username">'+obj.full_name+'</a>&nbsp;&nbsp;'+obj.message+'</p>';
-    str += '<span class="noti_time">1 Day</span> ';                          
+    str += '<span class="noti_time">1 sec ago</span> ';                          
     str += '</div>';
     str += '<div class="clearfix"></div>';
     str += '</div>';
@@ -1205,11 +1234,10 @@ $(document).on('click','button[data-type="class_exam_start_request"]',function()
 });
 
 $(document).on('click','a[data-type="tag-user-again"]',function(){
-  alert($('#select-tag-user-again[data-id="'+$(this).data('id')+'"]').val());
   var request = {
     type : 'tag-user-again',
     to   : 'all',
-    tagged_id: $('#select-tag-user-again[data-id="'+$(this).data('id')+'"]').val(),
+    tagged_id: $('.js-example-basic-single[data-id="'+$(this).data('id')+'"]').val(),
     fid : $(this).data('id')
   }
   ws.send(JSON.stringify(request));

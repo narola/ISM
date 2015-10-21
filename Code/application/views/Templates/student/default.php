@@ -78,6 +78,8 @@ function toHHMMSS (sec) {
         })
     </script>
     <script src="assets/js/jquery.cookie.js"></script>
+    <script src="assets/js/select2.min.js"></script> <!-- Select2 JS -->
+
     <script src="assets/js/ws.js"></script>
     <script>
         /*----show all comment[student]----*/
@@ -102,7 +104,6 @@ function toHHMMSS (sec) {
             }
         }
 </script>
-    <script src="assets/js/select2.min.js"></script> <!-- Select2 JS -->
 
 </head>
 
@@ -133,9 +134,6 @@ function toHHMMSS (sec) {
                 <!-- <li><a href="#">My Scoreboard</a></li> -->
               </ul>
             </li>
-          </ul>
-          <ul class="nav navbar-right">
-            <li><a class="" href="#"><span class="icon icon_search"></span></a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
@@ -515,7 +513,9 @@ function toHHMMSS (sec) {
             });
             
         });
-        
+         $(document).ready(function() {
+    $(".js-example-basic-single").select2();
+});
     </script>
 
 <?php } ?>

@@ -19,10 +19,10 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     }
 
     $datas = json_decode($message, true);
-    $datas['error'] = 'skip';
-    pr($datas);
+    $datas['error'] =  $datas['redirect'] = 'skip';
+ //   pr($datas);
     $data = array_merge($datas, $Server->active_hours());
-
+    $data['reload'] = 'no';
     /* For individual chat */
     if ($data['type'] == 'studymate') {
         $responce = $Server->single_chat($clientID, $data);
@@ -34,6 +34,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                 $res = array(
                     'type' => 'notification',
                     'error' => 'skip',
+                    'redirect' => 'skip',
                     'live_status' => true,
                     'user_id' => $Server->wsClients[$clientID][12]
                 );
@@ -97,6 +98,10 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         if (isset($data['data'])) {
             unset($data['data']);
         }
+    } else if($data['type'] == 'feed_file_share'){
+        $responce = $Server->save_feed_file($Server->wsClients[$clientID][12], $data);
+    } else if($data['type'] == 'comment_file_share'){
+        $responce = $Server->save_feed_comment_file($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'get_studymate_name') {
         $responce = $Server->get_studymate_name($data);
     } else if ($data['type'] == 'exam_start_request') {
@@ -109,8 +114,10 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->check_exam($Server->wsClients[$clientID][12], $data);
     }else if($data['type'] == 'end_exam'){
         $responce = $Server->end_exam($Server->wsClients[$clientID][12], $data);
+    }else if($data['type'] == 'tag-user-again'){
+        $responce = $Server->tag_again($Server->wsClients[$clientID][12], $data);        
     }
-
+    pr($data);
     $check = array('feed_comment', 'like');
     if (isset($responce)) {
         pr($responce, 1);
@@ -159,6 +166,13 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                         break;
                     }
                 }
+            }else if ($responce['type'] == 'tag-user-again') {
+                foreach ($Server->wsClients as $id => $client) {
+                    if (in_array($Server->wsClients[$id][12], $responce['tagged_id'])) {
+                        $Server->wsSend($id, json_encode($responce));
+                    }
+                }
+                $Server->wsSend($clientID, json_encode($responce));
             }
         }
     }
@@ -178,6 +192,7 @@ function wsOnClose($clientID, $status) {
             $res = array(
                 'type' => 'notification',
                 'error' => 'skip',
+                'redirect' => 'skip',
                 'live_status' => false,
                 'user_id' => $Server->wsClients[$clientID][12]
             );
@@ -195,6 +210,6 @@ $Server->bind('close', 'wsOnClose');
 
 // for other computers to connect, you will probably need to change this to your LAN IP or external IP,
 // alternatively use: gethostbyaddr(gethostbyname($_SERVER['SERVER_NAME']))
-$Server->wsStartServer('192.168.1.124', 9300);
+$Server->wsStartServer('192.168.1.21', 9300);
 // C:\wamp\bin\php\php5.5.12\php.exe -f "C:\wamp\www\ISM\Code\websocket\server.php"
 ?>

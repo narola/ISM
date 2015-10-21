@@ -23,17 +23,17 @@ class School extends ADMIN_Controller {
      * */
     public function index() {
 
+        $order = '';
+        $where['where'][TBL_SCHOOLS . '.is_delete'] = FALSE;
+        
         $this->data['page_title'] = 'Schools';
 
-        if (!empty($_GET['q']) || !empty($_GET['school_grade'])) {
-            if (!empty($_GET['q'])) {
-                $q = $this->input->get('q');
-            }
-
-            if (!empty($_GET['school_grade'])) {
-                $school_grade = $this->input->get('school_grade');
-            }
-
+        if (!empty($_GET['q']) || !empty($_GET['school_grade']) || !empty($_GET['order'])) {
+            
+            if (!empty($_GET['q'])) {$q = $this->input->get('q');}
+            if (!empty($_GET['school_grade'])) {$school_grade = $this->input->get('school_grade');}
+            if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }       
+            
             $str = '';
             if (!empty($school_grade)) {
                 $where['where'][TBL_SCHOOLS . '.school_grade'] = $school_grade;
@@ -53,6 +53,11 @@ class School extends ADMIN_Controller {
                 $str.='&q=' . $q;
             }
 
+            if($order == 'name_asc'){ $order = TBL_SCHOOLS.".school_name asc"; $str.='&order=name_asc';  }
+            if($order == 'name_desc'){ $order = TBL_SCHOOLS.".school_name desc"; $str.='&order=name_desc'; }
+            if($order == 'latest'){ $order = TBL_SCHOOLS.".created_date desc"; $str.='&order=latest'; }
+            if($order == 'older'){ $order = TBL_SCHOOLS.".created_date asc"; $str.='&order=older'; }
+
             $str = trim($str, '&');
 
             if (!empty($str)) {
@@ -61,11 +66,8 @@ class School extends ADMIN_Controller {
                 $config['base_url'] = base_url() . 'admin/school/index';
             }
             $config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
-            $offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'	
+            $offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'    
         } else {
-            $where = null;
-            $where['where'][TBL_SCHOOLS . '.is_delete'] = FALSE;
-
             $config['base_url'] = base_url() . 'admin/school/index';
             $offset = $this->uri->segment(4);
         }
@@ -131,6 +133,7 @@ class School extends ADMIN_Controller {
                 . TBL_CITIES . '.city_name,'
                 . TBL_STATES . '.state_name,'
                 . TBL_COUNTRIES . '.country_name', $where, array(
+            'order_by'=>$order,
             'limit' => $config['per_page'],
             'offset' => $offset,
             'join' => array(

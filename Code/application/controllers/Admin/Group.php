@@ -283,13 +283,30 @@ class Group extends ADMIN_Controller {
             )
                 )
         );
-/*$where = "`".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`group_id` = $gid AND `".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`created_date` >= DATE_SUB(NOW(), INTERVAL 6 month)";
+$where = "`".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`group_id` = $gid AND `".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`created_date` >= DATE_SUB(NOW(), INTERVAL 6 month)";
                                 
-        $group_performance = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_id,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".topic_id,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_score,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".created_date,",$where,FALSE);
-           foreach ($group_performance as $group) {
+        $group_performance = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_id,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".topic_id,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_score,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".created_date,".TBL_TUTORIAL_TOPIC . ".subject_id,".TBL_SUBJECTS . ".subject_name",$where,
+            array(
+                'join'=>array(
+                    array(
+                    'table' => TBL_TUTORIAL_TOPIC,
+                    'condition' => TBL_TUTORIAL_TOPIC . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.topic_id',
+                ),
+                    array(
+                    'table' => TBL_SUBJECTS,
+                    'condition' => TBL_SUBJECTS . '.id = ' . TBL_TUTORIAL_TOPIC . '.subject_id',
+                )
+                    ),
+            'group_by' => array(TBL_TUTORIAL_TOPIC . '.subject_id'),
+                )
+            );
+        // qry();
+           /*foreach ($group_performance as $group) {
               
-           }
-    p($performance,true);   */   
+           } */
+
+    // p($group_performance,true);
+           $this->data['group_performance'] = $group_performance;
         $this->template->load('admin/default', 'admin/group/performance', $this->data);
     }
 

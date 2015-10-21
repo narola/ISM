@@ -498,6 +498,21 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -671,6 +686,21 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1145,6 +1175,21 @@ class PHPWebSocket {
                     }
                     $data['tagged_id'] = $tagged_array;
                     $data['tagged_detail'] = $tagged_detail;
+                    $studymates = $this->class_mate_list($user_id);
+                    if(is_array($studymates)){
+                        $studymates = implode(',', $studymates);
+                        $query = 'SELECT u.id,u.full_name FROM  users u where u.id in('. $studymates.')';
+                        $rows = mysqli_query($link, $query);
+                        $i = 0;
+                        $studymates_detail = array();
+                        while ($row = mysqli_fetch_assoc($rows)) {
+                            $studymates_detail[$i]['full_name'] = $row['full_name'];
+                            $studymates_detail[$i]['id'] = $row['id'];
+                            $i++;
+                        }
+                        $data['studymates_detail'] = $studymates_detail;
+                    }
+                $data['current_date'] = date("M j, Y",strtotime(date('Y-m-d')));    
                 } else {
                     $data['to'] = 'self';
                     $data['error'] = 'Unable to save message.! Please try again.';
@@ -1232,6 +1277,17 @@ class PHPWebSocket {
                             . ' LEFT JOIN `' . TBL_USER_PROFILE_PICTURE . '` `p` ON `u`.`id` = `p`.`user_id`'
                             . ' WHERE `fc`.`is_delete` =0 AND `feed_id` IN(' . $feed_ids . ')';
                     $comment_row = mysqli_query($link, $query);
+
+                    $query = "SELECT `feed_id`, `image_link` FROM `feed_image` WHERE `feed_id` IN(" . $feed_ids . ")";
+                    $img = mysqli_query($link, $query);
+                    $feed_images = array();
+                    $i = 0;
+                    while ($img_list = mysqli_fetch_assoc($img)) {
+                        $feed_images[$i]['fid'] = $img_list['feed_id'];
+                        $feed_images[$i]['image_link'] = $img_list['image_link'];
+                        $i++;
+                    }
+
                     $final_feed = array();
                     foreach ($all as $key => $value) {
                         $final_feed[$key] = $value;
@@ -1250,6 +1306,14 @@ class PHPWebSocket {
                         $final_feed[$key]['tagged_detail'] = $found_tagged;
                     }
                     $data['feed'] = $final_feed;
+                    foreach ($data['feed'] as $key => $value) {
+                        foreach ($feed_images as $k => $v) {
+                            if ($v['fid'] == $value['post_id']) {
+                                $data['feed'][$key]['message'] .= '<a href="/uploads/' . $v['image_link'] . '"  target="_BLANK"><img src="uploads/' . $v['image_link'] . '" width="100" height="70"></a>';
+                                unset($feed_images[$k]);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -2482,6 +2546,8 @@ class PHPWebSocket {
                 }
 
                 $data['already_available_tagged_detail'] = $available_user;
+
+
             } else {
 
                 $data['to'] = 'self';
@@ -2491,7 +2557,8 @@ class PHPWebSocket {
             $data['to'] = 'self';
             $data['error'] = 'Please don\'t modify data manually.';
         }
-        return $data;
+
+        return array_merge($data, $this->get_client_info($user_id));
     }
 
     /**
@@ -2499,13 +2566,23 @@ class PHPWebSocket {
      * @param type $userID
      * @param type $data
      */
-    function save_feed_file($userID, $data) {
+    function save_feed_file($user_id, $data) {
+        $data['type'] = 'post';
+        $data['to'] = 'all';
         $time = time();
         $link = $this->db();
         $output_file = dirname(__DIR__) . "\\uploads\\user_" . $user_id;
         if (!file_exists($output_file)) {
             mkdir($output_file, 0777);
         }
+
+        $check_type = array(
+            'image/png',
+            'image/jpg',
+            'image/jpeg',
+            'image/gif'
+        );
+
         $output_file .= '\sentFiles';
         if (!file_exists($output_file)) {
             mkdir($output_file, 0777);
@@ -2516,19 +2593,39 @@ class PHPWebSocket {
 
         $studymate_id = $this->class_mate_list($user_id);
         if (is_array($data) && !empty($data)) {
-           
-            $query = "INSERT INTO `feeds`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$user_id,'','".$data['webpath']."','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
-            $x = mysqli_query($link, $query);
-            $data['post_id'] = mysqli_insert_id($link);
-            $data['tot_like'] = 0;
-            $data['tot_comment'] = 0;
-            file_put_contents($output_file, base64_decode($data['data']));
-            if (!$x) {
+            if (in_array($data['data_type'], $check_type)) {
+                $query = "INSERT INTO `feeds`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$user_id,'','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
+                $x = mysqli_query($link, $query);
+                $data['post_id'] = mysqli_insert_id($link);
+                $data['tot_like'] = 0;
+                $data['tot_comment'] = 0;
+                file_put_contents($output_file, base64_decode($data['data']));
+                if ($x) {
+                    $query = "INSERT INTO `ism`.`feed_image` (`id`, `feed_id`, `image_link`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES(NULL,  " . $data['post_id'] . ", '" . $data['webpath'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
+                    $y = mysqli_query($link, $query);
+                    if ($y) {
+                        $data['message'] = '<a href="uploads/' . $data['webpath'] . '"  target="_BLANK"><img src="uploads/' . $data['webpath'] . '" width="100" height="70"></a>';
+                    } else {
+                        $data['to'] = 'self';
+                        $data['error'] = 'Unable to save image data! Please try again!';
+                    }
+                } else {
+                    $data['to'] = 'self';
+                    $data['error'] = 'Unable to save feed data! Please try again!';
+                }
+
+
+                if (isset($data['data'])) {
+                    unset($data['data']);
+                }
+            } else {
                 $data['to'] = 'self';
-                $data['error'] = 'Unable to save message.! Please try again.';
+                $data['error'] = 'Please select only Image!';
             }
-           
         }
+
+
+        $data['tagged_id'] = $data['tagged_detail'] = array();
         //return $data;
         return array_merge($data, $this->get_client_info($user_id));
     }
@@ -2539,7 +2636,87 @@ class PHPWebSocket {
      * @param type $data
      */
     function save_feed_comment_file($userID, $data) {
-        
+
+        $data['type'] = 'feed_comment';
+        $data['to'] = 'all';
+        $time = time();
+        $link = $this->db();
+        $output_file = dirname(__DIR__) . "\\uploads\\user_" . $user_id;
+        if (!file_exists($output_file)) {
+            mkdir($output_file, 0777);
+        }
+
+        $check_type = array(
+            'image/png',
+            'image/jpg',
+            'image/jpeg',
+            'image/gif'
+        );
+
+        $output_file .= '\sentFiles';
+        if (!file_exists($output_file)) {
+            mkdir($output_file, 0777);
+        }
+        $data['webpath'] = 'user_' . $user_id . '/sentFiles/' . $time . '_' . $data['name'];
+        $output_file .= '\\' . $time . '_' . $data['name'];
+
+
+        $query = "SELECT `f`.`feed_by` FROM `" . TBL_FEEDS . "` `f` WHERE `f`.`id` = " . $data['to'] . " LIMIT 1";
+        $row = mysqli_query($link, $query);
+
+        // Check feed must exist on which comment is sent.
+        if (mysqli_num_rows($row) == 1) {
+            $rows = mysqli_fetch_assoc($row);
+            $data['allStudyMate'] = $this->class_mate_list($rows['feed_by']);
+
+            // Check user must comment on those feed which is added by his/him classmates not to others.
+            if (in_array($user_id, $data['allStudyMate'])) {
+                $query = "INSERT INTO `ism`.`" . TBL_FEED_COMMENT . "` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $data['message'] . "',$user_id, '" . $data['to'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes');";
+                $x = mysqli_query($link, $query);
+                if (!$x) {
+                    $data['to'] = "self";
+                    $data['error'] = "Unable to save your comment! Please try again.";
+                }
+            } else {
+                $data['to'] = "self";
+                $data['error'] = "You are not authorized to commet on this post.";
+            }
+        } else {
+            $data['to'] = 'self';
+            $data['error'] = 'Unable to Identify post. Please don\'t modify data manually.';
+        }
+        return array_merge($data, $this->get_client_info($user_id));
+    }
+
+    /**
+     * Return time based on creted date and current date.
+     * @param date $t
+     * @author Sandip Gopani (SAG)
+     */
+    function get_time_format($t) {
+        $CI = & get_instance();
+        $timeFirst = strtotime($t);
+        $time = select('users', 'NOW() as ctime', null, array('limit' => 1, 'single' => 1));
+        $timeSecond = strtotime($time['ctime']);
+        $output = null;
+        $diff = $timeSecond - $timeFirst;
+        if ($diff < 60) {
+            $output = $diff . ' sec ago';
+        } else if ($diff < 3600) {
+            $output = floor($diff / 60) . ' min ago';
+        } else if ($diff < 86400) {
+            $output = floor($diff / 3600);
+            if ($output < 2) {
+                $output .= ' hour ago';
+            } else {
+                $output .= ' hours ago';
+            }
+        } else if ($diff < 86400 * 2) {
+            $output = 'yesterday';
+        } else {
+            $output = date_format(date_create($t), 'M d Y g:i a');
+        }
+        return $output;
     }
 
 }

@@ -38,6 +38,17 @@
                             <?php }  } ?>
                         </select>
                     </div>
+
+                <div class="form-group">
+                    <select class="form-control" name="order" id="order" onchange="filter_data()">
+                        <option value="">Sort By</option>
+                        <option value="name_asc">Name Ascending</option>
+                        <option value="name_desc">Name Descending</option>
+                        <option value="latest">Latest First</option>
+                        <option value="older">Older First</option>
+                    </select>
+                </div>
+
                 </div>
             </div>
 
@@ -236,10 +247,12 @@ if(!empty($notices)) {
         var role = $('#role').val();
         var status = $('#status').val();
         var classroom = $('#classroom').val();
+        var order = $('#order').val();
 
         if(role == '' ){ $('#role').removeAttr('name'); }
         if(status == '' ){ $('#status').removeAttr('name'); }
         if(classroom == ''){ $('#classroom').removeAttr('name'); }
+        if(order == ''){  $('#order').removeAttr('name'); }
 
         $('#filter').submit();
     }
@@ -255,5 +268,9 @@ if(!empty($notices)) {
     <?php if(!empty($_GET['classroom'])) { ?>
         $('#classroom').val('<?php echo $_GET["classroom"];?>');    
     <?php } ?>
+
+    <?php if(!empty($_GET['order'])) { ?>
+        $('#order').val('<?php echo $_GET["order"];?>');    
+    <?php } ?> 
 
 </script>

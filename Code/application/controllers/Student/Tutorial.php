@@ -290,7 +290,6 @@ class Tutorial extends ISM_Controller {
 			}
 			// Randomely stored question ids.
 			shuffle($new);
-			
 				if(count($data['attempted_question']) > 0){
 					$final_attemped = array();
 					foreach ($data['attempted_question'] as $key => $value) {

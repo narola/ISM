@@ -11,168 +11,160 @@
     </div>
     <!--//breadcrumb-->
     <!--main content-->
-    <div class="question_bank">
-    	<div class="col-sm-12 general_cred">
-        	<!--box-->
-            <div class="box">
-                <div class="box_header filter">
-                    <h3>Add New Question</h3>
-                </div>
-                <!--box_body-->
-                <div class="box_body add_question_wrapper">
-               		<div class="col-sm-12 padding_t15">
-                    	<div class="form-group">
-                            <label class="txt_red">Question</label>
-                            <textarea class="form-control" name='question_text'></textarea>
-                        </div>
-                        <div class="form-group select">
-                        	<label class="txt_red">Question Type</label>
-                            <select class="form-control" id="question_type" name='question_type'>
-                            	<option value="text">Text</option>
-                            	<option value="paragraph">Paragraph Text</option>
-                                <option selected="selected" value="mcq">Multiple Choice</option>
-                            </select>
-                        </div>
+    <form method='post'>
+        <div class="question_bank">
+        	<div class="col-sm-12 general_cred">
+            	<!--box-->
+                <div class="box">
+                    <div class="box_header filter">
+                        <h3>Add New Question</h3>
                     </div>
-                    
-                    <div class="col-sm-12" id="replacing_div1">
-                    	<div class="form-group">
-                            <input type="text" class="form-control add_answer" placeholder="Their Short Answer">
-                        </div>
-                        <button class="btn_green btn">Done</button>
-                    </div>
-                    <div class="col-sm-12" id="replacing_div2">
-                    	<div class="form-group">
-                            <textarea class="form-control add_answer" placeholder="Their Longer Answer"></textarea>
-                        </div>
-                        <button class="btn_green btn">Done</button>
-                    </div>
-                    <div class="col-sm-12" id="replacing_div3">
-                    	<div class="form-group">
-                            <input type="radio" name="correct_ans">
-                            <input type="text" name="choices[]" class="form-control" placeholder="Question 1">
-                        </div>
-                        <div class="form-group">
-                            <input type="radio" name="correct_ans">
-                            <input type="text" name="choices[]" class="form-control" placeholder="Question 1">
-                            <a href="#" class="icon icon_add_small"></a>
-                        </div>                                    
-                        <div class="form-group" id="ques_tags">
-                        	<label class="txt_red">Question Tags</label>
-                            <div class="tag_container">
-                            	<input type="text" data-role="tagsinput"  class="typeahead" name="tags" id="tags">
+                    <!--box_body-->
+                    <div class="box_body add_question_wrapper">
+                   		<div class="col-sm-12 padding_t15">
+                        	<div class="form-group">
+                                <label class="txt_red">Question</label>
+                                <textarea class="form-control" name='question_text'></textarea>
+                            </div>
+                            <div class="form-group select">
+                            	<label class="txt_red">Question Type</label>
+                                <select class="form-control" id="question_type" name='question_type'>
+                                    <option  value="text">Text</option>
+                                    <option  value="paragraph">Paragraph Text</option>
+                                    <option selected="selected" value="mcq">Multiple Choice</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 inner_txtarea">
-                    	<div class="box_header">
-                        	<h3>Evaluation Notes</h3>
+                        
+                        <div class="col-sm-12" id="replacing_div1">
+                        	<div class="form-group">
+                                <input type="text" class="form-control add_answer" placeholder="Their Short Answer">
+                            </div>
+                            <button class="btn_green btn">Done</button>
                         </div>
-                    	<div class="form-group">
-                            <textarea class="form-control" name="evaluation_notes"></textarea>
+                        <div class="col-sm-12" id="replacing_div2">
+                        	<div class="form-group">
+                                <textarea class="form-control add_answer" placeholder="Their Longer Answer"></textarea>
+                            </div>
+                            <button class="btn_green btn">Done</button>
                         </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 inner_txtarea">
-                    	<div class="box_header">
-                        	<h3>Solution</h3>
-                        </div>
-                    	<div class="form-group">
-                            <textarea class="form-control" name="solution"></textarea>
-                        </div>
-                    </div>
+                        <div class="col-sm-12" id="replacing_div3">
 
-                    <!-- <input class="typeahead" type="text" placeholder="numbers (1-10)" autocomplete="off"> -->
+                            <input type="hidden" name='total_choices' id="total_choices" value="1" >
+                            <input type="hidden" name='correct_choice' id="correct_choice"  >
+                            
+                            <div class="form-group" id="div_1">
+                                <input type="radio" name="correct_ans" id="correct_ans" onchange="correct_choice1(this.value)" value="1">
+                                <input type="text" name="choices[]" class="form-control" placeholder="Question 1">
+                                <a onclick="add_choices()" class="icon icon_add_small"></a>
+                            </div>
 
-                    <div class="clearfix"></div>
-               	</div>
-                <!--//box-body-->
-                <div class="box_footer">
-                	<input type="checkbox"><label class="save_box"></label><label>Add Question to Preview</label>
-                	
-                    <button class="btn btn_green pull-right no-margin">Save & Add More</button>
-                    <button class="btn btn_red pull-right">Save</button>
+                            <div class="form-group" id="ques_tags">
+                            	<label class="txt_red">Question Tags</label>
+                                <div class="tag_container">
+                                	<!-- <input type="text" data-role="tagsinput"  class="typeahead" name="tags" id="tags"> -->
+                                    <select multiple="multiple" name="q_tags[]" id="my_select" class="form-control">
+                                           <option value="">Select Tags</option> 
+                                           <?php if(!empty($tags)) { foreach($tags as $tag) { ?>
+                                                <option value="<?php echo $tag['id']; ?>"><?php echo ucfirst($tag['tag_name']); ?></option>
+                                           <?php } }else{ ?>
+                                                <option value="">No Tag Found</option>
+                                           <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 inner_txtarea">
+                        	<div class="box_header">
+                            	<h3>Evaluation Notes</h3>
+                            </div>
+                        	<div class="form-group">
+                                <textarea class="form-control" name="evaluation_notes"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 inner_txtarea">
+                        	<div class="box_header">
+                            	<h3>Solution</h3>
+                            </div>
+                        	<div class="form-group">
+                                <textarea class="form-control" name="solution"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- <input class="typeahead" type="text" placeholder="numbers (1-10)" autocomplete="off"> -->
+
+                        <div class="clearfix"></div>
+                   	</div>
+                    <!--//box-body-->
+                    <div class="box_footer">
+                    	<input type="checkbox"><label class="save_box"></label><label>Add Question to Preview</label>
+                    	
+                        <button class="btn btn_green pull-right no-margin">Save & Add More</button>
+                        <button class="btn btn_red pull-right">Save</button>
+                    </div>
                 </div>
+                <!--//box-->
             </div>
-            <!--//box-->
+            <div class="clearfix"></div>
         </div>
-        <div class="clearfix"></div>
-    </div>
+    </form>
     <!--main content-->                
 </div>
             <!--//main-->
 
-<link rel="stylesheet" type="text/css" href="http://twitter.github.io/typeahead.js/css/examples.css">
-<script type='text/javascript' src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="http://twitter.github.io/typeahead.js/css/examples.css">
+<script type='text/javascript' src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script> -->
 
 <script>
-    
-    $('#question_type').val('mcq');        
-    
-    $(window).load(function(){
+    function test(ch){
+        console.log(ch)
+    }
+    function add_choices(){
 
-      // var numbers;
+        $('a.icon.icon_add_small').remove();
+        
+        var cnt = parseInt($('#total_choices').val())+1;
+        $('#total_choices').val(cnt);    
+        $('#ques_tags').before('<div id="div_'+cnt+'" class="form-group"><input type="radio" name="correct_ans" id="correct_ans"  onclick="correct_choice1(this.value)" value="'+cnt+'"><input type="text" name="choices[]" class="form-control" placeholder="Question '+cnt+'"><a onclick="add_choices()" class="icon icon_add_small"></a> <a onclick="remove_choice()" class="icon icon_add_small"></a></div>');
+    }
 
-      // numbers = new Bloodhound({
-      //   datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.num); },
-      //   queryTokenizer: Bloodhound.tokenizers.whitespace,
-      //   local: [
-      //     { num: 'one' },
-      //     { num: 'two' },
-      //     { num: 'three' },
-      //     { num: 'four' },
-      //     { num: 'five' },
-      //     { num: 'six' },
-      //     { num: 'seven' },
-      //     { num: 'eight' },
-      //     { num: 'nine' },
-      //     { num: 'ten' }
-      //   ]
-      // });
+    function correct_choice1(choice){
+        $('#correct_choice').val(choice);
+    }
 
-      // numbers.initialize();
+    function remove_choice(){
 
-      // $('.typeahead').typeahead(null, {
-      //   displayKey: 'num',
-      //   source: numbers.ttAdapter()
-      // });
-
-   var cities = new Bloodhound({
-      datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
-      queryTokenizer: Bloodhound.tokenizers.whitespace,
-      prefetch: '[{"value":1,"text":"Amsterdam","continent":"Europe"},{"value":4,"text":"Washington","continent":"America"},{"value":7,"text":"Sydney","continent":"Australia"},{"value":10,"text":"Beijing","continent":"Asia"},{"value":13,"text":"Cairo","continent":"Africa"}]'
-    });
-    cities.initialize();
-
-    var elt = $('#tags');
-    elt.tagsinput({
-      tagClass: function(item) {
-        switch (item.continent) {
-          case 'Europe'   : return 'label label-primary';
-          case 'America'  : return 'label label-danger label-important';
-          case 'Australia': return 'label label-success';
-          case 'Africa'   : return 'label label-default';
-          case 'Asia'     : return 'label label-warning';
+        var my_cnt = parseInt($('#total_choices').val());
+        var cnt = my_cnt-1;
+        var correct_choice = $('#correct_choice').val();
+        
+        
+        if(my_cnt == correct_choice){
+            $('#correct_choice').val('');
         }
-      },
-      itemValue: 'value',
-      itemText: 'text',
-      typeaheadjs: {
-        name: 'cities',
-        displayKey: 'text',
-        source: cities.ttAdapter()
-      }
+        
+        $('#total_choices').val(cnt);
+
+        if(cnt != 1){
+            var append_link = '<a onclick="add_choices()" class="icon icon_add_small"></a> <a onclick="remove_choice()" class="icon icon_add_small"></a>';
+            $('#div_'+cnt).append(append_link);
+        }else{
+            var append_link = '<a onclick="add_choices()" class="icon icon_add_small"></a>';
+            $('#div_'+cnt).append(append_link);
+        }
+
+        $('#div_'+my_cnt).remove().fadeout();
+    }    
+
+    $(document).ready(function(){
+        $('#my_select').select2();
     });
 
-    elt.tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
-    elt.tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
-    elt.tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
-    elt.tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
-    elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
+   // $('#question_type').val('msq') ;
 
-
-});
-
-
+    $('#replacing_div3').show();
+    $('#replacing_div2').hide();
+    $('#replacing_div1').hide();
 
     $(function() {       
         $('#question_type').change(function(){

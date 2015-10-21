@@ -5,7 +5,7 @@
         <form method="post" onsubmit="return success_credential()" >
 
           <div class="box_header">
-            <h3>General Credentials</h3>
+            <h3>Generate Credentials</h3>
           </div>
 
           <div class="box_body">  
@@ -114,7 +114,7 @@
           
           <div class="box_header">
             <div class="confirmation">
-                <p id="dialog_box" class="hide">You have requested <span class="txt_red" id="noc_new">50</span> credencials for <span id="role_id_new" class="txt_blue">Students</span> of <span class="txt_blue" id="school_id_new">St. Xevier's School</span> belong to first academic year in <span class="txt_green" id="course_id_new">Computer Science Course</span></p>
+                <p id="dialog_box" class="hide">You have requested <span class="txt_red" id="noc_new">50</span> credentials for <span id="role_id_new" class="txt_blue">Students</span> of <span class="txt_blue" id="school_id_new">St. Xevier's School</span> belong to first academic year in <span class="txt_green" id="course_id_new">Computer Science Course</span></p>
 
                 <?php echo flashMessage(TRUE); ?>
 

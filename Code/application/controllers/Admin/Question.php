@@ -92,25 +92,13 @@ class Question extends ADMIN_Controller {
 	public function add(){
 		
 		$this->data['page_tite'] = 'Add Question';
+		$this->data['tags'] = select(TBL_TAGS,FALSE,array('where'=>array('is_delete'=>'0')));
 
-		$tags = select(TBL_TAGS,FALSE,array('where'=>array('is_delete'=>'0')));
-		
-		$new_str = '';
+		$this->template->load('admin/default','admin/question/add',$this->data);
 
-		foreach($tags as $tag){
-			$new_str .=$tag['tag_name'].',';
-		}
-
-		$data['tags'] = trim($new_str,',');
-		
-		$this->form_validation->set_rules('question_text', 'Question Text', 'trim|required');
-
-		if($this->form_validation->run() == FALSE){
-
-			$this->template->load('admin/default','admin/question/add',$this->data);
-
-		}else{
-
+		if($_POST){
+			p($_POST);
+			die();
 		}
 
 	}
