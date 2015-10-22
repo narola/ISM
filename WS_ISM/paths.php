@@ -8,6 +8,6 @@
 
 define("SERVER_PATH" , $_SERVER["DOCUMENT_ROOT"]  . '/');
 
-define("USER_PROFILE_PICTURE",  '/Images/Users_Images/');
+define("USER_PROFILE_PICTURE",  'Images/Users_Images/');
 
 ?>

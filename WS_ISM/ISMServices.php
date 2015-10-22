@@ -25,13 +25,25 @@ $logger -> Log($debug, 'Service :', $_REQUEST['Service']);
 switch ($_REQUEST['Service'])
 {
     /*********************  Profile Functions ******************************/
-       case "AuthenticateUser":
+    case "RequestForCredentials":
+    case "AuthenticateUser":
+    case "RegisterUser":
+    case "CheckUsernameAvailability":
+    case "ForgotPassword":
     {
   	 include_once 'ProfileFunctions.php';
      $profile = new ProfileFunctions();
      $data = $profile -> call_service($_REQUEST['Service'], $postData);
     }
         break;
+    case "GetAllFeeds":
+    {
+         include_once 'SocialFunctions.php';
+       	 $profile = new SocialFunctions();
+    	 $data = $profile -> call_service($_REQUEST['Service'], $postData);
+    }    
+        
+ break;
 
 	/*********************  TutorialGroup Functions ******************************/
        case "AllocateTutorialGroup":
