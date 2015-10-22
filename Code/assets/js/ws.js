@@ -252,7 +252,7 @@ $(document).ready(function () {
 /* Check wheather web socket is supported by browser. */
 if ("WebSocket" in window)
 {
-    var ws = new WebSocket("ws://192.168.1.21:9300");
+    var ws = new WebSocket("ws://192.168.1.124:9300");
 
     ws.onopen = function ()
     {
@@ -1272,7 +1272,8 @@ $(document).on('keyup','input[data-type="study_mate_search"]',function(){
         type : 'study_mate_search',
         to   : 'self',
         search_txt : $('input[data-type="study_mate_search"]').val(),
-        fid : $(this).data('id')
+        fid : $(this).data('id'),
+        $('.row.filter_bar ul').find('li.active').data('id')
         }
         ws.send(JSON.stringify(request));
     }

@@ -1,3 +1,9 @@
+<script>
+    $(document).on('click','li[data-type="search-type"]',function(){
+        $('.row.filter_bar ul li').removeClass('active');
+        $(this).addClass('active');
+    });
+</script>
 <!--main-->
 <div class="col-sm-7 main main2 stydymates"> 
     <!--tabs-->
@@ -61,10 +67,10 @@
         <!--filterbar-->
         <div class="row filter_bar">
             <ul>
-                <li><a href="#">People</a></li>
-                <li><a href="#">School</a></li>
-                <li><a href="#">Area</a></li>
-                <li><a href="#">Course</a></li>
+                <li class="active" data-type="search-type" data-id="people"><a href="javascript:void(0);">People</a></li>
+                <li data-type="search-type" data-id="school"><a href="javascript:void(0);">School</a></li>
+                <li data-type="search-type" data-id="area"><a href="javascript:void(0);">Area</a></li>
+                <li data-type="search-type" data-id="course"><a href="javascript:void(0);">Course</a></li>
             </ul>
         </div>
         <!--//filterbar-->
