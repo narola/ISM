@@ -25,6 +25,7 @@ $logger -> Log($debug, 'Service :', $_REQUEST['Service']);
 switch ($_REQUEST['Service'])
 {
     /*********************  Profile Functions ******************************/
+
     case "RequestForCredentials":
     case "AuthenticateUser":
     case "RegisterUser":
@@ -43,17 +44,11 @@ switch ($_REQUEST['Service'])
     	 $data = $profile -> call_service($_REQUEST['Service'], $postData);
     }    
         
- break;
-
-	/*********************  TutorialGroup Functions ******************************/
-       case "AllocateTutorialGroup":
-    {
-		include_once 'TutorialGroup.php';
-		$profile = new TutorialGroup();
-		$data = $profile -> call_service($_REQUEST['Service'], $postData);
-    }
         break;
 
+	/*********************  TutorialGroup Functions ******************************/
+
+	case "AllocateTutorialGroup":
 	case "AcceptTutorialGroup":
 	{
 		include_once 'TutorialGroup.php';
