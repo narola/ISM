@@ -94,6 +94,9 @@ class Question extends ADMIN_Controller {
 		$this->data['page_tite'] = 'Add Question';
 		$this->data['tags'] = select(TBL_TAGS,FALSE,array('where'=>array('is_delete'=>'0')));
 
+		$where = array('where'=>array('is_delete'=>0));
+		$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null);
+
 		$this->template->load('admin/default','admin/question/add',$this->data);
 
 		if($_POST){

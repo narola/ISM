@@ -11,7 +11,7 @@
     </div>
     <!--//breadcrumb-->
     <!--main content-->
-    <form method='post'>
+    <form method='post' id="question_add">
         <div class="question_bank">
         	<div class="col-sm-12 general_cred">
             	<!--box-->
@@ -26,6 +26,40 @@
                                 <label class="txt_red">Question</label>
                                 <textarea class="form-control" name='question_text'></textarea>
                             </div>
+                            
+                            <div class="form-group select">
+                                <label class="txt_red">Course </label>
+                                <select class="form-control" name="course_id" onchange="get_classes(this.value)" id="course_id">
+                                <option value=''>Course</option>
+                                <?php if(!empty($courses)){ 
+                                    foreach ($courses as $course) { ?>
+                                        <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>        
+                                    <?php } 
+                                }?>
+                                </select>
+                            </div>
+
+                            <div class="form-group select">
+                                <label class="txt_red"> Classroom  </label>
+                                <select class="form-control" name="classroom_id" onchange="get_subjects(this.value)" id="classroom_id">
+                                    <option value=''>Classroom</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group select">
+                                <label class="txt_red"> Subject </label>
+                                <select class="form-control" name="subject_id" onchange="get_topics(this.value)" id="subject_id">
+                                    <option value=''>Subject</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group select">
+                                <label class="txt_red"> Topic </label>
+                                <select class="form-control" name="topic_id" id="topic_id" >
+                                    <option value=''>Topic</option>
+                                </select>
+                            </div>
+
                             <div class="form-group select">
                             	<label class="txt_red">Question Type</label>
                                 <select class="form-control" id="question_type" name='question_type'>
@@ -64,7 +98,7 @@
                                 <div class="tag_container">
                                 	<!-- <input type="text" data-role="tagsinput"  class="typeahead" name="tags" id="tags"> -->
                                     <select multiple="multiple" name="q_tags[]" id="my_select" class="form-control">
-                                           <option value="">Select Tags</option> 
+                                           <option value="" disabled>Select Tags</option> 
                                            <?php if(!empty($tags)) { foreach($tags as $tag) { ?>
                                                 <option value="<?php echo $tag['id']; ?>"><?php echo ucfirst($tag['tag_name']); ?></option>
                                            <?php } }else{ ?>
@@ -116,6 +150,44 @@
 <script type='text/javascript' src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script> -->
 
 <script>
+    
+    function get_classes(course_id){
+        $.ajax({
+           url:'<?php echo base_url()."admin/question/ajax_get_classrooms"; ?>',
+           type:'POST',
+           data:{course_id:course_id},
+           success:function(data){
+              $("#classroom_id").html(data);
+              $('#subject_id').val('');
+              $('#topic_id').val('');
+           }
+        });
+    }
+
+    function get_subjects(classroom_id){
+        $.ajax({
+           url:'<?php echo base_url()."admin/question/ajax_get_subjects"; ?>',
+           type:'POST',
+           data:{classroom_id:classroom_id},
+           success:function(data){
+              $("#subject_id").html(data);
+              $('#topic_id').val('');
+           }
+        });
+    }
+
+    function get_topics(subject_id){
+        $.ajax({
+           url:'<?php echo base_url()."admin/question/ajax_get_topics"; ?>',
+           type:'POST',
+           data:{subject_id:subject_id},
+           success:function(data){
+              $("#topic_id").html(data);
+           }
+        });
+    }
+
+
     function test(ch){
         console.log(ch)
     }

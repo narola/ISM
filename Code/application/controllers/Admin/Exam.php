@@ -116,7 +116,7 @@ class Exam extends ADMIN_Controller {
 	  									 	)
 	  									 );
 
-	  // /	p($this->data['all_exams'],true);
+	    // p($this->data['all_exams'],true);
 
 	  	$this->data['all_subjects'] = select(TBL_SUBJECTS); // Fetch All Subjects 
 	  	$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC); //Fetch All Topics
