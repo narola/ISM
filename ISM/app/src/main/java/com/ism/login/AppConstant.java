@@ -41,6 +41,13 @@ public class AppConstant {
     public static final String imageCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Images";
     public static final String videoCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
     public static final String audioCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Audios";
+
+	/**
+	 *  URLs
+	 */
+	private static final String URL_HOST = "http://localhost/ISM/WS_ISM/ISMServices.php?Service=";
+	public static final String URL_LOGIN = URL_HOST + "AuthenticateUser";
+
     /**
      * Hide Keyboard
      *
