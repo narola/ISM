@@ -31,6 +31,8 @@ switch ($_REQUEST['Service'])
     case "RegisterUser":
     case "CheckUsernameAvailability":
     case "ForgotPassword":
+    case "PostFeed":
+    case "TagFriendInFeed":
     {
   	 include_once 'ProfileFunctions.php';
      $profile = new ProfileFunctions();

@@ -29,11 +29,17 @@ class SocialFunctions
         $final_users= $this->getAllUsersFromUsers($user_id);
         $final_feeds_tagged = $this->getAllFeedIdFromFeedsTag($user_id);
 
-        $final_feeds['all_feeds'] = $this->getAllFeedsFromFeeds($final_followers, $final_mates, $final_teachers, $final_groups, $final_users, $final_feeds_tagged);
+        $final_feeds = $this->getAllFeedsFromFeeds($final_followers, $final_mates, $final_teachers, $final_groups, $final_users, $final_feeds_tagged);
 
-        //$data['total_feeds'] = $my_row_count;
-        //return $data['all_feeds']=$final_feeds;
-        return $final_feeds;
+        $response['data']=$final_feeds['data'];
+        $response['status']=$final_feeds['status'];
+        $response['message']=$final_feeds['message'];
+
+        $response['total_feeds'] = sizeof($response['data']);
+
+
+        //$data['data']=$final_feeds;
+        return $response;
     }
 
     public function getAllFollowtoFromFollowers($user_id)
@@ -154,71 +160,108 @@ class SocialFunctions
 
     public function getAllFeedsFromFeeds($final_followers, $final_mates, $final_teachers, $final_groups, $final_users, $final_feeds_tagged)
     {
-        //   $queryGetAllFeeds = "select * from " . TABLE_FEEDS . " where feed_by='" . $feed_by . "'";
 
-//        print_r($final_followers);//56,57,59,54
-//        print_r($final_mates);//138,139,140,138
-//        print_r($final_teachers);//340-343
-//        print_r($final_groups);//59
-//        print_r($final_users);//2-5,108,109
-//        print_r($final_feeds_tagged);//240,241,242,260,265,340
-
-
-        $myvar = implode(",", $final_mates);
-
-        $string1 = '';
-        $string2 = '';
-        $string3 = '';
-        $string4 = '';
-        $string5 = '';
-        $string6 = '';
+        $string_of_all_ids = '';
 
         foreach( $final_followers as $value){
-            $string1 .= "'".$value."',";
+            $string_of_all_ids .= "'".$value."',";
         }
 	    foreach( $final_mates as $value){
-		    $string1 .= "'".$value."',";
+		    $string_of_all_ids .= "'".$value."',";
         }
 	    foreach( $final_teachers as $value){
-		    $string1 .= "'".$value."',";
+		    $string_of_all_ids .= "'".$value."',";
         }
 	    foreach( $final_groups as $value){
-	        $string1 .= "'".$value."',";
+	        $string_of_all_ids .= "'".$value."',";
         }
 	    foreach( $final_users as $value){
-	        $string1 .= "'".$value."',";
+	        $string_of_all_ids .= "'".$value."',";
         }
 	    foreach( $final_feeds_tagged as $value){
-	        $string1 .= "'".$value."',";
+	        $string_of_all_ids .= "'".$value."',";
         }
-	    $string1;
 
+        $final_string=rtrim($string_of_all_ids,",");
+	   // echo "test_latest:".$final_string;
+
+
+        //SELECT f.`id`, f.`comment`, f.`comment_by`,u.`username`,p.`profile_link` FROM `feed_comment` f INNER JOIN `users` u INNER JOIN user_profile_picture p ON f.`comment_by`=u.id and p.user_id=u.id WHERE feed_id=13
 
         //$queryGetAllFeeds = "select * from " . TABLE_FEEDS . " where feed_by IN ('138','140')";
-        $queryGetAllFeeds = "select * from " . TABLE_FEEDS . " where feed_by IN (".$string1.")";
+        $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." ,users where feed_by IN (".$final_string.") Limit 20";
         $resultGetAllFeeds = mysql_query($queryGetAllFeeds) or $errorMsg = mysql_error();
 
         //for counting the number of rows for query result
         $feeds_count = mysql_num_rows($resultGetAllFeeds);
         $feeds_array = array();
+        $allfeeds=array();
         echo "allfeeds:" . $feeds_count;
         echo "\n\nfinal_query:".$queryGetAllFeeds;
+
+
+        /*
+         * $queryOn="autoGenerateCredential.school_id=schools.id and autoGenerateCredential.course_id=courses.id";
+            $queryData="SELECT * FROM ".TABLE_AUTO_GENERATED_CREDENTIAL." autoGenerateCredential INNER JOIN ".TABLE_SCHOOLS." schools INNER JOIN ".TABLE_COURSES." courses ON ".$queryOn." where username='".$userName."'";
+         */
         if ($feeds_count > 0) {
             while ($feeds = mysql_fetch_assoc($resultGetAllFeeds)) {
 
-                $feeds_array[] = $feeds;
+                $feeds_array['feed_id'] = $feeds['id'];
+                $feeds_array['user_id'] = $feeds['feed_by'];
+                $feeds_array['video_link'] = $feeds['video_link'];
+                $feeds_array['audio_link'] = $feeds['audio_link'];
+                $feeds_array['posted_on'] = $feeds['posted_on'];
+                $feeds_array['total_like'] = $feeds['total_like'];
+                $feeds_array['total_comment'] = $feeds['total_comment'];
+                $feeds_array['created_date'] = $feeds['created_date'];
+                $feeds_array['modified_date'] = $feeds['modified_date'];
+                //$feeds_array['user_id'] = $feeds['user_id'];
+                $feeds_array['username'] = $feeds['username'];
+
+
+                $feeds_array['comment']=array();
+                if(sizeof($feeds_array)>0)
+                {
+                    $queryGetAllComments = "SELECT f.`id`, f.`comment`, f.`comment_by`,u.`username`,p.`profile_link` FROM `feed_comment` f INNER JOIN `users` u INNER JOIN user_profile_picture p ON f.`comment_by`=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id'];
+                    $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
+                        $allcomment=array();
+                    echo "\n".$queryGetAllComments;
+                    //for counting the number of rows for query result
+                    $comments_count = mysql_num_rows($resultGetAlComments);
+
+                    while($comments=mysql_fetch_assoc($resultGetAlComments))
+                    {
+                        $allcomment[]=$comments;
+
+
+                    }
+
+                    $feeds_array['comment']=$allcomment;
+                    //$data['comments']=$comments_array;
+
+
+                }
+                $allfeeds[]=$feeds_array;
             }
+            echo "\n\ncomments_query:".$queryGetAllComments;
+            echo "\n\ncomments_count:".$comments_count;
+            $status = 1;
+            $data['comments']=$comments_array;
+            $errorMsg=USER_IS_AVAILABLE;
         } else {
             $status = 2;
             $errorMsg = USER_IS_NOT_AVAILABLE;
         }
 
-//        $data['message'] = $errorMsg;
-//        $data['status'] = $status;
-//        $data['total_feeds'] = $my_row_count;
 
-//        return $data['allfeeds'] = $feeds_array;
-        return $feeds_array;
+        $data['status'] = ($status > 1) ? 'failed' : 'success';
+        $data['message'] = $errorMsg;
+        $data['data'] = $allfeeds;
+
+
+        return $data;
+       // return $feeds_array;
     }
 
 
