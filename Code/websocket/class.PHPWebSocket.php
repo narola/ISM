@@ -513,6 +513,15 @@ class PHPWebSocket {
 
 
 
+
+
+
+
+
+
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -686,6 +695,15 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1176,9 +1194,9 @@ class PHPWebSocket {
                     $data['tagged_id'] = $tagged_array;
                     $data['tagged_detail'] = $tagged_detail;
                     $studymates = $this->class_mate_list($user_id);
-                    if(is_array($studymates)){
+                    if (is_array($studymates)) {
                         $studymates = implode(',', $studymates);
-                        $query = 'SELECT u.id,u.full_name FROM  users u where u.id in('. $studymates.')';
+                        $query = 'SELECT u.id,u.full_name FROM  users u where u.id in(' . $studymates . ')';
                         $rows = mysqli_query($link, $query);
                         $i = 0;
                         $studymates_detail = array();
@@ -1189,7 +1207,7 @@ class PHPWebSocket {
                         }
                         $data['studymates_detail'] = $studymates_detail;
                     }
-                $data['current_date'] = date("M j, Y",strtotime(date('Y-m-d')));    
+                    $data['current_date'] = date("M j, Y", strtotime(date('Y-m-d')));
                 } else {
                     $data['to'] = 'self';
                     $data['error'] = 'Unable to save message.! Please try again.';
@@ -1288,23 +1306,57 @@ class PHPWebSocket {
                         $i++;
                     }
 
+                    $query = 'SELECT u.id,u.full_name FROM  users u where u.id in(' . $ID_in . ')';
+                    $rows = mysqli_query($link, $query);
+                    $i = 0;
+                    $studymates_detail = array();
+                    while ($row = mysqli_fetch_assoc($rows)) {
+                        $studymates_detail[$i]['full_name'] = $row['full_name'];
+                        $studymates_detail[$i]['id'] = $row['id'];
+                        $i++;
+                    }
+
                     $final_feed = array();
+
+                    $all_comment = $all_feed = array();
+                    while ($comment_rows = mysqli_fetch_assoc($comment_row)) {
+                        $all_comment[] = $comment_rows;
+                    }
+
+                    while ($tagged_rows = mysqli_fetch_assoc($tag_row)) {
+                        $all_feed[] = $tagged_rows;
+                    }
+
+                    pr($all_comment);
                     foreach ($all as $key => $value) {
                         $final_feed[$key] = $value;
                         $found_comment = $found_tagged = array();
-                        while ($comment_rows = mysqli_fetch_assoc($comment_row)) {
-                            if ($comment_rows['to'] == $value['post_id']) {
-                                $found_comment[] = $comment_rows;
+
+                        foreach ($all_comment as $k => $v) {
+                            if ($v['to'] == $value['post_id']) {
+                                $found_comment[] = $v;
                             }
                         }
-                        while ($tagged_rows = mysqli_fetch_assoc($tag_row)) {
-                            if ($tagged_rows['feed_id'] == $value['post_id']) {
-                                $found_tagged[] = $tagged_rows;
+
+                        foreach ($all_feed as $k => $v) {
+                            if ($v['feed_id'] == $value['post_id']) {
+                                $found_tagged[] = $v;
                             }
                         }
+
                         $final_feed[$key]['comment'] = $found_comment;
                         $final_feed[$key]['tagged_detail'] = $found_tagged;
+                        $final_feed[$key]['studymates_detail'] = $studymates_detail;
                     }
+
+
+
+
+
+
+
+
+
                     $data['feed'] = $final_feed;
                     foreach ($data['feed'] as $key => $value) {
                         foreach ($feed_images as $k => $v) {
@@ -2546,8 +2598,6 @@ class PHPWebSocket {
                 }
 
                 $data['already_available_tagged_detail'] = $available_user;
-
-
             } else {
 
                 $data['to'] = 'self';
