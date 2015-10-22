@@ -124,6 +124,7 @@ class Tutorial extends ISM_Controller {
 			}
 
 			$data['online'] = online();
+
 			// Get information of all group members
 			$data['member'] = select(
 					TBL_TUTORIAL_GROUP_MEMBER.' tm',
@@ -149,6 +150,7 @@ class Tutorial extends ISM_Controller {
 						)
 					)
 				);
+			//p($data,true);
 			$this->template->load('student/default','student/tutorial_group',$data);
 	}
 		

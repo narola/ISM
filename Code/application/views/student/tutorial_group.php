@@ -13,7 +13,7 @@
                         	<img src="/<?php echo UPLOAD_URL.'/'.$topic['profile_link']; ?>">
                         </div>
                         <div class="admin_question">
-                        	<h4><?php echo $topic['full_name']; ?><span><?php echo date_format( date_create($topic['created_date']), 'M d Y g:i a'); ?></span></h4>
+                        	<h4><?php echo $topic['full_name']; ?><span><?php echo date_format( date_create($topic['created_date']), 'M d, Y g:i a'); ?></span></h4>
                         	<p><?php echo $topic['topic_description']; ?></p>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                                 <img src="/<?php echo UPLOAD_URL.'/'.$v['profile_link']; ?>">
                                 </div>
                                 <div class="admin_question">
-                                    <h4><?php echo $v['full_name']; ?><span><?php echo date_format( date_create($v['created_date']), 'M d Y g:i a'); ?></span></h4>
+                                    <h4><?php echo $v['full_name']; ?><span><?php echo date_format( date_create($v['created_date']), 'M d, Y g:i a'); ?></span></h4>
                                     <p><?php 
                                       $check_type = array(
                                         'image/png',
