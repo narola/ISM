@@ -108,7 +108,7 @@
 	background-position:-220px 0;
 }
 .icon_search{
-    background-position: -254px 0;
+    background-position: -255px -1px;
     opacity: 0.4;
 }
 .icon_bell, .icon_message, .icon_request{

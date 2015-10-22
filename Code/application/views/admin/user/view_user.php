@@ -9,7 +9,7 @@
                   <li class="active">User</li>
                 </ol>
         
-                <div class="form-group no_effect search_input col-sm-offset-3 col-sm-3">
+                <div class="form-group search_input col-sm-offset-3 col-sm-3 no-padding">
                     <input type="text" name="q" id="q" class="form-control" placeholder="Type User Name." >
                     <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
                 </div>

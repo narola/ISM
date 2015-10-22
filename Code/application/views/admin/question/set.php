@@ -2,12 +2,15 @@
     <div class="col-sm-7 main main2 main_wide" >
     	<!--breadcrumb-->
    		<div class="row page_header">
-        	<div class="col-sm-12">
+        	<div class="col-sm-8">
             	<ol class="breadcrumb">
                   <li><a href="#">Assessment</a></li> 
                   <li class="active">Question Bank</li>
                 </ol>                 
             </div>
+			<div class="col-sm-4 text-right padding_t10">
+				<button class="btn btn_red">Add New Question</button>
+			</div>
         </div>
         <!--//breadcrumb-->
         <!--main content-->
@@ -54,9 +57,9 @@
                             </select>
                         </div>
 
-                        <div class="form-group no_effect search_link text-right">
+                        <!--<div class="form-group no_effect search_link text-right">
                             <button class="btn btn-link icon icon_search" type="submit"></button>
-                        </div>
+                        </div>-->
                         <div class="clearfix"></div>
                     </form>
                     </div>
@@ -88,7 +91,7 @@
                                 <div class="notice_action">                                            
                                     <a href="#" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
                                     <a href="#" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
-                                    <a href="#" class="icon fa fa-heart" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
+                                    <a href="#" class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
                                     <input type="checkbox" id="<?php echo 'check_'.$question['id']; ?>" 
                                     onchange="set_question(this.value)"
                                     value="<?php echo $question['id']; ?>"><label class="save_box"></label>
@@ -105,10 +108,10 @@
                         </div>
                    	</div>
                     <!--//box-body-->
-                    <div class="box_footer">
+                    <!--<div class="box_footer">
                     	<button class="btn btn_red">Add New Question</button>
                         <button class="btn btn_green pull-right no-margin">Add to Preview</button>
-                    </div>
+                    </div>-->
                 </div>
                 <!--//box-->
             </div>

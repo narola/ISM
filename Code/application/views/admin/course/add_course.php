@@ -71,7 +71,8 @@
                         </div>                       
                         <?php echo myform_error('course_degree'); ?>
 
-                        <div class="form-group ">
+                        <div class="form-group">
+							<label>Select Course</label>
                             <select class="form-control " name="course_category_id" id="course_category_id">
                                 <option selected disabled>Select course Category</option> 
                                  <?php 
