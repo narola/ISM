@@ -25,7 +25,11 @@ $logger -> Log($debug, 'Service :', $_REQUEST['Service']);
 switch ($_REQUEST['Service'])
 {
     /*********************  Profile Functions ******************************/
-       case "AuthenticateUser":
+    case "RequestForCredentials":
+    case "AuthenticateUser":
+    case "RegisterUser":
+    case "CheckUsernameAvailability":
+    case "ForgotPassword":
     {
   	 include_once 'ProfileFunctions.php';
      $profile = new ProfileFunctions();
@@ -40,6 +44,16 @@ switch ($_REQUEST['Service'])
     }    
         
  break;
+
+	/*********************  TutorialGroup Functions ******************************/
+       case "allocateTutorialGroup":
+    {
+		include_once 'TutorialGroup.php';
+		$profile = new TutorialGroup();
+		$data = $profile -> call_service($_REQUEST['Service'], $postData);
+    }
+        break;
+
     /*********************  Invalid Option to serve ******************************/
     default:
     {
