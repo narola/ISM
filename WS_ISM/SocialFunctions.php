@@ -191,11 +191,13 @@ class SocialFunctions
 	    foreach( $final_feeds_tagged as $value){
 	        $string1 .= "'".$value."',";
         }
-	    $string1;
+
+        $final_string=rtrim($string1,",");
+	    echo "test_latest:".$final_string;
 
 
         //$queryGetAllFeeds = "select * from " . TABLE_FEEDS . " where feed_by IN ('138','140')";
-        $queryGetAllFeeds = "select * from " . TABLE_FEEDS . " where feed_by IN (".$string1.")";
+        $queryGetAllFeeds = "select * from " . TABLE_FEEDS . " where feed_by IN (".$final_string.")";
         $resultGetAllFeeds = mysql_query($queryGetAllFeeds) or $errorMsg = mysql_error();
 
         //for counting the number of rows for query result
