@@ -252,7 +252,7 @@ $(document).ready(function () {
 /* Check wheather web socket is supported by browser. */
 if ("WebSocket" in window)
 {
-    var ws = new WebSocket("ws://192.168.1.21:9300");
+    var ws = new WebSocket("ws://192.168.1.124:9300");
 
     ws.onopen = function ()
     {
@@ -689,6 +689,7 @@ if ("WebSocket" in window)
     };
 }
 
+
 /* Send message for individual chat. */
 $(document).on('keypress', 'input[data-type="chat"]', function (e) {
     if (e.keyCode == 13 && this.value) {
@@ -704,13 +705,11 @@ $(document).on('keypress', 'input[data-type="chat"]', function (e) {
     }
 });
 
-/* Check user is online or not */
 
+/* Check user is online or not */
 function set_status(id, status) {
-   
     var ac = $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="'+id+'"]');
         if (status == false) {
-            
             $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('online').addClass('offline');
             if(wp != id){
                 $('.stm_list .mCustomScrollBox .mCSB_container').append('<div class="'+ac.attr('class')+'" data-id="'+id+'">'+ac.remove().html()+'</div>');
@@ -755,12 +754,11 @@ $(document).on('click', '#mate_list', function () {
                 $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
                 j--;
             }
-            
     }
 
     if (is_needed == true) {
         str += '<div class="chat active" data-id="' + id + '">';
-        str += '<div class="chat_header"><div class="chat_img_holder">';
+        str += '<div class="chat_header" data-id="' + id + '"><div class="chat_img_holder">';
         str += '<img src="' + $(this).children('div').children('img').attr('src') + '">';
         str += '</div><p class="chat_name">' + $(this).children('p').html() + '</p>';
         str += '<a href="#"><span class="icon icon_option"></span></a></div>';
@@ -776,16 +774,17 @@ $(document).on('click', '#mate_list', function () {
         .mCustomScrollbar({
             theme:"minimal-dark"
         }).delay(300);
-         var request = {
+         
+    } else {
+        $(".chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
+    }
+    var request = {
             type: 'get_latest_message',
             to: 'self',
             my_id: id
         };
 
-        ws.send(JSON.stringify(request));
-    } else {
-        $(".chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
-    }
+    ws.send(JSON.stringify(request));
     $(this).children('span').html('');
 
 });
@@ -818,13 +817,12 @@ $(document).on('keypress','#all_feed .box.feeds .write_comment input[data-type="
         };
         ws.send(JSON.stringify(request));
         $(this).val('');
-        // alert(wp +'=='+ $(this).data('id'));
-        // if(wp == $(this).data('id')){
-            cnt = $('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)').html();
-            $('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)').html(parseInt(cnt) + 1);
-        // }
+          cnt = parseInt($('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)').html()) + 1;
+          var view =  $('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)');
+          view.html(cnt);
      }
 });
+
 
 /* Generate HTML clock of Feed Post. */
 function generate_post(obj,status){
@@ -884,7 +882,7 @@ function generate_post(obj,status){
                 $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
                 notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
                 if(notification_length == 0 ){
-                    notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">No more notification</div></li>');
+                    notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">kNo more notification</div></li>');
                     $('.mCSB_container .three_tabs .dropdown .badge').html(0);
                 }
                 else{
@@ -1241,4 +1239,15 @@ $(document).on('click','a[data-type="tag-user-again"]',function(){
     fid : $(this).data('id')
   }
   ws.send(JSON.stringify(request));
+});
+
+$(document).on('click','.chat_container .passive .chat_header',function(){
+  var request = {
+            type: 'get_latest_message',
+            to: 'self',
+            my_id: $(this).data('id')
+        };
+        var c =  $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="'+$(this).data('id')+'"] a span.badge');
+          c.html('');
+        ws.send(JSON.stringify(request));
 });
