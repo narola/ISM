@@ -12,13 +12,22 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.ism.R;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.Utility.Debug;
 import com.ism.author.asynctask.API_METHOD_NAME;
-import com.ism.author.asynctask.GetAllFeeds;
+import com.ism.author.asynctask.Urls;
 import com.ism.author.interfaces.OnApiResponseListener;
 import com.ism.interfaces.FragmentListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 /*
 * This is the homefragment containg the newsfeed.
@@ -94,7 +103,28 @@ public class HomeFragment extends Fragment implements OnApiResponseListener {
             }
         };
 
-        new GetAllFeeds(getActivity(), (OnApiResponseListener) this).execute();
+//        new GetAllFeeds(getActivity(), (OnApiResponseListener) this).execute();
+
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("user_id", "141");
+
+        JsonObjectRequest req = new JsonObjectRequest(Urls.getAllFeeds, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            VolleyLog.v("Response:%n %s", response.toString(4));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
 
 
     }
