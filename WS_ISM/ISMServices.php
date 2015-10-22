@@ -32,7 +32,14 @@ switch ($_REQUEST['Service'])
      $data = $profile -> call_service($_REQUEST['Service'], $postData);
     }
         break;
-
+    case "GetAllFeeds":
+    {
+         include_once 'SocialFunctions.php';
+       	 $profile = new SocialFunctions();
+    	 $data = $profile -> call_service($_REQUEST['Service'], $postData);
+    }    
+        
+ break;
     /*********************  Invalid Option to serve ******************************/
     default:
     {

@@ -62,6 +62,7 @@ define("TABLE_SCHOOL_CLASSROOM",   "school_classroom");
 define("TABLE_SCHOOL_COURSE",   "school_course");
 define("TABLE_SCHOOLS",   "schools");
 define("TABLE_STATES",   "states");
+define("TABLE_STUDENT_TEACHER",   "student_teacher");
 define("TABLE_STUDENT_ACADEMIC_INFO",   "student_academic_info");
 define("TABLE_STUDENT_EXAM_RESPONSE",   "student_exam_response");
 define("TABLE_STUDENT_EXAM_SCORE",   "student_exam_score");
