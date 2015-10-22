@@ -116,8 +116,10 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->end_exam($Server->wsClients[$clientID][12], $data);
     }else if($data['type'] == 'tag-user-again'){
         $responce = $Server->tag_again($Server->wsClients[$clientID][12], $data);        
+    }else if($data['type'] == 'study_mate_se'){
+        $responce = $Server->studymate_search($Server->wsClients[$clientID][12], $data);        
     }
-    pr($data);
+
     $check = array('feed_comment', 'like');
     if (isset($responce)) {
         pr($responce, 1);
@@ -166,6 +168,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                         break;
                     }
                 }
+                 $Server->wsSend($clientID, json_encode($responce));
             }else if ($responce['type'] == 'tag-user-again') {
                 foreach ($Server->wsClients as $id => $client) {
                     if (in_array($Server->wsClients[$id][12], $responce['tagged_id'])) {
@@ -210,6 +213,6 @@ $Server->bind('close', 'wsOnClose');
 
 // for other computers to connect, you will probably need to change this to your LAN IP or external IP,
 // alternatively use: gethostbyaddr(gethostbyname($_SERVER['SERVER_NAME']))
-$Server->wsStartServer('192.168.1.21', 9300);
+$Server->wsStartServer('192.168.1.124', 9300);
 // C:\wamp\bin\php\php5.5.12\php.exe -f "C:\wamp\www\ISM\Code\websocket\server.php"
 ?>

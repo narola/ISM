@@ -1,100 +1,4 @@
 <div class="col-sm-7 main main2 stydymates">  
-                <!--search bar-->
-                <div class="row search_bar">
-                    <input type="text" class="form-control" placeholder="Type here to search you mate">
-                    <a href="#" class="icon icon_search"></a>
-                    <button class="btn btn_green">View Recommendation</button>
-                </div>
-                <!--//search bar-->
-                <!--filterbar-->
-                <div class="row filter_bar">
-                    <ul>
-                        <li><a href="#">People</a></li>
-                        <li><a href="#">School</a></li>
-                        <li><a href="#">Area</a></li>
-                        <li><a href="#">Course</a></li>
-                    </ul>
-                </div>
-                <!--//filterbar-->
-                <!--search result-->
-                <h5 class="search_result_label">Search Result for</h5>
-                <div class="box general_cred">
-                    <div class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark">
-                        <!--item1-->
-                        <div class="study_mate">
-                            <div class="col-lg-9 col-md-8 col-sm-7">
-                                <div class="mate_user_img">
-                                    <img src="assets/images/user1.jpg">
-                                </div>
-                                <h4>Adam Rose</h4>
-                                <p>Student from Lourdes convents</p>
-                                <p>Live in Ghana</p>
-                                <a href="#">Following 34 Authers</a>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-5">
-                                <button class="btn btn_green btn-block">Add Studymate</button>
-                                
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--//item1-->
-                        <!--item1-->
-                        <div class="study_mate">
-                            <div class="col-lg-9 col-md-8 col-sm-7">
-                                <div class="mate_user_img">
-                                    <img src="assets/images/user4.jpg">
-                                </div>
-                                <h4>Adam Rose</h4>
-                                <p>Student from Lourdes convents</p>
-                                
-                                <a href="#">Following 34 Authers</a>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-5">
-                                <button class="btn btn_green btn-block">Add Studymate</button>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--//item1-->
-                        <!--item1-->
-                        <div class="study_mate">
-                            <div class="col-lg-9 col-md-8 col-sm-7">
-                                <div class="mate_user_img">
-                                    <img src="assets/images/user2.jpg">
-                                </div>
-                                <h4>Adam Rose</h4>
-                                <p>Student from Lourdes convents</p>
-                                
-                                <a href="#">Following 34 Authers</a>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-5">
-                                <button class="btn btn_black_normal btn-block">Respond to Request</button>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--//item1-->
-                        <!--item1-->
-                        <div class="study_mate">
-                            <div class="col-lg-9 col-md-8 col-sm-7">
-                                <div class="mate_user_img">
-                                    <img src="assets/images/user3.jpg">
-                                </div>
-                                <h4>Adam Rose</h4>
-                                <p>Student from Lourdes convents</p>
-                                
-                                <a href="#">Following 34 Authers</a>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-5">
-                                <button class="btn btn_green btn-block">Add Studymate</button>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--//item1-->
-                        <div class="text-center">
-                            <a href="#" class="search_result_label">View More</a>
-                        </div>
-                    </div>
-                </div>
-                <!--//search result-->
 <div class="box general_cred">
     <div class="box_header">
         <h3>Studymate Requests</h3>
@@ -128,7 +32,7 @@
         }
         else{
             ?>
-            <div class="study_mate"><h4>No more studymate request</h4></div>
+            <div class="study_mate"><label class="txt_grey txt_red">No more studymate request</label></div>
         <?php
         } 
         ?>
@@ -145,7 +49,7 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
                 <?php 
-                    if(isset($recommended_studymates)){
+                    if(isset($recommended_studymates) && sizeof($recommended_studymates) > 0){
                 ?>
                     <div class="item active" id="active-recommended">
                     <?php
@@ -182,12 +86,12 @@
                 <?php
                     }
                     else{
-                         echo '<h3>No Studymate Found...</h3>';
+                         echo '<label class="txt_grey txt_red">No studymate</label>';
                     }
                 ?>            
             </div>
             <?php 
-                if(isset($recommended_studymates)){
+                if(isset($recommended_studymates) && sizeof($recommended_studymates) > 0){
             ?>
                 <!-- Controls -->
                 <a class="left carousel-control" href="#carousel-studymate" role="button" data-slide="prev">

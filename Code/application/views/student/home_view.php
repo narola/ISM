@@ -155,7 +155,9 @@
                             <span><?php echo $value['tot_like'];?></span></a>
                         <a href="javascript:void(0);" class="comment_btn" data-id="<?php echo $value['fid'];?>"><span class="icon icon_comment"></span>
                             <span><?php echo $value['tot_comment'];?></span></a>
+                            <?php if($value['tot_comment'] > 3){  ?>
                         <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
+                        <?php } ?>
                         <div class="dropdown tag_user" style="display: inline-block;">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="<?php echo $value['fid'];?>" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
                         </div>

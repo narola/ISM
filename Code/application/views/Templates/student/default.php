@@ -16,10 +16,9 @@
     <!--fonts-->
     <link href='assets/css/fonts.css' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-      <!-- Select2 CSS Start -->
+    <!-- Select2 CSS Start -->
     <link href="assets/css/select2-bootstrap.css" rel="stylesheet">    
     <link href="assets/css/select2.css" rel="stylesheet">
-
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -192,9 +191,9 @@ function toHHMMSS (sec) {
                             ?>
                         </ul>
                     </li>
-                    <li><a href="#">
+                   <!--  <li><a href="#">
                         <span class="icon icon_message"></span>
-                        <span class="badge message_badge" id="my_message_cnt">0</span></a></li>
+                        <span class="badge message_badge" id="my_message_cnt">0</span></a></li> -->
                     <li><a href="/student/studymates_request"><span class="icon icon_request"></span>
                         <?php 
                             $request_cnt = count_studymate_request($this->session->userdata('user')['id']);
@@ -407,7 +406,7 @@ function toHHMMSS (sec) {
                  if(isset($active_c) && !empty($active_c) && $this->session->userdata('user')['id'] != get_cookie('active') && in_array( get_cookie('active'), studymates( $this->session->userdata('user')['id']))){
                 ?>
                 <div class="chat active" data-id="<?php echo $active_c['user']['id'] ?>">
-                    <div class="chat_header">
+                    <div class="chat_header" data-id="<?php echo $active_c['user']['id'] ?>">
                         <div class="chat_img_holder">
                             <img src="<?php echo UPLOAD_URL.'/'.$active_c['user']['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'"></div>
                             <p class="chat_name"><?php echo $active_c['user']['full_name'] ?></p>

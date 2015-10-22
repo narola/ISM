@@ -1,10 +1,21 @@
+<script>
+    $(document).on('click','li[data-type="search-type"]',function(){
+        $('.row.filter_bar ul li').removeClass('active');
+        $(this).addClass('active');
+    });
+</script>
 <!--main-->
-<div class="col-sm-7 main main2 stydymates">   
-    <div class="box general_cred">
-        <div class="box_header">
-            <h3>My Studymates</h3>
-        </div>
-        <div class="box_body studyamte_list mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="col-sm-7 main main2 stydymates"> 
+    <!--tabs-->
+    <div class="tabs_studymate row">
+        <button class="btn col-sm-6 no-padding active" id="ms">My Studymates</button>
+        <button class="btn col-sm-6 no-padding" id="fs">Find Studymates</button>
+    </div>
+    <!--//tabs-->
+    <!--my studymates-->
+    <div class="my_studymates">
+        <div class="box general_cred">
+           <div class="box_body studyamte_list mCustomScrollbar" data-mcs-theme="minimal-dark">
             <?php
                 if(isset($my_studymates)){
                     foreach ($my_studymates as $key => $value) {
@@ -17,7 +28,6 @@
                             </div>
                             <h4><?php echo $value['full_name'];?></h4>
                             <p>Student from <?php echo $value['school_name'];?></p>
-                            <a href="#"></a>
                         </div>
                         <div class="col-lg-3 col-md-4 col-sm-5">
                             <button class="btn btn_green btn-block">View Profile</button>
@@ -43,9 +53,70 @@
                 }
             ?>
         </div>
-
+        </div>
     </div>
-    <!--suggestion-->
+    <!--//my studymates-->
+    <!--search-->
+    <div class="search_studymate">
+        <!--search bar-->
+        <div class="row search_bar">
+            <input type="text" class="form-control" placeholder="Type here to search you mate" data-type="study_mate_search">
+            <a href="#" class="icon icon_search" style="float:right;"></a>
+        </div>
+        <!--//search bar-->
+        <!--filterbar-->
+        <div class="row filter_bar">
+            <ul>
+                <li class="active" data-type="search-type" data-id="people"><a href="javascript:void(0);">People</a></li>
+                <li data-type="search-type" data-id="school"><a href="javascript:void(0);">School</a></li>
+                <li data-type="search-type" data-id="area"><a href="javascript:void(0);">Area</a></li>
+                <li data-type="search-type" data-id="course"><a href="javascript:void(0);">Course</a></li>
+            </ul>
+        </div>
+        <!--//filterbar-->
+        <!--search result-->
+        <h5 class="search_result_label">Search Result for</h5>
+        <div class="box general_cred">
+            <div class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark" id="search_result">
+                <?php 
+                    if(isset($recommended_studymates) && sizeof($recommended_studymates) > 0){ 
+                    $i = 1;
+                    foreach ($recommended_studymates as $key => $value) {
+                ?>
+                <!--item1-->
+                <div class="study_mate">
+                    <div class="col-lg-9 col-md-8 col-sm-7">
+                        <div class="mate_user_img">
+                            <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                        </div>
+                        <h4><?php echo $value['full_name'];?></h4>
+                        <p><?php echo $value['school_name'];?></p>
+                        <p>Live in Ghana</p>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-5">
+                        <?php if($value['srid'] != ''){?>
+                        <button class="btn btn_black_normal btn-block" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>" disabled>Request Already Sent</button>
+                        <?php }else{ ?>
+                        <button class="btn btn_green btn-block" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>">Add Studymates</button>
+                        <?php } ?>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--//item1-->
+                <?php 
+                    } 
+                }
+                ?>
+                <div class="text-center">
+                    <a href="#" class="search_result_label">View More</a>
+                </div>
+            </div>
+        </div>
+        <!--//search result-->
+        
+    </div>
+    <!--//search-->
+     <!--suggestion-->
     <div class="box general_cred">
         <div class="box_header">
             <h3>Recommended Studymates</h3>
@@ -73,8 +144,14 @@
                                 </div>
                                 <div class="mate_descrip">
                                     <p class="mate_name"><?php echo $value['full_name'];?></p>
-                                    <p class="mate_following">Folowing 34 Authers</p>
-                                    <p><?php echo $value['school_name'];?></p>
+                                    <p>
+                                    <?php 
+                                        if(strlen($value['school_name']) > 30)
+                                            echo substr($value['school_name'],0, 29).'.....';
+                                        else
+                                            echo $value['school_name'];
+                                    ?> 
+                                    </p>
                                     <p><?php echo $value['course_name'];?></p>
                                     <?php if($value['srid'] != ''){?>
                                     <button class="btn btn_black_normal" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>" disabled>Request Already Sent</button>
@@ -93,7 +170,7 @@
                     <?php
                         }
                         else{
-                            echo '<h3>No Studymate Found...</h3>';
+                            echo '<label class="txt_grey txt_red">No studymate found</label>';
                         }
                     ?>            
                 </div>
@@ -120,8 +197,6 @@
     <!--//suggestion-->
 </div>
 <!--//main-->
-
-
 <!-- Modal -->
 <div class="modal fade" id="close_mate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document" style="width:600px;margin-top:220px;">
@@ -140,3 +215,19 @@
     </div>
 </div>
 <!-- /.modal -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#ms').click(function(){
+            $('.my_studymates').css('display','block');
+            $('.search_studymate').css('display','none');
+            $(this).addClass('active');
+            $('#fs').removeClass('active');
+        }); 
+        $('#fs').click(function(){
+            $('.my_studymates').css('display','none');
+            $('.search_studymate').css('display','block');
+            $(this).addClass('active');
+            $('#ms').removeClass('active');
+        });   
+    });
+</script>
