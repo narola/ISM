@@ -435,11 +435,11 @@ function toHHMMSS (sec) {
                             }
                                 if($value['sender_id'] == $active_c['user']['id']){
                             ?>
-                                <div class="from"><p><?php echo  $mess; ?></p></div>
+                                <div class="from"><p><?php echo  $mess; ?></p><div>Oct 15, 2015 11:30 am</div></div>
                             <?php
                                 }else{
                             ?>
-                                <div class="to"><p><?php echo  $mess; ?></p></div>
+                                <div class="to"><p><?php echo  $mess; ?></p><div>Oct 15, 2015 11:30 am</div></div>
                             <?php
                                 }
                             }
