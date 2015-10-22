@@ -522,6 +522,7 @@ class PHPWebSocket {
 
 
 
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -695,6 +696,7 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
 
 
 
@@ -2769,16 +2771,16 @@ class PHPWebSocket {
         return $output;
     }
 
-    function studymate_search($userid,$data){
+    function studymate_search($userid, $data) {
         $link = $this->db();
-        $query = "SELECT `in1`.`user_id`, `u`.`full_name`, `s`.`school_name`, `c`.`course_name`, `p`.`profile_link`, `sr`.`id` as `srid`, `sr`.`is_delete` FROM `tutorial_group_member` `m` JOIN `student_academic_info` `in` ON `in`.`user_id` = `m`.`user_id` JOIN `student_academic_info` `in1` ON `in`.`classroom_id` = `in1`.`classroom_id` and `in`.`course_id` = `in1`.`course_id` and `in`.`academic_year` = `in1`.`academic_year` and `in`.`school_id` = `in1`.`school_id` LEFT JOIN `users` `u` ON `in1`.`user_id` = `u`.`id` LEFT JOIN `schools` `s` ON `s`.`id` = `in`.`school_id` LEFT JOIN `courses` `c` ON `c`.`id` = `in1`.`course_id` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` LEFT JOIN `studymates_request` `sr` ON `sr`.`request_from_mate_id`=140 and `sr`.`request_to_mate_id` = `in1`.`user_id` and `sr`.`is_delete` = 0 WHERE `m`.`group_id` = '59' AND `in1`.`user_id` != '140' AND `in1`.`user_id` NOT IN('138') AND u.full_name like '".$data['search_txt']."%' GROUP BY `in1`.`user_id`";
-        $rows = mysqli_query($link,$query);
+        $query = "SELECT `in1`.`user_id`, `u`.`full_name`, `s`.`school_name`, `c`.`course_name`, `p`.`profile_link`, `sr`.`id` as `srid`, `sr`.`is_delete` FROM `tutorial_group_member` `m` JOIN `student_academic_info` `in` ON `in`.`user_id` = `m`.`user_id` JOIN `student_academic_info` `in1` ON `in`.`classroom_id` = `in1`.`classroom_id` and `in`.`course_id` = `in1`.`course_id` and `in`.`academic_year` = `in1`.`academic_year` and `in`.`school_id` = `in1`.`school_id` LEFT JOIN `users` `u` ON `in1`.`user_id` = `u`.`id` LEFT JOIN `schools` `s` ON `s`.`id` = `in`.`school_id` LEFT JOIN `courses` `c` ON `c`.`id` = `in1`.`course_id` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` LEFT JOIN `studymates_request` `sr` ON `sr`.`request_from_mate_id`=140 and `sr`.`request_to_mate_id` = `in1`.`user_id` and `sr`.`is_delete` = 0 WHERE `m`.`group_id` = '59' AND `in1`.`user_id` != '140' AND `in1`.`user_id` NOT IN('138') AND u.full_name like '" . $data['search_txt'] . "%' GROUP BY `in1`.`user_id`";
+        $rows = mysqli_query($link, $query);
         $result = array();
-        while($row = mysqli_fetch_assoc($rows)){
+        while ($row = mysqli_fetch_assoc($rows)) {
             $result[] = $row;
         }
         $data['result'] = $result;
-        return $data;            
+        return $data;
     }
 
 }
