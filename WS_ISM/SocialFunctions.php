@@ -154,46 +154,30 @@ class SocialFunctions
 
     public function getAllFeedsFromFeeds($final_followers, $final_mates, $final_teachers, $final_groups, $final_users, $final_feeds_tagged)
     {
-        //   $queryGetAllFeeds = "select * from " . TABLE_FEEDS . " where feed_by='" . $feed_by . "'";
 
-//        print_r($final_followers);//56,57,59,54
-//        print_r($final_mates);//138,139,140,138
-//        print_r($final_teachers);//340-343
-//        print_r($final_groups);//59
-//        print_r($final_users);//2-5,108,109
-//        print_r($final_feeds_tagged);//240,241,242,260,265,340
-
-
-        $myvar = implode(",", $final_mates);
-
-        $string1 = '';
-        $string2 = '';
-        $string3 = '';
-        $string4 = '';
-        $string5 = '';
-        $string6 = '';
+        $string_of_all_ids = '';
 
         foreach( $final_followers as $value){
-            $string1 .= "'".$value."',";
+            $string_of_all_ids .= "'".$value."',";
         }
 	    foreach( $final_mates as $value){
-		    $string1 .= "'".$value."',";
+		    $string_of_all_ids .= "'".$value."',";
         }
 	    foreach( $final_teachers as $value){
-		    $string1 .= "'".$value."',";
+		    $string_of_all_ids .= "'".$value."',";
         }
 	    foreach( $final_groups as $value){
-	        $string1 .= "'".$value."',";
+	        $string_of_all_ids .= "'".$value."',";
         }
 	    foreach( $final_users as $value){
-	        $string1 .= "'".$value."',";
+	        $string_of_all_ids .= "'".$value."',";
         }
 	    foreach( $final_feeds_tagged as $value){
-	        $string1 .= "'".$value."',";
+	        $string_of_all_ids .= "'".$value."',";
         }
 
-        $final_string=rtrim($string1,",");
-	    echo "test_latest:".$final_string;
+        $final_string=rtrim($string_of_all_ids,",");
+	   // echo "test_latest:".$final_string;
 
 
         //$queryGetAllFeeds = "select * from " . TABLE_FEEDS . " where feed_by IN ('138','140')";
