@@ -878,6 +878,10 @@
 	.range_picker:last-child {
 		margin-left: 80px;
 	}
+	.topic_content .label{
+		padding:6px;
+		font-size:13px;
+	}
 }
 @media (max-width:768px){
 	.login_background {

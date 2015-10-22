@@ -23,11 +23,13 @@ class User extends ADMIN_Controller {
 	  **/
 	 
 	public function index() {
-		
+			
 		$this->data['page_title'] = 'Users';
-		
-		if(!empty($_GET['role']) || !empty($_GET['course']) || !empty($_GET['school']) ||  !empty($_GET['year']) 
-			|| !empty($_GET['classroom']) || !empty($_GET['q']) ){
+		$order = '';
+		$where['where'][TBL_USERS.'.is_delete']=FALSE;
+
+		if(!empty($_GET['role']) || !empty($_GET['course']) || !empty($_GET['school']) || 
+			!empty($_GET['classroom']) || !empty($_GET['q']) || !empty($_GET['order']) ){
 
 			if( !empty($_GET['role']) ) { $role = $this->input->get('role'); }	
 			if( !empty($_GET['course'])){ $course  = $this->input->get('course'); }
@@ -35,6 +37,8 @@ class User extends ADMIN_Controller {
 			if( !empty($_GET['year']) ) { $year = $this->input->get('year'); }
 			if( !empty($_GET['classroom']) ){  $classroom = $this->input->get('classroom'); }
 			if( !empty($_GET['q']) ){  $q = $this->input->get('q'); }
+			if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }		
+
 
 			$str = '';
 
@@ -48,6 +52,11 @@ class User extends ADMIN_Controller {
 							}
 			if(!empty($q)){ $where['like'][TBL_USERS.'.username'] = $q; $str.='&q='.$q; }							
 
+			if($order == 'name_asc'){ $order = TBL_USERS.".username asc"; $str.='&order=name_asc';  }
+			if($order == 'name_desc'){ $order = TBL_USERS.".username desc"; $str.='&order=name_desc'; }
+			if($order == 'latest'){ $order = TBL_USERS.".created_date desc"; $str.='&order=latest'; }
+			if($order == 'older'){ $order = TBL_USERS.".created_date asc"; $str.='&order=older'; }
+
 			$str =  trim($str,'&');
 
 			if(!empty($str)) { $config['base_url']	 = base_url().'admin/user/index?'.$str; }else{ $config['base_url'] = base_url().'admin/user/index';  }
@@ -55,7 +64,7 @@ class User extends ADMIN_Controller {
 			$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'	
 	
 		}else{
-			$where=null;
+			
 			$where['where'][TBL_USERS.'.is_delete']=FALSE;
 			
 			$config['base_url']	 = base_url().'admin/user/index';
@@ -63,7 +72,7 @@ class User extends ADMIN_Controller {
 		}
 
 		$config['uri_segment'] = 4;
-		$config['num_links'] = 5;
+		$config['num_links'] = 2;
 		$config['total_rows'] = select(TBL_USERS,FALSE,$where,array('count'=>TRUE,'join'=>array(array('table' => TBL_STUDENT_ACADEMIC_INFO,'condition' => TBL_USERS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.user_id'))));
 		$config['per_page'] = 15;
 
@@ -99,6 +108,7 @@ class User extends ADMIN_Controller {
 											'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link',
 											$where,
 											array(
+												'order_by'=>$order,
 												'limit'=>$config['per_page'],
 												'offset'=>$offset,
 												'join' =>  array(
@@ -137,7 +147,7 @@ class User extends ADMIN_Controller {
 												    		)
 												)
 											);
-
+	
 		$this->pagination->initialize($config);
 		
 		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)));

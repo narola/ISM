@@ -157,46 +157,35 @@
         
                 },
                 legend: {
-                    enabled: false
+                    enabled: true
                 },
                 plotOptions: {
                     series: {
                         borderWidth: 0,
                         dataLabels: {
                             enabled: true,
-                            format: '{point.y:.1f}%'
+                            format: '{point.y}'
                         }
                     }
                 },
         
                 tooltip: {
                     headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b><br/>'
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
                 },
         
                 series: [{
-                    name: "Subject",
+                    name: "Subjects",
                     colorByPoint: true,
-                    data: [{
-                        name: "Mathematics",
-                        y: 90,
-                    }, {
-                        name: "Physics",
-                        y: 82,
-                    }, {
-                        name: "Chemistry",
-                        y: 55,
-                    }, {
-                        name: "Biology",
-                        y: 75,
-                    }, {
-                        name: "English",
-                        y: 88,
-                        drilldown: "English"
-                    }, {
-                        name: "Literature",
-                        y: 79,
-                    }]
+                    data: [
+
+                        <?php foreach ($group_performance as $group) { ?>
+                            {
+                            name: "<?php echo $group['subject_name']; ?>",
+                            y: <?php echo $group['group_score']; ?>
+                        },
+                        <?php } ?>
+                        ]
                 }],
                  
             });

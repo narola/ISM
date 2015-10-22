@@ -1,17 +1,23 @@
 <!--main-->
     <div class="col-sm-7 main main2">
       <!--breadcrumb-->
-      <div class="row page_header">
+      <form method="get" id="filter">
+        <div class="row page_header">
           <div class="col-sm-12">
-              <ol class="breadcrumb">
+              <ol class="breadcrumb col-sm-6">
                   <li><a href="#">Manage</a></li>
                   <li class="active">User</li>
                 </ol>
+        
+                <div class="form-group no_effect search_input col-sm-offset-3 col-sm-3">
+                    <input type="text" name="q" id="q" class="form-control" placeholder="Type User Name." >
+                    <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                </div>
             </div>
         </div>
         <!--//breadcrumb-->
         <!--filter-->
-        <form method="get" id="filter">
+        
 	        <div class="row filter">
 	          <div class="col-sm-12">
 	              <div class="form-group">
@@ -36,13 +42,6 @@
                             <?php }  } ?>
                         </select>
 	                </div>
-	                <!-- <div class="form-group">
-	                    <select class="form-control" name="year" onchange="filter_data()" id="year">
-	                        <option value="">Select Year</option>
-	                        <option value="2015">2015</option>
-	                        <option value="2016">2016</option>
-	                    </select>
-	                </div> -->
 	                <div class="form-group">
 	                    <select class="form-control" name="role" id="role" onchange="filter_data()">
                             <option value="">Select Role</option>
@@ -65,11 +64,18 @@
                             <?php }  } ?>
                         </select>
 	                </div>
+
+                <div class="form-group">
+                    <select class="form-control" name="order" id="order" onchange="filter_data()">
+                        <option value="">Sort By</option>
+                        <option value="name_asc">Name Ascending</option>
+                        <option value="name_desc">Name Descending</option>
+                        <option value="latest">Latest First</option>
+                        <option value="older">Older First</option>
+                    </select>
+                </div>
                     
-                    <div class="form-group no_effect search_input">
-                        <input type="text" name="q" id="q" class="form-control" placeholder="Type User Name." >
-                        <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
-                    </div>
+                    
 	            </div>
 	        </div>
             
@@ -197,6 +203,10 @@
 
 <script type="text/javascript">
     
+    // $(document).ready(function(){
+    //   $('select').select2();
+    // });
+
     function block_user(href,event){
          event.preventDefault();
          bootbox.confirm("Block User?", function(confirmed) {
@@ -223,17 +233,17 @@
     	
     	var role = $('#role').val();
     	var school = $('#school').val();
-    	var year = $('#year').val();
     	var course = $('#course').val();
     	var classroom = $('#classroom').val();
         var q = $('#q').val();
+        var order = $('#order').val();
 
-    	if(role == '' ){ $('#role').removeAttr('name'); }
+        if(role == '' ){ $('#role').removeAttr('name'); }
     	if(school == '' ){ $('#school').removeAttr('name'); }
-    	if(year == '' ){ $('#year').removeAttr('name'); }
     	if(course == '' ){ $('#course').removeAttr('name'); }
     	if(classroom == ''){ $('#classroom').removeAttr('name'); }
         if(q == ''){ $('#q').removeAttr('name');}
+        if(order == ''){  $('#order').removeAttr('name'); }
 
     	$('#filter').submit();
     }
@@ -265,10 +275,6 @@
 		$('#school').val('<?php echo $_GET["school"];?>');	
 	<?php } ?>
 
-	<?php if(!empty($_GET['year'])) { ?>
-		$('#year').val('<?php echo $_GET["year"];?>');	
-	<?php } ?>
-
 	<?php if(!empty($_GET['course'])) { ?>
 		$('#course').val('<?php echo $_GET["course"];?>');	
 	<?php } ?>
@@ -279,7 +285,11 @@
 
     <?php if(!empty($_GET['q'])) { ?>
         $('#q').val('<?php echo $_GET["q"];?>');    
-    <?php } ?>			
+    <?php } ?>	
+
+    <?php if(!empty($_GET['order'])) { ?>
+        $('#order').val('<?php echo $_GET["order"];?>');    
+    <?php } ?> 		
 
 </script>
  

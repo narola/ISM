@@ -20,7 +20,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 
     $datas = json_decode($message, true);
     $datas['error'] =  $datas['redirect'] = 'skip';
-    pr($datas);
+ //   pr($datas);
     $data = array_merge($datas, $Server->active_hours());
     $data['reload'] = 'no';
     /* For individual chat */
@@ -98,6 +98,10 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         if (isset($data['data'])) {
             unset($data['data']);
         }
+    } else if($data['type'] == 'feed_file_share'){
+        $responce = $Server->save_feed_file($Server->wsClients[$clientID][12], $data);
+    } else if($data['type'] == 'comment_file_share'){
+        $responce = $Server->save_feed_comment_file($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'get_studymate_name') {
         $responce = $Server->get_studymate_name($data);
     } else if ($data['type'] == 'exam_start_request') {
@@ -115,7 +119,6 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     }else if($data['type'] == 'study_mate_se'){
         $responce = $Server->studymate_search($Server->wsClients[$clientID][12], $data);        
     }
-
 
     $check = array('feed_comment', 'like');
     if (isset($responce)) {

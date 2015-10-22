@@ -47,7 +47,8 @@ $url = uri_string();
         <script src="assets/js/ZeroClipboard.min.js"></script>  <!-- For Copy to Clipboard Functionality Refer:http://zeroclipboard.org/ -->
         <script src="assets/js/bootbox.min.js"></script> <!-- Bootstrap Alert,Dialog Box Script Ref: http://bootboxjs.com/  -->
         <script src="assets/js/bootstrap-switch.js"></script>  <!-- Bootstrap Switch Script  -->
-        
+        <script src="assets/js/jquery.validate.js"></script>  <!-- Jquery Validate Plugin Script  -->
+
         <!-- Highchart JS Start -->
         <script src="http://code.highcharts.com/highcharts.js"></script>
         <script src="http://code.highcharts.com/modules/data.js"></script>
@@ -146,7 +147,11 @@ $url = uri_string();
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="#"><span class="icon icon_menu_report"></span> Reports</a></li>
+                        <li class="<?php
+                        if (in_array($url, array('admin/report'))) {
+                            echo 'active';
+                        }
+                        ?>"><a href="admin/report"><span class="icon icon_menu_report"></span> Reports</a></li>
                     </ul>
                     <!-- <ul class="nav navbar-nav navbar-right">
                         <li><a class="" href="#"><span class="icon icon_search"></span></a></li>

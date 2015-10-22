@@ -19,6 +19,8 @@ class Notice extends ADMIN_Controller {
 	public function index()
 	{
 
+		$order = 'created_date DESC';
+		
 		if($_POST){
 			
 			$bulk_notices = $this->input->post('notices_bulk');
@@ -38,11 +40,12 @@ class Notice extends ADMIN_Controller {
 
 		}
 
-		if( !empty($_GET['role']) || !empty($_GET['status']) || !empty($_GET['classroom']) ){
+		if( !empty($_GET['role']) || !empty($_GET['status']) || !empty($_GET['classroom']) || !empty($_GET['order']) ){
 
 			if( !empty($_GET['role']) ) { $role = $this->input->get('role'); }	
 			if( !empty($_GET['status']) ) { $status = $this->input->get('status'); }
 			if( !empty($_GET['classroom']) ) { $classroom = $this->input->get('classroom'); }	
+			if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }		
 			
 			$str = '';
 			
@@ -54,7 +57,13 @@ class Notice extends ADMIN_Controller {
 						else{ $where['noticeboard.is_template'] = TRUE;   $str .= '&status='.$status; } 
 					}
 			if(!empty($classroom)){  $where['noticeboard_viewer.classroom_id'] = $classroom ; $str .= '&classroom='.$classroom; }		
-					
+			
+			if($order == 'name_asc'){ $order = "noticeboard.notice asc"; $str.='&order=name_asc';  }
+			if($order == 'name_desc'){ $order = "noticeboard.notice desc"; $str.='&order=name_desc'; }
+			if($order == 'latest'){ $order = "noticeboard.created_date desc"; $str.='&order=latest'; }
+			if($order == 'older'){ $order = "noticeboard.created_date asc"; $str.='&order=older'; }	
+
+
 			$str =  trim($str,'&');
 
 			$config['base_url'] = base_url().'admin/notice/index?'.$str;
@@ -101,9 +110,9 @@ class Notice extends ADMIN_Controller {
 										"noticeboard.id,noticeboard.status,noticeboard.notice,noticeboard.created_date,noticeboard.notice_title,noticeboard_viewer.role_id",
 										array('where'=>$where),
 										array(
+											'order_by'=>$order,
 											'limit'=>$config['per_page'],
 											'offset'=>$offset,
-											'order_by'=>array('created_date DESC'),
 											'join'=>array(
 													array(
 														'table'=>'noticeboard_viewer'	,
@@ -112,7 +121,7 @@ class Notice extends ADMIN_Controller {
 												)
 											)
 										);
-
+		
 		//if(empty($this->data['notices'])){ $this->session->set_flashdata('error', 'No Notices Found.'); }
 
 		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));

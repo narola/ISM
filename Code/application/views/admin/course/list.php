@@ -30,6 +30,17 @@
                                     <?php }  } ?>
                             </select>
                         </div>
+
+                        <div class="form-group">
+                            <select class="form-control" name="order" id="order" onchange="filter_data()">
+                                <option value="">Sort By</option>
+                                <option value="name_asc">Name Ascending</option>
+                                <option value="name_desc">Name Descending</option>
+                                <option value="latest">Latest First</option>
+                                <option value="older">Older First</option>
+                            </select>
+                        </div>
+
                         <div class="form-group no_effect search_input">
                         	<input class="form-control" name="q" id="q" type="text" placeholder="Search">
                             <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
@@ -67,8 +78,7 @@
                             </div>
                             <div class="topic_action">
                            		<a href="<?php echo '/admin/course/update_course/'.$course['id'];?>" data-toggle="tooltip" data-placement="right" data-original-title="Edit" class="icon icon_edit"></a>
-                                <a data-toggle="tooltip" id="delete_<?php echo $course['id']; ?>" data-placement="right" data-original-title="Delete" class="delete icon icon_delete"></a>
-                                <a data-toggle="tooltip" class="fa fa-angle-double-down"></a>                     
+                                <a data-toggle="tooltip" id="delete_<?php echo $course['id']; ?>" data-placement="right" data-original-title="Delete" class="delete icon icon_delete_color"></a>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -108,12 +118,15 @@
     function filter_data(){
         var category = $('#category').val();
         var q = $('#q').val();        
-        
+        var order = $('#order').val();
+
         if(category == '' ){ $('#category').removeAttr('name'); }
         if(q == ''){ $('#q').removeAttr('name'); }
+        if(order == ''){  $('#order').removeAttr('name'); }
         
         $('#filter').submit();
     }
+
     $( "#filter" ).submit(function() {       
         var category = $('#category').val();
         var q = $('#q').val();
@@ -129,7 +142,11 @@
 
     <?php if(!empty($_GET['q'])) { ?>
 		$('#q').val('<?php echo $_GET["q"];?>');	
-    <?php } ?>	
+    <?php } ?>
+
+    <?php if(!empty($_GET['order'])) { ?>
+        $('#order').val('<?php echo $_GET["order"];?>');    
+    <?php } ?> 	
    
     $("a.delete").click(function(){
         var str_id = $(this).attr('id');
