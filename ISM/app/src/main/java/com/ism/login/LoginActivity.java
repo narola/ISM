@@ -92,7 +92,7 @@ public class LoginActivity extends Activity {
 //			isRemember();
 			etUserid.setText("");
 			etPwd.setText("");
-			global.myIntent(this, ProfileInfornation.class);
+			global.myIntent(this, ProfileInformationActivity.class);
 //		}
 	}
 
