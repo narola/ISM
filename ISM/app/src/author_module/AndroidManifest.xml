@@ -26,7 +26,8 @@
         <activity
             android:name="com.ism.author.AuthorHostActivity"
             android:hardwareAccelerated="false"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
 
     </application>

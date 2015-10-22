@@ -1,0 +1,134 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ism.author.rightcontainerfragment.AuthorProfileFragment">
+
+
+    <LinearLayout
+        android:layout_width="@dimen/content_right_width"
+        android:layout_height="match_parent"
+        android:background="@color/color_dark_gray"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/d15dp">
+
+            <com.ism.author.helper.CircleImageView
+                android:layout_width="@dimen/circular_imageview_width_height"
+                android:layout_height="@dimen/circular_imageview_width_height"
+                android:src="@drawable/userdp"
+                app:civ_border_color="@color/circular_image_border_color"
+                app:civ_border_width="@dimen/circular_imageview_border_width" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d10dp"
+                android:text="@string/strviewprofile"
+                android:textColor="@color/color_orange"
+                android:textSize="@dimen/d20sp"
+                android:textStyle="bold"></TextView>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/d10dp"
+            android:layout_marginTop="@dimen/d10dp"
+            android:text="@string/strtest"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d25sp"
+            android:textStyle="bold"></TextView>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/d60dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"></RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"></RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"></RelativeLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_myfeeds"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+
+            android:padding="@dimen/d20sp"
+            android:text="@string/strmyfeeds"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_mybooks"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+
+            android:padding="@dimen/d20sp"
+            android:text="@string/strmybooks"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_followers"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+
+            android:padding="@dimen/d20sp"
+            android:text="@string/strfollowers"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d20sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/txt_myactivity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+
+            android:padding="@dimen/d20sp"
+            android:text="@string/strmyactivity"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d20sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
