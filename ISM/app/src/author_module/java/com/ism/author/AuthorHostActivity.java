@@ -3,7 +3,6 @@ package com.ism.author;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -38,59 +37,39 @@ import com.ism.utility.Utility;
 
 import java.util.ArrayList;
 
+/*
+* these class is for the main screen after login contains the host activity for managing the main and container fragment.
+* */
 public class AuthorHostActivity extends Activity implements FragmentListener {
 
     private static final String TAG = AuthorHostActivity.class.getName();
 
+    RelativeLayout rlControllerTop, rlControllerTopMenu;
+    LinearLayout llSearch, llControllerLeft;
+    FrameLayout flFragmentContainerMain, flFragmentContainerRight;
 
-    RelativeLayout rlControllerTop;
-    RelativeLayout rlControllerTopMenu;
-    LinearLayout llSearch;
-    LinearLayout llControllerLeft;
-
-    FrameLayout flFragmentContainerMain;
-    FrameLayout flFragmentContainerRight;
-
-    ImageView imgLogo;
-    ImageView imgHome;
-    ImageView imgBack;
-    ImageView imgSearch;
-    ImageView imgOffice;
-    ImageView imgBooks;
-    ImageView imgEditProfileHome;
-    ImageView imgEditProfileTutorial;
-    ImageView imgEditProfileClassroom;
-    ImageView imgEditProfileAssesment;
-
+    ImageView imgLogo, imgHome, imgBack, imgSearch, imgOffice, imgBooks, imgEditProfileHome, imgEditProfileTutorial, imgEditProfileClassroom,
+            imgEditProfileAssesment, imgEvents, imgAuthorProfile, imgHighScore, imgChat;
 
     Spinner spSubmenu;
 
-    TextView txtOne;
-    TextView txtTwo;
-    TextView txtThree;
-    TextView txtTitle;
-    TextView txtAction;
+    TextView txtOne, txtTwo, txtThree, txtTitle, txtAction;
+
 
     EditText etSearch;
-
-    ImageView imgEvents;
-    ImageView imgAuthorProfile;
-    ImageView imgHighScore;
-    ImageView imgChat;
-
 
     private View.OnClickListener onClickMenuItem;
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
     private HostListener listenerHost;
 
-
     private TextView txtsMenu[];
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuAuthorOffice;
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuAuthorBooks;
-    private ArrayList<ControllerTopMenuItem> currentControllerTopMenu;
+    private ArrayList<ControllerTopMenuItem> controllerTopMenuAuthorOffice, currentControllerTopMenu;
+
+    /*
+    * these are the fragments for the main fragment.
+    * */
 
 
-    //these are the main container fragments
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_OFFICE = 1;
     public static final int FRAGMENT_BOOKS = 2;
@@ -129,7 +108,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.author_host_activity);
+        setContentView(R.layout.activity_author_host);
 
         inigGlobal();
     }
@@ -193,8 +172,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
 
         controllerTopMenuAuthorOffice = ControllerTopMenuItem.getMenuAuthorOffice(getActivity());
-        controllerTopMenuAuthorBooks = ControllerTopMenuItem.getMenuAuthorBooks(getActivity());
-
 
         onClickMenuItem = new View.OnClickListener() {
             @Override
@@ -214,6 +191,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
 
     //These is for the load fragmet in main container
+
 
     public void loadFragmentInMainContainer(int fragment) {
         try {
@@ -245,8 +223,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_MYACTIVITY:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyActivityFragment.newInstance()).commit();
                     break;
-
-
             }
 
         } catch (Exception e) {
@@ -384,7 +360,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
             }
         } catch (Exception e) {
-            Log.e(TAG, "onFragmentDetached Exception : " + e.toString());
+            Debug.e(TAG, "onFragmentDetached Exception : " + e.toString());
         }
 
 
@@ -438,7 +414,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                 }
 
             } else if (view == txtAction) {
-                Log.e(TAG, "text action");
+                Debug.e(TAG, "text action");
             } else {
                 boolean isActive = false;
                 for (int i = 0; i < currentControllerTopMenu.size(); i++) {
@@ -490,7 +466,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG, "onMenuItemClick Exception : " + e.toString());
+            Debug.e(TAG, "onMenuItemClick Exception : " + e.toString());
         }
     }
 
@@ -554,17 +530,14 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
         switch (view.getId()) {
             case R.id.img_events:
-                // Code for button 1 click
                 loadFragmentInRightContainer(FRAGMENT_EVENTS);
                 break;
 
             case R.id.img_author_profile:
-                // Code for button 2 click
                 loadFragmentInRightContainer(FRAGMENT_AUTHORPROFILE);
                 break;
 
             case R.id.img_high_score:
-                // Code for button 3 click
                 loadFragmentInRightContainer(FRAGMENT_HIGHSCORE);
                 break;
 
@@ -581,17 +554,14 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public void openMainContainerFragment(View view) {
         switch (view.getId()) {
             case R.id.img_home:
-                // Code for button 1 click
                 loadFragmentInMainContainer(FRAGMENT_HOME);
                 break;
 
             case R.id.img_office:
-                // Code for button 2 click
                 loadFragmentInMainContainer(FRAGMENT_OFFICE);
                 break;
 
             case R.id.img_books:
-                // Code for button 2 click
                 loadFragmentInMainContainer(FRAGMENT_BOOKS);
                 break;
 
@@ -601,8 +571,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     }
 
     public void searchFeeds(View view) {
-
-
         imgSearch.setActivated(!imgSearch.isActivated());
         if (etSearch.getVisibility() == View.VISIBLE) {
 //		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);

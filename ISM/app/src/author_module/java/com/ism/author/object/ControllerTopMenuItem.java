@@ -145,13 +145,5 @@ public class ControllerTopMenuItem {
     }
 
 
-    public static ArrayList<ControllerTopMenuItem> getMenuAuthorBooks(Context mContext) {
-
-        ArrayList<ControllerTopMenuItem> menu = null;
-
-        return menu;
-
-    }
-
 }
 

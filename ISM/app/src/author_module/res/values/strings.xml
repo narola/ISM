@@ -4,6 +4,7 @@
     <string name="app_name">ISM Author</string>
     <string name="hello_world">Hello world!</string>
     <string name="strtest">test</string>
+
     <string name="action_settings">Settings</string>
 
     <string name="str_personal_info">PERSONAL INFORMATION</string>
@@ -69,6 +70,7 @@
     <string name="straddpost">ADD POST</string>
     <string name="stradd">ADD</string>
     <string name="straddnew">ADD NEW</string>
+    <string name="strpost">POST</string>
 
 
     <!--Strings for the Submenu Of Office Menu-->
@@ -88,6 +90,16 @@
     <string name="strmybooks">My books</string>
     <string name="strfollowers">Followers</string>
     <string name="strmyactivity">My activity</string>
+
+
+    <!--these are the dummy data strings-->
+
+     
+    <string name="emaamall">Emma Mall</string>
+    <string name="strsentence">Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?</string>
+    <string name="strviewall">View All</string>
+
+    <string name="sayit">SAY IT</string>
 
 
 </resources>
