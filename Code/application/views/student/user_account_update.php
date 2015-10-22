@@ -87,6 +87,7 @@
                             <!--//avatar-->
                         	<div class="col-sm-8">
                                 <div class="form-group">
+									<label>Full Name</label>
                                     <input type="text" class="form-control" placeholder="Full Name" name="full_name" value="<?php echo isset($full_name)?$full_name : set_value('full_name');?>">
                                 </div>
                                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('full_name'),''))){ echo 'hide';} ?>">
