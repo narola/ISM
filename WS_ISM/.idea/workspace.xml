@@ -28,8 +28,8 @@
       <file leaf-file-name="ISMServices.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ISMServices.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.625" vertical-offset="171" max-vertical-offset="885">
-              <caret line="19" column="11" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="11" />
+            <state vertical-scroll-proportion="-12.875" vertical-offset="276" max-vertical-offset="1005">
+              <caret line="44" column="29" selection-start-line="44" selection-start-column="10" selection-end-line="44" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -38,14 +38,16 @@
       <file leaf-file-name="TutorialGroup.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TutorialGroup.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.59343797" vertical-offset="859" max-vertical-offset="2805">
-              <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.10128388" vertical-offset="2734" max-vertical-offset="3900">
+              <caret line="187" column="39" selection-start-line="187" selection-start-column="20" selection-end-line="187" selection-end-column="39" />
               <folding>
-                <marker date="1445428691000" expanded="true" signature="458:1953" placeholder="SELECT usr.i..." />
-                <marker date="1445428691000" expanded="true" signature="4836:4858" placeholder="SELECT group..." />
-                <marker date="1445428691000" expanded="true" signature="4836:4904" placeholder="SELECT group..." />
-                <marker date="1445428691000" expanded="true" signature="5528:5611" placeholder="Insert into ..." />
-                <marker date="1445428691000" expanded="true" signature="6086:6175" placeholder="Insert into ..." />
+                <marker date="1445494813000" expanded="true" signature="4343:4415" placeholder="SELECT group..." />
+                <marker date="1445494813000" expanded="true" signature="4908:5003" placeholder="Insert into ..." />
+                <marker date="1445494813000" expanded="true" signature="6309:6410" placeholder="Insert into ..." />
+                <marker date="1445494813000" expanded="true" signature="6953:7018" placeholder="SELECT joini..tutorial_group_member..." />
+                <marker date="1445494813000" expanded="true" signature="6953:7019" placeholder="SELECT joini..tutorial_group_member..." />
+                <marker date="1445494813000" expanded="true" signature="7391:7478" placeholder="UPDATE tutor..." />
+                <marker date="1445494813000" expanded="true" signature="7391:7479" placeholder="UPDATE tutor..." />
               </folding>
             </state>
           </provider>
@@ -57,6 +59,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/ProfileFunctions.php" />
+        <option value="$PROJECT_DIR$/ISMServices.php" />
         <option value="$PROJECT_DIR$/TutorialGroup.php" />
       </list>
     </option>
@@ -130,7 +133,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="/Volumes/Data/ISM Data/Web Scripts/WS_V3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="LayoutCode.rearrangeEntriesPHP" value="false" />
     <property name="options.lastSelected" value="preferences.sourceCode.PHP" />
@@ -138,6 +141,26 @@
     <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RunManager">
+    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpBehatConfigurationType" factoryName="Behat">
+      <BehatRunner />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <method />
+    </configuration>
     <list size="0" />
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -151,7 +174,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1600" height="835" extended-state="0" />
+    <frame x="0" y="23" width="1600" height="835" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -166,13 +189,13 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -199,43 +222,9 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/class.phpmailer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.721826" vertical-offset="10320" max-vertical-offset="34485">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Logger.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1020">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ProfileFunctions.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1554621" vertical-offset="0" max-vertical-offset="1110">
-          <caret line="55" column="46" selection-start-line="55" selection-start-column="46" selection-end-line="55" selection-end-column="46" />
-          <folding>
-            <marker date="1445319345000" expanded="true" signature="-1:-1" placeholder="select usern..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/table_vars.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1695">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ISMServices.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.625" vertical-offset="171" max-vertical-offset="885">
+        <state vertical-scroll-proportion="0.0" vertical-offset="171" max-vertical-offset="885">
           <caret line="19" column="11" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="11" />
           <folding />
         </state>
@@ -243,14 +232,68 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TutorialGroup.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59343797" vertical-offset="859" max-vertical-offset="2805">
-          <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2805">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1445428691000" expanded="true" signature="458:1953" placeholder="SELECT usr.i..." />
-            <marker date="1445428691000" expanded="true" signature="4836:4858" placeholder="SELECT group..." />
-            <marker date="1445428691000" expanded="true" signature="4836:4904" placeholder="SELECT group..." />
-            <marker date="1445428691000" expanded="true" signature="5528:5611" placeholder="Insert into ..." />
-            <marker date="1445428691000" expanded="true" signature="6086:6175" placeholder="Insert into ..." />
+            <marker date="1445494813000" expanded="true" signature="4343:4415" placeholder="SELECT group..." />
+            <marker date="1445494813000" expanded="true" signature="4908:5003" placeholder="Insert into ..." />
+            <marker date="1445494813000" expanded="true" signature="6309:6410" placeholder="Insert into ..." />
+            <marker date="1445494813000" expanded="true" signature="6953:7018" placeholder="SELECT joini..tutorial_group_member..." />
+            <marker date="1445494813000" expanded="true" signature="6953:7019" placeholder="SELECT joini..tutorial_group_member..." />
+            <marker date="1445494813000" expanded="true" signature="7391:7478" placeholder="UPDATE tutor..." />
+            <marker date="1445494813000" expanded="true" signature="7391:7479" placeholder="UPDATE tutor..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/class.phpmailer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-14.721826" vertical-offset="10320" max-vertical-offset="34485">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Logger.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1020">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ProfileFunctions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.1554621" vertical-offset="0" max-vertical-offset="1110">
+          <caret line="55" column="46" selection-start-line="55" selection-start-column="46" selection-end-line="55" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/table_vars.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1695">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ISMServices.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.875" vertical-offset="276" max-vertical-offset="1005">
+          <caret line="44" column="29" selection-start-line="44" selection-start-column="10" selection-end-line="44" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TutorialGroup.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.10128388" vertical-offset="2734" max-vertical-offset="3900">
+          <caret line="187" column="39" selection-start-line="187" selection-start-column="20" selection-end-line="187" selection-end-column="39" />
+          <folding>
+            <marker date="1445494813000" expanded="true" signature="4343:4415" placeholder="SELECT group..." />
+            <marker date="1445494813000" expanded="true" signature="4908:5003" placeholder="Insert into ..." />
+            <marker date="1445494813000" expanded="true" signature="6309:6410" placeholder="Insert into ..." />
+            <marker date="1445494813000" expanded="true" signature="6953:7018" placeholder="SELECT joini..tutorial_group_member..." />
+            <marker date="1445494813000" expanded="true" signature="6953:7019" placeholder="SELECT joini..tutorial_group_member..." />
+            <marker date="1445494813000" expanded="true" signature="7391:7478" placeholder="UPDATE tutor..." />
+            <marker date="1445494813000" expanded="true" signature="7391:7479" placeholder="UPDATE tutor..." />
           </folding>
         </state>
       </provider>

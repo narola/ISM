@@ -34,13 +34,21 @@ switch ($_REQUEST['Service'])
         break;
 
 	/*********************  TutorialGroup Functions ******************************/
-       case "allocateTutorialGroup":
+       case "AllocateTutorialGroup":
     {
 		include_once 'TutorialGroup.php';
 		$profile = new TutorialGroup();
 		$data = $profile -> call_service($_REQUEST['Service'], $postData);
     }
         break;
+
+	case "AcceptTutorialGroup":
+	{
+		include_once 'TutorialGroup.php';
+		$profile = new TutorialGroup();
+		$data = $profile -> call_service($_REQUEST['Service'], $postData);
+	}
+		break;
 
     /*********************  Invalid Option to serve ******************************/
     default:
