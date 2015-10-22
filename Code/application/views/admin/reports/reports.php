@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
 <!--main-->
             <div class="col-sm-7 main main2">
             	<!--breadcrumb-->
@@ -15,27 +17,33 @@
                     	<div class="form-group data_range">
                         	<label>Data Range :</label>
                             <div class="range_picker">
-                            	<input type="text" class="form-control" placeholder="From">
-                                <a href="#" class="icon icon_calendar_red"></a>
+                            <input class="form-control" type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
+                                <a class="icon icon_calendar_red"></a>
                             </div>
+                                <!-- <input type="text" class="form-control" placeholder="From">
                             <div class="range_picker">
                             	<input type="text" class="form-control" placeholder="To">
                                 <a href="#" class="icon icon_calendar_red"></a>
-                            </div>
+                            </div> -->
                         </div>
                     	<div class="form-group">
-                            <select class="form-control">
-                                <option>Course</option>
+                            <select class="form-control" name="course_id" onchange="get_classes(this.value)" id="course_id">
+                               <option value=''>Course</option>
+                                <?php if(!empty($courses)){ 
+                                    foreach ($courses as $course) { ?>
+                                        <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>        
+                                <?php } 
+                            }?>
                             </select>
                         </div>
                         <div class="form-group">
-                            <select class="form-control">
-                                <option>Subject</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control">
+                            <select class="form-control" name="classroom_id" onchange="get_subjects(this.value)" id="classroom_id">
                                 <option>Classroom</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="subject_id" onchange="get_topics(this.value)" id="subject_id">
+                                <option>Subject</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -117,7 +125,43 @@
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/modules/data.js"></script>
     <script src="http://code.highcharts.com/modules/drilldown.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+ 
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
     <script type="text/javascript">
+   
+$(function() {
+    $('input[name="daterange"]').daterangepicker();
+});
+
+function get_classes(course_id){
+        $.ajax({
+           url:'<?php echo base_url()."admin/question/ajax_get_classrooms"; ?>',
+           type:'POST',
+           data:{course_id:course_id},
+           success:function(data){
+              $("#classroom_id").html(data);
+              $('#subject_id').val('');
+              $('#topic_id').val('');
+           }
+        });
+    }
+
+  function get_subjects(classroom_id){
+        $.ajax({
+           url:'<?php echo base_url()."admin/question/ajax_get_subjects"; ?>',
+           type:'POST',
+           data:{classroom_id:classroom_id},
+           success:function(data){
+              $("#subject_id").html(data);
+              $('#topic_id').val('');
+           }
+        });
+  }
+    // var course_onload = $("#course_id").val($("#course_id option:first").next().val());
+    
+   
         $(function () {
             // Create the chart
             $('#performance_graph_3').highcharts({
@@ -254,7 +298,7 @@
                     text: ''
                 },
                 subtitle: {
-                    text: 'Point V/S Course'
+                    text: 'Question V/S Course'
                 },
                 xAxis: {
                     type: 'category'
@@ -305,4 +349,9 @@
                 }]
             });
         });
+
+
+
+
+  
     </script>

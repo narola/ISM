@@ -136,6 +136,7 @@
 
  <script type="text/javascript">
         $(function () {
+           
             // Create the chart
             $('#performance_graph').highcharts({
                 chart: {
@@ -177,15 +178,7 @@
                 series: [{
                     name: "Subjects",
                     colorByPoint: true,
-                    data: [
-
-                        <?php foreach ($group_performance as $group) { ?>
-                            {
-                            name: "<?php echo $group['subject_name']; ?>",
-                            y: <?php echo $group['group_score']; ?>
-                        },
-                        <?php } ?>
-                        ]
+                    data: <?php echo $group_performance; ?>
                 }],
                  
             });
