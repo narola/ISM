@@ -1265,8 +1265,8 @@ p.chat_name {
 .chat_text .from p{
 	position:relative;
     padding: 4px 10px;
-	background-color:#fff;
-	border:1px solid rgba(0,0,0,0.1);
+	background-color: #f2f2f2;
+    border: 1px solid #f2f2f2;
 	margin:7px 10px 2px;
 	display:block;
 }
@@ -1277,7 +1277,7 @@ p.chat_name {
 	position:absolute;
 	border-top:5px solid transparent;
 	border-bottom:5px solid transparent;
-	border-right:5px solid rgba(0,0,0,0.1);
+	border-right:5px solid #f2f2f2;
 }
 input.chat_input {
     position: absolute;
@@ -3550,6 +3550,7 @@ ul.ques_numbers {
     color: #aaa;
     font-size: 11px;
     padding: 0 15px;
+	margin-bottom: 12px;
 }
 .filter_bar ul>li.active>a {
     color: #323941;
