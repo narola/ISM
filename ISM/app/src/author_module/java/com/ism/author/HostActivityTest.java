@@ -1,4 +1,4 @@
-package com.ism;
+package com.ism.author;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.ism.HostActivity;
+import com.ism.R;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
 import com.ism.fragment.AssessmentFragment;
 import com.ism.fragment.ChatFragment;
@@ -36,7 +38,7 @@ import java.util.ArrayList;
 /**
  * Created by c161 on --/10/15.
  */
-public class HostActivity extends Activity implements FragmentListener {
+public class HostActivityTest extends Activity implements FragmentListener {
 
     private static final String TAG = HostActivity.class.getName();
 
@@ -137,10 +139,10 @@ public class HostActivity extends Activity implements FragmentListener {
         loadFragment(FRAGMENT_HOME);
         loadFragment(FRAGMENT_CHAT);
 
-        controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(HostActivity.this);
-        controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(HostActivity.this);
-        controllerTopMenuDesk = ControllerTopMenuItem.getMenuDesk(HostActivity.this);
-        controllerTopMenuReportCard = ControllerTopMenuItem.getMenuReportCard(HostActivity.this);
+        controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(HostActivityTest.this);
+        controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(HostActivityTest.this);
+        controllerTopMenuDesk = ControllerTopMenuItem.getMenuDesk(HostActivityTest.this);
+        controllerTopMenuReportCard = ControllerTopMenuItem.getMenuReportCard(HostActivityTest.this);
 
         imgHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,7 +204,7 @@ public class HostActivity extends Activity implements FragmentListener {
                     startSlideAnimation(etSearch, etSearch.getWidth(), 0, 0, 0);
                     startSlideAnimation(imgSearch, etSearch.getWidth(), 0, 0, 0);
                     etSearch.setVisibility(View.VISIBLE);
-                    Utility.showSoftKeyboard(etSearch, HostActivity.this);
+                    Utility.showSoftKeyboard(etSearch, HostActivityTest.this);
                 }
             }
         });
@@ -261,7 +263,7 @@ public class HostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_HOME:
 //                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, HomeFragment.newInstance()).commit();
                     ClassroomFragment homeFragment = ClassroomFragment.newInstance(FRAGMENT_HOME);
-                    listenerHost = homeFragment;
+//                    listenerHost = homeFragment;
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, homeFragment).commit();
                     break;
                 case FRAGMENT_TUTORIAL:
@@ -269,7 +271,7 @@ public class HostActivity extends Activity implements FragmentListener {
                     break;
                 case FRAGMENT_CLASSROOM:
                     ClassroomFragment classroomFragment = ClassroomFragment.newInstance(FRAGMENT_CLASSROOM);
-                    listenerHost = classroomFragment;
+//                    listenerHost = classroomFragment;
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, classroomFragment).commit();
                     break;
                 case FRAGMENT_ASSESSMENT:
@@ -468,7 +470,7 @@ public class HostActivity extends Activity implements FragmentListener {
                                 txtsMenu[i].setVisibility(View.GONE);
                                 startSlideAnimation(spSubmenu, -imgMenuBack.getWidth(), 0, 0, 0);
                                 spSubmenu.setVisibility(View.VISIBLE);
-                                adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(i).getSubMenu(), HostActivity.this);
+                                adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(i).getSubMenu(), HostActivityTest.this);
                                 spSubmenu.setAdapter(adapterControllerTopSpinner);
                             }
 

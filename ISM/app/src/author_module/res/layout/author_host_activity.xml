@@ -4,8 +4,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
 
     <RelativeLayout
@@ -31,8 +30,20 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/img_logo"
             android:background="@drawable/bg_right_controller_top_button"
+            android:onClick="openMainContainerFragment"
             android:scaleType="centerInside"
             android:src="@drawable/image_home" />
+
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/ll_search"
+            android:layout_toRightOf="@id/img_home"
+            android:gravity="center"
+            android:textSize="@dimen/controller_top_menu_text_size"
+            android:visibility="gone" />
 
 
         <RelativeLayout
@@ -42,6 +53,24 @@
             android:layout_toLeftOf="@+id/ll_search"
             android:layout_toRightOf="@id/img_home"
             android:visibility="gone">
+
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/controller_top_small_button_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_right_controller_top_button"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_back"
+                android:visibility="gone" />
+
+            <Spinner
+                android:id="@+id/sp_submenu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/img_back"
+                android:popupBackground="@color/bg_controller_top_dark"
+                android:visibility="gone"></Spinner>
 
 
             <TextView
@@ -82,14 +111,52 @@
                 android:textSize="@dimen/controller_top_menu_text_size"
                 android:visibility="gone" />
 
+            <TextView
+                android:id="@+id/txt_action"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/bg_controller_top_action"
+                android:gravity="center"
+                android:paddingLeft="@dimen/controller_menu_text_padding"
+                android:paddingRight="@dimen/controller_menu_text_padding"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/controller_top_menu_text_size"
+                android:visibility="gone" />
+
         </RelativeLayout>
+
+        <!--<RelativeLayout-->
+        <!--android:id="@+id/rl_add_post"-->
+        <!--android:layout_width="@dimen/d120dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_toLeftOf="@+id/ll_search"-->
+        <!--android:background="@drawable/bg_add_post"-->
+        <!--android:gravity="center"-->
+        <!--android:visibility="gone">-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/txt_add_post"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center_horizontal|center_vertical"-->
+        <!--android:text="@string/straddpost"-->
+        <!--android:textColor="@color/color_orange"-->
+        <!--android:textSize="@dimen/d20dp" />-->
+        <!--</RelativeLayout>-->
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"></LinearLayout>
 
 
         <LinearLayout
             android:id="@+id/ll_search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/img_notes"
+            android:layout_toLeftOf="@+id/img_events"
             android:orientation="horizontal">
 
             <ImageView
@@ -97,6 +164,7 @@
                 android:layout_width="@dimen/controller_top_button_width"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_left_controller_top_button"
+                android:onClick="searchFeeds"
                 android:scaleType="centerInside"
                 android:src="@drawable/image_search" />
 
@@ -117,20 +185,22 @@
 
 
         <ImageView
-            android:id="@+id/img_notes"
+            android:id="@+id/img_events"
             android:layout_width="@dimen/controller_top_button_width"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/img_study_mates"
+            android:layout_toLeftOf="@+id/img_author_profile"
             android:background="@drawable/bg_left_controller_top_button"
+            android:onClick="openRightContainerFragment"
             android:scaleType="centerInside"
             android:src="@drawable/image_notes" />
 
         <ImageView
-            android:id="@+id/img_study_mates"
+            android:id="@+id/img_author_profile"
             android:layout_width="@dimen/controller_top_button_width"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/img_high_score"
             android:background="@drawable/bg_left_controller_top_button"
+            android:onClick="openRightContainerFragment"
             android:scaleType="centerInside"
             android:src="@drawable/image_study_mates" />
 
@@ -138,8 +208,10 @@
             android:id="@+id/img_high_score"
             android:layout_width="@dimen/controller_top_button_width"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/img_chat"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/controller_top_button_width"
             android:background="@drawable/bg_left_controller_top_button"
+            android:onClick="openRightContainerFragment"
             android:scaleType="centerInside"
             android:src="@drawable/image_chat" />
 
@@ -147,10 +219,11 @@
             android:id="@+id/img_chat"
             android:layout_width="@dimen/controller_top_button_width"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/img_high_score"
             android:background="@drawable/bg_left_controller_top_button"
             android:scaleType="centerInside"
-            android:src="@drawable/image_chat" />
+            android:src="@drawable/image_chat"
+            android:visibility="gone" />
     </RelativeLayout>
 
 
@@ -160,36 +233,102 @@
         android:layout_width="@dimen/controller_left_width"
         android:layout_height="match_parent"
         android:layout_below="@id/rl_controller_top"
+        android:background="@drawable/bg_controller_top"
         android:orientation="vertical">
 
 
         <ImageView
             android:id="@+id/img_office"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="@dimen/controller_left_heihgt"
             android:background="@drawable/bg_controller_left_button_office"
+            android:onClick="openMainContainerFragment"
             android:scaleType="centerInside"
             android:src="@drawable/image_office" />
 
         <ImageView
             android:id="@+id/img_books"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_controller_left_button_assessment"
+            android:layout_height="@dimen/controller_left_heihgt"
+            android:background="@drawable/bg_controller_left_button_books"
+            android:onClick="openMainContainerFragment"
             android:scaleType="centerInside"
             android:src="@drawable/image_office" />
 
 
         <ImageView
-            android:id="@+id/img_logout"
-            android:layout_width="@dimen/controller_left_width"
-            android:layout_height="@dimen/controller_left_width"
-            android:background="@color/bg_logout"
+            android:id="@+id/img_edit_profile_home"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/controller_left_heihgt"
+            android:background="@drawable/bg_edit_profile_left_controller"
+
             android:scaleType="centerInside"
-            android:src="@drawable/ic_logout" />
+            android:src="@drawable/ic_home"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/img_edit_profile_tutorial"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/controller_left_heihgt"
+            android:background="@drawable/bg_edit_profile_left_controller"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_tutorial"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/img_edit_profile_classroom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/controller_left_heihgt"
+            android:background="@drawable/bg_edit_profile_left_controller"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_classroom"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/img_edit_profile_assesment"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/controller_left_heihgt"
+            android:background="@drawable/bg_edit_profile_left_controller"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_assessment"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="bottom">
+
+
+            <ImageView
+                android:id="@+id/img_logout"
+                android:layout_width="@dimen/controller_left_width"
+                android:layout_height="@dimen/controller_left_width"
+                android:background="@color/bg_logout"
+                android:onClick="logOut"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_logout" />
+        </LinearLayout>
+
+
     </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/fl_fragment_container_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_controller_top"
+        android:layout_toLeftOf="@+id/fl_fragment_container_right"
+        android:layout_toRightOf="@id/ll_controller_left"></FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_fragment_container_right"
+        android:layout_width="@dimen/content_right_width"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/rl_controller_top"
+        android:background="@android:color/darker_gray"></FrameLayout>
 
 
 </RelativeLayout>

@@ -3,6 +3,7 @@
 
     <string name="app_name">ISM Author</string>
     <string name="hello_world">Hello world!</string>
+    <string name="strtest">test</string>
     <string name="action_settings">Settings</string>
 
     <string name="str_personal_info">PERSONAL INFORMATION</string>
@@ -64,6 +65,29 @@
     <string name="title_activity_author_host">AuthorHostActivity</string>
 
     <!--NewsFeed -->
+
+    <string name="straddpost">ADD POST</string>
+    <string name="stradd">ADD</string>
+    <string name="straddnew">ADD NEW</string>
+
+
+    <!--Strings for the Submenu Of Office Menu-->
+
+    <string name="gotrending">Go Trending</string>
+    <string name="setquiz">Set Quiz</string>
+    <string name="settrial">Set Trial</string>
+    <string name="progressreport">Progress Report</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--this is for the author profile right container section-->
+
+    <string name="strviewprofile">View Profile</string>
+    <string name="strmyfeeds">My Feeds</string>
+    <string name="strmybooks">My books</string>
+    <string name="strfollowers">Followers</string>
+    <string name="strmyactivity">My activity</string>
 
 
 </resources>
