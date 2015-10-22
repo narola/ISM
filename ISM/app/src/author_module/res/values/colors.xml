@@ -24,12 +24,14 @@
     <color name="colorAccent">#1BC4A2</color>
     <color name="bg_app_dark">#323941</color>
     <color name="bg_logout">#1BC4A3</color>
-    <color name="bg_books">#4392CA</color>
+    <color name="bg_assessment">#4392CA</color>
     <color name="bg_office">#2BDC1E</color>
     <color name="bg_controller_left_light">#303940</color>
     <color name="bg_controller_left_medium">#29323A</color>
     <color name="bg_controller_left_dark">#212B33</color>
     <color name="border_gray">#DDDDDD</color>
+    <color name="bg_books">#ff3295ff</color>
+    <color name="circular_image_border_color">#40474F</color>
 
 
 </resources>

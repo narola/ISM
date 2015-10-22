@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/ll_main"
+    android:gravity="center"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bgwelcom"
     android:orientation="vertical">
@@ -17,20 +18,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:id="@+id/txt_nameyourtutorial_"
         android:text="@string/strwelcomeline"
         android:textColor="@color/color_text_light_green"
         android:textSize="@dimen/d30dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/txt_andwill_"
-        android:text="@string/strwelcomeline2"
-        android:textColor="@color/color_text_light_green"
-        android:textSize="@dimen/d30dp" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,69 +75,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:id="@+id/txt_tutorialgroup_"
-        android:text="@string/strtutorialgroupis5"
         android:textColor="@color/color_white"
         android:textSize="@dimen/d30dp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:id="@+id/txt_selected_"
-            android:text="@string/strselectedstudentsputtogetherto"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/d30dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="5sp"
-            android:id="@+id/txt_shareideas"
-            android:text="@string/strshareideas"
-            android:textColor="#81D525"
-            android:textSize="@dimen/d30dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="@string/strcollborate"
-            android:id="@+id/txt_collaborate"
-            android:textColor="#CC89EA"
-            android:textSize="@dimen/d30dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="@string/strand"
-            android:id="@+id/txt_and"
-            android:layout_marginLeft="5sp"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/d30dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:id="@+id/txt_doassign"
-            android:layout_marginLeft="5sp"
-            android:text="@string/strdoassignments"
-            android:textColor="#F5A438"
-            android:textSize="@dimen/d30dp" />
-    </LinearLayout>
 
 </LinearLayout>

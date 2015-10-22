@@ -20,8 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.author.AuthorHostActivity;
 import com.ism.login.Global;
-import com.ism.login.WelComeActivity;
 import com.ism.object.MyTypeFace;
 
 import java.io.IOException;
@@ -31,10 +31,10 @@ public class AuthorProfileInformationActivity extends Activity implements View.O
 
 
     private static final String TAG = AuthorProfileInformationActivity.class.getSimpleName();
-    private Spinner spGender, spSchoolgender, spAcademicyear, spCity, spClass, spCountry, spProgramcourse,  spState;
-    String strArrGender[] = {"Gender","Female", "Male"};
-    String strArrList[] = {"Select","Item1", "Item2"};
-//    private CustomSpinnerAdapter spinnerAdapter;
+    private Spinner spGender, spSchoolgender, spAcademicyear, spCity, spClass, spCountry, spProgramcourse, spState;
+    String strArrGender[] = {"Gender", "Female", "Male"};
+    String strArrList[] = {"Select", "Item1", "Item2"};
+    //    private CustomSpinnerAdapter spinnerAdapter;
     private ArrayAdapter<String> adapter;
     private Button btnSuumit;
     private TextView txtUploadpic;
@@ -45,7 +45,7 @@ public class AuthorProfileInformationActivity extends Activity implements View.O
     private TextView txtIfits;
     private TextView txtClickhere;
     private EditText etAge, etUsername, etNewpwd, etNameofschool, etHomeadd, etFullname,
-            etEmailadd, etDob, etDistrictofschool, etCurrentpwd, etCno,  etConfirmpwd;
+            etEmailadd, etDob, etDistrictofschool, etCurrentpwd, etCno, etConfirmpwd;
     private LayoutInflater mInflator;
     private boolean selected;
     LinearLayout llImageUpload;
@@ -100,7 +100,7 @@ public class AuthorProfileInformationActivity extends Activity implements View.O
         etHomeadd = (EditText) findViewById(R.id.et_homeAdd);
         etNameofschool = (EditText) findViewById(R.id.et_nameofschool);
         etNewpwd = (EditText) findViewById(R.id.et_newpwd);
-        llImageUpload=(LinearLayout)findViewById(R.id.ll_imageProfile);
+        llImageUpload = (LinearLayout) findViewById(R.id.ll_imageProfile);
         etUsername = (EditText) findViewById(R.id.et_username);
         txtUploadpic = (TextView) findViewById(R.id.txt_uploadpic);
         imgDp = (ImageView) findViewById(R.id.img_dp);
@@ -145,7 +145,7 @@ public class AuthorProfileInformationActivity extends Activity implements View.O
 
     }
 
-    private void setUpSpinner(Spinner spinner,String[] strArrGender) {
+    private void setUpSpinner(Spinner spinner, String[] strArrGender) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, R.layout.custom_spinner, strArrGender) {
 
@@ -176,14 +176,13 @@ public class AuthorProfileInformationActivity extends Activity implements View.O
                         R.color.color_dark_gray));
                 ((TextView) v).setTypeface(new MyTypeFace(getApplicationContext()).getRalewayRegular());
                 ((TextView) v).setCompoundDrawables(null, null, null, null);
-                if (position==0)
-                {
+                if (position == 0) {
                     ((TextView) v).setTextColor(getResources().getColorStateList(
                             R.color.color_white));
-                    ((TextView)v).setBackgroundColor(getResources().getColor(R.color.color_orange));
-                    ((TextView)v).setEnabled(false);
+                    ((TextView) v).setBackgroundColor(getResources().getColor(R.color.color_orange));
+                    ((TextView) v).setEnabled(false);
 
-                    ((TextView)v).setOnClickListener(null);
+                    ((TextView) v).setOnClickListener(null);
                 }
 
                 return v;
@@ -224,7 +223,7 @@ public class AuthorProfileInformationActivity extends Activity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_suumit: {
-                Global.myIntent(AuthorProfileInformationActivity.this, WelComeActivity.class);
+                Global.myIntent(AuthorProfileInformationActivity.this, AuthorHostActivity.class);
             }
             break;
             case R.id.ll_imageProfile: {

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_graylight"
     android:orientation="vertical"
-    tools:context="com.ism.login.ProfileInfornation">
+    tools:context="com.ism.login.ProfileInformationActivity">
 
     <include layout="@layout/custom_actionbar" />
 

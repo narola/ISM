@@ -17,8 +17,8 @@ import com.ism.object.MyTypeFace;
 /**
  * Created by c162 on 08/10/15.
  */
-public class TutorialGroup extends Activity {
-    private static final String TAG = TutorialGroup.class.getSimpleName();
+public class AcceptTutorialGroupActivity extends Activity {
+    private static final String TAG = AcceptTutorialGroupActivity.class.getSimpleName();
     private GridView grid;
     private TextView txtSchoolname, txtYearandcourse, txtYourtutorial, txtWelcometoism, txtUsername;
 
@@ -28,7 +28,7 @@ public class TutorialGroup extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.layout_tutorial_group);
+        setContentView(R.layout.layout_accept_tutorial_group);
         intitView();
     }
 
@@ -52,7 +52,7 @@ public class TutorialGroup extends Activity {
 	    btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentHostActivity = new Intent(TutorialGroup.this, HostActivity.class);
+                Intent intentHostActivity = new Intent(AcceptTutorialGroupActivity.this, HostActivity.class);
                 startActivity(intentHostActivity);
             }
         });
