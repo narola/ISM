@@ -32,6 +32,9 @@
     <color name="border_gray">#DDDDDD</color>
     <color name="bg_books">#ff3295ff</color>
     <color name="circular_image_border_color">#40474F</color>
+    <color name="news_feed_separator_color">#BABABA</color>
+    <color name="news_feed_post_box_color">#90BABABA</color>
+    <color name="fragment_background_color">#F5F5F5</color>
 
 
 </resources>

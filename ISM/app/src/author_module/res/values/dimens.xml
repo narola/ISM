@@ -62,6 +62,7 @@
     <dimen name="controller_left_heihgt">140dp</dimen>
     <dimen name="circular_imageview_width_height">70sp</dimen>
     <dimen name="circular_imageview_border_width">1dp</dimen>
+    <dimen name="dp_post_creater_image_width_height">160dp</dimen>
 
 
 </resources>
