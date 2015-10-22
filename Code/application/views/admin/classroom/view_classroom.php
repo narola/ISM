@@ -83,7 +83,7 @@
                             <th style="width: 240px;">Class Name</th>
                             <th>Course Name</th>
                             <th>Class Nickname</th>
-                            <th style="width:70px;">Actions</th>
+                            <th style="width:100px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -102,6 +102,8 @@
                                     <td>
                                         <a href="<?php echo base_url() . 'admin/classroom/update/' . $classroom['id']; ?>" class="icon icon_edit"
                                            data-toggle="tooltip" data-placement="bottom" title="Edit"> </a>
+										<a href="<?php echo base_url() . 'admin/classroom/update/' . $classroom['id']; ?>" class="icon icon_delete_color no-margin"
+                                           data-toggle="tooltip" data-placement="bottom" title="Delete"> </a>
                                     </td>
                                 </tr>
                                 <?php

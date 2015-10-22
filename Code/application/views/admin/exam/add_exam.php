@@ -26,10 +26,18 @@
             <div class="box_body">
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-8 padding_r15_">
+					<label>Exam Name</label>
                     <input type="text" class="form-control" name="exam_name" value="<?php echo set_value('exam_name'); ?>" placeholder="Exam Name">
                 </div>                     
-
-                <div class="form-group col-sm-12 col-md-6 col-lg-4 select no-padding">
+				<div class="form-group col-sm-12 col-md-6 col-lg-4 btn_switch no-padding">
+                    <label>Exam Type : </label>
+					<div>
+                    <input type="checkbox" name="exam_type" checked data-handle-width="100" ><!--data-size="mini"-->
+					</div>
+                </div>
+				
+                <div class="form-group col-sm-12 col-md-6 col-lg-4 select padding_r15_">
+					<label>Course Name</label>
                     <select class="form-control myselect" name="course_id" onchange="fetch_classroom(this.value)">
                         <option value="">Course Name</option>
                         <?php 
@@ -47,24 +55,26 @@
                 </div>
                 
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 select padding_r15_">
-                    
-                    <select name="classroom_id" class="form-control" onchange="fetch_subject(this.value)" id="classroom_id">
+
+                    <label>Classroom</label>
+                    <select name="classroom_id" class="form-control" onclick="fetch_subject(this.value)" id="classroom_id">
+
                         <option value="">Select Classroom</option>
                     </select>
 
                 </div>
-                <div class="form-group col-sm-12 col-md-6 col-lg-4 select padding_r15_">
+                
+                <div class="form-group col-sm-12 col-md-6 col-lg-4 select no-padding">
+					<label>Subject</label>
                     <select class="form-control" name="subject_id" id="subject_id" >
                         <option value="">Select Subject</option>
                     </select>    
                 </div>   
                 
-                <div class="form-group col-sm-12 col-md-6 col-lg-4 btn_switch no-padding">
-                    <label>Exam Type : </label>
-                    <input type="checkbox" name="exam_type" checked data-handle-width="100" data-size="mini">
-                </div>
+                
                     
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
+					<label>Passing Percentage</label>
                     <select class="form-control" name="pass_percentage">
                         <option value="">Passing Percentage</option>
                         <option value="30" <?php echo set_select('pass_percentage','30'); ?> >30%</option>
@@ -76,6 +86,7 @@
                 </div>
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
+					<label>Exam Category</label>
                     <select class="form-control" name="exam_category">
                         <option value="">Exam Category</option>
                         <option value="ISM_Mock" <?php echo set_select('exam_category','ISM_Mock'); ?> >ISM_Mock</option>
@@ -85,6 +96,7 @@
                     </select>
                 </div>                    
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
+					<label>Exam Duration</label>
                     <select class="form-control" name="duration">
                         <option value="">Exam Duration (MIN)</option>
                         <option value="30" <?php echo set_select('duration','30');?> >30 min</option>
@@ -96,6 +108,7 @@
                     </select>
                 </div>  
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select no-padding">
+					<label>Attemp Count</label>
                     <select class="form-control" name="attempt_count">
                         <option value="">Attemp Count</option>
                         <option value="0" <?php echo set_select('attempt_count','0');?> >0</option>
@@ -112,12 +125,14 @@
             <div class="box_body admin_controls">	
 
                <div data-date-format="dd-mm-yyyy" data-date="12-02-2012"  class="form-group dob col-sm-6 padding_r15_">
+					<label>Exam Start Date</label>
                     <input type="text" name="start_date" id="start_date" placeholder="Exam Start"  class="form-control ">
                     <!-- <label><input type="checkbox">Notify Student Via SMS</label> -->
                 </div> 
 
                <div class="form-group col-sm-6 padding_r15_">
-                   <div class="input-group bootstrap-timepicker">
+					<label>Exam Time</label>
+					<div class="input-group bootstrap-timepicker">
                         <input id="timepicker1" name="start_time" type="text" class="form-control input-small">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     </div>

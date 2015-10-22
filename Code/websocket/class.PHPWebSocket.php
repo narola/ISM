@@ -1230,7 +1230,7 @@ class PHPWebSocket {
         $link = $this->db();
         $query = "SELECT `f`.`feed_by` FROM `" . TBL_FEEDS . "` `f` WHERE `f`.`id` = " . $data['to'] . " LIMIT 1";
         $row = mysqli_query($link, $query);
-
+        $data['cdate'] = 'Just Now';
 // Check feed must exist on which comment is sent.
         if (mysqli_num_rows($row) == 1) {
             $rows = mysqli_fetch_assoc($row);
@@ -1268,7 +1268,7 @@ class PHPWebSocket {
                 $limit = 4;
                 $ID_in = implode(',', $this->class_mate_list($user_id));
                 $data['start'] += $limit;
-                $query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, `f`.`posted_on`,"
+                $query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, DATE_FORMAT(`f`.`posted_on`,'%b %d, %Y') AS posted_on,"
                         . " `u`.`full_name`, `l`.`is_delete` as my_like ,"
                         . " (select count(*) from " . TBL_FEED_COMMENT . " where feed_id = f.id and is_delete = 0) as tot_comment,"
                         . " (select count(*) from " . TBL_FEED_LIKE . " where feed_id = f.id and is_delete = 0) as tot_like,"
@@ -1292,7 +1292,7 @@ class PHPWebSocket {
                             . 'WHERE `feed_id` IN(' . $feed_ids . ')';
                     $tag_row = mysqli_query($link, $query);
 
-                    $query = 'SELECT `feed_id` as `to`, `comment` as `message`, `u`.`full_name`, `p`.`profile_link`'
+                    $query = 'SELECT `feed_id` as `to`, `fc`.`comment` as `message`,`fc`.`created_date` as cdate ,`u`.`full_name`, `p`.`profile_link`'
                             . ' FROM `' . TBL_FEED_COMMENT . '` `fc` LEFT JOIN `' . TBL_USERS . '` `u` ON `u`.`id` = `fc`.`comment_by`'
                             . ' LEFT JOIN `' . TBL_USER_PROFILE_PICTURE . '` `p` ON `u`.`id` = `p`.`user_id`'
                             . ' WHERE `fc`.`is_delete` =0 AND `feed_id` IN(' . $feed_ids . ')';
@@ -1322,6 +1322,7 @@ class PHPWebSocket {
 
                     $all_comment = $all_feed = array();
                     while ($comment_rows = mysqli_fetch_assoc($comment_row)) {
+                        $comment_rows['cdate'] = $this->get_time_format($comment_rows['cdate']);
                         $all_comment[] = $comment_rows;
                     }
 
@@ -1452,7 +1453,7 @@ class PHPWebSocket {
         if (is_array($data) && !empty($data)) {
 
             // Get  score related configuration from admin_config table. And stored into $config variable.
-            $query = "select `ac`.`config_key`,`ac`.`config_value` FROM `" . TBL_ADMIN_CONFIG . "` `ac` WHERE `ac`.`config_key` IN('activeHrFirstCommentScore','activeHoursFirstCommentCount','nonActivehoursScore','spamWordDeduction','activeHoursCommentScore','groupScoreFromIndividual')";
+            $query = "SELECT `ac`.`config_key`,`ac`.`config_value` FROM `" . TBL_ADMIN_CONFIG . "` `ac` WHERE `ac`.`config_key` IN('activeHrFirstCommentScore','activeHoursFirstCommentCount','nonActivehoursScore','spamWordDeduction','activeHoursCommentScore','groupScoreFromIndividual')";
             $row = mysqli_query($link, $query);
             $config = array();
             while ($rows = mysqli_fetch_assoc($row)) {
@@ -1528,6 +1529,7 @@ class PHPWebSocket {
                 } else {
                     $score = 0;
                 }
+
                 // Check spam word exist or not. If spam word exist deduct points based on admin_config (spamWordDeduction) value. 
                 $query = "SELECT * FROM `" . TBL_WORD_WATCH . "` `ww`";
                 $row = mysqli_query($link, $query);
@@ -1545,6 +1547,7 @@ class PHPWebSocket {
                         . "VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, $score,'" . $data['message'] . "', '', '', $is_active, '', '', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
                 $x = mysqli_query($link, $query);
                 $data['disscusion_id'] = mysqli_insert_id($link);
+                $data['cdate'] = $this->get_time_format('2015-1-1 10:10:10',true,'M d, Y g:i a');
 
                 // Update group score and student score.
                 if ($x) {
@@ -2745,15 +2748,16 @@ class PHPWebSocket {
      * @param date $t
      * @author Sandip Gopani (SAG)
      */
-    function get_time_format($t) {
-        $CI = & get_instance();
+    function get_time_format($t,$onlyCurrent = false,$format = null) {
+        $link = $this->db();
         $timeFirst = strtotime($t);
-        $time = select('users', 'NOW() as ctime', null, array('limit' => 1, 'single' => 1));
-        $timeSecond = strtotime($time['ctime']);
+        $row = mysqli_query($link,"select NOW() AS cdate");
+        $rows = mysqli_fetch_assoc($row);
+        $timeSecond = strtotime($rows['cdate']);
         $output = null;
         $diff = $timeSecond - $timeFirst;
         if ($diff < 60) {
-            $output = $diff . ' sec ago';
+            $output = 'Just Now';
         } else if ($diff < 3600) {
             $output = floor($diff / 60) . ' min ago';
         } else if ($diff < 86400) {
@@ -2767,6 +2771,10 @@ class PHPWebSocket {
             $output = 'yesterday';
         } else {
             $output = date_format(date_create($t), 'M d Y g:i a');
+        }
+        
+        if($onlyCurrent == true && $format != null ){
+            $output = date_format( date_create($rows['cdate']), $format);
         }
         return $output;
     }

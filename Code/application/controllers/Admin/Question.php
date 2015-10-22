@@ -222,24 +222,8 @@ class Question extends ADMIN_Controller {
 		$where = array('where'=>array('is_delete'=>0));
 		
 		$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null);
-		
 		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0,'course_id'=>$this->data['question']['course_id'])),null);
-		
-		$this->data['subjects'] = select(
-											TBL_SUBJECTS,
-											TBL_SUBJECTS.'.id,'.TBL_SUBJECTS.'.subject_name,'.TBL_COURSE_SUBJECT.'.subject_id',
-											array('where'=>array(TBL_SUBJECTS.'.is_delete'=>0,TBL_COURSE_SUBJECT.'.subject_id'=>$this->data['question']['subject_id'])),
-											array(
-												'group_by'=>TBL_SUBJECTS.'.id',
-												'join'=>array(
-															array(
-																'table'=>TBL_COURSE_SUBJECT,
-																'condition'=>TBL_COURSE_SUBJECT.'.subject_id='.TBL_SUBJECTS.'.id'
-															)
-														)
-												)	
-										);
-
+			
 		p($this->data['subjects'],true);
 		
 		$this->data['topics'] = select(TBL_TOPICS,FALSE,$where,null);

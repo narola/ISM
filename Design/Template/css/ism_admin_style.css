@@ -1480,8 +1480,12 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     padding: 15px;
 }
 .question_bank .filter .form-group {
-    width: 20%;
+    width: 23%;
+	margin-bottom: 10px;
 }
+/*.question_bank .filter .form-group :nth-child(5){
+	margin-bottom:0;
+}*/
 .question_bank {
     margin-bottom: 15px;
 }
@@ -2031,4 +2035,21 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .add_exam_form .box_body .dob:after{
 	top:32px;
+}
+.question_bank .filter .form-group.search_link{
+	position: absolute;
+    right: 5px;
+    bottom: 5px;
+}
+.question_bank .filter .form-group:nth-child(4n) {
+    margin-right: 0;
+}
+.question_bank .filter .form-group:nth-last-child(2){
+	margin-bottom:0;
+}
+.add_exam_form a.btn{
+	color:#fff;
+}
+.filter .form-group.group_search{
+	width:22%;
 }

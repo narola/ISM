@@ -103,6 +103,7 @@
 
                         <!-- <div class="row filter"> -->
                         <div class="form-group ">
+							<label>Country</label>
                             <select class="form-control " name="country" onchange="get_states(this.value)" id="country_id">
                                 <option selected disabled>Select Country</option> 
                                 <?php

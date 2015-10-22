@@ -401,7 +401,7 @@ function toHHMMSS (sec) {
 
 <!--chat-->
             <div class="chat_container" id = 'chat_container'>
-                 <?php 
+                 <?php
                  $active_c = active_chat();
                  if(isset($active_c) && !empty($active_c) && $this->session->userdata('user')['id'] != get_cookie('active') && in_array( get_cookie('active'), studymates( $this->session->userdata('user')['id']))){
                 ?>
@@ -410,8 +410,8 @@ function toHHMMSS (sec) {
                         <div class="chat_img_holder">
                             <img src="<?php echo UPLOAD_URL.'/'.$active_c['user']['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'"></div>
                             <p class="chat_name"><?php echo $active_c['user']['full_name'] ?></p>
-                            <a href="#">
-                                <span class="icon icon_option"></span>
+                            <a href="javascript:void(0);" data-type="close" data-id="<?php echo $active_c['user']['id'] ?>">
+                                <span class="close">x</span>
                             </a>
                         </div>
                         <div class="chat_text mCustomScrollbar" data-mcs-position="bottom">
@@ -435,11 +435,11 @@ function toHHMMSS (sec) {
                             }
                                 if($value['sender_id'] == $active_c['user']['id']){
                             ?>
-                                <div class="from"><p><?php echo  $mess; ?></p></div>
+                                <div class="from"><p><?php echo  $mess; ?></p><div>Oct 15, 2015 11:30 am</div></div>
                             <?php
                                 }else{
                             ?>
-                                <div class="to"><p><?php echo  $mess; ?></p></div>
+                                <div class="to"><p><?php echo  $mess; ?></p><div>Oct 15, 2015 11:30 am</div></div>
                             <?php
                                 }
                             }

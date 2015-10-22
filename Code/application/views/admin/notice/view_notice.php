@@ -2,7 +2,7 @@
 <div class="col-sm-7 main main2 noticeboard">
   <!--filter-->
     <form method="get" id="filter">
-            <div class="row filter">
+            <div class="row filter group_filter">
               <div class="col-sm-12">
 
                     <div class="form-group">
@@ -60,7 +60,7 @@
     <div class="padding_b30">
      
      <form method="post" id="bulk_notice" >
-        <div class="col-sm-10 text-left">
+        <div class="col-sm-10 text-left margin_t15">
             <?php echo flashMessage(TRUE,TRUE); ?>
         </div>    
     	<div class="col-sm-2">
@@ -73,6 +73,7 @@
                 </div>
             </div>
         </div>
+		<div class="clearfix"></div>
 
       <div class="col-lg-4 col-md-6">
           <div class="box add_notice shadow_effect text-center">

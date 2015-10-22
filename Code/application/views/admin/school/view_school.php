@@ -85,7 +85,7 @@
                             <th>Grade</th>
                             <th>Address</th>
                             <th>Contacts</th>
-                            <th style="width:70px;">Actions</th>
+                            <th style="width:100px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,6 +119,8 @@
                                     <td>
                                         <a href="<?php echo base_url() . 'admin/school/update/' . $school['id']; ?>" class="icon icon_edit"
                                            data-toggle="tooltip" data-placement="bottom" title="Edit"> </a>
+										<a href="<?php echo base_url() . 'admin/school/update/' . $school['id']; ?>" class="icon icon_delete_color no-margin"
+                                           data-toggle="tooltip" data-placement="bottom" title="Delete"> </a>
                                     </td>
                                 </tr>
                                 <?php

@@ -34,8 +34,8 @@
 	                    </select>
 	                </div>
 	                
-                    <div class="form-group no_effect search_input">
-                        <input type="text" name="q" id="q" class="form-control" placeholder="Type Group/Member Name." >
+                    <div class="form-group no_effect search_input group_search">
+                        <input type="text" name="q" id="q" class="form-control" placeholder="Type Group/Member Name" >
                         <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
                     </div>
 
@@ -75,7 +75,7 @@
         <div class="row tabel_view">
           <div class="col-sm-12">
               <div class="table-responsive">
-                  <table class="table table-striped table-bordered table_user">
+                  <table class="table table-striped table-bordered table_user table_group">
                       <thead>
                             <tr>
                                 <th></th>

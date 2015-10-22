@@ -1244,14 +1244,14 @@ p.chat_name {
 	text-align:right;
 }
 .chat_text .to p{
-    padding: 2px 10px;
+    padding: 4px 10px;
 	background-color:rgba(27,196,163,0.1);
 	border:1px solid rgba(27,196,163,0);	
 	margin:0;
 	position:relative;
-	margin:7px 10px;
+	margin:7px 10px 2px;
 	text-align:right;
-	display:inline-block;
+	display:block;
 }
 .chat_text .to p:after{
 	content:"";
@@ -1264,11 +1264,11 @@ p.chat_name {
 }
 .chat_text .from p{
 	position:relative;
-    padding: 2px 10px;
-	background-color:#fff;
-	border:1px solid rgba(0,0,0,0.1);
-	margin:7px 10px;
-	display:inline-block;
+    padding: 4px 10px;
+	background-color: #f2f2f2;
+    border: 1px solid #f2f2f2;
+	margin:7px 10px 2px;
+	display:block;
 }
 .chat_text .from p:before{
 	left:-6px;
@@ -1277,7 +1277,7 @@ p.chat_name {
 	position:absolute;
 	border-top:5px solid transparent;
 	border-bottom:5px solid transparent;
-	border-right:5px solid rgba(0,0,0,0.1);
+	border-right:5px solid #f2f2f2;
 }
 input.chat_input {
     position: absolute;
@@ -2039,6 +2039,7 @@ ul.tut_weekdays {
 .tut_group .box_body p, .tut_group .box_footer p{
 	font-size:13px;
 	margin:0;
+	
 }
 .tut_group .box_footer{
 	padding:5px 15px;
@@ -2245,6 +2246,9 @@ ul.tut_weekdays {
     text-decoration: none;
 }
 .form-control.select2-container {
+    height: 40px !important;
+}
+.add_exam_form .form-control.select2-container {
     height: 40px !important;
 }
 .select2-container .select2-choice{
@@ -3091,6 +3095,12 @@ ul.ques_numbers {
 .padding_t15{
 	padding-top:15px;
 }
+.padding_t10{
+	padding-top:10px;
+}
+.margin_t15{
+	margin-top:15px;
+}
 .instruction h4 span{
     font-family: sans-serif;
     font-size: 20px;
@@ -3521,6 +3531,27 @@ ul.ques_numbers {
 .with_labels .dob:after{
 	top:32px;
 }
+.page_header .search_input{
+	margin-top: 10px;
+    margin-bottom: 10px;
+}
+.alert {
+    padding: 10px 15px;
+	padding-right:35px;
+}
+.new_message .circleThree{
+	padding-left:20px;
+}
+.search_input .form-control{
+	padding-right:30px;
+}
+.from > div,
+.to>div {
+    color: #aaa;
+    font-size: 11px;
+    padding: 0 15px;
+	margin-bottom: 12px;
+}
 .filter_bar ul>li.active>a {
     color: #323941;
     font-weight: 600;
@@ -3550,3 +3581,4 @@ ul.ques_numbers {
 	opacity:0.5;
 	text-shadow:none;
 }
+
