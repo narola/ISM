@@ -25,7 +25,11 @@ $logger -> Log($debug, 'Service :', $_REQUEST['Service']);
 switch ($_REQUEST['Service'])
 {
     /*********************  Profile Functions ******************************/
-       case "AuthenticateUser":
+    case "RequestForCredentials":
+    case "AuthenticateUser":
+    case "RegisterUser":
+    case "CheckUsernameAvailability":
+    case "ForgotPassword":
     {
   	 include_once 'ProfileFunctions.php';
      $profile = new ProfileFunctions();
