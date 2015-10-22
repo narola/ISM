@@ -485,8 +485,7 @@ if ("WebSocket" in window)
             }    
 
         }else if(obj.type == 'get_studymate_name'){
-          $("#tagged-users").show();
-
+            $("#tagged-users").show();
             var i = 0;
             var j = 0;
             var k = 0;
@@ -525,44 +524,40 @@ if ("WebSocket" in window)
                         }
                         ids += ','+list.id;    
                     }
-
                     j++;
                 }
-
             });
             $('#tagged-users').html(str);
             $('#tagged-users-id').val(ids);
         }else if(obj.type == 'file_notification'){
         }else if(obj.type == 'question_responce'){
-          time_spent_per_question = 0;
-          $('.ques_numbers li[data-id="'+obj.question+'"]').attr('class',obj.status);
-          $('button[data-type="clear_responce"]').removeAttr('disabled');
-          $('button[data-type="question_responce"]').removeAttr('disabled');
+            time_spent_per_question = 0;
+            $('.ques_numbers li[data-id="'+obj.question+'"]').attr('class',obj.status);
+            $('button[data-type="clear_responce"]').removeAttr('disabled');
+            $('button[data-type="question_responce"]').removeAttr('disabled');
 
-          if(obj.qno > 0){
-            $('#q_no').html(obj.qno);
-            $('button[data-type="question_responce"]').attr('data-id',obj.qid);
-            $('#time_spent').html('00:00');
-            $('.question.text-center p').html(obj.question);
-            $('.ans_options').html('');
-             var chk = '';
-            $.each(obj.answer, function (index, list){
-               chk = ''; 
-            if(obj.choice_id == list.id ){
-                chk = 'checked';
-                exam_choice = list.id;
+            if(obj.qno > 0){
+                $('#q_no').html(obj.qno);
+                $('button[data-type="question_responce"]').attr('data-id',obj.qid);
+                $('#time_spent').html('00:00');
+                $('.question.text-center p').html(obj.question);
+                $('.ans_options').html('');
+                 var chk = '';
+                $.each(obj.answer, function (index, list){
+                   chk = ''; 
+                if(obj.choice_id == list.id ){
+                    chk = 'checked';
+                    exam_choice = list.id;
+                }
+                  $('.ans_options').append('<label><input '+chk+' type="radio" name="option" data-id="'+list.id+'">'+list.choice+'</label>'); 
+                });
             }
-              $('.ans_options').append('<label><input '+chk+' type="radio" name="option" data-id="'+list.id+'">'+list.choice+'</label>'); 
-            });
-          }
 
-          if($('ul.ques_numbers li[data-id="'+obj.qid+'"]').next().length == 0){
-           $('button[data-status="next"]').html(' Save ');
-          }
-          $('ul.ques_numbers li[data-id="'+obj.question_id+'"]').attr('class',obj.status).data('class',obj.status);
-          $('ul.ques_numbers li[data-id="'+obj.qid+'"]').attr('class','current');
-
-
+            if($('ul.ques_numbers li[data-id="'+obj.qid+'"]').next().length == 0){
+                $('button[data-status="next"]').html(' Save ');
+            }
+            $('ul.ques_numbers li[data-id="'+obj.question_id+'"]').attr('class',obj.status).data('class',obj.status);
+            $('ul.ques_numbers li[data-id="'+obj.qid+'"]').attr('class','current');
         }else if(obj.type == 'get_question'){
           $('ul.ques_numbers li[class="current"]').attr('class', $('ul.ques_numbers li[class="current"]').data('class'));
           $('ul.ques_numbers li[data-id="'+obj.new_question.qid+'"]').attr('class','current');
@@ -678,6 +673,32 @@ if ("WebSocket" in window)
                     $(".alert_notification").show().delay(50000).fadeOut();
                 }
             }
+        }
+
+        else if(obj.type == 'study_mate_search'){
+              str = '';
+            $.each(obj.result, function (index, list){
+            str += '<div class="study_mate">';
+            str += '<div class="col-lg-9 col-md-8 col-sm-7">';
+            str += '<div class="mate_user_img">';
+            str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+list.profile_link+'">';
+            str += '</div><h4>'+list.full_name+'</h4>';
+            str += '<p>'+list.school_name+'</p>';
+            str += '<p>Live in Ghana</p>';
+            str += '<a href="#">Following 34 Authers</a>';
+            str += '</div>';
+            str += '<div class="col-lg-3 col-md-4 col-sm-5">';
+            if(list.srid != ''){
+            str += ' <button class="btn btn_black_normal btn-block" data-type="studyment-request" data-id="'+list.user_id+'" disabled>Request Already Sent</button>';
+            }else{ 
+            str += '<button class="btn btn_green btn-block" data-type="studyment-request" data-id="'+list.user_id+'">Add Studymates</button>';
+            } 
+            str += ' </div>';
+            str += ' <div class="clearfix"></div>';
+            str += '</div>';
+            });
+            $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html(str);
+             // $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html('ji');
         }
         else {
             alert('Message Not Catched!!');
@@ -1250,4 +1271,18 @@ $(document).on('click','.chat_container .passive .chat_header',function(){
         var c =  $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="'+$(this).data('id')+'"] a span.badge');
           c.html('');
         ws.send(JSON.stringify(request));
+});
+
+$(document).on('keyup','input[data-type="study_mate_search"]',function(){
+    if($('input[data-type="study_mate_search"]').val().length >= 2){  
+        str = '<center><img src="assets/images/loading3.gif"></center>';
+        $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html(str);
+        var request = {
+        type : 'study_mate_search',
+        to   : 'self',
+        search_txt : $('input[data-type="study_mate_search"]').val(),
+        fid : $(this).data('id')
+        }
+        ws.send(JSON.stringify(request));
+    }
 });

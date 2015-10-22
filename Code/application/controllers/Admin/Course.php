@@ -13,38 +13,56 @@ class Course extends ADMIN_Controller {
 	 /**
       * Function for list all Courses
       */
-	public function lists() {       
+	public function lists() {      
+
 		$this->data['page_title'] = 'Courses';
+        
+		$where['where'][TBL_COURSES.'.is_delete']=FALSE;
         $category  = $this->input->get('category');
 		$q  = $this->input->get('q');
+		$order = '';
+		
 		$str = '';
         $where['where'][TBL_COURSES.'.is_delete']=0;
-		if(!empty($_GET['category']) || !empty($_GET['q']) ){
+
+		if(!empty($_GET['category']) || !empty($_GET['q']) || !empty($_GET['order']) ){
 
 			if( !empty($_GET['category']) ) { $role = $this->input->get('category'); }			
 			if( !empty($_GET['q']) ){  $q = $this->input->get('q'); }
+			if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }		
+
 
 			if(!empty($category)){ $where['where']['course_category_id'] = $category ; $str .= '&category='.$category; }			
-			if(!empty($q)){ $where['like'][TBL_COURSES.'.course_name'] = $q; $where['or_like'][TBL_COURSES.'.course_nickname'] = $q;$where['or_like'][TBL_COURSES.'.course_details'] = $q;$where['or_like'][TBL_COURSES.'.course_degree'] = $q;$where['or_like'][TBL_COURSES.'.course_type'] = $q;  $str .='&q='.$q; }
+			if(!empty($q)){ 
+					$where['like'][TBL_COURSES.'.course_name'] = $q; 
+					$where['or_like'][TBL_COURSES.'.course_nickname'] = $q;
+					$where['or_like'][TBL_COURSES.'.course_details'] = $q;
+					$where['or_like'][TBL_COURSES.'.course_degree'] = $q;
+					$where['or_like'][TBL_COURSES.'.course_type'] = $q;  
+					$str .='&q='.$q; 
+			}
             
+            if($order == 'name_asc'){ $order = TBL_COURSES.".course_name asc"; $str.='&order=name_asc';  }
+			if($order == 'name_desc'){ $order = TBL_COURSES.".course_name desc"; $str.='&order=name_desc'; }
+			if($order == 'latest'){ $order = TBL_COURSES.".created_date desc"; $str.='&order=latest'; }
+			if($order == 'older'){ $order = TBL_COURSES.".created_date asc"; $str.='&order=older'; }
+
             $str =  trim($str,'&');
 
-			if(!empty($str)) { $config['base_url']	 = base_url().'admin/course/lists?'.$str; }else{ $config['base_url'] = base_url().'admin/course/lists';  }
+			$config['base_url']	 = base_url().'admin/course/lists?'.$str; 
 			$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
 			$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'	
 	
 		}else{
-			$where=null;
-			$where['where'][TBL_COURSES.'.is_delete']=FALSE;
 			
-			$config['base_url']	 = base_url().'admin/course/lists?'.$str;
-			$offset = $this->uri->segment(4);
+			$config['base_url']	 = base_url().'admin/course/lists/index';
+			$offset = $this->uri->segment(5); // Set URI Segment for 5 Because it is not in INDEX function
 		}
 
-		$config['uri_segment'] = 4;
+		
 		$config['num_links'] = 5;
 		$config['total_rows'] = select(TBL_COURSES,FALSE,$where,array('count'=>TRUE,'join'=>array(array('table' => TBL_COURSE_CATEGORY,'condition' => TBL_COURSES.'.course_category_id = '.TBL_COURSE_CATEGORY.'.id'))));
-		$config['per_page'] = 15;
+		$config['per_page'] = 10;
 
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
 	  	$config['full_tag_close'] = '</ul>';
@@ -77,16 +95,18 @@ class Course extends ADMIN_Controller {
 											'.TBL_COURSES.'.course_duration,'.TBL_COURSES.'.course_degree,'.TBL_COURSE_CATEGORY.'.id AS course_category_id,'.TBL_COURSE_CATEGORY.'.course_category_name',											
 											$where,
 											array(
+												'order_by'=>$order,
 												'limit'=>$config['per_page'],
 												'offset'=>$offset,
 												'join' =>  array(
 											    			array(
 											    				'table' => TBL_COURSE_CATEGORY,
 											    				'condition' => TBL_COURSE_CATEGORY.'.id = '.TBL_COURSES.'.course_category_id'
-																))
+																)
+											    			)
 												)
-											);                                            
-      
+											);      
+		
 		$this->pagination->initialize($config);
 
 		$this->data['course_category'] = select(TBL_COURSE_CATEGORY,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));

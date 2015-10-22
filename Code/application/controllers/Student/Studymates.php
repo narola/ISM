@@ -59,7 +59,7 @@ class Studymates extends ISM_Controller {
 					),
 					array(
 						'table' => TBL_STUDENT_ACADEMIC_INFO.' in1',
-						'condition' => 'in.classroom_id = in1.classroom_id and in.course_id = in1.course_id and in.academic_year = in1.academic_year and in.school_id = in1.school_id',
+						'condition' => 'in.classroom_id = in1.classroom_id  and in.academic_year = in1.academic_year and in.school_id = in1.school_id',
 						'join'=>'join'
 					),
 					array(

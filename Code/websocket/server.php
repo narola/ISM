@@ -116,8 +116,10 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->end_exam($Server->wsClients[$clientID][12], $data);
     }else if($data['type'] == 'tag-user-again'){
         $responce = $Server->tag_again($Server->wsClients[$clientID][12], $data);        
+    }else if($data['type'] == 'study_mate_se'){
+        $responce = $Server->studymate_search($Server->wsClients[$clientID][12], $data);        
     }
-    pr($data);
+
     $check = array('feed_comment', 'like');
     if (isset($responce)) {
         pr($responce, 1);
@@ -166,6 +168,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                         break;
                     }
                 }
+                 $Server->wsSend($clientID, json_encode($responce));
             }else if ($responce['type'] == 'tag-user-again') {
                 foreach ($Server->wsClients as $id => $client) {
                     if (in_array($Server->wsClients[$id][12], $responce['tagged_id'])) {
