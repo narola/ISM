@@ -1282,7 +1282,7 @@ $(document).on('keyup','input[data-type="study_mate_search"]',function(){
         to   : 'self',
         search_txt : $('input[data-type="study_mate_search"]').val(),
         fid : $(this).data('id'),
-        $('.row.filter_bar ul').find('li.active').data('id')
+        search_type :$('.row.filter_bar ul').find('li.active').data('id')
         }
         ws.send(JSON.stringify(request));
     }
