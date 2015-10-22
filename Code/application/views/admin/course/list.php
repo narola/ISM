@@ -42,7 +42,7 @@
                         </div>
 
                         <div class="form-group no_effect search_input">
-                        	<input class="form-control" name="q" id="q" type="text" placeholder="Search">
+                        	<input class="form-control" name="q" id="q" type="text" placeholder="Search Course">
                             <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
                         </div>
                     </div>

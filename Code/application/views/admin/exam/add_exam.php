@@ -48,7 +48,7 @@
                 
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 select padding_r15_">
                     
-                    <select name="classroom_id" class="form-control" onclick="fetch_subject(this.value)" id="classroom_id">
+                    <select name="classroom_id" class="form-control" onchange="fetch_subject(this.value)" id="classroom_id">
                         <option value="">Select Classroom</option>
                     </select>
 

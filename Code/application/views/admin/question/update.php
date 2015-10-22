@@ -16,20 +16,21 @@
         	<div class="col-sm-12 general_cred">
             	<!--box-->
                 <div class="box">
+                    
                     <div class="box_header filter">
                         <h3>Add New Question</h3>
-
                     </div>
 
                     <div class="alert alert-danger<?php if(empty(strip_tags(validation_errors(),''))){ echo ' hide';} ?> ">
                         <?php echo validation_errors('',''); ?>
                     </div>
+
                     <!--box_body-->
                     <div class="box_body add_question_wrapper">
                    		<div class="col-sm-12 padding_t15">
                         	<div class="form-group">
                                 <label class="txt_red">Question</label>
-                                <textarea class="form-control" name='question_text'><?php echo set_value('question_text'); ?></textarea>
+                                <textarea class="form-control" name='question_text'><?php echo set_value("question_text") == false ? $question["question_text"] : set_value("question_text"); ?></textarea>
                             </div>
                             
                             <div class="form-group select">
@@ -42,7 +43,7 @@
                                                 <?php echo $course['course_name']; ?>
                                         </option>        
                                     <?php } 
-                                }?>
+                                } ?>
                                 </select>
                             </div>
 
@@ -257,10 +258,10 @@
         });
     }
 
+
     function test(ch){
         console.log(ch)
     }
-
     function add_choices(){
 
         $('a.icon.icon_add_small').remove();

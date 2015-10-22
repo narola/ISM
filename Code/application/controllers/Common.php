@@ -130,7 +130,7 @@ class Common extends CI_Controller {
                            );
         $new_str = '';
 
-        $new_str .= '<option selected disabled > Select Classroom </option>';
+        $new_str .= '<option selected disabled > Select Subject </option>';
         if (!empty($all_subjects)) {
             foreach ($all_subjects as $subject) {
                 $new_str.='<option value="' . $subject['id'] . '">' . $subject['subject_name'] . '</option>';
