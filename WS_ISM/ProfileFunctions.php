@@ -269,12 +269,10 @@ class ProfileFunctions
         $password = validateObject ($postData , 'password', "");
         $password = addslashes($password);
 
-
         $queryUser="SELECT id,username,password from ".TABLE_USERS." where username='".$username."'";
-        echo $queryUser;
         //echo $encrypted_passwd = $obj->encode($password);
         //$decrypted_password = $obj->decode("vxbhjXDuOZ8uncgNP7ykB2UvgLr5Q9SU31K6z+JGMYfREqZTYyr1f5E20k7jMTxNILaWMK0ImrNVS1GGn6gshA==");
-        echo "---------".$obj->decode("v8R/H5JqnMdmkqVWyYLr7a/z46844fI8otkn17Ba+Afd5eOTjH9uJRg0X5nHW6EAcAQP4QNhvbNWmfgqlzLXew==");
+        //echo "---------".$obj->decode("v8R/H5JqnMdmkqVWyYLr7a/z46844fI8otkn17Ba+Afd5eOTjH9uJRg0X5nHW6EAcAQP4QNhvbNWmfgqlzLXew==");
         $resultUser=mysql_query($queryUser) or $message=mysql_error();
         if(mysql_num_rows($resultUser))
         {
@@ -283,9 +281,9 @@ class ProfileFunctions
             {
                 //echo $obj->encode($password);
                 $encryptedPassword=$val['password'];
-                echo $encryptedPassword;
+                //echo $encryptedPassword;
                 $decrypted_password = $obj->decode($encryptedPassword);
-                echo $decrypted_password;
+                //echo $decrypted_password;
                 if($decrypted_password==$password)
                 {
                     $message=CREDENTIALS_EXITST;
@@ -305,7 +303,7 @@ class ProfileFunctions
         {
             //$encryptedPassword=encryptPassword($passowrd);
             $queryOn="autoGenerateCredential.school_id=schools.id and autoGenerateCredential.course_id=courses.id";
-            $queryData="SELECT * FROM ".TABLE_AUTO_GENERATED_CREDENTIAL." autoGenerateCredential INNER JOIN ".TABLE_SCHOOLS." schools INNER JOIN ".TABLE_COURSES." courses ON ".$queryOn." where username='".$userName."'";
+            $queryData="SELECT * FROM ".TABLE_AUTO_GENERATED_CREDENTIAL." autoGenerateCredential INNER JOIN ".TABLE_SCHOOLS." schools INNER JOIN ".TABLE_COURSES." courses ON ".$queryOn." where username='".$username."'";
             //$queryAuthUser="select * from ".TABLE_AUTO_GENERATED_CREDENTIAL." where username='".$userName."'";
             $resultAuthUser=mysql_query($queryData) or $errorMsg=mysql_error();
             if(mysql_num_rows($resultAuthUser))
@@ -355,7 +353,7 @@ class ProfileFunctions
             else
             {
                 $status="failed";
-               // $message = CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
+               $message = CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
             }
 
         }
