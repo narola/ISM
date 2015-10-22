@@ -17,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:padding="@dimen/d15dp"
+            android:layout_margin="10dp"
             android:src="@drawable/userdp" />
 
         <LinearLayout
@@ -90,7 +91,7 @@
         android:id="@+id/btn_accept"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_edittext_teacher"
+        android:background="@drawable/background_edittext"
         android:layout_gravity="center"
         android:gravity="center"
         android:paddingBottom="@dimen/d10dp"

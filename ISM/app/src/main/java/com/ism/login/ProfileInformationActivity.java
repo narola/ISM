@@ -28,9 +28,9 @@ import java.io.IOException;
 /**
  * Created by c162 on 07/10/15.
  */
-public class ProfileInfornation extends Activity implements View.OnClickListener {
-    private static final String TAG = ProfileInfornation.class.getSimpleName();
-    private Spinner spGender, spSchoolgender, spAcademicyear, spCity, spClass, spCountry, spProgramcourse,  spState;
+public class ProfileInformationActivity extends Activity implements View.OnClickListener {
+    private static final String TAG = ProfileInformationActivity.class.getSimpleName();
+    private Spinner spGender, spSchoolGender, spAcademicYear, spCity, spClass, spCountry, spProgramCourse,  spState;
     String strArrGender[] = {"Gender","Female", "Male"};
     String strArrList[] = {"Select","Item1", "Item2"};
     private CustomSpinnerAdapter spinnerAdapter;
@@ -38,13 +38,12 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
     private Button btnSuumit;
     private TextView txtUploadpic;
     private ImageView imgDp;
-    private static int RESULT_LOAD_IMAGE = 1;
     private int PICK_IMAGE_REQUEST = 1;
     private TextView txtYouare;
     private TextView txtIfits;
     private TextView txtClickhere;
-    private EditText etAge, etUsername, etNewpwd, etNameofschool, etHomeadd, etFullname,
-            etEmailadd, etDob, etDistrictofschool, etCurrentpwd, etCno,  etConfirmpwd;
+    private EditText etAge, etUserName, etNewPwd, etNameSchool, etHomeAddress, etFullName,
+            etEmailAddress, etDob, etDistrictOfSchool, etCurrentPwd, etContactNo,  etConfirmPwd;
     private LayoutInflater mInflator;
     private boolean selected;
     LinearLayout llImageUpload;
@@ -79,26 +78,26 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
          txtClickhere = (TextView) findViewById(R.id.txt_clickhere);
          txtYouare = (TextView) findViewById(R.id.txt_youare_);
          spGender = (Spinner) findViewById(R.id.sp_gender);
-         spSchoolgender = (Spinner) findViewById(R.id.sp_schoolgender);
-         spAcademicyear = (Spinner) findViewById(R.id.sp_academicyear);
+         spSchoolGender = (Spinner) findViewById(R.id.sp_schoolgender);
+         spAcademicYear = (Spinner) findViewById(R.id.sp_academicyear);
          spCity = (Spinner) findViewById(R.id.sp_city);
          spClass = (Spinner) findViewById(R.id.sp_class);
          spCountry = (Spinner) findViewById(R.id.sp_country);
          spState = (Spinner) findViewById(R.id.sp_state);
-         spProgramcourse = (Spinner) findViewById(R.id.sp_programcourse);
+         spProgramCourse = (Spinner) findViewById(R.id.sp_programcourse);
          etAge = (EditText) findViewById(R.id.et_age);
-         etCno = (EditText) findViewById(R.id.et_cno);
-         etConfirmpwd = (EditText) findViewById(R.id.et_confirmpwd);
-         etCurrentpwd = (EditText) findViewById(R.id.et_currentpwd);
-         etDistrictofschool = (EditText) findViewById(R.id.et_districtofschool);
+         etContactNo = (EditText) findViewById(R.id.et_cno);
+         etConfirmPwd = (EditText) findViewById(R.id.et_confirmpwd);
+         etCurrentPwd = (EditText) findViewById(R.id.et_currentpwd);
+         etDistrictOfSchool = (EditText) findViewById(R.id.et_districtofschool);
          etDob = (EditText) findViewById(R.id.et_dob);
-         etEmailadd = (EditText) findViewById(R.id.et_emailAdd);
-         etFullname = (EditText) findViewById(R.id.et_fullname);
-         etHomeadd = (EditText) findViewById(R.id.et_homeAdd);
-         etNameofschool = (EditText) findViewById(R.id.et_nameofschool);
-         etNewpwd = (EditText) findViewById(R.id.et_newpwd);
+         etEmailAddress = (EditText) findViewById(R.id.et_emailAdd);
+         etFullName = (EditText) findViewById(R.id.et_fullname);
+         etHomeAddress = (EditText) findViewById(R.id.et_homeAdd);
+         etNameSchool = (EditText) findViewById(R.id.et_nameofschool);
+         etNewPwd = (EditText) findViewById(R.id.et_newpwd);
         llImageUpload=(LinearLayout)findViewById(R.id.ll_imageProfile);
-         etUsername = (EditText) findViewById(R.id.et_username);
+         etUserName = (EditText) findViewById(R.id.et_username);
          txtUploadpic = (TextView) findViewById(R.id.txt_uploadpic);
          imgDp = (ImageView) findViewById(R.id.img_dp_post_creator);
          btnSuumit = (Button) findViewById(R.id.btn_suumit);
@@ -107,23 +106,23 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
          txtClickhere.setTypeface(myTypeFace.getRalewayThin());
          txtUploadpic.setTypeface(myTypeFace.getRalewayRegular());
          etAge.setTypeface(myTypeFace.getRalewayRegular());
-         etCno.setTypeface(myTypeFace.getRalewayRegular());
-         etConfirmpwd.setTypeface(myTypeFace.getRalewayRegular());
-         etCurrentpwd.setTypeface(myTypeFace.getRalewayRegular());
-         etDistrictofschool.setTypeface(myTypeFace.getRalewayRegular());
+         etContactNo.setTypeface(myTypeFace.getRalewayRegular());
+         etConfirmPwd.setTypeface(myTypeFace.getRalewayRegular());
+         etCurrentPwd.setTypeface(myTypeFace.getRalewayRegular());
+         etDistrictOfSchool.setTypeface(myTypeFace.getRalewayRegular());
          etDob.setTypeface(myTypeFace.getRalewayRegular());
-         etEmailadd.setTypeface(myTypeFace.getRalewayRegular());
-         etFullname.setTypeface(myTypeFace.getRalewayRegular());
-         etHomeadd.setTypeface(myTypeFace.getRalewayRegular());
-         etNameofschool.setTypeface(myTypeFace.getRalewayRegular());
-         etNewpwd.setTypeface(myTypeFace.getRalewayRegular());
-         etUsername.setTypeface(myTypeFace.getRalewayRegular());
+         etEmailAddress.setTypeface(myTypeFace.getRalewayRegular());
+         etFullName.setTypeface(myTypeFace.getRalewayRegular());
+         etHomeAddress.setTypeface(myTypeFace.getRalewayRegular());
+         etNameSchool.setTypeface(myTypeFace.getRalewayRegular());
+         etNewPwd.setTypeface(myTypeFace.getRalewayRegular());
+         etUserName.setTypeface(myTypeFace.getRalewayRegular());
 
         //  spGender.setTypeface(myTypeFace.getRalewayRegular());
 
          llImageUpload.setOnClickListener(this);
          btnSuumit.setOnClickListener(this);
-        spinnerAdapter = new CustomSpinnerAdapter(ProfileInfornation.this, strArrGender);
+        spinnerAdapter = new CustomSpinnerAdapter(ProfileInformationActivity.this, strArrGender);
         selected = false;
         mInflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 //        adapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, strArrGender);
@@ -131,12 +130,12 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
 //                R.array.list, R.layout.custom_spinner);
 //        adapter.setDropDownViewResource(R.layout.row_spinner);
 //         spGender.setAdapter(adapter);
-        setUpSpinner(spAcademicyear, strArrList);
+        setUpSpinner(spAcademicYear, strArrList);
         setUpSpinner(spCity, strArrList);
         setUpSpinner(spClass, strArrList);
-        setUpSpinner(spProgramcourse, strArrList);
+        setUpSpinner(spProgramCourse, strArrList);
         setUpSpinner(spState, strArrList);
-        setUpSpinner(spSchoolgender, strArrList);
+        setUpSpinner(spSchoolGender, strArrList);
         setUpSpinner(spCountry, strArrList);
         setUpSpinner(spGender, strArrGender);
 
@@ -221,7 +220,7 @@ public class ProfileInfornation extends Activity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_suumit: {
-                Global.myIntent(ProfileInfornation.this, WelComeActivity.class);
+                Global.myIntent(ProfileInformationActivity.this, WelComeActivity.class);
             }
             break;
             case R.id.ll_imageProfile: {
