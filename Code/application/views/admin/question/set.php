@@ -9,25 +9,74 @@
                 </ol>                 
             </div>
 			<div class="col-sm-4 text-right padding_t10">
-				<a href="<?php echo base_url().'admin/question/add'; ?>" class="btn btn_red"> Add New Question </a>
+				<button class="btn btn_red">Add New Question</button>
 			</div>
         </div>
         <!--//breadcrumb-->
+		<!--filter-->
+		<div class="question_bank_sr">
+		<div class="filter group_filter">
+            <div class="col-sm-12">
+                <form method="post">
+				<div class="form-group">
+					<select class="form-control" name="course_id" onchange="get_classes(this.value)" id="course_id">
+						<option value=''>Course</option>
+						<?php if(!empty($courses)){ 
+							foreach ($courses as $course) { ?>
+								<option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>        
+						<?php } 
+					}?>
+					</select>
+				</div>
+				<div class="form-group">
+					<select class="form-control" name="classroom_id" onchange="get_subjects(this.value)" id="classroom_id">
+						<option value=''>Classroom</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<select class="form-control" name="subject_id" onchange="get_topics(this.value)" id="subject_id">
+						<option value=''>Subject</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<select class="form-control" name="topic_id" id="topic_id" >
+						<option value=''>Topic</option>
+					</select>
+				</div>
+
+				<!--<div class="form-group">
+					<select class="form-control" name="exam_id" id="exam_id" onchange="fetch_question(this.value)">
+						<option value=''>Exams</option>
+						<?php //if(!empty($exams)){ 
+							//foreach ($exams as $exam) { ?>
+								<option value="<?php //echo $exam['id']; ?>"><?php //echo $exam['exam_name']; ?></option>        
+						<?php //} 
+					//}?>
+					</select>
+				</div>-->
+				<div class="form-group no_effect search_link text-right">
+					<button class="btn btn-link icon icon_search" type="submit"></button>
+				</div>
+				</form>
+            </div>
+        </div>
+		</div>
+		<!--//filter-->
         <!--main content-->
-        <div class="question_bank margin_15">
+        <div class="question_bank">
         	<div class="col-sm-6 general_cred">
             	<!--box-->
                 <div class="box">
-                    <div class="box_header filter">
+                    <!--<div class="box_header "><!--filter-- >
                         <form method="post">
                         <div class="form-group">
                             <select class="form-control" name="course_id" onchange="get_classes(this.value)" id="course_id">
                                 <option value=''>Course</option>
-                                <?php if(!empty($courses)){ 
-                                    foreach ($courses as $course) { ?>
-                                        <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>        
-                                <?php } 
-                            }?>
+                                <?php //if(!empty($courses)){ 
+                                    //foreach ($courses as $course) { ?>
+                                        <option value="<?php //echo $course['id']; ?>"><?php //echo $course['course_name']; ?></option>        
+                                <?php //} 
+                            //}?>
                             </select>
                         </div>
                         <div class="form-group">
@@ -49,20 +98,20 @@
                         <div class="form-group">
                             <select class="form-control" name="exam_id" id="exam_id" onchange="fetch_question(this.value)">
                                 <option value=''>Exams</option>
-                                <?php if(!empty($exams)){ 
-                                    foreach ($exams as $exam) { ?>
-                                        <option value="<?php echo $exam['id']; ?>"><?php echo $exam['exam_name']; ?></option>        
-                                <?php } 
-                            }?>
+                                <?php //if(!empty($exams)){ 
+                                    //foreach ($exams as $exam) { ?>
+                                        <option value="<?php //echo $exam['id']; ?>"><?php echo $exam['exam_name']; ?></option>        
+                                <?php //} 
+                            //}?>
                             </select>
                         </div>
 
                         <!--<div class="form-group no_effect search_link text-right">
                             <button class="btn btn-link icon icon_search" type="submit"></button>
-                        </div>-->
+                        </div>-- >
                         <div class="clearfix"></div>
                     </form>
-                    </div>
+                    </div>-->
                     <!--box_body-->
                     <div class="box_body">
                    		<div class="black_header">	
@@ -119,7 +168,19 @@
             	<!--box-->
                 <div class="box">
                     <div class="box_header">
-                       <h3>Preview</h3>
+                       <h4>Preview</h4>
+						<div class="filter preview_filter pull-right">
+							<div class="form-group">
+								<select class="form-control" name="exam_id" id="exam_id" onchange="fetch_question(this.value)">
+									<option value=''>Exams</option>
+									<?php if(!empty($exams)){ 
+										foreach ($exams as $exam) { ?>
+											<option value="<?php echo $exam['id']; ?>"><?php echo $exam['exam_name']; ?></option>        
+									<?php } 
+								}?>
+								</select>
+							</div>
+						</div>
                     </div>
                     <!--box_body-->
                     <div class="box_body">
@@ -294,8 +355,6 @@
 <?php if(!empty($_GET['exam'])) { ?>
     $('#exam_id').val('<?php echo $_GET["exam"];?>');    
 <?php } ?>
-
-
 
 jQuery(document).ready(function() {
     jQuery('.question_wrapper .fa-angle-double-down').click(function(){

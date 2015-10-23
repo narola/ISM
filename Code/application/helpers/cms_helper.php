@@ -59,9 +59,9 @@ function myform_error($field){
 function flashMessage($success = '', $error = '') {
 	$CI =& get_instance();
     if ($CI->session->flashdata('success') != "") {
-        echo '<div class="alert alert-success alert-dismissible" role="alert" style="position: absolute; bottom: 1%; right: 1%; z-index: 999999;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $CI->session->flashdata('success') . '</div>';
+        echo '<div class="alert alert-success alert-dismissible" role="alert" style="padding:25px 30px; position: absolute; bottom: 1%; right: 1%; z-index: 999999;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $CI->session->flashdata('success') . '</div>';
     }else if ($CI->session->flashdata('error') != "") {
-        echo '<div class="alert alert-danger alert-dismissible " style="position: absolute; bottom: 1%; right: 1%; z-index: 999999;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $CI->session->flashdata('error') . '</div>';
+        echo '<div class="alert alert-danger alert-dismissible " style="padding:25px 30px; position: absolute; bottom: 1%; right: 1%; z-index: 999999;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $CI->session->flashdata('error') . '</div>';
     }
 }
 

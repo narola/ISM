@@ -1,7 +1,7 @@
    <!--main-->
-<div class="col-sm-7 main main2 main_wide">
+<div class="col-sm-7 main main2 main_wide mCustomScrollbar" data-mcs-theme="minimal-dark">
 	<!--breadcrumb-->
-		<div class="row page_header">
+		<div class="page_header">
     	<div class="col-sm-12">
         	<ol class="breadcrumb">
               <li><a href="admin/group">Groups</a></li> 
@@ -11,7 +11,7 @@
     </div>
     <!--//breadcrumb-->
     <!--banner-->
-    <div class="row exam_banner banner_admin">
+    <div class="exam_banner banner_admin">
      	<div class="col-sm-12 text-center">
         	<div>
                 <div class="banner_text banner_group_image">
@@ -26,7 +26,7 @@
      </div>
     <!--//banner-->
     <!--main part-->
-    <div class="row">
+    <div class="">
     	<div class="col-sm-4 group_performance_1 general_cred">
         	<div class="box_header">
             	<h3>Members</h3>

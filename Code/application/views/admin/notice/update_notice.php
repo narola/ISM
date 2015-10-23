@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
   <!--breadcrumb-->
-  <div class="row page_header">
+  <div class="page_header">
       <div class="col-sm-12">
           <ol class="breadcrumb">
               <li><a href="admin/notice">Admin</a></li>                          
@@ -13,16 +13,16 @@
     <!--//breadcrumb-->
     <!--message-->
 
-    <div class="row">
+    <div class="col-sm-12">
       <div class="col-sm-12 new_message">
         <form method="post">  
           <div class="box exam_card">
               <div class="box_header">
                   <h3> Update Notice</h3>
                 </div>
-                <div class="box_body">
+                <div class="box_body admin_controls with_labels">
                   
-                  <div class="form-group">
+                  <div class="form-group select">
                       <label> Roles </label>
                        <select name="role_id" id="role_id" class="form-control">
                           <option selected disabled> Select Role </option>
@@ -40,7 +40,7 @@
                     <?php echo strip_tags(form_error('role_id'),'') ; ?>
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group select">
                       <label> Classroom </label>
                        <select name="classroom_id" id="classroom_id" class="form-control">
                           <option selected value=" "> Select Classroom </option>
