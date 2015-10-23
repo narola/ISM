@@ -11,14 +11,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.model.LoginRequest;
+import com.ism.model.ResponseObject;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
+import com.ism.ws.WebserviceWrapper;
 
 /**
  * Created by c162 on 07/10/15.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse {
 
 	private static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -68,6 +71,7 @@ public class LoginActivity extends Activity {
 				PreferenceData.setStringPrefs(PreferenceData.USER_NAME, LoginActivity.this, etUserid.getText().toString().trim());
 				PreferenceData.setBooleanPrefs(PreferenceData.IS_LOGGED_IN, LoginActivity.this, true);
 			}
+			authenticateUser();
 		}
 	}
 
@@ -85,7 +89,26 @@ public class LoginActivity extends Activity {
 	}
 
 	private void authenticateUser() {
+		try {
+			LoginRequest loginRequest = new LoginRequest();
+			loginRequest.setUsername("0YGAJ8793B");
+			loginRequest.setPassword("narola21");
 
+			/*new WebserviceWrapper(LoginActivity.this, loginRequest).new WebserviceCaller()
+					.execute("http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=AuthenticateUser");*/
+
+			new WebserviceWrapper(LoginActivity.this, loginRequest).new WebserviceCaller()
+					.execute(WebserviceWrapper.LOGIN);
+
+		} catch (Exception e) {
+         Log.e("error",e.getLocalizedMessage());
+		}
 	}
 
+	@Override
+	public void onResponse(Object object, Exception error) {
+		ResponseObject responseObj = (ResponseObject) object;
+		Log.e(TAG, "onResponse");
+
+	}
 }
