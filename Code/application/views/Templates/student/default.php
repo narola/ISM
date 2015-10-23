@@ -123,13 +123,13 @@ function toHHMMSS (sec) {
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/student/home"><span class="icon icon_menu_home"></span> Home</a></li>
+            <li class="active"><a href="student/home"><span class="icon icon_menu_home"></span> Home</a></li>
             <li><a href="student/tutorial"><span class="icon icon_menu_tut"></span> Tutorial</a></li>
             <li><a href="student/my_classroom_exam"><span class="icon icon_menu_class"></span> Classroom</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
               <ul class="dropdown-menu">
-                <li><a href="/student/my_exam">My Exam</a></li>
+                <li><a href="student/my_exam">My Exam</a></li>
                 <!-- <li><a href="#">My Scoreboard</a></li> -->
               </ul>
             </li>
@@ -225,7 +225,7 @@ function toHHMMSS (sec) {
                                 $d = 'data-type="s"';
                                  $url = '#'.$value;
                                }else{
-                                    $url = "/student/exam-instruction";
+                                    $url = "student/exam-instruction";
                                }
                                if($key+1 == $current_weekday){
                                 $active = 'class="active"';
@@ -248,11 +248,11 @@ function toHHMMSS (sec) {
                 else{
                 ?>
                  <ul class="personal_menu">
-                    <li><a href="/student/home">My Feeds</a></li>
-                    <li><a href="/student/my_exam">My Exams</a></li>
-                    <li><a href="/student/studymates">Studymates</a></li>
-                    <li><a href="/student/my_activities">My Activities</a></li>
-                    <li><a href="/student/notice_board">Notice Board</a></li>
+                    <li><a href="student/home">My Feeds</a></li>
+                    <li><a href="student/my_exam">My Exams</a></li>
+                    <li><a href="student/studymates">Studymates</a></li>
+                    <li><a href="student/my_activities">My Activities</a></li>
+                    <li><a href="student/notice_board">Notice Board</a></li>
                 </ul>
                 <?php
                     } 
