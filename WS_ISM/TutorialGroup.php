@@ -7,175 +7,248 @@
 class TutorialGroup
 {
 
-    function __construct()
-    {
+	function __construct()
+	{
 
-    }
+	}
 
-    public function call_service($service, $postData)
-    {
-        switch ($service) {
-            case "allocateTutorialGroup": {
-                return $this->generateTutorialGroup($_POST['user_id']);
-            }
-                break;
-        }
-    }
+	public function call_service($service, $postData)
+	{
+		switch ($service) {
+			case "AllocateTutorialGroup": {
+				return $this->allocateTutorialGroup($_POST['user_id']);
+			}
+				break;
 
-    public function generateTutorialGroup($user_id)
-    {
-        $get_students_query = "SELECT usr.id, usr.username, crs.course_name, inf.academic_year, pic.profile_link, sch.school_name,
-                                sch.school_grade, cls.class_name
+			case "AcceptTutorialGroup": {
+				return $this->acceptTutorialGroup($_POST['user_id'], $_POST['group_id'], $_POST['joining_status']);
+			}
+				break;
+		}
+	}
 
-                                FROM " . TABLE_USERS . " usr, " . TABLE_STUDENT_ACADEMIC_INFO . " inf, " . TABLE_SCHOOLS . " sch,
-                                    " . TABLE_CLASSROOMS . " cls, " . TABLE_COURSES . " crs, " . TABLE_USER_PROFILE_PICTURE . " pic,
+	public function allocateTutorialGroup($user_id)
+	{
+		$selectFields = "users.id, users.username, courses.course_name, academic_info.academic_year, pic.profile_link, schools.school_name,
+	                        schools.school_grade, classrooms.class_name";
+
+		$get_students_query = "SELECT " . $selectFields . "
+                                FROM " . TABLE_USERS . " users, " . TABLE_STUDENT_ACADEMIC_INFO . " academic_info, " . TABLE_SCHOOLS . " schools,
+                                    " . TABLE_CLASSROOMS . " classrooms, " . TABLE_COURSES . " courses, " . TABLE_USER_PROFILE_PICTURE . " pic,
                                     (select * from " . TABLE_STUDENT_ACADEMIC_INFO . " where user_id = " . $user_id . ") user
+                                WHERE users.role_id = 2
+	                                and users.id in (select user_id from " . TABLE_STUDENT_ACADEMIC_INFO . " where school_id in
+	                                    (select id from " . TABLE_SCHOOLS . " where school_grade != (select school_grade from
+	                                    " . TABLE_SCHOOLS . " where id = (select school_id from " . TABLE_STUDENT_ACADEMIC_INFO . "
+	                                     where user_id = user.user_id))))
+	                                and users.id = academic_info.user_id
+	                                and academic_info.school_id = schools.id
+	                                and academic_info.classroom_id = classrooms.id
+	                                and classrooms.course_id = courses.id
+	                                and users.id = pic.user_id
+	                                and academic_info.classroom_id = user.classroom_id
+	                                and academic_info.academic_year = user.academic_year";
 
-                                WHERE usr.role_id = 2
+		$res = mysql_query($get_students_query) or $message = mysql_error();
 
-                                and usr.id in (select user_id from " . TABLE_STUDENT_ACADEMIC_INFO . " where school_id in
-                                    (select id from " . TABLE_SCHOOLS . " where school_grade != (select school_grade from
-                                    " . TABLE_SCHOOLS . " where id = (select school_id from " . TABLE_STUDENT_ACADEMIC_INFO . "
-                                     where user_id = user.user_id))))
+		if ($res) {
+			if ((mysql_num_rows($res)) > 0) {
 
-                                and usr.id = inf.user_id
-                                and inf.school_id = sch.id
-                                and inf.classroom_id = cls.id
-                                and cls.course_id = crs.id
-                                and usr.id = pic.user_id
-                                and inf.classroom_id = user.classroom_id
-                                and inf.academic_year = user.academic_year";
+				$studentArray = array();
+				$studentArrayA = array();
+				$studentArrayB = array();
+				$studentArrayC = array();
+				$studentArrayD = array();
+				$studentArrayE = array();
 
-        $res = mysql_query($get_students_query) or $message = "Find user error : ".mysql_error();
+				while ($student = mysql_fetch_assoc($res)) {
 
-        if ($res) {
-            if ((mysql_num_rows($res)) > 0) {
+					$studentObj = '';
+					$studentObj['user_id'] = $student['id'];
+					$studentObj['user_name'] = $student['username'];
+					$studentObj['course_name'] = $student['course_name'];
+					$studentObj['academic_year'] = $student['academic_year'];
+					$studentObj['profile_pic'] = $student['profile_link'];
+					$studentObj['school_name'] = $student['school_name'];
+					$studentObj['school_grade'] = $student['school_grade'];
+					$studentObj['classroom_name'] = $student['class_name'];
 
-                $studentArray = array();
-                $studentArrayA = array();
-                $studentArrayB = array();
-                $studentArrayC = array();
-                $studentArrayD = array();
-                $studentArrayE = array();
+					if (strcmp($studentObj['school_grade'], "A") == 0) {
+						$studentArrayA[] = $studentObj;
+					} elseif (strcmp($studentObj['school_grade'], "B") == 0) {
+						$studentArrayB[] = $studentObj;
+					} elseif (strcmp($studentObj['school_grade'], "C") == 0) {
+						$studentArrayC[] = $studentObj;
+					} elseif (strcmp($studentObj['school_grade'], "D") == 0) {
+						$studentArrayD[] = $studentObj;
+					} elseif (strcmp($studentObj['school_grade'], "E") == 0) {
+						$studentArrayE[] = $studentObj;
+					}
 
-                while ($student = mysql_fetch_assoc($res)) {
+				}
 
-                    $studentObj = '';
-                    $studentObj['user_id'] = $student['id'];
-                    $studentObj['user_name'] = $student['username'];
-                    $studentObj['course_name'] = $student['course_name'];
-                    $studentObj['academic_year'] = $student['academic_year'];
-                    $studentObj['profile_pic'] = $student['profile_link'];
-                    $studentObj['school_name'] = $student['school_name'];
-                    $studentObj['school_grade'] = $student['school_grade'];
-                    $studentObj['classroom_name'] = $student['class_name'];
+				if (count($studentArrayA) > 0) {
+					$indexA = rand(0, count($studentArrayA) - 1);
+					$studentArray[] = $studentArrayA[$indexA];
+				}
+				if (count($studentArrayB) > 0) {
+					$indexB = rand(0, count($studentArrayB) - 1);
+					$studentArray[] = $studentArrayB[$indexB];
+				}
+				if (count($studentArrayC) > 0) {
+					$indexC = rand(0, count($studentArrayC) - 1);
+					$studentArray[] = $studentArrayC[$indexC];
+				}
+				if (count($studentArrayD) > 0) {
+					$indexD = rand(0, count($studentArrayD) - 1);
+					$studentArray[] = $studentArrayD[$indexD];
+				}
+				if (count($studentArrayE) > 0) {
+					$indexE = rand(0, count($studentArrayE) - 1);
+					$studentArray[] = $studentArrayE[$indexE];
+				}
 
-                    if (strcmp($studentObj['school_grade'], "A") == 0) {
-                        $studentArrayA[] = $studentObj;
-                    } elseif (strcmp($studentObj['school_grade'], "B") == 0) {
-                        $studentArrayB[] = $studentObj;
-                    } elseif (strcmp($studentObj['school_grade'], "C") == 0) {
-                        $studentArrayC[] = $studentObj;
-                    } elseif (strcmp($studentObj['school_grade'], "D") == 0) {
-                        $studentArrayD[] = $studentObj;
-                    } elseif (strcmp($studentObj['school_grade'], "E") == 0) {
-                        $studentArrayE[] = $studentObj;
-                    }
+				if (count($studentArray) == 4) {
+					$get_group_name = "SELECT group_name FROM " . TABLE_GROUP_NAMES . " order by RAND() LIMIT 1";
 
-                }
+					$res = mysql_query($get_group_name) or $message = mysql_error();
 
-                if (count($studentArrayA) > 0) {
-                    $indexA = rand(0, count($studentArrayA) - 1);
-                    $studentArray[] = $studentArrayA[$indexA];
-                }
-                if (count($studentArrayB) > 0) {
-                    $indexB = rand(0, count($studentArrayB) - 1);
-                    $studentArray[] = $studentArrayB[$indexB];
-                }
-                if (count($studentArrayC) > 0) {
-                    $indexC = rand(0, count($studentArrayC) - 1);
-                    $studentArray[] = $studentArrayC[$indexC];
-                }
-                if (count($studentArrayD) > 0) {
-                    $indexD = rand(0, count($studentArrayD) - 1);
-                    $studentArray[] = $studentArrayD[$indexD];
-                }
-                if (count($studentArrayE) > 0) {
-                    $indexE = rand(0, count($studentArrayE) - 1);
-                    $studentArray[] = $studentArrayE[$indexE];
-                }
+					if ($res) {
+						if ((mysql_num_rows($res)) > 0) {
+							while ($group = mysql_fetch_assoc($res)) {
+								$group_name = $group['group_name'];
+							}
+						}
+					}
 
-                if (count($studentArray) == 4) {
-	                $get_group_name = "SELECT group_name FROM ".TABLE_GROUP_NAMES." order by RAND() LIMIT 1";
+					$groupId = $group_name . " " . $studentArray[0]['course_name'];
 
-	                $res = mysql_query($get_group_name) or $message = mysql_error();
+					$insertFields = "group_name, group_type, group_status, is_completed ";
+					$valuesFields = " '" . $groupId . "', 'tutorial group', 1, 0 ";
 
-	                if ($res) {
-		                if ((mysql_num_rows($res)) > 0) {
-			                while ($group = mysql_fetch_assoc($res)) {
-				                $group_name = $group['group_name'];
-			                }
-		                }
-	                }
+					$insertGroupQuery = "Insert into " . TABLE_TUTORIAL_GROUPS . " (" . $insertFields . ") values(" . $valuesFields . ")";
+					$res = mysql_query($insertGroupQuery) or $message = mysql_error();
 
-	                $groupId = $group_name." ".$studentArray[0]['course_name'];
+					if ($res) {
+						$tutorialGroupId = mysql_insert_id();
 
-		            $insertFields = "group_name, group_type, group_status, is_completed ";
-		            $valuesFields = " '".$groupId."', 'tutorial group', 1, 0 " ;
+						$status = $this->addGroupMember($tutorialGroupId, $user_id);
+						if ($status == 1) {
+							foreach ($studentArray as $member) {
+								$status = $this->addGroupMember($tutorialGroupId, $member['user_id']);
+								if ($status == 2) {
+									break;
+								}
+							}
+						}
 
-	                $insertGroupQuery = "Insert into ".TABLE_TUTORIAL_GROUPS." (".$insertFields.") values(".$valuesFields.")";
-	                $res = mysql_query($insertGroupQuery) or $message = "Group insert error : ".mysql_error();
+						if ($status == 1) {
+							$message = 'Group created';
+						} else {
+							$message = 'Failed to insert group member';
+						}
 
-	                if($res)
-	                {
-		                $tutorialGroupId = mysql_insert_id();
+					} else {
+						$status = 2;
+					}
 
-		                $insertFields = "group_id, user_id, joining_status ";
+				} else {
+					$status = 1;
+					$message = 'Your Tutorial group will be created as soon as all members join.';
+				}
 
-		                foreach ($studentArray as $member) {
-			                $valuesFields = " '".$tutorialGroupId."', '".$member['user_id']."', 0 " ;
-			                $insertGroupQuery = "Insert into ".TABLE_TUTORIAL_GROUP_MEMBER." (".$insertFields.") values(".$valuesFields.")";
-			                $res = mysql_query($insertGroupQuery) or $message = "GroupMember insert error : ".mysql_error();
-			                if ($res) {
-				                $status = 1;
-			                } else {
-				                $status = 2;
-				                break;
-			                }
-		                }
+			} else {
+				$status = 1;
+				$message = 'Your Tutorial group will be created as soon as all members join.';
+			}
 
-		                if ($status == 1) {
-			                $message = 'Group created';
-		                }
+		} else {
+			$status = 2;
+		}
 
-	                } else {
-		                $status = 2;
-	                }
+		$data['status'] = ($status > 1) ? 'failed' : 'success';
+		$data['message'] = $message;
 
-                } else {
-	                $status = 1;
-	                $message = 'Your Tutorial group will be created as soon as all members join.';
-                }
+		$result['group_name'] = $groupId;
+		$result['group_members'] = $studentArray;
+		$data['data'] = $result;
 
-            } else {
-                $status = 1;
-                $message = 'Your Tutorial group will be created as soon as all members join.';
-            }
+		return $data;
 
-        } else {
-            $status = 2;
-        }
+	}
 
-        $data['status'] = ($status > 1) ? 'failed' : 'success';
-        $data['message'] = $message;
+	public function addGroupMember($tutorialGroupId, $userId) {
+		$insertFields = "group_id, user_id, joining_status ";
+		$valuesFields = " '" . $tutorialGroupId . "', '" . $userId . "', 0 ";
+		$insertGroupQuery = "Insert into " . TABLE_TUTORIAL_GROUP_MEMBER . " (" . $insertFields . ") values(" . $valuesFields . ")";
+		$res = mysql_query($insertGroupQuery) or $message = mysql_error();
+		return $res ? 1 : 2;
+	}
 
-	    $result['group_id'] = $groupId;
-	    $result['group_members'] = $studentArray;
-        $data['data'] = $result;
+	public function acceptTutorialGroup($user_id, $group_id, $joining_status)
+	{
+		$update_joining_status_query = "UPDATE " . TABLE_TUTORIAL_GROUP_MEMBER . " SET joining_status = " . $joining_status . ",
+		                                modified_date = NOW() WHERE user_id = " . $user_id . " and group_id = " . $group_id;
 
-        return $data;
+		$res = mysql_query($update_joining_status_query) or $message = mysql_error();
 
-    }
+		if ($res) {
+
+			$fetch_group_members = "SELECT joining_status FROM tutorial_group_member WHERE group_id = " .$group_id;
+			$res = mysql_query($fetch_group_members) or $message =  mysql_error();
+
+			if ($res) {
+
+				if ((mysql_num_rows($res)) == 5) {
+
+					$complete = true;
+					while ($member = mysql_fetch_assoc($res)) {
+						if ($member['joining_status'] == 0) {
+							$complete = false;
+							break;
+						}
+					}
+
+					if ($complete) {
+						$update_group_completed = "UPDATE ".TABLE_TUTORIAL_GROUPS." SET is_completed = 1, modified_date = NOW() WHERE id = ".$group_id;
+
+						$res = mysql_query($update_group_completed) or $message = mysql_error();
+
+						if ($res) {
+							$status = 1;
+							$message = "Group is complete";
+						} else {
+							$status = 2;
+						}
+
+					} else {
+						$status = 3;
+						$message = "Group is not yet complete. Waiting for other members to join.";
+					}
+
+				} else {
+					$status = 2;
+					$message = "Insufficient tutorial group members.";
+				}
+			} else {
+				$status = 2;
+			}
+		} else {
+			$status = 2;
+		}
+
+		if ($status == 3) {
+			$statusText = "in-complete";
+		} else {
+			$statusText = ($status > 1) ? 'failed' : 'success';
+		}
+		$data['status'] = $statusText;
+		$data['message'] = $message;
+		$data['data'] = "";
+
+		return $data;
+
+	}
 
 }
 
