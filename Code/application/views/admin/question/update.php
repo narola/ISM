@@ -16,20 +16,21 @@
         	<div class="col-sm-12 general_cred">
             	<!--box-->
                 <div class="box">
+                    
                     <div class="box_header filter">
                         <h3>Add New Question</h3>
-
                     </div>
 
                     <div class="alert alert-danger<?php if(empty(strip_tags(validation_errors(),''))){ echo ' hide';} ?> ">
                         <?php echo validation_errors('',''); ?>
                     </div>
+
                     <!--box_body-->
                     <div class="box_body add_question_wrapper">
                    		<div class="col-sm-12 padding_t15">
                         	<div class="form-group">
                                 <label class="txt_red">Question</label>
-                                <textarea class="form-control" name='question_text'><?php echo set_value('question_text'); ?></textarea>
+                                <textarea class="form-control" name='question_text'><?php echo set_value("question_text") == false ? $question["question_text"] : set_value("question_text"); ?></textarea>
                             </div>
                             
                             <div class="form-group select">
@@ -42,7 +43,7 @@
                                                 <?php echo $course['course_name']; ?>
                                         </option>        
                                     <?php } 
-                                }?>
+                                } ?>
                                 </select>
                             </div>
 
@@ -114,23 +115,26 @@
 
                             <?php if(!$_POST || $_POST['total_choices'] == 1) { ?>
 
-                            <input type="hidden" name='total_choices' id="total_choices" value="1" <?php echo set_value('total_choices'); ?> >
-                            <input type="hidden" name='correct_choice' id="correct_choice" <?php echo set_value('correct_choice'); ?> >
+                            <input type="hidden" name='total_choices' id="total_choices" value="<?php echo $choice_count; ?>"  >
+                            <input type="hidden" name='correct_choice' id="correct_choice" value="<?php echo $correct_choice_que; ?>" >
                             
+                            <?php $v_cnt =1; foreach($choices as $choice) { ?>
                             <div class="form-group" id="div_1">
-                                
                                 <input type="radio" name="correct_ans" id="correct_ans" <?php echo set_radio('correct_ans',1); ?> 
-                                onchange="correct_choice1(this.value)" value="1">
-
+                                onchange="correct_choice1(this.value)" value="1" <?php if($choice['is_right']==1){echo 'checked';} ?>>
                                 <input type="text" name="choices[]" class="form-control"
-                                value="<?php if($_POST) { echo $_POST['choices'][0]; } ?>"   placeholder="Choice 1">
-
-                                <a onclick="add_choices()" class="icon icon_add_small"></a>
+                                value="<?php echo $choice['choice_text']; ?>"   placeholder="Choice 1">
+                                <?php if($v_cnt == ($choice_count)){ ?>
+                                    <a onclick="add_choices()" class="icon icon_add_small"></a>
+                                    <a onclick="remove_choice()" class="icon icon_subs_small"></a>
+                                <?php } ?>
                             </div>
                             
                             <?php
+                                    $v_cnt++;
+                                }
 
-                                } else {  
+                            } else {  
                                  
                                  $post_total_choice = $_POST['total_choices'];
                                  //$post_correct_choice = $_POST[''];   
@@ -183,7 +187,7 @@
                             	<h3>Evaluation Notes</h3>
                             </div>
                         	<div class="form-group">
-                                <textarea class="form-control" name="evaluation_notes"></textarea>
+                                <textarea class="form-control" name="evaluation_notes"><?php echo set_value("evaluation_notes") == false ? $question["evaluation_notes"] : set_value("evaluation_notes"); ?></textarea>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6 inner_txtarea">
@@ -191,7 +195,7 @@
                             	<h3>Solution</h3>
                             </div>
                         	<div class="form-group">
-                                <textarea class="form-control" name="solution"></textarea>
+                                <textarea class="form-control" name="solution"><?php echo set_value("solution") == false ? $question["solution"] : set_value("solution"); ?></textarea>
                             </div>
                         </div>
 
@@ -221,6 +225,11 @@
 
 <script>
     
+    $('#course_id').val('<?php echo $question["course_id"] ?>');
+    $('#classroom_id').val('<?php echo $question["classroom_id"] ?>');
+    $('#subject_id').val('<?php echo $question["subject_id"] ?>');
+    $('#topic_id').val('<?php echo $question["topic_id"] ?>');
+
     function get_classes(course_id){
         $.ajax({
            url:'<?php echo base_url()."admin/question/ajax_get_classrooms"; ?>',
@@ -256,6 +265,7 @@
            }
         });
     }
+
 
     function test(ch){
         console.log(ch)

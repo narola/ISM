@@ -11,6 +11,9 @@ class Report extends ADMIN_Controller {
     }
 
     public function index(){
+
+    	$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+		
     	$this->data['page_title'] = 'Reports';
     	$this->template->load('admin/default','admin/reports/reports',$this->data);
     }

@@ -285,7 +285,7 @@ class Group extends ADMIN_Controller {
         );
 $where = "`".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`group_id` = $gid AND `".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`created_date` >= DATE_SUB(NOW(), INTERVAL 6 month)";
                                 
-        $group_performance = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_id,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".topic_id,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_score,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".created_date,".TBL_TUTORIAL_TOPIC . ".subject_id,".TBL_SUBJECTS . ".subject_name",$where,
+        $group_performance = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_score as y,".TBL_SUBJECTS . ".subject_name as name",$where,
             array(
                 'join'=>array(
                     array(
@@ -300,13 +300,9 @@ $where = "`".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`group_id` = $gid AND `".TBL
             'group_by' => array(TBL_TUTORIAL_TOPIC . '.subject_id'),
                 )
             );
-        // qry();
-           /*foreach ($group_performance as $group) {
-              
-           } */
-
-    // p($group_performance,true);
-           $this->data['group_performance'] = $group_performance;
+        
+        $this->data['group_performance'] = json_encode($group_performance,JSON_NUMERIC_CHECK);
+        $this->data['page_title'] = 'Group Performance';
         $this->template->load('admin/default', 'admin/group/performance', $this->data);
     }
 

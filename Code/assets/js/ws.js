@@ -802,7 +802,7 @@ $(document).on('click', '#mate_list', function () {
         str += '<div class="chat_header"><div class="chat_img_holder">';
         str += '<img src="' + $(this).children('div').children('img').attr('src') + '">';
         str += '</div><p class="chat_name">' + $(this).children('p').html() + '</p>';
-        str += '<a href="#"><span class="icon icon_option"></span></a></div>';
+        str += '<a href="javascript:void(0);" data-type="close" data-id="' + id + '"><span class="close" >x</span></a></div>';
         str += '<div class="chat_text"></div>';
         str += ' <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">';
         str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="' + id + '">';
@@ -939,7 +939,7 @@ function generate_post(obj,status){
         options += '<option value="'+study_list.id+'">'+study_list.full_name+'</option>';
     });
 
-    str += '<span class="date">'+obj.current_date+'</span>';
+    str += '<span class="date">'+obj.posted_on+'</span>';
     str += '<div class="clearfix"></div>';
     str += '<p>'+obj.message+'</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="'+obj.post_id+'"><span class="icon icon_thumb'+cls+'"></span>'+obj.tot_like+'</a>';
@@ -989,7 +989,7 @@ function generate_comment(obj){
     str += '</div>';
     str += '<div class="notification_txt">';
     str += '<p><a href="#" class="noti_username">'+obj.full_name+'</a>&nbsp;&nbsp;'+obj.message+'</p>';
-    str += '<span class="noti_time">1 sec ago</span> ';                          
+    str += '<span class="noti_time">'+obj.cdate+'</span>';                          
     str += '</div>';
     str += '<div class="clearfix"></div>';
     str += '</div>';
@@ -1044,7 +1044,7 @@ function generate_cm(obj){
     str += '<img src="/uploads/'+obj.profile_link+'">';
     str += '</div>';
     str += '<div class="admin_question">';
-    str += '<h4>'+obj.full_name+'<span>Sep 07 2015 2:32 pm</span></h4>';
+    str += '<h4>'+obj.full_name+'<span>'+obj.cdate+'</span></h4>';
     str += '<p>'+obj.message+'</p>';
     str += '</div>';
     str += '</div>';
@@ -1332,4 +1332,10 @@ $(document).on('click', '#view_profile', function(){
     $('#view_profile_model h3[data-type="user-name"]').html($(this).data('name'));  
     $('#view_profile_model p[data-type="course-name"]').html('<span class="fa fa-graduation-cap"></span>'+ $(this).data('course'));  
     $('#view_profile_model').modal('show');
+});
+
+/* close chat window */
+$(document).on('click','a[data-type="close"]',function(){ 
+    $('#chat_container .chat[data-id="'+$(this).data('id')+'"]').remove();
+    $.removeCookie('active');
 });

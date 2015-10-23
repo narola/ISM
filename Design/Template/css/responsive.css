@@ -87,7 +87,8 @@
 		width:75px !important;
 	}
 	.range_picker{
-		width:31%;
+		/*width:31%;*/
+		width:65%;
 	}
 	.filter.report_filter .form-group {
 		width: 15.8%;
@@ -261,13 +262,13 @@
 		width:200px;
 	}
 	.range_picker {
-    	width: 29%;
+    	width: 63%;
 	}
 	.filter.report_filter .form-group {
 		width: 15.7%;
 	}
 }	
-@media (max-width:1024px){
+@media (max-width:1080px){
 	.login_background {
 		background-size:auto;
 	}
@@ -548,11 +549,14 @@
 		width: 32%;
 	}
 	.range_picker {
-		width: 47%;
-		margin-bottom:15px;
+		/*width: 47%;
+		margin-bottom:15px;*/
+		width:100%;
+		margin-bottom:0;
+		margin-left:0;
 	}
 	.range_picker:last-child{
-    	margin-left: 95px;		
+    	/*margin-left: 95px;		*/
 	}
 	.filter.report_filter .form-group.data_range {
     	margin-bottom: 0;
@@ -873,10 +877,10 @@
 		font-weight: normal;
 	}
 	.range_picker {
-		width: 42%;
+		/*width: 42%;*/
 	}
 	.range_picker:last-child {
-		margin-left: 80px;
+		/*margin-left: 80px;*/
 	}
 	.topic_content .label{
 		padding:6px;

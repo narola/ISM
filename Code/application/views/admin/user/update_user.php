@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
 	<!--breadcrumb-->
-		<div class="row page_header">
+		<div class="page_header">
     	<div class="col-sm-12">
         	<ol class="breadcrumb">
               <li><a href="admin/user">Manage</a></li>                          
@@ -16,14 +16,14 @@
     <!--//filter-->
     
     <!--message-->
-   	<div class="row">
+   	<div class="">
     	<div class="col-sm-12 new_message">
         	<div class="box exam_card">
             	<div class="box_header">
                 	<h3>Update User</h3>
                 </div>
                 <form method="post">
-                    <div class="box_body">
+                    <div class="box_body admin_controls with_labels">
                     	
                         <div class="form-group">
                         	<label>Username</label>
@@ -132,7 +132,7 @@
                         </div> -->
 
                         <div class="form-group dob">
-                        
+							<label>Date of Birth</label>
                            <div data-date-format="dd-mm-yyyy" data-date="12-02-2012" id="birthdate" class="input-append date">
                                 <input type="text" name="birthdate" placeholder="Date of Birth" 
                                 value=" <?php  echo set_value("birthdate") == false ? $user["birthdate"] : set_value("birthdate"); ?>" class="form-control">

@@ -447,7 +447,7 @@ $timeSecond = strtotime($time['ctime']);
 $output = null;
 $diff = $timeSecond - $timeFirst;
   if($diff < 60){
-    $output = $diff. ' sec ago';
+    $output = 'Just Now';
   }else if($diff < 3600){
     $output = floor($diff/60). ' min ago';
   }else if ($diff < 86400){
