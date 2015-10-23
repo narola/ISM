@@ -20,6 +20,7 @@ class My_classroom_exam extends ISM_Controller {
 		//	get user detail
 		$user_data = $this->session->userdata('user');
 		$user_classroom = $user_data['classroom_id'];
+		$user_id = $user_data['id'];
 		$data['user_class_name'] = $user_data['class_name'];
 
 		$exam_type = $this->input->post('exam_type');
@@ -52,7 +53,7 @@ class My_classroom_exam extends ISM_Controller {
 				array(
 					array(
 						'table' => TBL_STUDENT_EXAM_SCORE.' sc',
-						'condition' => 'sc.exam_id = e.id and sc.exam_status = "finished"'
+						'condition' => 'sc.exam_id = e.id and sc.exam_status = "finished" and sc.user_id='.$user_id
 					)
 				)
 			);
@@ -62,7 +63,8 @@ class My_classroom_exam extends ISM_Controller {
 
 	//	Load class exam instruction  
 	public function exam_instruction()
-	{
+	{	
+
 		$data['title'] = 'ISM - My Classroom Exam';
 		$user_id = $this->session->userdata('user')['id'];
 		if(is_numeric($this->uri->segment(3))){
@@ -74,9 +76,9 @@ class My_classroom_exam extends ISM_Controller {
 		}
 
 		// echo select(TBL_STUDENT_EXAM_SCORE,null,array('where'=>array('user_id'=>$user_id,'exam_id'=>$data['exam_id'],'exam_status'=>'started')),1);
-		// qry();
+		
 		// exit;
-		if(select(TBL_STUDENT_EXAM_SCORE,null,array('where'=>array('user_id'=>$user_id,'exam_id'=>$data['exam_id'],'exam_status'=>'started')),1) > 0)
+		if(select(TBL_STUDENT_EXAM_SCORE,null,array('where'=>array('user_id'=>$user_id,'exam_status'=>'started')),1) > 0)
 			redirect('student/class_exam');
 		$this->template->load('student/default','student/class_exam_instruction',$data);	
 	}
@@ -103,10 +105,10 @@ class My_classroom_exam extends ISM_Controller {
 					)
 			);
 
-		if($data['exam_status']['remaining_time'] <= 0){
-			$this->session->set_flashdata('error','Selected exam is finished!');
-			redirect('/student/my_classroom_exam');
-		}
+		// if($data['exam_status']['remaining_time'] <= 0){
+		// 	$this->session->set_flashdata('error','Selected exam is finished!');
+		// 	redirect('/student/my_classroom_exam');
+		// }
 		
 		if(isset($data['exam_status']['exam_id']) && !empty($data['exam_status']['exam_id'])){
 			
