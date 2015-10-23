@@ -3581,4 +3581,6 @@ ul.ques_numbers {
 	opacity:0.5;
 	text-shadow:none;
 }
-
+.form-horizontal .control-label{
+	text-align:left;
+}

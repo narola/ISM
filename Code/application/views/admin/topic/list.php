@@ -1,7 +1,7 @@
 <!--main-->
-            <div class="col-sm-7 main main2">
+            <div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
             	<!--breadcrumb-->
-           		<div class="row page_header">
+           		<div class="page_header">
                 	<div class="col-sm-8">
                     	<ol class="breadcrumb">
                           <li><a href="#">Manage</a></li>                          
@@ -16,7 +16,7 @@
                 <!--//breadcrumb-->
                 <!--filter-->
                 <form method="get" id="filter">
-                <div class="row filter group_filter">
+                <div class="filter group_filter">
                 	<div class="col-sm-12">
                     	<div class="form-group">
                             <select class="form-control" name="subject" onchange="filter_data()" id="subject">
@@ -50,7 +50,7 @@
             <?php echo flashMessage(true,false); ?>
                 <!--//filter-->
                 <!--topics-->
-                <div class="row">
+                <div class="">
                 	<div class="col-sm-12 topic_container">
                     	<!--topic1-->
                         <?php 
@@ -94,10 +94,10 @@
                                 </div>
                             </div>
                             <div class="topic_action">
-                           		<a data-toggle="tooltip" data-placement="right" data-original-title="Edit" class="icon icon_edit"></a>
-                                <a data-toggle="tooltip" status="<?php echo $topic['is_archived']; ?>" id="archive_<?php echo $topic['id']; ?>" data-placement="right" data-original-title="Archive" class="archive icon <?php echo ($topic['is_archived']==0) ? 'icon_zip' : 'icon_zip_active'; ?>"> <i id="archived_loader_<?php echo $topic['id']; ?>" class="fa fa-refresh fa-spin topic_loader" style="display:none;"></i></a>
-                                <a data-toggle="tooltip" id="delete_<?php echo $topic['id']; ?>" data-placement="right" data-original-title="Delete" class="delete icon icon_delete"></a>
-                                <a data-toggle="tooltip" class="fa fa-angle-double-down"></a>                                
+                           		<a data-toggle="tooltip" data-placement="bottom" data-original-title="Edit" class="icon icon_edit"></a>
+                                <a data-toggle="tooltip" status="<?php echo $topic['is_archived']; ?>" id="archive_<?php echo $topic['id']; ?>" data-placement="bottom" data-original-title="Archive" class="archive icon <?php echo ($topic['is_archived']==0) ? 'icon_zip' : 'icon_zip_active'; ?>"> <i id="archived_loader_<?php echo $topic['id']; ?>" class="fa fa-refresh fa-spin topic_loader" style="display:none;"></i></a>
+                                <a data-toggle="tooltip" id="delete_<?php echo $topic['id']; ?>" data-placement="bottom" data-original-title="Delete" class="delete icon icon_delete"></a>
+                                <a class="fa fa-angle-double-down"></a>                                
                             </div>
                             <div class="clearfix"></div>
                         </div>

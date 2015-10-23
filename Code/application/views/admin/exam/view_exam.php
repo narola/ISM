@@ -1,5 +1,5 @@
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
 	<!--breadcrumb-->
 		<div class="row page_header">
     	<div class="col-sm-12">
