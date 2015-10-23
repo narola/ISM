@@ -47,7 +47,6 @@
     <dimen name="login_box_width">500sp</dimen>
 
     <!--this is for the newsfeed activity.-->
-
     <dimen name="controller_left_width">100dp</dimen>
     <dimen name="controller_left_divider_height">4dp</dimen>
     <dimen name="content_right_width">255dp</dimen>
@@ -60,6 +59,10 @@
     <dimen name="controller_menu_text_padding">30dp</dimen>
     <dimen name="controller_top_menu_text_size">20sp</dimen>
     <dimen name="shadow_layer_width">2dp</dimen>
+    <dimen name="controller_left_heihgt">140dp</dimen>
+    <dimen name="circular_imageview_width_height">70sp</dimen>
+    <dimen name="circular_imageview_border_width">1dp</dimen>
+    <dimen name="dp_post_creater_image_width_height">160dp</dimen>
 
 
 </resources>

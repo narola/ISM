@@ -44,12 +44,12 @@ public class TeacherHomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootview = inflater.inflate(R.layout.fragment_teacher_post_home, container, false);
+        rootview = inflater.inflate(R.layout.row_teacher_post, container, false);
 
-        listPostFeed = (ListView) rootview.findViewById(R.id.list_post_feed);
-        if (connectionDetector.isConnectingToInternet()) {
-            callAllFeedsApi();
-        }
+//        listPostFeed = (ListView) rootview.findViewById(R.id.list_post_feed);
+//        if (connectionDetector.isConnectingToInternet()) {
+//            callAllFeedsApi();
+//        }
 
         Log.e(TAG, "called");
         return rootview;

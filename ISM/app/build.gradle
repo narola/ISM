@@ -10,6 +10,10 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -41,4 +45,8 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.android.support:support-annotations:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile files('libs/httpmime-4.2.2.jar')
+    compile files('libs/jackson-annotations-2.3.1.jar')
+    compile files('libs/jackson-core-2.3.1.jar')
+    compile files('libs/jackson-databind-2.3.1.jar')
 }

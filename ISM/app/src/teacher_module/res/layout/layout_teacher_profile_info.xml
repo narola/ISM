@@ -87,7 +87,8 @@
                                     android:background="@drawable/edittext_shadow_selector"
                                     android:hint="@string/stremailaddress"
                                     android:padding="15dp"
-                                    android:textColorHint="@color/color_text_hint" />
+                                    android:textColorHint="@color/color_text_hint"
+                                    android:inputType="textEmailAddress"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -116,7 +117,8 @@
                                     android:background="@drawable/edittext_shadow_selector"
                                     android:hint="@string/strcontactnumber"
                                     android:padding="15dp"
-                                    android:textColorHint="@color/color_text_hint" />
+                                    android:textColorHint="@color/color_text_hint"
+                                    android:inputType="phone"/>
 
                             </LinearLayout>
 

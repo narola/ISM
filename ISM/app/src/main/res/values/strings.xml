@@ -99,14 +99,9 @@
 
 
 	<!--welcome-->
-	<string name="strwelcomeline">John, Your tutorial group being processed </string>
-	<string name="strwelcomeline2">and will be available to you for confirmation.</string>
-	<string name="strtutorialgroupis5">Tutorial group is 5 members group of randomly</string>
-	<string name="strselectedstudentsputtogetherto">selected students, put together to </string>
-	<string name="strshareideas">share ideas,</string>
-	<string name="strcollborate">collaborate</string>
-	<string name="strand">and</string>
-	<string name="strdoassignments">do assignments.</string>
+	<string name="strwelcomeline"><b>John,</b> Your tutorial group being processed \n and will be available to you for confirmation </string>
+	<string name="strtutorialgroupis5">Tutorial group is 5 members group of randomly \n selected students, put together to <font color="#81D525">share ideas,</font>\n<font color="#81D525">collaborate</font> and <font color="#81D525">do assignments.</font></string>
+
 
 
 
@@ -172,4 +167,13 @@
 
 <!-- TODO: Remove or change this placeholder text -->
 	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="strviewall">7</string>
+
+	<!--Validation error message strings-->
+	<string name="required">Required!</string>
+	<string name="error_password_length">Minimum 6 characters required!</string>
+	<string name="error_confirm_password_mismatch">Confirm password mismatch!</string>
+	<string name="error_same_old_new_password">Old and new passwords can\'t be same!</string>
+	<string name="error_invalid_email">Invalid email address!</string>
+	<string name="invalid_url">Invalid url!</string>
 </resources>
