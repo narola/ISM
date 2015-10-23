@@ -17,6 +17,8 @@ public class Data {
     private String roleId;
     private String schoolId;
     private String academicYear;
+    private String userId;
+    private String userName;
 
 
     @JsonProperty("school_name")
@@ -73,6 +75,21 @@ public class Data {
         this.academicYear = academicYear;
     }
 
+	@JsonProperty("userid")
+	public String getUserId() {
+		return userId;
+	}
 
-    
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	@JsonProperty("username")
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 }

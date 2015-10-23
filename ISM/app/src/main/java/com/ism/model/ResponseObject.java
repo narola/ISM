@@ -9,6 +9,9 @@ public class ResponseObject {
     private ArrayList<Data> data;
     private String status;
 
+    public static final String SUCCESS = "success";
+    public static final String FAILED = "failed";
+
     public String getMessage() {
         return this.message;
     }
