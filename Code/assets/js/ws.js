@@ -330,6 +330,8 @@ if ("WebSocket" in window)
                         $('.tut_group .box_footer[data-id="'+id+'"] p').html('Online');
                         $('.tut_group .box_body[data-id="'+id+'"] a').removeClass('icon_call_user').addClass('icon_call_user_disable');
                     }
+
+                    
                 
             });
 

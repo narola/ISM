@@ -7,7 +7,7 @@
                 	<div class="col-sm-12">
                     	<fieldset>
                           <legend>ISM Mock Test</legend>                          
-                          <h4 class="txt_green">Organic Chemistry Test - 133</h4>
+                          <h4 class="txt_green"><?php echo $exam_name; ?></h4>
                         </fieldset>
                     </div>
                 </div>

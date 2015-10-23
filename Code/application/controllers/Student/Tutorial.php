@@ -268,17 +268,24 @@ class Tutorial extends ISM_Controller {
 			
 			$question_info = select(
 				TBL_STUDENT_EXAM_SCORE. ' ss',
-				'GROUP_CONCAT(eq.question_id) as question_id, count(eq.question_id) as total_question, (SELECT GROUP_CONCAT(`srq`.`question_id`) FROM '.TBL_STUDENT_EXAM_RESPONSE.' `srq` 
+				'e.exam_name, GROUP_CONCAT(eq.question_id) as question_id, count(eq.question_id) as total_question, (SELECT GROUP_CONCAT(`srq`.`question_id`) FROM '.TBL_STUDENT_EXAM_RESPONSE.' `srq` 
 					WHERE `srq`.`exam_id` = `ss`.`exam_id` AND `srq`.`user_id` = `ss`.`user_id`) as attemped_question',
 				array('where' => array('ss.exam_id' => $data['exam']['exam_id'],'ss.user_id' =>$data['user_id'] )),
 				array('join' => array(
 						array(
 						'table' => TBL_EXAM_QUESTION. ' eq',
 						'condition' => 'eq.exam_id = ss.exam_id'
-						)),
+						),
+						array(
+						'table' => TBL_EXAMS. ' e',
+						'condition' => 'e.id = ss.exam_id'
+						),
+					),
 					'single' => true
 				)
 			);
+
+			$data['exam_name'] = $question_info['exam_name'];
 			$data['attempted_question'] = select(TBL_STUDENT_EXAM_RESPONSE.' ser',
 				'ser.id,ser.question_id,ser.answer_status',
 				array('where' => array(
@@ -287,9 +294,7 @@ class Tutorial extends ISM_Controller {
 				);
 			$new = explode(",",$question_info['question_id']);
 			$data['current_no'] = count($data['attempted_question']) + 1;
-			if(count($data['attempted_question']) == count($new)){
-				$data['current_no'] = 1;
-			}
+			
 			// Randomely stored question ids.
 			shuffle($new);
 				if(count($data['attempted_question']) > 0){
@@ -306,7 +311,9 @@ class Tutorial extends ISM_Controller {
 				}
 
 			$data['question_id'] = $new;
-
+			if(count($data['attempted_question']) == count($new)){
+				$data['current_no'] = 1;
+			}
 			/* Get random question */
 			$data['current_question'] = select(TBL_QUESTIONS. ' q',
 					'q.question_text,q.id',
