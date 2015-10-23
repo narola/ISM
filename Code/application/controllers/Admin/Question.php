@@ -313,7 +313,7 @@ class Question extends ADMIN_Controller {
 		$course_id = $this->input->post('course_id');
 		
 		$classrooms = select(TBL_CLASSROOMS,TBL_CLASSROOMS.'.id,'.TBL_CLASSROOMS.'.class_name ',
-			array('where'=>array('course_id'=>$course_id))
+			array('where'=>array(TBL_CLASSROOMS.'.course_id'=>$course_id))
 			);
 
 		
@@ -338,7 +338,7 @@ class Question extends ADMIN_Controller {
 		$course_id = $this->input->post('course_id');
 		
 		$subjects = select(TBL_COURSE_SUBJECT,TBL_COURSE_SUBJECT.'.subject_id,sub.subject_name ',
-			array('where'=>array('classroom_id'=>$classroom_id)),
+			array('where'=>array(TBL_COURSE_SUBJECT.'.classroom_id'=>$classroom_id)),
 				array(
 					'join'=>array(
 								array(

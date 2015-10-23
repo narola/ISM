@@ -21,7 +21,7 @@
 
                 <div class="form-group select col-sm-6 no-padding half_size">
                     
-                    <select class="form-control myselect2" name="course_id" onchange="get_subjects(this.value)" id="course_id">
+                    <select class="form-control myselect2" name="course_id" onchange="get_classes(this.value)" id="course_id">
                         <option value="">Select Course</option>
                         <?php 
                           if(!empty($courses)){ 
@@ -34,7 +34,14 @@
                     </select>
                     <a href="#" class="icon icon_add_small"></a>
                 </div>
-                
+                <div class="form-group select col-sm-6 no-padding half_size">
+
+                    <select class="form-control" name="classrooms" id="classroom_id" onchange="get_subjects(this.value)">
+                        <option value="">Select Classroom</option>
+                    </select>
+                    <a href="#" class="icon icon_add_small"></a>
+                    <?php echo myform_error('classrooms'); ?>
+                </div>
                 <div class="form-group select col-sm-6 no-padding half_size">
 
                     <select class="form-control" name="subjects" id="subject_id">
@@ -51,14 +58,18 @@
                         <?php echo myform_error('topic_name'); ?>
                     </div>
 
+                    
+
+                </div>
+                <div class="form-group col-sm-6 no-padding half_size">
                     <div class="form-group col-sm-12 no-padding half_size">
                         <label>Keywords for Evaluations</label>
                         <!-- <textarea name="keywords" class="form-control"></textarea> -->
                        <input type="text" data-role="tagsinput" name="keywords" id="keywords">
                        <?php echo myform_error('keywords'); ?>
                     </div>
-
                 </div>
+
                 <div class="form-group col-sm-6 no-padding half_size">
                     <label>Text Description</label>
                     <textarea name="topic_desc" id="editor1" class="form-control"></textarea>
@@ -107,13 +118,27 @@
         
  
 
-    function get_subjects(course_id){
+    function get_classes(course_id){
         $.ajax({
-           url:'<?php echo base_url()."admin/topic/ajax_get_subjects"; ?>',
+           url:'<?php echo base_url()."admin/question/ajax_get_classrooms"; ?>',
            type:'POST',
            data:{course_id:course_id},
            success:function(data){
-              $('#subject_id').html(data);
+              $("#classroom_id").html(data);
+              $('#subject_id').val('');
+              $('#topic_id').val('');
+           }
+        });
+    }
+
+  function get_subjects(classroom_id){
+        $.ajax({
+           url:'<?php echo base_url()."admin/question/ajax_get_subjects"; ?>',
+           type:'POST',
+           data:{classroom_id:classroom_id},
+           success:function(data){
+              $("#subject_id").html(data);
+              $('#topic_id').val('');
            }
         });
   }
