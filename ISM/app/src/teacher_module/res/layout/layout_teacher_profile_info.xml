@@ -5,7 +5,7 @@
     android:background="@color/color_graylight"
     android:orientation="vertical">
 
-    <include layout="@layout/custom_actionbar" />
+    <include layout="@layout/actionbar_ism_teacher_logo" />
 
     <ScrollView
         android:layout_width="match_parent"
