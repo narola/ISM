@@ -48,14 +48,52 @@ class ProfileFunctions
                 return $this->forgotPassword($postData);
             }
                 break;
+
+            case "PostFeed":
+            {
+                return $this->postFeed($postData);
+            }
+                break;
+
+            case "TagFriendInFeed":
+            {
+                return $this->tagFriendInFeed($postData);
+            }
+                break;
+
         }
     }
+
+    /*
+    * TagFriendInFeed
+    */
+
+    public function tagFriendInFeed ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $feed_by = validateObject ($postData , 'feed_by', "");
+        $feed_by = addslashes($feed_by);
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $tagged_by = validateObject ($postData , 'tagged_by', "");
+        $tagged_by = addslashes($tagged_by);
+
+        $query="INSERT INTO" .TABLE_FEEDS_TAGGED_USER."(`user_id`, `feed_id`, `tagged_by`) VALUES ()";
+
+    }
+
     /*
     * postFeed
     */
 
     public function postFeed ($postData)
     {
+        $data=array();
+        $response=array();
         $feed_by = validateObject ($postData , 'feed_by', "");
         $feed_by = addslashes($feed_by);
 
@@ -69,17 +107,55 @@ class ProfileFunctions
         $audio_link = addslashes($audio_link);
 
         $images = validateObject ($postData , 'images', "");
-        $images = addslashes($images);
+       // $images = addslashes($images);
 
-        $post_on = validateObject ($postData , 'post_on', "");
-        $post_on = addslashes($post_on);
+        $posted_on = validateObject ($postData , 'posted_on', "");
+        $posted_on = addslashes($posted_on);
 
+        $feed_image_dir="user_".$feed_by."/";
+//        if (!mkdir(FEEDS_PICTURE.$feed_image_dir, 0700, true)) {
+//           // die('Failed to create folders...');
+//        }
+        if (!is_dir(FEEDS_PICTURE.$feed_image_dir)) {
+            mkdir(FEEDS_PICTURE.$feed_image_dir, 0777, true);
+        }
         $insertFields="`feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`";
-        $insertValues="'".$feed_by."','".$feed_text."','".$video_link."','".$audio_link."',,'".$post_on."'";
-        $queryPostFeed="INSERT INTO `feeds`(".$insertFields.") VALUES (".insertValues.")";
+        $insertValues="".$feed_by.",'".$feed_text."','".$video_link."','".$audio_link."','".$posted_on."'";
+        $queryPostFeed="INSERT INTO ".TABLE_FEEDS."(".$insertFields.") VALUES (".$insertValues.")";
 
-       // $result=
-    
+        $result=mysql_query($queryPostFeed) or $message=mysql_error();
+        if($result)
+        {
+            $feed_id=mysql_insert_id();
+            if($video_link!=null)
+            {
+
+            }
+            $i=0;
+            if($images!=null)
+            {
+                foreach($images as $feed_image)
+                {
+                    if($feed_image!=null)
+                    {
+
+                        $feed_image_name = "IMG-" . date("Ymd-his").$i++.".png";
+                        $feed_image_link = $feed_image_dir.$feed_image_name;
+                        file_put_contents(FEEDS_PICTURE.$feed_image_link, base64_decode($feed_image));
+                        $queryInsertImage="INSERT INTO `feed_image`(`feed_id`, `image_link`) VALUES (".$feed_id.",'".$feed_image_link."')";
+                        $resultImageUploading=mysql_query($queryInsertImage) or $message=mysql_error();
+                    }
+
+                }
+            }
+            $message="“Post successfully submitted";
+            $status="success";
+        }
+
+        $response['status']="success";
+        $response['message']=$message;
+        $response['data']=$data;
+        return $response;
     }
 
     public function forgotPassword ($postData)
@@ -314,16 +390,11 @@ class ProfileFunctions
                     $username=$val['username'];
                     $encryptedPassword=$val['password'];
                     $status=$val['status'];
-                    //  $decrypted_password = $obj->decode("uKJ7lT+SNon0BuWA20D5qf9/kOxk/HT6E7FFieYb9SS+MCuFEGogSnCokaCyrOsP/3jOEBCzpl7zf6AbHKBYSA==");
-                    // echo $decrypted_password ;
-                    //  $test="uKJ7lT+SNon0BuWA20D5qf9/kOxk/HT6E7FFieYb9SS+MCuFEGogSnCokaCyrOsP/3jOEBCzpl7zf6AbHKBYSA==";
                     $decrypted_password = $obj->decode($encryptedPassword);
-                    // echo $decrypted_password;
-                    // echo $password;
+
                     if($decrypted_password==$password)
                     {
-                        //$user_id=$val['id'];
-                        //$profile_pic=$val['id'];
+
                         if($status==1)
                         {
                             //$status=$status;
