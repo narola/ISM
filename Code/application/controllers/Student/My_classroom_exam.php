@@ -105,10 +105,10 @@ class My_classroom_exam extends ISM_Controller {
 					)
 			);
 
-		// if($data['exam_status']['remaining_time'] <= 0){
-		// 	$this->session->set_flashdata('error','Selected exam is finished!');
-		// 	redirect('/student/my_classroom_exam');
-		// }
+		if($data['exam_status']['remaining_time'] <= 0){
+			$this->session->set_flashdata('error','Selected exam is finished!');
+			redirect('/student/my_classroom_exam');
+		}
 		
 		if(isset($data['exam_status']['exam_id']) && !empty($data['exam_status']['exam_id'])){
 			

@@ -436,12 +436,12 @@ class User_account extends CI_Controller {
 		if($birthdate != ''){
 			if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$birthdate)){
 				if($birthdate == '0000-00-00')
-					$this->form_validation->set_message('check_birth_date', 'Invalid Date');
+					$this->form_validation->set_message('check_birth_date', 'Invalid Date of Birth');
 				else
 					return TRUE;
 			}
 			else{
-				$this->form_validation->set_message('check_birth_date', 'Invalid Date');
+				$this->form_validation->set_message('check_birth_date', 'Invalid Date of Birth');
 				return FALSE;
 			}
 		}
