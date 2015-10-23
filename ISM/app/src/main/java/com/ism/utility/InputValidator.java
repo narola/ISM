@@ -147,24 +147,24 @@ public class InputValidator {
 				& (validateStringPresence(editTextConfirmPassword) && validateConfirmPasswordMatch(editTextPassword, editTextConfirmPassword));
 	}
 	
-	// For setting error message using custome string on any EditText.
+	// For setting error message using custom string on any EditText.
 	public static void setError(EditText editText, String errorMessage) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
 			editText.setError(errorMessage);
 		} else{
 			// There is no theme available for ErrorMessageWindow for Light theme for Gingerbread in AppCompat.
-			// To display message properly need to change color from white to black. No inbuilt functionality available for this.
+			// To display message properly, need to change color from white to black. No inbuilt functionality available for this.
 			editText.setError(Html.fromHtml("<font color='black'>" + errorMessage + "</font>"));
 		}
 	}
 
-	// For setting error message using custome string on any AutoCompleteTextView.
+	// For setting error message using custom string on any AutoCompleteTextView.
 	public static void setError(AutoCompleteTextView autoCompleteTextView, String errorMessage) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
 			autoCompleteTextView.setError(errorMessage);
 		} else{
 			// There is no theme available for ErrorMessageWindow for Light theme for Gingerbread in AppCompat.
-			// To display message properly need to change color from white to black. No inbuilt functionality available for this.
+			// To display message properly, need to change color from white to black. No inbuilt functionality available for this.
 			autoCompleteTextView.setError(Html.fromHtml("<font color='black'>" + errorMessage + "</font>"));
 		}
 	}

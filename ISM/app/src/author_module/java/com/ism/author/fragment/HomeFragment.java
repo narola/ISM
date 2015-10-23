@@ -12,10 +12,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.ism.R;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.Utility.Debug;
@@ -109,7 +105,7 @@ public class HomeFragment extends Fragment implements OnApiResponseListener {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("user_id", "141");
 
-        JsonObjectRequest req = new JsonObjectRequest(Urls.getAllFeeds, new JSONObject(params),
+        /*JsonObjectRequest req = new JsonObjectRequest(Urls.getAllFeeds, new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -124,7 +120,7 @@ public class HomeFragment extends Fragment implements OnApiResponseListener {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e("Error: ", error.getMessage());
             }
-        });
+        });*/
 
 
     }
