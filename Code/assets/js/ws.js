@@ -1282,6 +1282,10 @@ $(document).on('click','a[data-type="tag-user-again"]',function(){
     fid : $(this).data('id')
   }
   ws.send(JSON.stringify(request));
+  $(".js-example-basic-single").select2("val","");
+  $("#show-again[data-id='"+$(this).data("id")+"']").hide();
+
+
 });
 
 $(document).on('keyup','input[data-type="study_mate_search"]',function(){
