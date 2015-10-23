@@ -70,7 +70,7 @@
           <div class="box">
                 <div class="notice_content">
                     <div class="col-md-12">
-                        <h3>No records found...</h3>
+                        <label class="txt_grey txt_red">No records found...</label>
                     </div>
                 </div>                            
                 <div class="clearfix"></div>

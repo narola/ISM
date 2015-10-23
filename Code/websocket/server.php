@@ -20,7 +20,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 
     $datas = json_decode($message, true);
     $datas['error'] =  $datas['redirect'] = 'skip';
- //   pr($datas);
+   pr($datas);
     $data = array_merge($datas, $Server->active_hours());
     $data['reload'] = 'no';
     /* For individual chat */
@@ -116,7 +116,9 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->end_exam($Server->wsClients[$clientID][12], $data);
     }else if($data['type'] == 'tag-user-again'){
         $responce = $Server->tag_again($Server->wsClients[$clientID][12], $data);        
-    }else if($data['type'] == 'study_mate_se'){
+    }else if($data['type'] == 'study_mate_search'){
+        $responce = $Server->studymate_search($Server->wsClients[$clientID][12], $data);        
+    }else if($data['type'] == 'load-studymate-more'){
         $responce = $Server->studymate_search($Server->wsClients[$clientID][12], $data);        
     }
 

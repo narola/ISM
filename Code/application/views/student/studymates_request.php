@@ -17,8 +17,7 @@
                     </div>
                     <h4><?php echo $value['full_name'];?></h4>
                     <p><?php echo $value['school_name'];?></p>
-                    <p>Live in Ghana</p>
-                    <a href="#">Following 34 Authers</a>
+                    <p class="txt_green"><?php echo $value['course_name'];?></p>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-5" id="action-box">
                     <button class="btn btn_green btn-block" data-subtype="accept-request" data-type="decline-request" data-id="<?php echo $value['id'];?>">Confirm Request</button>
@@ -32,7 +31,7 @@
         }
         else{
             ?>
-            <div class="study_mate"><label class="txt_grey txt_red">No more studymate request</label></div>
+            <div class="study_mate"><center><label class="txt_grey txt_red">No more studymate request</label><center></div>
         <?php
         } 
         ?>
@@ -66,9 +65,13 @@
                             </div>
                             <div class="mate_descrip">
                                 <p class="mate_name"><?php echo $value['full_name'];?></p>
-                                <p class="mate_following">Folowing 34 Authers</p>
-                                <p><?php echo $value['school_name'];?></p>
-                                <p><?php echo $value['course_name'];?></p>
+                                <p><?php 
+                                        if(strlen($value['school_name']) > 30)
+                                            echo substr($value['school_name'],0, 29).'.....';
+                                        else
+                                            echo $value['school_name'];
+                                    ?> </p>
+                                <p class="txt_green"><?php echo $value['course_name'];?></p>
                                 <?php if($value['srid'] != '' && $value['is_delete'] == 0){?>
                                 <button class="btn btn_black_normal" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>" disabled>Request Already Sent</button>
                                 <?php }else{ ?>

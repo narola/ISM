@@ -31,7 +31,6 @@
                 ?>
                 <div class="col-sm-4 text-right" id="exam_status">
                     <h4 data-type="exam_sts_msg"><?php //echo $x; ?></h4>
-                    <h4 class="txt_red" data-type="class_exam_message"></h4>
                 </div>
                                       
             <div class="clearfix"></div>

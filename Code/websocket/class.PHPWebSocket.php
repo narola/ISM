@@ -1858,17 +1858,17 @@ class PHPWebSocket {
             $row = mysqli_fetch_assoc($rows);
             $group_id = $row['group_id'];
 
-            $query = "SELECT `in1`.`user_id` FROM `" . TBL_TUTORIAL_GROUP_MEMBER . "` `m`"
-                    . " JOIN `" . TBL_STUDENT_ACADEMIC_INFO . "` `in` ON `in`.`user_id` = `m`.`user_id`"
-                    . " JOIN `" . TBL_STUDENT_ACADEMIC_INFO . "` `in1` ON `in`.`classroom_id` = `in1`.`classroom_id` and `in`.`course_id` = `in1`.`course_id` and `in`.`academic_year` = `in1`.`academic_year` and `in`.`school_id` = `in1`.`school_id` "
-                    . " WHERE `m`.`group_id` = " . $group_id . " AND `in1`.`user_id` != " . $userid . " AND $where  "
-                    . " GROUP BY `in1`.`user_id`";
-            $rows = mysqli_query($link, $query);
-            while ($row = mysqli_fetch_assoc($rows)) {
-                $all[] = $row['user_id'];
-            }
+            // $query = "SELECT `in1`.`user_id` FROM `" . TBL_TUTORIAL_GROUP_MEMBER . "` `m`"
+            //         . " JOIN `" . TBL_STUDENT_ACADEMIC_INFO . "` `in` ON `in`.`user_id` = `m`.`user_id`"
+            //         . " JOIN `" . TBL_STUDENT_ACADEMIC_INFO . "` `in1` ON `in`.`classroom_id` = `in1`.`classroom_id` and `in`.`course_id` = `in1`.`course_id` and `in`.`academic_year` = `in1`.`academic_year` and `in`.`school_id` = `in1`.`school_id` "
+            //         . " WHERE `m`.`group_id` = " . $group_id . " AND `in1`.`user_id` != " . $userid . " AND $where  "
+            //         . " GROUP BY `in1`.`user_id`";
+            // $rows = mysqli_query($link, $query);
+            // while ($row = mysqli_fetch_assoc($rows)) {
+            //     $all[] = $row['user_id'];
+            // }
             // Check both request sender and receiver must mathing same studymate list (e.g request receiver must within senders studymates.)
-            if (in_array($data['studymate_id'], $all)) {
+            // if (in_array($data['studymate_id'], $all)) {
                 $query = "INSERT INTO `" . TBL_STUDYMATES_REQUEST . "`"
                         . "(`id`, `request_from_mate_id`, `request_to_mate_id`, `status`, `created_date`, `is_delete`, `is_testdata`) "
                         . "VALUES (NULL,$userid," . $data['studymate_id'] . ",0,CURRENT_TIMESTAMP,0,'yes')";
@@ -1885,10 +1885,10 @@ class PHPWebSocket {
                     $row = mysqli_fetch_assoc($rows);
                     $data['count'] = $row['cnt'];
                 }
-            } else {
-                $data['to'] = 'self';
-                $data['error'] = 'Unable to Identify post. Please don\'t modify data manually.';
-            }
+            // } else {
+            //     $data['to'] = 'self';
+            //     $data['error'] = 'Unable to Identify post. Please don\'t modify data manually.';
+            // }
             // }
         }
         return $data;
@@ -2770,14 +2770,36 @@ class PHPWebSocket {
     }
 
     function studymate_search($userid,$data){
+
         $link = $this->db();
-        $query = "SELECT `in1`.`user_id`, `u`.`full_name`, `s`.`school_name`, `c`.`course_name`, `p`.`profile_link`, `sr`.`id` as `srid`, `sr`.`is_delete` FROM `tutorial_group_member` `m` JOIN `student_academic_info` `in` ON `in`.`user_id` = `m`.`user_id` JOIN `student_academic_info` `in1` ON `in`.`classroom_id` = `in1`.`classroom_id` and `in`.`course_id` = `in1`.`course_id` and `in`.`academic_year` = `in1`.`academic_year` and `in`.`school_id` = `in1`.`school_id` LEFT JOIN `users` `u` ON `in1`.`user_id` = `u`.`id` LEFT JOIN `schools` `s` ON `s`.`id` = `in`.`school_id` LEFT JOIN `courses` `c` ON `c`.`id` = `in1`.`course_id` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` LEFT JOIN `studymates_request` `sr` ON `sr`.`request_from_mate_id`=140 and `sr`.`request_to_mate_id` = `in1`.`user_id` and `sr`.`is_delete` = 0 WHERE `m`.`group_id` = '59' AND `in1`.`user_id` != '140' AND `in1`.`user_id` NOT IN('138') AND u.full_name like '".$data['search_txt']."%' GROUP BY `in1`.`user_id`";
+        if($data['search_type'] == 'people')
+            $where = "u.full_name like '".$data['search_txt']."%'";
+        elseif($data['search_type'] == 'school')
+            $where = "s.school_name like '".$data['search_txt']."%'";
+        elseif($data['search_type'] == 'course')
+            $where = "c.course_name like '".$data['search_txt']."%'";
+        else
+            $where = "1=1";
+        
+        if(isset($data['data_start'])){
+            $limit = 4;
+            $d = $data['data_start'];
+            $data['data_start'] += $limit;
+        }
+        else{
+            $limit = 4;
+            $data['data_start'] = 0;   
+            $d = 0;   
+        }
+        $ID_in = implode(',', $this->class_mate_list($userid));
+        echo $query = "SELECT `u`.`id` as `user_id`, `u`.`full_name`, `s`.`school_name`, `c`.`course_name`, `p`.`profile_link`, `sr`.`id` as `srid`, `sr`.`is_delete` FROM `users` `u` JOIN `student_academic_info` `in` ON `in`.`user_id` = `u`.`id` LEFT JOIN `schools` `s` ON `s`.`id` = `in`.`school_id` LEFT JOIN `courses` `c` ON `c`.`id` = `in`.`course_id` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` LEFT JOIN `studymates_request` `sr` ON `sr`.`request_from_mate_id`=$userid and `sr`.`request_to_mate_id` = `u`.`id` and `sr`.`is_delete` = 0 WHERE `u`.`is_delete` =0 AND `u`.`id` NOT IN($ID_in) AND $where LIMIT ".$data['data_start'].','.$limit;
         $rows = mysqli_query($link,$query);
         $result = array();
         while($row = mysqli_fetch_assoc($rows)){
             $result[] = $row;
         }
         $data['result'] = $result;
+        $data['limit'] = $d + 4;
         return $data;            
     }
 

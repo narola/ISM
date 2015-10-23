@@ -53,7 +53,7 @@ class My_exam extends ISM_Controller {
 							)
 						)
 					);
-		$select = 'e.exam_name,s.id,s.subject_name';
+		$select = 'e.exam_name,s.id,s.subject_name,e.id as exam_id';
 		$data['my_exam'] = select(TBL_STUDENT_EXAM_SCORE.' sc',$select,$where,$option);
 		$this->template->load('student/default','student/my_exam',$data);
 	}

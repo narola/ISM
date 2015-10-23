@@ -38,16 +38,18 @@ class Studymates_request extends ISM_Controller {
 								'condition' => 'sl.id = si.school_id'
 							),
 							array(
+								'table' => TBL_COURSES.' c',
+								'condition' => 'si.course_id = c.id'
+							),
+							array(
 								'table' => TBL_USER_PROFILE_PICTURE.' p',
 								'condition' => 'p.user_id = u.id'
 							)
 						)
 					);
 		$where = array('where'=>array('s.request_to_mate_id'=>$user_id,'s.is_delete'=> 0),'where_in'=>array('s.status'=>array(0,2)),'where_not_in'=>array('u.id'=>$my_studymates));
-		$data['studymate_request'] = select(TBL_STUDYMATES_REQUEST.' s','sl.school_name,u.full_name,p.profile_link,u.id',$where,$options);
+		$data['studymate_request'] = select(TBL_STUDYMATES_REQUEST.' s','c.course_name,sl.school_name,u.full_name,p.profile_link,u.id',$where,$options);
 		
-		
-
 		/*----get recommended studymate list---*/
 		$where = array('where' => array('m.group_id'=>$user_group_id,'in1.user_id !=' => $user_id),'where_not_in'=>array('in1.user_id' => $my_studymates));
 		$options = array('join' => array(

@@ -399,6 +399,7 @@ if ("WebSocket" in window)
                 $('.mCSB_container .three_tabs #study_request_cnt').html(cnt);
             }
             $('.suggested_mates_card .mate_descrip button[data-id="'+obj.studymate_id+'"]').removeClass('btn_green').attr('disabled',true).addClass('btn_black_normal').html('Request Already Sent');
+            $('.study_mate button[data-id="'+obj.studymate_id+'"]').removeClass('btn_green').attr('disabled',true).addClass('btn_black_normal').html('Request Already Sent');
         }else if(obj.type == 'time_request'){
                 clearInterval(counter);
                 time_count = obj.total_active_time;
@@ -481,7 +482,7 @@ if ("WebSocket" in window)
             cnt = $('.box_body #my_request').length;
             if(cnt == 0)
             {
-                $('#my_request_box').html('<div class="study_mate"><h3>No more studymate request</h3></div>');
+                $('#my_request_box').html('<div class="study_mate"><center><label class="txt_grey txt_red">No more studymate request</label></center></div>');
             }    
 
         }else if(obj.type == 'get_studymate_name'){
@@ -675,29 +676,46 @@ if ("WebSocket" in window)
             }
         }
 
-        else if(obj.type == 'study_mate_search'){
-              str = '';
+        else if(obj.type == 'study_mate_search' || obj.type == "load-studymate-more"){
+            str = '';
+            $('a[data-type="load-studymate-more"]').remove().html();
             $.each(obj.result, function (index, list){
-            str += '<div class="study_mate">';
-            str += '<div class="col-lg-9 col-md-8 col-sm-7">';
-            str += '<div class="mate_user_img">';
-            str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+list.profile_link+'">';
-            str += '</div><h4>'+list.full_name+'</h4>';
-            str += '<p>'+list.school_name+'</p>';
-            str += '<p>Live in Ghana</p>';
-            str += '<a href="#">Following 34 Authers</a>';
-            str += '</div>';
-            str += '<div class="col-lg-3 col-md-4 col-sm-5">';
-            if(list.srid != ''){
-            str += ' <button class="btn btn_black_normal btn-block" data-type="studyment-request" data-id="'+list.user_id+'" disabled>Request Already Sent</button>';
-            }else{ 
-            str += '<button class="btn btn_green btn-block" data-type="studyment-request" data-id="'+list.user_id+'">Add Studymates</button>';
-            } 
-            str += ' </div>';
-            str += ' <div class="clearfix"></div>';
-            str += '</div>';
-            });
-            $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html(str);
+                str += '<div class="study_mate">';
+                str += '<div class="col-lg-9 col-md-8 col-sm-7">';
+                str += '<div class="mate_user_img">';
+                str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+list.profile_link+'">';
+                str += '</div><h4>'+list.full_name+'</h4>';
+                str += '<p>'+list.school_name+'</p>';
+                str += '<p class="txt_green">'+list.course_name+'</p>';
+                str += '</div>';
+                str += '<div class="col-lg-3 col-md-4 col-sm-5">';
+                if(list.srid != '' && list.srid != null){
+                str += ' <button class="btn btn_black_normal btn-block" data-type="studyment-request" data-id="'+list.user_id+'" disabled>Request Already Sent</button>';
+                }else{ 
+                str += '<button class="btn btn_green btn-block" data-type="studyment-request" data-id="'+list.user_id+'">Add Studymates</button>';
+                } 
+                str += ' </div>';
+                str += ' <div class="clearfix"></div>';
+                str += '</div>';
+                i++;
+            }); 
+            if(obj.result.length >= 3){ 
+                str += '<div class="text-center">';
+                str += '<a href="javascript:void(0);" data-start="'+obj.limit+'" data-type="load-studymate-more" class="search_result_label">';
+                str += 'View More</a>';
+                str += '</div>';
+            }
+            else{
+                str += '<div class="text-center">';
+                str += '<label class="txt_grey">No more studymates</label>';
+                str += '</div>';
+            }
+            if(obj.type == "load-studymate-more")
+                $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').append(str);
+            else{
+                
+                $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html(str);
+            }
              // $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html('ji');
         }
         else {
@@ -709,7 +727,6 @@ if ("WebSocket" in window)
         alert('Disconnected from Server!');
     };
 }
-
 
 /* Send message for individual chat. */
 $(document).on('keypress', 'input[data-type="chat"]', function (e) {
@@ -726,11 +743,13 @@ $(document).on('keypress', 'input[data-type="chat"]', function (e) {
     }
 });
 
-
 /* Check user is online or not */
+
 function set_status(id, status) {
+   
     var ac = $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="'+id+'"]');
         if (status == false) {
+            
             $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('online').addClass('offline');
             if(wp != id){
                 $('.stm_list .mCustomScrollBox .mCSB_container').append('<div class="'+ac.attr('class')+'" data-id="'+id+'">'+ac.remove().html()+'</div>');
@@ -775,11 +794,12 @@ $(document).on('click', '#mate_list', function () {
                 $(".chat_container .chat:nth-child(" + i + ")").attr('class', 'chat passive chat_' + j);
                 j--;
             }
+            
     }
 
     if (is_needed == true) {
         str += '<div class="chat active" data-id="' + id + '">';
-        str += '<div class="chat_header" data-id="' + id + '"><div class="chat_img_holder">';
+        str += '<div class="chat_header"><div class="chat_img_holder">';
         str += '<img src="' + $(this).children('div').children('img').attr('src') + '">';
         str += '</div><p class="chat_name">' + $(this).children('p').html() + '</p>';
         str += '<a href="#"><span class="icon icon_option"></span></a></div>';
@@ -795,17 +815,16 @@ $(document).on('click', '#mate_list', function () {
         .mCustomScrollbar({
             theme:"minimal-dark"
         }).delay(300);
-         
-    } else {
-        $(".chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
-    }
-    var request = {
+         var request = {
             type: 'get_latest_message',
             to: 'self',
             my_id: id
         };
 
-    ws.send(JSON.stringify(request));
+        ws.send(JSON.stringify(request));
+    } else {
+        $(".chat_container .chat[data-id='" + id + "']").attr('class', 'chat active');
+    }
     $(this).children('span').html('');
 
 });
@@ -838,12 +857,13 @@ $(document).on('keypress','#all_feed .box.feeds .write_comment input[data-type="
         };
         ws.send(JSON.stringify(request));
         $(this).val('');
-          cnt = parseInt($('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)').html()) + 1;
-          var view =  $('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)');
-          view.html(cnt);
+        // alert(wp +'=='+ $(this).data('id'));
+        // if(wp == $(this).data('id')){
+            cnt = $('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)').html();
+            $('.comment_btn[data-id="' + $(this).data('id') + '"] span:nth-of-type(2)').html(parseInt(cnt) + 1);
+        // }
      }
 });
-
 
 /* Generate HTML clock of Feed Post. */
 function generate_post(obj,status){
@@ -903,7 +923,7 @@ function generate_post(obj,status){
                 $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
                 notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
                 if(notification_length == 0 ){
-                    notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">kNo more notification</div></li>');
+                    notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">No more notification</div></li>');
                     $('.mCSB_container .three_tabs .dropdown .badge').html(0);
                 }
                 else{
@@ -1262,19 +1282,8 @@ $(document).on('click','a[data-type="tag-user-again"]',function(){
   ws.send(JSON.stringify(request));
 });
 
-$(document).on('click','.chat_container .passive .chat_header',function(){
-  var request = {
-            type: 'get_latest_message',
-            to: 'self',
-            my_id: $(this).data('id')
-        };
-        var c =  $('.stm .stm_list .mCustomScrollBox .mCSB_container .stm_item[data-id="'+$(this).data('id')+'"] a span.badge');
-          c.html('');
-        ws.send(JSON.stringify(request));
-});
-
 $(document).on('keyup','input[data-type="study_mate_search"]',function(){
-    if($('input[data-type="study_mate_search"]').val().length >= 2){  
+    // if($('input[data-type="study_mate_search"]').val().length >= 2){  
         str = '<center><img src="assets/images/loading3.gif"></center>';
         $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html(str);
         var request = {
@@ -1282,8 +1291,45 @@ $(document).on('keyup','input[data-type="study_mate_search"]',function(){
         to   : 'self',
         search_txt : $('input[data-type="study_mate_search"]').val(),
         fid : $(this).data('id'),
-        search_type :$('.row.filter_bar ul').find('li.active').data('id')
+        search_type : $('.row.filter_bar ul').find('li.active').data('id')
         }
         ws.send(JSON.stringify(request));
+    // }
+});
+
+$(document).on('click','li[data-type="search-type"]',function(){
+    // if($('input[data-type="study_mate_search"]').val().length >= 2){  
+        str = '<center><img src="assets/images/loading3.gif"></center>';
+        $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html(str);
+        var request = {
+        type : 'study_mate_search',
+        to   : 'self',
+        search_txt : $('input[data-type="study_mate_search"]').val(),
+        fid : $(this).data('id'),
+        search_type : $(this).data('id')
+        }
+        ws.send(JSON.stringify(request));
+    // }
+});
+
+$(document).on('click','a[data-type="load-studymate-more"]',function(){
+    var request = {
+        type : 'load-studymate-more',
+        to   : 'self',
+        search_txt : $('input[data-type="study_mate_search"]').val(),
+        fid : $(this).data('id'),
+        search_type : $('.row.filter_bar ul .active').data('id'),
+        load_more : 'true',
+        data_start : $(this).data('start')
     }
+    ws.send(JSON.stringify(request));
+});
+
+$(document).on('click', '#view_profile', function(){
+    // alert($(this).data('name'));
+    // $('button[data-type="close-studymate"]').attr('data-course',$(this).data('course')).attr('data-name',$(this).data('name')).attr('data-id',$(this).data('id')).attr('data-school',$(this).data('school')).attr('data-profile',$(this).data('profile'));   
+    $('#view_profile_model div[data-type="profile_pic"]').html('<img src="uploads/'+$(this).data('profile')+'">');  
+    $('#view_profile_model h3[data-type="user-name"]').html($(this).data('name'));  
+    $('#view_profile_model p[data-type="course-name"]').html('<span class="fa fa-graduation-cap"></span>'+ $(this).data('course'));  
+    $('#view_profile_model').modal('show');
 });
