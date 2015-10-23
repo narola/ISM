@@ -54,7 +54,8 @@ class Home extends CI_Controller {
 
 					);  
 
-
+		if(empty($tagged_feed_id))
+			$tagged_feed_id = array(0);
 		$where = array('where'=>array('f.is_delete'=> 0),'where_in'=>array('f.feed_by'=>studymates($user_id)),'or_where_in'=>array('f.id'=>$tagged_feed_id));
 		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.posted_on,f.created_date,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link,l.is_delete as my_like',$where,$options);
 		// p($result_feed,true);
