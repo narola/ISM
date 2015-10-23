@@ -14,16 +14,10 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.author.AuthorHostActivity;
-import com.ism.author.Utility.Debug;
 import com.ism.author.asynctask.API_METHOD_NAME;
-import com.ism.author.asynctask.Urls;
 import com.ism.author.interfaces.OnApiResponseListener;
 import com.ism.interfaces.FragmentListener;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
+import com.ism.utility.Debug;
 
 /*
 * This is the homefragment containg the newsfeed.

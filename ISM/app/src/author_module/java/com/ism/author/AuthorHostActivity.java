@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
-import com.ism.author.Utility.Debug;
 import com.ism.author.fragment.BooksFragment;
 import com.ism.author.fragment.FollowingFragment;
 import com.ism.author.fragment.GoTrendingFragment;
@@ -33,6 +32,7 @@ import com.ism.author.rightcontainerfragment.EventsFragment;
 import com.ism.author.rightcontainerfragment.HighScoreFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.ControllerTopMenuItem;
+import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 
 import java.util.ArrayList;

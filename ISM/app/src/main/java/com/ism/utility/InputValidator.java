@@ -146,7 +146,7 @@ public class InputValidator {
 		return (validateStringPresence(editTextPassword) && validatePasswordLength(editTextPassword, passwordLengthMin, errorMessage))
 				& (validateStringPresence(editTextConfirmPassword) && validateConfirmPasswordMatch(editTextPassword, editTextConfirmPassword));
 	}
-	
+
 	// For setting error message using custom string on any EditText.
 	public static void setError(EditText editText, String errorMessage) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
