@@ -12,12 +12,13 @@
                 </div>
                 <!--//breadcrumb-->
                 <!--filter-->
+                <form method="get" id="filter">  
                 <div class=" filter exam_filter report_filter">
                 	<div class="col-sm-12">
                     	<div class="form-group data_range">
                         	<label>Data Range :</label>
                             <div class="range_picker">
-                            <input class="form-control" type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
+                            <input id="date_range" class="form-control" type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
                                 <a class="icon icon_calendar_red"></a>
                             </div>
                                 <!-- <input type="text" class="form-control" placeholder="From">
@@ -46,14 +47,9 @@
                                 <option>Subject</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <select class="form-control">
-                                <option>Sort By</option>
-                            </select>
-                        </div>
-                        
                     </div>
                 </div>
+            </form>
                 <!--//filter-->
                 <!--report-->
                 <div class=" reports">
@@ -75,39 +71,23 @@
                                     <tr>
                                         <th>Rank</th>
                                         <th>Group Name</th>
-                                        <th>Course</th>
+                                        <!-- <th>Course</th> -->
                                         <th>Score</th>
                                     </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Vanice Beauty</td>
-                                        <td>HSC Sci</td>
-                                        <td>5000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Allrounders</td>
-                                        <td>HSC Sci</td>
-                                        <td>4750</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Ranker's Group</td>
-                                        <td>HSC Sci</td>
-                                        <td>4700</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>Heaven Group</td>
-                                        <td>HSC Sci</td>
-                                        <td>4450</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>Allrounders</td>
-                                        <td>HSC Sci</td>
-                                        <td>4300</td>
-                                    </tr>
+                                    <?php if(!empty($top_groups)){
+                                        $i=1;
+                                        foreach ($top_groups as $group) { ?>
+                                        <tr>
+                                        <td><?php echo $i; ?></td>
+                                        <td><?php echo $group['group_name']; ?></td>
+                                        <td><?php echo $group['score']; ?></td>
+                                    </tr>       
+
+                                    <?php 
+                                    $i++;
+                                    }
+                                     } ?>
+                                   
                                 </table>
                             </div>
                         </div>
@@ -146,6 +126,65 @@ function get_classes(course_id){
               $('#topic_id').val('');
            }
         });
+
+        var date_range = $("#date_range").val();
+
+        $.ajax({
+           url:'<?php echo base_url()."admin/report/get_question_stats"; ?>',
+           type:'POST',
+           dataType:'JSON',
+           data:{course_id:course_id, date_range:date_range},
+           success:function(response){
+              console.log(response);
+              
+            // Create the chart
+            $('#performance_graph_1').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: ''
+                },
+                subtitle: {
+                    text: 'Question V/S Course'
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Score'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y}'
+                        }
+                    }
+                },
+        
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
+                },
+        
+                series: [{
+                    name: "Classes",
+                    colorByPoint: true,
+                    data: response
+                }]
+            });
+           }
+        });
+        
+
+
     }
 
   function get_subjects(classroom_id){
@@ -158,6 +197,59 @@ function get_classes(course_id){
               $('#topic_id').val('');
            }
         });
+var date_range = $("#date_range").val();
+         $.ajax({
+           url:'<?php echo base_url()."admin/report/get_group_stats"; ?>',
+           type:'POST',
+           dataType:'JSON',
+           data:{classroom_id:classroom_id, date_range:date_range},
+           success:function(response){
+              console.log(response);
+              $('#performance_graph_2').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: ''
+                },
+                subtitle: {
+                    text: 'Group V/S Score'
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Score'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y}'
+                        }
+                    }
+                },
+        
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
+                },
+        
+                series: [{
+                    name: "Classes",
+                    colorByPoint: true,
+                    data: response
+                }]
+            });
+          }
+      });
+         
   }
     // var course_onload = $("#course_id").val($("#course_id option:first").next().val());
     
@@ -227,131 +319,7 @@ function get_classes(course_id){
                 }]              
             });
         });
-        $(function () {
-            // Create the chart
-            $('#performance_graph_2').highcharts({
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: ''
-                },
-                subtitle: {
-                    text: 'Group V/S Score'
-                },
-                xAxis: {
-                    type: 'category'
-                },
-                yAxis: {
-                    title: {
-                        text: 'Score'
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    series: {
-                        borderWidth: 0,
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.y:.1f}%'
-                        }
-                    }
-                },
         
-                tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b><br/>'
-                },
         
-                series: [{
-                    name: "Classes",
-                    colorByPoint: true,
-                    data: [{
-                        name: "Venice Beauty",
-                        y: 75,
-                        drilldown: "Venice Beauty"
-                    }, {
-                        name: "Allrounders",
-                        y: 82,
-                        drilldown: "Allrounders"
-                    }, {
-                        name: "Heaven Group",
-                        y: 95,
-                        drilldown: "Heaven Group"
-                    }, {
-                        name: "Rankers' Group",
-                        y: 65,
-                        drilldown: "Rankers' Group"
-                    }]
-                }]
-            });
-        });
-        $(function () {
-            // Create the chart
-            $('#performance_graph_1').highcharts({
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: ''
-                },
-                subtitle: {
-                    text: 'Question V/S Course'
-                },
-                xAxis: {
-                    type: 'category'
-                },
-                yAxis: {
-                    title: {
-                        text: 'Score'
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    series: {
-                        borderWidth: 0,
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.y:.1f}%'
-                        }
-                    }
-                },
-        
-                tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b><br/>'
-                },
-        
-                series: [{
-                    name: "Classes",
-                    colorByPoint: true,
-                    data: [{
-                        name: "HSC Sci",
-                        y: 90,
-                        drilldown: "HSC Sci"
-                    }, {
-                        name: "HSC Comm",
-                        y: 82,
-                        drilldown: "HSC Comm"
-                    }, {
-                        name: "Agriculture Sci",
-                        y: 55,
-                        drilldown: "Agriculture Sci"
-                    }, {
-                        name: "Computer Sci",
-                        y: 75,
-                        drilldown: "Computer Sci"
-                    }]
-                }]
-            });
-        });
 
-
-
-
-  
-    </script>
+</script>

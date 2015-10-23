@@ -9,7 +9,7 @@
                 </ol>                 
             </div>
 			<div class="col-sm-4 text-right padding_t10">
-				<button class="btn btn_red">Add New Question</button>
+				<a href="<?php echo base_url().'admin/question/add'; ?>" class="btn btn_red"> Add New Question </a>
 			</div>
         </div>
         <!--//breadcrumb-->
@@ -294,6 +294,8 @@
 <?php if(!empty($_GET['exam'])) { ?>
     $('#exam_id').val('<?php echo $_GET["exam"];?>');    
 <?php } ?>
+
+
 
 jQuery(document).ready(function() {
     jQuery('.question_wrapper .fa-angle-double-down').click(function(){
