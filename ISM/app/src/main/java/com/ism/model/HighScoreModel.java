@@ -6,6 +6,8 @@ import java.util.ArrayList;
  * Created by c162 on 12/10/15.
  */
 public class HighScoreModel {
+
+
     String strSubjectName;
     ArrayList<HighScoreStudentModel> arrayListStudent=new ArrayList<HighScoreStudentModel>();
 
