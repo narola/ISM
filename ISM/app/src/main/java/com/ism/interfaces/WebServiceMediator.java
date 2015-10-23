@@ -7,6 +7,6 @@ public class WebServiceMediator {
 
 	public static final String TAG = WebServiceMediator.class.getSimpleName();
 
-	
+
 
 }
