@@ -522,6 +522,7 @@ class PHPWebSocket {
 
 
 
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -695,6 +696,7 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
 
 
 
@@ -1327,7 +1329,6 @@ class PHPWebSocket {
                         $all_feed[] = $tagged_rows;
                     }
 
-                    pr($all_comment);
                     foreach ($all as $key => $value) {
                         $final_feed[$key] = $value;
                         $found_comment = $found_tagged = array();
@@ -1869,22 +1870,22 @@ class PHPWebSocket {
             // }
             // Check both request sender and receiver must mathing same studymate list (e.g request receiver must within senders studymates.)
             // if (in_array($data['studymate_id'], $all)) {
-                $query = "INSERT INTO `" . TBL_STUDYMATES_REQUEST . "`"
-                        . "(`id`, `request_from_mate_id`, `request_to_mate_id`, `status`, `created_date`, `is_delete`, `is_testdata`) "
-                        . "VALUES (NULL,$userid," . $data['studymate_id'] . ",0,CURRENT_TIMESTAMP,0,'yes')";
-                $x = mysqli_query($link, $query);
-                if (!$x) {
-                    $data['to'] = 'self';
-                    $data['error'] = 'Unable to save message.! Please try again.';
-                } else {
-                    $query = "SELECT count(*) as cnt FROM " . TBL_STUDYMATES_REQUEST . " "
-                            . "WHERE request_from_mate_id =" . $data['studymate_id'] . " AND status = 0";
+            $query = "INSERT INTO `" . TBL_STUDYMATES_REQUEST . "`"
+                    . "(`id`, `request_from_mate_id`, `request_to_mate_id`, `status`, `created_date`, `is_delete`, `is_testdata`) "
+                    . "VALUES (NULL,$userid," . $data['studymate_id'] . ",0,CURRENT_TIMESTAMP,0,'yes')";
+            $x = mysqli_query($link, $query);
+            if (!$x) {
+                $data['to'] = 'self';
+                $data['error'] = 'Unable to save message.! Please try again.';
+            } else {
+                $query = "SELECT count(*) as cnt FROM " . TBL_STUDYMATES_REQUEST . " "
+                        . "WHERE request_from_mate_id =" . $data['studymate_id'] . " AND status = 0";
 
-                    $rows = mysqli_query($link, $query);
-                    echo mysqli_error($link);
-                    $row = mysqli_fetch_assoc($rows);
-                    $data['count'] = $row['cnt'];
-                }
+                $rows = mysqli_query($link, $query);
+                echo mysqli_error($link);
+                $row = mysqli_fetch_assoc($rows);
+                $data['count'] = $row['cnt'];
+            }
             // } else {
             //     $data['to'] = 'self';
             //     $data['error'] = 'Unable to Identify post. Please don\'t modify data manually.';
@@ -2642,6 +2643,18 @@ class PHPWebSocket {
 
 
         $studymate_id = $this->class_mate_list($user_id);
+        $studymates = implode(',', $studymate_id);
+        $query = 'SELECT u.id,u.full_name FROM  users u where u.id in(' . $studymates . ')';
+        $rows = mysqli_query($link, $query);
+        $i = 0;
+        $studymates_detail = array();
+        while ($row = mysqli_fetch_assoc($rows)) {
+            $studymates_detail[$i]['full_name'] = $row['full_name'];
+            $studymates_detail[$i]['id'] = $row['id'];
+            $i++;
+        }
+        $data['studymates_detail'] = $studymates_detail;
+
         if (is_array($data) && !empty($data)) {
             if (in_array($data['data_type'], $check_type)) {
                 $query = "INSERT INTO `feeds`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$user_id,'','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
@@ -2769,38 +2782,37 @@ class PHPWebSocket {
         return $output;
     }
 
-    function studymate_search($userid,$data){
+    function studymate_search($userid, $data) {
 
         $link = $this->db();
-        if($data['search_type'] == 'people')
-            $where = "u.full_name like '".$data['search_txt']."%'";
-        elseif($data['search_type'] == 'school')
-            $where = "s.school_name like '".$data['search_txt']."%'";
-        elseif($data['search_type'] == 'course')
-            $where = "c.course_name like '".$data['search_txt']."%'";
+        if ($data['search_type'] == 'people')
+            $where = "u.full_name like '" . $data['search_txt'] . "%'";
+        elseif ($data['search_type'] == 'school')
+            $where = "s.school_name like '" . $data['search_txt'] . "%'";
+        elseif ($data['search_type'] == 'course')
+            $where = "c.course_name like '" . $data['search_txt'] . "%'";
         else
             $where = "1=1";
-        
-        if(isset($data['data_start'])){
+
+        if (isset($data['data_start'])) {
             $limit = 4;
             $d = $data['data_start'];
             $data['data_start'] += $limit;
-        }
-        else{
+        } else {
             $limit = 4;
-            $data['data_start'] = 0;   
-            $d = 0;   
+            $data['data_start'] = 0;
+            $d = 0;
         }
         $ID_in = implode(',', $this->class_mate_list($userid));
-        $query = "SELECT `u`.`id` as `user_id`, `u`.`full_name`, `s`.`school_name`, `c`.`course_name`, `p`.`profile_link`, `sr`.`id` as `srid`, `sr`.`is_delete` FROM `users` `u` JOIN `student_academic_info` `in` ON `in`.`user_id` = `u`.`id` LEFT JOIN `schools` `s` ON `s`.`id` = `in`.`school_id` LEFT JOIN `courses` `c` ON `c`.`id` = `in`.`course_id` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` LEFT JOIN `studymates_request` `sr` ON `sr`.`request_from_mate_id`=$userid and `sr`.`request_to_mate_id` = `u`.`id` and `sr`.`is_delete` = 0 WHERE `u`.`is_delete` =0 AND `u`.`id` NOT IN($ID_in) AND $where LIMIT ".$data['data_start'].','.$limit;
-        $rows = mysqli_query($link,$query);
+        $query = "SELECT `u`.`id` as `user_id`, `u`.`full_name`, `s`.`school_name`, `c`.`course_name`, `p`.`profile_link`, `sr`.`id` as `srid`, `sr`.`is_delete` FROM `users` `u` JOIN `student_academic_info` `in` ON `in`.`user_id` = `u`.`id` LEFT JOIN `schools` `s` ON `s`.`id` = `in`.`school_id` LEFT JOIN `courses` `c` ON `c`.`id` = `in`.`course_id` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` LEFT JOIN `studymates_request` `sr` ON `sr`.`request_from_mate_id`=$userid and `sr`.`request_to_mate_id` = `u`.`id` and `sr`.`is_delete` = 0 WHERE `u`.`is_delete` =0 AND `u`.`id` NOT IN($ID_in) AND $where LIMIT " . $data['data_start'] . ',' . $limit;
+        $rows = mysqli_query($link, $query);
         $result = array();
-        while($row = mysqli_fetch_assoc($rows)){
+        while ($row = mysqli_fetch_assoc($rows)) {
             $result[] = $row;
         }
         $data['result'] = $result;
         $data['limit'] = $d + 4;
-        return $data;            
+        return $data;
     }
 
 }

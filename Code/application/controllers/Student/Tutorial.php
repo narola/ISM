@@ -47,6 +47,7 @@ class Tutorial extends ISM_Controller {
 				t.topic_name,
 				t.topic_description,
 				t.created_date,
+				tg.group_status,
 				ts.score as my_score,
 				(SELECT SUM(group_score) FROM '.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' WHERE group_id = tm.group_id) as group_score,
 				up.profile_link,
@@ -72,12 +73,20 @@ class Tutorial extends ISM_Controller {
 					array(
 						'table' => TBL_USER_PROFILE_PICTURE.' up',
 						'condition' => 'up.user_id = u.id'
+						),
+					array(
+						'table' => TBL_TUTORIAL_GROUPS.' tg',
+						'condition' => 'tg.id = ta.group_id'
 						)
 					),
 				'single' => true
 				)
 			);
+		if($data['topic']['group_status'] != 'active'){
+			$this->session->set_flashdata('error','Your tutorial group is blocked by admin!');
+				redirect('/student/home');
 
+		}
 			// Check topic found or not.
 			if(isset($data['topic']) && !empty($data['topic'])){
 				// Get all discussion messages.
