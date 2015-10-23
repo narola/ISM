@@ -16,8 +16,14 @@ import com.ism.R;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.Utility.Debug;
 import com.ism.author.asynctask.API_METHOD_NAME;
+import com.ism.author.asynctask.Urls;
 import com.ism.author.interfaces.OnApiResponseListener;
 import com.ism.interfaces.FragmentListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 /*
 * This is the homefragment containg the newsfeed.
@@ -93,6 +99,7 @@ public class HomeFragment extends Fragment implements OnApiResponseListener {
             }
         };
 
+
     }
 
     @Override
@@ -152,12 +159,9 @@ public class HomeFragment extends Fragment implements OnApiResponseListener {
 
         if (api_method_name == API_METHOD_NAME.get_all_feeds) {
 
-            Debug.e(TAG, response);
-
 
         }
 
 
     }
-
 }

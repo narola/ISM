@@ -20,10 +20,10 @@ public class Global {
 
     public static Boolean isRemember;
 
-    public static void myIntent(Context con,Class contextTo ){
-        Intent intent=new Intent(con,contextTo);
+    public static void myIntent(Context context, Class classToOpen){
+        Intent intent=new Intent(context, classToOpen);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        con.startActivity(intent);
+        context.startActivity(intent);
     }
 
 }
