@@ -1,7 +1,7 @@
 <!--main-->
-            <div class="col-sm-7 main main2 main_wide">
+            <div class="col-sm-7 main main2 main_wide mCustomScrollbar" data-mcs-theme="minimal-dark">
             	<!--breadcrumb-->
-           		<div class="row page_header">
+           		<div class="page_header">
                 	<div class="col-sm-12">
                     	<ol class="breadcrumb">
                           <li><a href="#">Manage</a></li>                          
@@ -12,7 +12,7 @@
                 </div>
                 <!--//breadcrumb-->
                 <!--filter-->
-                <div class="row filter group_filter">
+                <div class="filter group_filter">
                 	<div class="col-sm-12">
                     	<div class="form-group">
                             <select class="form-control">
@@ -127,9 +127,9 @@
                                             </ul>
                                             <div class="recom_action">
                                                 <a href="#" class="icon icon_delete_color"></a>
-                                                <form method="post" action="admin/topic/allocate">
-                                                        <input type="hidden" name="group_id" value="<?php echo $unallocated_group; ?>">
-                                                        <input type="hidden" name="topic_id" value="<?php echo $topic['id']; ?>">
+                                                <form method="post" action="admin/topic/allocate" class="pull-right">
+                                                    <input type="hidden" name="group_id" value="<?php echo $unallocated_group; ?>">
+                                                    <input type="hidden" name="topic_id" value="<?php echo $topic['id']; ?>">
                                                     <button class="btn btn_blue">Allocate</button>
                                                 </form>
                                             </div>

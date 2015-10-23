@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
 	<!--breadcrumb-->
-		<div class="row page_header">
+		<div class="page_header">
     	<div class="col-sm-12">
         	<ol class="breadcrumb">
               <li><a href="admin/user">Manage</a></li>                          
@@ -12,7 +12,7 @@
     </div>
     <!--//breadcrumb-->
     <!--message-->
-   	<div class="row">
+   	<div class="col-sm-12">
     	<div class="col-sm-12 new_message">
         	<div class="box exam_card">
                 <form method="POST">
@@ -90,11 +90,12 @@
                         <div class="form-group">
                         	<label>Message</label>
                             <textarea class="form-control" name="message_desc" id="message_desc"><?php echo set_value('message_desc'); ?></textarea>
+							<div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_desc'),''))){ echo 'hide';} ?>">
+							  <?php echo strip_tags(form_error('message_desc'),'') ; ?>
+							</div>
                             <label class="notify"><input type="checkbox" name="notify_sms">Notify Student Via SMS</label><br/>
                         </div>
-                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_desc'),''))){ echo 'hide';} ?>">
-                          <?php echo strip_tags(form_error('message_desc'),'') ; ?>
-                        </div>
+                        
                     </div>
                     <div class="box_footer">
                     	<button class="btn btn_green" type="submit">Send</button>

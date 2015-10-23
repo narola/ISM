@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2 main_wide">
+<div class="col-sm-7 main main2 main_wide mCustomScrollbar" data-mcs-theme="minimal-dark">
 	<!--breadcrumb-->
-		<div class="row page_header">
+		<div class="page_header">
     	<div class="col-sm-12">
         	<ol class="breadcrumb">
               <li><a href="admin/question/set">Assessment</a></li> 
@@ -11,6 +11,7 @@
     </div>
     <!--//breadcrumb-->
     <!--main content-->
+	<div class="col-sm-12">
     <form method='post' id="question_add">
         <div class="question_bank">
         	<div class="col-sm-12 general_cred">
@@ -25,7 +26,7 @@
                         <?php echo validation_errors('',''); ?>
                     </div>
                     <!--box_body-->
-                    <div class="box_body add_question_wrapper">
+                    <div class="box_body add_question_wrapper admin_controls with_labels">
                    		<div class="col-sm-12 padding_t15">
                         	<div class="form-group">
                                 <label class="txt_red">Question</label>
@@ -212,6 +213,7 @@
             <div class="clearfix"></div>
         </div>
     </form>
+	</div>
     <!--main content-->                
 </div>
             <!--//main-->
