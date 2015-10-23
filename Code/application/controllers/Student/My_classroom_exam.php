@@ -20,7 +20,21 @@ class My_classroom_exam extends ISM_Controller {
 		//	get user detail
 		$user_data = $this->session->userdata('user');
 		$user_classroom = $user_data['classroom_id'];
-		
+		$data['user_class_name'] = $user_data['class_name'];
+
+		$exam_type = $this->input->post('exam_type');
+		if($exam_type != '')
+		{
+			$where1 = array('where' => array('e.classroom_id' => $user_classroom,'e.is_delete' => 0,'e.exam_category !='=>'tutorial','e.exam_category'=>$exam_type));
+			$where2 = 'and exam_category ="'.$exam_type.'" and classroom_id='.$user_classroom;
+			$data['exam_type'] = $exam_type;
+		}
+		else{
+			$where1 = array('where' => array('e.classroom_id' => $user_classroom,'e.is_delete' => 0,'e.exam_category !='=>'tutorial'));
+			$where2 = 'and 1=1 and classroom_id='.$user_classroom;
+			$data['exam_type'] = '';
+
+		}
 		//	get classroom subject		
 		$option = array('join' =>
 				array(
@@ -31,10 +45,9 @@ class My_classroom_exam extends ISM_Controller {
 				)
 			);
 		$where = array('where' => array('cs.classroom_id' => $user_classroom));
-		$data['my_subject'] = select(TBL_COURSE_SUBJECT.' cs','s.subject_name,s.id AS subject_id,s.subject_image',$where,$option);
+		$data['my_subject'] = select(TBL_COURSE_SUBJECT.' cs','(select count(*) from '.TBL_EXAMS.' where is_delete = 0 and subject_id = s.id '.$where2.')tot_exam,s.subject_name,s.id AS subject_id,s.subject_image',$where,$option);
 		
 		//	get exam list with percentage (if attampted)
-		$where = array('where' => array('e.classroom_id' => $user_classroom,'e.is_delete' => 0));
 		$option = array('join' =>
 				array(
 					array(
@@ -43,8 +56,7 @@ class My_classroom_exam extends ISM_Controller {
 					)
 				)
 			);
-		$data['my_exam']  = select(TBL_EXAMS.' e','e.exam_name,e.id as exam_id,TRUNCATE((sc.correct_answers * 100 / (select count(*) from '.TBL_EXAM_QUESTION.' where exam_id = sc.exam_id)),2) as per,e.subject_id,sc.id',$where,$option);
-		
+		$data['my_exam']  = select(TBL_EXAMS.' e','e.exam_name,e.id as exam_id,TRUNCATE((sc.correct_answers * 100 / (select count(*) from '.TBL_EXAM_QUESTION.' where exam_id = sc.exam_id)),2) as per,e.subject_id,sc.id',$where1,$option);
 		$this->template->load('student/default','student/my_classroom_exam',$data);
 	}
 

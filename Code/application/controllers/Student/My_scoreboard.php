@@ -32,6 +32,8 @@ class My_scoreboard extends ISM_Controller {
 
 	public function index()
 	{
+		// echo $this->examid;
+		// exit;
 		//	page title
 		$data['title'] = 'ISM - MY Scoreboard';
 
@@ -39,7 +41,7 @@ class My_scoreboard extends ISM_Controller {
 		$userid = $user_data['id'];
 
 		//	get student exam scoreboard
-		$where 	= array('where' => array('e.id' => $this->examid,'sc.user_id' => $userid));
+		$where 	= array('where' => array('e.id' => $this->examid,'sc.user_id' => $userid,'sc.exam_status'=>'finished'));
 		$option = array('join' => 
 					array(
 						array(
@@ -54,7 +56,6 @@ class My_scoreboard extends ISM_Controller {
 					'single' => true
 				);
 		$data['my_scoreboard']	= select(TBL_EXAMS.' e','e.id,eq.cnt,TRUNCATE(sc.total_time_spent / 60,2)as totmin,sc.attempt_count,(eq.cnt - sc.attempt_count) as unattampt,e.exam_category,e.exam_name,sc.incorrect_answers,sc.correct_answers,TRUNCATE((sc.correct_answers * 100 / cnt ),2)as percentage',$where,$option);
-		
 		$this->template->load('student/default','student/My_scoreboard',$data);
 	}
 }

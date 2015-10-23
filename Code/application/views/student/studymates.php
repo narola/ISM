@@ -4,6 +4,16 @@
         $(this).addClass('active');
     });
 </script>
+<style>
+        .avatar1 {
+            border: 6px solid rgba(255, 255, 255, 0.1);
+            border-radius: 70%;
+            height: 200px;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            width: 200px;
+        }
+    </style>
 <!--main-->
 <div class="col-sm-7 main main2 stydymates"> 
     <!--tabs-->
@@ -28,9 +38,10 @@
                             </div>
                             <h4><?php echo $value['full_name'];?></h4>
                             <p>Student from <?php echo $value['school_name'];?></p>
+                            <p class="txt_green"><?php echo $value['course_name'];?></p>
                         </div>
                         <div class="col-lg-3 col-md-4 col-sm-5">
-                            <button class="btn btn_green btn-block">View Profile</button>
+                            <button class="btn btn_green btn-block" data-name="<?php echo $value['full_name'];?>" data-id="<?php echo $value['user_id'];?>" data-school="<?php echo $value['full_name'];?>" data-profile="<?php echo $value['profile_link'];?>" data-course="<?php echo $value['course_name'];?>" id="view_profile">View Profile</button>
                             <div class="form-group select">
                                 <select class="form-control" name="action" id="action_studymate" data-name="<?php echo $value['full_name'];?>" data-id="<?php echo $value['user_id'];?>" data-school="<?php echo $value['full_name'];?>" data-profile="<?php echo $value['profile_link'];?>" data-course="<?php echo $value['course_name'];?>">
                                     <option value="0">Studymates</option>
@@ -69,7 +80,7 @@
             <ul>
                 <li class="active" data-type="search-type" data-id="people"><a href="javascript:void(0);">People</a></li>
                 <li data-type="search-type" data-id="school"><a href="javascript:void(0);">School</a></li>
-                <li data-type="search-type" data-id="area"><a href="javascript:void(0);">Area</a></li>
+                <!-- <li data-type="search-type" data-id="area"><a href="javascript:void(0);">Area</a></li> -->
                 <li data-type="search-type" data-id="course"><a href="javascript:void(0);">Course</a></li>
             </ul>
         </div>
@@ -79,9 +90,9 @@
         <div class="box general_cred">
             <div class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark" id="search_result">
                 <?php 
-                    if(isset($recommended_studymates) && sizeof($recommended_studymates) > 0){ 
+                    if(isset($find_studymates) && sizeof($find_studymates) > 0){ 
                     $i = 1;
-                    foreach ($recommended_studymates as $key => $value) {
+                    foreach ($find_studymates as $key => $value) {
                 ?>
                 <!--item1-->
                 <div class="study_mate">
@@ -91,7 +102,7 @@
                         </div>
                         <h4><?php echo $value['full_name'];?></h4>
                         <p><?php echo $value['school_name'];?></p>
-                        <p>Live in Ghana</p>
+                        <p class="txt_green"><?php echo $value['course_name'];?></p>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-5">
                         <?php if($value['srid'] != ''){?>
@@ -105,11 +116,14 @@
                 <!--//item1-->
                 <?php 
                     } 
-                }
                 ?>
                 <div class="text-center">
-                    <a href="#" class="search_result_label">View More</a>
+                    <a href="javascript:void(0);" data-start="4" data-type="load-studymate-more" class="search_result_label">View More</a>
                 </div>
+                <?php
+                }
+                ?>
+                
             </div>
         </div>
         <!--//search result-->
@@ -152,7 +166,7 @@
                                             echo $value['school_name'];
                                     ?> 
                                     </p>
-                                    <p><?php echo $value['course_name'];?></p>
+                                    <p class="txt_green"><?php echo $value['course_name'];?></p>
                                     <?php if($value['srid'] != ''){?>
                                     <button class="btn btn_black_normal" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>" disabled>Request Already Sent</button>
                                     <?php }else{ ?>
@@ -210,6 +224,38 @@
                 <code style="font-size:large;">Are sure for want to remove <b data-type="close-studymate-name" data-id="remove-name"></b> from studymates list?</code>
                     <h4 class="notice_by"><button class="btn btn_black_normal" data-type="close-studymate">OK</button></h4>
                 <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.modal -->
+<!-- Modal -->
+<div class="modal fade" id="view_profile_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:600px;margin-top:120px;">
+        <div class="modal-content">
+            <div class="modal-header notice_header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">STUDYMATE PROFILE</h4>
+                <small><?php echo date("d F Y",strtotime(date('Y-m-d')));?></small>
+            </div>
+            <div class="modal-body">
+                <div data-type="profile_pic" class="avatar1">
+                </div>
+                <div class="basic_info">
+                    <h3 data-type="user-name" class="txt_green text-uppercase"></h3>
+                    <p>
+                    <span class="fa fa-map-marker"></span>
+                    From Ghana
+                    </p>
+                    <p data-type="course-name">
+                        <span class="fa fa-graduation-cap"></span>
+                    </p>
+                    <p>
+                    <span class="fa fa-birthday-cake"></span>
+                    March 21, 1992
+                    </p>
+                    <div class="clearfix"></div>
+                </div>
             </div>
         </div>
     </div>

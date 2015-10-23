@@ -103,7 +103,7 @@ $url = uri_string();
                         if (in_array($url, array('admin/user', 'admin/topic/allocate',
                                     'admin/topic/lists', 'admin/school', 'admin/school/add',
                                     'admin/classroom', 'admin/classroom/add',
-                                    'admin/subject/lists', 'admin/subject/add_subject',
+                                    'admin/subject/lists', 'admin/subject/add_subject','admin/question/add'
                                 ))) {
                             echo 'active';
                         } else {
@@ -137,6 +137,14 @@ $url = uri_string();
                                 <li <?php echo ($url == 'admin/classroom') ? 'class="active"' : ''; ?>><a href="admin/classroom">Classroom</a></li>
                                 <li <?php echo ($url == 'admin/badges') ? 'class="active"' : ''; ?>><a href="admin/badges">Badges</a></li>
                                 <li <?php echo ($url == 'admin/user') ? 'class="active"' : ''; ?>><a href="admin/user">User</a></li>
+                                
+                                <li class="dropdown sub_menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Question</a>
+                                    <ul class="dropdown-menu">
+                                        <li <?php echo ($url == 'admin/question/add') ? 'class="active"' : ''; ?>><a href="admin/question/add">Add Question</a></li>
+                                    </ul>
+                                </li>
+
                                 <li class="<?php echo ($url == 'admin/topic/allocate' || $url == 'admin/topic/lists' || $url == 'admin/topic/add') ? 'active' : ''; ?> dropdown sub_menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Topics</a>
                                     <ul class="dropdown-menu">

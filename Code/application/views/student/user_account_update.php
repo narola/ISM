@@ -1,4 +1,4 @@
-`<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>ISM Registration</title>
@@ -55,7 +55,7 @@
             	<img src="assets/images/site_logo.png">
             </div>
         </div>
-        <div class="row reg_bg">
+        <div class="row reg_bg with_labels">
         	<div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
             	<form action="" method="post" enctype="multipart/form-data">
                     <!--box1-->
@@ -94,12 +94,14 @@
                                     <?php echo strip_tags(form_error('full_name'),'') ; ?>
                                 </div>
                                 <div class="form-group">
+									<label>Email Id</label>
                                     <input type="email" class="form-control" placeholder="Email Address" name="email_id" value="<?php echo isset($email_id)?$email_id : set_value('email_id');?>">
                                 </div>
                                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('email_id'),''))){ echo 'hide';} ?>">
                                     <?php echo strip_tags(form_error('email_id'),'') ; ?>
                                 </div>
                                 <div class="form-group select">
+									<label>Gender</label>
                                     <select class="form-control" name="gender" id="gender">
                                     	<option value="">Gender</option>
                                         <option value="male">Male</option>
@@ -111,6 +113,7 @@
                                     document.getElementById('gender').value = '<?= $gender; ?>';
                                 </script>    
                                 <div class="form-group dob">
+									<label>Date of Birth</label>
                                     <div class="input-append date" id="birthdate" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
                                         <input type="text" class="form-control" placeholder="Date of Birth" name="birthdate" id='dp' value="<?php echo isset($birthdate)?$birthdate:set_value('birthdate');?>">
                                     </div>
@@ -119,15 +122,18 @@
                                         <?php echo strip_tags(form_error('birthdate'),''); ?>
                                 </div>
                                 <div class="form-group age">
+									<label>Age</label>
                                     <input type="text" class="form-control" placeholder="Age" disabled >
                                 </div>
                                 <div class="form-group">
+									<label>Contact Number</label>
                                     <input type="text" class="form-control" placeholder="Contact Number" name="contact_number" value="<?php echo isset($contact_number)?$contact_number:set_value('contact_number');?>">
                                 </div>
                                 <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('contact_number'),''))){ echo 'hide';} ?>">
                                         <?php echo strip_tags(form_error('contact_number'),''); ?>
                                 </div>
                                 <div class="form-group">
+									<label>Home Address</label>
                                     <textarea class="form-control" placeholder="Home Address" name="home_address"><?php echo isset($home_address)?$home_address:set_value('home_address');?></textarea>
                                 </div>                         
                             </div>
@@ -158,6 +164,7 @@
                             <!--//avatar-->
                             <div class="col-sm-12"> 
                                        <div class="form-group small_input select">
+									   <label>Country</label>
                                     <select class="form-control" name="country_id" onchange="get_states(this.value)" id="country_id" >
                                         <option selected value="">Select Country</option> 
                                         <?php 
@@ -172,6 +179,7 @@
                                 </div>
                                         
                                 <div class="form-group small_input select">
+									<label>State</label>
                                     <select name="state_id" id="state_id" onchange="get_cities(this.value)" class="form-control">
                                         <option selected value="">Select State</option>
                                         <?php 
@@ -186,6 +194,7 @@
                                 </div>
                                 
                                 <div class="form-group small_input select">
+									<label>City</label>
                                     <select name="city_id" id="city_id" class="form-control">
                                         <option selected value="">Select City</option>
                                         <?php 
@@ -263,24 +272,28 @@
                         <div class="box_body">
                             <div class="col-sm-8">	
                             	<div class="form-group">
+									<label>Username</label>
                                 	<input type="text" class="form-control" placeholder="Username" name="username" value="<?php echo isset($username)?$username:set_value('username');?>">
                                 </div>
                                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('username'),''))){ echo 'hide';} ?>">
                                     <?php echo strip_tags(form_error('username'),'') ; ?>
                                 </div>
                                 <div class="form-group">
+									<label>Current Password</label>
                                 	<input type="password" class="form-control" placeholder="Current Password" name="cur_password" value="<?php echo isset($password)?$password:set_value('cur_password');?>">
                                 </div>
                                 <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('cur_password'),''))){ echo 'hide';} ?>">
                                     <?php echo strip_tags(form_error('cur_password'),''); ?>
                                 </div>
                                 <div class="form-group">
+									<label>New Password</label>
                                 	<input type="password" class="form-control" placeholder="New Password" name="new_password" value="<?php echo set_value('new_password');?>">
                                 </div>
                                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('new_password'),''))){ echo 'hide';}?>">
                                     <?php echo strip_tags(form_error('new_password'),'') ; ?>
                                 </div>  
                                 <div class="form-group">
+									<label>Confirm Password</label>
                                 	<input type="password" class="form-control" placeholder="Confirm Password" name="con_password" value="<?php echo set_value('con_password');?>">
                                 </div>
                                 <div class="alert alert-danger <?php if(empty(strip_tags(form_error('con_password'),''))){ echo 'hide';} ?>">
@@ -321,7 +334,7 @@
                     <div class="modal-body">
                         <form class="form-horizontal" action="" onsubmit="return send_email();" method="post">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Name :</label>
+                                <label class="col-sm-2 control-label">Name</label>
                                 <div class="col-sm-7">
                                     <input type="text" required class="form-control" id="request_name" name="request_name" placeholder="Name">
                                     <br>

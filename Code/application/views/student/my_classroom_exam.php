@@ -1,3 +1,11 @@
+<script>
+    $(document).on('change', 'select[data-type="exam-type"]', function(){
+        val = $(this).val();
+        if(val != ''){
+            $('#frm_class_exam').submit();
+        }
+    });
+</script>
 <!--main-->
 <div class="col-sm-7 main main2">
     <!--banner-->
@@ -5,7 +13,7 @@
         <div class="col-sm-12 text-center">
             <div class="banner_text">
                 <h3>Class</h3>
-                <h3>XII<br>Science</h3>
+                <h3><?php echo $user_class_name;?></h3>
             </div>
         </div>
      </div>   
@@ -13,26 +21,37 @@
      <!--filter-->
      <div class="row">
         <div class="col-sm-12 filter exams_filter">
-            <div class="form-group">
-                <select class="form-control">
-                    <option>Subject</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <select class="form-control">
-                    <option>Topic</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <select class="form-control">
-                    <option>Exam Type</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <select class="form-control">
-                    <option>WASSCE Year</option>
-                </select>
-            </div>
+
+            <form action="" method="post" id="frm_class_exam" class="form-inline">
+                <!-- <div class="form-group">
+                    <select class="form-control">
+                        <option>Subject</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control">
+                        <option>Topic</option>
+                    </select>
+                </div> -->
+                <div class="form-group">
+                    <select class="form-control" data-type="exam-type" name="exam_type" id="exam-type">
+                        <option value="">Exam Type</option>
+                        <option value="ISM_Mock">ISM Mock</option>
+                        <option value="WASSCE">WASSCE</option>
+                        <option value="EndOfTerm">End Of Term</option>
+                    </select>
+                    <script>
+                        sort_by = '<?php echo $exam_type;?>';
+                        document.getElementById('exam-type').value = sort_by;
+                    </script>
+                </div>
+                <div class="form-group">
+                    <select class="form-control">
+                        <option>WASSCE Year</option>
+                    </select>
+                </div>
+            </form>
+
         </div>
      </div> 
      <!--//filetr-->
@@ -52,8 +71,8 @@
                             <img src="<?php echo UPLOAD_URL.'/'.$value['subject_image'];?>" onerror="this.src='<?php echo UPLOAD_URL;?>/subjects/_dev_6GKA-Objectives-copy.png'">
                         </div>
                         <h3><?php echo $value['subject_name'];?></h3>                            
-                        <a href="#" class="icon icon_option no-margin"></a>  
-                        <label class="label label_black">15 Exams</label>
+                        <!-- <a href="#" class="icon icon_option no-margin"></a>   -->
+                        <label class="label label_black"><?php echo $value['tot_exam'];?> Exams</label>
                         <!-- <div class="user_profile_img">
                             <img src="images/user7.jpg">
                         </div>   -->                                   
@@ -74,17 +93,21 @@
                         ?>
                             <li><a href="<?php echo $url;?>">
                                 <?php 
-                                    if(strlen($exam_value['exam_name']) > 30)
-                                        echo substr($exam_value['exam_name'],0, 30).'.....'.$exam_value['exam_id'];
+                                    if(strlen($exam_value['exam_name']) > 29)
+                                        echo substr($exam_value['exam_name'],0, 29).'.....';
                                     else
-                                        echo $exam_value['exam_name'].$exam_value['exam_id'];
+                                        echo $exam_value['exam_name'];
                                 ?>
                                 <span class="result"><?php if($percentage != '')echo $percentage.'%';?></span>
                             </a></li>
                         <?php 
                                 }
                             }
+                            if($value['tot_exam'] == 0){
+                                echo '<li><center><label class="txt_grey txt_red">no exams</label></center></li>';
+                            }
                         ?>
+
                     </ul>
                  </div>
              </div>
@@ -97,4 +120,4 @@
      </div>
      <!--//exams-->
 </div>
-<!--//main-->
+<!--//main

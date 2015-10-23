@@ -1,7 +1,7 @@
 <!--main-->
-    <div class="col-sm-7 main main2 main_wide" >
+    <div class="col-sm-7 main main2 main_wide mCustomScrollbar" data-mcs-theme="minimal-dark" >
     	<!--breadcrumb-->
-   		<div class="row page_header">
+   		<div class="page_header">
         	<div class="col-sm-8">
             	<ol class="breadcrumb">
                   <li><a href="#">Assessment</a></li> 
@@ -14,7 +14,7 @@
         </div>
         <!--//breadcrumb-->
         <!--main content-->
-        <div class="question_bank">
+        <div class="question_bank margin_15">
         	<div class="col-sm-6 general_cred">
             	<!--box-->
                 <div class="box">

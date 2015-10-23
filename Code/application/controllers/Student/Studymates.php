@@ -18,7 +18,7 @@ class Studymates extends ISM_Controller {
 		$user_id = $this->session->userdata('user')['id'];
 		$course_id = $this->session->userdata('user')['course_id'];
 		
-		/*----get studymate list-----*/
+		/*----get My studymate list-----*/
 		$my_studymates = studymates($user_id,false);
 		
 		if(sizeof($my_studymates)>0){
@@ -59,7 +59,7 @@ class Studymates extends ISM_Controller {
 					),
 					array(
 						'table' => TBL_STUDENT_ACADEMIC_INFO.' in1',
-						'condition' => 'in.classroom_id = in1.classroom_id  and in.academic_year = in1.academic_year and in.school_id = in1.school_id',
+						'condition' => 'in.classroom_id = in1.classroom_id and in.course_id = in1.course_id and in.academic_year = in1.academic_year and in.school_id = in1.school_id',
 						'join'=>'join'
 					),
 					array(
@@ -87,7 +87,36 @@ class Studymates extends ISM_Controller {
 		'group_by' => 'in1.user_id'
 			);
 		$data['recommended_studymates'] = select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,p.profile_link,sr.id as srid,sr.is_delete',$where,$options);
-		
+	
+		/*----find studymates-----*/
+		$where = array('where' => array('u.is_delete'=>0),'where_not_in'=>array('u.id' => $my_studymates));
+		$options = array('join' => array(
+					array(
+						'table' => TBL_STUDENT_ACADEMIC_INFO.' in',
+						'condition' => 'in.user_id = u.id',
+						'join'=>'join'
+					),
+					array(
+						'table' => TBL_SCHOOLS.' s',
+						'condition' => 's.id = in.school_id'
+					),
+					array(
+						'table' => TBL_COURSES.' c',
+						'condition' => 'c.id = in.course_id'
+					),
+					array(
+						'table' => TBL_USER_PROFILE_PICTURE.' p',
+						'condition' => 'u.id = p.user_id'
+					),
+					array(
+						'table' => TBL_STUDYMATES_REQUEST.' sr',
+						'condition' => 'sr.request_from_mate_id='.$user_id.' and sr.request_to_mate_id = u.id and sr.is_delete = 0'
+					)
+				),
+				'limit'=>'4,0'
+			);
+		$data['find_studymates'] = select(TBL_USERS.' u','u.id as user_id,u.full_name,s.school_name,c.course_name,p.profile_link,sr.id as srid,sr.is_delete',$where,$options);
+
 		$this->template->load('student/default','student/studymates',$data);
 	}
 }

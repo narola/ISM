@@ -14,7 +14,7 @@
                 <div class="box exam_card">
                     <div class="box_header">
                         <h3><?php echo $value['subject_name'];?></h3>                            
-                        <a href="#" class="icon icon_option_dark"></a>
+                        <!-- <a href="#" class="icon icon_option_dark"></a> -->
                         <span><?php if($value['cnt'] == '') echo 0; echo $value['cnt'];?> Exams</span>    
                         <div class="clearfix"></div>                    
                     </div>
@@ -23,7 +23,7 @@
                             if(isset($my_exam) && sizeof($my_exam)>0 && $value['cnt'] > 0){
                                 foreach ($my_exam as $key => $e_value){ 
                                     if($e_value['id'] == $value['id']){ ?>
-                                        <li><a href="student/my_scoreboard/index/<?php echo $value['id'];?>">
+                                        <li><a href="student/my_scoreboard/index/<?php echo $e_value['exam_id'];?>">
                                         <?php 
                                             if(strlen($e_value['exam_name']) > 30)
                                                 echo substr($e_value['exam_name'],0, 30).'.....';
@@ -35,7 +35,7 @@
                                     <?php }
                                 } 
                             }else{
-                                echo '<li class="text-center"><hr><code><b style="font-size:large;">No exams</b></code><hr></li>';
+                                echo '<li><center><label class="txt_grey txt_red">no exams</label></center></li>';
                             }
                         ?>
                     </ul>

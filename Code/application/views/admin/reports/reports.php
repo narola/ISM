@@ -1,9 +1,9 @@
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
 <!--main-->
-            <div class="col-sm-7 main main2">
+            <div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
             	<!--breadcrumb-->
-           		<div class="row page_header">
+           		<div class=" page_header">
                 	<div class="col-sm-12">
                     	<ol class="breadcrumb">
                           <li><a href="#">Report Card</a></li>
@@ -12,7 +12,7 @@
                 </div>
                 <!--//breadcrumb-->
                 <!--filter-->
-                <div class="row filter exam_filter report_filter">
+                <div class=" filter exam_filter report_filter">
                 	<div class="col-sm-12">
                     	<div class="form-group data_range">
                         	<label>Data Range :</label>
@@ -56,7 +56,7 @@
                 </div>
                 <!--//filter-->
                 <!--report-->
-                <div class="row reports">
+                <div class=" reports">
                 	<div class="col-sm-6 no-padding performance_wrapper">
                     	<h3>Question Submitted</h3>
                         <div id="performance_graph_1">

@@ -24,8 +24,14 @@ class Home extends CI_Controller {
 		$data['title'] = 'ISM - Home';
 		$data['hide_right_bar'] = true;		
 		
+		// get post feed that tagged me by my studymates
+		$tagged = select(TBL_FEEDS_TAGGED_USER,'feed_id',array('where'=>array('user_id' => $user_id,'is_delete' => 0)),array('order_by' => 'id DESC'));
+		$tagged_feed_id = array();
+		foreach ($tagged as $key => $value) {
+			$tagged_feed_id[] = $value['feed_id'];
+		}
+
 		// Get Post feed with comment 
-		
 		$options =	array(
 						'join'	=>	array(
 							array(
@@ -48,11 +54,12 @@ class Home extends CI_Controller {
 
 					);  
 
-		$where = array('where'=>array('f.is_delete'=> 0),'where_in'=>array('f.feed_by'=>studymates($user_id)));
+
+		$where = array('where'=>array('f.is_delete'=> 0),'where_in'=>array('f.feed_by'=>studymates($user_id)),'or_where_in'=>array('f.id'=>$tagged_feed_id));
 		$result_feed = select(TBL_FEEDS.' f','f.id as fid,f.feed_by,f.feed_text,f.posted_on,f.created_date,u.full_name,(select count(*) from feed_comment where feed_id = f.id and is_delete = 0) as tot_comment,(select count(*) from feed_like where feed_id = f.id and is_delete = 0) as tot_like,p.profile_link,l.is_delete as my_like',$where,$options);
-		
+		// p($result_feed,true);
 		//---find feeds
-		
+		// p($tagged_feed_id,TRUE);
 		$feed_ids = array();
 		foreach ($result_feed as $key => $value) {
 			$feed_ids[] = $value['fid'];

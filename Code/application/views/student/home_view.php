@@ -228,10 +228,7 @@
 <!--//main-->
 
 <!--side right-->
-<div class="sidebar_right_container mCustomScrollbar" data-mcs-theme="minimal-dark"><!--scrollbar" id="style-3-->
-    
-    
-      <!-- --------------------Here you slider--------------------------- -->
+<div class="sidebar_right_container mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--notice board-->
     <div id="carousel-noticeboard" class="carousel slide" data-ride="carousel">
       <!-- Indicators -->
@@ -240,7 +237,7 @@
         <li data-target="#carousel-noticeboard" data-slide-to="1"></li>
         <li data-target="#carousel-noticeboard" data-slide-to="2"></li>
       </ol>
-<!-- Wrapper for slides -->
+    <!-- Wrapper for slides -->
       <div class="carousel-inner" role="listbox">
         <?php 
             if(isset($my_latest_notice) && sizeof($my_latest_notice)>0){
@@ -268,8 +265,8 @@
         <div class="item active">
           <img src="<?php echo base_url();?>assets/images/blackboard.jpg" alt="blackboard">
           <div class="carousel-caption">
-            <p class="noti_username">No notice for you</p>
-            <p style="color:#fff;font-size:large">- ISM Admin,  </p>
+            <p class="noti_username">WELCOME TO ISM</p>
+            <p class="txt_grey">- ISM Admin.</p>
           </div>
         </div>
         <?php } ?>
@@ -435,10 +432,8 @@
                                     </div>
                                     <div class="mate_descrip">
                                         <p class="mate_name"><?php echo $value['full_name'];?></p>
-                                        <p class="mate_following">Folowing 34 Authers</p>
-                                        <p>Live in Ghana</p>
                                         <p>Student from <?php echo $value['school_name'];?></p>
-                                        <p><?php echo $value['course_name'];?></p>
+                                        <p class="txt_green"><?php echo $value['course_name'];?></p>
                                         <?php if($value['srid'] != '' && $value['is_delete'] == 0){?>
                                         <button class="btn btn_black_normal" data-type="studyment-request" data-id="<?php echo $value['user_id'];?>" disabled>Request Already Sent</button>
                                         <?php }else{ ?>
@@ -466,7 +461,7 @@
               <?php } else { echo '<code>No more studymates</code>';} ?>
             </div>                        
             
-            <a href="student/studymates_request" class="btn btn_blue">Find More studymates</a>
+            <a href="student/studymates" class="btn btn_blue">Find More studymates</a>
         </div>
     </div>
     <!--//suggested Studymates-->

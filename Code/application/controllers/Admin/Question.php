@@ -104,7 +104,7 @@ class Question extends ADMIN_Controller {
 		$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null);
 		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,$where,null);
 		$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,$where,null);
-		$this->data['topics'] = select(TBL_TOPICS,FALSE,$where,null);
+		$this->data['topics'] = select(TBL_TUTORIAL_TOPIC,FALSE,$where,null);
 
 		$this->form_validation->set_rules('question_text', 'Question Text', 'trim|required');
 		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
@@ -201,7 +201,8 @@ class Question extends ADMIN_Controller {
 		$this->data['question'] = select(
 											TBL_QUESTIONS,
 											TBL_QUESTIONS.'.id,'.TBL_QUESTIONS.'.question_text,'.TBL_QUESTIONS.'.topic_id,'.
-											TBL_QUESTIONS.'.subject_id,'.TBL_QUESTIONS.'.classroom_id,'.TBL_CLASSROOMS.'.course_id',
+											TBL_QUESTIONS.'.subject_id,'.TBL_QUESTIONS.'.classroom_id,'.TBL_CLASSROOMS.'.course_id,'.
+											TBL_QUESTIONS.'.evaluation_notes,'.TBL_QUESTIONS.'.solution',
 											array('where'=>array(TBL_QUESTIONS.'.id'=>$qid)),
 											array(
 												'single'=>TRUE,
@@ -213,20 +214,30 @@ class Question extends ADMIN_Controller {
 													)
 												)
 										);
-		
+
+		//p($this->data['question'],true);
+
+		$where = array('where'=>array( 'is_delete'=>0 ));
+
 		$this->data['question_tags'] = select(TBL_TAGS_QUESTION,FALSE,array('where'=>array('question_id'=>$qid)));
 		$this->data['choices'] = select(TBL_ANSWER_CHOICES,FALSE,array('where'=>array('question_id'=>$qid))); 
-
-		 p($this->data['question']);
-
-		$where = array('where'=>array('is_delete'=>0));
+		$this->data['choice_count'] = count($this->data['choices']);
+		$correct_choice_count = 1;
+		foreach($this->data['choices'] as $q_choice){
+			if($q_choice['is_right'] == TRUE){
+				$this->data['correct_choice_que'] = $correct_choice_count;
+			}
+			$correct_choice_count++;
+		}
 		
+		//p($this->data['question_tags']);
+		//p($this->data['choices']);
+		//die();
+
 		$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null);
 		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0,'course_id'=>$this->data['question']['course_id'])),null);
-			
-		p($this->data['subjects'],true);
-		
-		$this->data['topics'] = select(TBL_TOPICS,FALSE,$where,null);
+		$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,$where,null);
+		$this->data['topics'] = select(TBL_TUTORIAL_TOPIC,FALSE,$where,null); 
 
 		$this->form_validation->set_rules('question_text', 'Question Text', 'trim|required');
 		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
@@ -313,7 +324,7 @@ class Question extends ADMIN_Controller {
 		$course_id = $this->input->post('course_id');
 		
 		$classrooms = select(TBL_CLASSROOMS,TBL_CLASSROOMS.'.id,'.TBL_CLASSROOMS.'.class_name ',
-			array('where'=>array('course_id'=>$course_id))
+			array('where'=>array(TBL_CLASSROOMS.'.course_id'=>$course_id))
 			);
 
 		
@@ -338,7 +349,7 @@ class Question extends ADMIN_Controller {
 		$course_id = $this->input->post('course_id');
 		
 		$subjects = select(TBL_COURSE_SUBJECT,TBL_COURSE_SUBJECT.'.subject_id,sub.subject_name ',
-			array('where'=>array('classroom_id'=>$classroom_id)),
+			array('where'=>array(TBL_COURSE_SUBJECT.'.classroom_id'=>$classroom_id)),
 				array(
 					'join'=>array(
 								array(
