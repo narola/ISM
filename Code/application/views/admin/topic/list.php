@@ -39,7 +39,17 @@
                                         <option value="<?php echo $role['id']; ?>"><?php echo $role['role_name']; ?></option>  
                                     <?php }  } ?>
                                 </select>
-                    </div>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="order" id="order" onchange="filter_data()">
+                                <option value="">Sort By</option>
+                                <option value="name_asc">Name Ascending</option>
+                                <option value="name_desc">Name Descending</option>
+                                <option value="latest">Latest First</option>
+                                <option value="older">Older First</option>
+                            </select>
+                        </div>
+
                         <div class="form-group no_effect search_input">
                         	<input class="form-control" name="q" id="q" type="text" placeholder="Search">
                             <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
@@ -69,7 +79,7 @@
                                 	<h3>Assigned By : <span><?php echo ucfirst($topic['first_name']).' '.ucfirst($topic['last_name']); ?></span></h3>
                                 </div>
                                 <div class="col-sm-12 topic_description">
-                                	<p><?php echo word_limiter(htmlentities($topic['topic_description'],50)); ?></p>
+                                	<p><?php echo html_entity_decode(word_limiter($topic['topic_description'],50)); ?></p>
                                 </div>
                                 <div class="col-sm-12">
                                 	<span class="label label_black">Allocated <?php echo $topic['allocation_count']; ?> times</span>
@@ -94,9 +104,18 @@
                                 </div>
                             </div>
                             <div class="topic_action">
-                           		<a data-toggle="tooltip" data-placement="bottom" data-original-title="Edit" class="icon icon_edit"></a>
-                                <a data-toggle="tooltip" status="<?php echo $topic['is_archived']; ?>" id="archive_<?php echo $topic['id']; ?>" data-placement="bottom" data-original-title="Archive" class="archive icon <?php echo ($topic['is_archived']==0) ? 'icon_zip' : 'icon_zip_active'; ?>"> <i id="archived_loader_<?php echo $topic['id']; ?>" class="fa fa-refresh fa-spin topic_loader" style="display:none;"></i></a>
-                                <a data-toggle="tooltip" id="delete_<?php echo $topic['id']; ?>" data-placement="bottom" data-original-title="Delete" class="delete icon icon_delete"></a>
+                           		<a href="admin/topic/update/<?= $topic['id'] ?>" data-toggle="tooltip" data-placement="bottom" data-original-title="Edit" class="icon icon_edit"></a>
+                                <a data-toggle="tooltip" status="<?php echo $topic['is_archived']; ?>" id="archive_<?php echo $topic['id']; ?>" 
+                                    data-placement="bottom" data-original-title="Archive" 
+                                    class="archive icon <?php echo ($topic['is_archived']==0) ? 'icon_zip' : 'icon_zip_active'; ?>"> 
+                                        <i id="archived_loader_<?php echo $topic['id']; ?>" class="fa fa-refresh fa-spin topic_loader" 
+                                            style="display:none;"></i>
+                                </a>
+                                <a data-toggle="tooltip" id="delete_<?php echo $topic['id']; ?>" data-placement="bottom" 
+                                    href="<?php echo base_url().'admin/topic/delete/'.$topic['id']; ?>"
+                                    onclick="delete_topic(this.href,event)"
+                                    data-original-title="Delete" class="icon icon_delete_color">
+                                </a>
                                 <a class="fa fa-angle-double-down"></a>                                
                             </div>
                             <div class="clearfix"></div>
@@ -135,25 +154,39 @@
             </div>
 <script type="text/javascript">
     
+    function delete_topic(href,event){
+         event.preventDefault();
+         bootbox.confirm("Delete Topic?", function(confirmed) {
+            if(confirmed){
+                window.location.href=href;
+            }
+        });
+    }
+
     function filter_data(){
         var role = $('#role').val();
         var subject = $('#subject').val();
         var q = $('#q').val();
-        
+        var order = $('#order').val();
+
         if(role == '' ){ $('#role').removeAttr('name'); }
         if(subject == '' ){ $('#subject').removeAttr('name'); }
         if(q == ''){ $('#q').removeAttr('name'); }
+        if(order == ''){  $('#order').removeAttr('name'); }
         
         $('#filter').submit();
     }
+
     $( "#filter" ).submit(function() {
         var role = $('#role').val();
         var subject = $('#subject').val();
         var q = $('#q').val();
-        
+        var order = $('#order').val();
+
         if(role == '' ){ $('#role').removeAttr('name'); }
         if(subject == '' ){ $('#subject').removeAttr('name'); }
         if(q == ''){ $('#q').removeAttr('name'); }
+        if(order == ''){  $('#order').removeAttr('name'); }
         
     });
 
@@ -167,7 +200,13 @@
 
     <?php if(!empty($_GET['q'])) { ?>
 		$('#q').val('<?php echo $_GET["q"];?>');	
-    <?php } ?>	
+    <?php } ?>
+
+    <?php if(!empty($_GET['order'])) { ?>
+        $('#order').val('<?php echo $_GET["order"];?>');    
+    <?php } ?> 
+
+
     $("a.status").click(function(){
         var id = $(this).attr('id');
         var topic_id = $(this).parents('ul').data('topic');        

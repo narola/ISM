@@ -26,15 +26,19 @@ class Topic extends ADMIN_Controller {
 		$subject  = $this->input->get('subject');
 		$q  = $this->input->get('q');
 		$where['where']['tut_topic.is_delete']=0;
-		if( !empty($role) || !empty($subject) || !empty($q)){
+		if( !empty($role) || !empty($subject) || !empty($q) || !empty($_GET['order']) ){
 
 			$str = '';
 
 			if(!empty($role)){ $where['where']['user.role_id'] = $role ; $str .= '&role='.$role; }	
-			
 			if(!empty($subject)){ $where['where']['tut_topic.subject_id'] = $subject; $str .='&subject='.$subject; }
-
-            if(!empty($q)){ $where['like']['tut_topic.topic_name'] = $q; $where['or_like']['tut_topic.topic_description'] = $q;$where['or_like']['tut_topic.evaluation_keywords'] = $q;  $str .='&q='.$q; }
+			if(!empty($q)){ 
+					$where['like']['tut_topic.topic_name'] = $q; 
+					$where['or_like']['tut_topic.topic_description'] = $q;
+					$where['or_like']['tut_topic.evaluation_keywords'] = $q;  
+					$str .='&q='.$q; 
+			}
+			if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }		
 
 			$str =  trim($str,'&');
 
@@ -157,43 +161,43 @@ class Topic extends ADMIN_Controller {
 			$where['where_not_in'] = array(TBL_TUTORIAL_GROUPS.'.id' => $allocated_group_ids);
 		}
 
-		$unallocated_groups = select(TBL_TUTORIAL_GROUPS,
-											TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
-											TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
-											TBL_COURSES.'.id as course_id,'.TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name',
-											$where,
-											array(
-												//'limit'=>$config['per_page'],
-												//'offset'=>$offset,
-												'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
-												'join' =>  array(
-											    			array(
-											    				'table' => TBL_TUTORIAL_GROUP_MEMBER,
-											    				'condition' => TBL_TUTORIAL_GROUPS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.group_id',
-											    				'join'=>'right'
-											    				),
-											    			array(
-											    				'table' => TBL_USERS,
-											    				'condition' => TBL_USERS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
-											    				),
-											    			array(
-											    				'table' => TBL_STUDENT_ACADEMIC_INFO,
-											    				'condition' => TBL_USERS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.user_id',
-											    				),
-											    			array(
-											    				'table' => TBL_COURSES,
-											    				'condition' => TBL_COURSES.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.course_id',
-											    				),
-											    			array(
-											    				'table' => TBL_SCHOOLS,
-											    				'condition' => TBL_SCHOOLS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.school_id',
-											    				),
-											    			)
-												)
-											);
-	
-	// p($unallocated_groups, true);
-	$this->data['groups'] = $unallocated_groups;
+			$unallocated_groups = select(TBL_TUTORIAL_GROUPS,
+												TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
+												TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
+												TBL_COURSES.'.id as course_id,'.TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name',
+												$where,
+												array(
+													//'limit'=>$config['per_page'],
+													//'offset'=>$offset,
+													'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
+													'join' =>  array(
+												    			array(
+												    				'table' => TBL_TUTORIAL_GROUP_MEMBER,
+												    				'condition' => TBL_TUTORIAL_GROUPS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.group_id',
+												    				'join'=>'right'
+												    				),
+												    			array(
+												    				'table' => TBL_USERS,
+												    				'condition' => TBL_USERS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
+												    				),
+												    			array(
+												    				'table' => TBL_STUDENT_ACADEMIC_INFO,
+												    				'condition' => TBL_USERS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.user_id',
+												    				),
+												    			array(
+												    				'table' => TBL_COURSES,
+												    				'condition' => TBL_COURSES.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.course_id',
+												    				),
+												    			array(
+												    				'table' => TBL_SCHOOLS,
+												    				'condition' => TBL_SCHOOLS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.school_id',
+												    				),
+												    			)
+													)
+												);
+		
+		// p($unallocated_groups, true);
+		$this->data['groups'] = $unallocated_groups;
 
 
 		//fetch all data of group right joins with tutorial group members
@@ -392,9 +396,10 @@ class Topic extends ADMIN_Controller {
 		exit;
 	}
 
-	 /**
+	/**
 	* function to add new topic
 	*/
+
 	public function add(){
 		
 		//Validation Set For Add Topic Following fields are required and topic name allow some character only
@@ -403,6 +408,10 @@ class Topic extends ADMIN_Controller {
 		$this->form_validation->set_rules('keywords', 'Keywords', 'trim|required');
 		$this->form_validation->set_rules('subjects', 'Subject', 'trim|required');
 		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
+		$this->form_validation->set_rules('classrooms', 'Classroom', 'trim|required');
+		$this->form_validation->set_rules('subjects', 'Subjects', 'trim|required');
+		$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
+		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required');
 
 		$this->data['courses'] = select(TBL_COURSES); // Fetch All Courses From Database
 		$this->data['page_title'] = 'Add New Topic'; // Set Page Title
@@ -418,6 +427,7 @@ class Topic extends ADMIN_Controller {
 				 "parent_id"=>0,
 				 "topic_description"=>htmlentities($this->input->post("topic_desc")),
 				 "subject_id"=>$this->input->post("subjects"),
+				 "topic_id"=>$this->input->post('topic_id'),
 				 "evaluation_keywords"=>$this->input->post("keywords"),
 				 "created_by"=>$this->session->userdata('id'),
 				 "classroom_id"=>2,
@@ -440,12 +450,105 @@ class Topic extends ADMIN_Controller {
 			}else{
 				redirect('admin/topic/add');
 			}
-			
 
-		}
-		
+		}		
 	}
 
+	/**
+	* function to Update Selected topic
+	*/
+	
+	public function update($id){
+		
+		$this->data['page_title'] = 'Update Topic'; // Set Page Title
+		
+		//Validation Set For Add Topic Following fields are required and topic name allow some character only
+		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required|regex_match[/[a-zA-Z& ]$/]', 
+			array('regex_match' => 'The {field} should have only characters,numbers and & special character only.'));
+		$this->form_validation->set_rules('keywords', 'Keywords', 'trim|required');
+		$this->form_validation->set_rules('subjects', 'Subject', 'trim|required');
+		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
+		$this->form_validation->set_rules('classrooms', 'Classroom', 'trim|required');
+		$this->form_validation->set_rules('subjects', 'Subjects', 'trim|required');
+		$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
+		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required');
+
+		$where = array('where'=>array('is_delete'=>'0'));
+		$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null); // Fetch All Courses From Database
+		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,$where,null);
+		$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,$where,null);
+		$this->data['topics'] = select(TBL_TOPICS,FALSE,$where,null);
+
+		$this->data['tutorial_topic'] = select(
+												TBL_TUTORIAL_TOPIC.' tutorial_topic',
+												'tutorial_topic.id,tutorial_topic.topic_name,tutorial_topic.topic_description,
+												tutorial_topic.classroom_id,tutorial_topic.subject_id,tutorial_topic.topic_id,
+												tutorial_topic.evaluation_keywords,classroom.course_id',
+												array('where'=>array('tutorial_topic.is_delete'=>'0','tutorial_topic.id'=>$id)),
+												array(
+													'single'=>TRUE,
+													'join'=>array(
+															array(
+																'table'=>TBL_CLASSROOMS.' as classroom',
+																'condition'=>'tutorial_topic.classroom_id=classroom.id'
+															)
+														)
+												)
+											);
+
+		if($this->form_validation->run() == FALSE){
+
+			$this->template->load('admin/default','admin/topic/edit', $this->data);
+
+		}else{
+
+			$data=array(
+				 "topic_name"=>$this->input->post("topic_name"),
+				 "parent_id"=>0,
+				 "topic_description"=>htmlentities($this->input->post("topic_desc")),
+				 "subject_id"=>$this->input->post("subjects"),
+				 "evaluation_keywords"=>$this->input->post("keywords"),
+				 "created_by"=>$this->session->userdata('id'),
+				 "classroom_id"=>2,
+				 "allocation_count"=>0,
+				 "status"=>"",
+				 "topic_day"=>"Mon",
+				 "created_date"=>date('Y-m-d H:i:s'),
+				 "modified_date"=>date('Y-m-d H:i:s'),
+				 "is_delete"=>0,
+				 "is_archived"=>0,
+				 "is_testdata"=>'yes',
+				);
+
+
+			update(TBL_TUTORIAL_TOPIC,$id,$data);
+
+			$this->session->set_flashdata('success','Topic has been Updated.');
+			
+			if(isset($_POST['save'])){
+				redirect('admin/topic/lists');
+			}else{
+				redirect('admin/topic/add');
+			}
+
+		}		
+	}
+
+	/**
+	* function to Delete Selected topic
+	*/
+	
+	public function delete($id){
+		update(TBL_TUTORIAL_TOPIC,$id,array('is_delete'=>TRUE));
+		$this->session->set_flashdata('success', 'Topic has been deleted Successfully.');
+		redirect('admin/topic/lists');
+	}
+
+	// ----------------------  AJAX FUNCTIONS --------------------------------------------------
+
+	/**
+	* ajax function to fetch Subjects from Classroom 
+	*/
 	public function ajax_get_subjects(){
 		$course_id = $this->input->post('course_id');
 		
@@ -472,6 +575,26 @@ class Topic extends ADMIN_Controller {
 		}
 		echo $new_str;
 	}
+
+	/**
+	* ajax function to fetch Topics from TOPIC Table not from tutorial topic
+	*/
+	public function ajax_get_topics(){
+
+		$subject_id = $this->input->post('subject_id');
+		$topics = select(TBL_TOPICS,FALSE,array('where'=>array('subject_id'=>$subject_id)));
+
+		$new_str = '';		
+		$new_str .= '<option selected disabled >Select Topic</option>';
+
+		if(!empty($topics)){
+			foreach($topics as $topic){
+				$new_str.='<option value="'.$topic['id'].'">'.$topic['topic_name'].'</option>';
+			}	
+		}
+		echo $new_str;
+	}
+
     /**
 	* ajax function to delete the topic 
 	*/

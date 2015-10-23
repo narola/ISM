@@ -330,7 +330,7 @@ class Question extends ADMIN_Controller {
 		
 		$new_str = '';
 		
-		$new_str .= '<option selected value="">Classroom</option>';
+		$new_str .= '<option selected value="" disabled >Classroom</option>';
 		if(!empty($classrooms)){
 			foreach($classrooms as $classroom){
 				$new_str.='<option value="'.$classroom['id'].'">'.$classroom['class_name'].'</option>';
@@ -363,7 +363,7 @@ class Question extends ADMIN_Controller {
 		
 		$new_str = '';
 		
-		$new_str .= '<option selected value="">Subject</option>';
+		$new_str .= '<option selected disabled value="">Subject</option>';
 		if(!empty($subjects)){
 			foreach($subjects as $subject){
 				$new_str.='<option value="'.$subject['subject_id'].'">'.$subject['subject_name'].'</option>';
@@ -388,7 +388,7 @@ class Question extends ADMIN_Controller {
 		
 		$new_str = '';
 		
-		$new_str .= '<option selected value="">Topic</option>';
+		$new_str .= '<option selected value="" disabled >Topic</option>';
 		if(!empty($topics)){
 			foreach($topics as $topic){
 				$new_str.='<option value="'.$topic['id'].'">'.$topic['topic_name'].'</option>';

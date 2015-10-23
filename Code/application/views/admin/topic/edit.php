@@ -14,7 +14,7 @@
     <!--main box-->
     <div class="box">
         <div class="box_header">
-            <h3>Add New Topic</h3>
+            <h3>Update Topic</h3>
         </div>
         <div class="box_body">  
             <form method="post">
@@ -42,6 +42,13 @@
                 <div class="form-group select col-sm-6 no-padding half_size">
                     <select class="form-control" name="classrooms" id="classroom_id" onchange="get_subjects(this.value)">
                         <option value="">Select Classroom</option>
+                        <?php if(!empty($classrooms)){ 
+                        foreach ($classrooms as $classroom) { ?>
+                            <option value="<?php echo $classroom['id']; ?>" <?php echo set_select('classroom_id',$classroom['id']); ?>>
+                                    <?php echo $classroom['class_name']; ?>
+                            </option>        
+                        <?php } 
+                        }?>
                     </select>
                     <a href="#" class="icon icon_add_small"></a>
                     <?php echo myform_error('classrooms'); ?>
@@ -51,6 +58,15 @@
 
                     <select class="form-control" name="subjects" id="subject_id" onchange="get_topic(this.value)">
                         <option value="">Select Subject</option>
+                        
+                        <?php if(!empty($subjects)){ 
+                        foreach ($subjects as $subject) { ?>
+                            <option value="<?php echo $subject['id']; ?>" <?php echo set_select('subject_id',$subject['id']); ?>>
+                                    <?php echo $subject['subject_name']; ?>
+                            </option>        
+                        <?php } 
+                        }?>
+
                     </select>
                     <a href="#" class="icon icon_add_small"></a>
                     <?php echo myform_error('subjects'); ?>
@@ -59,6 +75,13 @@
                 <div class="form-group select col-sm-6 no-padding half_size">
                     <select class="form-control" name="topic_id" id="topic_id">
                         <option value="">Select Topic</option>
+                        <?php if(!empty($topics)){ 
+                        foreach ($topics as $topic) { ?>
+                            <option value="<?php echo $topic['id']; ?>" <?php echo set_select('topic_id',$topic['id']); ?> >
+                                    <?php echo $topic['topic_name']; ?>
+                            </option>        
+                        <?php } 
+                        }?>
                     </select>
                     <a href="#" class="icon icon_add_small"></a>
                     <?php echo myform_error('topic_id'); ?> 
@@ -66,7 +89,9 @@
 
                 <div class="form-group col-sm-6 no-padding half_size">
                     <div class="form-group col-sm-12 no-padding half_size">
-                        <input name="topic_name" type="text" class="form-control" placeholder="Topic">
+                        <input name="topic_name" type="text" class="form-control" 
+                               value="<?php  echo set_value("topic_name") == false ? $tutorial_topic["topic_name"] : set_value("topic_name"); ?>"
+                               placeholder="Topic">
                         <?php echo myform_error('topic_name'); ?>
                     </div>
                 </div>
@@ -74,14 +99,16 @@
                     <div class="form-group col-sm-12 no-padding half_size">
                         <label>Keywords for Evaluations</label>
                         <!-- <textarea name="keywords" class="form-control"></textarea> -->
-                       <input type="text" data-role="tagsinput" name="keywords" id="keywords">
+                       <input type="text" data-role="tagsinput" 
+                       value="<?php  echo set_value("evaluation_keywords") == false ? $tutorial_topic["evaluation_keywords"] : set_value("evaluation_keywords"); ?>"
+                       name="keywords" id="keywords">
                        <?php echo myform_error('keywords'); ?>
                     </div>
                 </div>
 
                 <div class="form-group col-sm-6 no-padding half_size">
                     <label>Text Description</label>
-                    <textarea name="topic_desc" id="editor1" class="form-control"></textarea>
+                    <textarea name="topic_desc" id="editor1" class="form-control"><?php echo $tutorial_topic['topic_description']; ?></textarea>
                 </div>
                
                 <div class="col-sm-12 text-center btn_group">
@@ -100,6 +127,12 @@
             
 <script src="http://cdn.ckeditor.com/4.5.3/standard/ckeditor.js"></script>
 <script>
+        
+    
+    $('#course_id').val('<?php echo $tutorial_topic["course_id"] ?>');        
+    $('#classroom_id').val('<?php echo $tutorial_topic["classroom_id"] ?>');        
+    $('#subject_id').val('<?php echo $tutorial_topic["subject_id"] ?>');        
+    $('#topic_id').val('<?php echo $tutorial_topic["topic_id"] ?>');        
 
     function reset_topic(){
         $('input#keywords').tagsinput('removeAll');
