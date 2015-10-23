@@ -179,7 +179,7 @@ class User_account extends CI_Controller {
 				// ----
 				
 				$this->session->set_flashdata('success','Record Updated');
-				redirect('student/user_account');
+				redirect('student/home');
 
 			}
 			else{
