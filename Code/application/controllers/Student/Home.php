@@ -12,8 +12,7 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
-
-		if($this->session->userdata('user')['group_status'] !== 'active'){
+		if($this->session->userdata('user')['group_status'] != 'active'){
 			$this->session->set_flashdata('error','Chat and topic exam are bdisabled! Because your group is blocked by admin! ');
 		}
 		$user_data = $this->session->userdata('user');
@@ -303,7 +302,7 @@ class Home extends CI_Controller {
 			// If loggedin user accept group and all other members also accepted group then rerirect to "student/home" 
 			if(select(TBL_TUTORIAL_GROUP_MEMBER,null,$where,array('count' => true)) == 5){
 					$this->session->set_flashdata('success','Thanks for acceptting!!');
-					$this->set_session($this->session->userdata('user')['id']);
+				set_session($this->session->userdata('user')['id']);
 					redirect('student/home');
 			}else{
 				$this->session->set_flashdata('error','All group member must accept group to go ahead!!');
@@ -314,7 +313,7 @@ class Home extends CI_Controller {
 
 		//  Redirect User to /home. if all members of group acceptted join request.
 		if($user_group_info['joining_status'] == 1  &&  $total_joined == 5){
-			$this->set_session($this->session->userdata('user')['id']);
+			set_session($this->session->userdata('user')['id']);
 			redirect('student/home');
 		
 		}else if($user_group_info['joining_status'] != 1){   // if loggedin user not accepted group
@@ -373,66 +372,5 @@ class Home extends CI_Controller {
 		    		);
 		$this->load->view('student/group_allocation',$data);
 	}
-	public function set_session($userid){
-
-        $users = select(TBL_USERS.' u',
-                'u.*,s.district_id,s.school_name, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id,co.course_name,si.academic_year,si.course_id,si.classroom_id,si.school_id,(select count(*) cnt from tutorial_group_member where group_id = gu.id) as membercount,cl.class_name,s.district_id,d.district_name',   
-                array('where'   =>  array('u.id' => $userid)),
-                array('join'    =>    
-                   array(
-                        array(
-                            'table' => TBL_USER_PROFILE_PICTURE.' up',
-                            'condition' => 'up.user_id = u.id'
-                            ),
-                        array(
-                            'table' => TBL_TUTORIAL_GROUP_MEMBER.' tm',
-                            'condition' => 'tm.user_id = u.id'
-                            ),
-                        
-                        array(
-                            'table' => TBL_TUTORIAL_GROUPS.' gu',
-                            'condition' => 'gu.id = tm.group_id'
-                            ),
-                        array(
-                            'table' => TBL_STUDENT_ACADEMIC_INFO.' si',
-                            'condition' => 'u.id = si.user_id'
-                            ),
-                        array(
-                            'table' => TBL_SCHOOLS.' s',
-                            'condition' => 's.id = si.school_id'
-                            ),
-                        array(
-                            'table' => TBL_CITIES.' ct',
-                            'condition' => 'ct.id = u.city_id'
-                            ), 
-                        array(
-                            'table' => TBL_COUNTRIES.' cut',
-                            'condition' => 'cut.id = u.country_id'
-                            ), 
-                        array(
-                            'table' => TBL_STATES.' st',
-                            'condition' => 'st.id = u.state_id'
-                            ),
-                        array(
-                            'table' => TBL_COURSES.' co',
-                            'condition' => 'si.course_id = co.id'
-                            ),
-                        array(
-                            'table' => TBL_CLASSROOMS.' cl',
-                            'condition' => 'cl.id = si.classroom_id'
-                            ),
-                        array(
-                            'table' => TBL_DISTRICTS.' d',
-                            'condition' => 'd.id = s.district_id'
-                            )
-                        )
-                    )
-                );
-        $session_data = array(
-            'loggedin' => TRUE,
-            'user'=>$users[0]
-        );
-        $this->session->set_userdata($session_data);
-        return;
-    }
+	
 }
