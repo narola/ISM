@@ -117,18 +117,18 @@
 
                             <input type="hidden" name='total_choices' id="total_choices" value="1" <?php echo set_value('total_choices'); ?> >
                             <input type="hidden" name='correct_choice' id="correct_choice" <?php echo set_value('correct_choice'); ?> >
-                            
-                            <div class="form-group" id="div_1">
-                                
-                                <input type="radio" name="correct_ans" id="correct_ans" <?php echo set_radio('correct_ans',1); ?> 
-                                onchange="correct_choice1(this.value)" value="1">
+                            <div class="choice_wrapper"> 
+                                <div class="form-group" id="div_1">
+                                    
+                                    <input type="radio" name="correct_ans" id="correct_ans" <?php echo set_radio('correct_ans',1); ?> 
+                                    onchange="correct_choice1(this.value)" value="1">
 
-                                <input type="text" name="choices[]" class="form-control"
-                                value="<?php if($_POST) { echo $_POST['choices'][0]; } ?>"   placeholder="Choice 1">
-
-                                <a onclick="add_choices()" class="icon icon_add_small"></a>
+                                    <input type="text" name="choices[]" class="form-control choice_detail"
+                                    value="<?php if($_POST) { echo $_POST['choices'][0]; } ?>"   placeholder="Choice 1">
+                                    <i class="fa fa-plus-circle font-21 component"></i>
+                                    <!-- <a onclick="add_choices()" class="icon icon_add_small"></a> -->
+                                </div>
                             </div>
-                            
                             <?php
 
                                 } else {  
@@ -139,7 +139,7 @@
                             
                             <input type="hidden" name='total_choices' id="total_choices" value="<?php echo set_value('total_choices'); ?>"  >
                             <input type="hidden" name='correct_choice' id="correct_choice" value="<?php echo set_value('correct_choice'); ?>" >
-                            
+                            <div class="choice_wrapper">
                             <?php for($i=1;$i<=$post_total_choice;$i++) { ?>
                                     
                                     <div class="form-group" id="div_<?= $i ?>">
@@ -147,7 +147,7 @@
                                         <input type="radio" name="correct_ans" id="correct_ans" <?php echo set_radio('correct_ans',$i); ?> 
                                         onchange="correct_choice1(this.value)" value="<?= $i ?>">
 
-                                        <input type="text" name="choices[]" class="form-control" 
+                                        <input type="text" name="choices[]" class="form-control choice_detail" 
                                         value="<?php echo $_POST['choices'][$i-1]; ?>" placeholder="Choice <?= $i ?>">
 
                                         <?php if($i == $post_total_choice) { ?>
@@ -158,7 +158,7 @@
                                     </div>
 
                             <?php } ?>
-                            
+                            </div>
 
                             <?php } ?>
 
@@ -269,8 +269,18 @@
         //$('a.icon.icon_subs_small').remove();
         
         var cnt = parseInt($('#total_choices').val())+1;
+        console.log("add cnt: "+cnt);
         $('#total_choices').val(cnt);    
-        $('#ques_tags').before('<div id="div_'+cnt+'" class="form-group"><input type="radio" name="correct_ans" id="correct_ans"  onclick="correct_choice1(this.value)" value="'+cnt+'"><input type="text" name="choices[]" class="form-control" placeholder="Choice '+cnt+'"><a onclick="add_choices()" class="icon icon_add_small"></a> <a onclick="remove_choice('+cnt+')" class="icon icon_subs_small"></a></div>');
+        $('#ques_tags').before('<div id="div_'+cnt+'"  class="form-group "><input type="radio" name="correct_ans" id="correct_ans"  onclick="correct_choice1(this.value)" value="'+cnt+'"><input type="text" name="choices[]" class="form-control" placeholder="Choice '+cnt+'"><a onclick="add_choices()" class="icon icon_add_small"></a> <a onclick="remove_choice('+cnt+')" class="icon icon_subs_small"></a></div>');
+        
+        var i=1;
+        $($('#ques_tags').prevAll('div').get().reverse()).each(function(){
+            var id = 'div_'+ i;
+            $(this).attr('id',id);
+            i++;
+        });
+        console.log($('#ques_tags').prevAll('div'));
+        
     }
 
     function correct_choice1(choice){
@@ -279,8 +289,11 @@
 
     function remove_choice(remove_id){
 
+        console.log('remove_id: '+remove_id);
         var my_cnt = parseInt($('#total_choices').val());
+        console.log("my_cnt: "+my_cnt);
         var cnt = my_cnt-1;
+        console.log("cnt: "+cnt);
         var correct_choice = $('#correct_choice').val();
         
         $('#total_choices').val(cnt);
@@ -289,49 +302,82 @@
             $('#correct_choice').val('');
         }
 
+        var i=1;
+        $($('#ques_tags').prevAll('div').get().reverse()).each(function(){
+            var id = 'div_'+ i;
+            $(this).attr('id',id);
+            i++;
+        });
+
         // for(var j=1;j<my_cnt;j++){
         //     $('#div_'+j+'>input.form-control').attr('placeholder','Choice '+j);
         // }
         
         if(cnt != 1){
             
-            alert('cnt-'+cnt+'my_cnt-'+my_cnt+'remove_id-'+remove_id);
+            console.log('cnt-'+cnt+'my_cnt-'+my_cnt+'remove_id-'+remove_id);
             
             if(my_cnt != remove_id){
-
+               console.log('IF1');
                 $('#div_'+cnt+' > a').remove(); 
                 $('#div_'+cnt+' > a > a').remove(); 
                 var append_link = '<a onclick="remove_choice('+cnt+')" class="icon icon_subs_small"></a>';
-                $('#div_'+cnt).append(append_link);
-
-            }else if(my_cnt == remove_id){
-                alert('IF3');
-                $('#div_'+cnt+' > a').remove(); 
-                $('#div_'+cnt+' > a > a').remove(); 
-                var append_link = '<a onclick="add_choices()" class="icon icon_add_small"></a><a onclick="remove_choice('+cnt+')" class="icon icon_subs_small"></a>';
                 $('#div_'+cnt).append(append_link);
 
             }else{
 
-                alert('IF2');
+                console.log('IF2--->'+cnt);
                 $('#div_'+cnt+' > a').remove(); 
                 $('#div_'+cnt+' > a > a').remove(); 
-                var append_link = '<a onclick="remove_choice('+cnt+')" class="icon icon_subs_small"></a>';
+                var append_link = '<a onclick="add_choices()" class="icon icon_add_small"></a><a onclick="remove_choice('+cnt+')" class="icon icon_subs_small"></a>';
                 $('#div_'+cnt).append(append_link);
             }
 
-
         }else{
-            alert('ELSE');
+            console.log('ELSE');
             var append_link = '<a onclick="add_choices()" class="icon icon_add_small"></a>';
             $('#div_'+cnt).append(append_link);
         }
 
         $('#div_'+remove_id).remove();
+        $('#ques_tags div').each(function(){
+            var id = 'div_'+i;
+            $(this).attr('id',id);
+            i++;
+        });
     }    
 
     $(document).ready(function(){
         $('#my_select').select2();
+        var blank_txt = "<span class='col-md-12 blank_error' style='color:red;'>Please Fill Existing Field.</span>";
+
+        $('.component').on('click', function(){
+            var firstText = $(this).prev('input').val(); 
+            var last_val = $('.choice_wrapper div').last();
+            if( firstText !="" && last_val != ""){
+                var html = '<div class="form-group">';
+                html += '<input type="radio" name="correct_ans" id="correct_ans" onchange="correct_choice1(this.value)" value="1">';
+                html += '<input type="text" name="choices[]" class="form-control choice_detail" value=""   placeholder="Enter Choice">';
+                html += '<i class="fa fa-minus-circle font-21 component_close"></i>';
+                html += '</div>';
+                $(this).parent().parent().append(html);
+                $(this).nextAll('span.blank_error').remove();
+            }
+            else{
+                if( ! $(this).nextAll('span').hasClass('blank_error') ){
+                    $(this).parent().append(blank_txt);
+                }
+            }
+        });
+
+        $(document).on('keyup','.choice_detail',function(){
+            var txtValue = $(this).val();
+            if(txtValue == ''){
+                var nextVal = $(this).parent().next().find('.choice_detail').val();
+                $(this).val(nextVal);
+                $(this).parent().next().remove();
+            }
+        });
     });
 
    // $('#question_type').val('msq') ;
