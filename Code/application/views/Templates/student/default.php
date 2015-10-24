@@ -402,7 +402,7 @@ function toHHMMSS (sec) {
 
 <!--chat-->
 <?php if(  $this->session->userdata('user')['group_status'] == 'active') {?>
-            <div class="chat_container" id = 'chat_container'>
+            <div class="chat_container<?php echo ($url == 'student/home') ? ' home_chat' : '' ?>" id = 'chat_container'>
                  <?php
                  $active_c = active_chat();
                  if(isset($active_c) && !empty($active_c) && $this->session->userdata('user')['id'] != get_cookie('active') && in_array( get_cookie('active'), studymates( $this->session->userdata('user')['id']))){

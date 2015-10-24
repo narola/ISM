@@ -1175,7 +1175,10 @@ textarea.post_input{
 	bottom: 0;
     width: 250px;
     position: absolute;
-    right: 31%
+    right: 16%
+}
+.chat_container.home_chat{
+	right:31%;
 }
 .row{
 	position: relative;
@@ -1187,7 +1190,7 @@ textarea.post_input{
     /* border: 1px solid rgba(0,0,0,0.1); */
     position: fixed;
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
-    bottom: 10px;
+    bottom: 0;
     border-radius: 2px;
     padding-bottom: 50px;
 }
