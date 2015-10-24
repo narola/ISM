@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--filter-->
-    <div class="row filter group_filter small_group">
+    <div class="filter group_filter small_group">
         <div class="col-sm-12">
             <form action="" method="post" id="frm_notice_board">
                 <div class="form-group">
@@ -35,7 +35,7 @@
     </div>
     <!--//filter-->
     <!--topics-->
-    <div class="row">
+    <div class="">
         <div class="col-sm-12 notice_container">
             <?php 
                 if(sizeof($notice_list)>0){

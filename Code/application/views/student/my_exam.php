@@ -1,6 +1,6 @@
 <!--main-->
-<div class="col-sm-7 main main2">
-     <div class="row exam_banner">
+<div class="col-sm-7 main main2 main mCustomScrollbar" data-mcs-theme="minimal-dark">
+     <div class="exam_banner">
         <div class="col-sm-12 text-center">
             <div class="banner_text">
                 <h3>My Exams</h3>
@@ -8,6 +8,7 @@
             </div>
         </div>
      </div>  
+	 <div class="col-sm-12">
         <?php foreach ($subject_list as $key => $value){ ?>
             <!--exam card 1-->
             <div class="col-sm-12 col-md-6 col-lg-4">
@@ -42,6 +43,7 @@
                 </div>
             </div>
     <?php } ?>
+	</div>
 </div>
 <!--//main-->
          

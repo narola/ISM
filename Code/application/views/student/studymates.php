@@ -6,18 +6,21 @@
 </script>
 <style>
         .avatar1 {
-            border: 6px solid rgba(255, 255, 255, 0.1);
-            border-radius: 70%;
+            border: 6px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
             height: 200px;
             margin: 0 auto 15px;
             overflow: hidden;
             width: 200px;
         }
+		.avatar1 img{
+			width:100%;
+		}
     </style>
 <!--main-->
-<div class="col-sm-7 main main2 stydymates"> 
+<div class="col-sm-7 main main2 stydymates mCustomScrollbar" data-mcs-theme="minimal-dark"> 
     <!--tabs-->
-    <div class="tabs_studymate row">
+    <div class="tabs_studymate">
         <button class="btn col-sm-6 no-padding active" id="ms">My Studymates</button>
         <button class="btn col-sm-6 no-padding" id="fs">Find Studymates</button>
     </div>
@@ -131,7 +134,7 @@
     </div>
     <!--//search-->
      <!--suggestion-->
-    <div class="box general_cred">
+    <div class="box general_cred margin_15">
         <div class="box_header">
             <h3>Recommended Studymates</h3>
         </div>
@@ -250,10 +253,13 @@
                     <p data-type="course-name">
                         <span class="fa fa-graduation-cap"></span>
                     </p>
+					<p><span class="fa fa-university"></span>Stanford University</p>
+					<a href="#"><span class="fa fa-bookmark"></span>Following 12 Authers</a>
                     <p>
                     <span class="fa fa-birthday-cake"></span>
                     March 21, 1992
                     </p>
+					<button class="btn btn_green pull-right">Add Studymate</button>
                     <div class="clearfix"></div>
                 </div>
             </div>

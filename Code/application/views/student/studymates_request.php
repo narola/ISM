@@ -1,4 +1,5 @@
-<div class="col-sm-7 main main2 stydymates">  
+<div class="col-sm-7 main main2 stydymates mCustomScrollbar" data-mcs-theme="minimal-dark">  
+<div class="col-sm-12">
 <div class="box general_cred">
     <div class="box_header">
         <h3>Studymate Requests</h3>
@@ -37,8 +38,10 @@
         ?>
     </div>
 </div>
+</div>
 <!--suggestion-->
-<div class="box general_cred">
+<div class="col-sm-12">
+<div class="box general_cred margin_b30">
     <div class="box_header">
         <h3>Recommended Studymates</h3>
     </div>
@@ -112,6 +115,7 @@
         </div>       
         <!--//carousel-->
     </div>
+</div>
 </div>
 <!--//suggestion-->
 </div>

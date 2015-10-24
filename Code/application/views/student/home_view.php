@@ -45,7 +45,8 @@
 
 </script>
  <!--main-->
-<div class="col-sm-7 main">
+<div class="col-sm-7 main mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="col-sm-12">
     <div class="box">
         <textarea id="feed_post" type="text" class="form-control post_input" placeholder="SAY IT"></textarea>
         <!-- <a href="#" class="icon icon_emoji"></a> -->
@@ -224,6 +225,7 @@
     <div class="box text-center load_more mate_descrip">
         <button href="javascript:void(0);" data-type="load_more" data-start="4" class="btn btn_green no-margin">Load More</button>
     </div>
+	</div>
 </div>
 <!--//main-->
 

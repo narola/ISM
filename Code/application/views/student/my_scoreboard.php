@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
-    <div class="row page_header">
+    <div class="page_header">
         <div class="col-sm-12">
             <fieldset>
               <legend><?php echo $my_scoreboard['exam_category'];?></legend>                          
@@ -11,12 +11,12 @@
     </div>
     <!--//breadcrumb-->
     <!--score-->
-    <div class="row">
+    <div class="">
         <div class="col-sm-12 text-center">
             <h1 class="big_score">Your Score Is : <span><?php echo $my_scoreboard['percentage'];?>%</span></h1>
         </div>
     </div>
-    <div class="row evaluation">
+    <div class="evaluation">
         <div class="col-sm-12 col-md-6">
             <div class="box">
                 <div>

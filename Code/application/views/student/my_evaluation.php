@@ -1,7 +1,7 @@
  <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
-    <div class="row page_header exam_evalue_header">
+    <div class="page_header exam_evalue_header">
         <!--header -left-->
         <div class="col-md-6 col-sm-12">
             <div class="row">
@@ -27,7 +27,7 @@
     </div>
     <!--//breadcrumb-->
     <!--answers-->
-    <div class="row answers">
+    <div class="answers">
         <?php 
             if(isset($my_evaluation)){
                 $cnt = count($my_evaluation)/2;

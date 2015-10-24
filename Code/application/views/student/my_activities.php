@@ -1,5 +1,6 @@
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="col-sm-12">
     <div class="box activities">
         <div class="box_body">
             <div class="col-sm-12 border-left">
@@ -192,5 +193,6 @@
 
         </div>
      </div>
+	 </div>
 </div>
 <!--//main-->

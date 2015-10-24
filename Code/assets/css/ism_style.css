@@ -364,6 +364,12 @@ option{
 	border:1px solid rgba(0,0,0,0.1);
 	display: inline-block;
     border-radius: 50%;
+	overflow: hidden;
+	height:220px;
+	width:220px;
+}
+.avatar img{
+	width:100%;
 }
 div.upload {
     width: 208px;
@@ -533,6 +539,7 @@ div.upload input {
 	width:14%;
 	height:100vh;
 	position:fixed;
+	z-index:2;
 }
 .user_profile_img {
     width: 145px;
@@ -561,6 +568,7 @@ div.upload input {
     /*border-bottom: 1px solid #1bc4a3;*/
 }
 .three_tabs>li {
+	width:49%;
     display: inline-block;
     padding: 10px 17px;
     list-style: none;
@@ -575,7 +583,7 @@ div.upload input {
 .three_tabs .badge{
 	position:absolute;
 	top:-8px;
-	right:4px;
+	right:24px;
     font-family: sans-serif;
     font-size: 11px;
     border-radius: 5px;
@@ -642,7 +650,7 @@ div.upload input {
 }
 .personal_menu{
 	text-align:left;
-    padding-bottom: 70px;
+    padding-bottom: 150px;
 }
 .personal_menu li {
     padding: 15px 20px;
@@ -1428,8 +1436,8 @@ input.chat_input {
     z-index: 2;
 	right:-12px;
 }
-.inner_pages .mCustomScrollBox, 
-.inner_pages .mCSB_container{
+.sidebar_left_container  .mCustomScrollBox, 
+.sidebar_left_container  .mCSB_container{
 	overflow:visible;
 }
 
@@ -1537,7 +1545,7 @@ ul.exams_holder li a:after{
 .tut_week{
 	margin-top:-10px;
 	border-top:1px solid #1bc4a3;
-	padding-bottom: 60px;
+	padding-bottom: 140px;
 }
 .tut_week_heading{
 	background-color: #1bc4a3;    
@@ -2039,7 +2047,7 @@ ul.tut_weekdays {
 .tut_group .box_body p, .tut_group .box_footer p{
 	font-size:13px;
 	margin:0;
-	
+	margin-left: 80px;
 }
 .tut_group .box_footer{
 	padding:5px 15px;
@@ -2271,6 +2279,7 @@ ul.tut_weekdays {
 }
 .modal-header.notice_header {
     padding: 15px 15px 7px;
+	box-shadow: 0px 0px 17px -1px rgba(0,0,0,0.4);
 }
 .notice_header {
     background-image: url(../images/add_exam_bg.png);
@@ -2361,6 +2370,7 @@ ul.tut_weekdays {
 	border:none;
 	border-right:1px solid rgba(0,0,0,0.07);
 	float:left;
+	min-height: 250px;
 }
 .studymate_recom .carousel .item .suggested_mates_card:last-child{
 	border:none;
@@ -3101,6 +3111,9 @@ ul.ques_numbers {
 .margin_t15{
 	margin-top:15px;
 }
+.margin_b30{
+	margin-bottom:30px !important;
+}
 .instruction h4 span{
     font-family: sans-serif;
     font-size: 20px;
@@ -3400,6 +3413,7 @@ ul.ques_numbers {
 }
 .basic_info p{
 	margin-bottom:5px;
+	font-size: 16px;
 }
 .basic_info h3{
 	margin-top:10px;
@@ -3408,6 +3422,8 @@ ul.ques_numbers {
 	display:block;
 	margin-bottom:5px;
 	font-size:16px;
+	color:#1bc4a3;
+	text-decoration:none;
 }
 .basic_info .btn_black_normal{
 	margin-right:5px;
@@ -3584,4 +3600,10 @@ ul.ques_numbers {
 }
 .form-horizontal .control-label{
 	text-align:left;
+}
+.suggested_mates_holder  .mate_descrip {
+    min-height: 140px;
+}
+.banner_text h3:last-child{
+	font-size:15px;
 }

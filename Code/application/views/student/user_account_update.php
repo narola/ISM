@@ -24,12 +24,13 @@
     <style>
         .avatar1 {
             border: 6px solid rgba(255, 255, 255, 0.1);
-            border-radius: 70%;
+            border-radius: 50%;
             height: 200px;
             margin: 75px auto 15px;
             overflow: hidden;
             width: 200px;
         }
+		
     </style>
     <script type="text/javascript">
         function readURL(input) {
@@ -143,7 +144,7 @@
                                 <?php 
                                     if(isset($profile_pic)){
                                 ?>
-                            	<div class="avatar1">
+                            	<div class="avatar">
                                 	<img src="<?php echo UPLOAD_URL.'/'.$profile_pic;?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                 </div>
                                 <?php 
