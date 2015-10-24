@@ -181,6 +181,7 @@
                    data:{qid:qid,eid:eid},
                    success:function(data){
                     
+
                     if(data.res == 1){
 
                         //Show Notofication on your right-bottom side

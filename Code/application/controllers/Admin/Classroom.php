@@ -25,27 +25,27 @@ class Classroom extends ADMIN_Controller {
 
         $order = '';
         $str = '';
-        $where['where'][TBL_CLASSROOMS . '.is_delete'] = FALSE;
+        $where['where'][TBL_CLASSROOMS . '.is_delete'] = '0';
         $this->data['page_title'] = 'Class Rooms';
 
         if (!empty($_GET['q']) || !empty($_GET['course_name']) || !empty($_GET['order']) ) {
 
             if (!empty($_GET['q']) || !empty($_GET['order']) ) {
+                
                 $q = $this->input->get('q');
+                
                 $order_get = $this->input->get('order');
 
                 if($order_get == 'name_asc'){ $order = TBL_CLASSROOMS.".class_name asc"; $str.='&order=name_asc';  }
                 if($order_get == 'name_desc'){ $order = TBL_CLASSROOMS.".class_name desc"; $str.='&order=name_desc'; }
                 if($order_get == 'latest'){ $order = TBL_CLASSROOMS.".created_date desc"; $str.='&order=latest'; }
                 if($order_get == 'older'){ $order = TBL_CLASSROOMS.".created_date asc"; $str.='&order=older'; } 
-
             }
 
             if (!empty($_GET['course_name'])) {
                 $course_name = $this->input->get('course_name');
             }
 
-            
             if (!empty($course_name)) {
                 $where['where'][TBL_CLASSROOMS . '.course_id'] = $course_name;
                 $str .='&course_name=' . $course_name;
@@ -53,8 +53,8 @@ class Classroom extends ADMIN_Controller {
             if (!empty($q)) {
 
                 $where['like'][TBL_CLASSROOMS . '.class_name'] = $q;
-                $where['or_like'][TBL_CLASSROOMS . '.class_nickname'] = $q;
-                $where['or_like'][TBL_COURSES . '.course_name'] = $q;
+                // $where['or_like'][TBL_CLASSROOMS . '.class_nickname'] = $q;
+                // $where['or_like'][TBL_COURSES . '.course_name'] = $q;
                 $str.='&q=' . $q;
             }
 
@@ -113,6 +113,7 @@ class Classroom extends ADMIN_Controller {
         $config['last_tag_open'] = '<li>';
         $config['last_tag_close'] = '</li>';
 
+        //p($where);
         //fetch all data of users joins with cities,states,countries 
         $this->data['all_classrooms'] = select(TBL_CLASSROOMS, TBL_CLASSROOMS . '.id,'
                 . TBL_CLASSROOMS . '.class_name,'
@@ -130,6 +131,9 @@ class Classroom extends ADMIN_Controller {
                             )
                 )
         );
+
+        // qry();
+        // p($this->data['all_classrooms'],TRUE);
 
         $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => FALSE)));
 
