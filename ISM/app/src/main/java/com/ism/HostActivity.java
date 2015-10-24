@@ -1,6 +1,7 @@
 package com.ism;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -28,7 +29,9 @@ import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.StudyMatesFragment;
 import com.ism.fragment.TutorialFragment;
 import com.ism.interfaces.FragmentListener;
+import com.ism.login.LoginActivity;
 import com.ism.object.ControllerTopMenuItem;
+import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 
 import java.util.ArrayList;
@@ -186,7 +189,10 @@ public class HostActivity extends Activity implements FragmentListener {
         imgLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                PreferenceData.clearPreference(HostActivity.this);
+	            Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
+	            startActivity(intentLogin);
+	            finish();
             }
         });
 

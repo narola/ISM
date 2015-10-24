@@ -29,13 +29,14 @@ import java.io.IOException;
  * Created by c162 on 07/10/15.
  */
 public class ProfileInformationActivity extends Activity implements View.OnClickListener {
+
     private static final String TAG = ProfileInformationActivity.class.getSimpleName();
-    private Spinner spGender, spSchoolGender, spAcademicYear, spCity, spClass, spCountry, spProgramCourse,  spState;
+
+	private Spinner spGender, spSchoolGender, spAcademicYear, spCity, spClass, spCountry, spProgramCourse,  spState;
     String strArrGender[] = {"Gender","Female", "Male"};
     String strArrList[] = {"Select","Item1", "Item2"};
     private CustomSpinnerAdapter spinnerAdapter;
     private ArrayAdapter<String> adapter;
-    private Button btnSuumit;
     private TextView txtUploadpic;
     private ImageView imgDp;
     private int PICK_IMAGE_REQUEST = 1;
@@ -43,7 +44,7 @@ public class ProfileInformationActivity extends Activity implements View.OnClick
     private TextView txtIfits;
     private TextView txtClickhere;
     private EditText etAge, etUserName, etNewPwd, etNameSchool, etHomeAddress, etFullName,
-            etEmailAddress, etDob, etDistrictOfSchool, etCurrentPwd, etContactNo,  etConfirmPwd;
+		                etEmailAddress, etDob, etDistrictOfSchool, etCurrentPwd, etContactNo,  etConfirmPwd;
     private LayoutInflater mInflator;
     private boolean selected;
     LinearLayout llImageUpload;
@@ -100,7 +101,6 @@ public class ProfileInformationActivity extends Activity implements View.OnClick
          etUserName = (EditText) findViewById(R.id.et_username);
          txtUploadpic = (TextView) findViewById(R.id.txt_uploadpic);
          imgDp = (ImageView) findViewById(R.id.img_dp_post_creator);
-         btnSuumit = (Button) findViewById(R.id.btn_suumit);
          txtYouare.setTypeface(myTypeFace.getRalewayThin());
          txtIfits.setTypeface(myTypeFace.getRalewayThin());
          txtClickhere.setTypeface(myTypeFace.getRalewayThin());
@@ -121,7 +121,6 @@ public class ProfileInformationActivity extends Activity implements View.OnClick
         //  spGender.setTypeface(myTypeFace.getRalewayRegular());
 
          llImageUpload.setOnClickListener(this);
-         btnSuumit.setOnClickListener(this);
         spinnerAdapter = new CustomSpinnerAdapter(ProfileInformationActivity.this, strArrGender);
         selected = false;
         mInflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -189,6 +188,10 @@ public class ProfileInformationActivity extends Activity implements View.OnClick
         spinner.setAdapter(adapter);
     }
 
+	public void onClickSubmit(View view) {
+
+	}
+
     public void openGallary() {
         Intent intent = new Intent();
 // Show only images, no videos or anything else
@@ -219,15 +222,10 @@ public class ProfileInformationActivity extends Activity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_suumit: {
-                Global.myIntent(ProfileInformationActivity.this, WelComeActivity.class);
-            }
-            break;
             case R.id.ll_imageProfile: {
                 openGallary();
             }
             break;
-
         }
     }
 

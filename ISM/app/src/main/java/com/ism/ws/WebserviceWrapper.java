@@ -12,51 +12,56 @@ import com.ism.model.ResponseObject;
  */
 public class WebserviceWrapper {
 
-    private static final String TAG = WebserviceWrapper.class.getSimpleName();
+	private static final String TAG = WebserviceWrapper.class.getSimpleName();
 
-    private Object requestObject;
-    private WebserviceResponse webserviceResponse;
+	private Object requestObject;
+	private WebserviceResponse webserviceResponse;
 
-    //	Webservice flags
-    public static final int LOGIN = 0;
+//	Webservice flags
+	public static final int LOGIN = 1;
+	public static final int FORGOT_PASSWORD = 2;
+	public static final int REQUEST_CREDENTIALS = 3;
 
-    public interface WebserviceResponse {
-        public void onResponse(Object object, Exception error);
-    }
+	public interface WebserviceResponse {
+		public void onResponse(Object object, Exception error, int apiCode);
+	}
 
-    public WebserviceWrapper(Context context, Object requestObject) {
-        this.requestObject = requestObject;
-        webserviceResponse = (WebserviceResponse) context;
-    }
+	public WebserviceWrapper(Context context, Object requestObject) {
+		this.requestObject = requestObject;
+		webserviceResponse = (WebserviceResponse) context;
+	}
 
-    public class WebserviceCaller extends AsyncTask<Integer, Void, Object> {
+	public class WebserviceCaller extends AsyncTask<Integer, Void, Object> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+		private int currentApiCode;
 
-        @Override
-        protected Object doInBackground(Integer... params) {
-            Object responseObject = null;
-            try {
-                switch (params[0]) {
-                    case LOGIN:
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Object doInBackground(Integer... params) {
+			Object responseObject=null;
+			try {
+				currentApiCode = params[0];
+				switch (currentApiCode) {
+					case LOGIN:
 //						res = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObj.class, requestObject);
-                        responseObject = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObject.class, requestObject);
-                        break;
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
-            }
-            return responseObject;
-        }
+						responseObject = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObject.class, requestObject);
+						break;
+				}
+			} catch (Exception e) {
+				Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
+			}
+			return responseObject;
+		}
 
-        @Override
-        protected void onPostExecute(Object o) {
-            webserviceResponse.onResponse(o, null);
-            super.onPostExecute(o);
-        }
-    }
+		@Override
+		protected void onPostExecute(Object o) {
+			webserviceResponse.onResponse(o, null, currentApiCode);
+			super.onPostExecute(o);
+		}
+	}
 
 }

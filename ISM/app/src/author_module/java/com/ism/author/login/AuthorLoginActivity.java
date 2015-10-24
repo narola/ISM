@@ -89,12 +89,12 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
                 PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, true);
                 PreferenceData.setStringPrefs(PreferenceData.USER_NAME, AuthorLoginActivity.this, etUserid.getText().toString().trim());
-                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, etPwd.getText().toString().trim());
+//                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, etPwd.getText().toString().trim());
 
             } else {
                 PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, false);
                 PreferenceData.setStringPrefs(PreferenceData.USER_NAME, AuthorLoginActivity.this, "");
-                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, "");
+//                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, "");
             }
 
 
@@ -145,7 +145,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
             chk_rememberme.setChecked(true);
             etUserid.setText(PreferenceData.getStringPrefs(PreferenceData.USER_NAME, AuthorLoginActivity.this));
-            etPwd.setText(PreferenceData.getStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this));
+//            etPwd.setText(PreferenceData.getStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this));
 
         }
 
@@ -163,7 +163,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
                 if (apiMethodName == WebserviceWrapper.LOGIN) {
 
-                    PreferenceData.setBooleanPrefs(PreferenceData.IS_LOGGED_IN, AuthorLoginActivity.this, true);
+//                    PreferenceData.setBooleanPrefs(PreferenceData.IS_LOGGED_IN, AuthorLoginActivity.this, true);
                     Global.myIntent(AuthorLoginActivity.this, AuthorProfileInformationActivity.class);
 
                     Toast.makeText(AuthorLoginActivity.this, getString(R.string.strloginsuccess),

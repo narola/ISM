@@ -10,12 +10,9 @@ android {
         versionCode 1
         versionName "1.0"
     }
-
     packagingOptions {
-        exclude 'META-INF/ASL2.0'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
-        exclude 'META-INF/DEPENDENCIES'
     }
     buildTypes {
         release {
@@ -43,9 +40,6 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
     }
-    
-    useLibrary 'org.apache.http.legacy'
-
 }
 
 dependencies {

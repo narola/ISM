@@ -5,31 +5,31 @@
     <string name="lesson_notes">Lesson Notes</string>
     <string name="assignment">Assignment</string>
     <string name="exam">Exam</string>
-    <string name="ism_mock">ISM Mock</string>
-    <string name="wassce">Wassce</string>
-    <string name="end_of_term">End of Term</string>
-    <string name="jotter">Jotter</string>
-    <string name="favorite">Favorite</string>
-    <string name="timetable">Timetable</string>
-    <string name="books">Books</string>
-    <string name="forum">Forum</string>
-    <string name="progress_report">Progress Report</string>
-    <string name="add_notes">Add Notes</string>
-    <string name="add_new_favorite">Add new Favorite</string>
+	<string name="ism_mock">ISM Mock</string>
+	<string name="wassce">Wassce</string>
+	<string name="end_of_term">End of Term</string>
+	<string name="jotter">Jotter</string>
+	<string name="favorite">Favorite</string>
+	<string name="timetable">Timetable</string>
+	<string name="books">Books</string>
+	<string name="forum">Forum</string>
+	<string name="progress_report">Progress Report</string>
+	<string name="add_notes">Add Notes</string>
+	<string name="add_new_favorite">Add new Favorite</string>
 
-    <string name="notes">Notes</string>
-    <string name="assignments">Assignments</string>
-    <string name="links">Links</string>
-    <string name="events">Events</string>
-    <string name="Authors">Authors</string>
-    <string name="add_question">Add Question</string>
-    <string name="add_book">Add Book</string>
+	<string name="notes">Notes</string>
+	<string name="assignments">Assignments</string>
+	<string name="links">Links</string>
+	<string name="events">Events</string>
+	<string name="Authors">Authors</string>
+	<string name="add_question">Add Question</string>
+	<string name="add_book">Add Book</string>
 
-    <!--<string-array name="menu_classroom">
-        <item>@string/classwall</item>
-        <item>@string/lesson_notes</item>
-        <item>@string/assignment</item>
-        <item>@string/exam</item>
+	<!--<string-array name="menu_classroom">
+	    <item>@string/classwall</item>
+	    <item>@string/lesson_notes</item>
+	    <item>@string/assignment</item>
+	    <item>@string/exam</item>
     </string-array>-->
 
     <!--<string-array name="menu_assessment">
@@ -47,143 +47,133 @@
     </string-array>-->
 
 
-    <!-- Arti -->
-    <string name="title_activity_login">LoginActivity</string>
-
-    <!--Login string-->
-    <string name="strenteremailorusername">Enter Email/ Username</string>
-    <string name="strenterpassword">Enter Password</string>
-    <string name="strrememberme">Remember Me</string>
-    <string name="strlogin">LOGIN</string>
-    <string name="strforgotpwd"><u>Forgot Password</u></string>
-    <string name="strdonothavecredentials">Do Not Have Credentials, </string>
-    <string name="strclickhereu"><u>Click Here</u></string>
-
-    <!--Profile Info-->
-    <string name="strprofileinformation">PROFILE INFORMATION</string>
-    <string name="stremailaddress">Email Address</string>
-    <string name="strgender">Gender</string>
-    <string name="strfullname">Full Name</string>
-    <string name="strhomeaddress">Home Address</string>
-    <string name="strstate">State</string>
-    <string name="strcity">City</string>
-    <string name="strcountry">Country</string>
-    <string name="strdateofbirth">Date of Birth</string>
-    <string name="strcontactnumber">Contact Number</string>
-    <string name="strage">Age</string>
-    <string name="struploadprofilepicture">UPLOAD PROFILE PICTURE</string>
-
-    <string name="strschoolinformation">SCHOOL INFORMATION</string>
-    <string name="stryouareregisteredforfollowingschool">You are registered for following school.</string>
-    <string name="strifitisnotyourschool">If it\'s not your school.</string>
-    <string name="strnameofschool">Name of School</string>
-    <string name="strclass">Class</string>
-    <string name="stracademicyear">Academic Year</string>
-    <string name="strdistrictofschool">District of School</string>
-    <string name="strprogramcourse">Program/ Course</string>
-    <string name="strclickhere">Click Here</string>
-
-    <string name="strmanageaccount">MANAGE ACCOUNT</string>
-    <string name="strusername">Username</string>
-    <string name="strcurrentpwd">Current Password</string>
-    <string name="strnewpwd">New Password</string>
-    <string name="strconfirmpwd">Confirm Password</string>
-    <string name="strsubmit">Submit</string>
-    <string name="strcancel">Cancel</string>
-
-    <string-array name="list">
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-    </string-array>
 
 
-    <!--welcome-->
-    <string name="strwelcomeline"><b>John,</b> Your tutorial group being processed \n and will be available to you for confirmation </string>
-    <string name="strtutorialgroupis5">Tutorial group is 5 members group of randomly \n selected students, put together to <font color="#81D525">share ideas,</font>\n<font color="#81D525">collaborate</font> and <font color="#81D525">do assignments.</font></string>
+	<!-- Arti -->
+	<string name="title_activity_login">LoginActivity</string>
+
+	<!--Login string-->
+	<string name="username">Enter Username</string>
+	<string name="password">Enter Password</string>
+	<string name="strrememberme">Remember Me</string>
+	<string name="strlogin">LOGIN</string>
+	<string name="strforgotpwd"><u>Forgot Password</u></string>
+	<string name="strdonothavecredentials">Do Not Have Credentials, </string>
+	<string name="strclickhereu"><u>Click Here</u></string>
+
+	<!--Profile Info-->
+	<string name="strprofileinformation">PROFILE INFORMATION</string>
+	<string name="stremailaddress">Email Address</string>
+	<string name="strgender">Gender</string>
+	<string name="strfullname">Full Name</string>
+	<string name="strhomeaddress">Home Address</string>
+	<string name="strstate">State</string>
+	<string name="strcity">City</string>
+	<string name="strcountry">Country</string>
+	<string name="strdateofbirth">Date of Birth</string>
+	<string name="strcontactnumber">Contact Number</string>
+	<string name="strage">Age</string>
+	<string name="struploadprofilepicture">UPLOAD PROFILE PICTURE</string>
+
+	<string name="strschoolinformation">SCHOOL INFORMATION</string>
+	<string name="stryouareregisteredforfollowingschool">You are registered for following school.</string>
+	<string name="strifitisnotyourschool">If it\'s not your school.</string>
+	<string name="strnameofschool">Name of School</string>
+	<string name="strclass">Class</string>
+	<string name="stracademicyear">Academic Year</string>
+	<string name="strdistrictofschool">District of School</string>
+	<string name="strprogramcourse">Program/ Course</string>
+	<string name="strclickhere">Click Here</string>
+
+	<string name="strmanageaccount">MANAGE ACCOUNT</string>
+	<string name="strusername">Username</string>
+	<string name="strcurrentpwd">Current Password</string>
+	<string name="strnewpwd">New Password</string>
+	<string name="strconfirmpwd">Confirm Password</string>
+	<string name="strsubmit">Submit</string>
+	<string name="strcancel">Cancel</string>
+
+	<string-array name="list">
+		<item>1</item><item>1</item><item>1</item><item>1</item><item>1</item><item>1</item>
+	</string-array>
 
 
-    <!--Tutorial group-->
-    <string name="striacceptedgroup">I ACCEPT GROUP</string>
+	<!--welcome-->
+	<string name="strwelcomeline"><b>John,</b> Your tutorial group being processed \n and will be available to you for confirmation </string>
+	<string name="strtutorialgroupis5">Tutorial group is 5 members group of randomly \n selected students, put together to <font color="#81D525">share ideas,</font>\n<font color="#81D525">collaborate</font> and <font color="#81D525">do assignments.</font></string>
 
 
-    <!--raw for post-->
-    <string name="strwriteyourcommenthere">Write Your Comment Here</string>
-    <string name="strsentence">Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?</string>
 
 
-    <!-- Krunal -->
-    <string name="group_name">"Group Name : "</string>
-    <string name="monday">Monday</string>
-    <string name="tuesday">Tuesday</string>
-    <string name="wednesday">Wednesday</string>
-    <string name="thursday">Thursday</string>
-    <string name="friday">Friday</string>
-    <string name="saturday">Saturday</string>
-    <string name="sunday">Sunday</string>
-    <string name="hint_search">Search</string>
-    <string name="review_later">Review later</string>
-    <string name="clear_response">Clear response</string>
-    <string name="skip">Skip</string>
-    <string name="save_n_next">Save and next</string>
-    <string name="start_test">Start test</string>
-
-    <!--Strings for the Submenu Of Office Menu-->
-
-    <string name="gotrending">Go Trending</string>
-    <string name="setquiz">Set Quiz</string>
-    <string name="settrial">Set Trial</string>
-    <string name="progressreport">Progress Report</string>
-    <string name="stradd">ADD</string>
-    <string name="straddnew">ADD NEW</string>
+	<!--Tutorial group-->
+	<string name="striacceptedgroup">I ACCEPT GROUP</string>
 
 
-    <!--Arti-->
-    <!--right menu=> notice-->
-    <string-array name="accordion_notice">
-        <item>NOTICE</item>
-        <item>HIGH SCORE</item>
-        <item>EVENTS</item>
-    </string-array>
+	<!--raw for post-->
+	<string name="strwriteyourcommenthere">Write Your Comment Here</string>
+	<string name="strsentence">Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?</string>
 
-    <integer-array name="accordion_notice_visibility">
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-    </integer-array>
-    <string-array name="accordion_sections">
 
-        <item>HIGH SCORE</item>
-        <item>STUDYMATES</item>
-        <item>SUGGESTED STUDYMATES</item>
-        <item>FIND MORE STUDYMATES</item>
-        <!--<item>Section E</item>-->
-    </string-array>
+	<!-- Krunal -->
+	<string name="group_name">"Group Name : "</string>
+	<string name="monday">Monday</string>
+	<string name="tuesday">Tuesday</string>
+	<string name="wednesday">Wednesday</string>
+	<string name="thursday">Thursday</string>
+	<string name="friday">Friday</string>
+	<string name="saturday">Saturday</string>
+	<string name="sunday">Sunday</string>
+	<string name="hint_search">Search</string>
+	<string name="review_later">Review later</string>
+	<string name="clear_response">Clear response</string>
+	<string name="skip">Skip</string>
+	<string name="save_n_next">Save and next</string>
+	<string name="start_test">Start test</string>
 
-    <integer-array name="accordion_visibility">
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <!--<item>0</item>-->
-    </integer-array>
 
-    <!--Create post-->
-    <string name="strpost">Post</string>
-    <string name="strcreatepost">Create Post</string>
+	<!--Arti-->
+	<!--right menu=> notice-->
+	<string-array name="accordion_notice">
+		<item>NOTICE</item>
+		<item>HIGH SCORE</item>
+		<item>EVENTS</item>
+	</string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="strviewall">7</string>
+	<integer-array name="accordion_notice_visibility">
+		<item>0</item>
+		<item>0</item>
+		<item>0</item>
+	</integer-array>
+	<string-array name="accordion_sections">
 
-    <!--Validation error message strings-->
-    <string name="required">Required!</string>
-    <string name="error_password_length">Minimum 6 characters required!</string>
-    <string name="error_confirm_password_mismatch">Confirm password mismatch!</string>
-    <string name="error_same_old_new_password">Old and new passwords can\'t be same!</string>
-    <string name="error_invalid_email">Invalid email address!</string>
-    <string name="invalid_url">Invalid url!</string>
+		<item>HIGH SCORE</item>
+		<item>STUDYMATES</item>
+		<item>SUGGESTED STUDYMATES</item>
+		<item>FIND MORE STUDYMATES</item>
+		<!--<item>Section E</item>-->
+	</string-array>
+
+	<integer-array name="accordion_visibility">
+		<item>0</item>
+		<item>0</item>
+		<item>0</item>
+		<item>0</item>
+		<!--<item>0</item>-->
+	</integer-array>
+
+	<!--Create post-->
+<string name="strpost">Post</string>
+	<string name="strcreatepost">Create Post</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="strviewall">7</string>
+
+	<!--Validation error message strings-->
+	<string name="required">Required!</string>
+	<string name="error_password_length">Minimum 6 characters required!</string>
+	<string name="error_confirm_password_mismatch">Confirm password mismatch!</string>
+	<string name="error_same_old_new_password">Old and new passwords can\'t be same!</string>
+	<string name="error_invalid_email">Invalid email address!</string>
+	<string name="invalid_url">Invalid url!</string>
 </resources>

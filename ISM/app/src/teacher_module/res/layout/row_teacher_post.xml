@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_parent_teacher_post"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/bg_news_feed">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,7 +47,7 @@
                 android:ellipsize="end"
                 android:lines="4"
                 android:padding="@dimen/d10sp"
-                android:text="@string/strsentence"
+                android:text=""
                 android:textColor="@color/color_gray"
                 android:textSize="@dimen/d18sp" />
 
@@ -67,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d10dp"
-                    android:text="23"
+                    android:text=""
                     android:textColor="@color/color_black"
                     android:textSize="@dimen/d18sp" />
 
@@ -83,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d10dp"
-                    android:text="7"
+                    android:text=""
                     android:textColor="@color/color_black"
                     android:textSize="@dimen/d18sp" />
 
@@ -116,151 +119,11 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <!--<ListView-->
-    <!--android:id="@+id/raw_list_comments"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="100sp"-->
-    <!--android:layout_marginLeft="@dimen/d15dp"-->
-    <!--android:layout_marginRight="@dimen/d15dp" />-->
     <LinearLayout
-        android:id="@+id/ll_all_comments"
+        android:id="@+id/ll_comment_row_inflater"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/d15dp"
-            android:layout_marginRight="@dimen/d15dp">
-
-            <com.ism.helper.CircleImageView
-                android:id="@+id/img_dp_commenter1"
-                android:layout_width="@dimen/d50dp"
-                android:layout_height="@dimen/d50dp"
-                android:layout_margin="@dimen/d15dp"
-                android:contentDescription="@string/app_name"
-                android:padding="@dimen/d10dp"
-                android:src="@drawable/userdp" />
-
-            <LinearLayout
-                android:id="@+id/rl_comments1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/d10dp"
-                android:layout_marginLeft="@dimen/d15dp"
-                android:layout_marginRight="@dimen/d15dp"
-                android:layout_marginTop="@dimen/d15dp"
-                android:layout_toRightOf="@+id/img_dp_commenter1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/txt_username_commenter1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/d5dp"
-                    android:text="Adam Stanger"
-                    android:textColor="@color/color_blue"
-                    android:textSize="@dimen/d15sp" />
-
-                <TextView
-                    android:id="@+id/txt_comments_from_commenter1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:padding="@dimen/d5dp"
-                    android:text="Hi...how are you?"
-                    android:textColor="@color/color_gray"
-                    android:textSize="@dimen/d18dp" />
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rl_comments1"
-                android:layout_marginLeft="@dimen/d15dp"
-                android:layout_toRightOf="@+id/img_dp_commenter1">
-
-                <TextView
-                    android:id="@+id/txt_comment_duration1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/d5dp"
-                    android:text="1 day" />
-
-            </RelativeLayout>
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/d15dp"
-            android:layout_marginRight="@dimen/d15dp">
-
-            <com.ism.helper.CircleImageView
-                android:id="@+id/img_dp_commenter2"
-                android:layout_width="@dimen/d50dp"
-                android:layout_height="@dimen/d50dp"
-                android:layout_margin="@dimen/d15dp"
-                android:contentDescription="@string/app_name"
-                android:padding="@dimen/d10dp"
-                android:src="@drawable/userdp" />
-
-            <LinearLayout
-                android:id="@+id/rl_comments2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/d10dp"
-                android:layout_marginLeft="@dimen/d15dp"
-                android:layout_marginRight="@dimen/d15dp"
-                android:layout_marginTop="@dimen/d15dp"
-                android:layout_toRightOf="@+id/img_dp_commenter2"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/txt_username_commenter2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/d5dp"
-                    android:text="Adam Stanger"
-                    android:textColor="@color/color_blue"
-                    android:textSize="@dimen/d15sp" />
-
-                <TextView
-                    android:id="@+id/txt_comments_from_commenter2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:padding="@dimen/d5dp"
-                    android:text="Hi...how are you?"
-                    android:textColor="@color/color_gray"
-                    android:textSize="@dimen/d18dp" />
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rl_comments2"
-                android:layout_marginLeft="@dimen/d15dp"
-                android:layout_toRightOf="@+id/img_dp_commenter2">
-
-                <TextView
-                    android:id="@+id/txt_comment_duration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/d5dp"
-                    android:text="1 day" />
-
-            </RelativeLayout>
-
-
-        </RelativeLayout>
+        android:orientation="vertical">
 
     </LinearLayout>
 
@@ -273,8 +136,8 @@
         android:layout_marginLeft="@dimen/d15dp"
         android:layout_marginRight="@dimen/d15dp"
         android:layout_marginTop="@dimen/d10dp"
-        android:background="@drawable/edittext_shadow_selector"
         android:hint="@string/strwriteyourcommenthere"
         android:padding="@dimen/d15dp"
-        android:textColorHint="@color/color_text_hint" />
+        android:textColorHint="@color/color_text_hint"
+        android:background="@drawable/bg_news_feed"/>
 </LinearLayout>

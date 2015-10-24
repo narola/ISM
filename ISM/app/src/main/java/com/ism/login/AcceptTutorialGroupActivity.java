@@ -54,6 +54,7 @@ public class AcceptTutorialGroupActivity extends Activity {
             public void onClick(View v) {
                 Intent intentHostActivity = new Intent(AcceptTutorialGroupActivity.this, HostActivity.class);
                 startActivity(intentHostActivity);
+                finish();
             }
         });
 
