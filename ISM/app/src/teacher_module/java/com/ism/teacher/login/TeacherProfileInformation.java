@@ -153,9 +153,10 @@ public class TeacherProfileInformation extends Activity implements View.OnClickL
     public void onClick(View view) {
 
         if (view == btnSubmit) {
-            if (isTextFieldsInputsValid()) {
-                Global.myIntent(TeacherProfileInformation.this, TeacherHomeActivity.class);
-            }
+//            if (isTextFieldsInputsValid()) {
+//                Global.myIntent(TeacherProfileInformation.this, TeacherHomeActivity.class);
+//            }
+            Global.myIntent(TeacherProfileInformation.this, TeacherHomeActivity.class);
 
         } else if (view == llUploadProfilePic) {
 

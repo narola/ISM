@@ -40,7 +40,7 @@ import java.util.ArrayList;
 /**
  * Created by c75 on 16/10/15.
  */
-public class TeacherHomeActivity extends Activity implements FragmentListener {
+public class TeacherHomeActivity extends Activity implements FragmentListener{
 
     private static final String TAG = TeacherHomeActivity.class.getSimpleName();
 
@@ -75,6 +75,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     public static int currentMainFragment;
     public static int currentRightFragment;
     private int currentMainFragmentBg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -427,7 +428,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     break;
 
                 case FRAGMENT_TEACHER_TUTORIAL_GROUP:
-                    imgTutorial.setActivated(false);
+                    //imgTutorial.setActivated(false);
                     rlAddPost.setVisibility(View.GONE);
                     break;
             }
@@ -581,4 +582,21 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         slideOutAnimation.setFillAfter(true);
         view.startAnimation(slideOutAnimation);
     }
+
+//    @Override
+//    public void onResponse(API_METHOD,Object object, Exception error) {
+//        ResponseObject responseObj = (ResponseObject) object;
+//        Log.e(TAG, "onResponse");
+//
+//        // Log.e(TAG,((ResponseObject) object).getMessage());
+//        if (responseObj.getStatus().equalsIgnoreCase("success")) {
+//            Toast.makeText(TeacherHomeActivity.this, " Successful!!!", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(TeacherHomeActivity.this, " Not Successful!!!", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+
+
+
 }

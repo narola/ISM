@@ -365,7 +365,8 @@
                             android:background="@drawable/edittext_shadow_selector"
                             android:hint="@string/strcurrentpwd"
                             android:padding="15dp"
-                            android:textColorHint="@color/color_text_hint" />
+                            android:textColorHint="@color/color_text_hint"
+                            android:inputType="textPassword"/>
 
                     </LinearLayout>
 
@@ -384,7 +385,8 @@
                             android:background="@drawable/edittext_shadow_selector"
                             android:hint="@string/strnewpwd"
                             android:padding="15dp"
-                            android:textColorHint="@color/color_text_hint" />
+                            android:textColorHint="@color/color_text_hint"
+                            android:inputType="textPassword"/>
 
                         <EditText
                             android:id="@+id/et_confirmpwd"
@@ -395,7 +397,8 @@
                             android:background="@drawable/edittext_shadow_selector"
                             android:hint="@string/strconfirmpwd"
                             android:padding="15dp"
-                            android:textColorHint="@color/color_text_hint" />
+                            android:textColorHint="@color/color_text_hint"
+                            android:inputType="textPassword"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

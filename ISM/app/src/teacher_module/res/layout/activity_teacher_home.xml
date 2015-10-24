@@ -238,7 +238,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_controller_left_button_tutorial"
             android:scaleType="centerInside"
-            android:src="@drawable/image_tutorial" />
+            android:src="@drawable/image_tutorial_group" />
 
         <ImageView
             android:id="@+id/img_office"

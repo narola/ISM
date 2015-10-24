@@ -9,17 +9,24 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.login.Global;
+import com.ism.teacher.model.LoginRequest;
+
+import com.ism.teacher.model.ResponseObject;
 import com.ism.object.MyTypeFace;
+
+import com.ism.teacher.helper.ConnectionDetector;
+import com.ism.teacher.ws.WebserviceWrapper;
 import com.ism.utility.InputValidator;
 
 
 /**
  * Created by c75 on 15/10/15.
  */
-public class TeacherLoginActivity extends Activity implements View.OnClickListener {
+public class TeacherLoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
     private static final String TAG = TeacherLoginActivity.class.getSimpleName();
 
@@ -28,6 +35,7 @@ public class TeacherLoginActivity extends Activity implements View.OnClickListen
     CheckBox chkRememberme;
     TextView txtForgotpwd, txtDonothave, txtClickhere;
     private InputValidator inputValidator;
+    private ConnectionDetector connectionDetector;
 
 
     @Override
@@ -42,6 +50,8 @@ public class TeacherLoginActivity extends Activity implements View.OnClickListen
 
     private void initView() {
         MyTypeFace myTypeFace = new MyTypeFace(TeacherLoginActivity.this);
+        inputValidator = new InputValidator(TeacherLoginActivity.this);
+        connectionDetector = new ConnectionDetector(TeacherLoginActivity.this);
 
         txtForgotpwd = (TextView) findViewById(R.id.txt_forgotpwd);
         txtDonothave = (TextView) findViewById(R.id.txt_donothave_);
@@ -51,7 +61,7 @@ public class TeacherLoginActivity extends Activity implements View.OnClickListen
         etTeacherUserid = (EditText) findViewById(R.id.et_teacher_userid);
         etTeacherPassword = (EditText) findViewById(R.id.et_teacher_password);
         chkRememberme = (CheckBox) findViewById(R.id.chk_rememberme);
-        inputValidator = new InputValidator(TeacherLoginActivity.this);
+
 
         etTeacherUserid.setTypeface(myTypeFace.getRalewayRegular());
         etTeacherPassword.setTypeface(myTypeFace.getRalewayRegular());
@@ -75,7 +85,15 @@ public class TeacherLoginActivity extends Activity implements View.OnClickListen
 
             if (isInputsValid()) {
                 Log.e(TAG, "inputs valid");
-                Global.myIntent(this, com.ism.teacher.login.TeacherProfileInformation.class);
+
+                if (connectionDetector.isConnectingToInternet()) {
+                    authenticateUser();
+                } else {
+                    Toast.makeText(TeacherLoginActivity.this, "Please check your internet connection and try again", Toast.LENGTH_SHORT).show();
+                }
+
+
+                //Global.myIntent(this, com.ism.teacher.login.TeacherProfileInformation.class);
             }
 //            else if(!inputValidator.validateStringPresence(etTeacherUserid))
 //            {
@@ -87,6 +105,37 @@ public class TeacherLoginActivity extends Activity implements View.OnClickListen
 //                inputValidator.setError(etTeacherPassword,"Enter Password");
 //            }
 
+        }
+
+    }
+
+    private void authenticateUser() {
+        try {
+            LoginRequest loginRequest = new LoginRequest();
+            loginRequest.setUsername("0YGAJ8793B");
+            loginRequest.setPassword("narola21");
+
+			/*new WebserviceWrapper(LoginActivity.this, loginRequest).new WebserviceCaller()
+                    .execute("http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=AuthenticateUser");*/
+
+            new WebserviceWrapper(TeacherLoginActivity.this, loginRequest).new WebserviceCaller().execute(WebserviceWrapper.LOGIN);
+
+        } catch (Exception e) {
+            Log.e("error", e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public void onResponse(int API_METHOD, Object object, Exception error) {
+        ResponseObject responseObj = (ResponseObject) object;
+        Log.e(TAG, "onResponse");
+
+        Log.e(TAG, ((ResponseObject) object).getMessage());
+        if (responseObj.getStatus().equalsIgnoreCase("success")) {
+            Toast.makeText(TeacherLoginActivity.this, "Login Successful!!!", Toast.LENGTH_SHORT).show();
+            Global.myIntent(this, com.ism.teacher.login.TeacherProfileInformation.class);
+        } else {
+            Toast.makeText(TeacherLoginActivity.this, "Please enter valid username and password", Toast.LENGTH_SHORT).show();
         }
 
     }
