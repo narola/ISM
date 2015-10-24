@@ -98,8 +98,9 @@
     <string name="emaamall">Emma Mall</string>
     <string name="strsentence">Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?</string>
     <string name="strviewall">View All</string>
-
     <string name="sayit">SAY IT</string>
+    <string name="strcomments">All Comments</string>
+    <string name="strclose">Close</string>
 
 
 </resources>

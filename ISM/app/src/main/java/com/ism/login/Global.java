@@ -26,10 +26,6 @@ public class Global {
         context.startActivity(intent);
     }
 
-    public static Context getActivityContext(Context mContext) {
 
-        return mContext;
-
-    }
 
 }

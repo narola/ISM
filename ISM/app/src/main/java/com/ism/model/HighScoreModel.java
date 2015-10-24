@@ -9,7 +9,7 @@ public class HighScoreModel {
 
 
     String strSubjectName;
-    ArrayList<HighScoreStudentModel> arrayListStudent=new ArrayList<HighScoreStudentModel>();
+    ArrayList<HighScoreStudentModel> arrayListStudent = new ArrayList<HighScoreStudentModel>();
 
     public String getStrSubjectName() {
         return strSubjectName;

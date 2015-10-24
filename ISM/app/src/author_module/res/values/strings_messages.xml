@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="strloginsuccess">Login Successful.</string>
+    <string name="loading">loading...</string>
+    <string name="strnetissue">Please check your internet connection.</string>
+    <string name="strerrormessage">:::error</string>
+</resources>

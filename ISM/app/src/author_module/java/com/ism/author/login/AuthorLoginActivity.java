@@ -8,8 +8,12 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.R;
+import com.ism.author.model.LoginRequest;
+import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.WebserviceWrapper;
 import com.ism.login.AppConstant;
 import com.ism.login.Global;
 import com.ism.object.MyTypeFace;
@@ -21,7 +25,7 @@ import com.ism.utility.PreferenceData;
 /**
  * this is the class for user login.
  */
-public class AuthorLoginActivity extends Activity {
+public class AuthorLoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = AuthorLoginActivity.class.getSimpleName();
     EditText etPwd, etUserid;
@@ -79,19 +83,24 @@ public class AuthorLoginActivity extends Activity {
     public void onClickLogin(View view) {
         if (isInputsValid()) {
             Debug.e(TAG, "inputs valid");
+
+
             if (chk_rememberme.isChecked()) {
 
                 PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, true);
                 PreferenceData.setStringPrefs(PreferenceData.USER_NAME, AuthorLoginActivity.this, etUserid.getText().toString().trim());
                 PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, etPwd.getText().toString().trim());
-                PreferenceData.setBooleanPrefs(PreferenceData.IS_LOGGED_IN, AuthorLoginActivity.this, true);
+
             } else {
                 PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, false);
                 PreferenceData.setStringPrefs(PreferenceData.USER_NAME, AuthorLoginActivity.this, "");
                 PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, "");
             }
 
-            Global.myIntent(AuthorLoginActivity.this, AuthorProfileInformationActivity.class);
+
+            authenticateUser();
+
+
         }
     }
 
@@ -114,8 +123,21 @@ public class AuthorLoginActivity extends Activity {
     }
 
     private void authenticateUser() {
+        try {
+            LoginRequest loginRequest = new LoginRequest();
+            loginRequest.setUsername("0YGAJ8793B");
+            loginRequest.setPassword("narola21");
 
+			/*new WebserviceWrapper(LoginActivity.this, loginRequest).new WebserviceCaller()
+                    .execute("http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=AuthenticateUser");*/
+            new WebserviceWrapper(AuthorLoginActivity.this, loginRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                    .execute(WebserviceWrapper.LOGIN);
+
+        } catch (Exception e) {
+            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+        }
     }
+
 
     private void setIsRememberMe() {
 
@@ -130,4 +152,35 @@ public class AuthorLoginActivity extends Activity {
     }
 
 
+    @Override
+    public void onResponse(int apiMethodName, Object object, Exception error) {
+
+        try {
+
+            ResponseObject responseObj = (ResponseObject) object;
+
+            if (responseObj.getStatus().equals(Urls.STATUS_SUCCESS) && responseObj != null) {
+
+                if (apiMethodName == WebserviceWrapper.LOGIN) {
+
+                    PreferenceData.setBooleanPrefs(PreferenceData.IS_LOGGED_IN, AuthorLoginActivity.this, true);
+                    Global.myIntent(AuthorLoginActivity.this, AuthorProfileInformationActivity.class);
+
+                    Toast.makeText(AuthorLoginActivity.this, getString(R.string.strloginsuccess),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            } else {
+
+                Toast.makeText(AuthorLoginActivity.this, responseObj.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+
+            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+
+        }
+
+
+    }
 }

@@ -11,8 +11,10 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/d15dp"
+        android:layout_marginRight="@dimen/d15dp"
         android:layout_marginTop="@dimen/d15dp"
-        android:background="@color/news_feed_separator_color" />
+        android:background="@color/news_feed_post_box_color" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -34,19 +34,19 @@ public class AppConstant {
     public static final String RalewayThin = "Raleway-Thin.ttf";
     public static final String RalewayThinItalic = "Raleway-ThinItalic.ttf";
 
-    public static final String USERID="USERID";
+    public static final String USERID = "USERID";
 
-    public static final String PASSWORD="PASSWORD";
+    public static final String PASSWORD = "PASSWORD";
 
     public static final String imageCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Images";
     public static final String videoCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
     public static final String audioCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Audios";
 
-	/**
-	 *  URLs
-	 */
-	private static final String URL_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
-	public static final String URL_LOGIN = URL_HOST + "AuthenticateUser";
+    /**
+     * URLs
+     */
+    private static final String URL_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
+    public static final String URL_LOGIN = URL_HOST + "AuthenticateUser";
 
     /**
      * Hide Keyboard

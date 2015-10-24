@@ -1,4 +1,8 @@
-package com.ism.ws;
+package com.ism.author.ws;
+
+/**
+ * Created by c166 on 23/10/15.
+ */
 
 import android.util.Log;
 
@@ -14,6 +18,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
 
 /**
  * Created by c161 on 23/10/15.

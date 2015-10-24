@@ -23,92 +23,92 @@ import com.ism.ws.WebserviceWrapper;
  */
 public class LoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse {
 
-	private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final String TAG = LoginActivity.class.getSimpleName();
 
-	private EditText etPwd, etUserid;
+    private EditText etPwd, etUserid;
 
-	private InputValidator inputValidator;
+    private InputValidator inputValidator;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
-		initGlobal();
+        initGlobal();
 
-	}
+    }
 
-	private void initGlobal() {
-		MyTypeFace myTypeFace = new MyTypeFace(this);
-		etPwd = (EditText) findViewById(R.id.et_pwd);
-		etUserid = (EditText) findViewById(R.id.et_userid);
+    private void initGlobal() {
+        MyTypeFace myTypeFace = new MyTypeFace(this);
+        etPwd = (EditText) findViewById(R.id.et_pwd);
+        etUserid = (EditText) findViewById(R.id.et_userid);
 
-		etUserid.setTypeface(myTypeFace.getRalewayRegular());
-		etPwd.setTypeface(myTypeFace.getRalewayRegular());
-		((TextView) findViewById(R.id.txt_donothave)).setTypeface(myTypeFace.getRalewayRegular());
-		((TextView) findViewById(R.id.txt_clickhere)).setTypeface(myTypeFace.getRalewayRegular());
-		((TextView) findViewById(R.id.txt_forgotpwd)).setTypeface(myTypeFace.getRalewayRegular());
+        etUserid.setTypeface(myTypeFace.getRalewayRegular());
+        etPwd.setTypeface(myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_donothave)).setTypeface(myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_clickhere)).setTypeface(myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_forgotpwd)).setTypeface(myTypeFace.getRalewayRegular());
 
-		inputValidator = new InputValidator(LoginActivity.this);
-	}
+        inputValidator = new InputValidator(LoginActivity.this);
+    }
 
-	private void getIsRemember() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		Global.userId = sharedPreferences.getString(AppConstant.USERID, null);
+    private void getIsRemember() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Global.userId = sharedPreferences.getString(AppConstant.USERID, null);
 
-		Global.password = sharedPreferences.getString(AppConstant.PASSWORD, null);
-		if (Global.userId.length() == 0 && Global.password.length() == 0) {
-			etUserid.setText(Global.userId);
-			etPwd.setText(Global.password);
-		}
-	}
+        Global.password = sharedPreferences.getString(AppConstant.PASSWORD, null);
+        if (Global.userId.length() == 0 && Global.password.length() == 0) {
+            etUserid.setText(Global.userId);
+            etPwd.setText(Global.password);
+        }
+    }
 
-	public void onClickLogin(View view) {
-		if (isInputsValid()) {
-			Log.e(TAG, "inputs valid");
-			if (((CheckBox) findViewById(R.id.chk_rememberme)).isChecked()) {
-				PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this, true);
-				PreferenceData.setStringPrefs(PreferenceData.USER_NAME, LoginActivity.this, etUserid.getText().toString().trim());
-				PreferenceData.setBooleanPrefs(PreferenceData.IS_LOGGED_IN, LoginActivity.this, true);
-			}
-			authenticateUser();
-		}
-	}
+    public void onClickLogin(View view) {
+        if (isInputsValid()) {
+            Log.e(TAG, "inputs valid");
+            if (((CheckBox) findViewById(R.id.chk_rememberme)).isChecked()) {
+                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this, true);
+                PreferenceData.setStringPrefs(PreferenceData.USER_NAME, LoginActivity.this, etUserid.getText().toString().trim());
+                PreferenceData.setBooleanPrefs(PreferenceData.IS_LOGGED_IN, LoginActivity.this, true);
+            }
+            authenticateUser();
+        }
+    }
 
-	public void onClickForgotPassword(View view) {
+    public void onClickForgotPassword(View view) {
 
-	}
+    }
 
-	public void onClickClickHere(View view) {
+    public void onClickClickHere(View view) {
 
-	}
+    }
 
-	private boolean isInputsValid() {
-		return inputValidator.validateStringPresence(etUserid) &
-				(inputValidator.validateStringPresence(etPwd) && inputValidator.validatePasswordLength(etPwd));
-	}
+    private boolean isInputsValid() {
+        return inputValidator.validateStringPresence(etUserid) &
+                (inputValidator.validateStringPresence(etPwd) && inputValidator.validatePasswordLength(etPwd));
+    }
 
-	private void authenticateUser() {
-		try {
-			LoginRequest loginRequest = new LoginRequest();
-			loginRequest.setUsername("0YGAJ8793B");
-			loginRequest.setPassword("narola21");
+    private void authenticateUser() {
+        try {
+            LoginRequest loginRequest = new LoginRequest();
+            loginRequest.setUsername("0YGAJ8793B");
+            loginRequest.setPassword("narola21");
 
 			/*new WebserviceWrapper(LoginActivity.this, loginRequest).new WebserviceCaller()
-					.execute("http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=AuthenticateUser");*/
+                    .execute("http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=AuthenticateUser");*/
 
-			new WebserviceWrapper(LoginActivity.this, loginRequest).new WebserviceCaller()
-					.execute(WebserviceWrapper.LOGIN);
+            new WebserviceWrapper(LoginActivity.this, loginRequest).new WebserviceCaller()
+                    .execute(WebserviceWrapper.LOGIN);
 
-		} catch (Exception e) {
-         Log.e("error",e.getLocalizedMessage());
-		}
-	}
+        } catch (Exception e) {
+            Log.e("error", e.getLocalizedMessage());
+        }
+    }
 
-	@Override
-	public void onResponse(Object object, Exception error) {
-		ResponseObject responseObj = (ResponseObject) object;
-		Log.e(TAG, "onResponse");
+    @Override
+    public void onResponse(Object object, Exception error) {
+        ResponseObject responseObj = (ResponseObject) object;
+        Log.e(TAG, "onResponse");
 
-	}
+    }
 }
