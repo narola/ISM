@@ -87,7 +87,7 @@
                             <button class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
                         </div>
                     	<textarea placeholder="SAY IT" data-type="discussion"></textarea>
-                        <a href="#" class="icon icon_emoji"></a>
+                        <!-- <a href="#" class="icon icon_emoji"></a> -->
                                              
                     </div>
                     <!--//input-->

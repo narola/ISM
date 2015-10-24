@@ -12,6 +12,10 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
+
+		if($this->session->userdata('user')['group_status'] !== 'active'){
+			$this->session->set_flashdata('error','Chat and topic exam are bdisabled! Because your group is blocked by admin! ');
+		}
 		$user_data = $this->session->userdata('user');
 		$user_id = $user_data['id'];
 		$user_group_id = $user_data['group_id'];

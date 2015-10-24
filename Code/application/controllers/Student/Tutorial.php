@@ -188,6 +188,7 @@ class Tutorial extends ISM_Controller {
 				'ta.topic_id,
 				t.topic_name,
 				t.topic_description,
+				tg.group_status,
 				te.exam_id,
 				ss.created_date',
 				array('where' => array('ta.group_id' => $this->session->userdata('user')['group_id'],'ta.week_no' => $c_week,'tm.user_id' => $user_id,'YEAR(`ta`.`created_date`)' => $year  )),
@@ -207,13 +208,20 @@ class Tutorial extends ISM_Controller {
 					array(
 						'table' => TBL_STUDENT_EXAM_SCORE. ' ss',
 						'condition' => 'ss.exam_id = te.exam_id AND ss.user_id = '.$user_id
+						),
+					array(
+						'table' => TBL_TUTORIAL_GROUPS.' tg',
+						'condition' => 'tg.id = ta.group_id'
 						)
 					),
 				'single' => true,
 				'limit' => 1
 				)
 			);
-	   
+	   if($data['exam']['exam_status'] !== 'active'){
+	   		redirect('student/home');
+
+	   }
 	    $current_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
 	    //$current_time = DateTime::createFromFormat('Y-m-d', date('Y-m-d H:i:s'));
 	    if(isset($data['exam']) && !empty($data['exam'])){

@@ -48,7 +48,7 @@
 <div class="col-sm-7 main">
     <div class="box">
         <textarea id="feed_post" type="text" class="form-control post_input" placeholder="SAY IT"></textarea>
-        <a href="#" class="icon icon_emoji"></a>
+        <!-- <a href="#" class="icon icon_emoji"></a> -->
         <div class="form-group" id="tag-box">
             <div id="tagged-users" style="margin-bottom:10px;">
             </div>
@@ -501,10 +501,7 @@
     <!--//STM-->
     
 </div>
-<div class="alert alert_notification alert-dismissible" role="alert" id="my_message">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <p data-success="<?php echo $this->session->flashdata('success')?>" data-error="echo $this->session->flashdata('error');?>"><?php echo $this->session->flashdata('success');echo $this->session->flashdata('error');?></p>
-</div>
+
 <!--//side right-->
 <script type="text/javascript"> 
     $(document).ready(function() {
