@@ -1,7 +1,7 @@
 <!--main-->
 <div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
 	<!--breadcrumb-->
-		<div class="row page_header">
+		<div class="page_header">
     	<div class="col-sm-12">
         	<ol class="breadcrumb">
               <li><a href="#">Assessment</a></li>
@@ -12,7 +12,7 @@
     <!--//breadcrumb-->
     <!--filter-->
     <form method="get" id="filter">
-        <div class="row filter exam_filter">
+        <div class="filter exam_filter">
         	<div class="col-sm-12">
             	<div class="form-group">
                     <select class="form-control" name="exam_type" id="exam_type" onchange="filter_data()">
@@ -68,7 +68,7 @@
     
     <!--//filter-->
     <!--exam box-->	
-    <div class="padding_b30">
+    <div class="padding_b30 col-sm-12">
     	<div class="col-sm-12 col-md-6 col-lg-3">
          <div class="box exam_card add_exam text-center">
          	<a href="admin/exam/add">
@@ -100,7 +100,7 @@
             	<div class="exam_year">
                 	<p>Year : <span>Second Year CS</span></p>
                     <a style="cursor:pointer;" class="icon icon_option_dark"></a>
-                    <div class="popover right" role="tooltip">
+                    <div class="popover bottom" role="tooltip">
                         <div class="arrow"></div>
                         <div class="popover-content">
                             <ul>
@@ -136,6 +136,14 @@
 
 
 <script type="text/javascript">
+	$(document).ready(function(){
+		$('.exam_year a').click(function(){	
+			$('.popover').css('display','none');
+			// if($(this).parent('.exam_year').children('.popover').css('display')=='block'){				
+				// $(this).parent('.exam_year').children('.popover').css('display','none');
+			// }		
+		});
+	});
     
     function filter_data(){
         

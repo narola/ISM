@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
-    <div class="row page_header">
+    <div class="page_header">
         <div class="col-sm-8">
             <ol class="breadcrumb">
                 <li><a href="#">Manage</a></li>
@@ -15,7 +15,7 @@
     <!--//breadcrumb-->
     <!--filter-->
     <form method="get" id="filter">
-        <div class="row filter">
+        <div class="filter group_filter">
 
             <div class="col-sm-12">
                 <div class="form-group">
@@ -74,7 +74,7 @@
     <!--//filter-->
 
     <!--row table-->
-    <div class="row tabel_view">
+    <div class="tabel_view">
         <div class="col-sm-12">
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table_user">

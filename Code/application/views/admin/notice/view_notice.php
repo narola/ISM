@@ -1,8 +1,8 @@
 <!--main-->
-<div class="col-sm-7 main main2 noticeboard">
+<div class="col-sm-7 main main2 noticeboard mCustomScrollbar" data-mcs-theme="minimal-dark">
   <!--filter-->
     <form method="get" id="filter">
-            <div class="row filter group_filter">
+            <div class="filter group_filter">
               <div class="col-sm-12">
 
                     <div class="form-group">
@@ -57,7 +57,7 @@
     <!--//filter-->
     <!--noticeboard-->
 
-    <div class="padding_b30">
+    <div class="padding_b30 col-sm-12">
      
      <form method="post" id="bulk_notice" >
         <div class="col-sm-10 text-left margin_t15">

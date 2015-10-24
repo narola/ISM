@@ -31,8 +31,7 @@ class Question extends ADMIN_Controller {
 				$where = array(TBL_QUESTIONS.'.subject_id'=>$subject_id);
 			}else if($classroom_id !='' && $subject_id != '' && $tutorial_topic_id != ''){
 				$where = array(TBL_TUTORIAL_GROUP_QUESTION.'.tutorial_topic_id'=>$tutorial_topic_id);
-			}
-
+			}			
 		}
 		
 			$questions = select(TBL_QUESTIONS,
@@ -40,7 +39,7 @@ class Question extends ADMIN_Controller {
 								TBL_QUESTIONS.'.question_text,'.
 								TBL_SUBJECTS.'.subject_name,'.
 								TBL_USERS.'.full_name',
-			array('where'=>$where),
+				array('where'=>$where),
 				array(
 					'group_by'=>TBL_QUESTIONS.'.id,',
 					'join'=>array(
@@ -65,6 +64,7 @@ class Question extends ADMIN_Controller {
 				);
 
 			foreach ($questions as $key=>$question) {
+				
 				$choices = select(TBL_ANSWER_CHOICES,
 								TBL_ANSWER_CHOICES.'.id,'.
 								TBL_ANSWER_CHOICES.'.choice_text,',
@@ -74,8 +74,8 @@ class Question extends ADMIN_Controller {
 								);
 
 				$questions[$key]['choices']=array_column($choices,'choice_text');
+			}
 
-											}
 			// p($questions,true);
 			$this->data['questions'] = $questions;
 

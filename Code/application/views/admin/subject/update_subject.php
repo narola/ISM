@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
-    <div class="row page_header">
+    <div class=" page_header">
         <div class="col-sm-12">
             <ol class="breadcrumb">
                 <li><a href="admin/user">Admin</a></li>                          
@@ -15,7 +15,7 @@
 
     <!--//filter-->
     <!--message-->
-    <div class="row">
+    <div class="col-sm-12">
         <div class="col-sm-12 new_message">
             <div class="box exam_card">
                 <div class="box_header">

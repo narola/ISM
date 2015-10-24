@@ -1,3 +1,6 @@
+<?php
+$url = uri_string();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -123,10 +126,10 @@ function toHHMMSS (sec) {
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="student/home"><span class="icon icon_menu_home"></span> Home</a></li>
-            <li><a href="student/tutorial"><span class="icon icon_menu_tut"></span> Tutorial</a></li>
-            <li><a href="student/my_classroom_exam"><span class="icon icon_menu_class"></span> Classroom</a></li>
-            <li class="dropdown">
+            <li <?php echo ($url == 'student/home')?'class="active"':''; ?>><a href="student/home"><span class="icon icon_menu_home"></span> Home</a></li>
+            <li <?php echo ($url == 'student/tutorial')?'class="active"':''; ?>><a href="student/tutorial"><span class="icon icon_menu_tut"></span> Tutorial</a></li>
+            <li <?php echo ($url == 'student/my_classroom_exam')?'class="active"':''; ?>><a href="student/my_classroom_exam"><span class="icon icon_menu_class"></span> Classroom</a></li>
+            <li <?php echo ($url == 'student/my_exam')?'class="dropdown active"':'class="dropdown"'; ?>>
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
               <ul class="dropdown-menu">
                 <li><a href="student/my_exam">My Exam</a></li>
@@ -171,7 +174,7 @@ function toHHMMSS (sec) {
                                             </div>
                                             <div class="notification_txt">
                                                 <p><span class="noti_username"><?php echo $value['full_name']?></span> tagged you in a post</p>
-                                                <span class="noti_time">1 hour ago</span>
+                                                <span class="noti_time"><?php echo get_time_format($value['created_date']);?></span>
                                             </div>
                                             <div class="clearfix"></div>
                                             </a>
@@ -205,7 +208,7 @@ function toHHMMSS (sec) {
                     </li>
                 </ul>
                 <!--//notification-->
-                    
+                
                 <?php 
                 if(isset($menu)){
                     if($menu == 'week'){
@@ -219,26 +222,23 @@ function toHHMMSS (sec) {
                             foreach ($weekday as $key => $value) {
                             $d = '';
                             if($key <= 5 ){
-                                $url = 'javascript:void(0);';
+                                $redirect_url = 'javascript:void(0);';
                                 $active = '';
                                if($key+1 <= 3){
                                 $d = 'data-type="s"';
-                                 $url = '#'.$value;
+                                 $redirect_url = '#'.$value;
                                }else{
-                                    $url = "student/exam-instruction";
+                                    $redirect_url = "student/exam-instruction";
                                }
                                if($key+1 == $current_weekday){
                                 $active = 'class="active"';
                                }
                                
-                               echo '<li><a '.$d.' href="'.$url.'" '.$active.'>'.$value.'</a></li>';
+                               echo '<li><a '.$d.' href="'.$redirect_url.'" '.$active.'>'.$value.'</a></li>';
                                 }
                             }
 
-                         ?>
-
-
-                           
+                         ?> 
                         </ul>
                         <div class="clearfix"></div>
                     </div>
@@ -248,12 +248,13 @@ function toHHMMSS (sec) {
                 else{
                 ?>
                  <ul class="personal_menu">
-                    <li><a href="student/home">My Feeds</a></li>
-                    <li><a href="student/my_exam">My Exams</a></li>
-                    <li><a href="student/studymates">Studymates</a></li>
-                    <li><a href="student/my_activities">My Activities</a></li>
-                    <li><a href="student/notice_board">Notice Board</a></li>
+                    <li <?php echo ($url == 'student/home')?'class="active"':''; ?>><a href="student/home">My Feeds</a></li>
+                    <li <?php echo ($url == 'student/my_exam')?'class="active"':''; ?>><a href="student/my_exam">My Exams</a></li>
+                    <li <?php echo ($url == 'student/studymates')?'class="active"':''; ?>><a href="student/studymates">Studymates</a></li>
+                    <li <?php echo ($url == 'student/my_activities')?'class="active"':''; ?>><a href="student/my_activities">My Activities</a></li>
+                    <li <?php echo ($url == 'student/notice_board')?'class="active"':''; ?>><a href="student/notice_board">Notice Board</a></li>
                 </ul>
+
                 <?php
                     } 
                 ?>
