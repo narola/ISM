@@ -44,7 +44,7 @@ public class AppConstant {
 	/**
 	 *  URLs
 	 */
-	private static final String URL_HOST = "http://localhost/ISM/WS_ISM/ISMServices.php?Service=";
+	private static final String URL_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
 	public static final String URL_LOGIN = URL_HOST + "AuthenticateUser";
 
     /**

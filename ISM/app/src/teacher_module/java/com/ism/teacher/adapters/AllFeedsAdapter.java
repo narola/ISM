@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.teacher.model.Comment;
 import com.ism.teacher.model.Data;
 
 import java.util.ArrayList;
@@ -21,10 +23,12 @@ public class AllFeedsAdapter extends
         RecyclerView.Adapter<AllFeedsAdapter.ViewHolder> {
 
     ArrayList<Data> arrayListAllFeedsData;
+    Comment objComment;
+
+
     Context context;
 
     public AllFeedsAdapter(Context context, ArrayList<Data> data) {
-
         this.context = context;
         arrayListAllFeedsData = new ArrayList<>();
         arrayListAllFeedsData = data;
@@ -43,10 +47,10 @@ public class AllFeedsAdapter extends
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.row_teacher_post, parent, false);
+        View post_row_view = inflater.inflate(R.layout.row_teacher_post, parent, false);
 
         // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(contactView);
+        ViewHolder viewHolder = new ViewHolder(post_row_view);
         return viewHolder;
     }
 
@@ -57,6 +61,62 @@ public class AllFeedsAdapter extends
         holder.txtPostContent.setText(arrayListAllFeedsData.get(position).getFeed_text());
         holder.txtPostLikeCounter.setText(arrayListAllFeedsData.get(position).getTotal_like());
         holder.txtPostCommentsCounter.setText(arrayListAllFeedsData.get(position).getTotal_comment());
+
+        if (arrayListAllFeedsData.get(position).getComment().size() > 0) {
+
+
+            if (arrayListAllFeedsData.get(position).getComment().size() > 2) {
+                for (int i = 0; i < 2; i++) {
+
+                    objComment = arrayListAllFeedsData.get(position).getComment().get(i);
+
+//                    if (getCommentInflaterView(objComment) == null) {
+//                        holder.llCommentRowInflater.addView(getCommentInflaterView(objComment));
+//                    }
+//                    else {
+//                        holder.llCommentRowInflater.removeAllViews();
+//                    }
+                    holder.llCommentRowInflater.addView(getCommentInflaterView(objComment));
+
+                }
+            } else {
+                for (int i = 0; i < arrayListAllFeedsData.get(position).getComment().size(); i++) {
+
+                    objComment = arrayListAllFeedsData.get(position).getComment().get(i);
+//                    if (getCommentInflaterView(objComment) == null) {
+//                        holder.llCommentRowInflater.addView(getCommentInflaterView(objComment));
+//
+//                    }
+//
+//                    else {
+//                        holder.llCommentRowInflater.removeAllViews();
+//                    }
+                    holder.llCommentRowInflater.addView(getCommentInflaterView(objComment));
+                }
+            }
+
+        }
+
+
+    }
+
+    private View getCommentInflaterView(Comment commentData) {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View v = layoutInflater.inflate(R.layout.post_comments_list_item, null, false);
+
+        TextView txtCommenterUsername = (TextView) v.findViewById(R.id.txt_username_commenter);
+        TextView txtCommenterComment = (TextView) v.findViewById(R.id.txt_comments_from_commenter);
+        TextView txtCommentDuration = (TextView) v.findViewById(R.id.txt_comment_duration);
+
+
+        txtCommenterUsername.setText(commentData.getUsername());
+        txtCommenterComment.setText(commentData.getComment());
+        txtCommentDuration.setText(commentData.getCommentBy());
+
+
+        return v;
+
     }
 
     @Override
@@ -73,6 +133,7 @@ public class AllFeedsAdapter extends
         public TextView txtUsernamePostCreator, txtPostContent, txtPostLikeCounter, txtPostCommentsCounter, txtViewAllComments;
         public EditText etWritePost;
         public ImageView imgDpPostCreator;
+        public LinearLayout llParentTeacherPost, llCommentRowInflater;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -80,6 +141,8 @@ public class AllFeedsAdapter extends
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
+            llParentTeacherPost = (LinearLayout) itemView.findViewById(R.id.ll_parent_teacher_post);
+            llCommentRowInflater = (LinearLayout) itemView.findViewById(R.id.ll_comment_row_inflater);
 
             imgDpPostCreator = (ImageView) itemView.findViewById(R.id.img_dp_post_creator);
             txtUsernamePostCreator = (TextView) itemView.findViewById(R.id.txt_username_post_creator);
@@ -89,5 +152,7 @@ public class AllFeedsAdapter extends
             txtViewAllComments = (TextView) itemView.findViewById(R.id.txt_view_all_comments);
             etWritePost = (EditText) itemView.findViewById(R.id.et_writePost);
         }
+
+
     }
 }

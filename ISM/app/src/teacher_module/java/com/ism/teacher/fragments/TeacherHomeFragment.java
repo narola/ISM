@@ -59,9 +59,6 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootview = inflater.inflate(R.layout.fragment_teacher_post_home, container, false);
-        //  rootview = inflater.inflate(R.layout.row_teacher_post, container, false);
-
-//        listPostFeed = (ListView) rootview.findViewById(R.id.list_post_feed);
 
         recyclerviewPost = (RecyclerView) rootview.findViewById(R.id.recyclerview_post);
         if (connectionDetector.isConnectingToInternet()) {
@@ -69,12 +66,6 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
         }
 
-        // Create allFeedsAdapter passing in the sample user data
-        //allFeedsAdapter = new AllFeedsAdapter();
-        // Attach the allFeedsAdapter to the recyclerview to populate items
-
-        // Set layout manager to position the items
-//        recyclerviewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
         Log.e(TAG, "called");
         return rootview;
     }
@@ -83,9 +74,6 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
         try {
             GetAllFeedsTeacherRequest getAllFeedsTeacherRequest = new GetAllFeedsTeacherRequest();
             getAllFeedsTeacherRequest.setUser_id("141");
-
-			/*new WebserviceWrapper(LoginActivity.this, loginRequest).new WebserviceCaller()
-                    .execute("http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=AuthenticateUser");*/
 
             new WebserviceWrapper(getActivity(), getAllFeedsTeacherRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebserviceWrapper.GET_ALL_FEEDS);
@@ -128,16 +116,13 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
         ResponseObject responseObj = (ResponseObject) object;
         if (responseObj.getStatus().equalsIgnoreCase("success")) {
 
-            if(responseObj.getData().size()>0)
-            {
-                allFeedsAdapter=new AllFeedsAdapter(getActivity(),responseObj.getData());
+            if (responseObj.getData().size() > 0) {
+                allFeedsAdapter = new AllFeedsAdapter(getActivity(), responseObj.getData());
                 recyclerviewPost.setAdapter(allFeedsAdapter);
                 recyclerviewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                allFeedsAdapter.notifyDataSetChanged();
             }
 
-
-
-            //Toast.makeText(getActivity(), " Successful!!!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getActivity(), " Not Successful!!!", Toast.LENGTH_SHORT).show();
         }
