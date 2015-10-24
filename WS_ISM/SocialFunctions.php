@@ -185,11 +185,14 @@ class SocialFunctions
 	        $string_of_all_ids .= "'".$value."',";
         }
 
+        // to trim the last comma after finishing concating all the ids
         $final_string=rtrim($string_of_all_ids,",");
+
 	   // //echo "test_latest:".$final_string;
 
 
         //SELECT f.`id`, f.`comment`, f.`comment_by`,u.`username`,p.`profile_link` FROM `feed_comment` f INNER JOIN `users` u INNER JOIN user_profile_picture p ON f.`comment_by`=u.id and p.user_id=u.id WHERE feed_id=13
+
 
         //$queryGetAllFeeds = "select * from " . TABLE_FEEDS . " where feed_by IN ('138','140')";
         $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." ,users where feed_by IN (".$final_string.") Limit 20";
@@ -226,7 +229,7 @@ class SocialFunctions
                 $feeds_array['comment']=array();
                 if(sizeof($feeds_array)>0)
                 {
-                    $queryGetAllComments = "SELECT f.`id`, f.`comment`, f.`comment_by`,u.`username`,p.`profile_link` FROM `feed_comment` f INNER JOIN `users` u INNER JOIN user_profile_picture p ON f.`comment_by`=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id'];
+                    $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,u.username,p.profile_link FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id'];
                     $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
                         $allcomment=array();
                     //echo "\n".$queryGetAllComments;
@@ -250,7 +253,7 @@ class SocialFunctions
             //echo "\n\ncomments_query:".$queryGetAllComments;
             //echo "\n\ncomments_count:".$comments_count;
             $status = 1;
-            $data['comments']=$comments_array;
+            //$data['comments']=$comments_array;
             $errorMsg=USER_IS_AVAILABLE;
         } else {
             $status = 2;
