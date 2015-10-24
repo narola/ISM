@@ -294,14 +294,33 @@
         // }
         
         if(cnt != 1){
-            alert('IF');
+            
             alert('cnt-'+cnt+'my_cnt-'+my_cnt+'remove_id-'+remove_id);
-            $('#div_'+cnt+' > a').remove(); 
             
-            $('#div_'+cnt+' > a > a').remove(); 
-            
-            var append_link = '<a onclick="add_choices()" class="icon icon_add_small"></a><a onclick="remove_choice('+cnt+')" class="icon icon_subs_small"></a>';
-            $('#div_'+cnt).append(append_link);
+            if(my_cnt != remove_id){
+
+                $('#div_'+cnt+' > a').remove(); 
+                $('#div_'+cnt+' > a > a').remove(); 
+                var append_link = '<a onclick="remove_choice('+cnt+')" class="icon icon_subs_small"></a>';
+                $('#div_'+cnt).append(append_link);
+
+            }else if(my_cnt == remove_id){
+                alert('IF3');
+                $('#div_'+cnt+' > a').remove(); 
+                $('#div_'+cnt+' > a > a').remove(); 
+                var append_link = '<a onclick="add_choices()" class="icon icon_add_small"></a><a onclick="remove_choice('+cnt+')" class="icon icon_subs_small"></a>';
+                $('#div_'+cnt).append(append_link);
+
+            }else{
+
+                alert('IF2');
+                $('#div_'+cnt+' > a').remove(); 
+                $('#div_'+cnt+' > a > a').remove(); 
+                var append_link = '<a onclick="remove_choice('+cnt+')" class="icon icon_subs_small"></a>';
+                $('#div_'+cnt).append(append_link);
+            }
+
+
         }else{
             alert('ELSE');
             var append_link = '<a onclick="add_choices()" class="icon icon_add_small"></a>';
