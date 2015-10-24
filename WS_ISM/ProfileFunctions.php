@@ -54,16 +54,120 @@ class ProfileFunctions
                 return $this->postFeed($postData);
             }
                 break;
-
+            case "UploadMedia":
+            {
+               return $this->uploadMedia($postData);
+            }
+                break;
             case "TagFriendInFeed":
             {
                 return $this->tagFriendInFeed($postData);
+            }
+                break;
+            case "AddComment":
+            {
+                return $this->addComment($postData);
+            }
+                break;
+            case "LikeFeed":
+            {
+                return $this->likeFeed($postData);
             }
                 break;
 
         }
     }
 
+    /*
+      * LikeFeed
+      */
+
+    public function likeFeed ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $feed_id = validateObject ($postData , 'feed_id', "");
+        $feed_id = addslashes($feed_id);
+
+        $like_by = validateObject ($postData , 'like_by', "");
+        $like_by = addslashes($like_by);
+
+//        $comment = validateObject ($postData , 'comment', "");
+//        $comment = addslashes($comment);
+
+
+        $insertFields="`like_by`, `feed_id`";
+        $insertValues="".$like_by.", ".$feed_id;
+
+        $queryCheckFeed="SELECT * FROM " .TABLE_FEED_LIKE." where like_by =".$like_by." and feed_id=".$feed_id;
+        $resultCheckFeed=mysql_query($queryCheckFeed) or $message=mysql_error();
+       // echo $queryCheckFeed;
+        if(mysql_num_rows($resultCheckFeed))
+        {
+            $val=mysql_fetch_assoc($resultCheckFeed);
+            $feed_liked_id=$val['id'];
+            $queryLikedFeedDelete="DELETE FROM " .TABLE_FEED_LIKE." where id =".$feed_liked_id;
+            $resultLikedFeedDelete=mysql_query($queryLikedFeedDelete) or $message=mysql_error();
+            $status="success";
+            $message="Unliked successfully";
+        }
+        else{
+            $query="INSERT INTO " .TABLE_FEED_LIKE." (".$insertFields.") VALUES (".$insertValues.")";
+            $result=mysql_query($query) or $message=mysql_error();
+
+            $status="success";
+            $message="Liked successfully";
+        }
+
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
+    }
+
+    /*
+       * AddComment
+       */
+
+    public function addComment ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $feed_id = validateObject ($postData , 'feed_id', "");
+        $feed_id = addslashes($feed_id);
+
+        $comment_by = validateObject ($postData , 'comment_by', "");
+        $comment_by = addslashes($comment_by);
+
+        $comment = validateObject ($postData , 'comment', "");
+        $comment = addslashes($comment);
+
+        $insertFields="`comment`, `comment_by`, `feed_id`";
+        $insertValues="'".$comment."', ".$comment_by.", ".$feed_id."";
+
+
+        $query="INSERT INTO " .TABLE_FEED_COMMENT." (".$insertFields.") VALUES (".$insertValues.")";
+        $result=mysql_query($query) or $message=mysql_error();
+        //echo $query;
+        if($result)
+        {
+            $status="success";
+            $message="Comment added successfully";
+        }
+        else
+        {
+            $status="failed";
+            $message="";
+        }
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
+    }
     /*
     * TagFriendInFeed
     */
@@ -73,8 +177,8 @@ class ProfileFunctions
         $data=array();
         $response=array();
 
-        $feed_by = validateObject ($postData , 'feed_by', "");
-        $feed_by = addslashes($feed_by);
+        $feed_id = validateObject ($postData , 'feed_id', "");
+        $feed_id = addslashes($feed_id);
 
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
@@ -82,14 +186,34 @@ class ProfileFunctions
         $tagged_by = validateObject ($postData , 'tagged_by', "");
         $tagged_by = addslashes($tagged_by);
 
-        $query="INSERT INTO" .TABLE_FEEDS_TAGGED_USER."(`user_id`, `feed_id`, `tagged_by`) VALUES ()";
+        $insertFields="`user_id`, `feed_id`, `tagged_by`";
+        $insertValues=$user_id.", ".$feed_id.", ".$tagged_by;
+
+
+        $query="INSERT INTO " .TABLE_FEEDS_TAGGED_USER." (".$insertFields.") VALUES (".$insertValues.")";
+        $result=mysql_query($query) or $message=mysql_error();
+       // echo $query;
+        if($result)
+        {
+            $status="success";
+            $message="Tagged successfully";
+        }
+        else
+        {
+            $status="failed";
+            $message="";
+        }
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
 
     }
 
-    /*
+   /*
     * postFeed
+    *
     */
-
     public function postFeed ($postData)
     {
         $data=array();
@@ -107,20 +231,21 @@ class ProfileFunctions
         $audio_link = addslashes($audio_link);
 
         $images = validateObject ($postData , 'images', "");
-       // $images = addslashes($images);
+        // $images = addslashes($images);
 
         $posted_on = validateObject ($postData , 'posted_on', "");
         $posted_on = addslashes($posted_on);
 
-        $feed_image_dir="user_".$feed_by."/";
-//        if (!mkdir(FEEDS_PICTURE.$feed_image_dir, 0700, true)) {
-//           // die('Failed to create folders...');
-//        }
-        if (!is_dir(FEEDS_PICTURE.$feed_image_dir)) {
-            mkdir(FEEDS_PICTURE.$feed_image_dir, 0777, true);
+        if (!is_dir(FEEDS_MEDIA)) {
+            mkdir(FEEDS_MEDIA, 0777, true);
+        }
+        $feed_media_dir = "user_" . $feed_by . "/";
+        $dir = FEEDS_MEDIA . $feed_media_dir;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777);
         }
         $insertFields="`feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`";
-        $insertValues="".$feed_by.",'".$feed_text."','".$video_link."','".$audio_link."','".$posted_on."'";
+        $insertValues=$feed_by.",'".$feed_text."','".$video_link."','".$audio_link."','".$posted_on."'";
         $queryPostFeed="INSERT INTO ".TABLE_FEEDS."(".$insertFields.") VALUES (".$insertValues.")";
 
         $result=mysql_query($queryPostFeed) or $message=mysql_error();
@@ -129,7 +254,7 @@ class ProfileFunctions
             $feed_id=mysql_insert_id();
             if($video_link!=null)
             {
-
+                //$this->uploadMedia($feed_id,"video",$feed_media_dir);
             }
             $i=0;
             if($images!=null)
@@ -140,8 +265,8 @@ class ProfileFunctions
                     {
 
                         $feed_image_name = "IMG-" . date("Ymd-his").$i++.".png";
-                        $feed_image_link = $feed_image_dir.$feed_image_name;
-                        file_put_contents(FEEDS_PICTURE.$feed_image_link, base64_decode($feed_image));
+                        $feed_image_link = $feed_media_dir.$feed_image_name;
+                        file_put_contents(FEEDS_MEDIA.$feed_image_link, base64_decode($feed_image));
                         $queryInsertImage="INSERT INTO `feed_image`(`feed_id`, `image_link`) VALUES (".$feed_id.",'".$feed_image_link."')";
                         $resultImageUploading=mysql_query($queryInsertImage) or $message=mysql_error();
                     }
@@ -151,12 +276,117 @@ class ProfileFunctions
             $message="“Post successfully submitted";
             $status="success";
         }
+        else
+        {
+            $status="failed";
+        }
 
-        $response['status']="success";
+        $response['status']=$status;
         $response['message']=$message;
         $response['data']=$data;
         return $response;
     }
+
+    public function uploadMedia($postData)
+    {
+
+
+        $dir = '';
+        $mediaName = '';
+        $created_date = date("Y-m-d H:i:s");
+        //create Random String.
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        //generate random string with minimum 5 and maximum of 10 characters
+        $str = substr(str_shuffle($chars), 0, 8);
+        //add extension to file
+        $name = $str;
+        $feed_id=$_POST['feed_id'];
+
+        $feed_by=$_POST['feed_by'];
+        $mediaType=$_POST['mediaType'];
+
+        if (!is_dir(FEEDS_MEDIA)) {
+            mkdir(FEEDS_MEDIA, 0777, true);
+        }
+        $feed_media_dir = "user_" . $feed_by . "/";
+        $dir = FEEDS_MEDIA . $feed_media_dir;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777);
+        }
+        if("video"==$mediaType)
+        {
+            if ($_FILES["video_link"]["error"] > 0) {
+                $message = $_FILES["video_link"]["error"];
+
+            } else {
+                // Image 5 = Video 6 = Audio 7
+
+                $mediaName = $name . '.mp4';
+                $uploadDir = $dir;
+                $uploadFile = FEEDS_MEDIA.$feed_media_dir . $mediaName;
+                if (move_uploaded_file($_FILES['video_link']['tmp_name'], $uploadFile)) {
+                    //store image data.
+                    $link=$feed_media_dir . $mediaName;
+                    $procedure_insert_set = "CALL UPDATE_VIDEO_LINK ('".$link."','".$feed_id."' )";
+                    $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
+                    $status = "1";
+                    $message = "Successfully uploaded!.";
+                } else {
+                    $status = 2;
+                    $message = "Failed to upload media on server.";
+                }
+            }
+        }
+        else if("audio"==$mediaType)
+        {
+            if ($_FILES["audio_link"]["error"] > 0) {
+                $message = $_FILES["audio_link"]["error"];
+                $status=2;
+            } else {
+                $mediaName = $name . '.mp3';
+
+                $uploadDir = $dir;
+                $uploadFile = FEEDS_MEDIA .$feed_media_dir. $mediaName;
+                if (move_uploaded_file($_FILES['audio_link']['tmp_name'], $uploadFile)) {
+                    //store image data.
+
+                    $link=$feed_media_dir . $mediaName;
+                    $procedure_insert_set = "CALL UPDATE_AUDIO_LINK ('".$link."','".$feed_id."' )";
+                    $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
+                    $status = "1";
+                    $message = "Successfully uploaded!.";
+                } else {
+                    $status = 2;
+                    $message = "Failed to upload media on server.";
+
+                }
+            }
+
+        }
+
+
+        $data['status']=$status;
+        $data['link']=$link;
+        $data['message']=$message;
+        return $data;
+
+    }
+
+
+    /** Get Extension
+     * @param $str
+     * @return string
+     */
+    private function getExtension($str)
+    {
+        $i = strrpos($str,".");
+        if (!$i) { return ""; }
+
+        $l = strlen($str) - $i;
+        $ext = substr($str,$i+1,$l);
+        return $ext;
+    }
+
 
     public function forgotPassword ($postData)
     {
@@ -336,7 +566,9 @@ class ProfileFunctions
 
     public function authenticateUser($postData)
     {
-        $post=array();
+
+        $data=array();
+        $data['data']=array();
         $obj = new CI_Encrypt();
 
         $username = validateObject ($postData , 'username', "");
@@ -361,9 +593,9 @@ class ProfileFunctions
                 $decrypted_password = $obj->decode($encryptedPassword);
                 //echo $decrypted_password;
                 if($decrypted_password==$password)
-                {
+                {$post=array();
                     $message=CREDENTIALS_EXITST;
-                    $post['userid']=$val['id'];
+                    $post['user_id']=$val['id'];
                     $post['username']=$val['username'];
                     $status="success";
 
@@ -402,6 +634,7 @@ class ProfileFunctions
                         }
                         else if($status==0)
                         {
+                            $post=array();
                             //$queryData="SELECT * FROM `auto_generated_credential` t1 INNER JOIN `schools`t2 INNER JOIN `courses`t3 ON t1.school_id=t2.id and t1.course_id=t3.id where `username`='WJL91RU473'";
                             $post['school_id']=$val['school_id'];
                             $post['school_name']=$val['school_name'];
@@ -411,10 +644,12 @@ class ProfileFunctions
                             $post['role_id']=$val['role_id'];
                             $status="success";
                             $message=CREDENTIALS_EXITST;
+
                         }
                     }
                     else
                     {
+                       // $post="";
                         $status="failed";
                         $message=CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
                     }
@@ -423,13 +658,15 @@ class ProfileFunctions
             }
             else
             {
+               // $post="";
                 $status="failed";
                $message = CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
             }
 
         }
         // AND password='".$encryptedPassword."'
-        $data['data']=$post;
+
+        array_push($data['data'],$post);
         $data['message'] = $message;
         $data['status'] = $status;
 

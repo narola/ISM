@@ -26,12 +26,12 @@ function pr($arr = null, $exit = 1, $append_text = null) {
     return $value;
 }
 
-function validateObject($object, $key, $placeHolder) {
+function validateObject($object, $keyWord, $placeHolder) {
 
-    if(isset($object -> $key))
+    if(isset($object -> $keyWord))
     {
 //        $value = validateValue($object->$key, "");
-        return $object->$key;
+        return $object->$keyWord;
     }
     else
     {
@@ -93,5 +93,16 @@ function decryptPassword( $str ) {
     return( $qDecoded );
 }
 
+function gen_random_string()
+{
+    $chars ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";//length:36
+    $final_rand='';
+    for($i=0;$i<8; $i++)
+    {
+        $final_rand .= $chars[ rand(0,strlen($chars)-1)];
+
+    }
+    return $final_rand;
+}
 
 ?>

@@ -13,15 +13,18 @@ class SocialFunctions
         switch ($service) {
 
             case "GetAllFeeds": {
-                return $this->getAllFeedsFunction($_POST['user_id']);
+                return $this->getAllFeedsFunction($postData);
             }
                 break;
         }
     }
 
 
-    public function getAllFeedsFunction($user_id)
+    public function getAllFeedsFunction($postData)
     {
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
         $final_followers = $this->getAllFollowtoFromFollowers($user_id);
         $final_mates = $this->getAllMatesFromStudyMates($user_id);
         $final_teachers = $this->getAllTeachersFromStudentTeacher($user_id);
@@ -49,7 +52,7 @@ class SocialFunctions
         $result = mysql_query($query) or
         $errorMsg = mysql_error();
         $my_row_count = mysql_num_rows($result);
-        echo "followers:" . $my_row_count;
+        //echo "followers:" . $my_row_count;
         $followers_array = array();
         if ($my_row_count > 0) {
             while ($followers = mysql_fetch_assoc($result)) {
@@ -67,7 +70,7 @@ class SocialFunctions
 
         $mates_row_count = mysql_num_rows($result_mates);
         $mates_array = array();
-        echo "mates:" . $mates_row_count;
+        //echo "mates:" . $mates_row_count;
         if ($mates_row_count > 0) {
             while ($mates = mysql_fetch_assoc($result_mates)) {
                 $mates_array[] = $mates['mate_id'];
@@ -85,7 +88,7 @@ class SocialFunctions
 
         $teachers_row_count = mysql_num_rows($result_teachers);
         $teachers_array = array();
-        echo "teachers:" . $teachers_row_count;
+        //echo "teachers:" . $teachers_row_count;
         if ($teachers_row_count > 0) {
             while ($teachers = mysql_fetch_assoc($result_teachers)) {
                 $teachers_array[] = $teachers['teacher_id'];
@@ -104,7 +107,7 @@ class SocialFunctions
         $result_group_ids = mysql_query($query_group_id) or $errorMsg = mysql_error();
 
         $group_ids_count = mysql_num_rows($result_group_ids);
-        echo "groups:" . $group_ids_count;
+        //echo "groups:" . $group_ids_count;
         $group_id_array = array();
 
         if ($group_ids_count > 0) {
@@ -125,7 +128,7 @@ class SocialFunctions
         $result_id_from_user_table = mysql_query($query_id_from_user_table) or $errorMsg = mysql_error();
         $users_count = mysql_num_rows($result_id_from_user_table);
         $users_array = array();
-        echo "all_users:" . $users_count;
+        //echo "all_users:" . $users_count;
         if ($users_count > 0) {
             while ($users = mysql_fetch_assoc($result_id_from_user_table)) {
                 $users_array[] = $users['id'];
@@ -144,7 +147,7 @@ class SocialFunctions
         $feed_id_counts = mysql_num_rows($result_feed_id);
         $feeds_id_array = array();
 
-        echo "allfeeds_tagged:" . $feed_id_counts;
+        //echo "allfeeds_tagged:" . $feed_id_counts;
 
         if ($feed_id_counts > 0) {
             while ($feeds_ids = mysql_fetch_assoc($result_feed_id)) {
@@ -183,7 +186,7 @@ class SocialFunctions
         }
 
         $final_string=rtrim($string_of_all_ids,",");
-	   // echo "test_latest:".$final_string;
+	   // //echo "test_latest:".$final_string;
 
 
         //SELECT f.`id`, f.`comment`, f.`comment_by`,u.`username`,p.`profile_link` FROM `feed_comment` f INNER JOIN `users` u INNER JOIN user_profile_picture p ON f.`comment_by`=u.id and p.user_id=u.id WHERE feed_id=13
@@ -196,8 +199,8 @@ class SocialFunctions
         $feeds_count = mysql_num_rows($resultGetAllFeeds);
         $feeds_array = array();
         $allfeeds=array();
-        echo "allfeeds:" . $feeds_count;
-        echo "\n\nfinal_query:".$queryGetAllFeeds;
+        //echo "allfeeds:" . $feeds_count;
+        //echo "\n\nfinal_query:".$queryGetAllFeeds;
 
 
         /*
@@ -226,7 +229,7 @@ class SocialFunctions
                     $queryGetAllComments = "SELECT f.`id`, f.`comment`, f.`comment_by`,u.`username`,p.`profile_link` FROM `feed_comment` f INNER JOIN `users` u INNER JOIN user_profile_picture p ON f.`comment_by`=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id'];
                     $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
                         $allcomment=array();
-                    echo "\n".$queryGetAllComments;
+                    //echo "\n".$queryGetAllComments;
                     //for counting the number of rows for query result
                     $comments_count = mysql_num_rows($resultGetAlComments);
 
@@ -244,8 +247,8 @@ class SocialFunctions
                 }
                 $allfeeds[]=$feeds_array;
             }
-            echo "\n\ncomments_query:".$queryGetAllComments;
-            echo "\n\ncomments_count:".$comments_count;
+            //echo "\n\ncomments_query:".$queryGetAllComments;
+            //echo "\n\ncomments_count:".$comments_count;
             $status = 1;
             $data['comments']=$comments_array;
             $errorMsg=USER_IS_AVAILABLE;

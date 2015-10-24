@@ -33,6 +33,9 @@ switch ($_REQUEST['Service'])
     case "ForgotPassword":
     case "PostFeed":
     case "TagFriendInFeed":
+    case "UploadMedia":
+    case "AddComment":
+    case "LikeFeed":
     {
   	 include_once 'ProfileFunctions.php';
      $profile = new ProfileFunctions();
