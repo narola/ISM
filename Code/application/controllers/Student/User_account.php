@@ -237,7 +237,7 @@ class User_account extends CI_Controller {
 
 				/*---create login session----*/
 	            
-	            $this->set_session($insertid);
+	            set_session($insertid);
 	            
 	            $get_grade = select(TBL_SCHOOLS,'school_grade',array('where'=>array('id'=>$school_id)),1);
 	            $school_grade = $get_grade['school_grade'];

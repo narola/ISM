@@ -401,7 +401,7 @@ function toHHMMSS (sec) {
     </div>
 
 <!--chat-->
-<?php if(  $this->session->userdata('user')['group_status'] === 'active') {?>
+<?php if(  $this->session->userdata('user')['group_status'] == 'active') {?>
             <div class="chat_container" id = 'chat_container'>
                  <?php
                  $active_c = active_chat();

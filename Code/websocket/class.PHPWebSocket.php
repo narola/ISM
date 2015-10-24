@@ -522,6 +522,8 @@ class PHPWebSocket {
 
 
 
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -695,6 +697,8 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
 
 
 
@@ -2214,43 +2218,48 @@ class PHPWebSocket {
             $date = new DateTime(date("Y-m-d H:i:s"));
             $c_week = $date->format("W");
             $year = date("Y");
-            $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
+            $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`,`tg`.`group_status` ,`t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
                     . "FROM `tutorial_topic` `t` "
                     . "LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` "
                     . "LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` "
+                    . "LEFT JOIN `tutorial_groups` `tg` ON `tg`.`id` = `tm`.`group_id` "
                     . "LEFT JOIN `tutorial_topic_exam` `te` ON `te`.`tutorial_topic_id` = `ta`.`topic_id` "
                     . "LEFT JOIN `student_exam_score` `ss` ON `ss`.`exam_id` = `te`.`exam_id` AND `ss`.`user_id` = $userID "
                     . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' LIMIT 1";
 
             $row = mysqli_query($link, $query);
-
+            echo mysqli_error($link);
             if (mysqli_num_rows($row) == 1) {
                 $data['exam'] = mysqli_fetch_assoc($row);
+                if ($data['exam']['group_status'] == 'active') {
+                    $query = "INSERT INTO " . TBL_STUDENT_EXAM_SCORE . " (user_id, exam_id)"
+                            . " SELECT * FROM (SELECT '" . $userID . "', '" . $data['exam']['exam_id'] . "') AS tmp "
+                            . " WHERE NOT EXISTS ( SELECT user_id,exam_id FROM " . TBL_STUDENT_EXAM_SCORE . " "
+                            . " WHERE user_id = " . $userID . " AND exam_id = " . $data['exam']['exam_id'] . ") LIMIT 1";
+                    mysqli_query($link, $query);
 
-                $query = "INSERT INTO " . TBL_STUDENT_EXAM_SCORE . " (user_id, exam_id)"
-                        . " SELECT * FROM (SELECT '" . $userID . "', '" . $data['exam']['exam_id'] . "') AS tmp "
-                        . " WHERE NOT EXISTS ( SELECT user_id,exam_id FROM " . TBL_STUDENT_EXAM_SCORE . " "
-                        . "WHERE user_id = " . $userID . " AND exam_id = " . $data['exam']['exam_id'] . ") LIMIT 1";
-                mysqli_query($link, $query);
-
-                $current_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
-                if (isset($data['exam']) && !empty($data['exam'])) {
-                    if (isset($data['exam']['created_date'])) {
-                        if ($data['exam']['created_date'] != '' && $data['exam']['created_date'] != null) {
-                            $exam_start_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d', strtotime($data['exam']['created_date'])));
-                            if ($exam_start_date < $current_date) {
-                                $data['exam_status'] = 2;
-                            } else if ($exam_start_date == $current_date) {
-                                if ($data['exam_st'] == 'finished') {
+                    $current_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+                    if (isset($data['exam']) && !empty($data['exam'])) {
+                        if (isset($data['exam']['created_date'])) {
+                            if ($data['exam']['created_date'] != '' && $data['exam']['created_date'] != null) {
+                                $exam_start_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d', strtotime($data['exam']['created_date'])));
+                                if ($exam_start_date < $current_date) {
                                     $data['exam_status'] = 2;
-                                } else if ($data['exam_st'] == 'started') {
-                                    $data['exam_status'] = 1;
+                                } else if ($exam_start_date == $current_date) {
+                                    if ($data['exam_st'] == 'finished') {
+                                        $data['exam_status'] = 2;
+                                    } else if ($data['exam_st'] == 'started') {
+                                        $data['exam_status'] = 1;
+                                    }
                                 }
                             }
                         }
+                    } else {
+                        $data['error'] = 'Exam or Topic is not allocated for current week!';
                     }
                 } else {
-                    $data['error'] = 'Exam or Topic is not allocated for current week!';
+                    $data['error'] = 'Chat and topic exam are bdisabled! Because your group is blocked by admin!';
+                    $data['redirect'] = '/student/home';
                 }
             } else {
                 
@@ -2272,10 +2281,11 @@ class PHPWebSocket {
         $c_week = $date->format("W");
         $year = date("Y");
 
-        $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
+        $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`,`tg`.`group_status`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
                 . "FROM `tutorial_topic` `t` "
                 . "LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` "
                 . "LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` "
+                . "LEFT JOIN `tutorial_groups` `tg` ON `tg`.`id` = `tm`.`group_id` "
                 . "LEFT JOIN `tutorial_topic_exam` `te` ON `te`.`tutorial_topic_id` = `ta`.`topic_id` "
                 . "LEFT JOIN `student_exam_score` `ss` ON `ss`.`exam_id` = `te`.`exam_id` AND `ss`.`user_id` = $userID "
                 . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' LIMIT 1";
@@ -2288,6 +2298,13 @@ class PHPWebSocket {
         }
         $row = mysqli_query($link, $query);
         $data['exam'] = mysqli_fetch_assoc($row);
+        if (isset($data['exam']['group_status'])) {
+            if ($data['exam']['group_status'] != 'active') {
+                $data['error'] = 'Chat and topic exam are bdisabled! Because your group is blocked by admin!';
+                $data['redirect'] = '/student/home';
+                return $data;
+            }
+        }
 
         if ($data['exam_type'] == 'no') {
             if ($data['exam']['remaining_time'] <= 0) {
@@ -2406,10 +2423,11 @@ class PHPWebSocket {
             $date = new DateTime(date("Y-m-d H:i:s"));
             $c_week = $date->format("W");
             $year = date("Y");
-            $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
+            $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`,`tg`.`group_status` , `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
                     . "FROM `tutorial_topic` `t` "
                     . "LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` "
                     . "LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` "
+                    . "LEFT JOIN `tutorial_groups` `tg` ON `tg`.`id` = `tm`.`group_id` "
                     . "LEFT JOIN `tutorial_topic_exam` `te` ON `te`.`tutorial_topic_id` = `ta`.`topic_id` "
                     . "LEFT JOIN `student_exam_score` `ss` ON `ss`.`exam_id` = `te`.`exam_id` AND `ss`.`user_id` = $userID "
                     . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' LIMIT 1";
@@ -2418,6 +2436,10 @@ class PHPWebSocket {
 
             if (mysqli_num_rows($row) == 1) {
                 $data['exam'] = mysqli_fetch_assoc($row);
+                if($data['exam']['group_status'] != 'active'){
+                     $data['redirect'] = '/student/home';
+                    return $data;
+                }
 
                 $query = "SELECT `ser`.`choice_id` ,`q`.`id` as `qid`, `q`.`question_text`, `ac`.`id`, `ac`.`choice_text` "
                         . "FROM `answer_choices` `ac` "
@@ -2487,10 +2509,11 @@ class PHPWebSocket {
             $c_week = $date->format("W");
             $year = date("Y");
 
-            $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
+            $query = "SELECT `ta`.`topic_id`,`tg`.`group_status` ,`t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
                     . "FROM `tutorial_topic` `t` "
                     . "LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` "
                     . "LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` "
+                    . "LEFT JOIN `tutorial_groups` `tg` ON `tg`.`id` = `tm`.`group_id` "
                     . "LEFT JOIN `tutorial_topic_exam` `te` ON `te`.`tutorial_topic_id` = `ta`.`topic_id` "
                     . "LEFT JOIN `student_exam_score` `ss` ON `ss`.`exam_id` = `te`.`exam_id` AND `ss`.`user_id` = $userID "
                     . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' LIMIT 1";
@@ -2505,6 +2528,10 @@ class PHPWebSocket {
             $row = mysqli_query($link, $query);
             if (mysqli_num_rows($row) == 1) {
                 $exam = mysqli_fetch_assoc($row);
+                if($exam['group_status'] != 'active'){
+                     $data['redirect'] = '/student/home';
+                    return $data;
+                }
                 $data['redirect'] = '/student/my_scoreboard/index/' . $exam['exam_id'];
                 $query = "UPDATE `student_exam_score` `te` SET `te`.`exam_status` = 'finished', `te`.`exam_endtime` = CURRENT_TIMESTAMP WHERE `te`.`user_id` = $userID AND `te`.`exam_id` = " . $exam['exam_id'];
                 mysqli_query($link, $query);
