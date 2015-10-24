@@ -1,6 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2 general_cred">
-    <div class="box">
+<div class="col-sm-7 main main2 general_cred mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="col-sm-12">
+    <div class="box gene_error">
           
         <form method="post" onsubmit="return success_credential()" >
 
@@ -104,7 +105,7 @@
           </div>
 
           <div class="box_body">  
-              <div class="form-group col-sm-5">
+              <div class="form-group three_inputs noc">
                 <label>Enter Number of Users</label>
                 <input type="text" name="no_of_credentials" id="noc" value="<?php echo set_value('no_of_credentials'); ?>" class="form-control" id="">
                 <?php echo myform_error('no_of_credentials'); ?>
@@ -135,6 +136,7 @@
         </form>
 
       </div>
+	  </div>
 </div>
 <!--//main-->
 

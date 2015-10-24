@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
   <!--breadcrumb-->
-  <div class="row page_header">
+  <div class="page_header">
       <div class="col-sm-12">
           <ol class="breadcrumb">
               <li><a href="admin/notice">Admin</a></li>                          
@@ -12,16 +12,16 @@
     </div>
     <!--//breadcrumb-->
     <!--message-->
-    <div class="row">
+    <div class="col-sm-12">
       <div class="col-sm-12 new_message">
         <form method="post">  
           <div class="box exam_card">
               <div class="box_header">
                   <h3>Add New Notice</h3>
                 </div>
-                <div class="box_body">
+                <div class="box_body admin_controls with_labels">
                   
-                  <div class="form-group">
+                  <div class="form-group select">
                       <label> Templates </label>
                        <select name="roles" class="form-control js-example-basic-single" onchange="get_notice_template(this.value)">
                           <option selected value="">No Template</option>
@@ -41,7 +41,7 @@
                         <?php echo strip_tags($msgerror) ; ?>
                     </div>  
                           
-                  <div class="form-group">
+                  <div class="form-group select">
                       <label> Roles </label>
                        <select name="role_id" class="form-control">
                           <option selected disabled> Select Role </option>
@@ -59,7 +59,7 @@
                     <?php echo strip_tags(form_error('role_id'),'') ; ?>
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group select">
                       <label> Classroom </label>
                        <select name="classroom_id" class="form-control">
                           <option selected disabled> Select Classroom </option>
@@ -89,29 +89,30 @@
                       <label>Notice</label>
                       <textarea class="form-control" name="notice" id="notice"><?php echo set_value('notice'); ?></textarea>
                   </div>
-
-                </div>
-
-                <div class="alert alert-danger <?php if(empty(strip_tags(form_error('notice'),''))){ echo 'hide';} ?>">
+				  <div class="alert alert-danger <?php if(empty(strip_tags(form_error('notice'),''))){ echo 'hide';} ?>">
                     <?php echo strip_tags(form_error('notice'),'') ; ?>
+                  </div>
+					
+					<div class="form-group text-left">               
+						<div class="circleThree">
+							<input type="radio" value="active" id="circleThree" checked="checked"  name="status">
+							<label for="circleThree"></label>
+							<span> Active </span>
+					   
+							<input type="radio" value="inactive" id="circleThree1" name="status">
+							<label for="circleThree1"></label>
+							<span>Inactive</span>
+
+							<input type="radio" value="archive" id="circleThree2" name="status">
+							<label for="circleThree2"></label>
+							<span>Archive</span>
+						</div>
+					</div>
                 </div>
 
-                <div class="form-group text-left">
-                    
-                    <div class="circleThree">
-                        <input type="radio" value="active" id="circleThree" checked="checked"  name="status">
-                        <label for="circleThree"></label>
-                        <span> Active </span>
-                   
-                        <input type="radio" value="inactive" id="circleThree1" name="status">
-                        <label for="circleThree1"></label>
-                        <span>Inactive</span>
+                
 
-                        <input type="radio" value="archive" id="circleThree2" name="status">
-                        <label for="circleThree2"></label>
-                        <span>Archive</span>
-                    </div>
-                </div>
+                
 
 
                 <div class="box_footer">

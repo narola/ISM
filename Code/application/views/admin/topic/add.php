@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2 general_cred">
+<div class="col-sm-7 main main2 general_cred  mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
-    <div class="row page_header">
+    <div class="page_header">
         <div class="col-sm-12">
             <ol class="breadcrumb">
               <li><a href="admin/user">Manage</a></li>                          
@@ -12,6 +12,7 @@
     </div>
     <!--//breadcrumb-->
     <!--main box-->
+	<div class="col-sm-12">
     <div class="box">
         <div class="box_header">
             <h3>Add New Topic</h3>
@@ -27,54 +28,45 @@
                           if(!empty($courses)){ 
                             foreach($courses as $course) {
                           ?> 
-                        <option value="<?php echo $course['id']; ?>" <?php echo set_select('course_id', $course['id']); ?>> 
-                                <?php echo $course['course_name']; ?>
-                        </option>
-
+                        <option value="<?php echo $course['id']; ?>" <?php echo set_select('course_id', $course['id']); ?>> <?php echo $course['course_name']; ?></option>
                         <?php }  }else{ ?>
                         <option > No Course</option>
                         <?php } ?>
                     </select>
                     <a href="#" class="icon icon_add_small"></a>
-                    <?php echo myform_error('course_id'); ?>
                 </div>
-                
                 <div class="form-group select col-sm-6 no-padding half_size">
+
                     <select class="form-control" name="classrooms" id="classroom_id" onchange="get_subjects(this.value)">
                         <option value="">Select Classroom</option>
                     </select>
                     <a href="#" class="icon icon_add_small"></a>
                     <?php echo myform_error('classrooms'); ?>
                 </div>
-
                 <div class="form-group select col-sm-6 no-padding half_size">
 
-                    <select class="form-control" name="subjects" id="subject_id" onchange="get_topic(this.value)">
+                    <select class="form-control" name="subjects" id="subject_id">
                         <option value="">Select Subject</option>
                     </select>
                     <a href="#" class="icon icon_add_small"></a>
                     <?php echo myform_error('subjects'); ?>
                 </div>
 
-                <div class="form-group select col-sm-6 no-padding half_size">
-                    <select class="form-control" name="topic_id" id="topic_id">
-                        <option value="">Select Topic</option>
-                    </select>
-                    <a href="#" class="icon icon_add_small"></a>
-                    <?php echo myform_error('topic_id'); ?> 
-                </div>
-
                 <div class="form-group col-sm-6 no-padding half_size">
+                    
                     <div class="form-group col-sm-12 no-padding half_size">
                         <input name="topic_name" type="text" class="form-control" placeholder="Topic">
                         <?php echo myform_error('topic_name'); ?>
                     </div>
+
+                    
+
                 </div>
                 <div class="form-group col-sm-6 no-padding half_size">
                     <div class="form-group col-sm-12 no-padding half_size">
                         <label>Keywords for Evaluations</label>
                         <!-- <textarea name="keywords" class="form-control"></textarea> -->
-                       <input type="text" data-role="tagsinput" name="keywords" id="keywords">
+                       <input class="form-control" type="text" data-role="tagsinput" name="keywords" id="keywords">
                        <?php echo myform_error('keywords'); ?>
                     </div>
                 </div>
@@ -94,6 +86,7 @@
          </div>
 
     </div>
+	</div>
     <!--//main box-->
 </div>
 <!--//main-->
@@ -134,16 +127,8 @@
            data:{course_id:course_id},
            success:function(data){
               $("#classroom_id").html(data);
-              
               $('#subject_id').val('');
               $('#topic_id').val('');
-              
-              $('#subject_id').html('');
-              $('#topic_id').html('');
-
-              $('#select2-chosen-2').html('Select Classroom');
-              $('#select2-chosen-3').html('Select Subject');
-              $('#select2-chosen-4').html('Select Topic');
            }
         });
     }
@@ -155,27 +140,9 @@
            data:{classroom_id:classroom_id},
            success:function(data){
               $("#subject_id").html(data);
-              $('#topic_id').val('');$('#subject_id').val('');
-              $('#topic_id').html('');
-              
-              $('#select2-chosen-3').html('Select Subject');
-              $('#select2-chosen-4').html('Select Topic');
+              $('#topic_id').val('');
            }
         });
-  }
-
-  function get_topic(subject_id){
-        
-        //Fetch Topics from topics table not from tutorial topics
-        $.ajax({
-           url:'<?php echo base_url()."admin/topic/ajax_get_topics"; ?>',
-           type:'POST',
-           data:{subject_id:subject_id},
-           success:function(data){
-              $("#topic_id").html(data);
-           }
-        });
-
   }
 
     // $(function () {

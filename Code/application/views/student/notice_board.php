@@ -1,9 +1,3 @@
-<style type="text/css">
-    .active{
-        background-color:#323941;
-    border: 1px solid #f5f5f5;
-    }
-</style>
 <!--main-->
 <div class="col-sm-7 main main2">
     <!--filter-->

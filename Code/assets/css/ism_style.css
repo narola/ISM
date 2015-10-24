@@ -3564,7 +3564,8 @@ ul.ques_numbers {
 .div_buttons:after,
 .discussion_header:after,
 .top_question:after,
-.discussion:after {
+.discussion:after,
+.exam_banner:after {
     content: " ";
     display: table;
     clear: both;

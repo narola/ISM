@@ -175,7 +175,6 @@ class PHPWebSocket {
         $this->wsClients = array();
         $this->wsClientCount = 0;
         $this->wsClientIPCount = array();
-
         return true;
     }
 

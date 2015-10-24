@@ -1,8 +1,8 @@
 
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
-    <div class="row page_header">
+    <div class="page_header">
         <div class="col-sm-12">
             <ol class="breadcrumb">
                 <li><a href="admin/user">Admin</a></li>                          
@@ -17,7 +17,7 @@
     <!--//filter-->
 
     <!--message-->
-    <div class="row">
+    <div class="col-sm-12">
         <div class="col-sm-12 new_message">
             <div class="box exam_card">
                 <div class="box_header">
@@ -77,12 +77,13 @@
                                    value="<?php echo set_value("subject_name"); ?>">
                         </div>                        
                         <?php echo myform_error('subject_name'); ?>
-                        <div class="box_footer">
-                            <button type="submit" class="btn btn_green">Save</button>
-                            <button type="reset" class="btn btn_red">Reset</button>
-                            <a href="<?php echo base_url() . $prev_url; ?>" class='btn btn_black'>Cancel</a>
-                        </div>
+                        
                     </div>
+					<div class="box_footer">
+						<button type="submit" class="btn btn_green">Save</button>
+						<button type="reset" class="btn btn_red">Reset</button>
+						<a href="<?php echo base_url() . $prev_url; ?>" class='btn btn_black'>Cancel</a>
+					</div>
                 </form>   
             </div>
         </div>

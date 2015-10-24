@@ -1,8 +1,8 @@
 
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
-    <div class="row page_header">
+    <div class="page_header">
         <div class="col-sm-12">
             <ol class="breadcrumb">
                 <li><a href="javascript:void(0)">Manage</a></li>                          
@@ -17,14 +17,14 @@
     <!--//filter-->
 
     <!--message-->
-    <div class="row">
+    <div class="col-sm-12">
         <div class="col-sm-12 new_message">
             <div class="box exam_card">
                 <div class="box_header">
                     <h3>Add School</h3>
                 </div>
                 <form method="post">
-                    <div class="box_body ">
+                    <div class="box_body admin_controls with_labels">
 
                         <div class="form-group">
                             <label>School name</label>
@@ -43,7 +43,7 @@
                         </div>
                         <?php echo myform_error('school_code'); ?>
 
-                        <div class="form-group">
+                        <div class="form-group select">
                             <label>School Type</label>
                             <select class="form-control " name="school_type" id="school_type">
                                 <option value="co-education" <?php echo set_select("school_type", "co-education"); ?>>Co-Education</option>
@@ -102,7 +102,7 @@
                         </div>
 
                         <!-- <div class="row filter"> -->
-                        <div class="form-group ">
+                        <div class="form-group select">
 							<label>Country</label>
                             <select class="form-control " name="country" onchange="get_states(this.value)" id="country_id">
                                 <option selected disabled>Select Country</option> 
@@ -123,7 +123,7 @@
                         <?php echo myform_error('country'); ?>
                         <!-- </div> -->
 
-                        <div class="form-group" >
+                        <div class="form-group select" >
                             <label>State</label>
                             <select class="form-control" name="state" id="states_id" onchange="get_cities(this.value)" >
                                 <option selected disabled>Select State</option>
@@ -143,7 +143,7 @@
                         </div>
                         <?php echo myform_error('state'); ?>
 
-                        <div class="form-group">
+                        <div class="form-group select">
                             <label>City</label>
                             <select class="form-control" name="city" id="city_id" onchange="get_districts(this.value)" >
                                 <option disabled>Select City</option>

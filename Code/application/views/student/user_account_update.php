@@ -118,12 +118,12 @@
                                         <input type="text" class="form-control" placeholder="Date of Birth" name="birthdate" id='dp' value="<?php echo isset($birthdate)?$birthdate:set_value('birthdate');?>">
                                     </div>
                                 </div>
-                                <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('birthdate'),''))){ echo 'hide';} ?>">
-                                        <?php echo strip_tags(form_error('birthdate'),''); ?>
-                                </div>
                                 <div class="form-group age">
 									<label>Age</label>
                                     <input type="text" class="form-control" placeholder="Age" disabled >
+                                </div>
+                                <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('birthdate'),''))){ echo 'hide';} ?>">
+                                        <?php echo strip_tags(form_error('birthdate'),''); ?>
                                 </div>
                                 <div class="form-group">
 									<label>Contact Number</label>
@@ -464,10 +464,6 @@
         $(function () {
           $('[data-toggle="tooltip"]').tooltip()
         })
-
-
 </script>
-
-
 </body>
 </html>

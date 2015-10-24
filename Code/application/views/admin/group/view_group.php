@@ -1,7 +1,7 @@
 <!--main-->
-    <div class="col-sm-7 main main2">
+    <div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
       <!--breadcrumb-->
-      <div class="row page_header">
+      <div class="page_header">
           <div class="col-sm-12">
               <ol class="breadcrumb">
                   <li><a href="admin/group">Manage</a></li>
@@ -12,7 +12,7 @@
         <!--//breadcrumb-->
         <!--filter-->
         <form method="get" id="filter">
-	        <div class="row filter">
+	        <div class="filter">
 	          <div class="col-sm-12">
 	              
 	                <div class="form-group">
@@ -61,7 +61,7 @@
     
         <form method="post" action="<?php echo base_url().'admin/group/send_messages'; ?>"  >  <!-- Form Start -->
             
-            <div class="row div_buttons">
+            <div class="div_buttons">
                  <div class="col-sm-6" style="z-index:9999">
                     <input type="submit" class="btn btn_black" value="Send Messages">    
                 </div> 
@@ -72,7 +72,7 @@
             
         <!--//button-div-->
         <!--row table-->
-        <div class="row tabel_view">
+        <div class="tabel_view">
           <div class="col-sm-12">
               <div class="table-responsive">
                   <table class="table table-striped table-bordered table_user table_group">
