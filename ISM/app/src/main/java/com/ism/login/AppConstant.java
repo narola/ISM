@@ -46,6 +46,8 @@ public class AppConstant {
 	 */
 	private static final String URL_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
 	public static final String URL_LOGIN = URL_HOST + "AuthenticateUser";
+	public static final String URL_FORGOT_PASSWORD = URL_HOST + "ForgotPassword";
+	public static final String URL_REGISTER_USER = URL_HOST + "RegisterUser";
 
     /**
      * Hide Keyboard

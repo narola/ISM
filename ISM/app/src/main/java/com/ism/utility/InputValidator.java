@@ -45,7 +45,7 @@ public class InputValidator {
 	}
 
 	public boolean validatePasswordLength(EditText editText) {
-		if (editText.getText().toString().trim().length() < 6) {
+		if (editText.getText().toString().trim().length() < 8) {
 			setError(editText, context.getString(R.string.error_password_length));
 			return false;
 		} else {

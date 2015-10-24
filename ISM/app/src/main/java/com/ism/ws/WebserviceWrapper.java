@@ -21,6 +21,7 @@ public class WebserviceWrapper {
 	public static final int LOGIN = 1;
 	public static final int FORGOT_PASSWORD = 2;
 	public static final int REQUEST_CREDENTIALS = 3;
+	public static final int REGISTER_USER = 4;
 
 	public interface WebserviceResponse {
 		public void onResponse(Object object, Exception error, int apiCode);
@@ -47,8 +48,13 @@ public class WebserviceWrapper {
 				currentApiCode = params[0];
 				switch (currentApiCode) {
 					case LOGIN:
-//						res = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObj.class, requestObject);
 						responseObject = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObject.class, requestObject);
+						break;
+					case FORGOT_PASSWORD:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_FORGOT_PASSWORD, ResponseObject.class, requestObject);
+						break;
+					case REGISTER_USER:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_REGISTER_USER, ResponseObject.class, requestObject);
 						break;
 				}
 			} catch (Exception e) {

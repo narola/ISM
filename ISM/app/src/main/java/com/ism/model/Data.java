@@ -16,9 +16,13 @@ public class Data {
     private String courseName;
     private String roleId;
     private String schoolId;
+    private String schoolDestrict;
     private String academicYear;
     private String userId;
     private String userName;
+    private String id;
+    private String classId;
+    private String className;
 
 
     @JsonProperty("school_name")
@@ -75,7 +79,7 @@ public class Data {
         this.academicYear = academicYear;
     }
 
-	@JsonProperty("userid")
+	@JsonProperty("user_id")
 	public String getUserId() {
 		return userId;
 	}
@@ -91,5 +95,41 @@ public class Data {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+    @JsonProperty("id")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+	@JsonProperty("class_id")
+	public String getClassId() {
+		return classId;
+	}
+
+	public void setClassId(String classId) {
+		this.classId = classId;
+	}
+
+	@JsonProperty("class_name")
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
+	@JsonProperty("district_name")
+	public String getSchoolDestrict() {
+		return schoolDestrict;
+	}
+
+	public void setSchoolDestrict(String schoolDestrict) {
+		this.schoolDestrict = schoolDestrict;
 	}
 }
