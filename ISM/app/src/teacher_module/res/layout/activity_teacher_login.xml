@@ -47,7 +47,7 @@
             android:layout_marginTop="@dimen/d20dp"
             android:background="@drawable/background_edittext_teacher"
             android:gravity="center"
-            android:hint="@string/strenterpassword"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:singleLine="true"
             android:textColor="@color/color_white"

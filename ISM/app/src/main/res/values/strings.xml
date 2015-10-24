@@ -53,8 +53,8 @@
 	<string name="title_activity_login">LoginActivity</string>
 
 	<!--Login string-->
-	<string name="strenteremailorusername">Enter Email/ Username</string>
-	<string name="strenterpassword">Enter Password</string>
+	<string name="username">Enter Username</string>
+	<string name="password">Enter Password</string>
 	<string name="strrememberme">Remember Me</string>
 	<string name="strlogin">LOGIN</string>
 	<string name="strforgotpwd"><u>Forgot Password</u></string>

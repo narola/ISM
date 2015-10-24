@@ -18,10 +18,12 @@ public class WebserviceWrapper {
 	private WebserviceResponse webserviceResponse;
 
 //	Webservice flags
-	public static final int LOGIN = 0;
+	public static final int LOGIN = 1;
+	public static final int FORGOT_PASSWORD = 2;
+	public static final int REQUEST_CREDENTIALS = 3;
 
 	public interface WebserviceResponse {
-		public void onResponse(Object object,Exception error);
+		public void onResponse(Object object, Exception error, int apiCode);
 	}
 
 	public WebserviceWrapper(Context context, Object requestObject) {
@@ -30,6 +32,8 @@ public class WebserviceWrapper {
 	}
 
 	public class WebserviceCaller extends AsyncTask<Integer, Void, Object> {
+
+		private int currentApiCode;
 
 		@Override
 		protected void onPreExecute() {
@@ -40,7 +44,8 @@ public class WebserviceWrapper {
 		protected Object doInBackground(Integer... params) {
 			Object responseObject=null;
 			try {
-				switch (params[0]) {
+				currentApiCode = params[0];
+				switch (currentApiCode) {
 					case LOGIN:
 //						res = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObj.class, requestObject);
 						responseObject = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObject.class, requestObject);
@@ -54,7 +59,7 @@ public class WebserviceWrapper {
 
 		@Override
 		protected void onPostExecute(Object o) {
-			webserviceResponse.onResponse(o, null);
+			webserviceResponse.onResponse(o, null, currentApiCode);
 			super.onPostExecute(o);
 		}
 	}

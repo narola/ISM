@@ -6,19 +6,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.json.*;
 
-import java.util.ArrayList;
-
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Data {
-
+	
     private String schoolName;
     private String courseId;
     private String courseName;
     private String roleId;
     private String schoolId;
     private String academicYear;
+    private String userId;
+    private String userName;
 
 
     @JsonProperty("school_name")
@@ -31,7 +31,7 @@ public class Data {
     }
 
     @JsonProperty("course_id")
-    public String getCourseId() {
+	public String getCourseId() {
         return this.courseId;
     }
 
@@ -75,5 +75,21 @@ public class Data {
         this.academicYear = academicYear;
     }
 
+	@JsonProperty("userid")
+	public String getUserId() {
+		return userId;
+	}
 
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	@JsonProperty("username")
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 }

@@ -54,6 +54,7 @@ public class WelComeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Global.myIntent(getApplicationContext(), AcceptTutorialGroupActivity.class);
+                finish();
             }
         });
     }

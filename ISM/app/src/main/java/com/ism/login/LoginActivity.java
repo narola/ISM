@@ -1,6 +1,7 @@
 package com.ism.login;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ism.HostActivity;
 import com.ism.R;
 import com.ism.model.LoginRequest;
 import com.ism.model.ResponseObject;
@@ -29,13 +32,22 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private InputValidator inputValidator;
 
+	public static final String SCHOOL_ID = "schoolId";
+	public static final String SCHOOL_NAME = "schoolName";
+	public static final String COURSE_ID = "courseId";
+	public static final String COURSE_NAME = "courseName";
+	public static final String ACADEMIC_YEAR = "academicYear";
+	public static final String ROLE_ID = "roleId";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
-
-		initGlobal();
-
+		if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this)) {
+			launchHostActivity();
+		} else {
+			setContentView(R.layout.activity_login);
+			initGlobal();
+		}
 	}
 
 	private void initGlobal() {
@@ -52,24 +64,10 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		inputValidator = new InputValidator(LoginActivity.this);
 	}
 
-	private void getIsRemember() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		Global.userId = sharedPreferences.getString(AppConstant.USERID, null);
-
-		Global.password = sharedPreferences.getString(AppConstant.PASSWORD, null);
-		if (Global.userId.length() == 0 && Global.password.length() == 0) {
-			etUserid.setText(Global.userId);
-			etPwd.setText(Global.password);
-		}
-	}
-
 	public void onClickLogin(View view) {
 		if (isInputsValid()) {
-			Log.e(TAG, "inputs valid");
 			if (((CheckBox) findViewById(R.id.chk_rememberme)).isChecked()) {
 				PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this, true);
-				PreferenceData.setStringPrefs(PreferenceData.USER_NAME, LoginActivity.this, etUserid.getText().toString().trim());
-				PreferenceData.setBooleanPrefs(PreferenceData.IS_LOGGED_IN, LoginActivity.this, true);
 			}
 			authenticateUser();
 		}
@@ -91,11 +89,10 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private void authenticateUser() {
 		try {
 			LoginRequest loginRequest = new LoginRequest();
-			loginRequest.setUsername("0YGAJ8793B");
-			loginRequest.setPassword("narola21");
-
-			/*new WebserviceWrapper(LoginActivity.this, loginRequest).new WebserviceCaller()
-					.execute("http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=AuthenticateUser");*/
+			loginRequest.setUsername(etUserid.getText().toString().trim());
+			loginRequest.setPassword(etPwd.getText().toString().trim());
+//			loginRequest.setUsername("0YGAJ8793B");
+//			loginRequest.setPassword("narola21");
 
 			new WebserviceWrapper(LoginActivity.this, loginRequest).new WebserviceCaller()
 					.execute(WebserviceWrapper.LOGIN);
@@ -106,9 +103,50 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	}
 
 	@Override
-	public void onResponse(Object object, Exception error) {
-		ResponseObject responseObj = (ResponseObject) object;
-		Log.e(TAG, "onResponse");
-
+	public void onResponse(Object object, Exception error, int apiCode) {
+		switch (apiCode) {
+			case WebserviceWrapper.LOGIN:
+				onLoginResponse(object);
+				break;
+		}
 	}
+
+	private void onLoginResponse(Object object) {
+		ResponseObject responseObj = (ResponseObject) object;
+		if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+
+			if (responseObj.getData().get(0).getUserId() == null) {
+				Log.e(TAG, "first time login");
+
+				Intent intentRegister = new Intent(LoginActivity.this, ProfileInformationActivity.class);
+				intentRegister.putExtra(SCHOOL_ID, responseObj.getData().get(0).getSchoolId());
+				intentRegister.putExtra(SCHOOL_NAME, responseObj.getData().get(0).getSchoolName());
+				intentRegister.putExtra(COURSE_ID, responseObj.getData().get(0).getCourseId());
+				intentRegister.putExtra(COURSE_NAME, responseObj.getData().get(0).getCourseName());
+				intentRegister.putExtra(ACADEMIC_YEAR, responseObj.getData().get(0).getAcademicYear());
+				intentRegister.putExtra(ROLE_ID, responseObj.getData().get(0).getRoleId());
+				startActivity(intentRegister);
+				finish();
+
+			} else {
+				PreferenceData.setStringPrefs(PreferenceData.USER_ID, LoginActivity.this, responseObj.getData().get(0).getUserId());
+				PreferenceData.setStringPrefs(PreferenceData.USER_NAME, LoginActivity.this, responseObj.getData().get(0).getUserName());
+//				launchHostActivity();
+			}
+
+			Intent intentRegister = new Intent(LoginActivity.this, ProfileInformationActivity.class);
+			startActivity(intentRegister);
+			finish();
+
+		} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+			Toast.makeText(LoginActivity.this, "Username or Password is wrong!", Toast.LENGTH_LONG).show();
+		}
+	}
+
+	private void launchHostActivity() {
+		Intent intentRegister = new Intent(LoginActivity.this, HostActivity.class);
+		startActivity(intentRegister);
+		finish();
+	}
+
 }
