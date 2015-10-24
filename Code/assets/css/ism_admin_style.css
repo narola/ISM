@@ -2141,3 +2141,9 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .bootstrap-tagsinput {
     width: 90%;
 }
+.general_cred #replacing_div3 #div_1>input.form-control {
+    margin-left:-4px; 
+}
+#replacing_div3  .icon_subs_small{
+	margin-left:9px;
+}

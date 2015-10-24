@@ -177,7 +177,7 @@ class User_account extends CI_Controller {
 				/*--upadate profile picture*/
 				$this->set_profile($uid);
 				// ----
-				
+				set_session($this->session->userdata('user')['id']);
 				$this->session->set_flashdata('success','Record Updated');
 				redirect('student/home');
 

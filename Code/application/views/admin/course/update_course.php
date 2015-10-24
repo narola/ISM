@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
-    <div class="row page_header">
+    <div class="page_header">
         <div class="col-sm-12">
             <ol class="breadcrumb">
                 <li><a href="admin/user">Admin</a></li>                          
@@ -16,14 +16,14 @@
     <!--//filter-->
 
     <!--message-->
-   	<div class="row">
+   	<div class="col-sm-12">
         <div class="col-sm-12 new_message">
             <div class="box exam_card">
                 <div class="box_header">
                     <h3>Update Course</h3>
                 </div>
                 <form method="post">
-                    <div class="box_body ">
+                    <div class="box_body admin_controls with_labels">
                         <div class="form-group">
                             <label>Course Name</label>
                             <input type="text" class="form-control" name="course_name"  value="<?php  echo set_value("course_name") == false ? $course["course_name"] : set_value("course_name"); ?>">
@@ -34,7 +34,7 @@
 
                         <div class="form-group">
                             <label>Course Nickname</label>
-                            <input type="text" class="form-control" name="course_nickname" value="<?php  echo set_value("course_nickname") == false ? $course["course_nickname"] : set_value("course_nickname"); ?>"
+                            <input type="text" class="form-control" name="course_nickname" value="<?php  echo set_value("course_nickname") == false ? $course["course_nickname"] : set_value("course_nickname"); ?>">
                         </div>
                         <div class="alert alert-danger <?php if (empty(strip_tags(form_error('course_nickname'), ''))) { echo 'hide';} ?>">
                             <?php echo strip_tags(form_error('course_nickname'), ''); ?>
@@ -45,7 +45,7 @@
                             <textarea class="form-control" name="course_details"><?php echo (set_value("course_details") == false) ? $course["course_details"] : set_value("course_details"); ?></textarea>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group select">
                             <label>Course Type</label>
                              <select class="form-control " name="course_type" id="course_category_id">
                                 <option selected disabled>Select course Type</option> 
@@ -79,7 +79,8 @@
                             <?php echo strip_tags(form_error('course_degree'), ''); ?>
                         </div>
 
-                        <div class="form-group ">
+                        <div class="form-group select">
+							<label>Course Category</label>
                             <select class="form-control " name="course_category_id" id="course_category_id">
                                 <option selected disabled>Select course Category</option> 
                                  <?php 

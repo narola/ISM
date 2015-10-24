@@ -1,8 +1,8 @@
 <!--main-->           
             <?php echo flashMessage(true,false); ?>
-            <div class="col-sm-7 main main2">
+            <div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
             	<!--breadcrumb-->
-           		<div class="row page_header">
+           		<div class="page_header">
                 	<div class="col-sm-8">
                     	<ol class="breadcrumb">
                           <li><a href="#">Manage</a></li>                          
@@ -17,7 +17,7 @@
                 <!--//breadcrumb-->
                 <!--filter-->
                 <form method="get" id="filter">
-                <div class="row filter group_filter">
+                <div class="filter group_filter">
                 	<div class="col-sm-12">
                     	<div class="form-group">
                             <select class="form-control" name="category" onchange="filter_data()" id="category">
@@ -50,7 +50,7 @@
             </form>           
                 <!--//filter-->
                 <!--topics-->
-                <div class="row">
+                <div class="">
                 	<div class="col-sm-12 topic_container">
                     	<!--topic1-->
                         <?php 
@@ -77,8 +77,8 @@
                                 </div>
                             </div>
                             <div class="topic_action">
-                           		<a href="<?php echo '/admin/course/update_course/'.$course['id'];?>" data-toggle="tooltip" data-placement="right" data-original-title="Edit" class="icon icon_edit"></a>
-                                <a data-toggle="tooltip" id="delete_<?php echo $course['id']; ?>" data-placement="right" data-original-title="Delete" class="delete icon icon_delete_color"></a>
+                           		<a href="<?php echo '/admin/course/update_course/'.$course['id'];?>" data-toggle="tooltip" data-placement="bottom" data-original-title="Edit" class="icon icon_edit"></a>
+                                <a data-toggle="tooltip" id="delete_<?php echo $course['id']; ?>" data-placement="bottom" data-original-title="Delete" class="delete icon icon_delete_color"></a>
                             </div>
                             <div class="clearfix"></div>
                         </div>

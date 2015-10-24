@@ -1,8 +1,8 @@
 
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
-    <div class="row page_header">
+    <div class="page_header">
         <div class="col-sm-12">
             <ol class="breadcrumb">
                 <li><a href="admin/user">Admin</a></li>                          
@@ -17,14 +17,14 @@
     <!--//filter-->
 
     <!--message-->
-   	<div class="row">
+   	<div class="col-sm-12">
         <div class="col-sm-12 new_message">
             <div class="box exam_card">
                 <div class="box_header">
                     <h3>Add Course</h3>
                 </div>
                 <form method="post">
-                    <div class="box_body ">
+                    <div class="box_body admin_controls with_labels">
 
                         <div class="form-group">
                             <label>Course Name</label>
@@ -43,7 +43,7 @@
                             <textarea class="form-control" name="course_details"></textarea>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group select">
                             <label>Course Type</label>
                              <select class="form-control " name="course_type" id="course_category_id">
                                 <option selected disabled>Select course Type</option> 
@@ -71,7 +71,7 @@
                         </div>                       
                         <?php echo myform_error('course_degree'); ?>
 
-                        <div class="form-group">
+                        <div class="form-group select">
 							<label>Select Course</label>
                             <select class="form-control " name="course_category_id" id="course_category_id">
                                 <option selected disabled>Select course Category</option> 
