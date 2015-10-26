@@ -33,33 +33,40 @@ class Report extends ADMIN_Controller {
     }
 
     public function get_question_stats(){
-    	$course_id = $this->input->post('course_id');
-    	$date_range = $this->input->post('date_range');
+    	
+    	// $course_id = $this->input->post('course_id');
+        // $date_range = '09/27/2015 - 10/11/2015';
+        $date_range = $this->input->post('date_range');
     	$date_range_split = explode(" - ", $date_range);
     	$sdate = date_create(reset($date_range_split));
     	$edate = date_create(end($date_range_split));
     	$start_date=date_format($sdate,"Y-m-d H:i:s");
 		$end_date=date_format($edate,"Y-m-d H:i:s");
 		
-    	
-    	$classrooms = select(TBL_CLASSROOMS,TBL_CLASSROOMS.".id", array('where'=>array(TBL_CLASSROOMS.".course_id"=>$course_id)),FALSE );
-    	$classroom_ids = array_column($classrooms,'id');
-    	
-    	$quest_stats = select(TBL_QUESTIONS,"count(".TBL_QUESTIONS.".id) as y,".TBL_CLASSROOMS.".class_name as name", 
-    		array('where_in'=>array(TBL_QUESTIONS.".classroom_id"=>$classroom_ids),
-    				'where'=>array(TBL_QUESTIONS.".created_date > " => $start_date,
-    									TBL_QUESTIONS.".created_date < " => $end_date)
-    									
-    			),
-    		array(
-    			'join'=>array(
-								array(
-									'table'=>TBL_CLASSROOMS,
-									'condition'=>TBL_CLASSROOMS.'.id='.TBL_QUESTIONS.'.classroom_id'
-								)
-							),
-    			'group_by'=>TBL_QUESTIONS.".classroom_id"));
-    	echo json_encode($quest_stats,JSON_NUMERIC_CHECK);
+    	$courses = select(TBL_COURSES, TBL_COURSES.".id,".TBL_COURSES.".course_nickname",array('where'=>array('is_delete'=>FALSE)));
+            $stats = array();
+        foreach ($courses as $course) {
+        $classrooms = select(TBL_CLASSROOMS,TBL_CLASSROOMS.".id", array('where'=>array(TBL_CLASSROOMS.".course_id"=>$course['id'],
+            )),FALSE );
+        
+        $classroom_ids = array_column($classrooms,'id');
+            if(!empty($classroom_ids)){
+            $quest_stats = select(TBL_QUESTIONS,"count(".TBL_QUESTIONS.".id) as y", 
+            array('where_in'=>array(TBL_QUESTIONS.".classroom_id"=>$classroom_ids),
+                    'where'=>array(TBL_QUESTIONS.".created_date > " => $start_date,
+                                        TBL_QUESTIONS.".created_date < " => $end_date)
+                                        
+                ),
+            array('single'=>true)
+            );
+            $quest_stats['name'] = $course['course_nickname'];
+            $stats[]=$quest_stats;
+
+            }
+        }
+       
+        
+    	echo json_encode($stats,JSON_NUMERIC_CHECK);
     }
 
     public function get_group_stats(){

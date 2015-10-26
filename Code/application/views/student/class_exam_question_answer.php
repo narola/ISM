@@ -1,8 +1,8 @@
-<div class="row"> 	
+<div class=""> 	
     <!--main-->
-    <div class="col-sm-7 main main_wide_2">
+    <div class="col-sm-7 main main_wide_2 mCustomScrollbar" data-mcs-theme="minimal-dark">
     	<!--breadcrumb-->
-        <div class="row page_header">
+        <div class="page_header">
         	<div class="col-sm-12">
             	<fieldset>
                   <legend>ISM Mock Test</legend>                          
@@ -12,7 +12,7 @@
         </div>
         <!--//breadcrumb-->
         <!--question-->
-        <div class="row">
+        <div class="">
         	<div class="col-sm-12">
             	<div class="box question_box">
                 	<div class="box_header">

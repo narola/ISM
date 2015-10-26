@@ -83,9 +83,7 @@ class Tutorial extends ISM_Controller {
 				)
 			);
 		if($data['topic']['group_status'] != 'active'){
-			$this->session->set_flashdata('error','Your tutorial group is blocked by admin!');
 				redirect('/student/home');
-
 		}
 			// Check topic found or not.
 			if(isset($data['topic']) && !empty($data['topic'])){
@@ -218,7 +216,8 @@ class Tutorial extends ISM_Controller {
 				'limit' => 1
 				)
 			);
-	   if($data['exam']['exam_status'] !== 'active'){
+
+	   if($data['exam']['group_status'] != 'active'){
 	   		redirect('student/home');
 
 	   }

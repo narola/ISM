@@ -517,12 +517,14 @@ function set_session($userid){
                           'table' => TBL_DISTRICTS.' d',
                           'condition' => 'd.id = s.district_id'
                           )
-                        )
+                        ),
+    'limit' => 1,
+    'single' => true
                     )
                 );
         $session_data = array(
             'loggedin' => TRUE,
-            'user'=>$users[0]
+            'user'=>$users
         );
         $CI->session->set_userdata($session_data);
         return;

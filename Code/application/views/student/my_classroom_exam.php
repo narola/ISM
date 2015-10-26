@@ -7,9 +7,9 @@
     });
 </script>
 <!--main-->
-<div class="col-sm-7 main main2">
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--banner-->
-     <div class="row exam_banner">
+     <div class="exam_banner">
         <div class="col-sm-12 text-center">
             <div class="banner_text">
                 <h3>Class</h3>
@@ -19,7 +19,7 @@
      </div>   
      <!--//banner-->
      <!--filter-->
-     <div class="row">
+     <div class="">
         <div class="col-sm-12 filter exams_filter">
 
             <form action="" method="post" id="frm_class_exam" class="form-inline">
@@ -56,7 +56,7 @@
      </div> 
      <!--//filetr-->
      <!--exams-->
-     <div  class="row">
+     <div  class="">
         <div class="col-sm-12 exams_wrapper">
             <?php
                 if(isset($my_subject)){

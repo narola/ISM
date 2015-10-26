@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Home extends CI_Controller {
+class Home extends ISM_Controller {
 
 	public function __construct()
 	{
@@ -12,6 +12,7 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
+
 		if($this->session->userdata('user')['group_status'] != 'active'){
 			$this->session->set_flashdata('error','Chat and topic exam are bdisabled! Because your group is blocked by admin! ');
 		}
@@ -260,7 +261,7 @@ class Home extends CI_Controller {
 						'limit' => 3
 					);
 		$data['my_latest_notice'] = select(TBL_NOTICEBOARD_VIEWER.' v','n.notice_title,notice',$where,$option);
-		//p($data,true);
+		
 		$this->template->load('student/default','student/home_view',$data);
 	}
 

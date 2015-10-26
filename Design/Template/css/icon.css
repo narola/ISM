@@ -190,10 +190,10 @@
 	background-position:-141px -30px;
 }
 .icon_option_dark{
-	width:9px;
+	width:20px;
 	margin-left:10px;
 	margin-right:0;
-	background-position:-166px -30px;
+	background-position:-161px -28px;
 }
 .icon_go{
 	margin-right:0;
@@ -478,7 +478,9 @@
 	background-position: -293px -197px;
 }
 .icon_subs_small{
-	background-position: -330px -197px;
+	background-position: -330px -198px;
+    height: 24px;
+    width: 24px;
 }
 /*--------------icon---------------*/
 

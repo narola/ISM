@@ -1,13 +1,13 @@
-<div class="col-sm-7 main main_tut">
+<div class="col-sm-7 main main_tut mCustomScrollbar" data-mcs-theme="minimal-dark">
     <?php 	if(isset($topic) && !empty($topic)){ ?>
             <div class="fixed_comment">
-                <div class="row discussion_header">
+                <div class="discussion_header">
                 	<div class="col-sm-12">
                         <h3><span>Topic - </span><?php echo $topic['topic_name']; ?></h3>
                         <a href="#" class="icon icon_expand"></a>
                     </div>
                 </div>
-                <div class="row top_question">
+                <div class="top_question">
                 	<div class="col-sm-12">
                     	<div class="mate_user_img">
                         	<img src="/<?php echo UPLOAD_URL.'/'.$topic['profile_link']; ?>">
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-                <div class="row discussion">
+                <div class="discussion">
                 <?php 
                 if(isset($discussion) && count($discussion) > 0){
                     $i = 0;
@@ -74,7 +74,7 @@
                 ?> 
                 </div>
                 <?php //if($current_weekday <= 3){ ?>           
-                <div class="row">
+                <div class="">
                		<!--input-->
                     <div class="col-sm-12 input">
                     	<?php $cls = ""; if($time > 0){ $cls = "style='display:none'";  }?>
