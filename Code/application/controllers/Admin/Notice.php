@@ -18,7 +18,6 @@ class Notice extends ADMIN_Controller {
 	//  List All noticeboard view,delete,add,and change into archive notice
 	public function index()
 	{
-
 		$order = 'created_date DESC';
 		
 		if($_POST){
@@ -76,10 +75,14 @@ class Notice extends ADMIN_Controller {
 			$offset = $this->uri->segment(4);
 		}
 
-		$config['num_links'] = 5;
+		$config['num_links'] = 3;
 		$config['total_rows'] = select(TBL_NOTICEBOARD,FALSE,array('where'=>$where),array('count'=>TRUE,'join'=>array(array('table'=>'noticeboard_viewer','condition'=>'noticeboard.id=noticeboard_viewer.notice_id'))));
+		
+		// START To check weather page is on 1st page or not ? if it is on first page do not show add notice field
+		$this->data['page_number'] =  $this->uri->segment(4);
 		$config['per_page'] = 11;
-
+		//END
+		
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
  		$config['full_tag_close'] = '</ul>';
 
@@ -124,10 +127,10 @@ class Notice extends ADMIN_Controller {
 		
 		//if(empty($this->data['notices'])){ $this->session->set_flashdata('error', 'No Notices Found.'); }
 
-		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
-		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
-		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where_not_in'=>array('role_name'=>array('admin'))),array('limit'=>10));
-		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)));
+		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where_not_in'=>array('role_name'=>array('admin'))));
+		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)));
 
 		//pass pagination configuration set in $config variable and initialize into pagination class
 		$this->pagination->initialize($config);
@@ -140,7 +143,7 @@ class Notice extends ADMIN_Controller {
 
 		$this->data['roles'] = select(TBL_ROLES);
 		$this->data['templates'] = select(TBL_NOTICEBOARD,false,array('where'=>array('is_template'=>TRUE,'is_delete'=>FALSE)));
-		$this->data['classrooms'] = select(TBL_CLASSROOMS);
+		$this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>FALSE)),array('order_by'=>'class_name'));
 
 		$this->form_validation->set_rules('notice_title', 'Notice Title', 'trim|required|alpha_numeric_spaces');
 		$this->form_validation->set_rules('notice', 'Notice Description', 'trim|required');

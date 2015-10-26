@@ -126,10 +126,24 @@ class Dashboard extends ADMIN_Controller {
 		
 		$this->data['page_title'] = 'Auto Generated Credentials';
 
-		$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0)));
+		$school_grade = $this->input->post('school_grade');
+
+		if(!$_POST && empty($school_grade)){
+			$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0)));
+		}else{
+			$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0,'school_grade'=>$school_grade)));
+		}
+
 		$this->data['roles'] = select(TBL_ROLES,false,array('where'=>array('is_delete'=>0)));
 		$this->data['courses'] = select(TBL_COURSES,false,array('where'=>array('is_delete'=>0)));
-		$this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>0)));
+
+		$course_id = $this->input->post('course_id');
+
+		if(!$_POST && empty($course_id)){
+			$this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>0)));
+		}else{
+			$this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>0,'course_id'=>$course_id)));
+		}
 
 		$this->data['cur_year'] = date('Y');
 		$this->data['next_year'] = date('Y')+1;

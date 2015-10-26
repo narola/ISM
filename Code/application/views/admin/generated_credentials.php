@@ -11,6 +11,20 @@
 
           <div class="box_body">  
               
+              <div class="form-group three_inputs select" >
+                  <label>School Grade</label>
+                  <select class="form-control " name="school_grade" 
+                  onchange="fetch_school_from_grade(this.value)" id="school_grade">
+                    <option selected value="1"> Select School Grade</option>
+                      <option value="A" <?php echo set_select('school_grade', 'A'); ?>>A</option>
+                      <option value="B" <?php echo set_select('school_grade', 'B'); ?>>B</option>
+                      <option value="C" <?php echo set_select('school_grade', 'C'); ?>>C</option>
+                      <option value="D" <?php echo set_select('school_grade', 'D'); ?>>D</option>
+                      <option value="E" <?php echo set_select('school_grade', 'E'); ?>>E</option>
+                  </select>
+                  <a href="#" class="icon icon_add_small"></a>
+              </div>
+
               <div class="form-group three_inputs select">
                   <label>Select School </label>
                   <select class="form-control js-example-basic-single" id="school_id" name="school_id">
@@ -53,7 +67,8 @@
            <div class="box_body">
                 <div class="form-group three_inputs select">
                       <label>Course </label>
-                      <select class="form-control " name="course_id" id="course_id" >
+                      <select class="form-control " name="course_id" id="course_id"
+                        onchange="fetch_classroom(this.value)" >
                           <option selected disabled> Select Course</option>
                           <?php 
                               if(!empty($courses)) {
@@ -95,7 +110,6 @@
                           <option value="<?php echo $cur_year; ?>"><?php echo $cur_year; ?></option>
                           <option value="<?php echo $next_year; ?>"><?php echo $next_year; ?></option>
                       </select>
-                      <a href="#" class="icon icon_add_small"></a>
                   </div>
                   <div class="clearfix"></div>
            </div>
@@ -141,9 +155,32 @@
 <!--//main-->
 
 <script type="text/javascript">
+    
     $(document).ready(function() {
       $(".js-example-basic-single").select2({ placeholder: "Select a school"});
     });
+
+    function fetch_school_from_grade(school_grade){
+        $.ajax({
+            url:'<?php echo base_url()."common/fetch_school_from_grade"; ?>',
+            type:'POST',
+            data:{school_grade:school_grade},
+            success:function(data){
+                $('#school_id').html(data);
+            }
+        });
+    }
+
+    function fetch_classroom(course_id){
+        $.ajax({
+            url:'<?php echo base_url()."common/fetch_classroom"; ?>',
+            type:'POST',
+            data:{course_id:course_id},
+            success:function(data){
+                $('#classroom_id').html(data);
+            }
+        });
+    }
 
     function reset_form(){
         

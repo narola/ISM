@@ -252,9 +252,9 @@ class User extends ADMIN_Controller {
 			$email = $this->input->post('email_id');
 
 			if($this->data['user']['username'] !== $username){
-				$user_rule = 'trim|required|is_unique[users.username]|alpha_numeric';
+				$user_rule = 'trim|required|is_unique[users.username]|alpha_numeric|max_length[8]';
 			}else{
-				$user_rule = 'trim|required|alpha_numeric';
+				$user_rule = 'trim|required|alpha_numeric|max_length[8]';
 			}
 
 			if($this->data['user']['email_id'] !== $email){
@@ -264,7 +264,7 @@ class User extends ADMIN_Controller {
 			}
 
 		}else{
-			$user_rule = 'trim|required|alpha_numeric';
+			$user_rule = 'trim|required|alpha_numeric|max_length[8]';
 			$email_rule = 'trim|valid_email';
 		}
 
@@ -275,6 +275,9 @@ class User extends ADMIN_Controller {
 		$this->form_validation->set_rules('full_name', 'Full Name', 'trim|alpha_numeric_spaces');
 		$this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|numeric');	
 		$this->form_validation->set_rules('birthdate', 'Birthdate', 'required|trim|callback_valid_date');
+		$this->form_validation->set_rules('city', 'City', 'required|trim');
+		$this->form_validation->set_rules('state', 'State', 'required|trim');
+		$this->form_validation->set_rules('country', 'Country', 'required|trim');
 
 		if($this->form_validation->run() == FALSE){
 
@@ -314,7 +317,6 @@ class User extends ADMIN_Controller {
 	}
 
 	/**
-	 * undocumented function
 	 *
 	 * @return Bool
 	 * @author  Virendra patel SparkID-VPA
@@ -369,24 +371,54 @@ class User extends ADMIN_Controller {
 			redirect('admin');
 		 }
 
-		$this->data['u'] =select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>true));
-		$this->data['templates'] =select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
-		$this->data['users'] =select(TBL_USERS,
-									TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name,'.TBL_ROLES.'.id as rid',
-									 array(
-									 		'where'=>array(TBL_USERS.'.is_delete'=>FALSE),
-									 		'where_not_in'=>array(TBL_USERS.'.user_status'=>array('blocked'))
-									 	  ),
-									 array(
-										'order_by'=>TBL_USERS.'.username',
-										'join'=>array(
-													array(
-														'table'=>'roles',
-														'condition'=>TBL_USERS.'.role_id='.TBL_ROLES.'.id'
+		$this->data['templates'] =select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1','is_delete'=>0)));
+		
+		$role_id = $this->input->post('role_id');
+
+		if(!$_POST || $role_id==0){
+
+			$this->data['u'] =select(TBL_USERS,FALSE,array('where'=>array('id'=>$id,'is_delete'=>0)),array('single'=>true));
+			$this->data['users'] =select(TBL_USERS,
+										TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name,'.TBL_ROLES.'.id as rid',
+										 array(
+										 		'where'=>array(TBL_USERS.'.is_delete'=>FALSE),
+										 		'where_not_in'=>array(TBL_USERS.'.user_status'=>array('blocked'))
+										 	  ),
+										 array(
+											'order_by'=>TBL_USERS.'.username',
+											'join'=>array(
+														array(
+															'table'=>'roles',
+															'condition'=>TBL_USERS.'.role_id='.TBL_ROLES.'.id'
+														)
 													)
 												)
-											)
-									);
+										);
+
+		}else{
+
+			$this->data['users'] =select(TBL_USERS,
+										TBL_USERS.'.username,'.TBL_USERS.'.id,'.TBL_ROLES.'.role_name,'.TBL_ROLES.'.id as rid',
+										 array(
+										 		'where'=>array(
+										 						TBL_USERS.'.is_delete'=>FALSE,
+										 						TBL_USERS.'.role_id'=>$role_id
+										 					  ),
+										 		'where_not_in'=>array(TBL_USERS.'.user_status'=>array('blocked'))
+										 	  ),
+										 array(
+											'order_by'=>TBL_USERS.'.username',
+											'join'=>array(
+														array(
+															'table'=>'roles',
+															'condition'=>TBL_USERS.'.role_id='.TBL_ROLES.'.id'
+														)
+													)
+												)
+										);
+			$this->data['u'] =select(TBL_USERS,FALSE,array('where'=>array('id'=>$id,'role_id'=>$role_id,'is_delete'=>0)),array('single'=>true));
+		}
+
 		if(count($this->input->post('all_users')) == 0){
 			$this->form_validation->set_rules('all_users', 'Users', 'trim|required');		
 		}										
@@ -408,7 +440,6 @@ class User extends ADMIN_Controller {
 
 			$db_template = select(TBL_MESSAGES,FALSE,array('where'=>array('is_template'=>'1')));
 
-			 
 			$cnt = 0;
 			if(isset($_POST['save_template'])){
 				foreach($db_template as $db_temp){
@@ -436,17 +467,14 @@ class User extends ADMIN_Controller {
 						}else{
 							$template = '0';
 						}
+
 						$data = array(
 								'message_text'=>$msg_text,
 								'sender_id'=>$this->session->userdata('id'),
 								'message_title'=>$msg_title,
 								'status'=>'1',
 								'reply_for'=>'0',
-								'created_date'=>date('Y-m-d H:i:s',time()),
-								'modified_date'=>'0000-00-00 00:00:00',
-								'is_template'=>$template,
-								'is_delete'=>'0',
-								'is_testdata'=>'yes'
+								'is_template'=>$template
 							);
 
 						//insert data into messages table
@@ -454,11 +482,7 @@ class User extends ADMIN_Controller {
 
 						$data_message_receiver = array(
 								'message_id'=>$message_id,
-								'receiver_id'=>$user,
-								'created_date'=>date('Y-m-d H:i:s',time()),
-								'modified_date'=>'0000-00-00 00:00:00',	
-								'is_delete'=>'0',
-								'is_testdata'=>'yes'
+								'receiver_id'=>$user
 							);
 
 						// insert data into messages_receiver table using message id from message table

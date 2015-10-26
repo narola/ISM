@@ -10,9 +10,11 @@ class Course extends ADMIN_Controller {
 		parent::__construct();
         $this->data['prev_url'] = $this->session->userdata('prev_url');
     }
-	 /**
+	 
+	/**
       * Function for list all Courses
-      */
+     */
+
 	public function lists() {      
 
 		$this->data['page_title'] = 'Courses';
@@ -35,10 +37,10 @@ class Course extends ADMIN_Controller {
 			if(!empty($category)){ $where['where']['course_category_id'] = $category ; $str .= '&category='.$category; }			
 			if(!empty($q)){ 
 					$where['like'][TBL_COURSES.'.course_name'] = $q; 
-					$where['or_like'][TBL_COURSES.'.course_nickname'] = $q;
-					$where['or_like'][TBL_COURSES.'.course_details'] = $q;
-					$where['or_like'][TBL_COURSES.'.course_degree'] = $q;
-					$where['or_like'][TBL_COURSES.'.course_type'] = $q;  
+					$where['like'][TBL_COURSES.'.course_nickname'] = $q;
+					// $where['or_like'][TBL_COURSES.'.course_details'] = $q;
+					// $where['or_like'][TBL_COURSES.'.course_degree'] = $q;
+					// $where['or_like'][TBL_COURSES.'.course_type'] = $q;  	
 					$str .='&q='.$q; 
 			}
             
@@ -116,17 +118,15 @@ class Course extends ADMIN_Controller {
     /**
 	* ajax function to delete the Course 
 	*/
-	public function delete_course(){
-		$course_id = $this->input->post('course_id');
+	public function delete_course($course_id){
+		//$course_id = $this->input->post('course_id');
         $is_delete = 1;
 		$data=array(
 				 "is_delete"=> $is_delete
 				 );
 		update('courses',$course_id,$data);	// Update data  using common_model.php and cms_helper.php
-		
-		$response = array('is_delete'=>$is_delete,'id'=>'delete_'.$course_id);
-		echo json_encode($response);
-		exit; 
+		$this->session->set_flashdata('success', 'Course has been Successfully deleted.');
+		redirect('admin/course/lists');
 	}
 
     /**
