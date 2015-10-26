@@ -83,24 +83,29 @@ class Report extends ADMIN_Controller {
     public function get_group_stats(){
 
     	$classroom_id = $this->input->post('classroom_id');
-    	//$classroom_id = 2;
+    	// $classroom_id = 2;
 
     	$date_range = $this->input->post('date_range');
-    	//$date_range = '08/02/2015 - 11/10/2015';
+    	// $date_range = '08/02/2015 - 11/10/2015';
 
         $date_range_split = explode(" - ", $date_range);
     	$sdate = date_create(reset($date_range_split));
     	$edate = date_create(end($date_range_split));
     	$start_date=date_format($sdate,"Y-m-d H:i:s");
-		$end_date=date_format($edate,"Y-m-d H:i:s");
+		$end_date=date_format($edate,"Y-m-d H:i:s");  
+
+        /*
+                            ".group_id,sum(".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_score) as y",
+
+        */
 
     	$members = select(
                             TBL_STUDENT_ACADEMIC_INFO,
                             TBL_TUTORIAL_GROUPS.".group_name as name,".TBL_TUTORIAL_GROUP_MEMBER.
-                            ".group_id,sum(".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_score) as y",
+                            ".group_id,".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_score as y",
     		               array(
                             'where'=>array(
-                                    TBL_STUDENT_ACADEMIC_INFO.".classroom_id"=>$classroom_id,
+                                    TBL_TUTORIAL_GROUPS.".classroom_id"=>$classroom_id,
     			                    TBL_TUTORIAL_GROUPS.".is_completed"=>'1',
     			                    TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".created_date > " => $start_date,
     								TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".created_date < " => $end_date

@@ -72,7 +72,7 @@
                                     <?php if(!empty($top_groups)){
                                         $i=1;
                                         foreach ($top_groups as $group) { ?>
-                                        <tr>
+                                    <tr>
                                         <td><?php echo $i; ?></td>
                                         <td><?php echo $group['group_name']; ?></td>
                                         <td><?php echo $group['score']; ?></td>
@@ -139,7 +139,7 @@
                  // console.log(response);
                   
                 // Create the chart
-                $('#performance_graph_2').highcharts({
+                $('#performance_graph_1').highcharts({
                     chart: {
                         type: 'column'
                     },
@@ -147,7 +147,7 @@
                         text: ''
                     },
                     subtitle: {
-                        text: 'Group V/S Course'
+                        text: 'Points V/S Course'
                     },
                     xAxis: {
                         type: 'category'
@@ -176,7 +176,7 @@
                     },
             
                     series: [{
-                        name: "Group",
+                        name: "Courses",
                         colorByPoint: true,
                         data: response
                     }]
@@ -190,7 +190,7 @@
             
             var date_range = $("#date_range").val();
             var classroom_id = $('#classroom_id').val();
-
+            
             $.ajax({
                url:'<?php echo base_url()."admin/report/get_group_stats"; ?>',
                type:'POST',
@@ -200,7 +200,7 @@
                  // console.log(response);
                   
                 // Create the chart
-                $('#performance_graph_1').highcharts({
+                $('#performance_graph_2').highcharts({
                     chart: {
                         type: 'column'
                     },
