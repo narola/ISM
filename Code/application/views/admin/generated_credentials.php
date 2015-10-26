@@ -142,7 +142,7 @@
                 </div>
 
                 <button class="btn btn_red" type="submit">Confirm & Generate</button>
-                <button class="btn btn_black_normal" type="reset" onclick="reset_form()">Cancel</button>
+                <button class="btn btn_black_normal" type="reset" onclick="reset_form()">Reset</button>
 
             </div>
           </div>
