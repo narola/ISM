@@ -259,7 +259,7 @@
                     <span class="fa fa-birthday-cake"></span>
                     March 21, 1992
                     </p>
-					<button class="btn btn_green pull-right">Add Studymate</button>
+					<!--<button class="btn btn_green pull-right">Add Studymate</button>-->
                     <div class="clearfix"></div>
                 </div>
             </div>

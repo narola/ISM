@@ -3668,3 +3668,6 @@ a.expand_ques + .row{
 	height: 115px;
     overflow: hidden;
 }
+.studymate_recom .mate_name {
+    height: 30px;
+}
