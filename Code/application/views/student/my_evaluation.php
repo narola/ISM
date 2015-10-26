@@ -46,6 +46,7 @@
                             </div>
                             <div class="box_body">
                                 <p class="ques"><?php echo $value['question_text'];?></p>
+                                <a href="javascript:void(0);" id="expand_ques" class="fa fa-angle-double-down"></a>
                                 <!--answers-->
                                 <div class="row">
                                     <div class="col-lg-4 col-sm-6">
