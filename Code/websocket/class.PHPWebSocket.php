@@ -2141,10 +2141,10 @@ class PHPWebSocket {
                     }
                     /* Check answer id is within choices id or Not */
                     $query = "SELECT `id` FROM `answer_choices` WHERE `question_id` = " . $data['question_id'];
-                    $row = mysqli_query($link, $query);
+                    $rowz = mysqli_query($link, $query);
                     $all_choices = array();
-                    while ($rows = mysqli_fetch_assoc($row)) {
-                        $all_choices[] = $rows['id'];
+                    while ($rowsz = mysqli_fetch_assoc($rowz)) {
+                        $all_choices[] = $rowsz['id'];
                     }
 
                     if (in_array($data['answer'], $all_choices) || $data['answer'] == 0) {
