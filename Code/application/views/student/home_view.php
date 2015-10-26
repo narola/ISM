@@ -235,9 +235,20 @@
     <div id="carousel-noticeboard" class="carousel slide" data-ride="carousel">
       <!-- Indicators -->
       <ol class="carousel-indicators">
-        <li data-target="#carousel-noticeboard" data-slide-to="0" class="active"></li>
-        <li data-target="#carousel-noticeboard" data-slide-to="1"></li>
-        <li data-target="#carousel-noticeboard" data-slide-to="2"></li>
+        <?php 
+            if(isset($my_latest_notice) && sizeof($my_latest_notice)>0){ 
+                if(count($my_latest_notice) == 1)
+                    echo '<li data-target="#carousel-noticeboard" data-slide-to="0" class="active"></li>';
+                else if(count($my_latest_notice) == 2){ 
+                    echo '<li data-target="#carousel-noticeboard" data-slide-to="0" class="active"></li>';
+                    echo '<li data-target="#carousel-noticeboard" data-slide-to="1"></li>';
+                } else { 
+                    echo '<li data-target="#carousel-noticeboard" data-slide-to="0" class="active"></li>';
+                    echo '<li data-target="#carousel-noticeboard" data-slide-to="1"></li>';
+                    echo '<li data-target="#carousel-noticeboard" data-slide-to="2"></li>';
+                }
+            } 
+        ?>
       </ol>
     <!-- Wrapper for slides -->
       <div class="carousel-inner" role="listbox">
@@ -273,6 +284,10 @@
         </div>
         <?php } ?>
       </div>
+      <?php 
+            if(isset($my_latest_notice) && sizeof($my_latest_notice)>0){ 
+                if(count($my_latest_notice) > 1){
+        ?>
        <!-- Controls -->
       <a class="left carousel-control" href="#carousel-noticeboard" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -282,6 +297,10 @@
         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
       </a>
+      <?php
+            } 
+        }
+        ?>
     </div>
     <!--//notice board-->
      

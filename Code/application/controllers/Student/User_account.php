@@ -86,7 +86,7 @@ class User_account extends CI_Controller {
 		    		'single' => 1
 		    		));
 		// qry(true);
-		$this->form_validation->set_rules('username', 'Username', 'trim|required|callback_check_user');
+		$this->form_validation->set_rules('username', 'Username', 'trim|required|exact_length[8]|callback_check_user');
 		$this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|regex_match[/^[0-9().-]+$/]');
 		
 		if(isset($this->session->userdata('user')['id'])){
@@ -385,19 +385,28 @@ class User_account extends CI_Controller {
 	/*--check user exist or not------------------*/
 	public function check_user()
 	{
-		$uid = $this->session->userdata('user')['id'];
-		if(!empty($uid))
-			$found	=	select(TBL_USERS,null,array('where'=>array('username' => $this->input->post('username',TRUE),'id !='=>$uid)));
-		else
-			$found	=	select(TBL_USERS,null,array('where'=>array('username' => $this->input->post('username',TRUE))));
+		if(preg_match('/^[a-z0-9 .\-]+$/i', $this->input->post('username',TRUE)))
+		{
+			$uid = $this->session->userdata('user')['id'];
+			if(!empty($uid))
+				$found	=	select(TBL_USERS,null,array('where'=>array('username' => $this->input->post('username',TRUE),'id !='=>$uid)));
+			else
+				$found	=	select(TBL_USERS,null,array('where'=>array('username' => $this->input->post('username',TRUE))));
 
-		if(sizeof($found) > 0){
-			$this->form_validation->set_message('check_user', 'Username Already Exist');
-			return FALSE;
+			if(sizeof($found) > 0){
+				$this->form_validation->set_message('check_user', 'Username Already Exist');
+				return FALSE;
+			}
+			else{
+				return TRUE;
+			}
 		}
-		else{
-			return TRUE;
+		else
+		{
+			$this->form_validation->set_message('check_user', 'Invalid Username');
+			return FALSE;	
 		}
+		
 	}
 
 	/*--check email exist or not------------------*/
