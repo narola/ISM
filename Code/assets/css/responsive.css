@@ -110,6 +110,9 @@
 		font-size: 12px;
 		padding: 3px;
 	}
+	.form-inline .form-control{
+		width:100%;
+	}
 }
 @media (max-width:1280px){
 	.login_background{
@@ -372,7 +375,7 @@
    		padding: 10px 17px;
 	}
 	.filter .form-group {
-    	margin-bottom: 15px;
+    	/*margin-bottom: 15px;*/
     	width: 31.7%;
 	}
 	.filter .form-group:nth-child(3n){
@@ -408,8 +411,11 @@
     	left: -15px;
 		top:370px;
 	}
-	.main_tut, .input{
+	.main_tut{
 		width:40%;
+	}
+	.input{
+		width:39.9%;
 	}
 	.toolkit{
 		right: 21%;
@@ -488,7 +494,7 @@
 		display:block;
 	}
 	.fixed_comment {
-    	width: 36.9%;
+    	width: 39.8%;
 	}
 	.search_bar .form-control {
     	width: 58%;
@@ -734,6 +740,9 @@
 		padding-left: 10px;
 		width: 25%;
 	}
+	.calculator, .white_board, .explore, .dictionary {
+    	width: 77.5%;
+	}
 }
 
 @media (max-width:800px){
@@ -915,6 +924,22 @@
 		padding:6px;
 		font-size:13px;
 	}
+	.admin_question {
+    	width: 100%;
+	}
+	.discussion {
+		margin-top: 300px;
+	}
+	.calculator, .white_board, .explore, .dictionary {
+    	width: 72%;
+	}
+	.tut_group .box_body p, .tut_group .box_footer p {
+    	margin: 0;
+	}
+	.tut_group .mate_user_img{
+		float:none;
+		margin:0;
+	}
 }
 @media (max-width:768px){
 	.login_background {
@@ -958,6 +983,9 @@
 	}
 	.general_cred #replacing_div3 input.form-control {
     	width: 78%;
+	}
+	.calculator, .white_board, .explore, .dictionary {
+    	width: 71%;
 	}
 }
 @media (max-width:767px){
