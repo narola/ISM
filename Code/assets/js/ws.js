@@ -166,7 +166,7 @@ function timeout_timer()
     }
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     $('#circle_process').circleProgress({
         value: 0.00,
@@ -180,7 +180,7 @@ $(document).ready(function() {
     });
 
     /* Handle multiple chat window. */
-    $(document).on('click', '.chat .chat_header', function() {
+    $(document).on('click', '.chat .chat_header', function () {
         if ($(this).parent().hasClass('passive')) {
             if ($(this).parent().hasClass('chat_3')) {
                 $('.chat.active').removeClass('active').addClass('chat_3 passive');
@@ -197,7 +197,7 @@ $(document).ready(function() {
 
 
     /* Validate length of selected file. */
-    var handleFileSelect = function(evt) {
+    var handleFileSelect = function (evt) {
         var files = evt.target.files;
         var file = files[0];
         var user = $(this).data('id');
@@ -212,7 +212,7 @@ $(document).ready(function() {
         if (this.files[0].size <= 1024 * 1024 * 10) {
             if (files && file) {
                 var reader = new FileReader();
-                reader.onload = function(readerEvt) {
+                reader.onload = function (readerEvt) {
                     var binaryString = readerEvt.target.result;
                     console.log(btoa(binaryString));
                     var request = {
@@ -255,12 +255,12 @@ if ("WebSocket" in window)
 {
     var ws = new WebSocket("ws://192.168.1.124:9300");
 
-    ws.onopen = function()
+    ws.onopen = function ()
     {
         ws.send('{"type":"con","from":"' + wp + '","to":"self"}');
     };
 
-    ws.onmessage = function(evt)
+    ws.onmessage = function (evt)
     {
         var obj = $.parseJSON(evt.data);
 
@@ -270,7 +270,7 @@ if ("WebSocket" in window)
         }
 
         if (obj.reload == 'yes') {
-            setTimeout(function() {
+            setTimeout(function () {
                 location.reload();
             }, 3000);
 
@@ -328,7 +328,7 @@ if ("WebSocket" in window)
             }
 
             var theString = obj.online_user;
-            $.each(theString.split("-"), function(index, id) {
+            $.each(theString.split("-"), function (index, id) {
                 $('#mate_list[data-id="' + id + '"]').parent('div').removeClass('offline').addClass('online');
                 if (start_timer == true) {
                     $('.tut_group .box_footer[data-id="' + id + '"] p').html('Online');
@@ -346,7 +346,22 @@ if ("WebSocket" in window)
         } else if (obj.type == 'notification') {
             set_status(obj.user_id, obj.live_status);
         } else if (obj.type == 'get_latest_message') {
-            $('.chat[data-id="' + obj.my_id + '"] .chat_text .mCustomScrollBox .mCSB_container').html(obj.message);
+            $.each(obj.message, function (index, list) {
+                var my_msg = '';
+                if (list.is_text == 0) {
+                    my_msg = '<a href="uploads/' + list.a_link + '"  target="_BLANK"><img src="' + list.img_link + '" width="50" height="50" /></a>';
+                } else {
+                    my_msg = list.text;
+                }
+                if (list.to == 1) {
+                    my_msg = '<div class="to"><p>' + my_msg + '</p></div>';
+                } else {
+                    my_msg = '<div class="from"><p>' + my_msg + '</p></div>';
+                }
+                $('.chat[data-id="' + obj.my_id + '"] .chat_text .mCustomScrollBox .mCSB_container').append(my_msg);
+            });
+
+
         } else if (obj.type == 'post') {
             if (obj.id != wp) {
                 $('.alert_notification p').html("New feed from <b>" + obj.full_name + "</b>").show();
@@ -355,7 +370,7 @@ if ("WebSocket" in window)
         } else if (obj.type == 'feed_comment') {
             generate_comment(obj);
         } else if (obj.type == 'load_more_feed') {
-            $.each(obj.feed, function(index, jsonObject) {
+            $.each(obj.feed, function (index, jsonObject) {
                 generate_post(jsonObject, false);
             });
             $('button[data-type="load_more"]').attr('data-start', obj.start);
@@ -381,7 +396,7 @@ if ("WebSocket" in window)
             }
         } else if (obj.type == "discussion-type") {
             $('.box_footer[data-id="' + obj.type_id + '"]').html(obj.message);
-            setTimeout(function() {
+            setTimeout(function () {
                 $('.box_footer[data-id="' + obj.type_id + '"]').html('Online');
             }, 2000);
 
@@ -421,7 +436,7 @@ if ("WebSocket" in window)
         } else if (obj.type == "view-all-comment-activities") {
             str = '';
 
-            $.each(obj.comment, function(index, comment) {
+            $.each(obj.comment, function (index, comment) {
                 str += '<div class="user_small_img user_comment">';
                 str += '<img src="uploads/' + obj.profile + '" onerror="this.src=\'assets/images/avatar.png\'">';
                 str += '</div><div class="notification_txt">';
@@ -501,7 +516,7 @@ if ("WebSocket" in window)
             ids = '';
             other_name = '';
             len = obj.student_detail.length;
-            $.each(obj.student_detail, function(index, list) {
+            $.each(obj.student_detail, function (index, list) {
                 if (len == 1) {
                     str += '&nbsp;tagged : <label class="label label_name">' + list.name + '</label>';
                     ids += list.id;
@@ -551,7 +566,7 @@ if ("WebSocket" in window)
                 $('.question.text-center p').html(obj.question);
                 $('.ans_options').html('');
                 var chk = '';
-                $.each(obj.answer, function(index, list) {
+                $.each(obj.answer, function (index, list) {
                     chk = '';
                     if (obj.choice_id == list.id) {
                         chk = 'checked';
@@ -576,7 +591,7 @@ if ("WebSocket" in window)
             $('.question.text-center p').html(obj.new_question.question);
             $('.ans_options').html('');
             var chk = '';
-            $.each(obj.new_question.answer, function(index, list) {
+            $.each(obj.new_question.answer, function (index, list) {
                 chk = '';
                 if (obj.new_question.choice_id == list.id) {
                     chk = 'checked';
@@ -610,7 +625,7 @@ if ("WebSocket" in window)
             other_name = '';
             notification_str = '';
             len = obj.already_available_tagged_detail.length;
-            $.each(obj.already_available_tagged_detail, function(index, list) {
+            $.each(obj.already_available_tagged_detail, function (index, list) {
                 if (len == 1) {
                     str += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
                     ids += list.id;
@@ -667,7 +682,7 @@ if ("WebSocket" in window)
 
             already = '';
             i = 0;
-            $.each(obj.already_tagged_detail, function(index, list) {
+            $.each(obj.already_tagged_detail, function (index, list) {
                 if (i == 0)
                     already += list.full_name;
                 else
@@ -683,7 +698,7 @@ if ("WebSocket" in window)
         } else if (obj.type == 'study_mate_search' || obj.type == "load-studymate-more") {
             str = '';
             $('a[data-type="load-studymate-more"]').remove().html();
-            $.each(obj.result, function(index, list) {
+            $.each(obj.result, function (index, list) {
                 str += '<div class="study_mate">';
                 str += '<div class="col-lg-9 col-md-8 col-sm-7">';
                 str += '<div class="mate_user_img">';
@@ -830,14 +845,14 @@ if ("WebSocket" in window)
             alert('Message Not Catched!!');
         }
     };
-    ws.onclose = function()
+    ws.onclose = function ()
     {
         alert('Disconnected from Server!');
     };
 }
 
 /* Send message for individual chat. */
-$(document).on('keypress', 'input[data-type="chat"]', function(e) {
+$(document).on('keypress', 'input[data-type="chat"]', function (e) {
     if (e.keyCode == 13 && this.value) {
         var request = {
             type: 'studymate',
@@ -879,7 +894,7 @@ function set_status(id, status) {
 }
 
 
-$(document).on('click', '#mate_list', function() {
+$(document).on('click', '#mate_list', function () {
     $.cookie('active', $(this).attr('data-id'));
     var str = '';
     var id = $(this).data('id');
@@ -921,8 +936,8 @@ $(document).on('click', '#mate_list', function() {
         $('#chat_container').append(str);
         $("#chat_container .chat[data-id='" + id + "'] .chat_text")
                 .mCustomScrollbar({
-            theme: "minimal-dark"
-        }).delay(300);
+                    theme: "minimal-dark"
+                }).delay(300);
         var request = {
             type: 'get_latest_message',
             to: 'self',
@@ -938,7 +953,7 @@ $(document).on('click', '#mate_list', function() {
 });
 
 /* Send Feed Post */
-$(document).on('click', 'button[data-type="post"]', function() {
+$(document).on('click', 'button[data-type="post"]', function () {
     if ($.trim($('#feed_post').val()) != '') {
         var request = {
             type: 'post',
@@ -956,7 +971,7 @@ $(document).on('click', 'button[data-type="post"]', function() {
 });
 
 /* Send comment */
-$(document).on('keypress', '#all_feed .box.feeds .write_comment input[data-type="feed_comment"]', function(e) {
+$(document).on('keypress', '#all_feed .box.feeds .write_comment input[data-type="feed_comment"]', function (e) {
     if (e.keyCode == 13 && $.trim($(this).val()) != '') {
         var request = {
             type: 'feed_comment',
@@ -994,7 +1009,7 @@ function generate_post(obj, status) {
         k = 0;
         other_name = '';
         notification_str = '';
-        $.each(obj.tagged_detail, function(index, list) {
+        $.each(obj.tagged_detail, function (index, list) {
             if (len == 1) {
                 name += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
             }
@@ -1043,7 +1058,7 @@ function generate_post(obj, status) {
     str += '<span data-id="' + obj.post_id + '">' + name + '</span>';
 
     options = '';
-    $.each(obj.studymates_detail, function(index, study_list) {
+    $.each(obj.studymates_detail, function (index, study_list) {
         options += '<option value="' + study_list.id + '">' + study_list.full_name + '</option>';
     });
 
@@ -1079,7 +1094,7 @@ function generate_post(obj, status) {
     $("#" + obj.post_id).select2();
     $("#all_feed .box.feeds[data-id='" + obj.post_id + "']").fadeOut(0).fadeIn(400);
     if (typeof (obj.comment) != 'undefined') {
-        $.each(obj.comment, function(index, comment_list) {
+        $.each(obj.comment, function (index, comment_list) {
             generate_comment(comment_list);
         });
     }
@@ -1106,7 +1121,7 @@ function generate_comment(obj) {
 }
 
 /* load more feeds. */
-$(document).on('click', 'button[data-type="load_more"]', function() {
+$(document).on('click', 'button[data-type="load_more"]', function () {
     $('button[data-type="load_more"]').prop('disabled', true);
     var request = {
         type: 'load_more_feed',
@@ -1118,7 +1133,7 @@ $(document).on('click', 'button[data-type="load_more"]', function() {
 })
 
 /* Submit group discussion comment. */
-$(document).on('click', '.option_bar[data-type="discussion-submit"]', function() {
+$(document).on('click', '.option_bar[data-type="discussion-submit"]', function () {
     if ($.trim($('textarea[data-type="discussion"]').val()) != '') {
         var request = {
             type: 'discussion',
@@ -1130,7 +1145,7 @@ $(document).on('click', '.option_bar[data-type="discussion-submit"]', function()
 });
 
 /* Send tying event. */
-$(document).on('keypress', 'textarea[data-type="discussion"]', function() {
+$(document).on('keypress', 'textarea[data-type="discussion"]', function () {
     if ($(this).val().length % 2 == 0) {
         var request = {
             type: 'discussion-type',
@@ -1178,7 +1193,7 @@ function generate_cm(obj) {
  *   KAMLESH POKIYA (KAP).
  *   Like / dislike POST.
  */
-$(document).on('click', 'a[data-type="feed-like"]', function(e) {
+$(document).on('click', 'a[data-type="feed-like"]', function (e) {
 
     var request = {
         type: 'like',
@@ -1190,7 +1205,7 @@ $(document).on('click', 'a[data-type="feed-like"]', function(e) {
     $(this).val('');
 });
 /* Weekday scroll in tutorial group. */
-$(document).on('click', '.tut_weekdays li a[data-type="s"]', function(e) {
+$(document).on('click', '.tut_weekdays li a[data-type="s"]', function (e) {
     var nav = $(this).attr('href');
     e.preventDefault();
     if (nav.length) {
@@ -1204,7 +1219,7 @@ $(document).on('click', '.tut_weekdays li a[data-type="s"]', function(e) {
  *   KAMLESH POKIYA (KAP).
  *   Action of studymate with remove or not.
  */
-$(document).on('change', '#action_studymate', function() {
+$(document).on('change', '#action_studymate', function () {
     val = $(this).val();
     if (val == 1) {
         $('button[data-type="close-studymate"]').attr('data-course', $(this).data('course')).attr('data-name', $(this).data('name')).attr('data-id', $(this).data('id')).attr('data-school', $(this).data('school')).attr('data-profile', $(this).data('profile'));
@@ -1217,7 +1232,7 @@ $(document).on('change', '#action_studymate', function() {
  *   KAMLESH POKIYA (KAP).
  *   Remove studymate.
  */
-$(document).on('click', 'button[data-type="close-studymate"]', function(e) {
+$(document).on('click', 'button[data-type="close-studymate"]', function (e) {
 
     var request = {
         type: 'close_studymate',
@@ -1236,7 +1251,7 @@ $(document).on('click', 'button[data-type="close-studymate"]', function(e) {
     $('.box_body #carousel-studymate .carousel-inner #active-recomonded').append(str);
 });
 /* Send Request to search from dictionary... */
-$(document).on('keypress', 'input[data-type="search-dictionary"], a[data-type="search-dictionary"]', function(e) {
+$(document).on('keypress', 'input[data-type="search-dictionary"], a[data-type="search-dictionary"]', function (e) {
 
     if (e.keyCode == 13 && this.value) {
         var request = {
@@ -1255,7 +1270,7 @@ $(document).on('keypress', 'input[data-type="search-dictionary"], a[data-type="s
  *   KAMLESH POKIYA (KAP).
  *   Send studymate request.
  */
-$(document).on('click', 'button[data-type="studyment-request"]', function(e) {
+$(document).on('click', 'button[data-type="studyment-request"]', function (e) {
     var request = {
         type: 'send_studymate_request',
         to: $(this).attr('data-id'),
@@ -1264,7 +1279,7 @@ $(document).on('click', 'button[data-type="studyment-request"]', function(e) {
     };
     ws.send(JSON.stringify(request));
 });
-$(document).on('click', 'a[data-type="view-all-comment-activities"]', function(e) {
+$(document).on('click', 'a[data-type="view-all-comment-activities"]', function (e) {
     var request = {
         type: 'view-all-comment-activities',
         to: 'self',
@@ -1273,7 +1288,7 @@ $(document).on('click', 'a[data-type="view-all-comment-activities"]', function(e
     };
     ws.send(JSON.stringify(request));
 });
-$(document).on('click', 'button[data-type = "decline-request"]', function(e) {
+$(document).on('click', 'button[data-type = "decline-request"]', function (e) {
     var request = {
         type: 'decline-request',
         sub_type: $(this).data('subtype'),
@@ -1283,7 +1298,7 @@ $(document).on('click', 'button[data-type = "decline-request"]', function(e) {
     };
     ws.send(JSON.stringify(request));
 });
-$(document).on('click', 'button[data-type="save_and_next"]', function(e) {
+$(document).on('click', 'button[data-type="save_and_next"]', function (e) {
     var request = {
         type: 'exam_answer',
         qustion_id: $(this).data('qid'),
@@ -1295,7 +1310,7 @@ $(document).on('click', 'button[data-type="save_and_next"]', function(e) {
  *   KAMLESH POKIYA (KAP).
  *   Tag user.
  */
-$(document).on('change', '#select-tag-user', function(e) {
+$(document).on('change', '#select-tag-user', function (e) {
     if (e.val != '') {
         var request = {
             type: 'get_studymate_name',
@@ -1309,7 +1324,7 @@ $(document).on('change', '#select-tag-user', function(e) {
         $('#tagged-users').html('');
     }
 });
-$(document).on('click', 'button[data-type="exam_start_request"]', function() {
+$(document).on('click', 'button[data-type="exam_start_request"]', function () {
     $(this).attr('disabled', 'disabled');
     var request = {
         type: 'exam_start_request',
@@ -1318,16 +1333,16 @@ $(document).on('click', 'button[data-type="exam_start_request"]', function() {
     ws.send(JSON.stringify(request));
 });
 /* Clear selection */
-$(document).on('click', 'button[data-type="clear_responce"]', function() {
+$(document).on('click', 'button[data-type="clear_responce"]', function () {
     exam_choice = 0;
     $('.ans_options label input[name="option"]').attr('checked', false);
 });
 /* set answer */
-$(document).on('click', '.ans_options label input[name="option"]', function() {
+$(document).on('click', '.ans_options label input[name="option"]', function () {
     exam_choice = $(this).data('id');
 });
 /* Next question */
-$(document).on('click', 'button[data-type="question_responce"]', function() {
+$(document).on('click', 'button[data-type="question_responce"]', function () {
     $('button[data-type="clear_responce"]').attr('disabled', 'disabled');
     $('button[data-type="question_responce"]').attr('disabled', 'disabled');
     var question_id = $(this).attr('data-id');
@@ -1354,7 +1369,7 @@ $(document).on('click', 'button[data-type="question_responce"]', function() {
     ws.send(JSON.stringify(request));
     exam_choice = 0;
 });
-$(document).on('click', 'a[data-type="get_question"]', function() {
+$(document).on('click', 'a[data-type="get_question"]', function () {
     var request = {
         type: 'get_question',
         to: 'self',
@@ -1364,7 +1379,7 @@ $(document).on('click', 'a[data-type="get_question"]', function() {
     }
     ws.send(JSON.stringify(request));
 });
-$(document).on('click', 'button[data-type="end_exam"]', function() {
+$(document).on('click', 'button[data-type="end_exam"]', function () {
     var request = {
         type: 'end_exam',
         to: 'self',
@@ -1372,7 +1387,7 @@ $(document).on('click', 'button[data-type="end_exam"]', function() {
     }
     ws.send(JSON.stringify(request));
 });
-$(document).on('click', 'button[data-type="class_exam_start_request"]', function() {
+$(document).on('click', 'button[data-type="class_exam_start_request"]', function () {
     $(this).attr('disabled', 'disabled');
     var request = {
         type: 'class_exam_start_request',
@@ -1381,7 +1396,7 @@ $(document).on('click', 'button[data-type="class_exam_start_request"]', function
     };
     ws.send(JSON.stringify(request));
 });
-$(document).on('click', 'a[data-type="tag-user-again"]', function() {
+$(document).on('click', 'a[data-type="tag-user-again"]', function () {
     var request = {
         type: 'tag-user-again',
         to: 'all',
@@ -1396,7 +1411,7 @@ $(document).on('click', 'a[data-type="tag-user-again"]', function() {
  *   KAMLESH POKIYA (KAP).
  *   Tag studymate post.
  */
-$(document).on('click', 'a[data-type="tag-user-again"]', function() {
+$(document).on('click', 'a[data-type="tag-user-again"]', function () {
     var request = {
         type: 'tag-user-again',
         to: 'all',
@@ -1411,7 +1426,7 @@ $(document).on('click', 'a[data-type="tag-user-again"]', function() {
  *   KAMLESH POKIYA (KAP).
  *   Find studymate with textbox.
  */
-$(document).on('keyup', 'input[data-type="study_mate_search"]', function() {
+$(document).on('keyup', 'input[data-type="study_mate_search"]', function () {
 
 // if($('input[data-type="study_mate_search"]').val().length >= 2){  
     str = '<center><img src="assets/images/loading3.gif"></center>';
@@ -1430,7 +1445,7 @@ $(document).on('keyup', 'input[data-type="study_mate_search"]', function() {
  *   KAMLESH POKIYA (KAP).
  *   Find studymate with tab.
  */
-$(document).on('click', 'li[data-type="search-type"]', function() {
+$(document).on('click', 'li[data-type="search-type"]', function () {
 // if($('input[data-type="study_mate_search"]').val().length >= 2){  
     str = '<center><img src="assets/images/loading3.gif"></center>';
     $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html(str);
@@ -1448,7 +1463,7 @@ $(document).on('click', 'li[data-type="search-type"]', function() {
  *   KAMLESH POKIYA (KAP).
  *   Find studymate with Load more.
  */
-$(document).on('click', 'a[data-type="load-studymate-more"]', function() {
+$(document).on('click', 'a[data-type="load-studymate-more"]', function () {
     var request = {
         type: 'load-studymate-more',
         to: 'self',
@@ -1464,14 +1479,14 @@ $(document).on('click', 'a[data-type="load-studymate-more"]', function() {
  *   KAMLESH POKIYA (KAP).
  *   View studymate profile.
  */
-$(document).on('click', '#view_profile', function() {
+$(document).on('click', '#view_profile', function () {
     $('#view_profile_model div[data-type="profile_pic"]').html('<img src="uploads/' + $(this).data('profile') + '">');
     $('#view_profile_model h3[data-type="user-name"]').html($(this).data('name'));
     $('#view_profile_model p[data-type="course-name"]').html('<span class="fa fa-graduation-cap"></span>' + $(this).data('course'));
     $('#view_profile_model').modal('show');
 });
 /* close chat window */
-$(document).on('click', 'a[data-type="close"]', function() {
+$(document).on('click', 'a[data-type="close"]', function () {
     $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
     $.removeCookie('active');
 });
@@ -1479,7 +1494,7 @@ $(document).on('click', 'a[data-type="close"]', function() {
  *   KAMLESH POKIYA (KAP).
  *   Find studymate with load more.
  */
-$(document).on('click', 'a[data-type="load-activity-more"]', function() {
+$(document).on('click', 'a[data-type="load-activity-more"]', function () {
     var request = {
         type: 'load-activity-more',
         to: 'self',

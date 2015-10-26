@@ -436,6 +436,9 @@ class PHPWebSocket {
 
 
 
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -609,6 +612,9 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
 
 
 
@@ -933,7 +939,6 @@ class PHPWebSocket {
             'image/gif'
         );
         while ($rows = mysqli_fetch_assoc($row)) {
-
             $result[] = array(
                 'sender_id' => $rows['sender_id'],
                 'receiver_id' => $rows['receiver_id'],
@@ -943,24 +948,29 @@ class PHPWebSocket {
             );
         }
         //  $result = array_reverse($result);
-        $html = '';
-        foreach ($result as $value) {
-            $message = $value['message'];
-            if ($message == null) {
+        $html = array();
 
-                // If sent file is image than image is displayed otherwise default image is desplayed.
-                if (in_array($value['media_type'], $check_type)) {
-                    $message = '<a href="uploads/' . $value['media_link'] . '"  target="_BLANK"><img src="uploads/' . $value['media_link'] . '" width="50" height="50" /></a>';
-                } else {
-                    $message = '<a href="uploads/' . $value['media_link'] . '"  target="_BLANK"><img src="assets/images/default_chat.png" width="50" height="50" /></a>';
-                }
+        foreach ($result as $value) {
+            $in_h = array(
+                'is_text' => 0,
+                'a_link' => 'uploads/' . $value['media_link'],
+                'img_link' => 'uploads/' . $value['media_link'],
+                'text' => $value['message'],
+                'to' => 1
+            );
+
+            if ($value['message'] == null) {
+                if (!in_array($value['media_type'], $check_type))
+                    $in_h['img_link'] = 'assets/images/default_chat.png';
+            }else {
+                $in_h['is_text'] = 1;
             }
-            // check current user is sender.
+
+
             if ($value['sender_id'] == $data['my_id']) {
-                $html .= '<div class="from"><p>' . $message . '</p></div>';
-            } else {
-                $html .= '<div class="to"><p>' . $message . '</p></div>';
+                $in_h['to'] = 0;
             }
+            $html[] = $in_h;
         }
         $data['message'] = $html;
         return $data;
