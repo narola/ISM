@@ -20,6 +20,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class WSRequestPost {
 
+    private static final String TAG = WSRequestPost.class.getSimpleName();
+
     private static final Lock lock = new ReentrantLock();
     private static ObjectMapper mapper = null;
     private static final String LOG_TAG = "WSRequestPost";
@@ -68,6 +70,8 @@ public class WSRequestPost {
                 }
                 response.close();
                 json = sb.toString();
+
+//                Log.e(TAG, "Response json : " + json);
 
                 ret = getMapper().readValue(json, responseType);
 

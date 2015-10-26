@@ -34,6 +34,7 @@ public class RegisterRequest {
         return this.profileImage;
     }
 
+    @JsonProperty("profile_image")
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
@@ -42,6 +43,7 @@ public class RegisterRequest {
         return this.lastname;
     }
 
+    @JsonProperty("lastname")
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
@@ -68,6 +70,7 @@ public class RegisterRequest {
         return this.firstname;
     }
 
+	@JsonProperty("firstname")
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
@@ -76,6 +79,7 @@ public class RegisterRequest {
         return this.courseId;
     }
 
+	@JsonProperty("course_id")
     public void setCourseId(double courseId) {
         this.courseId = courseId;
     }
@@ -84,6 +88,7 @@ public class RegisterRequest {
         return this.schoolId;
     }
 
+	@JsonProperty("school_id")
     public void setSchoolId(double schoolId) {
         this.schoolId = schoolId;
     }
@@ -92,6 +97,7 @@ public class RegisterRequest {
         return this.contactNumber;
     }
 
+	@JsonProperty("contact_number")
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
     }
@@ -118,6 +124,7 @@ public class RegisterRequest {
         return this.homeAddress;
     }
 
+	@JsonProperty("home_address")
     public void setHomeAddress(String homeAddress) {
         this.homeAddress = homeAddress;
     }
@@ -126,6 +133,7 @@ public class RegisterRequest {
         return this.academicYear;
     }
 
+	@JsonProperty("academic_year")
     public void setAcademicYear(String academicYear) {
         this.academicYear = academicYear;
     }
@@ -134,6 +142,7 @@ public class RegisterRequest {
         return this.profileImageName;
     }
 
+	@JsonProperty("profile_image_name")
     public void setProfileImageName(String profileImageName) {
         this.profileImageName = profileImageName;
     }
@@ -142,6 +151,7 @@ public class RegisterRequest {
         return this.birthdate;
     }
 
+	@JsonProperty("birthdate")
     public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
@@ -150,6 +160,7 @@ public class RegisterRequest {
         return this.gender;
     }
 
+	@JsonProperty("gender")
     public void setGender(String gender) {
         this.gender = gender;
     }
@@ -158,6 +169,7 @@ public class RegisterRequest {
         return this.emailAddress;
     }
 
+	@JsonProperty("email_address")
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
@@ -166,6 +178,7 @@ public class RegisterRequest {
         return this.password;
     }
 
+	@JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
@@ -174,6 +187,7 @@ public class RegisterRequest {
         return this.deviceType;
     }
 
+	@JsonProperty("device_type")
     public void setDeviceType(String deviceType) {
         this.deviceType = deviceType;
     }
@@ -182,6 +196,7 @@ public class RegisterRequest {
         return this.classroomId;
     }
 
+	@JsonProperty("classroom_id")
     public void setClassroomId(double classroomId) {
         this.classroomId = classroomId;
     }
@@ -190,6 +205,7 @@ public class RegisterRequest {
         return this.roleId;
     }
 
+	@JsonProperty("role_id")
     public void setRoleId(double roleId) {
         this.roleId = roleId;
     }
@@ -198,6 +214,7 @@ public class RegisterRequest {
         return this.username;
     }
 
+	@JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;
     }

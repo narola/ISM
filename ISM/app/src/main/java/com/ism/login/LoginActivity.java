@@ -61,7 +61,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		etPwd = (EditText) findViewById(R.id.et_pwd);
 		etUserid = (EditText) findViewById(R.id.et_userid);
 
-		etUserid.setText("prerna");
+		etUserid.setText("0YGAJ8793B");
+//		etUserid.setText("prerna");
 		etPwd.setText("narola21");
 
 		etUserid.setTypeface(myTypeFace.getRalewayRegular());

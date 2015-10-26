@@ -181,4 +181,14 @@
 	<string name="last_name">Last Name</string>
 	<string name="first_name">First Name</string>
 	<string name="android">Android</string>
+
+
+
+
+	<string name="gotrending">Go Trending</string>
+	<string name="setquiz">Set Quiz</string>
+	<string name="settrial">Set Trial</string>
+	<string name="stradd">ADD</string>
+	<string name="straddnew">ADD NEW</string>
+	<string name="select">Select</string>
 </resources>

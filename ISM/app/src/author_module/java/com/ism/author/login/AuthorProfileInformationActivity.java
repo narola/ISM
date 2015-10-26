@@ -160,7 +160,7 @@ public class AuthorProfileInformationActivity extends Activity implements View.O
     private void setUpSpinner(Spinner spinner, String[] strArrGender) {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, R.layout.custom_spinner, strArrGender) {
+                this, R.layout.simple_spinner, strArrGender) {
 
             public View getView(int position, View convertView,
                                 ViewGroup parent) {
