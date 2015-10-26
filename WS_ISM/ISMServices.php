@@ -51,7 +51,7 @@ switch ($_REQUEST['Service'])
         
         break;
 
-	/*********************  TutorialGroup Functions ******************************/
+	/*********************  TutorialGroup Functions  ******************************/
 
 	case "AllocateTutorialGroup":
 	case "AcceptTutorialGroup":
@@ -62,7 +62,19 @@ switch ($_REQUEST['Service'])
 	}
 		break;
 
-    /*********************  Invalid Option to serve ******************************/
+	/*********************  Data Functions  ***************************************/
+
+	case "GetCountries":
+	case "GetStates":
+	case "GetCities":
+	{
+		include_once 'Data.php';
+		$profile = new TutorialGroup();
+		$data = $profile -> call_service($_REQUEST['Service'], $postData);
+	}
+		break;
+
+	/*********************  Invalid Option to serve  ******************************/
     default:
     {
         $data['data'] = 'No Service Found';
