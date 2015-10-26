@@ -47,7 +47,7 @@ class My_activities extends ISM_Controller {
 				);
 		$select = 't.topic_name,ga.created_date';
 		$data['my_activities']['topic_allcated'] = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' ga',$select,$where,$option);
-
+		// qry(true);
 		/*--------Get my studymates---------*/
 		$studymate = studymates($user_id,false);
 		$where = array('where_in'=>array('u.id'=>$studymate),'where_in' => array('date_format(sm.created_date,"%m")' => $month));
@@ -130,9 +130,9 @@ class My_activities extends ISM_Controller {
 		$options = array('order_by' => 'post.created_date DESC');
 		$select = 'post.feed_text,(select count(*) from feed_like where feed_id = post.id) as totlike,(select count(*) from feed_comment where feed_id = post.id) as totcomment,post.created_date';
 		$data['my_activities']['post'] = select(TBL_FEEDS.' post',$select,$where,$options);
-		
-		$data['my_month'] = $date_array;
-		
+		$data['my_month'] 		=	date('Y-m'); 
+		$data['new_my_month'] 	= 	date('Y-m',strtotime('-1 month',strtotime(date('Y-m'))));
+		// p($data['my_month'],true);
 		$this->template->load('student/default','student/my_activities',$data);
 	}
 }
