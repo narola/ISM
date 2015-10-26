@@ -76,7 +76,8 @@ function toHHMMSS (sec) {
                $(".alert-dismissible").hide(500);
               }, 3000);
         $(document).ready(function(){
-            $('.chat_text').mCustomScrollbar("scrollTo","bottom");    
+			$(".chat_text").mCustomScrollbar("update");
+			$(".chat_text").mCustomScrollbar("scrollTo", "bottom"); 
         })
     </script>
     <script src="assets/js/jquery.cookie.js"></script>

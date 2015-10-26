@@ -37,7 +37,7 @@ class My_exam extends ISM_Controller {
 							)
 						)
 					);
-		$data['subject_list'] = select(TBL_COURSE_SUBJECT.' c','s.id,s.subject_name,st.cnt,st.percentage',$where,$option);
+		$data['subject_list'] = select(TBL_CLASSROOM_SUBJECT.' c','s.id,s.subject_name,st.cnt,st.percentage',$where,$option);
 
 		//	get student classroom subject detail
 		$where = array('where'=>array('e.classroom_id' => $classroom_id,'sc.exam_status'=>'finished','sc.user_id'=>$user_id,'sc.is_delete' => 0,'e.is_delete' => 0));

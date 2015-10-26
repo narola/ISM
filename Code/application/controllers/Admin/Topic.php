@@ -152,9 +152,9 @@ class Topic extends ADMIN_Controller {
 
 		$allocated_group_ids = array_column($allocated_groups, 'group_id');
 		
-       //p($allocated_group_ids,true);
+       p($allocated_group_ids);
 		$where  = array('where'=> array(TBL_TUTORIAL_GROUPS.'.is_completed'=>1,
-				TBL_TUTORIAL_GROUPS.'.group_type'=>'tutorial group'
+					TBL_TUTORIAL_GROUPS.'.group_type'=>'tutorial group',
 				)) ;
 
 		if(!empty($allocated_group_ids)){
@@ -196,7 +196,7 @@ class Topic extends ADMIN_Controller {
 													)
 												);
 		
-		// p($unallocated_groups, true);
+		p($unallocated_groups);
 		$this->data['groups'] = $unallocated_groups;
 
 
@@ -270,10 +270,11 @@ class Topic extends ADMIN_Controller {
 				);
 				$where = array('where'=>array('tut_course.subject_id'=>$subject['subject_id'],
 					));
-				$classroom = select(TBL_COURSE_SUBJECT.' tut_course',
+				$classroom = select(TBL_CLASSROOM_SUBJECT.' tut_course',
 				'tut_course.classroom_id',
 					$where, array('single'=>true)
 				);
+				p($classroom);
 
 				$where = array('where'=>array('tut_course.classroom_id'=>$classroom['classroom_id']));
 
@@ -285,11 +286,11 @@ class Topic extends ADMIN_Controller {
 										)
 								)
 							);
-
-			$random_subject = select(TBL_COURSE_SUBJECT.' tut_course',
+			$random_subject = select(TBL_CLASSROOM_SUBJECT.' tut_course',
 				'tut_course.subject_id',
 					$where, $options
 				);
+				p($random_subject);
 
 				$random_subject_id = $random_subject['subject_id'];
 
@@ -322,7 +323,7 @@ class Topic extends ADMIN_Controller {
 								)
 							);
 
-				$random_subject_info = select(TBL_COURSE_SUBJECT.' tut_course',
+				$random_subject_info = select(TBL_CLASSROOM_SUBJECT.' tut_course',
 				'tut_course.subject_id',
 					$where, $options
 				);
@@ -552,13 +553,13 @@ class Topic extends ADMIN_Controller {
 	public function ajax_get_subjects(){
 		$course_id = $this->input->post('course_id');
 		
-		$subjects = select(TBL_COURSE_SUBJECT,TBL_COURSE_SUBJECT.'.subject_id,sub.subject_name ',
+		$subjects = select(TBL_CLASSROOM_SUBJECT,TBL_CLASSROOM_SUBJECT.'.subject_id,sub.subject_name ',
 			array('where'=>array('course_id'=>$course_id)),
 				array(
 					'join'=>array(
 								array(
 					    				'table' => TBL_SUBJECTS.' sub',
-					    				'condition' => 'sub.id = '.TBL_COURSE_SUBJECT.'.subject_id',
+					    				'condition' => 'sub.id = '.TBL_CLASSROOM_SUBJECT.'.subject_id',
 									)
 								)
 					)

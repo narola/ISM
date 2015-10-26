@@ -1,13 +1,14 @@
 <!--main-->
-            <div class="col-sm-7 main main2">
+            <div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
             	<!--breadcrumb-->
-                <div class="row page_header">
+                <div class="page_header">
                 	<div class="col-sm-12 text-center">
                     	<h4>Please Read Instructions Carefully</h4>
                     </div>
                 </div>
                 <!--//breadcrumb-->
                 <!--instruction-->
+                <div class="col-sm-12">
                 <div class="box instruction">
                 	<div class="box_header">	
                     	<h3><span class="assign_no">Assignment No.:33</span><span>Organic Chemistry</span></h3>
@@ -49,6 +50,7 @@
                             ?>
                         </div>
                     </div>
+                </div>
                 </div>
                 <!--//Instruction-->
 			</div>
