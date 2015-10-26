@@ -1156,6 +1156,7 @@ class PHPWebSocket {
             $msg = mysqli_escape_string($link, $data['message']); // Feed or comment
             $query = "INSERT INTO `feeds`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$user_id,'$msg','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
             $x = mysqli_query($link, $query);
+            pr(mysqli_error($link));
             $data['post_id'] = mysqli_insert_id($link);
             $data['tot_like'] = 0;
             $data['tot_comment'] = 0;
@@ -1212,7 +1213,7 @@ class PHPWebSocket {
                         }
                         $data['studymates_detail'] = $studymates_detail;
                     }
-                    $data['current_date'] = date("M j, Y", strtotime(date('Y-m-d')));
+                    $data['posted_on'] = date("M j, Y", strtotime(date('Y-m-d')));
                 } else {
                     $data['to'] = 'self';
                     $data['error'] = 'Unable to save message.! Please try again.';
@@ -2368,10 +2369,7 @@ class PHPWebSocket {
                                     . " VALUES (NULL, '$userID', " . $data['exam']['exam_id'] . ", '" . $data['question_id'] . "', '" . $data['answer'] . "', '" . $data['status'] . "', NULL, " . $roqs['is_right'] . ", " . $data['time'] . ", CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes') ";
                         }
                         $x = mysqli_query($link, $query);
-                        if (!$x) {
-                            pr($query);
-                            pr(mysqli_error($link));
-                        }
+                       
                     } else {
                         $data['error'] = "Please don't modify choices manually!!";
                         $data['reload'] = 'yes';

@@ -3610,3 +3610,17 @@ ul.ques_numbers {
 .banner_text h3:last-child{
 	font-size:15px;
 }
+.of {
+    position: relative;
+}
+.of:before{
+	content: "";
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    border: 2px solid #333;
+    position: absolute;
+    left: 10px;
+    top: 45%;
+}
