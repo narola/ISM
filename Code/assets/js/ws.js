@@ -1256,6 +1256,7 @@ $(document).on('click', 'a[data-type="get_question"]', function() {
         type: 'get_question',
         to: 'self',
         question_no: $(this).data('id'),
+        exam_type: $(this).data('change'),
         qno: $(this).data('no')
     }
     ws.send(JSON.stringify(request));

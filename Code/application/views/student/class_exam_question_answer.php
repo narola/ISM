@@ -125,7 +125,7 @@
                                         $data_cls = '';
                                     }
                                 ?>
-                                <li data-class = "<?php echo $data_cls; ?>" class="<?php echo $cls; ?>" data-id="<?php echo $value; ?>"><a data-no="<?php echo $key+1; ?>" data-type="get_question" href="javascript:void(0)" data-id="<?php echo $value; ?>"><span><?php echo $key+1; ?></span></a></li>
+                                <li data-class = "<?php echo $data_cls; ?>" class="<?php echo $cls; ?>" data-id="<?php echo $value; ?>"><a data-change="no" data-no="<?php echo $key+1; ?>" data-type="get_question" href="javascript:void(0)" data-id="<?php echo $value; ?>"><span><?php echo $key+1; ?></span></a></li>
                                 <?php
                             } ?>                            
 
