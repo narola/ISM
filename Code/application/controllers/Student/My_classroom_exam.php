@@ -46,7 +46,7 @@ class My_classroom_exam extends ISM_Controller {
 				)
 			);
 		$where = array('where' => array('cs.classroom_id' => $user_classroom));
-		$data['my_subject'] = select(TBL_COURSE_SUBJECT.' cs','(select count(*) from '.TBL_EXAMS.' where is_delete = 0 and subject_id = s.id '.$where2.')tot_exam,s.subject_name,s.id AS subject_id,s.subject_image',$where,$option);
+		$data['my_subject'] = select(TBL_CLASSROOM_SUBJECT.' cs','(select count(*) from '.TBL_EXAMS.' where is_delete = 0 and subject_id = s.id '.$where2.')tot_exam,s.subject_name,s.id AS subject_id,s.subject_image',$where,$option);
 		
 		//	get exam list with percentage (if attampted)
 		$option = array('join' =>
