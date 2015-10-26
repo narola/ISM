@@ -1068,7 +1068,10 @@ function generate_cm(obj){
     $('.row.discussion div[data-id="'+obj.disscusion_id+'"]').fadeOut(0).fadeIn(400);
 }
 
-/* Feed like dislike  */
+/*
+*   KAMLESH POKIYA (KAP).
+*   Like / dislike POST.
+*/
 $(document).on('click','a[data-type="feed-like"]',function(e){   
     var request = {
         type: 'like',
@@ -1093,7 +1096,10 @@ if (nav.length) {
     return false;
 });
 
-
+/*
+*   KAMLESH POKIYA (KAP).
+*   Action of studymate with remove or not.
+*/
 $(document).on('change', '#action_studymate', function(){
     val = $(this).val();
     if(val == 1){
@@ -1103,6 +1109,10 @@ $(document).on('change', '#action_studymate', function(){
     }
 });
 
+/*
+*   KAMLESH POKIYA (KAP).
+*   Remove studymate.
+*/
 $(document).on('click','button[data-type="close-studymate"]',function(e){
 
     var request = {
@@ -1138,6 +1148,10 @@ $(document).on('keypress','input[data-type="search-dictionary"], a[data-type="se
 
 });
 
+/*
+*   KAMLESH POKIYA (KAP).
+*   Send studymate request.
+*/
 $(document).on('click','button[data-type="studyment-request"]',function(e){
     var request = {
         type: 'send_studymate_request',
@@ -1179,6 +1193,10 @@ $(document).on('click','button[data-type="save_and_next"]',function(e){
 
 });
 
+/*
+*   KAMLESH POKIYA (KAP).
+*   Tag user.
+*/
 $(document).on('change', '#select-tag-user', function(e){
     if(e.val != ''){
         var request = {
@@ -1263,6 +1281,7 @@ $(document).on('click','button[data-type="end_exam"]',function(){
   }
  ws.send(JSON.stringify(request));
 });
+
 $(document).on('click','button[data-type="class_exam_start_request"]',function(){
     $(this).attr('disabled','disabled');
     var request = {
@@ -1274,20 +1293,27 @@ $(document).on('click','button[data-type="class_exam_start_request"]',function()
     ws.send(JSON.stringify(request));
 });
 
+
+/*
+*   KAMLESH POKIYA (KAP).
+*   Tag studymate post.
+*/
 $(document).on('click','a[data-type="tag-user-again"]',function(){
-  var request = {
-    type : 'tag-user-again',
-    to   : 'all',
-    tagged_id: $('.js-example-basic-single[data-id="'+$(this).data('id')+'"]').val(),
-    fid : $(this).data('id')
-  }
-  ws.send(JSON.stringify(request));
-  $(".js-example-basic-single").select2("val","");
-  $("#show-again[data-id='"+$(this).data("id")+"']").hide();
-
-
+    var request = {
+        type : 'tag-user-again',
+        to   : 'all',
+        tagged_id: $('.js-example-basic-single[data-id="'+$(this).data('id')+'"]').val(),
+        fid : $(this).data('id')
+    }
+    ws.send(JSON.stringify(request));
+    $(".js-example-basic-single").select2("val","");
+    $("#show-again[data-id='"+$(this).data("id")+"']").hide();
 });
 
+/*
+*   KAMLESH POKIYA (KAP).
+*   Find studymate with textbox.
+*/
 $(document).on('keyup','input[data-type="study_mate_search"]',function(){
     // if($('input[data-type="study_mate_search"]').val().length >= 2){  
         str = '<center><img src="assets/images/loading3.gif"></center>';
@@ -1303,6 +1329,10 @@ $(document).on('keyup','input[data-type="study_mate_search"]',function(){
     // }
 });
 
+/*
+*   KAMLESH POKIYA (KAP).
+*   Find studymate with tab.
+*/
 $(document).on('click','li[data-type="search-type"]',function(){
     // if($('input[data-type="study_mate_search"]').val().length >= 2){  
         str = '<center><img src="assets/images/loading3.gif"></center>';
@@ -1318,6 +1348,10 @@ $(document).on('click','li[data-type="search-type"]',function(){
     // }
 });
 
+/*
+*   KAMLESH POKIYA (KAP).
+*   Find studymate with Load more.
+*/
 $(document).on('click','a[data-type="load-studymate-more"]',function(){
     var request = {
         type : 'load-studymate-more',
@@ -1331,9 +1365,11 @@ $(document).on('click','a[data-type="load-studymate-more"]',function(){
     ws.send(JSON.stringify(request));
 });
 
+/*
+*   KAMLESH POKIYA (KAP).
+*   View studymate profile.
+*/
 $(document).on('click', '#view_profile', function(){
-    // alert($(this).data('name'));
-    // $('button[data-type="close-studymate"]').attr('data-course',$(this).data('course')).attr('data-name',$(this).data('name')).attr('data-id',$(this).data('id')).attr('data-school',$(this).data('school')).attr('data-profile',$(this).data('profile'));   
     $('#view_profile_model div[data-type="profile_pic"]').html('<img src="uploads/'+$(this).data('profile')+'">');  
     $('#view_profile_model h3[data-type="user-name"]').html($(this).data('name'));  
     $('#view_profile_model p[data-type="course-name"]').html('<span class="fa fa-graduation-cap"></span>'+ $(this).data('course'));  
@@ -1344,4 +1380,18 @@ $(document).on('click', '#view_profile', function(){
 $(document).on('click','a[data-type="close"]',function(){ 
     $('#chat_container .chat[data-id="'+$(this).data('id')+'"]').remove();
     $.removeCookie('active');
+});
+
+
+/*
+*   KAMLESH POKIYA (KAP).
+*   Find studymate with load more.
+*/
+$(document).on('click','a[data-type="load-activity-more"]',function(){ 
+    var request = {
+        type : 'load-activity-more',
+        to   : 'self',
+        month : $(this).data('month')
+    }
+    ws.send(JSON.stringify(request));
 });

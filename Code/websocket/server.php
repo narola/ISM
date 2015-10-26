@@ -120,6 +120,8 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->studymate_search($Server->wsClients[$clientID][12], $data);        
     }else if($data['type'] == 'load-studymate-more'){
         $responce = $Server->studymate_search($Server->wsClients[$clientID][12], $data);        
+    }else if($data['type'] == 'load-activity-more'){
+        $responce = $Server->load_activity($Server->wsClients[$clientID][12], $data);        
     }
 
     $check = array('feed_comment', 'like');

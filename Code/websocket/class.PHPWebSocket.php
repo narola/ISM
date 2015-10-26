@@ -431,99 +431,7 @@ class PHPWebSocket {
         if (!$mask)
             return false; // close socket, as no mask bit was sent from the client
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-// fetch byte position where the mask key starts
+        // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
 
         // read mask key
@@ -695,100 +603,8 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             
-// work out hash to use in Sec-WebSocket-Accept reply header
+        // work out hash to use in Sec-WebSocket-Accept reply header
         $hash = base64_encode(sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
 
         // build headers
@@ -1050,7 +866,7 @@ class PHPWebSocket {
      */
     function get_client_info($id) {
         $link = $this->db();
-        $query = "SELECT `u`.`id`,`u`.`full_name`, `upp`.`profile_link`  FROM `" . TBL_USERS . "` `u` LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `upp` ON `upp`.`user_id` = `u`.`id` WHERE `u`.`id` = $id LIMIT 1";
+        $query = "SELECT `u`.`id`,`u`.`full_name`, `upp`.`profile_link`, `u`.`created_date`  FROM `" . TBL_USERS . "` `u` LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `upp` ON `upp`.`user_id` = `u`.`id` WHERE `u`.`id` = $id LIMIT 1";
         $row = mysqli_query($link, $query);
         $count = mysqli_num_rows($row);
         $rows = mysqli_fetch_assoc($row);
@@ -1059,7 +875,8 @@ class PHPWebSocket {
             return array(
                 'id' => $rows['id'],
                 'full_name' => $rows['full_name'],
-                'profile_link' => $rows['profile_link']
+                'profile_link' => $rows['profile_link'],
+                'user_created_date' => $rows['created_date']
             );
         } else {
             return null;
@@ -2781,8 +2598,11 @@ class PHPWebSocket {
         return $output;
     }
 
+    /**
+    * studymate search.
+    * @author KAMLESH POKIYA (KAP)
+    */
     function studymate_search($userid, $data) {
-
         $link = $this->db();
         if ($data['search_type'] == 'people')
             $where = "u.full_name like '" . $data['search_txt'] . "%'";
@@ -2814,6 +2634,52 @@ class PHPWebSocket {
         return $data;
     }
 
-}
+    /**
+    *   Load more activity.
+    *   @author KAMLESH POKIYA (KAP)
+    */
+    function load_activity($user_id,$data){
+        $link = $this->db();
+        $user_info = $this->get_client_info($user_id);
+        $created_date = $user_info['user_created_date'];
+        $begin = new DateTime($created_date);
+        $end = new DateTime(date('Y-m-d H:i:s'));
+        $date_array = array();
+        while ($begin <= $end) {
+            $date_array[] = $begin->format('Y-m');
+            $begin->modify('first day of next month');
+        }
+        $month = array();
 
+        /*----find current month and if request to view more append one month in descending form---*/
+        $month[] = date('m',strtotime(date('Y-m-d')));
+        $m = date('m',strtotime($data['month']));
+
+        $load_more = $data['month'];
+        if($load_more != '')
+            $month[] = date('m',strtotime($load_more));
+
+        if(is_array($month))
+            $sep_month = implode(',', $month);
+        $data['result'] = array();
+        $query = "SELECT `u`.`full_name`, `sm`.`mate_of`, `sm2`.`mate_id`, if(sm.created_date is null, `sm2`.`created_date`, sm.created_date) as created_date, `s`.`school_name`, `p`.`profile_link`, `c`.`course_name` FROM `users` `u` LEFT JOIN `studymates` `sm` ON `u`.`id` = `sm`.`mate_of` and `sm`.`mate_id` =$user_id LEFT JOIN `studymates` `sm2` ON `u`.`id` = `sm2`.`mate_id` and `sm2`.`mate_of` =$user_id LEFT JOIN `student_academic_info` `in` ON `u`.`id` = `in`.`user_id` LEFT JOIN `schools` `s` ON `s`.`id` = `in`.`school_id` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` LEFT JOIN `courses` `c` ON `c`.`id` = `in`.`course_id` WHERE date_format(sm.created_date,'%m') IN($m)";
+        $row = mysqli_query($link,$query);
+        $i = 0;
+        while($rows = mysqli_fetch_assoc($row)){
+            $data['result']['my_studymate'][$i] = $rows;
+            $i++ ;
+        }
+
+
+        $query = "SELECT `upost`.`full_name` as `post_username`, `like_feed`.`feed_text`, `like`.`created_date`, (select count(*) from feed_like where feed_id = like_feed.id) as totlike, (select count(*) from feed_comment where feed_id = like_feed.id) as totcomment FROM `feed_like` `like` LEFT JOIN `feeds` `like_feed` ON `like_feed`.`id` = `like`.`feed_id` LEFT JOIN `users` `upost` ON `upost`.`id` = `like_feed`.`feed_by` WHERE `like`.`like_by` = '138' AND date_format(like.created_date,'%m') IN($m) ORDER BY `like`.`created_date` DESC";
+        $row = mysqli_query($link,$query);
+        $i = 0;
+        while($rows = mysqli_fetch_assoc($row)){
+            $data['result']['my_like'][$i] = $rows;
+            $i++ ;
+        }
+        return $data;
+    }
+}
+    
 ?>
