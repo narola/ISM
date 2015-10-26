@@ -431,99 +431,7 @@ class PHPWebSocket {
         if (!$mask)
             return false; // close socket, as no mask bit was sent from the client
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-// fetch byte position where the mask key starts
+        // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
 
         // read mask key
@@ -1257,15 +1165,6 @@ class PHPWebSocket {
                         $final_feed[$key]['tagged_detail'] = $found_tagged;
                         $final_feed[$key]['studymates_detail'] = $studymates_detail;
                     }
-
-
-
-
-
-
-
-
-
                     $data['feed'] = $final_feed;
                     foreach ($data['feed'] as $key => $value) {
                         foreach ($feed_images as $k => $v) {
@@ -2754,7 +2653,7 @@ class PHPWebSocket {
         if(is_array($month))
             $sep_month = implode(',', $month);
         $data['result'] = array();
-        $query = "SELECT `u`.`full_name`, `sm`.`mate_of`, `sm2`.`mate_id`, if(sm.created_date is null, `sm2`.`created_date`, sm.created_date) as created_date, `s`.`school_name`, `p`.`profile_link`, `c`.`course_name` FROM `users` `u` LEFT JOIN `studymates` `sm` ON `u`.`id` = `sm`.`mate_of` and `sm`.`mate_id` =$user_id LEFT JOIN `studymates` `sm2` ON `u`.`id` = `sm2`.`mate_id` and `sm2`.`mate_of` =$user_id LEFT JOIN `student_academic_info` `in` ON `u`.`id` = `in`.`user_id` LEFT JOIN `schools` `s` ON `s`.`id` = `in`.`school_id` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` LEFT JOIN `courses` `c` ON `c`.`id` = `in`.`course_id` WHERE date_format(sm.created_date,'%m') IN($m)";
+        echo $query = "SELECT `u`.`full_name`, `sm`.`mate_of`, `sm2`.`mate_id`, if(sm.created_date is null, `sm2`.`created_date`, sm.created_date) as created_date, `s`.`school_name`, `p`.`profile_link`, `c`.`course_name` FROM `users` `u` LEFT JOIN `studymates` `sm` ON `u`.`id` = `sm`.`mate_of` and `sm`.`mate_id` =$user_id LEFT JOIN `studymates` `sm2` ON `u`.`id` = `sm2`.`mate_id` and `sm2`.`mate_of` =$user_id LEFT JOIN `student_academic_info` `in` ON `u`.`id` = `in`.`user_id` LEFT JOIN `schools` `s` ON `s`.`id` = `in`.`school_id` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` LEFT JOIN `courses` `c` ON `c`.`id` = `in`.`course_id` WHERE date_format(sm.created_date,'%m') IN($m)";
         $row = mysqli_query($link,$query);
         $i = 0;
         while($rows = mysqli_fetch_assoc($row)){
@@ -2763,11 +2662,19 @@ class PHPWebSocket {
         }
 
 
-        $query = "SELECT `upost`.`full_name` as `post_username`, `like_feed`.`feed_text`, `like`.`created_date`, (select count(*) from feed_like where feed_id = like_feed.id) as totlike, (select count(*) from feed_comment where feed_id = like_feed.id) as totcomment FROM `feed_like` `like` LEFT JOIN `feeds` `like_feed` ON `like_feed`.`id` = `like`.`feed_id` LEFT JOIN `users` `upost` ON `upost`.`id` = `like_feed`.`feed_by` WHERE `like`.`like_by` = '138' AND date_format(like.created_date,'%m') IN($m) ORDER BY `like`.`created_date` DESC";
+        echo $query = "SELECT `upost`.`full_name` as `post_username`, `like_feed`.`feed_text`, `like`.`created_date`, (select count(*) from feed_like where feed_id = like_feed.id) as totlike, (select count(*) from feed_comment where feed_id = like_feed.id) as totcomment FROM `feed_like` `like` LEFT JOIN `feeds` `like_feed` ON `like_feed`.`id` = `like`.`feed_id` LEFT JOIN `users` `upost` ON `upost`.`id` = `like_feed`.`feed_by` WHERE `like`.`like_by` = '138' AND date_format(like.created_date,'%m') IN($m) ORDER BY `like`.`created_date` DESC";
         $row = mysqli_query($link,$query);
         $i = 0;
         while($rows = mysqli_fetch_assoc($row)){
             $data['result']['my_like'][$i] = $rows;
+            $i++ ;
+        }
+        
+        echo $query = "SELECT `u`.`full_name`, `u`.`id`, `comment_feed`.`feed_text`, `p`.`profile_link`, `comment`.`comment`, `comment`.`created_date`, (select count(*) from feed_like where feed_id = comment_feed.id) as totlike, (select count(*) from feed_comment where feed_id = comment_feed.id) as totcomment, `comment_feed`.`id` FROM `feed_comment` `comment` LEFT JOIN `feeds` `comment_feed` ON `comment_feed`.`id` = `comment`.`feed_id` LEFT JOIN `users` `u` ON `u`.`id` = `comment_feed`.`feed_by` LEFT JOIN `user_profile_picture` `p` ON `p`.`user_id` = `u`.`id` WHERE `comment`.`comment_by` = '138' AND date_format(comment.created_date,'%m') IN($m) GROUP BY `comment_feed`.`id` ORDER BY `comment`.`created_date` DESC";
+        $row = mysqli_query($link,$query);
+        $i = 0;
+        while($rows = mysqli_fetch_assoc($row)){
+            $data['result']['my_comment'][$i] = $rows;
             $i++ ;
         }
         return $data;

@@ -713,10 +713,10 @@ if ("WebSocket" in window)
                 str += '</div>';
             }
             if(obj.type == "load-studymate-more")
-                $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').append(str);
+                $('.search_studymate .box.general_cred .box_body').append(str);
             else{
                 
-                $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html(str);
+                $('.search_studymate .box.general_cred .box_body').html(str);
             }
              // $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html('ji');
         }
