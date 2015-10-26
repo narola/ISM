@@ -152,7 +152,7 @@ class Topic extends ADMIN_Controller {
 
 		$allocated_group_ids = array_column($allocated_groups, 'group_id');
 		
-       p($allocated_group_ids);
+       // p($allocated_group_ids);
 		$where  = array('where'=> array(TBL_TUTORIAL_GROUPS.'.is_completed'=>1,
 					TBL_TUTORIAL_GROUPS.'.group_type'=>'tutorial group',
 				)) ;
@@ -196,7 +196,7 @@ class Topic extends ADMIN_Controller {
 													)
 												);
 		
-		p($unallocated_groups);
+		// p($unallocated_groups);
 		$this->data['groups'] = $unallocated_groups;
 
 
@@ -257,26 +257,27 @@ class Topic extends ADMIN_Controller {
 			'tut_topic.group_id,tut_topic.topic_id',
 			$where
 			);
-		
+		// p($last_week_groups);
 	
 			if(in_array($unallocated, array_column($last_week_groups, 'group_id'))){
 
 				$key = array_search($unallocated, array_column($last_week_groups, 'group_id'));
 				$last_week_topic = $last_week_groups[$key]['topic_id'];
+
 				$where = array('where' => array('tut_topic.id'=>$last_week_topic));
 				$subject = select(TBL_TUTORIAL_TOPIC.' tut_topic',
-				'tut_topic.subject_id',
+				'tut_topic.subject_id,tut_topic.classroom_id',
 					$where, array('single'=>true)
 				);
-				$where = array('where'=>array('tut_course.subject_id'=>$subject['subject_id'],
+				/*$where = array('where'=>array('tut_course.subject_id'=>$subject['subject_id'],
 					));
 				$classroom = select(TBL_CLASSROOM_SUBJECT.' tut_course',
 				'tut_course.classroom_id',
 					$where, array('single'=>true)
 				);
-				p($classroom);
+				p($classroom);*/
 
-				$where = array('where'=>array('tut_course.classroom_id'=>$classroom['classroom_id']));
+				$where = array('where'=>array('tut_course.classroom_id'=>$subject['classroom_id']));
 
 				$options = array('order_by'=>'RAND()','single'=>true,'limit'=>1,
 					'join' =>  array(
@@ -290,28 +291,21 @@ class Topic extends ADMIN_Controller {
 				'tut_course.subject_id',
 					$where, $options
 				);
-				p($random_subject);
+				// p($random_subject);
 
 				$random_subject_id = $random_subject['subject_id'];
 
 			}else{
 				
-				$where = array('where'=>array('tut_grp_member.group_id'=>$unallocated));
+				$where = array('where'=>array('tut_grp.id'=>$unallocated));
 
 				$options = array('limit'=>1,'single'=>true);
-				$group_member = select(TBL_TUTORIAL_GROUP_MEMBER.' tut_grp_member',
-				'tut_grp_member.user_id',
+				$group_classroom = select(TBL_TUTORIAL_GROUPS.' tut_grp',
+				'tut_grp.classroom_id',
 					$where, $options
 				);
 				
-				$where = array('where'=>array('tut_stud_info.user_id'=>$group_member['user_id']));
-
-				$options = array('single'=>true);
-				$course_info = select(TBL_STUDENT_ACADEMIC_INFO.' tut_stud_info',
-				'tut_stud_info.classroom_id',
-					$where, $options
-				);
-				$where = array('where'=>array('tut_course.classroom_id'=>$course_info['classroom_id']
+				$where = array('where'=>array('tut_course.classroom_id'=>$group_classroom['classroom_id']
 					));
 
 				$options = array('order_by'=>'RAND()','single'=>true,'limit'=>1,
@@ -327,6 +321,8 @@ class Topic extends ADMIN_Controller {
 				'tut_course.subject_id',
 					$where, $options
 				);
+				
+		
 				$random_subject_id = $random_subject_info['subject_id'];
 
 			}
@@ -353,7 +349,7 @@ class Topic extends ADMIN_Controller {
 												)
 											);
 
-
+				// p($this->data['recommended_topics'],true);
 		$this->data['page_title'] = 'Allocate Topic';
 		$this->template->load('admin/default','admin/topic/allocate', $this->data);
 	}
@@ -465,7 +461,7 @@ class Topic extends ADMIN_Controller {
 		
 		//Validation Set For Add Topic Following fields are required and topic name allow some character only
 		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required|regex_match[/[a-zA-Z& ]$/]', 
-			array('regex_match' => 'The {field} should have only characters,numbers and & special character only.'));
+		array('regex_match' => 'The {field} should have only characters,numbers and & special character only.'));
 		$this->form_validation->set_rules('keywords', 'Keywords', 'trim|required');
 		$this->form_validation->set_rules('subjects', 'Subject', 'trim|required');
 		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
