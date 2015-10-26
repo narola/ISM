@@ -1561,7 +1561,7 @@ ul.exams_holder li a:after{
 	position: absolute;
     margin: 0;
     transform: rotate(-90deg);
-    top: 510px;
+    top: 450px;
     left: -10px;
 }
 ul.tut_weekdays {
@@ -1959,7 +1959,7 @@ ul.tut_weekdays {
     width: 154px;
     border-radius: 50%;
     margin: 0px auto;
-    left: 25px;
+    left: 27px;
     top: 3px;
 }
 .item_chart:after{
@@ -1970,7 +1970,7 @@ ul.tut_weekdays {
     width: 154px;
     border-radius: 50%;
     margin: 0px auto;
-    left: 25px;
+    left: 27px;
     top: 3px;
 }
 .item_chart h2 {
