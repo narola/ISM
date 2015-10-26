@@ -18,12 +18,15 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         return;
     }
 
+  
+    
     $datas = json_decode($message, true);
     
     $datas['error'] = $datas['redirect'] = 'skip';
     pr($datas);
     $data = array_merge($datas, $Server->active_hours());
     $data['reload'] = 'no';
+    
     
     $data = replace_invalid_chars($data);  // Reeplace '"<> to HTML code.
         
@@ -130,7 +133,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 
     $check = array('feed_comment', 'like');
     if (isset($responce)) {
-        $responce = replace_invalid_chars($responce);
+       // $responce = replace_invalid_chars($responce);
         pr($responce, 1);
         if ($responce['to'] == 'self') {
             $Server->wsSend($clientID, json_encode($responce));
