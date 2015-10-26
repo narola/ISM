@@ -3265,13 +3265,11 @@ ul.ques_numbers {
 	border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 .answers .ques{
-	padding-bottom: 10px;
-    border-bottom: 1px solid rgba(0,0,0,0.07);
+	
     font-weight: 500;
-    margin-bottom: 12px;
+   
 	font-size:16px;
-    height: 115px;
-    overflow: hidden;
+   
 }
 .answers p {
     font-size: 14px;
@@ -3635,4 +3633,28 @@ ul.ques_numbers {
 }
 .form-inline .form-group{
 	margin-right:5px;
+}
+.ques_num {
+    position: relative;
+}
+a.expand_ques {
+    font-size: 24px;
+    color: #666;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    position: absolute;
+    right: 15px;
+    top: 3px;
+	z-index:3;
+}
+a.expand_ques + .row{
+	z-index:2;
+}
+.q_div{
+	padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+	margin-bottom: 12px;
+	height: 115px;
+    overflow: hidden;
 }

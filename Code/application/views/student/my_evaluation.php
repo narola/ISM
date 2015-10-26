@@ -45,8 +45,8 @@
                                 <h5 class="txt_green">Question:  <span><?= $i?></span></h5>
                             </div>
                             <div class="box_body">
-                                <p class="ques"><?php echo $value['question_text'];?></p>
-                                <a href="javascript:void(0);" id="expand_ques" class="fa fa-angle-double-down"></a>
+                                <div class="q_div"><p class="ques"><?php echo $value['question_text'];?></p></div>
+                                <a href="javascript:void(0);" class="expand_ques fa fa-angle-double-down"></a>
                                 <!--answers-->
                                 <div class="row">
                                     <div class="col-lg-4 col-sm-6">
@@ -83,3 +83,26 @@
     <!--//answers-->
 </div>
 <!--//main-->
+<script type="text/javascript">
+        $(document).ready(function() {
+            $('.expand_ques').click(function(){
+                if($(this).hasClass('fa-angle-double-down')){
+                    var ph = $(this).parent().children('.q_div').children('p.ques').height();
+					if(ph>115){
+						$(this).parent().children('.q_div').animate( 
+							{ height:ph}, 
+							{ queue:false, duration:300 });
+						$(this).removeClass('fa-angle-double-down');
+						$(this).addClass('fa-angle-double-up');	
+					}								
+                }
+                else{
+                    $(this).parent().children('.q_div').animate( 
+                        { height: "115px"}, 
+                        { queue:false, duration:300 });
+                    $(this).removeClass('fa-angle-double-up');
+                    $(this).addClass('fa-angle-double-down');
+                }
+            });
+        });
+</script>
