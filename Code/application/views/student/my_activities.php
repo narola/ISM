@@ -128,7 +128,7 @@
                                         <h4 class="activity_heading">Status updated</h4>
                                         <?php } ?>
                                         <span class="date"><?php $old_date = strtotime($post_value['created_date']);echo date("M j, Y",$old_date);?></span>
-                                        <div class="feed_text">                                               
+                                        <div class="feed_text border_bottom">                                               
                                             <p><?php echo $post_value['feed_text'];?></p>
                                         </div> 
                                     </div>                

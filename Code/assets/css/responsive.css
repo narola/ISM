@@ -33,7 +33,10 @@
 		height:215px;
 	}
 	.fixed_comment{
-		width: 44.6%;
+		width: 46.8%;
+	}
+	.input{
+		width: 46.9%;	
 	}
 	.admin_question {
     	width: 84%;
@@ -208,7 +211,7 @@
     	width: 49.6%;
 	}
 	.fixed_comment {
-    	width: 44.5%;
+    	width: 46.8%;
 	}
 	.item_chart:after, .item_chart:before{
 		left:4px;

@@ -86,6 +86,7 @@ class Common extends CI_Controller {
         echo $new_str;
     }
 
+    /* Check weather Message Template is unique or not ?  */
     public function check_template_unique() {
         $msg_title = $this->input->post('msg_title');
         $data = select(TBL_MESSAGES, FALSE, array('where' => array('message_title' => $msg_title, 'is_template' => '1', 'is_delete' => '0')));
@@ -96,6 +97,20 @@ class Common extends CI_Controller {
         }
     }
 
+    /* Check weather Notice Template is unique or not ?  */
+    public function check_template_notice_unique() {
+
+        $notice_title = $this->input->post('notice_title');
+
+        $data = select(TBL_NOTICEBOARD, FALSE, array('where' => array('notice_title' => $notice_title, 'is_template' => '1', 'is_delete' => '0')));
+        if (!empty($data)) {
+            echo "1"; // Find Template in database Return 1
+        } else {
+            echo "0";  // Can't Find template in database and Return 0
+        }
+    }
+
+    /* Fetch Classroom Based on Course ID */
     public function fetch_classroom(){
 
         $course_id = $this->input->post('course_id');
@@ -111,6 +126,7 @@ class Common extends CI_Controller {
         echo $new_str;
     }
 
+    /* Fetch Subject based on Class ID */
     public function fetch_subject(){
 
         $class_id = $this->input->post('class_id');
@@ -136,6 +152,51 @@ class Common extends CI_Controller {
                 $new_str.='<option value="' . $subject['id'] . '">' . $subject['subject_name'] . '</option>';
             }
         }
+        echo $new_str;
+    }
+
+    /* Fetch Classroom Based on Course ID */
+    public function fetch_users(){
+
+        $role_id = $this->input->post('role_id');
+        
+        if($role_id != 0){
+            $all_users = select(TBL_USERS, FALSE, array('where' => array('role_id' => $role_id)), array('order_by' => 'username'));
+        }else{
+            $all_users = select(TBL_USERS, FALSE, FALSE, array('order_by' => 'username'));    
+        }
+        
+        $new_str = '';
+        $new_str .= '<option selected disabled > Select User </option>';
+
+        if (!empty($all_users)) {
+            foreach ($all_users as $user) {
+                $new_str.='<option value="' . $user['id'] . '">' . ucfirst($user['username']) . '</option>';
+            }
+        }
+
+        echo $new_str;
+    }
+
+    /* Fetch All Schools based on Grade System */
+    public function fetch_school_from_grade(){
+        
+        $school_grade = $this->input->post('school_grade');   
+        if($school_grade == '1'){
+            $schools = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)),array('order_by'=>'school_name'));
+        }else{
+            $schools = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE,'school_grade'=>$school_grade)),array('order_by'=>'school_name'));
+        }
+
+        $new_str = '';
+        if(!empty($schools)){
+            foreach ($schools as $school) {
+                $new_str .= '<option value="'.$school['id'].'">'.$school["school_name"].'</option>';
+            }
+        }else{
+            $new_str .= '<option value=""> No School Found </option>';
+        }
+
         echo $new_str;
     }
 

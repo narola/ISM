@@ -99,7 +99,7 @@
 							<div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_desc'),'')) || $my_cnt == 0 ){ echo 'hide';} ?>">
 							  <?php echo strip_tags(form_error('message_desc'),'') ; ?>
 							</div>
-                            <label class="notify"><input type="checkbox" name="notify_sms">Notify Student Via SMS</label><br/>
+                            <!-- <label class="notify"><input type="checkbox" name="notify_sms">Notify Student Via SMS</label> --><br/>
                         </div>
                         
                     </div>
