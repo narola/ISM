@@ -36,12 +36,30 @@ switch ($_REQUEST['Service'])
     case "UploadMedia":
     case "AddComment":
     case "LikeFeed":
+    case "GetStudentAcademicInfo":
     {
   	 include_once 'ProfileFunctions.php';
      $profile = new ProfileFunctions();
      $data = $profile -> call_service($_REQUEST['Service'], $postData);
     }
         break;
+
+    /*************************** StudyMate Functions ******************************/
+
+    case "GetStudentAcademicInfo":
+    case "GetStudymatesWithDetails":
+    case "GetSuggestedStudymates":
+    case "SendRequestToStudymate":
+    case "AcceptRequestFromStudymate":
+    case "GetStudymates":
+    {
+        include_once 'StudyMateFunctions.php';
+        $studyMate = new StudyMateFunctions();
+        $data = $studyMate -> call_service($_REQUEST['Service'], $postData);
+    }
+        break;
+
+
     case "GetAllFeeds":
     {
          include_once 'SocialFunctions.php';

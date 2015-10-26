@@ -195,7 +195,7 @@ class SocialFunctions
 
 
         //$queryGetAllFeeds = "select * from " . TABLE_FEEDS . " where feed_by IN ('138','140')";
-        $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." ,users where feed_by IN (".$final_string.") Limit 20";
+        $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." where feed_by IN (".$final_string.") Limit 20";
         $resultGetAllFeeds = mysql_query($queryGetAllFeeds) or $errorMsg = mysql_error();
 
         //for counting the number of rows for query result
@@ -203,7 +203,7 @@ class SocialFunctions
         $feeds_array = array();
         $allfeeds=array();
         //echo "allfeeds:" . $feeds_count;
-        //echo "\n\nfinal_query:".$queryGetAllFeeds;
+       // echo "\n\nfinal_query:".$queryGetAllFeeds;
 
 
         /*
@@ -215,6 +215,7 @@ class SocialFunctions
 
                 $feeds_array['feed_id'] = $feeds['id'];
                 $feeds_array['user_id'] = $feeds['feed_by'];
+                $feeds_array['feed_text'] = $feeds['feed_text'];
                 $feeds_array['video_link'] = $feeds['video_link'];
                 $feeds_array['audio_link'] = $feeds['audio_link'];
                 $feeds_array['posted_on'] = $feeds['posted_on'];
@@ -222,14 +223,22 @@ class SocialFunctions
                 $feeds_array['total_comment'] = $feeds['total_comment'];
                 $feeds_array['created_date'] = $feeds['created_date'];
                 $feeds_array['modified_date'] = $feeds['modified_date'];
+
+                $queryUser="select * from ".TABLE_USERS." where id=". $feeds['feed_by'];
+                $resultUser=mysql_query($queryUser) or $errorMsg=mysql_error();
+
+                if(mysql_num_rows($resultUser)){
+                    $val = mysql_fetch_assoc($resultUser);
+                    $feeds_array['full_name'] = $val['full_name'];
+                    $feeds_array['profile_pic'] = $val['profile_pic'];
+
+                }
                 //$feeds_array['user_id'] = $feeds['user_id'];
-                $feeds_array['username'] = $feeds['username'];
-
-
                 $feeds_array['comment']=array();
+
                 if(sizeof($feeds_array)>0)
                 {
-                    $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,u.username,p.profile_link FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id'];
+                    $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,u.full_name,p.profile_link FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id'];
                     $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
                         $allcomment=array();
                     //echo "\n".$queryGetAllComments;

@@ -2,13 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: c162
- * Date: 09/03/15
- * Time: 12:20 PM
+ * Date: 23/10/15
+ * Time: 9:56 AM
  */
-include_once 'Encrypt.php';
 include_once 'ConstantValues.php';
-include_once 'SendEmail.php';
-class ProfileFunctions
+class StudyMateFunctions
 {
 
     function __construct()
@@ -20,64 +18,35 @@ class ProfileFunctions
     {
         switch($service)
         {
-            case "AuthenticateUser":
+            case "GetStudymates":
             {
-                return $this->authenticateUser($postData);
+                return $this->getStudymates($postData);
             }
                 break;
-            case "RegisterUser":
+            case "GetStudymatesWithDetails":
             {
-                return $this->registerUser($postData);
-            }
-                break;
-
-            case "RequestForCredentials":
-            {
-                return $this->requestForCredentials($postData);
+                return $this->getStudymatesWithDetails($postData);
             }
                 break;
 
-            case "CheckUsernameAvailability":
+            case "GetSuggestedStudymates":
             {
-                return $this->checkUsernameAvailability($postData);
+                return $this->getSuggestedStudymates($postData);
             }
                 break;
 
-            case "ForgotPassword":
+            case "SendRequestToStudymate":
             {
-                return $this->forgotPassword($postData);
+                return $this->sendRequestToStudymate($postData);
             }
                 break;
 
-            case "PostFeed":
+            case "AcceptRequestFromStudymate":
             {
-                return $this->postFeed($postData);
+                return $this->acceptRequestFromStudymate($postData);
             }
                 break;
-            case "UploadMedia":
-            {
-               return $this->uploadMedia($postData);
-            }
-                break;
-            case "TagFriendInFeed":
-            {
-                return $this->tagFriendInFeed($postData);
-            }
-                break;
-            case "AddComment":
-            {
-                return $this->addComment($postData);
-            }
-                break;
-            case "LikeFeed":
-            {
-                return $this->likeFeed($postData);
-            }
-                break;
-            case "GetStudentAcademicInfo":
-            {
-                return $this->getStudentAcademicInfo($postData);
-            }
+
         }
     }
     /*
@@ -123,7 +92,7 @@ class ProfileFunctions
 
         $liked_id = validateObject ($postData , 'liked_id', "");
         $unliked_id = validateObject ($postData , 'unliked_id', "");
-        if($unliked_id!=null){
+
         foreach($unliked_id as $feed_id) {
             $insertFields = "`like_by`, `feed_id`";
             $insertValues = "" . $user_id . ", " . $feed_id;
@@ -133,31 +102,18 @@ class ProfileFunctions
             if (mysql_num_rows($resultCheckFeed)) {
                 $val = mysql_fetch_assoc($resultCheckFeed);
                 $feed_liked_id = $val['id'];
-                $querySET="SET `modified_date`=".getDefaultDate().",`is_delete`=0";
-                $queryLikedFeedUpdate = "UPDATE " . TABLE_FEED_LIKE . " where id =" . $feed_liked_id;
-                $resultLikedFeedUpdate = mysql_query($queryLikedFeedUpdate) or $message = mysql_error();
+                $queryLikedFeedDelete = "DELETE FROM " . TABLE_FEED_LIKE . " where id =" . $feed_liked_id;
+                $resultLikedFeedDelete = mysql_query($queryLikedFeedDelete) or $message = mysql_error();
 
             }
         }
+        foreach($liked_id as $feed_id) {
+            $insertFields = "`like_by`, `feed_id`";
+            $insertValues = "" . $user_id . ", " . $feed_id;
+            $query="INSERT INTO " .TABLE_FEED_LIKE." (".$insertFields.") VALUES (".$insertValues.")";
+            $result=mysql_query($query) or $message=mysql_error();
         }
 
-        if($liked_id!=null) {
-            foreach ($liked_id as $feed_id) {
-                if (mysql_num_rows($resultCheckFeed)) {
-                    $val = mysql_fetch_assoc($resultCheckFeed);
-                    $feed_liked_id = $val['id'];
-                    $querySET = "SET `modified_date`=" . getDefaultDate() . ",`is_delete`=1";
-                    $queryLikedFeedUpdate = "UPDATE " . TABLE_FEED_LIKE . " where id =" . $feed_liked_id;
-                    $resultLikedFeedUpdate = mysql_query($queryLikedFeedUpdate) or $message = mysql_error();
-
-                } else {
-                    $insertFields = "`like_by`, `feed_id`,`is_delete`";
-                    $insertValues = "" . $user_id . ", " . $feed_id . ",1";
-                    $query = "INSERT INTO " . TABLE_FEED_LIKE . " (" . $insertFields . ") VALUES (" . $insertValues . ")";
-                    $result = mysql_query($query) or $message = mysql_error();
-                }
-            }
-        }
         $status = "success";
         $message = "Successfully";
         $response['data']=$data;
@@ -232,7 +188,7 @@ class ProfileFunctions
 
         $query="INSERT INTO " .TABLE_FEEDS_TAGGED_USER." (".$insertFields.") VALUES (".$insertValues.")";
         $result=mysql_query($query) or $message=mysql_error();
-       // echo $query;
+        // echo $query;
         if($result)
         {
             $status="success";
@@ -250,10 +206,10 @@ class ProfileFunctions
 
     }
 
-   /*
-    * postFeed
-    *
-    */
+    /*
+     * postFeed
+     *
+     */
     public function postFeed ($postData)
     {
         $data=array();
@@ -428,7 +384,7 @@ class ProfileFunctions
     }
 
 
-    public function forgotPassword ($postData)
+    public function acceptRequestFromStudymate ($postData)
     {
         $data=array();
         $response=array();
@@ -441,7 +397,7 @@ class ProfileFunctions
         $status=0;
         $queryCheckEmail="SELECT * FROM ".TABLE_USERS." WHERE `email_id`='".$email_id."'";
         $resultCheckEmail=mysql_query($queryCheckEmail) or $errorMsg=mysql_error();
-       // echo $queryCheckEmail;
+        // echo $queryCheckEmail;
         if(mysql_num_rows($resultCheckEmail)) {
             while ($val = mysql_fetch_assoc($resultCheckEmail)) {
                 $status = 1;
@@ -449,7 +405,7 @@ class ProfileFunctions
         }
         else{
 
-                $status=0;
+            $status=0;
 
         }
         //$message="Hello ISM,\nI am very much interested to be part of ISM system.Please check my details below and let me know how can I become the part of this system.
@@ -474,7 +430,7 @@ class ProfileFunctions
         return $response;
     }
 
-    public function checkUsernameAvailability ($postData)
+    public function sendRequestToStudymate ($postData)
     {
         $message='';
         $data=array();
@@ -531,7 +487,7 @@ class ProfileFunctions
         return $response;
     }
 
-    public function requestForCredentials ($postData)
+    public function getSuggestedStudymates ($postData)
     {
         $message ='';
         $post=array();
@@ -635,261 +591,90 @@ class ProfileFunctions
 
     }
 
-    public function authenticateUser($postData)
+    public function getStudymates($postData)
     {
-
-        $data=array();
-        $data['data']=array();
-        $obj = new CI_Encrypt();
-
-        $username = validateObject ($postData , 'username', "");
-        $username = addslashes($username);
-
-        $password = validateObject ($postData , 'password', "");
-        $password = addslashes($password);
-
-        $queryUser="SELECT id,username,password from ".TABLE_USERS." where username='".$username."'";
-        //echo $encrypted_passwd = $obj->encode($password);
-        //$decrypted_password = $obj->decode("vxbhjXDuOZ8uncgNP7ykB2UvgLr5Q9SU31K6z+JGMYfREqZTYyr1f5E20k7jMTxNILaWMK0ImrNVS1GGn6gshA==");
-        //echo "---------".$obj->decode("v8R/H5JqnMdmkqVWyYLr7a/z46844fI8otkn17Ba+Afd5eOTjH9uJRg0X5nHW6EAcAQP4QNhvbNWmfgqlzLXew==");
-        $resultUser=mysql_query($queryUser) or $message=mysql_error();
-        if(mysql_num_rows($resultUser))
-        {
-            $encryptedPassword='';
-            while ($val = mysql_fetch_assoc($resultUser))
-            {
-                //echo $obj->encode($password);
-                $encryptedPassword=$val['password'];
-                //echo $encryptedPassword;
-                $decrypted_password = $obj->decode($encryptedPassword);
-                //echo $decrypted_password;
-                if($decrypted_password==$password)
-                {$post=array();
-                    $message=CREDENTIALS_EXITST;
-                    $post['user_id']=$val['id'];
-                    $post['username']=$val['username'];
-                    $status="success";
-
-                }
-                else
-                {
-                    $status="failed";
-                    $message=CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
-                }
-            }
-        }
-        else
-        {
-            //$encryptedPassword=encryptPassword($passowrd);
-            $queryOn="autoGenerateCredential.school_id=schools.id and autoGenerateCredential.course_id=courses.id";
-            $queryData="SELECT * FROM ".TABLE_AUTO_GENERATED_CREDENTIAL." autoGenerateCredential where username='".$username."'";
-            //$queryAuthUser="select * from ".TABLE_AUTO_GENERATED_CREDENTIAL." where username='".$userName."'";
-            $resultAuthUser=mysql_query($queryData) or $message=mysql_error();
-            if(mysql_num_rows($resultAuthUser))
-            {
-                $encryptedPassword='';
-                while ($val = mysql_fetch_assoc($resultAuthUser))
-                {
-                    $username=$val['username'];
-                    $encryptedPassword=$val['password'];
-                    $status=$val['status'];
-                    $id=$val['id'];
-                    $decrypted_password = $obj->decode($encryptedPassword);
-
-                    if($decrypted_password==$password)
-                    {
-
-                        if($status==1)
-                        {
-                            //$status=$status;
-                            $message = CREDENTIALS_ARE_DEACTIVATED_OR_ALREADY_TAKEN;
-                        }
-                        else if($status==0)
-                        {
-                            $post=array();
-                            //$queryData="SELECT * FROM `auto_generated_credential` t1 INNER JOIN `schools`t2 INNER JOIN `courses`t3 ON t1.school_id=t2.id and t1.course_id=t3.id where `username`='WJL91RU473'";
-                            $post['id']=$val['id'];
-                            $post['school_id']=$val['school_id'];
-                            $post['role_id']=$val['role_id'];
-                            $post['class_id']=$val['classroom_id'];
-                            $post['course_id']=$val['course_id'];
-
-                            $post['academic_year']=$val['academic_year'];
-                            $querySchool="select school.school_name,course.course_name,district. district_name, class.class_name from courses course INNER JOIN classrooms class INNER JOIN districts district INNER JOIN schools school on school.district_id=district.id where course.id=".$val['course_id']." and school.id=".$val['school_id']." and class.id=".$val['classroom_id']." limit 1";
-                            $resultSchool=mysql_query($querySchool) or $message=mysql_error();
-                            if(mysql_num_rows($resultSchool)){
-                                $valSchool=mysql_fetch_assoc($resultSchool);
-                                $post['school_name']=$valSchool['school_name'];
-                                $post['course_name']=$valSchool['course_name'];
-                                $post['district_name']=$valSchool['district_name'];
-                                $post['class_name']=$valSchool['class_name'];
-                            }
-                            $status="success";
-                            $message=CREDENTIALS_EXITST;
-
-                        }
-                    }
-                    else
-                    {
-                       // $post="";
-                        $status="failed";
-                        $message=CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
-                    }
-
-                }
-            }
-            else
-            {
-               // $post="";
-                $status="failed";
-               $message = CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
-            }
-
-        }
-        // AND password='".$encryptedPassword."'
-
-        array_push($data['data'],$post);
-        $data['message'] = $message;
-        $data['status'] = $status;
-
-        return $data;
-    }
-
-    public function registerUser($postData)
-    {
-
-        $data=array();
         $response=array();
-        $firstname = validateObject ($postData , 'firstname', "");
-        $firstname = addslashes($firstname);
+        $data=array();
+        $response['data']=array();
 
-        $lastname = validateObject ($postData , 'lastname', "");
-        $lastname = addslashes($lastname);
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
 
-        $home_address = validateObject ($postData , 'home_address', "");
-        $home_address = addslashes($home_address);
-
-        $contact_number = validateObject ($postData , 'contact_number', "");
-        $contact_number = addslashes($contact_number);
-
-        $email_address = validateObject ($postData , 'email_address', "");
-        $email_address = addslashes($email_address);
-
-        $gender = validateObject ($postData , 'gender', "");
-        $gender = addslashes($gender);
-
-        $birthdate = validateObject ($postData , 'birthdate', "");
-        // $birthdate = addslashes($birthdate);
-
-        $city_id = validateObject ($postData , 'city_id', "");
-        $city_id = addslashes($city_id);
-
-        $state_id = validateObject ($postData , 'state_id', "");
-        $state_id = addslashes($state_id);
-
-        $country_id = validateObject ($postData , 'country_id', "");
-        $country_id = addslashes($country_id);
-
-        $device_token = validateObject ($postData , 'device_token', "");
-        $device_token = addslashes($device_token);
-
-        $role_id = validateObject ($postData , 'role_id', "");
-        $role_id = addslashes($role_id);
-
-        $device_type = validateObject ($postData , 'device_type', "");
-        $device_type = addslashes($device_type);
-
-        $username = validateObject ($postData , 'username', "");
-        $username = addslashes($username);
-
-        $password = validateObject ($postData , 'password', "");
-        $password = addslashes($password);
-
-        $profile_image = validateObject ($postData , 'profile_image', "");
-        $profile_image_name = validateObject ($postData , 'profile_image_name', "");
-        $profile_image_name = addslashes($profile_image_name);
-        $profile_image_name_array=explode(".",$profile_image_name);
-
-//        if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
-//            die('Failed to create folders...');
-//        }
-        // echo $profile_image_name_array[0]."_test.".$profile_image_name_array[1];
-        $profile_image_name=$profile_image_name_array[0]."_test.".$profile_image_name_array[1];
-        $obj = new CI_Encrypt();
-
-        $insertFields="`username`, `password`,`device_type`, `first_name`, `last_name`, `full_name`,`email_id`, `contact_number`, `home_address`, `city_id`, `state_id`, `country_id`, `birthdate`, `gender`, `device_token`, `role_id`";
-        $insertValues="'".$username."','".$obj->encode($password)."','".$device_type."','".$firstname."','".$lastname."','".$firstname." ".$lastname."','".$email_address."','".$contact_number."','".$home_address."','".$city_id."','".$state_id."','".$country_id."','".$birthdate."','".$gender."','".$device_token."','".$role_id."'";
-
-        $queryInsert="INSERT INTO ".TABLE_USERS."(".$insertFields.") values(".$insertValues.")";
-        $resultQuery=mysql_query($queryInsert) or $message=mysql_error();
-        if($resultQuery)
+        $queryGetStudyMate="SELECT * from ".TABLE_STUDYMATES." studymates INNER JOIN ".TABLE_USERS." users on studymates.mate_id=users.id where mate_of=".$user_id;
+        $resultGetStudyMate=mysql_query($queryGetStudyMate) or $message=mysql_error();
+        if(mysql_num_rows($resultGetStudyMate))
         {
-            $user_id = mysql_insert_id();
-            if($role_id==2)
+
+            while ($val = mysql_fetch_assoc($resultGetStudyMate))
             {
-                $course_id = validateObject ($postData , 'course_id', "");
-                $course_id = addslashes($course_id);
-
-                $academic_year = validateObject ($postData , 'academic_year', "");
-                $academic_year = addslashes($academic_year);
-
-                $classroom_id = validateObject ($postData , 'classroom_id', "");
-                $classroom_id = addslashes($classroom_id);
-
-                $school_id = validateObject ($postData , 'school_id', "");
-                $school_id = addslashes($school_id);
-
-                $insertAcademicField="`user_id`, `school_id`, `classroom_id`, `academic_year`, `course_id`";
-                $insertAcademicValue="'".$user_id."', '".$school_id."', '".$classroom_id."', '".$academic_year."', '".$course_id."'";
-
-                //Image Saving
-                $profile_user_link="user_".$user_id."/";
-                $profile_image_dir=USER_PROFILE_PICTURE.$profile_user_link;
-                if (!mkdir($profile_image_dir, 0777, true)) {
-                    die('Failed to create folders...');
-                }
-
-                $profile_image_dir = $profile_image_dir . $profile_image_name;
-                $profile_image_link = $profile_user_link.$profile_image_name;
-                file_put_contents($profile_image_dir, base64_decode($profile_image));
-
-                $queryProfileImage="INSERT INTO ".TABLE_USER_PROFILE_PICTURE."(`user_id`, `profile_link`) VALUES (".$user_id.",'".$profile_image_link."')";
-                $resultProfileImage=mysql_query($queryProfileImage) or $message=mysql_error();
-
-//                if($resultProfileImage)
-//                {
-//                    $message="done";
-//                }
-//                else
-//                {
-//                    $message="not done";
-//                }
-                $queryAcademic="INSERT INTO ".TABLE_STUDENT_ACADEMIC_INFO."(".$insertAcademicField.") values (".$insertAcademicValue.")";
-                $resultAcademic=mysql_query($queryAcademic) or $message=mysql_error();
-//				if($resultAcademic)
-//				{
-                $data['user_id']=$user_id;
-                $data['username']=$username;
-                $data['profile_pic']=$profile_image_link;
-                $status="success";
-                $message="Registration completed successfully";
-//				}
-//				else
-//				{
-//					$status="failed";
-//					//$messsage="1Registration failed";
-//				}
-
+                $post=array();
+                $post['user_id']=$val['mate_id'];
+                $post['full_name']=$val['username'];
+                $post['profile_pic']=$val['profile_pic'];
+                array_push($data,$post);
             }
+            $status="success";
+            $message="";
+
         }
         else
         {
             $status="failed";
+            $message = DEFAULT_NO_RECORDS;
+            $data="";
         }
 
-        $response['status'] = $status;
+        array_push($response['data'],$data);
         $response['message'] = $message;
-        $response['data'] = $data;
+        $response['status'] = $status;
+
+        return $response;
+    }
+
+    public function getStudymatesWithDetails($postData)
+    {
+
+        $response=array();
+        $data=array();
+        $response['data']=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $queryInnerJoin=TABLE_STUDYMATES." studymates INNER JOIN ".TABLE_USERS." users INNER JOIN ".TABLE_STUDENT_ACADEMIC_INFO." studentAcademicInfo INNER JOIN ".TABLE_SCHOOLS." schools";
+        $queryOn="studymates.mate_id=users.id ";
+
+        $queryGetStudyMateAllDetail="SELECT * from ".$queryInnerJoin." on ".$queryOn."  where mate_of=".$user_id;
+        echo $queryGetStudyMateAllDetail;
+        $resultGetStudyMateAllDetail=mysql_query($queryGetStudyMateAllDetail) or $message=mysql_error();
+        if(mysql_num_rows($resultGetStudyMateAllDetail))
+        {
+
+            while ($val = mysql_fetch_assoc($resultGetStudyMateAllDetail))
+            {
+                $post=array();
+                $post['user_id']=$val['mate_id'];
+                $post['full_name']=$val['username'];
+                $post['profile_pic']=$val['profile_pic'];
+                $post['is_online']=$val['is_online'];
+                $post['school_name']=$val['school_name'];
+
+                array_push($data,$post);
+            }
+            $status="success";
+            $message="";
+
+        }
+        else
+        {
+            $status="failed";
+            $message = DEFAULT_NO_RECORDS;
+            $data="";
+        }
+
+        array_push($response['data'],$data);
+        $response['message'] = $message;
+        $response['status'] = $status;
 
         return $response;
     }
