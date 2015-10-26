@@ -364,6 +364,12 @@ option{
 	border:1px solid rgba(0,0,0,0.1);
 	display: inline-block;
     border-radius: 50%;
+	overflow: hidden;
+	height:220px;
+	width:220px;
+}
+.avatar img{
+	width:100%;
 }
 div.upload {
     width: 208px;
@@ -533,6 +539,7 @@ div.upload input {
 	width:14%;
 	height:100vh;
 	position:fixed;
+	z-index:2;
 }
 .user_profile_img {
     width: 145px;
@@ -561,6 +568,7 @@ div.upload input {
     /*border-bottom: 1px solid #1bc4a3;*/
 }
 .three_tabs>li {
+	width:49%;
     display: inline-block;
     padding: 10px 17px;
     list-style: none;
@@ -575,7 +583,7 @@ div.upload input {
 .three_tabs .badge{
 	position:absolute;
 	top:-8px;
-	right:4px;
+	right:24px;
     font-family: sans-serif;
     font-size: 11px;
     border-radius: 5px;
@@ -642,7 +650,7 @@ div.upload input {
 }
 .personal_menu{
 	text-align:left;
-    padding-bottom: 70px;
+    padding-bottom: 150px;
 }
 .personal_menu li {
     padding: 15px 20px;
@@ -902,7 +910,7 @@ textarea.post_input{
 	top:0;
 	left:0;
 	padding:15px;
-	font-size: 15px;
+	font-size: 14px;
 }
 .carousel-indicators li, .carousel-indicators .active{
 	border:none;
@@ -1167,7 +1175,10 @@ textarea.post_input{
 	bottom: 0;
     width: 250px;
     position: absolute;
-    right: 31%
+    right: 16%
+}
+.chat_container.home_chat{
+	right:31%;
 }
 .row{
 	position: relative;
@@ -1179,7 +1190,7 @@ textarea.post_input{
     /* border: 1px solid rgba(0,0,0,0.1); */
     position: fixed;
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
-    bottom: 10px;
+    bottom: 0;
     border-radius: 2px;
     padding-bottom: 50px;
 }
@@ -1428,8 +1439,8 @@ input.chat_input {
     z-index: 2;
 	right:-12px;
 }
-.inner_pages .mCustomScrollBox, 
-.inner_pages .mCSB_container{
+.sidebar_left_container  .mCustomScrollBox, 
+.sidebar_left_container  .mCSB_container{
 	overflow:visible;
 }
 
@@ -1537,7 +1548,7 @@ ul.exams_holder li a:after{
 .tut_week{
 	margin-top:-10px;
 	border-top:1px solid #1bc4a3;
-	padding-bottom: 60px;
+	padding-bottom: 140px;
 }
 .tut_week_heading{
 	background-color: #1bc4a3;    
@@ -1550,7 +1561,7 @@ ul.exams_holder li a:after{
 	position: absolute;
     margin: 0;
     transform: rotate(-90deg);
-    top: 510px;
+    top: 450px;
     left: -10px;
 }
 ul.tut_weekdays {
@@ -1948,7 +1959,7 @@ ul.tut_weekdays {
     width: 154px;
     border-radius: 50%;
     margin: 0px auto;
-    left: 25px;
+    left: 27px;
     top: 3px;
 }
 .item_chart:after{
@@ -1959,13 +1970,13 @@ ul.tut_weekdays {
     width: 154px;
     border-radius: 50%;
     margin: 0px auto;
-    left: 25px;
+    left: 27px;
     top: 3px;
 }
 .item_chart h2 {
 	font-family:Arial, Helvetica, sans-serif;
     position: absolute;
-    margin: 55px auto;
+    margin: 65px auto;
     width: 100%;
     font-size: 30px;
     font-weight: 600;
@@ -2039,7 +2050,7 @@ ul.tut_weekdays {
 .tut_group .box_body p, .tut_group .box_footer p{
 	font-size:13px;
 	margin:0;
-	
+	margin-left: 80px;
 }
 .tut_group .box_footer{
 	padding:5px 15px;
@@ -2233,6 +2244,7 @@ ul.tut_weekdays {
     color: #333;
     border: 1px solid rgba(27,196,163,0.5);
 	margin-right: 5px;
+	display: inline-block;
 }
 .more_tagged, .more_tagged:hover{
 	color:#1bc4a3;
@@ -2271,6 +2283,7 @@ ul.tut_weekdays {
 }
 .modal-header.notice_header {
     padding: 15px 15px 7px;
+	box-shadow: 0px 0px 17px -1px rgba(0,0,0,0.4);
 }
 .notice_header {
     background-image: url(../images/add_exam_bg.png);
@@ -2361,6 +2374,7 @@ ul.tut_weekdays {
 	border:none;
 	border-right:1px solid rgba(0,0,0,0.07);
 	float:left;
+	min-height: 250px;
 }
 .studymate_recom .carousel .item .suggested_mates_card:last-child{
 	border:none;
@@ -2563,6 +2577,10 @@ ul.tut_weekdays {
 	width:100%;
 	float:none;
     margin-bottom: 30px;
+    
+}
+.border_bottom{
+	border-bottom: 1px solid rgba(0,0,0,0.07);
 }
 .status_like .feed_text p, .commented_on .feed_text p, .commented_on .notification_txt p{
 	font-size:14px;
@@ -3101,6 +3119,9 @@ ul.ques_numbers {
 .margin_t15{
 	margin-top:15px;
 }
+.margin_b30{
+	margin-bottom:30px !important;
+}
 .instruction h4 span{
     font-family: sans-serif;
     font-size: 20px;
@@ -3248,11 +3269,11 @@ ul.ques_numbers {
 	border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 .answers .ques{
-	padding-bottom: 10px;
-    border-bottom: 1px solid rgba(0,0,0,0.07);
+	
     font-weight: 500;
-    margin-bottom: 12px;
+   
 	font-size:16px;
+   
 }
 .answers p {
     font-size: 14px;
@@ -3301,7 +3322,7 @@ ul.ques_numbers {
 	right:28px;
 }
 .exams_wrapper .box_header{
-	height:100px;
+	height:96px;
 	/*background-size:cover;
 	background-position:center;*/
 }
@@ -3400,6 +3421,7 @@ ul.ques_numbers {
 }
 .basic_info p{
 	margin-bottom:5px;
+	font-size: 16px;
 }
 .basic_info h3{
 	margin-top:10px;
@@ -3408,6 +3430,8 @@ ul.ques_numbers {
 	display:block;
 	margin-bottom:5px;
 	font-size:16px;
+	color:#1bc4a3;
+	text-decoration:none;
 }
 .basic_info .btn_black_normal{
 	margin-right:5px;
@@ -3565,10 +3589,15 @@ ul.ques_numbers {
 .discussion_header:after,
 .top_question:after,
 .discussion:after,
-.exam_banner:after {
+.exam_banner:after{
     content: " ";
     display: table;
     clear: both;
+}
+.shared_images:after {
+    content: " ";
+    clear: both;
+    display: table;
 }
 .margin_15{
 	margin:15px !important;
@@ -3584,4 +3613,57 @@ ul.ques_numbers {
 }
 .form-horizontal .control-label{
 	text-align:left;
+}
+.suggested_mates_holder  .mate_descrip {
+    min-height: 140px;
+}
+.banner_text h3:last-child{
+	font-size:15px;
+}
+.of {
+    position: relative;
+}
+.of:before{
+	content: "";
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    border: 2px solid #333;
+    position: absolute;
+    left: 10px;
+    top: 45%;
+}
+.test_finished .item_chart h2{
+    margin: 55px auto;
+}
+.form-inline .form-control{
+    padding-right: 44px;
+}
+.form-inline .form-group{
+	margin-right:5px;
+}
+.ques_num {
+    position: relative;
+}
+a.expand_ques {
+    font-size: 24px;
+    color: #666;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    position: absolute;
+    right: 15px;
+    top: 3px;
+	z-index:3;
+}
+a.expand_ques + .row{
+	z-index:2;
+}
+.q_div{
+	padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+	margin-bottom: 12px;
+	height: 115px;
+    overflow: hidden;
 }

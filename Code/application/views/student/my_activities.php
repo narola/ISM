@@ -156,7 +156,7 @@
                                         <h4 class="activity_heading">Status updated</h4>
                                         <?php } ?>
                                         <span class="date"><?php $old_date = strtotime($post_value['created_date']);echo date("M j, Y",$old_date);?></span>
-                                        <div class="feed_text">                                               
+                                        <div class="feed_text border_bottom">                                               
                                             <p><?php echo $post_value['feed_text'];?></p>
                                             <!-- <a href="#" class="like_btn"><span class="icon icon_thumb_0"></span><?php echo $post_value['totlike'];?></a>
                                             <a href="#" class="comment_btn"><span class="icon icon_comment"></span><?php echo $post_value['totcomment'];?></a> -->
