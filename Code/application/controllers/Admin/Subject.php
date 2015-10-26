@@ -20,6 +20,7 @@ class Subject extends ADMIN_Controller {
         $q = $this->input->get('q');
         $str = '';
         $where['where'][TBL_SUBJECTS . '.is_delete'] = 0;
+
         if (!empty($_GET['q'])) {
 
             if (!empty($_GET['q'])) {
@@ -39,7 +40,9 @@ class Subject extends ADMIN_Controller {
             }
             $config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
             $offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'	
+        
         } else {
+
             $where = null;
             $where['where'][TBL_SUBJECTS . '.is_delete'] = FALSE;
 
@@ -106,12 +109,13 @@ class Subject extends ADMIN_Controller {
      * Function for add subject
      */
     public function add_subject() {
+
         $this->data['page_title'] = 'Subject Add';
 
         $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => FALSE)));
         $this->data['classrooms'] = select(TBL_CLASSROOMS, FALSE, array('where' => array('is_delete' => FALSE)));
 
-        $this->form_validation->set_rules('subject_name', 'Subject Name', 'trim|required');
+        $this->form_validation->set_rules('subject_name', 'Subject Name', 'trim|required|is_unique[subjects.subject_name]');
         $this->form_validation->set_rules('course', 'Course Name', 'trim|required');
         $this->form_validation->set_rules('classroom', 'Classroom', 'trim|required');
 
@@ -137,11 +141,12 @@ class Subject extends ADMIN_Controller {
                 "is_delete" => 0
             );
 
-            insert(TBL_COURSE_SUBJECT, $data_cs);
+            insert(TBL_CLASSROOM_SUBJECT, $data_cs);
 
             $path = "uploads/subjects";
 
             if (!empty($_FILES['subject_image']['name'])) {
+
                 $ext = pathinfo($_FILES['subject_image']['name'], PATHINFO_EXTENSION);
                 $name = '_dev_' . $insertid . date('ymdhis') . '.' . $ext;
                 $config['upload_path'] = $path;
@@ -161,6 +166,7 @@ class Subject extends ADMIN_Controller {
                     update(TBL_SUBJECTS, $insertid, $data_subject_image);
                 }
             }
+
             if ($error_count > 0) {
                 $message = 'Record is Successfully created but please upload valid file.';
             } else {
@@ -185,9 +191,9 @@ class Subject extends ADMIN_Controller {
         $this->data['subject'] = select(TBL_SUBJECTS, TBL_SUBJECTS . '.id,'
                 . TBL_SUBJECTS . '.subject_name,'
                 . TBL_SUBJECTS . '.subject_image,'
-                . TBL_COURSE_SUBJECT . '.id as cs_id,'
-                . TBL_COURSE_SUBJECT . '.subject_id,'
-                . TBL_COURSE_SUBJECT . '.classroom_id,'
+                . TBL_CLASSROOM_SUBJECT . '.id as cs_id,'
+                . TBL_CLASSROOM_SUBJECT . '.subject_id,'
+                . TBL_CLASSROOM_SUBJECT . '.classroom_id,'
                 . TBL_CLASSROOMS . '.class_name,'
                 . TBL_CLASSROOMS . '.course_id,'
                 . TBL_COURSES . '.id,'
@@ -196,12 +202,12 @@ class Subject extends ADMIN_Controller {
             'single' => TRUE,
             'join' => array(
                 array(
-                    'table' => TBL_COURSE_SUBJECT,
-                    'condition' => TBL_COURSE_SUBJECT . '.subject_id = ' . TBL_SUBJECTS . '.id'
+                    'table' => TBL_CLASSROOM_SUBJECT,
+                    'condition' => TBL_CLASSROOM_SUBJECT . '.subject_id = ' . TBL_SUBJECTS . '.id'
                 ),
                 array(
                     'table' => TBL_CLASSROOMS,
-                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_COURSE_SUBJECT . '.classroom_id'
+                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_CLASSROOM_SUBJECT . '.classroom_id'
                 ),
                 array(
                     'table' => TBL_COURSES,
@@ -239,7 +245,7 @@ class Subject extends ADMIN_Controller {
             );
 
             $cs_id = $this->input->post("cs_id");
-            update(TBL_COURSE_SUBJECT, $cs_id, $data_cs); // Update data for course subject
+            update(TBL_CLASSROOM_SUBJECT, $cs_id, $data_cs); // Update data for course subject
 
             $path = "uploads/subjects/";
             if (!empty($_FILES['subject_image']['name'])) {

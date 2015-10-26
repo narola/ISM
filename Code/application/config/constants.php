@@ -106,7 +106,7 @@ define('TBL_CLASSROOM_ASSIGNMENT','classroom_assignment');
 define('TBL_CLASSROOMS','classrooms');
 define('TBL_COUNTRIES','countries');
 define('TBL_COURSE_CATEGORY','course_category');
-define('TBL_COURSE_SUBJECT','course_subject');
+define('TBL_CLASSROOM_SUBJECT','classroom_subject');
 define('TBL_COURSES','courses');
 define('TBL_DISTRICTS','districts');
 define('TBL_EXAM_SCHEDULE','exam_schedule');

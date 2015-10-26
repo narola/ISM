@@ -225,17 +225,17 @@ class Exam extends ADMIN_Controller {
 		
 		$this->data['all_subjects'] = select(
 												TBL_SUBJECTS,
-												TBL_SUBJECTS.'.id,'.TBL_SUBJECTS.'.subject_name,'.TBL_COURSE_SUBJECT.'.classroom_id',
+												TBL_SUBJECTS.'.id,'.TBL_SUBJECTS.'.subject_name,'.TBL_CLASSROOM_SUBJECT.'.classroom_id',
 												array('where'=>array(
 																		TBL_SUBJECTS.'.is_delete'=>FALSE,
-																		TBL_COURSE_SUBJECT.'.classroom_id'=>$this->data['exam']['classroom_id'])
+																		TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$this->data['exam']['classroom_id'])
 																	),
 												array(
 													//'group_by'=>TBL_SUBJECTS.'.id',
 													'join'=>array(
 															array(
-																	'table'=>TBL_COURSE_SUBJECT,
-																	'condition'=>TBL_SUBJECTS.'.id='.TBL_COURSE_SUBJECT.'.subject_id'
+																	'table'=>TBL_CLASSROOM_SUBJECT,
+																	'condition'=>TBL_SUBJECTS.'.id='.TBL_CLASSROOM_SUBJECT.'.subject_id'
 																)
 														)
 												)

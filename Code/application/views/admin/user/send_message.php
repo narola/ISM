@@ -43,6 +43,18 @@
                         <div class="alert alert-danger <?php if(empty(strip_tags($msgerror,''))){ echo 'hide';} ?>">
                             <?php echo strip_tags($msgerror) ; ?>
                         </div>
+                        
+                        <div class="form-group">
+                            <label> Select Role </label>
+                            <select name="role_id" id="role_id" class="form-control" onchange="fetch_users(this.value)">
+                                   <option value="0"> Select Role </option> 
+                                   <?php if(!empty($roles)) { foreach($roles as $role) { ?>
+                                    <option value="<?php echo $role['id']; ?>" <?php echo set_select('role_id',$role['id']); ?> >
+                                        <?php echo ucfirst($role['role_name']); ?>
+                                    </option>
+                                   <?php } }?>
+                            </select>    
+                        </div>
 
                         <div class="form-group">
                             <label> Select Users </label>
@@ -60,7 +72,7 @@
                                          ?>
                                            <option value="<?php echo $user['id'] ?>" 
                                             <?php echo set_select('all_users', $user['id']); 
-                                            if($user['username'] == $u['username']){ echo "selected='selected'"; } ?>
+                                                if($user['username'] == $u['username']){ echo "selected='selected'"; } ?>
                                             >
                                                 <?php echo ucfirst($user['username']); ?>
                                             </option> 
@@ -93,7 +105,7 @@
 							<div class="alert alert-danger <?php if(empty(strip_tags(form_error('message_desc'),''))){ echo 'hide';} ?>">
 							  <?php echo strip_tags(form_error('message_desc'),'') ; ?>
 							</div>
-                            <label class="notify"><input type="checkbox" name="notify_sms">Notify Student Via SMS</label><br/>
+                            <!-- <label class="notify"><input type="checkbox" name="notify_sms">Notify Student Via SMS</label><br/> -->
                         </div>
                         
                     </div>
@@ -118,6 +130,16 @@
       $(".js-example-basic-single").select2();
     });
 
+    function fetch_users(role_id){
+        $.ajax({
+            url:'<?php echo base_url()."common/fetch_users"; ?>',
+            type:'POST',
+            data:{role_id:role_id},
+            success:function(data){
+                $('#all_users').html(data);
+            }   
+        });
+    }
 
    $('#save_template').change(function() {
         
