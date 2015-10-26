@@ -1038,204 +1038,204 @@ $(document).on('keypress', 'textarea[data-type="discussion"]', function () {
 
 /* Generate html block of group disscussion  comment */
 function generate_cm(obj) {
-var cl_me = "";
-        if (wp == obj.id)
+    var cl_me = "";
+    if (wp == obj.id)
         cl_me = "me";
-        str = "";
-        str += '<div class="col-sm-12 ' + cl_me + '" data-id="' + obj.disscusion_id + '">';
-        str += '<div class="mate_user_img">';
-        str += '<img src="/uploads/' + obj.profile_link + '">';
-        str += '</div>';
-        str += '<div class="admin_question">';
-        str += '<h4>' + obj.full_name + '<span>' + obj.cdate + '</span></h4>';
-        str += '<p>' + obj.message + '</p>';
-        str += '</div>';
-        str += '</div>';
-        if (obj.active_count != 'skip') {
-$('#active_comment_count').html(obj.active_count);
-        }
+    str = "";
+    str += '<div class="col-sm-12 ' + cl_me + '" data-id="' + obj.disscusion_id + '">';
+    str += '<div class="mate_user_img">';
+    str += '<img src="/uploads/' + obj.profile_link + '">';
+    str += '</div>';
+    str += '<div class="admin_question">';
+    str += '<h4>' + obj.full_name + '<span>' + obj.cdate + '</span></h4>';
+    str += '<p>' + obj.message + '</p>';
+    str += '</div>';
+    str += '</div>';
+    if (obj.active_count != 'skip') {
+        $('#active_comment_count').html(obj.active_count);
+    }
 
-if (obj.group_score != 'skip') {
-$('#group_score_count').html(obj.group_score);
-        }
+    if (obj.group_score != 'skip') {
+        $('#group_score_count').html(obj.group_score);
+    }
 
-if (obj.my_score != 'skip') {
-$('#my_score_count').html(obj.my_score);
-        }
+    if (obj.my_score != 'skip') {
+        $('#my_score_count').html(obj.my_score);
+    }
 
-$('textarea[data-type="discussion"]').val('');
-        $('.row.discussion').append(str);
-        $('.row.discussion div[data-id="' + obj.disscusion_id + '"]').fadeOut(0).fadeIn(400);
+    $('textarea[data-type="discussion"]').val('');
+    $('.row.discussion').append(str);
+    $('.row.discussion div[data-id="' + obj.disscusion_id + '"]').fadeOut(0).fadeIn(400);
 }
 
 
-        /*
-         *   KAMLESH POKIYA (KAP).
-         *   Like / dislike POST.
-         */
-        $(document).on('click', 'a[data-type="feed-like"]', function(e){
+/*
+ *   KAMLESH POKIYA (KAP).
+ *   Like / dislike POST.
+ */
+$(document).on('click', 'a[data-type="feed-like"]', function (e) {
 
-        var request = {
+    var request = {
         type: 'like',
-                fid: $(this).data('id'),
-                to: '',
-                message: '',
-        };
-        ws.send(JSON.stringify(request));
-        $(this).val('');
+        fid: $(this).data('id'),
+        to: '',
+        message: '',
+    };
+    ws.send(JSON.stringify(request));
+    $(this).val('');
 });
-        /* Weekday scroll in tutorial group. */
-        $(document).on('click', '.tut_weekdays li a[data-type="s"]', function (e) {
-var nav = $(this).attr('href');
-        e.preventDefault();
-        if (nav.length) {
-$('html,body').animate({
-scrollTop: $(nav).offset().top - 240},
+/* Weekday scroll in tutorial group. */
+$(document).on('click', '.tut_weekdays li a[data-type="s"]', function (e) {
+    var nav = $(this).attr('href');
+    e.preventDefault();
+    if (nav.length) {
+        $('html,body').animate({
+            scrollTop: $(nav).offset().top - 240},
         500);
-        }
-return false;
+    }
+    return false;
 });
-        /*
-         *   KAMLESH POKIYA (KAP).
-         *   Action of studymate with remove or not.
-         */
-        $(document).on('change', '#action_studymate', function(){
-        val = $(this).val();
-        if (val == 1) {
-$('button[data-type="close-studymate"]').attr('data-course', $(this).data('course')).attr('data-name', $(this).data('name')).attr('data-id', $(this).data('id')).attr('data-school', $(this).data('school')).attr('data-profile', $(this).data('profile'));
+/*
+ *   KAMLESH POKIYA (KAP).
+ *   Action of studymate with remove or not.
+ */
+$(document).on('change', '#action_studymate', function () {
+    val = $(this).val();
+    if (val == 1) {
+        $('button[data-type="close-studymate"]').attr('data-course', $(this).data('course')).attr('data-name', $(this).data('name')).attr('data-id', $(this).data('id')).attr('data-school', $(this).data('school')).attr('data-profile', $(this).data('profile'));
         $('b[data-type="close-studymate-name"]').html($(this).data('name'));
         $('#close_mate').modal('show');
-        }
+    }
 });
-    
-        /*
-         *   KAMLESH POKIYA (KAP).
-         *   Remove studymate.
-         */
-        $(document).on('click', 'button[data-type="close-studymate"]', function(e){
 
-        var request = {
+/*
+ *   KAMLESH POKIYA (KAP).
+ *   Remove studymate.
+ */
+$(document).on('click', 'button[data-type="close-studymate"]', function (e) {
+
+    var request = {
         type: 'close_studymate',
-                to: 'self',
-                studymate_id: $(this).attr('data-id')
-        };
-        ws.send(JSON.stringify(request));
-        $('#mCSB_2 #mCSB_2_container div[data-id="' + $(this).attr('data-id') + '"]').remove().html();
-        str = '';
-        str += '<div class="suggested_mates_card">'
-        str += '<div class="mate_user_img"><img src="uploads/' + $(this).attr('data-profile') + '" onerror="this.src=\'assets/images/avatar.png\'"></div>';
-        str += '<div class="mate_descrip"><p class="mate_name">' + $(this).attr('data-name') + '</p>';
-        str += '<p class="mate_following">Folowing 34 Authers</p>';
-        str += '<p>' + $(this).attr('data-school') + '</p>';
-        str += '<p>' + $(this).attr('data-course') + '</p><button class="btn btn_green" data-id="' + $(this).attr('data-id') + '" data-type="studyment-request">Add Studymates</button></div></div>';
-        $('.box_body #carousel-studymate .carousel-inner #active-recomonded').append(str);
-});
-        /* Send Request to search from dictionary... */
-        $(document).on('keypress', 'input[data-type="search-dictionary"], a[data-type="search-dictionary"]', function (e) {
-
-if (e.keyCode == 13 && this.value) {
-var request = {
-type: 'dictionary',
         to: 'self',
-        keyword: this.value
+        studymate_id: $(this).attr('data-id')
+    };
+    ws.send(JSON.stringify(request));
+    $('#mCSB_2 #mCSB_2_container div[data-id="' + $(this).attr('data-id') + '"]').remove().html();
+    str = '';
+    str += '<div class="suggested_mates_card">'
+    str += '<div class="mate_user_img"><img src="uploads/' + $(this).attr('data-profile') + '" onerror="this.src=\'assets/images/avatar.png\'"></div>';
+    str += '<div class="mate_descrip"><p class="mate_name">' + $(this).attr('data-name') + '</p>';
+    str += '<p class="mate_following">Folowing 34 Authers</p>';
+    str += '<p>' + $(this).attr('data-school') + '</p>';
+    str += '<p>' + $(this).attr('data-course') + '</p><button class="btn btn_green" data-id="' + $(this).attr('data-id') + '" data-type="studyment-request">Add Studymates</button></div></div>';
+    $('.box_body #carousel-studymate .carousel-inner #active-recomonded').append(str);
+});
+/* Send Request to search from dictionary... */
+$(document).on('keypress', 'input[data-type="search-dictionary"], a[data-type="search-dictionary"]', function (e) {
+
+    if (e.keyCode == 13 && this.value) {
+        var request = {
+            type: 'dictionary',
+            to: 'self',
+            keyword: this.value
         };
         ws.send(JSON.stringify(request));
         $('.dictionary_result .mCustomScrollBox .mCSB_container').html('<img class="pre_loader" src="assets/images/loader1.GIF">').fadeIn(300);
         $(this).attr('disabled', '');
-        }
+    }
 
 });
 
-        /*
-         *   KAMLESH POKIYA (KAP).
-         *   Send studymate request.
-         */
-        $(document).on('click', 'button[data-type="studyment-request"]', function(e){
-        var request = {
+/*
+ *   KAMLESH POKIYA (KAP).
+ *   Send studymate request.
+ */
+$(document).on('click', 'button[data-type="studyment-request"]', function (e) {
+    var request = {
         type: 'send_studymate_request',
-                to: $(this).attr('data-id'),
-                studymate_id: $(this).attr('data-id'),
-                error: ''
-        };
-        ws.send(JSON.stringify(request));
+        to: $(this).attr('data-id'),
+        studymate_id: $(this).attr('data-id'),
+        error: ''
+    };
+    ws.send(JSON.stringify(request));
 });
-        $(document).on('click', 'a[data-type="view-all-comment-activities"]', function (e) {
-var request = {
-type: 'view-all-comment-activities',
+$(document).on('click', 'a[data-type="view-all-comment-activities"]', function (e) {
+    var request = {
+        type: 'view-all-comment-activities',
         to: 'self',
         comment_id: $(this).attr('data-id'),
         error: ''
-        };
-        ws.send(JSON.stringify(request));
+    };
+    ws.send(JSON.stringify(request));
 });
-        $(document).on('click', 'button[data-type = "decline-request"]', function (e) {
-var request = {
-type: 'decline-request',
+$(document).on('click', 'button[data-type = "decline-request"]', function (e) {
+    var request = {
+        type: 'decline-request',
         sub_type: $(this).data('subtype'),
         to: $(this).data('id'),
         studymate_id: $(this).data('id'),
         error: ''
-        };
-        ws.send(JSON.stringify(request));
+    };
+    ws.send(JSON.stringify(request));
 });
-        $(document).on('click', 'button[data-type="save_and_next"]', function (e) {
-var request = {
-type: 'exam_answer',
+$(document).on('click', 'button[data-type="save_and_next"]', function (e) {
+    var request = {
+        type: 'exam_answer',
         qustion_id: $(this).data('qid'),
         to: 'self'
-        };
-        ws.send(JSON.stringify(request));
+    };
+    ws.send(JSON.stringify(request));
 });
-        /*
-         *   KAMLESH POKIYA (KAP).
-         *   Tag user.
-         */
-        $(document).on('change', '#select-tag-user', function(e){
-if (e.val != ''){
-var request = {
-type: 'get_studymate_name',
-        to: 'self',
-        studymate_id: e.val,
-        error: ''
-        };
-        ws.send(JSON.stringify(request));
-        }
-else {
-$('#tagged-users').html('');
-        }
-});
-        $(document).on('click', 'button[data-type="exam_start_request"]', function () {
-$(this).attr('disabled', 'disabled');
+/*
+ *   KAMLESH POKIYA (KAP).
+ *   Tag user.
+ */
+$(document).on('change', '#select-tag-user', function (e) {
+    if (e.val != '') {
         var request = {
-        type: 'exam_start_request',
-                to: 'self',
+            type: 'get_studymate_name',
+            to: 'self',
+            studymate_id: e.val,
+            error: ''
         };
         ws.send(JSON.stringify(request));
+    }
+    else {
+        $('#tagged-users').html('');
+    }
 });
-        /* Clear selection */
-        $(document).on('click', 'button[data-type="clear_responce"]', function () {
-exam_choice = 0;
-        $('.ans_options label input[name="option"]').attr('checked', false);
+$(document).on('click', 'button[data-type="exam_start_request"]', function () {
+    $(this).attr('disabled', 'disabled');
+    var request = {
+        type: 'exam_start_request',
+        to: 'self',
+    };
+    ws.send(JSON.stringify(request));
 });
-        /* set answer */
-        $(document).on('click', '.ans_options label input[name="option"]', function () {
-exam_choice = $(this).data('id');
+/* Clear selection */
+$(document).on('click', 'button[data-type="clear_responce"]', function () {
+    exam_choice = 0;
+    $('.ans_options label input[name="option"]').attr('checked', false);
 });
-        /* Next question */
-        $(document).on('click', 'button[data-type="question_responce"]', function () {
-$('button[data-type="clear_responce"]').attr('disabled', 'disabled');
-        $('button[data-type="question_responce"]').attr('disabled', 'disabled');
-        var question_id = $(this).attr('data-id');
-        var next_question = 0;
-        var next_question_no = 0;
-        if ($('ul.ques_numbers li[data-id="' + question_id + '"]').next().length == 1) {
-next_question = $('ul.ques_numbers li[data-id="' + question_id + '"]').next().data('id');
+/* set answer */
+$(document).on('click', '.ans_options label input[name="option"]', function () {
+    exam_choice = $(this).data('id');
+});
+/* Next question */
+$(document).on('click', 'button[data-type="question_responce"]', function () {
+    $('button[data-type="clear_responce"]').attr('disabled', 'disabled');
+    $('button[data-type="question_responce"]').attr('disabled', 'disabled');
+    var question_id = $(this).attr('data-id');
+    var next_question = 0;
+    var next_question_no = 0;
+    if ($('ul.ques_numbers li[data-id="' + question_id + '"]').next().length == 1) {
+        next_question = $('ul.ques_numbers li[data-id="' + question_id + '"]').next().data('id');
         next_question_no = $('ul.ques_numbers li[data-id="' + question_id + '"]').next().children('a').data('no');
-        }
+    }
 
 
-var request = {
-type: 'question_responce',
+    var request = {
+        type: 'question_responce',
         to: 'self',
         time: time_spent_per_question,
         question_id: question_id,
@@ -1244,140 +1244,140 @@ type: 'question_responce',
         exam_type: $(this).data('change'),
         answer: exam_choice,
         status: $(this).attr('data-status')
-        }
+    }
 
-ws.send(JSON.stringify(request));
-        exam_choice = 0;
+    ws.send(JSON.stringify(request));
+    exam_choice = 0;
 });
-        $(document).on('click', 'a[data-type="get_question"]', function () {
-var request = {
-type: 'get_question',
+$(document).on('click', 'a[data-type="get_question"]', function () {
+    var request = {
+        type: 'get_question',
         to: 'self',
         question_no: $(this).data('id'),
         qno: $(this).data('no')
-        }
-ws.send(JSON.stringify(request));
+    }
+    ws.send(JSON.stringify(request));
 });
-        $(document).on('click', 'button[data-type="end_exam"]', function () {
-var request = {
-type: 'end_exam',
+$(document).on('click', 'button[data-type="end_exam"]', function () {
+    var request = {
+        type: 'end_exam',
         to: 'self',
         exam_type: $(this).data('change'),
-        }
-ws.send(JSON.stringify(request));
+    }
+    ws.send(JSON.stringify(request));
 });
-        $(document).on('click', 'button[data-type="class_exam_start_request"]', function(){
-$(this).attr('disabled', 'disabled');
-        var request = {
+$(document).on('click', 'button[data-type="class_exam_start_request"]', function () {
+    $(this).attr('disabled', 'disabled');
+    var request = {
         type: 'class_exam_start_request',
-                to: 'self',
-                exam_id: $(this).data('id')
-        };
-        ws.send(JSON.stringify(request));
+        to: 'self',
+        exam_id: $(this).data('id')
+    };
+    ws.send(JSON.stringify(request));
 });
-        $(document).on('click', 'a[data-type="tag-user-again"]', function () {
-var request = {
-type: 'tag-user-again',
+$(document).on('click', 'a[data-type="tag-user-again"]', function () {
+    var request = {
+        type: 'tag-user-again',
         to: 'all',
         tagged_id: $('.js-example-basic-single[data-id="' + $(this).data('id') + '"]').val(),
         fid: $(this).data('id')
-        }
-ws.send(JSON.stringify(request));
-        $(".js-example-basic-single").select2("val", "");
-        $("#show-again[data-id='" + $(this).data("id") + "']").hide();
+    }
+    ws.send(JSON.stringify(request));
+    $(".js-example-basic-single").select2("val", "");
+    $("#show-again[data-id='" + $(this).data("id") + "']").hide();
 });
-        /*
-         *   KAMLESH POKIYA (KAP).
-         *   Tag studymate post.
-         */
-        $(document).on('click', 'a[data-type="tag-user-again"]', function(){
-var request = {
-type : 'tag-user-again',
-        to   : 'all',
+/*
+ *   KAMLESH POKIYA (KAP).
+ *   Tag studymate post.
+ */
+$(document).on('click', 'a[data-type="tag-user-again"]', function () {
+    var request = {
+        type: 'tag-user-again',
+        to: 'all',
         tagged_id: $('.js-example-basic-single[data-id="' + $(this).data('id') + '"]').val(),
-        fid : $(this).data('id')
-        }
-ws.send(JSON.stringify(request));
-        $(".js-example-basic-single").select2("val", "");
-        $("#show-again[data-id='" + $(this).data("id") + "']").hide();
+        fid: $(this).data('id')
+    }
+    ws.send(JSON.stringify(request));
+    $(".js-example-basic-single").select2("val", "");
+    $("#show-again[data-id='" + $(this).data("id") + "']").hide();
 });
-        /*
-         *   KAMLESH POKIYA (KAP).
-         *   Find studymate with textbox.
-         */
-        $(document).on('keyup', 'input[data-type="study_mate_search"]', function(){
+/*
+ *   KAMLESH POKIYA (KAP).
+ *   Find studymate with textbox.
+ */
+$(document).on('keyup', 'input[data-type="study_mate_search"]', function () {
 
 // if($('input[data-type="study_mate_search"]').val().length >= 2){  
-str = '<center><img src="assets/images/loading3.gif"></center>';
-        $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html(str);
-        var request = {
+    str = '<center><img src="assets/images/loading3.gif"></center>';
+    $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html(str);
+    var request = {
         type: 'study_mate_search',
-                to: 'self',
-                search_txt: $('input[data-type="study_mate_search"]').val(),
-                fid: $(this).data('id'),
-                search_type: $('.row.filter_bar ul').find('li.active').data('id')
-        }
-ws.send(JSON.stringify(request));
-        // }
+        to: 'self',
+        search_txt: $('input[data-type="study_mate_search"]').val(),
+        fid: $(this).data('id'),
+        search_type: $('.row.filter_bar ul').find('li.active').data('id')
+    }
+    ws.send(JSON.stringify(request));
+    // }
 });
-        /*
-         *   KAMLESH POKIYA (KAP).
-         *   Find studymate with tab.
-         */
-        $(document).on('click', 'li[data-type="search-type"]', function(){
+/*
+ *   KAMLESH POKIYA (KAP).
+ *   Find studymate with tab.
+ */
+$(document).on('click', 'li[data-type="search-type"]', function () {
 // if($('input[data-type="study_mate_search"]').val().length >= 2){  
-str = '<center><img src="assets/images/loading3.gif"></center>';
-        $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html(str);
-        var request = {
+    str = '<center><img src="assets/images/loading3.gif"></center>';
+    $('.search_studymate .box.general_cred .box_body #mCSB_3 #mCSB_3_container').html(str);
+    var request = {
         type: 'study_mate_search',
-                to: 'self',
-                search_txt: $('input[data-type="study_mate_search"]').val(),
-                fid: $(this).data('id'),
-                search_type: $(this).data('id')
-        }
-ws.send(JSON.stringify(request));
-        // }
+        to: 'self',
+        search_txt: $('input[data-type="study_mate_search"]').val(),
+        fid: $(this).data('id'),
+        search_type: $(this).data('id')
+    }
+    ws.send(JSON.stringify(request));
+    // }
 });
-        /*
-         *   KAMLESH POKIYA (KAP).
-         *   Find studymate with Load more.
-         */
-        $(document).on('click', 'a[data-type="load-studymate-more"]', function(){
-var request = {
-type: 'load-studymate-more',
+/*
+ *   KAMLESH POKIYA (KAP).
+ *   Find studymate with Load more.
+ */
+$(document).on('click', 'a[data-type="load-studymate-more"]', function () {
+    var request = {
+        type: 'load-studymate-more',
         to: 'self',
         search_txt: $('input[data-type="study_mate_search"]').val(),
         fid: $(this).data('id'),
         search_type: $('.row.filter_bar ul .active').data('id'),
         load_more: 'true',
         data_start: $(this).data('start')
-}
-ws.send(JSON.stringify(request));
+    }
+    ws.send(JSON.stringify(request));
 });
-        /*
-         *   KAMLESH POKIYA (KAP).
-         *   View studymate profile.
-         */
-        $(document).on('click', '#view_profile', function(){
-$('#view_profile_model div[data-type="profile_pic"]').html('<img src="uploads/' + $(this).data('profile') + '">');
-        $('#view_profile_model h3[data-type="user-name"]').html($(this).data('name'));
-        $('#view_profile_model p[data-type="course-name"]').html('<span class="fa fa-graduation-cap"></span>' + $(this).data('course'));
-        $('#view_profile_model').modal('show');
+/*
+ *   KAMLESH POKIYA (KAP).
+ *   View studymate profile.
+ */
+$(document).on('click', '#view_profile', function () {
+    $('#view_profile_model div[data-type="profile_pic"]').html('<img src="uploads/' + $(this).data('profile') + '">');
+    $('#view_profile_model h3[data-type="user-name"]').html($(this).data('name'));
+    $('#view_profile_model p[data-type="course-name"]').html('<span class="fa fa-graduation-cap"></span>' + $(this).data('course'));
+    $('#view_profile_model').modal('show');
 });
-        /* close chat window */
-        $(document).on('click', 'a[data-type="close"]', function () {
-$('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
-        $.removeCookie('active');
+/* close chat window */
+$(document).on('click', 'a[data-type="close"]', function () {
+    $('#chat_container .chat[data-id="' + $(this).data('id') + '"]').remove();
+    $.removeCookie('active');
 });
-        /*
-         *   KAMLESH POKIYA (KAP).
-         *   Find studymate with load more.
-         */
-        $(document).on('click', 'a[data-type="load-activity-more"]', function(){
-var request = {
-type : 'load-activity-more',
-        to   : 'self',
-        month : $(this).data('month')
-        }
-ws.send(JSON.stringify(request));
+/*
+ *   KAMLESH POKIYA (KAP).
+ *   Find studymate with load more.
+ */
+$(document).on('click', 'a[data-type="load-activity-more"]', function () {
+    var request = {
+        type: 'load-activity-more',
+        to: 'self',
+        month: $(this).data('month')
+    }
+    ws.send(JSON.stringify(request));
 });
