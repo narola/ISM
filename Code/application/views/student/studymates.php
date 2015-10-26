@@ -90,8 +90,8 @@
         <!--//filterbar-->
         <!--search result-->
         <h5 class="search_result_label">Search Result for</h5>
-        <div class="box general_cred">
-            <div class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark" id="search_result">
+        <div class="box general_cred" data-type="search_result">
+            <div class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark" id="search_result" >
                 <?php 
                     if(isset($find_studymates) && sizeof($find_studymates) > 0){ 
                     $i = 1;
@@ -134,7 +134,7 @@
     </div>
     <!--//search-->
      <!--suggestion-->
-    <div class="box general_cred margin_15">
+     <div class="box general_cred margin_15">
         <div class="box_header">
             <h3>Recommended Studymates</h3>
         </div>
@@ -157,7 +157,7 @@
                             <!--card-->
                             <div class="suggested_mates_card">
                                 <div class="mate_user_img">
-                                    <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                                    <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                 </div>
                                 <div class="mate_descrip">
                                     <p class="mate_name"><?php echo $value['full_name'];?></p>

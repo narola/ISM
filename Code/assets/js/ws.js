@@ -731,9 +731,9 @@ if ("WebSocket" in window)
             }
 
             if (obj.type == "load-studymate-more") {
-                $('.search_studymate .box.general_cred .box_body').append(str);
+                $('.search_studymate  div[data-type="search_result"]').append(str);
             } else {
-                $('.search_studymate .box.general_cred .box_body').html(str);
+                $('.search_studymate  div[data-type="search_result"]').html(str);
             }
         } else if(obj.type = "load-activity-more"){
             str = ''; 
@@ -1499,6 +1499,15 @@ $(document).on('click', 'a[data-type="load-activity-more"]', function () {
         type: 'load-activity-more',
         to: 'self',
         month: $(this).attr('data-month')
+    }
+    ws.send(JSON.stringify(request));
+});
+
+$(document).on('click', 'img[data-type="show-profile"]', function () {
+    var request = {
+        type: 'show-profile',
+        to: 'self',
+        user_id: $(this).attr('data-id')
     }
     ws.send(JSON.stringify(request));
 });
