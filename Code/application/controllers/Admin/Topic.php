@@ -345,7 +345,8 @@ class Topic extends ADMIN_Controller {
 												)
 											);
 
-				
+		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>0)));
+		
 		$this->data['page_title'] = 'Allocate Topic';
 		$this->template->load('admin/default','admin/topic/allocate', $this->data);
 	}
@@ -406,7 +407,7 @@ class Topic extends ADMIN_Controller {
 		$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
 		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required');
 
-		$this->data['courses'] = select(TBL_COURSES); // Fetch All Courses From Database
+		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>0))); // Fetch All Courses From Database
 		$this->data['page_title'] = 'Add New Topic'; // Set Page Title
 
 		if($this->form_validation->run() == FALSE){
@@ -538,7 +539,28 @@ class Topic extends ADMIN_Controller {
 	}
 
 	// ----------------------  AJAX FUNCTIONS --------------------------------------------------
+	
+	/*
+	* function to get the classrooms through the course.
+	*/
+	public function ajax_get_classrooms(){
+		$course_id = $this->input->post('course_id');
+		
+		$classrooms = select(TBL_CLASSROOMS,TBL_CLASSROOMS.'.id,'.TBL_CLASSROOMS.'.class_name ',
+			array('where'=>array(TBL_CLASSROOMS.'.course_id'=>$course_id))
+			);
 
+		
+		$new_str = '';
+		
+		$new_str .= '<option selected value="" disabled >Classroom</option>';
+		if(!empty($classrooms)){
+			foreach($classrooms as $classroom){
+				$new_str.='<option value="'.$classroom['id'].'">'.$classroom['class_name'].'</option>';
+			}	
+		}
+		echo $new_str;
+	}
 	/**
 	* ajax function to fetch Subjects from Classroom 
 	*/
@@ -564,6 +586,28 @@ class Topic extends ADMIN_Controller {
 		if(!empty($subjects)){
 			foreach($subjects as $subject){
 				$new_str.='<option value="'.$subject['subject_id'].'">'.$subject['subject_name'].'</option>';
+			}	
+		}
+		echo $new_str;
+	}
+	/**
+	* ajax function to fetch groups from Classroom 
+	*/
+	public function ajax_get_groups(){
+		$classroom_id = $this->input->post('classroom_id');
+		
+		$groups = select(TBL_TUTORIAL_GROUPS,TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name',
+			array('where'=>array('classroom_id'=>$classroom_id))
+				
+			);
+
+		
+		$new_str = '';
+		
+		$new_str .= '<option selected disabled >Select Group</option>';
+		if(!empty($groups)){
+			foreach($groups as $group){
+				$new_str.='<option value="'.$group['id'].'">'.$group['group_name'].'</option>';
 			}	
 		}
 		echo $new_str;
