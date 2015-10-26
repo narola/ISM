@@ -138,7 +138,7 @@ class Common extends CI_Controller {
                                array(
                                     'join'=>array(
                                                 array(
-                                                    'table'=>TBL_COURSE_SUBJECT.' c_sub',
+                                                    'table'=>TBL_CLASSROOM_SUBJECT.' c_sub',
                                                     'condition'=> 'subjects.id=c_sub.subject_id'
                                                     )
                                     )

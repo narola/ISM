@@ -18,11 +18,18 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         return;
     }
 
+  
+    
     $datas = json_decode($message, true);
-    $datas['error'] =  $datas['redirect'] = 'skip';
-   pr($datas);
+    
+    $datas['error'] = $datas['redirect'] = 'skip';
+    pr($datas);
     $data = array_merge($datas, $Server->active_hours());
     $data['reload'] = 'no';
+    
+    
+    $data = replace_invalid_chars($data);  // Reeplace '"<> to HTML code.
+        
     /* For individual chat */
     if ($data['type'] == 'studymate') {
         $responce = $Server->single_chat($clientID, $data);
@@ -98,9 +105,9 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         if (isset($data['data'])) {
             unset($data['data']);
         }
-    } else if($data['type'] == 'feed_file_share'){
+    } else if ($data['type'] == 'feed_file_share') {
         $responce = $Server->save_feed_file($Server->wsClients[$clientID][12], $data);
-    } else if($data['type'] == 'comment_file_share'){
+    } else if ($data['type'] == 'comment_file_share') {
         $responce = $Server->save_feed_comment_file($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'get_studymate_name') {
         $responce = $Server->get_studymate_name($data);
@@ -110,20 +117,23 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->save_answer($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'get_question') {
         $responce = $Server->get_question($Server->wsClients[$clientID][12], $data);
-    } else if($data['type'] == 'class_exam_start_request'){
+    } else if ($data['type'] == 'class_exam_start_request') {
         $responce = $Server->check_exam($Server->wsClients[$clientID][12], $data);
-    }else if($data['type'] == 'end_exam'){
+    } else if ($data['type'] == 'end_exam') {
         $responce = $Server->end_exam($Server->wsClients[$clientID][12], $data);
-    }else if($data['type'] == 'tag-user-again'){
-        $responce = $Server->tag_again($Server->wsClients[$clientID][12], $data);        
-    }else if($data['type'] == 'study_mate_search'){
-        $responce = $Server->studymate_search($Server->wsClients[$clientID][12], $data);        
-    }else if($data['type'] == 'load-studymate-more'){
-        $responce = $Server->studymate_search($Server->wsClients[$clientID][12], $data);        
+    } else if ($data['type'] == 'tag-user-again') {
+        $responce = $Server->tag_again($Server->wsClients[$clientID][12], $data);
+    } else if ($data['type'] == 'study_mate_search') {
+        $responce = $Server->studymate_search($Server->wsClients[$clientID][12], $data);
+    } else if ($data['type'] == 'load-studymate-more') {
+        $responce = $Server->studymate_search($Server->wsClients[$clientID][12], $data);
+    } else if ($data['type'] == 'load-activity-more') {
+        $responce = $Server->load_activity($Server->wsClients[$clientID][12], $data);
     }
 
     $check = array('feed_comment', 'like');
     if (isset($responce)) {
+       // $responce = replace_invalid_chars($responce);
         pr($responce, 1);
         if ($responce['to'] == 'self') {
             $Server->wsSend($clientID, json_encode($responce));
@@ -170,8 +180,8 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                         break;
                     }
                 }
-                 $Server->wsSend($clientID, json_encode($responce));
-            }else if ($responce['type'] == 'tag-user-again') {
+                $Server->wsSend($clientID, json_encode($responce));
+            } else if ($responce['type'] == 'tag-user-again') {
                 foreach ($Server->wsClients as $id => $client) {
                     if (in_array($Server->wsClients[$id][12], $responce['tagged_id'])) {
                         $Server->wsSend($id, json_encode($responce));

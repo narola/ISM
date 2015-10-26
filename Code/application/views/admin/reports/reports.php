@@ -110,7 +110,8 @@
 <!-- Include Date Range Picker -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
     <script type="text/javascript">
-   
+   get_quest_stats();
+   $("#date_range").change(function(){  get_quest_stats(); });
 $(function() {
     $('input[name="daterange"]').daterangepicker();
 });
@@ -126,14 +127,15 @@ function get_classes(course_id){
               $('#topic_id').val('');
            }
         });
-
+}
+function get_quest_stats(){
         var date_range = $("#date_range").val();
 
         $.ajax({
            url:'<?php echo base_url()."admin/report/get_question_stats"; ?>',
            type:'POST',
            dataType:'JSON',
-           data:{course_id:course_id, date_range:date_range},
+           data:{date_range:date_range},
            success:function(response){
               console.log(response);
               
@@ -157,7 +159,7 @@ function get_classes(course_id){
                     }
                 },
                 legend: {
-                    enabled: false
+                    enabled: true
                 },
                 plotOptions: {
                     series: {
@@ -175,7 +177,7 @@ function get_classes(course_id){
                 },
         
                 series: [{
-                    name: "Classes",
+                    name: "Courses",
                     colorByPoint: true,
                     data: response
                 }]

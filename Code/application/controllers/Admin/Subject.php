@@ -141,7 +141,7 @@ class Subject extends ADMIN_Controller {
                 "is_delete" => 0
             );
 
-            insert(TBL_COURSE_SUBJECT, $data_cs);
+            insert(TBL_CLASSROOM_SUBJECT, $data_cs);
 
             $path = "uploads/subjects";
 
@@ -191,9 +191,9 @@ class Subject extends ADMIN_Controller {
         $this->data['subject'] = select(TBL_SUBJECTS, TBL_SUBJECTS . '.id,'
                 . TBL_SUBJECTS . '.subject_name,'
                 . TBL_SUBJECTS . '.subject_image,'
-                . TBL_COURSE_SUBJECT . '.id as cs_id,'
-                . TBL_COURSE_SUBJECT . '.subject_id,'
-                . TBL_COURSE_SUBJECT . '.classroom_id,'
+                . TBL_CLASSROOM_SUBJECT . '.id as cs_id,'
+                . TBL_CLASSROOM_SUBJECT . '.subject_id,'
+                . TBL_CLASSROOM_SUBJECT . '.classroom_id,'
                 . TBL_CLASSROOMS . '.class_name,'
                 . TBL_CLASSROOMS . '.course_id,'
                 . TBL_COURSES . '.id,'
@@ -202,12 +202,12 @@ class Subject extends ADMIN_Controller {
             'single' => TRUE,
             'join' => array(
                 array(
-                    'table' => TBL_COURSE_SUBJECT,
-                    'condition' => TBL_COURSE_SUBJECT . '.subject_id = ' . TBL_SUBJECTS . '.id'
+                    'table' => TBL_CLASSROOM_SUBJECT,
+                    'condition' => TBL_CLASSROOM_SUBJECT . '.subject_id = ' . TBL_SUBJECTS . '.id'
                 ),
                 array(
                     'table' => TBL_CLASSROOMS,
-                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_COURSE_SUBJECT . '.classroom_id'
+                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_CLASSROOM_SUBJECT . '.classroom_id'
                 ),
                 array(
                     'table' => TBL_COURSES,
@@ -245,7 +245,7 @@ class Subject extends ADMIN_Controller {
             );
 
             $cs_id = $this->input->post("cs_id");
-            update(TBL_COURSE_SUBJECT, $cs_id, $data_cs); // Update data for course subject
+            update(TBL_CLASSROOM_SUBJECT, $cs_id, $data_cs); // Update data for course subject
 
             $path = "uploads/subjects/";
             if (!empty($_FILES['subject_image']['name'])) {

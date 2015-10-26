@@ -910,7 +910,7 @@ textarea.post_input{
 	top:0;
 	left:0;
 	padding:15px;
-	font-size: 15px;
+	font-size: 14px;
 }
 .carousel-indicators li, .carousel-indicators .active{
 	border:none;
@@ -1561,7 +1561,7 @@ ul.exams_holder li a:after{
 	position: absolute;
     margin: 0;
     transform: rotate(-90deg);
-    top: 510px;
+    top: 450px;
     left: -10px;
 }
 ul.tut_weekdays {
@@ -1959,7 +1959,7 @@ ul.tut_weekdays {
     width: 154px;
     border-radius: 50%;
     margin: 0px auto;
-    left: 25px;
+    left: 27px;
     top: 3px;
 }
 .item_chart:after{
@@ -1970,13 +1970,13 @@ ul.tut_weekdays {
     width: 154px;
     border-radius: 50%;
     margin: 0px auto;
-    left: 25px;
+    left: 27px;
     top: 3px;
 }
 .item_chart h2 {
 	font-family:Arial, Helvetica, sans-serif;
     position: absolute;
-    margin: 55px auto;
+    margin: 65px auto;
     width: 100%;
     font-size: 30px;
     font-weight: 600;
@@ -2244,6 +2244,7 @@ ul.tut_weekdays {
     color: #333;
     border: 1px solid rgba(27,196,163,0.5);
 	margin-right: 5px;
+	display: inline-block;
 }
 .more_tagged, .more_tagged:hover{
 	color:#1bc4a3;
@@ -3264,11 +3265,11 @@ ul.ques_numbers {
 	border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 .answers .ques{
-	padding-bottom: 10px;
-    border-bottom: 1px solid rgba(0,0,0,0.07);
+	
     font-weight: 500;
-    margin-bottom: 12px;
+   
 	font-size:16px;
+   
 }
 .answers p {
     font-size: 14px;
@@ -3317,7 +3318,7 @@ ul.ques_numbers {
 	right:28px;
 }
 .exams_wrapper .box_header{
-	height:100px;
+	height:96px;
 	/*background-size:cover;
 	background-position:center;*/
 }
@@ -3609,4 +3610,51 @@ ul.ques_numbers {
 }
 .banner_text h3:last-child{
 	font-size:15px;
+}
+.of {
+    position: relative;
+}
+.of:before{
+	content: "";
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    border: 2px solid #333;
+    position: absolute;
+    left: 10px;
+    top: 45%;
+}
+.test_finished .item_chart h2{
+    margin: 55px auto;
+}
+.form-inline .form-control{
+    padding-right: 44px;
+}
+.form-inline .form-group{
+	margin-right:5px;
+}
+.ques_num {
+    position: relative;
+}
+a.expand_ques {
+    font-size: 24px;
+    color: #666;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    position: absolute;
+    right: 15px;
+    top: 3px;
+	z-index:3;
+}
+a.expand_ques + .row{
+	z-index:2;
+}
+.q_div{
+	padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+	margin-bottom: 12px;
+	height: 115px;
+    overflow: hidden;
 }

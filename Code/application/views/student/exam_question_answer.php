@@ -1,7 +1,7 @@
-<div class="row">
+<div class="">
         	
             <!--main-->
-            <div class="col-sm-7 main main_wide_2">
+            <div class="col-sm-7 main main_wide_2 mCustomScrollbar" data-mcs-theme="minimal-dark">
             	<!--breadcrumb-->
                 <div class="row page_header">
                 	<div class="col-sm-12">
@@ -13,7 +13,7 @@
                 </div>
                 <!--//breadcrumb-->
                 <!--question-->
-                <div class="row">
+                <div class="">
                 	<div class="col-sm-12">
                     	<div class="box question_box">
                         	<div class="box_header">
@@ -126,7 +126,7 @@
                                         $data_cls = '';
                                     }
                                 ?>
-                                <li data-class = "<?php echo $data_cls; ?>" class="<?php echo $cls; ?>" data-id="<?php echo $value; ?>"><a data-no="<?php echo $key+1; ?>" data-type="get_question" href="javascript:void(0)" data-id="<?php echo $value; ?>"><span><?php echo $key+1; ?></span></a></li>
+                                <li data-class = "<?php echo $data_cls; ?>" class="<?php echo $cls; ?>" data-id="<?php echo $value; ?>"><a data-change="yes" data-no="<?php echo $key+1; ?>" data-type="get_question" href="javascript:void(0)" data-id="<?php echo $value; ?>"><span><?php echo $key+1; ?></span></a></li>
                                 <?php
                             } ?>                            
 
