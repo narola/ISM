@@ -191,6 +191,7 @@ class Course extends ADMIN_Controller {
 		if($this->form_validation->run() == FALSE){
             $this->template->load('admin/default','admin/course/update_course',$this->data);			
 		}else{            
+            
             $data=array(
 				 "course_name"=>$this->input->post("course_name"),				
 				 "course_nickname"=>$this->input->post("course_nickname"),
@@ -203,6 +204,7 @@ class Course extends ADMIN_Controller {
 				 "modified_date"=>date('Y-m-d H:i:s'),
 				 "is_delete"=>0				 				
 			);	
+			
 			update(TBL_COURSES,$id,$data);	// Update data using common_model.php and cms_helper.php
 			$this->session->set_flashdata('success', 'Record is Successfully updated.');
 			redirect('admin/course/lists');
