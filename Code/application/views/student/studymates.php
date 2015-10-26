@@ -34,7 +34,7 @@
                     foreach ($my_studymates as $key => $value) {
                 ?>
                     <!--item1-->
-                    <div class="study_mate ol" data-id="<?php echo $value['user_id'];?>">
+                    <div class="study_mate of" data-id="<?php echo $value['user_id'];?>">
                         <div class="col-lg-9 col-md-8 col-sm-7">
                             <div class="mate_user_img">
                                 <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
