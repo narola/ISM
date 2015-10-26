@@ -2677,6 +2677,14 @@ class PHPWebSocket {
             $data['result']['my_comment'][$i] = $rows;
             $i++ ;
         }
+        
+        $query = "SELECT `post`.`feed_text`, (select count(*) from feed_like where feed_id = post.id) as totlike, (select count(*) from feed_comment where feed_id = post.id) as totcomment, `post`.`created_date` FROM `feeds` `post` WHERE `post`.`feed_by` = '138' AND date_format(post.created_date,'%m') IN($m) ORDER BY `post`.`created_date` DESC";
+        $row = mysqli_query($link,$query);
+        $i = 0;
+        while($rows = mysqli_fetch_assoc($row)){
+            $data['result']['my_post'][$i] = $rows;
+            $i++ ;
+        }
         return $data;
     }
 }
