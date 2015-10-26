@@ -152,7 +152,7 @@ class Topic extends ADMIN_Controller {
 
 		$allocated_group_ids = array_column($allocated_groups, 'group_id');
 		
-       // p($allocated_group_ids);
+       
 		$where  = array('where'=> array(TBL_TUTORIAL_GROUPS.'.is_completed'=>1,
 					TBL_TUTORIAL_GROUPS.'.group_type'=>'tutorial group',
 				)) ;
@@ -167,8 +167,6 @@ class Topic extends ADMIN_Controller {
 												TBL_COURSES.'.id as course_id,'.TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name',
 												$where,
 												array(
-													//'limit'=>$config['per_page'],
-													//'offset'=>$offset,
 													'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
 													'join' =>  array(
 												    			array(
@@ -192,11 +190,15 @@ class Topic extends ADMIN_Controller {
 												    				'table' => TBL_SCHOOLS,
 												    				'condition' => TBL_SCHOOLS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.school_id',
 												    				),
+												    			array(
+												    				'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
+												    				'condition' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.group_id = '.TBL_TUTORIAL_GROUPS.'.id',
+												    				),
 												    			)
 													)
 												);
 		
-		// p($unallocated_groups);
+		
 		$this->data['groups'] = $unallocated_groups;
 
 
@@ -249,16 +251,16 @@ class Topic extends ADMIN_Controller {
 		$last_week = $week-1;
 		$where  = array('where' => array('tut_topic.week_no' => $last_week,
 			'YEAR(tut_topic.created_date)' => $year
-			),
-		'where_in'=>array('tut_topic.group_id'=> $unallocated_group_ids)
-		);
+			));
+		if(!empty($allocated_group_ids)){
+		$where['where_in'] = array('tut_topic.group_id'=> $allocated_group_ids);
+		}
 		
 		$last_week_groups = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' tut_topic',
 			'tut_topic.group_id,tut_topic.topic_id',
 			$where
 			);
-		// p($last_week_groups);
-	
+		
 			if(in_array($unallocated, array_column($last_week_groups, 'group_id'))){
 
 				$key = array_search($unallocated, array_column($last_week_groups, 'group_id'));
@@ -269,13 +271,7 @@ class Topic extends ADMIN_Controller {
 				'tut_topic.subject_id,tut_topic.classroom_id',
 					$where, array('single'=>true)
 				);
-				/*$where = array('where'=>array('tut_course.subject_id'=>$subject['subject_id'],
-					));
-				$classroom = select(TBL_CLASSROOM_SUBJECT.' tut_course',
-				'tut_course.classroom_id',
-					$where, array('single'=>true)
-				);
-				p($classroom);*/
+				
 
 				$where = array('where'=>array('tut_course.classroom_id'=>$subject['classroom_id']));
 
@@ -291,7 +287,7 @@ class Topic extends ADMIN_Controller {
 				'tut_course.subject_id',
 					$where, $options
 				);
-				// p($random_subject);
+				
 
 				$random_subject_id = $random_subject['subject_id'];
 
@@ -349,7 +345,7 @@ class Topic extends ADMIN_Controller {
 												)
 											);
 
-				// p($this->data['recommended_topics'],true);
+				
 		$this->data['page_title'] = 'Allocate Topic';
 		$this->template->load('admin/default','admin/topic/allocate', $this->data);
 	}
