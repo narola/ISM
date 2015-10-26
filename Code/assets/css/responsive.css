@@ -14,9 +14,9 @@
 	.box_body .age{
 		width: 26.5%;
 	}
-	.three_tabs > li {
+	/*.three_tabs > li {
 		padding: 10px;
-	}
+	}*/
 	.inner_pages_admin .three_tabs > li {
     	padding: 10px 29px;
 	}
@@ -96,6 +96,17 @@
 	.filter.group_report_filter .form-group.data_range {
 	    width: 40%;
 	}
+	.stm .box_header{
+		padding: 16px 15px;
+	}
+	.suggested_mates_holder .btn_blue{
+		font-size:12px;
+		padding:6px;
+	}
+	.mate_descrip .btn_green, .mate_descrip .btn_black_normal{
+		font-size: 12px;
+		padding: 3px;
+	}
 }
 @media (max-width:1280px){
 	.login_background{
@@ -140,10 +151,7 @@
 	.suggested_mates_card{
 		 padding: 22px 16px;
 	}
-	.suggested_mates_holder .btn_blue{
-		font-size:12px;
-		padding:6px;
-	}
+	
 	.stm_item .stm_user_img{
 		height:40px;
 		width:40px;
@@ -152,9 +160,7 @@
 	.stm_item.online p, .stm_item.offline p{
 		margin:10px 0;
 	}
-	.stm .box_header{
-		padding: 16px 15px;
-	}
+	
 	.sidebar_right_admin .stm .box_header {
     	padding: 7px 15px;
 	}
@@ -267,6 +273,11 @@
 	.filter.report_filter .form-group {
 		width: 15.7%;
 	}
+	
+	.score_points {
+		padding-left: 25%;
+		width: 100%;
+	}
 }	
 @media (max-width:1080px){
 	.login_background {
@@ -279,8 +290,14 @@
 		height:90px;
 		width:90px;
 	}	
-	.three_tabs > li{
+	/*.three_tabs > li{
 		padding: 10px 5px;
+	}*/
+	.three_tabs > li{
+		width:48%;
+	}
+	.personal_menu {
+    	padding-bottom: 166px;
 	}
 	.personal_menu > li > a{
 		font-size:12px;
@@ -309,7 +326,7 @@
 	.score_descrip{width:70%;}
 	.score_points {
 		padding-left: 36%;
-		width: 100%;
+		
 	}
 	.stm_list {
     	max-height: 305px;
@@ -706,6 +723,14 @@
 	.group_member_report > div:nth-child(odd) {
     	padding: 15px 0 0 0;
 	}
+	.three_tabs > li {
+    	width: 100%;
+	}
+	.score_points {
+		float: left;
+		padding-left: 10px;
+		width: 25%;
+	}
 }
 
 @media (max-width:800px){
@@ -746,6 +771,7 @@
 	}
 	.score_points {
     	padding-left:0;
+		width:100%;
 	}
 	.score_img {
     	width: 40%;
