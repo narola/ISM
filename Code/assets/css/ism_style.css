@@ -1976,7 +1976,7 @@ ul.tut_weekdays {
 .item_chart h2 {
 	font-family:Arial, Helvetica, sans-serif;
     position: absolute;
-    margin: 55px auto;
+    margin: 65px auto;
     width: 100%;
     font-size: 30px;
     font-weight: 600;
@@ -3623,4 +3623,7 @@ ul.ques_numbers {
     position: absolute;
     left: 10px;
     top: 45%;
+}
+.test_finished .item_chart h2{
+    margin: 55px auto;
 }
