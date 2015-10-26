@@ -3,32 +3,36 @@ package com.ism.author.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.author.AuthorHostActivity;
-import com.ism.author.Utility.Debug;
-import com.ism.author.asynctask.API_METHOD_NAME;
-import com.ism.author.asynctask.Urls;
-import com.ism.author.interfaces.OnApiResponseListener;
+import com.ism.author.Utility.Utils;
+import com.ism.author.adapter.PostFeedsAdapter;
+import com.ism.author.dialog.ViewAllCommentsDialog;
+import com.ism.author.login.Urls;
+import com.ism.author.model.AddCommentRequest;
+import com.ism.author.model.GetAllFeedsRequest;
+import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.WebserviceWrapper;
 import com.ism.interfaces.FragmentListener;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
+import com.ism.utility.Debug;
 
 /*
 * This is the homefragment containg the newsfeed.
 */
-public class HomeFragment extends Fragment implements OnApiResponseListener {
+
+//WebserviceWrapper.WebserviceResponse,
+public class HomeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 
     private static final String TAG = HomeFragment.class.getSimpleName();
@@ -48,9 +52,14 @@ public class HomeFragment extends Fragment implements OnApiResponseListener {
     ImageView imgAddEmoticonsInPost, imgAttachFileInPost, imgAttachImageInPost, imgTagInPost;
     EditText etWritePost;
     TextView txtAddPost;
-    ListView lvPostFeeds;
+//    ListView lvPostFeeds;
+//    PostFeedsListAdapter postFeedsAdapter;
+
+    RecyclerView rvPostFeeds;
+    PostFeedsAdapter postFeedsAdapter;
 
     OnClickListener onClickAttachFile, onClickAddPost;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +80,8 @@ public class HomeFragment extends Fragment implements OnApiResponseListener {
         etWritePost = (EditText) view.findViewById(R.id.et_writePost);
         txtAddPost = (TextView) view.findViewById(R.id.txt_add_post);
 
-        lvPostFeeds = (ListView) view.findViewById(R.id.lv_post_feeds);
+//        lvPostFeeds = (ListView) view.findViewById(R.id.lv_post_feeds);
+        rvPostFeeds = (RecyclerView) view.findViewById(R.id.rv_post_feeds);
 
 
         onClickAttachFile = new View.OnClickListener() {
@@ -99,28 +109,23 @@ public class HomeFragment extends Fragment implements OnApiResponseListener {
             }
         };
 
-//        new GetAllFeeds(getActivity(), (OnApiResponseListener) this).execute();
 
+        if (Utils.isInternetConnected(getActivity())) {
 
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("user_id", "141");
+            getAllPostFeeds();
 
-        /*JsonObjectRequest req = new JsonObjectRequest(Urls.getAllFeeds, new JSONObject(params),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            VolleyLog.v("Response:%n %s", response.toString(4));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
-            }
-        });*/
+        } else {
+
+            Utils.showToast(getString(R.string.strnetissue), getActivity());
+
+        }
+
+        // Create adapter passing in the sample user data
+        postFeedsAdapter = new PostFeedsAdapter(getActivity(), viewAllCommetsListener, addCommentListener);
+        // Attach the adapter to the recyclerview to populate items
+        rvPostFeeds.setAdapter(postFeedsAdapter);
+        // Set layout manager to position the items
+        rvPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
     }
@@ -176,15 +181,93 @@ public class HomeFragment extends Fragment implements OnApiResponseListener {
     }
 
 
+    private void getAllPostFeeds() {
+
+        try {
+            GetAllFeedsRequest getAllFeedsRequest = new GetAllFeedsRequest();
+            getAllFeedsRequest.setUser_id("141");
+
+            new WebserviceWrapper(getActivity(), getAllFeedsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                    .execute(WebserviceWrapper.GETALLFEEDS);
+
+        } catch (Exception e) {
+            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+        }
+    }
+
+
+    private void addComment() {
+
+
+        try {
+
+            AddCommentRequest addCommentRequest = new AddCommentRequest();
+            addCommentRequest.setFeed_id("");
+            addCommentRequest.setComment_by("");
+            addCommentRequest.setComment("");
+
+
+            new WebserviceWrapper(getActivity(), addCommentRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                    .execute(WebserviceWrapper.ADDCOMMENT);
+
+        } catch (Exception e) {
+            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+        }
+
+    }
+
+    ResponseObject responseObj;
+
     @Override
-    public void onResponseReceived(API_METHOD_NAME api_method_name, String response) {
+    public void onResponse(int apiMethodName, Object object, Exception error) {
+
+        try {
+            responseObj = (ResponseObject) object;
+            if (responseObj.getStatus().equals(Urls.STATUS_SUCCESS) && responseObj != null) {
 
 
-        if (api_method_name == API_METHOD_NAME.get_all_feeds) {
+                Debug.e(TAG, "The response in fragment is" + (responseObj.getData()).get(0).getUsername());
+
+                if (apiMethodName == WebserviceWrapper.GETALLFEEDS) {
+                    postFeedsAdapter.addAll(responseObj.getData());
+                }
+
+            } else {
+
+                Toast.makeText(getActivity(), responseObj.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+
+            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+
+        }
+    }
+
+
+    View.OnClickListener viewAllCommetsListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+
+            int position = (Integer) v.getTag();
+
+            ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseObj.getData().get(position).getCommentList());
+            viewAllCommentsDialog.show();
 
 
         }
+    };
+
+    View.OnClickListener addCommentListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            int position = (Integer) v.getTag();
+            addComment();
 
 
-    }
+        }
+    };
+
 }

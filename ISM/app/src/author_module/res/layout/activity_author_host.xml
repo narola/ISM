@@ -32,7 +32,7 @@
             android:background="@drawable/bg_right_controller_top_button"
             android:onClick="openMainContainerFragment"
             android:scaleType="centerInside"
-            android:src="@drawable/image_home_teacher" />
+            android:src="@drawable/image_home" />
 
 
         <TextView
@@ -166,7 +166,7 @@
                 android:background="@drawable/bg_left_controller_top_button"
                 android:onClick="searchFeeds"
                 android:scaleType="centerInside"
-                android:src="@drawable/image_search_teacher" />
+                android:src="@drawable/image_search" />
 
             <EditText
                 android:id="@+id/et_search"
@@ -192,7 +192,7 @@
             android:background="@drawable/bg_left_controller_top_button"
             android:onClick="openRightContainerFragment"
             android:scaleType="centerInside"
-            android:src="@drawable/image_notes_teacher" />
+            android:src="@drawable/image_notes" />
 
         <ImageView
             android:id="@+id/img_author_profile"
@@ -212,7 +212,7 @@
             android:background="@drawable/bg_left_controller_top_button"
             android:onClick="openRightContainerFragment"
             android:scaleType="centerInside"
-            android:src="@drawable/image_chat_teacher" />
+            android:src="@drawable/image_chat" />
 
         <ImageView
             android:id="@+id/img_chat"
@@ -221,7 +221,7 @@
             android:layout_toRightOf="@+id/img_high_score"
             android:background="@drawable/bg_left_controller_top_button"
             android:scaleType="centerInside"
-            android:src="@drawable/image_chat_teacher"
+            android:src="@drawable/image_chat"
             android:visibility="gone" />
 
     </RelativeLayout>

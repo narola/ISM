@@ -8,7 +8,7 @@ import android.content.Intent;
  */
 public class Global {
 
-	static  Context context;
+    static Context context;
 
     public Global(Context context) {
         this.context = context;
@@ -20,10 +20,12 @@ public class Global {
 
     public static Boolean isRemember;
 
-    public static void myIntent(Context context, Class classToOpen){
-        Intent intent=new Intent(context, classToOpen);
+    public static void myIntent(Context context, Class classToOpen) {
+        Intent intent = new Intent(context, classToOpen);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
+
+
 
 }

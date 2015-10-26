@@ -5,4 +5,10 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+    <style name="DialogOpenAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_appear</item>
+        <item name="android:windowExitAnimation">@anim/popup_disappear</item>
+    </style>
+
 </resources>

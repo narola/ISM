@@ -2,18 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/d15dp"
+    android:background="@drawable/news_feed_post_box"
     android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/d15dp"
-        android:layout_marginRight="@dimen/d15dp"
+        android:layout_margin="@dimen/d15dp"
         android:orientation="horizontal">
 
 
-        <com.ism.helper.CircleImageView
+        <com.ism.author.helper.CircleImageView
             android:id="@+id/img_dp_post_creator"
             android:layout_width="@dimen/dp_post_creater_image_width_height"
             android:layout_height="@dimen/dp_post_creater_image_width_height"
@@ -124,22 +125,45 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></LinearLayout>
-
-
-    <EditText
-        android:id="@+id/et_writeComment"
+        android:id="@+id/ll_comment_inflater"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/d10dp"
-        android:layout_marginLeft="@dimen/d15dp"
-        android:layout_marginRight="@dimen/d15dp"
-        android:layout_marginTop="@dimen/d10dp"
-        android:background="@drawable/selector"
-        android:hint="@string/strwriteyourcommenthere"
-        android:padding="15sp"
-        android:textColorHint="@color/color_text_hint" />
+        android:orientation="vertical"></LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_writeComment"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d70dp"
+            android:layout_marginBottom="@dimen/d10dp"
+            android:layout_marginLeft="@dimen/d15dp"
+            android:layout_marginRight="@dimen/d15dp"
+            android:layout_marginTop="@dimen/d10dp"
+            android:background="@drawable/selector"
+            android:hint="@string/strwriteyourcommenthere"
+            android:padding="15sp"
+            android:textColorHint="@color/color_text_hint" />
+
+        <TextView
+            android:id="@+id/txt_add_comment"
+            android:layout_width="@dimen/d70dp"
+            android:layout_height="@dimen/d60dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/d20dp"
+            android:background="@color/color_dark_gray"
+            android:gravity="center"
+            android:text="@string/strpost"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d20dp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
 
 
 </LinearLayout>

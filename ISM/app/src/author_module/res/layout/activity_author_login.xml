@@ -24,6 +24,7 @@
             android:src="@drawable/ismtitle" />
 
         <EditText
+            android:id="@+id/et_userid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/d50dp"
@@ -37,7 +38,7 @@
             android:textColor="@color/color_white"
             android:textColorHint="@color/color_white"
             android:textSize="@dimen/d20dp"
-            android:id="@+id/et_userid" />
+             />
 
         <EditText
             android:layout_width="match_parent"
@@ -47,7 +48,7 @@
             android:layout_marginTop="@dimen/d20dp"
             android:background="@drawable/background_edittext"
             android:gravity="center"
-            android:hint="@string/password"
+            android:hint="@string/strenterpassword"
             android:singleLine="true"
             android:inputType="textPassword"
             android:textColor="@color/color_white"
