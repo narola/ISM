@@ -72,10 +72,14 @@ class My_activities extends ISM_Controller {
 						array(
 							'table' => TBL_USER_PROFILE_PICTURE.' p',
 							'condition' => 'u.id = p.user_id'
+						),
+						array(
+							'table' => TBL_COURSES.' c',
+							'condition' => 'c.id = in.course_id'
 						)
 					),
 				);
-		$select='u.full_name,sm.mate_of ,sm2.mate_id,if(sm.created_date is null,sm2.created_date,sm.created_date) as created_date,s.school_name,p.profile_link';
+		$select='u.full_name,sm.mate_of ,sm2.mate_id,if(sm.created_date is null,sm2.created_date,sm.created_date) as created_date,s.school_name,p.profile_link,c.course_name';
 		$data['my_activities']['studymates'] = select(TBL_USERS.' u',$select,$where,$option);
 
 		/*--------Get my like feed----------*/
@@ -96,7 +100,7 @@ class My_activities extends ISM_Controller {
 					);
 		$select = 'upost.full_name as post_username,like_feed.feed_text,like.created_date,(select count(*) from feed_like where feed_id = like_feed.id) as totlike,(select count(*) from feed_comment where feed_id = like_feed.id) as totcomment';
 		$data['my_activities']['like'] = select(TBL_FEED_LIKE.' like',$select,$where,$options);		
-
+		
 		/*-------Get my comment----------*/
 		$where = array('where' => array('comment.comment_by'=>$user_id),'where_in' => array('date_format(comment.created_date,"%m")' => $month));
 		$options = array('join' =>
@@ -120,14 +124,15 @@ class My_activities extends ISM_Controller {
 					);
 		$select = 'u.full_name,u.id,comment_feed.feed_text,p.profile_link,comment.comment,comment.created_date,(select count(*) from feed_like where feed_id = comment_feed.id) as totlike,(select count(*) from feed_comment where feed_id = comment_feed.id) as totcomment,comment_feed.id';
 		$data['my_activities']['comment'] = select(TBL_FEED_COMMENT.' comment',$select,$where,$options);
-
+		// qry(true);
 		/*-------Get my post--------*/
 		$where = array('where' => array('post.feed_by'=>$user_id),'where_in' => array('date_format(post.created_date,"%m")' => $month));
 		$options = array('order_by' => 'post.created_date DESC');
 		$select = 'post.feed_text,(select count(*) from feed_like where feed_id = post.id) as totlike,(select count(*) from feed_comment where feed_id = post.id) as totcomment,post.created_date';
 		$data['my_activities']['post'] = select(TBL_FEEDS.' post',$select,$where,$options);
-		
+
 		$data['my_month'] = $date_array;
+		
 		$this->template->load('student/default','student/my_activities',$data);
 	}
 }

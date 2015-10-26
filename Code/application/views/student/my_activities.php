@@ -53,8 +53,7 @@
                                             </div>
                                             <h4><?php echo $studymate_value['full_name'];?></h4>
                                             <p><?php echo $studymate_value['school_name'];?></p>
-                                            <p>Live in Ghana</p>
-                                            <a href="#">Following 34 Authers</a>
+                                            <p class="txt_grey"><?php echo $studymate_value['course_name'];?></p>
                                         </div>
                                     </div>   
                                 <?php
@@ -184,11 +183,11 @@
             </div>
             <div class="clearfix"></div>
             <div class="text-center">
-                <form action="" method="post">
+                <!-- <form action="" method="post"> -->
                     <input type="hidden" name="load_more" value="<?php echo isset($value)?$value:'';?>"> 
-                    <!-- <a href="#" class="search_result_label">View More</a> -->
+                    <a href="javascript:void(0);" data-month="<?php echo isset($value)?$value:'';?>" class="search_result_label" data-type="load-activity-more">View More</a>
                     <input type="submit" class="btn btn_green no-margin" value="View More">
-                </form>
+                <!-- </form> -->
             </div>
 
         </div>
