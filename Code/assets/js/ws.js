@@ -737,8 +737,111 @@ if ("WebSocket" in window)
             } else {
                 $('.search_studymate .box.general_cred .box_body').html(str);
             }
-
-
+        } else if(obj.type = "load-activity-more"){
+            str = ''; 
+            if(obj.result.my_like.length > 0 || obj.result.my_comment.length > 0 || obj.result.my_studymate.length > 0 || obj.result.my_post.length > 0 || obj.result.my_topic.length > 0)
+            {
+                str += '<div class="divide_discussion">';
+                str += '<hr><h4>'+obj.format_month+'</h4>';
+                str += '</div>';
+                t = 0; 
+                $.each(obj.result.my_topic, function(index, list) {
+                    str += '<div class="topic_allocated">';
+                    if(t == 0) {
+                        str += '<h4 class="activity_heading">Topic Allocated</h4>';
+                    }
+                    str += '<div class="topic_div">';
+                    str += '<h4>'+list.topic_name+'</h4>';
+                    str += '<div>';
+                    str += '<div><strong>Discussion</strong><p>29 Comments</p></div>';
+                    str += '<div><strong>Examination - Quiz</strong><p>Score :  215</p></div>';
+                    str += '</div>';
+                    str += '<div class="clearfix"></div>';
+                    str += '</div>';
+                    str += '</div>';
+                    t++;
+                });
+                s = 0;
+                $.each(obj.result.my_studymate, function(index, list) {
+                    str += '<div class="studymate_with">';
+                    if(s == 0) {
+                        str += '<h4 class="activity_heading">Became studymate with</h4>';
+                    }
+                    str += '<span class="date">'+list.created_date+'</span>';
+                    str += '<div class="study_mate">';
+                    str += '<div class="mate_user_img">';
+                    str += '<img src="uploads/'+list.profile_link+'" class="mCS_img_loaded" onerror="this.src=\'assets/images/avatar.png\'">';
+                    str += '</div>';
+                    str += '<h4>'+list.full_name+'</h4>';
+                    str += '<p>'+list.school_name+'</p>';
+                    str += '<p class="txt_grey">'+list.course_name+'</p>';
+                    str += '</div>';
+                    str += '</div>';
+                    s++;
+                });
+                $.each(obj.result.my_like, function(index, list) {
+                    str += '<div class="status_like">';
+                    str += '<h4 class="activity_heading">Liked status of <span class="txt_green">'+list.post_username+'</span></h4>';
+                    str += '<div class="feed_text">                                               ';
+                    str += '<p>'+list.feed_text+'</p>';
+                    str += '</div>';
+                    str += '<div class="clearfix"></div>';
+                    str += '</div>';
+                });
+                // display my comment
+                $.each(obj.result.my_comment, function(index, list) {
+                str += '<div class="commented_on">';
+                str += '<h4 class="activity_heading">Commented on</h4>';
+                str += '<div class="feeds">';
+                str += '<div class="user_small_img">';
+                str += '<img src="uploads/'+list.profile_link+'">';
+                str += '</div>';
+                str += '<div class="feed_text">';
+                str += '<h4>'+list.full_name+'</h4>';
+                str += '<span class="date">'+list.created_date+'</span>'
+                str += '<div class="clearfix"></div>';
+                str += '<p>'+list.feed_text+'</p>';
+//                str += '<div class="shared_images">';
+//                str += '<div><img src="images/shared1.jpg"></div>';
+//                str += '<div><img src="images/shared2.jpg"></div>';
+//                str += '</div>';
+                str += '<div class="clearfix"></div>';
+                str += '<a href="javascript:void(0);" data-type="view-all-comment-activities" data-id="'+list.id+'">View All</a>';
+                str += '</div>';
+                str += '<div class="clearfix"></div>';
+                str += '<div class="comment" data-id="'+list.id+'">';
+                str += '<div class="user_small_img user_comment">';
+                str += '<img src="uploads/'+obj.profile_link+'">';
+                str += '</div>';
+                str += '<div class="notification_txt">';
+                str += '<p><a href="javascript:void(0);" class="noti_username">'+obj.full_name+'</a>&nbsp;'+list.comment+'</p>';
+                str += '<span class="noti_time">1 Day</span>';
+                str += '</div>';
+                str += '<div class="clearfix"></div>';
+                str += '</div>';
+                str += '</div>';
+                str += '</div>';
+            });
+                p = 0;
+                $.each(obj.result.my_post, function(index, list) {
+                str += '<div class="status_like">';
+                if(p==0){
+                str += '<h4 class="activity_heading">Status updated</h4>';
+                }
+                str += '<span class="date">'+list.created_date+'</span>';
+                str += '<div class="feed_text">                                               ';
+                str += '<p>'+list.feed_text+'</p>';
+                str += '</div>';
+                str += '</div>';
+                p++;
+            });
+                $('div[data-type="activity-main"] div[data-type="activity-sub-main"] div[data-type="activity"] div[data-type="activity-body"] div[data-type="activity-sub-body"]').append(str);
+                $('a[data-type="load-activity-more"]').attr('data-month',obj.new_month);
+           }
+           else{
+                $('div[data-type="no-more"]').html('<lable class="txt_grey txt_red">No more activities</label>');
+                $('a[data-type="load-activity-more"]').attr('value','No more activities');
+           }
         } else {
 
             alert('Message Not Catched!!');
@@ -1397,7 +1500,7 @@ $(document).on('click', 'a[data-type="load-activity-more"]', function () {
     var request = {
         type: 'load-activity-more',
         to: 'self',
-        month: $(this).data('month')
+        month: $(this).attr('data-month')
     }
     ws.send(JSON.stringify(request));
 });

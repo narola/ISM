@@ -20,6 +20,7 @@ class Subject extends ADMIN_Controller {
         $q = $this->input->get('q');
         $str = '';
         $where['where'][TBL_SUBJECTS . '.is_delete'] = 0;
+
         if (!empty($_GET['q'])) {
 
             if (!empty($_GET['q'])) {
@@ -39,7 +40,9 @@ class Subject extends ADMIN_Controller {
             }
             $config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
             $offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'	
+        
         } else {
+
             $where = null;
             $where['where'][TBL_SUBJECTS . '.is_delete'] = FALSE;
 
@@ -106,12 +109,13 @@ class Subject extends ADMIN_Controller {
      * Function for add subject
      */
     public function add_subject() {
+
         $this->data['page_title'] = 'Subject Add';
 
         $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => FALSE)));
         $this->data['classrooms'] = select(TBL_CLASSROOMS, FALSE, array('where' => array('is_delete' => FALSE)));
 
-        $this->form_validation->set_rules('subject_name', 'Subject Name', 'trim|required');
+        $this->form_validation->set_rules('subject_name', 'Subject Name', 'trim|required|is_unique[subjects.subject_name]');
         $this->form_validation->set_rules('course', 'Course Name', 'trim|required');
         $this->form_validation->set_rules('classroom', 'Classroom', 'trim|required');
 
@@ -142,6 +146,7 @@ class Subject extends ADMIN_Controller {
             $path = "uploads/subjects";
 
             if (!empty($_FILES['subject_image']['name'])) {
+
                 $ext = pathinfo($_FILES['subject_image']['name'], PATHINFO_EXTENSION);
                 $name = '_dev_' . $insertid . date('ymdhis') . '.' . $ext;
                 $config['upload_path'] = $path;
@@ -161,6 +166,7 @@ class Subject extends ADMIN_Controller {
                     update(TBL_SUBJECTS, $insertid, $data_subject_image);
                 }
             }
+
             if ($error_count > 0) {
                 $message = 'Record is Successfully created but please upload valid file.';
             } else {

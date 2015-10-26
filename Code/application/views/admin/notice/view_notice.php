@@ -74,16 +74,19 @@
             </div>
         </div>
 		<div class="clearfix"></div>
-
-      <div class="col-lg-4 col-md-6">
-          <div class="box add_notice shadow_effect text-center">
-                <a href="<?php echo base_url().'admin/notice/add'; ?>">
-                    <span class="icon icon_add"></span><br>
-                    Add New Notice
-                </a>
+      <?php 
+        // START To check weather page is on 1st page or not ? if it is on first page do not show add notice field
+        if(empty($page_number)) { ?> 
+          <div class="col-lg-4 col-md-6">
+              <div class="box add_notice shadow_effect text-center">
+                    <a href="<?php echo base_url().'admin/notice/add'; ?>">
+                        <span class="icon icon_add"></span><br>
+                        Add New Notice
+                    </a>
+                </div>
             </div>
-        </div>
-     
+
+       <?php } // END ?> 
      
      <?php 
         if(!empty($notices)) { 

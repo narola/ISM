@@ -2577,6 +2577,10 @@ ul.tut_weekdays {
 	width:100%;
 	float:none;
     margin-bottom: 30px;
+    
+}
+.border_bottom{
+	border-bottom: 1px solid rgba(0,0,0,0.07);
 }
 .status_like .feed_text p, .commented_on .feed_text p, .commented_on .notification_txt p{
 	font-size:14px;
@@ -3585,10 +3589,15 @@ ul.ques_numbers {
 .discussion_header:after,
 .top_question:after,
 .discussion:after,
-.exam_banner:after {
+.exam_banner:after{
     content: " ";
     display: table;
     clear: both;
+}
+.shared_images:after {
+    content: " ";
+    clear: both;
+    display: table;
 }
 .margin_15{
 	margin:15px !important;
