@@ -335,7 +335,9 @@ if ("WebSocket" in window)
                     $('.tut_group .box_body[data-id="' + id + '"] a').removeClass('icon_call_user').addClass('icon_call_user_disable');
                 }
 
-
+                if($('.my_studymates .general_cred').length > 0){
+                  alert($('.my_studymates .general_cred .studyamte_list .mCustomScrollBox .mCSB_container').attr('class'));
+                }
 
             });
 

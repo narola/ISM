@@ -3358,6 +3358,7 @@ ul.ques_numbers {
 }
 .exam_img_holder img{
 	width:100%;
+	height: 100%;
 }
 .exams_wrapper .exam_chem{
 	/*background-image:url(../images/front_exam1.jpg);*/
@@ -3666,4 +3667,7 @@ a.expand_ques + .row{
 	margin-bottom: 12px;
 	height: 115px;
     overflow: hidden;
+}
+.studymate_recom .mate_name {
+    height: 30px;
 }

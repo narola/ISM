@@ -37,10 +37,6 @@ class Course extends ADMIN_Controller {
 			if(!empty($category)){ $where['where']['course_category_id'] = $category ; $str .= '&category='.$category; }			
 			if(!empty($q)){ 
 					$where['like'][TBL_COURSES.'.course_name'] = $q; 
-					$where['like'][TBL_COURSES.'.course_nickname'] = $q;
-					// $where['or_like'][TBL_COURSES.'.course_details'] = $q;
-					// $where['or_like'][TBL_COURSES.'.course_degree'] = $q;
-					// $where['or_like'][TBL_COURSES.'.course_type'] = $q;  	
 					$str .='&q='.$q; 
 			}
             
@@ -141,7 +137,7 @@ class Course extends ADMIN_Controller {
         $this->form_validation->set_rules('course_name', 'Course Name', 'trim|required');
 		$this->form_validation->set_rules('course_nickname', 'Course Nickname', 'trim|required');	
 		$this->form_validation->set_rules('course_type', 'Course Type', 'trim|required');
-		$this->form_validation->set_rules('course_duration', 'Course Duration', 'trim|required');
+		$this->form_validation->set_rules('course_duration', 'Course Duration', 'trim|required|integer');
 		$this->form_validation->set_rules('course_degree', 'Course Degree', 'trim|required');
 		$this->form_validation->set_rules('course_category_id', 'Course Degree', 'required');
 		
@@ -188,13 +184,14 @@ class Course extends ADMIN_Controller {
 		$this->form_validation->set_rules('course_name', 'Course Name', 'trim|required');
 		$this->form_validation->set_rules('course_nickname', 'Course Nickname', 'trim|required');	
 		$this->form_validation->set_rules('course_type', 'Course Type', 'trim|required');	
-		$this->form_validation->set_rules('course_duration', 'Course Duration', 'trim|required');
+		$this->form_validation->set_rules('course_duration', 'Course Duration', 'trim|required|integer');
 		$this->form_validation->set_rules('course_degree', 'Course Degree', 'trim|required');
 		$this->form_validation->set_rules('course_category_id', 'Course Degree', 'required|greater_than[0]');
 		
 		if($this->form_validation->run() == FALSE){
             $this->template->load('admin/default','admin/course/update_course',$this->data);			
 		}else{            
+            
             $data=array(
 				 "course_name"=>$this->input->post("course_name"),				
 				 "course_nickname"=>$this->input->post("course_nickname"),
@@ -207,6 +204,7 @@ class Course extends ADMIN_Controller {
 				 "modified_date"=>date('Y-m-d H:i:s'),
 				 "is_delete"=>0				 				
 			);	
+			
 			update(TBL_COURSES,$id,$data);	// Update data using common_model.php and cms_helper.php
 			$this->session->set_flashdata('success', 'Record is Successfully updated.');
 			redirect('admin/course/lists');
