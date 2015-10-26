@@ -14,6 +14,7 @@
                 <!--filter-->
                 <div class="filter group_filter">
                 	<div class="col-sm-12">
+                        <form method="get">
                     	<div class="form-group">
                             <select class="form-control" name="course_id" id="course_id" onchange="get_classes(this.value)">
                                 <option>Select Course</option>
@@ -41,6 +42,7 @@
                                 <option>Sort By</option>
                             </select>
                         </div>
+                    </form>
                         <div class="form-group no_effect text-right">
                             <a href="admin/topic/add" class="btn btn_green add_topic">Add New Topic</a>
                         </div>

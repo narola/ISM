@@ -553,7 +553,7 @@ class Topic extends ADMIN_Controller {
 		
 		$new_str = '';
 		
-		$new_str .= '<option selected value="" disabled >Classroom</option>';
+		$new_str .= '<option selected value="" disabled >Select Classroom</option>';
 		if(!empty($classrooms)){
 			foreach($classrooms as $classroom){
 				$new_str.='<option value="'.$classroom['id'].'">'.$classroom['class_name'].'</option>';
