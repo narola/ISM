@@ -107,6 +107,16 @@ public class InputValidator {
 	}
 
 
+	public boolean validatePhoneNumberLength(EditText editText)
+	{
+		if (editText.getText().toString().trim().length() < 10) {
+			setError(editText,"Minimum 10 characters are required");
+			return false;
+		} else {
+			editText.setError(null);
+			return true;
+		}
+	}
 
 	/**
 	 *

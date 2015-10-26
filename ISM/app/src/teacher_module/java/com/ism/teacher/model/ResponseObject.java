@@ -1,19 +1,24 @@
-package com.ism.model;
+package com.ism.teacher.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.json.*;
 
 import java.util.ArrayList;
 
 public class ResponseObject {
-
+	
     private String message;
     private ArrayList<Data> data;
     private String status;
+    private String total_feeds;
 
-    public static final String SUCCESS = "success";
-    public static final String FAILED = "failed";
+    @JsonProperty("total_feeds")
+    public String getTotal_feeds() {
+        return total_feeds;
+    }
+
+    public void setTotal_feeds(String total_feeds) {
+        this.total_feeds = total_feeds;
+    }
 
     public String getMessage() {
         return this.message;
@@ -40,4 +45,5 @@ public class ResponseObject {
     }
 
 
+    
 }

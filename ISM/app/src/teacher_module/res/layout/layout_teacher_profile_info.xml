@@ -5,7 +5,7 @@
     android:background="@color/color_graylight"
     android:orientation="vertical">
 
-    <include layout="@layout/custom_actionbar" />
+    <include layout="@layout/actionbar_ism_teacher_logo" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -87,7 +87,8 @@
                                     android:background="@drawable/edittext_shadow_selector"
                                     android:hint="@string/stremailaddress"
                                     android:padding="15dp"
-                                    android:textColorHint="@color/color_text_hint" />
+                                    android:textColorHint="@color/color_text_hint"
+                                    android:inputType="textEmailAddress"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -116,7 +117,8 @@
                                     android:background="@drawable/edittext_shadow_selector"
                                     android:hint="@string/strcontactnumber"
                                     android:padding="15dp"
-                                    android:textColorHint="@color/color_text_hint" />
+                                    android:textColorHint="@color/color_text_hint"
+                                    android:inputType="phone"/>
 
                             </LinearLayout>
 
@@ -363,7 +365,8 @@
                             android:background="@drawable/edittext_shadow_selector"
                             android:hint="@string/strcurrentpwd"
                             android:padding="15dp"
-                            android:textColorHint="@color/color_text_hint" />
+                            android:textColorHint="@color/color_text_hint"
+                            android:inputType="textPassword"/>
 
                     </LinearLayout>
 
@@ -382,7 +385,8 @@
                             android:background="@drawable/edittext_shadow_selector"
                             android:hint="@string/strnewpwd"
                             android:padding="15dp"
-                            android:textColorHint="@color/color_text_hint" />
+                            android:textColorHint="@color/color_text_hint"
+                            android:inputType="textPassword"/>
 
                         <EditText
                             android:id="@+id/et_confirmpwd"
@@ -393,7 +397,8 @@
                             android:background="@drawable/edittext_shadow_selector"
                             android:hint="@string/strconfirmpwd"
                             android:padding="15dp"
-                            android:textColorHint="@color/color_text_hint" />
+                            android:textColorHint="@color/color_text_hint"
+                            android:inputType="textPassword"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

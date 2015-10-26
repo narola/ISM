@@ -40,34 +40,15 @@ import java.util.ArrayList;
 /**
  * Created by c75 on 16/10/15.
  */
-public class TeacherHomeActivity extends Activity implements FragmentListener {
+public class TeacherHomeActivity extends Activity implements FragmentListener{
 
     private static final String TAG = TeacherHomeActivity.class.getSimpleName();
 
-    private LinearLayout llControllerLeft;
-    private FrameLayout flFragmentContainerMain;
-    private FrameLayout flFragmentContainerRight;
-    private RelativeLayout rlControllerTopMenu;
-    private LinearLayout llSearch;
-    private ImageView imgHome;
-    private ImageView imgTutorial;
-    private ImageView imgOffice;
-    private ImageView imgAssessment;
-    private ImageView imgDesk;
-    private ImageView imgReportCard;
-    private ImageView imgLogOut;
-    private ImageView imgSearch;
-    private ImageView imgNotes;
-    private ImageView img_teacher_profile;
-    private ImageView imgChat;
-    private ImageView imgMenuBack;
-    private TextView txtTitle;
-    private TextView txtOne;
-    private TextView txtTwo;
-    private TextView txtThree;
-    private TextView txtFour;
-    private TextView txtFive;
-    private TextView txtAction;
+    private LinearLayout llControllerLeft, llSearch;
+    private FrameLayout flFragmentContainerMain, flFragmentContainerRight;
+    private RelativeLayout rlControllerTopMenu, rlAddPost;
+    private ImageView imgHome, imgTutorial, imgOffice, imgAssessment, imgDesk, imgReportCard, imgLogOut, imgSearch, imgNotes, img_teacher_profile, imgChat, imgMenuBack;
+    private TextView txtTitle, txtOne, txtTwo, txtThree, txtFour, txtFive, txtAction, txtAddPost;
     private EditText etSearch;
     private Spinner spSubmenu;
 
@@ -75,11 +56,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
 
     private TextView txtsMenu[];
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuAssessment;
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuDesk;
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuReportCard;
-    private ArrayList<ControllerTopMenuItem> currentControllerTopMenu;
+    private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom, controllerTopMenuAssessment, controllerTopMenuDesk, controllerTopMenuReportCard, currentControllerTopMenu;
 
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_TUTORIAL = 1;
@@ -87,9 +64,6 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_ASSESSMENT = 3;
     public static final int FRAGMENT_DESK = 4;
     public static final int FRAGMENT_REPORT_CARD = 5;
-    // public static final int FRAGMENT_NOTES = 6;
-//    public static final int FRAGMENT_STUDY_MATES = 7;
-    //  public static final int FRAGMENT_CHAT = 8;
 
     public static final int FRAGMENT_UPCOMING_EVENTS = 6;
     public static final int FRAGMENT_TEACHER_CHAT = 7;
@@ -102,9 +76,6 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     public static int currentRightFragment;
     private int currentMainFragmentBg;
 
-
-    private TextView txtAddPost;
-    private RelativeLayout rlAddPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -457,7 +428,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     break;
 
                 case FRAGMENT_TEACHER_TUTORIAL_GROUP:
-                    imgTutorial.setActivated(false);
+                    //imgTutorial.setActivated(false);
                     rlAddPost.setVisibility(View.GONE);
                     break;
             }
@@ -611,4 +582,21 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         slideOutAnimation.setFillAfter(true);
         view.startAnimation(slideOutAnimation);
     }
+
+//    @Override
+//    public void onResponse(API_METHOD,Object object, Exception error) {
+//        ResponseObject responseObj = (ResponseObject) object;
+//        Log.e(TAG, "onResponse");
+//
+//        // Log.e(TAG,((ResponseObject) object).getMessage());
+//        if (responseObj.getStatus().equalsIgnoreCase("success")) {
+//            Toast.makeText(TeacherHomeActivity.this, " Successful!!!", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(TeacherHomeActivity.this, " Not Successful!!!", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+
+
+
 }

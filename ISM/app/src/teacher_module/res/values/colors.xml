@@ -6,5 +6,6 @@
     <color name="color_blue">#41B1E3</color>
     <color name="color_teacher_headers">#D5DBDF</color>
     <color name="color_black">#000000</color>
+    <color name="color_shade_news_feed">#90BABABA</color>
 
 </resources>

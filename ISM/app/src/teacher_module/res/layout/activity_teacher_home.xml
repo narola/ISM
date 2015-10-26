@@ -26,7 +26,7 @@
             android:layout_toRightOf="@id/img_logo"
             android:background="@drawable/bg_right_controller_top_button"
             android:scaleType="centerInside"
-            android:src="@drawable/image_home" />
+            android:src="@drawable/image_home_teacher" />
 
         <TextView
             android:id="@+id/txt_title"
@@ -175,7 +175,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_left_controller_top_button"
                 android:scaleType="centerInside"
-                android:src="@drawable/image_search" />
+                android:src="@drawable/image_search_teacher" />
 
             <EditText
                 android:id="@+id/et_search"
@@ -200,7 +200,7 @@
             android:layout_toLeftOf="@+id/img_teacher_profile"
             android:background="@drawable/bg_left_controller_top_button"
             android:scaleType="centerInside"
-            android:src="@drawable/image_notes" />
+            android:src="@drawable/image_notes_teacher" />
 
         <ImageView
             android:id="@+id/img_teacher_profile"
@@ -218,7 +218,7 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/bg_left_controller_top_button"
             android:scaleType="centerInside"
-            android:src="@drawable/image_chat" />
+            android:src="@drawable/image_chat_teacher" />
     </RelativeLayout>
 
 
@@ -238,7 +238,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_controller_left_button_tutorial"
             android:scaleType="centerInside"
-            android:src="@drawable/image_tutorial" />
+            android:src="@drawable/image_tutorial_group" />
 
         <ImageView
             android:id="@+id/img_office"
