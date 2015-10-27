@@ -159,7 +159,7 @@ class My_classroom_exam extends ISM_Controller {
 		$classroom_id = $this->session->userdata('user')['classroom_id'];
 		$data['exam_status'] = select(
 					TBL_STUDENT_EXAM_SCORE.' sc',
-					'if(sc.id > 0, sc.id, 0 ) as id, sc.exam_id,sc.created_date,if(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time',
+					'e.exam_name,if(sc.id > 0, sc.id, 0 ) as id, sc.exam_id,sc.created_date,if(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time',
 					'sc.user_id = '.$user_id.' AND sc.exam_status = "started" AND e.classroom_id` = '. $classroom_id,
 					array('join' => array(
 							array(
@@ -272,6 +272,7 @@ class My_classroom_exam extends ISM_Controller {
 		}else{
 			$data['error'] = 'Topic or Exam is not allocated for this week!';
 		}
+		//p($data,true);
 		$this->template->load('student/default','student/class_exam_question_answer',$data);
 
 	}
