@@ -1,3 +1,30 @@
+<!--
+<script type="text/javascript" src="assets/lib/jquery.1.10.2.min.js"></script> -->
+
+<script type="text/javascript" src="assets/lib/jquery.ui.core.1.10.3.min.js"></script>
+
+<script type="text/javascript" src="assets/lib/jquery.ui.widget.1.10.3.min.js"></script>
+<script type="text/javascript" src="assets/lib/jquery.ui.mouse.1.10.3.min.js"></script>
+<script type="text/javascript" src="assets/lib/jquery.ui.draggable.1.10.3.min.js"></script>
+
+
+<link rel="Stylesheet" type="text/css" href="assets/lib/wColorPicker.min.css" />
+<script type="text/javascript" src="assets/lib/wColorPicker.min.js"></script>
+
+
+<link rel="Stylesheet" type="text/css" href="assets/css/wPaint.min.css" />
+<script type="text/javascript" src="assets/js/wPaint.min.js"></script>
+<script type="text/javascript" src="assets/plugins/main/wPaint.menu.main.min.js"></script>
+<script type="text/javascript" src="assets/plugins/text/wPaint.menu.text.min.js"></script>
+<script type="text/javascript" src="assets/plugins/shapes/wPaint.menu.main.shapes.min.js"></script>
+<script type="text/javascript" src="assets/plugins/file/wPaint.menu.main.file.min.js"></script>
+<style>
+    
+.wPaint-theme-classic .wPaint-menu-icon { float: left; height: 30px; margin: 0 3px !important; width: 30px;}
+.wPaint-menu { left: 0 !important; position: relative !important; top: -130px !important; width: auto !important;}
+.wPaint-menu-holder { height: auto; display: inline-block; padding: 8px ;}
+
+</style>
 <div class="col-sm-7 main main_tut tut_dis"><!--mCustomScrollbar" data-mcs-theme="minimal-dark-->
     <?php 	if(isset($topic) && !empty($topic)){ ?>
             <div class="fixed_comment">
@@ -120,7 +147,7 @@
                 </div>
                 <!--white board-->
                 <div class="white_board">
-                    <ul class="board_tools">
+                   <!--  <ul class="board_tools">
                         <li class="paint"><a href="#" class="icon icon_paint"></a></li>
                         <li class="pen">
                             <a href="#" class="icon icon_pen"></a>
@@ -133,7 +160,80 @@
                         </li>
                         <li class="erase"><a href="#" class="icon icon_erase"></a></li>
                         <li class="clear"><a href="#" class="icon icon_clear"></a></li>
-                    </ul>
+                    </ul> -->
+                    <div class="tab-pane active" id="red">                                  
+                  
+                        <div id="wPaint" style="position:relative; width:280px; height:300px; background-color:#00000;border:1px solid black; margin:140px auto 20px;"></div>
+
+                        <!-- <center style="margin-bottom: 50px;">
+                            <input type="button" value="toggle menu" onclick="console.log($('#wPaint').wPaint('menuOrientation')); $('#wPaint').wPaint('menuOrientation', $('#wPaint').wPaint('menuOrientation') === 'vertical' ? 'horizontal' : 'vertical');"/>
+                        </center> -->
+
+                    <center id="wPaint-img"></center>
+                  
+                    <script type="text/javascript">
+                    var images = [
+                      'test/uploads/wPaint.png',
+                    ];
+
+                    function saveImg(image) {
+                      var _this = this;
+
+                      $.ajax({
+                        type: 'POST',
+                        url: 'test/upload.php',
+                        data: {image: image},
+                        success: function (resp) {
+
+                          // internal function for displaying status messages in the canvas
+                          _this._displayStatus('Image saved successfully');
+
+                          // doesn't have to be json, can be anything
+                          // returned from server after upload as long
+                          // as it contains the path to the image url
+                          // or a base64 encoded png, either will work
+                          resp = $.parseJSON(resp);
+
+                          // update images array / object or whatever
+                          // is being used to keep track of the images
+                          // can store path or base64 here (but path is better since it's much smaller)
+                          // alert(resp.img);
+                          images.push(resp.img);
+
+                          // do something with the image
+                          $('#wPaint-img').attr('src', image);
+                        }
+                      });
+                    }
+
+                    function loadImgBg () {
+
+                      // internal function for displaying background images modal
+                      // where images is an array of images (base64 or url path)
+                      // NOTE: that if you can't see the bg image changing it's probably
+                      // becasue the foregroud image is not transparent.
+                      this._showFileModal('bg', images);
+                    }
+
+                    function loadImgFg () {
+
+                      // internal function for displaying foreground images modal
+                      // where images is an array of images (base64 or url path)
+                      this._showFileModal('fg', images);
+                    }
+
+                    // init wPaint
+                    $('#wPaint').wPaint({
+                      menuOffsetLeft: -35,
+                      menuOffsetTop: -50,
+                      saveImg: saveImg,
+                      loadImgBg: loadImgBg,
+                      loadImgFg: loadImgFg
+                      
+                    });
+                  </script>
+                  
+                    </div>
                 </div>
                 <!--//white board-->
                 <!--Explore-->

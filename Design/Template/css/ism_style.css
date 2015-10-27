@@ -3151,9 +3151,9 @@ ul.ques_numbers {
 	min-height:375px;
 }
 .evaluation{
-    font-size: 14px;
-    text-transform: uppercase;
-    padding-bottom: 60px;
+	font-size: 14px;
+	text-transform: uppercase;
+	padding-bottom: 60px;
 }
 .evaluation p{
 	margin:0;
@@ -3696,4 +3696,28 @@ a.expand_ques + .row{
 }
 #view_profile_model .basic_info {
     margin-left: 260px;
+}
+.about_us_header{
+	background-color:#233244;
+	background-image:url(../images/about_header.png);
+	background-repeat:no-repeat;
+	background-position:center top;
+	min-height:500px;
+}
+.about_us_header h1{
+	margin-top:300px;
+}
+.about_us_header p {
+    font-size: 22px;
+    margin: 0;
+    font-weight: 500;
+}
+.btn_about_header{
+	
+}
+.btn_back {
+    margin-top: 15px;
+}
+.btn_back .fa{
+	margin-right:5px;
 }

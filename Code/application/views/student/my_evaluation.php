@@ -27,6 +27,9 @@
     </div>
     <!--//breadcrumb-->
     <!--answers-->
+    <div class="col-sm-12 text-right">
+        <button class="btn btn_green btn_back"><span class="fa fa-backward"></span> Back</button>
+    </div>
     <div class="answers">
         <?php 
             if(isset($my_evaluation)){
