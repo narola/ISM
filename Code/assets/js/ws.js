@@ -1371,6 +1371,12 @@ $(document).on('click', '.ans_options label input[name="option"]', function () {
 $(document).on('click', 'button[data-type="question_responce"]', function () {
     $('button[data-type="clear_responce"]').attr('disabled', 'disabled');
     $('button[data-type="question_responce"]').attr('disabled', 'disabled');
+    exam_choice = $(".ans_options label input[name='option']:checked").data('id');
+    
+    if(exam_choice == 'undefined' || exam_choice == '' || exam_choice == null){
+        exam_choice = 0;
+    }
+    
     var question_id = $(this).attr('data-id');
     var next_question = 0;
     var next_question_no = 0;
