@@ -92,12 +92,21 @@
                                                 <span class="date"><?php $old_date = strtotime($comment_value['created_date']);echo date("M j, Y",$old_date);?></span>
                                                 <div class="clearfix"></div>
                                                 <p><?php echo $comment_value['feed_text'];?></p>
+                                                <?php
+                                                    if($comment_value['image_link'] != ''){
+                                                ?>
                                                 <div class="shared_images">
-                                                    <div><img src="assets/images/shared1.jpg"></div>
-                                                    <div><img src="assets/images/shared2.jpg"></div>
+                                                    <div><img src="<?php echo UPLOAD_URL.'/'.$comment_value['image_link'];?>"></div>
                                                 </div>
+                                                <?php } ?>
                                                 <div class="clearfix"></div>
+                                                <?php 
+                                                    if($comment_value['totcomment'] > 1){
+                                                ?>
                                                 <a href="javascript:void(0);" data-type="view-all-comment-activities" data-id="<?php echo $comment_value['id'];?>">View All</a>
+                                                <?php 
+                                                    }
+                                                ?>
                                             </div>
                                             <div class="clearfix"></div>
                                             <!--comment-->
@@ -107,7 +116,7 @@
                                                 </div>
                                                 <div class="notification_txt">
                                                     <p><a href="#" class="noti_username"><?php echo $this->session->userdata('user')['full_name'];?></a> <?php echo $comment_value['comment'];?></p>
-                                                    <span class="noti_time">1 Day</span>                            
+                                                    <span class="noti_time"><?php echo get_time_format($comment_value['created_date']);?></span>                            
                                                 </div>
                                                 <div class="clearfix"></div>
 
@@ -130,7 +139,15 @@
                                         <span class="date"><?php $old_date = strtotime($post_value['created_date']);echo date("M j, Y",$old_date);?></span>
                                         <div class="feed_text border_bottom">                                               
                                             <p><?php echo $post_value['feed_text'];?></p>
+                                            <?php 
+                                                if($post_value['image_link'] != ''){
+                                            ?>
+                                            <div class="shared_images">
+                                                <div><img src="<?php echo UPLOAD_URL.'/'.$post_value['image_link'];?>" class="mCS_img_loaded"></div>
+                                            </div>
+                                            <?php } ?>
                                         </div> 
+                                        
                                     </div>                
                                 <?php
                                         $p++;

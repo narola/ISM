@@ -1733,17 +1733,20 @@ class PHPWebSocket {
      */
     function view_all_comment_activities($user_id, $data) {
         $link = $this->db();
-        $query = "SELECT *,u.full_name FROM " . TBL_FEED_COMMENT . " "
-                . "LEFT JOIN " . TBL_USER_PROFILE_PICTURE . " ON comment_by=user_id "
-                . "LEFT JOIN " . TBL_USERS . " u on u.id = comment_by "
-                . "WHERE comment_by=" . $user_id . ' AND feed_id=' . $data['comment_id'];
+        echo $query = "SELECT *,u.full_name,com.created_date as comment_date FROM " . TBL_FEED_COMMENT . " com "
+                . "LEFT JOIN " . TBL_USER_PROFILE_PICTURE . " p ON com.comment_by = p.user_id "
+                . "LEFT JOIN " . TBL_USERS . " u on u.id = com.comment_by "
+                . "WHERE comment_by=" . $user_id . ' AND com.feed_id=' . $data['comment_id'];
         $row = mysqli_query($link, $query);
         if (mysqli_num_rows($row) > 0) {
             $all = array();
+            $i = 0;
             while ($rows = mysqli_fetch_assoc($row)) {
-                $all[] = $rows['comment'];
+                $all[$i]['comment'] = $rows['comment'];
+                $all[$i]['date'] = $this->get_time_format($rows['comment_date']);
                 $link = $rows['profile_link'];
                 $name = $rows['full_name'];
+                $i++;
             }
             $data['comment'] = $all;
             $data['profile'] = $link;
@@ -2591,10 +2594,14 @@ class PHPWebSocket {
      * @author Sandip Gopani (SAG)
      */
     function get_time_format($t) {
-        $CI = & get_instance();
+        $link = $this->db();
         $timeFirst = strtotime($t);
-        $time = select('users', 'NOW() as ctime', null, array('limit' => 1, 'single' => 1));
-        $timeSecond = strtotime($time['ctime']);
+//        $time = select('users', 'NOW() as ctime', null, array('limit' => 1, 'single' => 1));
+        $query = "SELECT NOW() as ctime";
+        $rows = mysqli_query($link,$query);
+        $row = mysqli_fetch_array($rows);
+        
+        $timeSecond = strtotime($row['ctime']);
         $output = null;
         $diff = $timeSecond - $timeFirst;
         if ($diff < 60) {
@@ -2688,8 +2695,15 @@ class PHPWebSocket {
         $data['result']['my_post'] = array();
 
         // topic allocation
-        $query = "SELECT `t`.`topic_name`, `ga`.`created_date` FROM `tutorial_group_topic_allocation` `ga` LEFT JOIN `topics` `t` ON `t`.`id` = `ga`.`topic_id` WHERE `ga`.`group_id` = '59' AND date_format(ga.created_date,'%m') IN($m)";
-        $row = mysqli_query($link, $query);
+
+        $query = "SELECT group_id FROM tutorial_group_members where user_id = $user_id";
+        $row = mysqli_query($link,$query);
+        $rows = mysqli_fetch_array($row);
+        $group_id = $rows['group_id'];
+        if($group_id == '')
+            $group_id = 0;
+        echo $query = "SELECT `t`.`topic_name`, `ga`.`created_date` FROM `tutorial_group_topic_allocation` `ga` LEFT JOIN `topics` `t` ON `t`.`id` = `ga`.`topic_id` WHERE `ga`.`group_id` = $group_id AND date_format(ga.created_date,'%m') IN($m)";
+        $row = mysqli_query($link,$query);
         $i = 0;
         while ($rows = mysqli_fetch_assoc($row)) {
             $data['result']['my_topic'][$i] = $rows;
@@ -2704,26 +2718,25 @@ class PHPWebSocket {
             $i++;
         }
         // like feed
-        $query = "SELECT `upost`.`full_name` as `post_username`, `like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') as created_date, (select count(*) from feed_like where feed_id = like_feed.id) as totlike, (select count(*) from feed_comment where feed_id = like_feed.id) as totcomment FROM `feed_like` `like` LEFT JOIN `feeds` `like_feed` ON `like_feed`.`id` = `like`.`feed_id` LEFT JOIN `users` `upost` ON `upost`.`id` = `like_feed`.`feed_by` WHERE `like`.`like_by` = '138' AND date_format(like.created_date,'%m') IN($m) ORDER BY `like`.`created_date` DESC";
-        $row = mysqli_query($link, $query);
+        $query = "SELECT `upost`.`full_name` as `post_username`, `like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') as created_date, (select count(*) from feed_like where feed_id = like_feed.id) as totlike, (select count(*) from feed_comment where feed_id = like_feed.id) as totcomment FROM `feed_like` `like` LEFT JOIN `feeds` `like_feed` ON `like_feed`.`id` = `like`.`feed_id` LEFT JOIN `users` `upost` ON `upost`.`id` = `like_feed`.`feed_by` WHERE `like`.`like_by` = $user_id AND date_format(like.created_date,'%m') IN($m) ORDER BY `like`.`created_date` DESC";
+        $row = mysqli_query($link,$query);
         $i = 0;
         while ($rows = mysqli_fetch_assoc($row)) {
             $data['result']['my_like'][$i] = $rows;
             $i++;
         }
         // feed comment
-        $query = "SELECT `u`.`full_name`, `u`.`id`, `comment_feed`.`feed_text`, `p`.`profile_link`, `comment`.`comment`, DATE_FORMAT(`comment`.`created_date`,'%b %d %Y') as created_date, (select count(*) from feed_like where feed_id = comment_feed.id) as totlike, (select count(*) from feed_comment where feed_id = comment_feed.id) as totcomment, `comment_feed`.`id` FROM `feed_comment` `comment` LEFT JOIN `feeds` `comment_feed` ON `comment_feed`.`id` = `comment`.`feed_id` LEFT JOIN `users` `u` ON `u`.`id` = `comment_feed`.`feed_by` LEFT JOIN `user_profile_picture` `p` ON `p`.`user_id` = `u`.`id` WHERE `comment`.`comment_by` = '138' AND date_format(comment.created_date,'%m') IN($m) GROUP BY `comment_feed`.`id` ORDER BY `comment`.`created_date` DESC";
-        $row = mysqli_query($link, $query);
-
+        $query = "SELECT `u`.`full_name`, `u`.`id`, `comment_feed`.`feed_text`, `p`.`profile_link`, `fimage`.`image_link`, `comment`.`comment`, `comment`.`created_date`, (select count(*) from feed_like where feed_id = comment_feed.id) as totlike, (select count(*) from feed_comment where feed_id = comment_feed.id and comment_by = $user_id) as totcomment, `comment_feed`.`id` FROM `feed_comment` `comment` LEFT JOIN `feeds` `comment_feed` ON `comment_feed`.`id` = `comment`.`feed_id` LEFT JOIN `users` `u` ON `u`.`id` = `comment_feed`.`feed_by` LEFT JOIN `user_profile_picture` `p` ON `p`.`user_id` = `u`.`id` LEFT JOIN `feed_image` `fimage` ON `comment_feed`.`id` = `fimage`.`feed_id` WHERE `comment`.`comment_by` = $user_id AND date_format(comment.created_date,'%m') IN($m) GROUP BY `comment_feed`.`id` ORDER BY `comment`.`created_date` DESC";
+        $row = mysqli_query($link,$query);
         $i = 0;
         while ($rows = mysqli_fetch_assoc($row)) {
-            $data['result']['my_comment'][$i] = $rows;
+            $data['result']['my_comment'][$i] = $rows;            
+            $data['result']['my_comment'][$i]['comment_date'] = $this->get_time_format($rows['created_date']);
             $i++;
         }
         // my feed
-        $query = "SELECT `post`.`feed_text`, (select count(*) from feed_like where feed_id = post.id) as totlike, (select count(*) from feed_comment where feed_id = post.id) as totcomment, DATE_FORMAT(`post`.`created_date`,'%b %d %Y') as created_date FROM `feeds` `post` WHERE `post`.`feed_by` = '138' AND date_format(post.created_date,'%m') IN($m) ORDER BY `post`.`created_date` DESC";
-        $row = mysqli_query($link, $query);
-
+        $query = "SELECT `fimage`.`image_link`, `post`.`feed_text`, (select count(*) from feed_like where feed_id = post.id) as totlike, (select count(*) from feed_comment where feed_id = post.id) as totcomment, `post`.`created_date` FROM `feeds` `post` LEFT JOIN `feed_image` `fimage` ON `fimage`.`feed_id` = `post`.`id` WHERE `post`.`feed_by` = $userid AND date_format(post.created_date,'%m') IN($m) ORDER BY `post`.`created_date` DESC";
+        $row = mysqli_query($link,$query);
         $i = 0;
         while ($rows = mysqli_fetch_assoc($row)) {
             $data['result']['my_post'][$i] = $rows;

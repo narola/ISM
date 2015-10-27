@@ -45,11 +45,11 @@
                         document.getElementById('exam-type').value = sort_by;
                     </script>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <select class="form-control">
                         <option>WASSCE Year</option>
                     </select>
-                </div>
+                </div> -->
             </form>
 
         </div>
