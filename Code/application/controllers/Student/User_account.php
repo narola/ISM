@@ -551,7 +551,7 @@ class User_account extends CI_Controller {
 		$ext 	= pathinfo($_FILES['profile_image_1']['name'], PATHINFO_EXTENSION);
 		$name 	= str_replace('.'.$ext, '', $_FILES['profile_image_1']['name'].'_'.time()).'.'.$ext;
 		$config['upload_path']	 	= $path;
-		$config['allowed_types'] 	= 'gif|jpg|png';
+		$config['allowed_types'] 	= 'gif|jpg|png|jpeg';
 		$config['max_size']  		= '1000000000';	
 		$config['file_name'] 		= $name;
 		$error_count = 0;

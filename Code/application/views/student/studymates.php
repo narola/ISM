@@ -147,7 +147,7 @@
                                     <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                 </div>
                                 <div class="mate_descrip">
-                                    <p class="mate_name"><?php echo $value['full_name'];?></p>
+                                    <p class="mate_name" style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id'];?>"><?php echo $value['full_name'];?></p>
                                     <p>
                                     <?php 
                                         if(strlen($value['school_name']) > 30)
