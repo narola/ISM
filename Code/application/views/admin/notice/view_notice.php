@@ -120,11 +120,10 @@
                             <?php } ?>
                             <a href="<?php echo base_url().'admin/notice/update/'.$notice['id']; ?>" 
                                 class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="Edit"></a>
-                           <!-- To use ZeroClipboard set parameter for button  data-clipboard-target="ID TO COPY TEXT" find notice_text_1 id -->
-                            <button id="notice_<?php echo $notice['id']; ?>" class="btn btn-link icon icon_copy_color"  
-                                data-clipboard-target="notice_text_<?php echo $notice['id']; ?>" onclick="submit_bulk_form(1)"
-                                data-toggle="tooltip" data-placement="bottom" title="Copy" > 
-                            </button>
+
+                            <a href="<?php echo base_url().'admin/notice/copy/'.$notice['id']; ?>" 
+                                class="btn btn-link icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="Copy"></a>    
+                                    
                             <a href="<?php echo base_url().'admin/notice/delete/'.$notice['id']; ?>" 
                                  onclick="return delete_notice(this.href,event)"
                                 class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="Delete" ></a>
@@ -238,13 +237,6 @@ if(!empty($notices)) {
           event.preventDefault();
         });
     }     
-
-     <?php 
-    if(!empty($notices)) { 
-        foreach($notices as $notice) {
-        ?> 
-        var clientTarget = new ZeroClipboard( $("#notice_<?php echo $notice['id']; ?>") );
-    <?php } } ?>
 
     function filter_data(){
         

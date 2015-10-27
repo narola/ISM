@@ -178,11 +178,7 @@ class Notice extends ADMIN_Controller {
 					'notice'=>$this->input->post('notice'),
 					'posted_by'=>$posted_by,
 					'status'=>$this->input->post('status'),
-					'created_date'=>date('Y-m-d H:i:s',time()),
-					'modified_date'=>'0000-00-00 00:00:00',
-					'is_template'=>$this->input->post('is_template'),
-					'is_delete'=>FALSE,
-					'is_testdata'=>'yes'
+					'is_template'=>$this->input->post('is_template')
 				);
 
 			$notice_id = insert(TBL_NOTICEBOARD,$data);
@@ -190,14 +186,11 @@ class Notice extends ADMIN_Controller {
 			$noticeboard_viewer = array(
 					'notice_id'=>$notice_id,
 					'role_id'=>$this->input->post('role_id'),
-					'classroom_id'=>$this->input->post('classroom_id'),
-					'created_date'=>date('Y-m-d H:i:s',time()),
-					'modified_date'=>'0000-00-00 00:00:00',
-					'is_delete'=>FALSE,
-					'is_testdata'=>'yes'
+					'classroom_id'=>$this->input->post('classroom_id')
 				);
 
 			insert(TBL_NOTICEBOARD_VIEWER,$noticeboard_viewer);
+
 			$this->session->set_flashdata('success', 'Data is Successfully created.');
 			redirect($this->data['prev_url']);
 		}
@@ -205,6 +198,8 @@ class Notice extends ADMIN_Controller {
 
 	//Notice update Form
 	public function update($id){
+
+		$copy = $this->uri->segment(3);
 
 		$this->data['roles'] = select(TBL_ROLES);
 		$this->data['templates'] = select(TBL_NOTICEBOARD,false,array('where'=>array('is_template'=>TRUE)));
@@ -236,26 +231,52 @@ class Notice extends ADMIN_Controller {
 
 			$notice_id = $id;
 			$notice_viewer_id = $this->data['notice']['notice_viewer_id'];
+			$posted_by = $this->session->userdata('id'); 
+			if(!empty($this->input->post('classroom_id'))){ $classroom_id = $this->input->post('classroom_id');}else{ $classroom_id = null; }
 
-			$notice_data = array(
+			if($copy == 'copy'){
+
+				$notice_data = array(
+					'notice_title'=>$this->input->post('notice_title'),
+					'notice'=>$this->input->post('notice'),
+					'posted_by'=>$posted_by,
+					'status'=>$this->input->post('status'),
+					'is_template'=>$this->data['notice']['is_template'],
+				);
+
+				$notice_id = insert(TBL_NOTICEBOARD,$notice_data);
+
+				$noticeboard_viewer = array(
+					'notice_id'=>$notice_id,
+					'role_id'=>$this->input->post('role_id'),
+					'classroom_id'=>$classroom_id
+				);
+
+				insert(TBL_NOTICEBOARD_VIEWER,$noticeboard_viewer);
+				
+				$this->session->set_flashdata('success', 'Data is Successfully Created.');
+			}else{
+
+				$notice_data = array(
 					'notice_title'=>$this->input->post('notice_title'),
 					'notice'=>$this->input->post('notice'),
 					'status'=>$this->input->post('status'),
 					'modified_date'=>date('Y-m-d H:i:s',time()),
-					'is_template'=>$this->input->post('is_template'),
+					'is_template'=>$this->data['notice']['is_template'],
 				);
 
-			update(TBL_NOTICEBOARD,$notice_id,$notice_data);
+				update(TBL_NOTICEBOARD,$notice_id,$notice_data);
 
-			if(!empty($this->input->post('classroom_id'))){ $classroom_id = $this->input->post('classroom_id');}else{ $classroom_id = null; }
-			 
-			$notice_viewer_data = array(
-									'role_id'=>$this->input->post('role_id'),
-									'classroom_id'=>$classroom_id,
-									'modified_date'=>date('Y-m-d H:i:s',time()),
-								);
-			update(TBL_NOTICEBOARD_VIEWER,$notice_viewer_id,$notice_viewer_data);
-			$this->session->set_flashdata('success', 'Data is Successfully Updated.');
+				$notice_viewer_data = array(
+										'role_id'=>$this->input->post('role_id'),
+										'classroom_id'=>$classroom_id,
+										'modified_date'=>date('Y-m-d H:i:s',time()),
+									);
+				update(TBL_NOTICEBOARD_VIEWER,$notice_viewer_id,$notice_viewer_data);	
+
+				$this->session->set_flashdata('success', 'Data is Successfully Updated.');
+			}
+
 			redirect($this->data['prev_url']);
 		}
 	}

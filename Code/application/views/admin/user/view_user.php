@@ -6,12 +6,22 @@
           <div class="col-sm-12">
               <ol class="breadcrumb col-sm-6">
                   <li><a href="#">Manage</a></li>
-                  <li class="active">User</li>
+                  <li class="active">User <?php //if($_GET){ if(!empty($_GET['q'])){ echo 'IF'; }else{ echo 'ELSE'; } } ?></li>
                 </ol>
         
                 <div class="form-group search_input col-sm-offset-3 col-sm-3 no-padding">
                     <input type="text" name="q" id="q" class="form-control" placeholder="Type User Name." >
-                    <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                    
+
+                    <?php if(!empty($_GET['q'])) { ?>
+                        <a onclick="filter_data_reverse()" style="cursor:pointer">X</a>
+                    <?php }else { ?>
+                        <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                    <?php } ?>
+                    
+                    
+                    <!-- <a class="icon_clear" onclick="filter_data()" style="cursor:pointer"></a> -->
+
                 </div>
             </div>
         </div>
@@ -75,8 +85,7 @@
                     </select>
                 </div>
                     
-                    
-	            </div>
+	           </div>
 	        </div>
             
     	</form>	
@@ -101,7 +110,7 @@
         <div class="div_buttons">
           <div class="col-sm-6">
               <button class="btn btn_black" type="submit">Send Message</button>
-              <!-- <a class="btn btn_green" href="<?php echo base_url().'admin/user/add';?>" >Add User</a> -->
+              <!-- <a class="btn btn_green" href="<?php //echo base_url().'admin/user/add';?>" >Add User</a> -->
             </div>
 
           <div class="col-sm-6 text-right">
@@ -225,9 +234,16 @@
             if(confirmed){
                 window.location.href=href;
             }
-            
+
         });
     } 
+
+    function filter_data_reverse(){
+
+        $('#q').removeAttr('name');
+        $('#filter').submit();        
+
+    }
 
     function filter_data(){
     	
@@ -256,6 +272,7 @@
         var course = $('#course').val();
         var classroom = $('#classroom').val();
         var q = $('#q').val();
+        var order = $('#order').val();
 
         if(role == '' ){ $('#role').removeAttr('name'); }
         if(school == '' ){ $('#school').removeAttr('name'); }
@@ -263,7 +280,8 @@
         if(course == '' ){ $('#course').removeAttr('name'); }
         if(classroom == ''){ $('#classroom').removeAttr('name'); }
         if(q == ''){ $('#q').removeAttr('name');}
-        
+        if(order == ''){  $('#order').removeAttr('name'); }
+
     });
     
 

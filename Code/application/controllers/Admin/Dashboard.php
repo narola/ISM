@@ -128,10 +128,10 @@ class Dashboard extends ADMIN_Controller {
 
 		$school_grade = $this->input->post('school_grade');
 
-		if(!$_POST && empty($school_grade)){
-			$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0)));
+		if(!$_POST || empty($school_grade)){
+			$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0)),array('order_by'=>TBL_SCHOOLS.'.school_name'));
 		}else{
-			$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0,'school_grade'=>$school_grade)));
+			$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0,'school_grade'=>$school_grade)),array('order_by'=>TBL_SCHOOLS.'.school_name'));
 		}
 
 		$this->data['roles'] = select(TBL_ROLES,false,array('where'=>array('is_delete'=>0)));
@@ -140,9 +140,9 @@ class Dashboard extends ADMIN_Controller {
 		$course_id = $this->input->post('course_id');
 
 		if(!$_POST && empty($course_id)){
-			$this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>0)));
+			$this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>0)),array('order_by'=>TBL_CLASSROOMS.'.class_name'));
 		}else{
-			$this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>0,'course_id'=>$course_id)));
+			$this->data['classrooms'] = select(TBL_CLASSROOMS,false,array('where'=>array('is_delete'=>0,'course_id'=>$course_id)),array('order_by'=>TBL_CLASSROOMS.'.class_name'));
 		}
 
 		$this->data['cur_year'] = date('Y');
