@@ -53,11 +53,13 @@ class My_classroom_exam extends ISM_Controller {
 				array(
 					array(
 						'table' => TBL_STUDENT_EXAM_SCORE.' sc',
-						'condition' => 'sc.exam_id = e.id and sc.exam_status = "finished" and sc.user_id='.$user_id
+						'condition' => 'sc.exam_id = e.id and sc.user_id='.$user_id
 					)
 				)
-			);
-		$data['my_exam']  = select(TBL_EXAMS.' e','e.exam_name,e.id as exam_id,TRUNCATE((sc.correct_answers * 100 / (select count(*) from '.TBL_EXAM_QUESTION.' where exam_id = sc.exam_id)),2) as per,e.subject_id,sc.id',$where1,$option);
+		);
+
+		$data['my_exam']  = select(TBL_EXAMS.' e','sc.exam_status,e.exam_name,e.id as exam_id,TRUNCATE((sc.correct_answers * 100 / (select count(*) from '.TBL_EXAM_QUESTION.' where exam_id = sc.exam_id)),2) as per,e.subject_id,sc.id',$where1,$option);
+		//p($data,true);
 		$this->template->load('student/default','student/my_classroom_exam',$data);
 	}
 
@@ -67,43 +69,114 @@ class My_classroom_exam extends ISM_Controller {
 
 		$data['title'] = 'ISM - My Classroom Exam';
 		$user_id = $this->session->userdata('user')['id'];
-		if(is_numeric($this->uri->segment(3))){
-			$this->session->set_userdata('class_examid',$this->uri->segment(3));
-			$data['exam_id'] = $this->session->userdata('class_examid');
-		}
-		else{
-			$data['exam_id'] = $this->session->userdata('class_examid');	
-		}
+		$classroom_id = $this->session->userdata('user')['classroom_id'];
+		$exam_id = $data['exam_id']= $this->uri->segment(3);
+		$data['show_button'] = false;
+		/* Verify Exam  before start.*/
+		$data['verify'] = select(
+				TBL_EXAMS.' e',
+				"COUNT(*) AS `is_valid`,(select if(count(*)>0,1,0) FROM student_exam_score s JOIN exams e on e.id = s.exam_id where s.exam_status = 'started' AND s.user_id = $user_id AND e.exam_category != 'Tutorial' AND s.is_delete = 0 AND e.is_delete = 0) is_started, (select if(count(`id`)>0,1,0) FROM `exam_question` WHERE `exam_id` = $exam_id AND `is_delete` = 0) is_que_added ",
+				"`e`.`classroom_id` = $classroom_id AND `e`.`exam_category` != 'Tutorial' AND `e`.`id` = $exam_id AND e.is_delete = 0",
+				1
+			);
 
-		// echo select(TBL_STUDENT_EXAM_SCORE,null,array('where'=>array('user_id'=>$user_id,'exam_id'=>$data['exam_id'],'exam_status'=>'started')),1);
 		
-		// exit;
-		if(select(TBL_STUDENT_EXAM_SCORE,null,array('where'=>array('user_id'=>$user_id,'exam_status'=>'started')),1) > 0)
-			redirect('student/class_exam');
+		if($data['verify']['is_started'] == 1){
+			$data['exam_status'] = select(
+					TBL_STUDENT_EXAM_SCORE.' sc',
+					'sc.id, sc.exam_id,sc.created_date,if(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time',
+					'sc.user_id = '.$user_id.' AND sc.exam_status = "started" AND e.classroom_id` = '. $classroom_id,
+					array('join' => array(
+							array(
+								'table' => TBL_EXAMS.' e',
+								'condition' => 'e.id = sc.exam_id'
+								)
+							),
+						'limit' => 1,
+						'order_by' => 'sc.id desc',
+						'single' => true
+						)
+				);
+			// Check current exam time is finished or not.
+			if($data['exam_status']['remaining_time'] <= 0){
+					update(
+						TBL_STUDENT_EXAM_SCORE,
+						array('id' => $data['exam_status']['id']),
+						array('exam_status' => 'finished')
+						);
+					$data['show_button'] = true;
+			}else{
+				if($exam_id != $data['exam_status']['exam_id'] ){
+					$this->session->set_flashdata('error','Please finish current running exam first!!');
+				    redirect(base_url().'student/my_classroom_exam');
+				}else{
+					redirect(base_url().'student/class_exam');
+				}
+			}
+		}else{
+			if($data['verify']['is_valid'] == 1){
+
+				$is_finished = select(
+						TBL_STUDENT_EXAM_SCORE. ' s',
+						"if(count(*)>0,1,0) AS is_given",
+						"s.exam_status = 'finished' AND s.user_id = $user_id AND e.exam_category != 'Tutorial' AND s.is_delete = 0 AND e.is_delete = 0 AND s.exam_id = $exam_id",
+						array('join' => array(
+							array(
+								'table' => TBL_EXAMS.' e',
+								'condition' => 'e.id = s.exam_id'
+								)
+							),
+						'single' => true
+						)
+						);
+				if($is_finished['is_given'] == 1){
+					$this->session->set_flashdata('error','Selected exam was already given.');
+					redirect(base_url().'student/my_scoreboard/index/'.$exam_id);
+				}
+
+				if($data['verify']['is_que_added'] == 0){
+					$this->session->set_flashdata('error','No questions found in selected exam!');
+					redirect(base_url().'student/my_classroom_exam');
+				}else{
+
+					$data['show_button'] = true;
+				}
+			}else{
+				$this->session->set_flashdata('error','Selected Exam Invalid! Please don\'t modify data manually.');
+				redirect(base_url().'/student/my_classroom_exam');
+			}
+
+		}
+					
 		$this->template->load('student/default','student/class_exam_instruction',$data);	
 	}
 
 	public function exam_start()
 	{
-		$data['user_id'] = $user_id = $this->session->userdata('user')['id'];
+		$user_id = $data['user_id'] = $user_id = $this->session->userdata('user')['id'];
 		$data['hide_right_bar'] = true;	
 		$data['left_menu'] = false;
-
+		$classroom_id = $this->session->userdata('user')['classroom_id'];
 		$data['exam_status'] = select(
-				TBL_STUDENT_EXAM_SCORE.' sc',
-				'sc.exam_id,if(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time',
-				'sc.user_id = '.$data['user_id'].' and sc.exam_status = "started"',
-				array('join' => array(
-						array(
-							'table' => TBL_EXAMS.' e',
-							'condition' => 'e.id = sc.exam_id'
-							)
-						),
-					'limit' => 1,
-					'order_by' => 'sc.id desc',
-					'single' => true
-					)
-			);
+					TBL_STUDENT_EXAM_SCORE.' sc',
+					'if(sc.id > 0, sc.id, 0 ) as id, sc.exam_id,sc.created_date,if(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time',
+					'sc.user_id = '.$user_id.' AND sc.exam_status = "started" AND e.classroom_id` = '. $classroom_id,
+					array('join' => array(
+							array(
+								'table' => TBL_EXAMS.' e',
+								'condition' => 'e.id = sc.exam_id'
+								)
+							),
+						'limit' => 1,
+						'order_by' => 'sc.id desc',
+						'single' => true
+						)
+				);
+		
+		if($data['exam_status']['id']  ==  0 ){
+			$this->session->set_flashdata('error','There is problem! Please come later!!');
+			redirect('/student/my_classroom_exam');
+		}
 
 		if($data['exam_status']['remaining_time'] <= 0){
 			$this->session->set_flashdata('error','Selected exam is finished!');
@@ -199,7 +272,6 @@ class My_classroom_exam extends ISM_Controller {
 		}else{
 			$data['error'] = 'Topic or Exam is not allocated for this week!';
 		}
-		//p($question_info,true);
 		$this->template->load('student/default','student/class_exam_question_answer',$data);
 
 	}

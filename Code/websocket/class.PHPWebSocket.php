@@ -440,6 +440,8 @@ class PHPWebSocket {
 
 
 
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -613,6 +615,8 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
 
 
 
@@ -1280,14 +1284,15 @@ class PHPWebSocket {
                 $config[$rows['config_key']] = $rows['config_value'];
             }
 
-            $day = getdate();
-            $c_week = ceil($day['yday'] / 7);
-            $current_date = $day['year'] . '-' . $day['mon'] . '-' . $day['mday'];
+            $date = new DateTime(date("Y-m-d H:i:s"));
+            $c_week = $date->format("W");
+            $year = date("Y");
+            $current_date = date("Y-m-d");
 
             $query = "SELECT `tm`.`id` as member_id,`tg`.`topic_id`, `tm`.`group_id` "
                     . "FROM  `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `tg` "
                     . "LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER . "` `tm` ON `tm`.`group_id` = `tg`.`group_id` "
-                    . "WHERE `tm`.`user_id` = $userId AND `tg`.`week_no` = $c_week LIMIT 1";
+                    . "WHERE `tm`.`user_id` = $userId AND `tg`.`week_no` = $c_week AND YEAR(`tg`.`created_date`) = '$year' LIMIT 1";
             $row = mysqli_query($link, $query);
 
             $score = 0;
@@ -1377,7 +1382,7 @@ class PHPWebSocket {
                                 . "SET `group_score` = `group_score` + $add_to_group "
                                 . "WHERE `group_id` = " . $rows['group_id'] . " "
                                 . "AND `topic_id` = " . $rows['topic_id'] . " "
-                                . "AND `week_no` = " . $c_week;
+                                . "AND `week_no` = " . $c_week ." AND YEAR(`created_date`) = '$year'";
                         mysqli_query($link, $query);
                     }
 
@@ -1402,7 +1407,7 @@ class PHPWebSocket {
                         . "LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER_SCORE . "` `ts` ON `ts`.`member_id` = `tm`.`id` "
                         . "LEFT JOIN `" . TBL_USERS . "` `u` ON `u`.`id` = `t`.`created_by` "
                         . "LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `up` ON `up`.`user_id` = `u`.`id` "
-                        . "WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' AND `ta`.`week_no` = $c_week AND `tm`.`user_id` = '$userId'";
+                        . "WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' AND `ta`.`week_no` = $c_week AND YEAR(`ta`.`created_date`) = '$year'  AND  `tm`.`user_id` = '$userId'";
                 $row = mysqli_query($link, $query);
                 $rows = mysqli_fetch_assoc($row);
 
@@ -1945,12 +1950,15 @@ class PHPWebSocket {
 
 
             $day = getdate();
-            $c_week = ceil($day['yday'] / 7);
-            $current_date = $day['year'] . '-' . $day['mon'] . '-' . $day['mday'];
+            $date = new DateTime(date("Y-m-d H:i:s"));
+            $c_week = $date->format("W");
+            $year = date("Y");
 
             $query = "SELECT `tm`.`id` as member_id,`tg`.`topic_id`, `tm`.`group_id` FROM  `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `tg` "
                     . "LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER . "` `tm` ON `tm`.`group_id` = `tg`.`group_id` "
-                    . "WHERE `tm`.`user_id` = $userId AND `tg`.`week_no` = $c_week LIMIT 1";
+                    . "WHERE `tm`.`user_id` = $userId AND `tg`.`week_no` = $c_week AND YEAR(`tg`.`created_date`) = '$year' LIMIT 1";
+
+            // SELECT `t`.`id`, `t`.`topic_name`, `t`.`topic_description`, `t`.`created_date`, `tg`.`group_status`, `ts`.`score` as `my_score`, (SELECT SUM(group_score) FROM tutorial_group_topic_allocation WHERE group_id = tm.group_id) as group_score, `up`.`profile_link`, `u`.`full_name` FROM `tutorial_topic` `t` LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` LEFT JOIN `tutorial_group_member_score` `ts` ON `ts`.`member_id` = `tm`.`id` LEFT JOIN `users` `u` ON `u`.`id` = `t`.`created_by` LEFT JOIN `user_profile_picture` `up` ON `up`.`user_id` = `u`.`id` LEFT JOIN `tutorial_groups` `tg` ON `tg`.`id` = `ta`.`group_id` WHERE `ta`.`group_id` = '92' AND `ta`.`week_no` = '44' AND `tm`.`user_id` = '249' AND YEAR(`ta`.`created_date`) = '2015'
 
             $row = mysqli_query($link, $query);
 
@@ -2122,7 +2130,7 @@ class PHPWebSocket {
         if ($data['exam_st'] == 'started') {
             if ($data['status'] == 'next') {
                 if ($data['answer'] == 0) {
-                    $data['status'] = 'N';
+                    $data['status'] = 'S';
                 } else {
                     $data['status'] = 'A';
                 }
@@ -2205,12 +2213,12 @@ class PHPWebSocket {
             $query = "select count(*) total,"
                     . " sum(case WHEN is_right = 0 THEN 1 ELSE 0 end) incorrect,"
                     . " sum(case WHEN is_right = 1 THEN 1 ELSE 0 end) correct,"
-                    . " sum(response_duration) time_spent FROM `student_exam_response` WHERE `exam_id` = " . $data['exam']['exam_id'] . "  AND `user_id` = " . $userID . " ";
+                    . " sum(response_duration) time_spent FROM `student_exam_response` WHERE `exam_id` = " . $data['exam']['exam_id'] . "  AND `user_id` = " . $userID . " AND `answer_status` = 'A' ";
 
             $row = mysqli_query($link, $query);
             $rows = mysqli_fetch_assoc($row);
 
-            $query = 'UPDATE `student_exam_score` SET `correct_answers` = ' . $rows['correct'] . ' , `incorrect_answers`=  ' . $rows['incorrect'] . ', `total_time_spent` = ' . $rows['time_spent'] . ' WHERE `user_id` = ' . $userID . ' AND `exam_id` = ' . $data['exam']['exam_id'] . ' ';
+            $query = 'UPDATE `student_exam_score` SET `attempt_count` = (SELECT COUNT(id) FROM `student_exam_response` WHERE `answer_status` = "A"  AND `exam_id` = ' . $data['exam']['exam_id'] . '  AND `user_id` = ' . $userID . '), `correct_answers` = ' . $rows['correct'] . ' , `incorrect_answers`=  ' . $rows['incorrect'] . ', `total_time_spent` = ' . $rows['time_spent'] . ' WHERE `user_id` = ' . $userID . ' AND `exam_id` = ' . $data['exam']['exam_id'] . ' ';
             mysqli_query($link, $query);
         }
         return $data;
@@ -2668,9 +2676,9 @@ class PHPWebSocket {
 
         if (is_array($month))
             $sep_month = implode(',', $month);
-        
+
         $data['result'] = array();
-        $data['result']['my_topic'] = array();       
+        $data['result']['my_topic'] = array();
         $data['result']['my_studymate'] = array();
         $data['result']['my_like'] = array();
         $data['result']['my_comment'] = array();
@@ -2678,15 +2686,15 @@ class PHPWebSocket {
 
         // topic allocation
         $query = "SELECT `t`.`topic_name`, `ga`.`created_date` FROM `tutorial_group_topic_allocation` `ga` LEFT JOIN `topics` `t` ON `t`.`id` = `ga`.`topic_id` WHERE `ga`.`group_id` = '59' AND date_format(ga.created_date,'%m') IN($m)";
-        $row = mysqli_query($link,$query);
+        $row = mysqli_query($link, $query);
         $i = 0;
-        while($rows = mysqli_fetch_assoc($row)){
+        while ($rows = mysqli_fetch_assoc($row)) {
             $data['result']['my_topic'][$i] = $rows;
-            $i++ ;
+            $i++;
         }
         //  became studymate with
         $query = "SELECT `u`.`full_name`, `sm`.`mate_of`, `sm2`.`mate_id`, DATE_FORMAT(sm.created_date,'%b %d %Y') as created_date, `s`.`school_name`, `p`.`profile_link`, `c`.`course_name` FROM `users` `u` LEFT JOIN `studymates` `sm` ON `u`.`id` = `sm`.`mate_of` and `sm`.`mate_id` =$user_id LEFT JOIN `studymates` `sm2` ON `u`.`id` = `sm2`.`mate_id` and `sm2`.`mate_of` =$user_id LEFT JOIN `student_academic_info` `in` ON `u`.`id` = `in`.`user_id` LEFT JOIN `schools` `s` ON `s`.`id` = `in`.`school_id` LEFT JOIN `user_profile_picture` `p` ON `u`.`id` = `p`.`user_id` LEFT JOIN `courses` `c` ON `c`.`id` = `in`.`course_id` WHERE date_format(sm.created_date,'%m') IN($m)";
-        $row = mysqli_query($link,$query);
+        $row = mysqli_query($link, $query);
         $i = 0;
         while ($rows = mysqli_fetch_assoc($row)) {
             $data['result']['my_studymate'][$i] = $rows;
@@ -2694,7 +2702,7 @@ class PHPWebSocket {
         }
         // like feed
         $query = "SELECT `upost`.`full_name` as `post_username`, `like_feed`.`feed_text`, DATE_FORMAT(`like`.`created_date`,'%b %d %Y') as created_date, (select count(*) from feed_like where feed_id = like_feed.id) as totlike, (select count(*) from feed_comment where feed_id = like_feed.id) as totcomment FROM `feed_like` `like` LEFT JOIN `feeds` `like_feed` ON `like_feed`.`id` = `like`.`feed_id` LEFT JOIN `users` `upost` ON `upost`.`id` = `like_feed`.`feed_by` WHERE `like`.`like_by` = '138' AND date_format(like.created_date,'%m') IN($m) ORDER BY `like`.`created_date` DESC";
-        $row = mysqli_query($link,$query);
+        $row = mysqli_query($link, $query);
         $i = 0;
         while ($rows = mysqli_fetch_assoc($row)) {
             $data['result']['my_like'][$i] = $rows;
@@ -2702,24 +2710,24 @@ class PHPWebSocket {
         }
         // feed comment
         $query = "SELECT `u`.`full_name`, `u`.`id`, `comment_feed`.`feed_text`, `p`.`profile_link`, `comment`.`comment`, DATE_FORMAT(`comment`.`created_date`,'%b %d %Y') as created_date, (select count(*) from feed_like where feed_id = comment_feed.id) as totlike, (select count(*) from feed_comment where feed_id = comment_feed.id) as totcomment, `comment_feed`.`id` FROM `feed_comment` `comment` LEFT JOIN `feeds` `comment_feed` ON `comment_feed`.`id` = `comment`.`feed_id` LEFT JOIN `users` `u` ON `u`.`id` = `comment_feed`.`feed_by` LEFT JOIN `user_profile_picture` `p` ON `p`.`user_id` = `u`.`id` WHERE `comment`.`comment_by` = '138' AND date_format(comment.created_date,'%m') IN($m) GROUP BY `comment_feed`.`id` ORDER BY `comment`.`created_date` DESC";
-        $row = mysqli_query($link,$query);
+        $row = mysqli_query($link, $query);
 
         $i = 0;
         while ($rows = mysqli_fetch_assoc($row)) {
             $data['result']['my_comment'][$i] = $rows;
             $i++;
-        } 
+        }
         // my feed
         $query = "SELECT `post`.`feed_text`, (select count(*) from feed_like where feed_id = post.id) as totlike, (select count(*) from feed_comment where feed_id = post.id) as totcomment, DATE_FORMAT(`post`.`created_date`,'%b %d %Y') as created_date FROM `feeds` `post` WHERE `post`.`feed_by` = '138' AND date_format(post.created_date,'%m') IN($m) ORDER BY `post`.`created_date` DESC";
-        $row = mysqli_query($link,$query);
+        $row = mysqli_query($link, $query);
 
         $i = 0;
         while ($rows = mysqli_fetch_assoc($row)) {
             $data['result']['my_post'][$i] = $rows;
             $i++;
         }
-        $data['format_month'] = date('F Y',strtotime($data['month']));
-        $data['new_month'] = date('Y-m',strtotime('-1 month', strtotime($data['month'])));
+        $data['format_month'] = date('F Y', strtotime($data['month']));
+        $data['new_month'] = date('Y-m', strtotime('-1 month', strtotime($data['month'])));
         return array_merge($data, $this->get_client_info($user_id));
     }
 

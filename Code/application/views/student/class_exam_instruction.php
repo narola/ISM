@@ -37,15 +37,11 @@
             <div class="clearfix"></div>
             <div class="text-center">
                 <?php
-                $dis = ''; 
-                if($this->active_h['exam_st'] != 'started' ){
-                    $dis = 'disabled';
-                }
-                //if($exam_status !== 2){
+                if($show_button == true){
                 ?>
-                    <button data-id="<?php echo $exam_id;?>"data-type="class_exam_start_request" class="btn btn_green" <?php echo $dis; ?> >Start Exam <span class="fa fa-chevron-right"></span></button>
+                    <button data-id="<?php echo $exam_id;?>"data-type="class_exam_start_request" class="btn btn_green" >Start Exam <span class="fa fa-chevron-right"></span></button>
                 <?php
-                //}
+                }
                 ?>
             </div>
         </div>
