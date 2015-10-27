@@ -64,7 +64,7 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_weight="2"
                                 android:orientation="horizontal">
 
@@ -96,7 +96,7 @@
 	                        <EditText
 		                        android:id="@+id/et_emailAdd"
 		                        android:layout_width="match_parent"
-		                        android:layout_height="match_parent"
+		                        android:layout_height="0dp"
 		                        android:layout_marginRight="@dimen/d5dp"
 		                        android:layout_weight="2"
 		                        android:background="@drawable/selector"
@@ -107,7 +107,7 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_weight="2"
                                 android:orientation="horizontal">
 
@@ -137,12 +137,12 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_weight="2"
                                 android:orientation="horizontal">
 
                                 <EditText
-                                    android:id="@+id/et_dob"
+                                    android:id="@+id/txt_dob"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="@dimen/d5dp"
@@ -151,7 +151,6 @@
                                     android:hint="@string/strdateofbirth"
                                     android:padding="15sp"
                                     android:editable="false"
-                                    android:text="1989-07-30"
                                     android:textColorHint="@color/color_text_hint" />
 
                                 <EditText
@@ -246,8 +245,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@drawable/spinner_selector"
-                            android:padding="@dimen/d20dp"
-                            android:spinnerMode="dropdown" />
+                            android:padding="@dimen/d20dp" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -312,6 +310,7 @@
                             android:paddingRight="@dimen/d5dp"
                             android:paddingTop="@dimen/d10dp"
                             android:text="@string/strclickhere"
+                            android:onClick="onClickHere"
                             android:textColor="@color/color_green"
                             android:textSize="@dimen/d18dp" />
 
@@ -540,6 +539,7 @@
                     android:paddingRight="@dimen/d50dp"
                     android:paddingTop="@dimen/d10dp"
                     android:text="@string/strcancel"
+                    android:onClick="onClickCancel"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/d20dp" />
 

@@ -25,6 +25,7 @@ public class WebserviceWrapper {
 	public static final int GET_STATES = 5;
 	public static final int GET_CITIES = 6;
 	public static final int REGISTER_USER = 7;
+	public static final int REQUEST_SCHOOL_INFO = 8;
 
 	public interface WebserviceResponse {
 		public void onResponse(Object object, Exception error, int apiCode);
@@ -56,6 +57,9 @@ public class WebserviceWrapper {
 					case FORGOT_PASSWORD:
 						responseObject = new RequestWs().getRequest(AppConstant.URL_FORGOT_PASSWORD, ResponseObject.class, requestObject);
 						break;
+					case REQUEST_CREDENTIALS:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_REQUEST_CREDENTIALS, ResponseObject.class, requestObject);
+						break;
 					case GET_COUNTRIES:
 						responseObject = new RequestWs().getRequest(AppConstant.URL_GET_COUNTRIES, ResponseObject.class, requestObject);
 						break;
@@ -67,6 +71,9 @@ public class WebserviceWrapper {
 						break;
 					case REGISTER_USER:
 						responseObject = new RequestWs().getRequest(AppConstant.URL_REGISTER_USER, ResponseObject.class, requestObject);
+						break;
+					case REQUEST_SCHOOL_INFO:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_REQUEST_SCHOOL_INFO, ResponseObject.class, requestObject);
 						break;
 				}
 			} catch (Exception e) {
