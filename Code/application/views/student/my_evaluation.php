@@ -52,8 +52,17 @@
                                     <div class="col-lg-4 col-sm-6">
                                         <p>Your Answer:</p>
                                     </div>
-                                    <div class="col-lg-8 col-sm-6">
-                                        <p><?php if($value['your_ans'] == '')echo '-';else $value['your_ans'];?></p>
+                                    <?php 
+                                        if($value['your_ans'] == $value['correct_ans']){
+                                            $class = 'txt_green';
+                                        }
+                                        else{
+                                            $class = 'txt_red';
+                                        }
+
+                                    ?>
+                                    <div class="col-lg-8 col-sm-6 <?php echo $class;?>">
+                                        <p><?php if($value['your_ans'] == '')echo '-';else echo $value['your_ans'];?></p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
                                         <p>Correct Answer:</p>
