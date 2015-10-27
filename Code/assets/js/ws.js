@@ -16,9 +16,6 @@ function time_spent_counter()
     $('#time_spent').html(toHHMMSS(time_spent_per_question));
 }
 
-
-
-
 function exam_started_timer()
 {
     exam_time_to_left = exam_time_to_left - 1;
@@ -704,8 +701,8 @@ if ("WebSocket" in window)
                 str += '<div class="study_mate">';
                 str += '<div class="col-lg-9 col-md-8 col-sm-7">';
                 str += '<div class="mate_user_img">';
-                str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + list.profile_link + '">';
-                str += '</div><h4>' + list.full_name + '</h4>';
+                str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ list.user_id +'" onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + list.profile_link + '">';
+                str += '</div><h4 style="cursor:pointer;" data-type="show-profile" data-id="'+ list.user_id +'">' + list.full_name + '</h4>';
                 str += '<p>' + list.school_name + '</p>';
                 str += '<p class="txt_green">' + list.course_name + '</p>';
                 str += '</div>';
@@ -847,6 +844,15 @@ if ("WebSocket" in window)
             $('#view_profile_model div[data-type="profile_pic"]').html('<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.result.profile_link + '">');
             $('#view_profile_model h3[data-type="user-name"]').html(obj.result.full_name);
             $('#view_profile_model p[data-type="course-name"]').html('<span class="fa fa-graduation-cap"></span>' + obj.result.course_name);
+            if(obj.result.birthdate == null)
+                bdate = '-';
+            else
+                bdate = obj.result.birthdate;
+
+            $('#view_profile_model p[data-type="birth"]').html('<span class="fa fa-birthday-cake"></span>' + bdate);
+            $('#view_profile_model p[data-type="school"]').html('<span class="fa fa-university"></span>' + obj.result.school_name);
+            $('#view_profile_model p[data-type="email"]').html('<span class="fa fa glyphicon glyphicon-envelope"></span><i>' + obj.result.email_id+'</i>');
+            
            
             $('#view_profile_model').modal('show');
         }
@@ -1513,7 +1519,7 @@ $(document).on('click', 'a[data-type="load-activity-more"]', function () {
     ws.send(JSON.stringify(request));
 });
 
-$(document).on('click', 'p,img[data-type="show-profile"]', function () {
+$(document).on('click', 'h4,p,img[data-type="show-profile"]', function () {
     var request = {
         type: 'show_profile',
         to: 'self',

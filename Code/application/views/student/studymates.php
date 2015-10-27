@@ -88,9 +88,9 @@
                 <div class="study_mate">
                     <div class="col-lg-9 col-md-8 col-sm-7">
                         <div class="mate_user_img">
-                            <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                            <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                         </div>
-                        <h4><?php echo $value['full_name'];?></h4>
+                        <h4 style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id'];?>"><?php echo $value['full_name'];?></h4>
                         <p><?php echo $value['school_name'];?></p>
                         <p class="txt_green"><?php echo $value['course_name'];?></p>
                     </div>
@@ -233,19 +233,10 @@
                 </div>
                 <div class="basic_info">
                     <h3 data-type="user-name" class="txt_green text-uppercase"></h3>
-                    <p>
-                    <span class="fa fa-map-marker"></span>
-                    From Ghana
-                    </p>
-                    <p data-type="course-name">
-                        <span class="fa fa-graduation-cap"></span>
-                    </p>
-					<p><span class="fa fa-university"></span>Stanford University</p>
-					<a href="#"><span class="fa fa-bookmark"></span>Following 12 Authers</a>
-                    <p>
-                    <span class="fa fa-birthday-cake"></span>
-                    March 21, 1992
-                    </p>
+                    <p data-type="email"></p>
+                    <p data-type="course-name"></p>
+					<p data-type="school"></p>
+                    <p data-type="birth"></p>
 					<!--<button class="btn btn_green pull-right">Add Studymate</button>-->
                     <div class="clearfix"></div>
                 </div>

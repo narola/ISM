@@ -449,10 +449,10 @@
                               <!--card-->
                                 <div class="suggested_mates_card">
                                     <div class="mate_user_img">
-                                        <img src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                        <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id'];?>" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                     </div>
                                     <div class="mate_descrip">
-                                        <p class="mate_name"><?php echo $value['full_name'];?></p>
+                                        <p class="mate_name" style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id'];?>"><?php echo $value['full_name'];?></p>
                                         <p>Student from <?php echo $value['school_name'];?></p>
                                         <p class="txt_green"><?php echo $value['course_name'];?></p>
                                         <?php if($value['srid'] != '' && $value['is_delete'] == 0){?>
@@ -479,7 +479,7 @@
                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
               </a>
-              <?php } else { echo '<code>No more studymates</code>';} ?>
+              <?php } else { echo '<label class="txt_grey txt_red">No more studymates</label>';} ?>
             </div>                        
             
             <a href="student/studymates" class="btn btn_blue">Find More studymates</a>
@@ -520,9 +520,33 @@
         </div>            
     </div>
     <!--//STM-->
-    
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="view_profile_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:600px;margin-top:120px;">
+        <div class="modal-content">
+            <div class="modal-header notice_header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">STUDYMATE PROFILE</h4>
+                <small><?php echo date("d F Y",strtotime(date('Y-m-d')));?></small>
+            </div>
+            <div class="modal-body">
+                <div data-type="profile_pic" class="avatar1">
+                </div>
+                <div class="basic_info">
+                    <h3 data-type="user-name" class="txt_green text-uppercase"></h3>
+                    <p data-type="email"></p>
+                    <p data-type="course-name"></p>
+                    <p data-type="school"></p>
+                    <p data-type="birth"></p>
+                    <!--<button class="btn btn_green pull-right">Add Studymate</button>-->
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.modal -->
 <!--//side right-->
 <script type="text/javascript"> 
     $(document).ready(function() {
