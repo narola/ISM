@@ -1529,7 +1529,7 @@ $(document).on('click', 'a[data-type="load-activity-more"]', function () {
     ws.send(JSON.stringify(request));
 });
 
-$(document).on('click', 'h4,p,img[data-type="show-profile"]', function () {
+$(document).on('click', 'img[data-type="show-profile"],h4[data-type="show-profile"],p[data-type="show-profile"]', function () {
     var request = {
         type: 'show_profile',
         to: 'self',
