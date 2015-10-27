@@ -1010,6 +1010,9 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .bulk_action{
 	padding:15px 0 0 0;
+    position: absolute;
+    top: -66px;
+    width: 165px;
 }
 .bulk_action .form-group{
 	margin:0;

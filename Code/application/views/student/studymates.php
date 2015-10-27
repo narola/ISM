@@ -4,19 +4,6 @@
         $(this).addClass('active');
     });
 </script>
-<style>
-        .avatar1 {
-            border: 6px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            height: 200px;
-            margin: 0 auto 15px;
-            overflow: hidden;
-            width: 200px;
-        }
-		.avatar1 img{
-			width:100%;
-		}
-    </style>
 <!--main-->
 <div class="col-sm-7 main main2 stydymates mCustomScrollbar" data-mcs-theme="minimal-dark"> 
     <!--tabs-->

@@ -3677,3 +3677,20 @@ a.expand_ques + .row{
     height: 20px;
     padding: 2px 9px;
 }
+.avatar1 {
+	border: 6px solid rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	height: 200px;
+	margin: 0 auto 15px;
+	overflow: hidden;
+	width: 200px;
+}
+.avatar1 img{
+	width:100%;
+}
+#view_profile_model .avatar1{
+	float:left;
+}
+#view_profile_model .basic_info {
+    margin-left: 260px;
+}
