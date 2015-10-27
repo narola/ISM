@@ -117,11 +117,10 @@ class Question extends ADMIN_Controller {
 		$error_count = 0;
 
 		if($_POST){
-
 			$choices = $this->input->post('choices');
 			foreach($choices as $choice){
 				if($choice == ''){
-					$this->form_validation->set_rules('choice', 'Choice', 'trim|required');
+					$this->form_validation->set_rules('choice[]', 'Choice', 'trim|required');
 				}
 			}
 

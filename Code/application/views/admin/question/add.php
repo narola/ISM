@@ -351,9 +351,12 @@
         $('#my_select').select2();
         var blank_txt = "<span class='col-md-12 blank_error' style='color:red;'>Please Fill Existing Field.</span>";
 
+            var total_choice = $('#total_choices').val();
         $('.component').on('click', function(){
-            var firstText = $(this).prev('input').val(); 
-            var last_val = $('.choice_wrapper div').last();
+            var firstText = $(this).prev('input').val();
+            var last_val = $('.choice_wrapper div').last().find('.choice_detail').val();
+            // console.log("firstText: "+firstText);
+            // console.log("last_val: "+last_val);
             if( firstText !="" && last_val != ""){
                 var html = '<div class="form-group">';
                 html += '<input type="radio" name="correct_ans" id="correct_ans" onchange="correct_choice1(this.value)" value="1">';
@@ -361,13 +364,19 @@
                 html += '<i class="fa fa-minus-circle font-21 component_close"></i>';
                 html += '</div>';
                 $(this).parent().parent().append(html);
-                $(this).nextAll('span.blank_error').remove();
+                $(this).parent().parent().find('span.blank_error').remove();
+                $('#total_choices').val(total_choice++);
             }
             else{
-                if( ! $(this).nextAll('span').hasClass('blank_error') ){
-                    $(this).parent().append(blank_txt);
+                if( $(this).parent().nextAll('span').hasClass('blank_error') == false){
+                    $(this).parent().parent().append(blank_txt);
                 }
             }
+        });
+        
+        $('div.choice_wrapper').delegate('i.component_close', 'click', function(){
+            $(this).parent().remove();
+            $('#total_choices').val(total_choice--);
         });
 
         $(document).on('keyup','.choice_detail',function(){
@@ -376,6 +385,8 @@
                 var nextVal = $(this).parent().next().find('.choice_detail').val();
                 $(this).val(nextVal);
                 $(this).parent().next().remove();
+            }else{
+               $(this).parent().parent().find('span.blank_error').remove(); 
             }
         });
     });
