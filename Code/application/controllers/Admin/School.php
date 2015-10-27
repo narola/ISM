@@ -40,16 +40,7 @@ class School extends ADMIN_Controller {
                 $str .='&school_grade=' . $school_grade;
             }
             if (!empty($q)) {
-
                 $where['like'][TBL_SCHOOLS . '.school_name'] = $q;
-                $where['or_like'][TBL_SCHOOLS . '.principal_name'] = $q;
-                $where['or_like'][TBL_SCHOOLS . '.school_type'] = $q;
-                $where['or_like'][TBL_SCHOOLS . '.address'] = $q;
-                $where['or_like'][TBL_SCHOOLS . '.school_contact_no1'] = $q;
-                $where['or_like'][TBL_SCHOOLS . '.school_contact_no2'] = $q;
-                $where['or_like'][TBL_CITIES . '.city_name'] = $q;
-                $where['or_like'][TBL_STATES . '.state_name'] = $q;
-                $where['or_like'][TBL_COUNTRIES . '.country_name'] = $q;
                 $str.='&q=' . $q;
             }
 
@@ -65,11 +56,15 @@ class School extends ADMIN_Controller {
             } else {
                 $config['base_url'] = base_url() . 'admin/school/index';
             }
+
             $config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
             $offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'    
+
         } else {
+
             $config['base_url'] = base_url() . 'admin/school/index';
             $offset = $this->uri->segment(4);
+            
         }
 
         $config['uri_segment'] = 4;

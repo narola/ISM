@@ -110,8 +110,8 @@ class Topic extends ADMIN_Controller {
 											);
 		$this->pagination->initialize($config);
 
-		$this->data['roles'] = select(TBL_ROLES,FALSE,FALSE,null);
-		$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,FALSE,null);
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>'0')),null);
+		$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>'0')),null);
 
 		$this->data['page_title'] = 'Topics';
 		$this->template->load('admin/default','admin/topic/list', $this->data);
@@ -513,7 +513,6 @@ class Topic extends ADMIN_Controller {
 				 "is_archived"=>0,
 				 "is_testdata"=>'yes',
 				);
-
 
 			update(TBL_TUTORIAL_TOPIC,$id,$data);
 

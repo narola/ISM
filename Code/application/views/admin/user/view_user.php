@@ -239,10 +239,8 @@
     } 
 
     function filter_data_reverse(){
-
         $('#q').removeAttr('name');
         $('#filter').submit();        
-
     }
 
     function filter_data(){
