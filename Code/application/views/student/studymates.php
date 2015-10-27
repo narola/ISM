@@ -138,7 +138,9 @@
                             $i = 1;
                             foreach ($recommended_studymates as $key => $value) {
                             if($i/6==1){
-                                echo '</div><div class="item">';     
+                                echo '</div><div class="item">';  
+                                $i = 1;     
+
                             }
                         ?>
                             <!--card-->
