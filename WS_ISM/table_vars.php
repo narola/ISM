@@ -24,7 +24,7 @@ define("TABLE_CLASSROOM_ASSIGNMENT",   "classroom_assignment");
 define("TABLE_CLASSROOMS",   "classrooms");
 define("TABLE_COUNTRIES",   "countries");
 define("TABLE_COURSE_CATEGORY",   "course_category");
-define("TABLE_COURSE_SUBJECT",   "course_subject");
+define("TABLE_CLASSROOM_SUBJECT",   "classroom_subject");
 define("TABLE_COURSES",   "courses");
 define("TABLE_DISTRICTS",   "districts");
 define("TABLE_EXAM_QUESTION",   "exam_question");
@@ -108,7 +108,7 @@ define("TABLE_USER_PERMISSION",   "user_permission");
 define("TABLE_USER_PROFILE_PICTURE",   "user_profile_picture");
 define("TABLE_USERS",   "users");
 define("TABLE_WORD_WATCH",   "word_watch");
-
+define("TABLE_CLASSWALL","classwall");
 
 
 ?>

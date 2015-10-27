@@ -2,11 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: c162
- * Date: 23/10/15
- * Time: 9:56 AM
+ * Date: 26/10/15
+ * Time: 11:19 AM
  */
-include_once 'ConstantValues.php';
-class StudyMateFunctions
+
+class TeacherFunctions
 {
 
     function __construct()
@@ -18,71 +18,80 @@ class StudyMateFunctions
     {
         switch($service)
         {
-            case "GetStudymates":
+            case "PostForClasswall":
             {
-                return $this->getStudymates($postData);
+                return $this->postForClasswall($postData);
             }
                 break;
-            case "GetStudymatesWithDetails":
+            case "GetAllClasswallPost":
             {
-                return $this->getStudymatesWithDetails($postData);
-            }
-                break;
-
-            case "GetSuggestedStudymates":
-            {
-                return $this->getSuggestedStudymates($postData);
+                return $this->getAllClasswallPost($postData);
             }
                 break;
 
-            case "SendRequestToStudymate":
+            case "GetMyStudents":
             {
-                return $this->sendRequestToStudymate($postData);
+                return $this->getMyStudents($postData);
             }
                 break;
 
-            case "AcceptRequestFromStudymate":
+            case "GetAllSubjectsByClass":
             {
-                return $this->acceptRequestFromStudymate($postData);
+                return $this->getAllSubjectsByClass($postData);
+            }
+                break;
+
+            case "GetAllNotes":
+            {
+                return $this->getAllNotes($postData);
             }
                 break;
 
         }
     }
     /*
-    * getStudentAcademicInfo
+    * PostForClasswall
+     * This service will be used for teacher to post messages for class wall.
     */
 
-    public function getStudentAcademicInfo ($postData)
+    public function PostForClasswall ($postData)
     {
-//        $data = array();
-//        $response = array();
-//
-//        $user_id = validateObject($postData, 'user_id', "");
-//        $user_id = addslashes($user_id);
-//
-//        $queryOn="";
-//        $queryCheckFeed = "SELECT * FROM ".TABLE_USERS." users INNER JOIN " . TABLE_STUDENT_ACADEMIC_INFO . "academicInfo INNER JOIN ".TABLE_SCHOOLS." schools INNER JOIN ".TABLE_COURSES."  courses on ".$queryOn." where user_id =" . $like_by . " and feed_id=" . $feed_id;
-//        $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
-//        // echo $queryCheckFeed;
-//        if (mysql_num_rows($resultCheckFeed)) {
-//            $val = mysql_fetch_assoc($resultCheckFeed);
-//            $data['school_id'] = $val['school_id'];
-//            $data['school_name'] = $val['school_name'];
-//            $data['course_id'] = $val['course_id'];
-//            $data['course_name'] = $val['course_name'];
-//            $data['academic_year'] = $val['academic_year'];
-//            $data['classroom_id'] = $val['classroom_id'];
-//
-//
-//        }
+        $data = array();
+        $response = array();
+
+        $post_by = validateObject($postData, 'post_by', "");
+        $post_by = addslashes($post_by);
+
+        $wall_post = validateObject($postData, 'wall_post', "");
+        $wall_post = addslashes($wall_post);
+
+        $classroom_id = validateObject($postData, 'classroom_id', "");
+        $classroom_id = addslashes($classroom_id);
+
+        $insertFields="`wall_post`, `post_by`, `classroom_id`, `modified_date`";
+        $insertValues="'".$wall_post."',".$post_by.", " .$classroom_id.",'".getDefaultDate()."'";
+        $query = "INSERT INTO ".TABLE_CLASSWALL."(".$insertFields.") VALUES (".$insertValues.")";
+        $result = mysql_query($query) or $message = mysql_error();
+        if ($result) {
+            $status = "success";
+            $message = "Post successfully submitted";
+        }
+        else{
+            $status = "failed";
+            $message = "";
+        }
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
     }
 
     /*
-      * LikeFeed
+      * getAllClasswallPost
+      * This service will be used to fetch all the class wall post.
       */
 
-    public function likeFeed ($postData)
+    public function getAllClasswallPost ($postData)
     {
         $data=array();
         $response=array();
@@ -90,197 +99,243 @@ class StudyMateFunctions
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
 
-        $liked_id = validateObject ($postData , 'liked_id', "");
-        $unliked_id = validateObject ($postData , 'unliked_id', "");
+        $role_id = validateObject ($postData , 'role_id', "");
+        $role_id = addslashes($role_id);
 
-        foreach($unliked_id as $feed_id) {
-            $insertFields = "`like_by`, `feed_id`";
-            $insertValues = "" . $user_id . ", " . $feed_id;
-            $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id;
-            $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
-            echo $queryCheckFeed . "\n";
-            if (mysql_num_rows($resultCheckFeed)) {
-                $val = mysql_fetch_assoc($resultCheckFeed);
-                $feed_liked_id = $val['id'];
-                $queryLikedFeedDelete = "DELETE FROM " . TABLE_FEED_LIKE . " where id =" . $feed_liked_id;
-                $resultLikedFeedDelete = mysql_query($queryLikedFeedDelete) or $message = mysql_error();
-
-            }
+        if($role_id==2){
+            //student
+            $table=TABLE_STUDENT_ACADEMIC_INFO;
         }
-        foreach($liked_id as $feed_id) {
-            $insertFields = "`like_by`, `feed_id`";
-            $insertValues = "" . $user_id . ", " . $feed_id;
-            $query="INSERT INTO " .TABLE_FEED_LIKE." (".$insertFields.") VALUES (".$insertValues.")";
-            $result=mysql_query($query) or $message=mysql_error();
+        else if($role_id==3) {
+            //teacher
+            $table=TABLE_TEACHER_SUBJECT_INFO;
         }
-
-        $status = "success";
-        $message = "Successfully";
-        $response['data']=$data;
-        $response['status']=$status;
-        $response['message']=$message;
-        return $response;
-
-    }
-
-    /*
-       * AddComment
-       */
-
-    public function addComment ($postData)
-    {
-        $data=array();
-        $response=array();
-
-        $feed_id = validateObject ($postData , 'feed_id', "");
-        $feed_id = addslashes($feed_id);
-
-        $comment_by = validateObject ($postData , 'comment_by', "");
-        $comment_by = addslashes($comment_by);
-
-        $comment = validateObject ($postData , 'comment', "");
-        $comment = addslashes($comment);
-
-        $insertFields="`comment`, `comment_by`, `feed_id`";
-        $insertValues="'".$comment."', ".$comment_by.", ".$feed_id."";
-
-
-        $query="INSERT INTO " .TABLE_FEED_COMMENT." (".$insertFields.") VALUES (".$insertValues.")";
-        $result=mysql_query($query) or $message=mysql_error();
-        //echo $query;
-        if($result)
+        $query = "SELECT `classroom_id`FROM ".$table." WHERE `user_id`=" . $user_id;
+        $result = mysql_query($query) or $message = mysql_error();
+        if (mysql_num_rows($result))
         {
-            $status="success";
-            $message="Comment added successfully";
-        }
-        else
-        {
-            $status="failed";
-            $message="";
-        }
-        $response['data']=$data;
-        $response['status']=$status;
-        $response['message']=$message;
-        return $response;
-
-    }
-    /*
-    * TagFriendInFeed
-    */
-
-    public function tagFriendInFeed ($postData)
-    {
-        $data=array();
-        $response=array();
-
-        $feed_id = validateObject ($postData , 'feed_id', "");
-        $feed_id = addslashes($feed_id);
-
-        $user_id = validateObject ($postData , 'user_id', "");
-        $user_id = addslashes($user_id);
-
-        $tagged_by = validateObject ($postData , 'tagged_by', "");
-        $tagged_by = addslashes($tagged_by);
-
-        $insertFields="`user_id`, `feed_id`, `tagged_by`";
-        $insertValues=$user_id.", ".$feed_id.", ".$tagged_by;
-
-
-        $query="INSERT INTO " .TABLE_FEEDS_TAGGED_USER." (".$insertFields.") VALUES (".$insertValues.")";
-        $result=mysql_query($query) or $message=mysql_error();
-        // echo $query;
-        if($result)
-        {
-            $status="success";
-            $message="Tagged successfully";
-        }
-        else
-        {
-            $status="failed";
-            $message="";
-        }
-        $response['data']=$data;
-        $response['status']=$status;
-        $response['message']=$message;
-        return $response;
-
-    }
-
-    /*
-     * postFeed
-     *
-     */
-    public function postFeed ($postData)
-    {
-        $data=array();
-        $response=array();
-        $feed_by = validateObject ($postData , 'feed_by', "");
-        $feed_by = addslashes($feed_by);
-
-        $feed_text = validateObject ($postData , 'feed_text', "");
-        $feed_text = addslashes($feed_text);
-
-        $video_link = validateObject ($postData , 'video_link', "");
-        $video_link = addslashes($video_link);
-
-        $audio_link = validateObject ($postData , 'audio_link', "");
-        $audio_link = addslashes($audio_link);
-
-        $images = validateObject ($postData , 'images', "");
-        // $images = addslashes($images);
-
-        $posted_on = validateObject ($postData , 'posted_on', "");
-        $posted_on = addslashes($posted_on);
-
-        if (!is_dir(FEEDS_MEDIA)) {
-            mkdir(FEEDS_MEDIA, 0777, true);
-        }
-        $feed_media_dir = "user_" . $feed_by . "/";
-        $dir = FEEDS_MEDIA . $feed_media_dir;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777);
-        }
-        $insertFields="`feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`";
-        $insertValues=$feed_by.",'".$feed_text."','".$video_link."','".$audio_link."','".$posted_on."'";
-        $queryPostFeed="INSERT INTO ".TABLE_FEEDS."(".$insertFields.") VALUES (".$insertValues.")";
-
-        $result=mysql_query($queryPostFeed) or $message=mysql_error();
-        if($result)
-        {
-            $feed_id=mysql_insert_id();
-            if($video_link!=null)
+            while ($row = mysql_fetch_assoc($result))
             {
-                //$this->uploadMedia($feed_id,"video",$feed_media_dir);
-            }
-            $i=0;
-            if($images!=null)
-            {
-                foreach($images as $feed_image)
+                $classroom_id = $row['classroom_id'];
+               // echo $classroom_id."\n";
+                $getFields="classwall.id,classwall.created_date,users.profile_pic,classwall.wall_post,classwall.post_by,users.full_name";
+                $queryGetPost = "SELECT ".$getFields." FROM ".TABLE_CLASSWALL." classwall INNER JOIN ".TABLE_USERS." users on classwall.post_by=users.id WHERE `classroom_id`=" . $classroom_id;
+                $resultGetPost = mysql_query($queryGetPost) or $message = mysql_error();
+                //echo $queryGetPost;
+                if (mysql_num_rows($resultGetPost))
                 {
-                    if($feed_image!=null)
+                    while ($val = mysql_fetch_assoc($resultGetPost))
                     {
+                        $post = array();
+                        $post['classwall_id'] = $val['id'];
+                        $post['wall_post'] = $val['wall_post'];
+                        $post['post_by_id'] = $val['post_by'];
+                        $post['post_by_user'] = $val['full_name'];
+                        $post['post_user_pic'] = $val['profile_pic'];
+                        $post['posted_on'] = $val['created_date'];
+                        $post['classroom_id'] = $classroom_id;
 
-                        $feed_image_name = "IMG-" . date("Ymd-his").$i++.".png";
-                        $feed_image_link = $feed_media_dir.$feed_image_name;
-                        file_put_contents(FEEDS_MEDIA.$feed_image_link, base64_decode($feed_image));
-                        $queryInsertImage="INSERT INTO `feed_image`(`feed_id`, `image_link`) VALUES (".$feed_id.",'".$feed_image_link."')";
-                        $resultImageUploading=mysql_query($queryInsertImage) or $message=mysql_error();
+                        $data[] = $post;
                     }
-
+                    $status = "success";
+                    $message = "Successfully";
+                }
+                else{
+                    $status = "success";
+                    $message = DEFAULT_NO_RECORDS;
                 }
             }
-            $message="“Post successfully submitted";
+        }
+        else{
+            $status = "success";
+            $message = DEFAULT_NO_RECORDS;
+        }
+
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
+    }
+
+    /*
+     * GetMyStudents
+     * This service will be used to fetch students that belongs to the specific teacher.
+     */
+
+    public function getMyStudents ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+
+        $query="SELECT `student_id`,is_online FROM ".TABLE_STUDENT_TEACHER." WHERE `teacher_id`=".$user_id;
+        $result=mysql_query($query) or $message=mysql_error();
+        //echo $query;
+        if(mysql_num_rows($result))
+        {
+            while($row=mysql_fetch_assoc($result))
+            {
+                $post=array();
+                $student_id=$row['student_id'];
+               // echo "\n".$student_id."\n";
+               // $query="SELECT * FROM ".TABLE_USERS." WHERE `id`=".$student_id;
+               // $result=mysql_query($query) or $message=mysql_error();
+                $queryInnerJoin=TABLE_USERS." users INNER JOIN ".TABLE_STUDENT_ACADEMIC_INFO." studentAcademicInfo INNER JOIN ".TABLE_SCHOOLS." schools";
+                $queryOn="users.id=studentAcademicInfo.user_id or schools.id=studentAcademicInfo.school_id";
+
+                $getField="users.id,schools.school_name,users.full_name,users.profile_pic,users.id";
+                $queryStudent="SELECT ".$getField." from ".$queryInnerJoin." on ".$queryOn."  where users.id=".$student_id;
+                $resultStudent=mysql_query($queryStudent) or $message=mysql_error();
+               // echo $queryStudent."\n";
+                if(mysql_num_rows($resultStudent)) {
+                   $val = mysql_fetch_assoc($resultStudent);
+
+                        $post['user_id'] = $val['id'];
+                        $post['full_name'] = $val['full_name'];
+                        $post['is_online'] = $row['is_online'];
+                        $post['profile_pic'] = $val['profile_pic'];
+                        $post['school_name'] = $val['school_name'];
+                        $data[]=$post;
+                       // echo $post."\n";
+
+                }
+
+
+            }
             $status="success";
+           // $message="";
         }
         else
         {
-            $status="failed";
+            $status="success";
+          //  $message=DEFAULT_NO_RECORDS;
         }
-
+        $response['data']=$data;
         $response['status']=$status;
         $response['message']=$message;
-        $response['data']=$data;
         return $response;
+
+    }
+
+    /*
+    * getAllSubjectsByClass
+     *This service will be used to fetch the subjects that are specific to a classroom.
+    */
+
+    public function getAllSubjectsByClass ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $role_id = validateObject ($postData , 'role_id', "");
+        $role_id = addslashes($role_id);
+
+        if($role_id==2){
+            //student
+            $table=TABLE_STUDENT_ACADEMIC_INFO;
+        }
+        else if($role_id==3) {
+            //teacher
+            $table=TABLE_TEACHER_SUBJECT_INFO;
+        }
+
+        $query = "SELECT `classroom_id`FROM ".$table." WHERE `user_id`=" . $user_id;
+        $result = mysql_query($query) or $message = mysql_error();
+        if (mysql_num_rows($result))
+        {
+            while ($row = mysql_fetch_assoc($result))
+            {
+                $classroom_id = $row['classroom_id'];
+                // echo $classroom_id."\n";
+                $getFields="classroom_subject.classroom_id,classroom_subject.subject_id,subjects.subject_name,subjects.subject_image";
+                $queryGetPost = "SELECT ".$getFields." FROM ".TABLE_CLASSROOM_SUBJECT." classroom_subject INNER JOIN ".TABLE_SUBJECTS." subjects on classroom_subject.subject_id=subjects.id  WHERE classroom_subject.`classroom_id`=" . $classroom_id;
+                $resultGetPost = mysql_query($queryGetPost) or $message = mysql_error();
+               // echo $queryGetPost;
+
+                if (mysql_num_rows($resultGetPost))
+                {
+                    while ($val = mysql_fetch_assoc($resultGetPost))
+                    {
+                        $data[] = $val;
+                    }
+                    $message = "";
+                }
+            }
+        }
+        else{
+            $message = DEFAULT_NO_RECORDS;
+        }
+        $status = "success";
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
+    }
+
+    /*
+     * getAllNotes
+     * This service will be used to fetch all the notes that belongs to the user.
+     *
+     */
+    public function getAllNotes ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $role_id = validateObject ($postData , 'role_id', "");
+        $role_id = addslashes($role_id);
+
+        if($role_id==2){
+            //student
+            $table=TABLE_STUDENT_ACADEMIC_INFO;
+        }
+        else if($role_id==3) {
+            //teacher
+            $table=TABLE_TEACHER_SUBJECT_INFO;
+        }
+
+        $query = "SELECT `classroom_id`FROM ".$table." WHERE `user_id`=" . $user_id;
+        $result = mysql_query($query) or $message = mysql_error();
+       // echo $query;
+        if (mysql_num_rows($result))
+        {
+            while ($row = mysql_fetch_assoc($result))
+            {
+                $classroom_id = $row['classroom_id'];
+                // echo $classroom_id."\n";
+                $getFields="notes.id,notes.note_title,notes.note,notes.topic_id,topics.topic_name";
+                $queryGetPost = "SELECT ".$getFields." FROM ".TABLE_NOTES." notes INNER JOIN ".TABLE_TOPICS." topics on topics.id=notes.topic_id WHERE `classroom_id`=" . $classroom_id;
+                $resultGetPost = mysql_query($queryGetPost) or $message = mysql_error();
+                // echo $queryGetPost;
+
+                if (mysql_num_rows($resultGetPost)) {
+                    while ($val = mysql_fetch_assoc($resultGetPost)){
+                        $data[] = $val;
+                    }
+                    $message = "";
+                }
+            }
+        }
+        else{
+            $message = DEFAULT_NO_RECORDS;
+        }
+        $status = "success";
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
     }
 
     public function uploadMedia($postData)
@@ -595,7 +650,7 @@ class StudyMateFunctions
     {
         $response=array();
         $data=array();
-
+        $response['data']=array();
 
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
@@ -611,7 +666,7 @@ class StudyMateFunctions
                 $post['user_id']=$val['mate_id'];
                 $post['full_name']=$val['username'];
                 $post['profile_pic']=$val['profile_pic'];
-                $data[]=$post;
+                array_push($data,$post);
             }
             $status="success";
             $message="";
@@ -624,7 +679,7 @@ class StudyMateFunctions
             $data="";
         }
 
-        $response['data']=$data;
+        array_push($response['data'],$data);
         $response['message'] = $message;
         $response['status'] = $status;
 
@@ -645,7 +700,7 @@ class StudyMateFunctions
         $queryOn="studymates.mate_id=users.id ";
 
         $queryGetStudyMateAllDetail="SELECT * from ".$queryInnerJoin." on ".$queryOn."  where mate_of=".$user_id;
-        //echo $queryGetStudyMateAllDetail;
+        echo $queryGetStudyMateAllDetail;
         $resultGetStudyMateAllDetail=mysql_query($queryGetStudyMateAllDetail) or $message=mysql_error();
         if(mysql_num_rows($resultGetStudyMateAllDetail))
         {
@@ -679,4 +734,3 @@ class StudyMateFunctions
         return $response;
     }
 }
-?>

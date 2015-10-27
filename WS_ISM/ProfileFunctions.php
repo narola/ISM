@@ -49,31 +49,6 @@ class ProfileFunctions
             }
                 break;
 
-            case "PostFeed":
-            {
-                return $this->postFeed($postData);
-            }
-                break;
-            case "UploadMedia":
-            {
-               return $this->uploadMedia($postData);
-            }
-                break;
-            case "TagFriendInFeed":
-            {
-                return $this->tagFriendInFeed($postData);
-            }
-                break;
-            case "AddComment":
-            {
-                return $this->addComment($postData);
-            }
-                break;
-            case "LikeFeed":
-            {
-                return $this->likeFeed($postData);
-            }
-                break;
             case "GetStudentAcademicInfo":
             {
                 return $this->getStudentAcademicInfo($postData);
@@ -86,347 +61,42 @@ class ProfileFunctions
 
     public function getStudentAcademicInfo ($postData)
     {
-//        $data = array();
-//        $response = array();
-//
-//        $user_id = validateObject($postData, 'user_id', "");
-//        $user_id = addslashes($user_id);
-//
-//        $queryOn="";
-//        $queryCheckFeed = "SELECT * FROM ".TABLE_USERS." users INNER JOIN " . TABLE_STUDENT_ACADEMIC_INFO . "academicInfo INNER JOIN ".TABLE_SCHOOLS." schools INNER JOIN ".TABLE_COURSES."  courses on ".$queryOn." where user_id =" . $like_by . " and feed_id=" . $feed_id;
-//        $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
-//        // echo $queryCheckFeed;
-//        if (mysql_num_rows($resultCheckFeed)) {
-//            $val = mysql_fetch_assoc($resultCheckFeed);
-//            $data['school_id'] = $val['school_id'];
-//            $data['school_name'] = $val['school_name'];
-//            $data['course_id'] = $val['course_id'];
-//            $data['course_name'] = $val['course_name'];
-//            $data['academic_year'] = $val['academic_year'];
-//            $data['classroom_id'] = $val['classroom_id'];
-//
-//
-//        }
-    }
+        $data = array();
+        $response = array();
 
-    /*
-      * LikeFeed
-      */
-
-    public function likeFeed ($postData)
-    {
-        $data=array();
-        $response=array();
-
-        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
 
-        $liked_id = validateObject ($postData , 'liked_id', "");
-        $unliked_id = validateObject ($postData , 'unliked_id', "");
-        if($unliked_id!=null){
-        foreach($unliked_id as $feed_id) {
-            $insertFields = "`like_by`, `feed_id`";
-            $insertValues = "" . $user_id . ", " . $feed_id;
-            $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id;
-            $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
-            echo $queryCheckFeed . "\n";
-            if (mysql_num_rows($resultCheckFeed)) {
-                $val = mysql_fetch_assoc($resultCheckFeed);
-                $feed_liked_id = $val['id'];
-                $querySET="SET `modified_date`=".getDefaultDate().",`is_delete`=0";
-                $queryLikedFeedUpdate = "UPDATE " . TABLE_FEED_LIKE . " where id =" . $feed_liked_id;
-                $resultLikedFeedUpdate = mysql_query($queryLikedFeedUpdate) or $message = mysql_error();
-
-            }
-        }
-        }
-
-        if($liked_id!=null) {
-            foreach ($liked_id as $feed_id) {
-                if (mysql_num_rows($resultCheckFeed)) {
-                    $val = mysql_fetch_assoc($resultCheckFeed);
-                    $feed_liked_id = $val['id'];
-                    $querySET = "SET `modified_date`=" . getDefaultDate() . ",`is_delete`=1";
-                    $queryLikedFeedUpdate = "UPDATE " . TABLE_FEED_LIKE . " where id =" . $feed_liked_id;
-                    $resultLikedFeedUpdate = mysql_query($queryLikedFeedUpdate) or $message = mysql_error();
-
-                } else {
-                    $insertFields = "`like_by`, `feed_id`,`is_delete`";
-                    $insertValues = "" . $user_id . ", " . $feed_id . ",1";
-                    $query = "INSERT INTO " . TABLE_FEED_LIKE . " (" . $insertFields . ") VALUES (" . $insertValues . ")";
-                    $result = mysql_query($query) or $message = mysql_error();
-                }
-            }
-        }
-        $status = "success";
-        $message = "Successfully";
-        $response['data']=$data;
-        $response['status']=$status;
-        $response['message']=$message;
-        return $response;
-
-    }
-
-    /*
-       * AddComment
-       */
-
-    public function addComment ($postData)
-    {
-        $data=array();
-        $response=array();
-
-        $feed_id = validateObject ($postData , 'feed_id', "");
-        $feed_id = addslashes($feed_id);
-
-        $comment_by = validateObject ($postData , 'comment_by', "");
-        $comment_by = addslashes($comment_by);
-
-        $comment = validateObject ($postData , 'comment', "");
-        $comment = addslashes($comment);
-
-        $insertFields="`comment`, `comment_by`, `feed_id`";
-        $insertValues="'".$comment."', ".$comment_by.", ".$feed_id."";
-
-
-        $query="INSERT INTO " .TABLE_FEED_COMMENT." (".$insertFields.") VALUES (".$insertValues.")";
-        $result=mysql_query($query) or $message=mysql_error();
-        //echo $query;
-        if($result)
-        {
+        $queryFrom=TABLE_STUDENT_ACADEMIC_INFO . " academicInfo INNER JOIN ".TABLE_CLASSROOMS." classroom INNER JOIN ".TABLE_SCHOOLS." schools INNER JOIN ".TABLE_COURSES."  courses INNER JOIN ".TABLE_SCHOOL_CLASSROOM."  school_classroom ";
+        $queryGetFields="school_classroom.classroom_name,academicInfo.school_id,academicInfo.classroom_id,academicInfo.academic_year,academicInfo.course_id,schools.school_name,classroom.class_name,courses.course_name";
+        $queryOn="academicInfo.school_id=school_classroom.school_id and academicInfo.classroom_id=school_classroom.classroom_id and academicInfo.school_id=schools.id and academicInfo.classroom_id=classroom.id and academicInfo.course_id=courses.id";
+        $query = "SELECT ".$queryGetFields. " FROM ".$queryFrom ." on ".$queryOn." where user_id =" . $user_id;
+        $result = mysql_query($query) or $message = mysql_error();
+       //  echo $query;
+        //echo $message;
+        if (mysql_num_rows($result)) {
+            $val = mysql_fetch_assoc($result);
+            $data['school_id'] = $val['school_id'];
+            $data['school_name'] = $val['school_name'];
+            $data['course_id'] = $val['course_id'];
+            $data['course_name'] = $val['course_name'];
+            $data['academic_year'] = $val['academic_year'];
+            $data['classroom_id'] = $val['classroom_id'];
+            $data['classroom_name'] = $val['class_name'];
+            $data['class_division'] = $val['classroom_name'];
             $status="success";
-            $message="Comment added successfully";
+            //$message="";
         }
-        else
-        {
+        else{
             $status="failed";
-            $message="";
+            //$message=DEFAULT_NO_RECORDS;
+
         }
         $response['data']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
-
     }
-    /*
-    * TagFriendInFeed
-    */
-
-    public function tagFriendInFeed ($postData)
-    {
-        $data=array();
-        $response=array();
-
-        $feed_id = validateObject ($postData , 'feed_id', "");
-        $feed_id = addslashes($feed_id);
-
-        $user_id = validateObject ($postData , 'user_id', "");
-        $user_id = addslashes($user_id);
-
-        $tagged_by = validateObject ($postData , 'tagged_by', "");
-        $tagged_by = addslashes($tagged_by);
-
-        $insertFields="`user_id`, `feed_id`, `tagged_by`";
-        $insertValues=$user_id.", ".$feed_id.", ".$tagged_by;
-
-
-        $query="INSERT INTO " .TABLE_FEEDS_TAGGED_USER." (".$insertFields.") VALUES (".$insertValues.")";
-        $result=mysql_query($query) or $message=mysql_error();
-       // echo $query;
-        if($result)
-        {
-            $status="success";
-            $message="Tagged successfully";
-        }
-        else
-        {
-            $status="failed";
-            $message="";
-        }
-        $response['data']=$data;
-        $response['status']=$status;
-        $response['message']=$message;
-        return $response;
-
-    }
-
-   /*
-    * postFeed
-    *
-    */
-    public function postFeed ($postData)
-    {
-        $data=array();
-        $response=array();
-        $feed_by = validateObject ($postData , 'feed_by', "");
-        $feed_by = addslashes($feed_by);
-
-        $feed_text = validateObject ($postData , 'feed_text', "");
-        $feed_text = addslashes($feed_text);
-
-        $video_link = validateObject ($postData , 'video_link', "");
-        $video_link = addslashes($video_link);
-
-        $audio_link = validateObject ($postData , 'audio_link', "");
-        $audio_link = addslashes($audio_link);
-
-        $images = validateObject ($postData , 'images', "");
-        // $images = addslashes($images);
-
-        $posted_on = validateObject ($postData , 'posted_on', "");
-        $posted_on = addslashes($posted_on);
-
-        if (!is_dir(FEEDS_MEDIA)) {
-            mkdir(FEEDS_MEDIA, 0777, true);
-        }
-        $feed_media_dir = "user_" . $feed_by . "/";
-        $dir = FEEDS_MEDIA . $feed_media_dir;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777);
-        }
-        $insertFields="`feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`";
-        $insertValues=$feed_by.",'".$feed_text."','".$video_link."','".$audio_link."','".$posted_on."'";
-        $queryPostFeed="INSERT INTO ".TABLE_FEEDS."(".$insertFields.") VALUES (".$insertValues.")";
-
-        $result=mysql_query($queryPostFeed) or $message=mysql_error();
-        if($result)
-        {
-            $feed_id=mysql_insert_id();
-            if($video_link!=null)
-            {
-                //$this->uploadMedia($feed_id,"video",$feed_media_dir);
-            }
-            $i=0;
-            if($images!=null)
-            {
-                foreach($images as $feed_image)
-                {
-                    if($feed_image!=null)
-                    {
-
-                        $feed_image_name = "IMG-" . date("Ymd-his").$i++.".png";
-                        $feed_image_link = $feed_media_dir.$feed_image_name;
-                        file_put_contents(FEEDS_MEDIA.$feed_image_link, base64_decode($feed_image));
-                        $queryInsertImage="INSERT INTO `feed_image`(`feed_id`, `image_link`) VALUES (".$feed_id.",'".$feed_image_link."')";
-                        $resultImageUploading=mysql_query($queryInsertImage) or $message=mysql_error();
-                    }
-
-                }
-            }
-            $message="“Post successfully submitted";
-            $status="success";
-        }
-        else
-        {
-            $status="failed";
-        }
-
-        $response['status']=$status;
-        $response['message']=$message;
-        $response['data']=$data;
-        return $response;
-    }
-
-    public function uploadMedia($postData)
-    {
-
-
-        $dir = '';
-        $mediaName = '';
-        $created_date = date("Y-m-d H:i:s");
-        //create Random String.
-        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        //generate random string with minimum 5 and maximum of 10 characters
-        $str = substr(str_shuffle($chars), 0, 8);
-        //add extension to file
-        $name = $str;
-        $feed_id=$_POST['feed_id'];
-
-        $feed_by=$_POST['feed_by'];
-        $mediaType=$_POST['mediaType'];
-
-        if (!is_dir(FEEDS_MEDIA)) {
-            mkdir(FEEDS_MEDIA, 0777, true);
-        }
-        $feed_media_dir = "user_" . $feed_by . "/";
-        $dir = FEEDS_MEDIA . $feed_media_dir;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777);
-        }
-        if("video"==$mediaType)
-        {
-            if ($_FILES["video_link"]["error"] > 0) {
-                $message = $_FILES["video_link"]["error"];
-
-            } else {
-                // Image 5 = Video 6 = Audio 7
-
-                $mediaName = $name . '.mp4';
-                $uploadDir = $dir;
-                $uploadFile = FEEDS_MEDIA.$feed_media_dir . $mediaName;
-                if (move_uploaded_file($_FILES['video_link']['tmp_name'], $uploadFile)) {
-                    //store image data.
-                    $link=$feed_media_dir . $mediaName;
-                    $procedure_insert_set = "CALL UPDATE_VIDEO_LINK ('".$link."','".$feed_id."' )";
-                    $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
-                    $status = "1";
-                    $message = "Successfully uploaded!.";
-                } else {
-                    $status = 2;
-                    $message = "Failed to upload media on server.";
-                }
-            }
-        }
-        else if("audio"==$mediaType)
-        {
-            if ($_FILES["audio_link"]["error"] > 0) {
-                $message = $_FILES["audio_link"]["error"];
-                $status=2;
-            } else {
-                $mediaName = $name . '.mp3';
-
-                $uploadDir = $dir;
-                $uploadFile = FEEDS_MEDIA .$feed_media_dir. $mediaName;
-                if (move_uploaded_file($_FILES['audio_link']['tmp_name'], $uploadFile)) {
-                    //store image data.
-
-                    $link=$feed_media_dir . $mediaName;
-                    $procedure_insert_set = "CALL UPDATE_AUDIO_LINK ('".$link."','".$feed_id."' )";
-                    $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
-                    $status = "1";
-                    $message = "Successfully uploaded!.";
-                } else {
-                    $status = 2;
-                    $message = "Failed to upload media on server.";
-
-                }
-            }
-
-        }
-
-
-        $data['status']=$status;
-        $data['link']=$link;
-        $data['message']=$message;
-        return $data;
-
-    }
-
-
-    /** Get Extension
-     * @param $str
-     * @return string
-     */
-    private function getExtension($str)
-    {
-        $i = strrpos($str,".");
-        if (!$i) { return ""; }
-
-        $l = strlen($str) - $i;
-        $ext = substr($str,$i+1,$l);
-        return $ext;
-    }
-
 
     public function forgotPassword ($postData)
     {
@@ -480,9 +150,8 @@ class ProfileFunctions
         $data=array();
         $response=array();
         $username = validateObject ($postData , 'username', "");
-        //echo "\n".$username;
         $username = addslashes($username);
-        //echo "\n".$username;
+
         if($username!=null)
         {
             $queryUserName="SELECT `username` FROM ".TABLE_USERS." WHERE `username`='".$username."'";
@@ -648,7 +317,7 @@ class ProfileFunctions
         $password = validateObject ($postData , 'password', "");
         $password = addslashes($password);
 
-        $queryUser="SELECT id,username,password from ".TABLE_USERS." where username='".$username."'";
+        $queryUser="SELECT id,username,password,profile_pic,full_name from ".TABLE_USERS." where username='".$username."'";
         //echo $encrypted_passwd = $obj->encode($password);
         //$decrypted_password = $obj->decode("vxbhjXDuOZ8uncgNP7ykB2UvgLr5Q9SU31K6z+JGMYfREqZTYyr1f5E20k7jMTxNILaWMK0ImrNVS1GGn6gshA==");
         //echo "---------".$obj->decode("v8R/H5JqnMdmkqVWyYLr7a/z46844fI8otkn17Ba+Afd5eOTjH9uJRg0X5nHW6EAcAQP4QNhvbNWmfgqlzLXew==");
@@ -667,7 +336,8 @@ class ProfileFunctions
                 {$post=array();
                     $message=CREDENTIALS_EXITST;
                     $post['user_id']=$val['id'];
-                    $post['username']=$val['username'];
+                    $post['full_name']=$val['full_name'];
+                    $post['profile_pic']=$val['profile_pic'];
                     $status="success";
 
                 }
@@ -760,6 +430,7 @@ class ProfileFunctions
 
         $data=array();
         $response=array();
+        $response['data']=array();
         $firstname = validateObject ($postData , 'firstname', "");
         $firstname = addslashes($firstname);
 
@@ -809,10 +480,12 @@ class ProfileFunctions
         $profile_image_name = validateObject ($postData , 'profile_image_name', "");
         $profile_image_name = addslashes($profile_image_name);
         $profile_image_name_array=explode(".",$profile_image_name);
-
-//        if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
-//            die('Failed to create folders...');
-//        }
+        if (!is_dir(USER_PROFILE_PICTURE)) {
+            mkdir(USER_PROFILE_PICTURE, 0777, true);
+        }
+       // if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
+           // die('Failed to create folders...'.USER_PROFILE_PICTURE);
+       // }
         // echo $profile_image_name_array[0]."_test.".$profile_image_name_array[1];
         $profile_image_name=$profile_image_name_array[0]."_test.".$profile_image_name_array[1];
         $obj = new CI_Encrypt();
@@ -844,9 +517,11 @@ class ProfileFunctions
 
                 //Image Saving
                 $profile_user_link="user_".$user_id."/";
+
                 $profile_image_dir=USER_PROFILE_PICTURE.$profile_user_link;
-                if (!mkdir($profile_image_dir, 0777, true)) {
-                    die('Failed to create folders...');
+
+                if (!is_dir(USER_PROFILE_PICTURE.$profile_user_link)) {
+                    mkdir(USER_PROFILE_PICTURE.$profile_user_link, 0777, true);
                 }
 
                 $profile_image_dir = $profile_image_dir . $profile_image_name;
@@ -855,41 +530,26 @@ class ProfileFunctions
 
                 $queryProfileImage="INSERT INTO ".TABLE_USER_PROFILE_PICTURE."(`user_id`, `profile_link`) VALUES (".$user_id.",'".$profile_image_link."')";
                 $resultProfileImage=mysql_query($queryProfileImage) or $message=mysql_error();
-
-//                if($resultProfileImage)
-//                {
-//                    $message="done";
-//                }
-//                else
-//                {
-//                    $message="not done";
-//                }
                 $queryAcademic="INSERT INTO ".TABLE_STUDENT_ACADEMIC_INFO."(".$insertAcademicField.") values (".$insertAcademicValue.")";
                 $resultAcademic=mysql_query($queryAcademic) or $message=mysql_error();
-//				if($resultAcademic)
-//				{
-                $data['user_id']=$user_id;
-                $data['username']=$username;
-                $data['profile_pic']=$profile_image_link;
+                $post['user_id']=$user_id;
+                $post['username']=$username;
+                $post['profile_pic']=$profile_image_link;
+                $data[]=$post;
                 $status="success";
                 $message="Registration completed successfully";
-//				}
-//				else
-//				{
-//					$status="failed";
-//					//$messsage="1Registration failed";
-//				}
 
             }
         }
         else
         {
             $status="failed";
-        }
 
+        }
+        $response['data']=$data;
         $response['status'] = $status;
         $response['message'] = $message;
-        $response['data'] = $data;
+
 
         return $response;
     }

@@ -31,11 +31,6 @@ switch ($_REQUEST['Service'])
     case "RegisterUser":
     case "CheckUsernameAvailability":
     case "ForgotPassword":
-    case "PostFeed":
-    case "TagFriendInFeed":
-    case "UploadMedia":
-    case "AddComment":
-    case "LikeFeed":
     case "GetStudentAcademicInfo":
     {
   	 include_once 'ProfileFunctions.php';
@@ -59,8 +54,30 @@ switch ($_REQUEST['Service'])
     }
         break;
 
+    /*************************** Teacher Functions ******************************/
 
+    case "PostForClasswall":
+    case "GetAllClasswallPost":
+    case "GetMyStudents":
+    case "GetAllSubjectsByClass":
+    case "GetAllNotes":
+    case "SubmitNotes":
+    {
+        include_once 'TeacherFunctions.php';
+        $teacher = new TeacherFunctions();
+        $data = $teacher -> call_service($_REQUEST['Service'], $postData);
+    }
+        break;
+
+    /*********************  Social Functions ******************************/
     case "GetAllFeeds":
+    case "PostFeed":
+    case "TagFriendInFeed":
+    case "UploadMedia":
+    case "AddComment":
+    case "LikeFeed":
+    case "GetAllComments":
+
     {
          include_once 'SocialFunctions.php';
        	 $profile = new SocialFunctions();

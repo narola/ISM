@@ -16,10 +16,396 @@ class SocialFunctions
                 return $this->getAllFeedsFunction($postData);
             }
                 break;
+            case "PostFeed":
+            {
+                return $this->postFeed($postData);
+            }
+                break;
+            case "UploadMedia":
+            {
+                return $this->uploadMedia($postData);
+            }
+                break;
+            case "TagFriendInFeed":
+            {
+                return $this->tagFriendInFeed($postData);
+            }
+                break;
+            case "AddComment":
+            {
+                return $this->addComment($postData);
+            }
+                break;
+            case "LikeFeed":
+            {
+                return $this->likeFeed($postData);
+            }
+                break;
+            case "GetAllComments":
+            {
+                return $this->getAllComments($postData);
+            }
+                break;
         }
     }
 
+    /*
+       * getAllComments
+       */
 
+    public function getAllComments ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $feed_id = validateObject ($postData , 'feed_id', "");
+        $feed_id = addslashes($feed_id);
+
+        $getFields="f.id, f.comment, f.comment_by,u.full_name,p.profile_link";
+        $query="SELECT ".$getFields."  FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feed_id;
+        $result=mysql_query($query) or $message=mysql_error();
+        //echo $query;
+        if(mysql_num_rows($result))
+        {
+            while($comments=mysql_fetch_assoc($result))
+            {
+                $data[]=$comments;
+            }
+            $message="";
+        }
+        else
+        {
+            $message=DEFAULT_NO_RECORDS;
+        }
+        $status="success";
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
+    }
+
+    /*
+      * LikeFeed
+      */
+
+    public function likeFeed ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $liked_id = validateObject ($postData , 'liked_id', "");
+        $unliked_id = validateObject ($postData , 'unliked_id', "");
+        if($unliked_id!=null){
+            foreach($unliked_id as $feed_id) {
+                $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id;
+                // echo $queryCheckFeed."\n_unliked";
+                $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
+                // echo $queryCheckFeed . "\n";
+                if (mysql_num_rows($resultCheckFeed)) {
+                    $val = mysql_fetch_assoc($resultCheckFeed);
+                    $feed_like_id = $val['id'];
+                    $queryUpdate = "UPDATE `feed_like` SET `is_delete`=0 WHERE `id`=".$feed_like_id;
+                    // echo $procedure;
+                    $result = mysql_query($queryUpdate) or $errorMsg = mysql_error();
+                }
+            }
+        }
+
+        if($liked_id!=null) {
+            foreach ($liked_id as $feed_id) {
+                $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id;
+                //echo $queryCheckFeed."\n_liked";
+                $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
+                if (mysql_num_rows($resultCheckFeed)) {
+                    $val = mysql_fetch_assoc($resultCheckFeed);
+                    $feed_like_id = $val['id'];
+                    $queryUpdate = "UPDATE `feed_like` SET `is_delete`=1 WHERE `id`=".$feed_like_id;
+                    // echo $procedure;
+                    $result = mysql_query($queryUpdate) or $errorMsg = mysql_error();
+
+                } else {
+                    $insertFields = "`like_by`, `feed_id`,`is_delete`";
+                    $insertValues = "" . $user_id . ", " . $feed_id . ",'1'";
+                    $query = "INSERT INTO " . TABLE_FEED_LIKE . " (" . $insertFields . ") VALUES (" . $insertValues . ")";
+                    $result = mysql_query($query) or $message = mysql_error();
+                }
+            }
+        }
+        $status = "success";
+        $message = "Successfully";
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
+    }
+
+    /*
+       * AddComment
+       */
+
+    public function addComment ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $feed_id = validateObject ($postData , 'feed_id', "");
+        $feed_id = addslashes($feed_id);
+
+        $comment_by = validateObject ($postData , 'comment_by', "");
+        $comment_by = addslashes($comment_by);
+
+        $comment = validateObject ($postData , 'comment', "");
+        $comment = addslashes($comment);
+
+        $insertFields="`comment`, `comment_by`, `feed_id`";
+        $insertValues="'".$comment."', ".$comment_by.", ".$feed_id."";
+
+
+        $query="INSERT INTO " .TABLE_FEED_COMMENT." (".$insertFields.") VALUES (".$insertValues.")";
+        $result=mysql_query($query) or $message=mysql_error();
+        //echo $query;
+        if($result)
+        {
+            $status="success";
+            $message="Comment added successfully";
+        }
+        else
+        {
+            $status="failed";
+            $message="";
+        }
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
+    }
+    /*
+    * TagFriendInFeed
+    */
+
+    public function tagFriendInFeed ($postData)
+    {
+        $data=array();
+        $response=array();
+
+        $feed_id = validateObject ($postData , 'feed_id', "");
+        $feed_id = addslashes($feed_id);
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        //$user_id = addslashes($user_id);
+
+        $tagged_by = validateObject ($postData , 'tagged_by', "");
+        $tagged_by = addslashes($tagged_by);
+
+
+
+        foreach($user_id as $id){
+            $insertFields="`user_id`, `feed_id`, `tagged_by`";
+            $insertValues=$id.", ".$feed_id.", ".$tagged_by;
+            $query="INSERT INTO " .TABLE_FEEDS_TAGGED_USER." (".$insertFields.") VALUES (".$insertValues.")";
+            $result=mysql_query($query) or $message=mysql_error();
+            // echo $query;
+            if($result)
+            {
+                $status="success";
+                $message="Tagged successfully";
+            }
+        }
+
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
+    }
+
+    /*
+     * postFeed
+     *
+     */
+    public function postFeed ($postData)
+    {
+        $data=array();
+        $response=array();
+        $feed_by = validateObject ($postData , 'feed_by', "");
+        $feed_by = addslashes($feed_by);
+
+        $feed_text = validateObject ($postData , 'feed_text', "");
+        $feed_text = addslashes($feed_text);
+
+        $video_link = validateObject ($postData , 'video_link', "");
+        $video_link = addslashes($video_link);
+
+        $audio_link = validateObject ($postData , 'audio_link', "");
+        $audio_link = addslashes($audio_link);
+
+        $images = validateObject ($postData , 'images', "");
+        // $images = addslashes($images);
+
+        $posted_on = validateObject ($postData , 'posted_on', "");
+        $posted_on = addslashes($posted_on);
+
+        if (!is_dir(FEEDS_MEDIA)) {
+            mkdir(FEEDS_MEDIA, 0777, true);
+        }
+        $feed_media_dir = "user_" . $feed_by . "/";
+        $dir = FEEDS_MEDIA . $feed_media_dir;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777);
+        }
+        $insertFields="`feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`";
+        $insertValues=$feed_by.",'".$feed_text."','".$video_link."','".$audio_link."','".$posted_on."'";
+        $queryPostFeed="INSERT INTO ".TABLE_FEEDS."(".$insertFields.") VALUES (".$insertValues.")";
+
+        $result=mysql_query($queryPostFeed) or $message=mysql_error();
+        if($result)
+        {
+            $feed_id=mysql_insert_id();
+            if($video_link!=null)
+            {
+                //$this->uploadMedia($feed_id,"video",$feed_media_dir);
+            }
+            $i=0;
+            if($images!=null)
+            {
+                foreach($images as $feed_image)
+                {
+                    if($feed_image!=null)
+                    {
+
+                        $feed_image_name = "IMG-" . date("Ymd-his").$i++.".png";
+                        $feed_image_link = $feed_media_dir.$feed_image_name;
+                        file_put_contents(FEEDS_MEDIA.$feed_image_link, base64_decode($feed_image));
+                        $queryInsertImage="INSERT INTO `feed_image`(`feed_id`, `image_link`) VALUES (".$feed_id.",'".$feed_image_link."')";
+                        $resultImageUploading=mysql_query($queryInsertImage) or $message=mysql_error();
+                    }
+
+                }
+            }
+            $message="“Post successfully submitted";
+            $status="success";
+        }
+        else
+        {
+            $status="failed";
+        }
+
+        $response['status']=$status;
+        $response['message']=$message;
+        $response['data']=$data;
+        return $response;
+    }
+
+    public function uploadMedia($postData)
+    {
+
+
+        $dir = '';
+        $mediaName = '';
+        $created_date = date("Y-m-d H:i:s");
+        //create Random String.
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        //generate random string with minimum 5 and maximum of 10 characters
+        $str = substr(str_shuffle($chars), 0, 8);
+        //add extension to file
+        $name = $str;
+        $feed_id=$_POST['feed_id'];
+
+        $feed_by=$_POST['feed_by'];
+        $mediaType=$_POST['mediaType'];
+
+        if (!is_dir(FEEDS_MEDIA)) {
+            mkdir(FEEDS_MEDIA, 0777, true);
+        }
+        $feed_media_dir = "user_" . $feed_by . "/";
+        $dir = FEEDS_MEDIA . $feed_media_dir;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777);
+        }
+        if("video"==$mediaType)
+        {
+            if ($_FILES["video_link"]["error"] > 0) {
+                $message = $_FILES["video_link"]["error"];
+
+            } else {
+                // Image 5 = Video 6 = Audio 7
+
+                $mediaName = $name . '.mp4';
+                $uploadDir = $dir;
+                $uploadFile = FEEDS_MEDIA.$feed_media_dir . $mediaName;
+                if (move_uploaded_file($_FILES['video_link']['tmp_name'], $uploadFile)) {
+                    //store image data.
+                    $link=$feed_media_dir . $mediaName;
+                    $procedure_insert_set = "CALL UPDATE_VIDEO_LINK ('".$link."','".$feed_id."' )";
+                    $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
+                    $status = "1";
+                    $message = "Successfully uploaded!.";
+                } else {
+                    $status = 2;
+                    $message = "Failed to upload media on server.";
+                }
+            }
+        }
+        else if("audio"==$mediaType)
+        {
+            if ($_FILES["audio_link"]["error"] > 0) {
+                $message = $_FILES["audio_link"]["error"];
+                $status=2;
+            } else {
+                $mediaName = $name . '.mp3';
+
+                $uploadDir = $dir;
+                $uploadFile = FEEDS_MEDIA .$feed_media_dir. $mediaName;
+                if (move_uploaded_file($_FILES['audio_link']['tmp_name'], $uploadFile)) {
+                    //store image data.
+
+                    $link=$feed_media_dir . $mediaName;
+                    $procedure_insert_set = "CALL UPDATE_AUDIO_LINK ('".$link."','".$feed_id."' )";
+                    $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
+                    $status = "1";
+                    $message = "Successfully uploaded!.";
+                } else {
+                    $status = 2;
+                    $message = "Failed to upload media on server.";
+
+                }
+            }
+
+        }
+
+
+        $data['status']=$status;
+        $data['link']=$link;
+        $data['message']=$message;
+        return $data;
+
+    }
+
+
+    /** Get Extension
+     * @param $str
+     * @return string
+     */
+    private function getExtension($str)
+    {
+        $i = strrpos($str,".");
+        if (!$i) { return ""; }
+
+        $l = strlen($str) - $i;
+        $ext = substr($str,$i+1,$l);
+        return $ext;
+    }
+
+    /*
+     *
+     * GetAllFeeds
+     */
     public function getAllFeedsFunction($postData)
     {
         $user_id = validateObject ($postData , 'user_id', "");
@@ -234,27 +620,26 @@ class SocialFunctions
 
                 }
                 //$feeds_array['user_id'] = $feeds['user_id'];
-                $feeds_array['comment']=array();
+                $feeds_array['comment_list']=array();
 
                 if(sizeof($feeds_array)>0)
                 {
-                    $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,u.full_name,p.profile_link FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id'];
+                    $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,u.full_name,p.profile_link FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id']." Limit 2";
                     $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
                         $allcomment=array();
                     //echo "\n".$queryGetAllComments;
                     //for counting the number of rows for query result
-                    $comments_count = mysql_num_rows($resultGetAlComments);
-
-                    while($comments=mysql_fetch_assoc($resultGetAlComments))
+                    if(mysql_num_rows($resultGetAlComments))
                     {
-                        $allcomment[]=$comments;
+                        while($comments=mysql_fetch_assoc($resultGetAlComments))
+                        {
+                            $allcomment[]=$comments;
+                        }
 
-
+                        $feeds_array['comment_list']=$allcomment;
                     }
 
-                    $feeds_array['comment']=$allcomment;
                     //$data['comments']=$comments_array;
-
 
                 }
                 $allfeeds[]=$feeds_array;
