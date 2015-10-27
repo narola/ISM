@@ -133,7 +133,7 @@
 
                                 } else {  
                                  
-                                 $post_total_choice = $_POST['total_choices'];
+                                 $post_total_choice = $_POST['total_choices']+1;
                                  //$post_correct_choice = $_POST[''];   
                             ?>
                             
@@ -141,19 +141,20 @@
                             <input type="hidden" name='correct_choice' id="correct_choice" value="<?php echo set_value('correct_choice'); ?>" >
                             <div class="choice_wrapper">
                             <?php for($i=1;$i<=$post_total_choice;$i++) { ?>
-                                    
-                                    <div class="form-group" id="div_<?= $i ?>">
-                                        
-                                        <input type="radio" name="correct_ans" id="correct_ans" <?php echo set_radio('correct_ans',$i); ?> 
-                                        onchange="correct_choice1(this.value)" value="<?= $i ?>">
+                                    <?php $j = $i-1; ?>
+                                    <div class="form-group">
+                <input type="radio" name="correct_ans" id="correct_ans" onchange="correct_choice1(this.value)" value="1">
+                <input type="text" name="choices[]" class="form-control choice_detail" value="<?php echo $_POST['choices'][$j]; ?>"   placeholder="Enter Choice">
+                
+                                   
 
-                                        <input type="text" name="choices[]" class="form-control choice_detail" 
-                                        value="<?php echo $_POST['choices'][$i-1]; ?>" placeholder="Choice <?= $i ?>">
+                                        <?php if($i == 1) { ?>
+                                            <i class="fa fa-plus-circle font-21 component"></i>
+                                        <?php }else{ ?>
+                                 
+                <i class="fa fa-minus-circle font-21 component_close"></i>
+                                        <?php } ?>
 
-                                        <?php if($i == $post_total_choice) { ?>
-                                            <a onclick="add_choices()" class="icon icon_add_small"></a>
-                                            <a onclick="remove_choice()" class="icon icon_subs_small"></a>
-                                        <?php }?>
 
                                     </div>
 
