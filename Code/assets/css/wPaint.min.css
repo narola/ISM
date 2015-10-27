@@ -1,7 +1,7 @@
 .wPaint-menu{position:absolute !important;display:inline-block;*display:inline;zoom:1;line-height:0;z-index:99}
 .wPaint-menu-behind{z-index:98}
 .wPaint-menu-holder{position:relative;}
-.wPaint-menu-handle{display:inline-block;*display:inline;zoom:1}
+.wPaint-menu-handle{display:none;*display:inline;zoom:1}
 .wPaint-menu-icon{position:relative;vertical-align:top}
 .wPaint-menu-icon-img{position:relative;display:inline-block;*display:inline;zoom:1;background-repeat:no-repeat;overflow:hidden}
 .wPaint-menu-select-holder{position:absolute;left:1px;z-index:10;overflow:hidden}
