@@ -51,7 +51,6 @@ class My_evaluation extends ISM_Controller {
 		$data['my_scoreboard']	= select(TBL_EXAMS.' e','e.id,eq.cnt,TRUNCATE(sc.total_time_spent / 60,2)as totmin,sc.attempt_count,(eq.cnt - sc.attempt_count) as unattampt,e.exam_category,e.exam_name,sc.incorrect_answers,sc.correct_answers,TRUNCATE((sc.correct_answers * 100 / cnt ),2)as percentage',$where,$option);
 
 		//	get exam evaluation
-		echo $userid;
 		$where 	= array('where' => array('eq.exam_id'=>$this->examid,'sr.user_id' => $userid));
 		$option = array('join' => 
 					array(
