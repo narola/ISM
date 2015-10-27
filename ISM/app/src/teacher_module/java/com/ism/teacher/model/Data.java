@@ -22,8 +22,74 @@ public class Data {
     private String video_link;
     private String full_name;
     private String feed_text;
-    private ArrayList<Comment> comment;
+    private ArrayList<Comment> comment_list;
 
+
+    //For StudymatesList
+
+    private String profile_pic;
+
+
+
+    //For AllComments
+
+
+    private String id;
+    private String commentBy;
+    private String comment;
+    private String profileLink;
+
+
+    @JsonProperty("id")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @JsonProperty("commentBy")
+    public String getCommentBy() {
+        return commentBy;
+    }
+
+    public void setCommentBy(String commentBy) {
+        this.commentBy = commentBy;
+    }
+
+    @JsonProperty("comment")
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+
+
+    @JsonProperty("profileLink")
+    public String getProfileLink() {
+        return profileLink;
+    }
+
+    public void setProfileLink(String profileLink) {
+        this.profileLink = profileLink;
+    }
+
+    @JsonProperty("profile_pic")
+    public String getProfile_pic() {
+        return profile_pic;
+    }
+
+    public void setProfile_pic(String profile_pic) {
+        this.profile_pic = profile_pic;
+    }
+
+
+
+    //For feeds
 
     @JsonProperty("feed_id")
     public String getFeed_id() {
@@ -125,13 +191,13 @@ public class Data {
     }
 
 
-    @JsonProperty("comment")
-    public ArrayList<Comment> getComment() {
-        return comment;
+    @JsonProperty("comment_list")
+    public ArrayList<Comment> getCommentList() {
+        return comment_list;
     }
 
-    public void setComment(ArrayList<Comment> comment) {
-        this.comment = comment;
+    public void setCommentList(ArrayList<Comment> comment) {
+        this.comment_list = comment;
     }
 
 

@@ -176,4 +176,13 @@
 	<string name="error_same_old_new_password">Old and new passwords can\'t be same!</string>
 	<string name="error_invalid_email">Invalid email address!</string>
 	<string name="invalid_url">Invalid url!</string>
+
+
+
+
+	<string name="gotrending">Go Trending</string>
+	<string name="setquiz">Set Quiz</string>
+	<string name="settrial">Set Trial</string>
+	<string name="stradd">ADD</string>
+	<string name="straddnew">ADD NEW</string>
 </resources>

@@ -72,7 +72,7 @@ public class WSRequestPost {
 
 				ret = getMapper().readValue(json, responseType);
 
-				Log.e("api_response:",""+json);
+				Log.e("api_response:",json);
 
 			} catch (Exception e) {
 				Log.e(LOG_TAG, "Error converting result " + e.toString());

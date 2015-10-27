@@ -6,6 +6,8 @@
     <string name="str_personal_info">PERSONAL INFORMATION</string>
     <string name="str_manage_credential">MANAGE CREDENTIAL</string>
     <string name="str_teacher_tutorial_label">You are assigned group Venice Beauty,you have \n to schedule question for topic Osmosis.</string>
-
+    <string name="strcomments">Comments</string>
+    <string name="strclose">Close</string>
+    <string name="strsearchstudymatess">Search Study Mates</string>
 
 </resources>
