@@ -20,7 +20,7 @@
         <div class="box_body">  
             <form method="post">
 
-                <div class="form-group select col-sm-6 no-padding half_size">
+                <div class="form-group select col-sm-12 col-md-6 no-padding half_size">
                     
                     <select class="form-control myselect2" name="course_id" onchange="get_classes(this.value)" id="course_id">
                         <option value="">Select Course</option>
@@ -35,7 +35,7 @@
                     </select>
                     <a href="#" class="icon icon_add_small"></a>
                 </div>
-                <div class="form-group select col-sm-6 no-padding half_size">
+                <div class="form-group select col-sm-12 col-md-6 no-padding half_size">
 
                     <select class="form-control" name="classrooms" id="classroom_id" onchange="get_subjects(this.value)">
                         <option value="">Select Classroom</option>
@@ -43,7 +43,7 @@
                     <a href="#" class="icon icon_add_small"></a>
                     <?php echo myform_error('classrooms'); ?>
                 </div>
-                <div class="form-group select col-sm-6 no-padding half_size">
+                <div class="form-group select  col-sm-12 col-md-6 no-padding half_size">
 
                     <select class="form-control" name="subjects" id="subject_id">
                         <option value="">Select Subject</option>
@@ -52,7 +52,7 @@
                     <?php echo myform_error('subjects'); ?>
                 </div>
 
-                <div class="form-group col-sm-6 no-padding half_size">
+                <div class="form-group  col-sm-12 col-md-6 no-padding half_size">
                     
                     <div class="form-group col-sm-12 no-padding half_size">
                         <input name="topic_name" type="text" class="form-control" placeholder="Topic">
@@ -62,7 +62,7 @@
                     
 
                 </div>
-                <div class="form-group col-sm-6 no-padding half_size">
+                <div class="form-group  col-sm-12 col-md-6 no-padding half_size">
                     <div class="form-group col-sm-12 no-padding half_size">
                         <label>Keywords for Evaluations</label>
                         <!-- <textarea name="keywords" class="form-control"></textarea> -->
@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <div class="form-group col-sm-6 no-padding half_size">
+                <div class="form-group  col-sm-12 col-md-6 no-padding half_size">
                     <label>Text Description</label>
                     <textarea name="topic_desc" id="editor1" class="form-control"></textarea>
                 </div>

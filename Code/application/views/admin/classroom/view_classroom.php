@@ -2,13 +2,13 @@
 <div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
     <div class="page_header">
-        <div class="col-sm-8">
+        <div class="col-sm-6 col-md-8">
             <ol class="breadcrumb">
                 <li><a href="#">Manage</a></li>
                 <li class="active">Classroom</li>
             </ol>
         </div>
-        <div class="col-sm-4 text-right">
+        <div class="col-sm-6 col-md-4 text-right">
             <a class="btn btn_green add_topic" href="<?php echo base_url() . 'admin/classroom/add'; ?>" >Add New Classroom</a>
         </div>
     </div>
@@ -50,9 +50,6 @@
             </div>
         </div>
     </form>	
-
-    
-
     <!--//filter-->
 
     <!--row table-->
