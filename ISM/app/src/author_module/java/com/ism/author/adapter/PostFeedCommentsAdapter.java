@@ -8,19 +8,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.author.model.GetAllFeedsComment;
+import com.ism.author.model.Data;
 
 import java.util.ArrayList;
 
 /**
- * Created by c166 on 24/10/15.
+ * these is the postfeedcommentsadapter
  */
 public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommentsAdapter.ViewHolder> {
 
     private static final String TAG = PostFeedCommentsAdapter.class.getSimpleName();
 
     Context mContext;
-    ArrayList<GetAllFeedsComment> listOfComments = new ArrayList<GetAllFeedsComment>();
+    ArrayList<Data> listOfComments = new ArrayList<Data>();
 
 
     @Override
@@ -36,13 +36,13 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     @Override
     public void onBindViewHolder(PostFeedCommentsAdapter.ViewHolder holder, int position) {
-        holder.txtCommenterUsername.setText(listOfComments.get(position).getUsername());
+        holder.txtCommenterUsername.setText(listOfComments.get(position).getFullName());
         holder.txtCommenterComment.setText(listOfComments.get(position).getComment());
         holder.txtCommentDuration.setText(listOfComments.get(position).getCommentBy());
     }
 
 
-    public void addAll(ArrayList<GetAllFeedsComment> data) {
+    public void addAll(ArrayList<Data> data) {
 
         try {
             this.listOfComments.clear();

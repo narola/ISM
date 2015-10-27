@@ -101,6 +101,7 @@
     <string name="sayit">SAY IT</string>
     <string name="strcomments">All Comments</string>
     <string name="strclose">Close</string>
-
+    <string name="strsearchstudymates">Search Users</string>
+    <string name="strtag">TAG</string>
 
 </resources>

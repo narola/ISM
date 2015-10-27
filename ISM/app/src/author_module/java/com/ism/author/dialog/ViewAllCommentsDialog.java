@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.author.adapter.PostFeedCommentsAdapter;
-import com.ism.author.model.GetAllFeedsComment;
+import com.ism.author.model.Data;
 
 import java.util.ArrayList;
 
@@ -25,10 +25,10 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
     RecyclerView rvPostFeedsComments;
     PostFeedCommentsAdapter postFeedCommentsAdapter;
     TextView tvDialogClose;
-    ArrayList<GetAllFeedsComment> commentsList;
+    ArrayList<Data> commentsList;
 
 
-    public ViewAllCommentsDialog(Context mContext, ArrayList<GetAllFeedsComment> commentsList) {
+    public ViewAllCommentsDialog(Context mContext, ArrayList<Data> commentsList) {
         super(mContext);
 
         this.mContext = mContext;

@@ -22,6 +22,9 @@ public class WebserviceWrapper {
     public static final int LOGIN = 0;
     public static final int GETALLFEEDS = 1;
     public static final int ADDCOMMENT = 2;
+    public static final int GETSTUDYMATES = 3;
+    public static final int TAGFRIENDINFEED = 4;
+    public static final int GETALLCOMMENTS = 5;
 
     public static int API_METHOD_NAME;
 
@@ -71,6 +74,17 @@ public class WebserviceWrapper {
                         responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_ADDCOMMENT, ResponseObject.class, requestObject);
                         break;
 
+                    case GETSTUDYMATES:
+                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_GETSTUDYMATES, ResponseObject.class, requestObject);
+                        break;
+
+                    case TAGFRIENDINFEED:
+                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_TAGFRIENDINFEED, ResponseObject.class, requestObject);
+                        break;
+
+                    case GETALLCOMMENTS:
+                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_GETALLCOMMENTS, ResponseObject.class, requestObject);
+                        break;
 
                 }
             } catch (Exception e) {
