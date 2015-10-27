@@ -122,6 +122,11 @@
                                 
                                 </table>
                             </div>
+                             <nav  class="text-center">
+       
+                <?php echo $this->pagination->create_links(); ?>
+
+                </nav>
                         </div>
                     </div>
                     <div class="col-sm-12 col-lg-6">
