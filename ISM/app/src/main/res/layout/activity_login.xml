@@ -120,7 +120,7 @@
                 android:paddingLeft="@dimen/d5dp"
                 android:text="@string/strclickhereu"
                 android:textColor="@color/color_black"
-                android:onClick="onClickClickHere"
+                android:onClick="onClickHere"
                 android:textSize="@dimen/d18dp" />
 
         </LinearLayout>

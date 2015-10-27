@@ -191,4 +191,18 @@
 	<string name="stradd">ADD</string>
 	<string name="straddnew">ADD NEW</string>
 	<string name="select">Select</string>
+	<string name="ok">Ok</string>
+	<string name="msg_validation_set_dp"><![CDATA[> Please set your Profile picture.]]></string>
+	<string name="msg_validation_country"><![CDATA[\n> Please select your country.]]></string>
+	<string name="msg_validation_state"><![CDATA[\n> Please select your state.]]></string>
+	<string name="msg_validation_city"><![CDATA[\n> Please select your city.]]></string>
+	<string name="msg_validation_gender"><![CDATA[\n> Please select your gender.]]></string>
+	<string name="msg_validaton_dob"><![CDATA[\n> Please set your date of birth.]]></string>
+	<string name="msg_wrong_current_pwd">Wrong current password.</string>
+	<string name="registration_failed">Registration failed</string>
+	<string name="msg_email_exists">Email id already exists.</string>
+	<string name="msg_username_exists">Username already exists.</string>
+	<string name="gender">Gender</string>
+	<string name="male">Male</string>
+	<string name="female">Female</string>
 </resources>
