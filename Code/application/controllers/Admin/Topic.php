@@ -152,7 +152,7 @@ class Topic extends ADMIN_Controller {
 
 		$allocated_group_ids = array_column($allocated_groups, 'group_id');
 		
-       p($allocated_group_ids);
+       
 		$where  = array('where'=> array(TBL_TUTORIAL_GROUPS.'.is_completed'=>1,
 					TBL_TUTORIAL_GROUPS.'.group_type'=>'tutorial group',
 				)) ;
@@ -167,8 +167,6 @@ class Topic extends ADMIN_Controller {
 												TBL_COURSES.'.id as course_id,'.TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name',
 												$where,
 												array(
-													//'limit'=>$config['per_page'],
-													//'offset'=>$offset,
 													'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
 													'join' =>  array(
 												    			array(
@@ -192,11 +190,15 @@ class Topic extends ADMIN_Controller {
 												    				'table' => TBL_SCHOOLS,
 												    				'condition' => TBL_SCHOOLS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.school_id',
 												    				),
+												    			array(
+												    				'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
+												    				'condition' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.group_id = '.TBL_TUTORIAL_GROUPS.'.id',
+												    				),
 												    			)
 													)
 												);
 		
-		p($unallocated_groups);
+		
 		$this->data['groups'] = $unallocated_groups;
 
 
@@ -249,34 +251,29 @@ class Topic extends ADMIN_Controller {
 		$last_week = $week-1;
 		$where  = array('where' => array('tut_topic.week_no' => $last_week,
 			'YEAR(tut_topic.created_date)' => $year
-			),
-		'where_in'=>array('tut_topic.group_id'=> $unallocated_group_ids)
-		);
+			));
+		if(!empty($allocated_group_ids)){
+		$where['where_in'] = array('tut_topic.group_id'=> $allocated_group_ids);
+		}
 		
 		$last_week_groups = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' tut_topic',
 			'tut_topic.group_id,tut_topic.topic_id',
 			$where
 			);
 		
-	
 			if(in_array($unallocated, array_column($last_week_groups, 'group_id'))){
 
 				$key = array_search($unallocated, array_column($last_week_groups, 'group_id'));
 				$last_week_topic = $last_week_groups[$key]['topic_id'];
+
 				$where = array('where' => array('tut_topic.id'=>$last_week_topic));
 				$subject = select(TBL_TUTORIAL_TOPIC.' tut_topic',
-				'tut_topic.subject_id',
+				'tut_topic.subject_id,tut_topic.classroom_id',
 					$where, array('single'=>true)
 				);
-				$where = array('where'=>array('tut_course.subject_id'=>$subject['subject_id'],
-					));
-				$classroom = select(TBL_CLASSROOM_SUBJECT.' tut_course',
-				'tut_course.classroom_id',
-					$where, array('single'=>true)
-				);
-				p($classroom);
+				
 
-				$where = array('where'=>array('tut_course.classroom_id'=>$classroom['classroom_id']));
+				$where = array('where'=>array('tut_course.classroom_id'=>$subject['classroom_id']));
 
 				$options = array('order_by'=>'RAND()','single'=>true,'limit'=>1,
 					'join' =>  array(
@@ -290,28 +287,21 @@ class Topic extends ADMIN_Controller {
 				'tut_course.subject_id',
 					$where, $options
 				);
-				p($random_subject);
+				
 
 				$random_subject_id = $random_subject['subject_id'];
 
 			}else{
 				
-				$where = array('where'=>array('tut_grp_member.group_id'=>$unallocated));
+				$where = array('where'=>array('tut_grp.id'=>$unallocated));
 
 				$options = array('limit'=>1,'single'=>true);
-				$group_member = select(TBL_TUTORIAL_GROUP_MEMBER.' tut_grp_member',
-				'tut_grp_member.user_id',
+				$group_classroom = select(TBL_TUTORIAL_GROUPS.' tut_grp',
+				'tut_grp.classroom_id',
 					$where, $options
 				);
 				
-				$where = array('where'=>array('tut_stud_info.user_id'=>$group_member['user_id']));
-
-				$options = array('single'=>true);
-				$course_info = select(TBL_STUDENT_ACADEMIC_INFO.' tut_stud_info',
-				'tut_stud_info.classroom_id',
-					$where, $options
-				);
-				$where = array('where'=>array('tut_course.classroom_id'=>$course_info['classroom_id']
+				$where = array('where'=>array('tut_course.classroom_id'=>$group_classroom['classroom_id']
 					));
 
 				$options = array('order_by'=>'RAND()','single'=>true,'limit'=>1,
@@ -327,6 +317,8 @@ class Topic extends ADMIN_Controller {
 				'tut_course.subject_id',
 					$where, $options
 				);
+				
+		
 				$random_subject_id = $random_subject_info['subject_id'];
 
 			}
@@ -353,7 +345,8 @@ class Topic extends ADMIN_Controller {
 												)
 											);
 
-
+		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>0)));
+		
 		$this->data['page_title'] = 'Allocate Topic';
 		$this->template->load('admin/default','admin/topic/allocate', $this->data);
 	}
@@ -414,7 +407,7 @@ class Topic extends ADMIN_Controller {
 		$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
 		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required');
 
-		$this->data['courses'] = select(TBL_COURSES); // Fetch All Courses From Database
+		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>0))); // Fetch All Courses From Database
 		$this->data['page_title'] = 'Add New Topic'; // Set Page Title
 
 		if($this->form_validation->run() == FALSE){
@@ -465,7 +458,7 @@ class Topic extends ADMIN_Controller {
 		
 		//Validation Set For Add Topic Following fields are required and topic name allow some character only
 		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required|regex_match[/[a-zA-Z& ]$/]', 
-			array('regex_match' => 'The {field} should have only characters,numbers and & special character only.'));
+		array('regex_match' => 'The {field} should have only characters,numbers and & special character only.'));
 		$this->form_validation->set_rules('keywords', 'Keywords', 'trim|required');
 		$this->form_validation->set_rules('subjects', 'Subject', 'trim|required');
 		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
@@ -546,7 +539,28 @@ class Topic extends ADMIN_Controller {
 	}
 
 	// ----------------------  AJAX FUNCTIONS --------------------------------------------------
+	
+	/*
+	* function to get the classrooms through the course.
+	*/
+	public function ajax_get_classrooms(){
+		$course_id = $this->input->post('course_id');
+		
+		$classrooms = select(TBL_CLASSROOMS,TBL_CLASSROOMS.'.id,'.TBL_CLASSROOMS.'.class_name ',
+			array('where'=>array(TBL_CLASSROOMS.'.course_id'=>$course_id))
+			);
 
+		
+		$new_str = '';
+		
+		$new_str .= '<option selected value="" disabled >Select Classroom</option>';
+		if(!empty($classrooms)){
+			foreach($classrooms as $classroom){
+				$new_str.='<option value="'.$classroom['id'].'">'.$classroom['class_name'].'</option>';
+			}	
+		}
+		echo $new_str;
+	}
 	/**
 	* ajax function to fetch Subjects from Classroom 
 	*/
@@ -572,6 +586,28 @@ class Topic extends ADMIN_Controller {
 		if(!empty($subjects)){
 			foreach($subjects as $subject){
 				$new_str.='<option value="'.$subject['subject_id'].'">'.$subject['subject_name'].'</option>';
+			}	
+		}
+		echo $new_str;
+	}
+	/**
+	* ajax function to fetch groups from Classroom 
+	*/
+	public function ajax_get_groups(){
+		$classroom_id = $this->input->post('classroom_id');
+		
+		$groups = select(TBL_TUTORIAL_GROUPS,TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name',
+			array('where'=>array('classroom_id'=>$classroom_id))
+				
+			);
+
+		
+		$new_str = '';
+		
+		$new_str .= '<option selected disabled >Select Group</option>';
+		if(!empty($groups)){
+			foreach($groups as $group){
+				$new_str.='<option value="'.$group['id'].'">'.$group['group_name'].'</option>';
 			}	
 		}
 		echo $new_str;

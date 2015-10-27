@@ -4,7 +4,7 @@
   <div class="page_header">
       <div class="col-sm-12">
           <ol class="breadcrumb">
-              <li><a href="admin/notice">Admin</a></li>                          
+              <li><a href="admin/user">Admin</a></li>                          
               <li><a href="admin/notice">Manage Notices</a></li>
               <li class="active">Update Notice</li>
             </ol>
@@ -90,7 +90,9 @@
                     <?php echo strip_tags(form_error('notice'),'') ; ?>
                 </div>
                 <div class="box_footer">
-                  <button type="submit" class="btn btn_green">Update</button>
+                  <button type="submit" class="btn btn_green"> 
+                    <?php $copy = $this->uri->segment(3); if($copy == 'copy'){ echo "Save"; }else { echo "Update"; }  ?>
+                  </button>
                   <!-- <input type="checkbox" name="is_template" id="is_template" <?php if(!empty($notice['is_template'])){ echo "checked"; }?> value="1">
                   <label class="save_box"></label><label for="is_template">Save in Templates</label> -->
                   <a href="<?php echo $prev_url; ?>" class="btn btn_black">Cancel</a>

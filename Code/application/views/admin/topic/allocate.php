@@ -14,13 +14,26 @@
                 <!--filter-->
                 <div class="filter group_filter">
                 	<div class="col-sm-12">
+                        <form method="get">
                     	<div class="form-group">
-                            <select class="form-control">
-                                <option>Select Topic</option>
+                            <select class="form-control" name="course_id" id="course_id" onchange="get_classes(this.value)">
+                                <option>Select Course</option>
+                                <?php 
+                                    if(!empty($courses)){
+                                        foreach ($courses as $course) { ?>
+                                            <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>
+                                        <?php }
+                                    }
+                                ?>
                             </select>
                         </div>
                         <div class="form-group">
-                            <select class="form-control">
+                            <select class="form-control" name="classroom_id" onchange="get_groups(this.value)" id="classroom_id">
+                                <option value=''>Select Classroom</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="group_id" name="group_id">
                                 <option>Select Group</option>
                             </select>
                         </div>
@@ -29,6 +42,7 @@
                                 <option>Sort By</option>
                             </select>
                         </div>
+                    </form>
                         <div class="form-group no_effect text-right">
                             <a href="admin/topic/add" class="btn btn_green add_topic">Add New Topic</a>
                         </div>
@@ -148,3 +162,27 @@
                 <!--//row-->              
 			</div>
             <!--//main-->
+            <script type="text/javascript">
+            function get_classes(course_id){
+                $.ajax({
+                   url:'<?php echo base_url()."admin/topic/ajax_get_classrooms"; ?>',
+                   type:'POST',
+                   data:{course_id:course_id},
+                   success:function(data){
+                      $("#classroom_id").html(data);
+                      $('#group_id').val('');
+                   }
+                });
+            }
+            function get_groups(classroom_id){
+                $.ajax({
+                   url:'<?php echo base_url()."admin/topic/ajax_get_groups"; ?>',
+                   type:'POST',
+                   data:{classroom_id:classroom_id},
+                   success:function(data){
+                      $("#group_id").html(data);
+                   }
+                });
+            }
+  
+            </script>

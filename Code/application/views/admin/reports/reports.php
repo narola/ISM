@@ -38,13 +38,8 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <select class="form-control" name="classroom_id" onchange="get_subjects(this.value)" id="classroom_id">
+                            <select class="form-control" name="classroom_id" id="classroom_id" onchange="get_group_stats()">
                                 <option>Classroom</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" name="subject_id" onchange="get_topics(this.value)" id="subject_id">
-                                <option>Subject</option>
                             </select>
                         </div>
                     </div>
@@ -77,7 +72,7 @@
                                     <?php if(!empty($top_groups)){
                                         $i=1;
                                         foreach ($top_groups as $group) { ?>
-                                        <tr>
+                                    <tr>
                                         <td><?php echo $i; ?></td>
                                         <td><?php echo $group['group_name']; ?></td>
                                         <td><?php echo $group['score']; ?></td>
@@ -109,150 +104,149 @@
  
 <!-- Include Date Range Picker -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-    <script type="text/javascript">
+<script type="text/javascript">
+
    get_quest_stats();
+
    $("#date_range").change(function(){  get_quest_stats(); });
-$(function() {
-    $('input[name="daterange"]').daterangepicker();
-});
 
-function get_classes(course_id){
-        $.ajax({
-           url:'<?php echo base_url()."admin/question/ajax_get_classrooms"; ?>',
-           type:'POST',
-           data:{course_id:course_id},
-           success:function(data){
-              $("#classroom_id").html(data);
-              $('#subject_id').val('');
-              $('#topic_id').val('');
-           }
-        });
-}
-function get_quest_stats(){
-        var date_range = $("#date_range").val();
+    $(function() {
+        $('input[name="daterange"]').daterangepicker();
+    });
 
-        $.ajax({
-           url:'<?php echo base_url()."admin/report/get_question_stats"; ?>',
-           type:'POST',
-           dataType:'JSON',
-           data:{date_range:date_range},
-           success:function(response){
-              console.log(response);
-              
-            // Create the chart
-            $('#performance_graph_1').highcharts({
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: ''
-                },
-                subtitle: {
-                    text: 'Question V/S Course'
-                },
-                xAxis: {
-                    type: 'category'
-                },
-                yAxis: {
-                    title: {
-                        text: 'Score'
-                    }
-                },
-                legend: {
-                    enabled: true
-                },
-                plotOptions: {
-                    series: {
-                        borderWidth: 0,
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.y}'
-                        }
-                    }
-                },
-        
-                tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
-                },
-        
-                series: [{
-                    name: "Courses",
-                    colorByPoint: true,
-                    data: response
-                }]
+    function get_classes(course_id){
+            $.ajax({
+               url:'<?php echo base_url()."admin/question/ajax_get_classrooms"; ?>',
+               type:'POST',
+               data:{course_id:course_id},
+               success:function(data){
+                  $("#classroom_id").html(data);
+                  $('#subject_id').val('');
+                  $('#topic_id').val('');
+               }
             });
-           }
-        });
-        
-
-
     }
 
-  function get_subjects(classroom_id){
-        $.ajax({
-           url:'<?php echo base_url()."admin/question/ajax_get_subjects"; ?>',
-           type:'POST',
-           data:{classroom_id:classroom_id},
-           success:function(data){
-              $("#subject_id").html(data);
-              $('#topic_id').val('');
-           }
-        });
-var date_range = $("#date_range").val();
-         $.ajax({
-           url:'<?php echo base_url()."admin/report/get_group_stats"; ?>',
-           type:'POST',
-           dataType:'JSON',
-           data:{classroom_id:classroom_id, date_range:date_range},
-           success:function(response){
-              console.log(response);
-              $('#performance_graph_2').highcharts({
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: ''
-                },
-                subtitle: {
-                    text: 'Group V/S Score'
-                },
-                xAxis: {
-                    type: 'category'
-                },
-                yAxis: {
+    function get_quest_stats(){
+            var date_range = $("#date_range").val();
+
+            $.ajax({
+               url:'<?php echo base_url()."admin/report/get_question_stats"; ?>',
+               type:'POST',
+               dataType:'JSON',
+               data:{date_range:date_range},
+               success:function(response){
+                 // console.log(response);
+                  
+                // Create the chart
+                $('#performance_graph_1').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
                     title: {
-                        text: 'Score'
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    series: {
-                        borderWidth: 0,
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.y}'
+                        text: ''
+                    },
+                    subtitle: {
+                        text: 'Points V/S Course'
+                    },
+                    xAxis: {
+                        type: 'category'
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Score'
                         }
-                    }
-                },
-        
-                tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
-                },
-        
-                series: [{
-                    name: "Classes",
-                    colorByPoint: true,
-                    data: response
-                }]
+                    },
+                    legend: {
+                        enabled: true
+                    },
+                    plotOptions: {
+                        series: {
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y}'
+                            }
+                        }
+                    },
+            
+                    tooltip: {
+                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
+                    },
+            
+                    series: [{
+                        name: "Courses",
+                        colorByPoint: true,
+                        data: response
+                    }]
+                });
+               }
             });
-          }
-      });
-         
-  }
+            
+        }
+
+    function get_group_stats(){
+            
+            var date_range = $("#date_range").val();
+            var classroom_id = $('#classroom_id').val();
+            
+            $.ajax({
+               url:'<?php echo base_url()."admin/report/get_group_stats"; ?>',
+               type:'POST',
+               dataType:'JSON',
+               data:{date_range:date_range,classroom_id:classroom_id},
+               success:function(response){
+                 // console.log(response);
+                  
+                // Create the chart
+                $('#performance_graph_2').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: 'Question V/S Course'
+                    },
+                    xAxis: {
+                        type: 'category'
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Score'
+                        }
+                    },
+                    legend: {
+                        enabled: true
+                    },
+                    plotOptions: {
+                        series: {
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y}'
+                            }
+                        }
+                    },
+            
+                    tooltip: {
+                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
+                    },
+            
+                    series: [{
+                        name: "Groups",
+                        colorByPoint: true,
+                        data: response
+                    }]
+                });
+               }
+            });
+            
+        }
+
     // var course_onload = $("#course_id").val($("#course_id option:first").next().val());
     
    

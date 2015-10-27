@@ -4,19 +4,6 @@
         $(this).addClass('active');
     });
 </script>
-<style>
-        .avatar1 {
-            border: 6px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            height: 200px;
-            margin: 0 auto 15px;
-            overflow: hidden;
-            width: 200px;
-        }
-		.avatar1 img{
-			width:100%;
-		}
-    </style>
 <!--main-->
 <div class="col-sm-7 main main2 stydymates mCustomScrollbar" data-mcs-theme="minimal-dark"> 
     <!--tabs-->
@@ -90,8 +77,8 @@
         <!--//filterbar-->
         <!--search result-->
         <h5 class="search_result_label">Search Result for</h5>
-        <div class="box general_cred">
-            <div class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark" id="search_result">
+        <div class="box general_cred" data-type="search_result">
+            <div class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark" id="search_result" >
                 <?php 
                     if(isset($find_studymates) && sizeof($find_studymates) > 0){ 
                     $i = 1;
@@ -101,9 +88,9 @@
                 <div class="study_mate">
                     <div class="col-lg-9 col-md-8 col-sm-7">
                         <div class="mate_user_img">
-                            <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                            <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                         </div>
-                        <h4><?php echo $value['full_name'];?></h4>
+                        <h4 style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id'];?>"><?php echo $value['full_name'];?></h4>
                         <p><?php echo $value['school_name'];?></p>
                         <p class="txt_green"><?php echo $value['course_name'];?></p>
                     </div>
@@ -134,7 +121,7 @@
     </div>
     <!--//search-->
      <!--suggestion-->
-    <div class="box general_cred margin_15">
+     <div class="box general_cred margin_15">
         <div class="box_header">
             <h3>Recommended Studymates</h3>
         </div>
@@ -151,16 +138,18 @@
                             $i = 1;
                             foreach ($recommended_studymates as $key => $value) {
                             if($i/6==1){
-                                echo '</div><div class="item">';     
+                                echo '</div><div class="item">';  
+                                $i = 1;     
+
                             }
                         ?>
                             <!--card-->
                             <div class="suggested_mates_card">
                                 <div class="mate_user_img">
-                                    <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
+                                    <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                 </div>
                                 <div class="mate_descrip">
-                                    <p class="mate_name"><?php echo $value['full_name'];?></p>
+                                    <p class="mate_name" style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id'];?>"><?php echo $value['full_name'];?></p>
                                     <p>
                                     <?php 
                                         if(strlen($value['school_name']) > 30)
@@ -246,20 +235,11 @@
                 </div>
                 <div class="basic_info">
                     <h3 data-type="user-name" class="txt_green text-uppercase"></h3>
-                    <p>
-                    <span class="fa fa-map-marker"></span>
-                    From Ghana
-                    </p>
-                    <p data-type="course-name">
-                        <span class="fa fa-graduation-cap"></span>
-                    </p>
-					<p><span class="fa fa-university"></span>Stanford University</p>
-					<a href="#"><span class="fa fa-bookmark"></span>Following 12 Authers</a>
-                    <p>
-                    <span class="fa fa-birthday-cake"></span>
-                    March 21, 1992
-                    </p>
-					<button class="btn btn_green pull-right">Add Studymate</button>
+                    <p data-type="email"></p>
+                    <p data-type="course-name"></p>
+					<p data-type="school"></p>
+                    <p data-type="birth"></p>
+					<!--<button class="btn btn_green pull-right">Add Studymate</button>-->
                     <div class="clearfix"></div>
                 </div>
             </div>

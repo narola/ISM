@@ -2731,6 +2731,15 @@ class PHPWebSocket {
         return array_merge($data, $this->get_client_info($user_id));
     }
 
+    function get_studymate_detail($user_id,$data){
+        $link = $this->db();
+        $query = "SELECT u.*,p.profile_link,s.school_name,cs.course_name,c.class_name FROM users u LEFT JOIN student_academic_info inf on inf.user_id = u.id LEFT JOIN classrooms c ON c.id = inf.classroom_id LEFT JOIN schools s ON s.id = inf.school_id LEFT JOIN courses cs ON cs.id = inf.course_id LEFT JOIN user_profile_picture p on p.user_id = u.id WHERE u.id = ".$data['user_id'];
+        $row = mysqli_query($link,$query);
+        while ($rows = mysqli_fetch_assoc($row)) {
+            $data['result'] = $rows;
+        }
+        return $data;
+    }
 }
 
 ?>
