@@ -10,16 +10,41 @@ import org.json.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Data {
-	
-    private String schoolName;
-    private String courseId;
-    private String courseName;
-    private String roleId;
-    private String schoolId;
-    private String academicYear;
-    private String userId;
-    private String userName;
 
+	private String id;
+	private String string;
+	private String schoolName;
+	private String courseId;
+	private String courseName;
+	private String roleId;
+	private String schoolId;
+	private String schoolDestrict;
+	private String academicYear;
+	private String userId;
+	private String userName;
+    private String classId;
+    private String className;
+    private String countryName;
+    private String stateName;
+    private String cityName;
+
+	@Override
+	public String toString() {
+		return string;
+	}
+
+	public void setString(String string) {
+		this.string = string;
+	}
+
+	@JsonProperty("id")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @JsonProperty("school_name")
     public String getSchoolName() {
@@ -75,7 +100,7 @@ public class Data {
         this.academicYear = academicYear;
     }
 
-	@JsonProperty("userid")
+	@JsonProperty("user_id")
 	public String getUserId() {
 		return userId;
 	}
@@ -91,5 +116,59 @@ public class Data {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	@JsonProperty("class_id")
+	public String getClassId() {
+		return classId;
+	}
+
+	public void setClassId(String classId) {
+		this.classId = classId;
+	}
+
+	@JsonProperty("class_name")
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
+	@JsonProperty("district_name")
+	public String getSchoolDestrict() {
+		return schoolDestrict;
+	}
+
+	public void setSchoolDestrict(String schoolDestrict) {
+		this.schoolDestrict = schoolDestrict;
+	}
+
+	@JsonProperty("country_name")
+	public String getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(String countryName) {
+		setString(this.countryName = countryName);
+	}
+
+	@JsonProperty("state_name")
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		setString(this.stateName = stateName);
+	}
+
+	@JsonProperty("city_name")
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		setString(this.cityName = cityName);
 	}
 }

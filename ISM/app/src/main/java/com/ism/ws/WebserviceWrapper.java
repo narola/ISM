@@ -21,6 +21,10 @@ public class WebserviceWrapper {
 	public static final int LOGIN = 1;
 	public static final int FORGOT_PASSWORD = 2;
 	public static final int REQUEST_CREDENTIALS = 3;
+	public static final int GET_COUNTRIES = 4;
+	public static final int GET_STATES = 5;
+	public static final int GET_CITIES = 6;
+	public static final int REGISTER_USER = 7;
 
 	public interface WebserviceResponse {
 		public void onResponse(Object object, Exception error, int apiCode);
@@ -47,8 +51,22 @@ public class WebserviceWrapper {
 				currentApiCode = params[0];
 				switch (currentApiCode) {
 					case LOGIN:
-//						res = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObj.class, requestObject);
 						responseObject = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObject.class, requestObject);
+						break;
+					case FORGOT_PASSWORD:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_FORGOT_PASSWORD, ResponseObject.class, requestObject);
+						break;
+					case GET_COUNTRIES:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_GET_COUNTRIES, ResponseObject.class, requestObject);
+						break;
+					case GET_STATES:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_GET_STATES, ResponseObject.class, requestObject);
+						break;
+					case GET_CITIES:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_GET_CITIES, ResponseObject.class, requestObject);
+						break;
+					case REGISTER_USER:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_REGISTER_USER, ResponseObject.class, requestObject);
 						break;
 				}
 			} catch (Exception e) {
@@ -59,7 +77,11 @@ public class WebserviceWrapper {
 
 		@Override
 		protected void onPostExecute(Object o) {
-			webserviceResponse.onResponse(o, null, currentApiCode);
+			try {
+				webserviceResponse.onResponse(o, null, currentApiCode);
+			} catch (Exception e) {
+				webserviceResponse.onResponse(null, e, currentApiCode);
+			}
 			super.onPostExecute(o);
 		}
 	}

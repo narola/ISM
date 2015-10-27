@@ -167,6 +167,7 @@ public class QuestionPaletteFragment extends Fragment implements ExamFragment.Ex
 		}
 		String msg = isUncomplete ? getResources().getString(R.string.msg_end_test_unanswered) : getResources().getString(R.string.msg_end_test);
 		String negativeText = isUncomplete ? getResources().getString(R.string.attend) : getResources().getString(R.string.cancel);
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setMessage(msg)
 				.setPositiveButton(R.string.end_test, new DialogInterface.OnClickListener() {

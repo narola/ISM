@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -46,8 +45,8 @@ public class CustomSpinnerAdapter extends BaseAdapter {
     public View getView(int position, View cnvtView, ViewGroup parent) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        View mySpinner = inflater.inflate(R.layout.custom_spinner, parent, false);
-        TextView main_text = (TextView) mySpinner.findViewById(R.id.myspinner);
+        View mySpinner = inflater.inflate(R.layout.simple_spinner, parent, false);
+        TextView main_text = (TextView) mySpinner.findViewById(R.id.txt_title);
         main_text.setText(list[position]);
 
         return mySpinner;

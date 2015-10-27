@@ -47,13 +47,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d20dp"
                     android:layout_marginRight="@dimen/d20dp"
-
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-
                         android:layout_marginTop="@dimen/d10dp"
                         android:layout_weight="2.5"
                         android:orientation="horizontal">
@@ -61,7 +59,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-
                             android:layout_weight="1"
                             android:orientation="vertical">
 
@@ -72,34 +69,47 @@
                                 android:orientation="horizontal">
 
                                 <EditText
-                                    android:id="@+id/et_fullname"
+                                    android:id="@+id/et_firstname"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="@dimen/d5dp"
                                     android:layout_weight="1"
                                     android:background="@drawable/selector"
-                                    android:hint="@string/strfullname"
+                                    android:hint="@string/first_name"
                                     android:padding="15sp"
+                                    android:inputType="textPersonName"
                                     android:textColorHint="@color/color_text_hint" />
 
                                 <EditText
-                                    android:id="@+id/et_emailAdd"
+                                    android:id="@+id/et_lastname"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="@dimen/d5dp"
                                     android:layout_weight="1"
                                     android:background="@drawable/selector"
-                                    android:hint="@string/stremailaddress"
+                                    android:hint="@string/last_name"
                                     android:padding="15sp"
+                                    android:inputType="textPersonName"
                                     android:textColorHint="@color/color_text_hint" />
                             </LinearLayout>
+
+	                        <EditText
+		                        android:id="@+id/et_emailAdd"
+		                        android:layout_width="match_parent"
+		                        android:layout_height="match_parent"
+		                        android:layout_marginRight="@dimen/d5dp"
+		                        android:layout_weight="2"
+		                        android:background="@drawable/selector"
+		                        android:hint="@string/stremailaddress"
+		                        android:padding="15sp"
+		                        android:inputType="textPersonName"
+		                        android:textColorHint="@color/color_text_hint" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
                                 android:orientation="horizontal">
-
 
                                 <Spinner
                                     android:id="@+id/sp_gender"
@@ -108,7 +118,6 @@
                                     android:layout_marginRight="@dimen/d5dp"
                                     android:layout_weight="1"
                                     android:background="@drawable/spinner_selector"
-
                                     android:padding="@dimen/d20dp"
                                     android:spinnerMode="dropdown" />
 
@@ -121,8 +130,8 @@
                                     android:background="@drawable/selector"
                                     android:hint="@string/strcontactnumber"
                                     android:padding="15sp"
+                                    android:inputType="phone"
                                     android:textColorHint="@color/color_text_hint" />
-
 
                             </LinearLayout>
 
@@ -141,6 +150,8 @@
                                     android:background="@drawable/selector"
                                     android:hint="@string/strdateofbirth"
                                     android:padding="15sp"
+                                    android:editable="false"
+                                    android:text="1989-07-30"
                                     android:textColorHint="@color/color_text_hint" />
 
                                 <EditText
@@ -152,6 +163,7 @@
                                     android:background="@drawable/selector"
                                     android:hint="@string/strage"
                                     android:padding="15sp"
+                                    android:inputType="numberDecimal"
                                     android:textColorHint="@color/color_text_hint" />
                             </LinearLayout>
 
@@ -165,6 +177,7 @@
                                 android:gravity="top|left"
                                 android:hint="@string/strhomeaddress"
                                 android:padding="15sp"
+                                android:inputType="textPostalAddress"
                                 android:textColorHint="@color/color_text_hint" />
 
                         </LinearLayout>
@@ -175,6 +188,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="2.5"
                             android:background="@color/color_white"
+                            android:onClick="onClickUploadImage"
                             android:orientation="vertical">
 
                             <com.ism.helper.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -205,20 +219,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/d10dp"
-                        android:layout_marginTop="@dimen/d10dp"
                         android:orientation="horizontal"
                         android:weightSum="3">
 
                         <Spinner
-                            android:id="@+id/sp_city"
+                            android:id="@+id/sp_country"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
                             android:background="@drawable/spinner_selector"
-                            android:entries="@array/list"
-                            android:padding="@dimen/d20dp"
-                            android:spinnerMode="dropdown" />
+                            android:padding="@dimen/d20dp" />
 
                         <Spinner
                             android:id="@+id/sp_state"
@@ -226,17 +237,18 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector"
-                            android:entries="@array/list" />
+                            android:padding="@dimen/d20dp"
+                            android:background="@drawable/spinner_selector" />
 
                         <Spinner
-                            android:id="@+id/sp_country"
+                            android:id="@+id/sp_city"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@drawable/spinner_selector"
-                            android:entries="@array/list"
-                            android:padding="@dimen/d20dp" />
+                            android:padding="@dimen/d20dp"
+                            android:spinnerMode="dropdown" />
+
                     </LinearLayout>
                 </LinearLayout>
 
@@ -268,9 +280,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d20dp"
                     android:layout_marginRight="@dimen/d20dp"
-
                     android:orientation="vertical">
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -326,36 +336,44 @@
                         android:layout_weight="3"
                         android:orientation="horizontal">
 
-                        <EditText
-                            android:id="@+id/et_nameofschool"
+                        <TextView
+                            android:id="@+id/txt_nameofschool"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
                             android:background="@drawable/selector"
                             android:hint="@string/strnameofschool"
                             android:padding="15sp"
+                            android:textSize="20sp"
+                            android:gravity="center_vertical"
                             android:textColorHint="@color/color_text_hint" />
 
-                        <Spinner
-                            android:id="@+id/sp_class"
+                        <TextView
+                            android:id="@+id/txt_class"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector"
-                            android:entries="@array/list"
-                            android:padding="@dimen/d20dp" />
+                            android:background="@drawable/selector"
+                            android:hint="@string/strclass"
+                            android:padding="15sp"
+                            android:textSize="20sp"
+                            android:gravity="center_vertical"
+                            android:textColorHint="@color/color_text_hint" />
 
-                        <Spinner
-                            android:id="@+id/sp_academicyear"
+                        <TextView
+                            android:id="@+id/txt_academicyear"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_selector"
-                            android:entries="@array/list"
-                            android:padding="@dimen/d20dp" />
+                            android:background="@drawable/selector"
+                            android:hint="@string/stracademicyear"
+                            android:padding="15sp"
+                            android:textSize="20sp"
+                            android:gravity="center_vertical"
+                            android:textColorHint="@color/color_text_hint" />
 
                     </LinearLayout>
 
@@ -365,18 +383,21 @@
                         android:layout_weight="3"
                         android:orientation="horizontal">
 
-                        <Spinner
-                            android:id="@+id/sp_schoolgender"
+                        <TextView
+                            android:id="@+id/txt_schoolgender"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
                             android:background="@drawable/spinner_selector"
-                            android:entries="@array/list"
-                            android:padding="@dimen/d20dp" />
+                            android:hint="@string/strgender"
+                            android:textSize="20sp"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/d20dp"
+                            android:textColorHint="@color/color_text_hint" />
 
-                        <EditText
-                            android:id="@+id/et_districtofschool"
+                        <TextView
+                            android:id="@+id/txt_districtofschool"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginRight="@dimen/d5dp"
@@ -384,17 +405,22 @@
                             android:background="@drawable/selector"
                             android:hint="@string/strdistrictofschool"
                             android:padding="15sp"
+                            android:textSize="20sp"
+                            android:gravity="center_vertical"
                             android:textColorHint="@color/color_text_hint" />
 
-                        <Spinner
-                            android:id="@+id/sp_programcourse"
+                        <TextView
+                            android:id="@+id/txt_programcourse"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/d5dp"
                             android:layout_weight="1"
+                            android:hint="@string/strprogramcourse"
                             android:background="@drawable/spinner_selector"
-                            android:entries="@array/list"
-                            android:padding="@dimen/d20dp" />
+                            android:padding="@dimen/d20dp"
+                            android:textSize="20sp"
+                            android:gravity="center_vertical"
+                            android:textColorHint="@color/color_text_hint" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -456,6 +482,7 @@
                             android:background="@drawable/selector"
                             android:hint="@string/strcurrentpwd"
                             android:padding="15sp"
+                            android:inputType="textPassword"
                             android:textColorHint="@color/color_text_hint" />
 
                     </LinearLayout>
@@ -475,6 +502,7 @@
                             android:background="@drawable/selector"
                             android:hint="@string/strnewpwd"
                             android:padding="15sp"
+                            android:inputType="textPassword"
                             android:textColorHint="@color/color_text_hint" />
 
                         <EditText
@@ -486,6 +514,7 @@
                             android:background="@drawable/selector"
                             android:hint="@string/strconfirmpwd"
                             android:padding="15sp"
+                            android:inputType="textPassword"
                             android:textColorHint="@color/color_text_hint" />
                     </LinearLayout>
                 </LinearLayout>
