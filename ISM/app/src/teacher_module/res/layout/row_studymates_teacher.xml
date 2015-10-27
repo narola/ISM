@@ -43,7 +43,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:layout_marginTop="@dimen/d20dp"
-            android:button="@drawable/custom_checkbox_blue"
+            android:button="@drawable/custom_checkbox_drawable"
             android:checked="false"
             android:padding="@dimen/d10dp"
             android:textColor="@color/color_gray1"
@@ -52,6 +52,7 @@
     </RelativeLayout>
 
     <ImageView
+        android:id="@+id/img_separator_mates"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/color_shade_news_feed" />

@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d5dp"
-                    android:src="@drawable/image_like" />
+                    android:src="@drawable/bg_image_like" />
 
                 <TextView
                     android:id="@+id/txt_post_like_counter"
@@ -130,35 +130,36 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical">
+        >
 
         <EditText
             android:id="@+id/et_writePost"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/d60dp"
+            android:layout_height="@dimen/d70dp"
             android:layout_marginBottom="@dimen/d10dp"
             android:layout_marginLeft="@dimen/d15dp"
-            android:layout_marginRight="@dimen/d10dp"
+            android:layout_marginRight="@dimen/d15dp"
             android:layout_marginTop="@dimen/d10dp"
             android:layout_toLeftOf="@+id/txt_submit_post"
             android:background="@drawable/bg_news_feed"
             android:hint="@string/strwriteyourcommenthere"
-            android:padding="@dimen/d15dp"
+            android:padding="15sp"
             android:textColorHint="@color/color_text_hint" />
 
         <TextView
             android:id="@+id/txt_submit_post"
-            android:layout_width="75dp"
+            android:layout_width="@dimen/d110dp"
             android:layout_height="@dimen/d60dp"
-            android:layout_marginBottom="@dimen/d10dp"
-            android:layout_marginTop="@dimen/d10dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/d10dp"
-            android:background="@drawable/bg_add_post"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/d20dp"
+            android:background="@color/color_dark_gray"
             android:gravity="center"
-            android:text="COMMENT"
+            android:text="Comment"
+            android:textAllCaps="true"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/d16sp" />
+            android:textSize="@dimen/d20dp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
 

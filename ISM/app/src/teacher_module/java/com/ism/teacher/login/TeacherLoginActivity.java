@@ -13,12 +13,10 @@ import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.login.Global;
+import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.model.LoginRequest;
-
 import com.ism.teacher.model.ResponseObject;
 import com.ism.object.MyTypeFace;
-
-import com.ism.teacher.helper.ConnectionDetector;
 import com.ism.teacher.ws.WebserviceWrapper;
 import com.ism.utility.InputValidator;
 
@@ -35,7 +33,6 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
     CheckBox chkRememberme;
     TextView txtForgotpwd, txtDonothave, txtClickhere;
     private InputValidator inputValidator;
-    private ConnectionDetector connectionDetector;
 
 
     @Override
@@ -51,7 +48,6 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
     private void initView() {
         MyTypeFace myTypeFace = new MyTypeFace(TeacherLoginActivity.this);
         inputValidator = new InputValidator(TeacherLoginActivity.this);
-        connectionDetector = new ConnectionDetector(TeacherLoginActivity.this);
 
         txtForgotpwd = (TextView) findViewById(R.id.txt_forgotpwd);
         txtDonothave = (TextView) findViewById(R.id.txt_donothave_);
@@ -86,24 +82,14 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             if (isInputsValid()) {
                 Log.e(TAG, "inputs valid");
 
-                if (connectionDetector.isConnectingToInternet()) {
+                if (Utils.isInternetConnected(TeacherLoginActivity.this)) {
                     authenticateUser();
                 } else {
-                    Toast.makeText(TeacherLoginActivity.this, "Please check your internet connection and try again", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(getResources().getString(R.string.no_internet), TeacherLoginActivity.this);
                 }
-
 
                 //Global.myIntent(this, com.ism.teacher.login.TeacherProfileInformation.class);
             }
-//            else if(!inputValidator.validateStringPresence(etTeacherUserid))
-//            {
-//                inputValidator.setError(etTeacherUserid,"Enter User Name");
-//            }
-//
-//            else if(!inputValidator.validateStringPresence(etTeacherPassword))
-//            {
-//                inputValidator.setError(etTeacherPassword,"Enter Password");
-//            }
 
         }
 

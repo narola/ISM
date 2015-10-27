@@ -10,4 +10,7 @@
     <string name="strclose">Close</string>
     <string name="strsearchstudymatess">Search Study Mates</string>
 
+    <string name="no_internet">No Internet Connection Available...Please Try Again</string>
+    <string name="web_service_issue">Web service issue</string>
+
 </resources>

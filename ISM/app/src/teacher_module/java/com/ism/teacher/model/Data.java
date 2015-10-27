@@ -22,23 +22,29 @@ public class Data {
     private String video_link;
     private String full_name;
     private String feed_text;
+    private int like;
     private ArrayList<Comment> comment_list;
-
 
     //For StudymatesList
 
     private String profile_pic;
 
 
-
     //For AllComments
-
 
     private String id;
     private String commentBy;
     private String comment;
     private String profileLink;
 
+    @JsonProperty("like")
+    public int getLike() {
+        return like;
+    }
+
+    public void setLike(int like) {
+        this.like = like;
+    }
 
     @JsonProperty("id")
     public String getId() {
@@ -68,7 +74,6 @@ public class Data {
     }
 
 
-
     @JsonProperty("profileLink")
     public String getProfileLink() {
         return profileLink;
@@ -86,7 +91,6 @@ public class Data {
     public void setProfile_pic(String profile_pic) {
         this.profile_pic = profile_pic;
     }
-
 
 
     //For feeds
