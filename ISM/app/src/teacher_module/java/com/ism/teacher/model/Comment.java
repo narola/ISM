@@ -20,7 +20,7 @@ public class Comment {
     private String profileLink;
 
 
-    @JsonProperty("username")
+    @JsonProperty("full_name")
     public String getUsername() {
         return username;
     }

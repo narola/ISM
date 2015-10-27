@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_parent_teacher_post"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/bg_news_feed">
+    android:background="@drawable/bg_news_feed"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -105,7 +104,7 @@
                     android:layout_gravity="right">
 
                     <ImageView
-                        android:id="@+id/img_post_option"
+                        android:id="@+id/img_tag_studymates"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -119,6 +118,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_comment_row_inflater"
         android:layout_width="match_parent"
@@ -127,17 +127,39 @@
 
     </LinearLayout>
 
-
-    <EditText
-        android:id="@+id/et_writePost"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/d10dp"
-        android:layout_marginLeft="@dimen/d15dp"
-        android:layout_marginRight="@dimen/d15dp"
-        android:layout_marginTop="@dimen/d10dp"
-        android:hint="@string/strwriteyourcommenthere"
-        android:padding="@dimen/d15dp"
-        android:textColorHint="@color/color_text_hint"
-        android:background="@drawable/bg_news_feed"/>
+        android:layout_gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/et_writePost"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d60dp"
+            android:layout_marginBottom="@dimen/d10dp"
+            android:layout_marginLeft="@dimen/d15dp"
+            android:layout_marginRight="@dimen/d10dp"
+            android:layout_marginTop="@dimen/d10dp"
+            android:layout_toLeftOf="@+id/txt_submit_post"
+            android:background="@drawable/bg_news_feed"
+            android:hint="@string/strwriteyourcommenthere"
+            android:padding="@dimen/d15dp"
+            android:textColorHint="@color/color_text_hint" />
+
+        <TextView
+            android:id="@+id/txt_submit_post"
+            android:layout_width="75dp"
+            android:layout_height="@dimen/d60dp"
+            android:layout_marginBottom="@dimen/d10dp"
+            android:layout_marginTop="@dimen/d10dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/d10dp"
+            android:background="@drawable/bg_add_post"
+            android:gravity="center"
+            android:text="COMMENT"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d16sp" />
+    </RelativeLayout>
+
+
 </LinearLayout>

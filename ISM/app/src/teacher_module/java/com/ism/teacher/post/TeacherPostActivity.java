@@ -40,7 +40,7 @@ public class TeacherPostActivity extends Activity implements View.OnClickListene
 
         imgLikePost = (ImageView) findViewById(R.id.img_like_post);
         imgComments = (ImageView) findViewById(R.id.img_comments);
-        imgPostOption = (ImageView) findViewById(R.id.img_post_option);
+        imgPostOption = (ImageView) findViewById(R.id.img_tag_studymates);
 
         etWritePost = (EditText) findViewById(R.id.et_writePost);
     }

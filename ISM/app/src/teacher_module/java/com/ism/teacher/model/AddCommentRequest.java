@@ -1,16 +1,12 @@
-package com.ism.author.model;
+package com.ism.teacher.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-/**
- * these is addcomment request class.
- */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AddCommentRequest {
-
-
+	
     private String feed_id;
     private String comment_by;
     private String comment;
@@ -38,6 +34,4 @@ public class AddCommentRequest {
     public void setComment(String comment) {
         this.comment = comment;
     }
-
-
 }

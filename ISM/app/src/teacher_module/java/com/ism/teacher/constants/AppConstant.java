@@ -35,8 +35,8 @@ public class AppConstant {
     public static final String RalewayThinItalic = "Raleway-ThinItalic.ttf";
 
     public static final String USERID = "USERID";
-
     public static final String PASSWORD = "PASSWORD";
+    public static final String API_STATUS_SUCCESS = "success";
 
     public static final String imageCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Images";
     public static final String videoCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
@@ -49,6 +49,9 @@ public class AppConstant {
     public static final String URL_LOGIN = URL_HOST + "AuthenticateUser";
 
     public static final String URL_GET_ALL_FEEDS = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=GetAllFeeds";
+    public static final String URL_GET_ALL_COMMENTS = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=GetAllComments";
+    public static final String URL_GET_STUDYMATES = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=GetStudymates";
+    public static final String URL_ADD_COMMENT = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=AddComment";
 
     /**
      * Hide Keyboard

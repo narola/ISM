@@ -7,6 +7,7 @@
     <dimen name="d5sp">5sp</dimen>
     <dimen name="d10sp">10sp</dimen>
     <dimen name="d15sp">15sp</dimen>
+    <dimen name="d16sp">15sp</dimen>
     <dimen name="d18sp">18sp</dimen>
 
     <dimen name="d20sp">20sp</dimen>
@@ -38,7 +39,8 @@
     <dimen name="d90dp">90dp</dimen>
     <dimen name="d120dp">120dp</dimen>
     <dimen name="d130dp">130dp</dimen>
-
+    <dimen name="d140dp">140dp</dimen>
+    <dimen name="d150dp">150dp</dimen>
 
 
 </resources>

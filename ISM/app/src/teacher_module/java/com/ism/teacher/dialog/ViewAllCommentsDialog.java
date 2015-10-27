@@ -1,4 +1,4 @@
-package com.ism.author.dialog;
+package com.ism.teacher.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,8 +10,10 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.author.adapter.PostFeedCommentsAdapter;
-import com.ism.author.model.Data;
+
+import com.ism.teacher.adapters.PostFeedCommentsAdapter;
+import com.ism.teacher.model.Comment;
+import com.ism.teacher.model.Data;
 
 import java.util.ArrayList;
 
@@ -35,8 +37,7 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
         this.commentsList = commentsList;
 
         Window w = getWindow();
-        getWindow().getAttributes().windowAnimations =
-                R.style.DialogOpenAnimation;
+        getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         w.setBackgroundDrawableResource(android.R.color.transparent);

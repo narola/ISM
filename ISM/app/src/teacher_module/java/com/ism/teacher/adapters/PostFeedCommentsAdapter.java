@@ -1,4 +1,4 @@
-package com.ism.author.adapter;
+package com.ism.teacher.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.author.model.Data;
+import com.ism.teacher.model.Comment;
+import com.ism.teacher.model.Data;
+
 
 import java.util.ArrayList;
 
@@ -24,19 +26,19 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
 
     @Override
-    public PostFeedCommentsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
 
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View contactView = inflater.inflate(R.layout.row_post_commenter, parent, false);
+        View contactView = inflater.inflate(R.layout.post_comments_list_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(PostFeedCommentsAdapter.ViewHolder holder, int position) {
-        holder.txtCommenterUsername.setText(listOfComments.get(position).getFullName());
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.txtCommenterUsername.setText(listOfComments.get(position).getFull_name());
         holder.txtCommenterComment.setText(listOfComments.get(position).getComment());
         holder.txtCommentDuration.setText(listOfComments.get(position).getCommentBy());
     }
@@ -70,10 +72,10 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
         public ViewHolder(View itemView) {
             super(itemView);
 
-            txtCommenterUsername = (TextView) itemView.findViewById(R.id.txt_commenter_username);
-            txtCommenterComment = (TextView) itemView.findViewById(R.id.txt_commenter_comment);
+            txtCommenterUsername = (TextView) itemView.findViewById(R.id.txt_username_commenter);
+            txtCommenterComment = (TextView) itemView.findViewById(R.id.txt_comments_from_commenter);
             txtCommentDuration = (TextView) itemView.findViewById(R.id.txt_comment_duration);
-            txtCommentDuration = (TextView) itemView.findViewById(R.id.txt_comment_duration);
+           // txtCommentDuration = (TextView) itemView.findViewById(R.id.txt_comment_duration);
 
         }
     }
