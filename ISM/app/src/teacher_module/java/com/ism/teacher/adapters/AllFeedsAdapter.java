@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.teacher.fragments.TeacherHomeFragment;
+import com.ism.teacher.model.AddCommentRequest;
 import com.ism.teacher.model.Comment;
 import com.ism.teacher.model.Data;
+import com.ism.teacher.model.FeedIdRequest;
 import com.ism.utility.InputValidator;
 
 import java.util.ArrayList;
@@ -31,7 +33,6 @@ public class AllFeedsAdapter extends
 
     Fragment fragment;
     View.OnClickListener viewAllCommetsListener;
-    InputValidator inputValidator;
 
     public AllFeedsAdapter(Context context, ArrayList<Data> data) {
         this.context = context;
@@ -49,7 +50,13 @@ public class AllFeedsAdapter extends
         //  fragment = ((Activity) context).getFragmentManager().findFragmentById(R.id.fl_fragment_container_main);
         this.viewAllCommetsListener = viewAllCommetsListener;
         this.fragment = fragment;
-        inputValidator = new InputValidator(context);
+    }
+
+    public AllFeedsAdapter(Context context, ArrayList<Data> data, Fragment fragment) {
+        this.context = context;
+        arrayListAllFeedsData = new ArrayList<>();
+        arrayListAllFeedsData = data;
+        this.fragment = fragment;
     }
 
     /**
@@ -101,8 +108,18 @@ public class AllFeedsAdapter extends
 
         }
 
-        holder.txtViewAllComments.setTag(position);
-        holder.txtViewAllComments.setOnClickListener(viewAllCommetsListener);
+        holder.txtViewAllComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FeedIdRequest feedIdRequest = new FeedIdRequest();
+
+                feedIdRequest.setFeed_id(arrayListAllFeedsData.get(position).getFeed_id());
+
+                ((TeacherHomeFragment) fragment).callViewAllCommentsApi(feedIdRequest);
+            }
+        });
+
 
         holder.txtSubmitPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,9 +128,14 @@ public class AllFeedsAdapter extends
                 if (arrayListAllFeedsData.size() > 0) {
 
                     if (validateStringPresence(holder.etWritePost)) {
-                        ((TeacherHomeFragment) fragment).callAddCommentApi(position, holder.etWritePost.getText().toString());
-                    }
+                        AddCommentRequest addCommentRequest = new AddCommentRequest();
 
+                        addCommentRequest.setFeed_id(arrayListAllFeedsData.get(position).getFeed_id());
+                        addCommentRequest.setComment_by(arrayListAllFeedsData.get(position).getUser_id());
+                        addCommentRequest.setComment(holder.etWritePost.getText().toString());
+
+                        ((TeacherHomeFragment) fragment).callAddCommentApi(addCommentRequest);
+                    }
 
                 }
             }

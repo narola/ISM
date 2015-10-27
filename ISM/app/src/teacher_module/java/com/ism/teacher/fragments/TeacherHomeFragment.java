@@ -51,8 +51,6 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
     TagStudyMatesAdapter tagStudyMatesAdapter;
 
     ArrayList<Comment> commentArrayList;
-    ResponseObject responseObj;
-
 
     public static TeacherHomeFragment newInstance() {
         TeacherHomeFragment fragTeacherHome = new TeacherHomeFragment();
@@ -125,30 +123,27 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
 
     @Override
-    public void onResponse(int API_METHOD, Object object, Exception error) {
+    public void onResponse(int apiMethod, Object object, Exception error) {
 
-        responseObj = (ResponseObject) object;
+        ResponseObject responseObj = (ResponseObject) object;
         if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
 
-            if (API_METHOD == WebserviceWrapper.GET_ALL_FEEDS) {
+            if (apiMethod == WebserviceWrapper.GET_ALL_FEEDS) {
                 if (responseObj.getData().size() > 0) {
-                    allFeedsAdapter = new AllFeedsAdapter(getActivity(), responseObj.getData(), viewAllListener, this);
+                    allFeedsAdapter = new AllFeedsAdapter(getActivity(), responseObj.getData(), this);
                     recyclerviewPost.setAdapter(allFeedsAdapter);
                     recyclerviewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
 //                allFeedsAdapter.notifyDataSetChanged();
                 }
-            } else if (API_METHOD == WebserviceWrapper.GET_ALL_COMMENTS) {
+            } else if (apiMethod == WebserviceWrapper.GET_ALL_COMMENTS) {
                 if (responseObj.getData().size() > 0) {
                     ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseObj.getData());
                     viewAllCommentsDialog.show();
                 }
-            } else if (API_METHOD == WebserviceWrapper.GET_STUDYMATES) {
+            } else if (apiMethod == WebserviceWrapper.GET_STUDYMATES) {
                 if (responseObj.getData().size() > 0) {
                     TagCustomDialog tagCustomDialog = new TagCustomDialog(getActivity(), responseObj.getData());
                     tagCustomDialog.show();
-//                    tagStudyMatesAdapter = new TagStudyMatesAdapter(getActivity(), responseObj.getData(), tagStudymatesListener, this);
-//                    recyclerviewPost.setAdapter(allFeedsAdapter);
-//                    recyclerviewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
                 }
             }
 
@@ -157,62 +152,30 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
         }
     }
 
-    View.OnClickListener viewAllListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            int position = (Integer) v.getTag();
-//            if (responseObj.getData().get(position).getComment().size() > 0) {
-//                ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseObj.getData().get(position).getComment());
-//                viewAllCommentsDialog.show();
-//
-//            }
-
-            callViewAllCommentsApi(position);
-
-        }
-    };
-    FeedIdRequest feedIdRequest = new FeedIdRequest();
-
-    public void callViewAllCommentsApi(int position) {
+    public void callViewAllCommentsApi(FeedIdRequest feedIdRequest) {
 
         try {
-            FeedIdRequest feedIdRequest = new FeedIdRequest();
-            feedIdRequest.setFeed_id(responseObj.getData().get(position).getFeed_id());
-            //  Log.e("feed id",""+responseObj.getData().get(position).getFeed_id());
 
-            if (responseObj.getData().get(position).getFeed_id() != null) {
-                new WebserviceWrapper(getActivity(), feedIdRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GET_ALL_COMMENTS);
-            } else {
-                Toast.makeText(getActivity(), "feed id is null", Toast.LENGTH_SHORT).show();
-            }
+            new WebserviceWrapper(getActivity(), feedIdRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                    .execute(WebserviceWrapper.GET_ALL_COMMENTS);
 
         } catch (Exception e) {
 
         }
     }
 
-    public TagFriendInFeedRequest tagFriendInFeedRequest = new TagFriendInFeedRequest();
 
-
-    public void callAddCommentApi(int position, String postComment) {
+    public void callAddCommentApi(AddCommentRequest addCommentRequest) {
         try {
-            AddCommentRequest addCommentRequest = new AddCommentRequest();
-            addCommentRequest.setFeed_id(responseObj.getData().get(position).getFeed_id());
-            addCommentRequest.setComment_by(responseObj.getData().get(position).getUser_id());
-            addCommentRequest.setComment(postComment);
-
             new WebserviceWrapper(getActivity(), addCommentRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebserviceWrapper.ADD_COMMENTS);
-
-            //  recyclerviewPost.notifyAll();
 
         } catch (Exception e) {
             Log.e("error", e.getLocalizedMessage());
         }
     }
 
+    public TagFriendInFeedRequest tagFriendInFeedRequest = new TagFriendInFeedRequest();
 
     public void callGetStudyMates() {
 
