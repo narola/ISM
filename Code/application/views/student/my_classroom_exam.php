@@ -82,16 +82,22 @@
                         <?php 
                             foreach ($my_exam as $exam_value) {
                                 if($exam_value['subject_id'] == $value['subject_id']){
-                                    if($exam_value['per'] != ''){
+                                    $is_running_cls = '';
+                                    if($exam_value['exam_status'] == 'started'){
+                                        $is_running_cls = '<img src="assets/images/clock.GIF">&nbsp;';
+                                    }
+
+                                    if($exam_value['id'] != '' && $exam_value['exam_status'] == 'finished'){
                                         $url = 'student/my_scoreboard/index/'.$exam_value['exam_id'];
                                         $percentage = $exam_value['per'];
                                     }
                                     else{
+
                                         $url = 'student/class-exam-instruction/'.$exam_value['exam_id'];   
                                         $percentage = '';
                                     }
                         ?>
-                            <li><a href="<?php echo $url;?>">
+                            <li><a href="<?php echo $url;?>"><?php echo $is_running_cls; ?>
                                 <?php 
                                     if(strlen($exam_value['exam_name']) > 29)
                                         echo substr($exam_value['exam_name'],0, 29).'.....';
