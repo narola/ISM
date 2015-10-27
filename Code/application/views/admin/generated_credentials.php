@@ -161,6 +161,9 @@
     });
 
     function fetch_school_from_grade(school_grade){
+
+        $('#select2-chosen-1').html('Select School');
+        
         $.ajax({
             url:'<?php echo base_url()."common/fetch_school_from_grade"; ?>',
             type:'POST',

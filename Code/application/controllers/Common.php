@@ -188,10 +188,13 @@ class Common extends CI_Controller {
             $schools = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE,'school_grade'=>$school_grade)),array('order_by'=>'school_name'));
         }
 
-        $new_str = '';
+        $new_str = '<option value="" selected disabled > Select School </option>';
+        
         if(!empty($schools)){
             foreach ($schools as $school) {
-                $new_str .= '<option value="'.$school['id'].'">'.$school["school_name"].'</option>';
+                $new_str .= '<option '.$selected.' value="'.$school['id'].'">'.
+                                $school["school_name"].
+                            '</option>';
             }
         }else{
             $new_str .= '<option value=""> No School Found </option>';

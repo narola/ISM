@@ -51,7 +51,7 @@
                 <!--//filter--> 
                 <!--row-->
                 <div class="allocate_topic">
-                	<div class="col-sm-6">
+                	<div class="col-sm-12 col-lg-6">
                     	<div class="box general_cred">
                         	<div class="box_header">
                             	<h3>Allocate Topic for Groups</h3>
@@ -124,7 +124,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-12 col-lg-6">
                     	<div class="box general_cred">
                         	<div class="box_header">
                             	<h3>Recommended Topics</h3>

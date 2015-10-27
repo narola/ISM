@@ -237,7 +237,7 @@
                     },
             
                     series: [{
-                        name: "Courses",
+                        name: "Groups",
                         colorByPoint: true,
                         data: response
                     }]

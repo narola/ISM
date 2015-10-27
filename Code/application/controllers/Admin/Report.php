@@ -82,11 +82,11 @@ class Report extends ADMIN_Controller {
 
     public function get_group_stats(){
 
-    	// $classroom_id = $this->input->post('classroom_id');
-    	$classroom_id = 2;
+    	$classroom_id = $this->input->post('classroom_id');
+    	// $classroom_id = 2;
 
-    	// $date_range = $this->input->post('date_range');
-    	$date_range = '08/02/2015 - 11/10/2015';
+    	$date_range = $this->input->post('date_range');
+    	// $date_range = '08/02/2015 - 11/10/2015';
 
         $date_range_split = explode(" - ", $date_range);
     	$sdate = date_create(reset($date_range_split));
@@ -123,20 +123,28 @@ class Report extends ADMIN_Controller {
     		                  'group_by'=>TBL_TUTORIAL_GROUP_MEMBER.".group_id"
     		          )
     		);
-    
+        
         $new_str = array();            
         if(!empty($members)){
             foreach($members as $member){
                 array_push($new_str, $member['group_id']);
             }
+        }else{
+            array_push($new_str, '0');
         }
 
+        if(!empty($new_str)){
+            $group_by = "group_topic.group_id";
+        }else{
+            $group_by= '';
+        }
 
         $group_data = select(
                               TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' group_topic',
-                              'group_topic.group_id,group.group_name,sum(group_topic.group_score) as y',
+                              'group_topic.group_id,group.group_name as name,sum(group_topic.group_score) as y',
                               array('where_in'=>array('group_topic.group_id'=>$new_str)),
                               array(
+                                    'group_by'=>$group_by,
                                     'join'=>array(
                                                 array(
                                                         'table'=>TBL_TUTORIAL_GROUPS.' as group',

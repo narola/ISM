@@ -11,7 +11,7 @@
     </div>
     <!--//breadcrumb-->
     <!--main content-->
-	<div class="col-sm-12">
+	<div class="margin_15">
     <form method='post' id="question_add">
         <div class="question_bank">
         	<div class="col-sm-12 general_cred">
