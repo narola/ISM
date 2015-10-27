@@ -253,7 +253,7 @@ $(document).ready(function () {
 /* Check wheather web socket is supported by browser. */
 if ("WebSocket" in window)
 {
-    var ws = new WebSocket("ws://192.168.1.124:9300");
+    var ws = new WebSocket("ws://192.168.1.21:9300");
 
     ws.onopen = function ()
     {
@@ -336,7 +336,7 @@ if ("WebSocket" in window)
                 }
 
                 if($('.my_studymates .general_cred').length > 0){
-                  alert($('.my_studymates .general_cred .studyamte_list .mCustomScrollBox .mCSB_container').attr('class'));
+//                  alert($('.my_studymates .general_cred .studyamte_list .mCustomScrollBox .mCSB_container').attr('class'));
                 }
 
             });
@@ -737,7 +737,7 @@ if ("WebSocket" in window)
             } else {
                 $('.search_studymate  div[data-type="search_result"]').html(str);
             }
-        } else if(obj.type = "load-activity-more"){
+        } else if(obj.type == "load-activity-more"){
             str = ''; 
             if(obj.result.my_like.length > 0 || obj.result.my_comment.length > 0 || obj.result.my_studymate.length > 0 || obj.result.my_post.length > 0 || obj.result.my_topic.length > 0)
             {
@@ -842,7 +842,15 @@ if ("WebSocket" in window)
                 $('div[data-type="no-more"]').html('<lable class="txt_grey txt_red">No more activities</label>');
                 $('a[data-type="load-activity-more"]').attr('value','No more activities');
            }
-        } else {
+        } 
+        else if(obj.type == "show_profile"){
+            $('#view_profile_model div[data-type="profile_pic"]').html('<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.result.profile_link + '">');
+            $('#view_profile_model h3[data-type="user-name"]').html(obj.result.full_name);
+            $('#view_profile_model p[data-type="course-name"]').html('<span class="fa fa-graduation-cap"></span>' + obj.result.course_name);
+           
+            $('#view_profile_model').modal('show');
+        }
+        else {
 
             alert('Message Not Catched!!');
         }
@@ -1505,9 +1513,9 @@ $(document).on('click', 'a[data-type="load-activity-more"]', function () {
     ws.send(JSON.stringify(request));
 });
 
-$(document).on('click', 'img[data-type="show-profile"]', function () {
+$(document).on('click', 'p,img[data-type="show-profile"]', function () {
     var request = {
-        type: 'show-profile',
+        type: 'show_profile',
         to: 'self',
         user_id: $(this).attr('data-id')
     }
