@@ -1,9 +1,5 @@
 package com.ism.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.json.*;
-
 import java.util.ArrayList;
 
 public class ResponseObject {
