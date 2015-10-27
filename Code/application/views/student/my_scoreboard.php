@@ -15,8 +15,7 @@
         <div class="col-sm-12 text-center">
             <h1 class="big_score">Your Score Is : <span><?php echo $my_scoreboard['percentage'];?>%</span></h1>
         </div>
-    </div>
-    <div class="evaluation">
+        <div class="evaluation">
         <div class="col-sm-12 col-md-6 col-md-offset-3">
             <div class="box">
                 <div>
@@ -47,6 +46,8 @@
                 </div>
             </div>
         </div>
+    </div>
+   
     </div>
 </div>
 <script>

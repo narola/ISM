@@ -23,6 +23,7 @@ class My_exam extends ISM_Controller {
 		$classroom_id = $user_data['classroom_id'];
 		$user_id = $user_data['id'];
 
+
 		//	get attampted exam list with result
 		$where	=	array('where' => array('c.classroom_id' => $classroom_id));
 		$option	= 	array('join' => 
@@ -30,15 +31,11 @@ class My_exam extends ISM_Controller {
 							array(
 								'table' => TBL_SUBJECTS.' s',
 								'condition'	=>  's.id = c.subject_id'
-							),
-							array(
-								'table' => '(select e.subject_id,count(*) as cnt,TRUNCATE((sc.correct_answers * 100) / (select count(*) as totquestion from exam_question where exam_id = e.id),2) as percentage from '.TBL_EXAMS.' e left join '.TBL_STUDENT_EXAM_SCORE.' sc on e.id = sc.exam_id where sc.user_id = '.$user_id.' and e.is_delete = 0 and sc.exam_status="finished") st',
-								'condition' => 'st.subject_id = s.id'
 							)
 						)
 					);
-		$data['subject_list'] = select(TBL_CLASSROOM_SUBJECT.' c','s.id,s.subject_name,st.cnt,st.percentage',$where,$option);
-
+		$data['subject_list'] = select(TBL_CLASSROOM_SUBJECT.' c','s.id,s.subject_name,(select count(*)  from '.TBL_STUDENT_EXAM_SCORE.' sc LEFT JOIN '.TBL_EXAMS.' e ON e.id = sc.exam_id where sc.user_id = '.$user_id.' and sc.exam_status = \'finished\' and e.subject_id = s.id) as cnt',$where,$option);
+		
 		//	get student classroom subject detail
 		$where = array('where'=>array('e.classroom_id' => $classroom_id,'sc.exam_status'=>'finished','sc.user_id'=>$user_id,'sc.is_delete' => 0,'e.is_delete' => 0));
 		$option =  array( 'join' =>
@@ -50,11 +47,16 @@ class My_exam extends ISM_Controller {
 							array(
 								'table' => TBL_SUBJECTS.' s',
 								'condition' => 'e.subject_id = s.id'
+							),
+							array(
+								'table' => '(select count(*) as cnt,exam_id	FROM exam_question group by exam_id) ed',
+								'condition' => 'ed.exam_id = e.id'
 							)
 						)
 					);
-		$select = 'e.exam_name,s.id,s.subject_name,e.id as exam_id';
+		$select = 'ed.cnt,e.exam_name,s.id,s.subject_name,e.id as exam_id,TRUNCATE((sc.correct_answers * 100) / ed.cnt,2) as percentage';
 		$data['my_exam'] = select(TBL_STUDENT_EXAM_SCORE.' sc',$select,$where,$option);
+		
 		$this->template->load('student/default','student/my_exam',$data);
 	}
 }

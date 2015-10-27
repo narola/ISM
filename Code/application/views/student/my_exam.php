@@ -31,7 +31,7 @@
                                             else
                                                 echo $e_value['exam_name'];
                                         ?>  
-                                        <span class="result"><?php echo $value['percentage'];?>%</span></a>
+                                        <span class="result"><?php echo $e_value['percentage'];?>%</span></a>
                                         </li>
                                     <?php }
                                 } 
