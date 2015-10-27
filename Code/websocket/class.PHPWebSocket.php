@@ -2145,8 +2145,9 @@ class PHPWebSocket {
             if (mysqli_num_rows($row) == 1) {
 
                 /* Check question exist in question id. */
-                $query = "SELECT `id` FROM `exam_question` WHERE `exam_id` = " . $data['exam']['exam_id'] . " AND `question_id` = " . $data['question_id'] . " ";
-                $row = mysqli_query($link, $query);
+                $query = "SELECT if(COUNT(`id`) > 0,1,0) as total FROM `exam_question` WHERE `exam_id` = " . $data['exam']['exam_id'] . " AND `question_id` = " . $data['question_id'] . " ";
+                
+                $row = mysqli_query($link, $query);                
                 if (mysqli_num_rows($row) == 0) {
                     $data['error'] = 'Please don\'t modify data manually!';
                     $data['reload'] = 'yes';
