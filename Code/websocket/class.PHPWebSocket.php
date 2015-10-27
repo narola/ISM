@@ -2004,6 +2004,7 @@ class PHPWebSocket {
         }
         $data['type'] = 'discussion';
         $data['to'] = 'all';
+        $data['cdate'] = date_format(date_create(date("Y-m-d H:i:s")), 'M d, Y g:i a');
         $data['allStudyMate'] = $this->class_mate_list($userId);
         return array_merge($data, $this->get_client_info($userId));
     }

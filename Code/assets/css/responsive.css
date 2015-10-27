@@ -1129,3 +1129,10 @@
     	width: 100%;
 	}
 }
+/*@media (max-height:600px){
+	.discussion{
+		padding-bottom: 100px;
+		height: 40vh;
+		margin-top: 32%;
+	}
+}*/

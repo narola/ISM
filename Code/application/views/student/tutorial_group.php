@@ -25,7 +25,7 @@
 .wPaint-menu-holder { height: auto; display: inline-block; padding: 8px ;}
 
 </style>
-<div class="col-sm-7 main main_tut mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="col-sm-7 main main_tut tut_dis"><!--mCustomScrollbar" data-mcs-theme="minimal-dark-->
     <?php 	if(isset($topic) && !empty($topic)){ ?>
             <div class="fixed_comment">
                 <div class="discussion_header">
@@ -52,7 +52,8 @@
                     </div>
                 </div>
             </div>
-                <div class="discussion">
+                <div class="discussion mCustomScrollbar" data-mcs-theme="minimal-dark">
+                    <div id="inner_x">
                 <?php 
                 if(isset($discussion) && count($discussion) > 0){
                     $i = 0;
@@ -106,6 +107,7 @@
                 }
                 ?> 
                 </div>
+            </div>
                 <?php //if($current_weekday <= 3){ ?>           
                 <div class="">
                		<!--input-->
@@ -360,4 +362,13 @@ ws.send('{"type":"time_start_request","from":"' + wp + '","to":"self","error":""
   }
     
 }
+
+
+$(document).ready(function(){
+    var h = $(window).height();
+    var fh = $('.fixed_comment').height();
+    var ih = $('.input').height();
+    $('.discussion').css('height',h - (fh + ih + 30)) ;
+    $('.discussion').css({'margin-top':fh, 'margin-bottom':ih}); 
+});
 </script>
