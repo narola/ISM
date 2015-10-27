@@ -43,7 +43,11 @@
 
             <div class="form-group no_effect search_input">
             	<input class="form-control" name="q" id="q" type="text" placeholder="Type Course Name">
-                <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                <?php if(!empty($_GET['q'])) { ?>
+                    <a onclick="filter_data_reverse()" style="cursor:pointer">X</a>
+                <?php }else { ?>
+                    <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                <?php } ?>
             </div>
         </div>
     </div>
@@ -125,6 +129,11 @@
 
 <script type="text/javascript">
     
+    function filter_data_reverse(){
+        $('#q').removeAttr('name');
+        $('#filter').submit();        
+    }
+
     function filter_data(){
         var category = $('#category').val();
         var q = $('#q').val();        
@@ -140,9 +149,11 @@
     $( "#filter" ).submit(function() {       
         var category = $('#category').val();
         var q = $('#q').val();
+        var order = $('#order').val();
         
         if(category == '' ){ $('#category').removeAttr('name'); }
         if(q == ''){ $('#q').removeAttr('name'); }
+        if(order == ''){  $('#order').removeAttr('name'); }
         
     });
 
@@ -168,26 +179,5 @@
             
         });
     } 
-   
-    // $("a.delete").click(function(){
-    //     var str_id = $(this).attr('id');
-    //     var split_id = str_id.split("_");
-    //     var course_id = split_id[1];        
-    //     $('button[data-type="close-course"]').attr('data-id',course_id); 
-    //     $('#close_mate').modal('show');      
-    // });
-    
-    // $(document).on('click','button[data-type="close-course"]',function(e){
-    //     var course_id = $(this).attr('data-id');
-    //     $.ajax({
-    //            url:'<?php echo base_url()."admin/course/delete_course"; ?>',
-    //            dataType: "JSON",
-    //            type:'POST',
-    //            data:{course_id:course_id},
-    //            success:function(data){
-    //                $('#close_mate').modal('hide');      
-    //                $('#'+data.id).closest('div[class^="box"]').slideUp("slow", function() { $('#'+data.id).closest('div[class^="box"]')});               
-    //             }
-    //    });
-    // });
+
 </script>

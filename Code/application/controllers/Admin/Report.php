@@ -14,18 +14,19 @@ class Report extends ADMIN_Controller {
 
     	$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
 		$top_groups = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,"sum(".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_score) as score,".TBL_TUTORIAL_GROUPS.".group_name",
-			FALSE,
-			array('join'=>array(
-					array(
-							'table'=>TBL_TUTORIAL_GROUPS,
-							'condition'=>TBL_TUTORIAL_GROUPS.'.id='.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.group_id'
-						)
-				),
-			'group_by'=>TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_id",
-			'order_by'=>'score desc',
-			'limit'=>5
-			)
-			);
+                			FALSE,
+                			array('join'=>array(
+                					array(
+                							'table'=>TBL_TUTORIAL_GROUPS,
+                							'condition'=>TBL_TUTORIAL_GROUPS.'.id='.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.group_id'
+                						)
+                				),
+                			'group_by'=>TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_id",
+                			'order_by'=>'score desc',
+                			'limit'=>5
+                			)
+                		);
+
 		$this->data['top_groups'] = $top_groups;
 
     	$this->data['page_title'] = 'Reports';

@@ -45,11 +45,17 @@
 
                 <div class="form-group no_effect search_input">
                     <input type="text" name="q" id="q" class="form-control" placeholder="Search" >
-                    <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                    <?php if(!empty($_GET['q'])) { ?>
+                        <a onclick="filter_data_reverse()" style="cursor:pointer">X</a>
+                    <?php }else { ?>
+                        <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                    <?php } ?>
                 </div>
+
             </div>
         </div>
     </form>	
+
     <!--//filter-->
 
     <!--row table-->
@@ -72,7 +78,7 @@
 				echo 'hide';
 			}
 			?>">
-					 <?php echo strip_tags($error); ?>
+				<?php echo strip_tags($error); ?>
 			</div>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table_user">
@@ -128,6 +134,11 @@
 <!--//main-->
 
 <script type="text/javascript">
+    
+    function filter_data_reverse(){
+        $('#q').removeAttr('name');
+        $('#filter').submit();        
+    }
 
     function filter_data() {
         
@@ -145,6 +156,7 @@
     $("#filter").submit(function (event) {
         var q = $('#q').val();
         var course_name = $('#course_name').val();
+        var order = $('#order').val();
         
         if (q == '') { $('#q').removeAttr('name'); }
         if (course_name == '') { $('#course_name').removeAttr('name'); }

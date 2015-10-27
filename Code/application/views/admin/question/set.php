@@ -17,7 +17,7 @@
 		<div class="question_bank_sr">
 		<div class="filter group_filter">
             <div class="col-sm-12">
-                <form method="post">
+                <form method="get">
 				<div class="form-group">
 					<select class="form-control" name="course_id" onchange="get_classes(this.value)" id="course_id">
 						<option value=''>Course</option>
@@ -31,16 +31,31 @@
 				<div class="form-group">
 					<select class="form-control" name="classroom_id" onchange="get_subjects(this.value)" id="classroom_id">
 						<option value=''>Classroom</option>
+                        <?php if(!empty($classrooms)){ 
+                            foreach ($classrooms as $classroom) { ?>
+                                <option value="<?php echo $classroom['id']; ?>"><?php echo $classroom['class_name']; ?></option>        
+                        <?php } 
+                        }?>
 					</select>
 				</div>
 				<div class="form-group">
 					<select class="form-control" name="subject_id" onchange="get_topics(this.value)" id="subject_id">
 						<option value=''>Subject</option>
+                        <?php if(!empty($subjects)){ 
+                            foreach ($subjects as $subject) { ?>
+                                <option value="<?php echo $subject['id']; ?>"><?php echo $subject['subject_name']; ?></option>        
+                        <?php } 
+                        }?>
 					</select>
 				</div>
 				<div class="form-group">
 					<select class="form-control" name="topic_id" id="topic_id" >
 						<option value=''>Topic</option>
+                        <?php if(!empty($topics)){ 
+                            foreach ($topics as $topic) { ?>
+                                <option value="<?php echo $topic['id']; ?>"><?php echo $topic['topic_name']; ?></option>        
+                        <?php } 
+                        }?>
 					</select>
 				</div>
 
@@ -341,16 +356,20 @@
         });
   }
 
-<?php if(!empty($_GET['course'])) { ?>
-    $('#course_id').val('<?php echo $_GET["course"];?>');  
+<?php if(!empty($_GET['course_id'])) { ?>
+    $('#course_id').val('<?php echo $_GET["course_id"];?>');  
 <?php } ?>
 
-<?php if(!empty($_GET['class'])) { ?>
-    $('#classroom_id').val('<?php echo $_GET["class"];?>');  
+<?php if(!empty($_GET['classroom_id'])) { ?>
+    $('#classroom_id').val('<?php echo $_GET["classroom_id"];?>');  
 <?php } ?>
 
-<?php if(!empty($_GET['subject'])) { ?>
-    $('#subject_id').val('<?php echo $_GET["subject"];?>');    
+<?php if(!empty($_GET['subject_id'])) { ?>
+    $('#subject_id').val('<?php echo $_GET["subject_id"];?>');    
+<?php } ?>
+
+<?php if(!empty($_GET['topic_id'])) { ?>
+    $('#topic_id').val('<?php echo $_GET["topic_id"];?>');    
 <?php } ?>
 
 <?php if(!empty($_GET['exam'])) { ?>
