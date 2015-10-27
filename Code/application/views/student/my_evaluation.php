@@ -72,8 +72,21 @@
                                     </div>
                                 </div>
                                 <h5>Solution:</h5>
-                                <div class="solution no_solution">
-                                </div>
+                                <?php 
+                                    if($value['solution'] != ''){
+                                        ?>
+                                            <div class="solution no_solution">
+                                                <?php echo $value['solution']; ?>
+                                            </div>      
+                                        <?php 
+                                    }
+                                    else{
+                                        ?>
+                                            <div class="solution no_solution">
+                                            </div>
+                                        <?php 
+                                    }
+                                ?>
                             </div>
                         </div>
                     <?php 
