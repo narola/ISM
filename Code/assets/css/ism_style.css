@@ -3671,3 +3671,9 @@ a.expand_ques + .row{
 .studymate_recom .mate_name {
     height: 30px;
 }
+.wrong_ans{
+	background-color: rgba(255, 107, 107, 0.07);
+    border: 1px solid rgb(255, 107, 107);
+    height: 20px;
+    padding: 2px 9px;
+}
