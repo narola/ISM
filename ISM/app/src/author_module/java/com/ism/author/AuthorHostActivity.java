@@ -313,6 +313,11 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     txtAction.setTextColor(getResources().getColor(R.color.color_orange));
                     break;
 
+                case FRAGMENT_SETQUIZ:
+                    currentMainFragment = fragment;
+                    currentMainFragmentBg = R.color.bg_office;
+
+
                 case FRAGMENT_EVENTS:
                     currentRightFragment = fragment;
                     imgEvents.setActivated(true);

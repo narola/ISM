@@ -81,27 +81,26 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
 
     public void onClickLogin(View view) {
-        if (isInputsValid()) {
-            Debug.e(TAG, "inputs valid");
+//        if (isInputsValid()) {
+//            Debug.e(TAG, "inputs valid");
+//
+//
+//            if (chk_rememberme.isChecked()) {
+//
+//                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, true);
+//                PreferenceData.setStringPrefs(PreferenceData.USER_NAME, AuthorLoginActivity.this, etUserid.getText().toString().trim());
+////                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, etPwd.getText().toString().trim());
+//
+//            } else {
+//                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, false);
+//                PreferenceData.setStringPrefs(PreferenceData.USER_NAME, AuthorLoginActivity.this, "");
+////                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, "");
+//            }
+//            authenticateUser();
+//
+//        }
 
-
-            if (chk_rememberme.isChecked()) {
-
-                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, true);
-                PreferenceData.setStringPrefs(PreferenceData.USER_NAME, AuthorLoginActivity.this, etUserid.getText().toString().trim());
-//                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, etPwd.getText().toString().trim());
-
-            } else {
-                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, false);
-                PreferenceData.setStringPrefs(PreferenceData.USER_NAME, AuthorLoginActivity.this, "");
-//                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, "");
-            }
-
-
-            authenticateUser();
-
-
-        }
+        Global.myIntent(AuthorLoginActivity.this, AuthorProfileInformationActivity.class);
     }
 
     public void onClickForgotPassword(View view) {
@@ -128,8 +127,6 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             loginRequest.setUsername("0YGAJ8793B");
             loginRequest.setPassword("narola21");
 
-			/*new WebserviceWrapper(LoginActivity.this, loginRequest).new WebserviceCaller()
-                    .execute("http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=AuthenticateUser");*/
             new WebserviceWrapper(AuthorLoginActivity.this, loginRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebserviceWrapper.LOGIN);
 

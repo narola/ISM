@@ -1,5 +1,6 @@
 package com.ism.author.adapter;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.author.fragment.HomeFragment;
 import com.ism.author.helper.CircleImageView;
+import com.ism.author.model.AddCommentRequest;
 import com.ism.author.model.Data;
 import com.ism.author.model.GetAllFeedsComment;
 
@@ -26,13 +29,21 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     Context mContext;
     ArrayList<Data> listOfPostFeeds = new ArrayList<Data>();
-    private int NO_OF_COMMENTS_TO_SHOW = 2;
-    View.OnClickListener viewAllCommetsListener, addCommentListener;
+    View.OnClickListener viewAllCommetsListener;
+    Fragment fragment;
 
-    public PostFeedsAdapter(Context context, View.OnClickListener viewAllCommetsListener, View.OnClickListener addCommentListener) {
+
+    public PostFeedsAdapter(Context context, View.OnClickListener viewAllCommetsListener) {
         this.mContext = context;
         this.viewAllCommetsListener = viewAllCommetsListener;
-        this.addCommentListener = addCommentListener;
+
+
+    }
+
+    public PostFeedsAdapter(Fragment fragment, View.OnClickListener viewAllCommetsListener, Context context) {
+        this.mContext = context;
+        this.viewAllCommetsListener = viewAllCommetsListener;
+        this.fragment = fragment;
 
     }
 
@@ -43,36 +54,88 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.row_post_feed, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
+
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(PostFeedsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final PostFeedsAdapter.ViewHolder holder, final int position) {
 
-        holder.txtPostCreaterName.setText(listOfPostFeeds.get(position).getUsername());
+        holder.txtPostCreaterName.setText(listOfPostFeeds.get(position).getFullName());
         holder.txtPostContent.setText(listOfPostFeeds.get(position).getFeedText());
         holder.txtPostTotalLikeCount.setText(listOfPostFeeds.get(position).getTotalLike());
         holder.txtPostTotalCommentCount.setText(listOfPostFeeds.get(position).getTotalComment());
 
+        holder.llCommentInflater.removeAllViews();
 
-        if (listOfPostFeeds.get(position).getCommentList().size() > 0) {
+
+        if (holder.llCommentInflater.getChildCount() == 0) {
+
 
             for (int i = 0; i < listOfPostFeeds.get(position).getCommentList().size(); i++) {
 
+                if (i <= 1) {
 
-                View v = getCommetInflaterView(listOfPostFeeds.get(position).getCommentList().get(i));
-
-                if (holder.llCommentInflater.indexOfChild(v) == -1)
+                    View v = getCommetInflaterView(listOfPostFeeds.get(position).getCommentList().get(i));
                     holder.llCommentInflater.addView(v);
 
+                } else {
+                    break;
+                }
+
             }
+
         }
 
         holder.txtCommentViewAll.setTag(position);
         holder.txtCommentViewAll.setOnClickListener(viewAllCommetsListener);
 
-        holder.txtAddComment.setTag(position);
-        holder.txtAddComment.setOnClickListener(addCommentListener);
+
+        holder.txtCommentViewAll.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                ((HomeFragment) fragment).callGetAllComments(position);
+
+            }
+        });
+
+
+        holder.txtAddComment.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                AddCommentRequest addCommentRequest = new AddCommentRequest();
+                addCommentRequest.setComment(holder.etWriteComment.getText().toString());
+                addCommentRequest.setComment_by(listOfPostFeeds.get(position).getUserId());
+                addCommentRequest.setFeed_id(listOfPostFeeds.get(position).getFeedId());
+
+
+                ((HomeFragment) fragment).callAddComment(addCommentRequest);
+
+            }
+        });
+
+        holder.imgPostTag.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                //this is for the real data
+//                ((HomeFragment) fragment).tagFriendInFeedRequest.setFeed_id(listOfPostFeeds.get(position).getFeedId());
+//                ((HomeFragment) fragment).tagFriendInFeedRequest.setTagged_by(listOfPostFeeds.get(position).getUserId());
+
+                //this is testing data.
+                ((HomeFragment) fragment).tagFriendInFeedRequest.setFeed_id("240");
+                ((HomeFragment) fragment).tagFriendInFeedRequest.setTagged_by("134");
+                ((HomeFragment) fragment).callGetStudyMates(position);
+            }
+        });
+
 
     }
 
@@ -140,6 +203,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
             holder = (CommentsViewHolder) v.getTag();
         }
+
+
+        holder.txtCommenterUsername.setText(commentData.getUsername());
+        holder.txtCommenterComment.setText(commentData.getComment());
+        holder.txtCommentDuration.setText(commentData.getCommentBy());
 
         return v;
 

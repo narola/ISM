@@ -15,7 +15,6 @@ public class AddCommentRequest {
     private String comment_by;
     private String comment;
 
-
     public String getFeed_id() {
         return feed_id;
     }
