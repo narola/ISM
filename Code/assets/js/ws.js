@@ -1200,8 +1200,8 @@ function generate_cm(obj) {
     }
 
     $('textarea[data-type="discussion"]').val('');
-    $('.row.discussion').append(str);
-    $('.row.discussion div[data-id="' + obj.disscusion_id + '"]').fadeOut(0).fadeIn(400);
+    $('.discussion').append(str);
+    $('.discussion div[data-id="' + obj.disscusion_id + '"]').fadeOut(0).fadeIn(400);
 }
 
 

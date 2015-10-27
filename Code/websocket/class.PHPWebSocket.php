@@ -442,6 +442,7 @@ class PHPWebSocket {
 
 
 
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -615,6 +616,7 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
 
 
 
@@ -1382,7 +1384,7 @@ class PHPWebSocket {
                                 . "SET `group_score` = `group_score` + $add_to_group "
                                 . "WHERE `group_id` = " . $rows['group_id'] . " "
                                 . "AND `topic_id` = " . $rows['topic_id'] . " "
-                                . "AND `week_no` = " . $c_week ." AND YEAR(`created_date`) = '$year'";
+                                . "AND `week_no` = " . $c_week . " AND YEAR(`created_date`) = '$year'";
                         mysqli_query($link, $query);
                     }
 
@@ -1418,6 +1420,7 @@ class PHPWebSocket {
                 $data['error'] = 'No topic allocated! or Discussion time is over!';
             }
         }
+        $data['cdate'] = date_format(date_create(date("Y-m-d H:i:s")), 'M d, Y g:i a');
         $data['allStudyMate'] = $this->class_mate_list($userId);
         return array_merge($data, $this->get_client_info($userId));
     }
@@ -2608,7 +2611,7 @@ class PHPWebSocket {
         } else if ($diff < 86400 * 2) {
             $output = 'yesterday';
         } else {
-            $output = date_format(date_create($t), 'M d Y g:i a');
+            $output = date_format(date_create($t), 'M d, Y g:i a');
         }
         return $output;
     }
@@ -2731,15 +2734,18 @@ class PHPWebSocket {
         return array_merge($data, $this->get_client_info($user_id));
     }
 
-    function get_studymate_detail($user_id,$data){
+    function get_studymate_detail($user_id, $data) {
         $link = $this->db();
-        $query = "SELECT u.*,p.profile_link,s.school_name,cs.course_name,c.class_name FROM users u LEFT JOIN student_academic_info inf on inf.user_id = u.id LEFT JOIN classrooms c ON c.id = inf.classroom_id LEFT JOIN schools s ON s.id = inf.school_id LEFT JOIN courses cs ON cs.id = inf.course_id LEFT JOIN user_profile_picture p on p.user_id = u.id WHERE u.id = ".$data['user_id'];
-        $row = mysqli_query($link,$query);
-        while ($rows = mysqli_fetch_assoc($row)) {
-            $data['result'] = $rows;
+        if (isset($data['user_id'])) {
+            $query = "SELECT u.*,p.profile_link,s.school_name,cs.course_name,c.class_name FROM users u LEFT JOIN student_academic_info inf on inf.user_id = u.id LEFT JOIN classrooms c ON c.id = inf.classroom_id LEFT JOIN schools s ON s.id = inf.school_id LEFT JOIN courses cs ON cs.id = inf.course_id LEFT JOIN user_profile_picture p on p.user_id = u.id WHERE u.id = " . $data['user_id'];
+            $row = mysqli_query($link, $query);
+            while ($rows = mysqli_fetch_assoc($row)) {
+                $data['result'] = $rows;
+            }
         }
         return $data;
     }
+
 }
 
 ?>
