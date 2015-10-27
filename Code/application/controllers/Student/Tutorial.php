@@ -82,6 +82,7 @@ class Tutorial extends ISM_Controller {
 				'single' => true
 				)
 			);
+
 		if($data['topic']['group_status'] != 'active'){
 				redirect('/student/home');
 		}

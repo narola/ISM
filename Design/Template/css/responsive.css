@@ -14,9 +14,9 @@
 	.box_body .age{
 		width: 26.5%;
 	}
-	.three_tabs > li {
+	/*.three_tabs > li {
 		padding: 10px;
-	}
+	}*/
 	.inner_pages_admin .three_tabs > li {
     	padding: 10px 29px;
 	}
@@ -33,7 +33,10 @@
 		height:215px;
 	}
 	.fixed_comment{
-		width: 44.6%;
+		width: 46.8%;
+	}
+	.input{
+		width: 46.9%;	
 	}
 	.admin_question {
     	width: 84%;
@@ -56,6 +59,9 @@
 	}
 	.question_bank .filter .form-group {
 		width: 26%;
+	}
+	.question_bank .preview_filter .form-group {
+    	width: 100%;
 	}
 	.test_sidebar .btn_black{
 		width:100%;
@@ -96,6 +102,27 @@
 	.filter.group_report_filter .form-group.data_range {
 	    width: 40%;
 	}
+	.stm .box_header{
+		padding: 16px 15px;
+	}
+	.suggested_mates_holder .btn_blue{
+		font-size:12px;
+		padding:6px;
+	}
+	.mate_descrip .btn_green, .mate_descrip .btn_black_normal{
+		font-size: 12px;
+		padding: 3px;
+	}
+	.form-inline .form-control{
+		width:100%;
+	}
+	.bulk_action {
+    	right: 0;
+	}
+	.half_size .form-control{
+		width:88%;
+	}
+	
 }
 @media (max-width:1280px){
 	.login_background{
@@ -140,10 +167,7 @@
 	.suggested_mates_card{
 		 padding: 22px 16px;
 	}
-	.suggested_mates_holder .btn_blue{
-		font-size:12px;
-		padding:6px;
-	}
+	
 	.stm_item .stm_user_img{
 		height:40px;
 		width:40px;
@@ -152,9 +176,7 @@
 	.stm_item.online p, .stm_item.offline p{
 		margin:10px 0;
 	}
-	.stm .box_header{
-		padding: 16px 15px;
-	}
+	
 	.sidebar_right_admin .stm .box_header {
     	padding: 7px 15px;
 	}
@@ -202,7 +224,7 @@
     	width: 49.6%;
 	}
 	.fixed_comment {
-    	width: 44.5%;
+    	width: 46.8%;
 	}
 	.item_chart:after, .item_chart:before{
 		left:4px;
@@ -267,6 +289,11 @@
 	.filter.report_filter .form-group {
 		width: 15.7%;
 	}
+	
+	.score_points {
+		padding-left: 25%;
+		width: 100%;
+	}
 }	
 @media (max-width:1080px){
 	.login_background {
@@ -279,8 +306,14 @@
 		height:90px;
 		width:90px;
 	}	
-	.three_tabs > li{
+	/*.three_tabs > li{
 		padding: 10px 5px;
+	}*/
+	.three_tabs > li{
+		width:48%;
+	}
+	.personal_menu {
+    	padding-bottom: 166px;
 	}
 	.personal_menu > li > a{
 		font-size:12px;
@@ -309,7 +342,7 @@
 	.score_descrip{width:70%;}
 	.score_points {
 		padding-left: 36%;
-		width: 100%;
+		
 	}
 	.stm_list {
     	max-height: 305px;
@@ -359,7 +392,7 @@
 		margin-right:0;
 	}
 	.filter {
-    	padding: 22px 0 7px;
+    	padding: 15px 0;
 	}
 	.personal_menu .icon{
 		display:none;
@@ -388,8 +421,11 @@
     	left: -15px;
 		top:370px;
 	}
-	.main_tut, .input{
+	.main_tut{
 		width:40%;
+	}
+	.input{
+		width:39.9%;
 	}
 	.toolkit{
 		right: 21%;
@@ -450,7 +486,7 @@
     	width: 86%;
 	}
 	.main_wide .filter .form-group{
-		width:32.2%;
+		width:32.1%;
 	}
 	.recommended h4 > span {
 		display: block;
@@ -468,7 +504,7 @@
 		display:block;
 	}
 	.fixed_comment {
-    	width: 36.9%;
+    	width: 39.8%;
 	}
 	.search_bar .form-control {
     	width: 58%;
@@ -546,7 +582,7 @@
     	margin-left: 105px;
 	}
 	.filter.report_filter .form-group {
-		width: 32%;
+		width: 31%;
 	}
 	.range_picker {
 		/*width: 47%;
@@ -582,6 +618,28 @@
 	}
 	.group_mates .stm_item.online p::after, .group_mates .stm_item.offline p::after{
 		top:-25px;
+	}
+	.mark_scored h4 {
+    	margin: 44px 0;
+	}
+	.preview_filter{
+		padding:0;
+	}
+	.main_wide .question_bank .preview_filter .form-group {
+    	width: 100% !important;
+	}
+	.question_bank_sr .filter .form-group {
+    	width: 22%;
+		margin-right:15px;
+	}
+	.bulk_action {
+    	padding: 0;
+    }
+	.topic_groups .group_members>tbody>tr>td>.chat_img_holder{
+		float:left;	
+	}
+	.half_size .form-control {
+    	width: 83%;
 	}
 }
 @media (max-width:980px){
@@ -706,6 +764,26 @@
 	.group_member_report > div:nth-child(odd) {
     	padding: 15px 0 0 0;
 	}
+	.three_tabs > li {
+    	width: 100%;
+	}
+	.score_points {
+		float: left;
+		padding-left: 10px;
+		width: 25%;
+	}
+	.calculator, .white_board, .explore, .dictionary {
+    	width: 77.5%;
+	}
+	.mark_scored h4 {
+    	margin: 32px 0;
+	}
+	.mark_scored {
+    	border-top:1px solid rgba(0,0,0,0.07);
+	}
+	.half_size .form-control {
+    	width: 91%;
+	}
 }
 
 @media (max-width:800px){
@@ -746,6 +824,7 @@
 	}
 	.score_points {
     	padding-left:0;
+		width:100%;
 	}
 	.score_img {
     	width: 40%;
@@ -779,7 +858,7 @@
 		padding: 10px 8px;
 	}
 	.inner_pages_admin .three_tabs .badge {
-    	right: 0;
+    	right: 15px;
 	}
 	.table_user > thead > tr > th:first-child {
     	width: 235px;
@@ -886,6 +965,35 @@
 		padding:6px;
 		font-size:13px;
 	}
+	.admin_question {
+    	width: 100%;
+	}
+	.discussion {
+		margin-top: 300px;
+	}
+	.calculator, .white_board, .explore, .dictionary {
+    	width: 72%;
+	}
+	.tut_group .box_body p, .tut_group .box_footer p {
+    	margin: 0;
+	}
+	.tut_group .mate_user_img{
+		float:none;
+		margin:0;
+	}
+	.btn_find_studymates{
+		padding:6px;
+		font-size:12px;
+	}
+	.studymate_request .btn_green, .studymate_request .btn_black_normal{
+		padding:5px;
+	}
+	.bulk_action {
+    	width: 152px;
+	}
+	.half_size .form-control {
+    	width: 88%;
+	}
 }
 @media (max-width:768px){
 	.login_background {
@@ -919,7 +1027,7 @@
     	width: 31%;
 	}
 	.main_wide .filter .form-group {
-    	width: 31.8%;
+    	width: 31.7%;
 	}
 	.question_bank .box_footer{
 		padding:7px;
@@ -929,6 +1037,9 @@
 	}
 	.general_cred #replacing_div3 input.form-control {
     	width: 78%;
+	}
+	.calculator, .white_board, .explore, .dictionary {
+    	width: 71%;
 	}
 }
 @media (max-width:767px){

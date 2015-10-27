@@ -11,13 +11,13 @@
     </div>
     <!--//breadcrumb-->
     <!--score-->
-    <div class="">
+    <div class="reg_bg">
         <div class="col-sm-12 text-center">
             <h1 class="big_score">Your Score Is : <span><?php echo $my_scoreboard['percentage'];?>%</span></h1>
         </div>
     </div>
     <div class="evaluation">
-        <div class="col-sm-12 col-md-6">
+        <div class="col-sm-12 col-md-6 col-md-offset-3">
             <div class="box">
                 <div>
                     <p>Correnct Answers :  <span class="txt_green"><?php echo $my_scoreboard['correct_answers'];?></span></p>
@@ -31,10 +31,7 @@
                 <div>
                     <p>Total Time Spent :  <span class="txt_grey"><span class="fa fa-clock-o"></span><?php echo $my_scoreboard['totmin'];?> min</span></p>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-6">
-            <div class="box">
+       
                 <!--1-->
                 <div>
                     <!-- <p>Organic Chemistry - I</p> -->
@@ -51,9 +48,7 @@
             </div>
         </div>
     </div>
-    <!--//score-->
 </div>
-<!--//main-->
 <script>
     $(".progress-bar").animate({
     width: "<?php echo $my_scoreboard['percentage'];?>%"

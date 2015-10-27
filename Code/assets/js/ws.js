@@ -439,8 +439,8 @@ if ("WebSocket" in window)
                 str += '<div class="user_small_img user_comment">';
                 str += '<img src="uploads/' + obj.profile + '" onerror="this.src=\'assets/images/avatar.png\'">';
                 str += '</div><div class="notification_txt">';
-                str += '<p><a href="#" class="noti_username">' + obj.name + '</a> ' + comment + '</p>';
-                str += '<span class="noti_time">1 Day</span>';
+                str += '<p><a href="#" class="noti_username">' + obj.name + '</a> ' + comment.comment + '</p>';
+                str += '<span class="noti_time">'+comment.date+'</span>';
                 str += '</div>';
                 str += '<div class="clearfix"></div>';
             });
@@ -738,9 +738,11 @@ if ("WebSocket" in window)
             str = ''; 
             if(obj.result.my_like.length > 0 || obj.result.my_comment.length > 0 || obj.result.my_studymate.length > 0 || obj.result.my_post.length > 0 || obj.result.my_topic.length > 0)
             {
+                str += '<div class="clearfix"></div>';
                 str += '<div class="divide_discussion">';
                 str += '<hr><h4>'+obj.format_month+'</h4>';
                 str += '</div>';
+                str += '<div class="clearfix"></div>';
                 t = 0; 
                 $.each(obj.result.my_topic, function(index, list) {
                     str += '<div class="topic_allocated">';
@@ -791,28 +793,33 @@ if ("WebSocket" in window)
                 str += '<h4 class="activity_heading">Commented on</h4>';
                 str += '<div class="feeds">';
                 str += '<div class="user_small_img">';
-                str += '<img src="uploads/'+list.profile_link+'">';
+                str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+list.profile_link+'">';
                 str += '</div>';
                 str += '<div class="feed_text">';
                 str += '<h4>'+list.full_name+'</h4>';
                 str += '<span class="date">'+list.created_date+'</span>'
                 str += '<div class="clearfix"></div>';
                 str += '<p>'+list.feed_text+'</p>';
-//                str += '<div class="shared_images">';
-//                str += '<div><img src="images/shared1.jpg"></div>';
-//                str += '<div><img src="images/shared2.jpg"></div>';
-//                str += '</div>';
+                
+                if(list.image_link != '' && list.image_link != null){
+                    str += '<div class="shared_images">';
+                    str += '<div><img src="uploads/'+list.image_link+'"></div>';
+                    str += '</div>';
+                }
                 str += '<div class="clearfix"></div>';
-                str += '<a href="javascript:void(0);" data-type="view-all-comment-activities" data-id="'+list.id+'">View All</a>';
+
+                if(list.totcomment > 1){
+                    str += '<a href="javascript:void(0);" data-type="view-all-comment-activities" data-id="'+list.id+'">View All</a>';
+                }
                 str += '</div>';
                 str += '<div class="clearfix"></div>';
                 str += '<div class="comment" data-id="'+list.id+'">';
                 str += '<div class="user_small_img user_comment">';
-                str += '<img src="uploads/'+obj.profile_link+'">';
+                str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+obj.profile_link+'">';
                 str += '</div>';
                 str += '<div class="notification_txt">';
                 str += '<p><a href="javascript:void(0);" class="noti_username">'+obj.full_name+'</a>&nbsp;'+list.comment+'</p>';
-                str += '<span class="noti_time">1 Day</span>';
+                str += '<span class="noti_time">'+list.comment_date+'</span>';
                 str += '</div>';
                 str += '<div class="clearfix"></div>';
                 str += '</div>';
@@ -828,6 +835,11 @@ if ("WebSocket" in window)
                 str += '<span class="date">'+list.created_date+'</span>';
                 str += '<div class="feed_text">                                               ';
                 str += '<p>'+list.feed_text+'</p>';
+                if(list.image_link != '' && list.image_link != null){
+                    str += '<div class="shared_images">';
+                    str += '<div><img src="uploads/'+list.image_link+'"></div>';
+                    str += '</div>';
+                }
                 str += '</div>';
                 str += '</div>';
                 p++;
@@ -1100,8 +1112,6 @@ function generate_post(obj, status) {
     str += '</div>';
     str += '</div>';
 
-
-
     if (status == true) {
         $("#all_feed").prepend(str);
     } else {
@@ -1200,8 +1210,8 @@ function generate_cm(obj) {
     }
 
     $('textarea[data-type="discussion"]').val('');
-    $('.row.discussion').append(str);
-    $('.row.discussion div[data-id="' + obj.disscusion_id + '"]').fadeOut(0).fadeIn(400);
+    $('.discussion #inner_x').append(str);
+    $('.discussion #inner_x div[data-id="' + obj.disscusion_id + '"]').fadeOut(0).fadeIn(400);
 }
 
 
@@ -1361,6 +1371,12 @@ $(document).on('click', '.ans_options label input[name="option"]', function () {
 $(document).on('click', 'button[data-type="question_responce"]', function () {
     $('button[data-type="clear_responce"]').attr('disabled', 'disabled');
     $('button[data-type="question_responce"]').attr('disabled', 'disabled');
+    exam_choice = $(".ans_options label input[name='option']:checked").data('id');
+    
+    if(exam_choice == 'undefined' || exam_choice == '' || exam_choice == null){
+        exam_choice = 0;
+    }
+    
     var question_id = $(this).attr('data-id');
     var next_question = 0;
     var next_question_no = 0;
@@ -1519,7 +1535,7 @@ $(document).on('click', 'a[data-type="load-activity-more"]', function () {
     ws.send(JSON.stringify(request));
 });
 
-$(document).on('click', 'h4,p,img[data-type="show-profile"]', function () {
+$(document).on('click', 'img[data-type="show-profile"],h4[data-type="show-profile"],p[data-type="show-profile"]', function () {
     var request = {
         type: 'show_profile',
         to: 'self',
