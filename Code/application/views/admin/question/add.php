@@ -377,7 +377,8 @@
         
         $('div.choice_wrapper').delegate('i.component_close', 'click', function(){
             $(this).parent().remove();
-            $('#total_choices').val(total_choice--);
+            total_choice = total_choice-1;
+            $('#total_choices').val(total_choice);
         });
 
         $(document).on('keyup','.choice_detail',function(){

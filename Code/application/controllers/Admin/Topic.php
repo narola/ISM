@@ -491,7 +491,7 @@ class Topic extends ADMIN_Controller {
 			$this->template->load('admin/default','admin/topic/add', $this->data);
 
 		}else{
-
+			
 			$data=array(
 				 "topic_name"=>$this->input->post("topic_name"),
 				 "parent_id"=>0,
