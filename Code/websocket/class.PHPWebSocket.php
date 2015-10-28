@@ -1086,6 +1086,7 @@ class PHPWebSocket {
             if (in_array($user_id, $data['allStudyMate'])) {
                 $query = "INSERT INTO `ism`.`" . TBL_FEED_COMMENT . "` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $data['message'] . "',$user_id, '" . $data['to'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes');";
                 $x = mysqli_query($link, $query);
+                $data['comment_date'] = 'Just Now';
                 if (!$x) {
                     $data['to'] = "self";
                     $data['error'] = "Unable to save your comment! Please try again.";
@@ -1138,7 +1139,7 @@ class PHPWebSocket {
                             . 'WHERE `feed_id` IN(' . $feed_ids . ')';
                     $tag_row = mysqli_query($link, $query);
 
-                    $query = 'SELECT `feed_id` as `to`, `comment` as `message`, `u`.`full_name`, `p`.`profile_link`'
+                    $query = 'SELECT `feed_id` as `to`, `comment` as `message`, `u`.`full_name`, `p`.`profile_link`, fc.created_date'
                             . ' FROM `' . TBL_FEED_COMMENT . '` `fc` LEFT JOIN `' . TBL_USERS . '` `u` ON `u`.`id` = `fc`.`comment_by`'
                             . ' LEFT JOIN `' . TBL_USER_PROFILE_PICTURE . '` `p` ON `u`.`id` = `p`.`user_id`'
                             . ' WHERE `fc`.`is_delete` =0 AND `feed_id` IN(' . $feed_ids . ')';
@@ -1167,8 +1168,11 @@ class PHPWebSocket {
                     $final_feed = array();
 
                     $all_comment = $all_feed = array();
+                    $i = 0;
                     while ($comment_rows = mysqli_fetch_assoc($comment_row)) {
-                        $all_comment[] = $comment_rows;
+                        $all_comment[$i] = $comment_rows;
+                        $all_comment[$i]['comment_date'] = $this->get_time_format($comment_rows['created_date']);
+                        $i++;
                     }
 
                     while ($tagged_rows = mysqli_fetch_assoc($tag_row)) {
@@ -2607,7 +2611,7 @@ class PHPWebSocket {
         $output = null;
         $diff = $timeSecond - $timeFirst;
         if ($diff < 60) {
-            $output = $diff . ' sec ago';
+            $output = 'Just Now';
         } else if ($diff < 3600) {
             $output = floor($diff / 60) . ' min ago';
         } else if ($diff < 86400) {

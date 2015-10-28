@@ -1095,6 +1095,11 @@ function generate_post(obj, status) {
     str += '<p>' + obj.message + '</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="' + obj.post_id + '"><span class="icon icon_thumb' + cls + '"></span>' + obj.tot_like + '</a>';
     str += '<a href="javascript:void(0);" class="comment_btn"><span class="icon icon_comment"></span>' + obj.tot_comment + '</a>';
+    if(obj.comment != 'undefined'){
+        if(obj.comment.length > 2){
+            str += '<a href="javascript:void(0);" data-type="showall" data-id="'+obj.post_id+'">View All</a>'
+        }
+    }
     str += '<div class="dropdown tag_user" style="display: inline-block;">';
     str += '<a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="' + obj.post_id + '" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>'
     str += '</div>';
@@ -1120,8 +1125,10 @@ function generate_post(obj, status) {
     $("#" + obj.post_id).select2();
     $("#all_feed .box.feeds[data-id='" + obj.post_id + "']").fadeOut(0).fadeIn(400);
     if (typeof (obj.comment) != 'undefined') {
+        i = 0;
         $.each(obj.comment, function (index, comment_list) {
-            generate_comment(comment_list);
+            generate_comment(comment_list,i,true);
+            i++;
         });
     }
 
@@ -1130,20 +1137,35 @@ function generate_post(obj, status) {
 
 
 /* Generate HTML block of feed comment. */
-function generate_comment(obj) {
+function generate_comment(obj,i,k) {
     str = "";
-    str += '<div class="comment" style="display:block">';
+
+    i = typeof i !== 'undefined' ? i : 0;
+    k = typeof k !== 'undefined' ? k : false;
+    
+    if(parseInt(i) > 2){
+        display = 'display:none !important';
+        first_three = '';
+    }
+    else{
+        display = '';
+        first_three = 'true';
+    }
+    str += '<div class="comment" style="' + display +'" data-first="'+ first_three +'" data-id="'+ obj.to +'">';
     str += '<div class="user_small_img user_comment">';
     str += '<img src="uploads/' + obj.profile_link + '">';
     str += '</div>';
     str += '<div class="notification_txt">';
     str += '<p><a href="#" class="noti_username">' + obj.full_name + '</a>&nbsp;&nbsp;' + obj.message + '</p>';
-    str += '<span class="noti_time">' + obj.cdate + '</span>';
+    str += '<span class="noti_time">' + obj.comment_date + '</span>';
     str += '</div>';
     str += '<div class="clearfix"></div>';
     str += '</div>';
     $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments').prepend(str);
-    $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments .comment:nth-child(1)').fadeOut(0).fadeIn(400);
+    if(k != true){
+       $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments .comment:nth-child(1)').fadeOut(0).fadeIn(400);
+    }
+    
 }
 
 /* load more feeds. */

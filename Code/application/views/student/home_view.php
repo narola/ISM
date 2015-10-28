@@ -2,6 +2,18 @@
     function showall(id){
         $('.post'+id).show();
     }
+    $(document).on('click','a[data-type="showall"]',function(){
+        if($(this).html() == 'Hide')
+        {
+            $('#feed_comments div[data-id="'+ $(this).data('id') +'"]').hide();
+            $('#feed_comments div[data-first="true"]').show();
+            $(this).html('View All');
+
+        }else{
+            $('#feed_comments div[data-id="'+ $(this).data('id') +'"]').show();
+            $(this).html('Hide');
+        }
+    });
     $(document).ready(function () {
         $('#selection-box').css("display","none");
     });
@@ -157,7 +169,7 @@
                         <a href="javascript:void(0);" class="comment_btn" data-id="<?php echo $value['fid'];?>"><span class="icon icon_comment"></span>
                             <span><?php echo $value['tot_comment'];?></span></a>
                             <?php if($value['tot_comment'] > 3){  ?>
-                        <a href="javascript:void(0);" onclick="showall(<?= $j; ?>);">View All</a>
+                        <a href="javascript:void(0);" data-type="showall" data-id="<?php echo $value['fid'];?>">View All</a>
                         <?php } ?>
                         <div class="dropdown tag_user" style="display: inline-block;">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-type="tag-again" data-id="<?php echo $value['fid'];?>" aria-haspopup="true" aria-expanded="true"><span class="icon icon_user_2"></span><span class="caret"></span></a>
@@ -184,13 +196,17 @@
                             $i = 1;
                             foreach ($value['comment'] as $key => $com) {
                                 if($value['fid'] == $com['feed_id']){
-                                    if($i > 3)
+                                    if($i > 3){
+                                        $first_three = '';
                                         $display = 'none';
-                                    else
+                                    }
+                                    else{
+                                        $first_three = 'true';
                                         $display = '';
+                                    }
                                 ?>
 
-                                <div class="comment <?= 'post'.$j;?>" style="display:<?= $display;?>">
+                                <div class="comment" data-first="<?php echo $first_three;?>" data-id="<?php echo $value['fid'];?>" style="display:<?php echo $display;?>">
                                     <div class="user_small_img user_comment">
                                         <img src="<?php echo UPLOAD_URL.'/'.$com['profile_link'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
                                     </div>
