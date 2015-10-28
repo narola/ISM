@@ -37,6 +37,7 @@ class Question extends ADMIN_Controller {
 			if( !empty($_GET['classroom_id']) ) { 
 				
 				$classroom_id = $this->input->get('classroom_id'); 
+				
 				$this->data['subjects'] = select(TBL_CLASSROOM_SUBJECT,
 													 TBL_CLASSROOM_SUBJECT.'.subject_id as id,sub.subject_name ',
 													 array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$classroom_id,'sub.is_delete'=>'0')),
@@ -49,6 +50,7 @@ class Question extends ADMIN_Controller {
 																		)
 															)
 												 	);
+
 				$where[TBL_QUESTIONS.'.classroom_id'] = $classroom_id;  
 				$str .= '&classroom_id='.$classroom_id;
 
@@ -128,6 +130,8 @@ class Question extends ADMIN_Controller {
 		$config['per_page'] = 1;
 		//END
 		
+		//p($config,true);
+
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
  		$config['full_tag_close'] = '</ul>';
 
