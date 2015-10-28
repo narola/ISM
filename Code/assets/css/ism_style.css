@@ -3536,6 +3536,7 @@ ul.ques_numbers {
 	color:#1bc4a3;
 }
 .upload_loader{
+	display: none;
 	background-image: url(../images/spinner.gif);
     height: 24px;
     width: 24px;
@@ -3790,6 +3791,7 @@ a.expand_ques + .row{
     top: 260px;
     left: 46%;
 }
+
 .our_mission{
 	background-color:#8ec359;
     padding: 20px 0;
@@ -3958,3 +3960,4 @@ a.expand_ques + .row{
 .reg_footer.margin_t15 p{
 	margin:10px 0;
 }
+

@@ -75,7 +75,15 @@
                             ?>
                             <div class="col-sm-12 <?php echo $clss_me; ?>" data-id="<?php echo $v['id']; ?>">
                                 <div class="mate_user_img">
-                                <img src="/<?php echo UPLOAD_URL.'/'.$v['profile_link']; ?>">
+                                <?php 
+                                $imgs = '/assets/images/avatar.png';
+                                if($v['profile_link'] != ''){
+                                    $imgs = '/'.UPLOAD_URL.'/'.$v['profile_link']; 
+                                }
+
+                                ?>
+
+                                <img src="<?php echo $imgs; ?>">
                                 </div>
                                 <div class="admin_question">
                                     <h4><?php echo $v['full_name']; ?><span><?php echo date_format( date_create($v['created_date']), 'M d, Y g:i a'); ?></span></h4>
@@ -122,6 +130,7 @@
                             <button class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
                         </div>
                     	<textarea placeholder="SAY IT" data-type="discussion"></textarea>
+                        <div class="upload_loader" style="top:58px"></div>
                         <!-- <a href="#" class="icon icon_emoji"></a> -->
                                              
                     </div>
@@ -199,6 +208,8 @@
                     $('#wPaint').wPaint({
                       menuOffsetLeft: -35,
                       menuOffsetTop: -50,
+                      fillStyle: 'red',
+                      strokeStyle: 'blue',   
                       saveImg: saveImg,
                       loadImgBg: loadImgBg,
                       loadImgFg: loadImgFg

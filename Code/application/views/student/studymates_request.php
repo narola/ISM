@@ -59,7 +59,7 @@
                                     $i = 1;     
                                 }
                             ?>
-                                <div class="suggested_mates_card">
+                                <div class="suggested_mates_card" data-id="<?php echo $value['user_id'];?>">
                                     <div class="mate_user_img">
                                         <img style="cursor:pointer;" data-type="show-profile" data-id="<?php echo $value['user_id'];?>" onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                     </div>
