@@ -165,7 +165,8 @@ class Exam extends ADMIN_Controller {
 					'instructions' => htmlspecialchars($this->input->post('instructions')),
 					'negative_marking'=>$this->input->post('negative_marking'),
 					'random_question'=>$this->input->post('random_question'),
-					'declare_results'=>$this->input->post('declare_results')
+					'declare_results'=>$this->input->post('declare_result'),
+					'created_by'=>$this->session->userdata('id')
 				);
 
 			$exam_id = insert(TBL_EXAMS,$exam_data); // Insert Data into database and return Inserted ID using common_model.php and cms_helper.php
@@ -292,7 +293,8 @@ class Exam extends ADMIN_Controller {
 					'instructions' => htmlspecialchars($this->input->post('instructions')),
 					'negative_marking'=>$this->input->post('negative_marking'),
 					'random_question'=>$this->input->post('random_question'),
-					'declare_results'=>$this->input->post('declare_results')
+					'declare_results'=>$this->input->post('declare_results'),
+					'created_by'=>$this->session->userdata('id')
 				);
 
 			if($copy == 'copy'){
