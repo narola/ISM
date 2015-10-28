@@ -343,7 +343,7 @@ class Question extends ADMIN_Controller {
 		$error_count = 0;
 
 		if($_POST){
-			// p($_POST);
+			
 			$choices = $this->input->post('choices');
 			foreach($choices as $choice){
 				if($choice == ''){

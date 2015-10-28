@@ -501,7 +501,9 @@ class Topic extends ADMIN_Controller {
 
 		}else{
 
+
 			die('dsjhfisjnfdosa');
+
 			$data=array(
 				 "topic_name"=>$this->input->post("topic_name"),
 				 "parent_id"=>0,
