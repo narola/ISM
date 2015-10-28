@@ -36,7 +36,6 @@ class My_classroom_exam extends ISM_Controller {
 			$data['exam_type'] = '';
 
 		}
-		
 		//	get classroom subject		
 		$option = array('join' =>
 				array(
