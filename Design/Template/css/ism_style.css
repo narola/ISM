@@ -1850,6 +1850,7 @@ ul.tut_weekdays {
 }
 .white_board, .explore, .dictionary{
 	display:none;
+	position:relative;
 }
 .calculator .textarea {
     background-color: #fff;
@@ -3782,4 +3783,8 @@ a.expand_ques + .row{
 }
 .my_info textarea.form-control {
     height: 70px;
+}
+.white_board .upload_loader {
+    top: 260px;
+    left: 46%;
 }
