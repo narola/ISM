@@ -8,6 +8,7 @@
 include_once 'Encrypt.php';
 include_once 'ConstantValues.php';
 include_once 'SendEmail.php';
+include_once 'TutorialGroup.php';
 class ProfileFunctions
 {
 
@@ -368,6 +369,16 @@ class ProfileFunctions
                     $post['full_name']=$val['full_name'];
                     $post['profile_pic']=$val['profile_pic'];
                     $status="success";
+
+	                $tutorialGroupClass = new TutorialGroup();
+	                $tutorialGroup = $tutorialGroupClass -> call_service("GetTutorialGroupOfUser", $post['user_id']);
+
+	                if ($tutorialGroup['tutorial_group_found']) {
+		                $groupData = $tutorialGroup['tutorial_group'];
+		                $post['tutorial_group_id'] = $groupData['tutorial_group_id'];
+		                $post['tutorial_group_name'] = $groupData['tutorial_group_name'];
+		                $post['tutorial_group_members'] = $groupData['tutorial_group_members'];
+	                }
 
                 }
                 else
