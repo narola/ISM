@@ -85,7 +85,7 @@ class User_account extends CI_Controller {
 		    			),
 		    		'single' => 1
 		    		));
-		// qry(true);
+
 		$this->form_validation->set_rules('username', 'Username', 'trim|required|exact_length[8]|callback_check_user');
 		$this->form_validation->set_rules('contact_number', 'Contact Number', 'trim|regex_match[/^[0-9().-]+$/]');
 		
@@ -117,7 +117,7 @@ class User_account extends CI_Controller {
 		{
 			$this->send_mail($this->session->userdata('credential_user'));
 		}
-		// p($_POST,true);
+
 		$this->form_validation->set_rules('email_id', 'Email', 'trim|valid_email|required|callback_check_email');
 		$this->form_validation->set_rules('full_name', 'Full name', 'trim|required|callback_check_full_name');
 		$this->form_validation->set_rules('birthdate', 'Date of birth', 'trim|callback_check_birth_date');

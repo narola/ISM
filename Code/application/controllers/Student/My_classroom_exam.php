@@ -36,6 +36,7 @@ class My_classroom_exam extends ISM_Controller {
 			$data['exam_type'] = '';
 
 		}
+		
 		//	get classroom subject		
 		$option = array('join' =>
 				array(
@@ -58,8 +59,7 @@ class My_classroom_exam extends ISM_Controller {
 				)
 		);
 
-		$data['my_exam']  = select(TBL_EXAMS.' e','sc.exam_status,e.exam_name,e.id as exam_id,TRUNCATE((sc.correct_answers * 100 / (select count(*) from '.TBL_EXAM_QUESTION.' where exam_id = sc.exam_id)),2) as per,e.subject_id,sc.id',$where1,$option);
-		//p($data,true);
+		$data['my_exam']  = select(TBL_EXAMS.' e','if(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time,sc.exam_status,e.exam_name,e.id as exam_id,TRUNCATE((sc.correct_answers * 100 / (select count(*) from '.TBL_EXAM_QUESTION.' where exam_id = sc.exam_id)),2) as per,e.subject_id,sc.id',$where1,$option);
 		$this->template->load('student/default','student/my_classroom_exam',$data);
 	}
 
