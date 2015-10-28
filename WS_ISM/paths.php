@@ -12,5 +12,7 @@ define("USER_PROFILE_PICTURE",  'Images/Users_Images/');
 
 define("FEEDS_MEDIA",  'Feeds/');
 
+define("NOTES_MEDIA",  'Notes/');
+
 
 ?>

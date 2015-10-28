@@ -53,6 +53,10 @@ class ProfileFunctions
             {
                 return $this->getStudentAcademicInfo($postData);
             }
+            case "RequestForSchoolInfoUpdation":
+            {
+                return $this->requestForSchoolInfoUpdation($postData);
+            }
         }
     }
     /*
@@ -304,6 +308,31 @@ class ProfileFunctions
 
     }
 
+    public function RequestForSchoolInfoUpdation ($postData)
+    {
+        $message ='';
+        $post=array();
+        $response=array();
+        $email_address = validateObject ($postData , 'email_address', "");
+        $email_address= addslashes($email_address);
+
+        $message= validateObject ($postData , 'message', "");
+        $message = addslashes($message);
+
+        $name = validateObject ($postData , 'name', "");
+        $name = addslashes($name);
+
+        $sendEmail = new SendEmail();
+        $email_message="Hello, \n".$message."\n\n Thank You \n ".$name;
+        $response['status'] ="success";
+        $sendEmail -> sendemail($email_address, $email_message,"Request For Wrong School Details ","ism.educare@gmail.com");
+        //  $response['status'] =$status;
+        $response['message'] ="Sent successfully";
+        $response['data']=$post;
+        return $response;
+
+    }
+
     public function authenticateUser($postData)
     {
 
@@ -378,14 +407,14 @@ class ProfileFunctions
                         {
                             $post=array();
                             //$queryData="SELECT * FROM `auto_generated_credential` t1 INNER JOIN `schools`t2 INNER JOIN `courses`t3 ON t1.school_id=t2.id and t1.course_id=t3.id where `username`='WJL91RU473'";
-                            $post['id']=$val['id'];
+                            $post['credential_id']=$val['id'];
                             $post['school_id']=$val['school_id'];
                             $post['role_id']=$val['role_id'];
                             $post['class_id']=$val['classroom_id'];
                             $post['course_id']=$val['course_id'];
 
                             $post['academic_year']=$val['academic_year'];
-                            $querySchool="select school.school_name,course.course_name,district. district_name, class.class_name from courses course INNER JOIN classrooms class INNER JOIN districts district INNER JOIN schools school on school.district_id=district.id where course.id=".$val['course_id']." and school.id=".$val['school_id']." and class.id=".$val['classroom_id']." limit 1";
+                            $querySchool="select school.school_name,school.school_type,course.course_name,district. district_name, class.class_name from courses course INNER JOIN classrooms class INNER JOIN districts district INNER JOIN schools school on school.district_id=district.id where course.id=".$val['course_id']." and school.id=".$val['school_id']." and class.id=".$val['classroom_id']." limit 1";
                             $resultSchool=mysql_query($querySchool) or $message=mysql_error();
                             if(mysql_num_rows($resultSchool)){
                                 $valSchool=mysql_fetch_assoc($resultSchool);
@@ -393,6 +422,7 @@ class ProfileFunctions
                                 $post['course_name']=$valSchool['course_name'];
                                 $post['district_name']=$valSchool['district_name'];
                                 $post['class_name']=$valSchool['class_name'];
+                                $post['school_type']=$valSchool['school_type'];
                             }
                             $status="success";
                             $message=CREDENTIALS_EXITST;
@@ -431,6 +461,11 @@ class ProfileFunctions
         $data=array();
         $response=array();
         $response['data']=array();
+
+
+        $credential_id = validateObject ($postData , 'credential_id', "");
+        $credential_id = addslashes($credential_id);
+
         $firstname = validateObject ($postData , 'firstname', "");
         $firstname = addslashes($firstname);
 
@@ -515,6 +550,7 @@ class ProfileFunctions
                 $insertAcademicField="`user_id`, `school_id`, `classroom_id`, `academic_year`, `course_id`";
                 $insertAcademicValue="'".$user_id."', '".$school_id."', '".$classroom_id."', '".$academic_year."', '".$course_id."'";
 
+
                 //Image Saving
                 $profile_user_link="user_".$user_id."/";
 
@@ -532,12 +568,22 @@ class ProfileFunctions
                 $resultProfileImage=mysql_query($queryProfileImage) or $message=mysql_error();
                 $queryAcademic="INSERT INTO ".TABLE_STUDENT_ACADEMIC_INFO."(".$insertAcademicField.") values (".$insertAcademicValue.")";
                 $resultAcademic=mysql_query($queryAcademic) or $message=mysql_error();
-                $post['user_id']=$user_id;
-                $post['username']=$username;
-                $post['profile_pic']=$profile_image_link;
-                $data[]=$post;
-                $status="success";
-                $message="Registration completed successfully";
+                if($resultAcademic)
+                {
+//                    $updateStatus="UPDATE `auto_generated_credential` SET `status`='1' WHERE `id`=".$credential_id;
+//                    $resultAcademic=mysql_query($updateStatus) or $message=mysql_error();
+                   // echo $updateStatus;
+                    $post['user_id']=$user_id;
+                    $post['username']=$username;
+                    $post['profile_pic']=$profile_image_link;
+                    $data[]=$post;
+                    $status="success";
+                    $message="Registration completed successfully";
+
+                }
+                ELSE{
+
+                }
 
             }
         }

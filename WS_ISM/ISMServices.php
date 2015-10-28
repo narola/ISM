@@ -32,6 +32,7 @@ switch ($_REQUEST['Service'])
     case "CheckUsernameAvailability":
     case "ForgotPassword":
     case "GetStudentAcademicInfo":
+    case "RequestForSchoolInfoUpdation":
     {
   	 include_once 'ProfileFunctions.php';
      $profile = new ProfileFunctions();
@@ -62,6 +63,9 @@ switch ($_REQUEST['Service'])
     case "GetAllSubjectsByClass":
     case "GetAllNotes":
     case "SubmitNotes":
+    case "UploadMediaNotes":
+    case "CreateAssignment":
+    case "CreateExam":
     {
         include_once 'TeacherFunctions.php';
         $teacher = new TeacherFunctions();

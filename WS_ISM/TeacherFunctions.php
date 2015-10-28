@@ -47,11 +47,33 @@ class TeacherFunctions
             }
                 break;
 
+            case "SubmitNotes":
+            {
+                return $this->submitNotes($postData);
+            }
+                break;
+            case "UploadMediaNotes":
+            {
+                return $this->uploadMediaNotes($postData);
+            }
+                break;
+            case "CreateAssignment":
+            {
+                return $this->createAssignment($postData);
+            }
+                break;
+            case "CreateExam":
+            {
+                return $this->createExam($postData);
+            }
+                break;
+
+
         }
     }
     /*
     * PostForClasswall
-     * This service will be used for teacher to post messages for class wall.
+     * used for teacher to post messages for class wall.
     */
 
     public function PostForClasswall ($postData)
@@ -88,7 +110,7 @@ class TeacherFunctions
 
     /*
       * getAllClasswallPost
-      * This service will be used to fetch all the class wall post.
+      * used to fetch all the class wall post.
       */
 
     public function getAllClasswallPost ($postData)
@@ -99,14 +121,14 @@ class TeacherFunctions
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
 
-        $role_id = validateObject ($postData , 'role_id', "");
-        $role_id = addslashes($role_id);
+        $role = validateObject ($postData , 'role', "");
+        $role = addslashes($role);
 
-        if($role_id==2){
+        if($role==2){
             //student
             $table=TABLE_STUDENT_ACADEMIC_INFO;
         }
-        else if($role_id==3) {
+        else if($role==3) {
             //teacher
             $table=TABLE_TEACHER_SUBJECT_INFO;
         }
@@ -119,7 +141,7 @@ class TeacherFunctions
                 $classroom_id = $row['classroom_id'];
                // echo $classroom_id."\n";
                 $getFields="classwall.id,classwall.created_date,users.profile_pic,classwall.wall_post,classwall.post_by,users.full_name";
-                $queryGetPost = "SELECT ".$getFields." FROM ".TABLE_CLASSWALL." classwall INNER JOIN ".TABLE_USERS." users on classwall.post_by=users.id WHERE `classroom_id`=" . $classroom_id;
+                $queryGetPost = "SELECT ".$getFields." FROM ".TABLE_CLASSWALL." classwall INNER JOIN ".TABLE_USERS." users on classwall.post_by=users.id WHERE `classroom_id`=" .                $classroom_id;
                 $resultGetPost = mysql_query($queryGetPost) or $message = mysql_error();
                 //echo $queryGetPost;
                 if (mysql_num_rows($resultGetPost))
@@ -160,7 +182,7 @@ class TeacherFunctions
 
     /*
      * GetMyStudents
-     * This service will be used to fetch students that belongs to the specific teacher.
+     *  used to fetch students that belongs to the specific teacher.
      */
 
     public function getMyStudents ($postData)
@@ -223,7 +245,7 @@ class TeacherFunctions
 
     /*
     * getAllSubjectsByClass
-     *This service will be used to fetch the subjects that are specific to a classroom.
+     * used to fetch the subjects that are specific to a classroom.
     */
 
     public function getAllSubjectsByClass ($postData)
@@ -234,14 +256,14 @@ class TeacherFunctions
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
 
-        $role_id = validateObject ($postData , 'role_id', "");
-        $role_id = addslashes($role_id);
+        $role = validateObject ($postData , 'role', "");
+        $role = addslashes($role);
 
-        if($role_id==2){
+        if($role==2){
             //student
             $table=TABLE_STUDENT_ACADEMIC_INFO;
         }
-        else if($role_id==3) {
+        else if($role==3) {
             //teacher
             $table=TABLE_TEACHER_SUBJECT_INFO;
         }
@@ -282,7 +304,7 @@ class TeacherFunctions
 
     /*
      * getAllNotes
-     * This service will be used to fetch all the notes that belongs to the user.
+     *  used to fetch all the notes that belongs to the user.
      *
      */
     public function getAllNotes ($postData)
@@ -293,14 +315,14 @@ class TeacherFunctions
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
 
-        $role_id = validateObject ($postData , 'role_id', "");
-        $role_id = addslashes($role_id);
+        $role = validateObject ($postData , 'role', "");
+        $role = addslashes($role);
 
-        if($role_id==2){
+        if($role==2){
             //student
             $table=TABLE_STUDENT_ACADEMIC_INFO;
         }
-        else if($role_id==3) {
+        else if($role==3) {
             //teacher
             $table=TABLE_TEACHER_SUBJECT_INFO;
         }
@@ -314,16 +336,30 @@ class TeacherFunctions
             {
                 $classroom_id = $row['classroom_id'];
                 // echo $classroom_id."\n";
-                $getFields="notes.id,notes.note_title,notes.note,notes.topic_id,topics.topic_name";
-                $queryGetPost = "SELECT ".$getFields." FROM ".TABLE_NOTES." notes INNER JOIN ".TABLE_TOPICS." topics on topics.id=notes.topic_id WHERE `classroom_id`=" . $classroom_id;
+                $getFields="notes.topic_id,topics.topic_name,notes.id,notes.user_id,users.full_name,users.profile_pic,notes.created_date,notes.note_title,notes.note,notes.video_link,notes.audio_link,notes.video_thumbnail,notes.image_link";
+                $queryGetPost = "SELECT ".$getFields." FROM ".TABLE_NOTES." notes INNER JOIN ".TABLE_TOPICS." topics INNER JOIN ".TABLE_USERS." users on topics.id=notes.topic_id and users.id=notes.user_id WHERE `classroom_id`=" .$classroom_id;
                 $resultGetPost = mysql_query($queryGetPost) or $message = mysql_error();
                 // echo $queryGetPost;
 
                 if (mysql_num_rows($resultGetPost)) {
                     while ($val = mysql_fetch_assoc($resultGetPost)){
-                        $data[] = $val;
+                        $post=array();
+                        $post['topic_id']=$val['topic_id'];
+                        $post['topic_name']=$val['topic_name'];
+                        $post['note_id']=$val['id'];
+                        $post['note_by_id']=$val['user_id'];
+                        $post['note_by_user']=$val['full_name'];
+                        $post['user_profile_pic']=$val['profile_pic'];
+                        $post['note_title']=$val['note_title'];
+                        $post['note_text']=$val['note'];
+                        $post['video_link']=$val['video_link'];
+                        $post['video_thumbnail']=$val['video_thumbnail'];
+                        $post['image_link']=$val['image_link'];
+                        $post['audio_link']=$val['audio_link'];
+                        $post['created_date']=$val['created_date'];
+                        $data[] = $post;
                     }
-                    $message = "";
+                    $message = "Record Found";
                 }
             }
         }
@@ -338,146 +374,201 @@ class TeacherFunctions
 
     }
 
-    public function uploadMedia($postData)
+    /*
+     * submitNotes
+     *  used to submit notes in the system by either students or teachers.
+     */
+    public function submitNotes($postData)
     {
+        $data=array();
+        $response=array();
 
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
 
+        $note_title = validateObject ($postData , 'note_title', "");
+        $note_title = addslashes($note_title);
+
+        $note_text = validateObject ($postData , 'note_text', "");
+        $note_text = addslashes($note_text);
+
+        $video_content = validateObject ($postData , 'video_content', "");
+        $video_content = addslashes($video_content);
+
+        $video_thumbnail = validateObject ($postData , 'video_thumbnail', "");
+        $video_thumbnail = addslashes($video_thumbnail);
+
+        $audio_content = validateObject ($postData , 'audio_content', "");
+        $audio_content = addslashes($audio_content);
+
+        $images = validateObject ($postData , 'images', "");
+
+        $topic_id = validateObject ($postData , 'topic_id', "");
+        $topic_id = addslashes($topic_id);
+
+        $classroom_id = validateObject ($postData , 'classroom_id', "");
+        $classroom_id = addslashes($classroom_id);
+
+        if (!is_dir(NOTES_MEDIA)) {
+            mkdir(NOTES_MEDIA, 0777, true);
+        }
+        //Image Saving
+        $image_link="user_".$user_id."/";
+
+        $image_dir=NOTES_MEDIA.$image_link;
+
+        if (!is_dir($image_dir)) {
+            mkdir($image_dir, 0777, true);
+        }
+        $image_url="";
+        if($images!=null){
+            $i=0;
+            $image_name = "IMG-" . date("Ymd-his").$i++."_test.png";
+            $image_path = $image_dir . $image_name;
+            $image_url = $image_link.$image_name;
+            file_put_contents($image_path, base64_decode($images));
+        }
+        $thumbnail_url="";
+        if($video_thumbnail!=null){
+
+            $image_name = "THUMBNAIL-" . date("Ymd-his")."_test.png";
+            $image_path = $image_dir . $image_name;
+            $thumbnail_url = $image_link.$image_name;
+            file_put_contents($image_path, base64_decode($video_thumbnail));
+        }
+        $insertFields="`note_title`, `note`, `video_link`, `video_thumbnail`,`audio_link`, `image_link`, `topic_id`, `classroom_id`, `user_id`";
+        $insertValues="'".$note_title."','".$note_text."','".$video_content."','".$thumbnail_url."','".$audio_content."','".$image_url."','".$topic_id."','".$classroom_id."',".$user_id;
+        $query="INSERT INTO ".TABLE_NOTES."(".$insertFields.") VALUES (".$insertValues.")";
+        $result = mysql_query($query) or $message = mysql_error();
+        if($result){
+            $note_id=mysql_insert_id();
+            $response['status']="success";
+            $response['message']="Notes added successfully";
+        }
+        else {
+            $response['status'] = "failed";
+            $response['message'] = "";
+        }
+
+        $response['data']=$data;
+        return $response;
+
+    }
+
+    /*
+     *  used for the upload media(audio/video ) in submits notes
+     */
+    public function uploadMediaNotes($postData)
+    {
         $dir = '';
         $mediaName = '';
-        $created_date = date("Y-m-d H:i:s");
-        //create Random String.
-        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        //generate random string with minimum 5 and maximum of 10 characters
-        $str = substr(str_shuffle($chars), 0, 8);
-        //add extension to file
-        $name = $str;
-        $feed_id=$_POST['feed_id'];
+        $created_date = date("Ymd-His");
 
-        $feed_by=$_POST['feed_by'];
+        $user_id=$_POST['user_id'];
+
+        $note_id=$_POST['note_id'];
         $mediaType=$_POST['mediaType'];
 
-        if (!is_dir(FEEDS_MEDIA)) {
-            mkdir(FEEDS_MEDIA, 0777, true);
+        if (!is_dir(NOTES_MEDIA)) {
+            mkdir(NOTES_MEDIA, 0777, true);
         }
-        $feed_media_dir = "user_" . $feed_by . "/";
-        $dir = FEEDS_MEDIA . $feed_media_dir;
+        $media_dir = "user_" . $user_id . "/";
+        $dir = NOTES_MEDIA . $media_dir;
         if (!is_dir($dir)) {
             mkdir($dir, 0777);
         }
         if("video"==$mediaType)
         {
-            if ($_FILES["video_link"]["error"] > 0) {
-                $message = $_FILES["video_link"]["error"];
+            if ($_FILES["mediaFile"]["error"] > 0) {
+                $message = $_FILES["mediaFile"]["error"];
 
             } else {
                 // Image 5 = Video 6 = Audio 7
 
-                $mediaName = $name . '.mp4';
+                $mediaName = "VIDEO-".$created_date."_test.mp4";
                 $uploadDir = $dir;
-                $uploadFile = FEEDS_MEDIA.$feed_media_dir . $mediaName;
-                if (move_uploaded_file($_FILES['video_link']['tmp_name'], $uploadFile)) {
+                $uploadFile = NOTES_MEDIA.$media_dir . $mediaName;
+                if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
                     //store image data.
-                    $link=$feed_media_dir . $mediaName;
-                    $procedure_insert_set = "CALL UPDATE_VIDEO_LINK ('".$link."','".$feed_id."' )";
-                    $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
-                    $status = "1";
+                    $link=$media_dir . $mediaName;
+                    $queryUpdate = "Update ".TABLE_NOTES." set video_link= '".$link."' where id=".$note_id;
+                    $resultUpdate= mysql_query($queryUpdate) or $errorMsg = mysql_error();
+                    //echo $queryUpdate;
+                    $status = "success";
                     $message = "Successfully uploaded!.";
                 } else {
-                    $status = 2;
+                    $status = "failed";
                     $message = "Failed to upload media on server.";
                 }
             }
         }
         else if("audio"==$mediaType)
         {
-            if ($_FILES["audio_link"]["error"] > 0) {
-                $message = $_FILES["audio_link"]["error"];
+            if ($_FILES["mediaFile"]["error"] > 0) {
+                $message = $_FILES["mediaFile"]["error"];
                 $status=2;
             } else {
-                $mediaName = $name . '.mp3';
+                $mediaName = "AUDIO-".$created_date."_test.mp3";
 
                 $uploadDir = $dir;
-                $uploadFile = FEEDS_MEDIA .$feed_media_dir. $mediaName;
-                if (move_uploaded_file($_FILES['audio_link']['tmp_name'], $uploadFile)) {
+                $uploadFile = NOTES_MEDIA .$media_dir. $mediaName;
+                if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
                     //store image data.
 
-                    $link=$feed_media_dir . $mediaName;
-                    $procedure_insert_set = "CALL UPDATE_AUDIO_LINK ('".$link."','".$feed_id."' )";
-                    $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
-                    $status = "1";
+                    $link=$media_dir . $mediaName;
+                    $queryUpdate = "Update ".TABLE_NOTES." set audio_link= '".$link."' where id=".$note_id;
+                    $resultUpdate= mysql_query($queryUpdate) or $errorMsg = mysql_error();
+                    $status = "success";
                     $message = "Successfully uploaded!.";
                 } else {
-                    $status = 2;
+                    $status = "failed";
                     $message = "Failed to upload media on server.";
-
                 }
             }
 
         }
 
-
         $data['status']=$status;
-        $data['link']=$link;
+        //$data['link']=$link;
         $data['message']=$message;
         return $data;
 
     }
 
-
-    /** Get Extension
-     * @param $str
-     * @return string
+    /*
+     * createAssignment
      */
-    private function getExtension($str)
-    {
-        $i = strrpos($str,".");
-        if (!$i) { return ""; }
-
-        $l = strlen($str) - $i;
-        $ext = substr($str,$i+1,$l);
-        return $ext;
-    }
-
-
-    public function acceptRequestFromStudymate ($postData)
+    public function createAssignment ($postData)
     {
         $data=array();
         $response=array();
-        $email_id = validateObject ($postData , 'email_id', "");
-        $email_id = addslashes($email_id);
+        $message='';
+        $status='';
 
-        $sendEmail = new SendEmail();
-        $randomString=gen_random_string();
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
 
-        $status=0;
-        $queryCheckEmail="SELECT * FROM ".TABLE_USERS." WHERE `email_id`='".$email_id."'";
-        $resultCheckEmail=mysql_query($queryCheckEmail) or $errorMsg=mysql_error();
-        // echo $queryCheckEmail;
-        if(mysql_num_rows($resultCheckEmail)) {
-            while ($val = mysql_fetch_assoc($resultCheckEmail)) {
-                $status = 1;
-            }
-        }
-        else{
+//        $course_id = validateObject ($postData , 'course_id', "");
+//        $course_id = addslashes($course_id);
 
-            $status=0;
+        $classroom_id = validateObject ($postData , 'classroom_id', "");
+        $classroom_id = addslashes($classroom_id);
 
-        }
-        //$message="Hello ISM,\nI am very much interested to be part of ISM system.Please check my details below and let me know how can I become the part of this system.
-        if($status==1) {
-            $message = "Successfully sent";
-            $status="success";
-            $response = $sendEmail->sendemail("ism.educare@gmail.com", $randomString, "Forgot Password", $email_id);
-        }
-        else
-        {
-            $message = "Email id is not valid!";
-            $status="failed";
-        }
-        // return "Request sent successfully'";
+        $subject_id = validateObject ($postData , 'subject_id', "");
+        $subject_id = addslashes($subject_id);
 
-        //$response['data']=$data;
-        // $response['status']=$status;
+        $submission_date = validateObject ($postData , 'submission_date', "");
+        $submission_date = addslashes($submission_date);
+
+//        $assignment_type = validateObject ($postData , 'assignment_type', "");
+//        $assignment_type = addslashes($assignment_type);
+
+        $topic_id = validateObject ($postData , 'topic_id', "");
+        $topic_id = addslashes($topic_id);
+
+        $assignment_text = validateObject ($postData , 'assignment_text', "");
+        $assignment_text = addslashes($assignment_text);
+
         $response['message']=$message;
         $response['status']=$status;
         $response['data']=$data;
@@ -485,56 +576,75 @@ class TeacherFunctions
         return $response;
     }
 
-    public function sendRequestToStudymate ($postData)
+    /*
+     * create exam
+     */
+    public function createExam ($postData)
     {
         $message='';
+        $status='';
         $data=array();
         $response=array();
-        $username = validateObject ($postData , 'username', "");
-        //echo "\n".$username;
-        $username = addslashes($username);
-        //echo "\n".$username;
-        if($username!=null)
-        {
-            $queryUserName="SELECT `username` FROM ".TABLE_USERS." WHERE `username`='".$username."'";
-            $resultUserName=mysql_query($queryUserName) or $errorMsg=mysql_error();
-            if(mysql_num_rows($resultUserName))
-            {
-                while ($val = mysql_fetch_assoc($resultUserName))
-                {
-                    regenerate:
-                    {
-                        $username=$val['username'];
-                        $randomNumber=rand ( 0 , 999 );
-                        $username.=$randomNumber;
-                        //echo "\n".$username."i=";
-                        $queryGenUserName="SELECT `username` FROM ".TABLE_USERS." WHERE `username`='".$username."'";
-                        $resultGenUserName=mysql_query($queryGenUserName) or $errorMsg=mysql_error();
-                        if(mysql_num_rows($resultGenUserName))
-                        {
-                            goto regenerate;
-                        }
-                        else
-                        {
-                            //	echo "\n".$username."i=else=";}
-                            $status="success";
-                            $message="username is not available.";
-                            $data['username']=$username;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                $status="success";
-                $message="username is available.";
-            }
-        }
-        else
-        {
-            $status="failed";
-            $message="Invalid data.";
-        }
+
+//“passing_percent”:””
+//“subject_id”: “”,
+//“exam_mode”:””
+//“exam_type”:””
+//“exam_category”:””
+//“exam_duration”:””
+//“submission_date”:””,
+// “exam_instruction”:””
+//“declare_results”:
+//“negative_marking”:
+//“random_question”:””
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $exam_name = validateObject ($postData , 'exam_name', "");
+        $exam_name = addslashes($exam_name);
+
+        $course_id = validateObject ($postData , 'course_id', "");
+        $course_id = addslashes($course_id);
+
+        $classroom_id = validateObject ($postData , 'classroom_id', "");
+        $classroom_id = addslashes($classroom_id);
+
+        $passing_percent = validateObject ($postData , 'passing_percent', "");
+        $passing_percent = addslashes($passing_percent);
+
+        $subject_id = validateObject ($postData , 'subject_id', "");
+        $subject_id = addslashes($subject_id);
+
+        $exam_mode = validateObject ($postData , 'exam_mode', "");
+        $exam_mode = addslashes($exam_mode);
+
+        $exam_type = validateObject ($postData , 'exam_type', "");
+        $exam_type = addslashes($exam_type);
+
+        $exam_category = validateObject ($postData , 'exam_category', "");
+        $exam_category = addslashes($exam_category);
+
+        $exam_duration = validateObject ($postData , 'exam_duration', "");
+        $exam_duration= addslashes($exam_duration);
+
+        $submission_date = validateObject ($postData , 'submission_date', "");
+        $submission_date = addslashes($submission_date);
+
+        $exam_instruction = validateObject ($postData , 'exam_instruction', "");
+        $exam_instruction = addslashes($exam_instruction);
+
+        $declare_results = validateObject ($postData , 'declare_results', "");
+        $declare_results = addslashes($declare_results);
+
+        $negative_marking = validateObject ($postData , 'negative_marking', "");
+        $negative_marking = addslashes($negative_marking);
+
+        $random_question = validateObject ($postData , 'random_question', "");
+        $random_question = addslashes($random_question);
+
+        $insertField="";
+        $insertValues="";
         $response['data']=$data;
         $response['message']=$message;
         $response['status']=$status;

@@ -308,21 +308,21 @@ class SocialFunctions
 
         $dir = '';
         $mediaName = '';
-        $created_date = date("Y-m-d H:i:s");
+        $created_date = date("Ymd-His");
         //create Random String.
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         //generate random string with minimum 5 and maximum of 10 characters
         $str = substr(str_shuffle($chars), 0, 8);
         //add extension to file
-        $name = $str;
+        //$name = $str."_test";
         $feed_id=$_POST['feed_id'];
-
         $feed_by=$_POST['feed_by'];
         $mediaType=$_POST['mediaType'];
 
         if (!is_dir(FEEDS_MEDIA)) {
             mkdir(FEEDS_MEDIA, 0777, true);
         }
+
         $feed_media_dir = "user_" . $feed_by . "/";
         $dir = FEEDS_MEDIA . $feed_media_dir;
         if (!is_dir($dir)) {
@@ -336,7 +336,7 @@ class SocialFunctions
             } else {
                 // Image 5 = Video 6 = Audio 7
 
-                $mediaName = $name . '.mp4';
+                $mediaName = "VIDEO".$created_date."_test.mp4";
                 $uploadDir = $dir;
                 $uploadFile = FEEDS_MEDIA.$feed_media_dir . $mediaName;
                 if (move_uploaded_file($_FILES['video_link']['tmp_name'], $uploadFile)) {
@@ -344,10 +344,10 @@ class SocialFunctions
                     $link=$feed_media_dir . $mediaName;
                     $procedure_insert_set = "CALL UPDATE_VIDEO_LINK ('".$link."','".$feed_id."' )";
                     $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
-                    $status = "1";
+                    $status = "success";
                     $message = "Successfully uploaded!.";
                 } else {
-                    $status = 2;
+                    $status = "failed";
                     $message = "Failed to upload media on server.";
                 }
             }
@@ -358,7 +358,7 @@ class SocialFunctions
                 $message = $_FILES["audio_link"]["error"];
                 $status=2;
             } else {
-                $mediaName = $name . '.mp3';
+                $mediaName = "AUDIO".$created_date."_test.mp3";
 
                 $uploadDir = $dir;
                 $uploadFile = FEEDS_MEDIA .$feed_media_dir. $mediaName;
@@ -368,12 +368,11 @@ class SocialFunctions
                     $link=$feed_media_dir . $mediaName;
                     $procedure_insert_set = "CALL UPDATE_AUDIO_LINK ('".$link."','".$feed_id."' )";
                     $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
-                    $status = "1";
+                    $status = "success";
                     $message = "Successfully uploaded!.";
                 } else {
-                    $status = 2;
+                    $status = "failed";
                     $message = "Failed to upload media on server.";
-
                 }
             }
 
@@ -418,7 +417,7 @@ class SocialFunctions
         $final_users= $this->getAllUsersFromUsers($user_id);
         $final_feeds_tagged = $this->getAllFeedIdFromFeedsTag($user_id);
 
-        $final_feeds = $this->getAllFeedsFromFeeds($final_followers, $final_mates, $final_teachers, $final_groups, $final_users, $final_feeds_tagged);
+        $final_feeds = $this->getAllFeedsFromFeeds($user_id,$final_followers, $final_mates, $final_teachers, $final_groups, $final_users, $final_feeds_tagged);
 
         $response['data']=$final_feeds['data'];
         $response['status']=$final_feeds['status'];
@@ -547,7 +546,7 @@ class SocialFunctions
     }
 
 
-    public function getAllFeedsFromFeeds($final_followers, $final_mates, $final_teachers, $final_groups, $final_users, $final_feeds_tagged)
+    public function getAllFeedsFromFeeds($user_id,$final_followers, $final_mates, $final_teachers, $final_groups, $final_users, $final_feeds_tagged)
     {
 
         $string_of_all_ids = '';
@@ -599,8 +598,9 @@ class SocialFunctions
         if ($feeds_count > 0) {
             while ($feeds = mysql_fetch_assoc($resultGetAllFeeds)) {
 
+                $feeds_array['user_id'] = $user_id;
                 $feeds_array['feed_id'] = $feeds['id'];
-                $feeds_array['user_id'] = $feeds['feed_by'];
+                $feeds_array['feed_by'] = $feeds['feed_by'];
                 $feeds_array['feed_text'] = $feeds['feed_text'];
                 $feeds_array['video_link'] = $feeds['video_link'];
                 $feeds_array['audio_link'] = $feeds['audio_link'];
@@ -618,6 +618,13 @@ class SocialFunctions
                     $feeds_array['full_name'] = $val['full_name'];
                     $feeds_array['profile_pic'] = $val['profile_pic'];
 
+                }
+                $queryLike="select * from ".TABLE_FEED_LIKE." where like_by=".$user_id." and feed_id= ". $feeds['id'];
+                $resultLike=mysql_query($queryLike) or $errorMsg=mysql_error();
+                $feeds_array['like'] ="0";
+                if(mysql_num_rows($resultLike)){
+                    $valLike = mysql_fetch_assoc($resultLike);
+                    $feeds_array['like'] = $valLike['is_delete'];
                 }
                 //$feeds_array['user_id'] = $feeds['user_id'];
                 $feeds_array['comment_list']=array();
