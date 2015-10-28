@@ -24,7 +24,64 @@ class Question extends ADMIN_Controller {
 			$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>0)));	
 
 			$where = array();
-			$str = '';
+			$str = '';			
+
+			if(!empty($_GET['exam_id'])){
+				
+				$eid = $_GET['exam_id'];
+				$str .= '&exam_id='.$eid; 
+
+				$where_exam = array(TBL_EXAM_QUESTION.'.exam_id'=>$eid,TBL_EXAM_QUESTION.'.exam_id'=>$eid);	
+				$exam_questions = select(TBL_QUESTIONS,
+									TBL_QUESTIONS.'.id,'.
+									TBL_QUESTIONS.'.question_text,'.
+									TBL_SUBJECTS.'.subject_name,'.
+									TBL_EXAM_QUESTION.'.id as exam_ques_id,'.
+									TBL_USERS.'.full_name',
+									array('where'=>$where_exam),
+									array(
+										'group_by'=>TBL_QUESTIONS.'.id,',
+										'join'=>array(
+											array(
+							    				'table' => TBL_TUTORIAL_GROUP_QUESTION,
+							    				'condition' => TBL_QUESTIONS.'.id = '.TBL_TUTORIAL_GROUP_QUESTION.'.question_id',
+												),
+											array(
+							    				'table' => TBL_TUTORIAL_TOPIC,
+							    				'condition' => TBL_TUTORIAL_TOPIC.'.id = '.TBL_TUTORIAL_GROUP_QUESTION.'.tutorial_topic_id',
+												),
+											array(
+							    				'table' => TBL_SUBJECTS,
+							    				'condition' => TBL_SUBJECTS.'.id = '.TBL_TUTORIAL_TOPIC.'.subject_id',
+												),
+											array(
+							    				'table' => TBL_USERS,
+							    				'condition' => TBL_USERS.'.id = '.TBL_QUESTIONS.'.question_creator_id',
+												),
+											array(
+							    				'table' => TBL_EXAM_QUESTION,
+							    				'condition' => TBL_EXAM_QUESTION.'.question_id = '.TBL_QUESTIONS.'.id',
+												)
+											),
+										)
+									);
+
+				foreach ($exam_questions as $key=>$que) {
+
+					$exam_choices = select(TBL_ANSWER_CHOICES,
+									TBL_ANSWER_CHOICES.'.id,'.
+									TBL_ANSWER_CHOICES.'.choice_text,',
+									// TBL_ANSWER_CHOICES.'.question_id',
+									array('where'=>array(TBL_ANSWER_CHOICES.'.question_id'=>$que['id'])),
+									null
+									);
+
+					$exam_questions[$key]['choices']=array_column($exam_choices,'choice_text');
+				}
+				
+				$this->data['exam_questions'] = $exam_questions;
+
+			}
 
 			if( !empty($_GET['course_id']) ) { 
 					$course_id = $this->input->get('course_id'); 
@@ -80,30 +137,34 @@ class Question extends ADMIN_Controller {
 				$str .= '&topic_id='.$topic_id; 
 			}
 
-			// echo $classroom_id;
-			// echo "<br/>";
-			// echo $tutorial_topic_id;
-			// echo "<br/>";
-			// echo $subject_id;
+			if(!empty($_GET['per_page'])){
+				$str .= '&per_page='.$_GET['per_page']; 
+			}
+
+			$str =  trim($str,'&');
+
+			$config['base_url'] = base_url().'admin/question/set?'.$str;
+			$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
+			$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
 		 
 		}else{
 			
+			$config['base_url'] = base_url().'admin/question/set';	
+			$offset = $this->uri->segment(4);
+
 			$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>0)));
 			$this->data['classrooms'] =select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0)));
 			$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>0)));
 			$this->data['topics'] = select(TBL_TUTORIAL_TOPIC,FALSE,array('where'=>array('is_delete'=>0)));
-
 		}
 
-
 		$config['num_links'] = 3;
-		$config['total_rows'] = $questions = select(TBL_QUESTIONS,
+		$config['total_rows'] = $questions = count(select(TBL_QUESTIONS,
 													TBL_QUESTIONS.'.id,'.TBL_QUESTIONS.'.question_text,'.TBL_SUBJECTS.'.subject_name,'.
 													TBL_USERS.'.full_name',
 													array('where'=>$where),
 													array(
 														'group_by'=>TBL_QUESTIONS.'.id',
-														'count'=>TRUE,
 														'join'=>array(
 															array(
 											    				'table' => TBL_TUTORIAL_GROUP_QUESTION,
@@ -123,15 +184,12 @@ class Question extends ADMIN_Controller {
 																),
 															),
 														)
-													);
+													));
 
 
 		$this->data['page_number'] =  $this->uri->segment(4);
-		$config['per_page'] = 1;
-		//END
+		$config['per_page'] = 10;
 		
-		//p($config,true);
-
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
  		$config['full_tag_close'] = '</ul>';
 
@@ -163,6 +221,8 @@ class Question extends ADMIN_Controller {
 							array('where'=>$where),
 							array(
 								'group_by'=>TBL_QUESTIONS.'.id',
+								'limit'=>$config['per_page'],
+								'offset'=>$offset,
 								'join'=>array(
 									array(
 					    				'table' => TBL_TUTORIAL_GROUP_QUESTION,
@@ -205,10 +265,14 @@ class Question extends ADMIN_Controller {
 		
 		// ------------------------------------------------------------------------
 
-		$this->data['page_title'] = 'Set Question';
+		//pass pagination configuration set in $config variable and initialize into pagination class
 		
-		$this->data['exams'] = select(TBL_EXAMS,FALSE,$where);	
+		$this->pagination->initialize($config);
+		
+		// ------------------------------------------------------------------------
 
+		$this->data['page_title'] = 'Set Question';
+		$this->data['exams'] = select(TBL_EXAMS,FALSE,$where);	
 		$this->template->load('admin/default','admin/question/set',$this->data);
 	}
 
@@ -222,13 +286,52 @@ class Question extends ADMIN_Controller {
 		$this->data['page_tite'] = 'Add Question';
 		$this->data['tags'] = select(TBL_TAGS,FALSE,array('where'=>array('is_delete'=>'0')));
 
-		$where = array('where'=>array('is_delete'=>0));
-		
-		$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null);
-		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,$where,null);
-		$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,$where,null);
-		$this->data['topics'] = select(TBL_TUTORIAL_TOPIC,FALSE,$where,null);
+		if($_POST){
 
+			$course_id = $this->input->post('course_id'); 
+			$classroom_id = $this->input->post('classroom_id');
+			$subject_id = $this->input->post('subject_id');
+			$where = array('where'=>array('is_delete'=>0));
+			$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null);
+			if(!empty($course_id)){
+				$this->data['classrooms'] =select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0,'course_id'=>$course_id ))); 
+			}
+
+			if(!empty($classroom_id)){
+				
+				$this->data['subjects'] = select(TBL_CLASSROOM_SUBJECT,
+												 TBL_CLASSROOM_SUBJECT.'.subject_id as id,sub.subject_name ',
+												 array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$classroom_id,'sub.is_delete'=>'0')),
+													array(
+														'join'=>array(
+																	array(
+														    				'table' => TBL_SUBJECTS.' sub',
+														    				'condition' => 'sub.id = '.TBL_CLASSROOM_SUBJECT.'.subject_id',
+																		)
+																	)
+														)
+											 	);
+
+			}
+
+			if(!empty($subject_id)){
+
+				$this->data['topics'] = select(TBL_TUTORIAL_TOPIC, TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name, ',
+						array('where'=>array('subject_id'=>$subject_id,'is_delete'=>0)),
+						null
+				);
+			}
+
+
+		}else{
+
+			$where = array('where'=>array('is_delete'=>0));
+			$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null);
+			$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,$where,null);
+			$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,$where,null);
+			$this->data['topics'] = select(TBL_TUTORIAL_TOPIC,FALSE,$where,null);	
+		}
+		
 		$this->form_validation->set_rules('question_text', 'Question Text', 'trim|required');
 		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
 		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required');
@@ -282,9 +385,8 @@ class Question extends ADMIN_Controller {
 				}
 			}
 
-			
-
 			$correct_choice =  $this->input->post('correct_choice')-1;
+
 			$cnt = 0;
 
 			foreach($choices as $choice){

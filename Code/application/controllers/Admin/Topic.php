@@ -1,4 +1,5 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -472,17 +473,25 @@ class Topic extends ADMIN_Controller {
 
 	public function add(){
 		
+		// if($_POST){
+		// 	p($_POST);
+		// 	die();
+		// }		
+
 		//Validation Set For Add Topic Following fields are required and topic name allow some character only
+		 // $this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required|regex_match[/[a-zA-Z& ]$/]', 
+		 // 	array('regex_match' => 'The {field} should have only characters,numbers and & special character only.'));
+		
 		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required|regex_match[/[a-zA-Z& ]$/]', 
-			array('regex_match' => 'The {field} should have only characters,numbers and & special character only.'));
+		array('regex_match' => 'The {field} should have only characters,numbers and & special character only.'));
 		$this->form_validation->set_rules('keywords', 'Keywords', 'trim|required');
 		$this->form_validation->set_rules('subjects', 'Subject', 'trim|required');
 		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
 		$this->form_validation->set_rules('classrooms', 'Classroom', 'trim|required');
-		$this->form_validation->set_rules('subjects', 'Subjects', 'trim|required');
 		$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
 		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required');
-
+		
+		
 		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>0))); // Fetch All Courses From Database
 		$this->data['page_title'] = 'Add New Topic'; // Set Page Title
 
@@ -492,6 +501,7 @@ class Topic extends ADMIN_Controller {
 
 		}else{
 
+			die('dsjhfisjnfdosa');
 			$data=array(
 				 "topic_name"=>$this->input->post("topic_name"),
 				 "parent_id"=>0,
@@ -504,12 +514,10 @@ class Topic extends ADMIN_Controller {
 				 "allocation_count"=>0,
 				 "status"=>"",
 				 "topic_day"=>"Mon",
-				 "created_date"=>date('Y-m-d H:i:s'),
-				 "modified_date"=>date('Y-m-d H:i:s'),
-				 "is_delete"=>0,
-				 "is_archived"=>0,
-				 "is_testdata"=>'yes',
+				 "is_archived"=>0
 				);
+
+			p($data,true);
 
 			insert(TBL_TUTORIAL_TOPIC,$data);
 
@@ -539,7 +547,6 @@ class Topic extends ADMIN_Controller {
 		$this->form_validation->set_rules('subjects', 'Subject', 'trim|required');
 		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
 		$this->form_validation->set_rules('classrooms', 'Classroom', 'trim|required');
-		$this->form_validation->set_rules('subjects', 'Subjects', 'trim|required');
 		$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
 		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required');
 
