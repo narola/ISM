@@ -75,7 +75,15 @@
                             ?>
                             <div class="col-sm-12 <?php echo $clss_me; ?>" data-id="<?php echo $v['id']; ?>">
                                 <div class="mate_user_img">
-                                <img src="/<?php echo UPLOAD_URL.'/'.$v['profile_link']; ?>">
+                                <?php 
+                                $imgs = '/assets/images/avatar.png';
+                                if($v['profile_link'] != ''){
+                                    $imgs = '/'.UPLOAD_URL.'/'.$v['profile_link']; 
+                                }
+
+                                ?>
+
+                                <img src="<?php echo $imgs; ?>">
                                 </div>
                                 <div class="admin_question">
                                     <h4><?php echo $v['full_name']; ?><span><?php echo date_format( date_create($v['created_date']), 'M d, Y g:i a'); ?></span></h4>
