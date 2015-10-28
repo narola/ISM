@@ -17,7 +17,7 @@
 		<div class="question_bank_sr">
 		<div class="filter group_filter">
             <div class="col-sm-12">
-                <form method="get">
+                <form method="get" id="filter">
 				<div class="form-group">
 					<select class="form-control" name="course_id" onchange="get_classes(this.value)" id="course_id">
 						<option value=''>Course</option>
@@ -333,28 +333,70 @@
         });
     }
 
-  function get_subjects(classroom_id){
-        $.ajax({
-           url:'<?php echo base_url()."admin/question/ajax_get_subjects"; ?>',
-           type:'POST',
-           data:{classroom_id:classroom_id},
-           success:function(data){
-              $("#subject_id").html(data);
-              $('#topic_id').val('');
-           }
-        });
-  }
+    function get_subjects(classroom_id){
+            $.ajax({
+               url:'<?php echo base_url()."admin/question/ajax_get_subjects"; ?>',
+               type:'POST',
+               data:{classroom_id:classroom_id},
+               success:function(data){
+                  $("#subject_id").html(data);
+                  $('#topic_id').val('');
+               }
+            });
+      }
 
-  function get_topics(subject_id){
-        $.ajax({
-           url:'<?php echo base_url()."admin/question/ajax_get_topics"; ?>',
-           type:'POST',
-           data:{subject_id:subject_id},
-           success:function(data){
-              $("#topic_id").html(data);
-           }
-        });
-  }
+    function get_topics(subject_id){
+            $.ajax({
+               url:'<?php echo base_url()."admin/question/ajax_get_topics"; ?>',
+               type:'POST',
+               data:{subject_id:subject_id},
+               success:function(data){
+                  $("#topic_id").html(data);
+               }
+            });
+      }
+
+      $( "#filter" ).submit(function( event ) {
+      
+        var course_id = $('#course_id').val();
+        var classroom_id = $('#classroom_id').val();
+        var subject_id = $('#subject_id').val();
+        var topic_id = $('#topic_id').val();
+        var exam_id = $('#exam_id').val();
+
+        if(classroom_id != '' || subject_id != ''){
+            if(course_id == ''){
+                bootbox.alert("Please Select Course.");
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        if(course_id != ''){
+             if(classroom_id == '' || subject_id == ''){
+                 bootbox.alert("Please Select Classroom or Subject to Filter questions.");
+                event.preventDefault();
+                return false;
+             }
+        }
+
+        if(classroom_id == '' && subject_id == '' && topic_id=='' && course_id==''){
+            if(course_id == ''){
+                bootbox.alert("Please Select any option to filter questions.");
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        if(course_id == '' ){ $('#course_id').removeAttr('name'); }
+        if(classroom_id == '' ){ $('#classroom_id').removeAttr('name'); }
+        if(subject_id == '' ){ $('#subject_id').removeAttr('name'); }
+        if(topic_id == '' ){ $('#topic_id').removeAttr('name'); }
+        if(exam_id == ''){ $('#exam_id').removeAttr('name'); }
+        
+        return true;
+
+    });
 
 <?php if(!empty($_GET['course_id'])) { ?>
     $('#course_id').val('<?php echo $_GET["course_id"];?>');  
@@ -372,9 +414,11 @@
     $('#topic_id').val('<?php echo $_GET["topic_id"];?>');    
 <?php } ?>
 
-<?php if(!empty($_GET['exam'])) { ?>
-    $('#exam_id').val('<?php echo $_GET["exam"];?>');    
+<?php if(!empty($_GET['exam_id'])) { ?>
+    $('#exam_id').val('<?php echo $_GET["exam_id"];?>');    
 <?php } ?>
+
+
 
 jQuery(document).ready(function() {
     jQuery('.question_wrapper .fa-angle-double-down').click(function(){
