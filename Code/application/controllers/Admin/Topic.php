@@ -161,14 +161,14 @@ class Topic extends ADMIN_Controller {
 		if(!empty($allocated_group_ids)){
 			$where['where_not_in'] = array(TBL_TUTORIAL_GROUPS.'.id' => $allocated_group_ids);
 		}
-		if($unallocated != null){
+		/*if($unallocated != null){
 		$config['base_url'] = base_url() . 'admin/topic/allocate/'.$unallocated;
-	}else{
+	}else{*/
 		$config['base_url'] = base_url() . 'admin/topic/allocate';
-	}
-		 $offset = $this->uri->segment(4);
-		// $config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
-        // $offset = $this->input->get('per_page');
+	// }
+		 // $offset = $this->uri->segment(4);
+		$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
+        $offset = $this->input->get('per_page');
 		$config['uri_segment'] = 4;
         $config['num_links'] = 5;
         $config['total_rows'] = count(
@@ -210,7 +210,7 @@ class Topic extends ADMIN_Controller {
 												)
 
         	);
-        $config['per_page'] = 1;
+        $config['per_page'] = 2;
 
         $config['full_tag_open'] = '<ul class="pagination pagination_admin">';
         $config['full_tag_close'] = '</ul>';
@@ -309,11 +309,14 @@ class Topic extends ADMIN_Controller {
 											    				),
 											    			array(
 											    				'table'=>TBL_USER_PROFILE_PICTURE,
-											    				'condition'=>TBL_USER_PROFILE_PICTURE.'.id='.TBL_TUTORIAL_GROUP_MEMBER.'.user_id'
+											    				'condition'=>TBL_USER_PROFILE_PICTURE.'.user_id='.TBL_TUTORIAL_GROUP_MEMBER.'.user_id'
 											    				)
-											    			)
-												)
+											    			),
+											)
 											);
+
+$this->pagination->initialize($config);
+
 
 		$unallocated_group_ids = array_column($unallocated_groups, 'id');
 
