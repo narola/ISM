@@ -83,11 +83,11 @@ class Report extends ADMIN_Controller {
 
     public function get_group_stats(){
 
-    	// $classroom_id = $this->input->post('classroom_id');
-    	$classroom_id = 2;
+    	$classroom_id = $this->input->post('classroom_id');
+    	// $classroom_id = 2;
 
-    	// $date_range = $this->input->post('date_range');
-    	$date_range = '08/02/2015 - 11/10/2015';
+    	$date_range = $this->input->post('date_range');
+    	// $date_range = '08/02/2015 - 11/10/2015';
 
         $date_range_split = explode(" - ", $date_range);
     	$sdate = date_create(reset($date_range_split));
@@ -162,13 +162,12 @@ class Report extends ADMIN_Controller {
                                     ));
         $exams = select(TBL_EXAMS,TBL_EXAMS.'.id',$where,FALSE);
         $exam_ids = array_column($exams, 'id');
-        p($exam_ids);
-
+        $graph_data = array();
+        if(!empty($exam_ids)){
         $exam_score = select(TBL_STUDENT_EXAM_SCORE.','.TBL_ADMIN_CONFIG,
-            TBL_STUDENT_EXAM_SCORE.'.user_id,sum('.
-            TBL_STUDENT_EXAM_SCORE.'.correct_answers * '.TBL_ADMIN_CONFIG.'.config_value) as score,count('.
-            TBL_EXAM_QUESTION.'.question_id),'.TBL_ADMIN_CONFIG.'.config_value, count('.
-            TBL_EXAM_QUESTION.'.question_id) * '.TBL_ADMIN_CONFIG.'.config_value as total',
+            TBL_STUDENT_EXAM_SCORE.'.exam_id,'.TBL_STUDENT_EXAM_SCORE.'.user_id,
+            ('.TBL_STUDENT_EXAM_SCORE.'.correct_answers * '.TBL_ADMIN_CONFIG.'.config_value) as score,
+            (SELECT count(exam_question.question_id)*admin_config.config_value FROM `exam_question`, `admin_config` WHERE admin_config.config_key="correctAnswerScore" and exam_question.exam_id = '.TBL_STUDENT_EXAM_SCORE.'.exam_id ) as total_score',
             array(
                 'where'=>array(
                     TBL_STUDENT_EXAM_SCORE.".created_date > " => $start_date,
@@ -177,23 +176,61 @@ class Report extends ADMIN_Controller {
                     TBL_ADMIN_CONFIG.'.config_key'=>'correctAnswerScore'
                     ),
                 'where_in'=>array(TBL_STUDENT_EXAM_SCORE.'.exam_id'=>$exam_ids)
-                ),
-            array(
-                'join'=>array(
-                    array(
-                        'table'=>TBL_EXAM_QUESTION,
-                        'condition'=>TBL_EXAM_QUESTION.'.exam_id='.TBL_STUDENT_EXAM_SCORE.'.exam_id'
-                    )
-
-                    ),
-                'group_by'=>TBL_STUDENT_EXAM_SCORE.'.user_id'
                 )
+
             );
-qry();
-        /*foreach (range(0, 100, 10) as $number) {
-            echo $number;
-        }*/
-        p($exam_score, true);
+        $final = array();
+
+        foreach ($exam_score as $k => $v) {
+                if (array_key_exists($v['user_id'],$final)){
+                    $final[$v['user_id']]['score'] +=  $v['score'];
+                    $final[$v['user_id']]['total_score'] +=  $v['total_score'];
+                }else{
+                    $final[$v['user_id']] = array(
+                        'score' => $v['score'],
+                        'total_score' => $v['total_score']
+                        );
+                }
+             $final[$v['user_id']]['pers'] = ceil(($final[$v['user_id']]['score']/$final[$v['user_id']]['total_score'])*100) ;
+        }
+
+        $check = array(
+            0 => 10,
+            11 => 20,
+            21 => 30,
+            31 => 40,
+            41 => 50,
+            51 => 60,
+            61 => 70,
+            71 => 80,
+            81 => 90,
+            91 => 100
+            );
+        
+        $data = array();
+        foreach ($final as $final_score) {
+            foreach ($check as $key => $value) {
+                if($final_score['pers'] >= $key && $final_score['pers'] <= $value){
+                    if(array_key_exists($key.'-'.$value, $data)){
+                        $data[$value]++;                
+                    }else{
+                        $data[$value]=1;
+                    }    
+               } 
+            }
+        }
+
+        
+        foreach ($data as $key => $value) {
+            $arr = array();
+            $arr['y'] = $key;
+            $arr['name'] = $value;
+            $graph_data[] = $arr;
+        }
+       
+    }
+        $response['student'] = $graph_data;
+        // p($exam_score, true);
     	echo json_encode($response,JSON_NUMERIC_CHECK);
     }
 
