@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 no-padding performance_wrapper">
-                    	<h3>Question Submitted</h3>
+                    	<h3>Group Scores</h3>
                         <div id="performance_graph_2">
                         </div>
                     </div>
@@ -113,7 +113,7 @@
     $(function() {
         $('input[name="daterange"]').daterangepicker();
     });
-
+get_group_stats();
     function get_classes(course_id){
             $.ajax({
                url:'<?php echo base_url()."admin/question/ajax_get_classrooms"; ?>',
@@ -147,7 +147,7 @@
                         text: ''
                     },
                     subtitle: {
-                        text: 'Points V/S Course'
+                        text: 'Questions V/S Courses'
                     },
                     xAxis: {
                         type: 'category'
@@ -208,7 +208,7 @@
                         text: ''
                     },
                     subtitle: {
-                        text: 'Question V/S Course'
+                        text: 'Groups V/S Score'
                     },
                     xAxis: {
                         type: 'category'
@@ -239,7 +239,7 @@
                     series: [{
                         name: "Groups",
                         colorByPoint: true,
-                        data: response
+                        data: response.group_data
                     }]
                 });
                }

@@ -17,73 +17,68 @@
         <div class="box_header">
             <h3>Add New Topic</h3>
         </div>
-        <div class="box_body">  
-            <form method="post">
+        <form method="post" >
+            <div class="box_body" >  
+                    <div class="form-group select col-sm-12 col-md-6 no-padding half_size">
+                        
+                        <select class="form-control myselect2" name="course_id" onchange="get_classes(this.value)" id="course_id">
+                            <option value="">Select Course</option>
+                            <?php 
+                              if(!empty($courses)){ 
+                                foreach($courses as $course) {
+                              ?> 
+                            <option value="<?php echo $course['id']; ?>" <?php echo set_select('course_id', $course['id']); ?>> <?php echo $course['course_name']; ?></option>
+                            <?php }  }else{ ?>
+                            <option > No Course</option>
+                            <?php } ?>
+                        </select>
+                        <a href="#" class="icon icon_add_small"></a>
+                    </div>
+                    <div class="form-group select col-sm-12 col-md-6 no-padding half_size">
 
-                <div class="form-group select col-sm-12 col-md-6 no-padding half_size">
-                    
-                    <select class="form-control myselect2" name="course_id" onchange="get_classes(this.value)" id="course_id">
-                        <option value="">Select Course</option>
-                        <?php 
-                          if(!empty($courses)){ 
-                            foreach($courses as $course) {
-                          ?> 
-                        <option value="<?php echo $course['id']; ?>" <?php echo set_select('course_id', $course['id']); ?>> <?php echo $course['course_name']; ?></option>
-                        <?php }  }else{ ?>
-                        <option > No Course</option>
-                        <?php } ?>
-                    </select>
-                    <a href="#" class="icon icon_add_small"></a>
-                </div>
-                <div class="form-group select col-sm-12 col-md-6 no-padding half_size">
+                        <select class="form-control" name="classrooms" id="classroom_id" onchange="get_subjects(this.value)">
+                            <option value="">Select Classroom</option>
+                        </select>
+                        <a href="#" class="icon icon_add_small"></a>
+                        <?php echo myform_error('classrooms'); ?>
+                    </div>
+                    <div class="form-group select  col-sm-12 col-md-6 no-padding half_size">
 
-                    <select class="form-control" name="classrooms" id="classroom_id" onchange="get_subjects(this.value)">
-                        <option value="">Select Classroom</option>
-                    </select>
-                    <a href="#" class="icon icon_add_small"></a>
-                    <?php echo myform_error('classrooms'); ?>
-                </div>
-                <div class="form-group select  col-sm-12 col-md-6 no-padding half_size">
-
-                    <select class="form-control" name="subjects" id="subject_id">
-                        <option value="">Select Subject</option>
-                    </select>
-                    <a href="#" class="icon icon_add_small"></a>
-                    <?php echo myform_error('subjects'); ?>
-                </div>
-
-                <div class="form-group  col-sm-12 col-md-6 no-padding half_size">
-                    
-                    <div class="form-group col-sm-12 no-padding half_size">
-                        <input name="topic_name" type="text" class="form-control" placeholder="Topic">
-                        <?php echo myform_error('topic_name'); ?>
+                        <select class="form-control" name="subjects" id="subject_id">
+                            <option value="">Select Subject</option>
+                        </select>
+                        <a href="#" class="icon icon_add_small"></a>
+                        <?php echo myform_error('subjects'); ?>
                     </div>
 
-                    
-
-                </div>
-                <div class="form-group  col-sm-12 col-md-6 no-padding half_size">
-                    <div class="form-group col-sm-12 no-padding half_size">
-                        <label>Keywords for Evaluations</label>
-                        <!-- <textarea name="keywords" class="form-control"></textarea> -->
-                       <input class="form-control" type="text" data-role="tagsinput" name="keywords" id="keywords">
-                       <?php echo myform_error('keywords'); ?>
+                    <div class="form-group  col-sm-12 col-md-6 no-padding half_size">
+                        <div class="form-group col-sm-12 no-padding half_size">
+                            <input name="topic_name" type="text" class="form-control" placeholder="Topic">
+                            <?php echo myform_error('topic_name'); ?>
+                        </div>
                     </div>
-                </div>
+                    <div class="form-group  col-sm-12 col-md-6 no-padding half_size">
+                        <div class="form-group col-sm-12 no-padding half_size">
+                            <label>Keywords for Evaluations</label>
+                            <!-- <textarea name="keywords" class="form-control"></textarea> -->
+                           <input class="form-control" type="text" data-role="tagsinput" name="keywords" id="keywords">
+                           <?php echo myform_error('keywords'); ?>
+                        </div>
+                    </div>
 
-                <div class="form-group  col-sm-12 col-md-6 no-padding half_size">
-                    <label>Text Description</label>
-                    <textarea name="topic_desc" id="editor1" class="form-control"></textarea>
-                </div>
-               
-                <div class="col-sm-12 text-center btn_group">
-                    <button class="btn btn_green" type="submit" name="save">Save</button>
-                    <button class="btn btn_red" type="submit" name="save_more">Save & Add More</button>
-                    <button class="btn btn_black_normal" type="reset" onclick="reset_topic()">Cancel</button>
-                </div>
-                <div class="clearfix"></div>
-            </form>
-         </div>
+                    <div class="form-group  col-sm-12 col-md-6 no-padding half_size">
+                        <label>Text Description</label>
+                        <textarea name="topic_desc" id="editor1" class="form-control"></textarea>
+                    </div>
+                   
+                    <div class="col-sm-12 text-center btn_group">
+                        <button class="btn btn_green" type="submit" name="save">Save</button>
+                        <button class="btn btn_red" type="submit" name="save_more">Save & Add More</button>
+                        <button class="btn btn_black_normal" type="reset" onclick="reset_topic()">Cancel</button>
+                    </div>
+                    <div class="clearfix"></div>
+             </div>
+        </form>
 
     </div>
 	</div>

@@ -58,17 +58,11 @@
                         }?>
 					</select>
 				</div>
-
-				<!--<div class="form-group">
-					<select class="form-control" name="exam_id" id="exam_id" onchange="fetch_question(this.value)">
-						<option value=''>Exams</option>
-						<?php //if(!empty($exams)){ 
-							//foreach ($exams as $exam) { ?>
-								<option value="<?php //echo $exam['id']; ?>"><?php //echo $exam['exam_name']; ?></option>        
-						<?php //} 
-					//}?>
-					</select>
-				</div>-->
+                <?php if(!empty($_GET['per_page'])) { ?>
+                    <input type="hidden" name="per_page" value="<?php if(!empty($_GET['per_page'])) { echo $_GET['per_page']; } ?>">
+                <?php } ?>
+                <input type="hidden" name="exam_id" id="exam_id" value="<?php if(!empty($_GET['exam_id'])) { echo $_GET['exam_id']; } ?>">
+				    
 				<div class="form-group no_effect search_link text-right">
 					<button class="btn btn-link icon icon_search" type="submit"></button>
 				</div>
@@ -82,51 +76,7 @@
         	<div class="col-sm-6 general_cred">
             	<!--box-->
                 <div class="box">
-                    <!--<div class="box_header "><!--filter-- >
-                        <form method="post">
-                        <div class="form-group">
-                            <select class="form-control" name="course_id" onchange="get_classes(this.value)" id="course_id">
-                                <option value=''>Course</option>
-                                <?php //if(!empty($courses)){ 
-                                    //foreach ($courses as $course) { ?>
-                                        <option value="<?php //echo $course['id']; ?>"><?php //echo $course['course_name']; ?></option>        
-                                <?php //} 
-                            //}?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" name="classroom_id" onchange="get_subjects(this.value)" id="classroom_id">
-                                <option value=''>Classroom</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" name="subject_id" onchange="get_topics(this.value)" id="subject_id">
-                                <option value=''>Subject</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" name="topic_id" id="topic_id" >
-                                <option value=''>Topic</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <select class="form-control" name="exam_id" id="exam_id" onchange="fetch_question(this.value)">
-                                <option value=''>Exams</option>
-                                <?php //if(!empty($exams)){ 
-                                    //foreach ($exams as $exam) { ?>
-                                        <option value="<?php //echo $exam['id']; ?>"><?php echo $exam['exam_name']; ?></option>        
-                                <?php //} 
-                            //}?>
-                            </select>
-                        </div>
-
-                        <!--<div class="form-group no_effect search_link text-right">
-                            <button class="btn btn-link icon icon_search" type="submit"></button>
-                        </div>-- >
-                        <div class="clearfix"></div>
-                    </form>
-                    </div>-->
+                    
                     <!--box_body-->
                     <div class="box_body">
                    		<div class="black_header">	
@@ -135,7 +85,9 @@
                         <div class="question_list">
 
                             <?php if(!empty($questions)){
+                                
                                 $i=1;
+                                
                                 foreach ($questions as $question) { ?>
 
                             <!--q1-->
@@ -169,6 +121,10 @@
                              }
 
                             } ?>
+
+                            <div class="text-center ">
+                                <?php  echo $this->pagination->create_links();  ?>
+                            </div>
                         </div>
                    	</div>
                     <!--//box-body-->
@@ -186,14 +142,23 @@
                        <h4>Preview</h4>
 						<div class="filter preview_filter pull-right">
 							<div class="form-group">
-								<select class="form-control" name="exam_id" id="exam_id" onchange="fetch_question(this.value)">
-									<option value=''>Exams</option>
-									<?php if(!empty($exams)){ 
-										foreach ($exams as $exam) { ?>
-											<option value="<?php echo $exam['id']; ?>"><?php echo $exam['exam_name']; ?></option>        
-									<?php } 
-								}?>
-								</select>
+                                <!-- onchange="fetch_question(this.value)"  -->
+
+    								<select class="form-control" id="exam_id_select" onchange="form_submit(this.value)"  >
+    									<option value='' disabled selected>Select Exams</option>
+    									<?php if(!empty($exams)){ 
+    										foreach ($exams as $exam) { ?>
+    											<option value="<?php echo $exam['id']; ?>"><?php echo $exam['exam_name']; ?></option>        
+    									<?php } 
+    								}?>
+    								</select>
+
+                                <script type="text/javascript">
+                                    function form_submit(eid){
+                                       $('#exam_id').val(eid);
+                                       $('#filter').submit();
+                                    }
+                                </script>
 							</div>
 						</div>
                     </div>
@@ -201,7 +166,40 @@
                     <div class="box_body">
                    		<!-- All Question Lists are display Here. -->
                         <div class="question_list" id='question_list'>
-                        	
+                        	   <!--q1-->
+                               <?php  
+                                    $e_cnt = 1;
+
+                                    if(!empty($exam_questions)) { 
+                                        foreach($exam_questions as $exam_que) { ?>
+
+                                <div class="question_wrapper" id="que_div_'.$e_cnt.'" >
+
+                                    <div class="question_left">                                    
+                                        <h5 class="txt_red">Question <span id="exam_quest_<?php echo $e_cnt; ?>"><?php echo $e_cnt; ?></span></h5>                                       
+                                        <p class="ques"> <?php echo $exam_que['question_text']; ?> </p>
+                                        <div class="answer_options_div">
+                                            <ol>
+                                                <?php foreach($exam_que['choices'] as $e_choice) { ?>
+                                                    <li><?php echo $e_choice; ?></li>
+                                                <?php } ?>
+                                            </ol>
+                                        </div>
+                                    </div>
+
+                                    <div class="notice_action">  
+                                        <a href="#" class="icon icon_hand" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Move"></a>                                          
+                                        <a href="#" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
+                                        <a href="#" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
+                                        <a href="<?php echo base_url().'admin/question/delete_question/'.$exam_que['exam_ques_id']; ?> " onclick="delete_question(this.href,event,<?php echo $e_cnt; ?>)" 
+                                class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
+                                        
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <!--//q1-->
+
+                            <?php $e_cnt++; } } ?>
                         </div>
                    	</div>
                     <!--//box-body-->
@@ -356,7 +354,7 @@
             });
       }
 
-      $( "#filter" ).submit(function( event ) {
+    $( "#filter" ).submit(function( event ) {
       
         var course_id = $('#course_id').val();
         var classroom_id = $('#classroom_id').val();
@@ -364,7 +362,11 @@
         var topic_id = $('#topic_id').val();
         var exam_id = $('#exam_id').val();
 
-        if(classroom_id != '' || subject_id != ''){
+        // if(exam_id != ''){
+        //     return true;
+        // }
+
+        if(classroom_id != '' || subject_id != '' && exam_id != '' ){
             if(course_id == ''){
                 bootbox.alert("Please Select Course.");
                 event.preventDefault();
@@ -373,14 +375,14 @@
         }
 
         if(course_id != ''){
-             if(classroom_id == '' || subject_id == ''){
+             if(classroom_id == '' || subject_id == '' && exam_id == ''){
                  bootbox.alert("Please Select Classroom or Subject to Filter questions.");
                 event.preventDefault();
                 return false;
              }
         }
 
-        if(classroom_id == '' && subject_id == '' && topic_id=='' && course_id==''){
+        if(classroom_id == '' && subject_id == '' && topic_id=='' && course_id=='' & exam_id == ''){
             if(course_id == ''){
                 bootbox.alert("Please Select any option to filter questions.");
                 event.preventDefault();
@@ -415,7 +417,7 @@
 <?php } ?>
 
 <?php if(!empty($_GET['exam_id'])) { ?>
-    $('#exam_id').val('<?php echo $_GET["exam_id"];?>');    
+    $('#exam_id_select').val('<?php echo $_GET["exam_id"];?>');    
 <?php } ?>
 
 

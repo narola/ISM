@@ -83,11 +83,11 @@ class Report extends ADMIN_Controller {
 
     public function get_group_stats(){
 
-    	$classroom_id = $this->input->post('classroom_id');
-    	// $classroom_id = 2;
+    	// $classroom_id = $this->input->post('classroom_id');
+    	$classroom_id = 2;
 
-    	$date_range = $this->input->post('date_range');
-    	// $date_range = '08/02/2015 - 11/10/2015';
+    	// $date_range = $this->input->post('date_range');
+    	$date_range = '08/02/2015 - 11/10/2015';
 
         $date_range_split = explode(" - ", $date_range);
     	$sdate = date_create(reset($date_range_split));
@@ -140,7 +140,7 @@ class Report extends ADMIN_Controller {
             $group_by= '';
         }
 
-        $group_data = select(
+        $response['group_data'] = select(
                               TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' group_topic',
                               'group_topic.group_id,group.group_name as name,sum(group_topic.group_score) as y',
                               array('where_in'=>array('group_topic.group_id'=>$new_str)),
@@ -156,6 +156,46 @@ class Report extends ADMIN_Controller {
                                     )
                             );
         
-    	echo json_encode($group_data,JSON_NUMERIC_CHECK);
+        $where = array('where'=>array(TBL_EXAMS.'.classroom_id'=>$classroom_id,
+                                        TBL_EXAMS.'.exam_category'=>'ISM_Mock',
+                                        TBL_EXAMS.'.is_delete'=>0
+                                    ));
+        $exams = select(TBL_EXAMS,TBL_EXAMS.'.id',$where,FALSE);
+        $exam_ids = array_column($exams, 'id');
+        p($exam_ids);
+
+        $exam_score = select(TBL_STUDENT_EXAM_SCORE.','.TBL_ADMIN_CONFIG,
+            TBL_STUDENT_EXAM_SCORE.'.user_id,sum('.
+            TBL_STUDENT_EXAM_SCORE.'.correct_answers * '.TBL_ADMIN_CONFIG.'.config_value) as score,count('.
+            TBL_EXAM_QUESTION.'.question_id),'.TBL_ADMIN_CONFIG.'.config_value, count('.
+            TBL_EXAM_QUESTION.'.question_id) * '.TBL_ADMIN_CONFIG.'.config_value as total',
+            array(
+                'where'=>array(
+                    TBL_STUDENT_EXAM_SCORE.".created_date > " => $start_date,
+                    TBL_STUDENT_EXAM_SCORE.".created_date < " => $end_date,
+                    TBL_STUDENT_EXAM_SCORE.".exam_status" => 'finished',
+                    TBL_ADMIN_CONFIG.'.config_key'=>'correctAnswerScore'
+                    ),
+                'where_in'=>array(TBL_STUDENT_EXAM_SCORE.'.exam_id'=>$exam_ids)
+                ),
+            array(
+                'join'=>array(
+                    array(
+                        'table'=>TBL_EXAM_QUESTION,
+                        'condition'=>TBL_EXAM_QUESTION.'.exam_id='.TBL_STUDENT_EXAM_SCORE.'.exam_id'
+                    )
+
+                    ),
+                'group_by'=>TBL_STUDENT_EXAM_SCORE.'.user_id'
+                )
+            );
+qry();
+        /*foreach (range(0, 100, 10) as $number) {
+            echo $number;
+        }*/
+        p($exam_score, true);
+    	echo json_encode($response,JSON_NUMERIC_CHECK);
     }
+
+
 }

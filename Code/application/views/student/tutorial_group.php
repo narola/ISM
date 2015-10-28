@@ -173,6 +173,7 @@
                     <div class="tab-pane active" id="red">                                  
                   
                         <div id="wPaint" style="position:relative; width:280px; height:300px; background-color:#00000;border:1px solid black; margin:140px auto 20px;"></div>
+                        <div class="upload_loader"></div>
 
                         <!-- <center style="margin-bottom: 50px;">
                             <input type="button" value="toggle menu" onclick="console.log($('#wPaint').wPaint('menuOrientation')); $('#wPaint').wPaint('menuOrientation', $('#wPaint').wPaint('menuOrientation') === 'vertical' ? 'horizontal' : 'vertical');"/>
