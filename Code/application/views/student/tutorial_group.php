@@ -172,39 +172,11 @@
                     <center id="wPaint-img"></center>
                   
                     <script type="text/javascript">
-                    var images = [
+                    /*var images = [
                       'test/uploads/wPaint.png',
                     ];
-
-                    function saveImg(image) {
-                      var _this = this;
-
-                      $.ajax({
-                        type: 'POST',
-                        url: 'test/upload.php',
-                        data: {image: image},
-                        success: function (resp) {
-
-                          // internal function for displaying status messages in the canvas
-                          _this._displayStatus('Image saved successfully');
-
-                          // doesn't have to be json, can be anything
-                          // returned from server after upload as long
-                          // as it contains the path to the image url
-                          // or a base64 encoded png, either will work
-                          resp = $.parseJSON(resp);
-
-                          // update images array / object or whatever
-                          // is being used to keep track of the images
-                          // can store path or base64 here (but path is better since it's much smaller)
-                          // alert(resp.img);
-                          images.push(resp.img);
-
-                          // do something with the image
-                          $('#wPaint-img').attr('src', image);
-                        }
-                      });
-                    }
+*/
+                    
 
                     function loadImgBg () {
 
@@ -309,7 +281,14 @@
                         ?>
                             <div class="box_body" data-id="<?php echo $v['id']; ?>">
                             <div class="mate_user_img">
-                                <img src="/<?php echo UPLOAD_URL.'/'.$v['profile_link']; ?>">
+                                <?php 
+                                $imgs = '/assets/images/avatar.png';
+                                if($v['profile_link'] != ''){
+                                    $imgs = '/'.UPLOAD_URL.'/'.$v['profile_link']; 
+                                }
+
+                                ?>
+                                <img src="<?php echo $imgs; ?>">
                             </div>
                             <h4><?php echo $v['full_name']; ?></h4>
                             <p><?php echo $v['school_name']; ?></p>

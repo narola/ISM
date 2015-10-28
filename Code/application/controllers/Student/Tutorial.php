@@ -157,8 +157,7 @@ class Tutorial extends ISM_Controller {
 							)
 						)
 					)
-				);
-			//p($data,true);
+				);			
 			$this->template->load('student/default','student/tutorial_group',$data);
 	}
 		
