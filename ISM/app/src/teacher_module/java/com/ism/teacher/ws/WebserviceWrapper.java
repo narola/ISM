@@ -24,6 +24,8 @@ public class WebserviceWrapper {
     public static final int ADD_COMMENTS = 2;
     public static final int GET_ALL_COMMENTS = 3;
     public static final int GET_STUDYMATES = 4;
+    public static final int TAG_FRIEND_IN_FEED = 5;
+    public static final int LIKE_FEED = 6;
     public static int API_METHOD_NAME;
 
 
@@ -58,7 +60,6 @@ public class WebserviceWrapper {
                 API_METHOD_NAME = params[0];
                 switch (params[0]) {
                     case LOGIN:
-//						res = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObj.class, requestObject);
                         responseObject = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObject.class, requestObject);
                         break;
 
@@ -76,6 +77,14 @@ public class WebserviceWrapper {
 
                     case GET_STUDYMATES:
                         responseObject = new RequestWs().getRequest(AppConstant.URL_GET_STUDYMATES, ResponseObject.class, requestObject);
+                        break;
+
+                    case TAG_FRIEND_IN_FEED:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_TAG_FRIEND_IN_FEED, ResponseObject.class, requestObject);
+                        break;
+
+                    case LIKE_FEED:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_LIKE_FEED, ResponseObject.class, requestObject);
                         break;
 
                 }

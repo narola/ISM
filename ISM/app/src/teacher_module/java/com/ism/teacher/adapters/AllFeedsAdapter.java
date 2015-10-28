@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.teacher.fragments.TeacherHomeFragment;
+import com.ism.teacher.helper.PreferenceData;
 import com.ism.teacher.model.AddCommentRequest;
 import com.ism.teacher.model.Comment;
 import com.ism.teacher.model.Data;
 import com.ism.teacher.model.FeedIdRequest;
-import com.ism.utility.InputValidator;
 
 import java.util.ArrayList;
 
@@ -33,21 +33,18 @@ public class AllFeedsAdapter extends
 
     Fragment fragment;
     View.OnClickListener viewAllCommetsListener;
+    String likePrefData, unlikePrefData;
 
     public AllFeedsAdapter(Context context, ArrayList<Data> data) {
         this.context = context;
         arrayListAllFeedsData = new ArrayList<>();
         arrayListAllFeedsData = data;
-
-        //  fragment = ((Activity) context).getFragmentManager().findFragmentById(R.id.fl_fragment_container_main);
     }
 
     public AllFeedsAdapter(Context context, ArrayList<Data> data, View.OnClickListener viewAllCommetsListener, Fragment fragment) {
         this.context = context;
         arrayListAllFeedsData = new ArrayList<>();
         arrayListAllFeedsData = data;
-
-        //  fragment = ((Activity) context).getFragmentManager().findFragmentById(R.id.fl_fragment_container_main);
         this.viewAllCommetsListener = viewAllCommetsListener;
         this.fragment = fragment;
     }
@@ -87,16 +84,20 @@ public class AllFeedsAdapter extends
         holder.txtPostLikeCounter.setText(arrayListAllFeedsData.get(position).getTotal_like());
         holder.txtPostCommentsCounter.setText(arrayListAllFeedsData.get(position).getTotal_comment());
 
+
+        if (arrayListAllFeedsData.get(position).getLike() == 1) {
+            holder.imgLikePost.setSelected(true);
+        } else {
+            holder.imgLikePost.setSelected(false);
+        }
+
         holder.llCommentRowInflater.removeAllViews();
 
 
         if (holder.llCommentRowInflater.getChildCount() == 0) {
-
-//            Debug.e(TAG, "child count = if ==" + holder.llCommentInflater.getChildCount());
             for (int i = 0; i < arrayListAllFeedsData.get(position).getCommentList().size(); i++) {
 
                 if (i <= 1) {
-
                     View v = getCommentInflaterView(arrayListAllFeedsData.get(position).getCommentList().get(i));
                     holder.llCommentRowInflater.addView(v);
 
@@ -135,6 +136,7 @@ public class AllFeedsAdapter extends
                         addCommentRequest.setComment(holder.etWritePost.getText().toString());
 
                         ((TeacherHomeFragment) fragment).callAddCommentApi(addCommentRequest);
+                        ((TeacherHomeFragment) fragment).setSetAddCommentRowPosition(position);
                     }
 
                 }
@@ -153,6 +155,52 @@ public class AllFeedsAdapter extends
 
         });
 
+
+        holder.imgLikePost.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View view) {
+                likePrefData = PreferenceData.getStringPrefs(PreferenceData.LIKE_ID_LIST, context);
+                unlikePrefData = PreferenceData.getStringPrefs(PreferenceData.UNLIKE_ID_LIST, context);
+
+                holder.imgLikePost.setSelected(!holder.imgLikePost.isSelected());
+
+                if (holder.imgLikePost.isSelected()) {
+                    arrayListAllFeedsData.get(position).setLike(1);
+                    arrayListAllFeedsData.get(position).setTotal_like(String.valueOf(Integer.parseInt(arrayListAllFeedsData.get(position).getTotal_like()) + 1));
+
+                    setPrefForLike(arrayListAllFeedsData.get(position).getFeed_id() + ",");
+                } else {
+                    arrayListAllFeedsData.get(position).setLike(0);
+                    arrayListAllFeedsData.get(position).setTotal_like(String.valueOf(Integer.parseInt(arrayListAllFeedsData.get(position).getTotal_like()) - 1));
+
+                    setPrefForUnlike(arrayListAllFeedsData.get(position).getFeed_id() + ",");
+
+                }
+                notifyDataSetChanged();
+            }
+
+        });
+
+
+    }
+
+    public void setPrefForLike(String feed_id) {
+
+        PreferenceData.setStringPrefs(PreferenceData.LIKE_ID_LIST, context, likePrefData + feed_id);
+        if (unlikePrefData != null && unlikePrefData.length() > 0) {
+            PreferenceData.setStringPrefs(PreferenceData.UNLIKE_ID_LIST, context, unlikePrefData.replaceAll(feed_id, ""));
+        }
+
+    }
+
+    public void setPrefForUnlike(String feed_id) {
+
+        PreferenceData.setStringPrefs(PreferenceData.UNLIKE_ID_LIST, context, unlikePrefData + feed_id);
+        if (likePrefData != null && likePrefData.length() > 0) {
+            PreferenceData.setStringPrefs(PreferenceData.LIKE_ID_LIST, context, likePrefData.replaceAll(feed_id, ""));
+        }
 
     }
 
@@ -199,7 +247,7 @@ public class AllFeedsAdapter extends
         // for any view that will be set as you render a row
         public TextView txtUsernamePostCreator, txtPostContent, txtPostLikeCounter, txtPostCommentsCounter, txtViewAllComments, txtSubmitPost;
         public EditText etWritePost;
-        public ImageView imgDpPostCreator, imgTagStudymates;
+        public ImageView imgDpPostCreator, imgTagStudymates, imgLikePost, imgComments;
         public LinearLayout llParentTeacherPost, llCommentRowInflater;
 
         // We also create a constructor that accepts the entire item row
@@ -220,6 +268,8 @@ public class AllFeedsAdapter extends
             etWritePost = (EditText) itemView.findViewById(R.id.et_writePost);
             txtSubmitPost = (TextView) itemView.findViewById(R.id.txt_submit_post);
             imgTagStudymates = (ImageView) itemView.findViewById(R.id.img_tag_studymates);
+            imgLikePost = (ImageView) itemView.findViewById(R.id.img_like_post);
+            imgComments = (ImageView) itemView.findViewById(R.id.img_comments);
         }
 
 

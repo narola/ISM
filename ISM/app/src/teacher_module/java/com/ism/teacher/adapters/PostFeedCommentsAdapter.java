@@ -5,10 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.teacher.model.Comment;
 import com.ism.teacher.model.Data;
 
 
@@ -41,6 +41,12 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
         holder.txtCommenterUsername.setText(listOfComments.get(position).getFull_name());
         holder.txtCommenterComment.setText(listOfComments.get(position).getComment());
         holder.txtCommentDuration.setText(listOfComments.get(position).getCommentBy());
+
+        if (position == 0) {
+            holder.imgSeparator.setVisibility(View.GONE);
+        } else {
+            holder.imgSeparator.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -64,9 +70,8 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtCommenterUsername;
-        TextView txtCommenterComment;
-        TextView txtCommentDuration;
+        TextView txtCommenterUsername, txtCommenterComment, txtCommentDuration;
+        ImageView imgSeparator;
 
 
         public ViewHolder(View itemView) {
@@ -75,7 +80,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
             txtCommenterUsername = (TextView) itemView.findViewById(R.id.txt_username_commenter);
             txtCommenterComment = (TextView) itemView.findViewById(R.id.txt_comments_from_commenter);
             txtCommentDuration = (TextView) itemView.findViewById(R.id.txt_comment_duration);
-           // txtCommentDuration = (TextView) itemView.findViewById(R.id.txt_comment_duration);
+            imgSeparator = (ImageView) itemView.findViewById(R.id.img_separator);
 
         }
     }

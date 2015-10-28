@@ -9,34 +9,37 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.R;
-import com.ism.teacher.model.Comment;
 import com.ism.teacher.model.Data;
 
 import java.util.ArrayList;
 
 /**
- * these is the postfeedcommentsadapter
+ * Tag Study Mates Adapter close to display the list of studymates
  */
 public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdapter.ViewHolder> {
 
     private static final String TAG = TagStudyMatesAdapter.class.getSimpleName();
 
     Context context;
-    ArrayList<Data> listOfStudyMates = new ArrayList<>();
+    ArrayList<Data> listOfAllStudyMates = new ArrayList<>();
+    ArrayList<Data> copyListOfStudyMates = new ArrayList<>();
 
-    View.OnClickListener tagstudyMatesListener;
-    Fragment fragment;
 
-//    public TagStudyMatesAdapter(Context context, ArrayList<Data> listOfStudyMates, View.OnClickListener tagstudyMatesListener, Fragment fragment) {
-//
-//        this.context = context;
-//        listOfStudyMates = listOfStudyMates;
-//        this.tagstudyMatesListener = tagstudyMatesListener;
-//        this.fragment = fragment;
-//
-//    }
+    public TagStudyMatesAdapter(Context context, ArrayList<Data> listOfStudyMates) {
+        this.context = context;
+        this.listOfAllStudyMates = listOfStudyMates;
+        this.copyListOfStudyMates.addAll(listOfAllStudyMates);
+    }
+
+    public ArrayList<String> tagIds = new ArrayList<String>();
+
+    public ArrayList<String> getTagIds() {
+        return tagIds;
+    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,34 +53,38 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.txtStudymateName.setText(listOfStudyMates.get(position).getFull_name());
-//        holder.imgStudymateDp.;
-//        holder.chkAddusertotag;
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        holder.txtStudymateName.setText(listOfAllStudyMates.get(position).getFull_name());
+
+        holder.chkAddusertotag.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if (holder.chkAddusertotag.isChecked()) {
+
+                    tagIds.add(listOfAllStudyMates.get(position).getUser_id());
+
+
+                } else {
+                    tagIds.remove(listOfAllStudyMates.get(position).getUser_id());
+                }
+
+
+            }
+        });
     }
 
-
-    public void addAll(ArrayList<Data> data) {
-
-        try {
-            this.listOfStudyMates.clear();
-            this.listOfStudyMates.addAll(data);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getItemCount() {
-        return listOfStudyMates.size();
+        return listOfAllStudyMates.size();
     }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imgStudymateDp;
+        ImageView imgStudymateDp, imgSeparatorMates;
         TextView txtStudymateName;
         CheckBox chkAddusertotag;
 
@@ -88,8 +95,28 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
             imgStudymateDp = (ImageView) itemView.findViewById(R.id.img_studymate_dp);
             txtStudymateName = (TextView) itemView.findViewById(R.id.txt_studymate_name);
             chkAddusertotag = (CheckBox) itemView.findViewById(R.id.chk_addusertotag);
+            imgSeparatorMates = (ImageView) itemView.findViewById(R.id.img_separator_mates);
 
         }
+    }
+
+    public void filter(CharSequence charText) {
+        listOfAllStudyMates.clear();
+
+        if (charText.length() == 0) {
+            listOfAllStudyMates.addAll(copyListOfStudyMates);
+        } else {
+
+            for (Data wp : copyListOfStudyMates) {
+                if (wp.getFull_name().contains(charText)) {
+                    listOfAllStudyMates.add(wp);
+                }
+            }
+            if (listOfAllStudyMates.size() == 0) {
+                Toast.makeText(context, "No search result found!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        notifyDataSetChanged();
     }
 
 
