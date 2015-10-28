@@ -19,17 +19,17 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     }
 
   
-    
+
     $datas = json_decode($message, true);
-    
+    $datas['user_iddd'] = $Server->wsClients[$clientID][12];
     $datas['error'] = $datas['redirect'] = 'skip';
-    pr($datas);
+    // pr($datas);
     $data = array_merge($datas, $Server->active_hours());
     $data['reload'] = 'no';
-    
-    
+
+
     $data = replace_invalid_chars($data);  // Reeplace '"<> to HTML code.
-        
+
     /* For individual chat */
     if ($data['type'] == 'studymate') {
         $responce = $Server->single_chat($clientID, $data);
@@ -129,13 +129,13 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         $responce = $Server->studymate_search($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'load-activity-more') {
         $responce = $Server->load_activity($Server->wsClients[$clientID][12], $data);
-    } else if($data['type'] == 'show_profile'){
+    } else if ($data['type'] == 'show_profile') {
         $responce = $Server->get_studymate_detail($Server->wsClients[$clientID][12], $data);
     }
-
+    pr($data);
     $check = array('feed_comment', 'like');
     if (isset($responce)) {
-       // $responce = replace_invalid_chars($responce);
+        // $responce = replace_invalid_chars($responce);
         pr($responce, 1);
         if ($responce['to'] == 'self') {
             $Server->wsSend($clientID, json_encode($responce));
@@ -161,7 +161,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                     }
                 }
             } else if ($responce['type'] == 'discussion') {
-                $classmates = $Server->class_mate_list($Server->wsClients[$clientID][12]);
+                $classmates = $Server->get_group_member($Server->wsClients[$clientID][12]);
                 $my_score = $responce['my_score'];
                 $responce['my_score'] = 'skip';
                 foreach ($Server->wsClients as $id => $client) {
@@ -171,6 +171,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                         } else {
                             $responce['my_score'] = 'skip';
                         }
+                        pr('Sent to : '.$Server->wsClients[$id][12]);
                         $Server->wsSend($id, json_encode($responce));
                     }
                 }

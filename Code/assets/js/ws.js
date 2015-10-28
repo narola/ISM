@@ -211,7 +211,6 @@ $(document).ready(function () {
                 var reader = new FileReader();
                 reader.onload = function (readerEvt) {
                     var binaryString = readerEvt.target.result;
-                    console.log(btoa(binaryString));
                     var request = {
                         type: type,
                         name: file_name,
@@ -332,7 +331,7 @@ if ("WebSocket" in window)
                     $('.tut_group .box_body[data-id="' + id + '"] a').removeClass('icon_call_user').addClass('icon_call_user_disable');
                 }
 
-                if($('.my_studymates .general_cred').length > 0){
+                if ($('.my_studymates .general_cred').length > 0) {
 //                  alert($('.my_studymates .general_cred .studyamte_list .mCustomScrollBox .mCSB_container').attr('class'));
                 }
 
@@ -440,7 +439,7 @@ if ("WebSocket" in window)
                 str += '<img src="uploads/' + obj.profile + '" onerror="this.src=\'assets/images/avatar.png\'">';
                 str += '</div><div class="notification_txt">';
                 str += '<p><a href="#" class="noti_username">' + obj.name + '</a> ' + comment.comment + '</p>';
-                str += '<span class="noti_time">'+comment.date+'</span>';
+                str += '<span class="noti_time">' + comment.date + '</span>';
                 str += '</div>';
                 str += '<div class="clearfix"></div>';
             });
@@ -701,8 +700,8 @@ if ("WebSocket" in window)
                 str += '<div class="study_mate">';
                 str += '<div class="col-lg-9 col-md-8 col-sm-7">';
                 str += '<div class="mate_user_img">';
-                str += '<img style="cursor:pointer;" data-type="show-profile" data-id="'+ list.user_id +'" onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + list.profile_link + '">';
-                str += '</div><h4 style="cursor:pointer;" data-type="show-profile" data-id="'+ list.user_id +'">' + list.full_name + '</h4>';
+                str += '<img style="cursor:pointer;" data-type="show-profile" data-id="' + list.user_id + '" onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + list.profile_link + '">';
+                str += '</div><h4 style="cursor:pointer;" data-type="show-profile" data-id="' + list.user_id + '">' + list.full_name + '</h4>';
                 str += '<p>' + list.school_name + '</p>';
                 str += '<p class="txt_green">' + list.course_name + '</p>';
                 str += '</div>';
@@ -734,23 +733,23 @@ if ("WebSocket" in window)
             } else {
                 $('.search_studymate  div[data-type="search_result"]').html(str);
             }
-        } else if(obj.type == "load-activity-more"){
-            str = ''; 
-            if(obj.result.my_like.length > 0 || obj.result.my_comment.length > 0 || obj.result.my_studymate.length > 0 || obj.result.my_post.length > 0 || obj.result.my_topic.length > 0)
+        } else if (obj.type == "load-activity-more") {
+            str = '';
+            if (obj.result.my_like.length > 0 || obj.result.my_comment.length > 0 || obj.result.my_studymate.length > 0 || obj.result.my_post.length > 0 || obj.result.my_topic.length > 0)
             {
                 str += '<div class="clearfix"></div>';
                 str += '<div class="divide_discussion">';
-                str += '<hr><h4>'+obj.format_month+'</h4>';
+                str += '<hr><h4>' + obj.format_month + '</h4>';
                 str += '</div>';
                 str += '<div class="clearfix"></div>';
-                t = 0; 
-                $.each(obj.result.my_topic, function(index, list) {
+                t = 0;
+                $.each(obj.result.my_topic, function (index, list) {
                     str += '<div class="topic_allocated">';
-                    if(t == 0) {
+                    if (t == 0) {
                         str += '<h4 class="activity_heading">Topic Allocated</h4>';
                     }
                     str += '<div class="topic_div">';
-                    str += '<h4>'+list.topic_name+'</h4>';
+                    str += '<h4>' + list.topic_name + '</h4>';
                     str += '<div>';
                     str += '<div><strong>Discussion</strong><p>29 Comments</p></div>';
                     str += '<div><strong>Examination - Quiz</strong><p>Score :  215</p></div>';
@@ -761,111 +760,111 @@ if ("WebSocket" in window)
                     t++;
                 });
                 s = 0;
-                $.each(obj.result.my_studymate, function(index, list) {
+                $.each(obj.result.my_studymate, function (index, list) {
                     str += '<div class="studymate_with">';
-                    if(s == 0) {
+                    if (s == 0) {
                         str += '<h4 class="activity_heading">Became studymate with</h4>';
                     }
-                    str += '<span class="date">'+list.created_date+'</span>';
+                    str += '<span class="date">' + list.created_date + '</span>';
                     str += '<div class="study_mate">';
                     str += '<div class="mate_user_img">';
-                    str += '<img src="uploads/'+list.profile_link+'" class="mCS_img_loaded" onerror="this.src=\'assets/images/avatar.png\'">';
+                    str += '<img src="uploads/' + list.profile_link + '" class="mCS_img_loaded" onerror="this.src=\'assets/images/avatar.png\'">';
                     str += '</div>';
-                    str += '<h4>'+list.full_name+'</h4>';
-                    str += '<p>'+list.school_name+'</p>';
-                    str += '<p class="txt_grey">'+list.course_name+'</p>';
+                    str += '<h4>' + list.full_name + '</h4>';
+                    str += '<p>' + list.school_name + '</p>';
+                    str += '<p class="txt_grey">' + list.course_name + '</p>';
                     str += '</div>';
                     str += '</div>';
                     s++;
                 });
-                $.each(obj.result.my_like, function(index, list) {
+                $.each(obj.result.my_like, function (index, list) {
                     str += '<div class="status_like">';
-                    str += '<h4 class="activity_heading">Liked status of <span class="txt_green">'+list.post_username+'</span></h4>';
+                    str += '<h4 class="activity_heading">Liked status of <span class="txt_green">' + list.post_username + '</span></h4>';
                     str += '<div class="feed_text">                                               ';
-                    str += '<p>'+list.feed_text+'</p>';
+                    str += '<p>' + list.feed_text + '</p>';
                     str += '</div>';
                     str += '<div class="clearfix"></div>';
                     str += '</div>';
                 });
                 // display my comment
-                $.each(obj.result.my_comment, function(index, list) {
-                str += '<div class="commented_on">';
-                str += '<h4 class="activity_heading">Commented on</h4>';
-                str += '<div class="feeds">';
-                str += '<div class="user_small_img">';
-                str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+list.profile_link+'">';
-                str += '</div>';
-                str += '<div class="feed_text">';
-                str += '<h4>'+list.full_name+'</h4>';
-                str += '<span class="date">'+list.created_date+'</span>'
-                str += '<div class="clearfix"></div>';
-                str += '<p>'+list.feed_text+'</p>';
-                
-                if(list.image_link != '' && list.image_link != null){
-                    str += '<div class="shared_images">';
-                    str += '<div><img src="uploads/'+list.image_link+'"></div>';
+                $.each(obj.result.my_comment, function (index, list) {
+                    str += '<div class="commented_on">';
+                    str += '<h4 class="activity_heading">Commented on</h4>';
+                    str += '<div class="feeds">';
+                    str += '<div class="user_small_img">';
+                    str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + list.profile_link + '">';
                     str += '</div>';
-                }
-                str += '<div class="clearfix"></div>';
+                    str += '<div class="feed_text">';
+                    str += '<h4>' + list.full_name + '</h4>';
+                    str += '<span class="date">' + list.created_date + '</span>'
+                    str += '<div class="clearfix"></div>';
+                    str += '<p>' + list.feed_text + '</p>';
 
-                if(list.totcomment > 1){
-                    str += '<a href="javascript:void(0);" data-type="view-all-comment-activities" data-id="'+list.id+'">View All</a>';
-                }
-                str += '</div>';
-                str += '<div class="clearfix"></div>';
-                str += '<div class="comment" data-id="'+list.id+'">';
-                str += '<div class="user_small_img user_comment">';
-                str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/'+obj.profile_link+'">';
-                str += '</div>';
-                str += '<div class="notification_txt">';
-                str += '<p><a href="javascript:void(0);" class="noti_username">'+obj.full_name+'</a>&nbsp;'+list.comment+'</p>';
-                str += '<span class="noti_time">'+list.comment_date+'</span>';
-                str += '</div>';
-                str += '<div class="clearfix"></div>';
-                str += '</div>';
-                str += '</div>';
-                str += '</div>';
-            });
-                p = 0;
-                $.each(obj.result.my_post, function(index, list) {
-                str += '<div class="status_like">';
-                if(p==0){
-                str += '<h4 class="activity_heading">Status updated</h4>';
-                }
-                str += '<span class="date">'+list.created_date+'</span>';
-                str += '<div class="feed_text">                                               ';
-                str += '<p>'+list.feed_text+'</p>';
-                if(list.image_link != '' && list.image_link != null){
-                    str += '<div class="shared_images">';
-                    str += '<div><img src="uploads/'+list.image_link+'"></div>';
+                    if (list.image_link != '' && list.image_link != null) {
+                        str += '<div class="shared_images">';
+                        str += '<div><img src="uploads/' + list.image_link + '"></div>';
+                        str += '</div>';
+                    }
+                    str += '<div class="clearfix"></div>';
+
+                    if (list.totcomment > 1) {
+                        str += '<a href="javascript:void(0);" data-type="view-all-comment-activities" data-id="' + list.id + '">View All</a>';
+                    }
                     str += '</div>';
-                }
-                str += '</div>';
-                str += '</div>';
-                p++;
-            });
+                    str += '<div class="clearfix"></div>';
+                    str += '<div class="comment" data-id="' + list.id + '">';
+                    str += '<div class="user_small_img user_comment">';
+                    str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '">';
+                    str += '</div>';
+                    str += '<div class="notification_txt">';
+                    str += '<p><a href="javascript:void(0);" class="noti_username">' + obj.full_name + '</a>&nbsp;' + list.comment + '</p>';
+                    str += '<span class="noti_time">' + list.comment_date + '</span>';
+                    str += '</div>';
+                    str += '<div class="clearfix"></div>';
+                    str += '</div>';
+                    str += '</div>';
+                    str += '</div>';
+                });
+                p = 0;
+                $.each(obj.result.my_post, function (index, list) {
+                    str += '<div class="status_like">';
+                    if (p == 0) {
+                        str += '<h4 class="activity_heading">Status updated</h4>';
+                    }
+                    str += '<span class="date">' + list.created_date + '</span>';
+                    str += '<div class="feed_text">                                               ';
+                    str += '<p>' + list.feed_text + '</p>';
+                    if (list.image_link != '' && list.image_link != null) {
+                        str += '<div class="shared_images">';
+                        str += '<div><img src="uploads/' + list.image_link + '"></div>';
+                        str += '</div>';
+                    }
+                    str += '</div>';
+                    str += '</div>';
+                    p++;
+                });
                 $('div[data-type="activity-main"] div[data-type="activity-sub-main"] div[data-type="activity"] div[data-type="activity-body"] div[data-type="activity-sub-body"]').append(str);
-                $('a[data-type="load-activity-more"]').attr('data-month',obj.new_month);
-           }
-           else{
+                $('a[data-type="load-activity-more"]').attr('data-month', obj.new_month);
+            }
+            else {
                 $('div[data-type="no-more"]').html('<lable class="txt_grey txt_red">No more activities</label>');
-                $('a[data-type="load-activity-more"]').attr('value','No more activities');
-           }
-        } 
-        else if(obj.type == "show_profile"){
+                $('a[data-type="load-activity-more"]').attr('value', 'No more activities');
+            }
+        }
+        else if (obj.type == "show_profile") {
             $('#view_profile_model div[data-type="profile_pic"]').html('<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.result.profile_link + '">');
             $('#view_profile_model h3[data-type="user-name"]').html(obj.result.full_name);
             $('#view_profile_model p[data-type="course-name"]').html('<span class="fa fa-graduation-cap"></span>' + obj.result.course_name);
-            if(obj.result.birthdate == null)
+            if (obj.result.birthdate == null)
                 bdate = '-';
             else
                 bdate = obj.result.birthdate;
 
             $('#view_profile_model p[data-type="birth"]').html('<span class="fa fa-birthday-cake"></span>' + bdate);
             $('#view_profile_model p[data-type="school"]').html('<span class="fa fa-university"></span>' + obj.result.school_name);
-            $('#view_profile_model p[data-type="email"]').html('<span class="fa fa glyphicon glyphicon-envelope"></span><i>' + obj.result.email_id+'</i>');
-            
-           
+            $('#view_profile_model p[data-type="email"]').html('<span class="fa fa glyphicon glyphicon-envelope"></span><i>' + obj.result.email_id + '</i>');
+
+
             $('#view_profile_model').modal('show');
         }
         else {
@@ -1394,11 +1393,11 @@ $(document).on('click', 'button[data-type="question_responce"]', function () {
     $('button[data-type="clear_responce"]').attr('disabled', 'disabled');
     $('button[data-type="question_responce"]').attr('disabled', 'disabled');
     exam_choice = $(".ans_options label input[name='option']:checked").data('id');
-    
-    if(exam_choice == 'undefined' || exam_choice == '' || exam_choice == null){
+
+    if (exam_choice == 'undefined' || exam_choice == '' || exam_choice == null) {
         exam_choice = 0;
     }
-    
+
     var question_id = $(this).attr('data-id');
     var next_question = 0;
     var next_question_no = 0;
@@ -1565,3 +1564,15 @@ $(document).on('click', 'img[data-type="show-profile"],h4[data-type="show-profil
     }
     ws.send(JSON.stringify(request));
 });
+
+function saveImg(image) {
+    var arr = image.split(',');
+    var request = {
+        type: 'topic_file',
+        name: 'whiteboard_img.png',
+        data_type: 'image/png',
+        data: arr[1],
+        to: 'topic'
+    }
+    ws.send(JSON.stringify(request));
+}

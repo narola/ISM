@@ -360,7 +360,6 @@ function toHHMMSS (sec) {
                     <div class="stm_list mCustomScrollbar" data-mcs-theme="minimal-dark">
                         <?php
                         $class = studymates_info();
-                       // p($classmates,true);
                         if(isset($class) > 0){
                             foreach($class as $key => $value){
                                 $u = 'offline';

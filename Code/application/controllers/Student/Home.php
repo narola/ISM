@@ -153,10 +153,13 @@ class Home extends ISM_Controller {
 			}
 
 
-			if(!studymates($user_id,false) > 0 )
+		/*	if(!studymates($user_id,false) > 0 )
 				$studymates = array('');
 			else
-				$studymates = studymates($user_id,false);
+				*/
+		}
+
+		$studymates = studymates($user_id,false);
 
 	 		// Get Classmates details
 			$where = array('where_in' => array('u.id' =>  $studymates));
@@ -168,8 +171,6 @@ class Home extends ISM_Controller {
 				),
 			);
 			$data['classmates'] = select(TBL_USERS.' u', 'u.id,u.full_name,upp.profile_link,  (SELECT count(*) FROM `user_chat` `uc` WHERE `uc`.`sender_id` = `u`.`id` AND `uc`.`receiver_id` = '.$user_id.' AND `uc`.`received_status` = 0) as `unread_msg`',$where,$options);
-		}
-
 		/* Get all online users */
         
         $data['online'] = online();
@@ -261,7 +262,7 @@ class Home extends ISM_Controller {
 						'limit' => 3
 					);
 		$data['my_latest_notice'] = select(TBL_NOTICEBOARD_VIEWER.' v','n.notice_title,notice',$where,$option);
-		
+		//p($data,true);
 		$this->template->load('student/default','student/home_view',$data);
 	}
 

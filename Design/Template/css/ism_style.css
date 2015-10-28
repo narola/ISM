@@ -3702,22 +3702,50 @@ a.expand_ques + .row{
 	background-image:url(../images/about_header.png);
 	background-repeat:no-repeat;
 	background-position:center top;
-	min-height:500px;
+	/*min-height:500px;*/
 }
+.about_us_header:after{
+	content:"";
+	position:absolute;
+	border-right:15px solid transparent;
+	border-left:15px solid transparent;
+	border-top:15px dotted #233244;
+	bottom:-15px;
+	left:49%;
+}
+
 .about_us_header h1{
 	margin-top:300px;
+    margin-bottom: 25px;
 }
 .about_us_header p {
     font-size: 22px;
     margin: 0;
     font-weight: 500;
 }
-.btn_about_header{
-	
-}
 .btn_back {
     margin-top: 15px;
 }
 .btn_back .fa{
 	margin-right:5px;
+}
+.btn_about_header {
+    border: 2px solid #1bc4a3;
+    background-color: transparent;
+    color: #1bc4a3;
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 40px;
+    border-radius: 6px;
+    padding: 15px 80px;
+	transition:all ease .5s;
+	margin-bottom:20px;
+	outline:none;
+}
+.btn_about_header:hover{
+	color:#333;
+	background-color:#1bc4a3;
+}
+.btn_about_header:focus, .btn_about_header:active:focus{
+	outline:none;
 }

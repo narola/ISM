@@ -237,10 +237,11 @@
     </div>
 
     <!--//feed box-->
-    
+    <?php if(isset($feed) && count($feed) >= 4){ ?>
     <div class="box text-center load_more mate_descrip">
         <button href="javascript:void(0);" data-type="load_more" data-start="4" class="btn btn_green no-margin">Load More</button>
     </div>
+    <?php } ?>
 	</div>
 </div>
 <!--//main-->
@@ -509,7 +510,7 @@
         </div>
         <div class="stm_list mCustomScrollbar" data-mcs-theme="minimal-dark">
             <?php
-            if(isset($classmates) > 0){
+            if(isset($my_studymates) > 0){
                 foreach($classmates as $key => $value){
                     $u = 'offline';
                     if(in_array($value['id'], $online)){
