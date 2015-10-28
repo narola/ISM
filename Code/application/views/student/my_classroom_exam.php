@@ -83,7 +83,7 @@
                             foreach ($my_exam as $exam_value) {
                                 if($exam_value['subject_id'] == $value['subject_id']){
                                     $is_running_cls = '';
-                                    if($exam_value['exam_status'] == 'started'){
+                                    if($exam_value['exam_status'] == 'started' && $exam_value['remaining_time'] > 0){
                                         $is_running_cls = '<img src="assets/images/clock.GIF">&nbsp;';
                                     }
 
