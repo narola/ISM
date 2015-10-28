@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.adapter.Adapters;
-import com.ism.model.CredentialsRequest;
 import com.ism.model.Data;
 import com.ism.model.GetCitiesRequest;
 import com.ism.model.GetStatesRequest;
@@ -260,9 +259,18 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	public void onClickSubmit(View view) {
 		if (Utility.isOnline(ProfileInformationActivity.this)) {
-			if (isInputsValid()) {
+
+			PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, Global.userId = "374");
+			PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, ProfileInformationActivity.this, Global.fullName = "Krunal Panchal");
+			PreferenceData.setStringPrefs(PreferenceData.PROFILE_PIC, ProfileInformationActivity.this, "user_374/logo_test.png");
+
+			Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
+			startActivity(intentWelcome);
+			finish();
+
+			/*if (isInputsValid()) {
 				callApiRegisterUser();
-			}
+			}*/
 		} else {
 			Utility.toastOffline(ProfileInformationActivity.this);
 		}
@@ -640,8 +648,8 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
 					Log.e(TAG, "register successfull");
 
-					PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, responseObj.getData().get(0).getUserId());
-					PreferenceData.setStringPrefs(PreferenceData.USER_NAME, ProfileInformationActivity.this, responseObj.getData().get(0).getUserName());
+					PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, Global.userId = responseObj.getData().get(0).getUserId());
+					PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, ProfileInformationActivity.this, Global.fullName = responseObj.getData().get(0).getFullName());
 					PreferenceData.setStringPrefs(PreferenceData.PROFILE_PIC, ProfileInformationActivity.this, responseObj.getData().get(0).getProfilePic());
 
 					Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);

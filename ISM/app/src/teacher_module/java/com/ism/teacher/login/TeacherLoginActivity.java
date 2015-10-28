@@ -12,15 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.R;
-import com.ism.login.Global;
-import com.ism.teacher.model.LoginRequest;
-
-import com.ism.teacher.model.ResponseObject;
 import com.ism.object.MyTypeFace;
-
 import com.ism.teacher.helper.ConnectionDetector;
+import com.ism.teacher.model.LoginRequest;
+import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.ws.WebserviceWrapper;
 import com.ism.utility.InputValidator;
+import com.ism.utility.Utility;
 
 
 /**
@@ -93,7 +91,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
                 }
 
 
-                //Global.myIntent(this, com.ism.teacher.login.TeacherProfileInformation.class);
+                //Global.launchIntent(this, com.ism.teacher.login.TeacherProfileInformation.class);
             }
 //            else if(!inputValidator.validateStringPresence(etTeacherUserid))
 //            {
@@ -133,7 +131,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
         Log.e(TAG, ((ResponseObject) object).getMessage());
         if (responseObj.getStatus().equalsIgnoreCase("success")) {
             Toast.makeText(TeacherLoginActivity.this, "Login Successful!!!", Toast.LENGTH_SHORT).show();
-            Global.myIntent(this, com.ism.teacher.login.TeacherProfileInformation.class);
+            Utility.launchIntent(this, com.ism.teacher.login.TeacherProfileInformation.class);
         } else {
             Toast.makeText(TeacherLoginActivity.this, "Please enter valid username and password", Toast.LENGTH_SHORT).show();
         }

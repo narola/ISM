@@ -9,7 +9,7 @@ public class PreferenceData {
 
 	public static final String IS_REMEMBER_ME = "isRememberMe";
 	public static final String USER_ID = "userId";
-	public static final String USER_NAME = "userName";
+	public static final String FULL_NAME = "fullName";
 	public static final String PROFILE_PIC = "profilePic";
 
 	public static void setBooleanPrefs(String prefKey, Context context, boolean value) {

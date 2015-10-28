@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.json.*;
 
+import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -30,6 +31,9 @@ public class Data {
     private String cityName;
     private String profilePic;
     private String schoolType;
+    private String fullName;
+
+	private ArrayList<TutorialGroupMembers> tutorialGroupMembers;
 
 	@Override
 	public String toString() {
@@ -200,5 +204,23 @@ public class Data {
 
 	public void setSchoolType(String schoolType) {
 		this.schoolType = schoolType;
+	}
+
+	@JsonProperty("full_name")
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	@JsonProperty("tutorial_group_members")
+	public ArrayList<TutorialGroupMembers> getTutorialGroupMembers() {
+		return this.tutorialGroupMembers;
+	}
+
+	public void setTutorialGroupMembers(ArrayList<TutorialGroupMembers> tutorialGroupMembers) {
+		this.tutorialGroupMembers = tutorialGroupMembers;
 	}
 }

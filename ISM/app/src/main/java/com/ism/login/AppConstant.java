@@ -46,14 +46,15 @@ public class AppConstant {
 	private static final String URL_HOST_75 = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
 	private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";
 	private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
-	public static final String URL_LOGIN = URL_HOST_161 + "AuthenticateUser";
+	public static final String URL_LOGIN = URL_HOST_162 + "AuthenticateUser";
 	public static final String URL_FORGOT_PASSWORD = URL_HOST_162 + "ForgotPassword";
 	public static final String URL_REQUEST_CREDENTIALS = URL_HOST_162 + "RequestForCredentials";
-	public static final String URL_REQUEST_SCHOOL_INFO = URL_HOST_161 + "RequestForSchoolInfoUpdation";
+	public static final String URL_REQUEST_SCHOOL_INFO = URL_HOST_162 + "RequestForSchoolInfoUpdation";
 	public static final String URL_GET_COUNTRIES = URL_HOST_161 + "GetCountries";
 	public static final String URL_GET_STATES = URL_HOST_161 + "GetStates";
 	public static final String URL_GET_CITIES = URL_HOST_161 + "GetCities";
 	public static final String URL_REGISTER_USER = URL_HOST_162 + "RegisterUser";
+	public static final String URL_ALLOCATE_TUTORIAL_GROUP = URL_HOST_161 + "AllocateTutorialGroup";
 
     /**
      * Hide Keyboard

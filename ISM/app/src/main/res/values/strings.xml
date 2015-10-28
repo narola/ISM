@@ -99,11 +99,7 @@
 
 
 	<!--welcome-->
-	<string name="strwelcomeline"><b>John,</b> Your tutorial group being processed \n and will be available to you for confirmation </string>
-	<string name="strtutorialgroupis5">Tutorial group is 5 members group of randomly \n selected students, put together to <font color="#81D525">share ideas,</font>\n<font color="#81D525">collaborate</font> and <font color="#81D525">do assignments.</font></string>
-
-
-
+	<string name="welcome_msg">Your tutorial group being processed \n and will be available to you for confirmation </string>
 
 	<!--Tutorial group-->
 	<string name="striacceptedgroup">I ACCEPT GROUP</string>
@@ -182,9 +178,6 @@
 	<string name="first_name">First Name</string>
 	<string name="android">Android</string>
 
-
-
-
 	<string name="gotrending">Go Trending</string>
 	<string name="setquiz">Set Quiz</string>
 	<string name="settrial">Set Trial</string>
@@ -205,4 +198,6 @@
 	<string name="gender">Gender</string>
 	<string name="male">Male</string>
 	<string name="female">Female</string>
+	<string name="tutorial_group_description"><![CDATA[Tutorial group is 5 members group of randomly<br>selected students, put together to <font color=\'#81D525\'>share ideas,</font><br><font color=\'#CC89EA\'>collaborate</font> and <font color=\'#F5A438\'>do assignments.</font>]]></string>
+	<string name="msg_offline">You are offline!\nPlease check your internet connection.</string>
 </resources>

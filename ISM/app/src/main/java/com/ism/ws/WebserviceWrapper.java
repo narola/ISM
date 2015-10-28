@@ -26,6 +26,7 @@ public class WebserviceWrapper {
 	public static final int GET_CITIES = 6;
 	public static final int REGISTER_USER = 7;
 	public static final int REQUEST_SCHOOL_INFO = 8;
+	public static final int ALLOCATE_TUTORIAL_GROUP = 9;
 
 	public interface WebserviceResponse {
 		public void onResponse(Object object, Exception error, int apiCode);
@@ -74,6 +75,9 @@ public class WebserviceWrapper {
 						break;
 					case REQUEST_SCHOOL_INFO:
 						responseObject = new RequestWs().getRequest(AppConstant.URL_REQUEST_SCHOOL_INFO, ResponseObject.class, requestObject);
+						break;
+					case ALLOCATE_TUTORIAL_GROUP:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_ALLOCATE_TUTORIAL_GROUP, ResponseObject.class, requestObject);
 						break;
 				}
 			} catch (Exception e) {

@@ -20,6 +20,7 @@ import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
+import com.ism.utility.Utility;
 
 
 /**
@@ -88,19 +89,19 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 //            if (chk_rememberme.isChecked()) {
 //
 //                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, true);
-//                PreferenceData.setStringPrefs(PreferenceData.USER_NAME, AuthorLoginActivity.this, etUserid.getText().toString().trim());
+//                PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, AuthorLoginActivity.this, etUserid.getText().toString().trim());
 ////                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, etPwd.getText().toString().trim());
 //
 //            } else {
 //                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, false);
-//                PreferenceData.setStringPrefs(PreferenceData.USER_NAME, AuthorLoginActivity.this, "");
+//                PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, AuthorLoginActivity.this, "");
 ////                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, "");
 //            }
 //            authenticateUser();
 //
 //        }
 
-        Global.myIntent(AuthorLoginActivity.this, AuthorProfileInformationActivity.class);
+        Utility.launchIntent(AuthorLoginActivity.this, AuthorProfileInformationActivity.class);
     }
 
     public void onClickForgotPassword(View view) {
@@ -141,7 +142,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this)) {
 
             chk_rememberme.setChecked(true);
-            etUserid.setText(PreferenceData.getStringPrefs(PreferenceData.USER_NAME, AuthorLoginActivity.this));
+            etUserid.setText(PreferenceData.getStringPrefs(PreferenceData.FULL_NAME, AuthorLoginActivity.this));
 //            etPwd.setText(PreferenceData.getStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this));
 
         }
@@ -161,7 +162,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                 if (apiMethodName == WebserviceWrapper.LOGIN) {
 
 //                    PreferenceData.setBooleanPrefs(PreferenceData.IS_LOGGED_IN, AuthorLoginActivity.this, true);
-                    Global.myIntent(AuthorLoginActivity.this, AuthorProfileInformationActivity.class);
+                    Utility.launchIntent(AuthorLoginActivity.this, AuthorProfileInformationActivity.class);
 
                     Toast.makeText(AuthorLoginActivity.this, getString(R.string.strloginsuccess),
                             Toast.LENGTH_LONG).show();

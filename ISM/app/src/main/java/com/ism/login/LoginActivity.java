@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -517,8 +516,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 			} else {
 				Log.e(TAG, "registered user login");
-				PreferenceData.setStringPrefs(PreferenceData.USER_ID, LoginActivity.this, responseObj.getData().get(0).getUserId());
-				PreferenceData.setStringPrefs(PreferenceData.USER_NAME, LoginActivity.this, responseObj.getData().get(0).getUserName());
+				PreferenceData.setStringPrefs(PreferenceData.USER_ID, LoginActivity.this, Global.userId = responseObj.getData().get(0).getUserId());
+				PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, LoginActivity.this, Global.fullName = responseObj.getData().get(0).getFullName());
 
 				Intent intentRegister = new Intent(LoginActivity.this, HostActivity.class);
 				startActivity(intentRegister);
