@@ -14,6 +14,7 @@ class Topic extends ADMIN_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->library('pagination');
 	}
 
 	/**
@@ -21,7 +22,7 @@ class Topic extends ADMIN_Controller {
 	*/
 	public function lists(){
 
-		$this->load->library('pagination');
+		
 		$role = $this->input->get('role');
 		$subject  = $this->input->get('subject');
 		$q  = $this->input->get('q');
@@ -160,13 +161,88 @@ class Topic extends ADMIN_Controller {
 		if(!empty($allocated_group_ids)){
 			$where['where_not_in'] = array(TBL_TUTORIAL_GROUPS.'.id' => $allocated_group_ids);
 		}
+		if($unallocated != null){
+		$config['base_url'] = base_url() . 'admin/topic/allocate/'.$unallocated;
+	}else{
+		$config['base_url'] = base_url() . 'admin/topic/allocate';
+	}
+		$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
+        $offset = $this->input->get('per_page');
+		$config['uri_segment'] = 4;
+        $config['num_links'] = 5;
+        $config['total_rows'] = count(
+        	select(TBL_TUTORIAL_GROUPS,
+												TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
+												TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
+												TBL_COURSES.'.id as course_id,'.TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name',
+												$where,
+												array(
+													'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
+													'join' =>  array(
+												    			array(
+												    				'table' => TBL_TUTORIAL_GROUP_MEMBER,
+												    				'condition' => TBL_TUTORIAL_GROUPS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.group_id',
+												    				'join'=>'right'
+												    				),
+												    			array(
+												    				'table' => TBL_USERS,
+												    				'condition' => TBL_USERS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
+												    				),
+												    			array(
+												    				'table' => TBL_STUDENT_ACADEMIC_INFO,
+												    				'condition' => TBL_USERS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.user_id',
+												    				),
+												    			array(
+												    				'table' => TBL_COURSES,
+												    				'condition' => TBL_COURSES.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.course_id',
+												    				),
+												    			array(
+												    				'table' => TBL_SCHOOLS,
+												    				'condition' => TBL_SCHOOLS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.school_id',
+												    				),
+												    			array(
+												    				'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
+												    				'condition' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.group_id = '.TBL_TUTORIAL_GROUPS.'.id',
+												    				),
+												    			)
+													)
+												)
 
+        	);
+        $config['per_page'] = 1;
+
+        $config['full_tag_open'] = '<ul class="pagination pagination_admin">';
+        $config['full_tag_close'] = '</ul>';
+
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+
+        $config['first_link'] = 'First';
+        $config['first_tag_open'] = '<li>';
+        $config['first_tag_close'] = '</li>';
+
+        $config['cur_tag_open'] = '<li style="display:none"></li><li class="active"><a>';
+        $config['cur_tag_close'] = '</a></li><li style="display:none"></li>';
+
+        $config['prev_link'] = '&laquo;';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+
+        $config['next_link'] = '&raquo;';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+
+        $config['last_link'] = 'Last';
+        $config['last_tag_open'] = '<li>';
+        $config['last_tag_close'] = '</li>';
 			$unallocated_groups = select(TBL_TUTORIAL_GROUPS,
 												TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
 												TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
 												TBL_COURSES.'.id as course_id,'.TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name',
 												$where,
 												array(
+													'limit' => $config['per_page'],
+            'offset' => $offset,
 													'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
 													'join' =>  array(
 												    			array(

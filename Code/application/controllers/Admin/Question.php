@@ -240,6 +240,7 @@ class Question extends ADMIN_Controller {
 		$error_count = 0;
 
 		if($_POST){
+			// p($_POST);
 			$choices = $this->input->post('choices');
 			foreach($choices as $choice){
 				if($choice == ''){
@@ -250,7 +251,7 @@ class Question extends ADMIN_Controller {
 		}
 
 		if($this->form_validation->run() == FALSE){
-
+			// p($this->data,true);
 			$this->template->load('admin/default','admin/question/add',$this->data);
 		
 		}else{
