@@ -3535,6 +3535,7 @@ ul.ques_numbers {
 	color:#1bc4a3;
 }
 .upload_loader{
+	display: none;
 	background-image: url(../images/spinner.gif);
     height: 24px;
     width: 24px;

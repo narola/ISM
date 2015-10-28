@@ -195,10 +195,13 @@ $(document).ready(function () {
 
     /* Validate length of selected file. */
     var handleFileSelect = function (evt) {
+
+
+
         var files = evt.target.files;
         var file = files[0];
         var user = $(this).data('id');
-        var type = $(this).data('type');
+        var types = $(this).data('type');
         var type_of_data = this.files[0].type;
         var file_name = this.files[0].name;
 
@@ -212,12 +215,26 @@ $(document).ready(function () {
                 reader.onload = function (readerEvt) {
                     var binaryString = readerEvt.target.result;
                     var request = {
-                        type: type,
+                        type: types,
                         name: file_name,
                         data_type: type_of_data,
                         data: btoa(binaryString),
                         to: user
                     }
+                    if ($('#feed_post').length > 0) {
+                        $('#feed_post').attr('readonly', 'readonly');
+                        $('button[data-type="post"]').attr('disabled', 'disabled');
+                    }
+
+                    if ($('textarea[data-type="discussion"]').length > 0) {
+                        $('textarea[data-type="discussion"]').attr('readonly', 'readonly');
+                        $('div[data-type="discussion-submit"] button').attr('disabled', 'disabled');
+                    }
+                    if ($('.upload_loader').length > 0) {
+                        $('.upload_loader').fadeIn(400);
+                    }
+
+
                     ws.send(JSON.stringify(request));
                 };
                 reader.readAsBinaryString(file);
@@ -269,6 +286,21 @@ if ("WebSocket" in window)
             setTimeout(function () {
                 location.reload();
             }, 3000);
+
+        }
+
+        if ($('.upload_loader').length > 0) {
+            $('.upload_loader').fadeOut(400);
+
+            if ($('#feed_post').length > 0) {
+                $('#feed_post').removeAttr('readonly');
+                $('button[data-type="post"]').removeAttr('disabled');
+            }
+
+            if ($('textarea[data-type="discussion"]').length > 0) {
+                $('textarea[data-type="discussion"]').removeAttr('readonly');
+                $('div[data-type="discussion-submit"] button').removeAttr('disabled');
+            }
 
         }
 

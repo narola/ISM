@@ -130,6 +130,7 @@
                             <button class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
                         </div>
                     	<textarea placeholder="SAY IT" data-type="discussion"></textarea>
+                        <div class="upload_loader" style="top:58px"></div>
                         <!-- <a href="#" class="icon icon_emoji"></a> -->
                                              
                     </div>
@@ -206,6 +207,8 @@
                     $('#wPaint').wPaint({
                       menuOffsetLeft: -35,
                       menuOffsetTop: -50,
+                      fillStyle: 'red',
+                      strokeStyle: 'blue',   
                       saveImg: saveImg,
                       loadImgBg: loadImgBg,
                       loadImgFg: loadImgFg
