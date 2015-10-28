@@ -1046,9 +1046,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .general_cred .add_exam_form input.form-control{
 	width:100%;	
 }
-.padding_r15_{
-	padding:0 15px 0 0;
-}
+
 .box_body .padding_r15_.select:after{
 	right:30px;
 }

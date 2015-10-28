@@ -352,7 +352,8 @@
         $('#my_select').select2();
         var blank_txt = "<span class='col-md-12 blank_error' style='color:red;'>Please Fill Existing Field.</span>";
 
-            var total_choice = $('#total_choices').val();
+        var total_choice = $('#total_choices').val();
+
         $('.component').on('click', function(){
             var firstText = $(this).prev('input').val();
             var last_val = $('.choice_wrapper div').last().find('.choice_detail').val();
@@ -377,7 +378,8 @@
         
         $('div.choice_wrapper').delegate('i.component_close', 'click', function(){
             $(this).parent().remove();
-            $('#total_choices').val(total_choice--);
+            total_choice = total_choice-1;
+            $('#total_choices').val(total_choice);
         });
 
         $(document).on('keyup','.choice_detail',function(){
