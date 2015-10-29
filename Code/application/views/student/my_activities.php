@@ -27,7 +27,8 @@
                                             <div class="topic_div">
                                                 <h4><?php echo $topic_allcated_value['topic_name'];?></h4>
                                                 <div>
-                                                    <div><strong>Discussion</strong><p>29 Comments</p></div>
+                                                    <div><strong>Discussion</strong><p><?php echo $topic_allcated_value['total_discussion'];?> Comments</p></div>
+                                                    <div><strong>Discussion - Score</strong><p>Score :  215</p></div>
                                                     <div><strong>Examination - Quiz</strong><p>Score :  215</p></div>
                                                 </div>
                                                 <div class="clearfix"></div>

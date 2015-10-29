@@ -42,10 +42,14 @@ class My_activities extends ISM_Controller {
 						array(
 							'table' => TBL_TOPICS.' t',
 							'condition' => 't.id = ga.topic_id'
+						),
+						array(
+							'table' => '(select count(*) as cnt,topic_id from '. TBL_TUTORIAL_GROUP_DISCUSSION.' td where is_delete = 0 group by topic_id) topic_count',
+							'condition' => 'topic_count.topic_id = t.id'
 						)
 					)
 				);
-		$select = 't.topic_name,ga.created_date';
+		$select = 't.topic_name,ga.created_date,topic_count.cnt as total_discussion';
 		$data['my_activities']['topic_allcated'] = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' ga',$select,$where,$option);
 
 		/*--------Get my studymates---------*/
