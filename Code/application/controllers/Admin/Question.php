@@ -139,7 +139,7 @@ class Question extends ADMIN_Controller {
 			}
 
 			if(!empty($_GET['per_page'])){
-				$str .= '&per_page='.$_GET['per_page']; 
+				//$str .= '&per_page='.$_GET['per_page']; 
 			}
 
 			$str =  trim($str,'&');
@@ -875,7 +875,15 @@ class Question extends ADMIN_Controller {
 	public function delete_question($id){
 		//$id=$this->input->post('id');
 		delete(TBL_EXAM_QUESTION,$id);
-		redirect($this->data['prev_url']);
+		qry();
+		// p($this->data['prev_url'],true);
+		$prev_url = $this->data['prev_url'];
+		if(!empty($prev_url)){
+			$redirect_to = $prev_url;
+		}else{
+			$redirect_to = 'admin/question/set';
+		}
+		redirect($redirect_to);
 	}
 
 }
