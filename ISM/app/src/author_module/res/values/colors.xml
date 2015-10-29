@@ -37,6 +37,7 @@
     <color name="fragment_background_color">#F5F5F5</color>
     <color name="btn_save">#26AF61</color>
     <color name="btn_cancel">#3C4650</color>
+    <color name="color_blue">#41B1E3</color>
 
 
 </resources>

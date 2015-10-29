@@ -25,6 +25,7 @@
 
 
     <dimen name="d1dp">1dp</dimen>
+    <dimen name="d3dp">3dp</dimen>
     <dimen name="d5dp">5dp</dimen>
     <dimen name="d10dp">10dp</dimen>
     <dimen name="d15dp">15dp</dimen>
@@ -69,6 +70,7 @@
     <dimen name="circular_imageview_border_width">1dp</dimen>
     <dimen name="dp_post_creater_image_width_height">160dp</dimen>
     <dimen name="office_tab_width">315dp</dimen>
+    <dimen name="rich_text_editor_height">450dp</dimen>
 
 
 </resources>

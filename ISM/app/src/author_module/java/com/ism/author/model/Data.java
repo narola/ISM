@@ -50,6 +50,22 @@ public class Data {
     private String comment;
     private String profileLink;
 
+    /*these are for the getAllClassrooms*/
+
+    private String className;
+    private String classNickname;
+
+    /*these are for the getSubjects*/
+
+    private String subjectImage;
+    private String subjectName;
+
+     /*these are for the getTopics*/
+
+    private String topicName;
+    private String subjectId;
+    private String topicDescription;
+
 
     /*these methods are for login response*/
     @JsonProperty("school_name")
@@ -280,5 +296,75 @@ public class Data {
         this.profileLink = profileLink;
     }
 
+
+      /*these are for the getAllClassrooms*/
+
+    @JsonProperty("class_name")
+    public String getClassName() {
+        return this.className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    @JsonProperty("class_nickname")
+    public String getClassNickname() {
+        return this.classNickname;
+    }
+
+    public void setClassNickname(String classNickname) {
+        this.classNickname = classNickname;
+    }
+
+      /*these are for the getSubjects*/
+
+    @JsonProperty("subject_image")
+    public String getSubjectImage() {
+        return this.subjectImage;
+    }
+
+    public void setSubjectImage(String subjectImage) {
+        this.subjectImage = subjectImage;
+    }
+
+    @JsonProperty("subject_name")
+    public String getSubjectName() {
+        return this.subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+
+    /*these are for the getTopics*/
+
+    @JsonProperty("topic_name")
+    public String getTopicName() {
+        return this.topicName;
+    }
+
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
+    }
+
+    @JsonProperty("subject_id")
+    public String getSubjectId() {
+        return this.subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    @JsonProperty("topic_description")
+    public String getTopicDescription() {
+        return this.topicDescription;
+    }
+
+    public void setTopicDescription(String topicDescription) {
+        this.topicDescription = topicDescription;
+    }
 
 }
