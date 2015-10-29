@@ -262,7 +262,7 @@ class Dashboard extends ADMIN_Controller {
  				}
 			} // End Of For Loop	
 
-			$filename=$school_name['school_name'].'.xls'; //save our workbook as this file name
+			$filename=$school_name['school_name'].'-'.$class_name['class_name'].'.xls'; //save our workbook as this file name
 			
 			header('Content-Type: application/vnd.ms-excel'); //mime type
             header('Content-Disposition: attachment;filename="' . $filename . '"'); //tell browser what's the file name

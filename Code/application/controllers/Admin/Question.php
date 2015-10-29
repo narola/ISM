@@ -82,6 +82,8 @@ class Question extends ADMIN_Controller {
 				
 				$this->data['exam_questions'] = $exam_questions;
 
+				p($exam_questions,true);
+
 			}
 
 			if( !empty($_GET['course_id']) ) { 
@@ -289,9 +291,7 @@ class Question extends ADMIN_Controller {
 			$eid = $_GET['exam_id'];
 			$get_exam_data = select(TBL_EXAMS,FALSE,array('where'=>array('id'=>$eid)));
 
-			p($get_exam_data);
-			die();
-			if(empty($eid)){
+			if(empty($get_exam_data)){
 				show_404();
 			}
 		}
@@ -403,12 +403,12 @@ class Question extends ADMIN_Controller {
 
 				$eid = $_GET['exam_id'];
 
-				$data = array(
+				$data_exam_question = array(
 					'exam_id'=>$eid,
 					'question_id'=>$question_id
 				);
 
-				insert(TBL_EXAM_QUESTION,$data);
+				insert(TBL_EXAM_QUESTION,$data_exam_question);
 			}
 
 				
@@ -444,6 +444,11 @@ class Question extends ADMIN_Controller {
 
 			$button_type = $this->input->post('button_type');
 			
+			if(!empty($_GET['exam_id'])){
+				$eid = $_GET['exam_id'];
+				redirect('admin/question/set?exam_id='.$eid);
+			}	
+
 			$this->session->set_flashdata('success', 'Question has been saved Successfully.');
 
 			if($button_type == 'save'){
@@ -872,7 +877,7 @@ class Question extends ADMIN_Controller {
 	public function delete_question($id){
 		//$id=$this->input->post('id');
 		delete(TBL_EXAM_QUESTION,$id);
-		echo '1';
+		redirect($this->data['prev_url']);
 	}
 
 }

@@ -83,7 +83,7 @@
                         	<h4>Question Bank</h4>
                         </div>
                         <div class="question_list">
-
+                            
                             <?php if(!empty($questions)){
                                 
                                 $i=1;
@@ -297,6 +297,8 @@
             
             if(confirmed){
                 
+                window.location.href=href;
+
                 $.ajax({
                     url:href,
                     type:"post",
