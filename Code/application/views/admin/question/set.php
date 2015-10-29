@@ -9,7 +9,7 @@
                 </ol>                 
             </div>
 			<div class="col-sm-4 text-right padding_t10">
-				<button class="btn btn_red">Add New Question</button>
+				<a  class="btn btn_red" onclick="add_new_redirect()"> Add New Question </a>
 			</div>
         </div>
         <!--//breadcrumb-->
@@ -105,8 +105,8 @@
                                 </div>
                                 <a class="fa fa-angle-double-down"></a>
                                 <div class="notice_action">                                            
-                                    <a href="#" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
-                                    <a href="#" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
+                                    <a href="<?php echo base_url().'admin/question/update/'.$question['id']; ?>" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
+                                    <a href="<?php echo base_url().'admin/question/copy/'.$question['id']; ?>" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
                                     <a href="#" class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
                                     <input type="checkbox" id="<?php echo 'check_'.$question['id']; ?>" 
                                     onchange="set_question(this.value)"
@@ -189,8 +189,8 @@
 
                                     <div class="notice_action">  
                                         <a href="#" class="icon icon_hand" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Move"></a>                                          
-                                        <a href="#" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
-                                        <a href="#" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
+                                        <a href="<?php echo base_url().'admin/question/update/'.$exam_que['exam_ques_id']; ?>" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
+                                        <a href="<?php echo base_url().'admin/question/copy/'.$exam_que['exam_ques_id']; ?>" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
                                         <a href="<?php echo base_url().'admin/question/delete_question/'.$exam_que['exam_ques_id']; ?> " onclick="delete_question(this.href,event,<?php echo $e_cnt; ?>)" 
                                 class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
                                         
@@ -217,6 +217,15 @@
     // $(document).ready(function() {
     //   $("select").select2();
     // });
+    
+    function add_new_redirect(){
+        var eid = $('#exam_id').val();
+        if(eid == ''){
+            window.location.href="<?php echo base_url().'admin/question/add'; ?>";
+        }else{
+            window.location.href="<?php echo base_url().'admin/question/add?exam_id='; ?>"+eid;        
+        }
+    }    
 
     // eid=Exam ID  qid=Question ID
     function fetch_question(eid){

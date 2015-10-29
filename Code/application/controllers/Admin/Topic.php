@@ -16,6 +16,8 @@ class Topic extends ADMIN_Controller {
 	{
 		parent::__construct();
 		$this->load->library('pagination');
+		$this->data['cur_url'] = $this->session->userdata('cur_url');
+		$this->data['prev_url'] = $this->session->userdata('prev_url');
 	}
 
 	/**
