@@ -1143,7 +1143,7 @@ class PHPWebSocket {
                     $feed_ids = implode(',', $feed_ids);
                     $query = 'SELECT `u`.`id`, `u`.`full_name`, `t`.`feed_id` FROM `' . TBL_FEEDS_TAGGED_USER . '` `t` '
                             . 'LEFT JOIN `' . TBL_USERS . '` `u` ON `u`.`id` = `t`.`user_id` '
-                            . 'WHERE `feed_id` IN(' . $feed_ids . ') `t`.`is_delete` = 0';
+                            . 'WHERE `feed_id` IN(' . $feed_ids . ') AND `t`.`is_delete` = 0';
                     $tag_row = mysqli_query($link, $query);
 
                     $query = 'SELECT `feed_id` AS `to`, `comment` AS `message`, `u`.`full_name`, `p`.`profile_link`, fc.created_date'
