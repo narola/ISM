@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.json.*;
-
 import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,8 +30,12 @@ public class Data {
     private String profilePic;
     private String schoolType;
     private String fullName;
+	private String tutorialGroupId;
+	private String tutorialGroupJoiningStatus;
+	private String tutorialGroupComplete;
+	private String tutorialGroupName;
 
-	private ArrayList<TutorialGroupMembers> tutorialGroupMembers;
+	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 
 	@Override
 	public String toString() {
@@ -215,12 +217,48 @@ public class Data {
 		this.fullName = fullName;
 	}
 
+	@JsonProperty("tutorial_group_id")
+	public String getTutorialGroupId() {
+		return tutorialGroupId;
+	}
+
+	public void setTutorialGroupId(String tutorialGroupId) {
+		this.tutorialGroupId = tutorialGroupId;
+	}
+
+	@JsonProperty("tutorial_group_joining_status")
+	public String getTutorialGroupJoiningStatus() {
+		return tutorialGroupJoiningStatus;
+	}
+
+	public void setTutorialGroupJoiningStatus(String tutorialGroupJoiningStatus) {
+		this.tutorialGroupJoiningStatus = tutorialGroupJoiningStatus;
+	}
+
+	@JsonProperty("tutorial_group_complete")
+	public String getTutorialGroupComplete() {
+		return tutorialGroupComplete;
+	}
+
+	public void setTutorialGroupComplete(String tutorialGroupComplete) {
+		this.tutorialGroupComplete = tutorialGroupComplete;
+	}
+
+	@JsonProperty("tutorial_group_name")
+	public String getTutorialGroupName() {
+		return tutorialGroupName;
+	}
+
+	public void setTutorialGroupName(String tutorialGroupName) {
+		this.tutorialGroupName = tutorialGroupName;
+	}
+
 	@JsonProperty("tutorial_group_members")
-	public ArrayList<TutorialGroupMembers> getTutorialGroupMembers() {
+	public ArrayList<TutorialGroupMember> getTutorialGroupMembers() {
 		return this.tutorialGroupMembers;
 	}
 
-	public void setTutorialGroupMembers(ArrayList<TutorialGroupMembers> tutorialGroupMembers) {
+	public void setTutorialGroupMembers(ArrayList<TutorialGroupMember> tutorialGroupMembers) {
 		this.tutorialGroupMembers = tutorialGroupMembers;
 	}
 }

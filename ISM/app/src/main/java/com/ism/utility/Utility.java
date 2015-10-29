@@ -115,7 +115,7 @@ public class Utility {
 	 * Krunal Panchal
 	 * Format date to pass in api.
 	 * @param date
-	 * @return
+	 * @return String : formatted date to pass in api.
 	 */
 	public static String formatDateApi(Date date) {
 		return DATE_FORMAT_API.format(date);
@@ -124,7 +124,7 @@ public class Utility {
 	/**
 	 * Format date to display in app.
 	 * @param date
-	 * @return
+	 * @return String : formatted date for display in app.
 	 */
 	public static String formatDateDisplay(Date date) {
 		return DATE_FORMAT_DISPLAY.format(date);

@@ -8,14 +8,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AllocateTutorialGroupRequest {
 	
-    private double userId;
+    private String userId;
 
-    public double getUserId() {
+    public String getUserId() {
         return this.userId;
     }
 
     @JsonProperty("user_id")
-    public void setUserId(double userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

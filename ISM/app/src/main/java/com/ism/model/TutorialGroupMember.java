@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TutorialGroupMembers {
+public class TutorialGroupMember {
 	
     private String schoolGrade;
     private String academicYear;

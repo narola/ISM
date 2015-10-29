@@ -78,7 +78,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_assignment_activity, container, false);
+        view = inflater.inflate(R.layout.fragment_trial_activity, container, false);
 
         initGlobal();
 
