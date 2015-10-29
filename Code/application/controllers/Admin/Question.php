@@ -81,9 +81,7 @@ class Question extends ADMIN_Controller {
 				}
 				
 				$this->data['exam_questions'] = $exam_questions;
-
-				p($exam_questions,true);
-
+				
 			}
 
 			if( !empty($_GET['course_id']) ) { 

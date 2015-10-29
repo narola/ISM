@@ -519,8 +519,6 @@ $this->pagination->initialize($config);
 				 "is_archived"=>0
 				);
 
-			p($data,true);
-
 			insert(TBL_TUTORIAL_TOPIC,$data);
 
 			$this->session->set_flashdata('success','Topic has been created.');

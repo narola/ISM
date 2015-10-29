@@ -189,8 +189,8 @@
 
                                     <div class="notice_action">  
                                         <a href="#" class="icon icon_hand" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Move"></a>                                          
-                                        <a href="<?php echo base_url().'admin/question/update/'.$exam_que['exam_ques_id']; ?>" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
-                                        <a href="<?php echo base_url().'admin/question/copy/'.$exam_que['exam_ques_id']; ?>" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
+                                        <a href="<?php echo base_url().'admin/question/update/'.$exam_que['id']; ?>" class="icon icon_edit_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"></a>
+                                        <a href="<?php echo base_url().'admin/question/copy/'.$exam_que['id']; ?>" class="icon icon_copy_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Copy"></a>
                                         <a href="<?php echo base_url().'admin/question/delete_question/'.$exam_que['exam_ques_id']; ?> " onclick="delete_question(this.href,event,<?php echo $e_cnt; ?>)" 
                                 class="icon icon_delete_color" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"></a>
                                         
