@@ -2,13 +2,14 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Question extends ADMIN_Controller {
+	
 	public $data = array();
 
 	public function __construct()
 	{
 		parent::__construct();
-		//Load Dependencies
-
+		$this->data['cur_url'] = $this->session->userdata('cur_url');
+		$this->data['prev_url'] = $this->session->userdata('prev_url');
 	}
 
 	/*
@@ -80,7 +81,7 @@ class Question extends ADMIN_Controller {
 				}
 				
 				$this->data['exam_questions'] = $exam_questions;
-
+				
 			}
 
 			if( !empty($_GET['course_id']) ) { 
@@ -283,6 +284,16 @@ class Question extends ADMIN_Controller {
 	*/		
 	public function add(){
 		
+		if(!empty($_GET['exam_id'])){
+
+			$eid = $_GET['exam_id'];
+			$get_exam_data = select(TBL_EXAMS,FALSE,array('where'=>array('id'=>$eid)));
+
+			if(empty($get_exam_data)){
+				show_404();
+			}
+		}
+
 		$this->data['page_tite'] = 'Add Question';
 		$this->data['tags'] = select(TBL_TAGS,FALSE,array('where'=>array('is_delete'=>'0')));
 
@@ -293,8 +304,11 @@ class Question extends ADMIN_Controller {
 			$subject_id = $this->input->post('subject_id');
 			$where = array('where'=>array('is_delete'=>0));
 			$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null);
+			
 			if(!empty($course_id)){
 				$this->data['classrooms'] =select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0,'course_id'=>$course_id ))); 
+			}else{
+				$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,$where,null);
 			}
 
 			if(!empty($classroom_id)){
@@ -312,6 +326,8 @@ class Question extends ADMIN_Controller {
 														)
 											 	);
 
+			}else{
+				$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,$where,null);
 			}
 
 			if(!empty($subject_id)){
@@ -320,6 +336,9 @@ class Question extends ADMIN_Controller {
 						array('where'=>array('subject_id'=>$subject_id,'is_delete'=>0)),
 						null
 				);
+			
+			}else{
+				$this->data['topics'] = select(TBL_TUTORIAL_TOPIC,FALSE,$where,null);	
 			}
 
 
@@ -373,10 +392,24 @@ class Question extends ADMIN_Controller {
 				 "solution"=>$this->input->post("solution"),
 				 "topic_id"=>$this->input->post("topic_id"),
 				 "subject_id"=>$this->input->post("subject_id"),
-				 "classroom_id"=>$this->input->post("classroom_id"),
+				 "classroom_id"=>$this->input->post("classroom_id")
 			);
 
 			$question_id = insert(TBL_QUESTIONS,$data_question);
+
+			if(!empty($_GET['exam_id'])){
+
+				$eid = $_GET['exam_id'];
+
+				$data_exam_question = array(
+					'exam_id'=>$eid,
+					'question_id'=>$question_id
+				);
+
+				insert(TBL_EXAM_QUESTION,$data_exam_question);
+			}
+
+				
 
 			if(!empty($tags)){
 				foreach($tags as $tag){
@@ -407,8 +440,21 @@ class Question extends ADMIN_Controller {
 				$cnt++;
 			}
 
-
+			$button_type = $this->input->post('button_type');
 			
+			if(!empty($_GET['exam_id'])){
+				$eid = $_GET['exam_id'];
+				redirect('admin/question/set?exam_id='.$eid);
+			}	
+
+			$this->session->set_flashdata('success', 'Question has been saved Successfully.');
+
+			if($button_type == 'save'){
+				redirect('admin/question/set');
+			}else{
+				redirect('admin/question/add');
+			}
+
 		}
 	}
 
@@ -420,15 +466,18 @@ class Question extends ADMIN_Controller {
 	public function update($qid){
 
 		$this->data['page_tite'] = 'Add Question';
-		
 		$this->data['tags'] = select(TBL_TAGS,FALSE,array('where'=>array('is_delete'=>'0')));
-		
+
+		// ------------------------------------------------------------------------
+		// ------------------------------------------------------------------------
+
+
 		$this->data['question'] = select(
 											TBL_QUESTIONS,
 											TBL_QUESTIONS.'.id,'.TBL_QUESTIONS.'.question_text,'.TBL_QUESTIONS.'.topic_id,'.
 											TBL_QUESTIONS.'.subject_id,'.TBL_QUESTIONS.'.classroom_id,'.TBL_CLASSROOMS.'.course_id,'.
 											TBL_QUESTIONS.'.evaluation_notes,'.TBL_QUESTIONS.'.solution',
-											array('where'=>array(TBL_QUESTIONS.'.id'=>$qid)),
+											array('where'=>array(TBL_QUESTIONS.'.id'=>$qid,TBL_QUESTIONS.'.is_delete'=>'0')),
 											array(
 												'single'=>TRUE,
 												'join'=>array(
@@ -439,31 +488,78 @@ class Question extends ADMIN_Controller {
 													)
 												)
 										);
+		// ------------------------------------------------------------------------
+		// ------------------------------------------------------------------------
 
-		//p($this->data['question'],true);
+		if($_POST){
 
-		$where = array('where'=>array( 'is_delete'=>0 ));
-
-		$this->data['question_tags'] = select(TBL_TAGS_QUESTION,FALSE,array('where'=>array('question_id'=>$qid)));
-		$this->data['choices'] = select(TBL_ANSWER_CHOICES,FALSE,array('where'=>array('question_id'=>$qid))); 
-		$this->data['choice_count'] = count($this->data['choices']);
-		$correct_choice_count = 1;
-		foreach($this->data['choices'] as $q_choice){
-			if($q_choice['is_right'] == TRUE){
-				$this->data['correct_choice_que'] = $correct_choice_count;
+			$course_id = $this->input->post('course_id'); 
+			$classroom_id = $this->input->post('classroom_id');
+			$subject_id = $this->input->post('subject_id');
+			$where = array('where'=>array('is_delete'=>0));
+			$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null);
+			
+			if(!empty($course_id)){
+				$this->data['classrooms'] =select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0,'course_id'=>$course_id ))); 
+			}else{
+				$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,$where,null);
 			}
-			$correct_choice_count++;
+
+			if(!empty($classroom_id)){
+				
+				$this->data['subjects'] = select(TBL_CLASSROOM_SUBJECT,
+												 TBL_CLASSROOM_SUBJECT.'.subject_id as id,sub.subject_name ',
+												 array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$classroom_id,'sub.is_delete'=>'0')),
+													array(
+														'join'=>array(
+																	array(
+														    				'table' => TBL_SUBJECTS.' sub',
+														    				'condition' => 'sub.id = '.TBL_CLASSROOM_SUBJECT.'.subject_id',
+																		)
+																	)
+														)
+											 	);
+
+			}else{
+				$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,$where,null);
+			}
+
+			if(!empty($subject_id)){
+
+				$this->data['topics'] = select(TBL_TUTORIAL_TOPIC, TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name, ',
+						array('where'=>array('subject_id'=>$subject_id,'is_delete'=>0)),
+						null
+				);
+			
+			}else{
+				$this->data['topics'] = select(TBL_TUTORIAL_TOPIC,FALSE,$where,null);	
+			}
+
+
+		}else{
+
+			$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>0)),null);
+			$this->data['classrooms'] =select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0,'course_id'=>$this->data['question']['course_id'] ))); 
+			
+			$this->data['subjects'] = select(TBL_CLASSROOM_SUBJECT,
+											 TBL_CLASSROOM_SUBJECT.'.subject_id as id,sub.subject_name ',
+											 array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$this->data['question']['classroom_id'],'sub.is_delete'=>'0')),
+													array(
+														'join'=>array(
+																	array(
+														    				'table' => TBL_SUBJECTS.' sub',
+														    				'condition' => 'sub.id = '.TBL_CLASSROOM_SUBJECT.'.subject_id',
+																		)
+																	)
+														)
+											 	);
+			
+			$this->data['topics'] = select(TBL_TUTORIAL_TOPIC, TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name, ',
+						array('where'=>array('subject_id'=>$this->data['question']['subject_id'],'is_delete'=>0)),
+						null
+				);
 		}
 		
-		//p($this->data['question_tags']);
-		//p($this->data['choices']);
-		//die();
-
-		$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null);
-		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0,'course_id'=>$this->data['question']['course_id'])),null);
-		$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,$where,null);
-		$this->data['topics'] = select(TBL_TUTORIAL_TOPIC,FALSE,$where,null); 
-
 		$this->form_validation->set_rules('question_text', 'Question Text', 'trim|required');
 		$this->form_validation->set_rules('course_id', 'Course', 'trim|required');
 		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required');
@@ -478,16 +574,38 @@ class Question extends ADMIN_Controller {
 			$choices = $this->input->post('choices');
 			foreach($choices as $choice){
 				if($choice == ''){
-					$this->form_validation->set_rules('choice', 'Choice', 'trim|required');
+					$this->form_validation->set_rules('choice[]', 'Choice', 'trim|required');
 				}
 			}
 		}
 
-		if($this->form_validation->run() == FALSE){
+		// ------------------------------------------------------------------------
+		// ------------------------------------------------------------------------
 
+		$question_tags = select(TBL_TAGS_QUESTION,FALSE,array('where'=>array('question_id'=>$qid,'is_delete'=>'0')));
+		$this->data['choices'] = select(TBL_ANSWER_CHOICES,FALSE,array('where'=>array('question_id'=>$qid,'is_delete'=>'0'))); 
+		$this->data['choice_count'] = count($this->data['choices']);
+		$correct_choice_count = 1;
+		foreach($this->data['choices'] as $q_choice){
+			if($q_choice['is_right'] == TRUE){
+				$this->data['correct_choice_que'] = $correct_choice_count;
+			}
+			$correct_choice_count++;
+		}
+		$q_tags = array();
+		foreach($question_tags as $my_tags){
+			array_push($q_tags,$my_tags['tag_id']);
+		}
+		$this->data['que_tags'] = $q_tags;
+
+		// ------------------------------------------------------------------------
+		// ------------------------------------------------------------------------
+
+		if($this->form_validation->run() == FALSE){
 			$this->template->load('admin/default','admin/question/update',$this->data);
-		
 		}else{
+
+			$copy = $this->uri->segment(3);
 
 			$session_id = $this->session->userdata('id');
 			$choices = $this->input->post('choices');
@@ -503,10 +621,23 @@ class Question extends ADMIN_Controller {
 				 "solution"=>$this->input->post("solution"),
 				 "topic_id"=>$this->input->post("topic_id"),
 				 "subject_id"=>$this->input->post("subject_id"),
-				 "classroom_id"=>$this->input->post("classroom_id"),
+				 "classroom_id"=>$this->input->post("classroom_id")
 			);
 
-			$question_id = insert(TBL_QUESTIONS,$data_question);
+			if($copy == 'copy'){
+				$question_id = insert(TBL_QUESTIONS,$data_question);
+			}else{
+				
+				delete(TBL_TAGS_QUESTION,array('question_id'=>$qid));	
+				delete(TBL_ANSWER_CHOICES,array('question_id'=>$qid));
+				
+				$data_question['modified_date'] = date('Y-m-d H:i:s');
+				update(TBL_QUESTIONS,$qid,$data_question);
+				$question_id = $qid;
+			}
+
+
+		// ------------------------------------------------------------------------
 
 			if(!empty($tags)){
 				foreach($tags as $tag){
@@ -516,11 +647,12 @@ class Question extends ADMIN_Controller {
 			}
 
 			$correct_choice =  $this->input->post('correct_choice')-1;
+
 			$cnt = 0;
 
 			foreach($choices as $choice){
 				
-				$cnt==$correct_choice ? $is_right = TRUE : $is_right= FALSE; // Condition for Set Correct Answer for Choices
+				$cnt==$correct_choice ? $is_right = TRUE : $is_right= FALSE; // Set Correct Answer for Choices
 
 				$data_choice = array(
 							'question_id'=>$question_id,
@@ -534,10 +666,21 @@ class Question extends ADMIN_Controller {
 				insert(TBL_ANSWER_CHOICES,$data_choice);					
 
 				$cnt++;
-			
 			}
 
-		}
+			$button_type = $this->input->post('button_type');
+
+			
+			$this->session->set_flashdata('success', 'Question has been saved Successfully.');
+
+			if($button_type == 'save'){
+				redirect('admin/question/set');
+			}else{
+				redirect('admin/question/add');
+			}
+
+		}	
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -549,7 +692,7 @@ class Question extends ADMIN_Controller {
 		$course_id = $this->input->post('course_id');
 		
 		$classrooms = select(TBL_CLASSROOMS,TBL_CLASSROOMS.'.id,'.TBL_CLASSROOMS.'.class_name ',
-			array('where'=>array(TBL_CLASSROOMS.'.course_id'=>$course_id))
+			array('where'=>array(TBL_CLASSROOMS.'.course_id'=>$course_id,'is_delete'=>'0'))
 			);
 
 		
@@ -574,7 +717,7 @@ class Question extends ADMIN_Controller {
 		$course_id = $this->input->post('course_id');
 		
 		$subjects = select(TBL_CLASSROOM_SUBJECT,TBL_CLASSROOM_SUBJECT.'.subject_id,sub.subject_name ',
-			array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$classroom_id)),
+			array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$classroom_id,TBL_CLASSROOM_SUBJECT.'.is_delete'=>'0')),
 				array(
 					'join'=>array(
 								array(
@@ -606,9 +749,7 @@ class Question extends ADMIN_Controller {
 		$subject_id = $this->input->post('subject_id');
 		
 		$topics = select(TBL_TUTORIAL_TOPIC, TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name, ',
-							array('where'=>array('subject_id'=>$subject_id)),
-							null
-					);
+							array('where'=>array('subject_id'=>$subject_id,'is_delete'=>'0')) );
 
 		
 		$new_str = '';
@@ -734,7 +875,7 @@ class Question extends ADMIN_Controller {
 	public function delete_question($id){
 		//$id=$this->input->post('id');
 		delete(TBL_EXAM_QUESTION,$id);
-		echo '1';
+		redirect($this->data['prev_url']);
 	}
 
 }

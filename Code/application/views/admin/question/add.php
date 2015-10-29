@@ -19,12 +19,12 @@
                 <div class="box">
                     <div class="box_header filter">
                         <h3>Add New Question</h3>
-
                     </div>
 
                     <div class="alert alert-danger<?php if(empty(strip_tags(validation_errors(),''))){ echo ' hide';} ?> ">
                         <?php echo validation_errors('',''); ?>
                     </div>
+                    <?php echo flashMessage(TRUE,TRUE); ?>
                     <!--box_body-->
                     <div class="box_body add_question_wrapper admin_controls with_labels">
                    		<div class="col-sm-12 padding_t15">
@@ -92,8 +92,8 @@
                             <div class="form-group select">
                             	<label class="txt_red">Question Type</label>
                                 <select class="form-control" id="question_type" name='question_type'>
-                                    <option  value="text">Text</option>
-                                    <option  value="paragraph">Paragraph Text</option>
+                                    <option disabled value="text">Text</option>
+                                    <option disabled value="paragraph">Paragraph Text</option>
                                     <option selected="selected" value="mcq">Multiple Choice</option>
                                 </select>
                             </div>
@@ -115,8 +115,8 @@
 
                             <?php if(!$_POST || $_POST['total_choices'] == 1) { ?>
 
-                            <input type="hidden" name='total_choices' id="total_choices" value="1" <?php echo set_value('total_choices'); ?> >
-                            <input type="hidden" name='correct_choice' id="correct_choice" <?php echo set_value('correct_choice'); ?> >
+                            <input type="hidden" name='total_choices' id="total_choices" value="1"  >
+                            <input type="hidden" name='correct_choice' id="correct_choice" >
                             <div class="choice_wrapper"> 
                                 <div class="form-group" id="div_1">
                                     
@@ -132,29 +132,32 @@
                             <?php
 
                                 } else {  
-                                 
-                                 $post_total_choice = $_POST['total_choices']+1;
+                                
+                                 $post_total_choice = $_POST['total_choices'];
                                  //$post_correct_choice = $_POST[''];   
                             ?>
                             
                             <input type="hidden" name='total_choices' id="total_choices" value="<?php echo set_value('total_choices'); ?>"  >
                             <input type="hidden" name='correct_choice' id="correct_choice" value="<?php echo set_value('correct_choice'); ?>" >
+
                             <div class="choice_wrapper">
                             <?php for($i=1;$i<=$post_total_choice;$i++) { ?>
                                     <?php $j = $i-1; ?>
-                                    <div class="form-group">
-                <input type="radio" name="correct_ans" id="correct_ans" onchange="correct_choice1(this.value)" value="1">
-                <input type="text" name="choices[]" class="form-control choice_detail" value="<?php echo $_POST['choices'][$j]; ?>"   placeholder="Enter Choice">
                 
-                                   
+                                    <div class="form-group">
+                
+                <input type="radio" name="correct_ans" id="correct_ans" 
+                <?php if(!empty($_POST['correct_choice'])){ if($_POST['correct_choice'] == $i){ echo 'checked="checked"'; }} ?>
+                onchange="correct_choice1(this.value)" value="<?php echo $i; ?>">
+
+                <input type="text" name="choices[]" class="form-control choice_detail" value="<?php echo $_POST['choices'][$j]; ?>"
+                       placeholder="Enter Choice">
 
                                         <?php if($i == 1) { ?>
                                             <i class="fa fa-plus-circle font-21 component"></i>
                                         <?php }else{ ?>
-                                 
-                <i class="fa fa-minus-circle font-21 component_close"></i>
+                                            <i class="fa fa-minus-circle font-21 component_close"></i>
                                         <?php } ?>
-
 
                                     </div>
 
@@ -170,7 +173,9 @@
                                     <select multiple="multiple" name="q_tags[]" id="my_select" class="form-control">
                                            <option value="" disabled>Select Tags</option> 
                                            <?php if(!empty($tags)) { foreach($tags as $tag) { ?>
-                                                <option value="<?php echo $tag['id']; ?>" <?php echo set_select('q_tags[]',$tag['id']); ?> >
+                                                <option value="<?php echo $tag['id']; ?>" 
+                                                    <?php echo set_select('q_tags[]',$tag['id']); ?> >
+                                                    
                                                     <?php echo ucfirst($tag['tag_name']); ?>
                                                 </option>
                                            <?php } }else{ ?>
@@ -185,7 +190,7 @@
                             	<h3>Evaluation Notes</h3>
                             </div>
                         	<div class="form-group">
-                                <textarea class="form-control" name="evaluation_notes"></textarea>
+                                <textarea class="form-control" name="evaluation_notes"><?php echo set_value('evaluation_notes'); ?></textarea>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6 inner_txtarea">
@@ -193,7 +198,7 @@
                             	<h3>Solution</h3>
                             </div>
                         	<div class="form-group">
-                                <textarea class="form-control" name="solution"></textarea>
+                                <textarea class="form-control" name="solution"><?php echo set_value('solution'); ?></textarea>
                             </div>
                         </div>
 
@@ -203,10 +208,10 @@
                    	</div>
                     <!--//box-body-->
                     <div class="box_footer">
-                    	<input type="checkbox"><label class="save_box"></label><label>Add Question to Preview</label>
-                    	
-                        <button class="btn btn_green pull-right no-margin">Save & Add More</button>
-                        <button class="btn btn_red pull-right">Save</button>
+                        <input type="hidden" value="save" id="button_type" name="button_type">
+                        <button class="btn btn_green pull-right no-margin" onclick="set_hidden('set_ques')" >Save & Add More</button>
+                        <button class="btn btn_red pull-right" onclick="set_hidden('save')" >Save</button>
+                        <a href="<?php echo base_url().'admin/question/set'; ?>" class="btn btn_black_normal">Cancel</a>
                     </div>
                 </div>
                 <!--//box-->
@@ -223,6 +228,14 @@
 <script type='text/javascript' src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script> -->
 
 <script>
+
+    function set_hidden(button_data){
+        if(button_data == 'save'){
+            $('#button_type').val('save');
+        }else{
+            $('#button_type').val('set');
+        }
+    }
     
     function get_classes(course_id){
         $.ajax({
@@ -285,6 +298,7 @@
     }
 
     function correct_choice1(choice){
+
         $('#correct_choice').val(choice);
     }
 
@@ -360,14 +374,15 @@
             // console.log("firstText: "+firstText);
             // console.log("last_val: "+last_val);
             if( firstText !="" && last_val != ""){
+                total_choice = parseInt(total_choice)+1; 
                 var html = '<div class="form-group">';
-                html += '<input type="radio" name="correct_ans" id="correct_ans" onchange="correct_choice1(this.value)" value="1">';
+                html += '<input type="radio" name="correct_ans" id="correct_ans" onchange="correct_choice1(this.value)" value="'+total_choice+'">';
                 html += '<input type="text" name="choices[]" class="form-control choice_detail" value=""   placeholder="Enter Choice">';
                 html += '<i class="fa fa-minus-circle font-21 component_close"></i>';
                 html += '</div>';
                 $(this).parent().parent().append(html);
                 $(this).parent().parent().find('span.blank_error').remove();
-                $('#total_choices').val(total_choice++);
+                $('#total_choices').val(total_choice);
             }
             else{
                 if( $(this).parent().nextAll('span').hasClass('blank_error') == false){
@@ -377,17 +392,32 @@
         });
         
         $('div.choice_wrapper').delegate('i.component_close', 'click', function(){
+            var this_ans = $(this).parent().find('#correct_ans').val();
+            if($("#correct_choice").val()==this_ans){
+                $("#correct_choice").val('');
+            }
             $(this).parent().remove();
             total_choice = total_choice-1;
             $('#total_choices').val(total_choice);
         });
 
         $(document).on('keyup','.choice_detail',function(){
+            
             var txtValue = $(this).val();
+            var this_ans = $(this).parent().find('#correct_ans').val();
+
             if(txtValue == ''){
                 var nextVal = $(this).parent().next().find('.choice_detail').val();
                 $(this).val(nextVal);
                 $(this).parent().next().remove();
+                
+                total_choice = total_choice-1;
+                $('#total_choices').val(total_choice);
+
+                if($("#correct_choice").val()==this_ans){
+                    $("#correct_choice").val('');
+                }
+
             }else{
                $(this).parent().parent().find('span.blank_error').remove(); 
             }

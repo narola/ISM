@@ -423,7 +423,7 @@ div.upload input {
 }
 .reg_footer{
 	background-color:#232a34;
-	height:60px;
+	/*height:60px;*/
 	padding:20px 60px;
 }
 .reg_footer p{
@@ -1560,7 +1560,11 @@ ul.exams_holder li a:after{
 .tut_week_heading p{
 	position: absolute;
     margin: 0;
-    transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg); 
+	-webkit-transform:rotate(-90deg); 
+	-moz-transform: rotate(-90deg); 
+	-o-transform:rotate(-90deg);
+	transform: rotate(-90deg);	
     top: 450px;
     left: -10px;
 }
@@ -2082,6 +2086,10 @@ ul.tut_weekdays {
     font-size: 16px;
     text-transform: uppercase;
     position: absolute;
+	-ms-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
     transform: rotate(90deg);
 	text-decoration:none;
 	font-weight:600;
@@ -2743,9 +2751,9 @@ textarea {
 	-webkit-animation:swing .8s linear infinite alternate;
 }
 @keyframes swing{
-	0%{transform:rotate(3deg);}
-	50%{transform:rotate(0deg);}
-	100%{transform:rotate(-3deg);}
+	0%{-ms-transform: rotate(3deg); -webkit-transform:rotate(3deg); -moz-transform: rotate(3deg); -o-transform:rotate(3deg); transform:rotate(3deg);}
+	50%{-ms-transform: rotate(0deg); -webkit-transform:rotate(0deg); -moz-transform: rotate(0deg); -o-transform:rotate(0deg); transform:rotate(0deg);}
+	100%{-ms-transform: rotate(-3deg); -webkit-transform:rotate(-3deg); -moz-transform: rotate(-3deg); -o-transform:rotate(-3deg); transform:rotate(-3deg);}
 }
 
 .page_header h4{
@@ -3536,6 +3544,7 @@ ul.ques_numbers {
 	color:#1bc4a3;
 }
 .upload_loader{
+	display: none;
 	background-image: url(../images/spinner.gif);
     height: 24px;
     width: 24px;
@@ -3712,13 +3721,13 @@ a.expand_ques + .row{
 	background-position:center top;
 	/*min-height:500px;*/
 }
-.about_us_header:after{
+.arrow:after{
 	content:"";
 	position:absolute;
 	border-right:15px solid transparent;
 	border-left:15px solid transparent;
-	border-top:15px dotted #233244;
-	bottom:-15px;
+	border-top:15px solid #233244;
+	top:0;
 	left:49%;
 	z-index:1;
 }
@@ -3751,12 +3760,13 @@ a.expand_ques + .row{
 	margin-bottom:25px;
 	outline:none;
 }
-.btn_about_header:hover{
+.btn_about_header:hover, .btn_about_header:focus:hover{
 	color:#333;
 	background-color:#1bc4a3;
 }
 .btn_about_header:focus, .btn_about_header:active:focus{
 	outline:none;
+	color:#1bc4a3;
 }
 .my_info h1 {
     margin-top: 40px;
@@ -3774,6 +3784,7 @@ a.expand_ques + .row{
 .my_info {
     background-color: #f5f5f5;
 	padding-bottom:30px;
+	display:none;
 }
 .my_info .btn {
     text-transform: uppercase;
@@ -3788,3 +3799,173 @@ a.expand_ques + .row{
     top: 260px;
     left: 46%;
 }
+
+.our_mission{
+	background-color:#8ec359;
+    padding: 20px 0;
+}
+.our_mission h2{
+	color:#f4f095;
+}
+.our_mission p{
+	font-size: 25px;
+    color: #d8f7b3;
+    max-width: 730px;
+    font-weight: 700;
+    margin: 20px auto;
+}
+.item_left{
+	border-right:2px solid #848c96;
+    padding: 30px 0;
+	position:relative;
+}
+.item_right{
+	border-left:2px solid #848c96;
+    padding: 30px 0;
+	position:relative;	
+}
+.map_item {
+    width: 350px;
+    margin: 0 auto;
+}
+.map_item:afte{
+	content:"";
+	display:table;
+	clear:both;
+}
+.item_left .map_item{
+	margin-bottom:100px;
+}
+.item_right .map_item{
+	margin-top:100px;
+}
+.abt_img{
+	width:100%;
+	height:115px;
+	overflow:hidden;
+	border-radius:6px;
+	border:3px solid #fff;
+	margin-bottom:15px;
+}
+.abt_img img{
+	height:100%;
+}
+.item_red>.abt_img{
+	border-color:#a62438;
+}
+.item_blue>.abt_img{
+	border-color:#15cfdb;
+}
+.item_green>.abt_img{
+	border-color:#328216;
+}
+.item_purple>.abt_img{
+	border-color:#bf27b6;
+}
+
+.item_red .icon_holder{
+	background-color:#a62438;
+}
+.item_blue .icon_holder{
+	background-color:#15cfdb;
+}
+.item_green .icon_holder{
+	background-color:#328216;
+}
+.item_purple .icon_holder{
+	background-color:#bf27b6;
+}
+
+.item_red h3, .item_red p{
+	color:#a62438;
+}
+.item_blue h3, .item_blue p{
+	color:#15cfdb;
+}
+.item_green h3, .item_green p{
+	color:#328216;
+}
+.item_purple h3, .item_purple p{
+	color:#bf27b6;
+}
+.icon_holder {
+    height: 100px;
+    width: 100px;    
+    float: left;
+    margin-right: 15px;
+	border-radius:4px;
+}
+.img_stud, .img_teach, .img_win, .img_books{
+	background-image: url(../images/abt_img.png);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    margin: 17px;
+    height: 66px;
+    width: 66px;
+}
+.img_teach{
+	background-position: -66px 0;
+}
+.img_win{} .img_books{}
+.map_item h3{
+	font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+	margin-top:0;
+}
+.map_item p{
+	font-size:16px;
+	margin:0 0 0 115px;
+    min-height: 130px;
+}
+.item_red:before, .item_blue:before, .item_green:before, .item_purple:before{
+	content: "";
+    position: absolute;
+    background-image: url(../images/abt_img.png);
+    background-position: -264px -5px;
+    height: 55px;
+    width: 32px;
+    right: -90px;
+    top: 70px;
+    transform: rotate(-90deg);
+}
+.item_blue:before{
+    background-position: -296px -5px;
+    left: -90px;
+    transform: rotate(90deg);
+    width: 31px;
+}
+.item_green:before{
+    background-position: -327px -5px;
+}
+.item_purple:before{
+	background-position: -359px -5px;
+    left: -90px;
+    transform: rotate(90deg);
+
+}
+.my_info label{
+	font-weight:normal;
+}
+.reg_footer a{
+    margin-left:10px;
+    display: inline-block;
+	filter:brightness(5);
+	-webkit-filter:brightness(5);
+	-moz-filter:brightness(5);
+	opacity:0.3;
+	transition:opacity ease .3s;
+}
+.reg_footer a:hover{
+	opacity:1;
+	filter:none;
+	-webkit-filter:none;
+	-moz-filter:none;
+}
+.reg_footer span{
+	color:#fff;
+}
+.reg_footer.margin_t15 p{
+	margin:10px 0;
+}
+
