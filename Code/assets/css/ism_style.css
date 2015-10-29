@@ -3969,3 +3969,9 @@ a.expand_ques + .row{
 	margin:10px 0;
 }
 
+#frm_class_exam .form-group {
+	width:170px;
+}
+#frm_class_exam .form-group .form-control{
+	width:100%;
+}

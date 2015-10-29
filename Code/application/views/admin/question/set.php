@@ -122,7 +122,7 @@
 
                             } ?>
 
-                            <div class="text-center ">
+                            <div class="text-center border_bottom">
                                 <?php  echo $this->pagination->create_links();  ?>
                             </div>
                         </div>
