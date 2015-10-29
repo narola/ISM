@@ -23,41 +23,43 @@ class ProfileFunctions
         {
             case "AuthenticateUser":
             {
-                return $this->authenticateUser($postData);
+                return $this->authenticateUser($postData);//done
             }
                 break;
             case "RegisterUser":
             {
-                return $this->registerUser($postData);
+                return $this->registerUser($postData);//done
             }
                 break;
 
             case "RequestForCredentials":
             {
-                return $this->requestForCredentials($postData);
+                return $this->requestForCredentials($postData);//done
             }
                 break;
 
             case "CheckUsernameAvailability":
             {
-                return $this->checkUsernameAvailability($postData);
+                return $this->checkUsernameAvailability($postData);//done
             }
                 break;
 
             case "ForgotPassword":
             {
-                return $this->forgotPassword($postData);
+                return $this->forgotPassword($postData);//done
             }
                 break;
 
             case "GetStudentAcademicInfo":
             {
-                return $this->getStudentAcademicInfo($postData);
+                return $this->getStudentAcademicInfo($postData);//done
             }
+                break;
             case "RequestForSchoolInfoUpdation":
             {
-                return $this->requestForSchoolInfoUpdation($postData);
+                return $this->requestForSchoolInfoUpdation($postData);//done
             }
+                break;
         }
     }
     /*
@@ -587,7 +589,7 @@ class ProfileFunctions
 //                    $resultAcademic=mysql_query($updateStatus) or $message=mysql_error();
                    // echo $updateStatus;
                     $post['user_id']=$user_id;
-                    $post['username']=$username;
+                    $post['full_name']=$firstname." ".$lastname;
                     $post['profile_pic']=$profile_image_link;
                     $data[]=$post;
                     $status="success";

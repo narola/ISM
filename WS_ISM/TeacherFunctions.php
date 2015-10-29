@@ -20,54 +20,48 @@ class TeacherFunctions
         {
             case "PostForClasswall":
             {
-                return $this->postForClasswall($postData);
+                return $this->postForClasswall($postData);//done
             }
                 break;
             case "GetAllClasswallPost":
             {
-                return $this->getAllClasswallPost($postData);
+                return $this->getAllClasswallPost($postData);//done
             }
                 break;
 
             case "GetMyStudents":
             {
-                return $this->getMyStudents($postData);
+                return $this->getMyStudents($postData);//done
             }
                 break;
 
             case "GetAllSubjectsByClass":
             {
-                return $this->getAllSubjectsByClass($postData);
+                return $this->getAllSubjectsByClass($postData);//done
             }
                 break;
 
             case "GetAllNotes":
             {
-                return $this->getAllNotes($postData);
+                return $this->getAllNotes($postData);//done
             }
                 break;
 
             case "SubmitNotes":
             {
-                return $this->submitNotes($postData);
+                return $this->submitNotes($postData);//done
             }
                 break;
             case "UploadMediaNotes":
             {
-                return $this->uploadMediaNotes($postData);
+                return $this->uploadMediaNotes($postData);//done
             }
                 break;
             case "CreateAssignment":
             {
-                return $this->createAssignment($postData);
+                return $this->createAssignment($postData);//done
             }
                 break;
-            case "CreateExam":
-            {
-                return $this->createExam($postData);
-            }
-                break;
-
 
         }
     }
@@ -542,6 +536,7 @@ class TeacherFunctions
     {
         $data=array();
         $response=array();
+        $post=array();
         $message='';
         $status='';
 
@@ -557,8 +552,8 @@ class TeacherFunctions
         $subject_id = validateObject ($postData , 'subject_id', "");
         $subject_id = addslashes($subject_id);
 
-        $submission_date = validateObject ($postData , 'submission_date', "");
-        $submission_date = addslashes($submission_date);
+//        $submission_date = validateObject ($postData , 'submission_date', "");
+//        $submission_date = addslashes($submission_date);
 
 //        $assignment_type = validateObject ($postData , 'assignment_type', "");
 //        $assignment_type = addslashes($assignment_type);
@@ -569,6 +564,23 @@ class TeacherFunctions
         $assignment_text = validateObject ($postData , 'assignment_text', "");
         $assignment_text = addslashes($assignment_text);
 
+        $insertFields="`assignment_by`, `description`, `classroom_id`, `subject_id`, `topic_id`";
+        $insertValues=$user_id.",'".$assignment_text."',".$classroom_id.",".$subject_id.",".$topic_id;
+        $query="INSERT INTO ".TABLE_ASSIGNMENTS."(".$insertFields.") VALUES (".$insertValues.")";
+        $result=mysql_query($query) or  $message=mysql_error();
+        //echo $query;
+        if($result){
+            $post['assignment_id']=mysql_insert_id();
+            $status="success";
+            $message="Assignment created";
+        }
+        else{
+            $post['assignment_id']="";
+            $status="failed";
+            $message="";
+        }
+
+        $data[]=$post;
         $response['message']=$message;
         $response['status']=$status;
         $response['data']=$data;
@@ -576,271 +588,4 @@ class TeacherFunctions
         return $response;
     }
 
-    /*
-     * create exam
-     */
-    public function createExam ($postData)
-    {
-        $message='';
-        $status='';
-        $data=array();
-        $response=array();
-
-//“passing_percent”:””
-//“subject_id”: “”,
-//“exam_mode”:””
-//“exam_type”:””
-//“exam_category”:””
-//“exam_duration”:””
-//“submission_date”:””,
-// “exam_instruction”:””
-//“declare_results”:
-//“negative_marking”:
-//“random_question”:””
-
-        $user_id = validateObject ($postData , 'user_id', "");
-        $user_id = addslashes($user_id);
-
-        $exam_name = validateObject ($postData , 'exam_name', "");
-        $exam_name = addslashes($exam_name);
-
-        $course_id = validateObject ($postData , 'course_id', "");
-        $course_id = addslashes($course_id);
-
-        $classroom_id = validateObject ($postData , 'classroom_id', "");
-        $classroom_id = addslashes($classroom_id);
-
-        $passing_percent = validateObject ($postData , 'passing_percent', "");
-        $passing_percent = addslashes($passing_percent);
-
-        $subject_id = validateObject ($postData , 'subject_id', "");
-        $subject_id = addslashes($subject_id);
-
-        $exam_mode = validateObject ($postData , 'exam_mode', "");
-        $exam_mode = addslashes($exam_mode);
-
-        $exam_type = validateObject ($postData , 'exam_type', "");
-        $exam_type = addslashes($exam_type);
-
-        $exam_category = validateObject ($postData , 'exam_category', "");
-        $exam_category = addslashes($exam_category);
-
-        $exam_duration = validateObject ($postData , 'exam_duration', "");
-        $exam_duration= addslashes($exam_duration);
-
-        $submission_date = validateObject ($postData , 'submission_date', "");
-        $submission_date = addslashes($submission_date);
-
-        $exam_instruction = validateObject ($postData , 'exam_instruction', "");
-        $exam_instruction = addslashes($exam_instruction);
-
-        $declare_results = validateObject ($postData , 'declare_results', "");
-        $declare_results = addslashes($declare_results);
-
-        $negative_marking = validateObject ($postData , 'negative_marking', "");
-        $negative_marking = addslashes($negative_marking);
-
-        $random_question = validateObject ($postData , 'random_question', "");
-        $random_question = addslashes($random_question);
-
-        $insertField="";
-        $insertValues="";
-        $response['data']=$data;
-        $response['message']=$message;
-        $response['status']=$status;
-
-        return $response;
-    }
-
-    public function getSuggestedStudymates ($postData)
-    {
-        $message ='';
-        $post=array();
-        $response=array();
-        $firstname = validateObject ($postData , 'firstname', "");
-        $firstname = addslashes($firstname);
-
-        $lastname = validateObject ($postData , 'lastname', "");
-        $lastname = addslashes($lastname);
-
-        $home_address = validateObject ($postData , 'home_address', "");
-        $home_address = addslashes($home_address);
-
-        $contact_number = validateObject ($postData , 'contact_number', "");
-        $contact_number = addslashes($contact_number);
-
-        $email_address = validateObject ($postData , 'email_address', "");
-        $email_address = addslashes($email_address);
-
-        $school_name = validateObject ($postData , 'school_name', "");
-        $school_name = addslashes($school_name);
-
-        $city_id = validateObject ($postData , 'city_id', "");
-        $city_id = addslashes($city_id);
-
-        $state_id = validateObject ($postData , 'state_id', "");
-        $state_id = addslashes($state_id);
-
-        $country_id = validateObject ($postData , 'country_id', "");
-        $country_id = addslashes($country_id);
-
-        $queryState="SELECT `state_name` FROM `states` WHERE `id`=".$state_id;
-        $resultState=mysql_query($queryState) or $errorMsg=mysql_error();
-        if(mysql_num_rows($resultState))
-        {
-            while ($val = mysql_fetch_assoc($resultState))
-            {
-                $state_name=$val['state_name'];
-            }
-        }
-        else
-        {
-            $state_name=DEFAULT_NO_RECORDS;
-        }
-
-        $queryCountry="SELECT `country_name` FROM `countries` WHERE `id`=".$country_id;
-        $resultCountry=mysql_query($queryCountry) or $errorMsg=mysql_error();
-        if(mysql_num_rows($resultCountry))
-        {
-            while ($val = mysql_fetch_assoc($resultCountry))
-            {
-                $country_name=$val['country_name'];
-            }
-        }
-        else
-        {
-            $country_name=DEFAULT_NO_RECORDS;
-        }
-
-        $queryCity="SELECT `city_name` FROM `cities` WHERE `id`=".$city_id;
-        $resultCity=mysql_query($queryCity) or $errorMsg=mysql_error();
-        if(mysql_num_rows($resultCity))
-        {
-            while ($val = mysql_fetch_assoc($resultCity))
-            {
-                $city_name=$val['city_name'];
-            }
-        }
-        else
-        {
-            $country_name=DEFAULT_NO_RECORDS;
-        }
-        $data['firstname']=$firstname;
-        $data['lastname']=$lastname;
-        $data['home_address']=$home_address;
-        $data['contact_number']=$contact_number;
-        $data['email_address']=$email_address;
-        $data['school_name']=$school_name;
-        $data['city_id']=$city_id;
-        $data['state_id']=$state_id;
-        $data['country_id']=$country_id;
-
-        $sendEmail = new SendEmail();
-        $message="Hello ISM,\nI am very much interested to be part of ISM system.Please check my details below and let me know how can I become the part of this system.
-     	\nFullname: ".$firstname." ".$lastname.
-            "\nHome Address: ".$home_address.
-            "\nContact number: ". $contact_number.
-            "\nEmail address: ".$email_address.
-            "\nSchool name: ".$school_name.
-            "\nCity: ".$city_name.
-            "\nState: ".$state_name.
-            "\nCountry: ".$country_name.
-            "\n\nI am waiting for your call.
-		\nThanks.";
-        $response['status'] ="success";
-        $sendEmail -> sendemail($email_address, $message,"Request For Credentials","ism.educare@gmail.com");
-        //  $response['status'] =$status;
-        $response['message'] ="Sent successfully";
-        $response['data']=$post;
-        return $response;
-
-    }
-
-    public function getStudymates($postData)
-    {
-        $response=array();
-        $data=array();
-        $response['data']=array();
-
-        $user_id = validateObject ($postData , 'user_id', "");
-        $user_id = addslashes($user_id);
-
-        $queryGetStudyMate="SELECT * from ".TABLE_STUDYMATES." studymates INNER JOIN ".TABLE_USERS." users on studymates.mate_id=users.id where mate_of=".$user_id;
-        $resultGetStudyMate=mysql_query($queryGetStudyMate) or $message=mysql_error();
-        if(mysql_num_rows($resultGetStudyMate))
-        {
-
-            while ($val = mysql_fetch_assoc($resultGetStudyMate))
-            {
-                $post=array();
-                $post['user_id']=$val['mate_id'];
-                $post['full_name']=$val['username'];
-                $post['profile_pic']=$val['profile_pic'];
-                array_push($data,$post);
-            }
-            $status="success";
-            $message="";
-
-        }
-        else
-        {
-            $status="failed";
-            $message = DEFAULT_NO_RECORDS;
-            $data="";
-        }
-
-        array_push($response['data'],$data);
-        $response['message'] = $message;
-        $response['status'] = $status;
-
-        return $response;
-    }
-
-    public function getStudymatesWithDetails($postData)
-    {
-
-        $response=array();
-        $data=array();
-        $response['data']=array();
-
-        $user_id = validateObject ($postData , 'user_id', "");
-        $user_id = addslashes($user_id);
-
-        $queryInnerJoin=TABLE_STUDYMATES." studymates INNER JOIN ".TABLE_USERS." users INNER JOIN ".TABLE_STUDENT_ACADEMIC_INFO." studentAcademicInfo INNER JOIN ".TABLE_SCHOOLS." schools";
-        $queryOn="studymates.mate_id=users.id ";
-
-        $queryGetStudyMateAllDetail="SELECT * from ".$queryInnerJoin." on ".$queryOn."  where mate_of=".$user_id;
-        echo $queryGetStudyMateAllDetail;
-        $resultGetStudyMateAllDetail=mysql_query($queryGetStudyMateAllDetail) or $message=mysql_error();
-        if(mysql_num_rows($resultGetStudyMateAllDetail))
-        {
-
-            while ($val = mysql_fetch_assoc($resultGetStudyMateAllDetail))
-            {
-                $post=array();
-                $post['user_id']=$val['mate_id'];
-                $post['full_name']=$val['username'];
-                $post['profile_pic']=$val['profile_pic'];
-                $post['is_online']=$val['is_online'];
-                $post['school_name']=$val['school_name'];
-
-                array_push($data,$post);
-            }
-            $status="success";
-            $message="";
-
-        }
-        else
-        {
-            $status="failed";
-            $message = DEFAULT_NO_RECORDS;
-            $data="";
-        }
-
-        array_push($response['data'],$data);
-        $response['message'] = $message;
-        $response['status'] = $status;
-
-        return $response;
-    }
 }
