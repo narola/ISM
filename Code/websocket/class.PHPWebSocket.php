@@ -899,7 +899,7 @@ class PHPWebSocket {
      */
     function get_client_info($id) {
         $link = $this->db();
-        $query = "SELECT `u`.`id`,`u`.`full_name`, `upp`.`profile_link`, `u`.`created_date`  FROM `" . TBL_USERS . "` `u` LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `upp` ON `upp`.`user_id` = `u`.`id` WHERE `u`.`id` = $id `u`.`is_delete` = 0 LIMIT 1";
+        $query = "SELECT `u`.`id`,`u`.`full_name`, `upp`.`profile_link`, `u`.`created_date`  FROM `" . TBL_USERS . "` `u` LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `upp` ON `upp`.`user_id` = `u`.`id` WHERE `u`.`id` = $id AND `u`.`is_delete` = 0 LIMIT 1";
         $row = mysqli_query($link, $query);
         $count = mysqli_num_rows($row);
         $rows = mysqli_fetch_assoc($row);
@@ -1375,7 +1375,7 @@ class PHPWebSocket {
                     $score = 0;
                 }
                 // Check spam word exist or not. If spam word exist deduct points based on admin_config (spamWordDeduction) value. 
-                $query = "SELECT * FROM `" . TBL_WORD_WATCH . "` `ww` AND `ww`.`is_delete` = 0";
+                $query = "SELECT * FROM `" . TBL_WORD_WATCH . "` `ww` WHERE `ww`.`is_delete` = 0";
                 $row = mysqli_query($link, $query);
                 while ($rowq = mysqli_fetch_assoc($row)) {
                     // Check wherer spam word exist.
@@ -1428,7 +1428,7 @@ class PHPWebSocket {
                         . "LEFT JOIN `" . TBL_USERS . "` `u` ON `u`.`id` = `t`.`created_by` "
                         . "LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `up` ON `up`.`user_id` = `u`.`id` "
                         . "WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' "
-                        . "AND `ta`.`week_no` = $c_week AND YEAR(`ta`.`created_date`) = '$year'  AND  `tm`.`user_id` = '$userId' AND `td`.`is_delete` = 0";
+                        . "AND `ta`.`week_no` = $c_week AND YEAR(`ta`.`created_date`) = '$year'  AND  `tm`.`user_id` = '$userId' AND `t`.`is_delete` = 0";
                 $row = mysqli_query($link, $query);
                 $rows = mysqli_fetch_assoc($row);
 
@@ -1826,7 +1826,7 @@ class PHPWebSocket {
             $query = 'SELECT `u`.`full_name`,`s`.`school_name`,`c`.`course_name`,`p`.`profile_link` FROM ' . TBL_USERS . ' `u` '
                     . 'LEFT JOIN ' . TBL_STUDENT_ACADEMIC_INFO . ' `info` ON `info`.`user_id` = `u`.`id` '
                     . 'LEFT JOIN ' . TBL_SCHOOLS . ' `s` ON `s`.`id` = `info`.`school_id` LEFT JOIN ' . TBL_COURSES . ' `c` ON `c`.`id` = `info`.`course_id` '
-                    . 'LEFT JOIN ' . TBL_USER_PROFILE_PICTURE . ' `p` ON `p`.`user_id` = `u`.`id` WHERE `u`.`id` = ' . $data['studymate_id'] . " `u`.`is_delete` = 0";
+                    . 'LEFT JOIN ' . TBL_USER_PROFILE_PICTURE . ' `p` ON `p`.`user_id` = `u`.`id` WHERE `u`.`id` = ' . $data['studymate_id'] . " AND `u`.`is_delete` = 0";
             $row = mysqli_query($link, $query);
             $rows = mysqli_fetch_assoc($row);
             $data['full_name'] = $rows['full_name'];
@@ -2744,11 +2744,16 @@ class PHPWebSocket {
         $group_id = $rows['group_id'];
         if ($group_id == '')
             $group_id = 0;
-        echo $query = "SELECT `t`.`topic_name`, `ga`.`created_date` "
-                . "FROM `".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."` `ga` "
-                . "LEFT JOIN `topics` `t` ON `t`.`id` = `ga`.`topic_id` "
-                . "WHERE `ga`.`group_id` = $group_id "
-                . "AND date_format(ga.created_date,'%m') IN($m) AND `ga`.`is_delete` = 0 ";
+        $query = "SELECT `t`.`topic_name`, `ga`.`created_date`, IF(`topic_count`.`cnt` IS NULL,0,`topic_count`.`cnt`) AS `total_discussion`, IF(`s`.`score` IS NULL,0,`s`.`score`) AS `discussion_score`, IF(TRUNCATE((st_s.correct_answers * 100)/eq.total_question, 2) IS NULL,0.00,TRUNCATE((st_s.correct_answers * 100)/eq.total_question, 2)) AS per "
+                ."FROM `".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."` `ga` "
+                ."LEFT JOIN `".TBL_TOPICS."` `t` ON `t`.`id` = `ga`.`topic_id` "
+                ."LEFT JOIN (SELECT COUNT(*) AS cnt,topic_id FROM ".TBL_TUTORIAL_GROUP_DISCUSSION." td WHERE is_delete = 0 group by topic_id) topic_count ON `topic_count`.`topic_id` = `t`.`id` "
+                ."LEFT JOIN `".TBL_TUTORIAL_GROUP_MEMBER_SCORE."` `s` ON `t`.`id` = `s`.`topic_id` AND `s`.`member_id` =$user_id  AND date_format(s.created_date,'%m') IN($m)"
+                ."LEFT JOIN `".TBL_TUTORIAL_TOPIC_EXAM."` `e` ON `e`.`tutorial_topic_id` = `t`.`id` "
+                ."LEFT JOIN (SELECT COUNT(*) AS total_question,exam_id FROM exam_question group by exam_id) eq ON `eq`.`exam_id` = `e`.`exam_id` "
+                ."LEFT JOIN `".TBL_STUDENT_EXAM_SCORE."` `st_s` ON `st_s`.`exam_id` = `e`.`exam_id` AND `st_s`.`user_id` =$user_id AND date_format(st_s.created_date,'%m') IN($m)"
+                ."WHERE `ga`.`group_id` = '$group_id' AND `ga`.`is_delete` = '0' "
+                ."AND date_format(ga.created_date,'%m') IN($m)";
         $row = mysqli_query($link, $query);
         $i = 0;
         while ($rows = mysqli_fetch_assoc($row)) {
@@ -2811,7 +2816,7 @@ class PHPWebSocket {
                 . "FROM `".TBL_FEED_COMMENT."` "
                 . "WHERE `feed_id` = `post`.`id` ) AS `totcomment`, `post`.`created_date` FROM `".TBL_FEEDS."` `post` "
                 . "LEFT JOIN `".TBL_FEED_IMAGE."` `fimage` ON `fimage`.`feed_id` = `post`.`id` "
-                . "WHERE `post`.`feed_by` = $userid AND date_format(post.created_date,'%m') IN($m) "
+                . "WHERE `post`.`feed_by` = $user_id AND date_format(post.created_date,'%m') IN($m) "
                 . "ORDER BY `post`.`created_date` DESC";
         $row = mysqli_query($link, $query);
         $i = 0;

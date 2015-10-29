@@ -57,7 +57,7 @@ class My_activities extends ISM_Controller {
 
 					)
 				);
-		$select = 't.topic_name,ga.created_date,topic_count.cnt AS total_discussion,s.score AS discussion_score,TRUNCATE((st_s.correct_answers * 100)/eq.total_question,2) AS per';
+		$select = 't.topic_name,ga.created_date,IF(topic_count.cnt IS NULL,0,topic_count.cnt) AS total_discussion,IF(s.score IS NULL,0,s.score) AS discussion_score,IF(TRUNCATE((st_s.correct_answers * 100)/eq.total_question,2) IS NULL,"0.00",TRUNCATE((st_s.correct_answers * 100)/eq.total_question,2)) AS per';
 		$data['my_activities']['topic_allcated'] = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' ga',$select,$where,$option);
 
 		/*--------Get my studymates---------*/

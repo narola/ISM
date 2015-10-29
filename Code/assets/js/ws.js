@@ -496,7 +496,7 @@ if ("WebSocket" in window)
                     notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.user_data.profile_link + '"></div>';
                     notification_str += '<div class="notification_txt">';
                     notification_str += '<p><span class="noti_username">' + obj.user_data.full_name + '</span> accepted your friend request</p>';
-                    notification_str += '<span class="noti_time">1 hour ago</span></div>';
+                    notification_str += '<span class="noti_time">Just Now</span></div>';
                     notification_str += '<div class="clearfix"></div>';
                     notification_str += '</a></li>';
                     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
@@ -514,7 +514,7 @@ if ("WebSocket" in window)
                         $('.mCSB_container .three_tabs #study_request_cnt').html(0);
                     else {
 //                        cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() - 1;
-                        cnt = $('.mCSB_container .three_tabs #study_request_cnt').html(cnt);
+                        $('.mCSB_container .three_tabs #study_request_cnt').html(cnt);
 //                        $('.mCSB_container .three_tabs .bell_badge').html(cnt);
                     }
                 }
@@ -538,8 +538,8 @@ if ("WebSocket" in window)
                     }
                 }
             }
-            $('.box_body div[data-id="' + obj.studymate_id + '"]').remove().html();
-            cnt = $('.box_body #my_request').length;
+            $('.box_body #mCSB_3 #mCSB_3_container div[data-id="' + obj.studymate_id + '"]').remove().html();
+            cnt = $('.box_body #mCSB_3 #mCSB_3_container #my_request').length;
             if (cnt == 0)
             {
                 $('#my_request_box').html('<div class="study_mate"><center><label class="txt_grey txt_red">no more studymate request</label></center></div>');
@@ -791,8 +791,9 @@ if ("WebSocket" in window)
                     str += '<div class="topic_div">';
                     str += '<h4>' + list.topic_name + '</h4>';
                     str += '<div>';
-                    str += '<div><strong>Discussion</strong><p>29 Comments</p></div>';
-                    str += '<div><strong>Examination - Quiz</strong><p>Score :  215</p></div>';
+                    str += '<div><strong>Discussion</strong><p>'+ list.total_discussion +' Comments</p></div>';
+                    str += '<div><strong>Discussion - Score</strong><p>Score : '+ list.discussion_score +'</p></div>';
+                    str += '<div><strong>Examination - Quiz</strong><p>Percentage : '+ list.per +'%</p></div>';
                     str += '</div>';
                     str += '<div class="clearfix"></div>';
                     str += '</div>';
@@ -883,6 +884,7 @@ if ("WebSocket" in window)
                     str += '</div>';
                     p++;
                 });
+                $('a[data-type="load-activity-more"]').html('View More');
                 $('div[data-type="activity-main"] div[data-type="activity-sub-main"] div[data-type="activity"] div[data-type="activity-body"] div[data-type="activity-sub-body"]').append(str);
                 $('a[data-type="load-activity-more"]').attr('data-month', obj.new_month);
             }
@@ -1327,6 +1329,7 @@ $(document).on('click', 'button[data-type="close-studymate"]', function (e) {
     };
     ws.send(JSON.stringify(request));
     $('#mCSB_2 #mCSB_2_container div[data-id="' + $(this).attr('data-id') + '"]').remove().html();
+    $('#mCSB_6 #mCSB_6_container div[data-id="' + $(this).attr('data-id') + '"]').remove().html();
     if($('#mCSB_2 #mCSB_2_container .my_studymates .box.general_cred .study_mate').length == 0){
         $('#mCSB_2 #mCSB_2_container .my_studymates .box.general_cred').html('<div class="study_mate"><center><label class="txt_grey txt_red">no studymate found</label></center></div>');
     }
@@ -1580,12 +1583,14 @@ $(document).on('click', 'a[data-type="close"]', function () {
  *   Find studymate with load more.
  */
 $(document).on('click', 'a[data-type="load-activity-more"]', function () {
+    $(this).html('<img src="assets/images/spinner.gif">');
     var request = {
         type: 'load-activity-more',
         to: 'self',
         month: $(this).attr('data-month')
     }
     ws.send(JSON.stringify(request));
+    
 });
 
 $(document).on('click', 'img[data-type="show-profile"],h4[data-type="show-profile"],p[data-type="show-profile"]', function () {
