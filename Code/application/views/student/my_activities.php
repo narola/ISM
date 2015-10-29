@@ -30,6 +30,7 @@
                                                     <div><strong>Discussion</strong><p><?php echo $topic_allcated_value['total_discussion'];?> Comments</p></div>
                                                     <div><strong>Discussion - Score</strong><p>Score :  215</p></div>
                                                     <div><strong>Examination - Quiz</strong><p>Score :  215</p></div>
+                                                    <div><strong>Examination - Quiz</strong><p>Score :  215</p></div>
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
