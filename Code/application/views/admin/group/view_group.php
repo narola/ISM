@@ -150,7 +150,7 @@
                                     <td class="group_rank">01</td>
                                     <td class="group_points"><p><?php if(!empty($group['group_score'])) {echo $group['group_score']; }else{ echo 0; } ?></p><p>4 Assignments</p><p>10 Exams</p></td>
                                     <td>
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Timeline" class="icon icon_timeline"></a>
+                                        <!-- <a href="#" data-toggle="tooltip" data-placement="bottom" title="Timeline" class="icon icon_timeline"></a> -->
                                         
                                         <a href="#" data-toggle="tooltip" data-placement="bottom" title="Books" class="icon icon_books"></a>
                                         
