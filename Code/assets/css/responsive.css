@@ -70,6 +70,10 @@
 		margin: 0 5px 6px 0;
 	}
 	.test_finished svg {
+		-o-transform: rotate(-90deg) scale(0.8) translateY(-16px);
+		-moz-transform: rotate(-90deg) scale(0.8) translateY(-16px);
+		-ms-transform: rotate(-90deg) scale(0.8) translateY(-16px);
+		-webkit-transform: rotate(-90deg) scale(0.8) translateY(-16px);
     	transform: rotate(-90deg) scale(0.8) translateY(-16px);
 	}
 	.test_finished .item_chart:before, .test_finished .item_chart:after{
@@ -332,6 +336,10 @@
 		margin:0;
 	}
 	#circle_process {
+		-o-transform: translateX(-12px);
+		-ms-transform: translateX(-12px);
+		-moz-transform: translateX(-12px);
+		-webkit-transform: translateX(-12px);
 		transform: translateX(-12px);
 	}
 	.item_chart:after, .item_chart:before {
@@ -579,7 +587,11 @@
 		width:34%;
 	}
 	.test_finished svg {
-    	transform: rotate(-90deg) scale(1) translateY(0);
+    	-o-transform: rotate(-90deg) scale(1) translateY(0);
+		-ms-transform: rotate(-90deg) scale(1) translateY(0);
+		-moz-transform: rotate(-90deg) scale(1) translateY(0);
+		-webkit-transform: rotate(-90deg) scale(1) translateY(0);
+		transform: rotate(-90deg) scale(1) translateY(0);
 	}
 	.test_finished .item_chart:before, .test_finished .item_chart:after{
 		height:134px;
@@ -973,7 +985,11 @@
 		float:none !important;
 	}
 	.test_finished svg {
-    	transform: rotate(-90deg) scale(0.8) translateY(-16px);
+    	-o-transform: rotate(-90deg) scale(0.8) translateY(-16px);
+		-ms-transform: rotate(-90deg) scale(0.8) translateY(-16px);
+		-moz-transform: rotate(-90deg) scale(0.8) translateY(-16px);
+		-webkit-transform: rotate(-90deg) scale(0.8) translateY(-16px);
+		transform: rotate(-90deg) scale(0.8) translateY(-16px);
 	}
 	.test_finished .item_chart:before, .test_finished .item_chart:after{
 		height:108px;
@@ -1060,6 +1076,10 @@
 	}
 	
 	#circle_process {
+		-o-transform: translateX(-16px);
+		-ms-transform: translateX(-16px);
+		-moz-transform: translateX(-16px);
+		-webkit-transform: translateX(-16px);
 		transform: translateX(-16px);
 	}
 	.item_chart::after, .item_chart::before {
@@ -1116,6 +1136,10 @@
     	width: 71%;
 	}
 	#circle_process{
+		-o-transform: scale(0.9) translateX(-20px);
+		-ms-transform: scale(0.9) translateX(-20px);
+		-moz-transform: scale(0.9) translateX(-20px);
+		-webkit-transform: scale(0.9) translateX(-20px);
 		transform: scale(0.9) translateX(-20px);
 	}
 	.item_chart::after, .item_chart::before {
