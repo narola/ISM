@@ -44,6 +44,6 @@
     <dimen name="d130dp">130dp</dimen>
     <dimen name="d140dp">140dp</dimen>
     <dimen name="d150dp">150dp</dimen>
-
+    <dimen name="rich_text_editor_height">450dp</dimen>
 
 </resources>

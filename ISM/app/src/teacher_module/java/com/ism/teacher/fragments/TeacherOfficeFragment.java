@@ -169,7 +169,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
                     break;
                 case FRAGMENT_QUIZ:
                     Utils.showToast("teacher quiz",getActivity());
-                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AddAssignmentFragment.newInstance()).commit();
+                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AssignmentAddNewFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_MARK_SCRIPT:
                    // getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherMarkScriptHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_MARKSCRIPT).commit();

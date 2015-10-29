@@ -1,4 +1,4 @@
-package com.ism.author.fragment;
+package com.ism.teacher.fragments;
 
 
 import android.app.Activity;
@@ -18,17 +18,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.author.AuthorHostActivity;
-import com.ism.author.Utility.Utils;
-import com.ism.author.adapter.Adapters;
-import com.ism.author.login.Urls;
-import com.ism.author.model.CreateAssignmentRequest;
-import com.ism.author.model.Data;
-import com.ism.author.model.GetTopicsRequest;
-import com.ism.author.model.ResponseObject;
-import com.ism.author.ws.WebserviceWrapper;
+;
+import com.ism.adapter.Adapters;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
+import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.login.TeacherHomeActivity;
+import com.ism.teacher.model.CreateAssignmentRequest;
+import com.ism.teacher.model.Data;
+import com.ism.teacher.model.GetTopicsRequest;
+import com.ism.teacher.model.ResponseObject;
+import com.ism.teacher.ws.WebserviceWrapper;
 import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
 import com.ism.utility.Utility;
@@ -43,19 +44,19 @@ import jp.wasabeef.richeditor.RichEditor;
 /**
  * Created by c166 on 28/10/15.
  */
-public class TrialActivityFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class AssignmentActivityFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 
-    private static final String TAG = TrialActivityFragment.class.getSimpleName();
+    private static final String TAG = AssignmentActivityFragment.class.getSimpleName();
     private View view;
     private FragmentListener fragListener;
 
-    public static TrialActivityFragment newInstance() {
-        TrialActivityFragment trialActivityFragment = new TrialActivityFragment();
-        return trialActivityFragment;
+    public static AssignmentActivityFragment newInstance() {
+        AssignmentActivityFragment assignmentActivityFragment = new AssignmentActivityFragment();
+        return assignmentActivityFragment;
     }
 
-    public TrialActivityFragment() {
+    public AssignmentActivityFragment() {
         // Required empty public constructor
     }
 
@@ -206,7 +207,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(TrialAddNewFragment.FRAGMENT_TRIAL_ACTIVITY);
+               // fragListener.onFragmentAttached(TrialAddNewFragment.FRAGMENT_ASSIGNMENT_ACTIVITY);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -218,7 +219,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(TrialAddNewFragment.FRAGMENT_TRIAL_ACTIVITY);
+              //  fragListener.onFragmentDetached(TrialAddNewFragment.FRAGMENT_ASSIGNMENT_ACTIVITY);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
@@ -233,10 +234,10 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETCLASSROOMS);
             } catch (Exception e) {
-                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+             //   Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
@@ -248,10 +249,10 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETSUBJECT);
             } catch (Exception e) {
-                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+               // Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
@@ -265,10 +266,10 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
                 new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETTOPICS);
             } catch (Exception e) {
-                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+              //  Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
@@ -280,7 +281,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
             try {
 
                 CreateAssignmentRequest createAssignmentRequest = new CreateAssignmentRequest();
-                createAssignmentRequest.setUser_id(Urls.TEST_USER_ID);
+                createAssignmentRequest.setUser_id(AppConstant.TEST_USER_ID);
                 createAssignmentRequest.setSubmission_date(strDob);
                 createAssignmentRequest.setClassroom_id(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0);
@@ -295,10 +296,10 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
                 new WebserviceWrapper(getActivity(), createAssignmentRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.CREATEASSIGNMENT);
             } catch (Exception e) {
-                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+//                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
@@ -327,7 +328,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
         if (arrListClassRooms != null && arrListClassRooms.size() == 0 || spActivityClass.getSelectedItemPosition() > 0) {
             return true;
         } else {
-            strValidationMsg += getString(R.string.msg_validation_set_classroom);
+            strValidationMsg += getActivity().getResources().getString(R.string.msg_validation_set_classroom);
             return false;
         }
     }
@@ -368,13 +369,13 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
             if (apiMethodName == WebserviceWrapper.GETCLASSROOMS) {
 
                 ResponseObject callGetClassRoomsResponseObject = (ResponseObject) object;
-                if (callGetClassRoomsResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && callGetClassRoomsResponseObject != null) {
+                if (callGetClassRoomsResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetClassRoomsResponseObject != null) {
                     arrListClassRooms = new ArrayList<Data>();
                     arrListClassRooms.addAll(callGetClassRoomsResponseObject.getData());
                     List<String> classrooms = new ArrayList<String>();
                     classrooms.add(getString(R.string.select));
                     for (Data classroom : arrListClassRooms) {
-                        classrooms.add(classroom.getClassName());
+                        classrooms.add(classroom.getClass_name());
 
                     }
                     Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms);
@@ -387,14 +388,14 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
             } else if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
 
                 ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
-                if (callGetSubjectResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
+                if (callGetSubjectResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
 
                     arrListSubject = new ArrayList<Data>();
                     arrListSubject.addAll(callGetSubjectResponseObject.getData());
                     List<String> subjects = new ArrayList<String>();
                     subjects.add(getString(R.string.select));
                     for (Data subject : arrListSubject) {
-                        subjects.add(subject.getSubjectName());
+                        subjects.add(subject.getSubject_name());
 
                     }
 
@@ -407,14 +408,14 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
             } else if (apiMethodName == WebserviceWrapper.GETTOPICS) {
 
                 ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
-                if (callGetTopicsResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
+                if (callGetTopicsResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
 
                     arrListTopic = new ArrayList<Data>();
                     arrListTopic.addAll(callGetTopicsResponseObject.getData());
                     List<String> topics = new ArrayList<String>();
                     topics.add(getString(R.string.select));
                     for (Data topic : arrListTopic) {
-                        topics.add(topic.getTopicName());
+                        topics.add(topic.getTopic_name());
 
                     }
                     Adapters.setUpSpinner(getActivity(), spActivityTopic, topics);
@@ -427,7 +428,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
 
             } else if (apiMethodName == WebserviceWrapper.CREATEASSIGNMENT) {
                 ResponseObject createAssignmentResponseObject = (ResponseObject) object;
-                if (createAssignmentResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && createAssignmentResponseObject != null) {
+                if (createAssignmentResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && createAssignmentResponseObject != null) {
                     backToTrialScreen();
                     Utils.showToast(createAssignmentResponseObject.getMessage(), getActivity());
 
@@ -439,7 +440,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
 
 
         } catch (Exception e) {
-            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+//            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
         }
     }
 
@@ -470,7 +471,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
 
     private void backToTrialScreen() {
 
-        ((AuthorHostActivity) getActivity()).onBackPressed();
+        ((TeacherHomeActivity) getActivity()).onBackPressed();
     }
 
 
