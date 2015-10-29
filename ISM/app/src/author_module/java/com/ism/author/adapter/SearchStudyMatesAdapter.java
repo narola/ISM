@@ -16,7 +16,7 @@ import com.ism.author.model.Data;
 import java.util.ArrayList;
 
 /**
- * Created by c166 on 26/10/15.
+ * these adapter class is for getting studymates to tag them.
  */
 public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMatesAdapter.ViewHolder> {
 
@@ -75,11 +75,11 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
     }
 
     public void addAll(ArrayList<Data> data) {
-
         try {
 
             this.listOfStudyMates.clear();
             this.listOfStudyMates.addAll(data);
+            this.copyListOfStudyMates = data;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,7 +94,6 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         ImageView imgStudymateDp;
         TextView txtStudymateName;
         CheckBox chkAddusertotag;
@@ -107,6 +106,28 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
             chkAddusertotag = (CheckBox) itemView.findViewById(R.id.chk_addusertotag);
 
         }
+    }
+
+
+    ArrayList<Data> copyListOfStudyMates;
+
+    public void filter(CharSequence charText) {
+        listOfStudyMates.clear();
+
+        if (charText.length() == 0) {
+            listOfStudyMates.addAll(copyListOfStudyMates);
+        } else {
+
+            for (Data wp : copyListOfStudyMates) {
+                if (wp.getFullName().contains(charText)) {
+                    listOfStudyMates.add(wp);
+                }
+            }
+            if (listOfStudyMates.size() == 0) {
+//                Utils.showToast(mContext.getString(R.string.strnoresult), mContext);
+            }
+        }
+        notifyDataSetChanged();
     }
 
 }

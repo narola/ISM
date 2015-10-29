@@ -13,7 +13,7 @@ import com.ism.author.model.Data;
 import java.util.ArrayList;
 
 /**
- * these is the postfeedcommentsadapter
+ * these adapter class is for getallthe comments of particular feed
  */
 public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommentsAdapter.ViewHolder> {
 
@@ -43,7 +43,6 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
 
     public void addAll(ArrayList<Data> data) {
-
         try {
             this.listOfComments.clear();
             this.listOfComments.addAll(data);

@@ -250,7 +250,7 @@ public class CreatePostActivity extends Activity implements View.OnClickListener
     }
 
     public void openGallary() {
-         if (isAudio) {
+        if (isAudio) {
             Intent intent_upload = new Intent();
             intent_upload.setType("audio/*");
             intent_upload.setAction(Intent.ACTION_GET_CONTENT);
@@ -290,7 +290,7 @@ public class CreatePostActivity extends Activity implements View.OnClickListener
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            addImage(new MediaFilesModel("isImage",thumbnail,file));
+            addImage(new MediaFilesModel("isImage", thumbnail, file));
 
         } else if (requestCode == MEDIA_TYPE_VIDEO && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
@@ -298,7 +298,7 @@ public class CreatePostActivity extends Activity implements View.OnClickListener
             MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
             mMediaMetadataRetriever.setDataSource(getApplicationContext(), uri);
             bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-            addImage(new MediaFilesModel("isVideo",bitmap, new File(uri.getPath())));
+            addImage(new MediaFilesModel("isVideo", bitmap, new File(uri.getPath())));
             llVideo.setVisibility(View.GONE);
             listViewPost.setVisibility(View.VISIBLE);
         } else if (requestCode == CAPTURE_VIDEO_CODE && resultCode == RESULT_OK) {
@@ -307,21 +307,21 @@ public class CreatePostActivity extends Activity implements View.OnClickListener
             mMediaMetadataRetriever.setDataSource(getApplicationContext(), data
                     .getData());
             bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-            addImage(new MediaFilesModel("isVideo",bitmap, new File(data.getData().getPath())));
+            addImage(new MediaFilesModel("isVideo", bitmap, new File(data.getData().getPath())));
         } else if (requestCode == MEDIA_TYPE_AUDIO && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
 
             MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
             mMediaMetadataRetriever.setDataSource(getApplicationContext(), uri);
             bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-            addImage(new MediaFilesModel("isAudio",bitmap, new File(uri.getPath())));
+            addImage(new MediaFilesModel("isAudio", bitmap, new File(uri.getPath())));
         } else if (requestCode == RECORD_AUDIO && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
 
             MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
             mMediaMetadataRetriever.setDataSource(getApplicationContext(), uri);
             bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-            addImage(new MediaFilesModel("isAudio",bitmap, new File(uri.getPath())));
+            addImage(new MediaFilesModel("isAudio", bitmap, new File(uri.getPath())));
         }
     }
 
@@ -500,7 +500,7 @@ public class CreatePostActivity extends Activity implements View.OnClickListener
                 llImage.setVisibility(View.VISIBLE);
                 llAudio.setVisibility(View.GONE);
                 llVideo.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(),"Visible",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Visible", Toast.LENGTH_SHORT).show();
             }
             break;
             case R.id.txt_video: {
@@ -534,7 +534,7 @@ public class CreatePostActivity extends Activity implements View.OnClickListener
             }
             break;
             case R.id.txt_choose_image: {
-                Toast.makeText(getApplicationContext(),"Click",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Click", Toast.LENGTH_SHORT).show();
                 OpenImageGallery();
             }
             break;
@@ -554,7 +554,9 @@ public class CreatePostActivity extends Activity implements View.OnClickListener
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), MEDIA_TYPE_IMAGE);
     }
+
     public void captureVideo() {
+
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         // create a file to save the isVideo
         fileUri = getOutputMediaFileUri(CAPTURE_VIDEO_CODE);

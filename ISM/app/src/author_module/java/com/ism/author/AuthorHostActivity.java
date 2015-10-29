@@ -1,6 +1,8 @@
 package com.ism.author;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -27,6 +29,7 @@ import com.ism.author.fragment.MyFeedsFragment;
 import com.ism.author.fragment.OfficeFragment;
 import com.ism.author.fragment.ProgressReportFragment;
 import com.ism.author.fragment.SetQuizFragment;
+import com.ism.author.fragment.TrialFragment;
 import com.ism.author.rightcontainerfragment.AuthorProfileFragment;
 import com.ism.author.rightcontainerfragment.EventsFragment;
 import com.ism.author.rightcontainerfragment.HighScoreFragment;
@@ -42,7 +45,11 @@ import java.util.ArrayList;
 * */
 public class AuthorHostActivity extends Activity implements FragmentListener {
 
-    private static final String TAG = AuthorHostActivity.class.getName();
+    protected static final String TAG = AuthorHostActivity.class.getName();
+
+
+    FragmentTransaction mFragmentTransaction;
+    FragmentManager mFragmentManager;
 
     RelativeLayout rlControllerTop, rlControllerTopMenu;
     LinearLayout llSearch, llControllerLeft;
@@ -79,6 +86,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_GOTRENDING = 6;
     public static final int FRAGMENT_SETQUIZ = 7;
     public static final int FRAGMENT_PROGRESSREPORT = 8;
+    public static final int FRAGMENT_TRIAL = 9;
 
 
     //these are the right side fragments
@@ -116,6 +124,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
     private void inigGlobal() {
 
+        mFragmentManager = getFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
 
         rlControllerTop = (RelativeLayout) findViewById(R.id.rl_controller_top);
         llSearch = (LinearLayout) findViewById(R.id.ll_search);
@@ -199,12 +209,20 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_HOME:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, HomeFragment.newInstance()).commit();
                     break;
+
                 case FRAGMENT_OFFICE:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, OfficeFragment.newInstance()).commit();
+
+                    mFragmentTransaction = mFragmentManager.beginTransaction();
+                    mFragmentTransaction.add(R.id.fl_fragment_container_main, OfficeFragment.newInstance());
+                    mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_OFFICE));
+                    mFragmentTransaction.commit();
+
                     break;
                 case FRAGMENT_BOOKS:
+
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, BooksFragment.newInstance()).commit();
                     break;
+
                 case FRAGMENT_GOTRENDING:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GoTrendingFragment.newInstance()).commit();
                     break;
@@ -222,6 +240,14 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     break;
                 case FRAGMENT_MYACTIVITY:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyActivityFragment.newInstance()).commit();
+                    break;
+                case FRAGMENT_TRIAL:
+
+                    mFragmentTransaction = mFragmentManager.beginTransaction();
+                    mFragmentTransaction.add(R.id.fl_fragment_container_main, TrialFragment.newInstance());
+                    mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_TRIAL));
+                    mFragmentTransaction.commit();
+
                     break;
             }
 
@@ -279,6 +305,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     txtAction.setText(getString(R.string.straddpost));
                     txtAction.setTextColor(getResources().getColor(R.color.color_orange));
 
+
                     break;
 
                 case FRAGMENT_OFFICE:
@@ -288,7 +315,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     imgOffice.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_office);
                     txtAction.setTextColor(getResources().getColor(R.color.bg_office));
-                    loadControllerTopMenu(controllerTopMenuAuthorOffice);
+//                    loadControllerTopMenu(controllerTopMenuAuthorOffice);
                     break;
 
 
@@ -592,14 +619,18 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     }
 
     public void logOut(View view) {
-
     }
 
     private Activity getActivity() {
-
         return AuthorHostActivity.this;
 
     }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+//        Utils.showToast("The backstack count is" + getFragmentManager().getBackStackEntryCount(), this);
+    }
 }

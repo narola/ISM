@@ -36,6 +36,7 @@ public class Data {
     private String audioLink;
     private String videoLink;
     private String profilePic;
+    private double like;
     private ArrayList<GetAllFeedsComment> commentList;
 
     /*these parameters are of GetStudyMates Response*/
@@ -108,6 +109,14 @@ public class Data {
 
     /*these methods are for getAllfeeds response*/
 
+
+    public double getLike() {
+        return this.like;
+    }
+
+    public void setLike(double like) {
+        this.like = like;
+    }
 
     @JsonProperty("feed_id")
     public String getFeedId() {

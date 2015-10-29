@@ -22,7 +22,6 @@ public class PostFeedsListAdapter extends BaseAdapter {
 
     Context mContext;
     LayoutInflater inflater;
-
     ArrayList<Data> listOfPostFeeds = new ArrayList<Data>();
 
     public PostFeedsListAdapter(Context context) {
@@ -34,13 +33,11 @@ public class PostFeedsListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-
         return listOfPostFeeds.size();
     }
 
     @Override
     public Data getItem(int position) {
-
         return listOfPostFeeds.get(position);
     }
 
@@ -51,7 +48,6 @@ public class PostFeedsListAdapter extends BaseAdapter {
 
 
     public void addAll(ArrayList<Data> data) {
-
         try {
             this.listOfPostFeeds.clear();
             this.listOfPostFeeds.addAll(data);

@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
+
 import com.ism.R;
 
 import java.io.IOException;
@@ -25,8 +26,9 @@ public class MediaFileAdapter extends BaseAdapter {
     private final LayoutInflater inflater;
     ArrayList<MediaFilesModel> arrayList = new ArrayList<>();
     Context context;
-    MediaPlayer mediaPlayer=new MediaPlayer();
+    MediaPlayer mediaPlayer = new MediaPlayer();
     MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+
     public MediaFileAdapter(ArrayList<MediaFilesModel> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
@@ -58,7 +60,7 @@ public class MediaFileAdapter extends BaseAdapter {
         imageView.setVisibility(View.VISIBLE);
         Log.e("File", "" + arrayList.get(position).getUriFile());
         if (arrayList.get(position).getStrFileType().equals("isImage")) {
-            if (arrayList.get(position).getBitmap()!=null) {
+            if (arrayList.get(position).getBitmap() != null) {
                 imageView.setImageBitmap(arrayList.get(position).getBitmap());
                 txtClose.setVisibility(View.VISIBLE);
             }
@@ -72,20 +74,20 @@ public class MediaFileAdapter extends BaseAdapter {
         } else if (arrayList.get(position).getStrFileType().equals("isVideo")) {
             imageView.setImageBitmap(arrayList.get(position).getBitmap());
             txtClose.setVisibility(View.VISIBLE);
-            MediaPlayer mediaPlayer=new MediaPlayer();
+            MediaPlayer mediaPlayer = new MediaPlayer();
             try {
                 mediaPlayer.setDataSource(context, Uri.fromFile(arrayList.get(position).getUriFile()));
-                Log.i("TV",mediaPlayer.getDuration()+"");
+                Log.i("TV", mediaPlayer.getDuration() + "");
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-           videoIndicator.setText(mediaPlayer.getDuration()+"");
-           videoIndicator.setVisibility(View.VISIBLE);
+            videoIndicator.setText(mediaPlayer.getDuration() + "");
+            videoIndicator.setVisibility(View.VISIBLE);
 
         } else if (arrayList.get(position).getStrFileType().equals("isAudio")) {
             txtClose.setVisibility(View.VISIBLE);
-            MediaPlayer mediaPlayer=new MediaPlayer();
+            MediaPlayer mediaPlayer = new MediaPlayer();
             try {
                 mediaPlayer.setDataSource(context, Uri.fromFile(arrayList.get(position).getUriFile()));
                 mediaPlayer.getDuration();
@@ -99,7 +101,7 @@ public class MediaFileAdapter extends BaseAdapter {
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
-            videoIndicator.setText(mediaPlayer.getDuration()+"");
+            videoIndicator.setText(mediaPlayer.getDuration() + "");
             videoIndicator.setVisibility(View.VISIBLE);
             imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.ic_launcher));
         }
@@ -109,12 +111,12 @@ public class MediaFileAdapter extends BaseAdapter {
                 Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
             }
         });
-txtClose.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        arrayList.remove(position);
-    }
-});
+        txtClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrayList.remove(position);
+            }
+        });
         return convertView;
     }
 }

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.author.AuthorHostActivity;
+import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.PostFeedsAdapter;
 import com.ism.author.dialog.TagUserDialog;
@@ -25,6 +26,7 @@ import com.ism.author.model.AddCommentRequest;
 import com.ism.author.model.Data;
 import com.ism.author.model.GetAllCommentRequest;
 import com.ism.author.model.GetAllFeedsRequest;
+import com.ism.author.model.LikeFeedRequest;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.model.TagFriendInFeedRequest;
 import com.ism.author.ws.WebserviceWrapper;
@@ -115,7 +117,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
         callGetAllPostFeeds();
 
-        postFeedsAdapter = new PostFeedsAdapter(this, viewAllCommetsListener, getActivity());
+        postFeedsAdapter = new PostFeedsAdapter(this, getActivity());
         rvPostFeeds.setAdapter(postFeedsAdapter);
         rvPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -142,6 +144,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
             if (fragListener != null) {
                 fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_HOME);
             }
+//            callLikeFeed();
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
         }
@@ -172,19 +175,14 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
     }
 
-
     private void callGetAllPostFeeds() {
-
-
         if (Utils.isInternetConnected(getActivity())) {
-
             try {
                 GetAllFeedsRequest getAllFeedsRequest = new GetAllFeedsRequest();
-                getAllFeedsRequest.setUser_id("141");
-
+//                getAllFeedsRequest.setUser_id("141");
+                getAllFeedsRequest.setUser_id(Urls.TEST_GET_ALL_FEEDS);
                 new WebserviceWrapper(getActivity(), getAllFeedsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETALLFEEDS);
-
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -193,19 +191,11 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         }
     }
 
-
-    public void callGetAllComments(int position) {
-
-
+    public void callGetAllComments(GetAllCommentRequest getAllCommentRequest) {
         if (Utils.isInternetConnected(getActivity())) {
-
             try {
-                GetAllCommentRequest getAllCommentRequest = new GetAllCommentRequest();
-                getAllCommentRequest.setFeed_id(responseObj.getData().get(position).getFeedId());
-
                 new WebserviceWrapper(getActivity(), getAllCommentRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETALLCOMMENTS);
-
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -214,17 +204,11 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         }
     }
 
-
     public void callAddComment(AddCommentRequest addCommentRequest) {
-
-        AddCommentRequest addComment = addCommentRequest;
-
         if (Utils.isInternetConnected(getActivity())) {
-
             try {
                 new WebserviceWrapper(getActivity(), addCommentRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.ADDCOMMENT);
-
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -234,21 +218,15 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
     }
 
-
-    public void callGetStudyMates(int position) {
+    public void callGetStudyMates() {
 
         if (Utils.isInternetConnected(getActivity())) {
-
             try {
                 GetAllFeedsRequest getAllFeedsRequest = new GetAllFeedsRequest();
-
-//             getAllFeedsRequest.setUser_id(responseObj.getData().get(position).getUserId());
-                getAllFeedsRequest.setUser_id("167");
-
-
+//                getAllFeedsRequest.setUser_id("167");
+                getAllFeedsRequest.setUser_id(Urls.TEST_GETSTUDYMATES);
                 new WebserviceWrapper(getActivity(), getAllFeedsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETSTUDYMATES);
-
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -261,15 +239,47 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     public TagFriendInFeedRequest tagFriendInFeedRequest = new TagFriendInFeedRequest();
 
     public void callTagFriendInFeed() {
-
         if (Utils.isInternetConnected(getActivity())) {
-
             try {
-
-
                 new WebserviceWrapper(getActivity(), tagFriendInFeedRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.TAGFRIENDINFEED);
+            } catch (Exception e) {
+                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utils.showToast(getString(R.string.strnetissue), getActivity());
+        }
 
+    }
+
+
+    String likePrefData, unlikePrefData;
+
+    public void callLikeFeed() {
+
+
+        likePrefData = PreferenceData.getStringPrefs(PreferenceData.LIKE_ID_LIST, getActivity(), "");
+        unlikePrefData = PreferenceData.getStringPrefs(PreferenceData.UNLIKE_ID_LIST, getActivity(), "");
+
+
+        if (Utils.isInternetConnected(getActivity())) {
+            try {
+                LikeFeedRequest likeFeedRequest = new LikeFeedRequest();
+                likeFeedRequest.setUser_id(Urls.TEST_LIKEUSERID);
+
+                if (likePrefData.length() > 0) {
+                    likeFeedRequest.setLiked_id((likePrefData.substring(0, likePrefData.length() - 1)).split(","));
+//                    likeFeedRequest.setLiked_id(new String[]{"61"});
+                }
+
+                if (unlikePrefData.length() > 0) {
+                    likeFeedRequest.setUnliked_id((unlikePrefData.substring(0, unlikePrefData.length() - 1)).split(","));
+//                    likeFeedRequest.setUnliked_id(new String[]{"71", "62"});
+                }
+
+
+                new WebserviceWrapper(getActivity(), likeFeedRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebserviceWrapper.LIKEFEED);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -284,85 +294,57 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
     @Override
     public void onResponse(int apiMethodName, Object object, Exception error) {
-
         try {
-
             if (apiMethodName == WebserviceWrapper.GETALLFEEDS) {
 
                 responseObj = (ResponseObject) object;
-
                 if (responseObj.getStatus().equals(Urls.STATUS_SUCCESS) && responseObj != null) {
-
                     postFeedsAdapter.addAll(responseObj.getData());
-
                 } else {
-                    Toast.makeText(getActivity(), responseObj.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                    Utils.showToast(responseObj.getMessage(), getActivity());
+                }
+
+            } else if (apiMethodName == WebserviceWrapper.GETALLCOMMENTS) {
+
+                ResponseObject getAllCommentsResponseObject = (ResponseObject) object;
+                if (getAllCommentsResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && getAllCommentsResponseObject != null) {
+                    Debug.e(TAG, "The message is::" + getAllCommentsResponseObject.getMessage());
+                    openViewAllCommentsDialog(getAllCommentsResponseObject.getData());
+                } else {
+                    Utils.showToast(getAllCommentsResponseObject.getMessage(), getActivity());
                 }
 
             } else if (apiMethodName == WebserviceWrapper.ADDCOMMENT) {
 
-                ResponseObject commentResponseObject = (ResponseObject) object;
+                ResponseObject addCommentResponseObject = (ResponseObject) object;
+                if (addCommentResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && addCommentResponseObject != null) {
+                    Utils.showToast(addCommentResponseObject.getMessage(), getActivity());
 
-                if (commentResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && commentResponseObject != null) {
-                    Debug.e(TAG, "The message is::" + commentResponseObject.getMessage());
+                    updatePostFeedViewAfterAddComment();
                 } else {
-
-                    Toast.makeText(getActivity(), commentResponseObject.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                    Utils.showToast(addCommentResponseObject.getMessage(), getActivity());
                 }
 
 
             } else if (apiMethodName == WebserviceWrapper.GETSTUDYMATES) {
 
-
                 ResponseObject getStudyMatesResponseObject = (ResponseObject) object;
-
                 if (getStudyMatesResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && getStudyMatesResponseObject != null) {
                     Debug.e(TAG, "The message is::" + getStudyMatesResponseObject.getMessage());
-
                     openTagUserDialog(getStudyMatesResponseObject.getData());
-
-
                 } else {
-
-                    Toast.makeText(getActivity(), getStudyMatesResponseObject.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                    Utils.showToast(getStudyMatesResponseObject.getMessage(), getActivity());
                 }
 
             } else if (apiMethodName == WebserviceWrapper.TAGFRIENDINFEED) {
 
-                ResponseObject getFriendInFeedObject = (ResponseObject) object;
-
-                if (getFriendInFeedObject.getStatus().equals(Urls.STATUS_SUCCESS) && getFriendInFeedObject != null) {
-                    Debug.e(TAG, "The message is::" + getFriendInFeedObject.getMessage());
-
-
-                    Toast.makeText(getActivity(), getFriendInFeedObject.getMessage(),
+                ResponseObject tagFriendInFeedResponseObject = (ResponseObject) object;
+                if (tagFriendInFeedResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && tagFriendInFeedResponseObject != null) {
+                    Debug.e(TAG, "The message is::" + tagFriendInFeedResponseObject.getMessage());
+                    Toast.makeText(getActivity(), tagFriendInFeedResponseObject.getMessage(),
                             Toast.LENGTH_LONG).show();
-
-
                 } else {
-
-                    Toast.makeText(getActivity(), getFriendInFeedObject.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                }
-
-            } else if (apiMethodName == WebserviceWrapper.GETALLCOMMENTS) {
-
-                ResponseObject getAllCommentsObject = (ResponseObject) object;
-
-                if (getAllCommentsObject.getStatus().equals(Urls.STATUS_SUCCESS) && getAllCommentsObject != null) {
-                    Debug.e(TAG, "The message is::" + getAllCommentsObject.getMessage());
-
-
-                    ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseObj.getData());
-                    viewAllCommentsDialog.show();
-
-
-                } else {
-
-                    Toast.makeText(getActivity(), getAllCommentsObject.getMessage(),
+                    Toast.makeText(getActivity(), tagFriendInFeedResponseObject.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
 
@@ -375,22 +357,40 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     }
 
 
-    View.OnClickListener viewAllCommetsListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-//            int position = (Integer) v.getTag();
-//
-//            ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseObj.getData().get(position).getCommentList());
-//            viewAllCommentsDialog.show();
-
-        }
-    };
-
     private void openTagUserDialog(ArrayList<Data> data) {
 
         TagUserDialog tagUserDialog = new TagUserDialog(getActivity(), HomeFragment.this, data);
         tagUserDialog.show();
+
+    }
+
+
+    private void openViewAllCommentsDialog(ArrayList<Data> data) {
+
+        ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), data);
+        viewAllCommentsDialog.show();
+
+    }
+
+
+    int setAddCommentRowPosition;
+
+    public int getSetAddCommentRowPosition() {
+        return setAddCommentRowPosition;
+    }
+
+    public void setSetAddCommentRowPosition(int setAddCommentRowPosition) {
+        this.setAddCommentRowPosition = setAddCommentRowPosition;
+    }
+
+    private void updatePostFeedViewAfterAddComment() {
+        int position = getSetAddCommentRowPosition();
+        responseObj.getData().get(position).setTotalComment(String.valueOf(Integer.parseInt(responseObj.getData().get(position).getTotalComment()) + 1));
+        View v = rvPostFeeds.getChildAt(position);
+        EditText etWriteComment = (EditText) v.findViewById(R.id.et_writeComment);
+        etWriteComment.setText("");
+        postFeedsAdapter.notifyDataSetChanged();
+
 
     }
 
