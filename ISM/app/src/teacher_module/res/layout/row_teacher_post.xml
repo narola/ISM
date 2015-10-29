@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_parent_teacher_post"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/bg_news_feed">
+    android:background="@drawable/bg_news_feed"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d5dp"
-                    android:src="@drawable/image_like" />
+                    android:src="@drawable/bg_image_like" />
 
                 <TextView
                     android:id="@+id/txt_post_like_counter"
@@ -105,7 +104,7 @@
                     android:layout_gravity="right">
 
                     <ImageView
-                        android:id="@+id/img_post_option"
+                        android:id="@+id/img_tag_studymates"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -119,6 +118,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_comment_row_inflater"
         android:layout_width="match_parent"
@@ -127,17 +127,40 @@
 
     </LinearLayout>
 
-
-    <EditText
-        android:id="@+id/et_writePost"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/d10dp"
-        android:layout_marginLeft="@dimen/d15dp"
-        android:layout_marginRight="@dimen/d15dp"
-        android:layout_marginTop="@dimen/d10dp"
-        android:hint="@string/strwriteyourcommenthere"
-        android:padding="@dimen/d15dp"
-        android:textColorHint="@color/color_text_hint"
-        android:background="@drawable/bg_news_feed"/>
+        >
+
+        <EditText
+            android:id="@+id/et_writePost"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d70dp"
+            android:layout_marginBottom="@dimen/d10dp"
+            android:layout_marginLeft="@dimen/d15dp"
+            android:layout_marginRight="@dimen/d15dp"
+            android:layout_marginTop="@dimen/d10dp"
+            android:layout_toLeftOf="@+id/txt_submit_post"
+            android:background="@drawable/bg_news_feed"
+            android:hint="@string/strwriteyourcommenthere"
+            android:padding="15sp"
+            android:textColorHint="@color/color_text_hint" />
+
+        <TextView
+            android:id="@+id/txt_submit_post"
+            android:layout_width="@dimen/d110dp"
+            android:layout_height="@dimen/d60dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/d20dp"
+            android:background="@color/color_dark_gray"
+            android:gravity="center"
+            android:text="Comment"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d20dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+
 </LinearLayout>

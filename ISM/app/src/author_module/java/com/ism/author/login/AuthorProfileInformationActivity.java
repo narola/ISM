@@ -21,9 +21,9 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.author.AuthorHostActivity;
-import com.ism.login.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.InputValidator;
+import com.ism.utility.Utility;
 
 import java.io.IOException;
 
@@ -236,7 +236,7 @@ public class AuthorProfileInformationActivity extends Activity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_suumit: {
-                Global.myIntent(AuthorProfileInformationActivity.this, AuthorHostActivity.class);
+                Utility.launchIntent(AuthorProfileInformationActivity.this, AuthorHostActivity.class);
             }
             break;
             case R.id.ll_imageProfile: {

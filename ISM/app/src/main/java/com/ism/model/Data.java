@@ -6,12 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.json.*;
 
+import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Data {
 
 	private String id;
+	private String credentialId;
 	private String string;
 	private String schoolName;
 	private String courseId;
@@ -27,6 +29,11 @@ public class Data {
     private String countryName;
     private String stateName;
     private String cityName;
+    private String profilePic;
+    private String schoolType;
+    private String fullName;
+
+	private ArrayList<TutorialGroupMembers> tutorialGroupMembers;
 
 	@Override
 	public String toString() {
@@ -46,7 +53,16 @@ public class Data {
         this.id = id;
     }
 
-    @JsonProperty("school_name")
+	@JsonProperty("credential_id")
+	public String getCredentialId() {
+		return credentialId;
+	}
+
+	public void setCredentialId(String credentialId) {
+		this.credentialId = credentialId;
+	}
+
+	@JsonProperty("school_name")
     public String getSchoolName() {
         return this.schoolName;
     }
@@ -170,5 +186,41 @@ public class Data {
 
 	public void setCityName(String cityName) {
 		setString(this.cityName = cityName);
+	}
+
+	@JsonProperty("profile_pic")
+	public String getProfilePic() {
+		return profilePic;
+	}
+
+	public void setProfilePic(String profilePic) {
+		this.profilePic = profilePic;
+	}
+
+	@JsonProperty("school_type")
+	public String getSchoolType() {
+		return schoolType;
+	}
+
+	public void setSchoolType(String schoolType) {
+		this.schoolType = schoolType;
+	}
+
+	@JsonProperty("full_name")
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	@JsonProperty("tutorial_group_members")
+	public ArrayList<TutorialGroupMembers> getTutorialGroupMembers() {
+		return this.tutorialGroupMembers;
+	}
+
+	public void setTutorialGroupMembers(ArrayList<TutorialGroupMembers> tutorialGroupMembers) {
+		this.tutorialGroupMembers = tutorialGroupMembers;
 	}
 }

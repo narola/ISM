@@ -21,7 +21,12 @@ public class WebserviceWrapper {
     //	Webservice flags
     public static final int LOGIN = 0;
     public static final int GET_ALL_FEEDS = 1;
-    public static int API_METHOD_NAME ;
+    public static final int ADD_COMMENTS = 2;
+    public static final int GET_ALL_COMMENTS = 3;
+    public static final int GET_STUDYMATES = 4;
+    public static final int TAG_FRIEND_IN_FEED = 5;
+    public static final int LIKE_FEED = 6;
+    public static int API_METHOD_NAME;
 
 
     public interface WebserviceResponse {
@@ -55,13 +60,33 @@ public class WebserviceWrapper {
                 API_METHOD_NAME = params[0];
                 switch (params[0]) {
                     case LOGIN:
-//						res = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObj.class, requestObject);
                         responseObject = new RequestWs().getRequest(AppConstant.URL_LOGIN, ResponseObject.class, requestObject);
                         break;
 
                     case GET_ALL_FEEDS:
                         responseObject = new RequestWs().getRequest(AppConstant.URL_GET_ALL_FEEDS, ResponseObject.class, requestObject);
                         break;
+
+                    case ADD_COMMENTS:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_ADD_COMMENT, ResponseObject.class, requestObject);
+                        break;
+
+                    case GET_ALL_COMMENTS:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_GET_ALL_COMMENTS, ResponseObject.class, requestObject);
+                        break;
+
+                    case GET_STUDYMATES:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_GET_STUDYMATES, ResponseObject.class, requestObject);
+                        break;
+
+                    case TAG_FRIEND_IN_FEED:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_TAG_FRIEND_IN_FEED, ResponseObject.class, requestObject);
+                        break;
+
+                    case LIKE_FEED:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_LIKE_FEED, ResponseObject.class, requestObject);
+                        break;
+
                 }
             } catch (Exception e) {
                 Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());

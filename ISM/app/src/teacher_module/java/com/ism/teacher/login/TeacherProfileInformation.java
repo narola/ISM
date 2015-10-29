@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.adapter.CustomSpinnerAdapter;
-import com.ism.login.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.InputValidator;
+import com.ism.utility.Utility;
 
 /**
  * Created by c75 on 15/10/15.
@@ -154,9 +154,9 @@ public class TeacherProfileInformation extends Activity implements View.OnClickL
 
         if (view == btnSubmit) {
 //            if (isTextFieldsInputsValid()) {
-//                Global.myIntent(TeacherProfileInformation.this, TeacherHomeActivity.class);
+//                Global.launchIntent(TeacherProfileInformation.this, TeacherHomeActivity.class);
 //            }
-            Global.myIntent(TeacherProfileInformation.this, TeacherHomeActivity.class);
+            Utility.launchIntent(TeacherProfileInformation.this, TeacherHomeActivity.class);
 
         } else if (view == llUploadProfilePic) {
 

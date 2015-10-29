@@ -10,6 +10,7 @@ public class ResponseObject {
 
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
+    public static final String DUPLICATE_ENTRY = "Duplicate entry";
 
     public String getMessage() {
         return this.message;

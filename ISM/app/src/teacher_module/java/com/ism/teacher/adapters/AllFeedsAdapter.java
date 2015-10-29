@@ -1,5 +1,6 @@
 package com.ism.teacher.adapters;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.teacher.fragments.TeacherHomeFragment;
+import com.ism.teacher.helper.PreferenceData;
+import com.ism.teacher.model.AddCommentRequest;
 import com.ism.teacher.model.Comment;
 import com.ism.teacher.model.Data;
+import com.ism.teacher.model.FeedIdRequest;
 
 import java.util.ArrayList;
 
@@ -24,14 +29,31 @@ public class AllFeedsAdapter extends
 
     ArrayList<Data> arrayListAllFeedsData;
     Comment objComment;
-
-
     Context context;
+
+    Fragment fragment;
+    View.OnClickListener viewAllCommetsListener;
+    String likePrefData, unlikePrefData;
 
     public AllFeedsAdapter(Context context, ArrayList<Data> data) {
         this.context = context;
         arrayListAllFeedsData = new ArrayList<>();
         arrayListAllFeedsData = data;
+    }
+
+    public AllFeedsAdapter(Context context, ArrayList<Data> data, View.OnClickListener viewAllCommetsListener, Fragment fragment) {
+        this.context = context;
+        arrayListAllFeedsData = new ArrayList<>();
+        arrayListAllFeedsData = data;
+        this.viewAllCommetsListener = viewAllCommetsListener;
+        this.fragment = fragment;
+    }
+
+    public AllFeedsAdapter(Context context, ArrayList<Data> data, Fragment fragment) {
+        this.context = context;
+        arrayListAllFeedsData = new ArrayList<>();
+        arrayListAllFeedsData = data;
+        this.fragment = fragment;
     }
 
     /**
@@ -55,50 +77,143 @@ public class AllFeedsAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(AllFeedsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final AllFeedsAdapter.ViewHolder holder, final int position) {
 
         holder.txtUsernamePostCreator.setText(arrayListAllFeedsData.get(position).getFull_name());
         holder.txtPostContent.setText(arrayListAllFeedsData.get(position).getFeed_text());
         holder.txtPostLikeCounter.setText(arrayListAllFeedsData.get(position).getTotal_like());
         holder.txtPostCommentsCounter.setText(arrayListAllFeedsData.get(position).getTotal_comment());
 
-        if (arrayListAllFeedsData.get(position).getComment().size() > 0) {
+
+        if (arrayListAllFeedsData.get(position).getLike() == 1) {
+            holder.imgLikePost.setSelected(true);
+        } else {
+            holder.imgLikePost.setSelected(false);
+        }
+
+        holder.llCommentRowInflater.removeAllViews();
 
 
-            if (arrayListAllFeedsData.get(position).getComment().size() > 2) {
-                for (int i = 0; i < 2; i++) {
+        if (holder.llCommentRowInflater.getChildCount() == 0) {
+            for (int i = 0; i < arrayListAllFeedsData.get(position).getCommentList().size(); i++) {
 
-                    objComment = arrayListAllFeedsData.get(position).getComment().get(i);
+                if (i <= 1) {
+                    View v = getCommentInflaterView(arrayListAllFeedsData.get(position).getCommentList().get(i));
+                    holder.llCommentRowInflater.addView(v);
 
-//                    if (getCommentInflaterView(objComment) == null) {
-//                        holder.llCommentRowInflater.addView(getCommentInflaterView(objComment));
-//                    }
-//                    else {
-//                        holder.llCommentRowInflater.removeAllViews();
-//                    }
-                    holder.llCommentRowInflater.addView(getCommentInflaterView(objComment));
-
+                } else {
+                    break;
                 }
-            } else {
-                for (int i = 0; i < arrayListAllFeedsData.get(position).getComment().size(); i++) {
 
-                    objComment = arrayListAllFeedsData.get(position).getComment().get(i);
-//                    if (getCommentInflaterView(objComment) == null) {
-//                        holder.llCommentRowInflater.addView(getCommentInflaterView(objComment));
-//
-//                    }
-//
-//                    else {
-//                        holder.llCommentRowInflater.removeAllViews();
-//                    }
-                    holder.llCommentRowInflater.addView(getCommentInflaterView(objComment));
-                }
             }
 
         }
 
+        holder.txtViewAllComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FeedIdRequest feedIdRequest = new FeedIdRequest();
+
+                feedIdRequest.setFeed_id(arrayListAllFeedsData.get(position).getFeed_id());
+
+                ((TeacherHomeFragment) fragment).callViewAllCommentsApi(feedIdRequest);
+            }
+        });
+
+
+        holder.txtSubmitPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (arrayListAllFeedsData.size() > 0) {
+
+                    if (validateStringPresence(holder.etWritePost)) {
+                        AddCommentRequest addCommentRequest = new AddCommentRequest();
+
+                        addCommentRequest.setFeed_id(arrayListAllFeedsData.get(position).getFeed_id());
+                        addCommentRequest.setComment_by(arrayListAllFeedsData.get(position).getUser_id());
+                        addCommentRequest.setComment(holder.etWritePost.getText().toString());
+
+                        ((TeacherHomeFragment) fragment).callAddCommentApi(addCommentRequest);
+                        ((TeacherHomeFragment) fragment).setSetAddCommentRowPosition(position);
+                    }
+
+                }
+            }
+        });
+
+
+        holder.imgTagStudymates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((TeacherHomeFragment) fragment).tagFriendInFeedRequest.setFeed_id("240");
+                ((TeacherHomeFragment) fragment).tagFriendInFeedRequest.setTagged_by("134");
+                ((TeacherHomeFragment) fragment).callGetStudyMates();
+
+            }
+
+        });
+
+
+        holder.imgLikePost.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View view) {
+                likePrefData = PreferenceData.getStringPrefs(PreferenceData.LIKE_ID_LIST, context);
+                unlikePrefData = PreferenceData.getStringPrefs(PreferenceData.UNLIKE_ID_LIST, context);
+
+                holder.imgLikePost.setSelected(!holder.imgLikePost.isSelected());
+
+                if (holder.imgLikePost.isSelected()) {
+                    arrayListAllFeedsData.get(position).setLike(1);
+                    arrayListAllFeedsData.get(position).setTotal_like(String.valueOf(Integer.parseInt(arrayListAllFeedsData.get(position).getTotal_like()) + 1));
+
+                    setPrefForLike(arrayListAllFeedsData.get(position).getFeed_id() + ",");
+                } else {
+                    arrayListAllFeedsData.get(position).setLike(0);
+                    arrayListAllFeedsData.get(position).setTotal_like(String.valueOf(Integer.parseInt(arrayListAllFeedsData.get(position).getTotal_like()) - 1));
+
+                    setPrefForUnlike(arrayListAllFeedsData.get(position).getFeed_id() + ",");
+
+                }
+                notifyDataSetChanged();
+            }
+
+        });
+
 
     }
+
+    public void setPrefForLike(String feed_id) {
+
+        PreferenceData.setStringPrefs(PreferenceData.LIKE_ID_LIST, context, likePrefData + feed_id);
+        if (unlikePrefData != null && unlikePrefData.length() > 0) {
+            PreferenceData.setStringPrefs(PreferenceData.UNLIKE_ID_LIST, context, unlikePrefData.replaceAll(feed_id, ""));
+        }
+
+    }
+
+    public void setPrefForUnlike(String feed_id) {
+
+        PreferenceData.setStringPrefs(PreferenceData.UNLIKE_ID_LIST, context, unlikePrefData + feed_id);
+        if (likePrefData != null && likePrefData.length() > 0) {
+            PreferenceData.setStringPrefs(PreferenceData.LIKE_ID_LIST, context, likePrefData.replaceAll(feed_id, ""));
+        }
+
+    }
+
+    public boolean validateStringPresence(EditText editText) {
+        if (editText.getText() == null
+                || editText.getText().toString().trim().length() == 0) {
+            return false;
+        } else {
+            editText.setError(null);
+            return true;
+        }
+    }
+
 
     private View getCommentInflaterView(Comment commentData) {
 
@@ -130,9 +245,9 @@ public class AllFeedsAdapter extends
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        public TextView txtUsernamePostCreator, txtPostContent, txtPostLikeCounter, txtPostCommentsCounter, txtViewAllComments;
+        public TextView txtUsernamePostCreator, txtPostContent, txtPostLikeCounter, txtPostCommentsCounter, txtViewAllComments, txtSubmitPost;
         public EditText etWritePost;
-        public ImageView imgDpPostCreator;
+        public ImageView imgDpPostCreator, imgTagStudymates, imgLikePost, imgComments;
         public LinearLayout llParentTeacherPost, llCommentRowInflater;
 
         // We also create a constructor that accepts the entire item row
@@ -151,6 +266,10 @@ public class AllFeedsAdapter extends
             txtPostCommentsCounter = (TextView) itemView.findViewById(R.id.txt_post_comments_counter);
             txtViewAllComments = (TextView) itemView.findViewById(R.id.txt_view_all_comments);
             etWritePost = (EditText) itemView.findViewById(R.id.et_writePost);
+            txtSubmitPost = (TextView) itemView.findViewById(R.id.txt_submit_post);
+            imgTagStudymates = (ImageView) itemView.findViewById(R.id.img_tag_studymates);
+            imgLikePost = (ImageView) itemView.findViewById(R.id.img_like_post);
+            imgComments = (ImageView) itemView.findViewById(R.id.img_comments);
         }
 
 

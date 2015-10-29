@@ -35,8 +35,8 @@ public class AppConstant {
     public static final String RalewayThinItalic = "Raleway-ThinItalic.ttf";
 
     public static final String USERID = "USERID";
-
     public static final String PASSWORD = "PASSWORD";
+    public static final String API_STATUS_SUCCESS = "success";
 
     public static final String imageCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Images";
     public static final String videoCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
@@ -48,18 +48,21 @@ public class AppConstant {
     private static final String URL_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_LOGIN = URL_HOST + "AuthenticateUser";
 
-    public static final String URL_GET_ALL_FEEDS = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=GetAllFeeds";
 
-    /**
-     * Hide Keyboard
-     *
-     * @param mContext
-     */
-    public static void hideKeyboard(Context mContext) {
+    public static final String URL_GET_ALL_FEEDS = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=GetAllFeeds";
+    public static final String URL_GET_ALL_COMMENTS = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=GetAllComments";
+    public static final String URL_GET_STUDYMATES = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=GetStudymates";
+    public static final String URL_ADD_COMMENT = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=AddComment";
+    public static final String URL_TAG_FRIEND_IN_FEED = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=TagFriendInFeed";
+    public static final String URL_LIKE_FEED = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=LikeFeed";
 
-        InputMethodManager imm = (InputMethodManager) mContext
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(((Activity) mContext).getWindow()
-                .getCurrentFocus().getWindowToken(), 0);
-    }
+
+    public static final String TEST_USER_ID = "370";
+    public static final String TEST_GET_ALL_FEEDS = "141";
+    public static final String TEST_GETSTUDYMATES = "167";
+    public static final String TEST_FEEDID = "240";
+    public static final String TEST_TAGGED_BY = "134";
+    public static final String[] tagUserArray = new String[]{"141", "167"};
+
+
 }

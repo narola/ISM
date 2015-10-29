@@ -71,7 +71,7 @@ public class TrialActivityFragment extends Fragment {
         spActivitySubject = (Spinner) view.findViewById(R.id.sp_activity_subject);
 
     }
-    
+
 
     @Override
     public void onAttach(Activity activity) {
