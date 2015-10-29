@@ -12,18 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.R;
-<<<<<<< HEAD
 import com.ism.object.MyTypeFace;
-import com.ism.teacher.helper.ConnectionDetector;
-import com.ism.teacher.model.LoginRequest;
-import com.ism.teacher.model.ResponseObject;
-=======
-import com.ism.login.Global;
 import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.model.LoginRequest;
 import com.ism.teacher.model.ResponseObject;
-import com.ism.object.MyTypeFace;
->>>>>>> 804140e8d3abf04f1bccebd68043a82c606b7834
 import com.ism.teacher.ws.WebserviceWrapper;
 import com.ism.utility.InputValidator;
 import com.ism.utility.Utility;
