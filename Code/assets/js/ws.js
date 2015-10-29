@@ -266,7 +266,7 @@ $(document).ready(function () {
 /* Check wheather web socket is supported by browser. */
 if ("WebSocket" in window)
 {
-    var ws = new WebSocket("ws://192.168.1.124:9300");
+    var ws = new WebSocket("ws://192.168.1.124:9300?q=12345dgdfgdfg");
 
     ws.onopen = function ()
     {
@@ -410,7 +410,10 @@ if ("WebSocket" in window)
                 time_count = obj.time_to_left;
                 counter = setInterval(timer, 1000);
             }
-            generate_cm(obj);
+            if ($('.upload_loader_whiteboard').is(':visible')) {
+                $('.upload_loader_whiteboard').fadeOut(300);
+            }
+                generate_cm(obj);
         } else if (obj.type == 'like') {
             if (wp == obj.id) {
                 if (obj.message == 'like') {
@@ -1165,7 +1168,7 @@ function generate_post(obj, status) {
     if (typeof (obj.comment) != 'undefined') {
         i = 0;
         $.each(obj.comment, function (index, comment_list) {
-            generate_comment(comment_list,i,true);
+            generate_comment(comment_list, i, true);
             i++;
         });
     }
@@ -1175,21 +1178,21 @@ function generate_post(obj, status) {
 
 
 /* Generate HTML block of feed comment. */
-function generate_comment(obj,i,k) {
+function generate_comment(obj, i, k) {
     str = "";
 
     i = typeof i !== 'undefined' ? i : 0;
     k = typeof k !== 'undefined' ? k : false;
-    
-    if(parseInt(i) > 2){
+
+    if (parseInt(i) > 2) {
         display = 'display:none !important';
         first_three = '';
     }
-    else{
+    else {
         display = '';
         first_three = 'true';
     }
-    str += '<div class="comment" style="' + display +'" data-first="'+ first_three +'" data-id="'+ obj.to +'">';
+    str += '<div class="comment" style="' + display + '" data-first="' + first_three + '" data-id="' + obj.to + '">';
     str += '<div class="user_small_img user_comment">';
     str += '<img src="uploads/' + obj.profile_link + '">';
     str += '</div>';
@@ -1200,10 +1203,10 @@ function generate_comment(obj,i,k) {
     str += '<div class="clearfix"></div>';
     str += '</div>';
     $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments').prepend(str);
-    if(k != true){
-       $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments .comment:nth-child(1)').fadeOut(0).fadeIn(400);
+    if (k != true) {
+        $('#all_feed .box.feeds[data-id="' + obj.to + '"] #feed_comments .comment:nth-child(1)').fadeOut(0).fadeIn(400);
     }
-    
+
 }
 
 /* load more feeds. */
@@ -1604,5 +1607,6 @@ function saveImg(image) {
         data: arr[1],
         to: 'topic'
     }
+    $('.upload_loader_whiteboard').fadeIn(300);
     ws.send(JSON.stringify(request));
 }
