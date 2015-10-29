@@ -2017,6 +2017,10 @@ ul.tut_weekdays {
 	font-size:18px;
 }
 .time_chart svg {
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
     transform: rotate(-90deg);
 }
 .circle_animation {
@@ -2609,6 +2613,10 @@ ul.tut_weekdays {
     position: relative;
     top: 2px;
     left: 2px;
+	-webkit-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
     transform: rotate(90deg);
 }
 .emoticons{
@@ -2964,6 +2972,10 @@ textarea {
 	border-right:1px solid rgba(0,0,0,0.07);
 }
 .test_finished svg{
+	-ms-transform:rotate(-90deg);
+	-moz-transform:rotate(-90deg);
+	-webkit-transform:rotate(-90deg);
+	-o-transform:rotate(-90deg);
 	transform:rotate(-90deg);
 }
 .test_finished .item_chart:before{
@@ -3992,6 +4004,10 @@ a.expand_ques + .row{
 	width:100%;
 }
 .item_chart.css > #test_finished{
+	-moz-transform:rotate(90deg);
+	-o-transform:rotate(90deg);
+	-ms-transform:rotate(90deg);
+	-webkit-transform:rotate(90deg);
 	transform:rotate(90deg);
 }
 .my_info .profile .user_profile_img {
