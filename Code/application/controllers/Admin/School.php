@@ -205,8 +205,19 @@ class School extends ADMIN_Controller {
                 "is_delete" => 0,
             );
 
-            insert(TBL_SCHOOLS, $data);  // insert data into database using common_model.php and cms_helper.php
-
+           $school_id =  insert(TBL_SCHOOLS, $data);  // insert data into database using common_model.php and cms_helper.php
+           if(!empty($this->input->post("courses"))){
+            $courses = $this->input->post("courses");
+                foreach ($courses as $course_id) {
+                    if($course_id !=0){
+                    $school_course = array(
+                        'school_id'=>$school_id,
+                        'course_id'=>$course_id
+                        );
+                    insert(TBL_SCHOOL_COURSE, $school_course);
+                    }
+                }
+           }
             $this->session->set_flashdata('success', 'Record is Successfully created.');
             redirect('admin/school');
         }

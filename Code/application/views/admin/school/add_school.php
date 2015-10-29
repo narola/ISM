@@ -182,8 +182,7 @@
                         </div>
                          <div class="form-group">
                             <label>Courses</label>
-                            <select class="form-control" name="courses[]" multiple="true">
-                                <option disabled value="0">Select Courses</option>
+                            <select style="height: 150px;" class="form-control multiselect" name="courses[]" multiple="true">
                                 <option value="0"> No Courses</option>
                                 <?php
                                 if (!empty($courses)) {
