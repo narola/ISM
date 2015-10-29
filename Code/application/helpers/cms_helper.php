@@ -530,3 +530,70 @@ function set_session($userid){
         return;
     }
 
+
+/*  Get SUGGESTED + RECOMMENDED studymates
+*   @Auther - KAMLESH POKIYA (KAP).
+
+    Algorithm of find suggested studymate
+    1) get my group id and find all members connected to me in tutorial group
+    2) get the school ids and classroom_id of the member got in step 1
+    3) get the student studying in classroom_id + school_id got in step 2
+    4) all student got in step 3 can be my recommendations.
+*/
+function get_recommended($user_id,$user_group_id){
+    
+    //--get my studymate
+    $my_studymates = studymates($user_id,false);
+    if(!sizeof($my_studymates) > 0)
+            $my_studymates = array('');
+
+    //--get studymate for already requested me.    
+    $request_of = select(TBL_STUDYMATES_REQUEST,null,array('where' => array('request_to_mate_id' => $user_id,'is_delete'=>0)));
+    $already_request = array();
+    foreach ($request_of as $key => $value) {
+        $already_request[] = $value['request_from_mate_id'];
+    }
+
+    //--merge studymate + requested studymate
+    if(is_array($already_request))
+        $my_studymates = array_merge($my_studymates,$already_request);
+
+    $where = array('where' => array('m.group_id'=>$user_group_id,'in1.user_id !=' => $user_id),'where_not_in'=>array('in1.user_id' => $my_studymates));
+    $options = array('join' => array(
+                array(
+                    'table' => TBL_STUDENT_ACADEMIC_INFO.' in',
+                    'condition' => 'in.user_id = m.user_id',
+                    'join'=>'join'
+                ),
+                array(
+                    'table' => TBL_STUDENT_ACADEMIC_INFO.' in1',
+                    'condition' => 'in.classroom_id = in1.classroom_id and in.course_id = in1.course_id and in.academic_year = in1.academic_year and in.school_id = in1.school_id',
+                    'join'=>'join'
+                ),
+                array(
+                    'table' => TBL_USERS.' u',
+                    'condition' => 'in1.user_id = u.id'
+                ),
+                array(
+                    'table' => TBL_SCHOOLS.' s',
+                    'condition' => 's.id = in.school_id'
+                ),
+                array(
+                    'table' => TBL_COURSES.' c',
+                    'condition' => 'c.id = in1.course_id'
+                ),
+                array(
+                    'table' => TBL_USER_PROFILE_PICTURE.' p',
+                    'condition' => 'u.id = p.user_id'
+                ),
+                array(
+                    'table' => TBL_STUDYMATES_REQUEST.' sr',
+                    'condition' => 'sr.request_from_mate_id='.$user_id.' and sr.request_to_mate_id = in1.user_id and sr.is_delete = 0'
+                ),
+                
+            ),
+    'group_by' => 'in1.user_id'
+        );
+    return select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,p.profile_link,sr.id as srid,sr.is_delete',$where,$options);
+}
+

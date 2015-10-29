@@ -195,10 +195,13 @@ $(document).ready(function () {
 
     /* Validate length of selected file. */
     var handleFileSelect = function (evt) {
+
+
+
         var files = evt.target.files;
         var file = files[0];
         var user = $(this).data('id');
-        var type = $(this).data('type');
+        var types = $(this).data('type');
         var type_of_data = this.files[0].type;
         var file_name = this.files[0].name;
 
@@ -212,12 +215,26 @@ $(document).ready(function () {
                 reader.onload = function (readerEvt) {
                     var binaryString = readerEvt.target.result;
                     var request = {
-                        type: type,
+                        type: types,
                         name: file_name,
                         data_type: type_of_data,
                         data: btoa(binaryString),
                         to: user
                     }
+                    if ($('#feed_post').length > 0) {
+                        $('#feed_post').attr('readonly', 'readonly');
+                        $('button[data-type="post"]').attr('disabled', 'disabled');
+                    }
+
+                    if ($('textarea[data-type="discussion"]').length > 0) {
+                        $('textarea[data-type="discussion"]').attr('readonly', 'readonly');
+                        $('div[data-type="discussion-submit"] button').attr('disabled', 'disabled');
+                    }
+                    if ($('.upload_loader').length > 0) {
+                        $('.upload_loader').fadeIn(400);
+                    }
+
+
                     ws.send(JSON.stringify(request));
                 };
                 reader.readAsBinaryString(file);
@@ -259,7 +276,6 @@ if ("WebSocket" in window)
     ws.onmessage = function (evt)
     {
         var obj = $.parseJSON(evt.data);
-
         if (obj.error != 'skip') {
             $(".alert_notification p").html(obj.error);
             $(".alert_notification").show().delay(3000).fadeOut();
@@ -269,6 +285,21 @@ if ("WebSocket" in window)
             setTimeout(function () {
                 location.reload();
             }, 3000);
+
+        }
+
+        if ($('.upload_loader').length > 0) {
+            $('.upload_loader').fadeOut(400);
+
+            if ($('#feed_post').length > 0) {
+                $('#feed_post').removeAttr('readonly');
+                $('button[data-type="post"]').removeAttr('disabled');
+            }
+
+            if ($('textarea[data-type="discussion"]').length > 0) {
+                $('textarea[data-type="discussion"]').removeAttr('readonly');
+                $('div[data-type="discussion-submit"] button').removeAttr('disabled');
+            }
 
         }
 
@@ -409,13 +440,12 @@ if ("WebSocket" in window)
             $('input[data-type="search-dictionary"]').removeAttr('disabled');
 
         } else if (obj.type == "send_studymate_request") {
-
             if (obj.studymate_id == wp) {
                 cnt = $('.mCSB_container .three_tabs #study_request_cnt').html();
                 if (cnt == 0 || cnt == '')
                     cnt = 1;
                 else
-                    cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() + 1;
+                    cnt = parseInt($('.mCSB_container .three_tabs #study_request_cnt').html()) + 1;
                 $('.mCSB_container .three_tabs #study_request_cnt').html(cnt);
             }
             $('.suggested_mates_card .mate_descrip button[data-id="' + obj.studymate_id + '"]').removeClass('btn_green').attr('disabled', true).addClass('btn_black_normal').html('Request Already Sent');
@@ -464,7 +494,7 @@ if ("WebSocket" in window)
                     notification_str += '<li><a href="#">';
                     notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.user_data.profile_link + '"></div>';
                     notification_str += '<div class="notification_txt">';
-                    notification_str += '<p><span class="noti_username">' + obj.user_data.full_name + '</span> your friend request has been accepted</p>';
+                    notification_str += '<p><span class="noti_username">' + obj.user_data.full_name + '</span> accepted your friend request</p>';
                     notification_str += '<span class="noti_time">1 hour ago</span></div>';
                     notification_str += '<div class="clearfix"></div>';
                     notification_str += '</a></li>';
@@ -480,10 +510,11 @@ if ("WebSocket" in window)
                 if (obj.user_data.id == wp) {
                     cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() - 1;
                     if (cnt == '' || cnt == 0)
-                        $('.mCSB_container .three_tabs #study_request_cnt').remove().html();
+                        $('.mCSB_container .three_tabs #study_request_cnt').html(0);
                     else {
-                        cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() - 1;
-                        $('.mCSB_container .three_tabs .bell_badge').html(cnt);
+//                        cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() - 1;
+                        cnt = $('.mCSB_container .three_tabs #study_request_cnt').html(cnt);
+//                        $('.mCSB_container .three_tabs .bell_badge').html(cnt);
                     }
                 }
             }
@@ -497,12 +528,20 @@ if ("WebSocket" in window)
                 str += '<p>' + obj.school_name + '</p>';
                 str += '<p>' + obj.course_name + '</p><button class="btn btn_green" data-id="' + obj.studymate_id + '" data-type="studyment-request">Add Studymates</button></div></div>';
                 $('.box_body #carousel-studymate .carousel-inner #active-recomonded').append(str);
+                if (obj.user_data.id == wp) {
+                    cnt = $('.mCSB_container .three_tabs #study_request_cnt').html() - 1;
+                    if (cnt == '' || cnt == 0)
+                        $('.mCSB_container .three_tabs #study_request_cnt').html(0);
+                    else {
+                        cnt = $('.mCSB_container .three_tabs #study_request_cnt').html(cnt);
+                    }
+                }
             }
             $('.box_body div[data-id="' + obj.studymate_id + '"]').remove().html();
             cnt = $('.box_body #my_request').length;
             if (cnt == 0)
             {
-                $('#my_request_box').html('<div class="study_mate"><center><label class="txt_grey txt_red">No more studymate request</label></center></div>');
+                $('#my_request_box').html('<div class="study_mate"><center><label class="txt_grey txt_red">no more studymate request</label></center></div>');
             }
 
         } else if (obj.type == 'get_studymate_name') {
@@ -521,7 +560,7 @@ if ("WebSocket" in window)
                 }
                 else if (len == 2) {
                     if (i == 0) {
-                        str += '&nbsp;tagged <label class="label label_name">' + list.name + '</label>';
+                        str += '&nbsp;tagged : <label class="label label_name">' + list.name + '</label>';
                         ids += list.id;
                     } else {
                         str += '&nbsp;and <label class="label label_name">' + list.name + '</label>';
@@ -532,14 +571,14 @@ if ("WebSocket" in window)
                 else if (len > 2) {
 
                     if (j == 0) {
-                        str += '&nbsp;tagged <label class="label label_name">' + list.name + '</label>';
+                        str += '&nbsp;tagged : <label class="label label_name">' + list.name + '</label>';
                         ids += list.id;
                     } else {
                         other_name += list.name + '<div class=\'clearfix\'></div>';
                         l = parseInt(len) - parseInt(1);
                         if (j == l) {
 
-                            str += 'and <label class="label label_name">';
+                            str += '&nbsp;and <label class="label label_name">';
                             str += '<a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover1" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
                             str += '</label>';
                         }
@@ -630,7 +669,7 @@ if ("WebSocket" in window)
                 }
                 else if (len == 2) {
                     if (i == 0) {
-                        str += '&nbsp;tagged <label class="label label_name">' + list.full_name + '</label>';
+                        str += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
                         ids += list.id;
                     } else {
                         str += '&nbsp;and <label class="label label_name">' + list.full_name + '</label>';
@@ -640,7 +679,7 @@ if ("WebSocket" in window)
                 }
                 else if (len > 2) {
                     if (j == 0) {
-                        str += '&nbsp;tagged <label class="label label_name">' + list.full_name + '</label>';
+                        str += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
                         ids += list.id;
                     } else {
                         other_name += list.full_name + '<div class=\'clearfix\'></div>';
@@ -690,7 +729,7 @@ if ("WebSocket" in window)
             if (already != '') {
                 if (wp == obj.id) {
                     $(".alert_notification p").html(already + ' are already tagged');
-                    $(".alert_notification").show().delay(50000).fadeOut();
+                    $(".alert_notification").show().delay(5000).fadeOut();
                 }
             }
         } else if (obj.type == 'study_mate_search' || obj.type == "load-studymate-more") {
@@ -724,7 +763,7 @@ if ("WebSocket" in window)
             }
             else {
                 str += '<div class="text-center">';
-                str += '<label class="txt_grey">No more studymates</label>';
+                str += '<label class="txt_grey txt_red">no more studymates</label>';
                 str += '</div>';
             }
 
@@ -847,8 +886,8 @@ if ("WebSocket" in window)
                 $('a[data-type="load-activity-more"]').attr('data-month', obj.new_month);
             }
             else {
-                $('div[data-type="no-more"]').html('<lable class="txt_grey txt_red">No more activities</label>');
-                $('a[data-type="load-activity-more"]').attr('value', 'No more activities');
+                $('div[data-type="no-more"]').html('<lable class="txt_grey txt_red">no more activities</label>');
+                $('a[data-type="load-activity-more"]').attr('value', 'no more activities');
             }
         }
         else if (obj.type == "show_profile") {
@@ -1042,20 +1081,20 @@ function generate_post(obj, status) {
             }
             else if (len == 2) {
                 if (i == 0) {
-                    name += 'tagged <label class="label label_name">' + list.full_name + '</label>';
+                    name += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
                 } else {
-                    name += 'and <label class="label label_name">' + list.full_name + '</label>';
+                    name += '&nbsp;and : <label class="label label_name">' + list.full_name + '</label>';
                 }
                 i++;
             }
             else if (len > 2) {
                 if (j == 0) {
-                    name += 'tagged <label class="label label_name">' + list.full_name + '</label>';
+                    name += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
                 } else {
                     other_name += list.full_name + '<div class=\'clearfix\'></div>';
                     l = parseInt(len) - parseInt(1);
                     if (j == l) {
-                        name += 'and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover2" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
+                        name += '&nbsp;and <label class="label label_name"><a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover2" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
                         name += '</label>';
                     }
                 }
@@ -1073,7 +1112,7 @@ function generate_post(obj, status) {
                 $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
                 notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
                 if (notification_length == 0) {
-                    notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">No more notification</div></li>');
+                    notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">no more notification</div></li>');
                     $('.mCSB_container .three_tabs .dropdown .badge').html(0);
                 }
                 else {
@@ -1280,7 +1319,6 @@ $(document).on('change', '#action_studymate', function () {
  *   Remove studymate.
  */
 $(document).on('click', 'button[data-type="close-studymate"]', function (e) {
-
     var request = {
         type: 'close_studymate',
         to: 'self',
@@ -1288,14 +1326,17 @@ $(document).on('click', 'button[data-type="close-studymate"]', function (e) {
     };
     ws.send(JSON.stringify(request));
     $('#mCSB_2 #mCSB_2_container div[data-id="' + $(this).attr('data-id') + '"]').remove().html();
-    str = '';
-    str += '<div class="suggested_mates_card">'
-    str += '<div class="mate_user_img"><img src="uploads/' + $(this).attr('data-profile') + '" onerror="this.src=\'assets/images/avatar.png\'"></div>';
-    str += '<div class="mate_descrip"><p class="mate_name">' + $(this).attr('data-name') + '</p>';
-    str += '<p class="mate_following">Folowing 34 Authers</p>';
-    str += '<p>' + $(this).attr('data-school') + '</p>';
-    str += '<p>' + $(this).attr('data-course') + '</p><button class="btn btn_green" data-id="' + $(this).attr('data-id') + '" data-type="studyment-request">Add Studymates</button></div></div>';
-    $('.box_body #carousel-studymate .carousel-inner #active-recomonded').append(str);
+    if($('#mCSB_2 #mCSB_2_container .my_studymates .box.general_cred .study_mate').length == 0){
+        $('#mCSB_2 #mCSB_2_container .my_studymates .box.general_cred').html('<div class="study_mate"><center><label class="txt_grey txt_red">no studymate found</label></center></div>');
+    }
+//    str = '';
+//    str += '<div class="suggested_mates_card">'
+//    str += '<div class="mate_user_img"><img src="uploads/' + $(this).attr('data-profile') + '" onerror="this.src=\'assets/images/avatar.png\'"></div>';
+//    str += '<div class="mate_descrip"><p class="mate_name">' + $(this).attr('data-name') + '</p>';
+//    str += '<p class="mate_following">Folowing 34 Authers</p>';
+//    str += '<p>' + $(this).attr('data-school') + '</p>';
+//    str += '<p>' + $(this).attr('data-course') + '</p><button class="btn btn_green" data-id="' + $(this).attr('data-id') + '" data-type="studyment-request">Add Studymates</button></div></div>';
+//    $('.box_body #carousel-studymate .carousel-inner #active-recomonded').append(str);
 });
 /* Send Request to search from dictionary... */
 $(document).on('keypress', 'input[data-type="search-dictionary"], a[data-type="search-dictionary"]', function (e) {
@@ -1448,17 +1489,6 @@ $(document).on('click', 'button[data-type="class_exam_start_request"]', function
         exam_id: $(this).data('id')
     };
     ws.send(JSON.stringify(request));
-});
-$(document).on('click', 'a[data-type="tag-user-again"]', function () {
-    var request = {
-        type: 'tag-user-again',
-        to: 'all',
-        tagged_id: $('.js-example-basic-single[data-id="' + $(this).data('id') + '"]').val(),
-        fid: $(this).data('id')
-    }
-    ws.send(JSON.stringify(request));
-    $(".js-example-basic-single").select2("val", "");
-    $("#show-again[data-id='" + $(this).data("id") + "']").hide();
 });
 /*
  *   KAMLESH POKIYA (KAP).

@@ -94,6 +94,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     } else if ($data['type'] == 'set_unread') {
         $Server->set_unread($data);
     } else if ($data['type'] == 'decline-request') {
+        echo '12345';
         $responce = $Server->accept_decline_request($Server->wsClients[$clientID][12], $data);
     } else if ($data['type'] == 'single_chat_file') {
         $responce = $Server->save_sent_file($Server->wsClients[$clientID][12], $data);
@@ -183,7 +184,6 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                         break;
                     }
                 }
-                $Server->wsSend($clientID, json_encode($responce));
             } else if ($responce['type'] == 'tag-user-again') {
                 foreach ($Server->wsClients as $id => $client) {
                     if (in_array($Server->wsClients[$id][12], $responce['tagged_id'])) {

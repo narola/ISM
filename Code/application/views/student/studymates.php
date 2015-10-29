@@ -48,7 +48,7 @@
                 else{
                 ?>
                     <div class="study_mate">
-                        <h4>No studymate found...</h4>
+                        <center><label class="txt_grey txt_red">no studymate found...</label></center>
                     </div>
                 <?php
                 }

@@ -61,6 +61,7 @@
 <div class="col-sm-12">
     <div class="box">
         <textarea id="feed_post" type="text" class="form-control post_input" placeholder="SAY IT"></textarea>
+        <div class="upload_loader"></div>
         <!-- <a href="#" class="icon icon_emoji"></a> -->
         <div class="form-group" id="tag-box">
             <div id="tagged-users" style="margin-bottom:10px;">
