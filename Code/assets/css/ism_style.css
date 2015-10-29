@@ -3543,7 +3543,7 @@ ul.ques_numbers {
 	background-color:transparent;
 	color:#1bc4a3;
 }
-.upload_loader{
+.upload_loader,.upload_loader_whiteboard{
 	display: none;
 	background-image: url(../images/spinner.gif);
     height: 24px;
@@ -3552,6 +3552,7 @@ ul.ques_numbers {
     top: 35px;
     background-repeat: no-repeat;
     left: 48%;
+    z-index:999;
 }
 .label_name_default{
 	background-color: rgba(0,0,0,0.05);
@@ -3969,3 +3970,9 @@ a.expand_ques + .row{
 	margin:10px 0;
 }
 
+#frm_class_exam .form-group {
+	width:170px;
+}
+#frm_class_exam .form-group .form-control{
+	width:100%;
+}

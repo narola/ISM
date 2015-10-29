@@ -431,22 +431,6 @@ class PHPWebSocket {
         if (!$mask)
             return false; // close socket, as no mask bit was sent from the client
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
 
@@ -619,23 +603,7 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
+          
 // work out hash to use in Sec-WebSocket-Accept reply header
         $hash = base64_encode(sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
 
@@ -898,8 +866,8 @@ class PHPWebSocket {
     function get_group_member($userID, $add_me = true) {
         $link = $this->db();
         $query = "SELECT `t1`.`user_id` "
-                . "FROM `tutorial_group_member` `t1` "
-                . "LEFT JOIN `tutorial_group_member` `t2` ON `t1`.`group_id` = `t2`.`group_id` "
+                . "FROM `".TBL_TUTORIAL_GROUP_MEMBER."` `t1` "
+                . "LEFT JOIN `".TBL_TUTORIAL_GROUP_MEMBER."` `t2` ON `t1`.`group_id` = `t2`.`group_id` "
                 . "WHERE `t2`.`user_id` = $userID";
         $row = mysqli_query($link, $query);
         $out = array();
@@ -925,7 +893,7 @@ class PHPWebSocket {
      */
     function get_client_info($id) {
         $link = $this->db();
-        $query = "SELECT `u`.`id`,`u`.`full_name`, `upp`.`profile_link`, `u`.`created_date`  FROM `" . TBL_USERS . "` `u` LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `upp` ON `upp`.`user_id` = `u`.`id` WHERE `u`.`id` = $id LIMIT 1";
+        $query = "SELECT `u`.`id`,`u`.`full_name`, `upp`.`profile_link`, `u`.`created_date`  FROM `" . TBL_USERS . "` `u` LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `upp` ON `upp`.`user_id` = `u`.`id` WHERE `u`.`id` = $id `u`.`is_delete` = 0 LIMIT 1";
         $row = mysqli_query($link, $query);
         $count = mysqli_num_rows($row);
         $rows = mysqli_fetch_assoc($row);
@@ -968,7 +936,7 @@ class PHPWebSocket {
      */
     function get_latest_msg($data = null, $userID) {
 
-        $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message`,`uc`.`media_link`,`uc`.`media_type` FROM `" . TBL_USER_CHAT . "` `uc` WHERE (`uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` = $userID) OR (`uc`.`sender_id` = $userID AND `uc`.`receiver_id` = " . $data['my_id'] . ") ORDER BY `uc`.`id` DESC LIMIT 10";
+        $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message`,`uc`.`media_link`,`uc`.`media_type` FROM `" . TBL_USER_CHAT . "` `uc` WHERE (`uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` = $userID) OR (`uc`.`sender_id` = $userID AND `uc`.`receiver_id` = " . $data['my_id'] . ") AND `uc`.`is_delete` = 0 ORDER BY `uc`.`id` DESC LIMIT 10";
         $link = $this->db();
         mysqli_query($link, "UPDATE `" . TBL_USER_CHAT . "` `uc` SET  `uc`.`received_status` = 1  WHERE `uc`.`received_status` = 0 AND `uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` =" . $userID);
         $row = mysqli_query($link, $query);
@@ -1030,7 +998,7 @@ class PHPWebSocket {
         if (is_array($data) && !empty($data)) {
             $link = $this->db();
             $msg = mysqli_escape_string($link, $data['message']); // Feed or comment
-            $query = "INSERT INTO `feeds`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$user_id,'$msg','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
+            $query = "INSERT INTO `".TBL_FEEDS."`(`id`, `feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL,$user_id,'$msg','','',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,NULL,0,'yes')";
             $x = mysqli_query($link, $query);
             $data['post_id'] = mysqli_insert_id($link);
             $data['tot_like'] = 0;
@@ -1063,7 +1031,7 @@ class PHPWebSocket {
                         $t = implode(',', $tagged_array);
                     else
                         $t = '0';
-                    $query = "SELECT id,full_name from users where id in(" . $t . ")";
+                    $query = "SELECT `id`,`full_name` FROM `".TBL_USERS."` WHERE `id` in(" . $t . ") AND is_delete = 0";
                     $rows = mysqli_query($link, $query);
                     $tagged_detail = array();
                     $i = 0;
@@ -1077,7 +1045,7 @@ class PHPWebSocket {
                     $studymates = $this->class_mate_list($user_id);
                     if (is_array($studymates)) {
                         $studymates = implode(',', $studymates);
-                        $query = 'SELECT u.id,u.full_name FROM  users u where u.id in(' . $studymates . ')';
+                        $query = 'SELECT u.id,u.full_name FROM  `'.TBL_USERS.'` u WHERE u.id in(' . $studymates . ') is_delete = 0';
                         $rows = mysqli_query($link, $query);
                         $i = 0;
                         $studymates_detail = array();
@@ -1107,7 +1075,7 @@ class PHPWebSocket {
      */
     function classmate_comment($user_id, $data) {
         $link = $this->db();
-        $query = "SELECT `f`.`feed_by` FROM `" . TBL_FEEDS . "` `f` WHERE `f`.`id` = " . $data['to'] . " LIMIT 1";
+        $query = "SELECT `f`.`feed_by` FROM `" . TBL_FEEDS . "` `f` WHERE `f`.`id` = " . $data['to'] . "  AND is_delete = 0 LIMIT 1";
         $row = mysqli_query($link, $query);
 
 // Check feed must exist on which comment is sent.
@@ -1150,13 +1118,13 @@ class PHPWebSocket {
                 $data['start'] += $limit;
                 $query = "SELECT `f`.`id` as `post_id`, `f`.`feed_by`, `f`.`feed_text` as `message`, `f`.`posted_on`,"
                         . " `u`.`full_name`, `l`.`is_delete` as my_like ,"
-                        . " (select count(*) from " . TBL_FEED_COMMENT . " where feed_id = f.id and is_delete = 0) as tot_comment,"
-                        . " (select count(*) from " . TBL_FEED_LIKE . " where feed_id = f.id and is_delete = 0) as tot_like,"
-                        . " `p`.`profile_link` FROM `" . TBL_FEEDS . "` `f` LEFT JOIN `users` `u` ON `u`.`id` = `f`.`feed_by`"
+                        . " (SELECT COUNT(*) FROM " . TBL_FEED_COMMENT . " WHERE feed_id = f.id and is_delete = 0) AS tot_comment,"
+                        . " (SELECT COUNT(*) FROM " . TBL_FEED_LIKE . " WHERE feed_id = f.id and is_delete = 0) AS tot_like,"
+                        . " `p`.`profile_link` FROM `" . TBL_FEEDS . "` `f` LEFT JOIN `".TBL_USERS."` `u` ON `u`.`id` = `f`.`feed_by`"
                         . " LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `p` ON `u`.`id` = `p`.`user_id`"
                         . " LEFT JOIN `feed_like` `l` ON `l`.`feed_id` = `f`.`id` AND `l`.`like_by` = $user_id "
                         . " WHERE `f`.`is_delete` = 0 AND `f`.`feed_by` IN($ID_in) "
-                        . "ORDER BY `f`.`id` DESC LIMIT " . $data['start'] . "," . $limit;
+                        . " ORDER BY `f`.`id` DESC LIMIT " . $data['start'] . "," . $limit;
                 $row = mysqli_query($link, $query);
                 $all = array();
                 $feed_ids = array();
@@ -1169,16 +1137,16 @@ class PHPWebSocket {
                     $feed_ids = implode(',', $feed_ids);
                     $query = 'SELECT `u`.`id`, `u`.`full_name`, `t`.`feed_id` FROM `' . TBL_FEEDS_TAGGED_USER . '` `t` '
                             . 'LEFT JOIN `' . TBL_USERS . '` `u` ON `u`.`id` = `t`.`user_id` '
-                            . 'WHERE `feed_id` IN(' . $feed_ids . ')';
+                            . 'WHERE `feed_id` IN(' . $feed_ids . ') `t`.`is_delete` = 0';
                     $tag_row = mysqli_query($link, $query);
 
-                    $query = 'SELECT `feed_id` as `to`, `comment` as `message`, `u`.`full_name`, `p`.`profile_link`, fc.created_date'
+                    $query = 'SELECT `feed_id` AS `to`, `comment` AS `message`, `u`.`full_name`, `p`.`profile_link`, fc.created_date'
                             . ' FROM `' . TBL_FEED_COMMENT . '` `fc` LEFT JOIN `' . TBL_USERS . '` `u` ON `u`.`id` = `fc`.`comment_by`'
                             . ' LEFT JOIN `' . TBL_USER_PROFILE_PICTURE . '` `p` ON `u`.`id` = `p`.`user_id`'
-                            . ' WHERE `fc`.`is_delete` =0 AND `feed_id` IN(' . $feed_ids . ')';
+                            . ' WHERE `fc`.`is_delete` = 0 AND `feed_id` IN(' . $feed_ids . ')';
                     $comment_row = mysqli_query($link, $query);
 
-                    $query = "SELECT `feed_id`, `image_link` FROM `feed_image` WHERE `feed_id` IN(" . $feed_ids . ")";
+                    $query = "SELECT `feed_id`, `image_link` FROM `".TBL_FEED_IMAGE."` WHERE `feed_id` IN(" . $feed_ids . ") AND is_delete = 0";
                     $img = mysqli_query($link, $query);
                     $feed_images = array();
                     $i = 0;
@@ -1188,7 +1156,7 @@ class PHPWebSocket {
                         $i++;
                     }
 
-                    $query = 'SELECT u.id,u.full_name FROM  users u where u.id in(' . $ID_in . ')';
+                    $query = 'SELECT `u`.`id`,`u`.`full_name` FROM  `'.TBL_USERS.'` `u` WHERE `u`.`id` in(' . $ID_in . ') AND `u`.`is_delete` = 0';
                     $rows = mysqli_query($link, $query);
                     $i = 0;
                     $studymates_detail = array();
@@ -1255,7 +1223,7 @@ class PHPWebSocket {
      */
     function post_like_unlike($user_id, $data) {
         $link = $this->db();
-        $query = "SELECT `f`.`feed_by` FROM `" . TBL_FEEDS . "` `f` WHERE `f`.`id` = " . $data['fid'] . " LIMIT 1";
+        $query = "SELECT `f`.`feed_by` FROM `" . TBL_FEEDS . "` `f` WHERE `f`.`id` = " . $data['fid'] . " AND `f`.`is_delete` = 0  LIMIT 1";
         $row = mysqli_query($link, $query);
 
         // Check Feed must exist on which user is going to like.
@@ -1265,7 +1233,7 @@ class PHPWebSocket {
 
             // Check user can only like /dislike those post which is added by his classmates.
             if (in_array($user_id, $data['allStudyMate'])) {
-                $query = "SELECT * FROM " . TBL_FEED_LIKE . " WHERE feed_id =" . $data['fid'] . " and like_by=" . $user_id;
+                $query = "SELECT * FROM " . TBL_FEED_LIKE . " WHERE feed_id =" . $data['fid'] . " AND `like_by` = " . $user_id;
                 $row = mysqli_query($link, $query);
                 $row_cnt = $row->num_rows;
 
@@ -1273,10 +1241,10 @@ class PHPWebSocket {
                 if ($row_cnt > 0) {
                     $dt = mysqli_fetch_assoc($row);
                     if ($dt['is_delete'] == 0) {
-                        $query = "update " . TBL_FEED_LIKE . " set is_delete = 1 WHERE feed_id =" . $data['fid'] . " and like_by=" . $user_id;
+                        $query = "UPDATE " . TBL_FEED_LIKE . " SET `is_delete` = 1 WHERE `feed_id` = " . $data['fid'] . " and `like_by` = " . $user_id;
                         $data['message'] = 'unlike';
                     } else {
-                        $query = "update " . TBL_FEED_LIKE . " set is_delete = 0 WHERE feed_id =" . $data['fid'] . " and like_by=" . $user_id;
+                        $query = "UPDATE " . TBL_FEED_LIKE . " SET `is_delete` = 0 WHERE `feed_id` = " . $data['fid'] . " and `like_by` = " . $user_id;
                         $data['message'] = 'like';
                     }
                 } else {
@@ -1285,7 +1253,7 @@ class PHPWebSocket {
                 }
 
                 mysqli_query($link, $query);
-                $query = 'SELECT count(*) cnt FROM ' . TBL_FEED_LIKE . ' where is_delete = 0  AND feed_id=' . $data['fid'];
+                $query = 'SELECT COUNT(*) AS `cnt` FROM ' . TBL_FEED_LIKE . ' WHERE `is_delete` = 0  AND `feed_id` = ' . $data['fid'];
                 $row = mysqli_query($link, $query);
                 $d = mysqli_fetch_assoc($row);
                 $data['like_cnt'] = $d['cnt'];
@@ -1316,7 +1284,10 @@ class PHPWebSocket {
         if (is_array($data) && !empty($data)) {
 
             // Get  score related configuration from admin_config table. And stored into $config variable.
-            $query = "select `ac`.`config_key`,`ac`.`config_value` FROM `" . TBL_ADMIN_CONFIG . "` `ac` WHERE `ac`.`config_key` IN('activeHrFirstCommentScore','activeHoursFirstCommentCount','nonActivehoursScore','spamWordDeduction','activeHoursCommentScore','groupScoreFromIndividual')";
+            $query = "SELECT `ac`.`config_key`,`ac`.`config_value` "
+                    . "FROM `" . TBL_ADMIN_CONFIG . "` `ac` "
+                    . "WHERE `ac`.`config_key` "
+                    . "IN('activeHrFirstCommentScore','activeHoursFirstCommentCount','nonActivehoursScore','spamWordDeduction','activeHoursCommentScore','groupScoreFromIndividual')";
             $row = mysqli_query($link, $query);
             $config = array();
             while ($rows = mysqli_fetch_assoc($row)) {
@@ -1331,7 +1302,10 @@ class PHPWebSocket {
             $query = "SELECT `tm`.`id` as member_id,`tg`.`topic_id`, `tm`.`group_id` "
                     . "FROM  `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `tg` "
                     . "LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER . "` `tm` ON `tm`.`group_id` = `tg`.`group_id` "
-                    . "WHERE `tm`.`user_id` = $userId AND `tg`.`week_no` = $c_week AND YEAR(`tg`.`created_date`) = '$year' LIMIT 1";
+                    . "WHERE `tm`.`user_id` = $userId "
+                    . "AND `tg`.`week_no` = $c_week "
+                    . "AND YEAR(`tg`.`created_date`) = '$year' "
+                    . "AND `tg`.`is_delete` = 0 LIMIT 1";
             $row = mysqli_query($link, $query);
 
             $score = 0;
@@ -1345,6 +1319,7 @@ class PHPWebSocket {
                 $query = "SELECT `td`.`comment_score`,`td`.`sender_id` FROM `" . TBL_TUTORIAL_GROUP_DISCUSSION . "` `td` "
                         . "WHERE `td`.`group_id` = " . $rows['group_id'] . " "
                         . "AND `td`.`topic_id` = " . $rows['topic_id'] . " "
+                        . "AND `td`.`is_delete` = 0 "
                         . "AND date(`td`.`created_date`) = '$current_date' "
                         . "ORDER BY `td`.`id` DESC LIMIT 0,3";
                 $row = mysqli_query($link, $query);
@@ -1374,7 +1349,7 @@ class PHPWebSocket {
                     if ($data['time_to_left'] > 0) {
                         $is_active = 1;
 
-                        $query = "SELECT count(id) as total_count "
+                        $query = "SELECT COUNT(`id`) AS `total_count` "
                                 . "FROM `" . TBL_TUTORIAL_GROUP_DISCUSSION . "` `td` "
                                 . "WHERE date(`created_date`) = '$current_date' AND `td`.`in_active_hours` = 1 ";
                         $row = mysqli_query($link, $query);
@@ -1394,7 +1369,7 @@ class PHPWebSocket {
                     $score = 0;
                 }
                 // Check spam word exist or not. If spam word exist deduct points based on admin_config (spamWordDeduction) value. 
-                $query = "SELECT * FROM `" . TBL_WORD_WATCH . "` `ww`";
+                $query = "SELECT * FROM `" . TBL_WORD_WATCH . "` `ww` AND `ww`.`is_delete` = 0";
                 $row = mysqli_query($link, $query);
                 while ($rowq = mysqli_fetch_assoc($row)) {
                     // Check wherer spam word exist.
@@ -1407,7 +1382,7 @@ class PHPWebSocket {
 
                 $query = "INSERT INTO `ism`.`" . TBL_TUTORIAL_GROUP_DISCUSSION . "` "
                         . "(`id`, `group_id`, `topic_id`, `sender_id`, `comment_score`, `message`, `message_type`, `message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) "
-                        . "VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, $score,'" . $data['message'] . "', '', '', $is_active, '', '', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
+                        . "VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, $score,'" . $data['message'] . "', '', '', $is_active, '', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '0', 'yes')";
                 $x = mysqli_query($link, $query);
                 $data['disscusion_id'] = mysqli_insert_id($link);
 
@@ -1434,19 +1409,20 @@ class PHPWebSocket {
                 }
 
                 // Select latest user score and group score.
-                $query = "SELECT `ts`.`score` as `my_score`,(SELECT SUM(group_score) FROM " . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . " "
-                        . "WHERE group_id = " . $rows['group_id'] . ") as group_score,(SELECT count(`td`.`id`) "
+                $query = "SELECT `ts`.`score` AS `my_score`,(SELECT SUM(group_score) FROM " . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . " "
+                        . "WHERE group_id = " . $rows['group_id'] . ") AS group_score,(SELECT COUNT(`td`.`id`) "
                         . "FROM `" . TBL_TUTORIAL_GROUP_DISCUSSION . "` `td` "
                         . "WHERE `td`.`group_id` = " . $rows['group_id'] . " "
                         . "AND `td`.`topic_id` = " . $rows['topic_id'] . " "
-                        . "AND in_active_hours = 1) as active_count  "
+                        . "AND in_active_hours = 1) AS active_count  "
                         . "FROM `" . TBL_TUTORIAL_TOPIC . "` `t` "
                         . "LEFT JOIN `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `ta` ON `ta`.`topic_id` = `t`.`id` "
                         . "LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER . "` `tm` ON `tm`.`group_id` = `ta`.`group_id` "
                         . "LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER_SCORE . "` `ts` ON `ts`.`member_id` = `tm`.`id` "
                         . "LEFT JOIN `" . TBL_USERS . "` `u` ON `u`.`id` = `t`.`created_by` "
                         . "LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `up` ON `up`.`user_id` = `u`.`id` "
-                        . "WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' AND `ta`.`week_no` = $c_week AND YEAR(`ta`.`created_date`) = '$year'  AND  `tm`.`user_id` = '$userId'";
+                        . "WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' "
+                        . "AND `ta`.`week_no` = $c_week AND YEAR(`ta`.`created_date`) = '$year'  AND  `tm`.`user_id` = '$userId' AND `td`.`is_delete` = 0";
                 $row = mysqli_query($link, $query);
                 $rows = mysqli_fetch_assoc($row);
 
@@ -1570,7 +1546,9 @@ class PHPWebSocket {
 
         // Store current hours and minutes
         $output['system_time'] = $c_full_time = $currenttime['hours'] . ':' . $currenttime['minutes'] . ':' . $currenttime['seconds'];
-        $query = "SELECT `ac`.`config_value`, `ac`.`config_key` FROM `" . TBL_ADMIN_CONFIG . "` `ac` WHERE `ac`.`config_key` IN ('activeHoursStartTime','activeHoursEndTime','questionHrExamStartTime','questionHrExamEndTime')";
+        $query = "SELECT `ac`.`config_value`, `ac`.`config_key` "
+                . "FROM `" . TBL_ADMIN_CONFIG . "` `ac` "
+                . "WHERE `ac`.`config_key` IN ('activeHoursStartTime','activeHoursEndTime','questionHrExamStartTime','questionHrExamEndTime')";
         $row = mysqli_query($link, $query);
         if (mysqli_num_rows($row) == 4) {
             while ($rows = mysqli_fetch_assoc($row)) {
@@ -1680,9 +1658,9 @@ class PHPWebSocket {
      */
     function close_studymate($userid, $data) {
         $link = $this->db();
-        $query = "UPDATE " . TBL_STUDYMATES . " SET is_delete = 1 "
-                . "WHERE (mate_id = " . $userid . " AND mate_of=" . $data['studymate_id'] . ") "
-                . "OR (mate_of = " . $userid . " AND mate_id = " . $data['studymate_id'] . ")";
+        $query = "UPDATE " . TBL_STUDYMATES . " SET `is_delete` = 1 "
+                . "WHERE (`mate_id` = " . $userid . " AND `mate_of`=" . $data['studymate_id'] . ") "
+                . "OR (`mate_of` = " . $userid . " AND `mate_id` = " . $data['studymate_id'] . ")";
         $x = mysqli_query($link, $query);
         if (!$x) {
             $data['to'] = 'self';
@@ -1707,9 +1685,9 @@ class PHPWebSocket {
 
         $query = "SELECT id "
                 . "FROM " . TBL_STUDYMATES_REQUEST . " "
-                . "WHERE request_from_mate_id=" . $userid . " "
-                . "AND request_to_mate_id=" . $data['studymate_id'] . " "
-                . "AND status IN (0,2) AND is_delete = 0";
+                . "WHERE `request_from_mate_id` = " . $userid . " "
+                . "AND `request_to_mate_id` = " . $data['studymate_id'] . " "
+                . "AND `status` IN (0,2) AND `is_delete` = 0";
         $rows = mysqli_query($link, $query);
         $row_cnt = mysqli_num_rows($rows);
         // Studymates request is send or not.
@@ -1721,22 +1699,11 @@ class PHPWebSocket {
                 $where = "`in1`.`user_id` NOT IN(" . implode(',', $studymate) . ")";
             else
                 $where = ' 1=1';
-            $query = "SELECT group_id FROM " . TBL_TUTORIAL_GROUP_MEMBER . " where user_id=" . $userid;
+            $query = "SELECT `group_id` FROM " . TBL_TUTORIAL_GROUP_MEMBER . " WHERE `user_id` = " . $userid ." AND `is_delete` = 0";
             $rows = mysqli_query($link, $query);
             $row = mysqli_fetch_assoc($rows);
             $group_id = $row['group_id'];
 
-            // $query = "SELECT `in1`.`user_id` FROM `" . TBL_TUTORIAL_GROUP_MEMBER . "` `m`"
-            //         . " JOIN `" . TBL_STUDENT_ACADEMIC_INFO . "` `in` ON `in`.`user_id` = `m`.`user_id`"
-            //         . " JOIN `" . TBL_STUDENT_ACADEMIC_INFO . "` `in1` ON `in`.`classroom_id` = `in1`.`classroom_id` and `in`.`course_id` = `in1`.`course_id` and `in`.`academic_year` = `in1`.`academic_year` and `in`.`school_id` = `in1`.`school_id` "
-            //         . " WHERE `m`.`group_id` = " . $group_id . " AND `in1`.`user_id` != " . $userid . " AND $where  "
-            //         . " GROUP BY `in1`.`user_id`";
-            // $rows = mysqli_query($link, $query);
-            // while ($row = mysqli_fetch_assoc($rows)) {
-            //     $all[] = $row['user_id'];
-            // }
-            // Check both request sender and receiver must mathing same studymate list (e.g request receiver must within senders studymates.)
-            // if (in_array($data['studymate_id'], $all)) {
             $query = "INSERT INTO `" . TBL_STUDYMATES_REQUEST . "`"
                     . "(`id`, `request_from_mate_id`, `request_to_mate_id`, `status`, `created_date`, `is_delete`, `is_testdata`) "
                     . "VALUES (NULL,$userid," . $data['studymate_id'] . ",0,CURRENT_TIMESTAMP,0,'yes')";
@@ -1745,18 +1712,13 @@ class PHPWebSocket {
                 $data['to'] = 'self';
                 $data['error'] = 'Unable to save message.! Please try again.';
             } else {
-                $query = "SELECT count(*) as cnt FROM " . TBL_STUDYMATES_REQUEST . " "
-                        . "WHERE request_from_mate_id =" . $data['studymate_id'] . " AND status = 0";
+                $query = "SELECT count(*) AS `cnt` FROM " . TBL_STUDYMATES_REQUEST . " "
+                        . "WHERE `request_from_mate_id` = " . $data['studymate_id'] . " AND `status` = 0";
 
                 $rows = mysqli_query($link, $query);
                 $row = mysqli_fetch_assoc($rows);
                 $data['count'] = $row['cnt'];
             }
-            // } else {
-            //     $data['to'] = 'self';
-            //     $data['error'] = 'Unable to Identify post. Please don\'t modify data manually.';
-            // }
-            // }
         }
         $data['user_id'] = $userid;
         return $data;
@@ -1771,10 +1733,10 @@ class PHPWebSocket {
      */
     function view_all_comment_activities($user_id, $data) {
         $link = $this->db();
-        echo $query = "SELECT *,u.full_name,com.created_date as comment_date FROM " . TBL_FEED_COMMENT . " com "
-        . "LEFT JOIN " . TBL_USER_PROFILE_PICTURE . " p ON com.comment_by = p.user_id "
-        . "LEFT JOIN " . TBL_USERS . " u on u.id = com.comment_by "
-        . "WHERE comment_by=" . $user_id . ' AND com.feed_id=' . $data['comment_id'];
+        echo $query = "SELECT *,`u`.`full_name`,`com`.`created_date` AS `comment_date` FROM " . TBL_FEED_COMMENT . " `com` "
+        . "LEFT JOIN " . TBL_USER_PROFILE_PICTURE . " `p` ON `com`.`comment_by` = `p`.`user_id` "
+        . "LEFT JOIN " . TBL_USERS . " `u` on `u`.`id` = `com`.`comment_by` "
+        . "WHERE `comment_by` = " . $user_id . ' AND `com`.`feed_id` = ' . $data['comment_id']." `com`.`is_delete` = 0 ";
         $row = mysqli_query($link, $query);
         if (mysqli_num_rows($row) > 0) {
             $all = array();
@@ -1819,7 +1781,9 @@ class PHPWebSocket {
         $link = $this->db();
         $data['is_online'] = $this->online_status($data['studymate_id']);
         $query = 'SELECT * FROM ' . TBL_STUDYMATES_REQUEST . ' '
-                . 'WHERE request_to_mate_id=' . $user_id . ' AND request_from_mate_id=' . $data['studymate_id'] . ' AND status in (0,2)';
+                . 'WHERE `request_to_mate_id` = ' . $user_id . ' '
+                . 'AND `request_from_mate_id` = ' . $data['studymate_id'] . ' '
+                . 'AND `status` IN (0,2)';
         $row = mysqli_query($link, $query);
         if (mysqli_num_rows($row) > 0) {
             if ($data['sub_type'] == 'accept-request') {
@@ -1831,8 +1795,8 @@ class PHPWebSocket {
                     $data['to'] = 'self';
                     $data['error'] = 'Unable to save message.! Please try again.';
                 }
-                $query = 'UPDATE ' . TBL_STUDYMATES_REQUEST . ' SET status = 1,is_delete = 1 '
-                        . 'WHERE request_from_mate_id=' . $data['studymate_id'] . ' AND request_to_mate_id=' . $user_id;
+                $query = 'UPDATE ' . TBL_STUDYMATES_REQUEST . ' SET `status` = 1, `is_delete` = 1 '
+                        . 'WHERE `request_from_mate_id` = ' . $data['studymate_id'] . ' AND `request_to_mate_id` = '. $user_id;
                 $x = mysqli_query($link, $query);
                 if (!$x) {
                     $data['to'] = 'self';
@@ -1842,8 +1806,8 @@ class PHPWebSocket {
             }
 
             if ($data['sub_type'] == 'decline-request') {
-                $query = 'UPDATE ' . TBL_STUDYMATES_REQUEST . ' SET is_delete = 1 '
-                        . 'WHERE request_from_mate_id=' . $data['studymate_id'] . ' AND request_to_mate_id=' . $user_id;
+                $query = 'UPDATE ' . TBL_STUDYMATES_REQUEST . ' SET `is_delete` = 1 '
+                        . 'WHERE `request_from_mate_id` = ' . $data['studymate_id'] . ' AND `request_to_mate_id` = ' . $user_id;
                 $x = mysqli_query($link, $query);
                 if (!$x) {
                     $data['to'] = 'self';
@@ -1853,10 +1817,10 @@ class PHPWebSocket {
                 $data['message'] = 'decline';
             }
 
-            $query = 'SELECT u.full_name,s.school_name,c.course_name,p.profile_link FROM ' . TBL_USERS . ' u '
-                    . 'LEFT JOIN ' . TBL_STUDENT_ACADEMIC_INFO . ' info on info.user_id = u.id '
-                    . 'LEFT JOIN ' . TBL_SCHOOLS . ' s ON s.id = info.school_id LEFT JOIN ' . TBL_COURSES . ' c ON c.id = info.course_id '
-                    . 'LEFT JOIN ' . TBL_USER_PROFILE_PICTURE . ' p ON p.user_id = u.id WHERE u.id=' . $data['studymate_id'];
+            $query = 'SELECT `u`.`full_name`,`s`.`school_name`,`c`.`course_name`,`p`.`profile_link` FROM ' . TBL_USERS . ' `u` '
+                    . 'LEFT JOIN ' . TBL_STUDENT_ACADEMIC_INFO . ' `info` ON `info`.`user_id` = `u`.`id` '
+                    . 'LEFT JOIN ' . TBL_SCHOOLS . ' `s` ON `s`.`id` = `info`.`school_id` LEFT JOIN ' . TBL_COURSES . ' `c` ON `c`.`id` = `info`.`course_id` '
+                    . 'LEFT JOIN ' . TBL_USER_PROFILE_PICTURE . ' `p` ON `p`.`user_id` = `u`.`id` WHERE `u`.`id` = ' . $data['studymate_id']." `u`.`is_delete` = 0";
             $row = mysqli_query($link, $query);
             $rows = mysqli_fetch_assoc($row);
             $data['full_name'] = $rows['full_name'];
@@ -1998,11 +1962,13 @@ class PHPWebSocket {
             $c_week = $date->format("W");
             $year = date("Y");
 
-            $query = "SELECT `tm`.`id` as member_id,`tg`.`topic_id`, `tm`.`group_id` FROM  `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `tg` "
+            $query = "SELECT `tm`.`id` as member_id,`tg`.`topic_id`, `tm`.`group_id` "
+                    . "FROM  `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `tg` "
                     . "LEFT JOIN `" . TBL_TUTORIAL_GROUP_MEMBER . "` `tm` ON `tm`.`group_id` = `tg`.`group_id` "
-                    . "WHERE `tm`.`user_id` = $userId AND `tg`.`week_no` = $c_week AND YEAR(`tg`.`created_date`) = '$year' LIMIT 1";
+                    . "WHERE `tm`.`user_id` = $userId "
+                    . "AND `tg`.`week_no` = $c_week "
+                    . "AND YEAR(`tg`.`created_date`) = '$year' AND `tg`.`is_delete` = 0 LIMIT 1";
 
-            // SELECT `t`.`id`, `t`.`topic_name`, `t`.`topic_description`, `t`.`created_date`, `tg`.`group_status`, `ts`.`score` as `my_score`, (SELECT SUM(group_score) FROM tutorial_group_topic_allocation WHERE group_id = tm.group_id) as group_score, `up`.`profile_link`, `u`.`full_name` FROM `tutorial_topic` `t` LEFT JOIN `tutorial_group_topic_allocation` `ta` ON `ta`.`topic_id` = `t`.`id` LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` LEFT JOIN `tutorial_group_member_score` `ts` ON `ts`.`member_id` = `tm`.`id` LEFT JOIN `users` `u` ON `u`.`id` = `t`.`created_by` LEFT JOIN `user_profile_picture` `up` ON `up`.`user_id` = `u`.`id` LEFT JOIN `tutorial_groups` `tg` ON `tg`.`id` = `ta`.`group_id` WHERE `ta`.`group_id` = '92' AND `ta`.`week_no` = '44' AND `tm`.`user_id` = '249' AND YEAR(`ta`.`created_date`) = '2015'
 
             $row = mysqli_query($link, $query);
 
@@ -2014,7 +1980,7 @@ class PHPWebSocket {
                         . "(`id`, `group_id`, `topic_id`, `sender_id`, `comment_score`, `message`, `message_type`, "
                         . "`message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, "
                         . "`is_delete`, `is_testdata`) VALUES "
-                        . "(NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, 0,'', '', '', 0, '" . $data['webpath'] . "', '" . $data['data_type'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes')";
+                        . "(NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, 0,'', '', '', 0, '" . $data['webpath'] . "', '" . $data['data_type'] . "', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '0', 'yes')";
                 $x = mysqli_query($link, $query);
 
                 $data['disscusion_id'] = mysqli_insert_id($link);
@@ -2095,7 +2061,7 @@ class PHPWebSocket {
                     . "LEFT JOIN `tutorial_group_member` `tm` ON `tm`.`group_id` = `ta`.`group_id` "
                     . "LEFT JOIN `tutorial_topic_exam` `te` ON `te`.`tutorial_topic_id` = `ta`.`topic_id` "
                     . "LEFT JOIN `student_exam_score` `ss` ON `ss`.`exam_id` = `te`.`exam_id` AND `ss`.`user_id` = $userID "
-                    . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' LIMIT 1";
+                    . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' AND `t`.`is_delete` = 0 LIMIT 1";
 
             $row = mysqli_query($link, $query);
 

@@ -199,6 +199,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 // when a client connects
 function wsOnOpen($clientID) {
     global $Server;
+    
 }
 
 // when a client closes or lost connection
