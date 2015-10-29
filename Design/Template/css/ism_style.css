@@ -1560,7 +1560,11 @@ ul.exams_holder li a:after{
 .tut_week_heading p{
 	position: absolute;
     margin: 0;
-    transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg); 
+	-webkit-transform:rotate(-90deg); 
+	-moz-transform: rotate(-90deg); 
+	-o-transform:rotate(-90deg);
+	transform: rotate(-90deg);	
     top: 450px;
     left: -10px;
 }
@@ -2082,6 +2086,10 @@ ul.tut_weekdays {
     font-size: 16px;
     text-transform: uppercase;
     position: absolute;
+	-ms-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
     transform: rotate(90deg);
 	text-decoration:none;
 	font-weight:600;
@@ -2743,9 +2751,9 @@ textarea {
 	-webkit-animation:swing .8s linear infinite alternate;
 }
 @keyframes swing{
-	0%{transform:rotate(3deg);}
-	50%{transform:rotate(0deg);}
-	100%{transform:rotate(-3deg);}
+	0%{-ms-transform: rotate(3deg); -webkit-transform:rotate(3deg); -moz-transform: rotate(3deg); -o-transform:rotate(3deg); transform:rotate(3deg);}
+	50%{-ms-transform: rotate(0deg); -webkit-transform:rotate(0deg); -moz-transform: rotate(0deg); -o-transform:rotate(0deg); transform:rotate(0deg);}
+	100%{-ms-transform: rotate(-3deg); -webkit-transform:rotate(-3deg); -moz-transform: rotate(-3deg); -o-transform:rotate(-3deg); transform:rotate(-3deg);}
 }
 
 .page_header h4{
@@ -3536,6 +3544,7 @@ ul.ques_numbers {
 	color:#1bc4a3;
 }
 .upload_loader{
+	display: none;
 	background-image: url(../images/spinner.gif);
     height: 24px;
     width: 24px;
@@ -3790,6 +3799,7 @@ a.expand_ques + .row{
     top: 260px;
     left: 46%;
 }
+
 .our_mission{
 	background-color:#8ec359;
     padding: 20px 0;
@@ -3958,3 +3968,4 @@ a.expand_ques + .row{
 .reg_footer.margin_t15 p{
 	margin:10px 0;
 }
+
