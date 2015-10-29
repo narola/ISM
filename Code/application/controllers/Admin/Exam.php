@@ -127,9 +127,43 @@ class Exam extends ADMIN_Controller {
 	// Add a new item
 	public function add(){
 
-		$this->data['all_subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>FALSE)));
-		$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
-		$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)));		
+		if($_POST){
+
+			$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+			
+			if(!empty($_POST['course_id'])){
+				$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>'0',
+											  'course_id'=>$_POST['course_id'])),null);
+			}else{
+				$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>'0')));
+			}
+			
+			if(!empty($_POST['classroom_id'])){
+
+				$this->data['all_subjects'] = select(TBL_CLASSROOM_SUBJECT,
+												 TBL_CLASSROOM_SUBJECT.'.subject_id as id,sub.subject_name ',
+												 array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$_POST['classroom_id'],
+												 					  'sub.is_delete'=>'0')),
+													array(
+														'join'=>array(
+																	array(
+														    				'table' => TBL_SUBJECTS.' sub',
+														    				'condition' => 'sub.id = '.TBL_CLASSROOM_SUBJECT.'.subject_id',
+																		)
+																	)
+														)
+											 	);
+			}else{
+				$this->data['all_subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>'0')));
+			}
+
+		}else{
+
+			$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
+			$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)));
+			$this->data['all_subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>FALSE)));
+			//p($this->data['all_subjects'],true);
+		}	
 
 		$this->form_validation->set_rules('exam_name', 'Exam Name', 'trim|required|is_unique['.TBL_EXAMS.'.exam_name]');
 		$this->form_validation->set_rules('course_id', 'Course Name', 'trim|required');
@@ -165,7 +199,7 @@ class Exam extends ADMIN_Controller {
 					'instructions' => htmlspecialchars($this->input->post('instructions')),
 					'negative_marking'=>$this->input->post('negative_marking'),
 					'random_question'=>$this->input->post('random_question'),
-					'declare_results'=>$this->input->post('declare_result'),
+					'declare_results'=>$this->input->post('declare_results'),
 					'created_by'=>$this->session->userdata('id')
 				);
 
@@ -181,7 +215,7 @@ class Exam extends ADMIN_Controller {
 			$id = insert(TBL_EXAM_SCHEDULE,$exam_schedule);
 
 			if($button_type == 'set'){
-				redirect('admin/question/set?exam='.$id);	
+				redirect('admin/question/set?exam_id='.$exam_id);	
 			}else{
 				$this->session->set_flashdata('success', 'Exam has been Successfully Created');
 				redirect($this->data['prev_url']);	

@@ -496,8 +496,51 @@ $this->pagination->initialize($config);
 		$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
 		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required');
 		
-		
-		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>0))); // Fetch All Courses From Database
+		if($_POST){
+
+			$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>'0')),null); // Fetch All Courses From Database
+			
+			if(!empty($_POST['course_id'])){
+				$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>'0',
+											  'course_id'=>$_POST['course_id'])),null);
+			}else{
+				$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>'0')));
+			}
+			
+			if(!empty($_POST['classrooms'])){
+
+				$this->data['subjects'] = select(TBL_CLASSROOM_SUBJECT,
+												 TBL_CLASSROOM_SUBJECT.'.subject_id as id,sub.subject_name ',
+												 array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$_POST['classrooms'],
+												 					  'sub.is_delete'=>'0')),
+													array(
+														'join'=>array(
+																	array(
+														    				'table' => TBL_SUBJECTS.' sub',
+														    				'condition' => 'sub.id = '.TBL_CLASSROOM_SUBJECT.'.subject_id',
+																		)
+																	)
+														)
+											 	);
+			}else{
+				$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>'0')));
+			}
+
+			if(!empty($_POST['subjects'])){
+				$this->data['topics'] = select(TBL_TOPICS,FALSE,array('where'=>array('is_delete'=>'0',
+										  'subject_id'=>$_POST['subjects'])));
+			}else{
+				$this->data['topics'] = select(TBL_TOPICS,FALSE,array('where'=>array('is_delete'=>'0')));
+			}	
+
+		}else{
+
+			$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>'0'))); // Fetch All Courses From Database
+			$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>'0')));
+			$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>'0')));
+			$this->data['topics'] = select(TBL_TOPICS,FALSE,array('where'=>array('is_delete'=>'0')));
+		}
+
 		$this->data['page_title'] = 'Add New Topic'; // Set Page Title
 
 		if($this->form_validation->run() == FALSE){
@@ -512,13 +555,14 @@ $this->pagination->initialize($config);
 				 "topic_id"=>$this->input->post('topic_id'),
 				 "evaluation_keywords"=>$this->input->post("keywords"),
 				 "created_by"=>$this->session->userdata('id'),
-				 "classroom_id"=>2,
+				 "classroom_id"=>$this->input->post('classrooms'),
 				 "allocation_count"=>0,
 				 "status"=>"",
 				 "topic_day"=>"Mon",
 				 "is_archived"=>0
 				);
 
+			
 			insert(TBL_TUTORIAL_TOPIC,$data);
 
 			$this->session->set_flashdata('success','Topic has been created.');
@@ -550,12 +594,6 @@ $this->pagination->initialize($config);
 		$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
 		$this->form_validation->set_rules('topic_name', 'Topic Name', 'trim|required');
 
-		$where = array('where'=>array('is_delete'=>'0'));
-		$this->data['courses'] = select(TBL_COURSES,FALSE,$where,null); // Fetch All Courses From Database
-		$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,$where,null);
-		$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,$where,null);
-		$this->data['topics'] = select(TBL_TOPICS,FALSE,$where,null);
-
 		$this->data['tutorial_topic'] = select(
 												TBL_TUTORIAL_TOPIC.' tutorial_topic',
 												'tutorial_topic.id,tutorial_topic.topic_name,tutorial_topic.topic_description,
@@ -565,36 +603,96 @@ $this->pagination->initialize($config);
 												array(
 													'single'=>TRUE,
 													'join'=>array(
-															array(
-																'table'=>TBL_CLASSROOMS.' as classroom',
-																'condition'=>'tutorial_topic.classroom_id=classroom.id'
-															)
+																array(
+																	'table'=>TBL_CLASSROOMS.' as classroom',
+																	'condition'=>'tutorial_topic.classroom_id=classroom.id'
+																)	
 														)
 												)
 											);
+		
 
-		if($this->form_validation->run() == FALSE){
+		if($_POST){
 
-			$this->template->load('admin/default','admin/topic/edit', $this->data);
+			$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>'0')),null); // Fetch All Courses From Database
+			
+			if(!empty($_POST['course_id'])){
+				$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>'0',
+											  'course_id'=>$_POST['course_id'])),null);
+			}else{
+				$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>'0')));
+			}
+			
+			if(!empty($_POST['classrooms'])){
+
+				$this->data['subjects'] = select(TBL_CLASSROOM_SUBJECT,
+												 TBL_CLASSROOM_SUBJECT.'.subject_id as id,sub.subject_name ',
+												 array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$_POST['classrooms'],
+												 					  'sub.is_delete'=>'0')),
+													array(
+														'join'=>array(
+																	array(
+														    				'table' => TBL_SUBJECTS.' sub',
+														    				'condition' => 'sub.id = '.TBL_CLASSROOM_SUBJECT.'.subject_id',
+																		)
+																	)
+														)
+											 	);
+			}else{
+				$this->data['subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>'0')));
+			}
+
+			if(!empty($_POST['subjects'])){
+				$this->data['topics'] = select(TBL_TOPICS,FALSE,array('where'=>array('is_delete'=>'0',
+										  'subject_id'=>$_POST['subjects'])));
+			}else{
+				$this->data['topics'] = select(TBL_TOPICS,FALSE,array('where'=>array('is_delete'=>'0')));
+			}	
 
 		}else{
 
+			$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>'0')),null); // Fetch All Courses From Database
+			
+			$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>'0',
+											  'course_id'=>$this->data['tutorial_topic']['course_id'])),null);
+
+			$this->data['subjects'] = select(TBL_CLASSROOM_SUBJECT,
+												 TBL_CLASSROOM_SUBJECT.'.subject_id as id,sub.subject_name ',
+												 array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$this->data['tutorial_topic']['classroom_id'],
+												 					  'sub.is_delete'=>'0')),
+													array(
+														'join'=>array(
+																	array(
+														    				'table' => TBL_SUBJECTS.' sub',
+														    				'condition' => 'sub.id = '.TBL_CLASSROOM_SUBJECT.'.subject_id',
+																		)
+																	)
+														)
+											 	);
+
+			$this->data['topics'] = select(TBL_TOPICS,FALSE,array('where'=>array('is_delete'=>'0',
+										  'subject_id'=>$this->data['tutorial_topic']['subject_id'])),null);
+		}
+		
+
+		
+
+		if($this->form_validation->run() == FALSE){
+			
+			$this->template->load('admin/default','admin/topic/edit', $this->data);
+
+		}else{
+			
 			$data=array(
 				 "topic_name"=>$this->input->post("topic_name"),
 				 "parent_id"=>0,
 				 "topic_description"=>htmlentities($this->input->post("topic_desc")),
 				 "subject_id"=>$this->input->post("subjects"),
+				 "topic_id"=>$this->input->post('topic_id'),
 				 "evaluation_keywords"=>$this->input->post("keywords"),
 				 "created_by"=>$this->session->userdata('id'),
-				 "classroom_id"=>2,
-				 "allocation_count"=>0,
-				 "status"=>"",
-				 "topic_day"=>"Mon",
-				 "created_date"=>date('Y-m-d H:i:s'),
-				 "modified_date"=>date('Y-m-d H:i:s'),
-				 "is_delete"=>0,
-				 "is_archived"=>0,
-				 "is_testdata"=>'yes',
+				 "classroom_id"=>$this->input->post('classrooms'),
+				 "modified_date"=>date('Y-m-d H:i:s')
 				);
 
 			update(TBL_TUTORIAL_TOPIC,$id,$data);

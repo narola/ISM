@@ -2969,23 +2969,23 @@ textarea {
 .test_finished .item_chart:before{
 	content:"";
 	box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.4);
-    height: 134px;
+    height: 140px;
     position: absolute;
-    width: 134px;
+    width: 140px;
     border-radius: 50%;
     margin: 0px auto;
-    left: 3px;
+    left: 2px;
     top: 3px;
 }
 .test_finished .item_chart:after{
 	content:"";
 	box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.2) inset;
-    height: 134px;
+    height: 140px;
     position: absolute;
-    width: 134px;
+    width: 140px;
     border-radius: 50%;
     margin: 0px auto;
-    left: 3px;
+    left: 2px;
     top: 3px;
 }
 .clock{
@@ -3741,8 +3741,9 @@ a.expand_ques + .row{
 }
 .about_us_header p {
     font-size: 22px;
-    margin: 0;
+    margin: 0 auto;
     font-weight: 500;
+    max-width: 900px;
 }
 .btn_back {
     margin-top: 15px;
@@ -3930,11 +3931,19 @@ a.expand_ques + .row{
     width: 32px;
     right: -90px;
     top: 70px;
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
     transform: rotate(-90deg);
 }
 .item_blue:before{
     background-position: -296px -5px;
     left: -90px;
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
     transform: rotate(90deg);
     width: 31px;
 }
@@ -3944,6 +3953,10 @@ a.expand_ques + .row{
 .item_purple:before{
 	background-position: -359px -5px;
     left: -90px;
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
     transform: rotate(90deg);
 
 }
@@ -3977,4 +3990,27 @@ a.expand_ques + .row{
 }
 #frm_class_exam .form-group .form-control{
 	width:100%;
+}
+.item_chart.css > #test_finished{
+	transform:rotate(90deg);
+}
+.my_info .profile .user_profile_img {
+    height: 115px;
+    width: 115px;
+}
+.my_info .profile h3{
+	color:#ef7a13;
+	margin-top:0;
+}
+.my_info .profile span.fa {
+    width: 15px;
+    text-align: center;
+    margin-right: 5px;
+}
+.my_info .profile{
+	margin-top:30px;
+}
+.my_info .profile p {
+    font-size: 16px;
+    margin-bottom: 4px;
 }
