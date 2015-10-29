@@ -122,7 +122,7 @@ class Group extends ADMIN_Controller {
 
         $this->data['all_groups'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
                 TBL_TUTORIAL_GROUPS . '.group_status,'. TBL_CLASSROOMS . '.class_name,' . TBL_TUTORIAL_GROUPS . '.is_completed,'. TBL_TUTORIAL_GROUPS . '.is_delete,' . TBL_COURSES . '.course_name,' .
-                TBL_COURSES . '.id as course_id, sum(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score) as score', $where, array(
+                TBL_COURSES . '.id as course_id, sum(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score) as score, count(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id) as exams', $where, array(
             'limit' => $config['per_page'],
             'offset' => $offset,
             'group_by' => array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'),

@@ -238,45 +238,28 @@ class Topic extends ADMIN_Controller {
         $config['last_link'] = 'Last';
         $config['last_tag_open'] = '<li>';
         $config['last_tag_close'] = '</li>';
-			$unallocated_groups = select(TBL_TUTORIAL_GROUPS,
-												TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
-												TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
-												TBL_COURSES.'.id as course_id,'.TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name',
-												$where,
-												array(
-													'limit' => $config['per_page'],
-            										'offset' => $offset,
-													'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
-													'join' =>  array(
-												    			array(
-												    				'table' => TBL_TUTORIAL_GROUP_MEMBER,
-												    				'condition' => TBL_TUTORIAL_GROUPS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.group_id',
-												    				'join'=>'right'
-												    				),
-												    			array(
-												    				'table' => TBL_USERS,
-												    				'condition' => TBL_USERS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
-												    				),
-												    			array(
-												    				'table' => TBL_STUDENT_ACADEMIC_INFO,
-												    				'condition' => TBL_USERS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.user_id',
-												    				),
-												    			array(
-												    				'table' => TBL_COURSES,
-												    				'condition' => TBL_COURSES.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.course_id',
-												    				),
-												    			array(
-												    				'table' => TBL_SCHOOLS,
-												    				'condition' => TBL_SCHOOLS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.school_id',
-												    				),
-												    			array(
-												    				'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
-												    				'condition' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.group_id = '.TBL_TUTORIAL_GROUPS.'.id',
-												    				),
-												    			)
-													)
-												);
-		
+			$unallocated_groups = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
+                TBL_TUTORIAL_GROUPS . '.group_status,'. TBL_CLASSROOMS . '.class_name,' . TBL_TUTORIAL_GROUPS . '.is_completed,'. TBL_TUTORIAL_GROUPS . '.is_delete,' . TBL_COURSES . '.course_name,' .
+                TBL_COURSES . '.id as course_id, sum(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score) as score, count(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id) as exams', $where, array(
+            'limit' => $config['per_page'],
+            'offset' => $offset,
+            'group_by' => array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'),
+            'join' => array(
+                array(
+                    'table' => TBL_CLASSROOMS,
+                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_TUTORIAL_GROUPS . '.classroom_id',
+                ),
+                array(
+                    'table' => TBL_COURSES,
+                    'condition' => TBL_COURSES . '.id = ' . TBL_CLASSROOMS . '.course_id',
+                ),
+                array(
+                    'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
+                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'
+                )
+            )
+                )
+        );
 		
 		$this->data['groups'] = $unallocated_groups;
 

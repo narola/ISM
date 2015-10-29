@@ -164,7 +164,7 @@
                                             }
                                          ?>
                                     </td>
-                                    <td class="group_points"><p><?php if(!empty($group['score'])) {echo $group['score']; }else{ echo 0; } ?></p><p>4 Assignments</p><p>10 Exams</p></td>
+                                    <td class="group_points"><p><?php if(!empty($group['score'])) {echo $group['score']; ?><p><?php echo $group['exams']; ?> Exams</p><?php }else{ echo 0; } ?></p></td>
                                     <td>
                                         <!-- <a href="#" data-toggle="tooltip" data-placement="bottom" title="Timeline" class="icon icon_timeline"></a> -->
                                         
