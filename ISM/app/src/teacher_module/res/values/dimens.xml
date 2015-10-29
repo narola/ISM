@@ -23,6 +23,7 @@
     <dimen name="d130sp">130sp</dimen>
 
 
+    <dimen name="d1dp">1dp</dimen>
     <dimen name="d5dp">5dp</dimen>
     <dimen name="d10dp">10dp</dimen>
     <dimen name="d15dp">15dp</dimen>

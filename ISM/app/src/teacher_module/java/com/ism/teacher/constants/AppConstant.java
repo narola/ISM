@@ -65,4 +65,14 @@ public class AppConstant {
     public static final String[] tagUserArray = new String[]{"141", "167"};
 
 
+    /**
+     * Managing Teacher office Fragment by using tags
+     */
+    public static final String FRAGMENT_TAG_TEACHER_CLASSWALL="teacher_classwall";
+    public static final String FRAGMENT_TAG_TEACHER_NOTES="teacher_notes";
+    public static final String FRAGMENT_TAG_TEACHER_QUIZ="teacher_quiz";
+    public static final String FRAGMENT_TAG_TEACHER_MARKSCRIPT="teacher_markscript";
+    public static final String FRAGMENT_TAG_TEACHER_RESULTS="teacher_results";
+    public static final String FRAGMENT_TAG_TEACHER_PROGRESS_REPORT="teacher_progress_report";
+
 }

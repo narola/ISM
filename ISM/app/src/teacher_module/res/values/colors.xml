@@ -7,5 +7,10 @@
     <color name="color_teacher_headers">#D5DBDF</color>
     <color name="color_black">#000000</color>
     <color name="color_shade_news_feed">#90BABABA</color>
+    <color name="fragment_background_color">#F5F5F5</color>
+
+    <!-- Assignment -->
+    <color name="btn_save">#26AF61</color>
+    <color name="btn_cancel">#3C4650</color>
 
 </resources>
