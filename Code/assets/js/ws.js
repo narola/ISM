@@ -451,8 +451,6 @@ if ("WebSocket" in window)
                     cnt = parseInt($('.mCSB_container .three_tabs #study_request_cnt').html()) + 1;
                 $('.mCSB_container .three_tabs #study_request_cnt').html(cnt);
             }
-            $('.suggested_mates_card .mate_descrip button[data-id="' + obj.studymate_id + '"]').removeClass('btn_green').attr('disabled', true).addClass('btn_black_normal').html('Request Already Sent');
-            $('.study_mate button[data-id="' + obj.studymate_id + '"]').removeClass('btn_green').attr('disabled', true).addClass('btn_black_normal').html('Request Already Sent');
         } else if (obj.type == 'time_request') {
             clearInterval(counter);
             time_count = obj.total_active_time;
@@ -1369,6 +1367,7 @@ $(document).on('click', 'button[data-type="studyment-request"]', function (e) {
         error: ''
     };
     ws.send(JSON.stringify(request));
+    $(this).removeClass('btn_green').attr('disabled', true).addClass('btn_black_normal').html('Request Already Sent');
 });
 $(document).on('click', 'a[data-type="view-all-comment-activities"]', function (e) {
     var request = {
