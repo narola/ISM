@@ -563,7 +563,7 @@ if ("WebSocket" in window)
                         str += '&nbsp;tagged : <label class="label label_name">' + list.name + '</label>';
                         ids += list.id;
                     } else {
-                        str += '&nbsp;and <label class="label label_name">' + list.name + '</label>';
+                        str += 'and <label class="label label_name">' + list.name + '</label>';
                         ids += ',' + list.id;
                     }
                     i++;
@@ -578,7 +578,7 @@ if ("WebSocket" in window)
                         l = parseInt(len) - parseInt(1);
                         if (j == l) {
 
-                            str += '&nbsp;and <label class="label label_name">';
+                            str += 'and <label class="label label_name">';
                             str += '<a href="javascript:void(0);" data-html="true" data-trigger="focus" data-placement="bottom" data-toggle="popover1" title="Other Tagged" data-content="' + other_name + '">' + l + ' more</a>';
                             str += '</label>';
                         }
@@ -672,7 +672,7 @@ if ("WebSocket" in window)
                         str += '&nbsp;tagged : <label class="label label_name">' + list.full_name + '</label>';
                         ids += list.id;
                     } else {
-                        str += '&nbsp;and <label class="label label_name">' + list.full_name + '</label>';
+                        str += 'and <label class="label label_name">' + list.full_name + '</label>';
                         ids += ',' + list.id;
                     }
                     i++;
@@ -1133,7 +1133,7 @@ function generate_post(obj, status) {
     str += '<p>' + obj.message + '</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="' + obj.post_id + '"><span class="icon icon_thumb' + cls + '"></span>' + obj.tot_like + '</a>';
     str += '<a href="javascript:void(0);" class="comment_btn"><span class="icon icon_comment"></span>' + obj.tot_comment + '</a>';
-    if(obj.comment != 'undefined'){
+    if(typeof(obj.comment) != 'undefined'){
         if(obj.comment.length > 2){
             str += '<a href="javascript:void(0);" data-type="showall" data-id="'+obj.post_id+'">View All</a>'
         }

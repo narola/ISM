@@ -161,7 +161,8 @@ class Home extends ISM_Controller {
 		}
 
 		$studymates = studymates($user_id,false);
-
+		if(empty($studymates))
+			$studymates = array(0);
 	 		// Get Classmates details
 			$where = array('where_in' => array('u.id' =>  $studymates));
 			$options = array('join' => array(
