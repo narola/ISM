@@ -376,6 +376,8 @@ class ProfileFunctions
 	                if ($tutorialGroup['tutorial_group_found']) {
 		                $groupData = $tutorialGroup['tutorial_group'];
 		                $post['tutorial_group_id'] = $groupData['tutorial_group_id'];
+		                $post['tutorial_group_joining_status'] = $groupData['tutorial_group_joining_status'];
+		                $post['tutorial_group_complete'] = $groupData['tutorial_group_complete'];
 		                $post['tutorial_group_name'] = $groupData['tutorial_group_name'];
 		                $post['tutorial_group_members'] = $groupData['tutorial_group_members'];
 	                }
