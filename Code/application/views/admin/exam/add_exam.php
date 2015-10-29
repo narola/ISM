@@ -40,7 +40,7 @@
 				
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 select padding_r15_">
 					<label>Course Name</label>
-                    <select class="form-control myselect" name="course_id" onchange="fetch_classroom(this.value)">
+                    <select class="form-control myselect" name="course_id" id="course_id" onchange="fetch_classroom(this.value)">
                         <option value="">Course Name</option>
                         <?php 
                           if(!empty($all_courses)){ 
@@ -320,6 +320,15 @@
            }
         });
     }
+
+    <?php if(!empty($_GET['topic']) && !$_POST) { ?>
+        $('#exam_type').prop('checked',false);
+        $('.tutorial_topic').removeClass('hide');
+        // $("#course_id").select2("val", '<?php echo $get_topic["course_id"]; ?>'); //set the value
+        $("#course_id").val('<?php echo $get_topic["course_id"]; ?>');
+        $('#classroom_id').val('<?php echo $get_topic["classroom_id"]; ?>');
+        $('#subject_id').val('<?php echo $get_topic["subject_id"]; ?>');
+    <?php } ?>        
 
     $(document).ready(function(){
 
