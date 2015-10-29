@@ -73,9 +73,8 @@
     	transform: rotate(-90deg) scale(0.8) translateY(-16px);
 	}
 	.test_finished .item_chart:before, .test_finished .item_chart:after{
-		height:108px;
-		width:108px;
-		top:16px;
+		
+		top:3px;
 	}
 	.add_question_wrapper .select .form-control {
 		/*width: 67%;*/
@@ -260,7 +259,7 @@
     	bottom: 0 !important;
 	}
 	.ques_numbers li {
-    	margin: 0 1px 1px 0;
+    	margin: 0px 15px 15px 0;
 	}
 	.add_question_wrapper .select .form-control {
 		/*width: 64%;*/
@@ -300,7 +299,45 @@
 	#wPaint {
     	width: 230px !important;
 	}
+	.test_sidebar{
+		width:25%;
+	}
+	.main_wide_2{
+		width:75%;
+	}
 }	
+@media (max-width:1152px){
+	.three_tabs > li{
+		width:48%;
+	}
+	#carousel-noticeboard {
+    	width: 290px;
+	}
+	.stm .box_header {
+    	padding: 16px 7px;
+	}
+	.personal_menu {
+    	padding-bottom: 170px;
+	}
+	.admin_question {
+    	width: 81%;
+	}
+	.calculator, .white_board, .explore, .dictionary {
+ 	   width: 79%;
+	}
+	#wPaint {
+    	width: 208px !important;
+	}
+	.tut_group .box_body p, .tut_group .box_footer p{
+		margin:0;
+	}
+	#circle_process {
+		transform: translateX(-12px);
+	}
+	.item_chart::after, .item_chart::before {
+    	left: -14px;
+	}
+}
 @media (max-width:1080px){
 	.login_background {
 		background-size:auto;
@@ -315,8 +352,8 @@
 	/*.three_tabs > li{
 		padding: 10px 5px;
 	}*/
-	.three_tabs > li{
-		width:48%;
+	.tut_group .box_body p, .tut_group .box_footer p {
+		margin: 0 0 0 80px;
 	}
 	.personal_menu {
     	padding-bottom: 166px;
@@ -542,7 +579,7 @@
 		height:134px;
 		width:134px;
 		top:3px;
-		left:8px;
+		left:13px;
 	}
 	.ques_numbers li {
     	margin: 0 15px 15px 0;
@@ -1007,6 +1044,13 @@
 	.half_size .form-control {
     	width: 88%;
 	}
+	
+	#circle_process {
+		transform: translateX(-16px);
+	}
+	.item_chart::after, .item_chart::before {
+    	left: -12px;
+	}
 }
 @media (max-width:768px){
 	.login_background {
@@ -1054,6 +1098,16 @@
 	.calculator, .white_board, .explore, .dictionary {
     	width: 71%;
 	}
+	#circle_process{
+		transform: scale(0.9) translateX(-20px);
+	}
+	.item_chart::after, .item_chart::before {
+		left: -10px;
+		top: 10px;
+		height:140px;
+		width:140px;
+	}
+	
 }
 @media (max-width:767px){
 	.login_background {
