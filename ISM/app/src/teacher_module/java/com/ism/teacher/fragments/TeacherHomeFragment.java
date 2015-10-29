@@ -25,7 +25,7 @@ import com.ism.teacher.model.AddCommentRequest;
 import com.ism.teacher.model.Comment;
 import com.ism.teacher.model.FeedIdRequest;
 import com.ism.teacher.model.GetAllFeedsTeacherRequest;
-import com.ism.teacher.model.LikeFeedRequest;
+import com.ism.teacher.model.LIkeFeedRequest;
 import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.adapters.AllFeedsAdapter;
 import com.ism.teacher.login.TeacherHomeActivity;
@@ -302,7 +302,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
         if (Utils.isInternetConnected(getActivity())) {
             try {
-                LikeFeedRequest likeFeedRequest = new LikeFeedRequest();
+                LIkeFeedRequest likeFeedRequest = new LIkeFeedRequest();
                 likeFeedRequest.setUser_id(AppConstant.TEST_USER_ID);
 
                 if (likePrefData.length() > 0) {

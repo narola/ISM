@@ -140,28 +140,25 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 		inputValidator = new InputValidator(ProfileInformationActivity.this);
 
-		if (getIntent().getExtras() != null) {
-			Bundle extras = getIntent().getExtras();
-			strUserId = extras.getString(LoginActivity.ID);
-			strCurrentPassword = extras.getString(LoginActivity.PASSWORD);
-			strSchoolId = extras.getString(LoginActivity.SCHOOL_ID);
-			strSchoolName = extras.getString(LoginActivity.SCHOOL_NAME);
-			strSchoolDistrict = extras.getString(LoginActivity.SCHOOL_DISTRICT);
-			strSchoolType = extras.getString(LoginActivity.SCHOOL_TYPE);
-			strClassId = extras.getString(LoginActivity.CLASS_ID);
-			strClassName = extras.getString(LoginActivity.CLASS_NAME);
-			strCourseId = extras.getString(LoginActivity.COURSE_ID);
-			strCourseName = extras.getString(LoginActivity.COURSE_NAME);
-			strAcademicYear = extras.getString(LoginActivity.ACADEMIC_YEAR);
-			strRoleId = extras.getString(LoginActivity.ROLE_ID);
+		strUserId = PreferenceData.getStringPrefs(PreferenceData.CREDENTIAL_ID, ProfileInformationActivity.this);
+		strCurrentPassword = PreferenceData.getStringPrefs(PreferenceData.PASSWORD, ProfileInformationActivity.this);
+		strSchoolId = PreferenceData.getStringPrefs(PreferenceData.SCHOOL_ID, ProfileInformationActivity.this);
+		strSchoolName = PreferenceData.getStringPrefs(PreferenceData.SCHOOL_NAME, ProfileInformationActivity.this);
+		strSchoolDistrict = PreferenceData.getStringPrefs(PreferenceData.SCHOOL_DISTRICT, ProfileInformationActivity.this);
+		strSchoolType = PreferenceData.getStringPrefs(PreferenceData.SCHOOL_TYPE, ProfileInformationActivity.this);
+		strClassId = PreferenceData.getStringPrefs(PreferenceData.CLASS_ID, ProfileInformationActivity.this);
+		strClassName = PreferenceData.getStringPrefs(PreferenceData.CLASS_NAME, ProfileInformationActivity.this);
+		strCourseId = PreferenceData.getStringPrefs(PreferenceData.COURSE_ID, ProfileInformationActivity.this);
+		strCourseName = PreferenceData.getStringPrefs(PreferenceData.COURSE_NAME, ProfileInformationActivity.this);
+		strAcademicYear = PreferenceData.getStringPrefs(PreferenceData.ACADEMIC_YEAR, ProfileInformationActivity.this);
+		strRoleId = PreferenceData.getStringPrefs(PreferenceData.ROLE_ID, ProfileInformationActivity.this);
 
-			txtNameSchool.setText(strSchoolName);
-			txtClass.setText(strClassName);
-			txtAcademicYear.setText(strAcademicYear);
-			txtDistrictOfSchool.setText(strSchoolDistrict);
-			txtSchoolGender.setText(strSchoolType);
-			txtProgramCourse.setText(strCourseName);
-		}
+		txtNameSchool.setText(strSchoolName);
+		txtClass.setText(strClassName);
+		txtAcademicYear.setText(strAcademicYear);
+		txtDistrictOfSchool.setText(strSchoolDistrict);
+		txtSchoolGender.setText(strSchoolType);
+		txtProgramCourse.setText(strCourseName);
 
 		if (Utility.isOnline(ProfileInformationActivity.this)) {
 			callApiGetCountries();
@@ -260,8 +257,11 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 	public void onClickSubmit(View view) {
 		if (Utility.isOnline(ProfileInformationActivity.this)) {
 
-			PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, Global.userId = "374");
-			PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, ProfileInformationActivity.this, Global.fullName = "Krunal Panchal");
+			PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
+					PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
+			PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
+			PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, "141");
+			PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, ProfileInformationActivity.this, "Krunal Panchal");
 			PreferenceData.setStringPrefs(PreferenceData.PROFILE_PIC, ProfileInformationActivity.this, "user_374/logo_test.png");
 
 			Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
@@ -531,19 +531,19 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 			if (object != null) {
 				switch (apiCode) {
 					case WebserviceWrapper.GET_COUNTRIES:
-						onCountriesResponse(object);
+						onResponseCountries(object);
 						break;
 					case WebserviceWrapper.GET_STATES:
-						onStatesResponse(object);
+						onResponseStates(object);
 						break;
 					case WebserviceWrapper.GET_CITIES:
-						onCitiesResponse(object);
+						onResponseCities(object);
 						break;
 					case WebserviceWrapper.REGISTER_USER:
-						onRegisterUserResponse(object);
+						onResponseRegisterUser(object);
 						break;
 					case WebserviceWrapper.REQUEST_SCHOOL_INFO:
-						onRequestSchoolInfoResponse(object);
+						onResponseRequestSchoolInfo(object);
 						break;
 				}
 			} else if (error != null) {
@@ -554,119 +554,110 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 		}
 	}
 
-	private void onRequestSchoolInfoResponse(Object object) {
+	private void onResponseRequestSchoolInfo(Object object) {
 		try {
-			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					if (dialogSchoolInfo != null) {
-						dialogSchoolInfo.dismiss();
-					}
-					Toast.makeText(ProfileInformationActivity.this, "Request for school information updation sent to admin successfully.", Toast.LENGTH_LONG).show();
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-					Toast.makeText(ProfileInformationActivity.this, responseObj.getMessage(), Toast.LENGTH_LONG).show();
+			ResponseObject responseObj = (ResponseObject) object;
+			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+				if (dialogSchoolInfo != null) {
+					dialogSchoolInfo.dismiss();
 				}
+				Toast.makeText(ProfileInformationActivity.this, "Request for school information updation sent to admin successfully.", Toast.LENGTH_LONG).show();
+			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+				Toast.makeText(ProfileInformationActivity.this, responseObj.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {
-			Log.e(TAG, "onRequestSchoolInfoResponse Exception : " + e.toString());
+			Log.e(TAG, "onResponseRequestSchoolInfo Exception : " + e.toString());
 		}
 	}
 
-	private void onCitiesResponse(Object object) {
+	private void onResponseCities(Object object) {
 		try {
-			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					arrListCities = new ArrayList<Data>();
-					arrListCities.addAll(responseObj.getData());
-					List<String> cities = new ArrayList<String>();
-					cities.add(getString(R.string.select));
-					for (Data city : arrListCities) {
-						cities.add(city.getCityName());
-					}
-					Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, cities);
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-					Log.e(TAG, "onCitiesResponse Failed");
+			ResponseObject responseObj = (ResponseObject) object;
+			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+				arrListCities = new ArrayList<Data>();
+				arrListCities.addAll(responseObj.getData());
+				List<String> cities = new ArrayList<String>();
+				cities.add(getString(R.string.select));
+				for (Data city : arrListCities) {
+					cities.add(city.getCityName());
 				}
+				Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, cities);
+			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+				Log.e(TAG, "onResponseCities Failed");
 			}
 		} catch (Exception e) {
-			Log.e(TAG, "onCitiesResponse Exception : " + e.toString());
+			Log.e(TAG, "onResponseCities Exception : " + e.toString());
 		}
 	}
 
-	private void onStatesResponse(Object object) {
+	private void onResponseStates(Object object) {
 		try {
-			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					arrListStates = new ArrayList<Data>();
-					arrListStates.addAll(responseObj.getData());
-					List<String> states = new ArrayList<String>();
-					states.add(getString(R.string.select));
-					for (Data state : arrListStates) {
-						states.add(state.getStateName());
-					}
-					Adapters.setUpSpinner(ProfileInformationActivity.this, spState, states);
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-					Log.e(TAG, "onStatesResponse Failed");
+			ResponseObject responseObj = (ResponseObject) object;
+			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+				arrListStates = new ArrayList<Data>();
+				arrListStates.addAll(responseObj.getData());
+				List<String> states = new ArrayList<String>();
+				states.add(getString(R.string.select));
+				for (Data state : arrListStates) {
+					states.add(state.getStateName());
 				}
+				Adapters.setUpSpinner(ProfileInformationActivity.this, spState, states);
+			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+				Log.e(TAG, "onResponseStates Failed");
 			}
 		} catch (Exception e) {
-			Log.e(TAG, "onStatesResponse Exception : " + e.toString());
+			Log.e(TAG, "onResponseStates Exception : " + e.toString());
 		}
 	}
 
-	private void onCountriesResponse(Object object) {
+	private void onResponseCountries(Object object) {
 		try {
-			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					arrListCountries = new ArrayList<Data>();
-					arrListCountries.addAll(responseObj.getData());
-					List<String> countries = new ArrayList<String>();
-					countries.add(getString(R.string.select));
-					for (Data country : arrListCountries) {
-						countries.add(country.getCountryName());
-					}
-					Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, countries);
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-					Log.e(TAG, "onCountriesResponse Failed");
+			ResponseObject responseObj = (ResponseObject) object;
+			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+				arrListCountries = new ArrayList<Data>();
+				arrListCountries.addAll(responseObj.getData());
+				List<String> countries = new ArrayList<String>();
+				countries.add(getString(R.string.select));
+				for (Data country : arrListCountries) {
+					countries.add(country.getCountryName());
 				}
+				Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, countries);
+			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+				Log.e(TAG, "onResponseCountries Failed");
 			}
 		} catch (Exception e) {
-			Log.e(TAG, "onCountriesResponse Exception : " + e.toString());
+			Log.e(TAG, "onResponseCountries Exception : " + e.toString());
 		}
 	}
 
-	private void onRegisterUserResponse(Object object) {
+	private void onResponseRegisterUser(Object object) {
 		try {
 			Toast.makeText(ProfileInformationActivity.this, "Register response", Toast.LENGTH_SHORT).show();
 			if (object != null) {
 				ResponseObject responseObj = (ResponseObject) object;
-				Log.e(TAG, "onRegisterUserResponse : Message : " + responseObj.getMessage());
-
 				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					Log.e(TAG, "register successfull");
-
-					PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, Global.userId = responseObj.getData().get(0).getUserId());
-					PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, ProfileInformationActivity.this, Global.fullName = responseObj.getData().get(0).getFullName());
+					PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
+							PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
+					PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
+					PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, responseObj.getData().get(0).getUserId());
+					PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, ProfileInformationActivity.this, responseObj.getData().get(0).getFullName());
 					PreferenceData.setStringPrefs(PreferenceData.PROFILE_PIC, ProfileInformationActivity.this, responseObj.getData().get(0).getProfilePic());
 
 					Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
 					startActivity(intentWelcome);
 					finish();
 				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-					Log.e(TAG, "register failed");
-
-					if (responseObj.getMessage().contains(ResponseObject.DUPLICATE_ENTRY) && responseObj.getMessage().contains("email_id")) {
-						Utility.alert(ProfileInformationActivity.this, getString(R.string.registration_failed), getString(R.string.msg_email_exists));
-					} else if (responseObj.getMessage().contains(ResponseObject.DUPLICATE_ENTRY) && responseObj.getMessage().contains("username")) {
-						Utility.alert(ProfileInformationActivity.this, getString(R.string.registration_failed), getString(R.string.msg_username_exists));
+					if (responseObj.getMessage().contains(ResponseObject.DUPLICATE_ENTRY)) {
+						if (responseObj.getMessage().contains("email_id")) {
+							Utility.alert(ProfileInformationActivity.this, getString(R.string.registration_failed), getString(R.string.msg_email_exists));
+						} else if (responseObj.getMessage().contains("username")) {
+							Utility.alert(ProfileInformationActivity.this, getString(R.string.registration_failed), getString(R.string.msg_username_exists));
+						}
 					}
 				}
 			}
 		} catch (Exception e) {
-			Log.e(TAG, "onRegisterUserResponse Exception : " + e.toString());
+			Log.e(TAG, "onResponseRegisterUser Exception : " + e.toString());
 		}
 	}
 

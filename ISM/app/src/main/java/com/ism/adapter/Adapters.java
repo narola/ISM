@@ -20,6 +20,12 @@ public class Adapters {
 
 	private static final String TAG = Adapters.class.getSimpleName();
 
+	/**
+	 * Arti Patel
+	 * @param context
+	 * @param spinner
+	 * @param strArr
+	 */
 	public static void setUpSpinner(final Context context, Spinner spinner, List<String> strArr) {
 		final MyTypeFace myTypeFace = new MyTypeFace(context);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.simple_spinner, strArr) {
