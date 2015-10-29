@@ -20,7 +20,7 @@
         </div>
 
         <div class="alert alert-danger<?php if(empty(strip_tags(validation_errors(),''))){ echo ' hide';} ?> ">
-        <?php echo validation_errors('',''); ?>
+            <?php echo validation_errors('',''); ?>
         </div>
 
         <form method="post">    
@@ -33,7 +33,7 @@
 				<div class="form-group col-sm-12 col-md-6 col-lg-4 btn_switch no-padding">
                     <label>Exam Type : </label>
 					<div>
-                    <input type="checkbox" name="exam_type" checked data-handle-width="100" ><!--data-size="mini"-->
+                    <input type="checkbox" name="exam_type" <?php if($_POST){ echo set_checkbox('exam_type','on'); }else{ echo 'checked'; } ?> data-handle-width="100" ><!--data-size="mini"-->
 					</div>
                 </div>
 				
@@ -45,7 +45,7 @@
                           if(!empty($all_courses)){ 
                             foreach($all_courses as $course) {
                           ?> 
-                        <option value="<?php echo $course['id']; ?>" > 
+                        <option value="<?php echo $course['id']; ?>" <?php echo set_select('course_id',$course['id']); ?> > 
                                 <?php echo $course['course_name']; ?>
                         </option>
 
@@ -58,9 +58,19 @@
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 select padding_r15_">
 
                     <label>Classroom</label>
-                    <select name="classroom_id" class="form-control" onclick="fetch_subject(this.value)" id="classroom_id">
-
+                    <select name="classroom_id" class="form-control" onchange="fetch_subject(this.value)" id="classroom_id">
                         <option value="">Select Classroom</option>
+                        <?php 
+                          if(!empty($all_classrooms)){ 
+                            foreach($all_classrooms as $classroom) {
+                          ?> 
+                        <option value="<?php echo $classroom['id']; ?>" <?php echo set_select('classroom_id',$classroom['id']); ?> > 
+                                <?php echo $classroom['class_name']; ?>
+                        </option>
+
+                        <?php }  }else{ ?>
+                        <option > No Classroom </option>
+                        <?php } ?>
                     </select>
 
                 </div>
@@ -69,6 +79,17 @@
 					<label>Subject</label>
                     <select class="form-control" name="subject_id" id="subject_id" >
                         <option value="">Select Subject</option>
+                        <?php 
+                          if(!empty($all_subjects)){ 
+                            foreach($all_subjects as $subject) {
+                          ?> 
+                        <option value="<?php echo $subject['id']; ?>" <?php echo set_select('subject_id',$subject['id']); ?> > 
+                                <?php echo $subject['subject_name']; ?>
+                        </option>
+
+                        <?php }  }else{ ?>
+                        <option > No Subjects </option>
+                        <?php } ?>
                     </select>    
                 </div>   
                 
@@ -152,22 +173,22 @@
                 	<div>
                     	<label>Declare Results</label>
                         <div class="check_div">
-                            <label><input type="radio" name="declare_results" value="yes"> Yes</label>
-                            <label><input type="radio" name="declare_results" checked="checked" value="no" > No</label>
+                            <label><input type="radio" name="declare_results" <?php echo set_radio('declare_results','yes'); ?> value="yes"> Yes</label>
+                            <label><input type="radio" name="declare_results" <?php echo set_radio('declare_results','no',TRUE); ?> value="no" > No</label>
     					</div>
                     </div>
                     <div>
                     	<label>Negative Marking</label>
                         <div class="check_div">
-                            <label><input type="radio" name="negative_marking" value="yes" > Yes</label>
-                            <label><input type="radio" name="negative_marking" checked="checked" value="no" > No</label>
+                            <label><input type="radio" name="negative_marking" <?php echo set_radio('negative_marking','yes'); ?> value="yes" > Yes</label>
+                            <label><input type="radio" name="negative_marking" <?php echo set_radio('negative_marking','no',TRUE); ?> value="no" > No</label>
     					</div>
                     </div>
                     <div>
                     	<label>Random Questions</label>
                         <div class="check_div">
-                            <label><input type="radio" name="random_question" value="yes" > Yes</label>
-                            <label><input type="radio" name="random_question" checked="checked" value="no" > No</label>
+                            <label><input type="radio" name="random_question" <?php echo set_radio('random_question','yes'); ?> value="yes" > Yes</label>
+                            <label><input type="radio" name="random_question" <?php echo set_radio('random_question','no',TRUE); ?> value="no" > No</label>
     					</div>
                     </div>
                 </div>
@@ -190,13 +211,12 @@
 <script type="text/javascript">
 
     function set_hidden(button_data){
-        
+
         if(button_data == 'save'){
             $('#button_type').val('save');
         }else{
             $('#button_type').val('set');
         }
-
     }
     
     $(document).ready(function() {
@@ -223,6 +243,7 @@
             data:{course_id:course_id},
             success:function(data){
                 $('#classroom_id').html(data);
+                $('#subject_id').html('<option value="">Select Subject</option>');
             }
             
         });

@@ -86,8 +86,18 @@
                             
                             <?php if(!empty($questions)){
                                 
-                                $i=1;
-                                
+                                 $u_segment = $this->uri->segment(4)   ;
+
+                                 if(empty($u_segment)){
+                                    if(!empty($_GET['per_page'])){
+                                        $i = $_GET['per_page']+1;
+                                    }else{
+                                        $i=1;
+                                    }
+                                 }else{
+                                    $i=$u_segment+1;
+                                 }
+
                                 foreach ($questions as $question) { ?>
 
                             <!--q1-->

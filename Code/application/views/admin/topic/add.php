@@ -44,7 +44,7 @@
                         <option value="">Select Classroom</option>
                         <?php if(!empty($classrooms)){ 
                         foreach ($classrooms as $classroom) { ?>
-                            <option value="<?php echo $classroom['id']; ?>" <?php echo set_select('classroom_id',$classroom['id']); ?>>
+                            <option value="<?php echo $classroom['id']; ?>" <?php echo set_select('classrooms',$classroom['id']); ?>>
                                     <?php echo $classroom['class_name']; ?>
                             </option>        
                         <?php } 
@@ -61,7 +61,7 @@
                         
                         <?php if(!empty($subjects)){ 
                         foreach ($subjects as $subject) { ?>
-                            <option value="<?php echo $subject['id']; ?>" <?php echo set_select('subject_id',$subject['id']); ?>>
+                            <option value="<?php echo $subject['id']; ?>" <?php echo set_select('subjects',$subject['id']); ?>>
                                     <?php echo $subject['subject_name']; ?>
                             </option>        
                         <?php } 
@@ -74,7 +74,7 @@
 
                 <div class="form-group select col-sm-6 no-padding half_size">
                     <select class="form-control" name="topic_id" id="topic_id">
-                        <option value="">Select Topic</option>
+                        <option value="">Select Main Topic</option>
                         <?php if(!empty($topics)){ 
                         foreach ($topics as $topic) { ?>
                             <option value="<?php echo $topic['id']; ?>" <?php echo set_select('topic_id',$topic['id']); ?> >
@@ -152,9 +152,7 @@
 "smiley,sourcearea,specialchar,tab,table," +
 "tabletools,templates,undo,wsc"} );
 
-        
- 
-
+    
     function get_classes(course_id){
         $.ajax({
            url:'<?php echo base_url()."admin/question/ajax_get_classrooms"; ?>',
@@ -171,7 +169,7 @@
 
               $('#select2-chosen-2').html('Select Classroom');
               $('#select2-chosen-3').html('Select Subject');
-              $('#select2-chosen-4').html('Select Topic');
+              $('#select2-chosen-4').html('Select Main Topic');
            }
         });
     }
@@ -187,7 +185,7 @@
               $('#topic_id').html('');
               
               $('#select2-chosen-3').html('Select Subject');
-              $('#select2-chosen-4').html('Select Topic');
+              $('#select2-chosen-4').html('Select Main Topic');
            }
         });
   }
