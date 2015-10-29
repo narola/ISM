@@ -16,6 +16,8 @@ class Topic extends ADMIN_Controller {
 	{
 		parent::__construct();
 		$this->load->library('pagination');
+		$this->data['cur_url'] = $this->session->userdata('cur_url');
+		$this->data['prev_url'] = $this->session->userdata('prev_url');
 	}
 
 	/**
@@ -154,19 +156,19 @@ class Topic extends ADMIN_Controller {
 
 		$allocated_group_ids = array_column($allocated_groups, 'group_id');
 		
-       
-		$where  = array('where'=> array(TBL_TUTORIAL_GROUPS.'.is_completed'=>1,
+       	$where  = array('where'=> array(TBL_TUTORIAL_GROUPS.'.is_completed'=>1,
 					TBL_TUTORIAL_GROUPS.'.group_type'=>'tutorial group',
 				)) ;
 
 		if(!empty($allocated_group_ids)){
 			$where['where_not_in'] = array(TBL_TUTORIAL_GROUPS.'.id' => $allocated_group_ids);
 		}
-		if($unallocated != null){
+		/*if($unallocated != null){
 		$config['base_url'] = base_url() . 'admin/topic/allocate/'.$unallocated;
-	}else{
+	}else{*/
 		$config['base_url'] = base_url() . 'admin/topic/allocate';
-	}
+	// }
+		 // $offset = $this->uri->segment(4);
 		$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
         $offset = $this->input->get('per_page');
 		$config['uri_segment'] = 4;
@@ -210,7 +212,7 @@ class Topic extends ADMIN_Controller {
 												)
 
         	);
-        $config['per_page'] = 1;
+        $config['per_page'] = 2;
 
         $config['full_tag_open'] = '<ul class="pagination pagination_admin">';
         $config['full_tag_close'] = '</ul>';
@@ -243,7 +245,7 @@ class Topic extends ADMIN_Controller {
 												$where,
 												array(
 													'limit' => $config['per_page'],
-            'offset' => $offset,
+            										'offset' => $offset,
 													'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
 													'join' =>  array(
 												    			array(
@@ -309,11 +311,14 @@ class Topic extends ADMIN_Controller {
 											    				),
 											    			array(
 											    				'table'=>TBL_USER_PROFILE_PICTURE,
-											    				'condition'=>TBL_USER_PROFILE_PICTURE.'.id='.TBL_TUTORIAL_GROUP_MEMBER.'.user_id'
+											    				'condition'=>TBL_USER_PROFILE_PICTURE.'.user_id='.TBL_TUTORIAL_GROUP_MEMBER.'.user_id'
 											    				)
-											    			)
-												)
+											    			),
+											)
 											);
+
+$this->pagination->initialize($config);
+
 
 		$unallocated_group_ids = array_column($unallocated_groups, 'id');
 
@@ -496,13 +501,8 @@ class Topic extends ADMIN_Controller {
 		$this->data['page_title'] = 'Add New Topic'; // Set Page Title
 
 		if($this->form_validation->run() == FALSE){
-			
 			$this->template->load('admin/default','admin/topic/add', $this->data);
-
 		}else{
-
-
-			die('dsjhfisjnfdosa');
 
 			$data=array(
 				 "topic_name"=>$this->input->post("topic_name"),
@@ -518,8 +518,6 @@ class Topic extends ADMIN_Controller {
 				 "topic_day"=>"Mon",
 				 "is_archived"=>0
 				);
-
-			p($data,true);
 
 			insert(TBL_TUTORIAL_TOPIC,$data);
 

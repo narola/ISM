@@ -121,11 +121,11 @@
                                     $t_count = count($value['tagged']);
                                     foreach ($value['tagged'] as $t_key => $t_value) {
                                         if($t_count == 1){
-                                            echo '&nbsp;tagged <label class="label label_name">'.$t_value['full_name'].'</label>';
+                                            echo '&nbsp;tagged : <label class="label label_name">'.$t_value['full_name'].'</label>';
                                         }
                                         if($t_count == 2){
                                             if($t_j == 0){
-                                                echo '&nbsp;tagged <label class="label label_name">'.$t_value['full_name'].'</label>';    
+                                                echo '&nbsp;tagged : <label class="label label_name">'.$t_value['full_name'].'</label>';    
                                             }
                                             else{
                                                 echo 'and <label class="label label_name">'.$t_value['full_name'].'</label>';
@@ -134,7 +134,7 @@
                                         }
                                         if($t_count > 2){
                                             if($t_i == 0){
-                                                echo '&nbsp;tagged <label class="label label_name">'.$t_value['full_name'].'</label>';   
+                                                echo '&nbsp;tagged : <label class="label label_name">'.$t_value['full_name'].'</label>';   
                                             }
                                             else{
                                                 $l = $t_count - 1;

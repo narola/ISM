@@ -78,6 +78,7 @@ $route['admin/user/books'] = "admin/topic/next_phase";
 
 $route['admin/exam/copy/(:any)'] = "admin/exam/update/$1";
 $route['admin/notice/copy/(:any)'] = "admin/notice/update/$1";
+$route['admin/question/copy/(:any)'] = "admin/question/update/$1";
 
 $route['admin/(:any)'] = "admin/$1"; 
 $route['admin/(:any)/(:any)'] = "admin/$1/$2"; 

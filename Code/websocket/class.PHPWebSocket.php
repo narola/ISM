@@ -1678,7 +1678,7 @@ class PHPWebSocket {
      * @author Kamlesh Pokiya (KAP), Sandip Gopani(SAG)
      */
     function send_studymate_request($userid, $data) {
-
+        
         $link = $this->db();
         $studymate = $this->class_mate_list($userid, false);
         // if (sizeof($studymate) > 0) {
@@ -1720,6 +1720,7 @@ class PHPWebSocket {
                 $data['count'] = $row['cnt'];
             }
         }
+        $data['user_id'] = $userid;
         return $data;
     }
 

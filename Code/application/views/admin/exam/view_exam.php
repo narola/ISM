@@ -49,7 +49,11 @@
 
                 <div class="form-group no_effect search_input">
                     <input type="text" name="q" id="q" class="form-control" placeholder="Type Exam name." >
-                    <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                    <?php if(!empty($_GET['q'])) { ?>
+                        <a onclick="filter_data_reverse()" style="cursor:pointer">X</a>
+                    <?php }else { ?>
+                        <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
+                    <?php } ?>
                 </div>
                 
                 
@@ -136,6 +140,13 @@
 
 
 <script type="text/javascript">
+
+function filter_data_reverse(){
+        $('#q').removeAttr('name');
+        $('#filter').submit();        
+    }
+
+    
 	$(document).ready(function(){
 		$('.exam_year a').click(function(){	
 			$('.popover').css('display','none');
