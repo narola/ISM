@@ -41,11 +41,4 @@ public class TagFriendInFeedRequest {
     }
 
 
-//    {
-//        "feed_id":240,
-//            "tagged_by":134,
-//            "user_id":[141,167]
-//    }
-
-
 }

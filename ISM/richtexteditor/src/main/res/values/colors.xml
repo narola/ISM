@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="controlbar_start">#F6F6F6</color>
+    <color name="controlbar_center">#F7F7F7</color>
+    <color name="controlbar_stroke">#CACACA</color>
+    <color name="button_start">#FEFEFE</color>
+    <color name="button_center">#F0F0F0</color>
+    <color name="button_end">#E6E6E6</color>
+    <color name="rich_text_editor_stroke">#EBEBEB</color>
+</resources>

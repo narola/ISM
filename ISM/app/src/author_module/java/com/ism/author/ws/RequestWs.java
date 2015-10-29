@@ -16,7 +16,7 @@ public class RequestWs {
      **/
     public <CLS> CLS getRequest(String url, Class<CLS> cls, Object reqCls) throws Exception {
         /*if (nameValuePair != null) {
-			return new WebServiceRequest(url).execute(nameValuePair, cls,
+            return new WebServiceRequest(url).execute(nameValuePair, cls,
 					null);
 		} else {*/
         return new com.ism.ws.WSRequestPost(url).execute(cls, reqCls);

@@ -41,7 +41,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by c162 on 07/10/15.
+ * Created by c161 on 07/10/15.
  */
 public class ProfileInformationActivity extends Activity implements WebserviceWrapper.WebserviceResponse {
 
@@ -269,7 +269,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 			finish();
 
 			/*if (isInputsValid()) {
-				callApiRegisterUser();
+                callApiRegisterUser();
 			}*/
 		} else {
 			Utility.toastOffline(ProfileInformationActivity.this);

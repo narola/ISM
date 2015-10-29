@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GetCitiesRequest {
-	
+
     private int stateId;
 
     public int getStateId() {
@@ -18,5 +18,5 @@ public class GetCitiesRequest {
     public void setStateId(int stateId) {
         this.stateId = stateId;
     }
-    
+
 }

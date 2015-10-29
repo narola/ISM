@@ -1,4 +1,4 @@
-package com.ism.author.rightcontainerfragment;
+package com.ism.author.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -13,28 +13,28 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.utility.Debug;
 
 /**
- * Created by c166 on 21/10/15.
+ * Created by c166 on 29/10/15.
  */
-public class EventsFragment extends Fragment {
+public class TrialFragment extends Fragment {
 
 
-    private static final String TAG = EventsFragment.class.getSimpleName();
+    private static final String TAG = TrialFragment.class.getSimpleName();
     private View view;
 
     private FragmentListener fragListener;
 
-    public static EventsFragment newInstance() {
-        EventsFragment fragEvents = new EventsFragment();
-        return fragEvents;
+    public static TrialFragment newInstance() {
+        TrialFragment fragTrial = new TrialFragment();
+        return fragTrial;
     }
 
-    public EventsFragment() {
+    public TrialFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_events, container, false);
+        view = inflater.inflate(R.layout.fragment_trial, container, false);
 
         initGlobal();
 
@@ -51,7 +51,7 @@ public class EventsFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_EVENTS);
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_TRIAL);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -63,13 +63,11 @@ public class EventsFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_EVENTS);
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_TRIAL);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
     }
-
-
 }

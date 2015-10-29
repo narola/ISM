@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- * Created by c166 on 26/10/15.
+ * this is get all comment request class.
  */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -1,9 +1,11 @@
 package com.ism.author.ws;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.ism.R;
 import com.ism.author.login.Urls;
 import com.ism.author.model.ResponseObject;
 
@@ -17,14 +19,21 @@ public class WebserviceWrapper {
 
     private Object requestObject;
     private WebserviceResponse webserviceResponse;
+    private Context mContext;
 
     //	Webservice flags
     public static final int LOGIN = 0;
     public static final int GETALLFEEDS = 1;
-    public static final int ADDCOMMENT = 2;
-    public static final int GETSTUDYMATES = 3;
-    public static final int TAGFRIENDINFEED = 4;
-    public static final int GETALLCOMMENTS = 5;
+    public static final int GETALLCOMMENTS = 2;
+    public static final int ADDCOMMENT = 3;
+    public static final int GETSTUDYMATES = 4;
+    public static final int TAGFRIENDINFEED = 5;
+    public static final int LIKEFEED = 6;
+    public static final int GETCLASSROOMS = 7;
+    public static final int GETSUBJECT = 8;
+    public static final int GETTOPICS = 9;
+    public static final int CREATEASSIGNMENT = 10;
+
 
     public static int API_METHOD_NAME;
 
@@ -34,24 +43,18 @@ public class WebserviceWrapper {
     }
 
     public WebserviceWrapper(Context context, Object requestObject, WebserviceResponse listener) {
-
         this.requestObject = requestObject;
         webserviceResponse = listener;
+        this.mContext = context;
 
     }
-
-//    public WebserviceWrapper(Context context, Object requestObject) {
-//        this.requestObject = requestObject;
-//        webserviceResponse = (WebserviceResponse) context;
-//
-//    }
-
 
     public class WebserviceCaller extends AsyncTask<Integer, Void, Object> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            showProgressDialog();
         }
 
         @Override
@@ -63,28 +66,49 @@ public class WebserviceWrapper {
                 API_METHOD_NAME = params[0];
                 switch (API_METHOD_NAME) {
                     case LOGIN:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_LOGIN, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_LOGIN, ResponseObject.class, requestObject);
                         break;
 
                     case GETALLFEEDS:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_GETALLFEEDS, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GETALLFEEDS, ResponseObject.class, requestObject);
                         break;
 
                     case ADDCOMMENT:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_ADDCOMMENT, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_ADDCOMMENT, ResponseObject.class, requestObject);
                         break;
 
                     case GETSTUDYMATES:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_GETSTUDYMATES, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GETSTUDYMATES, ResponseObject.class, requestObject);
                         break;
 
                     case TAGFRIENDINFEED:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_TAGFRIENDINFEED, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_TAGFRIENDINFEED, ResponseObject.class, requestObject);
                         break;
 
                     case GETALLCOMMENTS:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_GETALLCOMMENTS, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GETALLCOMMENTS, ResponseObject.class, requestObject);
                         break;
+
+                    case LIKEFEED:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_LIKEFEED, ResponseObject.class, requestObject);
+                        break;
+
+                    case GETCLASSROOMS:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GETCLASSROOMS, ResponseObject.class, requestObject);
+                        break;
+
+                    case GETSUBJECT:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GETSUBJECT, ResponseObject.class, requestObject);
+                        break;
+
+                    case GETTOPICS:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GETTOPICS, ResponseObject.class, requestObject);
+                        break;
+
+                    case CREATEASSIGNMENT:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_CREATEASSIGNMENT, ResponseObject.class, requestObject);
+                        break;
+
 
                 }
             } catch (Exception e) {
@@ -97,9 +121,37 @@ public class WebserviceWrapper {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
 
+
+//            if (API_METHOD_NAME != LIKEFEED) {
+
+            dismissProgressDialog();
             webserviceResponse.onResponse(API_METHOD_NAME, o, null);
 
 
+//            } else {
+//
+//                PreferenceData.setStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, "");
+//                PreferenceData.setStringPrefs(PreferenceData.UNLIKE_ID_LIST, mContext, "");
+//
+//            }
+
+
+        }
+    }
+
+    ProgressDialog pd;
+
+    private void showProgressDialog() {
+
+        pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getString(R.string.loading));
+        pd.show();
+
+    }
+
+    private void dismissProgressDialog() {
+        if (pd != null) {
+            pd.dismiss();
         }
     }
 

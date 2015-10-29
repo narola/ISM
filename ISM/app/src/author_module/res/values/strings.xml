@@ -104,4 +104,28 @@
     <string name="strsearchstudymates">Search Users</string>
     <string name="strtag">TAG</string>
 
+
+    <string name="strmydesk">My Desk</string>
+    <string name="strgotrending">Go Trending</string>
+    <string name="strtrial">Trial</string>
+    <string name="strmy30th">My 30th</string>
+    <string name="strassessment">Assessment</string>
+
+    <string name="strmydeskinfo">Explore author\'s desk to reach his resources</string>
+    <string name="strgotrendinginfo">In rich your Knowlege with trending question</string>
+    <string name="strtrialinfo">Attempt trail and check your Knowlege</string>
+    <string name="strmy30thinfo">My 30th will help you access your Progress</string>
+    <string name="strassessmentinfo">Check Your score and reports of progress</string>
+
+    <string name="stractivity">Activity</string>
+    <string name="strexam">Exam</string>
+    <string name="strassignmentinfo">Assignment Information</string>
+    <string name="strassignmentname">Assignment Name</string>
+    <string name="strcoursename">Course Name</string>
+    <string name="strsave">Save</string>
+    <string name="strsubject">Subject</string>
+    <string name="strtopic">Topic</string>
+    <string name="strsubmissiondate">Submission Date</string>
+
+
 </resources>

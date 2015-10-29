@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- disabled state -->
-    <item android:state_enabled="false" android:drawable="@drawable/shadow_gray"/>
+    <item android:drawable="@drawable/shadow_gray" android:state_enabled="false" />
     <!-- pressed state -->
-    <item android:state_enabled="true" android:state_window_focused="true" android:state_pressed="true" android:drawable="@drawable/shadow_orange"/>
+    <item android:drawable="@drawable/shadow_blue" android:state_enabled="true" android:state_pressed="true" android:state_window_focused="true" />
     <!-- unselected state -->
-    <item android:state_enabled="true" android:state_focused="true" android:state_window_focused="true" android:drawable="@drawable/shadow_orange"/>
+    <item android:drawable="@drawable/shadow_blue" android:state_enabled="true" android:state_focused="true" android:state_window_focused="true" />
     <!-- dropdown list state -->
-    <item android:state_enabled="true" android:state_focused="true" android:drawable="@drawable/shadow_orange"/>
+    <item android:drawable="@drawable/shadow_blue" android:state_enabled="true" android:state_focused="true" />
     <!-- default -->
-    <item android:drawable="@drawable/shadow_gray"/>
+    <item android:drawable="@drawable/shadow_gray" />
 </selector>
