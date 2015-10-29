@@ -1,14 +1,11 @@
 <!--main-->
 <div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark" data-type="activity-main">
-<div class="col-sm-12" data-type="activity-sub-main">
-    <div class="box activities" data-type="activity">
-        <div class="box_body" data-type="activity-body">
-            <div class="col-sm-12 border-left" data-type="activity-sub-body">
-                <?php
-                    // p($my_month,true);
-                    if(isset($my_month)){
-                        // for ($i = count($my_month)-1;$i >= 0;$i--) {
-                            // $value = $my_month[$i];
+    <div class="col-sm-12" data-type="activity-sub-main">
+        <div class="box activities" data-type="activity">
+            <div class="box_body" data-type="activity-body">
+                <div class="col-sm-12 border-left" data-type="activity-sub-body">
+                    <?php
+                        if(isset($my_month)){
                             ?>
                             <div class="divide_discussion">                    
                                 <hr><h4><?php echo date("F Y",strtotime($my_month));?></h4>
@@ -18,32 +15,28 @@
                                 if(isset($my_activities['topic_allcated']) && sizeof($my_activities['topic_allcated'])>0){
                                     $t = 0;
                                     foreach ($my_activities['topic_allcated'] as $key => $topic_allcated_value) {
-                                        // if($value ==  date('Y-m',strtotime($topic_allcated_value['created_date']))){
                                 ?>
-                                        <div class="topic_allocated">
-                                            <?php if($t == 0) { ?>
-                                                <h4 class="activity_heading">Topic Allocated</h4>
-                                            <?php } ?>
-                                            <div class="topic_div">
-                                                <h4><?php echo $topic_allcated_value['topic_name'];?></h4>
-                                                <div>
-                                                    <div><strong>Discussion</strong><p><?php echo $topic_allcated_value['total_discussion'];?> Comments</p></div>
-                                                    <div><strong>Discussion - Score</strong><p>Score :  215</p></div>
-                                                    <div><strong>Examination - Quiz</strong><p>Score :  215</p></div>
-                                                    <div><strong>Examination - Quiz</strong><p>Score :  215</p></div>
-                                                </div>
-                                                <div class="clearfix"></div>
+                                    <div class="topic_allocated">
+                                        <?php if($t == 0) { ?>
+                                            <h4 class="activity_heading">Topic Allocated</h4>
+                                        <?php } ?>
+                                        <div class="topic_div">
+                                            <h4><?php echo $topic_allcated_value['topic_name'];?></h4>
+                                            <div>
+                                                <div><strong>Discussion</strong><p><?php echo $topic_allcated_value['total_discussion'];?> Comments</p></div>
+                                                <div><strong>Discussion - Score</strong><p>Score :  <?php echo isset($topic_allcated_value['discussion_score'])?$topic_allcated_value['discussion_score']:'0';?></p></div>
+                                                <div><strong>Examination - Quiz</strong><p>Percentage :  <?php echo $topic_allcated_value['per'];?>%</p></div>
                                             </div>
+                                            <div class="clearfix"></div>
                                         </div>
+                                    </div>
                                 <?php
-                                        $t++;
-                                        // }
+                                    $t++;
                                     }
                                 }   
-                            if(isset($my_activities['studymates']) && sizeof($my_activities['studymates']) > 0){
+                                if(isset($my_activities['studymates']) && sizeof($my_activities['studymates']) > 0){
                                 $s = 0;
-                                foreach ($my_activities['studymates'] as $key => $studymate_value) {
-                                    // if($value ==  date('Y-m',strtotime($studymate_value['created_date']))){
+                                    foreach ($my_activities['studymates'] as $key => $studymate_value) {
                                 ?>
                                     <div class="studymate_with">
                                         <?php if($s == 0) { ?>
@@ -60,30 +53,26 @@
                                         </div>
                                     </div>   
                                 <?php
-                                        $s++;
-                                    // }
+                                    $s++;
                                 }
                             }
                             if(isset($my_activities['like']) && sizeof($my_activities['like']) > 0){
-                                foreach ($my_activities['like'] as $key => $like_value) {
-                                    // if($value ==  date('Y-m',strtotime($like_value['created_date']))){
+                                    foreach ($my_activities['like'] as $key => $like_value) {
                                 ?>
-                                <div class="status_like">
-                                    <h4 class="activity_heading">Liked status of <span class="txt_green"><?php echo $like_value['post_username'];?></span></h4>
-                                    <div class="feed_text">                                               
-                                        <p><?php echo $like_value['feed_text'];?></p>
+                                    <div class="status_like">
+                                        <h4 class="activity_heading">Liked status of <span class="txt_green"><?php echo $like_value['post_username'];?></span></h4>
+                                        <div class="feed_text">                                               
+                                            <p><?php echo $like_value['feed_text'];?></p>
+                                        </div>
+                                        <div class="clearfix"></div>
                                     </div>
-                                    <div class="clearfix"></div>
-                                </div>
                                 <?php
-                                    // }
                                 }   
                             }
                             if(isset($my_activities['comment']) && sizeof($my_activities['comment'])>0){
-                                foreach ($my_activities['comment'] as $key => $comment_value) {
-                                    // if($value ==  date('Y-m',strtotime($comment_value['created_date']))){
+                                    foreach ($my_activities['comment'] as $key => $comment_value) {
                                 ?>
-                                     <div class="commented_on">
+                                    <div class="commented_on">
                                         <h4 class="activity_heading">Commented on</h4>
                                         <div class="feeds">
                                             <div class="user_small_img">
@@ -121,18 +110,15 @@
                                                     <span class="noti_time"><?php echo get_time_format($comment_value['created_date']);?></span>                            
                                                 </div>
                                                 <div class="clearfix"></div>
-
                                             </div>
                                         </div>
                                     </div>
                                 <?php
-                                    // }
                                 }
                             }
                             if(isset($my_activities['post']) && sizeof($my_activities['post'])>0){
                                 $p = 0;
                                 foreach ($my_activities['post'] as $key => $post_value) {
-                                    // if($value ==  date('Y-m',strtotime($post_value['created_date']))){
                                 ?>
                                     <div class="status_like">
                                         <?php if($p==0){ ?>
@@ -149,24 +135,21 @@
                                             </div>
                                             <?php } ?>
                                         </div> 
-                                        
                                     </div>                
                                 <?php
-                                        $p++;
-                                    // }
+                                    $p++;
                                 }
                             }
-                        // }
-                    }
-                ?>
-            </div>
-            <div class="clearfix"></div>
-            <div class="text-center" data-type="no-more">
-                <input type="hidden" name="load_more" value="<?php echo isset($value)?$value:'';?>"> 
-                <a href="javascript:void(0);" data-month="<?php echo isset($new_my_month)?$new_my_month:'';?>" class="search_result_label" data-type="load-activity-more">View More</a>
+                        }
+                    ?>
+                </div>
+                <div class="clearfix"></div>
+                <div class="text-center" data-type="no-more">
+                    <input type="hidden" name="load_more" value="<?php echo isset($value)?$value:'';?>"> 
+                    <a href="javascript:void(0);" data-month="<?php echo isset($new_my_month)?$new_my_month:'';?>" class="search_result_label" data-type="load-activity-more">View More</a>
+                </div>
             </div>
         </div>
-     </div>
-	 </div>
+	</div>
 </div>
 <!--//main-->
