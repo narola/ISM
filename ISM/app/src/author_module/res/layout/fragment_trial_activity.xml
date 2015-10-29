@@ -15,6 +15,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_white"
         android:orientation="horizontal"
         android:padding="@dimen/d15dp">
 
@@ -31,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+
             android:orientation="horizontal">
 
             <Button
@@ -38,10 +40,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_save"
-                android:paddingBottom="@dimen/d5dp"
-                android:paddingLeft="@dimen/d10dp"
-                android:paddingRight="@dimen/d10dp"
-                android:paddingTop="@dimen/d5dp"
                 android:text="@string/strsave"
                 android:textAllCaps="true"
                 android:textColor="@color/color_white"
@@ -53,10 +51,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/d15dp"
                 android:background="@drawable/btn_cancel"
-                android:paddingBottom="@dimen/d5dp"
-                android:paddingLeft="@dimen/d10dp"
-                android:paddingRight="@dimen/d10dp"
-                android:paddingTop="@dimen/d5dp"
                 android:text="@string/strcancel"
                 android:textAllCaps="true"
                 android:textColor="@color/color_white"
@@ -69,7 +63,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="@dimen/d1dp"
-        android:background="@color/news_feed_separator_color" />
+        android:background="@color/news_feed_post_box_color" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -103,8 +97,9 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/d5dp"
                     android:background="@drawable/selector"
-                    android:padding="@dimen/d15sp"
-                    android:textColor="@color/color_black" />
+                    android:padding="@dimen/d20dp"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/d20dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -128,8 +123,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/d5dp"
                     android:background="@drawable/selector"
-                    android:padding="@dimen/d15sp"
-                    android:textColor="@color/color_black" />
+
+                    android:padding="@dimen/d20dp"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/d20dp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -205,6 +202,34 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_activity_topic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/d10dp"
+                    android:text="@string/strtopic"
+                    android:textSize="@dimen/d20dp" />
+
+                <Spinner
+                    android:id="@+id/sp_activity_topic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/d5dp"
+                    android:layout_marginTop="@dimen/d5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/spinner_selector"
+                    android:entries="@array/list"
+                    android:padding="@dimen/d20dp"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
                     android:id="@+id/tv_activity_submissiondate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -212,22 +237,25 @@
                     android:text="@string/strsubmissiondate"
                     android:textSize="@dimen/d20dp" />
 
-                <TextView
-                    android:id="@+id/tv_activity_submissiondate_select"
+                <EditText
+                    android:id="@+id/et_activity_submissiondate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/d5dp"
                     android:background="@drawable/selector"
-                    android:padding="@dimen/d15sp"
-                    android:textColor="@color/color_black" />
+                    android:editable="false"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/d20sp"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/d20dp" />
             </LinearLayout>
         </LinearLayout>
 
 
-        <!--<com.narola.kpa.richtexteditor.view.RichTextEditor-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-        <!--</com.narola.kpa.richtexteditor.view.RichTextEditor>-->
+        <com.narola.kpa.richtexteditor.view.RichTextEditor
+            android:id="@+id/rte_trial_activity"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/rich_text_editor_height"></com.narola.kpa.richtexteditor.view.RichTextEditor>
     </LinearLayout>
 
 

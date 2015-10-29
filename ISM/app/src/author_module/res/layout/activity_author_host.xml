@@ -35,17 +35,6 @@
             android:src="@drawable/image_home" />
 
 
-        <TextView
-            android:id="@+id/txt_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/ll_search"
-            android:layout_toRightOf="@id/img_home"
-            android:gravity="center"
-            android:textSize="@dimen/controller_top_menu_text_size"
-            android:visibility="gone" />
-
-
         <RelativeLayout
             android:id="@+id/rl_controller_top_menu"
             android:layout_width="match_parent"
@@ -62,6 +51,18 @@
                 android:background="@drawable/bg_right_controller_top_button"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_back"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/img_back"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/d15dp"
+                android:text="dsdsdsds"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/controller_top_menu_text_size"
                 android:visibility="gone" />
 
             <Spinner
@@ -126,6 +127,7 @@
 
         </RelativeLayout>
 
+
         <!--<RelativeLayout-->
         <!--android:id="@+id/rl_add_post"-->
         <!--android:layout_width="@dimen/d120dp"-->
@@ -156,7 +158,7 @@
             android:id="@+id/ll_search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/img_events"
+            android:layout_toLeftOf="@+id/img_author_profile"
             android:orientation="horizontal">
 
             <ImageView
@@ -184,15 +186,15 @@
         </LinearLayout>
 
 
-        <ImageView
-            android:id="@+id/img_events"
-            android:layout_width="@dimen/controller_top_button_width"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/img_author_profile"
-            android:background="@drawable/bg_left_controller_top_button"
-            android:onClick="openRightContainerFragment"
-            android:scaleType="centerInside"
-            android:src="@drawable/image_notes" />
+        <!--<ImageView-->
+        <!--android:id="@+id/img_events"-->
+        <!--android:layout_width="@dimen/controller_top_button_width"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_toLeftOf="@+id/img_author_profile"-->
+        <!--android:background="@drawable/bg_left_controller_top_button"-->
+        <!--android:onClick="openRightContainerFragment"-->
+        <!--android:scaleType="centerInside"-->
+        <!--android:src="@drawable/image_notes" />-->
 
         <ImageView
             android:id="@+id/img_author_profile"

@@ -104,6 +104,7 @@ public class OfficeFragment extends Fragment {
 
         } else if (position == 2) {
 
+//            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDNEWTRIAL);
             ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
 
         } else if (position == 3) {

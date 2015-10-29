@@ -13,9 +13,9 @@ public class CreateAssignmentRequest {
 
     private String user_id;
     private String submission_date;
-    private String classroom_id;
-    private String subject_id;
-    private String topic_id;
+    private int classroom_id;
+    private int subject_id;
+    private int topic_id;
     private String assignment_text;
 
     public String getUser_id() {
@@ -34,29 +34,6 @@ public class CreateAssignmentRequest {
         this.submission_date = submission_date;
     }
 
-    public String getClassroom_id() {
-        return classroom_id;
-    }
-
-    public void setClassroom_id(String classroom_id) {
-        this.classroom_id = classroom_id;
-    }
-
-    public String getSubject_id() {
-        return subject_id;
-    }
-
-    public void setSubject_id(String subject_id) {
-        this.subject_id = subject_id;
-    }
-
-    public String getTopic_id() {
-        return topic_id;
-    }
-
-    public void setTopic_id(String topic_id) {
-        this.topic_id = topic_id;
-    }
 
     public String getAssignment_text() {
         return assignment_text;
@@ -64,6 +41,30 @@ public class CreateAssignmentRequest {
 
     public void setAssignment_text(String assignment_text) {
         this.assignment_text = assignment_text;
+    }
+
+    public int getClassroom_id() {
+        return classroom_id;
+    }
+
+    public void setClassroom_id(int classroom_id) {
+        this.classroom_id = classroom_id;
+    }
+
+    public int getSubject_id() {
+        return subject_id;
+    }
+
+    public void setSubject_id(int subject_id) {
+        this.subject_id = subject_id;
+    }
+
+    public int getTopic_id() {
+        return topic_id;
+    }
+
+    public void setTopic_id(int topic_id) {
+        this.topic_id = topic_id;
     }
 
 

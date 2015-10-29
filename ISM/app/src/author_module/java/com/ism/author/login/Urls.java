@@ -17,6 +17,10 @@ public class Urls {
     public static final String URL_TAGFRIENDINFEED = URL_ARTI_HOST + "TagFriendInFeed";
     public static final String URL_GETALLCOMMENTS = URL_ARTI_HOST + "GetAllComments";
     public static final String URL_LIKEFEED = URL_ARTI_HOST + "LikeFeed";
+    public static final String URL_GETCLASSROOMS = URL_ARTI_HOST + "GetClassrooms";
+    public static final String URL_GETSUBJECT = URL_ARTI_HOST + "GetSubject";
+    public static final String URL_GETTOPICS = URL_ARTI_HOST + "GetTopics";
+    public static final String URL_CREATEASSIGNMENT = URL_ARTI_HOST + "CreateAssignment";
 
 
     public static final String STATUS_SUCCESS = "success";

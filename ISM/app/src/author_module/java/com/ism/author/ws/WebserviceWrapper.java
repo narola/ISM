@@ -29,6 +29,11 @@ public class WebserviceWrapper {
     public static final int GETSTUDYMATES = 4;
     public static final int TAGFRIENDINFEED = 5;
     public static final int LIKEFEED = 6;
+    public static final int GETCLASSROOMS = 7;
+    public static final int GETSUBJECT = 8;
+    public static final int GETTOPICS = 9;
+    public static final int CREATEASSIGNMENT = 10;
+
 
     public static int API_METHOD_NAME;
 
@@ -61,32 +66,49 @@ public class WebserviceWrapper {
                 API_METHOD_NAME = params[0];
                 switch (API_METHOD_NAME) {
                     case LOGIN:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_LOGIN, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_LOGIN, ResponseObject.class, requestObject);
                         break;
 
                     case GETALLFEEDS:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_GETALLFEEDS, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GETALLFEEDS, ResponseObject.class, requestObject);
                         break;
 
                     case ADDCOMMENT:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_ADDCOMMENT, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_ADDCOMMENT, ResponseObject.class, requestObject);
                         break;
 
                     case GETSTUDYMATES:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_GETSTUDYMATES, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GETSTUDYMATES, ResponseObject.class, requestObject);
                         break;
 
                     case TAGFRIENDINFEED:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_TAGFRIENDINFEED, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_TAGFRIENDINFEED, ResponseObject.class, requestObject);
                         break;
 
                     case GETALLCOMMENTS:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_GETALLCOMMENTS, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GETALLCOMMENTS, ResponseObject.class, requestObject);
                         break;
 
                     case LIKEFEED:
-                        responseObject = new com.ism.ws.RequestWs().getRequest(Urls.URL_LIKEFEED, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_LIKEFEED, ResponseObject.class, requestObject);
                         break;
+
+                    case GETCLASSROOMS:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GETCLASSROOMS, ResponseObject.class, requestObject);
+                        break;
+
+                    case GETSUBJECT:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GETSUBJECT, ResponseObject.class, requestObject);
+                        break;
+
+                    case GETTOPICS:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GETTOPICS, ResponseObject.class, requestObject);
+                        break;
+
+                    case CREATEASSIGNMENT:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_CREATEASSIGNMENT, ResponseObject.class, requestObject);
+                        break;
+
 
                 }
             } catch (Exception e) {

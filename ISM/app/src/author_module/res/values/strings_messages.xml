@@ -9,4 +9,8 @@
     <string name="stremptycomment">Please add comment.</string>
     <string name="strnoresult">No search result found!</string>
     <string name="strselectuser">Please select user to tag.</string>
+    <string name="msg_validation_set_classroom">![CDATA[> Please select your classroom.]]</string>
+    <string name="msg_validation_set_subject">![CDATA[> Please select your subject.]]</string>
+    <string name="msg_validation_set_topic">![CDATA[> Please select your subject topic.]]</string>
+    <string name="msg_validation_add_text_rich_editor">![CDATA[> Please set the assignment.]]</string>
 </resources>
