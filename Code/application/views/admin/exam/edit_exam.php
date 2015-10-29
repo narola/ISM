@@ -216,8 +216,7 @@
                 </div>
                 <div class="col-sm-12 text-center btn_group">
                     <input type="hidden" value="save" id="button_type" name="button_type">
-                    <button class="btn btn_green" onclick="set_hidden('save')" >Save</button>
-                    <button class="btn btn_red" onclick="set_hidden('set_ques')">Save & Set Question</button>
+                    <button class="btn btn_green" onclick="set_hidden('save')" ><?php $copy = $this->uri->segment(3); if($copy == 'copy'){ echo "Save"; }else { echo "Update"; }  ?></button>
                     <a href="<?php echo $prev_url; ?>" class="btn btn_black_normal">Cancel</a>
                 </div>
                 <div class="clearfix"></div>

@@ -237,23 +237,23 @@
         }
     }    
 
-    // eid=Exam ID  qid=Question ID
-    function fetch_question(eid){
+    // // eid=Exam ID  qid=Question ID
+    // function fetch_question(eid){
         
-        $('input:checkbox').removeAttr('checked');
+    //     $('input:checkbox').removeAttr('checked');
 
-        if(eid != ''){
-            $.ajax({
-                url:'<?php echo base_url()."admin/exam/fetch_question"; ?>',
-                type:'POST',
-                dataType:'JSON',
-                data:{eid:eid},
-                success:function(data){
-                    $('#question_list').html(data.new_str);
-                }    
-            });
-        }
-    }
+    //     if(eid != ''){
+    //         $.ajax({
+    //             url:'<?php echo base_url()."admin/exam/fetch_question"; ?>',
+    //             type:'POST',
+    //             dataType:'JSON',
+    //             data:{eid:eid},
+    //             success:function(data){
+    //                 $('#question_list').html(data.new_str);
+    //             }    
+    //         });
+    //     }
+    // }
 
     function set_question(qid){
 
@@ -304,38 +304,9 @@
     function delete_question(href,event,remove_div){
         event.preventDefault();
          bootbox.confirm("Delete Question?", function(confirmed) {
-            
             if(confirmed){
-                
-                window.location.href=href;
-
-                $.ajax({
-                    url:href,
-                    type:"post",
-                    success:function(data){
-                        
-                        $('#que_div_'+remove_div).remove();                        
-                        var total_div = $('#question_list > div').length;
-                        total_div = parseInt(total_div);
-                        
-                        // to reset the question numbers
-                        //@nv       
-                        $($("#question_list .question_wrapper").get().reverse()).each(function() {
-                                
-                                var id = 'que_div_'+total_div;
-                                var span = 'exam_quest_'+total_div;
-                                $(this).attr('id',id);
-                       
-                                $(this).find('h5.txt_red > span').attr('id',span);
-                                $(this).find('h5.txt_red > span').text(total_div);
-                                total_div--;
-
-                        });
-                     }
-                        
-                });
+                window.location.href=href; 
             }
-            
         });
     }
 

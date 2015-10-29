@@ -95,6 +95,10 @@
                             </select>
                         </div>
 
+                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('country'),''))){ echo 'hide';} ?>">
+                          <?php echo strip_tags(form_error('country'),'') ; ?>
+                        </div>
+
                         <div class="form-group" >
                             <label>State</label>
                             <select class="form-control" name="state" id="states_id" onchange="get_cities(this.value)" >
@@ -111,6 +115,10 @@
                             </select>
                         </div>
 
+                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('state'),''))){ echo 'hide';} ?>">
+                          <?php echo strip_tags(form_error('state'),'') ; ?>
+                        </div>
+
                         <div class="form-group">
                             <label>City</label>
                             <select class="form-control" name="city" id="city_id">
@@ -124,6 +132,10 @@
                                 <option > No City</option>
                                 <?php } ?>
                             </select>
+                        </div>
+
+                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('city'),''))){ echo 'hide';} ?>">
+                          <?php echo strip_tags(form_error('city'),'') ; ?>
                         </div>
 
                         <!-- <div class="form-group">
