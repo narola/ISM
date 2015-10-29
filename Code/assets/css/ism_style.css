@@ -2562,12 +2562,14 @@ ul.tut_weekdays {
 	margin:0;
 }
 .topic_div>div>div{
-	width:50%;
+	/*width:50%;*/
+	width:33%;
 	float:left;
 	padding:5px 15px;
-}
-.topic_allocated .topic_div>div>div:first-child{
 	border-right:1px solid rgba(0,0,0,0.07);
+}
+.topic_allocated .topic_div>div>div:last-child{
+	border-right:none;
 }
 .studymate_with .study_mate{
 	padding:0;

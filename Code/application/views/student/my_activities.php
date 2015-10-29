@@ -29,6 +29,7 @@
                                                 <div>
                                                     <div><strong>Discussion</strong><p>29 Comments</p></div>
                                                     <div><strong>Examination - Quiz</strong><p>Score :  215</p></div>
+                                                    <div><strong>Examination - Quiz</strong><p>Score :  215</p></div>
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
