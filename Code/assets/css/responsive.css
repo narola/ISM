@@ -334,8 +334,14 @@
 	#circle_process {
 		transform: translateX(-12px);
 	}
-	.item_chart::after, .item_chart::before {
+	.item_chart:after, .item_chart:before {
     	left: -14px;
+	}
+	.item_red:before, .item_green:before{
+		right: -50px;
+	}
+	.item_blue:before, .item_purple:before{
+		left: -50px;
 	}
 }
 @media (max-width:1080px){
@@ -834,6 +840,14 @@
     	left: -17px;
     	top: 460px;
 	}
+	.item_red:before, .item_green:before{
+		left: -70px;
+		right:auto;
+	}
+	.item_blue:before, .item_purple:before{
+		right: -70px;
+		left:auto;
+	}
 }
 
 @media (max-width:800px){
@@ -1050,6 +1064,9 @@
 	}
 	.item_chart::after, .item_chart::before {
     	left: -12px;
+	}
+	.item_red:before, .item_green:before, .item_blue:before, .item_purple:before{
+		content:none;
 	}
 }
 @media (max-width:768px){
