@@ -24,12 +24,14 @@
     <dimen name="d130sp">130sp</dimen>
 
 
+    <dimen name="d1dp">1dp</dimen>
     <dimen name="d5dp">5dp</dimen>
     <dimen name="d10dp">10dp</dimen>
     <dimen name="d15dp">15dp</dimen>
     <dimen name="d18dp">18dp</dimen>
 
     <dimen name="d20dp">20dp</dimen>
+    <dimen name="d22dp">22dp</dimen>
     <dimen name="d30dp">30dp</dimen>
     <dimen name="d25dp">25dp</dimen>
 
@@ -41,6 +43,8 @@
     <dimen name="d120dp">120dp</dimen>
     <dimen name="d130dp">130dp</dimen>
     <dimen name="d150dp">150dp</dimen>
+    <dimen name="d170dp">170dp</dimen>
+    <dimen name="d190dp">190dp</dimen>
 
 
     <!--This is for the login activity-->
@@ -64,6 +68,7 @@
     <dimen name="circular_imageview_width_height">70sp</dimen>
     <dimen name="circular_imageview_border_width">1dp</dimen>
     <dimen name="dp_post_creater_image_width_height">160dp</dimen>
+    <dimen name="office_tab_width">315dp</dimen>
 
 
 </resources>

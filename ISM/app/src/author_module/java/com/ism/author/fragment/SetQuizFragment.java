@@ -13,7 +13,7 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.utility.Debug;
 
 /**
- * Created by c166 on 21/10/15.
+ * these class is for set quiz fragment
  */
 public class SetQuizFragment extends Fragment {
 

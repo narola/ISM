@@ -81,6 +81,10 @@
                 android:textSize="@dimen/d40dp"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:layout_width="1dp"
+                android:layout_height="fill_parent" />
+
             <TextView
                 android:id="@+id/tv_dialog_close"
                 android:layout_width="0dp"

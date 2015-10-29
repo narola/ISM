@@ -1,13 +1,22 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/fragment_background_color"
+    android:padding="@dimen/d20dp"
     tools:context="com.ism.author.fragment.OfficeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This is Office Fragment" />
 
-</FrameLayout>
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gv_officetab"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:horizontalSpacing="@dimen/d25dp"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/d25dp"
+        tools:listitem="@layout/row_grid_officetab" />
+
+
+</LinearLayout>

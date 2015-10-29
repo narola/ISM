@@ -21,9 +21,9 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.author.AuthorHostActivity;
-import com.ism.login.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.InputValidator;
+import com.ism.utility.Utility;
 
 import java.io.IOException;
 

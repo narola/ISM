@@ -12,39 +12,40 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.author.Utility.PreferenceData;
+import com.ism.author.Utility.Utils;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.helper.CircleImageView;
+import com.ism.author.login.Urls;
 import com.ism.author.model.AddCommentRequest;
 import com.ism.author.model.Data;
+import com.ism.author.model.GetAllCommentRequest;
 import com.ism.author.model.GetAllFeedsComment;
+import com.ism.utility.Debug;
 
 import java.util.ArrayList;
 
 /**
- * these is the adapter class for the postfeeds
+ * these adapter class is for getting all the postfeeds.
  */
 public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.ViewHolder> {
 
     private static final String TAG = PostFeedsAdapter.class.getSimpleName();
 
     Context mContext;
-    ArrayList<Data> listOfPostFeeds = new ArrayList<Data>();
-    View.OnClickListener viewAllCommetsListener;
     Fragment fragment;
+    ArrayList<Data> listOfPostFeeds = new ArrayList<Data>();
+    String likePrefData, unlikePrefData;
 
-
-    public PostFeedsAdapter(Context context, View.OnClickListener viewAllCommetsListener) {
+    public PostFeedsAdapter(Context context) {
         this.mContext = context;
-        this.viewAllCommetsListener = viewAllCommetsListener;
-
-
     }
 
-    public PostFeedsAdapter(Fragment fragment, View.OnClickListener viewAllCommetsListener, Context context) {
+    public PostFeedsAdapter(Fragment fragment, Context context) {
         this.mContext = context;
-        this.viewAllCommetsListener = viewAllCommetsListener;
         this.fragment = fragment;
 
+        PreferenceData.clearPreference(mContext);
     }
 
     @Override
@@ -66,14 +67,16 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         holder.txtPostTotalLikeCount.setText(listOfPostFeeds.get(position).getTotalLike());
         holder.txtPostTotalCommentCount.setText(listOfPostFeeds.get(position).getTotalComment());
 
+
+        if (listOfPostFeeds.get(position).getLike() == 1) {
+            holder.imgPostLike.setSelected(true);
+        } else {
+            holder.imgPostLike.setSelected(false);
+        }
+
         holder.llCommentInflater.removeAllViews();
-
-
         if (holder.llCommentInflater.getChildCount() == 0) {
-
-
             for (int i = 0; i < listOfPostFeeds.get(position).getCommentList().size(); i++) {
-
                 if (i <= 1) {
 
                     View v = getCommetInflaterView(listOfPostFeeds.get(position).getCommentList().get(i));
@@ -82,22 +85,21 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 } else {
                     break;
                 }
-
             }
-
         }
-
-        holder.txtCommentViewAll.setTag(position);
-        holder.txtCommentViewAll.setOnClickListener(viewAllCommetsListener);
-
 
         holder.txtCommentViewAll.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                if (listOfPostFeeds.get(position).getCommentList().size() > 0) {
+                    GetAllCommentRequest getAllCommentRequest = new GetAllCommentRequest();
+                    getAllCommentRequest.setFeed_id(listOfPostFeeds.get(position).getFeedId());
+                    ((HomeFragment) fragment).callGetAllComments(getAllCommentRequest);
+                } else {
+                    Utils.showToast(mContext.getString(R.string.strnocomments), mContext);
+                }
 
-
-                ((HomeFragment) fragment).callGetAllComments(position);
 
             }
         });
@@ -108,13 +110,21 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             @Override
             public void onClick(View v) {
 
-                AddCommentRequest addCommentRequest = new AddCommentRequest();
-                addCommentRequest.setComment(holder.etWriteComment.getText().toString());
-                addCommentRequest.setComment_by(listOfPostFeeds.get(position).getUserId());
-                addCommentRequest.setFeed_id(listOfPostFeeds.get(position).getFeedId());
+                if (holder.etWriteComment.getText() != null
+                        && holder.etWriteComment.getText().toString().trim().length() != 0) {
 
+                    ((HomeFragment) fragment).setSetAddCommentRowPosition(position);
+                    AddCommentRequest addCommentRequest = new AddCommentRequest();
+                    addCommentRequest.setComment(holder.etWriteComment.getText().toString());
+//                   addCommentRequest.setComment_by(listOfPostFeeds.get(position).getUserId());
+                    addCommentRequest.setComment_by(Urls.TEST_USER_ID);
+                    addCommentRequest.setFeed_id(listOfPostFeeds.get(position).getFeedId());
+                    ((HomeFragment) fragment).callAddComment(addCommentRequest);
 
-                ((HomeFragment) fragment).callAddComment(addCommentRequest);
+                } else {
+                    Utils.showToast(mContext.getString(R.string.stremptycomment), mContext);
+                }
+
 
             }
         });
@@ -124,18 +134,69 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             @Override
             public void onClick(View v) {
 
-
                 //this is for the real data
 //                ((HomeFragment) fragment).tagFriendInFeedRequest.setFeed_id(listOfPostFeeds.get(position).getFeedId());
 //                ((HomeFragment) fragment).tagFriendInFeedRequest.setTagged_by(listOfPostFeeds.get(position).getUserId());
 
                 //this is testing data.
-                ((HomeFragment) fragment).tagFriendInFeedRequest.setFeed_id("240");
-                ((HomeFragment) fragment).tagFriendInFeedRequest.setTagged_by("134");
-                ((HomeFragment) fragment).callGetStudyMates(position);
+                ((HomeFragment) fragment).tagFriendInFeedRequest.setFeed_id(Urls.TEST_FEEDID);
+                ((HomeFragment) fragment).tagFriendInFeedRequest.setTagged_by(Urls.TEST_TAGGED_BY);
+                ((HomeFragment) fragment).callGetStudyMates();
             }
         });
 
+        holder.imgPostLike.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                likePrefData = PreferenceData.getStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, "");
+                unlikePrefData = PreferenceData.getStringPrefs(PreferenceData.UNLIKE_ID_LIST, mContext, "");
+
+                holder.imgPostLike.setSelected(!holder.imgPostLike.isSelected());
+
+                if (holder.imgPostLike.isSelected()) {
+                    listOfPostFeeds.get(position).setLike(1);
+                    listOfPostFeeds.get(position).setTotalLike(String.valueOf(Integer.parseInt(listOfPostFeeds.get(position).getTotalLike()) + 1));
+
+                    setPrefForLike(listOfPostFeeds.get(position).getFeedId() + ",");
+                } else {
+                    listOfPostFeeds.get(position).setLike(0);
+                    listOfPostFeeds.get(position).setTotalLike(String.valueOf(Integer.parseInt(listOfPostFeeds.get(position).getTotalLike()) - 1));
+
+                    setPrefForUnlike(listOfPostFeeds.get(position).getFeedId() + ",");
+
+                }
+                notifyDataSetChanged();
+
+                Debug.e(TAG, "Pref for like==" + PreferenceData.getStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, ""));
+                Debug.e(TAG, "Pref for unlike==" + PreferenceData.getStringPrefs(PreferenceData.UNLIKE_ID_LIST, mContext, ""));
+
+
+            }
+        });
+
+
+    }
+
+
+    private void setPrefForLike(String feed_id) {
+
+        PreferenceData.setStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, likePrefData + feed_id);
+        if (unlikePrefData != null && unlikePrefData.length() > 0) {
+            PreferenceData.setStringPrefs(PreferenceData.UNLIKE_ID_LIST, mContext, unlikePrefData.replaceAll(feed_id, ""));
+        }
+
+
+    }
+
+    private void setPrefForUnlike(String feed_id) {
+
+        PreferenceData.setStringPrefs(PreferenceData.UNLIKE_ID_LIST, mContext, unlikePrefData + feed_id);
+        if (likePrefData != null && likePrefData.length() > 0) {
+            PreferenceData.setStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, likePrefData.replaceAll(feed_id, ""));
+        }
 
     }
 
@@ -152,19 +213,16 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         notifyDataSetChanged();
     }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         CircleImageView imgDpPostCreator;
         TextView txtPostCreaterName, txtPostContent, txtPostTotalLikeCount, txtPostTotalCommentCount, txtCommentViewAll, txtAddComment;
         ImageView imgPostLike, imgPostComment, imgPostTag;
         EditText etWriteComment;
         LinearLayout llCommentInflater;
-
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -186,13 +244,10 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     }
 
     private View getCommetInflaterView(GetAllFeedsComment commentData) {
-
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         CommentsViewHolder holder;
         View v = null;
-
         if (v == null) {
-
             v = layoutInflater.inflate(R.layout.row_post_commenter, null, false);
             holder = new CommentsViewHolder();
             holder.txtCommenterUsername = (TextView) v.findViewById(R.id.txt_commenter_username);
@@ -200,18 +255,14 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             holder.txtCommentDuration = (TextView) v.findViewById(R.id.txt_comment_duration);
             v.setTag(holder);
         } else {
-
             holder = (CommentsViewHolder) v.getTag();
         }
-
 
         holder.txtCommenterUsername.setText(commentData.getUsername());
         holder.txtCommenterComment.setText(commentData.getComment());
         holder.txtCommentDuration.setText(commentData.getCommentBy());
 
         return v;
-
-
     }
 
 
@@ -222,5 +273,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         TextView txtCommentDuration;
 
     }
+
 
 }

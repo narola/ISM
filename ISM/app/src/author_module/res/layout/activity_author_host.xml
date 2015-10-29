@@ -253,7 +253,7 @@
             android:background="@drawable/bg_controller_left_button_books"
             android:onClick="openMainContainerFragment"
             android:scaleType="centerInside"
-            android:src="@drawable/image_office" />
+            android:src="@drawable/image_books" />
 
 
         <ImageView

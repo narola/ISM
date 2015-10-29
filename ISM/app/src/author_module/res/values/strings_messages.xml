@@ -5,4 +5,8 @@
     <string name="loading">loading...</string>
     <string name="strnetissue">Please check your internet connection.</string>
     <string name="strerrormessage">:::error</string>
+    <string name="strnocomments">Sorry there are no comments.</string>
+    <string name="stremptycomment">Please add comment.</string>
+    <string name="strnoresult">No search result found!</string>
+    <string name="strselectuser">Please select user to tag.</string>
 </resources>
