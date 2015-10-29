@@ -65,7 +65,6 @@ switch ($_REQUEST['Service'])
     case "SubmitNotes":
     case "UploadMediaNotes":
     case "CreateAssignment":
-    case "CreateExam":
     {
         include_once 'TeacherFunctions.php';
         $teacher = new TeacherFunctions();
@@ -73,6 +72,23 @@ switch ($_REQUEST['Service'])
     }
         break;
 
+    /*************************** Exam Functions ******************************/
+    case "CreateExam":
+    case "SetQuestionsForExam":
+    case "GetQuestionBank":
+    case "GetCourses":
+    case "GetSubject":
+    case "GetClassrooms":
+    case "GetAllExams":
+    case "GetExamQuestions":
+    case "GetExamSubmission":
+    case "GetExamEvaluation":
+    {
+        include_once 'ExamFunctions.php';
+        $exam = new ExamFunctions();
+        $data = $exam -> call_service($_REQUEST['Service'], $postData);
+    }
+        break;
     /*********************  Social Functions ******************************/
     case "GetAllFeeds":
     case "PostFeed":

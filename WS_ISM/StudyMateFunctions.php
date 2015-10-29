@@ -20,44 +20,36 @@ class StudyMateFunctions
         {
             case "GetStudymates":
             {
-                return $this->getStudymates($postData);
+                return $this->getStudymates($postData);//done
             }
                 break;
             case "GetStudymatesWithDetails":
             {
-                return $this->getStudymatesWithDetails($postData);
+                return $this->getStudymatesWithDetails($postData);//done
             }
                 break;
 
             case "GetSuggestedStudymates":
             {
-                return $this->getSuggestedStudymates($postData);
+                return $this->getSuggestedStudymates($postData);//in progress
             }
                 break;
 
             case "SendRequestToStudymate":
             {
-                return $this->sendRequestToStudymate($postData);
+                return $this->sendRequestToStudymate($postData);// remaining
             }
                 break;
 
             case "AcceptRequestFromStudymate":
             {
-                return $this->acceptRequestFromStudymate($postData);
+                return $this->acceptRequestFromStudymate($postData);//remaining
             }
                 break;
 
         }
     }
 
-    public function uploadMedia($postData)
-    {
-
-        $data=array();
-
-        return $data;
-
-    }
 
 
     public function acceptRequestFromStudymate ($postData)
@@ -89,13 +81,16 @@ class StudyMateFunctions
     public function getSuggestedStudymates ($postData)
     {
         $message ='';
+        $status='';
         $post=array();
+        $data=array();
         $response=array();
 
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
 
-        $query="SELECT * FROM `student_academic_info` WHERE user_id=370";
+        $users[]=$user_id;
+        $query="SELECT * FROM `student_academic_info` WHERE user_id=".$user_id;
         $result=mysql_query($query) or $message=mysql_error();
         if(mysql_num_rows($result))
         {
@@ -103,16 +98,51 @@ class StudyMateFunctions
             $classroom_id=$val['classroom_id'];
             $course_id=$val['course_id'];
             $school_id=$val['school_id'];
-            $querySchool="SELECT $user_id FROM `student_academic_info` WHERE user_id!=370 and school_id=".$school_id;
+            $querySchool="SELECT * FROM `student_academic_info` WHERE school_id=".$school_id;
             $resultSchool=mysql_query($querySchool) or $message=mysql_error();
+            echo $querySchool;
             if(mysql_num_rows($resultSchool)){
-              //  while($row=m)
+                while($row=mysql_fetch_assoc($resultSchool)){
+                    $suggested_studymate_id=$row['user_id'];
+                    if(!in_array($suggested_studymate_id,$users)){
+                        $post['user_id']=$suggested_studymate_id;
+                        $data[]=$post;
+
+                    }
+                }
+            }
+            $querySchool="SELECT * FROM `student_academic_info` WHERE classroom_id=".$classroom_id;
+            $resultSchool=mysql_query($querySchool) or $message=mysql_error();
+            echo $querySchool;
+            if(mysql_num_rows($resultSchool)){
+                while($row=mysql_fetch_assoc($resultSchool)){
+                    $suggested_studymate_id=$row['user_id'];
+                    if(!in_array($suggested_studymate_id,$users)){
+                        $post['user_id']=$suggested_studymate_id;
+                        $data[]=$post;
+
+                    }
+                }
+            }
+            $querySchool="SELECT * FROM `student_academic_info` WHERE course_id=".$course_id;
+            $resultSchool=mysql_query($querySchool) or $message=mysql_error();
+            echo $querySchool;
+            if(mysql_num_rows($resultSchool)){
+                while($row=mysql_fetch_assoc($resultSchool)){
+                    $suggested_studymate_id=$row['user_id'];
+                    if(!in_array($suggested_studymate_id,$users)){
+                        $post['user_id']=$suggested_studymate_id;
+                        $data[]=$post;
+
+                    }
+                }
             }
 
 
         }
-        $response['message'] ="Sent successfully";
-        $response['data']=$post;
+        $response['status'] =$status;
+        $response['message'] =$message;
+        $response['data']=$data;
         return $response;
 
     }
@@ -129,7 +159,7 @@ class StudyMateFunctions
 
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
-
+        $users[]=null;
         $queryGetStudyMate="SELECT * from ".TABLE_STUDYMATES." studymates INNER JOIN ".TABLE_USERS." users on studymates.mate_id=users.id where mate_of=".$user_id." or mate_id=".$user_id;
         $resultGetStudyMate=mysql_query($queryGetStudyMate) or $message=mysql_error();
         if(mysql_num_rows($resultGetStudyMate))
@@ -138,18 +168,27 @@ class StudyMateFunctions
             while ($val = mysql_fetch_assoc($resultGetStudyMate))
             {
                 $post=array();
+                $studymate_id=null;
                 if($user_id!=$val['mate_of'])
                 {
-                    $post['user_id']=$val['mate_of'];
+                    $studymate_id=$val['mate_of'];
                 }
                 else if($user_id!=$val['mate_id'])
                 {
-                    $post['user_id']=$val['mate_id'];
+                    $studymate_id=$val['mate_id'];
                 }
                 //post['user_id']=$val['mate_id'];
-                $post['full_name']=$val['username'];
-                $post['profile_pic']=$val['profile_pic'];
-                $data[]=$post;
+                if(in_array($studymate_id,$users)){
+
+                }
+                else{
+                    $post['user_id']=$studymate_id;
+                    $users[]=$studymate_id;
+                    $post['full_name']=$val['username'];
+                    $post['profile_pic']=$val['profile_pic'];
+                    $data[]=$post;
+                }
+
             }
             $status="success";
             $message="";
@@ -178,7 +217,7 @@ class StudyMateFunctions
 
         $response=array();
         $data=array();
-        $response['data']=array();
+        //$response['data']=array();
 
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
@@ -191,20 +230,28 @@ class StudyMateFunctions
         $resultGetStudyMateAllDetail=mysql_query($queryGetStudyMateAllDetail) or $message=mysql_error();
         if(mysql_num_rows($resultGetStudyMateAllDetail))
         {
-
+            $users[]=null;
             while ($val = mysql_fetch_assoc($resultGetStudyMateAllDetail))
             {
                 $post=array();
+                $studymate_id=null;
                 if($val['mate_id']!=$user_id)
-                    $post['user_id+']=$val['mate_id'];
+                    $studymate_id=$val['mate_id'];
                 else if( $val['mate_of']!=$user_id)
-                $post['user_id']=$val['mate_id'];
-                $post['full_name']=$val['username'];
-                $post['profile_pic']=$val['profile_pic'];
-                $post['is_online']=$val['is_online'];
-                $post['school_name']=$val['school_name'];
+                    $studymate_id=$val['mate_of'];
+                if(in_array($studymate_id,$users)){
 
-                array_push($data,$post);
+                }
+                else{
+                    $post['user_id']=$studymate_id;
+                    $users[]=$studymate_id;
+                    $post['full_name']=$val['username'];
+                    $post['profile_pic']=$val['profile_pic'];
+                    $post['is_online']=$val['is_online'];
+                    $post['school_name']=$val['school_name'];
+                    array_push($data,$post);
+                }
+
             }
             $status="success";
             $message="";
@@ -217,7 +264,7 @@ class StudyMateFunctions
             $data="";
         }
 
-        array_push($response['data'],$data);
+        $response['data']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
 
