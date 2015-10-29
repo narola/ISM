@@ -36,7 +36,7 @@ class My_activities extends ISM_Controller {
 			$month[] = date('m',strtotime($load_more));
 		
 		/*---------Get topic allocated------*/
-		$where = array('where' => array('ga.group_id' => $user_group_id),'where_in' => array('date_format(ga.created_date,"%m")' => $month));
+		$where = array('where' => array('ga.group_id' => $user_group_id,'ga.is_delete' => '0'),'where_in' => array('date_format(ga.created_date,"%m")' => $month));
 		$option= array('join' =>
 					array(
 						array(
@@ -50,7 +50,7 @@ class My_activities extends ISM_Controller {
 
 		/*--------Get my studymates---------*/
 		$studymate = studymates($user_id,false);
-		$where = array('where_in'=>array('u.id'=>$studymate),'where_in' => array('date_format(sm.created_date,"%m")' => $month));
+		$where = array('where' => array('u.is_delete' => 0),'where_in'=>array('u.id' => $studymate),'where_in' => array('date_format(sm.created_date,"%m")' => $month));
 		$option = array('join'=>
 					array(
 						array(
@@ -83,7 +83,7 @@ class My_activities extends ISM_Controller {
 		$data['my_activities']['studymates'] = select(TBL_USERS.' u',$select,$where,$option);
 
 		/*--------Get my like feed----------*/
-		$where = array('where' => array('like.like_by'=>$user_id),'where_in' => array('date_format(like.created_date,"%m")' => $month));
+		$where = array('where' => array('like.like_by' => $user_id,'like.is_delete' => 0),'where_in' => array('date_format(like.created_date,"%m")' => $month));
 		$options = array('join' =>
 						array(
 							array(
@@ -102,7 +102,7 @@ class My_activities extends ISM_Controller {
 		$data['my_activities']['like'] = select(TBL_FEED_LIKE.' like',$select,$where,$options);		
 		
 		/*-------Get my comment----------*/
-		$where = array('where' => array('comment.comment_by'=>$user_id),'where_in' => array('date_format(comment.created_date,"%m")' => $month));
+		$where = array('where' => array('comment.comment_by'=>$user_id,'comment.is_delete' => 0),'where_in' => array('date_format(comment.created_date,"%m")' => $month));
 		$options = array('join' =>
 						array(
 							array(
@@ -130,7 +130,7 @@ class My_activities extends ISM_Controller {
 		$data['my_activities']['comment'] = select(TBL_FEED_COMMENT.' comment',$select,$where,$options);
 
 		/*-------Get my post--------*/
-		$where = array('where' => array('post.feed_by'=>$user_id),'where_in' => array('date_format(post.created_date,"%m")' => $month));
+		$where = array('where' => array('post.feed_by' => $user_id,'post.is_delete' => 0),'where_in' => array('date_format(post.created_date,"%m")' => $month));
 		$options = array('join' =>
 						array(
 							array(
