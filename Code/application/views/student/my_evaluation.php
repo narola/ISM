@@ -28,7 +28,7 @@
     <!--//breadcrumb-->
     <!--answers-->
     <div class="col-sm-12 text-right">
-        <button class="btn btn_green btn_back"><span class="fa fa-backward"></span> Back</button>
+        <button class="btn btn_green btn_back" onclick="window.location.href = 'student/my_scoreboard'"><span class="fa fa-backward"></span> Back</button>
     </div>
     <div class="answers">
         <?php 

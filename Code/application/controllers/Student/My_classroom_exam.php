@@ -193,7 +193,6 @@ class My_classroom_exam extends ISM_Controller {
 						'single' => true
 						)
 				);
-		
 		if($data['exam_status']['id']  ==  0 ){
 			$this->session->set_flashdata('error','There is problem! Please come later!!');
 			redirect('/student/my_classroom_exam');

@@ -10,6 +10,9 @@
         </div>
     </div>
     <!--//breadcrumb-->
+    <div class="col-sm-12 text-right">
+        <button class="btn btn_green btn_back" onclick="window.location.href = 'student/my_classroom_exam'"><span class="fa fa-backward"></span> Back</button>
+    </div>
     <!--score-->
     <div class="reg_bg">
         <div class="col-sm-12 text-center">

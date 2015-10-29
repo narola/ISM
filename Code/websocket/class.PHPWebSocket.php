@@ -788,7 +788,7 @@ class PHPWebSocket {
                         }
                     }
 
-                    $query = "INSERT INTO `ism`.`" . TBL_USER_CHAT . "` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`, `media_type`, `received_status`, `created_date`, `is_delete`, `is_testdata`) "
+                    $query = "INSERT INTO `" . TBL_USER_CHAT . "` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`, `media_type`, `received_status`, `created_date`, `is_delete`, `is_testdata`) "
                             . "VALUES (NULL, $from, $to, '$msg', NULL, NULL, $received_status, CURRENT_TIMESTAMP, '0', 'yes')";
                     $x = mysqli_query($link, $query);
                     $data['insert_id'] = mysqli_insert_id($link);
@@ -1091,7 +1091,7 @@ class PHPWebSocket {
 
             // Check user must comment on those feed which is added by his/him classmates not to others.
             if (in_array($user_id, $data['allStudyMate'])) {
-                $query = "INSERT INTO `ism`.`" . TBL_FEED_COMMENT . "` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $data['message'] . "',$user_id, '" . $data['to'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes');";
+                $query = "INSERT INTO `" . TBL_FEED_COMMENT . "` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $data['message'] . "',$user_id, '" . $data['to'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes');";
                 $x = mysqli_query($link, $query);
                 $data['comment_date'] = 'Just Now';
                 if (!$x) {
@@ -1386,7 +1386,7 @@ class PHPWebSocket {
                     }
                 }
 
-                $query = "INSERT INTO `ism`.`" . TBL_TUTORIAL_GROUP_DISCUSSION . "` "
+                $query = "INSERT INTO `" . TBL_TUTORIAL_GROUP_DISCUSSION . "` "
                         . "(`id`, `group_id`, `topic_id`, `sender_id`, `comment_score`, `message`, `message_type`, `message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) "
                         . "VALUES (NULL, '" . $rows['group_id'] . "', '" . $rows['topic_id'] . "', $userId, $score,'" . $data['message'] . "', '', '', $is_active, '', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '0', 'yes')";
                 $x = mysqli_query($link, $query);
@@ -1891,7 +1891,7 @@ class PHPWebSocket {
                     }
                 }
 
-                $query = "INSERT INTO `ism`.`" . TBL_USER_CHAT . "` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`,"
+                $query = "INSERT INTO `" . TBL_USER_CHAT . "` (`id`, `sender_id`, `receiver_id`, `message`, `media_link`,"
                         . " `media_type`, `received_status`, `created_date`, `is_delete`, `is_testdata`) "
                         . "VALUES (NULL, $user_id," . $data['to'] . ", NULL, '" . $data['webpath'] . "', '" . $data['data_type'] . "', $received_status, CURRENT_TIMESTAMP, '0', 'yes')";
 
@@ -1982,7 +1982,7 @@ class PHPWebSocket {
             if (mysqli_num_rows($row) == 1) {
                 $rows = mysqli_fetch_assoc($row);
 
-                $query = "INSERT INTO `ism`.`" . TBL_TUTORIAL_GROUP_DISCUSSION . "` "
+                $query = "INSERT INTO `" . TBL_TUTORIAL_GROUP_DISCUSSION . "` "
                         . "(`id`, `group_id`, `topic_id`, `sender_id`, `comment_score`, `message`, `message_type`, "
                         . "`message_status`, `in_active_hours`, `media_link`, `media_type`, `created_date`, `modified_date`, "
                         . "`is_delete`, `is_testdata`) VALUES "
@@ -2170,7 +2170,7 @@ class PHPWebSocket {
                 }
 
                 if ($left == false) {
-                    $query = "SELECT id FROM `ism`.`" . TBL_STUDENT_EXAM_RESPONSE . "` `sr` "
+                   $query = "SELECT id FROM `" . TBL_STUDENT_EXAM_RESPONSE . "` `sr` "
                             . "WHERE `sr`.`user_id` = $userID "
                             . "AND `sr`.`exam_id` = " . $data['exam']['exam_id'] . " "
                             . "AND `sr`.`question_id` = " . $data['question_id'] . " AND `sr`.`is_delete` = 0";
@@ -2191,11 +2191,11 @@ class PHPWebSocket {
 
                     if (in_array($data['answer'], $all_choices) || $data['answer'] == 0) {
                         if (mysqli_num_rows($row) == 0) {
-                            $query = "INSERT INTO `ism`.`" . TBL_STUDENT_EXAM_RESPONSE . "` "
+                            $query = "INSERT INTO `" . TBL_STUDENT_EXAM_RESPONSE . "` "
                                     . "(`id`, `user_id`, `exam_id`, `question_id`, `choice_id`, `answer_status`, `answer_text`, `is_right`, `response_duration`, `created_date`, `modified_date`, `is_delete`, `is_testdata`)"
                                     . " VALUES (NULL, '$userID', " . $data['exam']['exam_id'] . ", '" . $data['question_id'] . "', '" . $data['answer'] . "', '" . $data['status'] . "', NULL, " . $roqs['is_right'] . ", " . $data['time'] . ", CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '0', 'yes') ";
                         } else {
-                            $query = "UPDATE `ism`.`" . TBL_STUDENT_EXAM_RESPONSE . "` `sr` "
+                            $query = "UPDATE `" . TBL_STUDENT_EXAM_RESPONSE . "` `sr` "
                                     . "SET `choice_id` = " . $data['answer'] . ", `answer_status` = '" . $data['status'] . "', `response_duration` = " . $data['time'] . ",`is_right` = " . $roqs['is_right'] . " "
                                     . "WHERE  `sr`.`user_id` = $userID "
                                     . "AND `sr`.`exam_id` = " . $data['exam']['exam_id'] . " "
@@ -2245,7 +2245,7 @@ class PHPWebSocket {
                     . 'SET `attempt_count` = (SELECT COUNT(id) FROM `' . TBL_STUDENT_EXAM_RESPONSE . '` '
                     . 'WHERE `answer_status` = "A"  AND `exam_id` = ' . $data['exam']['exam_id'] . '  '
                     . 'AND `user_id` = ' . $userID . '), `correct_answers` = ' . $rows['correct'] . ' , `incorrect_answers`=  ' . $rows['incorrect'] . ', `total_time_spent` = ' . $rows['time_spent'] . ' '
-                    . 'WHERE `user_id` = ' . $userID . ' AND `exam_id` = ' . $data['exam']['exam_id'] . ' `is_delete` = 0';
+                    . 'WHERE `user_id` = ' . $userID . ' AND `exam_id` = ' . $data['exam']['exam_id'] . ' AND `is_delete` = 0';
             mysqli_query($link, $query);
         }
         return $data;
@@ -2328,7 +2328,7 @@ class PHPWebSocket {
         if (mysqli_num_rows($rows) > 0) {
             $row = mysqli_fetch_assoc($rows);
             $data['class_exam_status'] = 'started';
-            $query = "INSERT INTO `" . TBL_STUDENT_EXAM_RESPONSE . "`( `user_id`, `exam_id`, `attempt_count`, `correct_answers`, `incorrect_answers`, `total_time_spent`, `evaluation_privacy`, `exam_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (" . $userid . "," . $data['exam_id'] . ",0,0,0,0,0,'started',CURRENT_TIMESTAMP,0,'yes')";
+           $query = "INSERT INTO `" . TBL_STUDENT_EXAM_SCORE . "`( `user_id`, `exam_id`, `attempt_count`, `correct_answers`, `incorrect_answers`, `total_time_spent`, `evaluation_privacy`, `exam_status`, `created_date`, `is_delete`, `is_testdata`) VALUES (" . $userid . "," . $data['exam_id'] . ",0,0,0,0,0,'started',CURRENT_TIMESTAMP,0,'yes')";
             $x = mysqli_query($link, $query);
             if (!$x) {
                 $data['to'] = 'self';
@@ -2359,14 +2359,13 @@ class PHPWebSocket {
                     . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' AND `t`.`is_delete` = 0 LIMIT 1";
 
             if ($data['exam_type'] == 'no') {
-                $query = " SELECT sc.exam_id,"
+               $query = " SELECT sc.exam_id,"
                         . "IF(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time,sc.created_date,sc.created_date + Interval e.duration minute,e.duration,NOW() "
                         . "FROM `" . TBL_STUDENT_EXAM_SCORE . "` `sc` "
-                        . "LEFT JOIN exams `e` ON `e`.`id` = `sc`.`exam_id` "
+                        . "LEFT JOIN `".TBL_EXAMS."` `e` ON `e`.`id` = `sc`.`exam_id` "
                         . "WHERE `sc`.`user_id` = $userID AND `sc`.`exam_status` = 'started' AND `sc`.`is_delete` = 0"
-                        . "ORDER BY sc.id DESC LIMIT 1 ";
+                        . " ORDER BY sc.id DESC LIMIT 1 ";
             }
-
             $row = mysqli_query($link, $query);
             if (mysqli_num_rows($row) == 1) {
                 $exam = mysqli_fetch_assoc($row);
@@ -2536,7 +2535,7 @@ class PHPWebSocket {
                 $data['tot_comment'] = 0;
                 file_put_contents($output_file, base64_decode($data['data']));
                 if ($x) {
-                    $query = "INSERT INTO `ism`.`".TBL_FEED_IMAGE."` (`id`, `feed_id`, `image_link`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES(NULL,  " . $data['post_id'] . ", '" . $data['webpath'] . "', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '0', 'yes')";
+                    $query = "INSERT INTO `".TBL_FEED_IMAGE."` (`id`, `feed_id`, `image_link`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES(NULL,  " . $data['post_id'] . ", '" . $data['webpath'] . "', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '0', 'yes')";
                     $y = mysqli_query($link, $query);
                     if ($y) {
                         $data['message'] = '<a href="uploads/' . $data['webpath'] . '"  target="_BLANK"><img src="uploads/' . $data['webpath'] . '" width="100" height="70"></a>';
@@ -2606,7 +2605,7 @@ class PHPWebSocket {
 
             // Check user must comment on those feed which is added by his/him classmates not to others.
             if (in_array($user_id, $data['allStudyMate'])) {
-                $query = "INSERT INTO `ism`.`" . TBL_FEED_COMMENT . "` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $data['message'] . "',$user_id, '" . $data['to'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes');";
+                $query = "INSERT INTO `" . TBL_FEED_COMMENT . "` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $data['message'] . "',$user_id, '" . $data['to'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes');";
                 $x = mysqli_query($link, $query);
                 if (!$x) {
                     $data['to'] = "self";
