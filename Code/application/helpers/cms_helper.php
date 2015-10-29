@@ -597,3 +597,21 @@ function get_recommended($user_id,$user_group_id){
     return select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,p.profile_link,sr.id as srid,sr.is_delete',$where,$options);
 }
 
+/*  Filter the data to store in database
+*   @Author - SANDIP GOPANI [SAG].
+*/
+function replace_invalid_chars($data = null) {
+    if (is_array($data) && $data != null) {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = replace_invalid_chars($value);
+            } else {
+                $data[$key] = htmlspecialchars($value, ENT_QUOTES);
+            }
+        }
+    }else{
+        $data = htmlspecialchars($data, ENT_QUOTES);
+    }
+    return $data;
+}
+

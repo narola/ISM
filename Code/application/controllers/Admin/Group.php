@@ -121,29 +121,20 @@ class Group extends ADMIN_Controller {
         $config['last_tag_close'] = '</li>';
 
         $this->data['all_groups'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
-                TBL_TUTORIAL_GROUPS . '.group_status,' . TBL_TUTORIAL_GROUPS . '.is_completed,'. TBL_TUTORIAL_GROUPS . '.is_delete,' . TBL_COURSES . '.course_name,' .
-                TBL_COURSES . '.id as course_id,' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score', $where, array(
+                TBL_TUTORIAL_GROUPS . '.group_status,'. TBL_CLASSROOMS . '.class_name,' . TBL_TUTORIAL_GROUPS . '.is_completed,'. TBL_TUTORIAL_GROUPS . '.is_delete,' . TBL_COURSES . '.course_name,' .
+                TBL_COURSES . '.id as course_id, sum(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score) as score', $where, array(
             'limit' => $config['per_page'],
             'offset' => $offset,
-            'group_by' => array(TBL_TUTORIAL_GROUP_MEMBER . '.group_id'),
+            'group_by' => array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'),
             'order_by' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score DESC',
             'join' => array(
                 array(
-                    'table' => TBL_TUTORIAL_GROUP_MEMBER,
-                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
-                    'join' => 'right'
-                ),
-                array(
-                    'table' => TBL_USERS,
-                    'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
-                ),
-                array(
-                    'table' => TBL_STUDENT_ACADEMIC_INFO,
-                    'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
+                    'table' => TBL_CLASSROOMS,
+                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_TUTORIAL_GROUPS . '.classroom_id',
                 ),
                 array(
                     'table' => TBL_COURSES,
-                    'condition' => TBL_COURSES . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.course_id',
+                    'condition' => TBL_COURSES . '.id = ' . TBL_CLASSROOMS . '.course_id',
                 ),
                 array(
                     'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
@@ -152,8 +143,7 @@ class Group extends ADMIN_Controller {
             )
                 )
         );
-
-        //fetch all data of group right joins with tutorial group members
+    //fetch all data of group right joins with tutorial group members
         $this->data['all_groups_members'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUP_MEMBER . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.id as gid,' .
                 TBL_USERS . '.username,' . TBL_SCHOOLS . '.school_name,' . TBL_CLASSROOMS . '.class_name,' . TBL_USER_PROFILE_PICTURE . '.profile_link,' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id', FALSE, array(
             'join' => array(
