@@ -372,7 +372,7 @@ option{
 	width:100%;
 }
 div.upload {
-    width: 208px;
+    width: 209px;
     height: 20px;
     margin: 0 auto;
     overflow: hidden;
@@ -386,7 +386,7 @@ div.upload input {
 	cursor:pointer;
 	position:absolute;
     display: block !important;
-    width: 208px !important;
+    width: 209px !important;
     height: 20px !important;
     opacity: 0 !important;
     overflow: hidden !important;
