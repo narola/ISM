@@ -8,7 +8,6 @@ var exam_will_start;
 var time_status = 1;
 var time_spent_per_question = 0;
 var time_spent = setInterval(time_spent_counter, 1000);
-;
 
 function time_spent_counter()
 {
@@ -205,6 +204,15 @@ $(document).ready(function () {
         var type_of_data = this.files[0].type;
         var file_name = this.files[0].name;
 
+        if(types == 'feed_file_share'){
+            if(type_of_data != 'image/png' && type_of_data != 'image/gif' && type_of_data != 'image/jpg' && type_of_data != 'image/jpeg'){
+                alert('You can upload only images in feed!');
+                return;
+            }
+        }
+
+
+
         if (user != 'feed' && user != 'topic') {
             $('.chat[data-id="' + user + '"] .chat_loading').fadeIn(300);
         }
@@ -266,7 +274,7 @@ $(document).ready(function () {
 /* Check wheather web socket is supported by browser. */
 if ("WebSocket" in window)
 {
-    var ws = new WebSocket("ws://192.168.1.124:9300?q=12345dgdfgdfg");
+    var ws = new WebSocket("ws://192.168.1.124:9300");
 
     ws.onopen = function ()
     {
