@@ -51,18 +51,19 @@
                 </div>
 
                 <div class="form-group no_effect search_input">
-                	<input class="form-control" name="q" id="q" type="text" placeholder="Search">
+                	<input class="form-control" name="q" id="q" type="text" placeholder="Type Topic Name">
                     <?php if(!empty($_GET['q'])) { ?>
                         <a onclick="filter_data_reverse()" style="cursor:pointer">X</a>
                     <?php }else { ?>
                         <a class="fa fa-search" onclick="filter_data()" style="cursor:pointer"></a>
                     <?php } ?>
-
                 </div>
             </div>
         </div>
     </form>
+    
     <?php echo flashMessage(true,false); ?>
+
         <!--//filter-->
         <!--topics-->
         <div class="">
@@ -89,6 +90,12 @@
                         <div class="col-sm-12">
                         	<span class="label label_black">Allocated <?php echo $topic['allocation_count']; ?> times</span>
                             <span class="label label_red"><?php echo $topic['questions_count']; ?> Question<?php echo ($topic['questions_count'] > 1) ? 's' : ''; ?></span>
+                            
+                            <!-- <span class="label label_red"><?php //echo $topic['id']; p($not_in);?></span> -->
+                            <?php if(in_array($topic['id'],$not_in) == FALSE){  ?>
+                            <a href="<?php echo base_url().'admin/exam/add?topic='.$topic['id'];?>" class="label label_red">Add Exam</a>
+                            <?php } ?>
+
                         
                        		<!-- Split button -->
                             
@@ -246,7 +253,7 @@
         });
     });
 
-     $("a.delete").click(function(){
+    $("a.delete").click(function(){
         var str_id = $(this).attr('id');
         var split_id = str_id.split("_");
         var topic_id = split_id[1];        

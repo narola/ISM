@@ -34,10 +34,10 @@ class My_exam extends ISM_Controller {
 							)
 						)
 					);
-		$data['subject_list'] = select(TBL_CLASSROOM_SUBJECT.' c','s.id,s.subject_name,(select count(*)  from '.TBL_STUDENT_EXAM_SCORE.' sc LEFT JOIN '.TBL_EXAMS.' e ON e.id = sc.exam_id where sc.user_id = '.$user_id.' and sc.exam_status = \'finished\' and e.subject_id = s.id) as cnt',$where,$option);
+		$data['subject_list'] = select(TBL_CLASSROOM_SUBJECT.' c','s.id,s.subject_name,(SELECT COUNT(*) FROM '.TBL_STUDENT_EXAM_SCORE.' sc LEFT JOIN '.TBL_EXAMS.' e ON e.id = sc.exam_id WHERE sc.user_id = '.$user_id.' AND sc.exam_status = \'finished\' and e.subject_id = s.id) AS cnt',$where,$option);
 		
 		//	get student classroom subject detail
-		$where = array('where'=>array('e.classroom_id' => $classroom_id,'sc.exam_status'=>'finished','sc.user_id'=>$user_id,'sc.is_delete' => 0,'e.is_delete' => 0));
+		$where = array('where'=>array('e.classroom_id' => $classroom_id,'sc.exam_status'=>'finished','sc.user_id'=>$user_id,'sc.is_delete' => 0,'e.is_delete' => 0,'e.exam_category !=' => 'Tutorial'));
 		$option =  array( 'join' =>
 						array(
 							array(
@@ -49,12 +49,12 @@ class My_exam extends ISM_Controller {
 								'condition' => 'e.subject_id = s.id'
 							),
 							array(
-								'table' => '(select count(*) as cnt,exam_id	FROM exam_question group by exam_id) ed',
+								'table' => '(SELECT COUNT(*) AS cnt,exam_id	FROM '.TBL_EXAM_QUESTION.' GROUP BY exam_id) ed',
 								'condition' => 'ed.exam_id = e.id'
 							)
 						)
 					);
-		$select = 'ed.cnt,e.exam_name,s.id,s.subject_name,e.id as exam_id,TRUNCATE((sc.correct_answers * 100) / ed.cnt,2) as percentage';
+		$select = 'ed.cnt,e.exam_name,s.id,s.subject_name,e.id AS exam_id,TRUNCATE((sc.correct_answers * 100) / ed.cnt,2) AS percentage';
 		$data['my_exam'] = select(TBL_STUDENT_EXAM_SCORE.' sc',$select,$where,$option);
 		
 		$this->template->load('student/default','student/my_exam',$data);

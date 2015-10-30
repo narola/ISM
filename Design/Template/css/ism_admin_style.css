@@ -1327,9 +1327,9 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 	-ms-transform: rotate(-90deg);
 	transform: rotate(-90deg);
     position: absolute;
-    top: 50%;
-    left: 0px;
-    width: 25px;
+    top: 40%;
+    left: -27px;
+    width: 80px;
     text-transform: uppercase;	
 }
 .month_name{
@@ -2164,4 +2164,26 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .profile_admin .form-group:last-child{
 	margin-bottom:0;
+}
+.profile_admin .basic_info:before,
+.profile_admin .upload:after{
+	content:"";
+	display:table;
+	clear:both;
+}
+.profile_admin .basic_info {
+    margin-left: 0;
+}
+.profile_admin .upload{
+    margin: 0;
+    position: absolute;
+    top: 160px;
+    color: #ff6b66;
+    z-index: 1;
+}
+.change_dp{
+	position:absolute;
+}
+.change_dp .user_profile_img{
+	float:none;
 }

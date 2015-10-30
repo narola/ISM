@@ -25,11 +25,11 @@ class Topic extends ADMIN_Controller {
 	*/
 	public function lists(){
 
-		
 		$role = $this->input->get('role');
 		$subject  = $this->input->get('subject');
 		$q  = $this->input->get('q');
 		$where['where']['tut_topic.is_delete']=0;
+
 		if( !empty($role) || !empty($subject) || !empty($q) || !empty($_GET['order']) ){
 
 			$str = '';
@@ -38,8 +38,8 @@ class Topic extends ADMIN_Controller {
 			if(!empty($subject)){ $where['where']['tut_topic.subject_id'] = $subject; $str .='&subject='.$subject; }
 			if(!empty($q)){ 
 					$where['like']['tut_topic.topic_name'] = $q; 
-					$where['or_like']['tut_topic.topic_description'] = $q;
-					$where['or_like']['tut_topic.evaluation_keywords'] = $q;  
+					// $where['or_like']['tut_topic.topic_description'] = $q;
+					// $where['or_like']['tut_topic.evaluation_keywords'] = $q;  
 					$str .='&q='.$q; 
 			}
 			if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }		
@@ -112,6 +112,18 @@ class Topic extends ADMIN_Controller {
 												'group_by'=>'tut_topic.id'
 												)
 											);
+		
+		// qry(true);
+
+		$topic_exams = select(TBL_TUTORIAL_TOPIC_EXAM);
+
+		$not_in = array();
+		foreach($topic_exams as $te){
+			array_push($not_in,$te['tutorial_topic_id']);
+		}
+		
+		$this->data['not_in'] = $not_in;
+
 		$this->pagination->initialize($config);
 
 		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>'0')),null);
@@ -163,56 +175,61 @@ class Topic extends ADMIN_Controller {
 		if(!empty($allocated_group_ids)){
 			$where['where_not_in'] = array(TBL_TUTORIAL_GROUPS.'.id' => $allocated_group_ids);
 		}
-		/*if($unallocated != null){
-		$config['base_url'] = base_url() . 'admin/topic/allocate/'.$unallocated;
-	}else{*/
-		$config['base_url'] = base_url() . 'admin/topic/allocate';
-	// }
-		 // $offset = $this->uri->segment(4);
-		$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
-        $offset = $this->input->get('per_page');
-		$config['uri_segment'] = 4;
-        $config['num_links'] = 5;
-        $config['total_rows'] = count(
-        	select(TBL_TUTORIAL_GROUPS,
-												TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name,'.TBL_TUTORIAL_GROUPS.'.group_type,'.
-												TBL_TUTORIAL_GROUPS.'.group_status,'.TBL_TUTORIAL_GROUPS.'.is_completed,'.TBL_COURSES.'.course_name,'.
-												TBL_COURSES.'.id as course_id,'.TBL_USERS.'.username,'.TBL_SCHOOLS.'.school_name',
-												$where,
-												array(
-													'group_by'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'),
-													'join' =>  array(
-												    			array(
-												    				'table' => TBL_TUTORIAL_GROUP_MEMBER,
-												    				'condition' => TBL_TUTORIAL_GROUPS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.group_id',
-												    				'join'=>'right'
-												    				),
-												    			array(
-												    				'table' => TBL_USERS,
-												    				'condition' => TBL_USERS.'.id = '.TBL_TUTORIAL_GROUP_MEMBER.'.user_id',
-												    				),
-												    			array(
-												    				'table' => TBL_STUDENT_ACADEMIC_INFO,
-												    				'condition' => TBL_USERS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.user_id',
-												    				),
-												    			array(
-												    				'table' => TBL_COURSES,
-												    				'condition' => TBL_COURSES.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.course_id',
-												    				),
-												    			array(
-												    				'table' => TBL_SCHOOLS,
-												    				'condition' => TBL_SCHOOLS.'.id = '.TBL_STUDENT_ACADEMIC_INFO.'.school_id',
-												    				),
-												    			array(
-												    				'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
-												    				'condition' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.'.group_id = '.TBL_TUTORIAL_GROUPS.'.id',
-												    				),
-												    			)
-													)
-												)
 
-        	);
-        $config['per_page'] = 2;
+		$str = '';
+
+		if($_GET){
+			if(!empty($_GET['course_id']) || !empty($_GET['classroom_id']) || !empty($_GET['group_id']) ){
+				
+				if(!empty($_GET['course_id'])){ 
+						$course_id = $_GET['course_id']; 
+						$where['where'][TBL_CLASSROOMS.'.course_id']=$course_id;
+						$str .= '&course_id='.$course_id; 
+					}
+
+				if(!empty($_GET['classroom_id'])){ 
+						$classroom_id = $_GET['classroom_id']; 
+						$where['where'][TBL_CLASSROOMS.'.id']=$classroom_id; 
+						$str .= '&classroom_id='.$classroom_id; 
+				}
+
+				if(!empty($_GET['group_id'])){
+						$group_id = $_GET['group_id']; 
+						$where['where'][TBL_TUTORIAL_GROUPS.'.id']=$group_id;
+						$str .= '&group_id='.$group_id;  
+				}	
+
+				$str = trim($str,'&');
+			}
+		}
+
+		$config['base_url'] = base_url() . 'admin/topic/allocate?'.$str;
+		$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
+        $config['uri_segment'] = 4;
+        $config['num_links'] = 5;
+        $config['total_rows'] = sizeof(select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
+                TBL_TUTORIAL_GROUPS . '.group_status,'. TBL_CLASSROOMS . '.class_name,' . TBL_TUTORIAL_GROUPS . '.is_completed,'. TBL_TUTORIAL_GROUPS . '.is_delete,' . TBL_COURSES . '.course_name,' .
+                TBL_COURSES . '.id as course_id, sum(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score) as score, count(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id) as exams', $where, array(
+	            'group_by' => array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'),
+	            'join' => array(
+				                array(
+				                    'table' => TBL_CLASSROOMS,
+				                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_TUTORIAL_GROUPS . '.classroom_id',
+				                ),
+				                array(
+				                    'table' => TBL_COURSES,
+				                    'condition' => TBL_COURSES . '.id = ' . TBL_CLASSROOMS . '.course_id',
+				                ),
+				                array(
+				                    'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
+				                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'
+				                )
+	            			)
+             		)
+        		));
+
+        $config['per_page'] = 1;
+		$offset = $this->input->get('per_page');
 
         $config['full_tag_open'] = '<ul class="pagination pagination_admin">';
         $config['full_tag_close'] = '</ul>';
@@ -238,31 +255,38 @@ class Topic extends ADMIN_Controller {
         $config['last_link'] = 'Last';
         $config['last_tag_open'] = '<li>';
         $config['last_tag_close'] = '</li>';
-			$unallocated_groups = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
+		
+		// ------------------------------------------------------------------------
+
+		$unallocated_groups = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
                 TBL_TUTORIAL_GROUPS . '.group_status,'. TBL_CLASSROOMS . '.class_name,' . TBL_TUTORIAL_GROUPS . '.is_completed,'. TBL_TUTORIAL_GROUPS . '.is_delete,' . TBL_COURSES . '.course_name,' .
                 TBL_COURSES . '.id as course_id, sum(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score) as score, count(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id) as exams', $where, array(
-            'limit' => $config['per_page'],
-            'offset' => $offset,
-            'group_by' => array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'),
-            'join' => array(
-                array(
-                    'table' => TBL_CLASSROOMS,
-                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_TUTORIAL_GROUPS . '.classroom_id',
-                ),
-                array(
-                    'table' => TBL_COURSES,
-                    'condition' => TBL_COURSES . '.id = ' . TBL_CLASSROOMS . '.course_id',
-                ),
-                array(
-                    'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
-                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'
-                )
-            )
-                )
-        );
-		
+	            'limit' => $config['per_page'],
+	            'offset' => $offset,
+	            'group_by' => array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'),
+	            'join' => array(
+	                array(
+	                    'table' => TBL_CLASSROOMS,
+	                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_TUTORIAL_GROUPS . '.classroom_id',
+	                ),
+	                array(
+	                    'table' => TBL_COURSES,
+	                    'condition' => TBL_COURSES . '.id = ' . TBL_CLASSROOMS . '.course_id',
+	                ),
+	                array(
+	                    'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
+	                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'
+	                )
+	            )
+              )
+        );	
+	
+		// qry();
+		// p($unallocated_groups,true);
+
 		$this->data['groups'] = $unallocated_groups;
 
+		// ------------------------------------------------------------------------
 
 		//fetch all data of group right joins with tutorial group members
 		$this->data['all_groups_members'] =   select(TBL_TUTORIAL_GROUPS,
@@ -300,12 +324,10 @@ class Topic extends ADMIN_Controller {
 											)
 											);
 
-$this->pagination->initialize($config);
+		$this->pagination->initialize($config);
 
 
 		$unallocated_group_ids = array_column($unallocated_groups, 'id');
-
-
 	
 		if($unallocated == null){
 			$unallocated = current($unallocated_group_ids);
@@ -348,7 +370,7 @@ $this->pagination->initialize($config);
 										)
 								)
 							);
-			$random_subject = select(TBL_CLASSROOM_SUBJECT.' tut_course',
+				$random_subject = select(TBL_CLASSROOM_SUBJECT.' tut_course',
 				'tut_course.subject_id',
 					$where, $options
 				);
@@ -411,6 +433,17 @@ $this->pagination->initialize($config);
 											);
 
 		$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>0)));
+
+		if(!empty($_GET['course_id']) || !empty($_GET['classroom_id']) || !empty($_GET['group_id']) ){
+			$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0,TBL_CLASSROOMS.'.course_id'=>$_GET['course_id'])));
+			$this->data['all_groups'] = select(TBL_TUTORIAL_GROUPS,TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name',
+			array('where'=>array('classroom_id'=>$_GET['classroom_id']))
+				
+			);
+		}else{
+			$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0)));
+
+		}
 		
 		$this->data['page_title'] = 'Allocate Topic';
 		$this->template->load('admin/default','admin/topic/allocate', $this->data);
@@ -545,7 +578,6 @@ $this->pagination->initialize($config);
 				 "is_archived"=>0
 				);
 
-			
 			insert(TBL_TUTORIAL_TOPIC,$data);
 
 			$this->session->set_flashdata('success','Topic has been created.');
@@ -594,7 +626,6 @@ $this->pagination->initialize($config);
 												)
 											);
 		
-
 		if($_POST){
 
 			$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>'0')),null); // Fetch All Courses From Database
@@ -657,9 +688,6 @@ $this->pagination->initialize($config);
 										  'subject_id'=>$this->data['tutorial_topic']['subject_id'])),null);
 		}
 		
-
-		
-
 		if($this->form_validation->run() == FALSE){
 			
 			$this->template->load('admin/default','admin/topic/edit', $this->data);

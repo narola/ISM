@@ -19,7 +19,7 @@ class Course extends ADMIN_Controller {
 
 		$this->data['page_title'] = 'Courses';
         
-		$where['where'][TBL_COURSES.'.is_delete']=FALSE;
+		$where['where'][TBL_COURSES.'.is_delete']=0;
         $category  = $this->input->get('category');
 		$q  = $this->input->get('q');
 		$order = '';
@@ -107,7 +107,7 @@ class Course extends ADMIN_Controller {
 		
 		$this->pagination->initialize($config);
 
-		$this->data['course_category'] = select(TBL_COURSE_CATEGORY,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+		$this->data['course_category'] = select(TBL_COURSE_CATEGORY,FALSE,array('where'=>array('is_delete'=>0)),array('limit'=>10));
 		$this->template->load('admin/default','admin/course/list',$this->data);
 	}
     
@@ -131,7 +131,7 @@ class Course extends ADMIN_Controller {
     public function add_course()
     {
         $this->data['page_title'] = 'Course Add';
-        $this->data['course_category'] = select(TBL_COURSE_CATEGORY,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+        $this->data['course_category'] = select(TBL_COURSE_CATEGORY,FALSE,array('where'=>array('is_delete'=>0)),array('limit'=>10));
         $this->data['course_types'] = array('University','Primary','Secondary','Higher Secondary');
         
         $this->form_validation->set_rules('course_name', 'Course Name', 'trim|required');
@@ -178,7 +178,7 @@ class Course extends ADMIN_Controller {
 		}
       
         $this->data['course'] = select(TBL_COURSES,FALSE,array('where'=>array('id'=>$id)),array('single'=>TRUE));
-		$this->data['course_category'] = select(TBL_COURSE_CATEGORY,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+		$this->data['course_category'] = select(TBL_COURSE_CATEGORY,FALSE,array('where'=>array('is_delete'=>0)),array('limit'=>10));
         $this->data['course_types'] = array('University','Primary','Secondary','Higher Secondary');
 		
 		$this->form_validation->set_rules('course_name', 'Course Name', 'trim|required');

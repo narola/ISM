@@ -29,7 +29,7 @@
                 }
                 else{
                     ?>
-                    <div class="study_mate"><center><label class="txt_grey txt_red">No more studymate request</label><center></div>
+                    <div class="study_mate"><center><label class="txt_grey txt_red">no more studymate request</label><center></div>
                 <?php
                 } 
                 ?>
@@ -87,7 +87,7 @@
                         <?php
                             }
                             else{
-                                 echo '<label class="txt_grey txt_red">No studymate</label>';
+                                 echo '<label class="txt_grey txt_red">no studymate</label>';
                             }
                         ?>            
                     </div>

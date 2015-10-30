@@ -351,6 +351,14 @@
 	.item_blue:before, .item_purple:before{
 		left: -50px;
 	}
+	.navbar-default .navbar-nav > li > a {
+    	padding: 15px 9px;
+	}
+	.change_dp {
+		position: relative;
+		margin-bottom: 60px;
+	}
+	
 }
 @media (max-width:1080px){
 	.login_background {
@@ -704,6 +712,10 @@
 	}
 	#wPaint {
     	width: 188px !important;
+	}
+	.change_dp .user_profile_img{
+		height:145px;
+		width:145px;
 	}
 }
 @media (max-width:980px){
