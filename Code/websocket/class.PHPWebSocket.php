@@ -955,12 +955,12 @@ class PHPWebSocket {
      */
     function get_latest_msg($data = null, $userID) {
 
-        $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message`,`uc`.`media_link`,`uc`.`media_type` "
+        $query = "SELECT `uc`.`id`, `uc`.`sender_id`, `uc`.`receiver_id`, `uc`.`message`,`uc`.`media_link`,`uc`.`media_type`,`uc`.`created_date` "
                 . "FROM `" . TBL_USER_CHAT . "` `uc` "
                 . "WHERE (`uc`.`sender_id` = " . $data['my_id'] . " "
                 . "AND `uc`.`receiver_id` = $userID) OR (`uc`.`sender_id` = $userID AND `uc`.`receiver_id` = " . $data['my_id'] . ") "
                 . "AND `uc`.`is_delete` = 0 "
-                . "ORDER BY `uc`.`id` DESC LIMIT 10";
+                . "ORDER BY `uc`.`id` ASC LIMIT 10";
         $link = $this->db();
         mysqli_query($link, "UPDATE `" . TBL_USER_CHAT . "` `uc` SET  `uc`.`received_status` = 1  WHERE `uc`.`received_status` = 0 AND `uc`.`sender_id` = " . $data['my_id'] . " AND `uc`.`receiver_id` =" . $userID);
         $row = mysqli_query($link, $query);
@@ -977,7 +977,8 @@ class PHPWebSocket {
                 'receiver_id' => $rows['receiver_id'],
                 'message' => $rows['message'],
                 'media_link' => $rows['media_link'],
-                'media_type' => $rows['media_type']
+                'media_type' => $rows['media_type'],
+                'cdate' =>  $this->get_time_format($rows['created_date'])
             );
         }
         //  $result = array_reverse($result);
@@ -989,7 +990,8 @@ class PHPWebSocket {
                 'a_link' => 'uploads/' . $value['media_link'],
                 'img_link' => 'uploads/' . $value['media_link'],
                 'text' => $value['message'],
-                'to' => 1
+                'to' => 1,
+                'cdate' => $value['cdate']
             );
 
             if ($value['message'] == null) {
@@ -1469,7 +1471,7 @@ class PHPWebSocket {
                 }
 
                 // Select latest user score and group score.
-                $query = "SELECT `ts`.`score` AS `my_score`,(SELECT SUM(group_score) "
+                $query = "SELECT if(`ts`.`score`>0, `ts`.`score` ,0) AS `my_score`,(SELECT SUM(group_score) "
                         . "FROM " . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . " "
                         . "WHERE group_id = " . $rows['group_id'] . ") AS group_score,(SELECT COUNT(`td`.`id`) "
                         . "FROM `" . TBL_TUTORIAL_GROUP_DISCUSSION . "` `td` "
@@ -1484,6 +1486,7 @@ class PHPWebSocket {
                         . "LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `up` ON `up`.`user_id` = `u`.`id` "
                         . "WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' "
                         . "AND `ta`.`week_no` = $c_week AND YEAR(`ta`.`created_date`) = '$year'  AND  `tm`.`user_id` = '$userId' AND `t`.`is_delete` = 0";
+                echo $query;
                 $row = mysqli_query($link, $query);
                 $rows = mysqli_fetch_assoc($row);
 
@@ -1948,6 +1951,7 @@ class PHPWebSocket {
         if (!file_exists($output_file)) {
             mkdir($output_file, 0777);
         }
+        $data['name'] = preg_replace("/[^a-zA-Z]+/", "", $data['name']);
         $data['webpath'] = 'user_' . $user_id . '/sentFiles/' . $time . '_' . $data['name'];
         $output_file .= '\\' . $time . '_' . $data['name'];
 
@@ -2025,6 +2029,7 @@ class PHPWebSocket {
         if (!file_exists($output_file)) {
             mkdir($output_file, 0777);
         }
+        $data['name'] = preg_replace("/[^a-zA-Z]+/", "", $data['name']);
         $data['webpath'] = 'user_' . $userId . '/sentFiles/' . $time . '_' . $data['name'];
         $output_file .= '\\' . $time . '_' . $data['name'];
 
@@ -2617,6 +2622,7 @@ class PHPWebSocket {
         if (!file_exists($output_file)) {
             mkdir($output_file, 0777);
         }
+        $data['name'] = preg_replace("/[^a-zA-Z]+/", "", $data['name']);
         $data['webpath'] = 'user_' . $user_id . '/sentFiles/' . $time . '_' . $data['name'];
         $output_file .= '\\' . $time . '_' . $data['name'];
 
@@ -2703,6 +2709,7 @@ class PHPWebSocket {
         if (!file_exists($output_file)) {
             mkdir($output_file, 0777);
         }
+        $data['name'] = preg_replace("/[^a-zA-Z]+/", "", $data['name']);
         $data['webpath'] = 'user_' . $user_id . '/sentFiles/' . $time . '_' . $data['name'];
         $output_file .= '\\' . $time . '_' . $data['name'];
 

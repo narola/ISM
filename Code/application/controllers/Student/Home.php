@@ -227,7 +227,6 @@ class Home extends ISM_Controller {
 						'limit' => 3
 					);
 		$data['my_latest_notice'] = select(TBL_NOTICEBOARD_VIEWER.' v','n.notice_title,notice',$where,$option);
-		//p($data,true);
 		$this->template->load('student/default','student/home_view',$data);
 	}
 
