@@ -13,4 +13,12 @@
     <color name="btn_save">#26AF61</color>
     <color name="btn_cancel">#3C4650</color>
 
+    <!--Assignment student row-->
+    <color name="color_red_assignment">#D75651</color>
+    <color name="color_violet_assignment">#A44B99</color>
+    <color name="color_blue_assignment">#0E5198</color>
+    <color name="color_blue_assignment_type">#77C2EA</color>
+
+    <!-- Assignment student color -->
+    <color name="color_gray_assignment">#929292</color>
 </resources>

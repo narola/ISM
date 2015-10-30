@@ -18,11 +18,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.R;
-;
-import com.ism.adapter.Adapters;
+
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
 import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.login.TeacherHomeActivity;
 import com.ism.teacher.model.CreateAssignmentRequest;
@@ -183,7 +183,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
                         Utility.toastOffline(getActivity());
                     }
                 } else {
-                    com.ism.adapter.Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
+                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
                 }
             }
 
