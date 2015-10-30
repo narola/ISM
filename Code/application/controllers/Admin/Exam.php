@@ -48,7 +48,7 @@ class Exam extends ADMIN_Controller {
 		}else{
 			$order = '';
 			$where=null;
-			$where['where']['exam.is_delete']=FALSE;
+			$where['where']['exam.is_delete']=0;
 			
 			$config['base_url']	 = base_url().'admin/exam/index';
 			$offset = $this->uri->segment(4);

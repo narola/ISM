@@ -48,6 +48,7 @@ class Classroom extends ADMIN_Controller {
 
             if (!empty($course_name)) {
                 $where['where'][TBL_CLASSROOMS . '.course_id'] = $course_name;
+                $where['where'][TBL_COURSES . '.is_delete'] = 0;
                 $str .='&course_name=' . $course_name;
             }
             if (!empty($q)) {
@@ -135,7 +136,7 @@ class Classroom extends ADMIN_Controller {
         // qry();
         // p($this->data['all_classrooms'],TRUE);
 
-        $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => FALSE)));
+        $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => 0)));
 
 
         $this->pagination->initialize($config);
@@ -151,7 +152,7 @@ class Classroom extends ADMIN_Controller {
 
         $this->data['page_title'] = 'Class Room Add';
 
-        $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => FALSE)), array('order_by' => 'course_name'));
+        $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => 0)), array('order_by' => 'course_name'));
 
         $this->form_validation->set_rules('class_name', 'Class Name', 'trim|required|is_unique[classrooms.class_name]');
 
@@ -190,7 +191,7 @@ class Classroom extends ADMIN_Controller {
         }
 
         $this->data['classroom'] = select(TBL_CLASSROOMS, FALSE, array('where' => array('id' => $id)), array('single' => TRUE));
-        $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => FALSE)), array('order_by' => 'course_name'));
+        $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => 0)), array('order_by' => 'course_name'));
 
         if ($_POST) {
             $class_name = $this->input->post('class_name');
