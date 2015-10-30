@@ -127,6 +127,14 @@ class Exam extends ADMIN_Controller {
 	// Add a new item
 	public function add(){
 
+		$all_tutorial_topic_exam = select(TBL_TUTORIAL_TOPIC_EXAM);
+
+		$not_in =array();
+		foreach ($all_tutorial_topic_exam as $tutorial_topic_exam) {
+			array_push($not_in, $tutorial_topic_exam['tutorial_topic_id'])	;	
+		}
+
+
 		if($_POST){
 
 			$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
@@ -157,13 +165,88 @@ class Exam extends ADMIN_Controller {
 				$this->data['all_subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>'0')));
 			}
 
+			if(!empty($_POST['subject_id'])){
+
+				$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+											   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+											   array(
+											   		'where'=>array('subject_id'=>$_POST['subject_id']),
+											   		'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
+											   		)
+											);
+			
+			}else{
+				$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+											   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+											   array(
+											   		'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
+											   		)
+											);
+			}
+
 		}else{
 
 			$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
 			$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE)));
 			$this->data['all_subjects'] = select(TBL_SUBJECTS,FALSE,array('where'=>array('is_delete'=>FALSE)));
-			//p($this->data['all_subjects'],true);
+			$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+											   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+											   array(
+											   		'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
+											   		)
+											);
 		}	
+
+		if(!empty($_GET['topic']) && !$_POST){
+			 
+			$this->data['get_topic'] = select(TBL_TUTORIAL_TOPIC,
+							    TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name,'.TBL_TUTORIAL_TOPIC.'.classroom_id,'.
+							    TBL_TUTORIAL_TOPIC.'.subject_id,'.TBL_CLASSROOMS.'.course_id',
+							    array(
+							   		'where'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$_GET['topic'])
+							   		),
+							    array(
+							    	'single'=>TRUE,
+							    	'join'=>array(
+							    			array(
+							    				'table'=>TBL_CLASSROOMS,
+							    				'condition'=>TBL_CLASSROOMS.'.id='.TBL_TUTORIAL_TOPIC.'.classroom_id'
+							    			)
+							    		)	
+							    	)
+							);
+			
+			if(empty($this->data['get_topic'])){
+				show_404();
+			}
+
+		
+			$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>'0',
+											  'course_id'=>$this->data['get_topic']['course_id'])),null);
+
+			$this->data['all_subjects'] = select(TBL_CLASSROOM_SUBJECT,
+												 TBL_CLASSROOM_SUBJECT.'.subject_id as id,sub.subject_name ',
+												 array('where'=>array(TBL_CLASSROOM_SUBJECT.'.classroom_id'=>$this->data['get_topic']['classroom_id'],
+												 					  'sub.is_delete'=>'0')),
+													array(
+														'join'=>array(
+																	array(
+														    				'table' => TBL_SUBJECTS.' sub',
+														    				'condition' => 'sub.id = '.TBL_CLASSROOM_SUBJECT.'.subject_id',
+																		)
+																	)
+														)
+											 	);
+			$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+											   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+											   array(
+											   		'where'=>array('subject_id'=>$this->data['get_topic']['subject_id']),
+											   		'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
+											   		)
+											);
+
+		}	
+
 
 		$this->form_validation->set_rules('exam_name', 'Exam Name', 'trim|required|is_unique['.TBL_EXAMS.'.exam_name]');
 		$this->form_validation->set_rules('course_id', 'Course Name', 'trim|required');
@@ -213,6 +296,14 @@ class Exam extends ADMIN_Controller {
 				);
 
 			$id = insert(TBL_EXAM_SCHEDULE,$exam_schedule);
+
+			//Code For Tutorial Exam Table Entry
+			if(!isset($_POST['exam_type'])){
+				
+				$topic_id = $this->input->post('topic_id');
+				$tutoral_topic_data = array('tutorial_topic_id'=>$topic_id,'exam_id'=>$exam_id);
+				insert(TBL_TUTORIAL_TOPIC_EXAM,$tutoral_topic_data);
+			}
 
 			if($button_type == 'set'){
 				redirect('admin/question/set?exam_id='.$exam_id);	

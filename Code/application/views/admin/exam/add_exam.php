@@ -33,13 +33,14 @@
 				<div class="form-group col-sm-12 col-md-6 col-lg-4 btn_switch no-padding">
                     <label>Exam Type : </label>
 					<div>
-                    <input type="checkbox" name="exam_type" <?php if($_POST){ echo set_checkbox('exam_type','on'); }else{ echo 'checked'; } ?> data-handle-width="100" ><!--data-size="mini"-->
+                    <input type="checkbox" name="exam_type" id="exam_type"
+                        <?php if($_POST){ echo set_checkbox('exam_type','on'); }else{ echo 'checked'; } ?> data-handle-width="100" ><!--data-size="mini"-->
 					</div>
                 </div>
 				
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 select padding_r15_">
 					<label>Course Name</label>
-                    <select class="form-control myselect" name="course_id" onchange="fetch_classroom(this.value)">
+                    <select class="form-control myselect" name="course_id" id="course_id" onchange="fetch_classroom(this.value)">
                         <option value="">Course Name</option>
                         <?php 
                           if(!empty($all_courses)){ 
@@ -77,7 +78,7 @@
                 
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 select no-padding">
 					<label>Subject</label>
-                    <select class="form-control" name="subject_id" id="subject_id" >
+                    <select class="form-control" onchange="get_topics(this.value)" name="subject_id" id="subject_id" >
                         <option value="">Select Subject</option>
                         <?php 
                           if(!empty($all_subjects)){ 
@@ -91,10 +92,28 @@
                         <option > No Subjects </option>
                         <?php } ?>
                     </select>    
+                </div>
+
+                <div class="form-group col-sm-12 tutorial_topic 
+                <?php if($_POST){ echo isset($_POST['exam_type']) ? 'hide':''; } else{ echo 'hide'; } ?> select no-padding topic">
+
+                    <label>Topic</label>
+                    <select class="form-control" name="topic_id" id="topic_id" >
+                        <option value="">Select Topic</option>
+                        <?php 
+                          if(!empty($all_topics)){ 
+                            foreach($all_topics as $topic) {
+                          ?> 
+                        <option value="<?php echo $topic['id']; ?>" <?php echo set_select('topic_id',$topic['id']); ?> > 
+                                <?php echo $topic['topic_name']; ?>
+                        </option>
+
+                        <?php }  }else{ ?>
+                        <option > No Topics </option>
+                        <?php } ?>
+                    </select>    
                 </div>   
                 
-                
-                    
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
 					<label>Passing Percentage</label>
                     <select class="form-control" name="pass_percentage">
@@ -109,12 +128,14 @@
 
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
 					<label>Exam Category</label>
-                    <select class="form-control" name="exam_category">
+                    <select class="form-control" name="exam_category" id="exam_category">
                         <option value="">Exam Category</option>
                         <option value="ISM_Mock" <?php echo set_select('exam_category','ISM_Mock'); ?> >ISM_Mock</option>
                         <option value="WASSCE" <?php echo set_select('exam_category','WASSCE'); ?> >WASSCE</option>
                         <option value="EndOfTerm" <?php echo set_select('exam_category','EndOfTerm'); ?> >End Of Term</option>
-                        <option value="Tutorial" <?php echo set_select('exam_category','Tutorial'); ?> >Tutorial</option>
+                        <?php if(isset($_POST['exam_type']) || !$_POST) { ?>
+                            <option value="Tutorial" <?php echo set_select('exam_category','Tutorial'); ?> >Tutorial</option>
+                        <?php } ?>
                     </select>
                 </div>                    
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
@@ -218,8 +239,9 @@
             $('#button_type').val('set');
         }
     }
-    
+
     $(document).ready(function() {
+
         $(".myselect").select2();
 
          $('#timepicker1').timepicker({ 
@@ -233,6 +255,31 @@
         $("[name='exam_type']").bootstrapSwitch();
         $('.bootstrap-switch-handle-on').text('Subject');
         $('.bootstrap-switch-handle-off').text('Topic');
+
+       $('input[name="exam_type"]').on('switchChange.bootstrapSwitch', function(event, state) {
+          // console.log(this); // DOM element
+          // console.log(event); // jQuery event
+          console.log(state); // true | false
+
+            if(state == true){
+                
+                $('.tutorial_topic').addClass('hide');
+
+                $('#exam_category').append($('<option>', {
+                    value: 'Tutorial',
+                    text: 'Tutorial'
+                }));
+            }else{
+
+                $('.tutorial_topic').removeClass('hide');
+
+                $("#exam_category option[value='Tutorial']").each(function() {
+                    $(this).remove();
+                });
+            }
+
+        });
+
     });
 
     function fetch_classroom(course_id){
@@ -244,23 +291,44 @@
             success:function(data){
                 $('#classroom_id').html(data);
                 $('#subject_id').html('<option value="">Select Subject</option>');
+                $('#topic_id').html('<option value="">Select Topic</option>');
             }
             
         });
     }
 
     function fetch_subject(class_id){
-         $.ajax({
+        $.ajax({
 
             url:'<?php echo base_url()."common/fetch_subject"; ?>',
             type:'post',
             data:{class_id:class_id},
             success:function(data){
                 $('#subject_id').html(data);
+                $('#topic_id').html('<option value="">Select Topic</option>');
             }
-
         });
     }
+
+    function get_topics(subject_id){
+        $.ajax({
+           url:'<?php echo base_url()."admin/question/ajax_get_topics_tutorials"; ?>',
+           type:'POST',
+           data:{subject_id:subject_id},
+           success:function(data){
+              $("#topic_id").html(data);
+           }
+        });
+    }
+
+    <?php if(!empty($_GET['topic']) && !$_POST) { ?>
+        $('#exam_type').prop('checked',false);
+        $('.tutorial_topic').removeClass('hide');
+        // $("#course_id").select2("val", '<?php echo $get_topic["course_id"]; ?>'); //set the value
+        $("#course_id").val('<?php echo $get_topic["course_id"]; ?>');
+        $('#classroom_id').val('<?php echo $get_topic["classroom_id"]; ?>');
+        $('#subject_id').val('<?php echo $get_topic["subject_id"]; ?>');
+    <?php } ?>        
 
     $(document).ready(function(){
 

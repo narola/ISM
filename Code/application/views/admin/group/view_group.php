@@ -94,7 +94,8 @@
                         <tbody>
                           <?php 
                             if(!empty($all_groups)) {
-                            
+                             $temp_score = 0;
+                                            $i=1;
                               foreach($all_groups as $group) {
                             ?>
                                 <tr>
@@ -111,12 +112,12 @@
                                             <img src="<?php echo 'uploads/user_141/user6_14436733csdfs32.jpg'; ?>" 
                                             onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" >
                                         </div>
-                                        <h4><span>Group Name : </span> <?php echo $group['group_name'] ?> <span> [<?php echo $group['course_name'] ?>]</span></h4>
+                                        <h4><span>Group Name : </span> <?php echo $group['group_name'] ?> <span> [<?php echo $group['course_name'] ?> - <?php echo $group['class_name'] ?>] </span></h4>
                                         <table class="group_members">
                                         <?php
-                                            
                                             if(!empty($all_groups_members)) {
                                                 $cnt = 0;
+                                           
                                                 foreach($all_groups_members as $member) {
                                                     if( $member['gid'] == $group['id']){
                                                         if($cnt == 0){ echo '<tr>'; }
@@ -147,8 +148,23 @@
                                             <?php } ?>
                                         </table>                                            
                                     </td>
-                                    <td class="group_rank">01</td>
-                                    <td class="group_points"><p><?php if(!empty($group['group_score'])) {echo $group['group_score']; }else{ echo 0; } ?></p><p>4 Assignments</p><p>10 Exams</p></td>
+                                    <td class="group_rank">
+                                        <?php 
+                                            if(!empty($group['score'])) {
+                                                $score = $group['score'];
+                                               
+                                                if($score != $temp_score){
+                                                    $temp_score = $score;
+                                                    echo sprintf("%02d", $i);
+                                                    $i++;
+                                                }else{
+                                                    $temp_score = $score;
+                                                    echo sprintf("%02d", $i);
+                                                }
+                                            }
+                                         ?>
+                                    </td>
+                                    <td class="group_points"><p><?php if(!empty($group['score'])) {echo $group['score']; ?><p><?php echo $group['exams']; ?> Exams</p><?php }else{ echo 0; } ?></p></td>
                                     <td>
                                         <!-- <a href="#" data-toggle="tooltip" data-placement="bottom" title="Timeline" class="icon icon_timeline"></a> -->
                                         

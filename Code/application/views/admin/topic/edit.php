@@ -112,9 +112,8 @@
                 </div>
                
                 <div class="col-sm-12 text-center btn_group">
-                    <button class="btn btn_green" type="submit" name="save">Save</button>
-                    <button class="btn btn_red" type="submit" name="save_more">Save & Add More</button>
-                    <button class="btn btn_black_normal" type="reset" onclick="reset_topic()">Cancel</button>
+                    <button class="btn btn_green" type="submit" name="save">Update</button>
+                    <a href="<?php echo $prev_url; ?>" class="btn btn_black_normal">Cancel</a>
                 </div>
                 <div class="clearfix"></div>
             </form>

@@ -168,6 +168,7 @@ class School extends ADMIN_Controller {
         $this->data['states'] = select(TBL_STATES, FALSE, array('order_by' => 'state_name'));
         $this->data['cities'] = select(TBL_CITIES, FALSE, array('order_by' => 'city_name'));
         $this->data['districts'] = select(TBL_DISTRICTS, FALSE, array('order_by' => 'district_name'));
+        $this->data['courses'] = select(TBL_COURSES, FALSE,array('where'=>array('is_delete'=>0)), FALSE);
 
         $this->form_validation->set_rules('schoolname', 'School Name', 'trim|required|is_unique[schools.school_name]');
         $this->form_validation->set_rules('school_code', 'School Code', 'trim|required|numeric');
@@ -182,7 +183,7 @@ class School extends ADMIN_Controller {
 
             $this->template->load('admin/default', 'admin/school/add_school', $this->data);
         } else {
-
+            // p($_POST,true);
             $data = array(
                 "school_name" => $this->input->post("schoolname"),
                 "school_nickname" => $this->input->post("school_nickname"),
@@ -204,8 +205,19 @@ class School extends ADMIN_Controller {
                 "is_delete" => 0,
             );
 
-            insert(TBL_SCHOOLS, $data);  // insert data into database using common_model.php and cms_helper.php
-
+           $school_id =  insert(TBL_SCHOOLS, $data);  // insert data into database using common_model.php and cms_helper.php
+           if(!empty($this->input->post("courses"))){
+            $courses = $this->input->post("courses");
+                foreach ($courses as $course_id) {
+                    if($course_id !=0){
+                    $school_course = array(
+                        'school_id'=>$school_id,
+                        'course_id'=>$course_id
+                        );
+                    insert(TBL_SCHOOL_COURSE, $school_course);
+                    }
+                }
+           }
             $this->session->set_flashdata('success', 'Record is Successfully created.');
             redirect('admin/school');
         }

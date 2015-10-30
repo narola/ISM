@@ -765,8 +765,44 @@ class Question extends ADMIN_Controller {
 
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Function to get tutorial topics exam not in tutorial_topic_exam Table
+	 **/
+	public function ajax_get_topics_tutorials(){
+		  
+		  $subject_id = $this->input->post('subject_id');
+		
+		$all_tutorial_topic_exam = select(TBL_TUTORIAL_TOPIC_EXAM);
+
+		$not_in =array();
+		foreach ($all_tutorial_topic_exam as $tutorial_topic_exam) {
+			array_push($not_in, $tutorial_topic_exam['tutorial_topic_id'])	;	
+		}
+
+		$topics= select(TBL_TUTORIAL_TOPIC,
+					   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+					   array(
+					   		'where'=>array('subject_id'=>$subject_id),
+					   		'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
+					   		)
+					);
+
+		$new_str = '';
+		
+		$new_str .= '<option selected value="" disabled >Topic</option>';
+		if(!empty($topics)){
+			foreach($topics as $topic){
+				$new_str.='<option value="'.$topic['id'].'">'.$topic['topic_name'].'</option>';
+			}	
+		}
+		echo $new_str;
+	}
+
+	// ------------------------------------------------------------------------
+
 	public function set_question(){
 
+		
 		$qid = $this->input->post('qid');
 		$eid = $this->input->post('eid');
 

@@ -180,6 +180,23 @@
                                 <?php } ?>
                             </select>
                         </div>
+                         <div class="form-group">
+                            <label>Courses</label>
+                            <select style="height: 150px;" class="form-control multiselect" name="courses[]" multiple="true">
+                                <option value="0"> No Courses</option>
+                                <?php
+                                if (!empty($courses)) {
+                                    foreach ($courses as $course) {
+                                        ?> 
+                                        <option value="<?php echo $course['id']; ?>" <?php echo set_select('course', $course['id']); ?>> <?php echo $course['course_name']; ?></option>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <option value="0">No Courses</option>
+                                <?php } ?>
+                            </select>
+                        </div>
 
                     </div>
 

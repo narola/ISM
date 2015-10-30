@@ -77,8 +77,8 @@
                                     </td>
                                     <td><?php echo ucfirst($subject['subject_name']); ?></td>
                                     <td>
-                                        <a href="<?php echo '/admin/subject/update_subject/'.$subject['id'];?>" data-toggle="tooltip" data-placement="right" data-original-title="Edit" class="icon icon_edit"></a>
-                                        <a data-toggle="tooltip" id="delete_<?php echo $subject['id']; ?>" data-placement="right" data-original-title="Delete" class="delete icon icon_delete"></a>                                        
+                                        <a href="<?php echo '/admin/subject/update_subject/'.$subject['id'];?>" data-toggle="tooltip" data-placement="bottom" data-original-title="Edit" class="icon icon_edit"></a>
+                                        <a data-toggle="tooltip" id="delete_<?php echo $subject['id']; ?>" data-placement="bottom" data-original-title="Delete" class="delete icon icon_delete"></a>                                        
                                     </td>
                                 </tr>
                                 <?php

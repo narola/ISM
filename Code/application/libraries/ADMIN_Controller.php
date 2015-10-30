@@ -11,12 +11,16 @@ class ADMIN_Controller extends CI_Controller {
 	 	$prev_url = trim($this->session->userdata('prev_url'),'/'); 
 		
 		if(empty($cur_url) && empty($prev_url)){
-			
 			$this->session->set_userdata( array('cur_url'=>$this->input->server('REQUEST_URI')) );
 			$this->session->set_userdata( array('prev_url'=>'test') );
 		}
 
-		if(!empty($cur_url) && trim($this->input->server('REQUEST_URI'),'/') != $cur_url ){
+		// If Ajax Call then Current and Previous Urls will not be Set.
+		$session_exceptional_urls = array('admin/question/set_question','admin/question/ajax_get_topics_tutorials','ajax_get_states','template_notice',
+										  'template_message','check_template_unique','check_template_notice_unique');
+
+		if(!empty($cur_url) && trim($this->input->server('REQUEST_URI'),'/') != $cur_url 
+			&& in_array(trim($this->input->server('REQUEST_URI'),'/'),$session_exceptional_urls) == FALSE ){
 			
 			$this->session->set_userdata( array('cur_url'=> trim($this->input->server('REQUEST_URI'),'/') ) );
 			$this->session->set_userdata( array('prev_url'=>$cur_url) );	

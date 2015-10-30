@@ -104,11 +104,11 @@
                                             <div class="group_score">
                                                 <hr>
                                                 <div>
-                                                    <h2 class="group_total_points">5000</h2>
+                                                    <h2 class="group_total_points"><?php echo $group['score']; ?></h2>
                                                     <p>Score</p>
                                                 </div>
                                                 <div>
-                                                    <h2 class="group_rank">04</h2>
+                                                    <h2 class="group_rank"><?php if($group['score']!=0){ echo $group['exams']; }else{ echo 0; }  ?></h2>
                                                     <p>Exams</p>
                                                 </div>
                                                 <div class="clearfix"></div>
