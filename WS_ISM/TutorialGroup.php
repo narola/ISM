@@ -40,6 +40,8 @@ class TutorialGroup
 		$groupName = "";
 		$studentArray = array();
 		$tutorialGroupId = 0;
+		$tutorialGroupJoiningStatus = '';
+		$allMembersAccepted = '';
 		$tutorialGroupName = "";
 		$tutorialGroupMembers = array();
 
@@ -48,6 +50,8 @@ class TutorialGroup
 		if ($tutorialGroup['tutorial_group_found']) {
 			$groupData = $tutorialGroup['tutorial_group'];
 			$tutorialGroupId = $groupData['tutorial_group_id'];
+			$tutorialGroupJoiningStatus = $groupData['tutorial_group_joining_status'];
+			$allMembersAccepted = $groupData['tutorial_group_complete'];
 			$tutorialGroupName = $groupData['tutorial_group_name'];
 			$tutorialGroupMembers = $groupData['tutorial_group_members'];
 			$status = 1;
@@ -163,21 +167,22 @@ class TutorialGroup
 								}
 							}
 
-							$tutorialGroup = $this->getTutorialGroupOfUser($user_id);
-
-							if ($tutorialGroup['tutorial_group_found']) {
-								$groupData = $tutorialGroup['tutorial_group'];
-								$tutorialGroupId = $groupData['tutorial_group_id'];
-								$tutorialGroupName = $groupData['tutorial_group_name'];
-								$tutorialGroupMembers = $groupData['tutorial_group_members'];
-								$status = 1;
-							}
-
 							if ($status == 1) {
+								$tutorialGroup = $this->getTutorialGroupOfUser($user_id);
+								if ($tutorialGroup['tutorial_group_found']) {
+									$groupData = $tutorialGroup['tutorial_group'];
+									$tutorialGroupId = $groupData['tutorial_group_id'];
+									$tutorialGroupJoiningStatus = $groupData['tutorial_group_joining_status'];
+									$allMembersAccepted = $groupData['tutorial_group_complete'];
+									$tutorialGroupName = $groupData['tutorial_group_name'];
+									$tutorialGroupMembers = $groupData['tutorial_group_members'];
+								}
+
 								$message = 'Group created';
 							} else {
 								$message = 'Failed to insert group member';
 							}
+
 
 						} else {
 							$status = 2;
@@ -202,6 +207,8 @@ class TutorialGroup
 		$data['message'] = $message;
 
 		$result['tutorial_group_id'] = $tutorialGroupId;
+		$result['tutorial_group_joining_status'] = $tutorialGroupJoiningStatus;
+		$result['tutorial_group_complete'] = $allMembersAccepted;
 		$result['tutorial_group_name'] = $tutorialGroupName;
 		$result['tutorial_group_members'] = $tutorialGroupMembers;
 		$dataArray = array();
@@ -301,7 +308,9 @@ class TutorialGroup
 	 */
 	public function getTutorialGroupOfUser($user_id)
 	{
-		$check_allocation_query = "SELECT members.group_id, groups.group_name
+		$selectFields = "members.group_id, members.joining_status, groups.group_name, groups.is_completed ";
+
+		$check_allocation_query = "SELECT " . $selectFields . "
 									FROM " . TABLE_TUTORIAL_GROUP_MEMBER . " members, " . TABLE_TUTORIAL_GROUPS . " groups
 									where members.user_id = " . $user_id . " and members.group_id = groups.id";
 
@@ -318,6 +327,8 @@ class TutorialGroup
 
 				while ($student = mysql_fetch_assoc($res)) {
 					$groupId = $student['group_id'];
+					$joiningStatus = $student['joining_status'];
+					$allMembersAccepted = $student['is_completed'];
 					$groupName = $student['group_name'];
 				}
 
@@ -357,6 +368,8 @@ class TutorialGroup
 				}
 
 				$tutorialGroup['tutorial_group_id'] = $groupId;
+				$tutorialGroup['tutorial_group_joining_status'] = $joiningStatus;
+				$tutorialGroup['tutorial_group_complete'] = $allMembersAccepted;
 				$tutorialGroup['tutorial_group_name'] = $groupName;
 				$tutorialGroup['tutorial_group_members'] = $studentArray;
 
