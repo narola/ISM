@@ -4030,3 +4030,8 @@ a.expand_ques + .row{
     font-size: 16px;
     margin-bottom: 4px;
 }
+.top_question .admin_question p {
+    height: 76px;
+    display: inline-block;
+    overflow: hidden;
+}
