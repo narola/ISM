@@ -13,4 +13,28 @@
     <string name="no_internet">No Internet Connection Available...Please Try Again</string>
     <string name="web_service_issue">Web service issue</string>
 
+
+    <!-- Assignment resources-->
+    <string name="stractivity">Activity</string>
+    <string name="strexam">Exam</string>
+    <string name="strassignmentinfo">Assignment Information</string>
+    <string name="strassignmentname">Assignment Name</string>
+    <string name="strcoursename">Course Name</string>
+    <string name="strsave">Save</string>
+    <string name="strsubject">Subject</string>
+    <string name="strsubmissiondate">Submission Date</string>
+    <string name="strtopic">Topic</string>
+    <string name="msg_validation_set_topic">![CDATA[> Please select your subject topic.]]</string>
+    <string name="msg_validation_add_text_rich_editor">![CDATA[> Please set the assignment.]]</string>
+    <string name="msg_validation_set_classroom">![CDATA[> Please select your classroom.]]</string>
+    <string name="msg_validation_set_subject">![CDATA[> Please select your subject.]]</string>
+
+    <!-- Controller String-->
+    <string name="str_classwall">Classwall</string>
+    <string name="str_notes">Notes</string>
+    <string name="str_quiz">Quiz</string>
+    <string name="str_markscript">Mark Script</string>
+    <string name="str_results">Results</string>
+    <string name="str_add">Add</string>
+    <string name="str_progressReport">Progress Report</string>
 </resources>

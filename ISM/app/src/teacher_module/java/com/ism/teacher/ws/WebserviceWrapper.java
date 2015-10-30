@@ -26,6 +26,13 @@ public class WebserviceWrapper {
     public static final int GET_STUDYMATES = 4;
     public static final int TAG_FRIEND_IN_FEED = 5;
     public static final int LIKE_FEED = 6;
+
+    public static final int GETCLASSROOMS = 7;
+    public static final int GETSUBJECT = 8;
+    public static final int GETTOPICS = 9;
+    public static final int CREATEASSIGNMENT = 10;
+
+
     public static int API_METHOD_NAME;
 
 
@@ -85,6 +92,22 @@ public class WebserviceWrapper {
 
                     case LIKE_FEED:
                         responseObject = new RequestWs().getRequest(AppConstant.URL_LIKE_FEED, ResponseObject.class, requestObject);
+                        break;
+
+                    case GETCLASSROOMS:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_GETCLASSROOMS, ResponseObject.class, requestObject);
+                        break;
+
+                    case GETSUBJECT:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_GETSUBJECT, ResponseObject.class, requestObject);
+                        break;
+
+                    case GETTOPICS:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_GETTOPICS, ResponseObject.class, requestObject);
+                        break;
+
+                    case CREATEASSIGNMENT:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_CREATEASSIGNMENT, ResponseObject.class, requestObject);
                         break;
 
                 }

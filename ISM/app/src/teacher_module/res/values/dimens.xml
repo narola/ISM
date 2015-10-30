@@ -23,6 +23,7 @@
     <dimen name="d130sp">130sp</dimen>
 
 
+    <dimen name="d1dp">1dp</dimen>
     <dimen name="d5dp">5dp</dimen>
     <dimen name="d10dp">10dp</dimen>
     <dimen name="d15dp">15dp</dimen>
@@ -43,6 +44,6 @@
     <dimen name="d130dp">130dp</dimen>
     <dimen name="d140dp">140dp</dimen>
     <dimen name="d150dp">150dp</dimen>
-
+    <dimen name="rich_text_editor_height">450dp</dimen>
 
 </resources>

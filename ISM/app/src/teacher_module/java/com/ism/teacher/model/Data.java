@@ -37,6 +37,89 @@ public class Data {
     private String comment;
     private String profileLink;
 
+
+    /*for the getAllClassrooms*/
+
+    private String class_name;
+    private String class_nickname;
+    private String course_id;
+
+    /*for the getSubjects*/
+
+    private String subject_image;
+    private String subject_name;
+
+     /* for the getTopics*/
+
+    private String topic_name;
+    private String topic_description;
+
+    @JsonProperty("class_name")
+    public String getClass_name() {
+        return class_name;
+    }
+
+    public void setClass_name(String class_name) {
+        this.class_name = class_name;
+    }
+
+    @JsonProperty("class_nickname")
+    public String getClass_nickname() {
+        return class_nickname;
+    }
+
+    public void setClass_nickname(String class_nickname) {
+        this.class_nickname = class_nickname;
+    }
+
+    @JsonProperty("course_id")
+    public String getCourse_id() {
+        return course_id;
+    }
+
+    public void setCourse_id(String course_id) {
+        this.course_id = course_id;
+    }
+
+    @JsonProperty("subject_image")
+    public String getSubject_image() {
+        return subject_image;
+    }
+
+    public void setSubject_image(String subject_image) {
+        this.subject_image = subject_image;
+    }
+
+    @JsonProperty("subject_name")
+
+    public String getSubject_name() {
+        return subject_name;
+    }
+
+    public void setSubject_name(String subject_name) {
+        this.subject_name = subject_name;
+    }
+
+    @JsonProperty("topic_name")
+
+    public String getTopic_name() {
+        return topic_name;
+    }
+
+    public void setTopic_name(String topic_name) {
+        this.topic_name = topic_name;
+    }
+
+    @JsonProperty("topic_description")
+
+    public String getTopic_description() {
+        return topic_description;
+    }
+
+    public void setTopic_description(String topic_description) {
+        this.topic_description = topic_description;
+    }
+
     @JsonProperty("like")
     public int getLike() {
         return like;
