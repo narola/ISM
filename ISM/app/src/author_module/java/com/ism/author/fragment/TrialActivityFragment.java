@@ -158,7 +158,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
         });
 
 
-        rteTrialActivity.getRichEditor().setEditorFontSize(30);
+        rteTrialActivity.getRichEditor().setEditorFontSize(25);
 
         rteTrialActivity.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override

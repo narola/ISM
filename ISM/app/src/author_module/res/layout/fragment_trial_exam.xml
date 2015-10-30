@@ -64,7 +64,7 @@
                         android:textSize="@dimen/d20dp" />
 
                     <Spinner
-                        android:id="@+id/sp_exam_coursename"
+                        android:id="@+id/sp_exam_classroom"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d10dp"
@@ -80,6 +80,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/d10dp"
                     android:orientation="horizontal">
+
+
+                    <Spinner
+                        android:id="@+id/sp_exam_subjectname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_selector"
+                        android:entries="@array/list"
+                        android:padding="@dimen/d20dp"
+                        android:spinnerMode="dropdown" />
+
 
                     <Spinner
                         android:id="@+id/sp_exam_passingpercent"
@@ -109,7 +121,7 @@
                             android:textSize="@dimen/d20dp" />
 
                         <ToggleButton
-                            android:id="@+id/tb_exam_selectsubject"
+                            android:id="@+id/tb_exam_selectexamfor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
@@ -128,17 +140,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/d10dp"
-                    android:orientation="horizontal">
-
-                    <Spinner
-                        android:id="@+id/sp_exam_subjectname"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/spinner_selector"
-                        android:entries="@array/list"
-                        android:padding="@dimen/d20dp"
-                        android:spinnerMode="dropdown" />
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
 
                     <Spinner
@@ -170,7 +173,7 @@
                         android:spinnerMode="dropdown" />
 
                     <Spinner
-                        android:id="@+id/sp_exam_examtype"
+                        android:id="@+id/sp_exam_exammode"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d10dp"
@@ -200,6 +203,7 @@
                         android:background="@drawable/selector"
                         android:gravity="center_vertical"
                         android:hint="@string/strattemptcount"
+                        android:inputType="number"
                         android:paddingLeft="@dimen/d20dp"
                         android:textColor="@color/color_black"
                         android:textColorHint="@color/color_text_hint"
@@ -481,6 +485,45 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_add_negative_mark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:id="@+id/tv_exam_addnegativemark"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/strnegativemark"
+                        android:textColor="@color/color_black_light"
+                        android:textSize="@dimen/d20dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/d20dp"
+                        android:layout_weight="1">
+
+                        <EditText
+                            android:id="@+id/et_exam_addnegativemark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector"
+                            android:gravity="center_vertical"
+                            android:inputType="number"
+                            android:paddingLeft="@dimen/d20dp"
+                            android:textColor="@color/color_black"
+                            android:textSize="@dimen/d20dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/d15dp"
@@ -589,6 +632,7 @@
                     android:layout_marginTop="@dimen/d15dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     android:weightSum="3">
 
                     <TextView
@@ -619,11 +663,12 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!--<com.narola.kpa.richtexteditor.view.RichTextEditor-->
-                <!--android:id="@+id/rte_trial_activity"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/rich_text_editor_height"-->
-                <!--android:layout_margin="@dimen/d15dp"></com.narola.kpa.richtexteditor.view.RichTextEditor>-->
+
+                <com.narola.kpa.richtexteditor.view.RichTextEditor
+                    android:id="@+id/rte_trial_exam"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/rich_text_editor_height"
+                    android:layout_margin="@dimen/d15dp"></com.narola.kpa.richtexteditor.view.RichTextEditor>
             </LinearLayout>
 
 
@@ -631,6 +676,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/d20dp"
+                android:layout_marginTop="@dimen/d20dp"
                 android:orientation="horizontal">
 
                 <Button
@@ -655,7 +702,7 @@
                     android:textSize="@dimen/d20dp" />
 
                 <Button
-                    android:id="@+id/btn_activity_cancel"
+                    android:id="@+id/btn_exam_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d15dp"
@@ -664,7 +711,6 @@
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/d20dp" />
-
 
             </LinearLayout>
         </LinearLayout>

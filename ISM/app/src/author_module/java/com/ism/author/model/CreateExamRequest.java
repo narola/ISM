@@ -28,6 +28,7 @@ public class CreateExamRequest {
     private String exam_start_time;
     private String user_id;
     private String negative_mark_value;
+    private int book_id;
 
     public String getExam_name() {
         return exam_name;
@@ -163,6 +164,15 @@ public class CreateExamRequest {
 
     public void setNegative_mark_value(String negative_mark_value) {
         this.negative_mark_value = negative_mark_value;
+    }
+
+
+    public int getBook_id() {
+        return book_id;
+    }
+
+    public void setBook_id(int book_id) {
+        this.book_id = book_id;
     }
 
 

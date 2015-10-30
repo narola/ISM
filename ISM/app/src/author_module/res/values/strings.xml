@@ -132,6 +132,7 @@
     <string name="strpassingpercent">Passing Percent</string>
     <string name="strexamfor">Exam For:</string>
     <string name="strexamtype">Exam Type</string>
+    <string name="strexammode">Exam Mode</string>
     <string name="strexamduration">Exam Duration(MIN)</string>
     <string name="strattemptcount">Attempt Count</string>
     <string name="strexamschedule">Exam Schedule</string>
@@ -144,6 +145,7 @@
     <string name="strrandomquestion">Random Question :</string>
     <string name="strusescore">Use Score From Questions :</string>
     <string name="strscorevalue">Question Score Value :</string>
+    <string name="strnegativemark">Question Negative Mark :</string>
     <string name="stryes">Yes</string>
     <string name="strno">No</string>
     <string name="strsetquestion">set question</string>
@@ -152,6 +154,12 @@
         <item>Exam Type</item>
         <item>Topic</item>
         <item>Subject</item>
+    </string-array>
+
+    <string-array name="exammode">
+        <item>Exam Mode</item>
+        <item>Subjective</item>
+        <item>Objective</item>
     </string-array>
 
     <string-array name="examname">
