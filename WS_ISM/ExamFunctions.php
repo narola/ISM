@@ -117,6 +117,10 @@ class ExamFunctions
             $post['exam_id'] = $rowExam['id'];
             $post['exam_score'] = $rowExam['marks_obtained'];
             if ($rowExam['exam_mode']=="subjective") {
+//                {
+//                    "exam_id":63,
+//                    "student_id":370
+//                }
                 $query = "SELECT * FROM " . TABLE_EXAM_SCHEDULE . " exam_schedule INNER JOIN " . TABLE_USERS . " users on exam_schedule.exam_assessor=users.id WHERE exam_id=" . $exam_id;
                 $result = mysql_query($query) or $message = mysql_error();
                 //echo $query;
@@ -130,12 +134,13 @@ class ExamFunctions
                 $evaluation = array();
                 $queryEvaluation = "SELECT * FROM " . TABLE_EXAM_EVALUATION . " WHERE exam_id=" . $exam_id;
                 $resultEvaluation = mysql_query($queryEvaluation) or $message = mysql_error();
+
                 if (mysql_num_rows($resultEvaluation)) {
                     $rowEvaluation = mysql_fetch_assoc($resultEvaluation);
                     if ($rowEvaluation['evaluation_status'] == "unassesed") {
                         $evaluation['evaluation_score'] = $rowEvaluation['evaluation_status'];
                     } else {
-                        $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_SUBJECTIVE_EVALUATION . " WHERE question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ")";
+                        $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_SUBJECTIVE_EVALUATION . " WHERE `exam_id`=" . $exam_id . " and evaluation_by=".$row['exam_assessor']." and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ")";
                         $resultStudentRes = mysql_query($queryStudentRes) or $message = mysql_error();
                         echo $queryStudentRes;
                         echo "\n".mysql_num_rows($resultStudentRes);
@@ -148,8 +153,9 @@ class ExamFunctions
                                 $evaluation['evaluation_notes'] = $rowEvaluation['evaluation_notes'];
                                 $evaluations[]=$evaluation;
                             }
-                            $post['evaluation']=$evaluations;
+
                         }
+                        $post['evaluation']=$evaluations;
 
                     }
 
@@ -157,11 +163,14 @@ class ExamFunctions
 
 
             } else if($rowExam['exam_mode']=="objective"){
-
-                $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_OBJECTIVE_RESPONSE . " WHERE question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ")";
+//                {
+//                    "exam_id":9,
+//                    "student_id":202
+//                }
+                $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_OBJECTIVE_RESPONSE . " WHERE `user_id`=" . $student_id . " and `exam_id`=" . $exam_id . " and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ")";
                 $resultStudentRes = mysql_query($queryStudentRes) or $message = mysql_error();
-                //echo $queryStudentRes;
-                //echo "\n".mysql_num_rows($resultStudentRes);
+                echo $queryStudentRes;
+                echo "\n".mysql_num_rows($resultStudentRes);
                 $evaluations=array();
                 if (mysql_num_rows($resultStudentRes)) {
                     while ($rowEvaluation = mysql_fetch_assoc($resultStudentRes)) {
