@@ -2159,3 +2159,9 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 #replacing_div3  .icon_subs_small{
 	margin-left:9px;
 }
+.profile_admin a{
+	color:#ff6b6b;
+}
+.profile_admin .form-group:last-child{
+	margin-bottom:0;
+}
