@@ -14,35 +14,49 @@
                 <!--filter-->
                 <div class="filter group_filter">
                 	<div class="col-sm-12">
-                        <form method="get">
-                    	<div class="form-group">
-                            <select class="form-control" name="course_id" id="course_id" onchange="get_classes(this.value)">
-                                <option>Select Course</option>
-                                <?php 
-                                    if(!empty($courses)){
-                                        foreach ($courses as $course) { ?>
-                                            <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>
-                                        <?php }
-                                    }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" name="classroom_id" onchange="get_groups(this.value)" id="classroom_id">
-                                <option value=''>Select Classroom</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" id="group_id" name="group_id">
-                                <option>Select Group</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control">
-                                <option>Sort By</option>
-                            </select>
-                        </div>
-                    </form>
+                        <form method="get" id="filter">
+                        	<div class="form-group">
+                                <select class="form-control" name="course_id" id="course_id" onchange="get_classes(this.value)">
+                                    <option>Select Course</option>
+                                    <?php 
+                                        if(!empty($courses)){
+                                            foreach ($courses as $course) { ?>
+                                                <option value="<?php echo $course['id']; ?>"><?php echo $course['course_name']; ?></option>
+                                            <?php }
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="classroom_id" onchange="filter_data()" id="classroom_id">
+                                    <option value=''>Select Classroom</option>
+                                    <?php 
+                                        if(!empty($classrooms)){
+                                            foreach ($classrooms as $classroom) { ?>
+                                                <option value="<?php echo $classroom['id']; ?>"><?php echo $classroom['class_name']; ?></option>
+                                            <?php }
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                            <!-- <div class="form-group">
+                                <select class="form-control" id="group_id" onchange="filter_data()" name="group_id">
+                                    <option value="">Select Group</option>
+                                    <?php /*
+                                        if(!empty($all_groups)){
+                                            foreach ($all_groups as $group) { ?>
+                                                <option value="<?php echo $group['id']; ?>"><?php echo $group['group_name']; ?></option>
+                                            <?php }
+                                        }*/
+                                    ?>
+                                </select>
+                            </div> -->
+                            <!-- <div class="form-group">
+                                <select class="form-control">
+                                    <option>Sort By</option>
+                                </select>
+                            </div> -->
+                        </form>
                         <div class="form-group no_effect text-right">
                             <a href="admin/topic/add" class="btn btn_green add_topic">Add New Topic</a>
                         </div>
@@ -142,7 +156,7 @@
                                         <td class="recommended">
                                             <h4><?php echo $topic['topic_name']; ?><span>Subject : <?php echo $topic['subject_name']; ?></span></h4>
                                             <ul>
-                                                <li><p><?php echo $topic['topic_description']; ?></p></li>
+                                                <li><p><?php echo html_entity_decode($topic['topic_description']); ?></p></li>
                                             </ul>
                                             <div class="recom_action">
                                                 <a href="#" class="icon icon_delete_color"></a>
@@ -167,27 +181,57 @@
                 <!--//row-->              
 			</div>
             <!--//main-->
-            <script type="text/javascript">
-            function get_classes(course_id){
-                $.ajax({
-                   url:'<?php echo base_url()."admin/topic/ajax_get_classrooms"; ?>',
-                   type:'POST',
-                   data:{course_id:course_id},
-                   success:function(data){
-                      $("#classroom_id").html(data);
-                      $('#group_id').val('');
-                   }
-                });
-            }
-            function get_groups(classroom_id){
-                $.ajax({
-                   url:'<?php echo base_url()."admin/topic/ajax_get_groups"; ?>',
-                   type:'POST',
-                   data:{classroom_id:classroom_id},
-                   success:function(data){
-                      $("#group_id").html(data);
-                   }
-                });
-            }
-  
-            </script>
+<script type="text/javascript">
+
+    function filter_data(){
+
+        var course_id = $('#course_id').val();
+        var classroom_id = $('#classroom_id').val();
+        var group_id = $('#group_id').val();
+        
+        if(course_id == '' ){ $('#course_id').removeAttr('name'); }
+        if(classroom_id == '' ){ $('#classroom_id').removeAttr('name'); }
+        if(group_id == '' ){ $('#group_id').removeAttr('name'); }
+        
+        $('#filter').submit();
+    }
+
+    <?php if(!empty($_GET['course_id'])) { ?>
+        $('#course_id').val('<?php echo $_GET["course_id"];?>');  
+    <?php } ?>
+
+    <?php if(!empty($_GET['classroom_id'])) { ?>
+        $('#classroom_id').val('<?php echo $_GET["classroom_id"];?>');  
+    <?php } ?>
+
+    <?php if(!empty($_GET['group_id'])) { ?>
+        $('#group_id').val('<?php echo $_GET["group_id"];?>');  
+    <?php } ?>
+
+    function get_classes(course_id){
+        $.ajax({
+           url:'<?php echo base_url()."admin/topic/ajax_get_classrooms"; ?>',
+           type:'POST',
+           data:{course_id:course_id},
+           success:function(data){
+              $("#classroom_id").html(data);
+              $('#group_id').html('<option value=""> Select Group </option>');
+           }
+        });
+    }
+
+    function get_groups(classroom_id){
+        $.ajax({
+           url:'<?php echo base_url()."admin/topic/ajax_get_groups"; ?>',
+           type:'POST',
+           data:{classroom_id:classroom_id},
+           success:function(data){
+              $("#group_id").html(data);
+              filter_data();
+           }
+        });
+    }
+
+
+
+</script>

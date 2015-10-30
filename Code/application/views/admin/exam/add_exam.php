@@ -328,6 +328,7 @@
         $("#course_id").val('<?php echo $get_topic["course_id"]; ?>');
         $('#classroom_id').val('<?php echo $get_topic["classroom_id"]; ?>');
         $('#subject_id').val('<?php echo $get_topic["subject_id"]; ?>');
+        $('#topic_id').val('<?php echo $_GET["topic"]; ?>');
     <?php } ?>        
 
     $(document).ready(function(){
