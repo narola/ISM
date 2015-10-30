@@ -59,7 +59,6 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
         // Required empty public constructor
     }
 
-
     TextView tvActivityTitle, tvActivityAssignmentname, tvActivityCoursename, tvActivityClass, tvActivitySubject, tvActivitySubmissiondate, tvActivityTopic;
     EditText etActivityAssignmentname, etActivityCoursename, etActivitySubmissionDate;
     Button btnActivitySave, btnActivityCancel;
@@ -292,6 +291,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
                             get(spActivityTopic.getSelectedItemPosition() - 1).getId()) : 0);
                 }
                 createAssignmentRequest.setAssignment_text(strAssignmenttext);
+
                 new WebserviceWrapper(getActivity(), createAssignmentRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.CREATEASSIGNMENT);
             } catch (Exception e) {

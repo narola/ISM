@@ -12,8 +12,9 @@ public class CreateExamRequest {
 
 
     private String exam_name;
-    private String classroom_id;
-    private String subject_id;
+    private int classroom_id;
+    private int subject_id;
+    private int attempt_count;
     private String exam_type;
     private String exam_category;
     private String exam_mode;
@@ -23,8 +24,10 @@ public class CreateExamRequest {
     private String declare_results;
     private String negative_marking;
     private String random_question;
-    private String submission_date;
+    private String exam_start_date;
+    private String exam_start_time;
     private String user_id;
+    private String negative_mark_value;
 
     public String getExam_name() {
         return exam_name;
@@ -34,20 +37,28 @@ public class CreateExamRequest {
         this.exam_name = exam_name;
     }
 
-    public String getClassroom_id() {
+    public int getClassroom_id() {
         return classroom_id;
     }
 
-    public void setClassroom_id(String classroom_id) {
+    public void setClassroom_id(int classroom_id) {
         this.classroom_id = classroom_id;
     }
 
-    public String getSubject_id() {
+    public int getSubject_id() {
         return subject_id;
     }
 
-    public void setSubject_id(String subject_id) {
+    public void setSubject_id(int subject_id) {
         this.subject_id = subject_id;
+    }
+
+    public int getAttempt_count() {
+        return attempt_count;
+    }
+
+    public void setAttempt_count(int attempt_count) {
+        this.attempt_count = attempt_count;
     }
 
     public String getExam_type() {
@@ -122,12 +133,20 @@ public class CreateExamRequest {
         this.random_question = random_question;
     }
 
-    public String getSubmission_date() {
-        return submission_date;
+    public String getExam_start_date() {
+        return exam_start_date;
     }
 
-    public void setSubmission_date(String submission_date) {
-        this.submission_date = submission_date;
+    public void setExam_start_date(String exam_start_date) {
+        this.exam_start_date = exam_start_date;
+    }
+
+    public String getExam_start_time() {
+        return exam_start_time;
+    }
+
+    public void setExam_start_time(String exam_start_time) {
+        this.exam_start_time = exam_start_time;
     }
 
     public String getUser_id() {
@@ -136,6 +155,14 @@ public class CreateExamRequest {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    public String getNegative_mark_value() {
+        return negative_mark_value;
+    }
+
+    public void setNegative_mark_value(String negative_mark_value) {
+        this.negative_mark_value = negative_mark_value;
     }
 
 
