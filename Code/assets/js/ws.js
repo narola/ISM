@@ -538,7 +538,7 @@ if ("WebSocket" in window)
                     }
                 }
             }
-            $('.box_body #mCSB_3 #mCSB_3_container div[data-id="' + obj.studymate_id + '"]').remove().html();
+            $('.box_body .mCustomScrollBox .mCSB_container div[data-id="' + obj.studymate_id + '"]').remove();
             cnt = $('.box_body #mCSB_3 #mCSB_3_container #my_request').length;
             if (cnt == 0)
             {
