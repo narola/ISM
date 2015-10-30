@@ -65,7 +65,7 @@ public class UpcomingEventsFragment extends Fragment {
         //NOTICE
         NoticeModel model;
 
-        //logic for adapter =>set  only two record for adapter if four or more record found then setvisibilty of VIEW ALL VISIBLE
+        //logic for allFeedsAdapter =>set  only two record for allFeedsAdapter if four or more record found then setvisibilty of VIEW ALL VISIBLE
         ArrayList<NoticeModel> arrayListNotice = new ArrayList<NoticeModel>();
         model = new NoticeModel("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years.");
         arrayListNotice.add(model);

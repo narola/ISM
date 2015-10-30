@@ -1,6 +1,7 @@
 package com.ism;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -28,7 +29,9 @@ import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.StudyMatesFragment;
 import com.ism.fragment.TutorialFragment;
 import com.ism.interfaces.FragmentListener;
+import com.ism.login.LoginActivity;
 import com.ism.object.ControllerTopMenuItem;
+import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 
 import java.util.ArrayList;
@@ -186,7 +189,10 @@ public class HostActivity extends Activity implements FragmentListener {
         imgLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                PreferenceData.clearWholePreference(HostActivity.this);
+	            Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
+	            startActivity(intentLogin);
+	            finish();
             }
         });
 
@@ -444,6 +450,14 @@ public class HostActivity extends Activity implements FragmentListener {
 
             } else if (view == txtAction) {
                 Log.e(TAG, "text action");
+                /*switch (currentMainFragment) {
+                    case FRAGMENT_CLASSROOM:
+	                    switch (ClassroomFragment.getCurrentChildFragment()) {
+		                    case ClassroomFragment.FRAGMENT_CLASSWALL:
+			                    break;
+	                    }
+	                    break;
+                }*/
             } else {
                 boolean isActive = false;
                 for (int i = 0; i < currentControllerTopMenu.size(); i++) {

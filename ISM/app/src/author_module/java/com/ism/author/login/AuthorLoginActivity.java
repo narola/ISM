@@ -4,57 +4,70 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.R;
+import com.ism.author.model.LoginRequest;
+import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.WebserviceWrapper;
 import com.ism.login.AppConstant;
 import com.ism.login.Global;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.Debug;
+import com.ism.utility.InputValidator;
+import com.ism.utility.PreferenceData;
+import com.ism.utility.Utility;
 
 
 /**
- * Created by c75 on 15/10/15.
+ * this is the class for user login.
  */
-public class AuthorLoginActivity extends Activity implements View.OnClickListener {
-
-
+public class AuthorLoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = AuthorLoginActivity.class.getSimpleName();
+    EditText etPwd, etUserid;
+    CheckBox chk_rememberme;
 
 
-    TextView txtForgotpwd;
-    TextView txtClickhere;
-    Button btnLogin;
-    EditText etPwd;
-    EditText etUserid;
-    CheckBox chkRememberme;
-    Global global;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
-    private TextView txtDonothave;
+    private InputValidator inputValidator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_author_login);
-        global = new Global(this);
-        initView();
 
-        //  getIsRemember();
+        initGlobal();
+
+    }
+
+
+    private void initGlobal() {
+
+        MyTypeFace myTypeFace = new MyTypeFace(this);
+        etPwd = (EditText) findViewById(R.id.et_pwd);
+        etUserid = (EditText) findViewById(R.id.et_userid);
+
+        etUserid.setTypeface(myTypeFace.getRalewayRegular());
+        etPwd.setTypeface(myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_donothave)).setTypeface(myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_clickhere)).setTypeface(myTypeFace.getRalewayRegular());
+        ((TextView) findViewById(R.id.txt_forgotpwd)).setTypeface(myTypeFace.getRalewayRegular());
+
+        chk_rememberme = (CheckBox) findViewById(R.id.chk_rememberme);
+
+        inputValidator = new InputValidator(AuthorLoginActivity.this);
+
+//        setIsRememberMe();
 
 
     }
 
-    private void getIsRemember() {
 
+    private void getIsRemember() {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Global.userId = sharedPreferences.getString(AppConstant.USERID, null);
@@ -67,108 +80,105 @@ public class AuthorLoginActivity extends Activity implements View.OnClickListene
         }
     }
 
-    private void initView() {
 
-
-        MyTypeFace myTypeFace = new MyTypeFace(this);
-
-        txtForgotpwd = (TextView) findViewById(R.id.txt_forgotpwd);
-        txtClickhere = (TextView) findViewById(R.id.txt_clickhere);
-        txtDonothave = (TextView) findViewById(R.id.txt_donothave_);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        etPwd = (EditText) findViewById(R.id.et_pwd);
-        etUserid = (EditText) findViewById(R.id.et_userid);
-        chkRememberme = (CheckBox) findViewById(R.id.chk_rememberme);
-        etUserid.setTypeface(myTypeFace.getRalewayRegular());
-        etPwd.setTypeface(myTypeFace.getRalewayRegular());
-        txtDonothave.setTypeface(myTypeFace.getRalewayRegular());
-        txtClickhere.setTypeface(myTypeFace.getRalewayRegular());
-        txtForgotpwd.setTypeface(myTypeFace.getRalewayRegular());
-
-        btnLogin.setOnClickListener(this);
-        txtClickhere.setOnClickListener(this);
-        txtForgotpwd.setOnClickListener(this);
-        chkRememberme.setOnClickListener(this);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
+    public void onClickLogin(View view) {
+//        if (isInputsValid()) {
+//            Debug.e(TAG, "inputs valid");
 //
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
+//
+//            if (chk_rememberme.isChecked()) {
+//
+//                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, true);
+//                PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, AuthorLoginActivity.this, etUserid.getText().toString().trim());
+////                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, etPwd.getText().toString().trim());
+//
+//            } else {
+//                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, false);
+//                PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, AuthorLoginActivity.this, "");
+////                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, "");
+//            }
+//            authenticateUser();
+//
 //        }
 
-        return super.onOptionsItemSelected(item);
+        Utility.launchIntent(AuthorLoginActivity.this, AuthorProfileInformationActivity.class);
     }
+
+    public void onClickForgotPassword(View view) {
+
+    }
+
+    public void onClickClickHere(View view) {
+
+    }
+
+    public void onClickIsRememberMe(View view) {
+
+
+    }
+
+    private boolean isInputsValid() {
+        return inputValidator.validateStringPresence(etUserid) &
+                (inputValidator.validateStringPresence(etPwd) && inputValidator.validatePasswordLength(etPwd));
+    }
+
+    private void authenticateUser() {
+        try {
+            LoginRequest loginRequest = new LoginRequest();
+            loginRequest.setUsername("0YGAJ8793B");
+            loginRequest.setPassword("narola21");
+
+            new WebserviceWrapper(AuthorLoginActivity.this, loginRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                    .execute(WebserviceWrapper.LOGIN);
+
+        } catch (Exception e) {
+            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+        }
+    }
+
+
+    private void setIsRememberMe() {
+
+        if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this)) {
+
+            chk_rememberme.setChecked(true);
+            etUserid.setText(PreferenceData.getStringPrefs(PreferenceData.FULL_NAME, AuthorLoginActivity.this));
+//            etPwd.setText(PreferenceData.getStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this));
+
+        }
+
+    }
+
 
     @Override
-    public void onClick(View view) {
+    public void onResponse(int apiMethodName, Object object, Exception error) {
 
+        try {
 
-        switch (view.getId()) {
-            case R.id.btn_login: {
-                validatation();
+            ResponseObject responseObj = (ResponseObject) object;
 
+            if (responseObj.getStatus().equals(Urls.STATUS_SUCCESS) && responseObj != null) {
+
+                if (apiMethodName == WebserviceWrapper.LOGIN) {
+
+//                    PreferenceData.setBooleanPrefs(PreferenceData.IS_LOGGED_IN, AuthorLoginActivity.this, true);
+                    Utility.launchIntent(AuthorLoginActivity.this, AuthorProfileInformationActivity.class);
+
+                    Toast.makeText(AuthorLoginActivity.this, getString(R.string.strloginsuccess),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            } else {
+
+                Toast.makeText(AuthorLoginActivity.this, responseObj.getMessage(),
+                        Toast.LENGTH_LONG).show();
             }
-            break;
-            case R.id.chk_rememberme: {
-                // isRemember();
+        } catch (Exception e) {
 
-            }
-            break;
+            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+
         }
 
-    }
-
-    private void validatation() {
-//        if ( etUserid.getText().toString().length() == 0) {
-//             etUserid.requestFocus();
-//             etUserid.setError(Html.fromHtml("<font color='red'>Field should not be blank.</font>"));
-//
-//        } else if ( etPwd.getText().toString().length() == 0) {
-//             etPwd.requestFocus();
-//             etPwd.setError(Html.fromHtml("<font color='red'>Field should not be blank.</font>"));
-//
-//        } else {
-        //isRemember();
-        etUserid.setText("");
-        etPwd.setText("");
-        global.myIntent(this, AuthorProfileInformationActivity.class);
-        // }
-    }
-
-    private void isRemember() {
-
-        if ( chkRememberme.isChecked()) {
-
-            editor = sharedPreferences.edit();
-            editor.putString(AppConstant.USERID, etUserid.getText().toString());
-            editor.putString(AppConstant.PASSWORD, etPwd.getText().toString());
-            editor.commit();
-
-        } else {
-
-            editor = sharedPreferences.edit();
-            editor.putString(AppConstant.USERID, "");
-            editor.putString(AppConstant.PASSWORD, "");
-            editor.commit();
-
-        }
 
     }
 }

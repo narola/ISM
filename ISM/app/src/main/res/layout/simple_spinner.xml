@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/txt_title"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:drawablePadding="@dimen/d10dp"
+    android:drawableRight="@drawable/dropdownarrow"
+    android:gravity="center_vertical|left"
+    android:text="Seletct"
+    android:background="@color/color_white"
+    android:textColor="@color/color_text_hint"
+    android:textSize="@dimen/d18dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

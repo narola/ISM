@@ -12,7 +12,6 @@ import java.io.File;
  */
 public class AppConstant {
 
-
     //All fonts
 
     public static final String RalewayBlack = "Raleway-Black.ttf";
@@ -35,19 +34,35 @@ public class AppConstant {
     public static final String RalewayThinItalic = "Raleway-ThinItalic.ttf";
 
     public static final String USERID="USERID";
-
     public static final String PASSWORD="PASSWORD";
 
     public static final String imageCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Images";
     public static final String videoCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
     public static final String audioCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Audios";
+
+	/**
+	 *  URLs
+	 */
+	private static final String URL_HOST_75 = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
+	private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";
+	private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
+	public static final String URL_LOGIN = URL_HOST_162 + "AuthenticateUser";
+	public static final String URL_FORGOT_PASSWORD = URL_HOST_162 + "ForgotPassword";
+	public static final String URL_REQUEST_CREDENTIALS = URL_HOST_162 + "RequestForCredentials";
+	public static final String URL_REQUEST_SCHOOL_INFO = URL_HOST_162 + "RequestForSchoolInfoUpdation";
+	public static final String URL_GET_COUNTRIES = URL_HOST_161 + "GetCountries";
+	public static final String URL_GET_STATES = URL_HOST_161 + "GetStates";
+	public static final String URL_GET_CITIES = URL_HOST_161 + "GetCities";
+	public static final String URL_REGISTER_USER = URL_HOST_162 + "RegisterUser";
+	public static final String URL_ALLOCATE_TUTORIAL_GROUP = URL_HOST_161 + "AllocateTutorialGroup";
+	public static final String URL_ACCEPT_TUTORIAL_GROUP = URL_HOST_161 + "AcceptTutorialGroup";
+
     /**
      * Hide Keyboard
      *
      * @param mContext
      */
     public static void hideKeyboard(Context mContext) {
-
         InputMethodManager imm = (InputMethodManager) mContext
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(((Activity) mContext).getWindow()

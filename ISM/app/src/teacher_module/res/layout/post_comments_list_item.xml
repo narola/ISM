@@ -1,15 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:orientation="vertical">-->
+<?xml version="1.0" encoding="utf-8"?><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:orientation="vertical">-->
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/d15dp"
+    android:layout_marginRight="@dimen/d15dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/img_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/d15dp"
+        android:layout_marginRight="@dimen/d15dp"
+        android:layout_marginTop="@dimen/d15dp"
+        android:background="@color/color_shade_news_feed" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/d15dp"
-        android:layout_marginRight="@dimen/d15dp">
+        android:orientation="horizontal">
 
         <com.ism.helper.CircleImageView
             android:id="@+id/img_dp_commenter"
@@ -21,54 +31,51 @@
             android:src="@drawable/userdp" />
 
         <LinearLayout
-            android:id="@+id/rl_comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/d15dp"
-            android:layout_marginRight="@dimen/d15dp"
-            android:layout_marginTop="@dimen/d15dp"
-            android:layout_marginBottom="@dimen/d10dp"
-            android:layout_toRightOf="@+id/img_dp_commenter"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txt_username_commenter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/d5dp"
-                android:text="Adam Stanger"
-                android:textColor="@color/color_blue"
-                android:textSize="@dimen/d15sp" />
-
-            <TextView
-                android:id="@+id/txt_comments_from_commenter"
+            <LinearLayout
+                android:id="@+id/rl_comments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:padding="@dimen/d5dp"
-                android:text="Hi...how are you?"
-                android:textColor="@color/color_gray"
-                android:textSize="@dimen/d18dp" />
+                android:layout_marginBottom="@dimen/d10dp"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_marginRight="@dimen/d15dp"
+                android:layout_marginTop="@dimen/d15dp"
+                android:layout_toRightOf="@+id/img_dp_commenter"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/txt_username_commenter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/d5dp"
+                    android:text="Adam Stanger"
+                    android:textColor="@color/color_blue"
+                    android:textSize="@dimen/d15sp" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_comments"
-            android:layout_marginLeft="@dimen/d15dp"
-            android:layout_toRightOf="@+id/img_dp_commenter">
+                <TextView
+                    android:id="@+id/txt_comments_from_commenter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:padding="@dimen/d5dp"
+                    android:text="Hi...how are you?"
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/d18dp" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/txt_comment_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d15dp"
                 android:padding="@dimen/d5dp"
                 android:text="1 day" />
 
-        </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
 
-
-    </RelativeLayout>
-
-<!--</LinearLayout>-->
+</LinearLayout>

@@ -1,84 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/ll_main"
-    android:gravity="center"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/bgwelcom"
-    android:orientation="vertical">
+<LinearLayout
+	android:id="@+id/ll_main"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@drawable/bgwelcom"
+	android:gravity="center"
+	android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/d30dp"
-        android:src="@drawable/welcomism" />
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal"
+		android:layout_margin="@dimen/d30dp"
+		android:src="@drawable/welcomism"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:id="@+id/txt_nameyourtutorial_"
-        android:text="@string/strwelcomeline"
-        android:textColor="@color/color_text_light_green"
-        android:textSize="@dimen/d30dp" />
+	<TextView
+		android:id="@+id/txt_welcome_msg"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:textColor="@color/color_text_light_green"
+		android:textSize="@dimen/d30dp"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/d70dp"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_margin="@dimen/d70dp"
+		android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="300sp"
-                android:layout_height="1dp"
-                android:layout_marginBottom="2dp"
-                android:background="@color/color_line_green" />
-            <TextView
-                android:layout_width="300sp"
-                android:layout_height="1dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/color_line_green" />
-        </LinearLayout>
-        <com.ism.helper.GIFView
-            android:layout_width="100sp"
-            app:src="@drawable/loading3"
-            android:id="@+id/gif_book"
-            android:padding="@dimen/d10dp"
-            android:layout_margin="@dimen/d10dp"
-            android:layout_height="100sp" />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="300sp"
-                android:layout_height="1dp"
-                android:layout_marginBottom="2dp"
-                android:background="@color/color_line_green" />
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:orientation="vertical">
 
-            <TextView
-                android:layout_width="300sp"
-                android:layout_height="1dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/color_line_green" />
-        </LinearLayout>
-    </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:id="@+id/txt_tutorialgroup_"
-        android:textColor="@color/color_white"
-        android:textSize="@dimen/d30dp" />
+			<TextView
+				android:layout_width="300sp"
+				android:layout_height="1dp"
+				android:layout_marginBottom="2dp"
+				android:background="@color/color_line_green"/>
 
+			<TextView
+				android:layout_width="300sp"
+				android:layout_height="1dp"
+				android:layout_marginTop="2dp"
+				android:background="@color/color_line_green"/>
+		</LinearLayout>
+
+		<com.ism.helper.GIFView
+			android:id="@+id/gif_book"
+			android:layout_width="100sp"
+			android:layout_height="100sp"
+			android:layout_margin="@dimen/d10dp"
+			android:padding="@dimen/d10dp"
+			app:src="@drawable/loading3"/>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:orientation="vertical">
+
+			<TextView
+				android:layout_width="300sp"
+				android:layout_height="1dp"
+				android:layout_marginBottom="2dp"
+				android:background="@color/color_line_green"/>
+
+			<TextView
+				android:layout_width="300sp"
+				android:layout_height="1dp"
+				android:layout_marginTop="2dp"
+				android:background="@color/color_line_green"/>
+		</LinearLayout>
+	</LinearLayout>
+
+	<TextView
+		android:id="@+id/txt_tutorialgroup_"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:textColor="@color/color_white"
+		android:textSize="@dimen/d30dp"/>
 
 </LinearLayout>

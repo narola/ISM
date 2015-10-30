@@ -33,7 +33,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:inputType="text"
-            android:hint="@string/strenteremailorusername"
+            android:hint="@string/username"
             android:textColor="@color/color_white"
             android:textColorHint="@color/color_white"
             android:textSize="@dimen/d20dp"
@@ -47,7 +47,7 @@
             android:layout_marginTop="@dimen/d20dp"
             android:background="@drawable/background_edittext"
             android:gravity="center"
-            android:hint="@string/strenterpassword"
+            android:hint="@string/password"
             android:singleLine="true"
             android:inputType="textPassword"
             android:textColor="@color/color_white"
@@ -81,6 +81,7 @@
             android:paddingRight="@dimen/d90dp"
             android:text="@string/strlogin"
             android:textColor="@color/color_white"
+            android:onClick="onClickLogin"
             android:textSize="@dimen/d20dp"
             android:id="@+id/btn_login"
             />
@@ -93,6 +94,7 @@
             android:text="@string/strforgotpwd"
             android:textColor="@color/color_black"
             android:id="@+id/txt_forgotpwd"
+            android:onClick="onClickForgotPassword"
             android:textSize="@dimen/d18dp" />
 
         <LinearLayout
@@ -106,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:id="@+id/txt_donothave_"
+                android:id="@+id/txt_donothave"
                 android:text="@string/strdonothavecredentials"
                 android:textColor="@color/color_gray"
                 android:textSize="@dimen/d18dp" />
@@ -118,6 +120,7 @@
                 android:paddingLeft="@dimen/d5dp"
                 android:text="@string/strclickhereu"
                 android:textColor="@color/color_black"
+                android:onClick="onClickHere"
                 android:textSize="@dimen/d18dp" />
 
         </LinearLayout>

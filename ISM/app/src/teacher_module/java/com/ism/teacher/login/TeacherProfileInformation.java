@@ -15,23 +15,22 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.adapter.CustomSpinnerAdapter;
-import com.ism.login.Global;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.InputValidator;
+import com.ism.utility.Utility;
 
 /**
  * Created by c75 on 15/10/15.
  */
 public class TeacherProfileInformation extends Activity implements View.OnClickListener {
 
-
-    Global global;
-
+    private static final String TAG = TeacherProfileInformation.class.getSimpleName();
     //Views
     private Spinner spGenderTeacher, spNameofSchool, spRegionSchool, spCityTeacher, spProgramCourse;
     private Button btnSubmit, btnCancel;
 
-    private EditText etFullnameTeacher, etEmailAddTeacher, etHomeaddTeacher, etContactnoTeacher;
-    private EditText etUsername, etCurrentpwd, etNewpwd, etConfirmpwd;
+    private EditText etFullnameTeacher, etEmailAddressTeacher, etHomeAddressTeacher, etContactnoTeacher;
+    private EditText etUsername, etCurrentPassword, etNewPassword, etConfirmPassword;
     private LinearLayout llUploadProfilePic;
 
     private TextView txtClickhere;
@@ -46,31 +45,34 @@ public class TeacherProfileInformation extends Activity implements View.OnClickL
     private boolean selected;
     private LayoutInflater mInflator;
 
+    private InputValidator inputValidator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.layout_teacher_profile_info);
-        global = new Global(this);
+
         initView();
 
     }
 
     private void initView() {
 
+        inputValidator = new InputValidator(TeacherProfileInformation.this);
         txtClickhere = (TextView) findViewById(R.id.txt_clickhere);
 
         llUploadProfilePic = (LinearLayout) findViewById(R.id.ll_upload_profile_pic);
 
         etFullnameTeacher = (EditText) findViewById(R.id.et_fullname_teacher);
-        etEmailAddTeacher = (EditText) findViewById(R.id.et_emailAdd_teacher);
-        etHomeaddTeacher = (EditText) findViewById(R.id.et_homeAdd_teacher);
+        etEmailAddressTeacher = (EditText) findViewById(R.id.et_emailAdd_teacher);
+        etHomeAddressTeacher = (EditText) findViewById(R.id.et_homeAdd_teacher);
         etContactnoTeacher = (EditText) findViewById(R.id.et_contactno_teacher);
         etUsername = (EditText) findViewById(R.id.et_username);
-        etCurrentpwd = (EditText) findViewById(R.id.et_currentpwd);
-        etNewpwd = (EditText) findViewById(R.id.et_newpwd);
-        etConfirmpwd = (EditText) findViewById(R.id.et_confirmpwd);
+        etCurrentPassword = (EditText) findViewById(R.id.et_currentpwd);
+        etNewPassword = (EditText) findViewById(R.id.et_newpwd);
+        etConfirmPassword = (EditText) findViewById(R.id.et_confirmpwd);
 
         spGenderTeacher = (Spinner) findViewById(R.id.sp_gender_teacher);
         spNameofSchool = (Spinner) findViewById(R.id.sp_name_of_school);
@@ -102,7 +104,7 @@ public class TeacherProfileInformation extends Activity implements View.OnClickL
 
     private void setUpSpinner(Spinner spinner, String[] strArrGender) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, R.layout.custom_spinner, strArrGender) {
+                this, R.layout.simple_spinner, strArrGender) {
 
             public View getView(int position, View convertView,
                                 ViewGroup parent) {
@@ -151,17 +153,27 @@ public class TeacherProfileInformation extends Activity implements View.OnClickL
     public void onClick(View view) {
 
         if (view == btnSubmit) {
+//            if (isTextFieldsInputsValid()) {
+//                Global.launchIntent(TeacherProfileInformation.this, TeacherHomeActivity.class);
+//            }
+            Utility.launchIntent(TeacherProfileInformation.this, TeacherHomeActivity.class);
 
-            Global.myIntent(TeacherProfileInformation.this,TeacherHomeActivity.class);
-        }
-        else if (view == llUploadProfilePic) {
-            //  Toast.makeText(TeacherProfileInformation.this,"Test",Toast.LENGTH_SHORT).show();
-        }
+        } else if (view == llUploadProfilePic) {
 
-        else if (view == btnCancel) {
-            //  Toast.makeText(TeacherProfileInformation.this,"Test",Toast.LENGTH_SHORT).show();
+        } else if (view == btnCancel) {
+
         } else if (view == txtClickhere) {
-            //  Toast.makeText(TeacherProfileInformation.this,"Test",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean isTextFieldsInputsValid() {
+        return inputValidator.validateStringPresence(etFullnameTeacher)
+                & (inputValidator.validateStringPresence(etEmailAddressTeacher) && inputValidator.validateEmail(etEmailAddressTeacher))
+                & (inputValidator.validateStringPresence(etContactnoTeacher) && inputValidator.validatePhoneNumberLength(etContactnoTeacher))
+                & inputValidator.validateStringPresence(etHomeAddressTeacher)
+                & inputValidator.validateStringPresence(etUsername)
+                & (inputValidator.validateStringPresence(etCurrentPassword) && inputValidator.validatePasswordLength(etHomeAddressTeacher))
+                & (inputValidator.validateStringPresence(etNewPassword) && inputValidator.validatePasswordLength(etNewPassword))
+                & (inputValidator.validateStringPresence(etConfirmPassword) && inputValidator.validatePasswordLength(etConfirmPassword) && inputValidator.validateConfirmPasswordMatch(etNewPassword, etConfirmPassword));
     }
 }

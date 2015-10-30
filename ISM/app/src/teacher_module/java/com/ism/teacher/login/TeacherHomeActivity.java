@@ -1,6 +1,7 @@
 package com.ism.teacher.login;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -27,9 +28,13 @@ import com.ism.fragment.HomeFragment;
 import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.TutorialFragment;
 import com.ism.interfaces.FragmentListener;
-import com.ism.object.ControllerTopMenuItem;
+
+import com.ism.teacher.Utility.ControllerTopMenuItem;
+import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
+import com.ism.teacher.fragments.TeacherOfficeFragment;
+import com.ism.teacher.fragments.TeacherQuizHomeFragment;
 import com.ism.teacher.fragments.TeacherTutorialGroupFragment;
 import com.ism.teacher.fragments.UpcomingEventsFragment;
 import com.ism.teacher.fragments.UserProfileFragment;
@@ -44,30 +49,11 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
 
     private static final String TAG = TeacherHomeActivity.class.getSimpleName();
 
-    private LinearLayout llControllerLeft;
-    private FrameLayout flFragmentContainerMain;
-    private FrameLayout flFragmentContainerRight;
-    private RelativeLayout rlControllerTopMenu;
-    private LinearLayout llSearch;
-    private ImageView imgHome;
-    private ImageView imgTutorial;
-    private ImageView imgOffice;
-    private ImageView imgAssessment;
-    private ImageView imgDesk;
-    private ImageView imgReportCard;
-    private ImageView imgLogOut;
-    private ImageView imgSearch;
-    private ImageView imgNotes;
-    private ImageView img_teacher_profile;
-    private ImageView imgChat;
-    private ImageView imgMenuBack;
-    private TextView txtTitle;
-    private TextView txtOne;
-    private TextView txtTwo;
-    private TextView txtThree;
-    private TextView txtFour;
-    private TextView txtFive;
-    private TextView txtAction;
+    private LinearLayout llControllerLeft, llSearch;
+    private FrameLayout flFragmentContainerMain, flFragmentContainerRight;
+    private RelativeLayout rlControllerTopMenu, rlAddPost;
+    private ImageView imgHome, imgTutorial, imgOffice, imgAssessment, imgDesk, imgReportCard, imgLogOut, imgSearch, imgNotes, img_teacher_profile, imgChat, imgMenuBack;
+    private TextView txtTitle, txtOne, txtTwo, txtThree, txtFour, txtFive, txtSix, txtAction, txtAddPost;
     private EditText etSearch;
     private Spinner spSubmenu;
 
@@ -75,11 +61,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
 
     private TextView txtsMenu[];
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuAssessment;
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuDesk;
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuReportCard;
-    private ArrayList<ControllerTopMenuItem> currentControllerTopMenu;
+    private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom, controllerTopMenuAssessment, controllerTopMenuDesk, controllerTopMenuReportCard, currentControllerTopMenu;
 
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_TUTORIAL = 1;
@@ -87,24 +69,32 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_ASSESSMENT = 3;
     public static final int FRAGMENT_DESK = 4;
     public static final int FRAGMENT_REPORT_CARD = 5;
-    // public static final int FRAGMENT_NOTES = 6;
-//    public static final int FRAGMENT_STUDY_MATES = 7;
-    //  public static final int FRAGMENT_CHAT = 8;
 
     public static final int FRAGMENT_UPCOMING_EVENTS = 6;
     public static final int FRAGMENT_TEACHER_CHAT = 7;
     public static final int FRAGMENT_USER_PROFILE = 8;
     public static final int FRAGMENT_TEACHER_HOME = 9;
     public static final int FRAGMENT_TEACHER_TUTORIAL_GROUP = 10;
+    public static final int FRAGMENT_TEACHER_OFFICE = 11;
 
 
     public static int currentMainFragment;
     public static int currentRightFragment;
     private int currentMainFragmentBg;
 
+    //ry
+    private ArrayList<ControllerTopMenuItem> controllerTopMenuOffice, controllerTopMenuQuiz;
+    private HostListener listenerHost;
+    private AddTopicsListener addTopicsListener;
 
-    private TextView txtAddPost;
-    private RelativeLayout rlAddPost;
+
+    public interface HostListener {
+        public void onControllerMenuItemClicked(int position);
+    }
+
+    public interface AddTopicsListener {
+        public void addTopic(int position);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +115,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         rlControllerTopMenu = (RelativeLayout) findViewById(R.id.rl_controller_top_menu);
         llSearch = (LinearLayout) findViewById(R.id.ll_search);
         imgHome = (ImageView) findViewById(R.id.img_home);
-        imgTutorial = (ImageView) findViewById(R.id.img_tutorial);
+        imgTutorial = (ImageView) findViewById(R.id.img_tutorial_teacher);
         imgOffice = (ImageView) findViewById(R.id.img_office);
         imgAssessment = (ImageView) findViewById(R.id.img_assessment);
         imgDesk = (ImageView) findViewById(R.id.img_desk);
@@ -142,18 +132,23 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         txtThree = (TextView) findViewById(R.id.txt_three);
         txtFour = (TextView) findViewById(R.id.txt_four);
         txtFive = (TextView) findViewById(R.id.txt_five);
+        txtSix = (TextView) findViewById(R.id.txt_six);
         txtAction = (TextView) findViewById(R.id.txt_action);
         etSearch = (EditText) findViewById(R.id.et_search);
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
 
-        txtsMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
+        txtsMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive, txtSix};
 
-        //   loadFragment(FRAGMENT_CHAT);
 
         controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(TeacherHomeActivity.this);
         controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(TeacherHomeActivity.this);
         controllerTopMenuDesk = ControllerTopMenuItem.getMenuDesk(TeacherHomeActivity.this);
         controllerTopMenuReportCard = ControllerTopMenuItem.getMenuReportCard(TeacherHomeActivity.this);
+
+        //control for office side bar menu
+        controllerTopMenuOffice = ControllerTopMenuItem.getMenuTeacherOffice(TeacherHomeActivity.this);
+        controllerTopMenuQuiz = ControllerTopMenuItem.getMenuDesk(TeacherHomeActivity.this);
+
 
         imgHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,7 +167,8 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         imgOffice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(FRAGMENT_CLASSROOM);
+//                loadFragment(FRAGMENT_CLASSROOM);
+                loadFragment(FRAGMENT_TEACHER_OFFICE);
             }
         });
 
@@ -265,6 +261,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         txtThree.setOnClickListener(onClickMenuItem);
         txtFour.setOnClickListener(onClickMenuItem);
         txtFive.setOnClickListener(onClickMenuItem);
+        txtSix.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
 
 
@@ -295,15 +292,11 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                 case FRAGMENT_REPORT_CARD:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ReportCardFragment.newInstance()).commit();
                     break;
-//                case FRAGMENT_NOTES:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, NotesFragment.newInstance()).commit();
-//                    break;
+
+
                 case FRAGMENT_UPCOMING_EVENTS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, UpcomingEventsFragment.newInstance()).commit();
                     break;
-//                case FRAGMENT_STUDY_MATES:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudyMatesFragment.newInstance()).commit();
-//                    break;
 
                 case FRAGMENT_TEACHER_CHAT:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, TeacherChatFragment.newInstance()).commit();
@@ -318,6 +311,13 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
 
                 case FRAGMENT_TEACHER_TUTORIAL_GROUP:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TeacherTutorialGroupFragment.newInstance()).commit();
+                    break;
+
+                case FRAGMENT_TEACHER_OFFICE:
+                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance(FRAGMENT_TEACHER_OFFICE);
+                    listenerHost = teacherOfficeFragment;
+                    addTopicsListener = teacherOfficeFragment;
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment).commit();
                     break;
 
             }
@@ -346,14 +346,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     txtTitle.setText(Html.fromHtml("<font color='#ffffff'>" + getString(R.string.group_name) + "</font><font color='#1BBC9B'>Venice Beauty</font>"));
                     txtTitle.setVisibility(View.VISIBLE);
                     break;
-                case FRAGMENT_CLASSROOM:
-                    currentMainFragment = fragment;
-                    currentMainFragmentBg = R.color.bg_classroom;
-                    imgOffice.setActivated(true);
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
-                    txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
-                    loadControllerTopMenu(controllerTopMenuClassroom);
-                    break;
+
                 case FRAGMENT_ASSESSMENT:
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_assessment;
@@ -411,6 +404,15 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     txtAddPost.setText("PAST");
                     rlAddPost.setVisibility(View.VISIBLE);
                     break;
+                case FRAGMENT_TEACHER_OFFICE:
+                    currentMainFragment = fragment;
+                    currentMainFragmentBg = R.color.bg_classroom;
+                    imgOffice.setActivated(true);
+                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
+                    txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
+                    loadControllerTopMenu(controllerTopMenuOffice);
+                    break;
+
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
@@ -460,6 +462,9 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     imgTutorial.setActivated(false);
                     rlAddPost.setVisibility(View.GONE);
                     break;
+                case FRAGMENT_TEACHER_OFFICE:
+                    imgOffice.setActivated(false);
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentDetached Exception : " + e.toString());
@@ -508,7 +513,28 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                 }
 
             } else if (view == txtAction) {
-                Log.e(TAG, "text action");
+
+                switch (currentMainFragment) {
+
+                    case FRAGMENT_TEACHER_OFFICE:
+
+                        switch (TeacherOfficeFragment.getCurrentChildFragment()) {
+
+                            case TeacherOfficeFragment.FRAGMENT_NOTES:
+                                if (addTopicsListener != null) {
+                                    addTopicsListener.addTopic(TeacherOfficeFragment.FRAGMENT_NOTES);
+                                }
+                                break;
+                            case TeacherOfficeFragment.FRAGMENT_QUIZ:
+                                if (addTopicsListener != null) {
+                                    addTopicsListener.addTopic(TeacherOfficeFragment.FRAGMENT_QUIZ);
+                                }
+                                break;
+                        }
+                        break;
+                }
+
+
             } else {
                 boolean isActive = false;
                 for (int i = 0; i < currentControllerTopMenu.size(); i++) {
@@ -544,6 +570,15 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                             } else {
                                 txtAction.setVisibility(View.GONE);
                             }
+
+                            /**
+                             * Menu item click event
+                             */
+                            if (listenerHost != null) {
+                                listenerHost.onControllerMenuItemClicked(i);
+                            }
+
+
                         } else {
                             currentControllerTopMenu.get(i).setIsActive(false);
                             startSlideAnimation(txtsMenu[i], 0, rlControllerTopMenu.getWidth(), 0, 0);
@@ -611,4 +646,6 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         slideOutAnimation.setFillAfter(true);
         view.startAnimation(slideOutAnimation);
     }
+
+
 }
