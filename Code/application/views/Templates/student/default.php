@@ -75,10 +75,6 @@ function toHHMMSS (sec) {
               function(){
                $(".alert-dismissible").hide(500);
               }, 3000);
-        $(document).ready(function(){
-			$(".chat_text").mCustomScrollbar("update");
-			$(".chat_text").mCustomScrollbar("scrollTo", "bottom"); 
-        })
     </script>
     <script src="assets/js/jquery.cookie.js"></script>
     <script src="assets/js/select2.min.js"></script> <!-- Select2 JS -->
@@ -416,7 +412,7 @@ function toHHMMSS (sec) {
                                 <span class="close">x</span>
                             </a>
                         </div>
-                        <div class="chat_text mCustomScrollbar" data-mcs-position="bottom">
+                        <div class="chat_text">
                             <?php
                             if(isset($active_c['comment'] ) && !empty($active_c['comment'] )){
                                 $check_type = array(
@@ -437,11 +433,11 @@ function toHHMMSS (sec) {
                             }
                                 if($value['sender_id'] == $active_c['user']['id']){
                             ?>
-                                <div class="from"><p><?php echo  $mess; ?></p><div>Oct 15, 2015 11:30 am</div></div>
+                                <div class="from"><p><?php echo  $mess; ?></p><div><?php echo get_time_format($value['created_date']); ?></div></div>
                             <?php
                                 }else{
                             ?>
-                                <div class="to"><p><?php echo  $mess; ?></p><div>Oct 15, 2015 11:30 am</div></div>
+                                <div class="to"><p><?php echo  $mess; ?></p><div><?php echo get_time_format($value['created_date']); ?></div></div>
                             <?php
                                 }
                             }
@@ -462,7 +458,8 @@ function toHHMMSS (sec) {
 
 <?php if(isset($menu) && $menu == 'week'){ ?>
 <script type="text/javascript">
-        jQuery(document).ready(function() {
+
+
             $('.calc_header a').click(function(){
                 if(!$('.calc_header a').hasClass('collapsed')){
                     $('.calc_header a span').removeClass('fa-angle-up');    
@@ -523,6 +520,24 @@ function toHHMMSS (sec) {
 <?php } ?>
 
     <!--//body-->
-   
+   <script>
+
+    jQuery(document).ready(function() {
+
+            $('.chat_text').mCustomScrollbar({  
+                theme:"minimal-dark",
+            callbacks:{
+                        onInit:function()
+                        {
+                             $('.chat_text').mCustomScrollbar('scrollTo','bottom');
+                        },
+                          onUpdate:function(){
+                            $('.chat_text').mCustomScrollbar('scrollTo','bottom');
+                        }
+                    }
+                    });
+            });
+
+   </script>
 </body>
 </html>

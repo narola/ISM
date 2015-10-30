@@ -326,11 +326,14 @@ if ("WebSocket" in window)
 
         if (obj.type == 'studymate') {
             if (wp == obj.from) {
-                $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').prepend("<div class='to'><p>" + obj.message + "</p></div>");
+                $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p><div>Just Now</div></div>");
                 $('.chat[data-id="' + obj.to + '"] .chat_loading').fadeOut(300);
             } else {
-                $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').prepend("<div class='from'><p>" + obj.message + "</p></div>");
+                $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div>Just Now</div></div>");
             }
+
+             $('.chat_text').mCustomScrollbar('scrollTo','bottom');
+
             if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
                 var request = {
                     type: 'set_unread',
@@ -391,9 +394,9 @@ if ("WebSocket" in window)
                     my_msg = list.text;
                 }
                 if (list.to == 1) {
-                    my_msg = '<div class="to"><p>' + my_msg + '</p></div>';
+                    my_msg = '<div class="to"><p>' + my_msg + '</p><div>'+list.cdate+'</div></div>';
                 } else {
-                    my_msg = '<div class="from"><p>' + my_msg + '</p></div>';
+                    my_msg = '<div class="from"><p>' + my_msg + '</p><div>'+list.cdate+'</div></div>';
                 }
                 $('.chat[data-id="' + obj.my_id + '"] .chat_text .mCustomScrollBox .mCSB_container').append(my_msg);
             });
@@ -413,6 +416,7 @@ if ("WebSocket" in window)
             $('button[data-type="load_more"]').attr('data-start', obj.start);
             $('button[data-type="load_more"]').prop('disabled', false);
         } else if (obj.type == 'discussion') {
+            $('.discussion').mCustomScrollbar('scrollTo','bottom');
             if (obj.time_to_left > 0) {
                 clearInterval(counter);
                 time_count = obj.time_to_left;
@@ -492,11 +496,13 @@ if ("WebSocket" in window)
                 else
                     status = 'offline';
                 str = '';
-                str += '<div class="stm_item ' + status + '" data-id="' + obj.studymate_id + '" onerror="this.src=\'assets/images/avatar.png\'">';
-                str += '<a href="javascript:void(0);" id="mate-list" data-id="' + obj.studymate_id + '">';
-                str += '<div class="stm_user_img"><img src="uploads/' + obj.profile + '"></div>';
+                str += '<div class="stm_item ' + status + '" data-id="' + obj.studymate_id + '">';
+                str += '<a href="javascript:void(0);" id="mate_list" data-id="' + obj.studymate_id + '">';
+                str += '<div class="stm_user_img">';
+                str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile + '" class="mCS_img_loaded"></div>';
+                str += '<span class="badge message_badge"></span>';
                 str += '<p>' + obj.full_name + '</p></a>';
-                str += '<div class="clearfix"></div></div>'
+                str += '<div class="clearfix"></div></div>';
                 $('.stm_list #mCSB_5 #mCSB_5_container').append(str);
 
                 if (wp == obj.studymate_id) {
@@ -1304,12 +1310,9 @@ $(document).on('click', 'a[data-type="feed-like"]', function (e) {
 /* Weekday scroll in tutorial group. */
 $(document).on('click', '.tut_weekdays li a[data-type="s"]', function (e) {
     var nav = $(this).attr('href');
-    e.preventDefault();
-    if (nav.length) {
-        $('html,body').animate({
-            scrollTop: $(nav).offset().top - 240},
-        500);
-    }
+
+$('.discussion').mCustomScrollbar('scrollTo',nav);
+
     return false;
 });
 /*
@@ -1622,3 +1625,19 @@ function saveImg(image) {
     $('.upload_loader_whiteboard').fadeIn(300);
     ws.send(JSON.stringify(request));
 }
+
+$(document).ready(function(){
+    if( $('.discussion').length > 0){
+     $('.discussion').mCustomScrollbar({
+            callbacks:{
+                        onInit:function()
+                        {
+                             $('.discussion').mCustomScrollbar('scrollTo','bottom');
+                        },
+                          onUpdate:function(){
+                            $('.discussion').mCustomScrollbar('scrollTo','bottom');
+                        }
+                    }
+                    });
+ }
+});

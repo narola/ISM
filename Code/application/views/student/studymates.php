@@ -62,7 +62,7 @@
         <!--search bar-->
         <div class="row search_bar">
             <input type="text" class="form-control" placeholder="Type here to search you mate" data-type="study_mate_search">
-            <a href="#" class="icon icon_search" style="float:right;"></a>
+            <span class="icon icon_search" style="float:right;"></span>
         </div>
         <!--//search bar-->
         <!--filterbar-->

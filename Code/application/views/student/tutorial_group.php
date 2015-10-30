@@ -31,7 +31,11 @@
                 <div class="discussion_header">
                 	<div class="col-sm-12">
                         <h3><span>Topic - </span><?php echo $topic['topic_name']; ?></h3>
+
                         <a href="javascript:void(0);" class="icon icon_expand" id="expand_q"></a>
+
+                       <!-- <a href="#" class="icon icon_expand"></a> -->
+
                     </div>
                 </div>
                 <div class="top_question">
@@ -52,7 +56,7 @@
                     </div>
                 </div>
             </div>
-                <div class="discussion mCustomScrollbar" data-mcs-theme="minimal-dark">
+                <div class="discussion" data-mcs-theme="minimal-dark">
                     <div id="inner_x">
                 <?php 
                 if(isset($discussion) && count($discussion) > 0){
@@ -150,9 +154,15 @@
                         <h3><span>My Toolkit</span></h3>
                     </div>
                 </div>
+
                 <div class="calculator row" id="accordian_calc">
                      <iframe  height="575" src="http://web2.0calc.com/widgets/vertical/?options=%7B%22angular%22%3A%22deg%22%2C%22options%22%3A%22show%22%2C%22menu%22%3A%22show%22%7D" scrolling="no" style="border: 1px solid silver;position:absolute;clip:rect(37px,1100px,800px,0px);"> 
                     </iframe>
+
+                <div class="calculator row " id="accordian_calc">
+                     <!-- <iframe  height="575" src="http://web2.0calc.com/widgets/vertical/?options=%7B%22angular%22%3A%22deg%22%2C%22options%22%3A%22show%22%2C%22menu%22%3A%22show%22%7D" scrolling="no" style="border: 1px solid silver;position:absolute;clip:rect(37px,1100px,800px,0px);"> 
+                    </iframe> -->
+
                 </div>
                 <!--white board-->
                 <div class="white_board">
