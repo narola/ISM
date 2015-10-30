@@ -726,6 +726,7 @@ if ("WebSocket" in window)
                 if (wp == list.id) {
                     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
                     $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
+                    $('noti_time').timestatus();
                     notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
                     if (notification_length == 0) {
                         notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">No more notification</div></li>');
@@ -736,7 +737,6 @@ if ("WebSocket" in window)
                     }
                 }
             });
-
             $('#all_feed div.box.feeds[data-id="' + obj.fid + '"] .feed_text span[data-id="' + obj.fid + '"]').html(str);
 
 
@@ -1216,7 +1216,7 @@ function generate_comment(obj, i, k) {
     }
     str += '<div class="comment" style="' + display + '" data-first="' + first_three + '" data-id="' + obj.to + '">';
     str += '<div class="user_small_img user_comment">';
-    str += '<img src="uploads/' + obj.profile_link + '">';
+    str += '<img src="uploads/' + obj.profile_link + '" onerror="this.src=\'assets/images/avatar.png\'">';
     str += '</div>';
     str += '<div class="notification_txt">';
     str += '<p><a href="#" class="noti_username">' + obj.full_name + '</a>&nbsp;&nbsp;' + obj.message + '</p>';
