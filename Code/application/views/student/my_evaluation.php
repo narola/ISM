@@ -1,5 +1,5 @@
  <!--main-->
-<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="col-sm-7 main main2 mscroll_custom">
     <!--breadcrumb-->
     <div class="page_header exam_evalue_header">
         <!--header -left-->

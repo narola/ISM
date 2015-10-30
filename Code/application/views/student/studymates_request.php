@@ -1,10 +1,10 @@
-<div class="col-sm-7 main main2 stydymates mCustomScrollbar" data-mcs-theme="minimal-dark">  
+<div class="col-sm-7 main main2 stydymates mscroll_custom">  
     <div class="col-sm-12">
         <div class="box general_cred">
             <div class="box_header">
                 <h3>Studymate Requests</h3>
             </div>
-            <div id="my_request_box" class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark">
+            <div id="my_request_box" class="box_body studyamte_list studymate_request mscroll_custom">
                <?php
                 if(isset($studymate_request) && sizeof($studymate_request) > 0){
                     foreach ($studymate_request as $key => $value) {

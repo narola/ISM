@@ -7,7 +7,7 @@
     });
 </script>
 <!--main-->
-<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="col-sm-7 main main2 mscroll_custom">
     <!--banner-->
      <div class="exam_banner">
         <div class="col-sm-12 text-center">
@@ -78,7 +78,7 @@
                         </div>   -->                                   
                         <div class="clearfix"></div>                    
                     </div>
-                    <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
+                    <ul class="exams_holder mscroll_custom">
                         <?php 
                             foreach ($my_exam as $exam_value) {
                                 if($exam_value['subject_id'] == $value['subject_id']){

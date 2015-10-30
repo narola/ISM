@@ -204,8 +204,8 @@ $(document).ready(function () {
         var type_of_data = this.files[0].type;
         var file_name = this.files[0].name;
 
-        if(types == 'feed_file_share'){
-            if(type_of_data != 'image/png' && type_of_data != 'image/gif' && type_of_data != 'image/jpg' && type_of_data != 'image/jpeg'){
+        if (types == 'feed_file_share') {
+            if (type_of_data != 'image/png' && type_of_data != 'image/gif' && type_of_data != 'image/jpg' && type_of_data != 'image/jpeg') {
                 alert('You can upload only images in feed!');
                 return;
             }
@@ -332,7 +332,7 @@ if ("WebSocket" in window)
                 $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div>Just Now</div></div>");
             }
 
-             $('.chat_text').mCustomScrollbar('scrollTo','bottom');
+            $('.chat_text').mCustomScrollbar('scrollTo', 'bottom');
 
             if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
                 var request = {
@@ -394,9 +394,9 @@ if ("WebSocket" in window)
                     my_msg = list.text;
                 }
                 if (list.to == 1) {
-                    my_msg = '<div class="to"><p>' + my_msg + '</p><div>'+list.cdate+'</div></div>';
+                    my_msg = '<div class="to"><p>' + my_msg + '</p><div>' + list.cdate + '</div></div>';
                 } else {
-                    my_msg = '<div class="from"><p>' + my_msg + '</p><div>'+list.cdate+'</div></div>';
+                    my_msg = '<div class="from"><p>' + my_msg + '</p><div>' + list.cdate + '</div></div>';
                 }
                 $('.chat[data-id="' + obj.my_id + '"] .chat_text .mCustomScrollBox .mCSB_container').append(my_msg);
             });
@@ -416,7 +416,7 @@ if ("WebSocket" in window)
             $('button[data-type="load_more"]').attr('data-start', obj.start);
             $('button[data-type="load_more"]').prop('disabled', false);
         } else if (obj.type == 'discussion') {
-            $('.discussion').mCustomScrollbar('scrollTo','bottom');
+            $('.discussion').mCustomScrollbar('scrollTo', 'bottom');
             if (obj.time_to_left > 0) {
                 clearInterval(counter);
                 time_count = obj.time_to_left;
@@ -425,7 +425,7 @@ if ("WebSocket" in window)
             if ($('.upload_loader_whiteboard').is(':visible')) {
                 $('.upload_loader_whiteboard').fadeOut(300);
             }
-                generate_cm(obj);
+            generate_cm(obj);
         } else if (obj.type == 'like') {
             if (wp == obj.id) {
                 if (obj.message == 'like') {
@@ -660,13 +660,21 @@ if ("WebSocket" in window)
 
         } else if (obj.type == 'exam_start_request') {
             if (obj.exam_st == 'started') {
-                location.href = '/student/exam';
+                var irl = '/'
+                if (window.location.host == 'clientapp.narolainfotech.com') {
+                    irl = '/hd/ISM/'
+                }
+                location.href = irl + 'student/exam';
             }
         } else if (obj.type == 'end_exam') {
 
         } else if (obj.type == 'class_exam_start_request') {
             if (obj.class_exam_status == 'started') {
-                location.href = '/student/class_exam';
+                var irl = '/'
+                if (window.location.host == 'clientapp.narolainfotech.com') {
+                    irl = '/hd/ISM/'
+                }
+                location.href = irl + 'student/class_exam';
             }
         } else if (obj.type == 'tag-user-again') {
             var i = 0;
@@ -805,9 +813,9 @@ if ("WebSocket" in window)
                     str += '<div class="topic_div">';
                     str += '<h4>' + list.topic_name + '</h4>';
                     str += '<div>';
-                    str += '<div><strong>Discussion</strong><p>'+ list.total_discussion +' Comments</p></div>';
-                    str += '<div><strong>Discussion - Score</strong><p>Score : '+ list.discussion_score +'</p></div>';
-                    str += '<div><strong>Examination - Quiz</strong><p>Percentage : '+ list.per +'%</p></div>';
+                    str += '<div><strong>Discussion</strong><p>' + list.total_discussion + ' Comments</p></div>';
+                    str += '<div><strong>Discussion - Score</strong><p>Score : ' + list.discussion_score + '</p></div>';
+                    str += '<div><strong>Examination - Quiz</strong><p>Percentage : ' + list.per + '%</p></div>';
                     str += '</div>';
                     str += '<div class="clearfix"></div>';
                     str += '</div>';
@@ -1150,9 +1158,9 @@ function generate_post(obj, status) {
     str += '<p>' + obj.message + '</p>';
     str += '<a href="javascript:void(0);" class="like_btn" data-type="feed-like" data-id="' + obj.post_id + '"><span class="icon icon_thumb' + cls + '"></span>' + obj.tot_like + '</a>';
     str += '<a href="javascript:void(0);" class="comment_btn"><span class="icon icon_comment"></span>' + obj.tot_comment + '</a>';
-    if(typeof(obj.comment) != 'undefined'){
-        if(obj.comment.length > 2){
-            str += '<a href="javascript:void(0);" data-type="showall" data-id="'+obj.post_id+'">View All</a>'
+    if (typeof (obj.comment) != 'undefined') {
+        if (obj.comment.length > 2) {
+            str += '<a href="javascript:void(0);" data-type="showall" data-id="' + obj.post_id + '">View All</a>'
         }
     }
     str += '<div class="dropdown tag_user" style="display: inline-block;">';
@@ -1311,7 +1319,7 @@ $(document).on('click', 'a[data-type="feed-like"]', function (e) {
 $(document).on('click', '.tut_weekdays li a[data-type="s"]', function (e) {
     var nav = $(this).attr('href');
 
-$('.discussion').mCustomScrollbar('scrollTo',nav);
+    $('.discussion').mCustomScrollbar('scrollTo', nav);
 
     return false;
 });
@@ -1341,7 +1349,7 @@ $(document).on('click', 'button[data-type="close-studymate"]', function (e) {
     ws.send(JSON.stringify(request));
     $('#mCSB_2 #mCSB_2_container div[data-id="' + $(this).attr('data-id') + '"]').remove().html();
     $('#mCSB_6 #mCSB_6_container div[data-id="' + $(this).attr('data-id') + '"]').remove().html();
-    if($('#mCSB_2 #mCSB_2_container .my_studymates .box.general_cred .study_mate').length == 0){
+    if ($('#mCSB_2 #mCSB_2_container .my_studymates .box.general_cred .study_mate').length == 0) {
         $('#mCSB_2 #mCSB_2_container .my_studymates .box.general_cred').html('<div class="study_mate"><center><label class="txt_grey txt_red">no studymate found</label></center></div>');
     }
 //    str = '';
@@ -1601,7 +1609,7 @@ $(document).on('click', 'a[data-type="load-activity-more"]', function () {
         month: $(this).attr('data-month')
     }
     ws.send(JSON.stringify(request));
-    
+
 });
 
 $(document).on('click', 'img[data-type="show-profile"],h4[data-type="show-profile"],p[data-type="show-profile"]', function () {
@@ -1626,18 +1634,36 @@ function saveImg(image) {
     ws.send(JSON.stringify(request));
 }
 
-$(document).ready(function(){
-    if( $('.discussion').length > 0){
-     $('.discussion').mCustomScrollbar({
-            callbacks:{
-                        onInit:function()
-                        {
-                             $('.discussion').mCustomScrollbar('scrollTo','bottom');
-                        },
-                          onUpdate:function(){
-                            $('.discussion').mCustomScrollbar('scrollTo','bottom');
-                        }
-                    }
-                    });
- }
+
+$.fn.timestatus = function(msg) {
+    this.html(msg);
+};
+
+$(document).ready(function () {
+
+    $('.just_now').timestatus('Hello');
+    
+
+    $('.mscroll_custom').mCustomScrollbar({
+        theme: "minimal-dark"
+    });
+
+    if ($('.discussion').length > 0) {
+        $('.discussion').mCustomScrollbar({
+            callbacks: {
+                onInit: function ()
+                {
+                    $('.discussion').mCustomScrollbar('scrollTo', 'bottom');
+                },
+                onUpdate: function () {
+                    $('.discussion').mCustomScrollbar('scrollTo', 'bottom');
+                }
+            }
+        });
+    }
+    
 });
+
+
+
+

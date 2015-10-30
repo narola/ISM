@@ -142,7 +142,7 @@ function toHHMMSS (sec) {
         <div class="row">
             <?php if(!isset($left_menu)){ ?>
             <!--side left-->
-            <div class="sidebar_left_container text-center mCustomScrollbar" data-mcs-theme="minimal"><!-- scrollbar" id="style-3-->
+            <div class="sidebar_left_container text-center mscroll_custom"><!-- scrollbar" id="style-3-->
                 <div class="user_profile_img">
                     <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$this->session->userdata['user']['profile_pic'];?>">
                 </div>
@@ -264,7 +264,7 @@ function toHHMMSS (sec) {
 
             <?php if(!isset($hide_right_bar)){  ?>
             <!-- Right Bar -->
-             <div class="sidebar_right_container sidebar_right_container2 mCustomScrollbar" data-mcs-theme="minimal-dark"><!--scrollbar" id="style-3-->
+             <div class="sidebar_right_container sidebar_right_container2 mscroll_custom"><!--scrollbar" id="style-3-->
                 
                 <!--high score board-->
                 <div class="score box">
@@ -353,7 +353,7 @@ function toHHMMSS (sec) {
                     <div class="box_header">
                         <h3>Studymates <span> STM</span></h3>
                     </div>
-                    <div class="stm_list mCustomScrollbar" data-mcs-theme="minimal-dark">
+                    <div class="stm_list mscroll_custom">
                         <?php
                         $class = studymates_info();
                         if(isset($class) > 0){

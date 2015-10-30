@@ -2724,7 +2724,7 @@ class PHPWebSocket {
 
             // Check user must comment on those feed which is added by his/him classmates not to others.
             if (in_array($user_id, $data['allStudyMate'])) {
-                $query = "INSERT INTO `" . TBL_FEED_COMMENT . "` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $data['message'] . "',$user_id, '" . $data['to'] . "', CURRENT_TIMESTAMP, '0000-00-00 00:00:00', '0', 'yes');";
+                $query = "INSERT INTO `" . TBL_FEED_COMMENT . "` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) VALUES (NULL, '" . $data['message'] . "',$user_id, '" . $data['to'] . "', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '0', 'yes');";
                 $x = mysqli_query($link, $query);
                 if (!$x) {
                     $data['to'] = "self";

@@ -1,7 +1,7 @@
 <div class="">
         	
             <!--main-->
-            <div class="col-sm-7 main main_wide_2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+            <div class="col-sm-7 main main_wide_2 mscroll_custom">
             	<!--breadcrumb-->
                 <div class="row page_header">
                 	<div class="col-sm-12">
@@ -53,7 +53,7 @@
 			</div>
             <!--//main-->
             <!--side right-->
-            <div class="sidebar_right_container test_sidebar mCustomScrollbar" data-mcs-theme="minimal-dark"><!--scrollbar" id="style-3-->
+            <div class="sidebar_right_container test_sidebar mscroll_custom"><!--scrollbar" id="style-3-->
             	<div class="sidebar_profile">
                 	<div class="user_profile_img">
                        <img onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$this->session->userdata['user']['profile_pic'];?>">                       

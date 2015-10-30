@@ -1,5 +1,5 @@
 <!--main-->
-<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark" data-type="activity-main">
+<div class="col-sm-7 main main2 mscroll_custom" data-type="activity-main">
     <div class="col-sm-12" data-type="activity-sub-main">
         <div class="box activities" data-type="activity">
             <div class="box_body" data-type="activity-body">

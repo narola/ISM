@@ -1,6 +1,6 @@
 <div class=""> 	
     <!--main-->
-    <div class="col-sm-7 main main_wide_2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+    <div class="col-sm-7 main main_wide_2 mscroll_custom">
     	<!--breadcrumb-->
         <div class="page_header">
         	<div class="col-sm-12">

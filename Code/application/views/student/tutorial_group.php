@@ -133,7 +133,7 @@
                         	<a href="javascript:void(0);" class="icon icon_pin"><input id="group_file_share" type="file" data-type="topic_file" data-id="topic"></a>
                             <button class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
                         </div> 
-                    	<textarea placeholder="SAY IT" data-type="discussion" class="mCustomScrollbar" data-mcs-theme="minimal-dark"></textarea>
+                    	<textarea placeholder="SAY IT" data-type="discussion" class="mscroll_custom"></textarea>
                         <div class="upload_loader" style="top:58px"></div>
                         <!-- <a href="#" class="icon icon_emoji"></a> -->
                                              
@@ -251,7 +251,7 @@
                             <input class="form-control" type="text" placeholder="Search Dictionary.." data-type="search-dictionary">
                             <a href="javascript:void(0);" class="fa fa-search" data-type="search-dictionary"></a>
                         </div>
-                        <div class="dictionary_result mCustomScrollbar" data-mcs-theme="minimal-dark">
+                        <div class="dictionary_result mscroll_custom">
                         </div>
                     </div>
                 </div>
@@ -267,7 +267,7 @@
                 </div>
                 <!--//tabs-->
             </div>
-            <div class="sidebar_right_container sidebar_right_container2 tut_right_bar mCustomScrollbar" data-mcs-theme="minimal-dark">
+            <div class="sidebar_right_container sidebar_right_container2 tut_right_bar mscroll_custom">
                 <div class="col-sm-12 time_chart">
                     <div class="box">
                         <div class="box_body">

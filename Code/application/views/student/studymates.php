@@ -5,7 +5,7 @@
     });
 </script>
 <!--main-->
-<div class="col-sm-7 main main2 stydymates mCustomScrollbar" data-mcs-theme="minimal-dark"> 
+<div class="col-sm-7 main main2 stydymates mscroll_custom"> 
     <!--tabs-->
     <div class="tabs_studymate">
         <button class="btn col-sm-6 no-padding active" id="ms">My Studymates</button>
@@ -15,7 +15,7 @@
     <!--my studymates-->
     <div class="my_studymates">
         <div class="box general_cred">
-           <div class="box_body studyamte_list mCustomScrollbar" data-mcs-theme="minimal-dark">
+           <div class="box_body studyamte_list mscroll_custom">
             <?php
                 if(isset($my_studymates)){
                     foreach ($my_studymates as $key => $value) {
@@ -78,7 +78,7 @@
         <!--search result-->
         <h5 class="search_result_label">Search Result for</h5>
         <div class="box general_cred" data-type="search_result">
-            <div class="box_body studyamte_list studymate_request mCustomScrollbar" data-mcs-theme="minimal-dark" id="search_result" >
+            <div class="box_body studyamte_list studymate_request mscroll_custom" id="search_result" >
                 <?php 
                     if(isset($find_studymates) && sizeof($find_studymates) > 0){ 
                     $i = 1;

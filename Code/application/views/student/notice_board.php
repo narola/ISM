@@ -1,5 +1,5 @@
 <!--main-->
-<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="col-sm-7 main main2 mscroll_custom">
     <!--filter-->
     <div class="filter group_filter small_group">
         <div class="col-sm-12">

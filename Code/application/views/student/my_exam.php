@@ -1,5 +1,5 @@
 <!--main-->
-<div class="col-sm-7 main main2 main mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="col-sm-7 main main2 main mscroll_custom">
      <div class="exam_banner">
         <div class="col-sm-12 text-center">
             <div class="banner_text">
@@ -19,7 +19,7 @@
                         <span><?php if($value['cnt'] == '') echo 0; echo $value['cnt'];?> Exams</span>    
                         <div class="clearfix"></div>                    
                     </div>
-                    <ul class="exams_holder mCustomScrollbar" data-mcs-theme="minimal-dark">
+                    <ul class="exams_holder mscroll_custom">
                         <?php 
                             if(isset($my_exam) && sizeof($my_exam)>0 && $value['cnt'] > 0){
                                 foreach ($my_exam as $key => $e_value){ 

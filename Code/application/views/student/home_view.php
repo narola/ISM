@@ -57,7 +57,7 @@
 
 </script>
  <!--main-->
-<div class="col-sm-7 main mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="col-sm-7 main mscroll_custom">
 <div class="col-sm-12">
     <div class="box">
         <textarea id="feed_post" type="text" class="form-control post_input" placeholder="SAY IT"></textarea>
@@ -248,7 +248,7 @@
 <!--//main-->
 
 <!--side right-->
-<div class="sidebar_right_container mCustomScrollbar" data-mcs-theme="minimal-dark">
+<div class="sidebar_right_container mscroll_custom">
     <!--notice board-->
     <div id="carousel-noticeboard" class="carousel slide" data-ride="carousel">
       <!-- Indicators -->
@@ -282,7 +282,7 @@
                     }
         ?>
             <img src="<?php echo base_url();?>assets/images/blackboard.jpg" alt="blackboard">
-                <div class="carousel-caption mCustomScrollbar" data-mcs-theme="minimal-dark">
+                <div class="carousel-caption mscroll_custom">
                     <p class="noti_username" style="font-size:large;"><?php echo $value['notice_title'];?></p>
                     <p style="txt_white"><?php echo $value['notice'];?><br><span style="float:right">-ISM Admin</span></p>
                 </div>
@@ -509,7 +509,7 @@
         <div class="box_header">
             <h3>Studymates <span> STM</span></h3>
         </div>
-        <div class="stm_list mCustomScrollbar" data-mcs-theme="minimal-dark">
+        <div class="stm_list mscroll_custom">
             <?php
             if(isset($my_studymates) > 0){
                 foreach($classmates as $key => $value){
