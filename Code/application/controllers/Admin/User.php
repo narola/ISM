@@ -243,7 +243,7 @@ class User extends ADMIN_Controller {
 		$this->data['countries'] = select(TBL_COUNTRIES);
 		$this->data['states'] = select(TBL_STATES,FALSE,array('where'=>array('country_id'=>$this->data['user']['country_id'])));
 	    $this->data['cities'] = select(TBL_CITIES,FALSE,array('where'=>array('state_id'=>$this->data['user']['state_id'])));
-		$this->data['roles'] = select(TBL_ROLES,FALSE,array('is_delete'=>'0'));
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>'0')));
 		$this->data['packages'] = select(TBL_MEMBERSHIP_PACKAGE);
 		
 		if($_POST){

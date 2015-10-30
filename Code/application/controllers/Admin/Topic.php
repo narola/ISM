@@ -29,6 +29,7 @@ class Topic extends ADMIN_Controller {
 		$subject  = $this->input->get('subject');
 		$q  = $this->input->get('q');
 		$where['where']['tut_topic.is_delete']=0;
+
 		if( !empty($role) || !empty($subject) || !empty($q) || !empty($_GET['order']) ){
 
 			$str = '';
@@ -112,6 +113,8 @@ class Topic extends ADMIN_Controller {
 												)
 											);
 		
+		// qry(true);
+
 		$topic_exams = select(TBL_TUTORIAL_TOPIC_EXAM);
 
 		$not_in = array();
@@ -575,7 +578,6 @@ class Topic extends ADMIN_Controller {
 				 "is_archived"=>0
 				);
 
-			
 			insert(TBL_TUTORIAL_TOPIC,$data);
 
 			$this->session->set_flashdata('success','Topic has been created.');
@@ -624,7 +626,6 @@ class Topic extends ADMIN_Controller {
 												)
 											);
 		
-
 		if($_POST){
 
 			$this->data['courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>'0')),null); // Fetch All Courses From Database
@@ -687,9 +688,6 @@ class Topic extends ADMIN_Controller {
 										  'subject_id'=>$this->data['tutorial_topic']['subject_id'])),null);
 		}
 		
-
-		
-
 		if($this->form_validation->run() == FALSE){
 			
 			$this->template->load('admin/default','admin/topic/edit', $this->data);
