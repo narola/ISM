@@ -139,7 +139,21 @@ class Group extends ADMIN_Controller {
                 array(
                     'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
                     'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'
-                )
+                ),
+                 array(
+                    'table' => TBL_TUTORIAL_GROUP_MEMBER,
+                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
+                    'join' => 'right'
+                ),
+                array(
+                    'table' => TBL_USERS,
+                    'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
+                ),
+                array(
+                    'table' => TBL_STUDENT_ACADEMIC_INFO,
+                    'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
+                ),
+               
             )
                 )
         );
