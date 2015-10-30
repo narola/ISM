@@ -423,7 +423,7 @@ class SocialFunctions
         $response['status']=$final_feeds['status'];
         $response['message']=$final_feeds['message'];
 
-        $response['total_feeds'] = sizeof($response['data']);
+
 
 
         //$data['data']=$final_feeds;
@@ -655,10 +655,10 @@ class SocialFunctions
             //echo "\n\ncomments_count:".$comments_count;
             $status = 1;
             //$data['comments']=$comments_array;
-            $errorMsg=USER_IS_AVAILABLE;
+            $errorMsg="";
         } else {
             $status = 2;
-            $errorMsg = USER_IS_NOT_AVAILABLE;
+            $errorMsg = DEFAULT_NO_RECORDS;
         }
 
 
