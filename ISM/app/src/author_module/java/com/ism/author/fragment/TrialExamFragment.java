@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.ism.R;
+import com.ism.author.AuthorHostActivity;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.login.Urls;
@@ -30,6 +32,7 @@ import com.ism.author.ws.WebserviceWrapper;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
+import com.ism.utility.InputValidator;
 import com.ism.utility.Utility;
 
 import java.util.ArrayList;
@@ -70,6 +73,8 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
     RadioGroup radio_declareresult, radio_negativemarking, radio_exam_random_question, radio_exam_usescore;
     LinearLayout ll_add_questionscore;
 
+    Button btn_exam_save, btn_exam_setquestion, btn_exam_cancel;
+
 
     MyTypeFace myTypeFace;
 
@@ -77,6 +82,8 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
     private static int EXAMDURATION_INTERVAL = 30, EXAMDURATION_STARTVALUE = 30, EXAMDURATION_ENDVALUE = 300;
 
     String examStartDate = "", examEndDate = "";
+
+    private InputValidator inputValidator;
 
 
     @Override
@@ -91,6 +98,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
 
 
         myTypeFace = new MyTypeFace(getActivity());
+        inputValidator = new InputValidator(getActivity());
 
         tv_exam_title = (TextView) view.findViewById(R.id.tv_exam_title);
 
@@ -143,6 +151,11 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         radio_negativemarking = (RadioGroup) view.findViewById(R.id.radio_negativemarking);
         radio_exam_random_question = (RadioGroup) view.findViewById(R.id.radio_exam_random_question);
         radio_exam_usescore = (RadioGroup) view.findViewById(R.id.radio_exam_usescore);
+
+
+        btn_exam_save=(Button)view.findViewById(R.id.btn_exam_save);
+        btn_exam_setquestion=(Button)view.findViewById(R.id.btn_exam_setquestion);
+        btn_exam_cancel=(Button)view.findViewById(R.id.btn_exam_cancel);
 
         ll_add_questionscore = (LinearLayout) view.findViewById(R.id.ll_add_questionscore);
 
@@ -210,6 +223,27 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
                 return true;
             }
         });
+
+
+        btn_exam_save.setOnClickListener(new View.OnClickListener() {
+                                             @Override
+                                             public void onClick(View v) {
+                                                 if (isInputsValid()) {
+                                                     callApiCreateExam();
+                                                 }
+
+
+                                             }
+                                         }
+        );
+
+        btn_exam_setquestion.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        backToTrialScreen();
+                                                    }
+                                                }
+        );
 
 
     }
@@ -324,6 +358,12 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
             Utils.showToast(getString(R.string.strnetissue), getActivity());
         }
 
+    }
+
+    private String strValidationMsg;
+
+    private boolean isInputsValid() {
+        return true;
     }
 
 
@@ -446,5 +486,9 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
 
         }
 
+    }
+
+    private void backToTrialScreen() {
+        ((AuthorHostActivity) getActivity()).onBackPressed();
     }
 }

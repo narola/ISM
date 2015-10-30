@@ -647,8 +647,9 @@
                     android:id="@+id/btn_exam_setquestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_save"
-                    android:text="@string/strsave"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:background="@drawable/btn_setquestion"
+                    android:text="@string/strsetquestion"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/d20dp" />

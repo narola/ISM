@@ -59,7 +59,6 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
         // Required empty public constructor
     }
 
-
     TextView tvActivityTitle, tvActivityAssignmentname, tvActivityCoursename, tvActivityClass, tvActivitySubject, tvActivitySubmissiondate, tvActivityTopic;
     EditText etActivityAssignmentname, etActivityCoursename, etActivitySubmissionDate;
     Button btnActivitySave, btnActivityCancel;
