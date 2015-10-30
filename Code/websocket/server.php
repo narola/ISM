@@ -18,7 +18,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
         return;
     }
 
-  
+
 
     $datas = json_decode($message, true);
     $datas['user_iddd'] = $Server->wsClients[$clientID][12];
@@ -172,7 +172,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                         } else {
                             $responce['my_score'] = 'skip';
                         }
-                        pr('Sent to : '.$Server->wsClients[$id][12]);
+                        pr('Sent to : ' . $Server->wsClients[$id][12]);
                         $Server->wsSend($id, json_encode($responce));
                     }
                 }
@@ -180,10 +180,10 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                 foreach ($Server->wsClients as $id => $client) {
                     if ($Server->wsClients[$id][12] == $responce['to']) {
                         $Server->wsSend($id, json_encode($responce));
-                        $Server->wsSend($clientID, json_encode($responce));
                         break;
                     }
                 }
+                $Server->wsSend($clientID, json_encode($responce));
             } else if ($responce['type'] == 'tag-user-again') {
                 foreach ($Server->wsClients as $id => $client) {
                     if (in_array($Server->wsClients[$id][12], $responce['tagged_id'])) {
@@ -199,7 +199,6 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 // when a client connects
 function wsOnOpen($clientID) {
     global $Server;
-    
 }
 
 // when a client closes or lost connection
