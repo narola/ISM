@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.author.AuthorHostActivity;
-import com.ism.author.rightcontainerfragment.AuthorProfileFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
@@ -136,7 +135,7 @@ public class TrialAddNewFragment extends Fragment {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, TrialActivityFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_TRIAL_EXAM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, AuthorProfileFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, TrialExamFragment.newInstance()).commit();
                     break;
 
             }
@@ -157,6 +156,7 @@ public class TrialAddNewFragment extends Fragment {
             img_sep_tab_activity.setVisibility(View.VISIBLE);
             tv_tab_exam.setTextColor(getResources().getColor(R.color.color_text_hint));
             img_sep_tab_exam.setVisibility(View.INVISIBLE);
+            loadFragmentInContainer(FRAGMENT_TRIAL_ACTIVITY);
 
         } else if (position == 1) {
 
@@ -165,6 +165,7 @@ public class TrialAddNewFragment extends Fragment {
             img_sep_tab_activity.setVisibility(View.INVISIBLE);
             tv_tab_exam.setTextColor(getResources().getColor(R.color.color_black));
             img_sep_tab_exam.setVisibility(View.VISIBLE);
+            loadFragmentInContainer(FRAGMENT_TRIAL_EXAM);
 
         }
 

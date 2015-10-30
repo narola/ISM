@@ -292,6 +292,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
                             get(spActivityTopic.getSelectedItemPosition() - 1).getId()) : 0);
                 }
                 createAssignmentRequest.setAssignment_text(strAssignmenttext);
+
                 new WebserviceWrapper(getActivity(), createAssignmentRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.CREATEASSIGNMENT);
             } catch (Exception e) {
