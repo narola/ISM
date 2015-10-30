@@ -17,13 +17,9 @@ import android.widget.Toast;
 import com.ism.HostActivity;
 import com.ism.R;
 import com.ism.adapter.Adapters;
-import com.ism.model.CredentialsRequest;
-import com.ism.model.Data;
-import com.ism.model.ForgotPasswordRequest;
-import com.ism.model.GetCitiesRequest;
-import com.ism.model.GetStatesRequest;
-import com.ism.model.LoginRequest;
-import com.ism.model.ResponseObject;
+import com.ism.ws.model.Data;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
@@ -99,8 +95,12 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	}
 
 	public void onClickLogin(View view) {
-		if (isInputsValid()) {
-			callApiAuthenticateUser();
+		if (Utility.isOnline(LoginActivity.this)) {
+			if (isInputsValid()) {
+				callApiAuthenticateUser();
+			}
+		} else {
+			Utility.toastOffline(LoginActivity.this);
 		}
 	}
 
@@ -150,7 +150,11 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		spState = (Spinner) dialogView.findViewById(R.id.sp_state);
 		spCity = (Spinner) dialogView.findViewById(R.id.sp_city);
 
-		callApiGetCountries();
+		if (Utility.isOnline(LoginActivity.this)) {
+			callApiGetCountries();
+		} else {
+			Utility.toastOffline(LoginActivity.this);
+		}
 
 		spCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
@@ -214,17 +218,17 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			public void onClick(View v) {
 				if (Utility.isOnline(LoginActivity.this)) {
 					if (isInputsValid()) {
-						CredentialsRequest credentialsRequest = new CredentialsRequest();
-						credentialsRequest.setFirstname(etFirstName.getText().toString().trim());
-						credentialsRequest.setLastname(etLastName.getText().toString().trim());
-						credentialsRequest.setEmailAddress(etEmail.getText().toString().trim());
-						credentialsRequest.setHomeAddress(etHomeAddress.getText().toString().trim());
-						credentialsRequest.setSchoolName(etSchoolName.getText().toString().trim());
-						credentialsRequest.setContactNumber(etContactNo.getText().toString().trim());
-						credentialsRequest.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
-						credentialsRequest.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
-						credentialsRequest.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
-						callApiRequestCredentials(credentialsRequest);
+						RequestObject requestObject = new RequestObject();
+						requestObject.setFirstname(etFirstName.getText().toString().trim());
+						requestObject.setLastname(etLastName.getText().toString().trim());
+						requestObject.setEmailAddress(etEmail.getText().toString().trim());
+						requestObject.setHomeAddress(etHomeAddress.getText().toString().trim());
+						requestObject.setSchoolName(etSchoolName.getText().toString().trim());
+						requestObject.setContactNumber(etContactNo.getText().toString().trim());
+						requestObject.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
+						requestObject.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
+						requestObject.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
+						callApiRequestCredentials(requestObject);
 					}
 				} else {
 					Utility.toastOffline(LoginActivity.this);
@@ -282,7 +286,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiGetCountries() {
 		try {
-			new WebserviceWrapper(LoginActivity.this, null).new WebserviceCaller()
+			new WebserviceWrapper(LoginActivity.this, null, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.GET_COUNTRIES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
@@ -291,10 +295,10 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiGetStates(int countryId) {
 		try {
-			GetStatesRequest statesRequest = new GetStatesRequest();
-			statesRequest.setCountryId(countryId);
+			RequestObject requestObject = new RequestObject();
+			requestObject.setCountryId(countryId);
 
-			new WebserviceWrapper(LoginActivity.this, statesRequest).new WebserviceCaller()
+			new WebserviceWrapper(LoginActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.GET_STATES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetStates Exception : " + e.getLocalizedMessage());
@@ -303,19 +307,19 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiGetCities(int stateId) {
 		try {
-			GetCitiesRequest citiesRequest = new GetCitiesRequest();
-			citiesRequest.setStateId(stateId);
+			RequestObject requestObject = new RequestObject();
+			requestObject.setStateId(stateId);
 
-			new WebserviceWrapper(LoginActivity.this, citiesRequest).new WebserviceCaller()
+			new WebserviceWrapper(LoginActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.GET_CITIES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetCities Exception : " + e.getLocalizedMessage());
 		}
 	}
 
-	private void callApiRequestCredentials(CredentialsRequest credentialsRequest) {
+	private void callApiRequestCredentials(RequestObject requestObject) {
 		try {
-			new WebserviceWrapper(LoginActivity.this, credentialsRequest).new WebserviceCaller()
+			new WebserviceWrapper(LoginActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.REQUEST_CREDENTIALS);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiRequestCredentials Exception : " + e.getLocalizedMessage());
@@ -329,10 +333,10 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiForgotPassword(String email) {
 		try {
-			ForgotPasswordRequest forgotPasswordRequest = new ForgotPasswordRequest();
-			forgotPasswordRequest.setEmailId(email);
+			RequestObject requestObject = new RequestObject();
+			requestObject.setEmailId(email);
 
-			new WebserviceWrapper(LoginActivity.this, forgotPasswordRequest).new WebserviceCaller()
+			new WebserviceWrapper(LoginActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.FORGOT_PASSWORD);
 
 		} catch (Exception e) {
@@ -342,13 +346,13 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiAuthenticateUser() {
 		try {
-			LoginRequest loginRequest = new LoginRequest();
-			loginRequest.setUsername(etUserid.getText().toString().trim());
-			loginRequest.setPassword(etPwd.getText().toString().trim());
-//			loginRequest.setUsername("0YGAJ8793B");
-//			loginRequest.setPassword("narola21");
+			RequestObject requestObject = new RequestObject();
+			requestObject.setUsername(etUserid.getText().toString().trim());
+			requestObject.setPassword(etPwd.getText().toString().trim());
+//			requestObject.setUsername("0YGAJ8793B");
+//			requestObject.setPassword("narola21");
 
-			new WebserviceWrapper(LoginActivity.this, loginRequest).new WebserviceCaller()
+			new WebserviceWrapper(LoginActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.LOGIN);
 
 		} catch (Exception e) {
@@ -484,27 +488,29 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			if (responseObj.getData().get(0).getUserId() == null) {
 
 				PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, LoginActivity.this, ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
-				PreferenceData.setStringPrefs(PreferenceData.CREDENTIAL_ID, LoginActivity.this, responseObj.getData().get(0).getCredentialId());
-				PreferenceData.setStringPrefs(PreferenceData.PASSWORD, LoginActivity.this, etPwd.getText().toString().trim());
-				PreferenceData.setStringPrefs(PreferenceData.SCHOOL_ID, LoginActivity.this, responseObj.getData().get(0).getSchoolId());
-				PreferenceData.setStringPrefs(PreferenceData.SCHOOL_NAME, LoginActivity.this, responseObj.getData().get(0).getSchoolName());
-				PreferenceData.setStringPrefs(PreferenceData.SCHOOL_DISTRICT, LoginActivity.this, responseObj.getData().get(0).getSchoolDestrict());
-				PreferenceData.setStringPrefs(PreferenceData.SCHOOL_TYPE, LoginActivity.this, responseObj.getData().get(0).getSchoolType());
-				PreferenceData.setStringPrefs(PreferenceData.CLASS_ID, LoginActivity.this, responseObj.getData().get(0).getClassId());
-				PreferenceData.setStringPrefs(PreferenceData.CLASS_NAME, LoginActivity.this, responseObj.getData().get(0).getClassName());
-				PreferenceData.setStringPrefs(PreferenceData.COURSE_ID, LoginActivity.this, responseObj.getData().get(0).getCourseId());
-				PreferenceData.setStringPrefs(PreferenceData.COURSE_NAME, LoginActivity.this, responseObj.getData().get(0).getCourseName());
-				PreferenceData.setStringPrefs(PreferenceData.ACADEMIC_YEAR, LoginActivity.this, responseObj.getData().get(0).getAcademicYear());
-				PreferenceData.setStringPrefs(PreferenceData.ROLE_ID, LoginActivity.this, responseObj.getData().get(0).getRoleId());
+				PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, LoginActivity.this, responseObj.getData().get(0).getCredentialId());
+				PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, LoginActivity.this, etPwd.getText().toString().trim());
+				PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_ID, LoginActivity.this, responseObj.getData().get(0).getSchoolId());
+				PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, LoginActivity.this, responseObj.getData().get(0).getSchoolName());
+				PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, LoginActivity.this, responseObj.getData().get(0).getSchoolDestrict());
+				PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_TYPE, LoginActivity.this, responseObj.getData().get(0).getSchoolType());
+				PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_ID, LoginActivity.this, responseObj.getData().get(0).getClassId());
+				PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, LoginActivity.this, responseObj.getData().get(0).getClassName());
+				PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_ID, LoginActivity.this, responseObj.getData().get(0).getCourseId());
+				PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, LoginActivity.this, responseObj.getData().get(0).getCourseName());
+				PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, LoginActivity.this, responseObj.getData().get(0).getAcademicYear());
+				PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, LoginActivity.this, responseObj.getData().get(0).getRoleId());
 
 				launchProfileInfoActivity();
 
 			} else {
 
 				PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this, ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
-				PreferenceData.setStringPrefs(PreferenceData.USER_ID, LoginActivity.this, Global.userId = responseObj.getData().get(0).getUserId());
-				PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, LoginActivity.this, Global.fullName = responseObj.getData().get(0).getFullName());
-				PreferenceData.setStringPrefs(PreferenceData.PROFILE_PIC, LoginActivity.this, Global.profilePic = responseObj.getData().get(0).getProfilePic());
+				PreferenceData.setStringPrefs(PreferenceData.USER_ID, LoginActivity.this, responseObj.getData().get(0).getUserId());
+				PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, LoginActivity.this, responseObj.getData().get(0).getFullName());
+				PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, LoginActivity.this, responseObj.getData().get(0).getProfilePic());
+				PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, LoginActivity.this, responseObj.getData().get(0).getTutorialGroupId());
+				PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseObj.getData().get(0).getTutorialGroupName());
 
 				if (responseObj.getData().get(0).getTutorialGroupId() == null) {
 					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);

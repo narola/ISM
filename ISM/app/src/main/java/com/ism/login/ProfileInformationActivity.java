@@ -23,12 +23,9 @@ import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.adapter.Adapters;
-import com.ism.model.Data;
-import com.ism.model.GetCitiesRequest;
-import com.ism.model.GetStatesRequest;
-import com.ism.model.RegisterRequest;
-import com.ism.model.ResponseObject;
-import com.ism.model.SchoolInfoRequest;
+import com.ism.ws.model.Data;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
@@ -140,18 +137,18 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 		inputValidator = new InputValidator(ProfileInformationActivity.this);
 
-		strUserId = PreferenceData.getStringPrefs(PreferenceData.CREDENTIAL_ID, ProfileInformationActivity.this);
-		strCurrentPassword = PreferenceData.getStringPrefs(PreferenceData.PASSWORD, ProfileInformationActivity.this);
-		strSchoolId = PreferenceData.getStringPrefs(PreferenceData.SCHOOL_ID, ProfileInformationActivity.this);
-		strSchoolName = PreferenceData.getStringPrefs(PreferenceData.SCHOOL_NAME, ProfileInformationActivity.this);
-		strSchoolDistrict = PreferenceData.getStringPrefs(PreferenceData.SCHOOL_DISTRICT, ProfileInformationActivity.this);
-		strSchoolType = PreferenceData.getStringPrefs(PreferenceData.SCHOOL_TYPE, ProfileInformationActivity.this);
-		strClassId = PreferenceData.getStringPrefs(PreferenceData.CLASS_ID, ProfileInformationActivity.this);
-		strClassName = PreferenceData.getStringPrefs(PreferenceData.CLASS_NAME, ProfileInformationActivity.this);
-		strCourseId = PreferenceData.getStringPrefs(PreferenceData.COURSE_ID, ProfileInformationActivity.this);
-		strCourseName = PreferenceData.getStringPrefs(PreferenceData.COURSE_NAME, ProfileInformationActivity.this);
-		strAcademicYear = PreferenceData.getStringPrefs(PreferenceData.ACADEMIC_YEAR, ProfileInformationActivity.this);
-		strRoleId = PreferenceData.getStringPrefs(PreferenceData.ROLE_ID, ProfileInformationActivity.this);
+		strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_CREDENTIAL_ID, ProfileInformationActivity.this);
+		strCurrentPassword = PreferenceData.getStringPrefs(PreferenceData.USER_PASSWORD, ProfileInformationActivity.this);
+		strSchoolId = PreferenceData.getStringPrefs(PreferenceData.USER_SCHOOL_ID, ProfileInformationActivity.this);
+		strSchoolName = PreferenceData.getStringPrefs(PreferenceData.USER_SCHOOL_NAME, ProfileInformationActivity.this);
+		strSchoolDistrict = PreferenceData.getStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, ProfileInformationActivity.this);
+		strSchoolType = PreferenceData.getStringPrefs(PreferenceData.USER_SCHOOL_TYPE, ProfileInformationActivity.this);
+		strClassId = PreferenceData.getStringPrefs(PreferenceData.USER_CLASS_ID, ProfileInformationActivity.this);
+		strClassName = PreferenceData.getStringPrefs(PreferenceData.USER_CLASS_NAME, ProfileInformationActivity.this);
+		strCourseId = PreferenceData.getStringPrefs(PreferenceData.USER_COURSE_ID, ProfileInformationActivity.this);
+		strCourseName = PreferenceData.getStringPrefs(PreferenceData.USER_COURSE_NAME, ProfileInformationActivity.this);
+		strAcademicYear = PreferenceData.getStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, ProfileInformationActivity.this);
+		strRoleId = PreferenceData.getStringPrefs(PreferenceData.USER_ROLE_ID, ProfileInformationActivity.this);
 
 		txtNameSchool.setText(strSchoolName);
 		txtClass.setText(strClassName);
@@ -257,20 +254,20 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 	public void onClickSubmit(View view) {
 		if (Utility.isOnline(ProfileInformationActivity.this)) {
 
-			PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
+			/*PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
 					PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
 			PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
 			PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, "141");
-			PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, ProfileInformationActivity.this, "Krunal Panchal");
-			PreferenceData.setStringPrefs(PreferenceData.PROFILE_PIC, ProfileInformationActivity.this, "user_374/logo_test.png");
+			PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, ProfileInformationActivity.this, "Krunal Panchal");
+			PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, "user_374/logo_test.png");
 
 			Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
 			startActivity(intentWelcome);
-			finish();
+			finish();*/
 
-			/*if (isInputsValid()) {
+			if (isInputsValid()) {
                 callApiRegisterUser();
-			}*/
+			}
 		} else {
 			Utility.toastOffline(ProfileInformationActivity.this);
 		}
@@ -314,11 +311,11 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 			public void onClick(View v) {
 				if (Utility.isOnline(ProfileInformationActivity.this)) {
 					if (isInputsValidSchoolInfo()) {
-						SchoolInfoRequest schoolInfoRequest = new SchoolInfoRequest();
-						schoolInfoRequest.setName(etName.getText().toString().trim());
-						schoolInfoRequest.setEmailAddress(etEmail.getText().toString().trim());
-						schoolInfoRequest.setMessage(etMessage.getText().toString().trim());
-						callApiRequestSchoolInfo(schoolInfoRequest);
+						RequestObject requestObject = new RequestObject();
+						requestObject.setName(etName.getText().toString().trim());
+						requestObject.setEmailAddress(etEmail.getText().toString().trim());
+						requestObject.setMessage(etMessage.getText().toString().trim());
+						callApiRequestSchoolInfo(requestObject);
 					}
 				} else {
 					Utility.toastOffline(ProfileInformationActivity.this);
@@ -333,9 +330,9 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 		});
 	}
 
-	private void callApiRequestSchoolInfo(SchoolInfoRequest schoolInfoRequest) {
+	private void callApiRequestSchoolInfo(RequestObject requestObject) {
 		try {
-			new WebserviceWrapper(ProfileInformationActivity.this, schoolInfoRequest).new WebserviceCaller()
+			new WebserviceWrapper(ProfileInformationActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.REQUEST_SCHOOL_INFO);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiRequestSchoolInfo Exception : " + e.toString());
@@ -344,30 +341,30 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	private void callApiRegisterUser() {
 		try {
-			RegisterRequest registerRequest = new RegisterRequest();
-			registerRequest.setFirstname(etFirstName.getText().toString().trim());
-			registerRequest.setLastname(etLastName.getText().toString().trim());
-			registerRequest.setEmailAddress(etEmailAddress.getText().toString().trim());
-			registerRequest.setContactNumber(etContactNo.getText().toString().trim());
-			registerRequest.setGender(arrListGender.get(spGender.getSelectedItemPosition()));
-			registerRequest.setBirthdate(strDob);
-			registerRequest.setHomeAddress(etHomeAddress.getText().toString().trim());
-			registerRequest.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
-			registerRequest.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
-			registerRequest.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
-			registerRequest.setUsername(etUserName.getText().toString().trim());
-			registerRequest.setPassword(etNewPwd.getText().toString().trim());
-			registerRequest.setDeviceToken(Utility.getDeviceTokenId(ProfileInformationActivity.this));
-			registerRequest.setSchoolId(Double.parseDouble(strSchoolId));
-			registerRequest.setClassroomId(Double.parseDouble(strClassId));
-			registerRequest.setCourseId(Double.parseDouble(strCourseId));
-			registerRequest.setAcademicYear(strAcademicYear);
-			registerRequest.setRoleId(Double.parseDouble(strRoleId));
-			registerRequest.setDeviceType(getString(R.string.android));
-			registerRequest.setProfileImageName("image_" + System.currentTimeMillis() + ".png");
-			registerRequest.setProfileImage(strDpBase64);
+			RequestObject requestObject = new RequestObject();
+			requestObject.setFirstname(etFirstName.getText().toString().trim());
+			requestObject.setLastname(etLastName.getText().toString().trim());
+			requestObject.setEmailAddress(etEmailAddress.getText().toString().trim());
+			requestObject.setContactNumber(etContactNo.getText().toString().trim());
+			requestObject.setGender(arrListGender.get(spGender.getSelectedItemPosition()));
+			requestObject.setBirthdate(strDob);
+			requestObject.setHomeAddress(etHomeAddress.getText().toString().trim());
+			requestObject.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
+			requestObject.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
+			requestObject.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
+			requestObject.setUsername(etUserName.getText().toString().trim());
+			requestObject.setPassword(etNewPwd.getText().toString().trim());
+			requestObject.setDeviceToken(Utility.getDeviceTokenId(ProfileInformationActivity.this));
+			requestObject.setSchoolId(Integer.parseInt(strSchoolId));
+			requestObject.setClassroomId(Integer.parseInt(strClassId));
+			requestObject.setCourseId(Integer.parseInt(strCourseId));
+			requestObject.setAcademicYear(strAcademicYear);
+			requestObject.setRoleId(Integer.parseInt(strRoleId));
+			requestObject.setDeviceType(getString(R.string.android));
+			requestObject.setProfileImageName("image_" + System.currentTimeMillis() + ".png");
+			requestObject.setProfileImage(strDpBase64);
 
-			new WebserviceWrapper(ProfileInformationActivity.this, registerRequest).new WebserviceCaller()
+			new WebserviceWrapper(ProfileInformationActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.REGISTER_USER);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiRegisterUser Exception : " + e.getLocalizedMessage());
@@ -376,7 +373,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	private void callApiGetCountries() {
 		try {
-			new WebserviceWrapper(ProfileInformationActivity.this, null).new WebserviceCaller()
+			new WebserviceWrapper(ProfileInformationActivity.this, null, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.GET_COUNTRIES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
@@ -385,10 +382,11 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	private void callApiGetStates(int countryId) {
 		try {
-			GetStatesRequest statesRequest = new GetStatesRequest();
-			statesRequest.setCountryId(countryId);
+			RequestObject requestObject = new RequestObject();
 
-			new WebserviceWrapper(ProfileInformationActivity.this, statesRequest).new WebserviceCaller()
+			requestObject.setCountryId(countryId);
+
+			new WebserviceWrapper(ProfileInformationActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.GET_STATES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
@@ -397,10 +395,10 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	private void callApiGetCities(int stateId) {
 		try {
-			GetCitiesRequest citiesRequest = new GetCitiesRequest();
-			citiesRequest.setStateId(stateId);
+			RequestObject requestObject = new RequestObject();
+			requestObject.setStateId(stateId);
 
-			new WebserviceWrapper(ProfileInformationActivity.this, citiesRequest).new WebserviceCaller()
+			new WebserviceWrapper(ProfileInformationActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.GET_CITIES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
@@ -632,16 +630,16 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	private void onResponseRegisterUser(Object object) {
 		try {
-			Toast.makeText(ProfileInformationActivity.this, "Register response", Toast.LENGTH_SHORT).show();
 			if (object != null) {
 				ResponseObject responseObj = (ResponseObject) object;
 				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
 					PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
 							PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
 					PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
+					PreferenceData.remove(PreferenceData.USER_PASSWORD, ProfileInformationActivity.this);
 					PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, responseObj.getData().get(0).getUserId());
-					PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, ProfileInformationActivity.this, responseObj.getData().get(0).getFullName());
-					PreferenceData.setStringPrefs(PreferenceData.PROFILE_PIC, ProfileInformationActivity.this, responseObj.getData().get(0).getProfilePic());
+					PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, ProfileInformationActivity.this, responseObj.getData().get(0).getFullName());
+					PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, responseObj.getData().get(0).getProfilePic());
 
 					Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
 					startActivity(intentWelcome);

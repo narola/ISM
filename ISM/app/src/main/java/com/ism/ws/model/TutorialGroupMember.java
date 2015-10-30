@@ -1,4 +1,4 @@
-package com.ism.model;
+package com.ism.ws.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

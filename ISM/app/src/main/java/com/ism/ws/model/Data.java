@@ -1,8 +1,9 @@
-package com.ism.model;
+package com.ism.ws.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.ws.model.TutorialGroupMember;
 
 import java.util.ArrayList;
 
@@ -12,7 +13,6 @@ public class Data {
 
 	private String id;
 	private String credentialId;
-	private String string;
 	private String schoolName;
 	private String courseId;
 	private String courseName;
@@ -34,17 +34,20 @@ public class Data {
 	private String tutorialGroupJoiningStatus;
 	private String tutorialGroupComplete;
 	private String tutorialGroupName;
+	private String like;
+	private String modifiedDate;
+	private String audioLink;
+	private String postedOn;
+	private String feedBy;
+	private String totalLike;
+	private String createdDate;
+	private String feedId;
+	private String videoLink;
+	private String feedText;
+	private String totalComment;
 
 	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
-
-	@Override
-	public String toString() {
-		return string;
-	}
-
-	public void setString(String string) {
-		this.string = string;
-	}
+	private ArrayList<Comment> comments;
 
 	@JsonProperty("id")
     public String getId() {
@@ -169,7 +172,7 @@ public class Data {
 	}
 
 	public void setCountryName(String countryName) {
-		setString(this.countryName = countryName);
+		this.countryName = countryName;
 	}
 
 	@JsonProperty("state_name")
@@ -178,7 +181,7 @@ public class Data {
 	}
 
 	public void setStateName(String stateName) {
-		setString(this.stateName = stateName);
+		this.stateName = stateName;
 	}
 
 	@JsonProperty("city_name")
@@ -187,7 +190,7 @@ public class Data {
 	}
 
 	public void setCityName(String cityName) {
-		setString(this.cityName = cityName);
+		this.cityName = cityName;
 	}
 
 	@JsonProperty("profile_pic")
@@ -260,5 +263,113 @@ public class Data {
 
 	public void setTutorialGroupMembers(ArrayList<TutorialGroupMember> tutorialGroupMembers) {
 		this.tutorialGroupMembers = tutorialGroupMembers;
+	}
+
+	@JsonProperty("like")
+	public String getLike() {
+		return like;
+	}
+
+	public void setLike(String like) {
+		this.like = like;
+	}
+
+	@JsonProperty("modified_date")
+	public String getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(String modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
+	@JsonProperty("audio_link")
+	public String getAudioLink() {
+		return audioLink;
+	}
+
+	public void setAudioLink(String audioLink) {
+		this.audioLink = audioLink;
+	}
+
+	@JsonProperty("posted_on")
+	public String getPostedOn() {
+		return postedOn;
+	}
+
+	public void setPostedOn(String postedOn) {
+		this.postedOn = postedOn;
+	}
+
+	@JsonProperty("feed_by")
+	public String getFeedBy() {
+		return feedBy;
+	}
+
+	public void setFeedBy(String feedBy) {
+		this.feedBy = feedBy;
+	}
+
+	@JsonProperty("total_like")
+	public String getTotalLike() {
+		return totalLike;
+	}
+
+	public void setTotalLike(String totalLike) {
+		this.totalLike = totalLike;
+	}
+
+	@JsonProperty("comment_list")
+	public ArrayList<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(ArrayList<Comment> comments) {
+		this.comments = comments;
+	}
+
+	@JsonProperty("created_date")
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	@JsonProperty("feed_id")
+	public String getFeedId() {
+		return feedId;
+	}
+
+	public void setFeedId(String feedId) {
+		this.feedId = feedId;
+	}
+
+	@JsonProperty("video_link")
+	public String getVideoLink() {
+		return videoLink;
+	}
+
+	public void setVideoLink(String videoLink) {
+		this.videoLink = videoLink;
+	}
+
+	@JsonProperty("feed_text")
+	public String getFeedText() {
+		return feedText;
+	}
+
+	public void setFeedText(String feedText) {
+		this.feedText = feedText;
+	}
+
+	@JsonProperty("total_comment")
+	public String getTotalComment() {
+		return totalComment;
+	}
+
+	public void setTotalComment(String totalComment) {
+		this.totalComment = totalComment;
 	}
 }
