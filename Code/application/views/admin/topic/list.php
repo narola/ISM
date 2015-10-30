@@ -94,6 +94,8 @@
                             <!-- <span class="label label_red"><?php //echo $topic['id']; p($not_in);?></span> -->
                             <?php if(in_array($topic['id'],$not_in) == FALSE){  ?>
                             <a href="<?php echo base_url().'admin/exam/add?topic='.$topic['id'];?>" class="label label_red">Add Exam</a>
+                            <?php }else{ ?>
+                            <a href="<?php echo base_url().'admin/question/set?exam_id='.$topic['exam_id'];?>" class="label label_red">Question Set</a>
                             <?php } ?>
 
                         

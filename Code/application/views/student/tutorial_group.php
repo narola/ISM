@@ -31,7 +31,11 @@
                 <div class="discussion_header">
                 	<div class="col-sm-12">
                         <h3><span>Topic - </span><?php echo $topic['topic_name']; ?></h3>
+
+                        <a href="javascript:void(0);" class="icon icon_expand" id="expand_q"></a>
+
                        <!-- <a href="#" class="icon icon_expand"></a> -->
+
                     </div>
                 </div>
                 <div class="top_question">
@@ -47,7 +51,7 @@
                         </div>
                         <div class="admin_question">
                         	<h4><?php echo $topic['full_name']; ?><span><?php echo date_format( date_create($topic['created_date']), 'M d, Y g:i a'); ?></span></h4>
-                        	<p><?php echo $topic['topic_description']; ?></p>
+                        	<p><span><?php echo $topic['topic_description']; ?></span></p>
                         </div>
                     </div>
                 </div>
@@ -128,8 +132,8 @@
                     	<div class="option_bar" data-type="discussion-submit">
                         	<a href="javascript:void(0);" class="icon icon_pin"><input id="group_file_share" type="file" data-type="topic_file" data-id="topic"></a>
                             <button class="btn btn_post">Post<span class="fa fa-chevron-right"></span></button>
-                        </div>
-                    	<textarea placeholder="SAY IT" data-type="discussion"></textarea>
+                        </div> 
+                    	<textarea placeholder="SAY IT" data-type="discussion" class="mCustomScrollbar" data-mcs-theme="minimal-dark"></textarea>
                         <div class="upload_loader" style="top:58px"></div>
                         <!-- <a href="#" class="icon icon_emoji"></a> -->
                                              
@@ -150,9 +154,11 @@
                         <h3><span>My Toolkit</span></h3>
                     </div>
                 </div>
-                <div class="calculator row " id="accordian_calc">
-                      <iframe  height="575" src="http://web2.0calc.com/widgets/vertical/?options=%7B%22angular%22%3A%22deg%22%2C%22options%22%3A%22show%22%2C%22menu%22%3A%22show%22%7D" scrolling="no" style="border: 1px solid silver;position:absolute;clip:rect(37px,1100px,800px,0px);"> 
-                    </iframe> 
+
+                <div class="calculator row" id="accordian_calc">
+                     <iframe  height="575" src="http://web2.0calc.com/widgets/vertical/?options=%7B%22angular%22%3A%22deg%22%2C%22options%22%3A%22show%22%2C%22menu%22%3A%22show%22%7D" scrolling="no" style="border: 1px solid silver;position:absolute;clip:rect(37px,1100px,800px,0px);"> 
+                    </iframe>
+
                 </div>
                 <!--white board-->
                 <div class="white_board">
@@ -357,5 +363,24 @@ $(document).ready(function(){
     var ih = $('.input').height();
     $('.discussion').css('height',h - (fh + ih + 30)) ;
     $('.discussion').css({'margin-top':fh, 'margin-bottom':ih}); 
+	
+	$('#expand_q').click(function(){
+		var qh = $('.top_question .admin_question p>span').height();
+		
+		if($('.top_question .admin_question p').height()>76){
+			$('.top_question .admin_question p').animate( 
+				{ height: "76px"}, 
+				{ queue:false, duration:300 });	
+		}
+		else if($('.top_question .admin_question p').height()<=76){
+			if($('.top_question .admin_question p>span').height()>76)
+			{
+				$('.top_question .admin_question p').animate( 
+					{ height: qh+25}, 
+					{ queue:false, duration:300 });	
+				$(this).addClass('opened');	
+			}
+		}
+	});
 });
 </script>
