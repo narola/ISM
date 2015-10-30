@@ -42,13 +42,13 @@ class My_evaluation extends ISM_Controller {
 							'condition' => 'sc.exam_id = e.id'
 						),
 						array(
-							'table' => '(select count(*) as cnt,exam_id from exam_question where exam_id = '.$this->examid.') eq',
+							'table' => '(SELECT COUNT(*) AS cnt,exam_id FROM '.TBL_EXAM_QUESTION.' WHERE exam_id = '.$this->examid.') eq',
 							'condition' => 'eq.exam_id = e.id'
 						)
 					),
 					'single' => true
 				);
-		$data['my_scoreboard']	= select(TBL_EXAMS.' e','e.id,eq.cnt,TRUNCATE(sc.total_time_spent / 60,2)as totmin,sc.attempt_count,(eq.cnt - sc.attempt_count) as unattampt,e.exam_category,e.exam_name,sc.incorrect_answers,sc.correct_answers,TRUNCATE((sc.correct_answers * 100 / cnt ),2)as percentage',$where,$option);
+		$data['my_scoreboard']	= select(TBL_EXAMS.' e','e.id,eq.cnt,TRUNCATE(sc.total_time_spent / 60,2) AS totmin,sc.attempt_count,(eq.cnt - sc.attempt_count) AS unattampt,e.exam_category,e.exam_name,sc.incorrect_answers,sc.correct_answers,TRUNCATE((sc.correct_answers * 100 / cnt ),2) AS percentage',$where,$option);
 
 		//	get exam evaluation
 		$where 	= array('where' => array('eq.exam_id'=>$this->examid,'sr.user_id' => $userid));
@@ -74,7 +74,7 @@ class My_evaluation extends ISM_Controller {
 					'group_by' => 'eq.question_id'
 				);
 		$data['my_evaluation'] = select(TBL_EXAM_QUESTION.' eq','sr.choice_id,
-			eq.question_id,q.question_text,q.solution,ac.choice_text as correct_ans,ac2.choice_text as your_ans',$where,$option);
+			eq.question_id,q.question_text,q.solution,ac.choice_text AS correct_ans,ac2.choice_text AS your_ans',$where,$option);
 		$this->template->load('student/default','student/my_evaluation',$data);
 
 	}
