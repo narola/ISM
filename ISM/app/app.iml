@@ -112,14 +112,27 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 23 Platform (1)" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+<<<<<<< HEAD
+    <orderEntry type="library" exported="" name="appcompat-v7-23.0.1" level="project" />
+=======
+<<<<<<< HEAD
+    <orderEntry type="library" exported="" name="appcompat-v7-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="realm-0.84.1" level="project" />
+=======
+>>>>>>> e424d10f91aa22279181f0bb86ee87ba6eff99de
     <orderEntry type="library" exported="" name="jackson-databind-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="httpmime-4.2.2" level="project" />
     <orderEntry type="library" exported="" name="jackson-annotations-2.3.1" level="project" />
+>>>>>>> c7f7ca55ad19a5460d0b6e5f6f7a9bc1a39939ad
     <orderEntry type="library" exported="" name="picasso-2.3.2" level="project" />
+    <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
+<<<<<<< HEAD
+=======
     <orderEntry type="library" exported="" name="jackson-core-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-23.0.1" level="project" />
+>>>>>>> c7f7ca55ad19a5460d0b6e5f6f7a9bc1a39939ad
     <orderEntry type="library" exported="" name="support-annotations-23.0.1" level="project" />
     <orderEntry type="module" module-name="richtexteditor" exported="" />
   </component>

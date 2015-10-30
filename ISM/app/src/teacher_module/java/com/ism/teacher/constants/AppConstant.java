@@ -45,6 +45,12 @@ public class AppConstant {
     /**
      * URLs
      */
+
+    public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
+    public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
+
+
+
     private static final String URL_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_LOGIN = URL_HOST + "AuthenticateUser";
 
@@ -56,6 +62,12 @@ public class AppConstant {
     public static final String URL_TAG_FRIEND_IN_FEED = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=TagFriendInFeed";
     public static final String URL_LIKE_FEED = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=LikeFeed";
 
+    public static final String URL_GETCLASSROOMS = URL_ARTI_HOST + "GetClassrooms";
+    public static final String URL_GETSUBJECT = URL_ARTI_HOST + "GetSubject";
+    public static final String URL_GETTOPICS = URL_ARTI_HOST + "GetTopics";
+    public static final String URL_CREATEASSIGNMENT = URL_ARTI_HOST + "CreateAssignment";
+
+
 
     public static final String TEST_USER_ID = "370";
     public static final String TEST_GET_ALL_FEEDS = "141";
@@ -64,5 +76,15 @@ public class AppConstant {
     public static final String TEST_TAGGED_BY = "134";
     public static final String[] tagUserArray = new String[]{"141", "167"};
 
+
+    /**
+     * Managing Teacher office Fragment by using tags
+     */
+    public static final String FRAGMENT_TAG_TEACHER_CLASSWALL="teacher_classwall";
+    public static final String FRAGMENT_TAG_TEACHER_NOTES="teacher_notes";
+    public static final String FRAGMENT_TAG_TEACHER_QUIZ="teacher_quiz";
+    public static final String FRAGMENT_TAG_TEACHER_MARKSCRIPT="teacher_markscript";
+    public static final String FRAGMENT_TAG_TEACHER_RESULTS="teacher_results";
+    public static final String FRAGMENT_TAG_TEACHER_PROGRESS_REPORT="teacher_progress_report";
 
 }

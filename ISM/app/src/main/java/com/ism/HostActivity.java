@@ -189,7 +189,7 @@ public class HostActivity extends Activity implements FragmentListener {
         imgLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PreferenceData.clearPreference(HostActivity.this);
+                PreferenceData.clearWholePreference(HostActivity.this);
 	            Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
 	            startActivity(intentLogin);
 	            finish();
@@ -450,6 +450,14 @@ public class HostActivity extends Activity implements FragmentListener {
 
             } else if (view == txtAction) {
                 Log.e(TAG, "text action");
+                /*switch (currentMainFragment) {
+                    case FRAGMENT_CLASSROOM:
+	                    switch (ClassroomFragment.getCurrentChildFragment()) {
+		                    case ClassroomFragment.FRAGMENT_CLASSWALL:
+			                    break;
+	                    }
+	                    break;
+                }*/
             } else {
                 boolean isActive = false;
                 for (int i = 0; i < currentControllerTopMenu.size(); i++) {

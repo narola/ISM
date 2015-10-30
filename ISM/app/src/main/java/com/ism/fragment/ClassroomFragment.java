@@ -28,7 +28,7 @@ public class ClassroomFragment extends Fragment implements HostActivity.HostList
 	public static final int FRAGMENT_LESSON_NOTES = 1;
 	public static final int FRAGMENT_ASSIGNMENT = 2;
 	public static final int FRAGMENT_EXAM = 3;
-	private int fragment;
+	static private int fragment;
 
     public static ClassroomFragment newInstance(int fragment) {
         ClassroomFragment fragClassroom = new ClassroomFragment();
@@ -112,6 +112,10 @@ public class ClassroomFragment extends Fragment implements HostActivity.HostList
 		} catch (Exception e) {
 			Log.e(TAG, "loadFragment Exception : " + e.toString());
 		}
+	}
+
+	public static int getCurrentChildFragment() {
+		return fragment;
 	}
 
 }

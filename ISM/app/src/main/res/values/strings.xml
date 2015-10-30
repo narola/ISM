@@ -200,4 +200,6 @@
 	<string name="female">Female</string>
 	<string name="tutorial_group_description"><![CDATA[Tutorial group is 5 members group of randomly<br>selected students, put together to <font color=\'#81D525\'>share ideas,</font><br><font color=\'#CC89EA\'>collaborate</font> and <font color=\'#F5A438\'>do assignments.</font>]]></string>
 	<string name="msg_offline">You are offline!\nPlease check your internet connection.</string>
+	<string name="msg_tutorial_group_pending">Your Tutorial group will be created as soon as other members join.</string>
+	<string name="msg_waiting_for_other_members">Group is not yet complete. Waiting for other members to join.</string>
 </resources>
