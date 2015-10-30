@@ -21,4 +21,8 @@
 
     <!-- Assignment student color -->
     <color name="color_gray_assignment">#929292</color>
+
+    <color name="news_feed_separator_color">#BABABA</color>
+    <color name="news_feed_post_box_color">#90BABABA</color>
+    <color name="color_black_light">#90000000</color>
 </resources>

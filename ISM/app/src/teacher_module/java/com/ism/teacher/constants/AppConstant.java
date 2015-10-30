@@ -66,6 +66,8 @@ public class AppConstant {
     public static final String URL_GETSUBJECT = URL_ARTI_HOST + "GetSubject";
     public static final String URL_GETTOPICS = URL_ARTI_HOST + "GetTopics";
     public static final String URL_CREATEASSIGNMENT = URL_ARTI_HOST + "CreateAssignment";
+    public static final String URL_GET_COURSES = URL_ARTI_HOST + "GetCourses";
+    public static final String URL_CREATE_EXAM = URL_ARTI_HOST + "CreateExam";
 
 
 

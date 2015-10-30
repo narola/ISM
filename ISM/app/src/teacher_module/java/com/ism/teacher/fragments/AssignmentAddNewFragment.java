@@ -134,7 +134,7 @@ public class AssignmentAddNewFragment extends Fragment {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_ASSIGNMENT_EXAM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, TeacherChatFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance()).commit();
                     break;
 
             }
