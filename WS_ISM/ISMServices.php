@@ -78,6 +78,7 @@ switch ($_REQUEST['Service'])
     case "GetQuestionBank":
     case "GetCourses":
     case "GetSubject":
+    case "GetTopics":
     case "GetClassrooms":
     case "GetAllExams":
     case "GetExamQuestions":

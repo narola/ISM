@@ -572,12 +572,12 @@ class TeacherFunctions
         if($result){
             $post['assignment_id']=mysql_insert_id();
             $status="success";
-           // $message="";
+            $message="Assignment created";
         }
         else{
             $post['assignment_id']="";
             $status="failed";
-           // $message="";
+            $message="";
         }
 
         $data[]=$post;
