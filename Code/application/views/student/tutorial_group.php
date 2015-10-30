@@ -38,7 +38,7 @@
                 	<div class="col-sm-12">
                     	<div class="mate_user_img">
                             <?php 
-                            $topic_img  =  '/'.UPLOAD_URL.'/'.$topic['profile_link'];
+                            $topic_img  =  UPLOAD_URL.'/'.$topic['profile_link'];
                                 if($topic['profile_link'] == ''){
                                     $topic_img = '/assets/images/avatar.png';
                                 }
@@ -78,7 +78,7 @@
                                 <?php 
                                 $imgs = '/assets/images/avatar.png';
                                 if($v['profile_link'] != ''){
-                                    $imgs = '/'.UPLOAD_URL.'/'.$v['profile_link']; 
+                                    $imgs = UPLOAD_URL.'/'.$v['profile_link']; 
                                 }
 
                                 ?>
@@ -151,8 +151,8 @@
                     </div>
                 </div>
                 <div class="calculator row " id="accordian_calc">
-                     <!-- <iframe  height="575" src="http://web2.0calc.com/widgets/vertical/?options=%7B%22angular%22%3A%22deg%22%2C%22options%22%3A%22show%22%2C%22menu%22%3A%22show%22%7D" scrolling="no" style="border: 1px solid silver;position:absolute;clip:rect(37px,1100px,800px,0px);"> 
-                    </iframe> -->
+                      <iframe  height="575" src="http://web2.0calc.com/widgets/vertical/?options=%7B%22angular%22%3A%22deg%22%2C%22options%22%3A%22show%22%2C%22menu%22%3A%22show%22%7D" scrolling="no" style="border: 1px solid silver;position:absolute;clip:rect(37px,1100px,800px,0px);"> 
+                    </iframe> 
                 </div>
                 <!--white board-->
                 <div class="white_board">
@@ -296,7 +296,7 @@
                                 <?php 
                                 $imgs = '/assets/images/avatar.png';
                                 if($v['profile_link'] != ''){
-                                    $imgs = '/'.UPLOAD_URL.'/'.$v['profile_link']; 
+                                    $imgs = UPLOAD_URL.'/'.$v['profile_link']; 
                                 }
 
                                 ?>
@@ -318,10 +318,6 @@
             </div>
 
             <script>
-
-
-
-
 var time_count = "<?php echo $time; ?>";
 var max_count = "<?php echo $time; ?>";
 start_timer = true;

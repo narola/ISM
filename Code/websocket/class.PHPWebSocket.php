@@ -2146,9 +2146,8 @@ class PHPWebSocket {
                     . "LEFT JOIN `" . TBL_STUDENT_EXAM_SCORE . "` `ss` ON `ss`.`exam_id` = `te`.`exam_id` AND `ss`.`user_id` = $userID "
                     . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' "
                     . "AND `t`.`is_delete` = 0 LIMIT 1";
-
             $row = mysqli_query($link, $query);
-
+            pr($query);
             if (mysqli_num_rows($row) == 1) {
                 $data['exam'] = mysqli_fetch_assoc($row);
 
@@ -2157,10 +2156,11 @@ class PHPWebSocket {
                         . "FROM (SELECT '" . $userID . "', '" . $data['exam']['exam_id'] . "') AS tmp "
                         . " WHERE NOT EXISTS ( SELECT user_id,exam_id "
                         . "FROM " . TBL_STUDENT_EXAM_SCORE . " "
-                        . "WHERE user_id = " . $userID . " AND `is_delete` = 0  "
+                        . "WHERE user_id = " . $userID . " "
                         . "AND exam_id = " . $data['exam']['exam_id'] . ") LIMIT 1";
+                
+                pr($query);
                 mysqli_query($link, $query);
-
                 $current_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
                 if (isset($data['exam']) && !empty($data['exam'])) {
                     if (isset($data['exam']['created_date'])) {

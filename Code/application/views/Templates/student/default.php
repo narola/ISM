@@ -459,7 +459,7 @@ function toHHMMSS (sec) {
 <?php if(isset($menu) && $menu == 'week'){ ?>
 <script type="text/javascript">
 
-
+$(document).ready(function(){
             $('.calc_header a').click(function(){
                 if(!$('.calc_header a').hasClass('collapsed')){
                     $('.calc_header a span').removeClass('fa-angle-up');    

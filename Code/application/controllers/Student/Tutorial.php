@@ -352,7 +352,6 @@ class Tutorial extends ISM_Controller {
 		}else{
 			$data['error'] = 'Topic or Exam is not allocated for this week!';
 		}
-		//p($data,true);
 		$this->template->load('student/default','student/exam_question_answer',$data);
 	}
 
