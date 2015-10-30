@@ -45,11 +45,11 @@
                     <div class="group_score">
                         <hr>
                         <div>
-                            <h2 class="group_total_points txt_red"><?php echo $member['score']; ?></h2>
+                            <h2 class="group_total_points txt_red"><?php echo ($member['score']!='') ? $member['score'] : 0; ?></h2>
                             <p>Score</p>
                         </div>
                         <div>
-                            <h2 class="group_rank txt_green">04</h2>
+                            <h2 class="group_rank txt_green"><?php echo $all_groups['exams']; ?></h2>
                             <p>Exams</p>
                         </div>
                         <div class="clearfix"></div>
@@ -66,10 +66,10 @@
             </div>
             <div class="allocate_topic_wrapper mCustomScrollbar" data-mcs-theme="minimal-dark">
                 <!--month1-->
-                <div class="allocated_topics month_wise">
-                    <div class="month_name"><span>August</span></div>
 
                     <?php if(!empty($all_groups_topics)){ foreach($all_groups_topics as $topic){ ?>
+                <div class="allocated_topics month_wise">
+                    <div class="month_name"><span>WEEK <?php echo $topic['week_no']; ?></span></div>
                         <!--card1-->
                         <div class="exams_holder">
                             <div class="exam_year">
@@ -82,37 +82,11 @@
                             </div>                                
                         </div>
                         <!--//card1-->
-                    <?php } } ?>                            
                 </div>
+                    <?php } } ?>                            
                 <!--//month1-->
                 <!--month2-->
-                <div class="allocated_topics month_wise">
-                    <div class="month_name"><span>September</span></div>
-                    <!--card1-->
-                    <div class="exams_holder">
-                        <div class="exam_year">
-                            <p>Organic Chemistry</p>
-                        </div>
-                        <div class="type_holder">
-                            <div class="exam_type"><p>Discussion</p><p>29 Comments</p></div>
-                            <div class="exam_cat"><p>Examination - Quiz</p><p>500 Score</p></div>
-                            <div class="clearfix"></div>
-                        </div>                                
-                    </div>
-                    <!--//card1-->
-                    <!--card1-->
-                    <div class="exams_holder">
-                        <div class="exam_year">
-                            <p>Osctillation & Waves</p>
-                        </div>
-                        <div class="type_holder">
-                            <div class="exam_type"><p>Discussion</p><p>35 Comments</p></div>
-                            <div class="exam_cat"><p>Examination - Quiz</p><p>490 Score</p></div>
-                            <div class="clearfix"></div>
-                        </div>                                
-                    </div>
-                    <!--//card1-->
-                </div>
+                
                 <!--//month2-->
             </div>
         </div>

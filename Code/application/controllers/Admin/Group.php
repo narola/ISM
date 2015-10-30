@@ -186,26 +186,21 @@ class Group extends ADMIN_Controller {
 
         $this->data['all_groups'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
                 TBL_TUTORIAL_GROUPS . '.group_status,' . TBL_TUTORIAL_GROUPS . '.is_completed,' . TBL_COURSES . '.course_name,' .
-                TBL_COURSES . '.id as course_id', $where, array(
+                TBL_COURSES . '.id as course_id, count(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id) as exams', $where, array(
             'single' => TRUE,
-            'group_by' => array(TBL_TUTORIAL_GROUP_MEMBER . '.group_id'),
+            'group_by' => array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'),
             'join' => array(
                 array(
-                    'table' => TBL_TUTORIAL_GROUP_MEMBER,
-                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
-                    'join' => 'right'
-                ),
-                array(
-                    'table' => TBL_USERS,
-                    'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
-                ),
-                array(
-                    'table' => TBL_STUDENT_ACADEMIC_INFO,
-                    'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
+                    'table' => TBL_CLASSROOMS,
+                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_TUTORIAL_GROUPS . '.classroom_id',
                 ),
                 array(
                     'table' => TBL_COURSES,
-                    'condition' => TBL_COURSES . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.course_id',
+                    'condition' => TBL_COURSES . '.id = ' . TBL_CLASSROOMS . '.course_id',
+                ),
+                array(
+                    'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
+                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'
                 )
             )
                 )
@@ -252,9 +247,11 @@ class Group extends ADMIN_Controller {
 
         $this->data['all_groups_topics'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
                 TBL_TUTORIAL_GROUPS . '.group_status,' . TBL_TUTORIAL_GROUPS . '.is_completed,' .
-                TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score,' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.topic_id,' .
-                TBL_TUTORIAL_TOPIC . '.topic_name,COUNT(' . TBL_TUTORIAL_GROUP_DISCUSSION . '.id) as total', $where, array(
-            'group_by' => array(TBL_TUTORIAL_TOPIC . '.id'),
+                TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score,' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.topic_id,' .TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.week_no,' .
+                TBL_TUTORIAL_TOPIC . '.topic_name,COUNT(' . TBL_TUTORIAL_GROUP_DISCUSSION . '.id) as total', 
+                array('where'=>array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'=>$gid)), 
+                array(
+            'group_by' => array(TBL_TUTORIAL_GROUP_DISCUSSION . '.group_id'),
             'join' => array(
                 array(
                     'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
@@ -268,11 +265,12 @@ class Group extends ADMIN_Controller {
                 array(
                     'table' => TBL_TUTORIAL_GROUP_DISCUSSION,
                     'condition' => TBL_TUTORIAL_GROUP_DISCUSSION . '.topic_id=' . TBL_TUTORIAL_TOPIC . '.id',
-                    'join' => 'right'
+                    // 'join' => 'right'
                 )
             )
                 )
         );
+// p($this->data['all_groups_topics'], true);
 $where = "`".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`group_id` = $gid AND `".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`created_date` >= DATE_SUB(NOW(), INTERVAL 6 month)";
                                 
         $group_performance = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,'sum('.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_score) as y,".TBL_SUBJECTS . ".subject_name as name",$where,
