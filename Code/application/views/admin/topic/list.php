@@ -97,9 +97,8 @@
                             <?php }else{ ?>
                             <a href="<?php echo base_url().'admin/question/set?exam_id='.$topic['exam_id'];?>" class="label label_red">Question Set</a>
                             <?php } ?>
-
-                        
-                       		<!-- Split button -->
+                            
+                            <!-- Split button -->
                             
                             <div class="btn-group">
                               <button type="button" class="set_status_<?php echo $topic['id']; ?> btn btn-default"><?php echo ($topic['status']) ? $topic['status'] : 'Select Status'; ?></button>

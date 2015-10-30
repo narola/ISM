@@ -326,12 +326,12 @@ if ("WebSocket" in window)
 
         if (obj.type == 'studymate') {
             if (wp == obj.from) {
-                $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p><div>Just Now</div></div>");
+                $('#chat_container .chat[data-id="' + obj.to + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='to'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
                 $('.chat[data-id="' + obj.to + '"] .chat_loading').fadeOut(300);
             } else {
-                $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div>Just Now</div></div>");
+                $('#chat_container .chat[data-id="' + obj.from + '"] .chat_text .mCustomScrollBox .mCSB_container').append("<div class='from'><p>" + obj.message + "</p><div class='just_now'>Just Now</div></div>");
             }
-
+            $('.just_now').timestatus();
             $('.chat_text').mCustomScrollbar('scrollTo', 'bottom');
 
             if ($('#chat_container .chat.active').data('id') != obj.from && wp != obj.from) {
@@ -1634,15 +1634,41 @@ function saveImg(image) {
     ws.send(JSON.stringify(request));
 }
 
+$.fn.timestatus = function (msg) {
+    var x = 0;
+    var id = Date.now();
+    this.removeClass('just_now');
+    this.addClass(""+id);
+    var dis = '';
+    setInterval(function () {
+        if (x > 7200) {
+            dis = '2 hours ago';
+        } else if (x > 3600) {
+            dis = '1 hour ago';
+        } else if (x > 1800) {
+            dis = '30 min ago';
+        } else if (x > 900) {
+            dis = '15 min ago';
+        } else if (x > 300) {
+            dis = '5 min ago';
+        } else if (x > 120) {
+            dis = '2 min ago';
+        } else if (x > 60) {
+            dis = '1 min ago';
+        } else if (x > 30) {
+            dis = '30 sec ago';
+        } else if (x > 15) {
+            dis = '15 sec ago';
+        }else{
+            dis = 'Just Now';
+        }
+        $('.' + id).html(dis);
+        x++;
+    }, 1000, this);
 
-$.fn.timestatus = function(msg) {
-    this.html(msg);
 };
 
 $(document).ready(function () {
-
-    $('.just_now').timestatus('Hello');
-    
 
     $('.mscroll_custom').mCustomScrollbar({
         theme: "minimal-dark"
@@ -1661,7 +1687,7 @@ $(document).ready(function () {
             }
         });
     }
-    
+
 });
 
 
