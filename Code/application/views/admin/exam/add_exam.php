@@ -133,9 +133,6 @@
                         <option value="ISM_Mock" <?php echo set_select('exam_category','ISM_Mock'); ?> >ISM_Mock</option>
                         <option value="WASSCE" <?php echo set_select('exam_category','WASSCE'); ?> >WASSCE</option>
                         <option value="EndOfTerm" <?php echo set_select('exam_category','EndOfTerm'); ?> >End Of Term</option>
-                        <?php if(isset($_POST['exam_type']) || !$_POST) { ?>
-                            <option value="Tutorial" <?php echo set_select('exam_category','Tutorial'); ?> >Tutorial</option>
-                        <?php } ?>
                     </select>
                 </div>                    
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
@@ -265,17 +262,18 @@
                 
                 $('.tutorial_topic').addClass('hide');
 
-                $('#exam_category').append($('<option>', {
-                    value: 'Tutorial',
-                    text: 'Tutorial'
-                }));
+                $("#exam_category option[value='Tutorial']").each(function() {
+                    $(this).remove();
+                });
             }else{
 
                 $('.tutorial_topic').removeClass('hide');
 
-                $("#exam_category option[value='Tutorial']").each(function() {
-                    $(this).remove();
-                });
+                $('#exam_category').append($('<option>', {
+                    value: 'Tutorial',
+                    text: 'Tutorial'
+                }));
+               
             }
 
         });
@@ -328,6 +326,7 @@
         $("#course_id").val('<?php echo $get_topic["course_id"]; ?>');
         $('#classroom_id').val('<?php echo $get_topic["classroom_id"]; ?>');
         $('#subject_id').val('<?php echo $get_topic["subject_id"]; ?>');
+        $('#topic_id').val('<?php echo $_GET["topic"]; ?>');
     <?php } ?>        
 
     $(document).ready(function(){

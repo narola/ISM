@@ -37,7 +37,7 @@ class My_exam extends ISM_Controller {
 		$data['subject_list'] = select(TBL_CLASSROOM_SUBJECT.' c','s.id,s.subject_name,(SELECT COUNT(*) FROM '.TBL_STUDENT_EXAM_SCORE.' sc LEFT JOIN '.TBL_EXAMS.' e ON e.id = sc.exam_id WHERE sc.user_id = '.$user_id.' AND sc.exam_status = \'finished\' and e.subject_id = s.id) AS cnt',$where,$option);
 		
 		//	get student classroom subject detail
-		$where = array('where'=>array('e.classroom_id' => $classroom_id,'sc.exam_status'=>'finished','sc.user_id'=>$user_id,'sc.is_delete' => 0,'e.is_delete' => 0));
+		$where = array('where'=>array('e.classroom_id' => $classroom_id,'sc.exam_status'=>'finished','sc.user_id'=>$user_id,'sc.is_delete' => 0,'e.is_delete' => 0,'e.exam_category !=' => 'Tutorial'));
 		$option =  array( 'join' =>
 						array(
 							array(

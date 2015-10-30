@@ -51,11 +51,12 @@
                       <?php 
                           if(!empty($roles)) {
                             foreach($roles as $role) { 
+                                if($role['id'] !='1'){
                           ?>
                           <option value="<?php echo $role['id']; ?>" <?php echo set_select('role_id', $role['id']); ?>>
-                               <?php echo $role['role_name']; ?>
+                               <?php echo ucfirst($role['role_name']); ?>
                           </option>
-                      <?php } }else{ ?>
+                      <?php } } }else{ ?>
                           <option disabled > No Roles Found</option>  
                       <?php } ?>
                   </select>

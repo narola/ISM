@@ -492,11 +492,13 @@ if ("WebSocket" in window)
                 else
                     status = 'offline';
                 str = '';
-                str += '<div class="stm_item ' + status + '" data-id="' + obj.studymate_id + '" onerror="this.src=\'assets/images/avatar.png\'">';
-                str += '<a href="javascript:void(0);" id="mate-list" data-id="' + obj.studymate_id + '">';
-                str += '<div class="stm_user_img"><img src="uploads/' + obj.profile + '"></div>';
+                str += '<div class="stm_item ' + status + '" data-id="' + obj.studymate_id + '">';
+                str += '<a href="javascript:void(0);" id="mate_list" data-id="' + obj.studymate_id + '">';
+                str += '<div class="stm_user_img">';
+                str += '<img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile + '" class="mCS_img_loaded"></div>';
+                str += '<span class="badge message_badge"></span>';
                 str += '<p>' + obj.full_name + '</p></a>';
-                str += '<div class="clearfix"></div></div>'
+                str += '<div class="clearfix"></div></div>';
                 $('.stm_list #mCSB_5 #mCSB_5_container').append(str);
 
                 if (wp == obj.studymate_id) {

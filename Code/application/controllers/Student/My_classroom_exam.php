@@ -27,12 +27,12 @@ class My_classroom_exam extends ISM_Controller {
 		if($exam_type != '')
 		{
 			$where1 = array('where' => array('e.classroom_id' => $user_classroom,'e.is_delete' => 0,'e.exam_category !='=>'tutorial','e.exam_category'=>$exam_type));
-			$where2 = 'and exam_category ="'.$exam_type.'" and classroom_id='.$user_classroom;
+			$where2 = 'AND exam_category ="'.$exam_type.'" AND classroom_id='.$user_classroom;
 			$data['exam_type'] = $exam_type;
 		}
 		else{
 			$where1 = array('where' => array('e.classroom_id' => $user_classroom,'e.is_delete' => 0,'e.exam_category !='=>'tutorial'));
-			$where2 = 'and 1=1 and classroom_id='.$user_classroom;
+			$where2 = 'AND 1=1 AND classroom_id='.$user_classroom;
 			$data['exam_type'] = '';
 
 		}
@@ -46,7 +46,7 @@ class My_classroom_exam extends ISM_Controller {
 				)
 			);
 		$where = array('where' => array('cs.classroom_id' => $user_classroom));
-		$data['my_subject'] = select(TBL_CLASSROOM_SUBJECT.' cs','(select count(*) from '.TBL_EXAMS.' where is_delete = 0 and subject_id = s.id '.$where2.')tot_exam,s.subject_name,s.id AS subject_id,s.subject_image',$where,$option);
+		$data['my_subject'] = select(TBL_CLASSROOM_SUBJECT.' cs','(SELECT COUNT(*) FROM '.TBL_EXAMS.' WHERE is_delete = 0 AND subject_id = s.id '.$where2.')tot_exam,s.subject_name,s.id AS subject_id,s.subject_image',$where,$option);
 		
 		//	get exam list with percentage (if attampted)
 		$option = array('join' =>
@@ -58,7 +58,7 @@ class My_classroom_exam extends ISM_Controller {
 				)
 		);
 
-		$data['my_exam']  = select(TBL_EXAMS.' e','if(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time,sc.exam_status,e.exam_name,e.id as exam_id,TRUNCATE((sc.correct_answers * 100 / (select count(*) from '.TBL_EXAM_QUESTION.' where exam_id = sc.exam_id)),2) as per,e.subject_id,sc.id',$where1,$option);
+		$data['my_exam']  = select(TBL_EXAMS.' e','IF(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) AS remaining_time,sc.exam_status,e.exam_name,e.id AS exam_id,TRUNCATE((sc.correct_answers * 100 / (SELECT COUNT(*) FROM '.TBL_EXAM_QUESTION.' WHERE exam_id = sc.exam_id)),2) AS per,e.subject_id,sc.id',$where1,$option);
 		
 		/* Mark exam as finished whose time is over. */
 		foreach ($data['my_exam'] as $k => $v) {
@@ -110,7 +110,7 @@ class My_classroom_exam extends ISM_Controller {
 		/* Verify Exam  before start.*/
 		$data['verify'] = select(
 				TBL_EXAMS.' e',
-				"COUNT(*) AS `is_valid`,(select if(count(*)>0,1,0) FROM student_exam_score s JOIN exams e on e.id = s.exam_id where s.exam_status = 'started' AND s.user_id = $user_id AND e.exam_category != 'Tutorial' AND s.is_delete = 0 AND e.is_delete = 0) is_started, (select if(count(`id`)>0,1,0) FROM `exam_question` WHERE `exam_id` = $exam_id AND `is_delete` = 0) is_que_added ",
+				"COUNT(*) AS `is_valid`,(SELECT IF(COUNT(*)>0,1,0) FROM student_exam_score s JOIN exams e on e.id = s.exam_id WHERE s.exam_status = 'started' AND s.user_id = $user_id AND e.exam_category != 'Tutorial' AND s.is_delete = 0 AND e.is_delete = 0) is_started, (SELECT IF(COUNT(`id`)>0,1,0) FROM `exam_question` WHERE `exam_id` = $exam_id AND `is_delete` = 0) is_que_added ",
 				"`e`.`classroom_id` = $classroom_id AND `e`.`exam_category` != 'Tutorial' AND `e`.`id` = $exam_id AND e.is_delete = 0",
 				1
 			);
@@ -119,7 +119,7 @@ class My_classroom_exam extends ISM_Controller {
 		if($data['verify']['is_started'] == 1){
 			$data['exam_status'] = select(
 					TBL_STUDENT_EXAM_SCORE.' sc',
-					'sc.id, sc.exam_id,sc.created_date,if(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time',
+					'sc.id, sc.exam_id,sc.created_date,IF(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) AS remaining_time',
 					'sc.user_id = '.$user_id.' AND sc.exam_status = "started" AND e.classroom_id` = '. $classroom_id,
 					array('join' => array(
 							array(
@@ -128,7 +128,7 @@ class My_classroom_exam extends ISM_Controller {
 								)
 							),
 						'limit' => 1,
-						'order_by' => 'sc.id desc',
+						'order_by' => 'sc.id DESC',
 						'single' => true
 						)
 				);
@@ -180,7 +180,7 @@ class My_classroom_exam extends ISM_Controller {
 		$classroom_id = $this->session->userdata('user')['classroom_id'];
 		$data['exam_status'] = select(
 					TBL_STUDENT_EXAM_SCORE.' sc',
-					'e.exam_name,if(sc.id > 0, sc.id, 0 ) as id, sc.exam_id,sc.created_date,if(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time',
+					'e.exam_name,IF(sc.id > 0, sc.id, 0 ) AS id, sc.exam_id,sc.created_date,if(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) AS remaining_time',
 					'sc.user_id = '.$user_id.' AND sc.exam_status = "started" AND e.classroom_id` = '. $classroom_id,
 					array('join' => array(
 							array(
@@ -207,8 +207,8 @@ class My_classroom_exam extends ISM_Controller {
 			
 			$question_info = select(
 				TBL_STUDENT_EXAM_SCORE. ' ss',
-				'GROUP_CONCAT(eq.question_id) as question_id, count(eq.question_id) as total_question, (SELECT GROUP_CONCAT(`srq`.`question_id`) FROM '.TBL_STUDENT_EXAM_RESPONSE.' `srq` 
-					WHERE `srq`.`exam_id` = `ss`.`exam_id` AND `srq`.`user_id` = `ss`.`user_id`) as attemped_question',
+				'GROUP_CONCAT(eq.question_id) as question_id, COUNT(eq.question_id) AS total_question, (SELECT GROUP_CONCAT(`srq`.`question_id`) FROM '.TBL_STUDENT_EXAM_RESPONSE.' `srq` 
+					WHERE `srq`.`exam_id` = `ss`.`exam_id` AND `srq`.`user_id` = `ss`.`user_id`) AS attemped_question',
 				array('where' => array('ss.exam_id' => $data['exam_status']['exam_id'],'ss.user_id' =>$data['user_id'] )),
 				array('join' => array(
 						array(

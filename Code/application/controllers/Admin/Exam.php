@@ -240,7 +240,8 @@ class Exam extends ADMIN_Controller {
 			$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
 											   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
 											   array(
-											   		'where'=>array('subject_id'=>$this->data['get_topic']['subject_id']),
+											   		'where'=>array('subject_id'=>$this->data['get_topic']['subject_id'],
+											   					   TBL_TUTORIAL_TOPIC.'.is_delete'=>'0'),
 											   		'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
 											   		)
 											);
