@@ -78,7 +78,7 @@ public class AssignmentAddNewFragment extends Fragment {
                                                public void onClick(View v) {
 
                                                    initTab(0);
-
+                                                   loadFragmentInContainer(FRAGMENT_ASSIGNMENT_ACTIVITY);
 
                                                }
                                            }
@@ -90,7 +90,7 @@ public class AssignmentAddNewFragment extends Fragment {
                                            public void onClick(View v) {
 
                                                initTab(1);
-
+                                               loadFragmentInContainer(FRAGMENT_ASSIGNMENT_EXAM);
 
                                            }
                                        }
@@ -131,12 +131,10 @@ public class AssignmentAddNewFragment extends Fragment {
         try {
             switch (fragment) {
                 case FRAGMENT_ASSIGNMENT_ACTIVITY:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, AssignmentActivityFragment.newInstance()).commit();
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_ASSIGNMENT_EXAM:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, AuthorProfileFragment.newInstance()).commit();
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, TeacherChatFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance()).commit();
                     break;
 
             }

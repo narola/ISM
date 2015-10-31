@@ -3,6 +3,8 @@ package com.ism.teacher.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.ism.R;
 import com.ism.interfaces.FragmentListener;
+import com.ism.teacher.adapters.AssignmentSubjectsAdapter;
 
 /**
  * Created by c161 on --/10/15.
@@ -22,6 +25,9 @@ public class TeacherQuizHomeFragment extends Fragment {
 
     private FragmentListener fragListener;
 
+    private RecyclerView recyclerAssignmentSubjects;
+    AssignmentSubjectsAdapter assignmentSubjectsAdapter;
+
     public static TeacherQuizHomeFragment newInstance() {
         TeacherQuizHomeFragment teacherQuizHomeFragment = new TeacherQuizHomeFragment();
         return teacherQuizHomeFragment;
@@ -33,15 +39,19 @@ public class TeacherQuizHomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_teacher_quiz_home, container, false);
+        view = inflater.inflate(R.layout.fragment_assignment_home, container, false);
 
+        recyclerAssignmentSubjects = (RecyclerView) view.findViewById(R.id.recycler_assignment_subjects);
         initGlobal();
 
         return view;
     }
 
     private void initGlobal() {
-
+//        assignmentSubjectsAdapter = new AssignmentSubjectsAdapter();
+        recyclerAssignmentSubjects.setHasFixedSize(true);
+        recyclerAssignmentSubjects.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        recyclerAssignmentSubjects.setAdapter(new AssignmentSubjectsAdapter());
     }
 
     @Override

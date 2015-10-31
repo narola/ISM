@@ -38,7 +38,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
     public static final int FRAGMENT_ADD_ASSIGNMENT = 6;
 
 
-    private static int fragment;
+    private int fragment;
     private static int current_fragment;
 
     public static TeacherOfficeFragment newInstance(int fragment) {
@@ -76,7 +76,6 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
     private void initGlobal() {
 
         loadFragment(FRAGMENT_CLASSWALL);
-        //loadFragment(fragment);
 
     }
 
@@ -85,6 +84,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
         super.onAttach(activity);
         try {
             fragListener = (FragmentListener) activity;
+            fragListener.onFragmentAttached(fragment);
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
         }
@@ -114,7 +114,6 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
                 case FRAGMENT_CLASSWALL:
                     current_fragment = FRAGMENT_CLASSWALL;
                     getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherClassWallFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_CLASSWALL).commit();
-                    // getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AddAssignmentFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_NOTES:
                     current_fragment = FRAGMENT_NOTES;
@@ -138,10 +137,10 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
                     getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherProgressReportHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_PROGRESS_REPORT).commit();
 
                     break;
-                case FRAGMENT_ADD_ASSIGNMENT:
-                    current_fragment = FRAGMENT_ADD_ASSIGNMENT;
-                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AddAssignmentFragment.newInstance()).commit();
-                    break;
+//                case FRAGMENT_ADD_ASSIGNMENT:
+//                    current_fragment = FRAGMENT_ADD_ASSIGNMENT;
+//                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AddAssignmentFragment.newInstance()).commit();
+//                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "loadFragment Exception : " + e.toString());
@@ -165,14 +164,14 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
                     break;
                 case FRAGMENT_NOTES:
                     //getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherNoteHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_NOTES).commit();
-                    Utils.showToast("teacher notes test",getActivity());
+                    Utils.showToast("teacher notes test", getActivity());
                     break;
                 case FRAGMENT_QUIZ:
-                    Utils.showToast("teacher quiz",getActivity());
+                    Utils.showToast("teacher quiz", getActivity());
                     getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AssignmentAddNewFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_MARK_SCRIPT:
-                   // getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherMarkScriptHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_MARKSCRIPT).commit();
+                    // getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherMarkScriptHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_MARKSCRIPT).commit();
                     break;
                 case FRAGMENT_RESULTS:
 //                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherResultsHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_RESULTS).commit();
@@ -185,4 +184,53 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
             Log.e(TAG, "loadAddTopics Exception : " + e.toString());
         }
     }
+
+//    @Override
+//    public void onFragmentAttached(int fragment) {
+//        try {
+//            switch (fragment) {
+//                case FRAGMENT_CLASSWALL:
+//                    break;
+//                case FRAGMENT_NOTES:
+//                    Utils.showToast("teacher notes attached", getActivity());
+//                    break;
+//                case FRAGMENT_QUIZ:
+//                    Utils.showToast("teacher quiz attached", getActivity());
+//                    break;
+//                case FRAGMENT_MARK_SCRIPT:
+//                    break;
+//                case FRAGMENT_RESULTS:
+//                    break;
+//                case FRAGMENT_PROGRESS_REPORT:
+//                    break;
+//            }
+//        } catch (Exception e) {
+//            Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
+//        }
+//    }
+//
+//    @Override
+//    public void onFragmentDetached(int fragment) {
+//
+//        try {
+//            switch (fragment) {
+//                case FRAGMENT_CLASSWALL:
+//                    break;
+//                case FRAGMENT_NOTES:
+//                    Utils.showToast("teacher notes detached", getActivity());
+//                    break;
+//                case FRAGMENT_QUIZ:
+//                    Utils.showToast("teacher quiz detached", getActivity());
+//                    break;
+//                case FRAGMENT_MARK_SCRIPT:
+//                    break;
+//                case FRAGMENT_RESULTS:
+//                    break;
+//                case FRAGMENT_PROGRESS_REPORT:
+//                    break;
+//            }
+//        } catch (Exception e) {
+//            Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
+//        }
+//    }
 }
