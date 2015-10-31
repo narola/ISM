@@ -5,6 +5,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * Created by c166 on 23/10/15.
  */
@@ -52,6 +55,12 @@ public class Utils {
             e.printStackTrace();
         }
 
+    }
+
+    public static String getDate() {
+        SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        return curFormater.format(calendar.getTime());
     }
 
 

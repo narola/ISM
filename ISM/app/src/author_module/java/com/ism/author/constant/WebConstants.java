@@ -1,9 +1,9 @@
-package com.ism.author.login;
+package com.ism.author.constant;
 
 /**
  * these is the common class for all the api related url.
  */
-public class Urls {
+public class WebConstants {
 
     private static final String URL_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
@@ -21,6 +21,8 @@ public class Urls {
     public static final String URL_GETSUBJECT = URL_ARTI_HOST + "GetSubject";
     public static final String URL_GETTOPICS = URL_ARTI_HOST + "GetTopics";
     public static final String URL_CREATEASSIGNMENT = URL_ARTI_HOST + "CreateAssignment";
+    public static final String URL_POSTFEED = URL_ARTI_HOST + "PostFeed";
+
 
 
     public static final String STATUS_SUCCESS = "success";

@@ -1,4 +1,4 @@
-package com.ism.author.login;
+package com.ism.author.activtiy;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package com.ism.author.login;
+package com.ism.author.constant;
 
 import android.app.Activity;
 import android.content.Context;
@@ -41,11 +41,14 @@ public class AppConstant {
     public static final String videoCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
     public static final String audioCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Audios";
 
+
+
     /**
      * URLs
      */
     private static final String URL_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_LOGIN = URL_HOST + "AuthenticateUser";
+    public static final String Status_Uploading="uploading";
 
     /**
      * Hide Keyboard
