@@ -44,7 +44,6 @@ $url = uri_string();
         <script src="assets/js/bootstrap-tagsinput.js"></script> <!-- Input Tagging Feature -->
         <script src="assets/js/bootstrap-datepicker.js"></script>  <!-- Bootstrap DatePicker Script  -->
         <script src="assets/js/bootstrap-timepicker.min.js"></script>  <!-- Bootstrap TimePicker Script  -->
-        <script src="assets/js/ZeroClipboard.min.js"></script>  <!-- For Copy to Clipboard Functionality Refer:http://zeroclipboard.org/ -->
         <script src="assets/js/bootbox.min.js"></script> <!-- Bootstrap Alert,Dialog Box Script Ref: http://bootboxjs.com/  -->
         <script src="assets/js/bootstrap-switch.js"></script>  <!-- Bootstrap Switch Script  -->
         <script src="assets/js/jquery.validate.js"></script>  <!-- Jquery Validate Plugin Script  -->
@@ -178,7 +177,7 @@ $url = uri_string();
                     <div class="user_profile_img">
                         <img src="assets/images/user1.jpg">
                     </div>
-                    <h4>Adam Ross</h4>
+                    <h4>Admin</h4>
                     <a href="#">View Profile</a>
                     <div class="clearfix"></div>
                     <!--notification-->
