@@ -289,13 +289,13 @@ class TutorialGroup
 		}
 
 		if ($status == 3) {
-			$statusText = "in-complete";
+			$statusText = "incomplete";
 		} else {
 			$statusText = ($status > 1) ? 'failed' : 'success';
 		}
 		$data['status'] = $statusText;
 		$data['message'] = $message;
-		$data['data'] = "";
+		$data['data'] = array();
 
 		return $data;
 
