@@ -3,6 +3,7 @@
 class SocialFunctions
 {
 
+
     function __construct()
     {
 
@@ -267,6 +268,7 @@ class SocialFunctions
         if($result)
         {
             $feed_id=mysql_insert_id();
+            $post['feed_id']=$feed_id;
             if($video_link!=null)
             {
                 //$this->uploadMedia($feed_id,"video",$feed_media_dir);
@@ -288,6 +290,7 @@ class SocialFunctions
 
                 }
             }
+            $data[]=$post;
             $message="“Post successfully submitted";
             $status="success";
         }
@@ -330,8 +333,8 @@ class SocialFunctions
         }
         if("video"==$mediaType)
         {
-            if ($_FILES["video_link"]["error"] > 0) {
-                $message = $_FILES["video_link"]["error"];
+            if ($_FILES["mediaFile"]["error"] > 0) {
+                $message = $_FILES["mediaFile"]["error"];
 
             } else {
                 // Image 5 = Video 6 = Audio 7
@@ -339,7 +342,7 @@ class SocialFunctions
                 $mediaName = "VIDEO".$created_date."_test.mp4";
                 $uploadDir = $dir;
                 $uploadFile = FEEDS_MEDIA.$feed_media_dir . $mediaName;
-                if (move_uploaded_file($_FILES['video_link']['tmp_name'], $uploadFile)) {
+                if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
                     //store image data.
                     $link=$feed_media_dir . $mediaName;
                     $procedure_insert_set = "CALL UPDATE_VIDEO_LINK ('".$link."','".$feed_id."' )";
@@ -354,7 +357,7 @@ class SocialFunctions
         }
         else if("audio"==$mediaType)
         {
-            if ($_FILES["audio_link"]["error"] > 0) {
+            if ($_FILES["mediaFile"]["error"] > 0) {
                 $message = $_FILES["audio_link"]["error"];
                 $status=2;
             } else {
@@ -362,7 +365,7 @@ class SocialFunctions
 
                 $uploadDir = $dir;
                 $uploadFile = FEEDS_MEDIA .$feed_media_dir. $mediaName;
-                if (move_uploaded_file($_FILES['audio_link']['tmp_name'], $uploadFile)) {
+                if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
                     //store image data.
 
                     $link=$feed_media_dir . $mediaName;
@@ -587,90 +590,147 @@ class SocialFunctions
         $feeds_count = mysql_num_rows($resultGetAllFeeds);
         $feeds_array = array();
         $allfeeds=array();
-        //echo "allfeeds:" . $feeds_count;
-       // echo "\n\nfinal_query:".$queryGetAllFeeds;
-
-
-        /*
-         * $queryOn="autoGenerateCredential.school_id=schools.id and autoGenerateCredential.course_id=courses.id";
-            $queryData="SELECT * FROM ".TABLE_AUTO_GENERATED_CREDENTIAL." autoGenerateCredential INNER JOIN ".TABLE_SCHOOLS." schools INNER JOIN ".TABLE_COURSES." courses ON ".$queryOn." where username='".$userName."'";
-         */
+        $feedId[]=array();
         if ($feeds_count > 0) {
             while ($feeds = mysql_fetch_assoc($resultGetAllFeeds)) {
-
-                $feeds_array['user_id'] = $user_id;
-                $feeds_array['feed_id'] = $feeds['id'];
-                $feeds_array['feed_by'] = $feeds['feed_by'];
-                $feeds_array['feed_text'] = $feeds['feed_text'];
-                $feeds_array['video_link'] = $feeds['video_link'];
-                $feeds_array['audio_link'] = $feeds['audio_link'];
-                $feeds_array['posted_on'] = $feeds['posted_on'];
-                $feeds_array['total_like'] = $feeds['total_like'];
-                $feeds_array['total_comment'] = $feeds['total_comment'];
-                $feeds_array['created_date'] = $feeds['created_date'];
-                $feeds_array['modified_date'] = $feeds['modified_date'];
-
-                $queryUser="select * from ".TABLE_USERS." where id=". $feeds['feed_by'];
-                $resultUser=mysql_query($queryUser) or $errorMsg=mysql_error();
-
-                if(mysql_num_rows($resultUser)){
-                    $val = mysql_fetch_assoc($resultUser);
-                    $feeds_array['full_name'] = $val['full_name'];
-                    $feeds_array['profile_pic'] = $val['profile_pic'];
-
-                }
-                $queryLike="select * from ".TABLE_FEED_LIKE." where like_by=".$user_id." and feed_id= ". $feeds['id'];
-                $resultLike=mysql_query($queryLike) or $errorMsg=mysql_error();
-                $feeds_array['like'] ="0";
-                if(mysql_num_rows($resultLike)){
-                    $valLike = mysql_fetch_assoc($resultLike);
-                    $feeds_array['like'] = $valLike['is_delete'];
-                }
-                //$feeds_array['user_id'] = $feeds['user_id'];
-                $feeds_array['comment_list']=array();
-
-                if(sizeof($feeds_array)>0)
-                {
-                    $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,u.full_name,p.profile_link FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id']." Limit 2";
-                    $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
-                        $allcomment=array();
-                    //echo "\n".$queryGetAllComments;
-                    //for counting the number of rows for query result
-                    if(mysql_num_rows($resultGetAlComments))
-                    {
-                        while($comments=mysql_fetch_assoc($resultGetAlComments))
-                        {
-                            $allcomment[]=$comments;
-                        }
-
-                        $feeds_array['comment_list']=$allcomment;
-                    }
-
-                    //$data['comments']=$comments_array;
-
-                }
-                $allfeeds[]=$feeds_array;
+//                $feeds_array['user_id'] = $user_id;
+//                $feeds_array['feed_id'] = $feeds['id'];
+//                $feeds_array['feed_by'] = $feeds['feed_by'];
+//                $feeds_array['feed_text'] = $feeds['feed_text'];
+//                $feeds_array['video_link'] = $feeds['video_link'];
+//                $feeds_array['audio_link'] = $feeds['audio_link'];
+//                $feeds_array['posted_on'] = $feeds['posted_on'];
+//                $feeds_array['total_like'] = $feeds['total_like'];
+//                $feeds_array['total_comment'] = $feeds['total_comment'];
+//                $feeds_array['created_date'] = $feeds['created_date'];
+//                $feeds_array['modified_date'] = $feeds['modified_date'];
+//
+//                $queryUser="select * from ".TABLE_USERS." where id=". $feeds['feed_by'];
+//                $resultUser=mysql_query($queryUser) or $errorMsg=mysql_error();
+//
+//                if(mysql_num_rows($resultUser)){
+//                    $val = mysql_fetch_assoc($resultUser);
+//                    $feeds_array['full_name'] = $val['full_name'];
+//                    $feeds_array['profile_pic'] = $val['profile_pic'];
+//
+//                }
+//                $queryLike="select * from ".TABLE_FEED_LIKE." where like_by=".$user_id." and feed_id= ". $feeds['id'];
+//                $resultLike=mysql_query($queryLike) or $errorMsg=mysql_error();
+//                $feeds_array['like'] ="0";
+//                if(mysql_num_rows($resultLike)){
+//                    $valLike = mysql_fetch_assoc($resultLike);
+//                    $feeds_array['like'] = $valLike['is_delete'];
+//                }
+//                //$feeds_array['user_id'] = $feeds['user_id'];
+//                $feeds_array['comment_list']=array();
+//
+//                if(sizeof($feeds_array)>0)
+//                {
+//                    $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,u.full_name,p.profile_link FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id']." Limit 2";
+//                    $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
+//                        $allcomment=array();
+//                    //echo "\n".$queryGetAllComments;
+//                    //for counting the number of rows for query result
+//                    if(mysql_num_rows($resultGetAlComments))
+//                    {
+//                        while($comments=mysql_fetch_assoc($resultGetAlComments))
+//                        {
+//                            $allcomment[]=$comments;
+//                        }
+//
+//                        $feeds_array['comment_list']=$allcomment;
+//                    }
+//
+//                    //$data['comments']=$comments_array;
+//
+//                }
+                $feedId=$feeds['id'];
+                $allfeeds[]=$this->getFeedInArray($feeds,$user_id);
             }
-            //echo "\n\ncomments_query:".$queryGetAllComments;
-            //echo "\n\ncomments_count:".$comments_count;
-            $status = 1;
-            //$data['comments']=$comments_array;
-            $errorMsg="";
         } else {
-            $status = 2;
-            $errorMsg = DEFAULT_NO_RECORDS;
+
         }
+        $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." where feed_by =".$user_id." Limit 20";
+        $resultGetAllFeeds = mysql_query($queryGetAllFeeds) or $errorMsg = mysql_error();
+       // echo $queryGetAllFeeds;
+        $feeds_count = mysql_num_rows($resultGetAllFeeds);
 
+        if ($feeds_count > 0) {
+            while ($feeds = mysql_fetch_assoc($resultGetAllFeeds)) {
+                $feedID=$feeds['id'];
+               // echo $feedID."\n";
+//                    if(in_array($feedID,$feedId)){
+//                        echo $feedID."***\n";
+                $allfeeds[]=$this->getFeedInArray($feeds,$user_id);
+//                    }
+            }
+        }
+        $status = "success";
 
-        $data['status'] = ($status > 1) ? 'failed' : 'success';
+        $errorMsg="";
         $data['message'] = $errorMsg;
+        $data['status'] = $status;
         $data['data'] = $allfeeds;
 
 
         return $data;
        // return $feeds_array;
     }
+    public  function  getFeedInArray($feeds,$user_id){
+        $feeds_array['user_id'] = $user_id;
+        $feeds_array['feed_id'] = $feeds['id'];
+        $feeds_array['feed_by'] = $feeds['feed_by'];
+        $feeds_array['feed_text'] = $feeds['feed_text'];
+        $feeds_array['video_link'] = $feeds['video_link'];
+        $feeds_array['audio_link'] = $feeds['audio_link'];
+        $feeds_array['posted_on'] = $feeds['posted_on'];
+        $feeds_array['total_like'] = $feeds['total_like'];
+        $feeds_array['total_comment'] = $feeds['total_comment'];
+        $feeds_array['created_date'] = $feeds['created_date'];
+        $feeds_array['modified_date'] = $feeds['modified_date'];
 
+
+        $queryUser="select * from ".TABLE_USERS." where id=". $feeds['feed_by'];
+        $resultUser=mysql_query($queryUser) or $errorMsg=mysql_error();
+
+        if(mysql_num_rows($resultUser)){
+            $val = mysql_fetch_assoc($resultUser);
+            $feeds_array['full_name'] = $val['full_name'];
+            $feeds_array['profile_pic'] = $val['profile_pic'];
+
+        }
+        $queryLike="select * from ".TABLE_FEED_LIKE." where like_by=".$user_id." and feed_id= ". $feeds['id'];
+        $resultLike=mysql_query($queryLike) or $errorMsg=mysql_error();
+        $feeds_array['like'] ="0";
+        if(mysql_num_rows($resultLike)){
+            $valLike = mysql_fetch_assoc($resultLike);
+            $feeds_array['like'] = $valLike['is_delete'];
+        }
+        //$feeds_array['user_id'] = $feeds['user_id'];
+        $feeds_array['comment_list']=array();
+
+        if(sizeof($feeds_array)>0)
+        {
+            $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,u.full_name,p.profile_link FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id']." Limit 2";
+            $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
+            $allcomment=array();
+            //echo "\n".$queryGetAllComments;
+            //for counting the number of rows for query result
+            if(mysql_num_rows($resultGetAlComments))
+            {
+                while($comments=mysql_fetch_assoc($resultGetAlComments))
+                {
+                    $allcomment[]=$comments;
+                }
+
+                $feeds_array['comment_list']=$allcomment;
+            }
+
+            //$data['comments']=$comments_array;
+
+        }
+        return $feeds_array;
+    }
 
 }
 

@@ -113,7 +113,7 @@ class StudyMateFunctions
             }
             $querySchool="SELECT * FROM `student_academic_info` WHERE classroom_id=".$classroom_id;
             $resultSchool=mysql_query($querySchool) or $message=mysql_error();
-            echo $querySchool;
+           // echo $querySchool;
             if(mysql_num_rows($resultSchool)){
                 while($row=mysql_fetch_assoc($resultSchool)){
                     $suggested_studymate_id=$row['user_id'];

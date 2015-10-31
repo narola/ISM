@@ -142,8 +142,8 @@ class ExamFunctions
                     } else {
                         $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_SUBJECTIVE_EVALUATION . " WHERE `exam_id`=" . $exam_id . " and evaluation_by=".$row['exam_assessor']." and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ")";
                         $resultStudentRes = mysql_query($queryStudentRes) or $message = mysql_error();
-                        echo $queryStudentRes;
-                        echo "\n".mysql_num_rows($resultStudentRes);
+                        //echo $queryStudentRes;
+                       // echo "\n".mysql_num_rows($resultStudentRes);
                         $evaluations=array();
                         if (mysql_num_rows($resultStudentRes)) {
                             while ($rowEvaluation = mysql_fetch_assoc($resultStudentRes)) {
@@ -316,6 +316,10 @@ class ExamFunctions
         $exam_mode = validateObject ($postData , 'exam_mode', "");
         $exam_mode = addslashes($exam_mode);
 
+        $book_id = validateObject ($postData , 'book_id', "");
+        $book_id = addslashes($book_id);
+
+
         $exam_type = validateObject ($postData , 'exam_type', "");
         $exam_type = addslashes($exam_type);
 
@@ -350,8 +354,8 @@ class ExamFunctions
         $random_question = validateObject ($postData , 'random_question', "");
         $random_question = addslashes($random_question);
 
-        $insertFields="`created_by`,`exam_name`, `classroom_id`, `subject_id`, `exam_type`, `exam_category`, `exam_mode`, `pass_percentage`, `duration`, `instructions`, `negative_marking`,`negative_mark_value`, `random_question`, `declare_results`,`attempt_count`";
-        $insertValues=$user_id.",'".$exam_name."',".$classroom_id.",".$subject_id.",'".$exam_type."','".$exam_category."','".$exam_mode."',".$passing_percent.",".$exam_duration.",'".$exam_instruction."','".$negative_marking."',".$negative_mark_value.",'".$random_question."','".$declare_results."','".$attempt_count."'";
+        $insertFields="`created_by`,`exam_name`, `book_id`,`classroom_id`, `subject_id`, `exam_type`, `exam_category`, `exam_mode`, `pass_percentage`, `duration`, `instructions`, `negative_marking`,`negative_mark_value`, `random_question`, `declare_results`,`attempt_count`";
+        $insertValues=$user_id.",'".$exam_name."',".$book_id.",".$classroom_id.",".$subject_id.",'".$exam_type."','".$exam_category."','".$exam_mode."',".$passing_percent.",".$exam_duration.",'".$exam_instruction."','".$negative_marking."',".$negative_mark_value.",'".$random_question."','".$declare_results."','".$attempt_count."'";
 
         $query="INSERT INTO ".TABLE_EXAMS."(".$insertFields.") VALUES (".$insertValues.")";
         $result=mysql_query($query) or  $message=mysql_error();
@@ -368,11 +372,11 @@ class ExamFunctions
               //  echo $queryInsertExamSchedule;
                 if($resultExamSchedule){
                     $status="success";
-                    $message="Exam created and scheduled";
+                  //  $message="Exam created and scheduled";
                 }
                 else{
                     $status="failed";
-                    $message="Exam is created but not scheduled";
+                   // $message="Exam is created but not scheduled";
                 }
             }
             // $message="";
@@ -380,7 +384,7 @@ class ExamFunctions
         else{
             $post['exam_id']="";
             $status="failed";
-            $message="Exam is not created and scheduled";
+           // $message="Exam is not created and scheduled";
         }
 
         $data[]=$post;
