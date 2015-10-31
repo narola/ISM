@@ -14,29 +14,29 @@ public class PreferenceData {
 
 //	ProfileInfo  ============================
 	public static final String IS_REMEMBER_ME_FIRST_LOGIN = "isFirstLoginRememberMe";
-	public static final String PASSWORD = "password";
-	public static final String CREDENTIAL_ID = "credentialId";
-	public static final String SCHOOL_ID = "schoolId";
-	public static final String SCHOOL_NAME = "schoolName";
-	public static final String SCHOOL_DISTRICT = "schoolDistrict";
-	public static final String SCHOOL_TYPE = "schoolType";
-	public static final String CLASS_ID = "classId";
-	public static final String CLASS_NAME = "className";
-	public static final String COURSE_ID = "courseId";
-	public static final String COURSE_NAME = "courseName";
-	public static final String ACADEMIC_YEAR = "academicYear";
-	public static final String ROLE_ID = "roleId";
+	public static final String USER_PASSWORD = "userPassword";
+	public static final String USER_CREDENTIAL_ID = "userCredentialId";
+	public static final String USER_SCHOOL_ID = "userSchoolId";
+	public static final String USER_SCHOOL_NAME = "userSchoolName";
+	public static final String USER_SCHOOL_DISTRICT = "userSchoolDistrict";
+	public static final String USER_SCHOOL_TYPE = "userSchoolType";
+	public static final String USER_CLASS_ID = "userClassId";
+	public static final String USER_CLASS_NAME = "userClassName";
+	public static final String USER_COURSE_ID = "userCourseId";
+	public static final String USER_COURSE_NAME = "userCourseName";
+	public static final String USER_ACADEMIC_YEAR = "userAcademicYear";
+	public static final String USER_ROLE_ID = "userRoleId";
 //	=========================================
 
-	public static final String SCHOOL_GRADE = "schoolGrade";
+	public static final String USER_SCHOOL_GRADE = "userSchoolGrade";
 	public static final String IS_TUTORIAL_GROUP_ALLOCATED = "isTutorialGroupAllocated";
 	public static final String IS_TUTORIAL_GROUP_ACCEPTED = "isTutorialGroupAccepted";
 	public static final String IS_TUTORIAL_GROUP_COMPLETED = "isTutorialGroupCompleted";
 	public static final String TUTORIAL_GROUP_ID = "tutorialGroupId";
 	public static final String TUTORIAL_GROUP_NAME = "tutorialGroupName";
 	public static final String USER_ID = "userId";
-	public static final String FULL_NAME = "fullName";
-	public static final String PROFILE_PIC = "profilePic";
+	public static final String USER_FULL_NAME = "userFullName";
+	public static final String USER_PROFILE_PIC = "userProfilePic";
 
 	public static void setBooleanPrefs(String prefKey, Context context, boolean value) {
 		SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_ISM, 0).edit();

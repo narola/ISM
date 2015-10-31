@@ -90,12 +90,12 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 //            if (chk_rememberme.isChecked()) {
 //
 //                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, true);
-//                PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, AuthorLoginActivity.this, etUserid.getText().toString().trim());
+//                PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, AuthorLoginActivity.this, etUserid.getText().toString().trim());
 ////                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, etPwd.getText().toString().trim());
 //
 //            } else {
 //                PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this, false);
-//                PreferenceData.setStringPrefs(PreferenceData.FULL_NAME, AuthorLoginActivity.this, "");
+//                PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, AuthorLoginActivity.this, "");
 ////                PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this, "");
 //            }
 //            authenticateUser();
@@ -143,7 +143,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this)) {
 
             chk_rememberme.setChecked(true);
-            etUserid.setText(PreferenceData.getStringPrefs(PreferenceData.FULL_NAME, AuthorLoginActivity.this));
+            etUserid.setText(PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorLoginActivity.this));
 //            etPwd.setText(PreferenceData.getStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this));
 
         }

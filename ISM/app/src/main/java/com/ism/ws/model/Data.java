@@ -1,0 +1,375 @@
+package com.ism.ws.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.ws.model.TutorialGroupMember;
+
+import java.util.ArrayList;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Data {
+
+	private String id;
+	private String credentialId;
+	private String schoolName;
+	private String courseId;
+	private String courseName;
+	private String roleId;
+	private String schoolId;
+	private String schoolDestrict;
+	private String academicYear;
+	private String userId;
+	private String userName;
+    private String classId;
+    private String className;
+    private String countryName;
+    private String stateName;
+    private String cityName;
+    private String profilePic;
+    private String schoolType;
+    private String fullName;
+	private String tutorialGroupId;
+	private String tutorialGroupJoiningStatus;
+	private String tutorialGroupComplete;
+	private String tutorialGroupName;
+	private String like;
+	private String modifiedDate;
+	private String audioLink;
+	private String postedOn;
+	private String feedBy;
+	private String totalLike;
+	private String createdDate;
+	private String feedId;
+	private String videoLink;
+	private String feedText;
+	private String totalComment;
+
+	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
+	private ArrayList<Comment> comments;
+
+	@JsonProperty("id")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+	@JsonProperty("credential_id")
+	public String getCredentialId() {
+		return credentialId;
+	}
+
+	public void setCredentialId(String credentialId) {
+		this.credentialId = credentialId;
+	}
+
+	@JsonProperty("school_name")
+    public String getSchoolName() {
+        return this.schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
+    @JsonProperty("course_id")
+	public String getCourseId() {
+        return this.courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    @JsonProperty("course_name")
+    public String getCourseName() {
+        return this.courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    @JsonProperty("role_id")
+    public String getRoleId() {
+        return this.roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    @JsonProperty("school_id")
+    public String getSchoolId() {
+        return this.schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    @JsonProperty("academic_year")
+    public String getAcademicYear() {
+        return this.academicYear;
+    }
+
+    public void setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
+    }
+
+	@JsonProperty("user_id")
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	@JsonProperty("username")
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@JsonProperty("class_id")
+	public String getClassId() {
+		return classId;
+	}
+
+	public void setClassId(String classId) {
+		this.classId = classId;
+	}
+
+	@JsonProperty("class_name")
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
+	@JsonProperty("district_name")
+	public String getSchoolDestrict() {
+		return schoolDestrict;
+	}
+
+	public void setSchoolDestrict(String schoolDestrict) {
+		this.schoolDestrict = schoolDestrict;
+	}
+
+	@JsonProperty("country_name")
+	public String getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
+	}
+
+	@JsonProperty("state_name")
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	@JsonProperty("city_name")
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+	@JsonProperty("profile_pic")
+	public String getProfilePic() {
+		return profilePic;
+	}
+
+	public void setProfilePic(String profilePic) {
+		this.profilePic = profilePic;
+	}
+
+	@JsonProperty("school_type")
+	public String getSchoolType() {
+		return schoolType;
+	}
+
+	public void setSchoolType(String schoolType) {
+		this.schoolType = schoolType;
+	}
+
+	@JsonProperty("full_name")
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	@JsonProperty("tutorial_group_id")
+	public String getTutorialGroupId() {
+		return tutorialGroupId;
+	}
+
+	public void setTutorialGroupId(String tutorialGroupId) {
+		this.tutorialGroupId = tutorialGroupId;
+	}
+
+	@JsonProperty("tutorial_group_joining_status")
+	public String getTutorialGroupJoiningStatus() {
+		return tutorialGroupJoiningStatus;
+	}
+
+	public void setTutorialGroupJoiningStatus(String tutorialGroupJoiningStatus) {
+		this.tutorialGroupJoiningStatus = tutorialGroupJoiningStatus;
+	}
+
+	@JsonProperty("tutorial_group_complete")
+	public String getTutorialGroupComplete() {
+		return tutorialGroupComplete;
+	}
+
+	public void setTutorialGroupComplete(String tutorialGroupComplete) {
+		this.tutorialGroupComplete = tutorialGroupComplete;
+	}
+
+	@JsonProperty("tutorial_group_name")
+	public String getTutorialGroupName() {
+		return tutorialGroupName;
+	}
+
+	public void setTutorialGroupName(String tutorialGroupName) {
+		this.tutorialGroupName = tutorialGroupName;
+	}
+
+	@JsonProperty("tutorial_group_members")
+	public ArrayList<TutorialGroupMember> getTutorialGroupMembers() {
+		return this.tutorialGroupMembers;
+	}
+
+	public void setTutorialGroupMembers(ArrayList<TutorialGroupMember> tutorialGroupMembers) {
+		this.tutorialGroupMembers = tutorialGroupMembers;
+	}
+
+	@JsonProperty("like")
+	public String getLike() {
+		return like;
+	}
+
+	public void setLike(String like) {
+		this.like = like;
+	}
+
+	@JsonProperty("modified_date")
+	public String getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(String modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
+	@JsonProperty("audio_link")
+	public String getAudioLink() {
+		return audioLink;
+	}
+
+	public void setAudioLink(String audioLink) {
+		this.audioLink = audioLink;
+	}
+
+	@JsonProperty("posted_on")
+	public String getPostedOn() {
+		return postedOn;
+	}
+
+	public void setPostedOn(String postedOn) {
+		this.postedOn = postedOn;
+	}
+
+	@JsonProperty("feed_by")
+	public String getFeedBy() {
+		return feedBy;
+	}
+
+	public void setFeedBy(String feedBy) {
+		this.feedBy = feedBy;
+	}
+
+	@JsonProperty("total_like")
+	public String getTotalLike() {
+		return totalLike;
+	}
+
+	public void setTotalLike(String totalLike) {
+		this.totalLike = totalLike;
+	}
+
+	@JsonProperty("comment_list")
+	public ArrayList<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(ArrayList<Comment> comments) {
+		this.comments = comments;
+	}
+
+	@JsonProperty("created_date")
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	@JsonProperty("feed_id")
+	public String getFeedId() {
+		return feedId;
+	}
+
+	public void setFeedId(String feedId) {
+		this.feedId = feedId;
+	}
+
+	@JsonProperty("video_link")
+	public String getVideoLink() {
+		return videoLink;
+	}
+
+	public void setVideoLink(String videoLink) {
+		this.videoLink = videoLink;
+	}
+
+	@JsonProperty("feed_text")
+	public String getFeedText() {
+		return feedText;
+	}
+
+	public void setFeedText(String feedText) {
+		this.feedText = feedText;
+	}
+
+	@JsonProperty("total_comment")
+	public String getTotalComment() {
+		return totalComment;
+	}
+
+	public void setTotalComment(String totalComment) {
+		this.totalComment = totalComment;
+	}
+}
