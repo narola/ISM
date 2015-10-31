@@ -23,14 +23,8 @@ import com.ism.R;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
 import com.ism.author.fragment.AddQuestionFragment;
 import com.ism.author.fragment.BooksFragment;
-import com.ism.author.fragment.FollowingFragment;
-import com.ism.author.fragment.GoTrendingFragment;
 import com.ism.author.fragment.HomeFragment;
-import com.ism.author.fragment.MyActivityFragment;
-import com.ism.author.fragment.MyFeedsFragment;
 import com.ism.author.fragment.OfficeFragment;
-import com.ism.author.fragment.ProgressReportFragment;
-import com.ism.author.fragment.SetQuizFragment;
 import com.ism.author.fragment.TrialAddNewFragment;
 import com.ism.author.fragment.TrialFragment;
 import com.ism.author.rightcontainerfragment.AuthorProfileFragment;
@@ -209,6 +203,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
             inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
     public void loadFragmentInMainContainer(int fragment) {
         try {
             switch (fragment) {

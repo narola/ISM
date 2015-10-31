@@ -215,8 +215,6 @@
             </LinearLayout>
 
 
-
-
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/d1dp"
@@ -702,7 +700,8 @@
                     android:text="@string/strsetquestion"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20dp"
+                    android:visibility="visible" />
 
                 <Button
                     android:id="@+id/btn_exam_cancel"

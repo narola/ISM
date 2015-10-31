@@ -249,6 +249,9 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
                                                     @Override
                                                     public void onClick(View v) {
 
+
+                                                        ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION);
+
                                                     }
                                                 }
         );
@@ -530,6 +533,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
             if (callCreateExamResponse.getStatus().equals(WebConstants.STATUS_SUCCESS) && callCreateExamResponse != null) {
 
                 Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
+                btn_exam_setquestion.setVisibility(View.VISIBLE);
 
             } else {
 
