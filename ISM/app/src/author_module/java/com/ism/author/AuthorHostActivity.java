@@ -20,15 +20,10 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
+import com.ism.author.fragment.AddQuestionFragment;
 import com.ism.author.fragment.BooksFragment;
-import com.ism.author.fragment.FollowingFragment;
-import com.ism.author.fragment.GoTrendingFragment;
 import com.ism.author.fragment.HomeFragment;
-import com.ism.author.fragment.MyActivityFragment;
-import com.ism.author.fragment.MyFeedsFragment;
 import com.ism.author.fragment.OfficeFragment;
-import com.ism.author.fragment.ProgressReportFragment;
-import com.ism.author.fragment.SetQuizFragment;
 import com.ism.author.fragment.TrialAddNewFragment;
 import com.ism.author.fragment.TrialFragment;
 import com.ism.author.rightcontainerfragment.AuthorProfileFragment;
@@ -88,7 +83,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_PROGRESSREPORT = 8;
     public static final int FRAGMENT_TRIAL = 9;
     public static final int FRAGMENT_ADDNEWTRIAL = 10;
-
+    public static final int FRAGMENT_ADDQUESTION = 11;
 
     //these are the right side fragments
 
@@ -205,40 +200,21 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
+
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, HomeFragment.newInstance()).commit();
                     break;
 
                 case FRAGMENT_OFFICE:
-
                     mFragmentTransaction = mFragmentManager.beginTransaction();
                     mFragmentTransaction.add(R.id.fl_fragment_container_main, OfficeFragment.newInstance());
                     mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_OFFICE));
                     mFragmentTransaction.commit();
-
                     break;
-                case FRAGMENT_BOOKS:
 
+                case FRAGMENT_BOOKS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, BooksFragment.newInstance()).commit();
                     break;
 
-                case FRAGMENT_GOTRENDING:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GoTrendingFragment.newInstance()).commit();
-                    break;
-                case FRAGMENT_SETQUIZ:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, SetQuizFragment.newInstance()).commit();
-                    break;
-                case FRAGMENT_PROGRESSREPORT:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ProgressReportFragment.newInstance()).commit();
-                    break;
-                case FRAGMENT_MYFEEDS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyFeedsFragment.newInstance()).commit();
-                    break;
-                case FRAGMENT_FOLLOWING:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, FollowingFragment.newInstance()).commit();
-                    break;
-                case FRAGMENT_MYACTIVITY:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyActivityFragment.newInstance()).commit();
-                    break;
 
                 case FRAGMENT_TRIAL:
 
@@ -248,6 +224,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     mFragmentTransaction.commit();
 
                     break;
+
                 case FRAGMENT_ADDNEWTRIAL:
 
                     mFragmentTransaction = mFragmentManager.beginTransaction();
@@ -256,6 +233,49 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     mFragmentTransaction.commit();
 
                     break;
+
+
+                case FRAGMENT_ADDQUESTION:
+
+                    mFragmentTransaction = mFragmentManager.beginTransaction();
+                    mFragmentTransaction.add(R.id.fl_fragment_container_main, AddQuestionFragment.newInstance());
+                    mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_ADDQUESTION));
+                    mFragmentTransaction.commit();
+
+                    break;
+
+
+//                case FRAGMENT_GOTRENDING:
+//
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GoTrendingFragment.newInstance()).commit();
+//                    break;
+//
+//                case FRAGMENT_SETQUIZ:
+//
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, SetQuizFragment.newInstance()).commit();
+//                    break;
+//
+//                case FRAGMENT_PROGRESSREPORT:
+//
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ProgressReportFragment.newInstance()).commit();
+//                    break;
+//
+//                case FRAGMENT_MYFEEDS:
+//
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyFeedsFragment.newInstance()).commit();
+//                    break;
+//
+//                case FRAGMENT_FOLLOWING:
+//
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, FollowingFragment.newInstance()).commit();
+//                    break;
+//
+//                case FRAGMENT_MYACTIVITY:
+//
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyActivityFragment.newInstance()).commit();
+//                    break;
+
+
             }
 
         } catch (Exception e) {
@@ -295,6 +315,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
             switch (fragment) {
                 case FRAGMENT_HOME:
+
                     currentMainFragment = fragment;
                     rlControllerTopMenu.setVisibility(View.VISIBLE);
                     txtAction.setVisibility(View.VISIBLE);
@@ -324,7 +345,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
 
                 case FRAGMENT_TRIAL:
-
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_office;
                     rlControllerTopMenu.setVisibility(View.VISIBLE);
@@ -349,9 +369,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     currentMainFragmentBg = R.color.bg_books;
                     imgBooks.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_books);
-
-//                    loadControllerTopMenu(null);
-
                     rlControllerTopMenu.setVisibility(View.VISIBLE);
                     imgBack.setVisibility(View.GONE);
                     spSubmenu.setVisibility(View.GONE);

@@ -249,6 +249,9 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
                                                     @Override
                                                     public void onClick(View v) {
 
+
+                                                        ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION);
+
                                                     }
                                                 }
         );
@@ -439,7 +442,8 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
     private String strValidationMsg;
 
     private boolean isInputsValid() {
-        return true;
+        return inputValidator.validateStringPresence(et_exam_name) && inputValidator.validateStringPresence(et_exam_attemptcount) &
+                inputValidator.validateStringPresence(et_exam_startdate) & inputValidator.validateStringPresence(et_exam_enddate);
     }
 
 
@@ -465,77 +469,84 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
     @Override
     public void onResponse(int apiMethodName, Object object, Exception error) {
 
-        if (apiMethodName == WebserviceWrapper.GETCLASSROOMS) {
 
-            ResponseObject callGetClassRoomsResponse = (ResponseObject) object;
-            if (callGetClassRoomsResponse.getStatus().equals(Urls.STATUS_SUCCESS) && callGetClassRoomsResponse != null) {
+        try {
 
-                arrListClassRooms = new ArrayList<Data>();
-                arrListClassRooms.addAll(callGetClassRoomsResponse.getData());
-                List<String> classrooms = new ArrayList<String>();
-                classrooms.add(getString(R.string.strclass));
-                for (Data course : arrListClassRooms) {
-                    classrooms.add(course.getClassName());
+            if (apiMethodName == WebserviceWrapper.GETCLASSROOMS) {
 
-                }
-                Adapters.setUpSpinner(getActivity(), sp_exam_classroom, classrooms);
-                callApiGetSubjects();
+                ResponseObject callGetClassRoomsResponse = (ResponseObject) object;
+                if (callGetClassRoomsResponse.getStatus().equals(Urls.STATUS_SUCCESS) && callGetClassRoomsResponse != null) {
 
-            } else {
-                Utils.showToast(callGetClassRoomsResponse.getMessage(), getActivity());
-            }
+                    arrListClassRooms = new ArrayList<Data>();
+                    arrListClassRooms.addAll(callGetClassRoomsResponse.getData());
+                    List<String> classrooms = new ArrayList<String>();
+                    classrooms.add(getString(R.string.strclass));
+                    for (Data course : arrListClassRooms) {
+                        classrooms.add(course.getClassName());
 
-        } else if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
+                    }
+                    Adapters.setUpSpinner(getActivity(), sp_exam_classroom, classrooms);
+                    callApiGetSubjects();
 
-            ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
-            if (callGetSubjectResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
-
-                arrListSubject = new ArrayList<Data>();
-                arrListSubject.addAll(callGetSubjectResponseObject.getData());
-                List<String> subjects = new ArrayList<String>();
-                subjects.add(getString(R.string.strsubjectname));
-                for (Data subject : arrListSubject) {
-                    subjects.add(subject.getSubjectName());
-
+                } else {
+                    Utils.showToast(callGetClassRoomsResponse.getMessage(), getActivity());
                 }
 
-                Adapters.setUpSpinner(getActivity(), sp_exam_subjectname, subjects);
+            } else if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
 
-            } else {
-                Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
-            }
+                ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
+                if (callGetSubjectResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
 
-        } else if (apiMethodName == WebserviceWrapper.GETTOPICS) {
+                    arrListSubject = new ArrayList<Data>();
+                    arrListSubject.addAll(callGetSubjectResponseObject.getData());
+                    List<String> subjects = new ArrayList<String>();
+                    subjects.add(getString(R.string.strsubjectname));
+                    for (Data subject : arrListSubject) {
+                        subjects.add(subject.getSubjectName());
 
-            ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
-            if (callGetTopicsResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
+                    }
 
-                arrListTopic = new ArrayList<Data>();
-                arrListTopic.addAll(callGetTopicsResponseObject.getData());
-                List<String> topics = new ArrayList<String>();
-                topics.add(getString(R.string.strtopic));
-                for (Data topic : arrListTopic) {
-                    topics.add(topic.getTopicName());
+                    Adapters.setUpSpinner(getActivity(), sp_exam_subjectname, subjects);
 
+                } else {
+                    Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
                 }
-                Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, topics);
-            } else {
-                Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, arrListDefalt);
-                Utils.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
+
+            } else if (apiMethodName == WebserviceWrapper.GETTOPICS) {
+
+                ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
+                if (callGetTopicsResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
+
+                    arrListTopic = new ArrayList<Data>();
+                    arrListTopic.addAll(callGetTopicsResponseObject.getData());
+                    List<String> topics = new ArrayList<String>();
+                    topics.add(getString(R.string.strtopic));
+                    for (Data topic : arrListTopic) {
+                        topics.add(topic.getTopicName());
+
+                    }
+                    Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, topics);
+                } else {
+                    Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, arrListDefalt);
+                    Utils.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
+                }
+
+            } else if (apiMethodName == WebserviceWrapper.CREATEEXAM) {
+
+                ResponseObject callCreateExamResponse = (ResponseObject) object;
+                if (callCreateExamResponse.getStatus().equals(Urls.STATUS_SUCCESS) && callCreateExamResponse != null) {
+
+                    Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
+
+                } else {
+
+                    Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
+                }
+
             }
 
-        } else if (apiMethodName == WebserviceWrapper.CREATEEXAM) {
-
-            ResponseObject callCreateExamResponse = (ResponseObject) object;
-            if (callCreateExamResponse.getStatus().equals(Urls.STATUS_SUCCESS) && callCreateExamResponse != null) {
-
-                Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
-
-            } else {
-
-                Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
-            }
-
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponse Exception : " + e.toString());
         }
 
     }
