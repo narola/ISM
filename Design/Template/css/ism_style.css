@@ -4035,3 +4035,6 @@ a.expand_ques + .row{
     display: inline-block;
     overflow: hidden;
 }
+#feed_post.form-control[disabled], #feed_post.form-control[readonly]{
+	background-color:#fff;
+}
