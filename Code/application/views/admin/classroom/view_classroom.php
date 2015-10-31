@@ -106,8 +106,8 @@
                                     <td>
                                         <a href="<?php echo base_url() . 'admin/classroom/update/' . $classroom['id']; ?>" class="icon icon_edit"
                                            data-toggle="tooltip" data-placement="bottom" title="Edit"> </a>
-										<a href="<?php echo base_url() . 'admin/classroom/update/' . $classroom['id']; ?>" class="icon icon_delete_color no-margin"
-                                           data-toggle="tooltip" data-placement="bottom" title="Delete"> </a>
+										<!-- <a href="<?php echo base_url() . 'admin/classroom/update/' . $classroom['id']; ?>" class="icon icon_delete_color no-margin"
+                                           data-toggle="tooltip" data-placement="bottom" title="Delete"> </a> -->
                                     </td>
                                 </tr>
                                 <?php

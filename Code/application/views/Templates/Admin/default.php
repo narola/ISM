@@ -532,9 +532,6 @@ $url = uri_string();
                 format: 'yyyy-mm-dd'
             });
 
-            // $(function () {
-                
-            // });
         </script>
 
     </body>
