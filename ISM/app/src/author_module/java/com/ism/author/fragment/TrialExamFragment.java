@@ -22,7 +22,7 @@ import com.ism.R;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
-import com.ism.author.login.Urls;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.model.CreateExamRequest;
 import com.ism.author.model.Data;
 import com.ism.author.model.GetTopicsRequest;
@@ -468,7 +468,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         if (apiMethodName == WebserviceWrapper.GETCLASSROOMS) {
 
             ResponseObject callGetClassRoomsResponse = (ResponseObject) object;
-            if (callGetClassRoomsResponse.getStatus().equals(Urls.STATUS_SUCCESS) && callGetClassRoomsResponse != null) {
+            if (callGetClassRoomsResponse.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetClassRoomsResponse != null) {
 
                 arrListClassRooms = new ArrayList<Data>();
                 arrListClassRooms.addAll(callGetClassRoomsResponse.getData());
@@ -488,7 +488,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         } else if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
 
             ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
-            if (callGetSubjectResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
+            if (callGetSubjectResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
 
                 arrListSubject = new ArrayList<Data>();
                 arrListSubject.addAll(callGetSubjectResponseObject.getData());
@@ -508,7 +508,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         } else if (apiMethodName == WebserviceWrapper.GETTOPICS) {
 
             ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
-            if (callGetTopicsResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
+            if (callGetTopicsResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
 
                 arrListTopic = new ArrayList<Data>();
                 arrListTopic.addAll(callGetTopicsResponseObject.getData());
@@ -527,7 +527,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         } else if (apiMethodName == WebserviceWrapper.CREATEEXAM) {
 
             ResponseObject callCreateExamResponse = (ResponseObject) object;
-            if (callCreateExamResponse.getStatus().equals(Urls.STATUS_SUCCESS) && callCreateExamResponse != null) {
+            if (callCreateExamResponse.getStatus().equals(WebConstants.STATUS_SUCCESS) && callCreateExamResponse != null) {
 
                 Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
 
