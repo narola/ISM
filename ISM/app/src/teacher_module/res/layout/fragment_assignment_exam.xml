@@ -1,668 +1,718 @@
-<?xml version="1.0" encoding="utf-8"?><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:background="@color/fragment_background_color"--><!--android:orientation="vertical">-->
-
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/fragment_background_color"
-    android:scrollbars="none">
+    android:orientation="vertical">
 
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/d1dp"
-            android:background="@color/news_feed_separator_color" />
-
-        <TextView
-            android:id="@+id/tv_exam_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/d15dp"
-            android:drawableLeft="@drawable/btn_personal_info"
-            android:drawablePadding="@dimen/d15dp"
-            android:gravity="center_vertical"
-            android:text="@string/strpersonalinformation"
-            android:textAllCaps="true"
-            android:textSize="@dimen/d18dp" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/d1dp"
-            android:background="@color/news_feed_post_box_color" />
-
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/d15dp">
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/d1dp"
+                android:background="@color/news_feed_separator_color" />
+
+            <TextView
+                android:id="@+id/tv_exam_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:drawableLeft="@drawable/btn_personal_info"
+                android:drawablePadding="@dimen/d15dp"
+                android:gravity="center_vertical"
+                android:text="@string/strpersonalinformation"
+                android:textAllCaps="true"
+                android:textSize="@dimen/d18dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/d1dp"
+                android:background="@color/news_feed_post_box_color" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/et_exam_name"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector"
-                    android:gravity="center_vertical"
-                    android:hint="@string/strexamname"
-                    android:paddingLeft="@dimen/d20dp"
-                    android:textColor="@color/color_black"
-                    android:textColorHint="@color/color_text_hint"
-                    android:textSize="@dimen/d20dp" />
-
-                <Spinner
-                    android:id="@+id/sp_exam_coursename"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/spinner_selector"
-                    android:entries="@array/list"
-                    android:padding="@dimen/d20dp"
-                    android:spinnerMode="dropdown" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/d10dp"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/sp_exam_passingpercent"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/spinner_selector"
-                    android:entries="@array/list"
-                    android:padding="@dimen/d20dp"
-                    android:spinnerMode="dropdown" />
+                android:orientation="vertical"
+                android:padding="@dimen/d15dp">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/tv_exam_examfor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:hint="@string/strexamfor"
-                        android:paddingLeft="@dimen/d20dp"
-                        android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
-
-                    <ToggleButton
-                        android:id="@+id/tb_exam_selectsubject"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/d20dp"
-                        android:background="@drawable/toggle_selector_assignment"
-                        android:checked="true"
-                        android:textOff=""
-                        android:textOn="" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/d10dp"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/sp_exam_subjectname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/spinner_selector"
-                    android:entries="@array/list"
-                    android:padding="@dimen/d20dp"
-                    android:spinnerMode="dropdown" />
-
-
-                <Spinner
-                    android:id="@+id/sp_exam_subjecttopic"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/spinner_selector"
-                    android:entries="@array/list"
-                    android:padding="@dimen/d20dp"
-                    android:spinnerMode="dropdown" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/d10dp"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/sp_exam_examname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/spinner_selector"
-                    android:entries="@array/list"
-                    android:padding="@dimen/d20dp"
-                    android:spinnerMode="dropdown" />
-
-                <Spinner
-                    android:id="@+id/sp_exam_examtype"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/spinner_selector"
-                    android:entries="@array/list"
-                    android:padding="@dimen/d20dp"
-                    android:spinnerMode="dropdown" />
-
-                <Spinner
-                    android:id="@+id/sp_exam_examduration"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/spinner_selector"
-                    android:entries="@array/list"
-                    android:padding="@dimen/d20dp"
-                    android:spinnerMode="dropdown" />
-
-
-                <EditText
-                    android:id="@+id/et_exam_attemptcount"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector"
-                    android:gravity="center_vertical"
-                    android:hint="@string/strattemptcount"
-                    android:paddingLeft="@dimen/d20dp"
-                    android:textColor="@color/color_black"
-                    android:textColorHint="@color/color_text_hint"
-                    android:textSize="@dimen/d20dp" />
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/d1dp"
-            android:background="@color/news_feed_post_box_color" />
-
-        <TextView
-            android:id="@+id/tv_exam_examschedule"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/d5dp"
-            android:layout_marginLeft="@dimen/d20dp"
-            android:layout_marginTop="@dimen/d5dp"
-            android:drawableLeft="@drawable/btn_exam_schedule"
-            android:drawablePadding="@dimen/d15dp"
-            android:gravity="center_vertical"
-            android:text="@string/strexamschedule"
-            android:textAllCaps="true"
-            android:textSize="@dimen/d18dp" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/d1dp"
-            android:background="@color/news_feed_post_box_color" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/d15dp">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <EditText
-                            android:id="@+id/et_exam_startdate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/selector"
-                            android:editable="false"
-                            android:gravity="center_vertical"
-                            android:hint="@string/strstartdate"
-                            android:paddingLeft="@dimen/d20dp"
-                            android:textColor="@color/color_black"
-                            android:textColorHint="@color/color_text_hint"
-                            android:textSize="@dimen/d20dp" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/btn_calendar_teacher" />
-
-                    </RelativeLayout>
-
-                    <CheckBox
-                        android:id="@+id/cb_exam_startdate_notify"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/d15dp"
-                        android:layout_marginTop="@dimen/d20dp"
-                        android:button="@drawable/notify_checkbox_assignment"
-                        android:checked="true"
-                        android:padding="@dimen/d10dp"
-                        android:text="@string/strnotifystudent"
-                        android:textColor="@color/color_text_hint"
-                        android:textSize="@dimen/d18dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <EditText
-                            android:id="@+id/et_exam_enddate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/selector"
-                            android:editable="false"
-                            android:gravity="center_vertical"
-                            android:hint="@string/strenddate"
-                            android:paddingLeft="@dimen/d20dp"
-                            android:textColor="@color/color_black"
-                            android:textColorHint="@color/color_text_hint"
-                            android:textSize="@dimen/d20dp" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/btn_calendar_teacher" />
-
-                    </RelativeLayout>
-
-                    <CheckBox
-                        android:id="@+id/cb_exam_enddate_notify"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/d15dp"
-                        android:layout_marginTop="@dimen/d20dp"
-                        android:button="@drawable/notify_checkbox_assignment"
-                        android:checked="true"
-                        android:padding="@dimen/d10dp"
-                        android:text="@string/strnotifystudent"
-                        android:textColor="@color/color_text_hint"
-                        android:textSize="@dimen/d18dp" />
-                </LinearLayout>
-
-
-            </LinearLayout>
-        </LinearLayout>
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/d1dp"
-            android:background="@color/news_feed_post_box_color" />
-
-        <TextView
-            android:id="@+id/tv_exam_examinstruction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/d5dp"
-            android:layout_marginLeft="@dimen/d20dp"
-            android:layout_marginTop="@dimen/d5dp"
-            android:drawableLeft="@drawable/btn_exam_schedule"
-            android:drawablePadding="@dimen/d15dp"
-            android:gravity="center_vertical"
-            android:text="@string/strexaminstruction"
-            android:textAllCaps="true"
-            android:textSize="@dimen/d18dp" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/d1dp"
-            android:background="@color/news_feed_post_box_color" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/d25dp"
-            android:paddingTop="@dimen/d15dp">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
-
-                <TextView
-                    android:id="@+id/tv_exam_declareresult"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/strdeclareresults"
-                    android:textColor="@color/color_black_light"
-                    android:textSize="@dimen/d20dp" />
-
-
-                <RadioGroup
-                    android:id="@+id/radio_declareresult"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/d15dp">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:drawableLeft="@drawable/custom_radio_button_assignment"
-                        android:drawablePadding="@dimen/d15dp"
-                        android:text="@string/stryes"
-                        android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/d15dp"
-                        android:button="@null"
-                        android:drawableLeft="@drawable/custom_radio_button_assignment"
-                        android:drawablePadding="@dimen/d15dp"
-                        android:text="@string/strno"
-                        android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/d15dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
-
-                <TextView
-                    android:id="@+id/tv_exam_negativemarking"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/strnegativemarking"
-                    android:textColor="@color/color_black_light"
-                    android:textSize="@dimen/d20dp" />
-
-
-                <RadioGroup
-                    android:id="@+id/radio_negativemarking"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/d15dp">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:drawableLeft="@drawable/custom_radio_button_assignment"
-                        android:drawablePadding="@dimen/d15dp"
-                        android:text="@string/stryes"
-                        android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/d15dp"
-                        android:button="@null"
-                        android:drawableLeft="@drawable/custom_radio_button_assignment"
-                        android:drawablePadding="@dimen/d15dp"
-                        android:text="@string/strno"
-                        android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/d15dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
-
-                <TextView
-                    android:id="@+id/tv_exam_randomquestion"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/strrandomquestion"
-                    android:textColor="@color/color_black_light"
-                    android:textSize="@dimen/d20dp" />
-
-
-                <RadioGroup
-                    android:id="@+id/radio_exam_random_question"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/d15dp">
-
-                    <RadioButton
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:drawableLeft="@drawable/custom_radio_button_assignment"
-                        android:drawablePadding="@dimen/d15dp"
-                        android:text="@string/stryes"
-                        android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/d15dp"
-                        android:button="@null"
-                        android:drawableLeft="@drawable/custom_radio_button_assignment"
-                        android:drawablePadding="@dimen/d15dp"
-                        android:text="@string/strno"
-                        android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/d15dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
-
-                <TextView
-                    android:id="@+id/tv_exam_usescore"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/strusescore"
-                    android:textColor="@color/color_black_light"
-                    android:textSize="@dimen/d20dp" />
-
-
-                <RadioGroup
-                    android:id="@+id/radio_exam_usescore"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/d15dp">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:drawableLeft="@drawable/custom_radio_button_assignment"
-                        android:drawablePadding="@dimen/d15dp"
-                        android:text="@string/stryes"
-                        android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/d15dp"
-                        android:button="@null"
-                        android:drawableLeft="@drawable/custom_radio_button_assignment"
-                        android:drawablePadding="@dimen/d15dp"
-                        android:text="@string/strno"
-                        android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_add_questionscore"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/d15dp"
-                android:layout_marginTop="@dimen/d15dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
-                <TextView
-                    android:id="@+id/tv_exam_questionscorevalue"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/strscorevalue"
-                    android:textColor="@color/color_black_light"
-                    android:textSize="@dimen/d20dp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d20dp"
-                    android:layout_weight="1">
-
                     <EditText
-                        android:id="@+id/et_exam_questionscorevalue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/et_exam_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:background="@drawable/selector"
                         android:gravity="center_vertical"
+                        android:hint="@string/strexamname"
+                        android:paddingLeft="@dimen/d20dp"
+                        android:textColor="@color/color_black"
+                        android:textColorHint="@color/color_text_hint"
+                        android:textSize="@dimen/d20dp" />
+
+                    <Spinner
+                        android:id="@+id/sp_exam_classroom"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/d10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_selector"
+                        android:entries="@array/list"
+                        android:padding="@dimen/d20dp"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d10dp"
+                    android:orientation="horizontal">
+
+
+                    <Spinner
+                        android:id="@+id/sp_exam_subjectname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_selector"
+                        android:entries="@array/list"
+                        android:padding="@dimen/d20dp"
+                        android:spinnerMode="dropdown" />
+
+
+                    <Spinner
+                        android:id="@+id/sp_exam_passingpercent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_selector"
+                        android:entries="@array/list"
+                        android:padding="@dimen/d20dp"
+                        android:spinnerMode="dropdown" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_exam_examfor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:hint="@string/strexamfor"
+                            android:paddingLeft="@dimen/d20dp"
+                            android:textColor="@color/color_black_light"
+                            android:textSize="@dimen/d20dp" />
+
+                        <ToggleButton
+                            android:id="@+id/tb_exam_selectexamfor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/d20dp"
+                            android:background="@drawable/toggle_selector_assignment"
+                            android:checked="true"
+                            android:textOff=""
+                            android:textOn="" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d10dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+
+                    <Spinner
+                        android:id="@+id/sp_exam_subjecttopic"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/d10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_selector"
+                        android:entries="@array/list"
+                        android:padding="@dimen/d20dp"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d10dp"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/sp_exam_examname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_selector"
+                        android:entries="@array/list"
+                        android:padding="@dimen/d20dp"
+                        android:spinnerMode="dropdown" />
+
+                    <Spinner
+                        android:id="@+id/sp_exam_exammode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/d10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_selector"
+                        android:entries="@array/list"
+                        android:padding="@dimen/d20dp"
+                        android:spinnerMode="dropdown" />
+
+                    <Spinner
+                        android:id="@+id/sp_exam_examduration"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/d10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_selector"
+                        android:entries="@array/list"
+                        android:padding="@dimen/d20dp"
+                        android:spinnerMode="dropdown" />
+
+
+                    <EditText
+                        android:id="@+id/et_exam_attemptcount"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector"
+                        android:gravity="center_vertical"
+                        android:hint="@string/strattemptcount"
                         android:inputType="number"
                         android:paddingLeft="@dimen/d20dp"
                         android:textColor="@color/color_black"
+                        android:textColorHint="@color/color_text_hint"
                         android:textSize="@dimen/d20dp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/d1dp"
+                android:background="@color/news_feed_post_box_color" />
+
+            <TextView
+                android:id="@+id/tv_exam_examschedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/d5dp"
+                android:layout_marginLeft="@dimen/d20dp"
+                android:layout_marginTop="@dimen/d5dp"
+                android:drawableLeft="@drawable/btn_exam_schedule"
+                android:drawablePadding="@dimen/d15dp"
+                android:gravity="center_vertical"
+                android:text="@string/strexamschedule"
+                android:textAllCaps="true"
+                android:textSize="@dimen/d18dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/d1dp"
+                android:background="@color/news_feed_post_box_color" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/d15dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <EditText
+                                android:id="@+id/et_exam_startdate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/selector"
+                                android:editable="false"
+                                android:gravity="center_vertical"
+                                android:hint="@string/strstartdate"
+                                android:paddingLeft="@dimen/d20dp"
+                                android:textColor="@color/color_black"
+                                android:textColorHint="@color/color_text_hint"
+                                android:textSize="@dimen/d20dp" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/btn_calendar_teacher" />
+
+                        </RelativeLayout>
+
+                        <CheckBox
+                            android:id="@+id/cb_exam_startdate_notify"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/d15dp"
+                            android:layout_marginTop="@dimen/d20dp"
+                            android:button="@drawable/notify_checkbox_assignment"
+                            android:checked="true"
+                            android:padding="@dimen/d10dp"
+                            android:text="@string/strnotifystudent"
+                            android:textColor="@color/color_text_hint"
+                            android:textSize="@dimen/d18dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/d10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <EditText
+                                android:id="@+id/et_exam_enddate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/selector"
+                                android:editable="false"
+                                android:gravity="center_vertical"
+                                android:hint="@string/strenddate"
+                                android:paddingLeft="@dimen/d20dp"
+                                android:textColor="@color/color_black"
+                                android:textColorHint="@color/color_text_hint"
+                                android:textSize="@dimen/d20dp" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/btn_calendar_teacher" />
+
+                        </RelativeLayout>
+
+                        <CheckBox
+                            android:id="@+id/cb_exam_enddate_notify"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/d15dp"
+                            android:layout_marginTop="@dimen/d20dp"
+                            android:button="@drawable/notify_checkbox_assignment"
+                            android:checked="true"
+                            android:padding="@dimen/d10dp"
+                            android:text="@string/strnotifystudent"
+                            android:textColor="@color/color_text_hint"
+                            android:textSize="@dimen/d18dp" />
+                    </LinearLayout>
+
+
                 </LinearLayout>
             </LinearLayout>
 
-            <com.narola.kpa.richtexteditor.view.RichTextEditor
-                android:id="@+id/rte_trial_activity"
+
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/rich_text_editor_height"
-                android:layout_margin="@dimen/d15dp"></com.narola.kpa.richtexteditor.view.RichTextEditor>
+                android:layout_height="@dimen/d1dp"
+                android:background="@color/news_feed_post_box_color" />
+
+            <TextView
+                android:id="@+id/tv_exam_examinstruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/d5dp"
+                android:layout_marginLeft="@dimen/d20dp"
+                android:layout_marginTop="@dimen/d5dp"
+                android:drawableLeft="@drawable/btn_exam_schedule"
+                android:drawablePadding="@dimen/d15dp"
+                android:gravity="center_vertical"
+                android:text="@string/strexaminstruction"
+                android:textAllCaps="true"
+                android:textSize="@dimen/d18dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/d1dp"
+                android:background="@color/news_feed_post_box_color" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/d25dp"
+                android:paddingTop="@dimen/d15dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+
+                    <TextView
+                        android:id="@+id/tv_exam_declareresult"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/strdeclareresults"
+                        android:textColor="@color/color_black_light"
+                        android:textSize="@dimen/d20dp" />
+
+
+                    <RadioGroup
+                        android:id="@+id/radio_declareresult"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/d15dp">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/custom_radio_button_assignment"
+                            android:drawablePadding="@dimen/d15dp"
+                            android:text="@string/stryes"
+                            android:textColor="@color/color_black_light"
+                            android:textSize="@dimen/d20dp" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/d15dp"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/custom_radio_button_assignment"
+                            android:drawablePadding="@dimen/d15dp"
+                            android:text="@string/strno"
+                            android:textColor="@color/color_black_light"
+                            android:textSize="@dimen/d20dp" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+
+                    <TextView
+                        android:id="@+id/tv_exam_negativemarking"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/strnegativemarking"
+                        android:textColor="@color/color_black_light"
+                        android:textSize="@dimen/d20dp" />
+
+
+                    <RadioGroup
+                        android:id="@+id/radio_negativemarking"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/d15dp">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/custom_radio_button_assignment"
+                            android:drawablePadding="@dimen/d15dp"
+                            android:text="@string/stryes"
+                            android:textColor="@color/color_black_light"
+                            android:textSize="@dimen/d20dp" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/d15dp"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/custom_radio_button_assignment"
+                            android:drawablePadding="@dimen/d15dp"
+                            android:text="@string/strno"
+                            android:textColor="@color/color_black_light"
+                            android:textSize="@dimen/d20dp" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_add_negative_mark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:id="@+id/tv_exam_addnegativemark"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/strnegativemark"
+                        android:textColor="@color/color_black_light"
+                        android:textSize="@dimen/d20dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/d20dp"
+                        android:layout_weight="1">
+
+                        <EditText
+                            android:id="@+id/et_exam_addnegativemark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector"
+                            android:gravity="center_vertical"
+                            android:inputType="number"
+                            android:paddingLeft="@dimen/d20dp"
+                            android:textColor="@color/color_black"
+                            android:textSize="@dimen/d20dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+
+                    <TextView
+                        android:id="@+id/tv_exam_randomquestion"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/strrandomquestion"
+                        android:textColor="@color/color_black_light"
+                        android:textSize="@dimen/d20dp" />
+
+
+                    <RadioGroup
+                        android:id="@+id/radio_exam_random_question"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/d15dp">
+
+                        <RadioButton
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/custom_radio_button_assignment"
+                            android:drawablePadding="@dimen/d15dp"
+                            android:text="@string/stryes"
+                            android:textColor="@color/color_black_light"
+                            android:textSize="@dimen/d20dp" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/d15dp"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/custom_radio_button_assignment"
+                            android:drawablePadding="@dimen/d15dp"
+                            android:text="@string/strno"
+                            android:textColor="@color/color_black_light"
+                            android:textSize="@dimen/d20dp" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+
+                    <TextView
+                        android:id="@+id/tv_exam_usescore"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/strusescore"
+                        android:textColor="@color/color_black_light"
+                        android:textSize="@dimen/d20dp" />
+
+
+                    <RadioGroup
+                        android:id="@+id/radio_exam_usescore"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/d15dp">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/custom_radio_button_assignment"
+                            android:drawablePadding="@dimen/d15dp"
+                            android:text="@string/stryes"
+                            android:textColor="@color/color_black_light"
+                            android:textSize="@dimen/d20dp" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/d15dp"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/custom_radio_button_assignment"
+                            android:drawablePadding="@dimen/d15dp"
+                            android:text="@string/strno"
+                            android:textColor="@color/color_black_light"
+                            android:textSize="@dimen/d20dp" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_add_questionscore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/d15dp"
+                    android:layout_marginTop="@dimen/d15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:id="@+id/tv_exam_questionscorevalue"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/strscorevalue"
+                        android:textColor="@color/color_black_light"
+                        android:textSize="@dimen/d20dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/d20dp"
+                        android:layout_weight="1">
+
+                        <EditText
+                            android:id="@+id/et_exam_questionscorevalue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector"
+                            android:gravity="center_vertical"
+                            android:inputType="number"
+                            android:paddingLeft="@dimen/d20dp"
+                            android:textColor="@color/color_black"
+                            android:textSize="@dimen/d20dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <com.narola.kpa.richtexteditor.view.RichTextEditor
+                    android:id="@+id/rte_trial_exam"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/rich_text_editor_height"
+                    android:layout_margin="@dimen/d15dp"></com.narola.kpa.richtexteditor.view.RichTextEditor>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/d20dp"
+                android:layout_marginTop="@dimen/d20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_exam_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_save_assignment"
+                    android:text="@string/strsave"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/d20dp" />
+
+                <Button
+                    android:id="@+id/btn_exam_setquestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:background="@drawable/btn_setquestion_assignment"
+                    android:text="@string/strsetquestion"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/d20dp" />
+
+                <Button
+                    android:id="@+id/btn_exam_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:background="@drawable/btn_cancel_assignment"
+                    android:text="@string/strcancel"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/d20dp" />
+
+            </LinearLayout>
         </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_exam_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn_save_assignment"
-                android:text="@string/strsave"
-                android:textAllCaps="true"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/d20dp" />
-
-            <Button
-                android:id="@+id/btn_exam_setquestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/d15dp"
-                android:background="@drawable/btn_setquestion_assignment"
-                android:text="@string/strsetquestion"
-                android:textAllCaps="true"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/d20dp" />
-
-            <Button
-                android:id="@+id/btn_activity_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/d15dp"
-                android:background="@drawable/btn_cancel_assignment"
-                android:text="@string/strcancel"
-                android:textAllCaps="true"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/d20dp" />
-
-
-        </LinearLayout>
-    </LinearLayout>
-</ScrollView><!--</LinearLayout>-->
+    </ScrollView>
+</LinearLayout>

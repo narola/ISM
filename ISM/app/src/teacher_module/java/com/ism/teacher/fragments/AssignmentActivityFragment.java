@@ -207,7 +207,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-               // fragListener.onFragmentAttached(TrialAddNewFragment.FRAGMENT_ASSIGNMENT_ACTIVITY);
+                // fragListener.onFragmentAttached(TrialAddNewFragment.FRAGMENT_ASSIGNMENT_ACTIVITY);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -219,7 +219,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
         super.onDetach();
         try {
             if (fragListener != null) {
-              //  fragListener.onFragmentDetached(TrialAddNewFragment.FRAGMENT_ASSIGNMENT_ACTIVITY);
+                //  fragListener.onFragmentDetached(TrialAddNewFragment.FRAGMENT_ASSIGNMENT_ACTIVITY);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
@@ -234,7 +234,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETCLASSROOMS);
             } catch (Exception e) {
-             //   Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+                //   Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
             Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
@@ -249,7 +249,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETSUBJECT);
             } catch (Exception e) {
-               // Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+                // Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
             Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
@@ -266,7 +266,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
                 new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETTOPICS);
             } catch (Exception e) {
-              //  Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+                //  Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
             Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
