@@ -24,8 +24,7 @@ import java.util.ArrayList;
 /**
  * Created by c75 on 24/10/15.
  */
-public class AllFeedsAdapter extends
-        RecyclerView.Adapter<AllFeedsAdapter.ViewHolder> {
+public class AllFeedsAdapter extends RecyclerView.Adapter<AllFeedsAdapter.ViewHolder> {
 
     ArrayList<Data> arrayListAllFeedsData;
     Comment objComment;

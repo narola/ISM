@@ -16,7 +16,7 @@ import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utils;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.helper.CircleImageView;
-import com.ism.author.login.Urls;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.model.AddCommentRequest;
 import com.ism.author.model.Data;
 import com.ism.author.model.GetAllCommentRequest;
@@ -117,7 +117,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                     AddCommentRequest addCommentRequest = new AddCommentRequest();
                     addCommentRequest.setComment(holder.etWriteComment.getText().toString());
 //                   addCommentRequest.setComment_by(listOfPostFeeds.get(position).getUserId());
-                    addCommentRequest.setComment_by(Urls.TEST_USER_ID);
+                    addCommentRequest.setComment_by(WebConstants.TEST_USER_ID);
                     addCommentRequest.setFeed_id(listOfPostFeeds.get(position).getFeedId());
                     ((HomeFragment) fragment).callAddComment(addCommentRequest);
 
@@ -139,8 +139,8 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 //                ((HomeFragment) fragment).tagFriendInFeedRequest.setTagged_by(listOfPostFeeds.get(position).getUserId());
 
                 //this is testing data.
-                ((HomeFragment) fragment).tagFriendInFeedRequest.setFeed_id(Urls.TEST_FEEDID);
-                ((HomeFragment) fragment).tagFriendInFeedRequest.setTagged_by(Urls.TEST_TAGGED_BY);
+                ((HomeFragment) fragment).tagFriendInFeedRequest.setFeed_id(WebConstants.TEST_FEEDID);
+                ((HomeFragment) fragment).tagFriendInFeedRequest.setTagged_by(WebConstants.TEST_TAGGED_BY);
                 ((HomeFragment) fragment).callGetStudyMates();
             }
         });

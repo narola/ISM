@@ -4,23 +4,17 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.R;
-import com.ism.adapter.Adapters;
-import com.ism.model.AllocateTutorialGroupRequest;
-import com.ism.model.Data;
-import com.ism.model.ResponseObject;
-import com.ism.model.TutorialGroupMember;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
+import com.ism.ws.model.TutorialGroupMember;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.ws.WebserviceWrapper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by c161 on 08/10/15.
@@ -48,7 +42,7 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 	    txtTutorialGroup.setTypeface(myTypeFace.getRalewayRegular());
 	    txtWelcomeMsg.setTypeface(myTypeFace.getRalewaySemiBold());
 
-	    txtWelcomeMsg.setText(PreferenceData.getStringPrefs(PreferenceData.FULL_NAME, WelComeActivity.this) + ", " + getString(R.string.welcome_msg));
+	    txtWelcomeMsg.setText(PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, WelComeActivity.this) + ", " + getString(R.string.welcome_msg));
         txtTutorialGroup.setText(Html.fromHtml(getString(R.string.tutorial_group_description)));
 
 	    Global.userId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, WelComeActivity.this);
@@ -62,10 +56,10 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 
 	private void callApiAllocateTutorialGroup() {
 		try {
-			AllocateTutorialGroupRequest allocateTutorialGroupRequest = new AllocateTutorialGroupRequest();
-			allocateTutorialGroupRequest.setUserId(Global.userId);
+			RequestObject requestObject = new RequestObject();
+			requestObject.setUserId(Global.userId);
 
-			new WebserviceWrapper(WelComeActivity.this, allocateTutorialGroupRequest).new WebserviceCaller()
+			new WebserviceWrapper(WelComeActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.ALLOCATE_TUTORIAL_GROUP);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiAllocateTutorialGroup Exception : " + e.toString());
@@ -100,12 +94,12 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 
 					for (TutorialGroupMember member : responseObj.getData().get(0).getTutorialGroupMembers()) {
 						if (member.getUserId().equals(Global.userId)) {
-							PreferenceData.setStringPrefs(PreferenceData.COURSE_NAME, WelComeActivity.this, member.getCourseName());
-							PreferenceData.setStringPrefs(PreferenceData.ACADEMIC_YEAR, WelComeActivity.this, member.getAcademicYear());
-							PreferenceData.setStringPrefs(PreferenceData.PROFILE_PIC, WelComeActivity.this, member.getProfilePic());
-							PreferenceData.setStringPrefs(PreferenceData.SCHOOL_NAME, WelComeActivity.this, member.getSchoolName());
-							PreferenceData.setStringPrefs(PreferenceData.SCHOOL_GRADE, WelComeActivity.this, member.getSchoolGrade());
-							PreferenceData.setStringPrefs(PreferenceData.CLASS_NAME, WelComeActivity.this, member.getClassName());
+							PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, WelComeActivity.this, member.getCourseName());
+							PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, WelComeActivity.this, member.getAcademicYear());
+							PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, WelComeActivity.this, member.getProfilePic());
+							PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, WelComeActivity.this, member.getSchoolName());
+							PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_GRADE, WelComeActivity.this, member.getSchoolGrade());
+							PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, WelComeActivity.this, member.getClassName());
 						}
 					}
 

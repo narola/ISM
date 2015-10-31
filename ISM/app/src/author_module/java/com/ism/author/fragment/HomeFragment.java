@@ -2,6 +2,7 @@ package com.ism.author.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,17 +12,18 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utils;
+import com.ism.author.activtiy.PostActivity;
 import com.ism.author.adapter.PostFeedsAdapter;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.dialog.TagUserDialog;
 import com.ism.author.dialog.ViewAllCommentsDialog;
-import com.ism.author.login.Urls;
 import com.ism.author.model.AddCommentRequest;
 import com.ism.author.model.Data;
 import com.ism.author.model.GetAllCommentRequest;
@@ -55,9 +57,8 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     }
 
     ImageView imgAddEmoticonsInPost, imgAttachFileInPost, imgAttachImageInPost, imgTagInPost;
+    LinearLayout llPost;
     EditText etWritePost;
-    TextView txtAddPost;
-
 //    ListView lvPostFeeds;
 //    PostFeedsListAdapter postFeedsAdapter;
 
@@ -72,49 +73,25 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         initGlobal(view);
-
         return view;
     }
 
     private void initGlobal(View view) {
 
-        imgAddEmoticonsInPost = (ImageView) view.findViewById(R.id.img_add_emoticons_in_post);
-        imgAttachFileInPost = (ImageView) view.findViewById(R.id.img_attach_file_in_post);
-        imgAttachImageInPost = (ImageView) view.findViewById(R.id.img_attach_image_in_post);
-        imgTagInPost = (ImageView) view.findViewById(R.id.img_tag_in_post);
-
-        etWritePost = (EditText) view.findViewById(R.id.et_writePost);
-        txtAddPost = (TextView) view.findViewById(R.id.txt_add_post);
-
-//        lvPostFeeds = (ListView) view.findViewById(R.id.lv_post_feeds);
+        llPost = (LinearLayout) view.findViewById(R.id.ll_post);
         rvPostFeeds = (RecyclerView) view.findViewById(R.id.rv_post_feeds);
-
+        etWritePost=(EditText)view.findViewById(R.id.et_writePost);
+        etWritePost.setEnabled(true);
 
         onClickAttachFile = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 onAttachFileClick(view);
-
-
             }
         };
-
-        imgAddEmoticonsInPost.setOnClickListener(onClickAttachFile);
-        imgAttachFileInPost.setOnClickListener(onClickAttachFile);
-        imgAttachImageInPost.setOnClickListener(onClickAttachFile);
-        imgTagInPost.setOnClickListener(onClickAttachFile);
-
-        onClickAddPost = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                onAddPostClick(view);
-
-
-            }
-        };
-
+        etWritePost.setOnClickListener(onClickAttachFile);
+        llPost.setOnClickListener(onClickAttachFile);
         callGetAllPostFeeds();
 
         postFeedsAdapter = new PostFeedsAdapter(this, getActivity());
@@ -151,36 +128,27 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         fragListener = null;
     }
 
-
-    private void onAddPostClick(View view) {
-
-        if (view == txtAddPost) {
-
-        }
-
-
-    }
-
     private void onAttachFileClick(View view) {
 
-        if (view == imgAddEmoticonsInPost) {
-
-        } else if (view == imgAttachFileInPost) {
-
-        } else if (view == imgAttachImageInPost) {
-
-        } else if (view == imgTagInPost) {
+        if (view == llPost || view==etWritePost) {
+            Intent intent = new Intent(getActivity(), PostActivity.class);
+            startActivity(intent);
 
         }
 
     }
+
+//    public void postFeed() {
+//        Intent intent = new Intent(getActivity(), PostActivity.class);
+//        startActivity(intent);
+//    }
 
     private void callGetAllPostFeeds() {
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 GetAllFeedsRequest getAllFeedsRequest = new GetAllFeedsRequest();
 //                getAllFeedsRequest.setUser_id("141");
-                getAllFeedsRequest.setUser_id(Urls.TEST_GET_ALL_FEEDS);
+                getAllFeedsRequest.setUser_id(WebConstants.TEST_USER_ID);
                 new WebserviceWrapper(getActivity(), getAllFeedsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETALLFEEDS);
             } catch (Exception e) {
@@ -224,7 +192,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
             try {
                 GetAllFeedsRequest getAllFeedsRequest = new GetAllFeedsRequest();
 //                getAllFeedsRequest.setUser_id("167");
-                getAllFeedsRequest.setUser_id(Urls.TEST_GETSTUDYMATES);
+                getAllFeedsRequest.setUser_id(WebConstants.TEST_GETSTUDYMATES);
                 new WebserviceWrapper(getActivity(), getAllFeedsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETSTUDYMATES);
             } catch (Exception e) {
@@ -265,7 +233,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 LikeFeedRequest likeFeedRequest = new LikeFeedRequest();
-                likeFeedRequest.setUser_id(Urls.TEST_LIKEUSERID);
+                likeFeedRequest.setUser_id(WebConstants.TEST_LIKEUSERID);
 
                 if (likePrefData.length() > 0) {
                     likeFeedRequest.setLiked_id((likePrefData.substring(0, likePrefData.length() - 1)).split(","));
@@ -298,7 +266,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
             if (apiMethodName == WebserviceWrapper.GETALLFEEDS) {
 
                 responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(Urls.STATUS_SUCCESS) && responseObj != null) {
+                if (responseObj.getStatus().equals(WebConstants.STATUS_SUCCESS) && responseObj != null) {
                     postFeedsAdapter.addAll(responseObj.getData());
                 } else {
                     Utils.showToast(responseObj.getMessage(), getActivity());
@@ -307,7 +275,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
             } else if (apiMethodName == WebserviceWrapper.GETALLCOMMENTS) {
 
                 ResponseObject getAllCommentsResponseObject = (ResponseObject) object;
-                if (getAllCommentsResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && getAllCommentsResponseObject != null) {
+                if (getAllCommentsResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && getAllCommentsResponseObject != null) {
                     Debug.e(TAG, "The message is::" + getAllCommentsResponseObject.getMessage());
                     openViewAllCommentsDialog(getAllCommentsResponseObject.getData());
                 } else {
@@ -317,7 +285,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
             } else if (apiMethodName == WebserviceWrapper.ADDCOMMENT) {
 
                 ResponseObject addCommentResponseObject = (ResponseObject) object;
-                if (addCommentResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && addCommentResponseObject != null) {
+                if (addCommentResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && addCommentResponseObject != null) {
                     Utils.showToast(addCommentResponseObject.getMessage(), getActivity());
 
                     updatePostFeedViewAfterAddComment();
@@ -329,7 +297,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
             } else if (apiMethodName == WebserviceWrapper.GETSTUDYMATES) {
 
                 ResponseObject getStudyMatesResponseObject = (ResponseObject) object;
-                if (getStudyMatesResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && getStudyMatesResponseObject != null) {
+                if (getStudyMatesResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && getStudyMatesResponseObject != null) {
                     Debug.e(TAG, "The message is::" + getStudyMatesResponseObject.getMessage());
                     openTagUserDialog(getStudyMatesResponseObject.getData());
                 } else {
@@ -339,7 +307,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
             } else if (apiMethodName == WebserviceWrapper.TAGFRIENDINFEED) {
 
                 ResponseObject tagFriendInFeedResponseObject = (ResponseObject) object;
-                if (tagFriendInFeedResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && tagFriendInFeedResponseObject != null) {
+                if (tagFriendInFeedResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && tagFriendInFeedResponseObject != null) {
                     Debug.e(TAG, "The message is::" + tagFriendInFeedResponseObject.getMessage());
                     Toast.makeText(getActivity(), tagFriendInFeedResponseObject.getMessage(),
                             Toast.LENGTH_LONG).show();

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/backgroundlogin"
     android:gravity="center"
-    tools:context="com.ism.author.login.AuthorLoginActivity">
+    tools:context="com.ism.author.activtiy.AuthorLoginActivity">
 
     <LinearLayout
         android:layout_width="@dimen/login_box_width"

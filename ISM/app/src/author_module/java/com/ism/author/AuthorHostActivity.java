@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -96,7 +97,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_HIGHSCORE = 13;
     public static final int FRAGMENT_CHAT = 14;
 
-
+    private InputMethodManager inputMethod;
     //these are the fragments for the author edit profile screen.
 
 //    public static final int FRAGMENT_TUTORIAL = 3;
@@ -200,11 +201,17 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
     //These is for the load fragmet in main container
 
-
+    public void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
     public void loadFragmentInMainContainer(int fragment) {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
+                    hideKeyboard();
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, HomeFragment.newInstance()).commit();
                     break;
 
