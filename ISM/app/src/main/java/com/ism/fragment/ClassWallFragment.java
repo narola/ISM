@@ -1,6 +1,7 @@
 package com.ism.fragment;
 
 import android.app.Fragment;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.ism.R;
 import com.ism.adapter.PostFeedsAdapter;
@@ -24,7 +26,6 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 	private RecyclerView recyclerPost;
 
 	private PostFeedsAdapter adpPostFeeds;
-	private RecyclerView.LayoutManager layoutManager;
 
 	public static ClassWallFragment newInstance() {
 		ClassWallFragment fragment = new ClassWallFragment();
@@ -47,11 +48,24 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 	private void initGlobal() {
 		recyclerPost = (RecyclerView) view.findViewById(R.id.recycler_post);
 
-		layoutManager = new LinearLayoutManager(getActivity());
-		recyclerPost.setLayoutManager(layoutManager);
+		recyclerPost.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+		RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
+			@Override
+			public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+				super.getItemOffsets(outRect, view, parent, state);
+				outRect.bottom = 10;
+				outRect.right = 10;
+				outRect.left = 10;
+				if (parent.getChildLayoutPosition(view) == 0) {
+					outRect.top = 10;
+				}
+			}
+		};
+
+		recyclerPost.addItemDecoration(itemDecoration);
 
 		if (Utility.isOnline(getActivity())) {
-			Log.e(TAG, "feed api called");
 			callApiGetAllFeeds();
 		} else {
 			Utility.toastOffline(getActivity());
@@ -63,7 +77,6 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 		try {
 			RequestObject requestObject = new RequestObject();
 			requestObject.setUserId("141");
-
 			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.GET_ALL_FEEDS);
 		} catch (Exception e) {
@@ -80,6 +93,8 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 						onResponseGetAllFeeds(object);
 						break;
 				}
+			} else {
+				Log.e(TAG, "onResponse apiCall Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponse Exception : " + e.toString());
@@ -90,11 +105,8 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 		try {
 			ResponseObject responseObj = (ResponseObject) object;
 			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				Log.e(TAG, "onResponseGetAllFeeds fetched");
 				adpPostFeeds = new PostFeedsAdapter(getActivity(), responseObj.getData());
-				Log.e(TAG, "onResponseGetAllFeeds adapter initialized");
 				recyclerPost.setAdapter(adpPostFeeds);
-				Log.e(TAG, "onResponseGetAllFeeds adapter set");
 			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
 				Log.e(TAG, "onResponseGetAllFeeds Failed : " + responseObj.getMessage());
 			}

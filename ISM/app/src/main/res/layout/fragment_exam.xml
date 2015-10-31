@@ -56,7 +56,7 @@
 		android:layout_marginLeft="@dimen/exam_padding"
 		android:layout_marginRight="@dimen/exam_padding"
 		android:layout_marginBottom="@dimen/exam_padding"
-		android:background="@drawable/bgwhite_bordergray">
+		android:background="@drawable/bg_white_border_gray">
 
 		<WebView
 			android:id="@+id/wv_instruction"
@@ -97,7 +97,7 @@
 		android:layout_marginRight="@dimen/exam_padding"
 		android:layout_marginBottom="@dimen/exam_padding"
 		android:visibility="gone"
-		android:background="@drawable/bgwhite_bordergray">
+		android:background="@drawable/bg_white_border_gray">
 
 		<ScrollView
 			android:layout_width="match_parent"

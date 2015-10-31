@@ -24,9 +24,9 @@ public class ISMStudent extends Application {
 
 		options = new DisplayImageOptions.Builder()
 				.cacheInMemory(true)
-				.showImageOnLoading(R.drawable.img_audio_stop)
-				.showImageForEmptyUri(R.drawable.img_audio_stop)
-				.showImageOnFail(R.drawable.img_audio_stop)
+				.showImageOnLoading(R.drawable.ic_classmates_active)
+				.showImageForEmptyUri(R.drawable.ic_classmates_active)
+				.showImageOnFail(R.drawable.ic_classmates_active)
 				.cacheOnDisk(true)
 				.considerExifParams(true)
 				.bitmapConfig(Bitmap.Config.RGB_565)
