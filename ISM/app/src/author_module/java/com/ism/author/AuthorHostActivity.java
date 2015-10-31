@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -22,8 +23,14 @@ import com.ism.R;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
 import com.ism.author.fragment.AddQuestionFragment;
 import com.ism.author.fragment.BooksFragment;
+import com.ism.author.fragment.FollowingFragment;
+import com.ism.author.fragment.GoTrendingFragment;
 import com.ism.author.fragment.HomeFragment;
+import com.ism.author.fragment.MyActivityFragment;
+import com.ism.author.fragment.MyFeedsFragment;
 import com.ism.author.fragment.OfficeFragment;
+import com.ism.author.fragment.ProgressReportFragment;
+import com.ism.author.fragment.SetQuizFragment;
 import com.ism.author.fragment.TrialAddNewFragment;
 import com.ism.author.fragment.TrialFragment;
 import com.ism.author.rightcontainerfragment.AuthorProfileFragment;
@@ -85,13 +92,14 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_ADDNEWTRIAL = 10;
     public static final int FRAGMENT_ADDQUESTION = 11;
 
+
     //these are the right side fragments
 
     public static final int FRAGMENT_AUTHORPROFILE = 12;
     public static final int FRAGMENT_HIGHSCORE = 13;
     public static final int FRAGMENT_CHAT = 14;
 
-
+    private InputMethodManager inputMethod;
     //these are the fragments for the author edit profile screen.
 
 //    public static final int FRAGMENT_TUTORIAL = 3;
@@ -195,23 +203,29 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
     //These is for the load fragmet in main container
 
-
+    public void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
     public void loadFragmentInMainContainer(int fragment) {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
-
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, HomeFragment.newInstance()).commit();
                     break;
 
                 case FRAGMENT_OFFICE:
+
                     mFragmentTransaction = mFragmentManager.beginTransaction();
                     mFragmentTransaction.add(R.id.fl_fragment_container_main, OfficeFragment.newInstance());
                     mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_OFFICE));
                     mFragmentTransaction.commit();
-                    break;
 
+                    break;
                 case FRAGMENT_BOOKS:
+
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, BooksFragment.newInstance()).commit();
                     break;
 
@@ -224,7 +238,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     mFragmentTransaction.commit();
 
                     break;
-
                 case FRAGMENT_ADDNEWTRIAL:
 
                     mFragmentTransaction = mFragmentManager.beginTransaction();
@@ -315,7 +328,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
             switch (fragment) {
                 case FRAGMENT_HOME:
-
                     currentMainFragment = fragment;
                     rlControllerTopMenu.setVisibility(View.VISIBLE);
                     txtAction.setVisibility(View.VISIBLE);
@@ -345,6 +357,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
 
                 case FRAGMENT_TRIAL:
+
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_office;
                     rlControllerTopMenu.setVisibility(View.VISIBLE);
@@ -369,6 +382,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     currentMainFragmentBg = R.color.bg_books;
                     imgBooks.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_books);
+
+//                    loadControllerTopMenu(null);
+
                     rlControllerTopMenu.setVisibility(View.VISIBLE);
                     imgBack.setVisibility(View.GONE);
                     spSubmenu.setVisibility(View.GONE);

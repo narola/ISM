@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.ism.author.fragment.TrialActivityFragment;
 import com.ism.utility.Utility;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -64,6 +65,12 @@ public class Utils {
             e.printStackTrace();
         }
 
+    }
+
+    public static String getDate() {
+        SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        return curFormater.format(calendar.getTime());
     }
 
     private static DatePickerDialog datePickerDob;

@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.ism.login.AppConstant;
-import com.ism.model.ResponseObject;
 
 /**
  * Created by c161 on 23/10/15.
@@ -28,14 +27,15 @@ public class WebserviceWrapper {
 	public static final int REQUEST_SCHOOL_INFO = 8;
 	public static final int ALLOCATE_TUTORIAL_GROUP = 9;
 	public static final int ACCEPT_TUTORIAL_GROUP = 10;
+	public static final int GET_ALL_FEEDS = 11;
 
 	public interface WebserviceResponse {
 		public void onResponse(Object object, Exception error, int apiCode);
 	}
 
-	public WebserviceWrapper(Context context, Object requestObject) {
+	public WebserviceWrapper(Context context, Object requestObject, WebserviceResponse webserviceResponse) {
 		this.requestObject = requestObject;
-		webserviceResponse = (WebserviceResponse) context;
+		this.webserviceResponse = webserviceResponse;
 	}
 
 	public class WebserviceCaller extends AsyncTask<Integer, Void, Object> {
@@ -82,6 +82,9 @@ public class WebserviceWrapper {
 						break;
 					case ACCEPT_TUTORIAL_GROUP:
 						responseObject = new RequestWs().getRequest(AppConstant.URL_ACCEPT_TUTORIAL_GROUP, ResponseObject.class, requestObject);
+						break;
+					case GET_ALL_FEEDS:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_GET_ALL_FEEDS, ResponseObject.class, requestObject);
 						break;
 				}
 			} catch (Exception e) {

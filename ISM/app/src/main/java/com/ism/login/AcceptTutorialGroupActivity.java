@@ -1,89 +1,101 @@
 package com.ism.login;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.HostActivity;
+import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.adapter.TutorialGroupAdapter;
-import com.ism.model.AcceptTutorialGroupRequest;
-import com.ism.model.ResponseObject;
+import com.ism.helper.CircleImageView;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.ws.WebserviceWrapper;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
- * Created by c162 on 08/10/15.
+ * Created by c161 on 30/10/15.
  */
 public class AcceptTutorialGroupActivity extends Activity implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = AcceptTutorialGroupActivity.class.getSimpleName();
 
-	private String strUserId;
-	private String strGroupId;
-	private GridView grid;
-    private TextView txtSchoolname, txtYearandcourse, txtYourtutorial, txtWelcometoism, txtUsername;
+	private GridView gridTutorialGroup;
+	private TextView txtUserName, txtUserSchoolName, txtUserYearAndCourse;
+	private CircleImageView imgUserDp;
 
-    private Button btnAccept;
+	private ImageLoader imageLoader;
+
+	private String strUserId, strGroupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.layout_accept_tutorial_group);
-        intitView();
+
+        intitGlobal();
+
     }
 
-    private void intitView() {
-        MyTypeFace myTypeFace = new MyTypeFace(this);
-        txtSchoolname = (TextView) findViewById(R.id.txt_schoolname);
-        txtYearandcourse = (TextView) findViewById(R.id.txt_yearandcourse);
-        txtYourtutorial = (TextView) findViewById(R.id.txt_yourtutorial_);
-        txtWelcometoism = (TextView) findViewById(R.id.txt_welcometoism);
-        txtUsername = (TextView) findViewById(R.id.txt_username);
-        btnAccept = (Button) findViewById(R.id.btn_accept);
-        txtUsername.setTypeface(myTypeFace.getRalewaySemiBold());
-        txtWelcometoism.setTypeface(myTypeFace.getRalewaySemiBold());
-        txtYourtutorial.setTypeface(myTypeFace.getRalewayBold());
-        txtYearandcourse.setTypeface(myTypeFace.getRalewayRegular());
-        txtSchoolname.setTypeface(myTypeFace.getRalewayRegular());
+    private void intitGlobal() {
+        txtUserSchoolName = (TextView) findViewById(R.id.txt_schoolname);
+        txtUserYearAndCourse = (TextView) findViewById(R.id.txt_yearandcourse);
+        txtUserName = (TextView) findViewById(R.id.txt_username);
+	    imgUserDp = (CircleImageView) findViewById(R.id.img_user_dp);
 
-        grid = (GridView) findViewById(R.id.gv_groupMember);
-        grid.setAdapter(new TutorialGroupAdapter(getApplicationContext()));
+        MyTypeFace myTypeFace = new MyTypeFace(this);
+	    ((TextView) findViewById(R.id.txt_welcometoism)).setTypeface(myTypeFace.getRalewaySemiBold());
+	    ((TextView) findViewById(R.id.txt_yourtutorial_)).setTypeface(myTypeFace.getRalewayBold());
+	    txtUserName.setTypeface(myTypeFace.getRalewaySemiBold());
+	    txtUserYearAndCourse.setTypeface(myTypeFace.getRalewayRegular());
+	    txtUserSchoolName.setTypeface(myTypeFace.getRalewayRegular());
+
+	    imageLoader = ImageLoader.getInstance();
+	    imageLoader.init(ImageLoaderConfiguration.createDefault(AcceptTutorialGroupActivity.this));
+
+	    Global.profilePic = AppConstant.URL_IMAGE_PATH + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AcceptTutorialGroupActivity.this);
+
+	    Global.profilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
+
+	    imageLoader.displayImage(Global.profilePic, imgUserDp, ISMStudent.options);
+	    txtUserName.setText(PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AcceptTutorialGroupActivity.this));
+	    txtUserSchoolName.setText(PreferenceData.getStringPrefs(PreferenceData.USER_SCHOOL_NAME, AcceptTutorialGroupActivity.this));
+	    txtUserYearAndCourse.setText(PreferenceData.getStringPrefs(PreferenceData.USER_CLASS_NAME, AcceptTutorialGroupActivity.this)
+	                                + ", " + PreferenceData.getStringPrefs(PreferenceData.USER_COURSE_NAME, AcceptTutorialGroupActivity.this));
+
+        gridTutorialGroup = (GridView) findViewById(R.id.gv_groupMember);
+        gridTutorialGroup.setAdapter(new TutorialGroupAdapter(AcceptTutorialGroupActivity.this));
 
 	    strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AcceptTutorialGroupActivity.this);
 	    strGroupId = PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, AcceptTutorialGroupActivity.this);
 
-	    btnAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-	            callApiAcceptTutorialGroup();
-                PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
-                Intent intentHostActivity = new Intent(AcceptTutorialGroupActivity.this, HostActivity.class);
-                startActivity(intentHostActivity);
-                finish();
-            }
-        });
-
     }
+
+	public void onClickAccept(View view) {
+		if (Utility.isOnline(AcceptTutorialGroupActivity.this)) {
+			callApiAcceptTutorialGroup();
+		} else {
+			Utility.toastOffline(AcceptTutorialGroupActivity.this);
+		}
+	}
 
 	private void callApiAcceptTutorialGroup() {
 		try {
-			AcceptTutorialGroupRequest acceptTutorialGroupRequest = new AcceptTutorialGroupRequest();
-			acceptTutorialGroupRequest.setUserId(strUserId);
-			acceptTutorialGroupRequest.setGroupId(strGroupId);
-			acceptTutorialGroupRequest.setJoiningStatus("1");
+			RequestObject requestObject = new RequestObject();
+			requestObject.setUserId(strUserId);
+			requestObject.setGroupId(strGroupId);
+			requestObject.setJoiningStatus("1");
 
-			new WebserviceWrapper(AcceptTutorialGroupActivity.this, acceptTutorialGroupRequest).new WebserviceCaller()
+			new WebserviceWrapper(AcceptTutorialGroupActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.ACCEPT_TUTORIAL_GROUP);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiAcceptTutorialGroup Exception : " + e.toString());
@@ -114,11 +126,11 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 				PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
 				PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, AcceptTutorialGroupActivity.this, true);
 				launchHostActivity();
+			} else if (responseObj.getStatus().equals("incomplete")) {
+				Toast.makeText(AcceptTutorialGroupActivity.this, R.string.msg_waiting_for_other_members, Toast.LENGTH_LONG).show();
+				PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
 			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				if (responseObj.getMessage().contains("Group is not yet complete")) {
-					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
-					Toast.makeText(AcceptTutorialGroupActivity.this, R.string.msg_waiting_for_other_members, Toast.LENGTH_LONG).show();
-				}
+				Log.e(TAG, "onResponseAcceptTutorialGroup Failed : " + responseObj.getMessage());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseAcceptTutorialGroup Exception : " + e.toString());

@@ -21,7 +21,7 @@ import com.ism.R;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
-import com.ism.author.login.Urls;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.model.CreateAssignmentRequest;
 import com.ism.author.model.Data;
 import com.ism.author.model.GetTopicsRequest;
@@ -279,7 +279,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
             try {
 
                 CreateAssignmentRequest createAssignmentRequest = new CreateAssignmentRequest();
-                createAssignmentRequest.setUser_id(Urls.TEST_USER_ID);
+                createAssignmentRequest.setUser_id(WebConstants.TEST_USER_ID);
                 createAssignmentRequest.setSubmission_date(strDob);
                 createAssignmentRequest.setClassroom_id(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0);
@@ -368,7 +368,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
             if (apiMethodName == WebserviceWrapper.GETCLASSROOMS) {
 
                 ResponseObject callGetClassRoomsResponseObject = (ResponseObject) object;
-                if (callGetClassRoomsResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && callGetClassRoomsResponseObject != null) {
+                if (callGetClassRoomsResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetClassRoomsResponseObject != null) {
                     arrListClassRooms = new ArrayList<Data>();
                     arrListClassRooms.addAll(callGetClassRoomsResponseObject.getData());
                     List<String> classrooms = new ArrayList<String>();
@@ -387,7 +387,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
             } else if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
 
                 ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
-                if (callGetSubjectResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
+                if (callGetSubjectResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
 
                     arrListSubject = new ArrayList<Data>();
                     arrListSubject.addAll(callGetSubjectResponseObject.getData());
@@ -407,7 +407,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
             } else if (apiMethodName == WebserviceWrapper.GETTOPICS) {
 
                 ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
-                if (callGetTopicsResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
+                if (callGetTopicsResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
 
                     arrListTopic = new ArrayList<Data>();
                     arrListTopic.addAll(callGetTopicsResponseObject.getData());
@@ -427,7 +427,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
 
             } else if (apiMethodName == WebserviceWrapper.CREATEASSIGNMENT) {
                 ResponseObject createAssignmentResponseObject = (ResponseObject) object;
-                if (createAssignmentResponseObject.getStatus().equals(Urls.STATUS_SUCCESS) && createAssignmentResponseObject != null) {
+                if (createAssignmentResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && createAssignmentResponseObject != null) {
                     backToTrialScreen();
                     Utils.showToast(createAssignmentResponseObject.getMessage(), getActivity());
 
