@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.ism.author.fragment.TrialActivityFragment;
 import com.ism.utility.Utility;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -66,6 +67,12 @@ public class Utils {
 
     }
 
+    public static String getDate() {
+        SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        return curFormater.format(calendar.getTime());
+    }
+
     private static DatePickerDialog datePickerDob;
     private static Calendar calDob;
     private static String strDob;
@@ -75,7 +82,7 @@ public class Utils {
         try {
             if (calDob == null) {
                 calDob = Calendar.getInstance();
-                calDob.add(Calendar.YEAR, -3);
+                calDob.add(Calendar.YEAR, 100);
                 lngMaxDob = calDob.getTimeInMillis();
             }
             datePickerDob = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
@@ -88,7 +95,7 @@ public class Utils {
                     mEdittext.setText(Utility.formatDateDisplay(calDob.getTime()));
                 }
             }, calDob.get(Calendar.YEAR), calDob.get(Calendar.MONTH), calDob.get(Calendar.DAY_OF_MONTH));
-            datePickerDob.getDatePicker().setMaxDate(lngMaxDob);
+//            datePickerDob.getDatePicker().setMaxDate(lngMaxDob);
             datePickerDob.show();
         } catch (Exception e) {
             Log.e(TAG, "showDatePickerDob Exception : " + e.toString());

@@ -1,4 +1,4 @@
-package com.ism.author.login;
+package com.ism.author.activtiy;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.R;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.model.LoginRequest;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
@@ -157,7 +158,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
             ResponseObject responseObj = (ResponseObject) object;
 
-            if (responseObj.getStatus().equals(Urls.STATUS_SUCCESS) && responseObj != null) {
+            if (responseObj.getStatus().equals(WebConstants.STATUS_SUCCESS) && responseObj != null) {
 
                 if (apiMethodName == WebserviceWrapper.LOGIN) {
 

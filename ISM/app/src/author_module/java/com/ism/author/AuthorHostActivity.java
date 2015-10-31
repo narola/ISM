@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
+import com.ism.author.fragment.AddQuestionFragment;
 import com.ism.author.fragment.BooksFragment;
 import com.ism.author.fragment.FollowingFragment;
 import com.ism.author.fragment.GoTrendingFragment;
@@ -88,6 +90,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_PROGRESSREPORT = 8;
     public static final int FRAGMENT_TRIAL = 9;
     public static final int FRAGMENT_ADDNEWTRIAL = 10;
+    public static final int FRAGMENT_ADDQUESTION = 11;
 
 
     //these are the right side fragments
@@ -96,7 +99,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_HIGHSCORE = 13;
     public static final int FRAGMENT_CHAT = 14;
 
-
+    private InputMethodManager inputMethod;
     //these are the fragments for the author edit profile screen.
 
 //    public static final int FRAGMENT_TUTORIAL = 3;
@@ -200,7 +203,12 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
     //These is for the load fragmet in main container
 
-
+    public void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
     public void loadFragmentInMainContainer(int fragment) {
         try {
             switch (fragment) {
@@ -221,24 +229,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, BooksFragment.newInstance()).commit();
                     break;
 
-                case FRAGMENT_GOTRENDING:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GoTrendingFragment.newInstance()).commit();
-                    break;
-                case FRAGMENT_SETQUIZ:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, SetQuizFragment.newInstance()).commit();
-                    break;
-                case FRAGMENT_PROGRESSREPORT:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ProgressReportFragment.newInstance()).commit();
-                    break;
-                case FRAGMENT_MYFEEDS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyFeedsFragment.newInstance()).commit();
-                    break;
-                case FRAGMENT_FOLLOWING:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, FollowingFragment.newInstance()).commit();
-                    break;
-                case FRAGMENT_MYACTIVITY:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyActivityFragment.newInstance()).commit();
-                    break;
 
                 case FRAGMENT_TRIAL:
 
@@ -256,6 +246,49 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     mFragmentTransaction.commit();
 
                     break;
+
+
+                case FRAGMENT_ADDQUESTION:
+
+                    mFragmentTransaction = mFragmentManager.beginTransaction();
+                    mFragmentTransaction.add(R.id.fl_fragment_container_main, AddQuestionFragment.newInstance());
+                    mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_ADDQUESTION));
+                    mFragmentTransaction.commit();
+
+                    break;
+
+
+//                case FRAGMENT_GOTRENDING:
+//
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GoTrendingFragment.newInstance()).commit();
+//                    break;
+//
+//                case FRAGMENT_SETQUIZ:
+//
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, SetQuizFragment.newInstance()).commit();
+//                    break;
+//
+//                case FRAGMENT_PROGRESSREPORT:
+//
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ProgressReportFragment.newInstance()).commit();
+//                    break;
+//
+//                case FRAGMENT_MYFEEDS:
+//
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyFeedsFragment.newInstance()).commit();
+//                    break;
+//
+//                case FRAGMENT_FOLLOWING:
+//
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, FollowingFragment.newInstance()).commit();
+//                    break;
+//
+//                case FRAGMENT_MYACTIVITY:
+//
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyActivityFragment.newInstance()).commit();
+//                    break;
+
+
             }
 
         } catch (Exception e) {

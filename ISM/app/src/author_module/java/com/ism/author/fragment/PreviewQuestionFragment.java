@@ -1,44 +1,41 @@
-package com.ism.teacher.fragments;
+package com.ism.author.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ism.HostActivity;
 import com.ism.R;
 import com.ism.interfaces.FragmentListener;
-import com.ism.teacher.login.TeacherHomeActivity;
+import com.ism.utility.Debug;
 
 /**
- * Created by c161 on --/10/15.
+ * Created by c166 on 31/10/15.
  */
-public class AddAssignmentFragment extends Fragment {
+public class PreviewQuestionFragment extends Fragment {
 
-    private static final String TAG = AddAssignmentFragment.class.getSimpleName();
 
+    private static final String TAG = PreviewQuestionFragment.class.getSimpleName();
     private View view;
 
     private FragmentListener fragListener;
 
-    public static AddAssignmentFragment newInstance() {
-        AddAssignmentFragment addAssignmentFragment = new AddAssignmentFragment();
-        return addAssignmentFragment;
+    public static PreviewQuestionFragment newInstance() {
+        PreviewQuestionFragment previewQuestionFragment = new PreviewQuestionFragment();
+        return previewQuestionFragment;
     }
 
-    public AddAssignmentFragment() {
+    public PreviewQuestionFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_add_assignment, container, false);
+        view = inflater.inflate(R.layout.fragment_preview_question, container, false);
 
         initGlobal();
-
         return view;
     }
 
@@ -52,10 +49,10 @@ public class AddAssignmentFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-               // fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_TEACHER_OFFICE);
+                fragListener.onFragmentAttached(AddQuestionFragment.FRAGMENT_PREVIEWQUESTION);
             }
         } catch (ClassCastException e) {
-            Log.e(TAG, "onAttach Exception : " + e.toString());
+            Debug.e(TAG, "onAttach Exception : " + e.toString());
         }
     }
 
@@ -64,12 +61,11 @@ public class AddAssignmentFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-               // fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_TEACHER_OFFICE);
+                fragListener.onFragmentDetached(AddQuestionFragment.FRAGMENT_PREVIEWQUESTION);
             }
         } catch (ClassCastException e) {
-            Log.e(TAG, "onDetach Exception : " + e.toString());
+            Debug.e(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
     }
-
 }

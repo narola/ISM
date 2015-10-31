@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d5dp"
-                    android:text="Adam Stanger"
+                    android:text="Adam Stangersfasdassdsfsdfd"
                     android:textColor="@color/color_blue"
                     android:textSize="@dimen/d15sp" />
 

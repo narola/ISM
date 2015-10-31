@@ -32,12 +32,16 @@
         </activity>
 
         <activity
-            android:name="com.ism.author.login.AuthorProfileInformationActivity"
+            android:name="com.ism.author.activtiy.AuthorProfileInformationActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name="com.ism.author.activtiy.PostActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape" />
 
         <activity
-            android:name="com.ism.author.login.AuthorLoginActivity"
+            android:name="com.ism.author.activtiy.AuthorLoginActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

@@ -11,7 +11,10 @@ public class ResponseObject {
     private String message;
     private ArrayList<Data> data;
     private String status;
-    private int total_feeds;
+
+    public static final String SUCCESS = "success";
+    public static final String FAILED = "failed";
+    public static final String DUPLICATE_ENTRY = "Duplicate entry";
 
     public String getMessage() {
         return this.message;
@@ -36,16 +39,6 @@ public class ResponseObject {
     public void setStatus(String status) {
         this.status = status;
     }
-
-
-    public int getTotal_feeds() {
-        return total_feeds;
-    }
-
-    public void setTotal_feeds(int total_feeds) {
-        this.total_feeds = total_feeds;
-    }
-
 
 }
 

@@ -171,4 +171,12 @@
     </string-array>
 
 
+    <!--postActivity-->
+    <string name="strchooseimagefromgallery">Choose Image from gallery</string>
+    <string name="strchoosevideofromgallery">Choose Video from gallery</string>
+    <string name="strcaptureimageusingcamera">Capture Image using camera</string>
+    <string name="strcapturevideousingcamera">Capture Video using camera</string>
+    <string name="strrecordyouraudio">Record Your Audio</string>
+    <string name="strchooseyouraudio">Choose Your Audio</string>
+
 </resources>

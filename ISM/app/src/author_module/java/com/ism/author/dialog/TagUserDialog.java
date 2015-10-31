@@ -17,7 +17,7 @@ import com.ism.R;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.SearchStudyMatesAdapter;
 import com.ism.author.fragment.HomeFragment;
-import com.ism.author.login.Urls;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.model.Data;
 
 import java.util.ArrayList;
@@ -110,7 +110,7 @@ public class TagUserDialog extends Dialog implements View.OnClickListener {
 
             String[] tagUserArray = searchStudyMatesAdapter.getTagIds().toArray(new String[searchStudyMatesAdapter.getTagIds().size()]);
             if (tagUserArray.length > 0) {
-                ((HomeFragment) fragment).tagFriendInFeedRequest.setUser_id(Urls.tagUserArray);
+                ((HomeFragment) fragment).tagFriendInFeedRequest.setUser_id(WebConstants.tagUserArray);
                 ((HomeFragment) fragment).callTagFriendInFeed();
                 dismiss();
             } else {

@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity android:name=".PostActivity"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateAlwaysVisible"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

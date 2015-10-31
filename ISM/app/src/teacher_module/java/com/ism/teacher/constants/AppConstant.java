@@ -52,20 +52,22 @@ public class AppConstant {
 
 
     private static final String URL_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
-    public static final String URL_LOGIN = URL_HOST + "AuthenticateUser";
+    public static final String URL_LOGIN = URL_ARTI_HOST + "AuthenticateUser";
 
 
-    public static final String URL_GET_ALL_FEEDS = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=GetAllFeeds";
-    public static final String URL_GET_ALL_COMMENTS = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=GetAllComments";
-    public static final String URL_GET_STUDYMATES = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=GetStudymates";
-    public static final String URL_ADD_COMMENT = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=AddComment";
-    public static final String URL_TAG_FRIEND_IN_FEED = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=TagFriendInFeed";
-    public static final String URL_LIKE_FEED = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=LikeFeed";
+    public static final String URL_GET_ALL_FEEDS = URL_ARTI_HOST+ "GetAllFeeds";
+    public static final String URL_GET_ALL_COMMENTS = URL_ARTI_HOST+"GetAllComments";
+    public static final String URL_GET_STUDYMATES = URL_ARTI_HOST+"GetStudymates";
+    public static final String URL_ADD_COMMENT =URL_ARTI_HOST+"AddComment";
+    public static final String URL_TAG_FRIEND_IN_FEED = URL_ARTI_HOST+"TagFriendInFeed";
+    public static final String URL_LIKE_FEED = URL_ARTI_HOST+"LikeFeed";
 
     public static final String URL_GETCLASSROOMS = URL_ARTI_HOST + "GetClassrooms";
     public static final String URL_GETSUBJECT = URL_ARTI_HOST + "GetSubject";
     public static final String URL_GETTOPICS = URL_ARTI_HOST + "GetTopics";
     public static final String URL_CREATEASSIGNMENT = URL_ARTI_HOST + "CreateAssignment";
+    public static final String URL_GET_COURSES = URL_ARTI_HOST + "GetCourses";
+    public static final String URL_CREATE_EXAM = URL_ARTI_HOST + "CreateExam";
 
 
 
