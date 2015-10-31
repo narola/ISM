@@ -34,8 +34,8 @@ public class WebserviceWrapper {
     public static final int GETTOPICS = 9;
     public static final int CREATEASSIGNMENT = 10;
     public static final int POSTFEED = 11;
-    public static final int GETCOURSES = 11;
-    public static final int CREATEEXAM = 12;
+    public static final int GETCOURSES = 12;
+    public static final int CREATEEXAM = 13;
 
 
     public static int API_METHOD_NAME;
@@ -115,11 +115,11 @@ public class WebserviceWrapper {
                         break;
 
                     case GETCOURSES:
-                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_GET_COURSES, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_COURSES, ResponseObject.class, requestObject);
                         break;
 
                     case CREATEEXAM:
-                        responseObject = new com.ism.author.ws.RequestWs().getRequest(Urls.URL_CREATE_EXAM, ResponseObject.class, requestObject);
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_CREATE_EXAM, ResponseObject.class, requestObject);
                         break;
 
 

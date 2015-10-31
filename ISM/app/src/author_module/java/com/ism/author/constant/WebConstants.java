@@ -21,13 +21,10 @@ public class WebConstants {
     public static final String URL_GETSUBJECT = URL_ARTI_HOST + "GetSubject";
     public static final String URL_GETTOPICS = URL_ARTI_HOST + "GetTopics";
     public static final String URL_CREATEASSIGNMENT = URL_ARTI_HOST + "CreateAssignment";
-<<<<<<< HEAD:ISM/app/src/author_module/java/com/ism/author/constant/WebConstants.java
     public static final String URL_POSTFEED = URL_ARTI_HOST + "PostFeed";
 
-=======
     public static final String URL_GET_COURSES = URL_ARTI_HOST + "GetCourses";
     public static final String URL_CREATE_EXAM = URL_ARTI_HOST + "CreateExam";
->>>>>>> 13f8af244f1c82ba5ddc2ba13a29330a4d7b6164:ISM/app/src/author_module/java/com/ism/author/login/Urls.java
 
 
     public static final String STATUS_SUCCESS = "success";
