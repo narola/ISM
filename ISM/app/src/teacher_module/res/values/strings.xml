@@ -36,6 +36,13 @@
     <string name="msg_validation_set_exam_mode">\nPlease select exam mode</string>
     <string name="msg_validation_set_exam_duration">\nPlease select exam duration</string>
 
+    <string name="msg_validation_declare_results">\nPlease select any declare result option.</string>
+    <string name="msg_validation_negative_marking">\nPlease select any negative marking option.</string>
+    <string name="msg_validation_random_question">\nPlease select any random question option.</string>
+    <string name="msg_validation_use_score_from_questions">\nPlease select use score from question option.</string>
+
+
+
     <!-- Controller String-->
     <string name="str_classwall">Classwall</string>
     <string name="str_notes">Notes</string>

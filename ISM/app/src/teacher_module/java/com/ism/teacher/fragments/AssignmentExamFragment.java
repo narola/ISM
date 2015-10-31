@@ -455,7 +455,55 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     private boolean isInputsValid() {
         return inputValidator.validateStringPresence(et_exam_name) & inputValidator.validateStringPresence(et_exam_attemptcount)
                 & inputValidator.validateStringPresence(et_exam_startdate) & inputValidator.validateStringPresence(et_exam_enddate)
-                && checkOtherInputs();
+                && checkOtherInputs() && checkRadioButtonInputs();
+    }
+
+    private boolean checkRadioButtonInputs() {
+        strValidationMsg = "";
+
+        if (isDeclareResultOption() & isNegativeMarkingOption() & isRandomQuestionOption() & isUseScoreFromQuestion()) {
+            return true;
+        } else {
+            Utility.alert(getActivity(), null, strValidationMsg);
+            return false;
+        }
+
+    }
+
+    private boolean isUseScoreFromQuestion() {
+        if (radio_exam_usescore.getCheckedRadioButtonId() == -1) {
+            strValidationMsg += getString(R.string.msg_validation_use_score_from_questions);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean isRandomQuestionOption() {
+        if (radio_exam_random_question.getCheckedRadioButtonId() == -1) {
+            strValidationMsg += getString(R.string.msg_validation_random_question);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean isNegativeMarkingOption() {
+        if (radio_negativemarking.getCheckedRadioButtonId() == -1) {
+            strValidationMsg += getString(R.string.msg_validation_negative_marking);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean isDeclareResultOption() {
+        if (radio_declareresult.getCheckedRadioButtonId() == -1) {
+            strValidationMsg += getString(R.string.msg_validation_declare_results);
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private boolean checkOtherInputs() {
@@ -622,7 +670,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 ResponseObject callCreateExamResponse = (ResponseObject) object;
                 if (callCreateExamResponse.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callCreateExamResponse != null) {
 
-                    Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
+                    Utils.showToast("Exam Created Successfully", getActivity());
 
                 } else {
 
