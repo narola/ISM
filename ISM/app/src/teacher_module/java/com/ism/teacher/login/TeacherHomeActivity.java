@@ -326,6 +326,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
 
                 case FRAGMENT_ADDQUESTION:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionFragmentTeacher.newInstance(FRAGMENT_ADDQUESTION)).commit();
+                    flFragmentContainerRight.setVisibility(View.GONE);
                     break;
 
             }

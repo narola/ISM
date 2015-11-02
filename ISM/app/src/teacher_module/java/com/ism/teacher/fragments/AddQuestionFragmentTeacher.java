@@ -56,6 +56,11 @@ public class AddQuestionFragmentTeacher extends Fragment {
                 .addToBackStack(String.valueOf(FRAGMENT_QUESTIONLIST))
                 .commit();
 
+//        getChildFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.fl_addquestionfragment_container_left, AddNewQuestionFromAssignment.newInstance(fragment))
+//                .commit();
+
         return view;
     }
 
@@ -70,28 +75,12 @@ public class AddQuestionFragmentTeacher extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            fragListener = (FragmentListener) activity;
-            if (fragListener != null) {
-                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_ADDQUESTION);
-            }
-        } catch (ClassCastException e) {
-            //Debug.e(TAG, "onAttach Exception : " + e.toString());
-        }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        try {
-            if (fragListener != null) {
-//                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ADDQUESTION);
-                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_ADDQUESTION);
-            }
-        } catch (ClassCastException e) {
-//            Debug.e(TAG, "onDetach Exception : " + e.toString());
-        }
-        fragListener = null;
     }
 
     public void flipCard() {

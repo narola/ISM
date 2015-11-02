@@ -93,5 +93,11 @@
         <item>Tutorial</item>
     </string-array>
 
+    <string-array name="question_type">
+        <item>Text</item>
+        <item>Paragraph text</item>
+        <item>Multiple choice</item>
+    </string-array>
+
 
 </resources>
