@@ -80,6 +80,7 @@ $route['admin/exam/copy/(:any)'] = "admin/exam/update/$1";
 $route['admin/notice/copy/(:any)'] = "admin/notice/update/$1";
 $route['admin/question/copy/(:any)'] = "admin/question/update/$1";
 
+$route['admin/forgot_password'] = "admin/dashboard/forgot_password";
 $route['admin/(:any)'] = "admin/$1"; 
 $route['admin/(:any)/(:any)'] = "admin/$1/$2"; 
 $route['admin/(:any)/(:any)/(:any)'] = "admin/$1/$2/$3"; 

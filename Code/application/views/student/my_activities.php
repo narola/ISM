@@ -15,6 +15,7 @@
                                 if(isset($my_activities['topic_allcated']) && sizeof($my_activities['topic_allcated'])>0){
                                     $t = 0;
                                     foreach ($my_activities['topic_allcated'] as $key => $topic_allcated_value) {
+                                        if($topic_allcated_value['topic_name'] != ''){
                                 ?>
                                     <div class="topic_allocated">
                                         <?php if($t == 0) { ?>
@@ -31,6 +32,7 @@
                                         </div>
                                     </div>
                                 <?php
+                                        }
                                     $t++;
                                     }
                                 }   
