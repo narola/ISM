@@ -158,5 +158,6 @@ class My_activities extends ISM_Controller {
 		$data['new_my_month'] 	= 	date('Y-m',strtotime('-1 month',strtotime(date('Y-m'))));
 
 		$this->template->load('student/default','student/my_activities',$data);
+
 	}
 }

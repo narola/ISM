@@ -68,7 +68,7 @@
                         </div>
                     </form>
                     <div class="login_links">
-                        <a href="admin/forgot_password">Forgot Password</a>
+                        <a href="#">Forgot Password</a>
                         <!--<p>Do Not Have Credencials, <a href="#">Click Here</a></p>-->
                     </div>
                 </div>
