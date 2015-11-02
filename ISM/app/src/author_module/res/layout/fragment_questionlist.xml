@@ -10,6 +10,128 @@
         android:orientation="vertical">
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/sp_questionlist_course"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_selector"
+                android:entries="@array/list"
+                android:padding="@dimen/d20dp"
+                android:spinnerMode="dropdown" />
+
+            <Spinner
+                android:id="@+id/sp_questionlist_subject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_selector"
+                android:entries="@array/list"
+                android:padding="@dimen/d20dp"
+                android:spinnerMode="dropdown" />
+
+
+            <Spinner
+                android:id="@+id/sp_questionlist_exam_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_selector"
+                android:entries="@array/list"
+                android:padding="@dimen/d20dp"
+                android:spinnerMode="dropdown" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/d5dp"
+                        android:background="@color/color_text_hint" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/d10dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/img_question_search" />
+
+                    <EditText
+                        android:id="@+id/et_questionlist_search"
+                        android:layout_width="@dimen/d150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="1"
+                        android:hint="@string/hint_search"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:padding="10dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHint="@color/color_graylight"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_questionlist_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_app_dark"
+            android:gravity="center"
+            android:padding="@dimen/d5dp"
+            android:text="@string/strquestionbank"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d15dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_questionlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_app_dark"
+            android:gravity="center_vertical"
+            android:padding="@dimen/d10dp">
+
+            <TextView
+                android:id="@+id/tv_questionlist_add_new_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_orange"
+                android:text="@string/straddnewquestion"
+                android:textColor="@color/color_white" />
+
+            <TextView
+                android:id="@+id/tv_questionlist_add_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/btn_green"
+                android:text="@string/straddtopreview"
+                android:textColor="@color/color_white" />
+        </RelativeLayout>
+
     </LinearLayout>
 
 </LinearLayout>

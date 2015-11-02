@@ -14,6 +14,8 @@ import com.ism.utility.Utility;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by c166 on 23/10/15.
@@ -82,7 +84,7 @@ public class Utils {
         try {
             if (calDob == null) {
                 calDob = Calendar.getInstance();
-                calDob.add(Calendar.YEAR, 100);
+//                calDob.add(Calendar.YEAR, 100);
                 lngMaxDob = calDob.getTimeInMillis();
             }
             datePickerDob = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
@@ -102,6 +104,23 @@ public class Utils {
         }
 
         return strDob;
+    }
+
+
+    public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+    public static String getDateInApiFormat(String dateText) {
+        String newDate = "";
+        try {
+            Date date = DATE_FORMAT_API.parse(dateText);
+            newDate = DATE_FORMAT_API.format(date);
+
+        } catch (Exception e) {
+
+            Log.e("Exception", "Date exception");
+        }
+        return newDate;
+
     }
 
 

@@ -24,7 +24,6 @@ public class Data {
     private String schoolId;
     private String academicYear;
 
-
     /*these paarmeters are of getALlFeeds response*/
     private String feedId;
     private String createdDate;
@@ -68,14 +67,31 @@ public class Data {
     private String topicDescription;
 
 
-    //    postfeed
+    /*these are for the postfeed*/
 
     private String feed_by;
-//    private String feed_text;
-  //  private String video_link;
-//    private String audio_link;
+
     private List<String> images;
- //   private String posted_on;
+
+
+    /*these are for the get questionbank*/
+
+    private String questionFormat;
+    private String questionAssetsLink;
+    private String questionHint;
+    private String questionImageLink;
+    private String evaluationNotes;
+    private String topicId;
+    private ArrayList<AnswersModel> answers;
+    private String classroomId;
+    private String bookId;
+    private String solution;
+    private String questionId;
+    private String questionText;
+    private String questionCreatorId;
+    private String questionCreatorName;
+
+
     /*these methods are for login response*/
     @JsonProperty("school_name")
     public String getSchoolName() {
@@ -375,6 +391,8 @@ public class Data {
     public void setTopicDescription(String topicDescription) {
         this.topicDescription = topicDescription;
     }
+
+    /*these are for the postfeed*/
     @JsonProperty("feed_by")
     public String getFeed_by() {
         return feed_by;
@@ -383,30 +401,7 @@ public class Data {
     public void setFeed_by(String feed_by) {
         this.feed_by = feed_by;
     }
-//    @JsonProperty("feed_text")
-//    public String getFeed_text() {
-//        return feed_text;
-//    }
-//
-//    public void setFeed_text(String feed_text) {
-//        this.feed_text = feed_text;
-//    }
-//    @JsonProperty("video_link")
-//    public String getVideo_link() {
-//        return video_link;
-//    }
-//
-//    public void setVideo_link(String video_link) {
-//        this.video_link = video_link;
-//    }
-//    @JsonProperty("audio_link")
-//    public String getAudio_link() {
-//        return audio_link;
-//    }
-//
-//    public void setAudio_link(String audio_link) {
-//        this.audio_link = audio_link;
-//    }
+
     @JsonProperty("images")
     public List<String> getImages() {
         return images;
@@ -415,14 +410,135 @@ public class Data {
     public void setImages(List<String> images) {
         this.images = images;
     }
-//    @JsonProperty("posted_on")
-//    public String getPosted_on() {
-//        return posted_on;
-//    }
-//
-//    public void setPosted_on(String posted_on) {
-//        this.posted_on = posted_on;
-//    }
+
+
+    /*these are for the get questionbank*/
+
+    @JsonProperty("question_format")
+    public String getQuestionFormat() {
+        return this.questionFormat;
+    }
+
+    public void setQuestionFormat(String questionFormat) {
+        this.questionFormat = questionFormat;
+    }
+
+    @JsonProperty("question_assets_link")
+    public String getQuestionAssetsLink() {
+        return this.questionAssetsLink;
+    }
+
+    public void setQuestionAssetsLink(String questionAssetsLink) {
+        this.questionAssetsLink = questionAssetsLink;
+    }
+
+    @JsonProperty("question_hint")
+    public String getQuestionHint() {
+        return this.questionHint;
+    }
+
+    public void setQuestionHint(String questionHint) {
+        this.questionHint = questionHint;
+    }
+
+    @JsonProperty("question_image_link")
+    public String getQuestionImageLink() {
+        return this.questionImageLink;
+    }
+
+    public void setQuestionImageLink(String questionImageLink) {
+        this.questionImageLink = questionImageLink;
+    }
+
+    @JsonProperty("evaluation_notes")
+    public String getEvaluationNotes() {
+        return this.evaluationNotes;
+    }
+
+    public void setEvaluationNotes(String evaluationNotes) {
+        this.evaluationNotes = evaluationNotes;
+    }
+
+    @JsonProperty("topic_id")
+    public String getTopicId() {
+        return this.topicId;
+    }
+
+    public void setTopicId(String topicId) {
+        this.topicId = topicId;
+    }
+
+    @JsonProperty("answers")
+    public ArrayList<AnswersModel> getAnswers() {
+        return this.answers;
+    }
+
+    public void setAnswers(ArrayList<AnswersModel> answers) {
+        this.answers = answers;
+    }
+
+    @JsonProperty("classroom_id")
+    public String getClassroomId() {
+        return this.classroomId;
+    }
+
+    public void setClassroomId(String classroomId) {
+        this.classroomId = classroomId;
+    }
+
+    @JsonProperty("book_id")
+    public String getBookId() {
+        return this.bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
+    }
+
+    @JsonProperty("solution")
+    public String getSolution() {
+        return this.solution;
+    }
+
+    public void setSolution(String solution) {
+        this.solution = solution;
+    }
+
+    @JsonProperty("question_id")
+    public String getQuestionId() {
+        return this.questionId;
+    }
+
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
+    }
+
+    @JsonProperty("question_text")
+    public String getQuestionText() {
+        return this.questionText;
+    }
+
+    public void setQuestionText(String questionText) {
+        this.questionText = questionText;
+    }
+
+    @JsonProperty("question_creator_id")
+    public String getQuestionCreatorId() {
+        return this.questionCreatorId;
+    }
+
+    public void setQuestionCreatorId(String questionCreatorId) {
+        this.questionCreatorId = questionCreatorId;
+    }
+
+    @JsonProperty("question_creator_name")
+    public String getQuestionCreatorName() {
+        return this.questionCreatorName;
+    }
+
+    public void setQuestionCreatorName(String questionCreatorName) {
+        this.questionCreatorName = questionCreatorName;
+    }
 
 
 }

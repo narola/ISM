@@ -110,7 +110,6 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
 
         rteTrialActivity = (RichTextEditor) view.findViewById(R.id.rte_trial_activity);
 
-        callApiGetClassRooms();
 
         tvActivityTitle.setTypeface(myTypeFace.getRalewayRegular());
         tvActivityAssignmentname.setTypeface(myTypeFace.getRalewayRegular());
@@ -194,6 +193,9 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
         arrListDefalt = new ArrayList<String>();
         arrListDefalt.add(getString(R.string.select));
         Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
+
+
+        callApiGetClassRooms();
 
 
     }
