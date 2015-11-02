@@ -215,6 +215,8 @@
             </LinearLayout>
 
 
+
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/d1dp"
@@ -667,8 +669,9 @@
                 <com.narola.kpa.richtexteditor.view.RichTextEditor
                     android:id="@+id/rte_trial_exam"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/rich_text_editor_height"
-                    android:layout_margin="@dimen/d15dp"></com.narola.kpa.richtexteditor.view.RichTextEditor>
+                    android:layout_height="@dimen/rich_text_editor_height">
+
+                </com.narola.kpa.richtexteditor.view.RichTextEditor>
             </LinearLayout>
 
 

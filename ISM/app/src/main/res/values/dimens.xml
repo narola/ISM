@@ -37,4 +37,11 @@
     <dimen name="button_margin_exam">7dp</dimen>
     <dimen name="button_padding_exam">20dp</dimen>
     <dimen name="button_height">42dp</dimen>
+    <dimen name="post_feed_spacing">10dp</dimen>
+    <dimen name="post_dp_size">120dp</dimen>
+    <dimen name="post_dp_margin">17dp</dimen>
+    <dimen name="dp_size_list">50dp</dimen>
+    <dimen name="dp_margin_list">15dp</dimen>
+    <dimen name="post_text_size">18sp</dimen>
+    <dimen name="comment_padding">5dp</dimen>
 </resources>

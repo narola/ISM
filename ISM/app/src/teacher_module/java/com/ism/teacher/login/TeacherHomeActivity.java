@@ -31,6 +31,7 @@ import com.ism.interfaces.FragmentListener;
 
 import com.ism.teacher.Utility.ControllerTopMenuItem;
 import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.fragments.AddQuestionFragmentTeacher;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
 import com.ism.teacher.fragments.TeacherOfficeFragment;
@@ -77,6 +78,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_TEACHER_TUTORIAL_GROUP = 10;
     public static final int FRAGMENT_TEACHER_OFFICE = 11;
 
+    public static final int FRAGMENT_ADDQUESTION = 12;
 
     public static int currentMainFragment;
     public static int currentRightFragment;
@@ -271,7 +273,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     }
 
 
-    private void loadFragment(int fragment) {
+    public void loadFragment(int fragment) {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
@@ -292,6 +294,8 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                 case FRAGMENT_REPORT_CARD:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ReportCardFragment.newInstance()).commit();
                     break;
+
+
 
 
                 case FRAGMENT_UPCOMING_EVENTS:
@@ -318,6 +322,10 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     listenerHost = teacherOfficeFragment;
                     addTopicsListener = teacherOfficeFragment;
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment).commit();
+                    break;
+
+                case FRAGMENT_ADDQUESTION:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionFragmentTeacher.newInstance(FRAGMENT_ADDQUESTION)).commit();
                     break;
 
             }
@@ -413,6 +421,16 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     loadControllerTopMenu(controllerTopMenuOffice);
                     break;
 
+
+                case FRAGMENT_ADDQUESTION:
+                    currentMainFragment = fragment;
+                    currentMainFragmentBg = R.color.bg_classroom;
+                    imgOffice.setActivated(true);
+                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
+                    txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
+                    loadControllerTopMenu(null);
+                    break;
+
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
@@ -463,6 +481,10 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     rlAddPost.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_TEACHER_OFFICE:
+                    imgOffice.setActivated(false);
+                    break;
+
+                case FRAGMENT_ADDQUESTION:
                     imgOffice.setActivated(false);
                     break;
             }

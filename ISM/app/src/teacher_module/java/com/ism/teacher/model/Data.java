@@ -11,6 +11,10 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Data {
 
+
+    //Login Response
+    private String course_name;
+
     private String feed_id;
     private String created_date;
     private String total_comment;
@@ -288,4 +292,12 @@ public class Data {
     }
 
 
+    @JsonProperty("course_name")
+    public String getCourse_name() {
+        return course_name;
+    }
+
+    public void setCourse_name(String course_name) {
+        this.course_name = course_name;
+    }
 }

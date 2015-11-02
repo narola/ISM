@@ -31,6 +31,8 @@ public class WebserviceWrapper {
     public static final int GETSUBJECT = 8;
     public static final int GETTOPICS = 9;
     public static final int CREATEASSIGNMENT = 10;
+    public static final int GETCOURSES = 11;
+    public static final int CREATEEXAM = 12;
 
 
     public static int API_METHOD_NAME;
@@ -110,6 +112,13 @@ public class WebserviceWrapper {
                         responseObject = new RequestWs().getRequest(AppConstant.URL_CREATEASSIGNMENT, ResponseObject.class, requestObject);
                         break;
 
+                    case GETCOURSES:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_GET_COURSES, ResponseObject.class, requestObject);
+                        break;
+
+                    case CREATEEXAM:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_CREATE_EXAM, ResponseObject.class, requestObject);
+                        break;
                 }
             } catch (Exception e) {
                 Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());

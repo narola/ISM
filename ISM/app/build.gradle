@@ -43,7 +43,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.squareup.picasso:picasso:2.3.2'
@@ -52,4 +52,5 @@ dependencies {
     compile files('libs/realm-0.84.1.jar')
     compile project(':richtexteditor')
     compile files('libs/universal-image-loader-1.9.4.jar')
+    compile 'com.android.support:cardview-v7:23.0.1'
 }
