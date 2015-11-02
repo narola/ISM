@@ -8,10 +8,20 @@ import android.net.Uri;
 public class PostFileModel {
     String strFileType;
     Uri strFilePath;
+    String strVideoThumbNail;
 
-    public PostFileModel(String strFileType, Uri strFilePath) {
+    public PostFileModel(String strFileType, Uri strFilePath, String strVideoThumbNail) {
         this.strFileType = strFileType;
         this.strFilePath = strFilePath;
+        this.strVideoThumbNail = strVideoThumbNail;
+    }
+
+    public String getStrVideoThumbNail() {
+        return strVideoThumbNail;
+    }
+
+    public void setStrVideoThumbNail(String strVideoThumbNail) {
+        this.strVideoThumbNail = strVideoThumbNail;
     }
 
     public String getStrFileType() {

@@ -102,7 +102,7 @@ public class PostFileAdapter extends BaseAdapter {
          mMediaMetadataRetriever.setDataSource(context, arrayList.get(position).getStrFilePath());
          bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
          imageView.setImageBitmap(bitmap);
-            videoIndicator.setText(mediaPlayer.getDuration() + "");
+         videoIndicator.setText(mediaPlayer.getDuration() + "");
             videoIndicator.setVisibility(View.VISIBLE);
             imgPlay.setVisibility(View.VISIBLE);
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -94,6 +95,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
     private boolean isPlay = false;
     private int serverResponseCode;
     private Uri uploadUri;
+    private String mediaType=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +104,6 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         setContentView(R.layout.layout_post);
         initLayout();
 
-//        txtPost.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                popupWindow();
-//            }
-//        });
     }
 
     private void initLayout() {
@@ -247,7 +243,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_play));
             }
         } else if (v == imgSave) {
-            model = new PostFileModel("audio", Uri.fromFile(new File(mFileName)));
+            model = new PostFileModel("audio", Uri.fromFile(new File(mFileName)),"");
             arrayList.add(model);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
             llAudioRecoder.setVisibility(View.GONE);
@@ -266,6 +262,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             showKeyboard();
         } else if (v == txtCancel) {
             hideKeyboard();
+
             super.onBackPressed();
             //delete video or audio or image if capture
         } else if (v == txtPost) {
@@ -275,6 +272,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
     }
 
     private void callPostFeed() {
+        String strThumbnailBase64=null;
         List<String> listImages = new ArrayList<String>();
         int j = 0;
         try {
@@ -287,16 +285,22 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                         String strImgBase64 = Utility.getBase64ForImage(bitmap);
                         listImages.add(strImgBase64);
                     }
+                    else if (arrayList.get(i).getStrFileType().equals("video")){
+                        MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+                        mMediaMetadataRetriever.setDataSource(this, arrayList.get(i).getStrFilePath());
+                        Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+                        strThumbnailBase64 = Utility.getBase64ForImage(bitmap);
+                    }
                 }
-
 
                 PostFeedRequest postFeedRequest = new PostFeedRequest();
                 postFeedRequest.setFeed_by("370");
-                Log.e(TAG + "Images", "" + listImages);
+//                Log.e(TAG + "Images", "" + listImages);
                 postFeedRequest.setImages(listImages);
                 postFeedRequest.setVideo_link("");
                 postFeedRequest.setAudio_link("");
                 postFeedRequest.setPosted_on(Utils.getDate());
+                postFeedRequest.setVideo_thumbnail(strThumbnailBase64);
                 postFeedRequest.setFeed_text(etSayIt.getText().toString().trim());
                 new WebserviceWrapper(PostActivity.this, postFeedRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.POSTFEED);
@@ -306,7 +310,17 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             Log.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage() + "");
         }
     }
+    private Bitmap getImage(int id) {
 
+        Bitmap thumb = MediaStore.Video.Thumbnails.getThumbnail(
+
+                getContentResolver(),
+
+                id, MediaStore.Video.Thumbnails.MICRO_KIND, null);
+
+        return thumb;
+
+    }
     public String getPath(Uri uri) {
         String wholeID = DocumentsContract.getDocumentId(uri);
         // Split at colon, use second item in the array
@@ -355,7 +369,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             String fileName = getPath(path);
             File sourceFile = new File(fileName);
             if (!sourceFile.isFile()) {
-                Log.e("Huzza", "Source File Does not exist");
+                Log.e(TAG, "Source File Does not exist");
                 return 0;
             }
             FileInputStream fileInputStream = new FileInputStream(sourceFile);
@@ -382,9 +396,9 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
 
-            dos.writeBytes("Content-Disposition: form-data; name=\"feed_by1\""+ lineEnd);
+            //dos.writeBytes("Content-Disposition: form-data; name=\"feed_by1\""+ lineEnd);
             dos.writeBytes(lineEnd);
-            dos.writeBytes("370");
+           // dos.writeBytes("370");
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
 
@@ -401,7 +415,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             dos.writeBytes(twoHyphens + boundary + lineEnd);
             dos.writeBytes("Content-Disposition: form-data; name=\"feed_by\""+ lineEnd);
             dos.writeBytes(lineEnd);
-            dos.writeBytes("370");
+            dos.writeBytes(feed_by);
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
 
@@ -598,7 +612,8 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         @Override
         protected Object doInBackground(String... params) {
             Log.e(TAG,""+feed_id);
-            doFileUpload(uploadUri, "video", AppConstant.USERID, feed_id);
+
+            doFileUpload(uploadUri, mediaType, "370", feed_id);
             return null;
         }
     }
@@ -610,13 +625,13 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             String path = data.getData().toString();
             Uri uri = data.getData();
             Log.i("uri", uri + "");
-            model = new PostFileModel("image", uri);
+            model = new PostFileModel("image", uri,"");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
             // adapter.notifyDataSetChanged();
         } else if (requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK) {
-            model = new PostFileModel("image", uriFile);
+            model = new PostFileModel("image", uriFile,"");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
@@ -624,21 +639,21 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             Uri uri = data.getData();
             Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory());
             Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory() + uri.getPath());
-            model = new PostFileModel("video", uri);
+            model = new PostFileModel("video", uri,"");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         } else if (requestCode == CAPTURE_VIDEO && resultCode == RESULT_OK) {
             Uri uri = data.getData();
             Log.i(TAG, uri.getPath() + "");
-            model = new PostFileModel("video", uri);
+            model = new PostFileModel("video", uri,"");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         } else if (requestCode == MEDIA_TYPE_AUDIO && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             listview.setVisibility(View.VISIBLE);
-            model = new PostFileModel("audio", uri);
+            model = new PostFileModel("audio", uri,"");
             arrayList.add(model);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         }
@@ -791,13 +806,17 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             if (arrayList != null) {
                 for (int i = 0; i < arrayList.size(); i++) {
                     if (arrayList.get(i).getStrFileType().equals("video")) {
+                        mediaType="video";
                         uploadUri = arrayList.get(i).getStrFilePath();
                         new UploadFileToServer().execute();
                     } else if (arrayList.get(i).getStrFileType().equals("audio")) {
-
+                        uploadUri = arrayList.get(i).getStrFilePath();
+                        mediaType="audio";
+                        new UploadFileToServer().execute();
                     }
                 }
             }
+            arrayList.clear();
             super.onBackPressed();
 
         } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {

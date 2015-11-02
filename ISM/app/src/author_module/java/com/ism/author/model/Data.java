@@ -71,8 +71,17 @@ public class Data {
     //    postfeed
 
     private String feed_by;
-//    private String feed_text;
-  //  private String video_link;
+
+    @JsonProperty("video_thumbnail")
+    public String getVideo_thumbnail() {
+        return video_thumbnail;
+    }
+
+    public void setVideo_thumbnail(String video_thumbnail) {
+        this.video_thumbnail = video_thumbnail;
+    }
+
+    private String video_thumbnail;
 //    private String audio_link;
     private List<String> images;
  //   private String posted_on;
