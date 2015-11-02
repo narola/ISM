@@ -1882,7 +1882,7 @@ class PHPWebSocket {
                     $data['error'] = 'Unable to save message.! Please try again.';
                 }
                 $query = 'UPDATE ' . TBL_STUDYMATES_REQUEST . ' '
-                        . 'SET `status` = 1, `is_delete` = 1 '
+                        . 'SET `status` = 1, `is_delete` = 1 ,`modified_date` = NOW()'
                         . 'WHERE `request_from_mate_id` = ' . $data['studymate_id'] . ' '
                         . 'AND `request_to_mate_id` = ' . $user_id;
                 $x = mysqli_query($link, $query);

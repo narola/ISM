@@ -165,7 +165,7 @@ function toHHMMSS (sec) {
                                                 <img onerror="this.src='assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                             </div>
                                             <div class="notification_txt">
-                                                <p><span class="noti_username"><?php echo $value['full_name']?></span> tagged you in a post</p>
+                                                <p><span class="noti_username"><?php echo $value['full_name']?></span><?php echo $value['msg'];?></p>
                                                 <span class="noti_time"><?php echo get_time_format($value['created_date']);?></span>
                                             </div>
                                             <div class="clearfix"></div>
