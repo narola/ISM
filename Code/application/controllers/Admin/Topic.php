@@ -150,7 +150,6 @@ class Topic extends ADMIN_Controller {
 		$year = date('Y', time());
 		$date = new DateTime($year);
 		$week = $date->format("W");
-		
 		// save the allocated topic in db
 		if($_POST){
 
@@ -160,6 +159,19 @@ class Topic extends ADMIN_Controller {
 								   'topic_id'=>$tid,'group_score'=>0,'created_date'=>date('Y-m-d H:i:s'),
 								   'modified_date'=>'0000-00-00 00:00:00','is_delete'=>'0','is_testdata'=>'yes');
 			insert(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,$tutorial_data);
+			
+			$members = select(TBL_TUTORIAL_GROUP_MEMBER,TBL_TUTORIAL_GROUP_MEMBER.'.id',
+				array('where'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'=>59))
+				);
+			$member_ids = array_column($members,'id');
+			foreach ($member_ids as $member) {
+				$member_data = array('topic_id'=>$tid,
+					'score'=>0,
+					'member_id'=>$member
+					);
+				insert(TBL_TUTORIAL_GROUP_MEMBER_SCORE,$member_data);
+			}
+
 			$this->session->set_flashdata('success', 'Topic has beed allocated to group.');
 			redirect('admin/topic/allocate');
 
@@ -236,7 +248,7 @@ class Topic extends ADMIN_Controller {
              		)
         		));
 
-        $config['per_page'] = 1;
+        $config['per_page'] = 10;
 		$offset = $this->input->get('per_page');
 
         $config['full_tag_open'] = '<ul class="pagination pagination_admin">';
@@ -289,9 +301,7 @@ class Topic extends ADMIN_Controller {
               )
         );	
 	
-		// qry();
-		// p($unallocated_groups,true);
-
+		
 		$this->data['groups'] = $unallocated_groups;
 
 		// ------------------------------------------------------------------------
