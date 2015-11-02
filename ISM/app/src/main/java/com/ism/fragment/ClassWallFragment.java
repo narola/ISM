@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.adapter.PostFeedsAdapter;
+import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.ws.RequestObject;
 import com.ism.ws.ResponseObject;
@@ -26,6 +28,8 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 	private RecyclerView recyclerPost;
 
 	private PostFeedsAdapter adpPostFeeds;
+
+	private String strUserId;
 
 	public static ClassWallFragment newInstance() {
 		ClassWallFragment fragment = new ClassWallFragment();
@@ -49,6 +53,8 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 		recyclerPost = (RecyclerView) view.findViewById(R.id.recycler_post);
 
 		recyclerPost.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+		strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, getActivity());
 
 		RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
 			@Override
@@ -76,7 +82,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 	private void callApiGetAllFeeds() {
 		try {
 			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId("141");
+			requestObject.setUserId(strUserId);
 			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.GET_ALL_FEEDS);
 		} catch (Exception e) {
@@ -93,8 +99,10 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 						onResponseGetAllFeeds(object);
 						break;
 				}
-			} else {
+			} else if(error != null) {
 				Log.e(TAG, "onResponse apiCall Exception : " + error.toString());
+			} else {
+				Log.e(TAG, "onResponse all null");
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponse Exception : " + e.toString());

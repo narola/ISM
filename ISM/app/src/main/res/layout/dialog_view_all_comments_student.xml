@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginBottom="@dimen/d50dp"
+              android:layout_marginLeft="@dimen/d150dp"
+              android:layout_marginRight="@dimen/d130dp"
+              android:layout_marginTop="@dimen/d50dp"
+              android:background="@drawable/bg_news_feed"
+              android:orientation="vertical">
+
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/color_green"
+		android:gravity="center"
+		android:paddingBottom="@dimen/d10dp"
+		android:paddingTop="@dimen/d10dp"
+		android:text="@string/strcomments"
+		android:textColor="@color/color_white"
+		android:textSize="@dimen/d40dp"
+		android:textStyle="bold"/>
+
+	<android.support.v7.widget.RecyclerView
+		android:id="@+id/rv_post_feeds_comments"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_weight="1"/>
+
+	<TextView
+		android:id="@+id/tv_dialog_close"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/color_green"
+		android:gravity="center"
+		android:paddingBottom="@dimen/d10dp"
+		android:paddingTop="@dimen/d10dp"
+		android:text="@string/strclose"
+		android:textAllCaps="true"
+		android:textColor="@color/color_white"
+		android:textSize="@dimen/d40dp"
+		android:textStyle="bold"/>
+</LinearLayout>

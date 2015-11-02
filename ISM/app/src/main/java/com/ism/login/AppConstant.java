@@ -59,6 +59,10 @@ public class AppConstant {
 	public static final String URL_ALLOCATE_TUTORIAL_GROUP = URL_HOST_161 + "AllocateTutorialGroup";
 	public static final String URL_ACCEPT_TUTORIAL_GROUP = URL_HOST_161 + "AcceptTutorialGroup";
 	public static final String URL_GET_ALL_FEEDS = URL_HOST_162 + "GetAllFeeds";
+	public static final String URL_ADD_COMMENT = URL_HOST_162 + "AddComment";
+	public static final String URL_GET_ALL_COMMENTS = URL_HOST_162 + "GetAllComments";
+	public static final String URL_GET_ALL_STUDY_MATES = URL_HOST_162 + "GetStudymates";
+	public static final String URL_TAG_STUDY_MATES = URL_HOST_162 + "TagFriendInFeed";
 
     /**
      * Hide Keyboard

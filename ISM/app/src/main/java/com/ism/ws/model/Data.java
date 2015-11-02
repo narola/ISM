@@ -45,6 +45,9 @@ public class Data {
 	private String videoLink;
 	private String feedText;
 	private String totalComment;
+	private String comment;
+	private String commentBy;
+	private String profileLink;
 
 	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 	private ArrayList<Comment> comments;
@@ -371,5 +374,32 @@ public class Data {
 
 	public void setTotalComment(String totalComment) {
 		this.totalComment = totalComment;
+	}
+
+	@JsonProperty("comment")
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	@JsonProperty("comment_by")
+	public String getCommentBy() {
+		return commentBy;
+	}
+
+	public void setCommentBy(String commentBy) {
+		this.commentBy = commentBy;
+	}
+
+	@JsonProperty("profile_link")
+	public String getProfileLink() {
+		return profileLink;
+	}
+
+	public void setProfileLink(String profileLink) {
+		this.profileLink = profileLink;
 	}
 }
