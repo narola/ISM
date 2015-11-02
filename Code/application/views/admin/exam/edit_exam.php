@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2 general_cred">
+<div class="col-sm-7 main main2 mCustomScrollbar general_cred" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
-        <div class="row page_header">
+        <div class="page_header">
         <div class="col-sm-12">
             <ol class="breadcrumb">
               <li><a href="#">Assessment</a></li>
@@ -13,6 +13,7 @@
     <!--//breadcrumb-->
    
     <!--exam box--> 
+    <div class="col-sm-12">
     <div class="box add_exam_form">
         <div class="box_header">
             <h3><span class="icon icon_info"></span>Exam Details</h3>
@@ -222,6 +223,7 @@
                 <div class="clearfix"></div>
             </div>
         </form>
+    </div>
     </div>
     <!--//exam box-->
 </div>
