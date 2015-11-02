@@ -299,7 +299,6 @@ class Exam extends ADMIN_Controller {
 
 			//Code For Tutorial Exam Table Entry
 			if(!isset($_POST['exam_type'])){
-				
 				$topic_id = $this->input->post('topic_id');
 				$tutoral_topic_data = array('tutorial_topic_id'=>$topic_id,'exam_id'=>$exam_id);
 				insert(TBL_TUTORIAL_TOPIC_EXAM,$tutoral_topic_data);
@@ -311,7 +310,7 @@ class Exam extends ADMIN_Controller {
 				$this->session->set_flashdata('success', 'Exam has been Successfully Created');
 				redirect($this->data['prev_url']);	
 			}
-
+			
 		}
 	}
 

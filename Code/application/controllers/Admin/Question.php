@@ -134,7 +134,7 @@ class Question extends ADMIN_Controller {
 			if( !empty($_GET['topic_id']) ) { 
 				
 				$topic_id = $this->input->get('topic_id'); 
-				$where[TBL_TUTORIAL_GROUP_QUESTION.'.tutorial_topic_id'] = $topic_id; 
+				$where[TBL_QUESTIONS.'.topic_id'] = $topic_id; 
 				$str .= '&topic_id='.$topic_id; 
 			}
 
@@ -245,8 +245,8 @@ class Question extends ADMIN_Controller {
 								)
 							);
 
-		// p($questions);
-		// qry(true);
+		// qry();
+		// p($questions,true);
 
 		foreach ($questions as $key=>$question) {
 			
