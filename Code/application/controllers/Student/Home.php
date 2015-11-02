@@ -14,7 +14,7 @@ class Home extends ISM_Controller {
 	{
 
 		if($this->session->userdata('user')['group_status'] != 'active'){
-			$this->session->set_flashdata('error','Chat and topic exam are bdisabled! Because your group is blocked by admin! ');
+			$this->session->set_flashdata('error','Chat and topic exam are disabled! Because your group is blocked by admin! ');
 		}
 		$user_data = $this->session->userdata('user');
 		$user_id = $user_data['id'];
