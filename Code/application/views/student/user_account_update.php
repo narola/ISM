@@ -418,9 +418,17 @@
             $('#program_id').prop('disabled', false);
             $('#todo').val('enabled');
         }
+        // $('#birthdate input').datepicker({
+        //     format: 'yyyy-mm-dd'
+        // });
         $('#birthdate input').datepicker({
             format: 'yyyy-mm-dd'
         });
+
+        $('#birthdate input').on('changeDate', function(ev){
+            $(this).datepicker('hide');
+        });
+
 
         $('#request_name').keypress(function (e) {
             var regex = new RegExp("^[a-zA-Z\\b ]+$");
