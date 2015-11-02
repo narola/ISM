@@ -343,6 +343,9 @@
                                     <div class="alert alert-danger" style="display:none" id="err3">
                                         Name field is required
                                     </div>
+                                    <div class="alert alert-danger" style="display:none" id="err4">
+                                        Invalid name
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -423,6 +426,7 @@
             var regex = new RegExp("^[a-zA-Z\\b ]+$");
             var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
             if (regex.test(str) || e.keyCode === 9) {
+                $('#err4').hide();
                 return true;
             }
 
@@ -434,7 +438,16 @@
             email = $('#request_email').val();
             message = $('#message').val();
             name = $('#request_name').val();
-       
+            if(name != ''){
+                var regex = new RegExp("^[a-zA-Z0-9\\b ]+$");
+                if (regex.test(name)) {
+                    return true;
+                }
+                else{
+                    $('#err4').show();
+                    return false;
+                }
+            }
             if(email == '' && message == '' && name == ''){
                 $('#err2').show();
                 $('#err1').show();   

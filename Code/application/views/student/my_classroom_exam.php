@@ -2,7 +2,7 @@
     $(document).on('change', 'select[data-type="exam-type"]', function(){
         val = $(this).val();
         if(val != ''){
-           
+
             $('#frm_class_exam').submit();
         }
     });
@@ -37,7 +37,7 @@
                 <div class="form-group">
                     <select class="form-control" data-type="exam-type" name="exam_type" id="exam-type">
                         <option value="">Exam Type</option>
-                        <option value="0">All</option>
+                        <option value="0">All Exams</option>
                         <option value="ISM_Mock">ISM Mock</option>
                         <option value="WASSCE">WASSCE</option>
                         <option value="EndOfTerm">End Of Term</option>
