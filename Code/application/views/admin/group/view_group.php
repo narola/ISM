@@ -180,7 +180,7 @@
                                              class="icon icon_blockuser" data-toggle="tooltip" data-placement="bottom" title="Block"></a>  
                                           <?php } ?>
                                         
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Main"  class="icon icon_mail"></a>
+                                        <!-- <a href="#" data-toggle="tooltip" data-placement="bottom" title="Mail"  class="icon icon_mail"></a> -->
                                         
                                         <a href="<?php echo base_url().'admin/group/send_message/'.$group['id']; ?>" title="Message"
                                         data-toggle="tooltip" data-placement="bottom"  class="icon icon_chat"></a>

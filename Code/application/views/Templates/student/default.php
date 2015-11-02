@@ -152,17 +152,12 @@ function toHHMMSS (sec) {
                 <ul class="three_tabs">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span>
-                        <?php $noti_cnt = count_notification_list($this->session->userdata('user')['id']);
-                            //if($noti_cnt > 0){
-                        ?>
-                            <span class="badge bell_badge"><?php echo $noti_cnt;?></span>
-                        <?php //} ?>
+                            <span class="badge bell_badge"><?php echo $this->noti_cnt;?></span>
                         </a>
                         <ul class="dropdown-menu" id="notification-panel">
                             <?php 
-                                $notification_list = notification_list($this->session->userdata('user')['id']);
-                                if(sizeof($notification_list) > 0 ){
-                                    foreach ($notification_list as $key => $value) {
+                                if(sizeof($this->notification_list) > 0 ){
+                                    foreach ($this->notification_list as $key => $value) {
                                         ?>
                                         <li>
                                             <a href="#">

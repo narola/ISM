@@ -726,7 +726,7 @@ if ("WebSocket" in window)
                 if (wp == list.id) {
                     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
                     $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
-                    $('noti_time').timestatus();
+                    $('.noti_time').timestatus();
                     notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
                     if (notification_length == 0) {
                         notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">No more notification</div></li>');
@@ -938,7 +938,7 @@ if ("WebSocket" in window)
     };
     ws.onclose = function ()
     {
-        alert('Disconnected from Server!');
+        // alert('Disconnected from Server!');
     };
 }
 

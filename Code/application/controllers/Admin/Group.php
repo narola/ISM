@@ -329,7 +329,7 @@ $where = "`".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`group_id` = $gid AND `".TBL
 
     public function active($id) {
         update(TBL_TUTORIAL_GROUPS, $id, array('group_status' => 'active', 'modified_date' => date('Y-m-d H:i:s', time())));
-        $this->session->set_flashdata('success', 'Group is Successfully Blocked.');
+        $this->session->set_flashdata('success', 'Group is Successfully Unblocked.');
         redirect('admin/group');
     }
 
