@@ -215,8 +215,6 @@
             </LinearLayout>
 
 
-
-
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/d1dp"
@@ -669,7 +667,9 @@
                 <com.narola.kpa.richtexteditor.view.RichTextEditor
                     android:id="@+id/rte_trial_exam"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/rich_text_editor_height">
+                    android:layout_height="@dimen/rich_text_editor_height"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:layout_marginTop="@dimen/d15dp">
 
                 </com.narola.kpa.richtexteditor.view.RichTextEditor>
             </LinearLayout>
@@ -687,7 +687,7 @@
                     android:id="@+id/btn_exam_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_save"
+                    android:background="@drawable/btn_green"
                     android:text="@string/strsave"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
@@ -702,7 +702,8 @@
                     android:text="@string/strsetquestion"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20dp"
+                    android:visibility="visible" />
 
                 <Button
                     android:id="@+id/btn_exam_cancel"

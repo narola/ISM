@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_white"
     android:drawablePadding="@dimen/d10dp"
-    android:drawableRight="@drawable/dropdownarrow"
+    android:drawableRight="@drawable/dropdown_small"
     android:gravity="center_vertical|left"
     android:singleLine="true"
     android:text="Seletct"
