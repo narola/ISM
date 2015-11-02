@@ -1,7 +1,7 @@
 <!--main-->
-<div class="col-sm-7 main main2 general_cred">
+<div class="col-sm-7 main main2 mCustomScrollbar general_cred" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
-        <div class="row page_header">
+        <div class="page_header">
         <div class="col-sm-12">
             <ol class="breadcrumb">
               <li><a href="#">Assessment</a></li>
@@ -13,6 +13,7 @@
     <!--//breadcrumb-->
    
     <!--exam box--> 
+    <div class="col-sm-12">
     <div class="box add_exam_form">
         <div class="box_header">
             <h3><span class="icon icon_info"></span>Exam Details</h3>
@@ -74,10 +75,11 @@
                     </select>
 
                 </div>
+
                 <div class="form-group col-sm-12 col-md-6 col-lg-4 select padding_r15_">
                     <label>Subject</label>
 
-                    <select class="form-control" name="subject_id" id="subject_id" >
+                    <select class="form-control" name="subject_id" id="subject_id" onchange="get_topics(this.value)">
                         <option value="">Select Subject</option>
                         <?php 
                           if(!empty($all_subjects)){ 
@@ -92,6 +94,26 @@
                         <?php } ?>
                     </select>    
                 </div>   
+
+                <div class="form-group col-sm-12 tutorial_topic 
+                <?php if($exam['exam_type'] == 'topic'){ echo ''; } else { echo 'hide'; } ?> select no-padding topic">
+
+                    <label>Topic</label>
+                    <select class="form-control" name="topic_id" id="topic_id" >
+                        <option value="">Select Topic</option>
+                        <?php 
+                          if(!empty($all_topics)){ 
+                            foreach($all_topics as $topic) {
+                          ?> 
+                        <option value="<?php echo $topic['id']; ?>" <?php if(in_array($topic['id'],$not_in)){ echo 'disabled="disabled"'; } ?> > 
+                                <?php echo $topic['topic_name']; ?>
+                        </option>
+
+                        <?php }  }else{ ?>
+                        <option > No Topics </option>
+                        <?php } ?>
+                    </select>    
+                </div> 
                     
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select padding_r15_">
                     <label>Passing Percentage</label>
@@ -223,6 +245,7 @@
             </div>
         </form>
     </div>
+    </div>
     <!--//exam box-->
 </div>
 <!--//main-->
@@ -234,6 +257,8 @@
     $('#course_id').val('<?php echo $exam["course_id"] ?>');
     $('#classroom_id').val('<?php echo $exam["classroom_id"] ?>');  
     $('#subject_id').val('<?php echo $exam["subject_id"] ?>');  
+    $('#topic_id').val('<?php echo $exam["topic_id"] ?>');  
+
     $('#pass_percentage').val('<?php echo $exam["pass_percentage"] ?>');  
     $('#duration').val('<?php echo $exam["duration"] ?>');  
     $('#attempt_count').val('<?php echo $exam["attempt_count"] ?>');  
@@ -241,7 +266,7 @@
     
     <?php if($exam['exam_type'] == 'subject') { ?>
         $("[name='exam_type']").prop('checked',true);    
-    <?php }else{ ?>        
+    <?php } else { ?>        
         $("[name='exam_type']").prop('checked',false);    
     <?php } ?>        
 
@@ -268,6 +293,30 @@
         $("[name='exam_type']").bootstrapSwitch();
         $('.bootstrap-switch-handle-on').text('Subject');
         $('.bootstrap-switch-handle-off').text('Topic');
+
+        $('input[name="exam_type"]').on('switchChange.bootstrapSwitch', function(event, state) {
+          
+          if(state == true){
+                
+                $('.tutorial_topic').addClass('hide');
+
+                $("#exam_category option[value='Tutorial']").each(function() {
+                    $(this).remove();
+                });
+            }else{
+
+                $('.tutorial_topic').removeClass('hide');
+
+                $('#exam_category').append($('<option>', {
+                    value: 'Tutorial',
+                    text: 'Tutorial'
+                }));
+               
+            }
+
+        });
+
+
     });
 
     function fetch_classroom(course_id){
@@ -279,6 +328,7 @@
             success:function(data){
                 $('#classroom_id').html(data);
                 $('#subject_id').html('<option value="">Select Subject</option>');
+                $('#topic_id').html('<option value="">Select Topic</option>');
             }
         });
     }
@@ -291,8 +341,20 @@
             data:{class_id:class_id},
             success:function(data){
                 $('#subject_id').html(data);
+                $('#topic_id').html('<option value="">Select Topic</option>');
             }
 
+        });
+    }
+
+    function get_topics(subject_id){
+        $.ajax({
+           url:'<?php echo base_url()."admin/question/ajax_get_topics_tutorials"; ?>',
+           type:'POST',
+           data:{subject_id:subject_id},
+           success:function(data){
+              $("#topic_id").html(data);
+           }
         });
     }
 

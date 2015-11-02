@@ -938,7 +938,7 @@ if ("WebSocket" in window)
     };
     ws.onclose = function ()
     {
-        alert('Disconnected from Server!');
+        // alert('Disconnected from Server!');
     };
 }
 

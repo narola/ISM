@@ -77,7 +77,7 @@
                             </div>
                             <div class="type_holder">
                                 <div class="exam_type"><p>Discussion</p><p><?php echo $topic['total']; ?> Comments</p></div>
-                                <div class="exam_cat"><p>Examination - Quiz</p><p><?php echo $topic['group_score']; ?> Score</p></div>
+                                <div class="exam_cat"><p>Group Score</p><p><?php echo $topic['group_score']; ?> Score</p></div>
                                 <div class="clearfix"></div>
                             </div>                                
                         </div>

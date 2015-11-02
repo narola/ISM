@@ -248,7 +248,6 @@ class Exam extends ADMIN_Controller {
 
 		}	
 
-
 		$this->form_validation->set_rules('exam_name', 'Exam Name', 'trim|required|is_unique['.TBL_EXAMS.'.exam_name]');
 		$this->form_validation->set_rules('course_id', 'Course Name', 'trim|required');
 		$this->form_validation->set_rules('subject_id', 'Subject Name', 'trim|required');
@@ -321,10 +320,18 @@ class Exam extends ADMIN_Controller {
 
 		$copy = $this->uri->segment(3);
 
+		$all_tutorial_topic_exam = select(TBL_TUTORIAL_TOPIC_EXAM);
+		$not_in =array();
+		foreach ($all_tutorial_topic_exam as $tutorial_topic_exam) {
+			array_push($not_in, $tutorial_topic_exam['tutorial_topic_id'])	;	
+		}
+		
+		$this->data['not_in']=$not_in;
+
 		$this->data['exam']	= select(
 									 TBL_EXAMS.' exam',
 									 'exam.id,exam.exam_name,exam.exam_type,exam.exam_category,exam.classroom_id,exam.subject_id,classroom.course_id,exam.pass_percentage,exam.duration,
-									  exam.attempt_count,exam.instructions,exam.negative_marking,exam.random_question,exam.declare_results,
+									  exam.attempt_count,exam.instructions,exam.negative_marking,exam.random_question,exam.declare_results,tte.tutorial_topic_id as topic_id,
 									  '.TBL_EXAM_SCHEDULE.'.start_date,'.TBL_EXAM_SCHEDULE.'.start_time,'.TBL_EXAM_SCHEDULE.'.id as schedule_id',
 									 array('where'=>array('exam.id'=>$id)),
 									 array(
@@ -337,10 +344,15 @@ class Exam extends ADMIN_Controller {
 										 				array(
 										 						'table'=>TBL_CLASSROOMS.' as classroom',
 										 						'condition'=>'exam.classroom_id=classroom.id'
+										 					),
+										 				array(
+										 						'table'=>TBL_TUTORIAL_TOPIC_EXAM.' as tte',
+										 						'condition'=>'tte.exam_id=exam.id'
 										 					)
 									 			       )
 									 	  	)
 									);
+		// p($this->data['exam'],true);	
 
 		if(empty($this->data['exam'])){
 			redirect('admin/exam');
@@ -350,6 +362,8 @@ class Exam extends ADMIN_Controller {
 		
 		$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
 		
+		$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE,'course_id'=>$this->data['exam']['course_id'])));		
+
 		$this->data['all_subjects'] = select(
 												TBL_SUBJECTS,
 												TBL_SUBJECTS.'.id,'.TBL_SUBJECTS.'.subject_name,'.TBL_CLASSROOM_SUBJECT.'.classroom_id',
@@ -367,20 +381,25 @@ class Exam extends ADMIN_Controller {
 														)
 												)
 											);
+		// p($this->data['exam'],true);
+		$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+										   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+										   array(
+										   		'where'=>array('subject_id'=>$this->data['exam']['subject_id'])
+										   		)
+										);
 
-		$this->data['all_classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>FALSE,'course_id'=>$this->data['exam']['course_id'])));		
+		// qry();
+		// p($this->data['exam']);
+		// p($this->data['all_topics'],true);
 
 		if($_POST){
-			
 			$exam_name = $this->input->post('exam_name');
-
 			if($copy == 'copy'){
 				$exam_validation = 'trim|required|is_unique['.TBL_EXAMS.'.exam_name]';
 			}else{
 				$exam_name == $this->data['exam']['exam_name']?$exam_validation = 'trim|required':$exam_validation = 'trim|required|is_unique['.TBL_EXAMS.'.exam_name]';
 			}
-			
-			
 		}else{
 			$exam_validation = 'trim|required';
 		}
