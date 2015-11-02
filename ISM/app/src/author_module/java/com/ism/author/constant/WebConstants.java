@@ -9,6 +9,8 @@ public class WebConstants {
     public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
 
+//    path
+    public static final String FEED_MEDIA = "http://192.168.1.162/ISM/WS_ISM/Feeds/";
 
     public static final String URL_LOGIN = URL_ARTI_HOST + "AuthenticateUser";
     public static final String URL_GETALLFEEDS = URL_ARTI_HOST + "GetAllFeeds";
@@ -25,6 +27,7 @@ public class WebConstants {
 
     public static final String URL_GET_COURSES = URL_ARTI_HOST + "GetCourses";
     public static final String URL_CREATE_EXAM = URL_ARTI_HOST + "CreateExam";
+    public static final String URL_GETQUESTIONBANK = URL_ARTI_HOST + "GetQuestionBank";
 
 
     public static final String STATUS_SUCCESS = "success";

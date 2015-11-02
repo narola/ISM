@@ -65,7 +65,13 @@ public class PostFeedRequest {
     String audio_link;
     List<String> images;
     String posted_on;
+    String video_thumbnail;
 
+    public String getVideo_thumbnail() {
+        return video_thumbnail;
+    }
 
-
+    public void setVideo_thumbnail(String video_thumbnail) {
+        this.video_thumbnail = video_thumbnail;
+    }
 }

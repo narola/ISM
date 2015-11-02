@@ -1,15 +1,21 @@
 package com.ism.author.activtiy;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -34,11 +40,13 @@ import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
 import com.ism.utility.Utility;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -72,7 +80,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
     public static int CAPTURE_VIDEO = 400;
     public static int RECORD_AUDIO = 500;
     public static int MEDIA_TYPE_AUDIO = 6000;
-    private String mFileName,feed_id;
+    private String mFileName, feed_id;
     private Uri uriFile;
     private PostFileAdapter postFileAdapter = new PostFileAdapter();
     private CircularSeekBar seekbar;
@@ -85,6 +93,11 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
     private MediaPlayer mPlayer;
     private int playTime;
     private boolean isPlay = false;
+    private int serverResponseCode;
+    private String uploadUri;
+    private String mediaType=null;
+    private int recoderDone=0;
+    private File sourceFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +106,6 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         setContentView(R.layout.layout_post);
         initLayout();
 
-//        txtPost.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                popupWindow();
-//            }
-//        });
     }
 
     private void initLayout() {
@@ -141,32 +148,6 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         //llBlank.setVisibility(View.VISIBLE);
         imgKeyboard.setBackgroundColor(getResources().getColor(R.color.color_blue));
     }
-
-//    private void popupWindow() {
-//        popupWindow = new PopupWindow(getApplicationContext());
-//        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        //  arrayList = new ArrayList<MediaFilesModel>();
-//        View view = inflater.inflate(R.layout.layout_post, null);
-//        popupWindow = new PopupWindow(view,
-//                WindowManager.LayoutParams.MATCH_PARENT,
-//                WindowManager.LayoutParams.MATCH_PARENT, true);
-//        popupWindow.setOutsideTouchable(false);
-//        popupWindow.setTouchable(true);
-//        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-//        popupWindow.setSplitTouchEnabled(true);
-//        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-//        etSayIt = (EditText) view.findViewById(R.id.et_sayit);
-//        imgAudio = (ImageView) view.findViewById(R.id.img_audio);
-//        imgVideo = (ImageView) view.findViewById(R.id.img_video);
-//        imgImage = (ImageView) view.findViewBy.Id(R.id.img_image);
-//        imgTool = (ImageView) view.findViewById(R.id.img_tool);
-//        imgLink = (ImageView) view.findViewById(R.id.img_link);
-//        imgKeyboard = (ImageView) view.findViewById(R.id.img_keyboard);
-//        imgEmoticons = (ImageView) view.findViewById(R.id.img_emoticons);
-//        imgImage.setOnClickListener(this);
-//
-//
-//    }
 
     public void hideKeyboard() {
         View view = this.getCurrentFocus();
@@ -253,18 +234,21 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                     isRecording = false;
 
                 }
+                recoderDone=1;
                 seekbar.setProgress(0);
                 //handler.removeCallbacks(r);
                 imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_play));
-            } else if (!isRecording && isPlay) {
+            } else if (recoderDone==1 ) {
                 playIt();
                 imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_pause));
-            } else if (!isRecording && !isPlay) {
+                recoderDone=2;
+            } else if (recoderDone==2 ) {
                 playIt();
                 imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_play));
+                recoderDone=1;
             }
         } else if (v == imgSave) {
-            model = new PostFileModel("audio", Uri.fromFile(new File(mFileName)));
+            model = new PostFileModel("audio", Uri.fromFile(new File(mFileName)),"");
             arrayList.add(model);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
             llAudioRecoder.setVisibility(View.GONE);
@@ -283,6 +267,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             showKeyboard();
         } else if (v == txtCancel) {
             hideKeyboard();
+
             super.onBackPressed();
             //delete video or audio or image if capture
         } else if (v == txtPost) {
@@ -292,142 +277,239 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
     }
 
     private void callPostFeed() {
-        List<String> listImages=new ArrayList<String>();
-        int j=0;
+        String strThumbnailBase64=null;
+        List<String> listImages = new ArrayList<String>();
+        int j = 0;
         try {
-           // ArrayList<PostFileModel> arrayList=new ArrayList<PostFileModel>();
-           // PostFileAdapter adapter=new PostFileAdapter();
-           // arrayList=adapter.getArrayList();
-            Log.e(TAG+"Arraylist",""+arrayList);
-            if(arrayList!=null){
-                for(int i=0;i<arrayList.size();i++){
-                    if(arrayList.get(i).getStrFileType().equals("image")){
+            Log.e(TAG + "Arraylist", "" + arrayList);
+            if (arrayList != null) {
+                for (int i = 0; i < arrayList.size(); i++) {
+                    if (arrayList.get(i).getStrFileType().equals("image")) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), arrayList.get(i).getStrFilePath());
                         //imgDp.setImageBitmap(bitmap);
                         String strImgBase64 = Utility.getBase64ForImage(bitmap);
                         listImages.add(strImgBase64);
                     }
-                }
-            }
-            PostFeedRequest postFeedRequest = new PostFeedRequest();
-            postFeedRequest.setFeed_by("370");
-            Log.e(TAG + "Images", "" + listImages);
-            postFeedRequest.setImages(listImages);
-            postFeedRequest.setVideo_link("");
-            postFeedRequest.setAudio_link("");
-            postFeedRequest.setPosted_on(Utils.getDate());
-            postFeedRequest.setFeed_text(etSayIt.getText().toString().trim());
-            new WebserviceWrapper(PostActivity.this, postFeedRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                    .execute(WebserviceWrapper.POSTFEED);
-            if(arrayList!=null){
-                for(int i=0;i<arrayList.size();i++){
-                    if(arrayList.get(i).getStrFileType().equals("video")){
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), arrayList.get(i).getStrFilePath());
-                        //imgDp.setImageBitmap(bitmap);
-                        //String strImgBase64 = Utility.getBase64ForImage(bitmap);
-                        //listImages.add(strImgBase64);
-                        doFileUpload("video",arrayList.get(i).getStrFilePath(),"video","370",feed_id);
-                    }else if (arrayList.get(i).getStrFileType().equals("audio")){
-
+                    else if (arrayList.get(i).getStrFileType().equals("video")){
+                        MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+                        mMediaMetadataRetriever.setDataSource(this, arrayList.get(i).getStrFilePath());
+                        Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+                        strThumbnailBase64 = Utility.getBase64ForImage(bitmap);
                     }
                 }
+
+                PostFeedRequest postFeedRequest = new PostFeedRequest();
+                postFeedRequest.setFeed_by("370");
+//                Log.e(TAG + "Images", "" + listImages);
+                postFeedRequest.setImages(listImages);
+                postFeedRequest.setVideo_link("");
+                postFeedRequest.setAudio_link("");
+                postFeedRequest.setPosted_on(Utils.getDate());
+                postFeedRequest.setVideo_thumbnail(strThumbnailBase64);
+                postFeedRequest.setFeed_text(etSayIt.getText().toString().trim());
+                new WebserviceWrapper(PostActivity.this, postFeedRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebserviceWrapper.POSTFEED);
+
             }
         } catch (Exception e) {
-            Log.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            Log.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage() + "");
         }
+    }
+    private Bitmap getImage(int id) {
+
+        Bitmap thumb = MediaStore.Video.Thumbnails.getThumbnail(
+
+                getContentResolver(),
+
+                id, MediaStore.Video.Thumbnails.MICRO_KIND, null);
+
+        return thumb;
+
     }
     public String getPath(Uri uri) {
-        String[] projection = { MediaStore.Video.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
+        String wholeID = DocumentsContract.getDocumentId(uri);
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = {MediaStore.Images.Media.DATA};
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = getContentResolver().
+                query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                        column, sel, new String[]{id}, null);
+        String filePath = "";
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
     }
+//    public String getPathAudio(Uri uri) {
+//        String wholeID = DocumentsContract.getDocumentId(uri);
+//        // Split at colon, use second item in the array
+//        String id = wholeID.split(":")[1];
+//
+//        String[] column = {MediaStore.Audio.Media.DATA};
+//
+//        // where id is equal to
+//        String sel = MediaStore.Audio.Media._ID + "=?";
+//
+//        Cursor cursor = getContentResolver().
+//                query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+//                        column, sel, new String[]{id}, null);
+//        String filePath = "";
+//
+//        int columnIndex = cursor.getColumnIndex(column[0]);
+//
+//        if (cursor.moveToFirst()) {
+//            filePath = cursor.getString(columnIndex);
+//        }
+//        cursor.close();
+//        return filePath;
+//    }
 
-          private void doFileUpload(String filename,Uri path,String type,String feed_by,String feed_id){
-            HttpURLConnection conn = null;
-            DataOutputStream dos = null;
-            DataInputStream inStream = null;
-            String lineEnd = "rn";
-            String twoHyphens = "--";
-            String boundary =  "*****";
-            int bytesRead, bytesAvailable, bufferSize;
-            byte[] buffer;
-            int maxBufferSize = 1*1024*1024;
-            String responseFromServer = "";
-           // String urlString = "http://your_website.com/upload_audio_test/upload_audio.php";
-            try
-            {
-                //------------------ CLIENT REQUEST
 
-                FileInputStream fileInputStream = new FileInputStream(path.toString());
-                // open a URL connection to the Servlet
-                URL url = new URL("http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=UploadMedia");
-                // Open a HTTP connection to the URL
-                conn = (HttpURLConnection) url.openConnection();
-                // Allow Inputs
-                conn.setDoInput(true);
-                // Allow Outputs
-                conn.setDoOutput(true);
-                // Don't use a cached copy.
-                conn.setUseCaches(false);
-                // Use a post method.
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                dos = new DataOutputStream( conn.getOutputStream() );
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name="+filename+";filename=" + path + lineEnd);
-                dos.writeBytes("mediaType:" + type);
-                dos.writeBytes("feed_by:" + feed_by);
-                dos.writeBytes("feed_id:"+feed_id);
-                dos.writeBytes(lineEnd);
-                // create a buffer of maximum size
+    private int doFileUpload(String file, String type, String feed_by, String feed_id) {
+        HttpURLConnection conn = null;
+        DataOutputStream dos = null;
+        DataInputStream inStream = null;
+        String lineEnd = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+        int bytesRead, bytesAvailable, bufferSize;
+        byte[] buffer;
+        int maxBufferSize = 1 * 1024 * 1024;
+        String responseFromServer = "",fileName=null;
+        // String urlString = "http://your_website.com/upload_audio_test/upload_audio.php";
+        try {
+            //------------------ CLIENT REQUEST
+
+            //  setImageFromIntent(filePath);
+            if (android.os.Build.VERSION.SDK_INT > 9) {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+            }
+            if(type.equals("video")){
+          //  fileName = getPath(path);
+             sourceFile = new File(file);
+            if (!sourceFile.isFile()) {
+                Log.e(TAG, "Source File Does not exist");
+                return 0;
+            }}
+            else if(type.equals("audio")){
+                fileName = file;
+                sourceFile = new File(file);
+                Log.e(TAG, ""+sourceFile);
+                if (!sourceFile.isFile()) {
+                    Log.e(TAG, "Source File Does not exist");
+                    return 0;
+                }
+            }
+            FileInputStream fileInputStream = new FileInputStream(sourceFile);
+            // open a URL connection to the Servlet
+            URL url = new URL("http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=UploadMedia");
+            // Open a HTTP connection to the URL
+            conn = (HttpURLConnection) url.openConnection();
+            // Allow Inputs
+            conn.setDoInput(true);
+            // Allow Outputs
+            conn.setDoOutput(true);
+            // Don't use a cached copy.
+            conn.setUseCaches(false);
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+            //conn.setRequestProperty("mediaFile", fileName);
+            dos = new DataOutputStream(conn.getOutputStream());
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            //dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=\"mediaFile\";filename=\""+sourceFile.getName()+"\"" + lineEnd);
+            dos.writeBytes(lineEnd);
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+
+            //dos.writeBytes("Content-Disposition: form-data; name=\"feed_by1\""+ lineEnd);
+            dos.writeBytes(lineEnd);
+           // dos.writeBytes("370");
+            dos.writeBytes(lineEnd);
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+
+            dos.writeBytes("Content-Disposition: form-data; name=\"feed_id\""+ lineEnd);
+            dos.writeBytes(lineEnd);
+            dos.writeBytes(feed_id);
+            dos.writeBytes(lineEnd);
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+
+            dos.writeBytes("Content-Disposition: form-data; name=\"mediaType\""+ lineEnd);
+            dos.writeBytes(lineEnd);
+            dos.writeBytes(type);
+            dos.writeBytes(lineEnd);
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=\"feed_by\""+ lineEnd);
+            dos.writeBytes(lineEnd);
+            dos.writeBytes(feed_by);
+            dos.writeBytes(lineEnd);
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+
+            dos.writeBytes(lineEnd);
+
+            bytesAvailable = fileInputStream.available(); // create a buffer of  maximum size
+            Log.i(TAG, "Initial .available : " + bytesAvailable);
+
+            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            buffer = new byte[bufferSize];
+
+            // read file and write it into form...
+            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+            while (bytesRead > 0) {
+                dos.write(buffer, 0, bufferSize);
                 bytesAvailable = fileInputStream.available();
                 bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                buffer = new byte[bufferSize];
-                // read file and write it into form...
                 bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-                while (bytesRead > 0)
-                {
-                    dos.write(buffer, 0, bufferSize);
-                    bytesAvailable = fileInputStream.available();
-                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-                }
-                // send multipart form data necesssary after file data...
-                dos.writeBytes(lineEnd);
-                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-                // close streams
-                Log.e("Debug","File is written");
-                fileInputStream.close();
-                dos.flush();
-                dos.close();
             }
-            catch (MalformedURLException ex)
-            {
-                Log.e("Debug", "error: " + ex.getMessage(), ex);
-            }
-            catch (IOException ioe)
-            {
-                Log.e("Debug", "error: " + ioe.getMessage(), ioe);
-            }
-            //------------------ read the SERVER RESPONSE
-            try {
-                inStream = new DataInputStream( conn.getInputStream() );
-                String str;
 
-                while (( str = inStream.readLine()) != null)
-                {
-                    Log.e("Debug","Server Response "+str);
-                }
-                inStream.close();
+            // send multipart form data necesssary after file data...
+            dos.writeBytes(lineEnd);
+            dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
-            }
-            catch (IOException ioex){
-                Log.e("Debug", "error: " + ioex.getMessage(), ioex);
-            }
+            // Responses from the server (code and message)
+            serverResponseCode = conn.getResponseCode();
+            String serverResponseMessage = conn.getResponseMessage();
+
+            Log.i("Upload file to server", "HTTP Response is : " + serverResponseMessage + ": " + serverResponseCode);
+            // close streams
+            Log.i("Upload file to server", fileName + " File is written");
+            fileInputStream.close();
+            dos.flush();
+            dos.close();
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+            Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        //this block will give the response of upload link
+        try {
+            BufferedReader rd = new BufferedReader(new InputStreamReader(conn
+                    .getInputStream()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                Log.i(TAG, "RES Message: " + line);
+            }
+            rd.close();
+        } catch (IOException ioex) {
+            Log.e(TAG, "error: " + ioex.getMessage(), ioex);
+        }
+        return serverResponseCode;  // like 200 (Ok)
+
+    } //
 
     public void startRecording() {
         if (!isRecording) {
@@ -443,15 +525,16 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             // tv.setVisibility(TextView.VISIBLE);
             try {
                 mRecorder.prepare();
+                // Start record job
+                mRecorder.start();
+                // Change isRecroding flag to true
+                isRecording = true;
+                // Post the record progress
+                //   handler.post(UpdateRecordTime);
             } catch (IOException e) {
                 Log.e("LOG_TAG", "prepare failed");
             }
-            // Start record job
-            mRecorder.start();
-            // Change isRecroding flag to true
-            isRecording = true;
-            // Post the record progress
-            //   handler.post(UpdateRecordTime);
+
 
         }
     }
@@ -487,13 +570,24 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             // set start time
             playTime = 0;
             // Reset max and progress of the SeekBar
-            seekbar.setMax(recordTime);
+
             seekbar.setProgress(0);
+
             try {
                 // Initialize the player and start playing the audio
                 mPlayer.setDataSource(mFileName);
                 mPlayer.prepare();
                 mPlayer.start();
+                handler = new Handler();
+                i = 0;
+                Runnable r = new Runnable() {
+                    public void run() {
+                        seekbar.getProgress();
+                        seekbar.setProgress(i++);
+                        handler.postDelayed(this, 60);
+                    }
+                };
+                handler.postDelayed(r, 0);
                 // Post the play progress
                 // handler.post(UpdatePlayTime);
             } catch (IOException e) {
@@ -501,13 +595,15 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             }
             isPlay = true;
         } else {
+            handler.removeCallbacks(r);
+            seekbar.setMax(0);
             isPlay = false;
             mPlayer.pause();
         }
 
     }
 
-//    Runnable UpdatePlayTime = new Runnable() {
+    //    Runnable UpdatePlayTime = new Runnable() {
 //        public void run() {
 //            if (mPlayer.isPlaying()) {
 //                //   tv.setText(String.valueOf(playTime));
@@ -536,56 +632,98 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
 //      //  handler.postDelayed(r, 0);
 //        // Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
 //    }
+    ProgressDialog pd;
+
+    private void showProgressDialog() {
+
+        pd = new ProgressDialog(PostActivity.this);
+        pd.setMessage(getResources().getString(R.string.loading));
+        pd.show();
+
+    }
+
+    private void dismissProgressDialog() {
+        if (pd != null) {
+            pd.dismiss();
+        }
+    }
+
+    class UploadFileToServer extends AsyncTask<String, String, Object> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+             showProgressDialog();
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+              dismissProgressDialog();
+        }
+
+        @Override
+        protected Object doInBackground(String... params) {
+            Log.e(TAG,""+feed_id);
+
+            doFileUpload(uploadUri, mediaType, "370", feed_id);
+            return null;
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MEDIA_TYPE_IMAGE && resultCode == RESULT_OK) {
-            Toast.makeText(getApplicationContext(), "Select Image", Toast.LENGTH_SHORT).show();
             String path = data.getData().toString();
             Uri uri = data.getData();
             Log.i("uri", uri + "");
-//            Bitmap bitmap = null;
-//            try {
-//                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            String strImgBase64 = Utility.getBase64ForImage(bitmap);
-            model = new PostFileModel("image", uri);
+            model = new PostFileModel("image", uri,"");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
             // adapter.notifyDataSetChanged();
         } else if (requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK) {
-            Toast.makeText(getApplicationContext(), "Select Image", Toast.LENGTH_SHORT).show();
-            model = new PostFileModel("image", uriFile);
+            model = new PostFileModel("image", uriFile,"");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         } else if (requestCode == MEDIA_TYPE_VIDEO && resultCode == RESULT_OK) {
-            Toast.makeText(getApplicationContext(), "Select Image", Toast.LENGTH_SHORT).show();
             Uri uri = data.getData();
-            Log.i(TAG, uri.getPath() + "");
-            model = new PostFileModel("video", uri);
+            Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory());
+            Log.e(TAG + "::", "" + Environment.getExternalStorageDirectory() + uri.getPath());
+            model = new PostFileModel("video", uri,"");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         } else if (requestCode == CAPTURE_VIDEO && resultCode == RESULT_OK) {
-            Toast.makeText(getApplicationContext(), "Select Image", Toast.LENGTH_SHORT).show();
             Uri uri = data.getData();
             Log.i(TAG, uri.getPath() + "");
-            model = new PostFileModel("video", uri);
+            model = new PostFileModel("video", uri,"");
             arrayList.add(model);
             listview.setVisibility(View.VISIBLE);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         } else if (requestCode == MEDIA_TYPE_AUDIO && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
+            Log.i(TAG, uri+ "");
             listview.setVisibility(View.VISIBLE);
-            model = new PostFileModel("audio", uri);
+            model = new PostFileModel("audio", uri,"");
             arrayList.add(model);
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
+        }
+    }
+
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Video.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 
@@ -593,14 +731,14 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), MEDIA_TYPE_IMAGE);
+        startActivityForResult(intent, MEDIA_TYPE_IMAGE);
     }
 
     public void OpenAudio() {
         Intent intent = new Intent();
         intent.setType("audio/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), MEDIA_TYPE_AUDIO);
+        startActivityForResult(intent, MEDIA_TYPE_AUDIO);
     }
 
     private void captureImage() {
@@ -614,6 +752,9 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("video/*");
         startActivityForResult(galleryIntent, MEDIA_TYPE_VIDEO);
+//        Intent galleryIntent =new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+//        galleryIntent.setType("video/*");
+//        startActivityForResult(galleryIntent, MEDIA_TYPE_VIDEO);
     }
 
     public void toolSelected(View v) {
@@ -714,7 +855,22 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
     public void onResponse(int API_METHOD, Object object, Exception error) {
         ResponseObject responseObj = (ResponseObject) object;
         if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-            feed_id=responseObj.getData().get(0).getFeedId();
+            feed_id = responseObj.getData().get(0).getFeedId();
+            if (arrayList != null) {
+                for (int i = 0; i < arrayList.size(); i++) {
+                    if (arrayList.get(i).getStrFileType().equals("video")) {
+                        mediaType="video";
+//                        fileName = getPath(arrayList.get(i).getStrFilePath());
+                        uploadUri =  getPath(arrayList.get(i).getStrFilePath());;
+                        new UploadFileToServer().execute();
+                    } else if (arrayList.get(i).getStrFileType().equals("audio")) {
+                        uploadUri = arrayList.get(i).getStrFilePath().getPath();
+                        mediaType="audio";
+                        new UploadFileToServer().execute();
+                    }
+                }
+            }
+            arrayList.clear();
             super.onBackPressed();
 
         } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
