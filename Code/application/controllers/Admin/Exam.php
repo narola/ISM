@@ -134,7 +134,6 @@ class Exam extends ADMIN_Controller {
 			array_push($not_in, $tutorial_topic_exam['tutorial_topic_id'])	;	
 		}
 
-
 		if($_POST){
 
 			$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
@@ -261,7 +260,7 @@ class Exam extends ADMIN_Controller {
 		if($this->form_validation->run() == FALSE){
 			$this->template->load('admin/default','admin/exam/add_exam',$this->data);
 		}else{
-			
+
 			if(isset($_POST['exam_type'])){
 				$exam_type = 'subject';
 			}else{	
@@ -310,7 +309,7 @@ class Exam extends ADMIN_Controller {
 				$this->session->set_flashdata('success', 'Exam has been Successfully Created');
 				redirect($this->data['prev_url']);	
 			}
-			
+
 		}
 	}
 
@@ -417,6 +416,8 @@ class Exam extends ADMIN_Controller {
 			$this->template->load('admin/default','admin/exam/edit_exam',$this->data);
 		}else{
 			
+			p($_POST,true);
+
 			if(isset($_POST['exam_type'])){
 				$exam_type = 'subject';
 			}else{	
@@ -453,6 +454,12 @@ class Exam extends ADMIN_Controller {
 				);
 
 				$id = insert(TBL_EXAM_SCHEDULE,$exam_schedule);
+
+				if(!isset($_POST['exam_type'])){
+					$topic_id = $this->input->post('topic_id');
+					$tutoral_topic_data = array('tutorial_topic_id'=>$topic_id,'exam_id'=>$exam_id);
+					insert(TBL_TUTORIAL_TOPIC_EXAM,$tutoral_topic_data);
+				}
 
 			}else{
 				

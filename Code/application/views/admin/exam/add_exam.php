@@ -166,17 +166,25 @@
 
                <div data-date-format="dd-mm-yyyy" data-date="12-02-2012"  class="form-group dob col-sm-6 padding_r15_">
 					<label>Exam Start Date</label>
-                    <input type="text" name="start_date" id="start_date" placeholder="Exam Start"  class="form-control ">
+                    <input type="text" name="start_date" id="start_date" placeholder="Exam Start" 
+                          value="<?php echo set_value('start_date'); ?>"  class="form-control" >
                     <!-- <label><input type="checkbox">Notify Student Via SMS</label> -->
                 </div> 
 
                <div class="form-group col-sm-6 padding_r15_">
 					<label>Exam Time</label>
 					<div class="input-group bootstrap-timepicker">
-                        <input id="timepicker1" name="start_time" type="text" class="form-control input-small">
+                        <input id="timepicker1" name="start_time" value="<?php echo set_value('start_time'); ?>" type="text" 
+                        class="form-control input-small" onclick="my_func()" >
                         <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     </div>
                 </div> 
+
+                <script type="text/javascript">
+                    function my_func(){
+                        $( ".input-group-addon" ).trigger( "click" );
+                    }
+                </script>
 
                 <div class="clearfix"></div>
             </div>
@@ -185,7 +193,7 @@
             </div>
             <div class="box_body">
             	<div class="form-group col-md-6 col-lg-8 padding_r15_">
-                	<textarea name="instructions" id="editor1" class="form-control"></textarea>
+                	<textarea name="instructions" id="editor1" class="form-control"><?php echo set_value('instructions'); ?></textarea>
             	</div>
                 <div class="form-group col-md-6 col-lg-4 option_radio">
                 	<div>
@@ -331,12 +339,15 @@
 
     $(document).ready(function(){
 
+        // var today = new Date();
+        // var lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);    
+
         $('#start_date').datepicker({
             format: 'yyyy-mm-dd'
         });
 
-        $('#end_date input').datepicker({
-            format: 'yyyy-mm-dd'
+        $('#start_date').on('changeDate', function(ev){
+            $(this).datepicker('hide');
         });
 
     });

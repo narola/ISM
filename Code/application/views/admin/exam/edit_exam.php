@@ -349,7 +349,7 @@
 
     function get_topics(subject_id){
         $.ajax({
-           url:'<?php echo base_url()."admin/question/ajax_get_topics_tutorials"; ?>',
+           url:'<?php echo base_url()."admin/question/ajax_get_topics_tutorials_edit"; ?>',
            type:'POST',
            data:{subject_id:subject_id},
            success:function(data){
