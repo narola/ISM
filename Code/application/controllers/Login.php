@@ -21,7 +21,7 @@ class Login extends CI_Controller {
         $request_change = $this->input->post('send_request');
         if($request_change == 'change')
         {
-            // $this->request_for_credentials();
+            $this->request_for_credentials();
 
         }
 
@@ -76,7 +76,6 @@ class Login extends CI_Controller {
          
             if (!empty($fetch_data)) {
                 $db_pass = $this->encrypt->decode($fetch_data['password']);
-// exit;
                 if ($db_pass === $password && $fetch_data['role_id'] != 1 && $fetch_data['is_delete'] == 0 && $fetch_data['user_status'] == 'active') {
                     
                     /* If remember Me Checkbox is clicked */
@@ -161,7 +160,7 @@ class Login extends CI_Controller {
         }
         else
         {
-            $this->session->set_flashdata('error', 'Please click on verfication link in your email');
+            $this->session->set_flashdata('success', 'Please click on verfication link in your email');
             redirect('login');
         }
     }
@@ -186,8 +185,9 @@ class Login extends CI_Controller {
                             'single'=>1
                         );
             $where = array('where'  =>  array('u.email_id' => $emailid));
-            $chkdata = select(TBL_USERS.' u','f.token,f.complete_date',$where,$options);
-            if(empty($chkdata['complete_date']) && $chkdata['token'] != ''){
+            $chkdata = select(TBL_USERS.' u','f.token,f.complete_date,f.created_date',$where,$options);
+            
+            if(empty($chkdata['complete_date']) && $chkdata['token'] != '' && date('Y-m-d',strtotime($chkdata['created_date'])) == date('Y-m-d')){
                 $this->session->set_flashdata('error', 'Request alredy sended please check it');
                 redirect('login');  
             }    
@@ -268,6 +268,11 @@ class Login extends CI_Controller {
                             </table>
                         </td>
                     </tr>
+                     <tr>
+                        <td>
+                            <span style="font-size:x-small;">©2015 ISM. All Rights Reserved.</span>   
+                        </td>
+                    </tr>
                 </table>
             </body>';
             $msg .='</html>';
@@ -342,7 +347,6 @@ class Login extends CI_Controller {
     
     /*-----Do not have credentials----*/
     public function request_for_credentials(){
-        
         $message = $this->input->post('message');
         $email_id = $this->input->post('request_email');
         $name = $this->input->post('request_name');
@@ -396,7 +400,7 @@ class Login extends CI_Controller {
         $this->email->message($msg);
         $this->email->send();
         $this->email->print_debugger();
-        $this->session->set_flashdata('error', 'Your request submitted successfully.');
+        $this->session->set_flashdata('success', 'Your request submitted successfully.');
         redirect('login');
     }
 
