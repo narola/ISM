@@ -125,92 +125,95 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     @Override
     public void onResponse(int apiMethod, Object object, Exception error) {
-
-        if (apiMethod == WebserviceWrapper.GET_ALL_FEEDS) {
-            responseObj = (ResponseObject) object;
-            if (responseObj != null) {
-                if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
-                    if (responseObj.getData().size() > 0) {
-                        allFeedsAdapter = new AllFeedsAdapter(getActivity(), responseObj.getData(), this);
-                        recyclerviewPost.setAdapter(allFeedsAdapter);
-                        recyclerviewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    }
-                } else {
-                    Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Utils.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
-            }
-
-
-        } else if (apiMethod == WebserviceWrapper.GET_ALL_COMMENTS) {
-            ResponseObject responseObj = (ResponseObject) object;
-
-            if (responseObj != null) {
-                if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
-                    if (responseObj.getData().size() > 0) {
-                        ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseObj.getData());
-                        viewAllCommentsDialog.show();
-                    }
-                } else {
-                    Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Utils.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
-            }
+	    try {
+		    if (apiMethod == WebserviceWrapper.GET_ALL_FEEDS) {
+			    responseObj = (ResponseObject) object;
+			    if (responseObj != null) {
+				    if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
+					    if (responseObj.getData().size() > 0) {
+						    allFeedsAdapter = new AllFeedsAdapter(getActivity(), responseObj.getData(), this);
+						    recyclerviewPost.setAdapter(allFeedsAdapter);
+						    recyclerviewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
+					    }
+				    } else {
+					    Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
+				    }
+			    } else {
+				    Utils.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
+			    }
 
 
-        } else if (apiMethod == WebserviceWrapper.GET_STUDYMATES) {
-            ResponseObject responseObj = (ResponseObject) object;
+		    } else if (apiMethod == WebserviceWrapper.GET_ALL_COMMENTS) {
+			    ResponseObject responseObj = (ResponseObject) object;
 
-            if (responseObj != null) {
-                if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
-                    if (responseObj.getData().size() > 0) {
-                        TagStudyMatesDialog tagStudyMatesDialog = new TagStudyMatesDialog(getActivity(), responseObj.getData(), this);
-                        tagStudyMatesDialog.show();
-                    }
-                } else {
-                    Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Utils.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
-
-            }
-
-
-        } else if (apiMethod == WebserviceWrapper.TAG_FRIEND_IN_FEED) {
-            ResponseObject responseObj = (ResponseObject) object;
-
-            if (responseObj != null) {
-                if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
-                    Toast.makeText(getActivity(), "Tag Successful", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Tag Not Successful", Toast.LENGTH_SHORT).show();
-                }
+			    if (responseObj != null) {
+				    if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
+					    if (responseObj.getData().size() > 0) {
+						    ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseObj.getData());
+						    viewAllCommentsDialog.show();
+					    }
+				    } else {
+					    Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
+				    }
+			    } else {
+				    Utils.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
+			    }
 
 
-            } else {
-                Utils.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
+		    } else if (apiMethod == WebserviceWrapper.GET_STUDYMATES) {
+			    ResponseObject responseObj = (ResponseObject) object;
 
-            }
+			    if (responseObj != null) {
+				    if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
+					    if (responseObj.getData().size() > 0) {
+						    TagStudyMatesDialog tagStudyMatesDialog = new TagStudyMatesDialog(getActivity(), responseObj.getData(), this);
+						    tagStudyMatesDialog.show();
+					    }
+				    } else {
+					    Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
+				    }
+			    } else {
+				    Utils.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
 
-        } else if (apiMethod == WebserviceWrapper.ADD_COMMENTS) {
-            ResponseObject responseObj = (ResponseObject) object;
-            if (responseObj != null) {
-                if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
+			    }
 
-                    updatePostFeedViewAfterAddComment();
 
-                    Toast.makeText(getActivity(), "Comment Added Successfully!!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+		    } else if (apiMethod == WebserviceWrapper.TAG_FRIEND_IN_FEED) {
+			    ResponseObject responseObj = (ResponseObject) object;
 
-            }
+			    if (responseObj != null) {
+				    if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
+					    Toast.makeText(getActivity(), "Tag Successful", Toast.LENGTH_SHORT).show();
+				    } else {
+					    Toast.makeText(getActivity(), "Tag Not Successful", Toast.LENGTH_SHORT).show();
+				    }
 
-        }
+
+			    } else {
+				    Utils.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
+
+			    }
+
+		    } else if (apiMethod == WebserviceWrapper.ADD_COMMENTS) {
+			    ResponseObject responseObj = (ResponseObject) object;
+			    if (responseObj != null) {
+				    if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
+
+					    updatePostFeedViewAfterAddComment();
+
+					    Toast.makeText(getActivity(), "Comment Added Successfully!!", Toast.LENGTH_SHORT).show();
+				    } else {
+					    Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
+				    }
+			    } else {
+				    Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+
+			    }
+
+		    }
+	    } catch (Exception e) {
+		    Log.e(TAG, "onResponse Exception : " + e.toString());
+	    }
 
     }
 

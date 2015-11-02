@@ -252,7 +252,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         btn_exam_setquestion.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-
+                                                        ((TeacherHomeActivity) getActivity()).loadFragment(TeacherHomeActivity.FRAGMENT_ADDQUESTION);
                                                     }
                                                 }
         );
