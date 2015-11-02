@@ -128,7 +128,7 @@ class Dashboard extends ADMIN_Controller {
 
 		$school_grade = $this->input->post('school_grade');
 
-		if(!$_POST || empty($school_grade)){
+		if(empty($school_grade) || !$_POST){
 			$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0)),array('order_by'=>TBL_SCHOOLS.'.school_name'));
 		}else{
 			$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0,'school_grade'=>$school_grade)),array('order_by'=>TBL_SCHOOLS.'.school_name'));
@@ -180,7 +180,7 @@ class Dashboard extends ADMIN_Controller {
 
 			//load our new PHPExcel library
 			$this->load->library('excel');
-			ob_end_clean();
+			ob_clean();
 			//activate worksheet number 1
 			$this->excel->setActiveSheetIndex(0);
 			//name the worksheet
@@ -240,14 +240,9 @@ class Dashboard extends ADMIN_Controller {
 							'school_id'=>$school_id,
 							'role_id'=>$role_id,
 							'status'=>'1',
-							'created_date'=>date('Y-m-d H:i:s',time()),
-							'modified_date'=>'0000-00-00 00:00:00',
 							'classroom_id'=> $classroom_id,
 							'course_id'=> $course_id,
-							'academic_year'=>$year,
-							'is_delete'=>FALSE,
-							'is_my_school'=>FALSE,
-							'is_testdata'=>'yes'
+							'academic_year'=>$year
 						);
 
 					insert(TBL_AUTO_GENERATED_CREDENTIAL,$data); // insert data into database using common_model.php and cms_helper.php

@@ -15,7 +15,7 @@
                   <label>School Grade</label>
                   <select class="form-control " name="school_grade" 
                   onchange="fetch_school_from_grade(this.value)" id="school_grade">
-                    <option selected value="1"> Select School Grade</option>
+                    <option selected value=""> Select School Grade</option>
                       <option value="A" <?php echo set_select('school_grade', 'A'); ?>>A</option>
                       <option value="B" <?php echo set_select('school_grade', 'B'); ?>>B</option>
                       <option value="C" <?php echo set_select('school_grade', 'C'); ?>>C</option>
@@ -27,7 +27,7 @@
 
               <div class="form-group three_inputs select">
                   <label>Select School </label>
-                  <select class="form-control js-example-basic-single" id="school_id" name="school_id">
+                  <select class="form-control js-example-basic-single" id="school_id" name="school_id" onchange="school_id_error()">
                      <option  selected value=""> Select School</option>
                       <?php 
                           if(!empty($schools)) {
@@ -41,12 +41,12 @@
                       <?php } ?> 
                   </select>
                   <a href="#" class="icon icon_add_small"></a>
-                  <?php echo myform_error('school_id'); ?>
+                  <?php echo form_error('school_id','<div class="alert alert-danger school_id_error">','</div>'); ?>
               </div>
 
               <div class="form-group three_inputs select" >
                   <label>Role</label>
-                  <select class="form-control " name="role_id" id="role_id">
+                  <select class="form-control " name="role_id" id="role_id" onchange="role_id_error()" >
                     <option selected disabled> Select Role</option>
                       <?php 
                           if(!empty($roles)) {
@@ -56,11 +56,11 @@
                           <option value="<?php echo $role['id']; ?>" <?php echo set_select('role_id', $role['id']); ?>>
                                <?php echo ucfirst($role['role_name']); ?>
                           </option>
-                      <?php } } }else{ ?>
+                      <?php } } } else { ?>
                           <option disabled > No Roles Found</option>  
                       <?php } ?>
                   </select>
-                  <?php echo myform_error('role_id'); // create custom helper function in cms_helper.php  ?> 
+                  <?php echo form_error('role_id','<div class="alert alert-danger role_id_error">','</div>'); // create custom helper function in cms_helper.php  ?> 
               </div>
               <div class="clearfix"></div>
            </div>
@@ -83,12 +83,12 @@
                           <?php } ?>      
                       </select>
                       <a href="#" class="icon icon_add_small"></a>
-                      <?php echo myform_error('course_id'); ?>
+                      <?php echo form_error('course_id','<div class="alert alert-danger course_id_error">','</div>'); ?>
                   </div>
 
                   <div class="form-group three_inputs select">
                       <label>Classroom</label>
-                      <select class="form-control" name="classroom_id" id="classroom_id">
+                      <select class="form-control" name="classroom_id" id="classroom_id" onchange="classroom_id_error()">
                           <option selected disabled> Select Classroom</option>
                           <?php 
                               if(!empty($classrooms)) {
@@ -102,7 +102,7 @@
                           <?php } ?>
                       </select>
                       <a href="#" class="icon icon_add_small"></a>
-                      <?php echo myform_error('classroom_id'); ?>
+                      <?php echo form_error('classroom_id','<div class="alert alert-danger classroom_id_error">','</div>'); ?>
                   </div>
 
                   <div class="form-group three_inputs select">
@@ -122,8 +122,9 @@
           <div class="box_body">  
               <div class="form-group three_inputs noc">
                 <label>Enter Number of Users</label>
-                <input type="text" name="no_of_credentials" id="noc" value="<?php echo set_value('no_of_credentials'); ?>" class="form-control" id="">
-                <?php echo myform_error('no_of_credentials'); ?>
+                <input type="text" name="no_of_credentials" id="noc" value="<?php echo set_value('no_of_credentials'); ?>" 
+                       class="form-control" onkeyup="noc_error()">
+                <?php echo form_error('no_of_credentials','<div class="alert alert-danger noc_error">','</div>'); ?>
               </div>
               <div class="clearfix"></div>
           </div>
@@ -134,9 +135,7 @@
 
                 <?php echo flashMessage(TRUE); ?>
 
-                <?php 
-                    $success = $this->session->flashdata('success'); 
-                ?>
+                <?php $success = $this->session->flashdata('success'); ?>
                 
                 <div class="alert alert-success <?php if(empty(strip_tags($success,''))){ echo 'hide';} ?>">
                     <?php echo strip_tags($success) ; ?>
@@ -157,9 +156,13 @@
 
 <script type="text/javascript">
     
-    $(document).ready(function() {
-      $(".js-example-basic-single").select2({ placeholder: "Select a school"});
-    });
+    //Error Hide on Select Dropdown value or on keyup of textbox
+    function school_id_error() {  $('.school_id_error').hide(); }
+    function role_id_error(){ $('.role_id_error').hide(); }
+    function classroom_id_error(){ $('.classroom_id_error').hide(); }
+    function noc_error(){ $('.noc_error').hide(); }
+
+    $(document).ready(function() { $(".js-example-basic-single").select2({ placeholder: "Select a school"}); });
 
     function fetch_school_from_grade(school_grade){
 
@@ -176,6 +179,9 @@
     }
 
     function fetch_classroom(course_id){
+        
+        $('.course_id_error').hide();
+
         $.ajax({
             url:'<?php echo base_url()."common/fetch_classroom"; ?>',
             type:'POST',

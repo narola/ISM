@@ -60,9 +60,11 @@
     <div class="padding_b30 col-sm-12">
      
      <form method="post" id="bulk_notice" >
-        <div class="col-sm-10 text-left margin_t15">
-            <?php echo flashMessage(TRUE,TRUE); ?>
-        </div>    
+        
+        <div class="col-sm-offset-2 col-sm-8 text-left margin_t15">
+            <?php echo flashMessage(TRUE,TRUE); ?> 
+        </div> 
+
     	<div class="col-sm-2">
             <div class="box_body bulk_action">
                 <div class="form-group select">

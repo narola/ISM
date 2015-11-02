@@ -63,8 +63,7 @@
             <br/>
             <br/>
             <div class="col-sm-10 text-left">
-                <?php echo flashMessage(TRUE,FALSE); ?>
-                <?php echo flashMessage(FALSE,TRUE); ?>
+                <?php echo flashMessage(TRUE,TRUE); ?>
             </div>
 
         </div>
