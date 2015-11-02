@@ -19,6 +19,7 @@ class My_exam extends ISM_Controller {
 		//	get student detail
 		$user_data = $this->session->userdata('user');
 		$data['my_course_name'] = $user_data['course_name'];
+		$data['my_course_nick_name'] = $user_data['course_nickname'];
 		$course_id = $user_data['course_id'];
 		$classroom_id = $user_data['classroom_id'];
 		$user_id = $user_data['id'];

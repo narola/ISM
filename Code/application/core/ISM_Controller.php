@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class ISM_Controller extends CI_Controller {
 
 	var $active_h = array();
+	var $notification_list = array();
 
 	public function __construct(){
 		
@@ -11,6 +12,8 @@ class ISM_Controller extends CI_Controller {
 		
 		$this->load->model(array('common_model'));	
 		$this->active_h = active_hours();
+		$this->notification_list = notification_list($this->session->userdata('user')['id']);
+		$this->noti_cnt = count_notification_list($this->session->userdata('user')['id']);
 		$exceptional_url = array('student/logout','student/forgot_password','student/reset_password',
 								'student/group_allocation');
 		
