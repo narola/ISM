@@ -30,8 +30,11 @@
                 <div class="col-sm-12">
                 	<img src="assets/images/logo.png" class="logo">
                     <form class="login_form" method="post">
-                         <div class=" alert alert-danger <?php if(empty($this->session->flashdata('error'))){ echo 'hide';} ?>">
+                        <div class=" alert alert-danger <?php if(empty($this->session->flashdata('error'))){ echo 'hide';} ?>">
                             <?php echo $this->session->flashdata('error');?>
+                        </div>
+                        <div class=" alert alert-success <?php if(empty($this->session->flashdata('success'))){ echo 'hide';} ?>">
+                            <?php echo $this->session->flashdata('success');?>
                         </div>
                     	<div class="form-group">
                     		<input placeholder="Enter Email/Username" class="form-control" type="text" name="username">
@@ -86,6 +89,9 @@
                                     <div class="alert alert-danger" style="display:none" id="err3">
                                         Name field is required
                                     </div>
+                                    <div class="alert alert-danger" style="display:none" id="err4">
+                                        Invalid name
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -132,6 +138,7 @@
             var regex = new RegExp("^[a-zA-Z0-9\\b ]+$");
             var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
             if (regex.test(str) || e.keyCode === 9) {
+                $('#err4').hide();
                 return true;
             }
 
@@ -143,7 +150,17 @@
             email = $('#request_email').val();
             message = $('#message').val();
             name = $('#request_name').val();
-       
+            if(name != ''){
+                var regex = new RegExp("^[a-zA-Z0-9\\b ]+$");
+                if (regex.test(name)) {
+                    return true;
+                }
+                else{
+                    $('#err4').show();
+                    return false;
+                }
+            }
+
             if(email == '' && message == '' && name == ''){
                 $('#err2').show();
                 $('#err1').show();   

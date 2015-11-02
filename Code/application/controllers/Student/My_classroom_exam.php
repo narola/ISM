@@ -24,7 +24,8 @@ class My_classroom_exam extends ISM_Controller {
 		$data['user_class_name'] = $user_data['class_name'];
 
 		$exam_type = $this->input->post('exam_type');
-		if($exam_type != '')
+	
+		if($exam_type != '0' )
 		{
 			$where1 = array('where' => array('e.classroom_id' => $user_classroom,'e.is_delete' => 0,'e.exam_category !='=>'tutorial','e.exam_category'=>$exam_type));
 			$where2 = 'AND exam_category ="'.$exam_type.'" AND classroom_id='.$user_classroom;
