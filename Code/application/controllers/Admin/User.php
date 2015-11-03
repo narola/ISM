@@ -559,7 +559,7 @@ class User extends ADMIN_Controller {
 											)
 									);
 
-		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)));
 
 		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required|alpha_numeric_spaces');	
 		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	

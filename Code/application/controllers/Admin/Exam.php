@@ -513,7 +513,7 @@ class Exam extends ADMIN_Controller {
 				}else{
 					$id = insert(TBL_EXAM_SCHEDULE,$exam_schedule);	
 				}
-
+				
 				$this->session->set_flashdata('success', 'Exam has been Successfully Updated.');
 			}
 

@@ -470,8 +470,8 @@ class Dashboard extends ADMIN_Controller {
         }
     } 
 
-    /*
-	*	@Auther KAMLESH POKIYA (KAP).
+    /**
+	*@author KAMLESH POKIYA (KAP).
 	*	after verifiction of email and token accept request for change password.
 	*/
     public function reset_password(){
@@ -506,9 +506,23 @@ class Dashboard extends ADMIN_Controller {
             }
         }
     }
-     public function about_us(){
+
+    /*
+    *	@author KAMLESH POKIYA
+    *	Load about us page 
+    */
+    
+    public function about_us(){
      	$this->load->view('admin/about_us');
-     }
+    }
+
+    /**
+     * function Profile edit is for edit Profile for Admin
+     * @author Virendra patel
+     **/
+    public function profile_edit(){	
+		$this->template->load('admin/default','admin/user/profile_edit',$this->data);
+    }
 }
 
 /* End of file Admin.php */

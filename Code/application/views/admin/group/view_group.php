@@ -26,6 +26,19 @@
                             <?php }  } ?>
                         </select>
 	                </div>
+
+                    <div class="form-group">
+                       <select class="form-control" name="classroom" onchange="filter_data()" id="classroom" >
+                            <option value="">Select Classroom</option>
+                            <?php 
+                              if(!empty($classrooms)){ 
+                                foreach($classrooms as $classroom) {
+                                ?>
+                                <option value="<?php echo $classroom['id']; ?>"><?php echo $classroom['class_name']; ?></option>  
+                            <?php }  } ?>
+                        </select>
+                    </div>
+
 	                <div class="form-group">
 	                    <select class="form-control" onchange="filter_data()" name="year" id="year">
 	                        <option value="">Select Year</option>
@@ -273,6 +286,10 @@
 
     <?php if(!empty($_GET['year'])) { ?>
         $('#year').val('<?php echo $_GET["year"];?>');    
+    <?php } ?>  
+
+     <?php if(!empty($_GET['classroom'])) { ?>
+        $('#classroom').val('<?php echo $_GET["classroom"];?>');    
     <?php } ?>          
 
 </script>
