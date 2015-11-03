@@ -385,13 +385,22 @@ class Exam extends ADMIN_Controller {
 												)
 											);
 		// p($this->data['exam'],true);
-		$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
-										   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
-										   array(
-										   		'where'=>array('subject_id'=>$this->data['exam']['subject_id'])
-										   		)
-										);
-
+		if($copy != 'copy') {
+			$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+											   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+											   array(
+											   		'where'=>array('subject_id'=>$this->data['exam']['subject_id'])
+											   		)
+											);
+		}else{
+			$this->data['all_topics'] = select(TBL_TUTORIAL_TOPIC,
+												   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+												   array(
+												   		'where'=>array('subject_id'=>$this->data['exam']['subject_id']),
+												   		'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
+												   		)
+												);
+		}
 		// qry();
 		// p($this->data['exam']);
 		// p($this->data['all_topics'],true);
@@ -408,9 +417,12 @@ class Exam extends ADMIN_Controller {
 		}
 
 		$this->form_validation->set_rules('exam_name', 'Exam Name', $exam_validation );
-		$this->form_validation->set_rules('course_id', 'Course Name', 'trim|required');
-		$this->form_validation->set_rules('subject_id', 'Subject Name', 'trim|required');
-		$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required');
+
+		if($copy == 'copy') {
+			$this->form_validation->set_rules('course_id', 'Course Name', 'trim|required');
+			$this->form_validation->set_rules('subject_id', 'Subject Name', 'trim|required');
+			$this->form_validation->set_rules('classroom_id', 'Classroom', 'trim|required');
+		}	
 		$this->form_validation->set_rules('pass_percentage', 'Passing Percentage', 'trim|required');
 		$this->form_validation->set_rules('exam_category', 'Exam Category', 'trim|required');
 		$this->form_validation->set_rules('duration', 'Exam duration', 'trim|required');
@@ -434,7 +446,9 @@ class Exam extends ADMIN_Controller {
 			
 			// $button_type = $this->input->post('button_type');
 
-			$exam_data=array(
+			if($copy == 'copy'){
+
+				$exam_data=array(
 					'exam_name'=>$this->input->post('exam_name'),
 					'classroom_id'=>$this->input->post('classroom_id'),
 					'subject_id'=>$this->input->post('subject_id'),
@@ -449,11 +463,6 @@ class Exam extends ADMIN_Controller {
 					'declare_results'=>$this->input->post('declare_results'),
 					'created_by'=>$this->session->userdata('id')
 				);
-
-			p($exam_data);
-			p($_POST,true);
-
-			if($copy == 'copy'){
 				
 				$exam_id = insert(TBL_EXAMS,$exam_data); 
 
@@ -471,8 +480,24 @@ class Exam extends ADMIN_Controller {
 					$tutoral_topic_data = array('tutorial_topic_id'=>$topic_id,'exam_id'=>$exam_id);
 					insert(TBL_TUTORIAL_TOPIC_EXAM,$tutoral_topic_data);
 				}
+				$this->session->set_flashdata('success', 'Exam has been Successfully Created.');
 
 			}else{
+
+				$exam_data=array(
+					'exam_name'=>$this->input->post('exam_name'),
+					'exam_type'=>$exam_type,
+					'exam_category'=>$this->input->post('exam_category'),
+					'pass_percentage'=>$this->input->post('pass_percentage'),
+					'duration'=>$this->input->post('duration'),
+					'attempt_count'=>$this->input->post('attempt_count'),
+					'instructions' => htmlspecialchars($this->input->post('instructions')),
+					'negative_marking'=>$this->input->post('negative_marking'),
+					'random_question'=>$this->input->post('random_question'),
+					'declare_results'=>$this->input->post('declare_results'),
+					'created_by'=>$this->session->userdata('id'),
+					'modified_date'=>date('Y-m-d H:i:s')
+				);
 				
 				$exam_id = update(TBL_EXAMS,$id,$exam_data); 
 				
@@ -488,12 +513,13 @@ class Exam extends ADMIN_Controller {
 				}else{
 					$id = insert(TBL_EXAM_SCHEDULE,$exam_schedule);	
 				}
+
+				$this->session->set_flashdata('success', 'Exam has been Successfully Updated.');
 			}
 
 			if($button_type == 'set'){
 				redirect('admin/question/set?exam='.$id);	
 			}else{
-				$this->session->set_flashdata('success', 'Exam has been Successfully Updated.');
 				redirect($this->data['prev_url']);	
 			}
 		}
