@@ -14,6 +14,7 @@ import com.ism.object.MyTypeFace;
 import com.ism.R;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.login.TeacherHomeActivity;
+import com.ism.teacher.model.Data;
 import com.ism.utility.Debug;
 
 /**
@@ -53,12 +54,12 @@ public class AddQuestionFragmentTeacher extends Fragment {
         initGlobal();
 
 
-//        getFragmentManager()
-//                .beginTransaction()
-//                .add(R.id.fl_addquestionfragment_container_left, new QuestionListFragment(this))
-//                .addToBackStack(String.valueOf(FRAGMENT_QUESTIONLIST))
-//                .commit();
-//
+        getFragmentManager()
+                .beginTransaction()
+                .add(R.id.fl_addquestionfragment_container_left, new QuestionListFragment(this))
+                .addToBackStack(String.valueOf(FRAGMENT_QUESTIONLIST))
+                .commit();
+
 
         return view;
     }
@@ -68,7 +69,7 @@ public class AddQuestionFragmentTeacher extends Fragment {
         fl_addquestionfragment_container_left = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
         fl_addquestionfragment_container_right = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
 
-        loadFragment(FRAGMENT_QUESTIONLIST);
+        //  loadFragment(FRAGMENT_QUESTIONLIST);
     }
 
     @Override
@@ -85,15 +86,15 @@ public class AddQuestionFragmentTeacher extends Fragment {
     public void flipCard() {
         if (!mShowingBack) {
             mShowingBack = true;
-            /*getFragmentManager()
+            getFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(
                             R.animator.card_flip_right_in, R.animator.card_flip_right_out,
                             R.animator.card_flip_left_in, R.animator.card_flip_left_out)
-                    .add(R.id.fl_addquestionfragment_container_left, new QuestionAddEditFragment(this))
+                    .add(R.id.fl_addquestionfragment_container_left, new AddNewQuestionFromAssignment(this))
                     .addToBackStack(null)
-                    .commit();*/
-            loadFragment(FRAGMENT_QUESTIONADDEDIT);
+                    .commit();
+            //loadFragment(FRAGMENT_QUESTIONADDEDIT);
 
         } else {
 
@@ -141,7 +142,9 @@ public class AddQuestionFragmentTeacher extends Fragment {
                     break;
                 case FRAGMENT_ADD_NEW_QUESTION:
                     current_fragment = FRAGMENT_ADD_NEW_QUESTION;
-                    getChildFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_left, AddNewQuestionFromAssignment.newInstance(FRAGMENT_ADD_NEW_QUESTION)).commit();
+                    getChildFragmentManager().beginTransaction().setCustomAnimations(
+                            R.animator.card_flip_right_in, R.animator.card_flip_right_out,
+                            R.animator.card_flip_left_in, R.animator.card_flip_left_out).replace(R.id.fl_addquestionfragment_container_left, new AddNewQuestionFromAssignment(this)).commit();
                     break;
                 case FRAGMENT_PREVIEWQUESTION:
                     current_fragment = FRAGMENT_PREVIEWQUESTION;
@@ -154,8 +157,9 @@ public class AddQuestionFragmentTeacher extends Fragment {
         }
     }
 
-    public static int getCurrentChildFragment() {
-        return current_fragment;
+    public void addItemToPreviewFragment(Data data) {
+
+//        previewQuestionFragment.addItemsToList(data);
     }
 
 }

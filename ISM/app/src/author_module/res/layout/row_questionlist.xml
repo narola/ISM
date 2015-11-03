@@ -88,7 +88,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/d1dp"
-                android:background="@color/color_teacher_headers" />
+                android:background="@color/questionlistseparator" />
         </LinearLayout>
 
         <LinearLayout
@@ -129,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/custom_checkbox_question_selection"
-                android:checked="true" />
+                android:checked="false" />
         </LinearLayout>
 
     </LinearLayout>
@@ -137,5 +137,5 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="@dimen/d1dp"
-        android:background="@color/color_teacher_headers" />
+        android:background="@color/questionlistseparator" />
 </LinearLayout>

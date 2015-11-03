@@ -97,12 +97,27 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         tvQuestionlistAddNewQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int fragment=AddQuestionFragmentTeacher.getCurrentChildFragment();
+//                int fragment=AddQuestionFragmentTeacher.getCurrentChildFragment();
+//
+//                getFragmentManager().beginTransaction().
+//                        setCustomAnimations(
+//                                R.animator.card_flip_right_in, R.animator.card_flip_right_out,
+//                                R.animator.card_flip_left_in, R.animator.card_flip_left_out).replace(R.id.fl_addquestionfragment_container_left, AddNewQuestionFromAssignment.newInstance(fragment)).commit();
 
-                getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_left, AddNewQuestionFromAssignment.newInstance(fragment)).commit();
+                ((AddQuestionFragmentTeacher) mFragment).flipCard();
+
             }
         });
 
+        tvQuestionlistAddPreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ((AddQuestionFragmentTeacher) mFragment).addItemToPreviewFragment(getQuestionBankResponseObject.getData().get(0));
+
+
+            }
+        });
 
         callApiGetQuestionBank();
 

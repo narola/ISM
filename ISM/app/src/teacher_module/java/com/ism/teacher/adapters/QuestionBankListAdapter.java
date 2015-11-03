@@ -1,7 +1,7 @@
 package com.ism.teacher.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
+
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.ism.R;
 
+import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.model.AnswersModel;
 import com.ism.object.MyTypeFace;
 import com.ism.teacher.model.Data;
 
@@ -33,7 +35,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     Context mContext;
     ArrayList<Data> listOfQuestions = new ArrayList<Data>();
     MyTypeFace myTypeFace;
-
+    boolean dropdownFlag = false;
 
     public QuestionBankListAdapter(Context context) {
         this.mContext = context;
@@ -47,37 +49,82 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
         myTypeFace = new MyTypeFace(context);
         LayoutInflater inflater = LayoutInflater.from(context);
-        View contactView = inflater.inflate(R.layout.row_questionlist_teacher, parent, false);
-        ViewHolder viewHolder = new ViewHolder(contactView);
+        View questionListview = inflater.inflate(R.layout.row_questionlist_teacher, parent, false);
+        ViewHolder viewHolder = new ViewHolder(questionListview);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
 
-        holder.tv_question_no.setText(holder.tv_question_no.getText() + " " + (position + 1));
-        holder.tv_question_no.setTypeface(myTypeFace.getRalewayBold());
-        holder.tv_question_no.setPaintFlags(holder.tv_question_no.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        holder.tvQuestionNo.setText(holder.tvQuestionNo.getText() + " " + (position + 1));
+        holder.tvQuestionNo.setTypeface(myTypeFace.getRalewayBold());
+        holder.tvQuestionNo.setPaintFlags(holder.tvQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        holder.tv_question_category.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tv_question_category.setText(holder.tv_question_category.getText());
+        holder.tvQuestionCategory.setTypeface(myTypeFace.getRalewayRegular());
+        holder.tvQuestionCategory.setText(holder.tvQuestionCategory.getText());
         String category = " " + listOfQuestions.get(position).getSubject_name();
         SpannableString f = new SpannableString(category);
-        f.setSpan(new ForegroundColorSpan(Color.GREEN), 0,
+        f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
                 category.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        holder.tv_question_category.append(f);
+        holder.tvQuestionCategory.append(f);
 
-//        holder.tv_question_createdby.setTypeface(myTypeFace.getRalewayRegular());
-//        holder.tv_question_createdby.setText(holder.tv_question_createdby.getText());
-//        String created_by = " " + listOfQuestions.get(position).getQuestionCreatorName();
-//        f = new SpannableString(created_by);
-//        f.setSpan(new ForegroundColorSpan(Color.GREEN), 0,
-//                category.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        holder.tv_question_createdby.append(f);
-//
-//        holder.tv_question.setTypeface(myTypeFace.getRalewayRegular());
-//        holder.tv_question.setText(listOfQuestions.get(position).getQuestionText());
+        holder.tvQuestionCreatedby.setTypeface(myTypeFace.getRalewayRegular());
+        holder.tvQuestionCreatedby.setText(holder.tvQuestionCreatedby.getText());
+        String creator = " " + listOfQuestions.get(position).getQuestionCreatorName();
+        f = new SpannableString(creator);
+        f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
+                creator.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        holder.tvQuestionCreatedby.append(f);
+
+
+        holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
+        holder.tvQuestion.setText(listOfQuestions.get(position).getQuestionText());
+
+
+        holder.imgDropdownViewAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!dropdownFlag) {
+                    if (!listOfQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
+
+                        holder.tvQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
+                        holder.tvQuestionAns.setText(listOfQuestions.get(position).getSolution());
+                        holder.tvQuestionAns.setVisibility(View.VISIBLE);
+
+                    } else {
+
+                        holder.llQuestionAnswers.removeAllViews();
+                        if (holder.llQuestionAnswers.getChildCount() == 0) {
+                            for (int i = 0; i < listOfQuestions.get(position).getAnswers().size(); i++) {
+                                View ansView = getAnsInflaterView(listOfQuestions.get(position).getAnswers().get(i), i);
+                                holder.llQuestionAnswers.addView(ansView);
+                            }
+                        }
+
+                        holder.llQuestionAnswers.setVisibility(View.VISIBLE);
+
+                    }
+                    holder.imgDropdownViewAnswer.setBackgroundResource(R.drawable.dropdown_close);
+                    dropdownFlag = true;
+
+                } else {
+                    holder.imgDropdownViewAnswer.setBackgroundResource(R.drawable.dropdown_open);
+                    dropdownFlag = false;
+
+                    if (!listOfQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
+                        holder.tvQuestionAns.setVisibility(View.GONE);
+                    } else {
+                        holder.llQuestionAnswers.setVisibility(View.GONE);
+                        holder.llQuestionAnswers.removeAllViews();
+                    }
+
+                }
+
+            }
+        });
 
 
     }
@@ -100,31 +147,43 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tv_question_no, tv_question_category, tv_question_createdby, tv_question, tv_question_ans;
-        LinearLayout ll_question_answers;
-        ImageView img_dropdown_view_answer, img_question_edit, img_question_copy, img_question_addtofavourite;
-        CheckBox chk_select_question;
+        TextView tvQuestionNo, tvQuestionCategory, tvQuestionCreatedby, tvQuestion, tvQuestionAns;
+        LinearLayout llQuestionAnswers;
+        ImageView imgDropdownViewAnswer, imgQuestionEdit, imgQuestionCopy, imgQuestionAddtofavourite;
+        CheckBox chkSelectQuestion;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            tv_question_no = (TextView) itemView.findViewById(R.id.tv_question_no);
-            tv_question_category = (TextView) itemView.findViewById(R.id.tv_question_category);
-            tv_question_createdby = (TextView) itemView.findViewById(R.id.tv_question_createdby);
-            tv_question = (TextView) itemView.findViewById(R.id.tv_question);
-            tv_question_ans = (TextView) itemView.findViewById(R.id.tv_question_ans);
+            tvQuestionNo = (TextView) itemView.findViewById(R.id.tv_question_no);
+            tvQuestionCategory = (TextView) itemView.findViewById(R.id.tv_question_category);
+            tvQuestionCreatedby = (TextView) itemView.findViewById(R.id.tv_question_createdby);
+            tvQuestion = (TextView) itemView.findViewById(R.id.tv_question);
+            tvQuestionAns = (TextView) itemView.findViewById(R.id.tv_question_ans);
 
-            ll_question_answers = (LinearLayout) itemView.findViewById(R.id.ll_question_answers);
+            llQuestionAnswers = (LinearLayout) itemView.findViewById(R.id.ll_question_answers);
 
-            img_dropdown_view_answer = (ImageView) itemView.findViewById(R.id.img_dropdown_view_answer);
-            img_question_edit = (ImageView) itemView.findViewById(R.id.img_question_edit);
-            img_question_copy = (ImageView) itemView.findViewById(R.id.img_question_copy);
-            img_question_addtofavourite = (ImageView) itemView.findViewById(R.id.img_question_addtofavourite);
+            imgDropdownViewAnswer = (ImageView) itemView.findViewById(R.id.img_dropdown_view_answer);
+            imgQuestionEdit = (ImageView) itemView.findViewById(R.id.img_question_edit);
+            imgQuestionCopy = (ImageView) itemView.findViewById(R.id.img_question_copy);
+            imgQuestionAddtofavourite = (ImageView) itemView.findViewById(R.id.img_question_addtofavourite);
 
-            chk_select_question = (CheckBox) itemView.findViewById(R.id.chk_select_question);
+            chkSelectQuestion = (CheckBox) itemView.findViewById(R.id.chk_select_question);
 
 
         }
     }
+
+    private View getAnsInflaterView(AnswersModel answer, int position) {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+        View v;
+        v = layoutInflater.inflate(R.layout.row_mcq_question_answer, null, false);
+        TextView tvMcqQuestionAns = (TextView) v.findViewById(R.id.tv_mcq_question_ans);
+        tvMcqQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
+        tvMcqQuestionAns.setText(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText());
+
+        return v;
+    }
+
 }
