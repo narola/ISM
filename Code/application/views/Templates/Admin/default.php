@@ -175,10 +175,10 @@ $url = uri_string();
                 <!--side left-->
                 <div class="sidebar_left_container inner_pages inner_pages_admin text-center mCustomScrollbar" data-mcs-theme="minimal"><!-- scrollbar" id="style-3-->
                     <div class="user_profile_img">
-                        <img src="assets/images/user1.jpg">
+                        <img src="<?php echo base_url().'uploads/'.$this->session->userdata('profile_pic');?>">
                     </div>
                     <h4>Admin</h4>
-                    <a href="#">View Profile</a>
+                    <a href="admin/dashboard/profile_edit">View Profile</a>
                     <div class="clearfix"></div>
                     <!--notification-->
                     <ul class="three_tabs">
