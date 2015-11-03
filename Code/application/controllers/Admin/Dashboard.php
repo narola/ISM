@@ -506,7 +506,9 @@ class Dashboard extends ADMIN_Controller {
             }
         }
     }
-
+     public function about_us(){
+     	$this->load->view('admin/about_us');
+     }
 }
 
 /* End of file Admin.php */
