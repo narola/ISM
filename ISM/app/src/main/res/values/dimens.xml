@@ -44,4 +44,7 @@
     <dimen name="dp_margin_list">15dp</dimen>
     <dimen name="post_text_size">18sp</dimen>
     <dimen name="comment_padding">5dp</dimen>
+    <dimen name="dialog_progress_margin">15dp</dimen>
+    <dimen name="app_button_corner_radius">5dp</dimen>
+    <dimen name="dialog_spacing">20dp</dimen>
 </resources>

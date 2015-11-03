@@ -69,12 +69,11 @@
             android:checked="true"
             android:id="@+id/chk_rememberme" />
 
-        <Button
+        <com.ism.commonsource.view.ActionProcessButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/d20dp"
-            android:background="@drawable/backgroundbtnlogin"
             android:drawablePadding="@dimen/d10dp"
             android:drawableRight="@drawable/arrow"
             android:gravity="center"
@@ -84,7 +83,14 @@
             android:textColor="@color/color_white"
             android:onClick="onClickLogin"
             android:textSize="@dimen/d20dp"
-            android:id="@+id/btn_login" />
+            android:id="@+id/btn_login"
+            app:pb_colorComplete="@color/color_dark_gray"
+            app:pb_colorNormal="@color/color_dark_gray"
+            app:pb_colorPressed="@color/color_dark_gray"
+            app:pb_colorProgress="@color/purple_progress"
+            app:pb_cornerRadius="@dimen/app_button_corner_radius"
+            app:pb_textComplete="@string/strlogin"
+            app:pb_textProgress="@string/processing"/>
 
         <TextView
             android:layout_width="match_parent"

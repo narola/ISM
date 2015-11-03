@@ -12,6 +12,8 @@ import com.ism.HostActivity;
 import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.adapter.TutorialGroupAdapter;
+import com.ism.commonsource.view.ActionProcessButton;
+import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.helper.CircleImageView;
 import com.ism.ws.RequestObject;
 import com.ism.ws.ResponseObject;
@@ -32,15 +34,17 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 	private GridView gridTutorialGroup;
 	private TextView txtUserName, txtUserSchoolName, txtUserYearAndCourse;
 	private CircleImageView imgUserDp;
+	private ActionProcessButton btnAccept;
 
 	private ImageLoader imageLoader;
+	private ProgressGenerator progressGenerator;
 
 	private String strUserId, strGroupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_accept_tutorial_group);
+        setContentView(R.layout.activity_accept_tutorial_group);
 
         intitGlobal();
 
@@ -51,6 +55,7 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
         txtUserYearAndCourse = (TextView) findViewById(R.id.txt_yearandcourse);
         txtUserName = (TextView) findViewById(R.id.txt_username);
 	    imgUserDp = (CircleImageView) findViewById(R.id.img_user_dp);
+	    btnAccept = (ActionProcessButton) findViewById(R.id.btn_accept);
 
         MyTypeFace myTypeFace = new MyTypeFace(this);
 	    ((TextView) findViewById(R.id.txt_welcometoism)).setTypeface(myTypeFace.getRalewaySemiBold());
@@ -58,6 +63,8 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 	    txtUserName.setTypeface(myTypeFace.getRalewaySemiBold());
 	    txtUserYearAndCourse.setTypeface(myTypeFace.getRalewayRegular());
 	    txtUserSchoolName.setTypeface(myTypeFace.getRalewayRegular());
+
+	    progressGenerator = new ProgressGenerator();
 
 	    imageLoader = ImageLoader.getInstance();
 	    imageLoader.init(ImageLoaderConfiguration.createDefault(AcceptTutorialGroupActivity.this));
@@ -77,7 +84,6 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 
 	    strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, AcceptTutorialGroupActivity.this);
 	    strGroupId = PreferenceData.getStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, AcceptTutorialGroupActivity.this);
-
     }
 
 	public void onClickAccept(View view) {
@@ -90,6 +96,9 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 
 	private void callApiAcceptTutorialGroup() {
 		try {
+			btnAccept.setProgress(1);
+			btnAccept.setEnabled(false);
+			progressGenerator.start(btnAccept);
 			RequestObject requestObject = new RequestObject();
 			requestObject.setUserId(strUserId);
 			requestObject.setGroupId(strGroupId);
@@ -105,32 +114,36 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 	@Override
 	public void onResponse(Object object, Exception error, int apiCode) {
 		try {
-			if (object != null) {
-				switch (apiCode) {
-					case WebserviceWrapper.ACCEPT_TUTORIAL_GROUP:
-						onResponseAcceptTutorialGroup(object);
-						break;
-				}
-			} else if (error != null) {
-				Log.e(TAG, "onResponse ApiCall Exception : " + error.toString() + "\nFor apiCode : " + apiCode);
+			switch (apiCode) {
+				case WebserviceWrapper.ACCEPT_TUTORIAL_GROUP:
+					onResponseAcceptTutorialGroup(object, error);
+					break;
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponse Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseAcceptTutorialGroup(Object object) {
+	private void onResponseAcceptTutorialGroup(Object object, Exception error) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
-				PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, AcceptTutorialGroupActivity.this, true);
-				launchHostActivity();
-			} else if (responseObj.getStatus().equals("incomplete")) {
-				Toast.makeText(AcceptTutorialGroupActivity.this, R.string.msg_waiting_for_other_members, Toast.LENGTH_LONG).show();
-				PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Log.e(TAG, "onResponseAcceptTutorialGroup Failed : " + responseObj.getMessage());
+			if (btnAccept != null) {
+				btnAccept.setProgress(100);
+				btnAccept.setEnabled(true);
+			}
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
+					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, AcceptTutorialGroupActivity.this, true);
+					launchHostActivity();
+				} else if (responseObj.getStatus().equals("incomplete")) {
+					Toast.makeText(AcceptTutorialGroupActivity.this, R.string.msg_waiting_for_other_members, Toast.LENGTH_LONG).show();
+					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseAcceptTutorialGroup Failed : " + responseObj.getMessage());
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseAcceptTutorialGroup api Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseAcceptTutorialGroup Exception : " + e.toString());
