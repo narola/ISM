@@ -126,9 +126,12 @@ class PHPWebSocket {
                             $this->wsRemoveClient($clientID);
                         }
                     } else {
+
                         // listen socket changed
                         $client = socket_accept($this->wsRead[0]);
+
                         if ($client !== false) {
+
                             // fetch client IP as integer
                             $clientIP = '';
                             $result = socket_getpeername($client, $clientIP);
@@ -437,6 +440,9 @@ class PHPWebSocket {
 
 
 
+
+
+
             
 // fetch byte position where the mask key starts
         $seek = $this->wsClients[$clientID][7] <= 125 ? 2 : ($this->wsClients[$clientID][7] <= 65535 ? 4 : 10);
@@ -610,6 +616,9 @@ class PHPWebSocket {
         // check Sec-WebSocket-Version header was received and value is 7
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
+
+
+
 
 
 
@@ -978,7 +987,7 @@ class PHPWebSocket {
                 'message' => $rows['message'],
                 'media_link' => $rows['media_link'],
                 'media_type' => $rows['media_type'],
-                'cdate' =>  $this->get_time_format($rows['created_date'])
+                'cdate' => $this->get_time_format($rows['created_date'])
             );
         }
         //  $result = array_reverse($result);
@@ -1089,7 +1098,7 @@ class PHPWebSocket {
                         }
                         $data['studymates_detail'] = $studymates_detail;
                     }
-                    $data['posted_on'] = date("M j, Y", strtotime(date('Y-m-d')));
+                    $data['posted_on'] = date("M j, Y", strtotime($this->ctime()));
                 } else {
                     $data['to'] = 'self';
                     $data['error'] = 'Unable to save message.! Please try again.';
@@ -1332,7 +1341,6 @@ class PHPWebSocket {
      */
     function discussion($userId, $data = null) {
         $data['active_count'] = $data['group_score'] = $data['my_score'] = 'skip';
-        $data['time_to_left'] = 0;
         $data['message'] = preg_replace('!\s+!', ' ', $data['message']);
         $link = $this->db();
         $words = explode(' ', $data['message']);
@@ -1350,10 +1358,10 @@ class PHPWebSocket {
                 $config[$rows['config_key']] = $rows['config_value'];
             }
 
-            $date = new DateTime(date("Y-m-d H:i:s"));
+            $date = new DateTime($this->ctime());
             $c_week = $date->format("W");
-            $year = date("Y");
-            $current_date = date("Y-m-d");
+            $year = $date->format("Y");
+            $current_date = $date->format("Y-m-d");
 
             $query = "SELECT `tm`.`id` as member_id,`tg`.`topic_id`, `tm`.`group_id` "
                     . "FROM  `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `tg` "
@@ -1370,7 +1378,6 @@ class PHPWebSocket {
             if (mysqli_num_rows($row) == 1) {
                 $rows = mysqli_fetch_assoc($row);
                 $is_active = 0;
-                //  $data['time_to_left'] = $this->active_hours();
                 $score = $config['nonActivehoursScore'];
                 $query = "SELECT `td`.`comment_score`,`td`.`sender_id` FROM `" . TBL_TUTORIAL_GROUP_DISCUSSION . "` `td` "
                         . "WHERE `td`.`group_id` = " . $rows['group_id'] . " "
@@ -1486,7 +1493,6 @@ class PHPWebSocket {
                         . "LEFT JOIN `" . TBL_USER_PROFILE_PICTURE . "` `up` ON `up`.`user_id` = `u`.`id` "
                         . "WHERE `ta`.`group_id` = '" . $rows['group_id'] . "' "
                         . "AND `ta`.`week_no` = $c_week AND YEAR(`ta`.`created_date`) = '$year'  AND  `tm`.`user_id` = '$userId' AND `t`.`is_delete` = 0";
-                echo $query;
                 $row = mysqli_query($link, $query);
                 $rows = mysqli_fetch_assoc($row);
 
@@ -1497,7 +1503,7 @@ class PHPWebSocket {
                 $data['error'] = 'No topic allocated! or Discussion time is over!';
             }
         }
-        $data['cdate'] = date_format(date_create(date("Y-m-d H:i:s")), 'M d, Y g:i a');
+        $data['cdate'] = date_format(date_create($this->ctime()), 'M d, Y g:i a');
         $data['allStudyMate'] = $this->class_mate_list($userId);
         return array_merge($data, $this->get_client_info($userId));
     }
@@ -2040,10 +2046,9 @@ class PHPWebSocket {
             $link = $this->db();
 
 
-            $day = getdate();
-            $date = new DateTime(date("Y-m-d H:i:s"));
+            $date = new DateTime($this->ctime());
             $c_week = $date->format("W");
-            $year = date("Y");
+            $year = $date->format("Y");
 
             $query = "SELECT `tm`.`id` as member_id,`tg`.`topic_id`, `tm`.`group_id` "
                     . "FROM  `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `tg` "
@@ -2135,9 +2140,9 @@ class PHPWebSocket {
         if (is_array($data) && $data != null) {
             $link = $this->db();
             $data['exam_status'] = 0;    // 0 = Not statred, 1 = started, 2 = finished
-            $date = new DateTime(date("Y-m-d H:i:s"));
+            $date = new DateTime($this->ctime());
             $c_week = $date->format("W");
-            $year = date("Y");
+            $year = $date->format("Y");
             $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
                     . "FROM `" . TBL_TUTORIAL_TOPIC . "` `t` "
                     . "LEFT JOIN `" . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . "` `ta` ON `ta`.`topic_id` = `t`.`id` "
@@ -2147,7 +2152,6 @@ class PHPWebSocket {
                     . "WHERE `ta`.`week_no` = '$c_week' AND `tm`.`user_id` = '$userID' AND YEAR(`ta`.`created_date`) = '$year' "
                     . "AND `t`.`is_delete` = 0 LIMIT 1";
             $row = mysqli_query($link, $query);
-            pr($query);
             if (mysqli_num_rows($row) == 1) {
                 $data['exam'] = mysqli_fetch_assoc($row);
 
@@ -2158,8 +2162,7 @@ class PHPWebSocket {
                         . "FROM " . TBL_STUDENT_EXAM_SCORE . " "
                         . "WHERE user_id = " . $userID . " "
                         . "AND exam_id = " . $data['exam']['exam_id'] . ") LIMIT 1";
-                
-                pr($query);
+
                 mysqli_query($link, $query);
                 $current_date = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
                 if (isset($data['exam']) && !empty($data['exam'])) {
@@ -2196,9 +2199,9 @@ class PHPWebSocket {
     function save_answer($userID, $data) {
         $left = false;
         $link = $this->db();
-        $date = new DateTime(date("Y-m-d H:i:s"));
-        $c_week = $date->format("W");
-        $year = date("Y");
+        $date = new DateTime($this->ctime());
+            $c_week = $date->format("W");
+            $year = $date->format("Y");
 
         $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
                 . "FROM `" . TBL_TUTORIAL_TOPIC . "` `t` "
@@ -2318,7 +2321,7 @@ class PHPWebSocket {
         }
         if ($data['next'] !== 0) {
             $data['question_no'] = $data['next'];
-            $data = array_merge($data, $this->get_question($userID, $data, true, false));
+            $data = array_merge($data, $this->get_question($userID, $data, true));
         }
 
         /* Update total_score. */
@@ -2351,18 +2354,25 @@ class PHPWebSocket {
         if (is_array($data) && $data != null) {
             $link = $this->db();
             $data['new_question'] = 'skip';
-            $date = new DateTime(date("Y-m-d H:i:s"));
+            $date = new DateTime($this->ctime());
             $c_week = $date->format("W");
-            $year = date("Y");
+            $year = $date->format("Y");
+
+            $result = array(
+                'question' => null,
+                'qid' => null,
+                'answer' => null,
+                'choice_id' => 'skip'
+            );
 
             if ($data['exam_type'] == 'no') {
-                $query = "SELECT `es`.`exam_id`, `es`.`created_date` "
-                        . "FROM `" . TBL_STUDENT_EXAM_SCORE . "` `es`"
-                        . "JOIN `exams` `e` ON `e`.`id` = `es`.`exam_id` "
-                        . "WHERE `es`.`user_id` = $userID "
-                        . "AND `es`.`exam_status` = 'started' "
-                        . "AND `e`.`exam_type` = 'subject' "
-                        . "AND `e`.`is_delete` = 0 LIMIT 1";
+                $query = " SELECT sc.exam_id,"
+                        . "IF(TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute) < 0,0,TIMESTAMPDIFF(SECOND,NOW(),sc.created_date + Interval e.duration minute)) as remaining_time,sc.created_date,sc.created_date + Interval e.duration minute,e.duration,NOW() "
+                        . "FROM `" . TBL_STUDENT_EXAM_SCORE . "` `sc` "
+                        . "LEFT JOIN `" . TBL_EXAMS . "` `e` ON `e`.`id` = `sc`.`exam_id` "
+                        . "WHERE `sc`.`user_id` = $userID "
+                        . "AND `sc`.`exam_status` = 'started' "
+                        . "ORDER BY `sc`.`id` DESC LIMIT 1 ";
             } else {
                 $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
                         . "FROM `" . TBL_TUTORIAL_TOPIC . "` `t` "
@@ -2374,9 +2384,11 @@ class PHPWebSocket {
                         . "AND YEAR(`ta`.`created_date`) = '$year' AND `t`.`is_delete` = 0 LIMIT 1";
             }
 
+
             $row = mysqli_query($link, $query);
+            $data['exam'] = mysqli_fetch_assoc($row);
             if (mysqli_num_rows($row) == 1) {
-                $data['exam'] = mysqli_fetch_assoc($row);
+
 
                 $query = "SELECT `ser`.`choice_id` ,`q`.`id` as `qid`, `q`.`question_text`, `ac`.`id`, `ac`.`choice_text` "
                         . " FROM `" . TBL_ANSWER_CHOICES . "` `ac` "
@@ -2386,12 +2398,7 @@ class PHPWebSocket {
                         . " WHERE `ac`.`question_id` = " . $data['question_no'] . " "
                         . "AND `ac`.`is_delete` = 0 ORDER BY RAND()";
                 $row = mysqli_query($link, $query);
-                $result = array(
-                    'question' => null,
-                    'qid' => null,
-                    'answer' => null,
-                    'choice_id' => 'skip'
-                );
+
 
                 while ($rows = mysqli_fetch_assoc($row)) {
                     $result['question'] = htmlentities($rows['question_text']);
@@ -2449,9 +2456,9 @@ class PHPWebSocket {
         if ($data != null && is_array($data)) {
             $link = $this->db();
             $data['new_question'] = 'skip';
-            $date = new DateTime(date("Y-m-d H:i:s"));
+            $date = new DateTime($this->ctime());
             $c_week = $date->format("W");
-            $year = date("Y");
+            $year = $date->format("Y");
 
             $query = "SELECT `ta`.`topic_id`, `t`.`topic_name`, `t`.`topic_description`, `ta`.`created_date`, `te`.`exam_id`,`ss`.`created_date` "
                     . "FROM `" . TBL_TUTORIAL_TOPIC . "` `t` "
@@ -2828,7 +2835,7 @@ class PHPWebSocket {
         $user_info = $this->get_client_info($user_id);
         $created_date = $user_info['user_created_date'];
         $begin = new DateTime($created_date);
-        $end = new DateTime(date('Y-m-d H:i:s'));
+        $end = new DateTime($this->ctime());
         $date_array = array();
         while ($begin <= $end) {
             $date_array[] = $begin->format('Y-m');
@@ -2837,7 +2844,7 @@ class PHPWebSocket {
         $month = array();
 
         /* ----find current month and if request to view more append one month in descending form--- */
-        $month[] = date('m', strtotime(date('Y-m-d')));
+        $month[] = date('m', strtotime($this->ctime()));
         $m = date('m', strtotime($data['month']));
 
         $load_more = $data['month'];
@@ -2966,6 +2973,15 @@ class PHPWebSocket {
             }
         }
         return $data;
+    }
+
+    function ctime() {
+        $link = $this->db();
+        $query = "SELECT NOW() AS ctime";
+        $rows = mysqli_query($link, $query);
+        $row = mysqli_fetch_array($rows);
+        return $row['ctime'];
+        ;
     }
 
 }
