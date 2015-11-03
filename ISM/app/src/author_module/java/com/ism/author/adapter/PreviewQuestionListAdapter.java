@@ -49,10 +49,9 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
-
-        holder.tvPreviewQuestionNo.setText(holder.tvPreviewQuestionNo.getText() + " " + (position + 1));
+        holder.tvPreviewQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
         holder.tvPreviewQuestionNo.setTypeface(myTypeFace.getRalewayBold());
         holder.tvPreviewQuestionNo.setPaintFlags(holder.tvPreviewQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -60,13 +59,40 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         holder.tvPreviewQuestion.setTypeface(myTypeFace.getRalewayRegular());
         holder.tvPreviewQuestion.setText(listOfPreviewQuestions.get(position).getQuestionText());
 
-        holder.llPreviewQuestionAnswers.removeAllViews();
-        if (holder.llPreviewQuestionAnswers.getChildCount() == 0) {
-            for (int i = 0; i < listOfPreviewQuestions.get(position).getAnswers().size(); i++) {
-                View ansView = getAnsInflaterView(listOfPreviewQuestions.get(position).getAnswers().get(i), i);
-                holder.llPreviewQuestionAnswers.addView(ansView);
+        if (!listOfPreviewQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
+
+            holder.tvPreviewQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvPreviewQuestionAns.setText(listOfPreviewQuestions.get(position).getSolution());
+
+
+            holder.llPreviewQuestionAnswers.setVisibility(View.GONE);
+            holder.tvPreviewQuestionAns.setVisibility(View.VISIBLE);
+
+
+        } else {
+
+            holder.llPreviewQuestionAnswers.removeAllViews();
+            if (holder.llPreviewQuestionAnswers.getChildCount() == 0) {
+                for (int i = 0; i < listOfPreviewQuestions.get(position).getAnswers().size(); i++) {
+                    View ansView = getAnsInflaterView(listOfPreviewQuestions.get(position).getAnswers().get(i), i);
+                    holder.llPreviewQuestionAnswers.addView(ansView);
+                }
             }
+
+            holder.llPreviewQuestionAnswers.setVisibility(View.VISIBLE);
+            holder.tvPreviewQuestionAns.setVisibility(View.GONE);
         }
+
+
+        holder.imgPreviewQuestionDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                listOfPreviewQuestions.remove(listOfPreviewQuestions.get(position));
+                notifyDataSetChanged();
+
+            }
+        });
 
 
     }
@@ -74,7 +100,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
     public void addAll(ArrayList<Data> data) {
         try {
-            this.listOfPreviewQuestions.clear();
+//            this.listOfPreviewQuestions.clear();
             this.listOfPreviewQuestions.addAll(data);
         } catch (Exception e) {
             e.printStackTrace();

@@ -43,8 +43,7 @@
                 android:id="@+id/ll_preview_question_answers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"></LinearLayout>
+                android:orientation="vertical"></LinearLayout>
 
             <TextView
                 android:id="@+id/tv_preview_question_ans"
@@ -62,7 +61,9 @@
         <ImageView
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/d10dp"
+            android:layout_marginBottom="@dimen/d10dp"
+            android:layout_marginLeft="@dimen/d10dp"
+            android:layout_marginTop="@dimen/d10dp"
             android:background="@color/color_teacher_headers" />
 
 

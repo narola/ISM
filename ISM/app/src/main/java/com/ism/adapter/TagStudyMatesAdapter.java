@@ -71,7 +71,7 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imgStudymateDp, imgSeparatorMates;
+        ImageView imgStudymateDp;
         TextView txtStudymateName;
         CheckBox chkAddusertotag;
 
@@ -80,6 +80,7 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
             imgStudymateDp = (ImageView) itemView.findViewById(R.id.img_studymate_dp);
             txtStudymateName = (TextView) itemView.findViewById(R.id.txt_studymate_name);
             chkAddusertotag = (CheckBox) itemView.findViewById(R.id.chk_addusertotag);
+//			imgSeparatorMates = (ImageView) itemView.findViewById(R.id.img_separator_mates);
         }
     }
 
