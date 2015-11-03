@@ -85,6 +85,17 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         tvQuestionlistAddPreview.setTypeface(myTypeFace.getRalewayRegular());
 
 
+        tvQuestionlistAddPreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ((AddQuestionFragment) mFragment).addItemToPreviewFragment(getQuestionBankResponseObject.getData().get(0));
+
+
+            }
+        });
+
+
         callApiGetQuestionBank();
 
 

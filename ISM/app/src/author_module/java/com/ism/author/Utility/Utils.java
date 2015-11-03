@@ -123,6 +123,10 @@ public class Utils {
 
     }
 
+    public static String getCharForNumber(int i) {
+        return i > 0 && i < 27 ? String.valueOf((char) (i + 'A' - 1)) : null;
+    }
+
 
 }
 
