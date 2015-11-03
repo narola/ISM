@@ -370,7 +370,7 @@ class Dashboard extends ADMIN_Controller {
                             <table style="padding: 15px; width:100%;background-color: #fff;border: 1px solid rgba(0,0,0,0.1);">
                                 <tr>
                                     <td style="text-align: center;border-bottom: 1px solid rgba(0,0,0,0.1);">
-                                        <h2 style="color: #1bc4a3; margin:10px 0;">Reset Password</h2>
+                                        <h2 style="color: #ff6b6b; margin:10px 0;">Reset Password</h2>
                                     </td>
                                 </tr>
                                 <tr>
@@ -402,7 +402,7 @@ class Dashboard extends ADMIN_Controller {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div style="background-color:#1bc4a3; text-align:center; padding: 12px; margin:15px 0; border-radius: 5px;">
+                                        <div style="background-color:#ff6b6b; text-align:center; padding: 12px; margin:15px 0; border-radius: 5px;">
                                             <a href="http://ism/admin/change?id='.$encoded_mail.'" style="color:#fff; text-decoration:none; font-weight:bold; text-transform:uppercase;">Reset Your Password</a>
                                         </div>
                                     </td>

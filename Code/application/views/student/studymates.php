@@ -31,7 +31,7 @@
                             <p class="txt_green"><?php echo $value['course_name'];?></p>
                         </div>
                         <div class="col-lg-3 col-md-4 col-sm-5">
-                            <button class="btn btn_green btn-block" data-name="<?php echo $value['full_name'];?>" data-id="<?php echo $value['user_id'];?>" data-school="<?php echo $value['full_name'];?>" data-profile="<?php echo $value['profile_link'];?>" data-course="<?php echo $value['course_name'];?>" id="view_profile">View Profile</button>
+                            <button class="btn btn_green btn-block" data-type="show-profile" data-id="<?php echo $value['user_id'];?>">View Profile</button>
                             <div class="form-group select">
                                 <select class="form-control" name="action" id="action_studymate" data-name="<?php echo $value['full_name'];?>" data-id="<?php echo $value['user_id'];?>" data-school="<?php echo $value['full_name'];?>" data-profile="<?php echo $value['profile_link'];?>" data-course="<?php echo $value['course_name'];?>">
                                     <option value="0">Studymate</option>
