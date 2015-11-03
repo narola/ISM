@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ISM</string>
+    <string name="app_name">ISM Student</string>
 
     <string name="classwall">Classwall</string>
     <string name="lesson_notes">Lesson Notes</string>
@@ -207,4 +207,6 @@
 	<string name="msg_failed_comment">Failed to post comment!, please try again.</string>
 
 	<string name="strsearchstudymatess">Search Study Mates</string>
+	<string name="strclose">Close</string>
+	<string name="strcomments">Comments</string>
 </resources>

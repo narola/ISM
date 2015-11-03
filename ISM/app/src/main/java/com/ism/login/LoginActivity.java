@@ -17,8 +17,6 @@ import android.widget.Toast;
 import com.ism.HostActivity;
 import com.ism.R;
 import com.ism.adapter.Adapters;
-import com.ism.common.view.ActionProcessButton;
-import com.ism.common.view.ProgressGenerator;
 import com.ism.ws.model.Data;
 import com.ism.ws.RequestObject;
 import com.ism.ws.ResponseObject;
@@ -34,7 +32,7 @@ import java.util.List;
 /**
  * Created by c161 on 07/10/15.
  */
-public class LoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse {
+public class LoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse/*, ProgressGenerator.OnCompleteListener*/ {
 
 	private static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -42,7 +40,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private Spinner spCountry;
 	private Spinner spState;
 	private Spinner spCity;
-	private ActionProcessButton btnLogin;
+//	private ActionProcessButton btnLogin;
 
 	private InputValidator inputValidator;
 	private ArrayList<Data> arrListCountries;
@@ -50,7 +48,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private ArrayList<Data> arrListCities;
 	private List<String> arrListDefalt;
 	private AlertDialog dialogCredentials;
-	private ProgressGenerator progressGenerator;
+//	private ProgressGenerator progressGenerator;
 
 	private String strValidationMsg;
 
@@ -79,7 +77,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void initGlobal() {
 		MyTypeFace myTypeFace = new MyTypeFace(this);
-		btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
+//		btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
 		etPwd = (EditText) findViewById(R.id.et_pwd);
 		etUserid = (EditText) findViewById(R.id.et_userid);
 
@@ -98,11 +96,25 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		arrListDefalt = new ArrayList<String>();
 		arrListDefalt.add(getString(R.string.select));
 
-		progressGenerator = new ProgressGenerator();
+//		progressGenerator = new ProgressGenerator(this);
 	}
 
 	public void onClickLogin(View view) {
 		if (Utility.isOnline(LoginActivity.this)) {
+
+//			if (strValidationMsg == null || strValidationMsg.equals("")) {
+//				strValidationMsg = "1";
+//				Log.e(TAG, "started");
+//
+//				btnLogin.setProgress(10);
+//				progressGenerator.start(btnLogin);
+//			} else {
+//				strValidationMsg = "";
+//				Log.e(TAG, "stopped");
+//
+//				btnLogin.setProgress(100);
+//			}
+
 			if (isInputsValid()) {
 				callApiAuthenticateUser();
 			}
@@ -353,8 +365,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiAuthenticateUser() {
 		try {
-			progressGenerator.start(btnLogin);
-			btnLogin.setEnabled(false);
+//			progressGenerator.start(btnLogin);
+//			btnLogin.setEnabled(false);
 			RequestObject requestObject = new RequestObject();
 			requestObject.setUsername(etUserid.getText().toString().trim());
 			requestObject.setPassword(etPwd.getText().toString().trim());
@@ -569,4 +581,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		finish();
 	}
 
+	/*@Override
+	public void onComplete() {
+		Log.e(TAG, "completed");
+	}*/
 }

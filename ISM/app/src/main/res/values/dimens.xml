@@ -19,7 +19,7 @@
     <dimen name="d10dp">10dp</dimen>
     <dimen name="d15dp">15dp</dimen>
     <dimen name="d18dp">18dp</dimen>
-
+    <dimen name="d20sp">20sp</dimen>
     <dimen name="d20dp">20dp</dimen>
     <dimen name="d30dp">30dp</dimen>
     <dimen name="d25dp">25dp</dimen>
@@ -44,4 +44,6 @@
     <dimen name="dp_margin_list">15dp</dimen>
     <dimen name="post_text_size">18sp</dimen>
     <dimen name="comment_padding">5dp</dimen>
+    <dimen name="d150dp">150dp</dimen>
+    <dimen name="d18sp">18sp</dimen>
 </resources>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/office_tab_width"
+    android:layout_height="match_parent"
+    android:background="@drawable/office_tab_box"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="@dimen/office_tab_width"
+        android:layout_height="wrap_content"
+        android:background="@drawable/my_desk_title"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_subject_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:padding="10dp"
+                android:text="subject"
+                android:textAllCaps="true"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/d15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_exam_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/d10dp"
+                android:layout_marginLeft="@dimen/d10dp"
+                android:layout_marginRight="@dimen/d10dp"
+                android:background="@drawable/bg_white_corner"
+                android:gravity="left|center"
+                android:padding="5dp"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/d18sp" />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:layout_gravity="center"
+            android:src="@drawable/gridoption"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_exam"
+        android:layout_width="@dimen/office_tab_width"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/txt_total_student"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:singleLine="false"
+                android:text="50 Student"
+                android:textColor="@color/color_pink"
+                android:textSize="@dimen/d20sp" />
+
+            <TextView
+                android:id="@+id/txt_average_percent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/txt_total_student"
+                android:layout_below="@+id/txt_total_student"
+                android:gravity="center"
+                android:singleLine="false"
+                android:textColor="@color/color_black"
+                android:text="Average %"
+                android:textSize="@dimen/d15sp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:background="@color/border_gray" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/txt_student_attempted"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:singleLine="false"
+                android:text="50 "
+                android:textColor="@color/color_red"
+                android:textSize="@dimen/d20sp" />
+
+            <TextView
+                android:id="@+id/txt_attempt_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/txt_student_attempted"
+                android:layout_below="@+id/txt_student_attempted"
+                android:gravity="center"
+                android:singleLine="false"
+                android:textColor="@color/color_black"
+                android:text="Attempted"
+                android:textSize="@dimen/d15sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
