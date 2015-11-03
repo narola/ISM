@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/color_white">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -86,9 +87,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d15dp"
                         android:background="@drawable/bg_news_feed"
+                        android:gravity="top"
                         android:hint="Question Title"
+                        android:inputType="textMultiLine"
                         android:minLines="3"
-                        android:padding="3dp"/>
+                        android:padding="3dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -111,8 +114,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/spinner_selector_blue"
-                            android:spinnerMode="dropdown"
-                            android:entries="@array/question_type"/>
+                            android:entries="@array/question_type"
+                            android:spinnerMode="dropdown" />
                     </LinearLayout>
 
 
@@ -152,14 +155,16 @@
                 android:layout_marginLeft="@dimen/d15dp"
                 android:layout_marginRight="@dimen/d15dp"
                 android:layout_marginTop="@dimen/d10dp"
+                android:background="@color/color_assignment_question"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_answer_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_dash_border"
+                    android:hint="Answer"
                     android:minLines="2" />
             </LinearLayout>
 
@@ -168,8 +173,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="@dimen/d15dp">
+                android:layout_margin="@dimen/d15dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/txt_question_type_label"
@@ -226,9 +231,11 @@
 
                     <EditText
                         android:id="@+id/et_evaluation_notes"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="top"
                         android:hint=""
+                        android:inputType="textMultiLine"
                         android:minLines="8" />
                 </LinearLayout>
 
@@ -254,8 +261,10 @@
 
                     <EditText
                         android:id="@+id/et_solution"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
                         android:minLines="8" />
                 </LinearLayout>
             </LinearLayout>
@@ -264,7 +273,7 @@
 
     </ScrollView>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/d50dp"
         android:layout_alignParentBottom="true"
@@ -276,6 +285,7 @@
             android:id="@+id/chk_add_to_preview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/d10dp"
             android:button="@drawable/checkbox_preview_drawable"
             android:checked="false"
@@ -285,25 +295,36 @@
 
             />
 
-        <Button
-            android:id="@+id/btn_save_question"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="@dimen/d15dp"
-            android:background="@drawable/btn_save_question"
-            android:text="Save"
-            android:textColor="@color/color_white"
-            android:textSize="12sp" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/d15dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_save_n_addmore_question"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="@dimen/d20dp"
-            android:background="@drawable/btn_save_n_addmore"
-            android:text="Save and Add More"
-            android:textColor="@color/color_white"
-            android:textSize="12sp" />
+            <Button
+                android:id="@+id/btn_save_question"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:background="@drawable/btn_save_question"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:textColor="@color/color_white"
+                android:textSize="16sp" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btn_save_n_addmore_question"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/d20dp"
+                android:background="@drawable/btn_save_n_addmore"
+                android:text="Save and Add More"
+                android:textAllCaps="false"
+                android:textColor="@color/color_white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
 </RelativeLayout>

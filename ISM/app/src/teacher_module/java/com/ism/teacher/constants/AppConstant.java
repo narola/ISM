@@ -51,23 +51,23 @@ public class AppConstant {
     public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
 
 
-    /*
     public static final String URL_LOGIN = URL_ARTI_HOST + "AuthenticateUser";
-    public static final String URL_GET_ALL_FEEDS = URL_ARTI_HOST+ "GetAllFeeds";
-    public static final String URL_GET_ALL_COMMENTS = URL_ARTI_HOST+"GetAllComments";
-    public static final String URL_GET_STUDYMATES = URL_ARTI_HOST+"GetStudymates";
-    public static final String URL_ADD_COMMENT =URL_ARTI_HOST+"AddComment";
-    public static final String URL_TAG_FRIEND_IN_FEED = URL_ARTI_HOST+"TagFriendInFeed";
-    public static final String URL_LIKE_FEED = URL_ARTI_HOST+"LikeFeed";
+    public static final String URL_GET_ALL_FEEDS = URL_ARTI_HOST + "GetAllFeeds";
+    public static final String URL_GET_ALL_COMMENTS = URL_ARTI_HOST + "GetAllComments";
+    public static final String URL_GET_STUDYMATES = URL_ARTI_HOST + "GetStudymates";
+    public static final String URL_ADD_COMMENT = URL_ARTI_HOST + "AddComment";
+    public static final String URL_TAG_FRIEND_IN_FEED = URL_ARTI_HOST + "TagFriendInFeed";
+    public static final String URL_LIKE_FEED = URL_ARTI_HOST + "LikeFeed";
     public static final String URL_GETCLASSROOMS = URL_ARTI_HOST + "GetClassrooms";
     public static final String URL_GETSUBJECT = URL_ARTI_HOST + "GetSubject";
     public static final String URL_GETTOPICS = URL_ARTI_HOST + "GetTopics";
     public static final String URL_CREATEASSIGNMENT = URL_ARTI_HOST + "CreateAssignment";
     public static final String URL_GET_COURSES = URL_ARTI_HOST + "GetCourses";
     public static final String URL_CREATE_EXAM = URL_ARTI_HOST + "CreateExam";
-    */
+    public static final String URL_GETQUESTIONBANK = URL_ARTI_HOST + "GetQuestionBank";
 
-    public static final String URL_LOGIN = URL_RAVI_HOST + "AuthenticateUser";
+
+   /* public static final String URL_LOGIN = URL_RAVI_HOST + "AuthenticateUser";
     public static final String URL_GET_ALL_FEEDS = URL_RAVI_HOST+ "GetAllFeeds";
     public static final String URL_GET_ALL_COMMENTS = URL_RAVI_HOST+"GetAllComments";
     public static final String URL_GET_STUDYMATES = URL_RAVI_HOST+"GetStudymates";
@@ -80,8 +80,7 @@ public class AppConstant {
     public static final String URL_CREATEASSIGNMENT = URL_RAVI_HOST + "CreateAssignment";
     public static final String URL_GET_COURSES = URL_RAVI_HOST + "GetCourses";
     public static final String URL_CREATE_EXAM = URL_RAVI_HOST + "CreateExam";
-
-
+    public static final String URL_GETQUESTIONBANK = URL_RAVI_HOST + "GetQuestionBank";*/
 
     public static final String TEST_USER_ID = "370";
     public static final String TEST_GET_ALL_FEEDS = "141";
@@ -89,16 +88,18 @@ public class AppConstant {
     public static final String TEST_FEEDID = "240";
     public static final String TEST_TAGGED_BY = "134";
     public static final String[] tagUserArray = new String[]{"141", "167"};
-
+    public static final int AUTHOR_ROLE_ID = 4;
 
     /**
      * Managing Teacher office Fragment by using tags
      */
-    public static final String FRAGMENT_TAG_TEACHER_CLASSWALL="teacher_classwall";
-    public static final String FRAGMENT_TAG_TEACHER_NOTES="teacher_notes";
-    public static final String FRAGMENT_TAG_TEACHER_QUIZ="teacher_quiz";
-    public static final String FRAGMENT_TAG_TEACHER_MARKSCRIPT="teacher_markscript";
-    public static final String FRAGMENT_TAG_TEACHER_RESULTS="teacher_results";
-    public static final String FRAGMENT_TAG_TEACHER_PROGRESS_REPORT="teacher_progress_report";
+    public static final String FRAGMENT_TAG_TEACHER_CLASSWALL = "teacher_classwall";
+    public static final String FRAGMENT_TAG_TEACHER_NOTES = "teacher_notes";
+    public static final String FRAGMENT_TAG_TEACHER_QUIZ = "teacher_quiz";
+    public static final String FRAGMENT_TAG_TEACHER_MARKSCRIPT = "teacher_markscript";
+    public static final String FRAGMENT_TAG_TEACHER_RESULTS = "teacher_results";
+    public static final String FRAGMENT_TAG_TEACHER_PROGRESS_REPORT = "teacher_progress_report";
+
+
 
 }

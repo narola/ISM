@@ -100,4 +100,11 @@
     </string-array>
 
 
+    <!-- Assignment Add Question-->
+    <string name="strquestionbank">question bank</string>
+    <string name="strquestion">Question</string>
+    <string name="strcategory">Category:</string>
+    <string name="strcreatedby">Created by:</string>
+    <string name="straddnewquestion">Add New Question</string>
+    <string name="straddtopreview">Add to Preview</string>
 </resources>

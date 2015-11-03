@@ -41,12 +41,12 @@ public class AddNewQuestionFromAssignment extends Fragment {
     private List<String> arrayListQuestionType;
 
 
-    public static AddQuestionFragmentTeacher newInstance(int fragment) {
-        AddQuestionFragmentTeacher addQuestionFragmentTeacher = new AddQuestionFragmentTeacher();
+    public static AddNewQuestionFromAssignment newInstance(int fragment) {
+        AddNewQuestionFromAssignment addNewQuestionFromAssignment = new AddNewQuestionFromAssignment();
         Bundle args = new Bundle();
         args.putInt(ARG_FRAGMENT, fragment);
-        addQuestionFragmentTeacher.setArguments(args);
-        return addQuestionFragmentTeacher;
+        addNewQuestionFromAssignment.setArguments(args);
+        return addNewQuestionFromAssignment;
     }
 
     @Override
