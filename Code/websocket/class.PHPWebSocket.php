@@ -1123,11 +1123,17 @@ class PHPWebSocket {
                 . "AND `f`.`is_delete` = 0 LIMIT 1";
         $row = mysqli_query($link, $query);
 
-// Check feed must exist on which comment is sent.
+        // Check feed must exist on which comment is sent.
         if (mysqli_num_rows($row) == 1) {
             $rows = mysqli_fetch_assoc($row);
+            
+            echo $query = "SELECT * FROM ".TBL_FEEDS_TAGGED_USER." WHERE user_id = ".$user_id." AND feed_id =".$data['to'];
+            $row = mysqli_query($link,$query);
             $data['allStudyMate'] = $this->class_mate_list($rows['feed_by']);
-
+            if(mysqli_num_rows($row) > 0){
+                $data['allStudyMate'][] = $user_id;
+            }
+            
             // Check user must comment on those feed which is added by his/him classmates not to others.
             if (in_array($user_id, $data['allStudyMate'])) {
                 $query = "INSERT INTO `" . TBL_FEED_COMMENT . "` (`id`, `comment`, `comment_by`, `feed_id`, `created_date`, `modified_date`, `is_delete`, `is_testdata`) "
@@ -1280,11 +1286,17 @@ class PHPWebSocket {
                 . "WHERE `f`.`id` = " . $data['fid'] . " "
                 . "AND `f`.`is_delete` = 0  LIMIT 1";
         $row = mysqli_query($link, $query);
-
+        
         // Check Feed must exist on which user is going to like.
         if (mysqli_num_rows($row) == 1) {
             $rows = mysqli_fetch_assoc($row);
+            
+            $query = "SELECT * FROM ".TBL_FEEDS_TAGGED_USER." WHERE user_id = ".$user_id." AND feed_id =".$data['fid'];
+            $row = mysqli_query($link,$query);
             $data['allStudyMate'] = $this->class_mate_list($rows['feed_by']);
+            if(mysqli_num_rows($row) > 0){
+                $data['allStudyMate'][] = $user_id;
+            }
 
             // Check user can only like /dislike those post which is added by his classmates.
             if (in_array($user_id, $data['allStudyMate'])) {
@@ -1876,7 +1888,7 @@ class PHPWebSocket {
                     $data['error'] = 'Unable to save message.! Please try again.';
                 }
                 $query = 'UPDATE ' . TBL_STUDYMATES_REQUEST . ' '
-                        . 'SET `status` = 1, `is_delete` = 1 '
+                        . 'SET `status` = 1, `is_delete` = 1 ,`modified_date` = NOW()'
                         . 'WHERE `request_from_mate_id` = ' . $data['studymate_id'] . ' '
                         . 'AND `request_to_mate_id` = ' . $user_id;
                 $x = mysqli_query($link, $query);

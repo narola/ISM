@@ -33,44 +33,21 @@
                     <img src="<?php echo base_url().'assets'; ?>/images/logo_login_admin.png" class="logo">
 
                     <?php $error = $this->session->flashdata('error'); ?>
-  
                     <form class="login_form" method="POST">
                         <div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
                                   <?php echo strip_tags($error) ; ?>
                           </div>
                         <div class="form-group">
-                            <input placeholder="Enter Email/Username" class="form-control" type="text" name="username">
+                            <input placeholder="Enter Email Address" class="form-control" type="email" name="emailid">
                         </div>
 
-                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('username'),''))){ echo 'hide';} ?>">
-                              <?php echo strip_tags(form_error('username'),'') ; ?>
-                        </div>
-
-                        <div class="form-group">
-                            <input placeholder="Enter Password" class="form-control" type="password" name="password">
-                        </div>
-
-                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('password'),''))){ echo 'hide';} ?>">
-                              <?php echo strip_tags(form_error('password'),'') ; ?>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="squaredThree">
-                                <input type="checkbox" name="remember" />
-                                <label for="squaredThree"></label>
-                                <span>Remember Me</span>
-                            </div>
-
-                            <!--<label><input type="checkbox"> Remember Me</label>-->
+                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('emailid'),''))){ echo 'hide';} ?>">
+                              <?php echo strip_tags(form_error('emailid'),'') ; ?>
                         </div>
                         <div class="form-group">    
                             <button type="submit" class="btn btn_black" >Login<span class="fa fa-chevron-right"></span></button>
                         </div>
                     </form>
-                    <div class="login_links">
-                        <a href="admin/forgot_password">Forgot Password</a>
-                        <!--<p>Do Not Have Credencials, <a href="#">Click Here</a></p>-->
-                    </div>
                 </div>
                 <div class="clearfix"></div>
             </div>

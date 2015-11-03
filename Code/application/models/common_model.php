@@ -229,12 +229,8 @@ function active_chat($user_id){
 		$options = array('join' =>
 				array(
 					array(
-						'table' => TBL_FEEDS.' f',
-						'condition' => 'f.id = tg.feed_id'
-					),
-					array(
 						'table' => TBL_USERS.' u',
-						'condition' => 'u.id = f.feed_by'
+						'condition' => 'u.id = tg.tagged_by'
 					),
 					array(
 						'table' => TBL_USER_PROFILE_PICTURE.' p',
@@ -243,13 +239,33 @@ function active_chat($user_id){
 				)
 			);
 		$where = array('where' => array('tg.is_delete'=>0,'tg.is_see'=> 0,'tg.user_id'=>$user_id));
-		$tagged_notification = select(TBL_FEEDS_TAGGED_USER.' tg','u.id,u.full_name,p.profile_link,tg.created_date',$where,$options);
-		return $tagged_notification;
+		$tagged_notification = select(TBL_FEEDS_TAGGED_USER.' tg','u.id,u.full_name,\' tagged you in a post \' as msg,p.profile_link,tg.created_date',$where,$options);
+
+		$options = array('join' =>
+				array(
+					array(
+						'table' => TBL_USERS.' u',
+						'condition' => 'u.id = sr.request_to_mate_id'
+					),
+					array(
+						'table' => TBL_USER_PROFILE_PICTURE.' p',
+						'condition' => 'u.id = p.user_id'
+					)
+				)
+			);
+		$where = array('where' => array('sr.status' => 1,'sr.is_delete' => 1,'sr.is_seen' => 0,'sr.request_from_mate_id' => $user_id));
+		$request_accept_notification = select(TBL_STUDYMATES_REQUEST.' sr','u.id,u.full_name,\' accepted your friend request \' as msg,p.profile_link,sr.modified_date as created_date',$where,$options);
+		return array_merge($tagged_notification,$request_accept_notification);
 	}
 
 	function count_notification_list($user_id){
-		$where = array('where' => array('tg.is_delete'=>0,'tg.is_see'=> 0,'tg.user_id'=>$user_id));
-		return select(TBL_FEEDS_TAGGED_USER.' tg','u.id,u.full_name,p.profile_link',$where,array('count'=>true));
+		$where = array('where' => array('tg.is_delete' => 0,'tg.is_see' => 0,'tg.user_id' => $user_id));
+		$cnt_tagged_user = select(TBL_FEEDS_TAGGED_USER.' tg',null,$where);
+
+		$where = array('where' => array('sr.status' => 1,'sr.is_delete' => 1,'sr.is_seen' => 0,'sr.request_from_mate_id' => $user_id));
+		$request_accept_notification = select(TBL_STUDYMATES_REQUEST.' sr',null,$where);
+
+		return count($cnt_tagged_user) + count($request_accept_notification); 
 	}
 }
 

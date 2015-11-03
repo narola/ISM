@@ -16,8 +16,9 @@ class ADMIN_Controller extends CI_Controller {
 		}
 
 		// If Ajax Call then Current and Previous Urls will not be Set.
-		$session_exceptional_urls = array('admin/question/set_question','admin/question/ajax_get_topics_tutorials','ajax_get_states','template_notice',
-										  'template_message','check_template_unique','check_template_notice_unique');
+		$session_exceptional_urls = array('admin/question/set_question','admin/question/ajax_get_topics_tutorials','ajax_get_states',
+										  'template_notice','template_message','check_template_unique','check_template_notice_unique',
+										  'ajax_get_topics_tutorials_edit','admin/topic/set_topic_status');
 
 		if(!empty($cur_url) && trim($this->input->server('REQUEST_URI'),'/') != $cur_url 
 			&& in_array(trim($this->input->server('REQUEST_URI'),'/'),$session_exceptional_urls) == FALSE ){
@@ -26,7 +27,7 @@ class ADMIN_Controller extends CI_Controller {
 			$this->session->set_userdata( array('prev_url'=>$cur_url) );	
 		}
 
-		$exceptional_url = array('admin','admin/logout');
+		$exceptional_url = array('admin','admin/logout','admin/forgot_password');
 
 		if(in_array(uri_string(), $exceptional_url) == FALSE && is_loggedin_admin() == FALSE){
 

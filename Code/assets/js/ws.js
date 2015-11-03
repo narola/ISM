@@ -508,10 +508,11 @@ if ("WebSocket" in window)
                     notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.user_data.profile_link + '"></div>';
                     notification_str += '<div class="notification_txt">';
                     notification_str += '<p><span class="noti_username">' + obj.user_data.full_name + '</span> accepted your friend request</p>';
-                    notification_str += '<span class="noti_time">Just Now</span></div>';
+                    notification_str += '<span class="noti_time just_noti">Just Now</span></div>';
                     notification_str += '<div class="clearfix"></div>';
                     notification_str += '</a></li>';
                     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
+                    $('.just_noti').timestatus();
                     $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
                     cnt = $('.mCSB_container .three_tabs #study_request_cnt').html();
                     if (cnt == '' || cnt == 0)
@@ -720,12 +721,13 @@ if ("WebSocket" in window)
                 notification_str += '<div class="user_small_img"><img onerror="this.src=\'assets/images/avatar.png\'" src="uploads/' + obj.profile_link + '"></div>';
                 notification_str += '<div class="notification_txt">';
                 notification_str += '<p><span class="noti_username">' + obj.full_name + '</span> tagged you in a post</p>';
-                notification_str += '<span class="noti_time">Just now</span></div>';
+                notification_str += '<span class="noti_time just_noti">Just now</span></div>';
                 notification_str += '<div class="clearfix"></div>';
                 notification_str += '</a></li>';
                 if (wp == list.id) {
                     $('.mCSB_container .three_tabs #notification-panel #no-more-notification').remove().html();
                     $('.mCSB_container .three_tabs #notification-panel').prepend(notification_str);
+                    $('.just_noti').timestatus();
                     notification_length = $('.mCSB_container .three_tabs #notification-panel li').length;
                     if (notification_length == 0) {
                         notification_length = $('.mCSB_container .three_tabs #notification-panel').prepend('<li><div class="notification_txt">No more notification</div></li>');
@@ -736,7 +738,6 @@ if ("WebSocket" in window)
                     }
                 }
             });
-
             $('#all_feed div.box.feeds[data-id="' + obj.fid + '"] .feed_text span[data-id="' + obj.fid + '"]').html(str);
 
 
@@ -938,7 +939,7 @@ if ("WebSocket" in window)
     };
     ws.onclose = function ()
     {
-        alert('Disconnected from Server!');
+        // alert('Disconnected from Server!');
     };
 }
 
@@ -1216,7 +1217,7 @@ function generate_comment(obj, i, k) {
     }
     str += '<div class="comment" style="' + display + '" data-first="' + first_three + '" data-id="' + obj.to + '">';
     str += '<div class="user_small_img user_comment">';
-    str += '<img src="uploads/' + obj.profile_link + '">';
+    str += '<img src="uploads/' + obj.profile_link + '" onerror="this.src=\'assets/images/avatar.png\'">';
     str += '</div>';
     str += '<div class="notification_txt">';
     str += '<p><a href="#" class="noti_username">' + obj.full_name + '</a>&nbsp;&nbsp;' + obj.message + '</p>';

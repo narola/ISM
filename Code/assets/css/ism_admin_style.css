@@ -1648,7 +1648,8 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 	margin:0;
 }
 #replacing_div3 .icon{
-    margin: 0 0 0 15px;
+    /*margin: 0 0 0 15px;*/
+	margin: 0 0 0 7px;
 }
 #replacing_div3 label {
     display: inline-block;
@@ -2186,4 +2187,11 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .change_dp .user_profile_img{
 	float:none;
+}
+.profile_admin .btn{
+	width:120px;
+	margin-top:10px;
+}
+.profile_admin .btn_red{
+	margin-right:15px;
 }

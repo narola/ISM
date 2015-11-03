@@ -261,7 +261,7 @@
         var eid = $('#exam_id').val();
         
         if(eid == ''){
-            bootbox.alert("Please select exam before add question.");
+            bootbox.alert("Please select exam before adding question.");
             $('#check_'+qid).prop('checked',false);
         }else{
 

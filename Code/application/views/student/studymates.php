@@ -34,7 +34,7 @@
                             <button class="btn btn_green btn-block" data-name="<?php echo $value['full_name'];?>" data-id="<?php echo $value['user_id'];?>" data-school="<?php echo $value['full_name'];?>" data-profile="<?php echo $value['profile_link'];?>" data-course="<?php echo $value['course_name'];?>" id="view_profile">View Profile</button>
                             <div class="form-group select">
                                 <select class="form-control" name="action" id="action_studymate" data-name="<?php echo $value['full_name'];?>" data-id="<?php echo $value['user_id'];?>" data-school="<?php echo $value['full_name'];?>" data-profile="<?php echo $value['profile_link'];?>" data-course="<?php echo $value['course_name'];?>">
-                                    <option value="0">Studymates</option>
+                                    <option value="0">Studymate</option>
                                     <option value="1">Remove Studymate</option>
                                 </select>
                             </div>

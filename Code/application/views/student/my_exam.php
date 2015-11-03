@@ -1,10 +1,23 @@
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
+<style>
+.red-tooltip + .tooltip > .tooltip-inner {
+    background-color: #000;
+    font-size:15px;
+    border:1px solid black;
+    color : #fff;
+}
+</style>
 <!--main-->
 <div class="col-sm-7 main main2 main mscroll_custom">
      <div class="exam_banner">
         <div class="col-sm-12 text-center">
             <div class="banner_text">
                 <h3>My Exams</h3>
-                <h3><?php echo $my_course_name;?></h3>
+                 <h3><a href="javascript:void(0);" class="red-tooltip" style="text-decoration:none;color:#000;" data-toggle="tooltip" title="<?php echo $my_course_name;?>" data-placement="bottom"><?php echo $my_course_nick_name;?></a></h3>
             </div>
         </div>
      </div>  

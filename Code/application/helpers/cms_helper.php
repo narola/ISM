@@ -59,9 +59,9 @@ function myform_error($field){
 function flashMessage($success = '', $error = '') {
 	$CI =& get_instance();
     if ($CI->session->flashdata('success') != "") {
-        echo '<div class="alert alert-success alert-dismissible" role="alert" style="padding:25px 30px; position: absolute; bottom: 1%; right: 1%; z-index: 999999;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $CI->session->flashdata('success') . '</div>';
+        echo '<div class="alert alert-success alert-dismissible" role="alert" style="z-index: 999999;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $CI->session->flashdata('success') . '</div>';
     }else if ($CI->session->flashdata('error') != "") {
-        echo '<div class="alert alert-danger alert-dismissible " style="padding:25px 30px; position: absolute; bottom: 1%; right: 1%; z-index: 999999;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $CI->session->flashdata('error') . '</div>';
+        echo '<div class="alert alert-danger alert-dismissible " style="z-index: 999999;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $CI->session->flashdata('error') . '</div>';
     }
 }
 
@@ -468,7 +468,7 @@ return $output;
 function set_session($userid){
   $CI =& get_instance();
          $users = select(TBL_USERS.' u',
-                'u.*,s.district_id,s.school_name,gu.group_status, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id,co.course_name,si.academic_year,si.course_id,si.classroom_id,si.school_id,(select count(*) cnt from tutorial_group_member where group_id = gu.id) as membercount,cl.class_name,s.district_id,d.district_name',   
+                'u.*,s.district_id,s.school_name,gu.group_status, s.address as school_address, ct.city_name as city_name, cut.country_name as country_name, st.state_name as state_name,up.profile_link as profile_pic,tm.group_id,co.course_name,course_nickname,si.academic_year,si.course_id,si.classroom_id,si.school_id,(select count(*) cnt from tutorial_group_member where group_id = gu.id) as membercount,cl.class_name,s.district_id,d.district_name',   
                 array('where'   =>  array('u.id' => $userid)),
                 array('join'    =>    
                    array(

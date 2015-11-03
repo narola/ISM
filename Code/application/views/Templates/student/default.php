@@ -152,17 +152,12 @@ function toHHMMSS (sec) {
                 <ul class="three_tabs">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span>
-                        <?php $noti_cnt = count_notification_list($this->session->userdata('user')['id']);
-                            //if($noti_cnt > 0){
-                        ?>
-                            <span class="badge bell_badge"><?php echo $noti_cnt;?></span>
-                        <?php //} ?>
+                            <span class="badge bell_badge"><?php echo $this->noti_cnt;?></span>
                         </a>
                         <ul class="dropdown-menu" id="notification-panel">
                             <?php 
-                                $notification_list = notification_list($this->session->userdata('user')['id']);
-                                if(sizeof($notification_list) > 0 ){
-                                    foreach ($notification_list as $key => $value) {
+                                if(sizeof($this->notification_list) > 0 ){
+                                    foreach ($this->notification_list as $key => $value) {
                                         ?>
                                         <li>
                                             <a href="#">
@@ -170,7 +165,7 @@ function toHHMMSS (sec) {
                                                 <img onerror="this.src='assets/images/avatar.png'" src="<?php echo UPLOAD_URL.'/'.$value['profile_link'];?>">
                                             </div>
                                             <div class="notification_txt">
-                                                <p><span class="noti_username"><?php echo $value['full_name']?></span> tagged you in a post</p>
+                                                <p><span class="noti_username"><?php echo $value['full_name']?></span><?php echo $value['msg'];?></p>
                                                 <span class="noti_time"><?php echo get_time_format($value['created_date']);?></span>
                                             </div>
                                             <div class="clearfix"></div>

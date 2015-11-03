@@ -14,7 +14,7 @@ class Home extends ISM_Controller {
 	{
 
 		if($this->session->userdata('user')['group_status'] != 'active'){
-			$this->session->set_flashdata('error','Chat and topic exam are bdisabled! Because your group is blocked by admin! ');
+			$this->session->set_flashdata('error','Chat and topic exam are disabled! Because your group is blocked by admin! ');
 		}
 		$user_data = $this->session->userdata('user');
 		$user_id = $user_data['id'];
@@ -209,8 +209,8 @@ class Home extends ISM_Controller {
 		$data['my_studymates'] = select(TBL_USERS.' u',null,array('where_in'=>array('id'=>$my_studymates)));
 		
 		//--remove tagged user notification list as already seen
-
 		update(TBL_FEEDS_TAGGED_USER,array('user_id'=>$user_id),array('is_see'=>1));
+		update(TBL_STUDYMATES_REQUEST,array('request_from_mate_id'=>$user_id),array('is_seen'=>1));
 
 		//--Latest three notice sended via admin
 		$classroom_id = $this->session->userdata('user')['classroom_id'];

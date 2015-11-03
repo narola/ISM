@@ -134,7 +134,7 @@ class Question extends ADMIN_Controller {
 			if( !empty($_GET['topic_id']) ) { 
 				
 				$topic_id = $this->input->get('topic_id'); 
-				$where[TBL_TUTORIAL_GROUP_QUESTION.'.tutorial_topic_id'] = $topic_id; 
+				$where[TBL_QUESTIONS.'.topic_id'] = $topic_id; 
 				$str .= '&topic_id='.$topic_id; 
 			}
 
@@ -245,8 +245,8 @@ class Question extends ADMIN_Controller {
 								)
 							);
 
-		// p($questions);
-		// qry(true);
+		// qry();
+		// p($questions,true);
 
 		foreach ($questions as $key=>$question) {
 			
@@ -770,7 +770,7 @@ class Question extends ADMIN_Controller {
 	 **/
 	public function ajax_get_topics_tutorials(){
 		  
-		  $subject_id = $this->input->post('subject_id');
+		$subject_id = $this->input->post('subject_id');
 		
 		$all_tutorial_topic_exam = select(TBL_TUTORIAL_TOPIC_EXAM);
 
@@ -793,6 +793,47 @@ class Question extends ADMIN_Controller {
 		if(!empty($topics)){
 			foreach($topics as $topic){
 				$new_str.='<option value="'.$topic['id'].'">'.$topic['topic_name'].'</option>';
+			}	
+		}
+		echo $new_str;
+	}
+
+	// ------------------------------------------------------------------------
+
+	/**
+	 * function for fetch for edit axam of subject change and fetch all topics in which topic's in tutorial_exam_topic Table
+	 * and all topics will be disabled which is in tutorial topic exam table.
+	 **/
+	
+	public function ajax_get_topics_tutorials_edit(){
+
+		$subject_id = $this->input->post('subject_id');
+		
+		$all_tutorial_topic_exam = select(TBL_TUTORIAL_TOPIC_EXAM);
+
+		$not_in =array();
+		foreach ($all_tutorial_topic_exam as $tutorial_topic_exam) {
+			array_push($not_in, $tutorial_topic_exam['tutorial_topic_id'])	;	
+		}
+
+		$topics= select(TBL_TUTORIAL_TOPIC,
+					   TBL_TUTORIAL_TOPIC.'.id,'.TBL_TUTORIAL_TOPIC.'.topic_name',
+					   array(
+					   		'where'=>array('subject_id'=>$subject_id),
+					   		// 'where_not_in'=>array(TBL_TUTORIAL_TOPIC.'.id'=>$not_in)
+					   		)
+					);
+
+		$new_str = '';	
+		$new_str .= '<option selected value="" disabled >Topic</option>';
+		
+		if(!empty($topics)){
+			foreach($topics as $topic){
+				$new_str .= '<option value="'.$topic['id'].'"';
+				if(in_array($topic['id'],$not_in)){ $new_str .='disabled="disabled"';};
+				$new_str .= '>';
+				$new_str .= $topic['topic_name'];
+				$new_str .= '</option>';
 			}	
 		}
 		echo $new_str;
