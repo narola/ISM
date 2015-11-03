@@ -71,8 +71,20 @@ public class Data {
     //    postfeed
 
     private String feed_by;
+    private String video_thumbnail;
+    private List<String> images;
+    private ArrayList<FeedImages> feed_images;
 
-    @JsonProperty("video_thumbnail")
+    /*these methods are for login response*/
+
+    @JsonProperty("feed_images")
+    public ArrayList<FeedImages> getFeed_images() {
+        return feed_images;
+    }
+
+    public void setFeed_images(ArrayList<FeedImages> feed_images) {
+        this.feed_images = feed_images;
+    }
     public String getVideo_thumbnail() {
         return video_thumbnail;
     }
@@ -81,11 +93,7 @@ public class Data {
         this.video_thumbnail = video_thumbnail;
     }
 
-    private String video_thumbnail;
-//    private String audio_link;
-    private List<String> images;
- //   private String posted_on;
-    /*these methods are for login response*/
+
     @JsonProperty("school_name")
     public String getSchoolName() {
         return this.schoolName;
@@ -424,14 +432,7 @@ public class Data {
     public void setImages(List<String> images) {
         this.images = images;
     }
-//    @JsonProperty("posted_on")
-//    public String getPosted_on() {
-//        return posted_on;
-//    }
-//
-//    public void setPosted_on(String posted_on) {
-//        this.posted_on = posted_on;
-//    }
+
 
 
 }

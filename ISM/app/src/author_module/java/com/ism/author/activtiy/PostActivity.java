@@ -94,8 +94,10 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
     private int playTime;
     private boolean isPlay = false;
     private int serverResponseCode;
-    private Uri uploadUri;
+    private String uploadUri;
     private String mediaType=null;
+    private int recoderDone=0;
+    private File sourceFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,15 +234,18 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                     isRecording = false;
 
                 }
+                recoderDone=1;
                 seekbar.setProgress(0);
                 //handler.removeCallbacks(r);
                 imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_play));
-            } else if (!isRecording && isPlay) {
+            } else if (recoderDone==1 ) {
                 playIt();
                 imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_pause));
-            } else if (!isRecording && !isPlay) {
+                recoderDone=2;
+            } else if (recoderDone==2 ) {
                 playIt();
                 imgStop.setBackgroundDrawable(getResources().getDrawable(R.drawable.audio_play));
+                recoderDone=1;
             }
         } else if (v == imgSave) {
             model = new PostFileModel("audio", Uri.fromFile(new File(mFileName)),"");
@@ -344,9 +349,32 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         cursor.close();
         return filePath;
     }
+//    public String getPathAudio(Uri uri) {
+//        String wholeID = DocumentsContract.getDocumentId(uri);
+//        // Split at colon, use second item in the array
+//        String id = wholeID.split(":")[1];
+//
+//        String[] column = {MediaStore.Audio.Media.DATA};
+//
+//        // where id is equal to
+//        String sel = MediaStore.Audio.Media._ID + "=?";
+//
+//        Cursor cursor = getContentResolver().
+//                query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+//                        column, sel, new String[]{id}, null);
+//        String filePath = "";
+//
+//        int columnIndex = cursor.getColumnIndex(column[0]);
+//
+//        if (cursor.moveToFirst()) {
+//            filePath = cursor.getString(columnIndex);
+//        }
+//        cursor.close();
+//        return filePath;
+//    }
 
 
-    private int doFileUpload(Uri path, String type, String feed_by, String feed_id) {
+    private int doFileUpload(String file, String type, String feed_by, String feed_id) {
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
         DataInputStream inStream = null;
@@ -356,7 +384,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         int bytesRead, bytesAvailable, bufferSize;
         byte[] buffer;
         int maxBufferSize = 1 * 1024 * 1024;
-        String responseFromServer = "";
+        String responseFromServer = "",fileName=null;
         // String urlString = "http://your_website.com/upload_audio_test/upload_audio.php";
         try {
             //------------------ CLIENT REQUEST
@@ -366,11 +394,21 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
             }
-            String fileName = getPath(path);
-            File sourceFile = new File(fileName);
+            if(type.equals("video")){
+          //  fileName = getPath(path);
+             sourceFile = new File(file);
             if (!sourceFile.isFile()) {
                 Log.e(TAG, "Source File Does not exist");
                 return 0;
+            }}
+            else if(type.equals("audio")){
+                fileName = file;
+                sourceFile = new File(file);
+                Log.e(TAG, ""+sourceFile);
+                if (!sourceFile.isFile()) {
+                    Log.e(TAG, "Source File Does not exist");
+                    return 0;
+                }
             }
             FileInputStream fileInputStream = new FileInputStream(sourceFile);
             // open a URL connection to the Servlet
@@ -487,15 +525,16 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             // tv.setVisibility(TextView.VISIBLE);
             try {
                 mRecorder.prepare();
+                // Start record job
+                mRecorder.start();
+                // Change isRecroding flag to true
+                isRecording = true;
+                // Post the record progress
+                //   handler.post(UpdateRecordTime);
             } catch (IOException e) {
                 Log.e("LOG_TAG", "prepare failed");
             }
-            // Start record job
-            mRecorder.start();
-            // Change isRecroding flag to true
-            isRecording = true;
-            // Post the record progress
-            //   handler.post(UpdateRecordTime);
+
 
         }
     }
@@ -531,13 +570,24 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             // set start time
             playTime = 0;
             // Reset max and progress of the SeekBar
-            seekbar.setMax(recordTime);
+
             seekbar.setProgress(0);
+
             try {
                 // Initialize the player and start playing the audio
                 mPlayer.setDataSource(mFileName);
                 mPlayer.prepare();
                 mPlayer.start();
+                handler = new Handler();
+                i = 0;
+                Runnable r = new Runnable() {
+                    public void run() {
+                        seekbar.getProgress();
+                        seekbar.setProgress(i++);
+                        handler.postDelayed(this, 60);
+                    }
+                };
+                handler.postDelayed(r, 0);
                 // Post the play progress
                 // handler.post(UpdatePlayTime);
             } catch (IOException e) {
@@ -545,6 +595,8 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             }
             isPlay = true;
         } else {
+            handler.removeCallbacks(r);
+            seekbar.setMax(0);
             isPlay = false;
             mPlayer.pause();
         }
@@ -584,8 +636,8 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
 
     private void showProgressDialog() {
 
-        pd = new ProgressDialog(getApplicationContext());
-        pd.setMessage(getApplicationContext().getString(R.string.loading));
+        pd = new ProgressDialog(PostActivity.this);
+        pd.setMessage(getResources().getString(R.string.loading));
         pd.show();
 
     }
@@ -600,13 +652,13 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // showProgressDialog();
+             showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            //   dismissProgressDialog();
+              dismissProgressDialog();
         }
 
         @Override
@@ -652,6 +704,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             listview.setAdapter(new PostFileAdapter(arrayList, getApplicationContext()));
         } else if (requestCode == MEDIA_TYPE_AUDIO && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
+            Log.i(TAG, uri+ "");
             listview.setVisibility(View.VISIBLE);
             model = new PostFileModel("audio", uri,"");
             arrayList.add(model);
@@ -678,14 +731,14 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select"), MEDIA_TYPE_IMAGE);
+        startActivityForResult(intent, MEDIA_TYPE_IMAGE);
     }
 
     public void OpenAudio() {
         Intent intent = new Intent();
         intent.setType("audio/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select"), MEDIA_TYPE_AUDIO);
+        startActivityForResult(intent, MEDIA_TYPE_AUDIO);
     }
 
     private void captureImage() {
@@ -807,10 +860,11 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 for (int i = 0; i < arrayList.size(); i++) {
                     if (arrayList.get(i).getStrFileType().equals("video")) {
                         mediaType="video";
-                        uploadUri = arrayList.get(i).getStrFilePath();
+//                        fileName = getPath(arrayList.get(i).getStrFilePath());
+                        uploadUri =  getPath(arrayList.get(i).getStrFilePath());;
                         new UploadFileToServer().execute();
                     } else if (arrayList.get(i).getStrFileType().equals("audio")) {
-                        uploadUri = arrayList.get(i).getStrFilePath();
+                        uploadUri = arrayList.get(i).getStrFilePath().getPath();
                         mediaType="audio";
                         new UploadFileToServer().execute();
                     }
