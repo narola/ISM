@@ -155,7 +155,7 @@
                                   </div>
                                   <h4><?php echo ucfirst($user['username']); ?></h4>
                                   <?php if($user['user_status']=='active'){ 
-                                        echo '<p class="active">Active Today</p>'; 
+                                        echo '<p class="active">Active</p>'; 
                                     }elseif($user['user_status']=='blocked'){ 
                                         echo '<p style="color:red">Blocked</p>';
                                     } ?>
