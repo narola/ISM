@@ -25,29 +25,38 @@ class Group extends ADMIN_Controller {
         $this->data['page_title'] = 'Groups';
         $where['where'][TBL_TUTORIAL_GROUPS . '.is_completed'] = 1;
         $where['where'][TBL_TUTORIAL_GROUPS . '.is_delete'] = 0;
-        if (!empty($_GET['course']) || !empty($_GET['year']) || !empty($_GET['q'])) {
 
-            if (!empty($_GET['course'])) {
-                $course = $this->input->get('course');
-            }
-            if (!empty($_GET['q'])) {
-                $q = $this->input->get('q');
-            }
-            if (!empty($_GET['year'])) {
-                $year = $this->input->get('year');
-            }
+        //Fetch Courses and If Courses is selected then Classroom will fetch all classroom based on Course ID
+        $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => FALSE)));
+
+        if (!empty($_GET['course']) || !empty($_GET['classroom']) || !empty($_GET['year']) || !empty($_GET['q'])) {
+
+            if (!empty($_GET['course'])) { $course = $this->input->get('course'); }
+            if (!empty($_GET['classroom'])) { $classroom = $this->input->get('classroom'); }
+            if (!empty($_GET['q'])) { $q = $this->input->get('q'); }
+            if (!empty($_GET['year'])) { $year = $this->input->get('year'); }
 
             $str = '';
 
-            if (!empty($course)) {
+            if(!empty($course)) {
                 $where['where'][TBL_STUDENT_ACADEMIC_INFO . '.course_id'] = $course;
                 $str .='&course=' . $course;
+                $this->data['classrooms'] =select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0,'course_id'=>$course ))); 
+            }else{
+                $this->data['classrooms'] =select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0)));
             }
+
+            if(!empty($classroom)){
+                $where['where'][TBL_STUDENT_ACADEMIC_INFO . '.classroom_id'] = $classroom;
+                $str .='&classroom=' . $classroom;
+            }
+
             if (!empty($q)) {
                 $where['like'][TBL_TUTORIAL_GROUPS . '.group_name'] = $q;
                 $where['or_like'][TBL_USERS . '.username'] = $q;
                 $str .='&q=' . $q;
             }
+
             if (!empty($year)) {
                 $next_year = $year + 1;
                 $academic_year = "$year-$next_year";    // find next year and create string like 2015-2016
@@ -70,26 +79,26 @@ class Group extends ADMIN_Controller {
         $config['total_rows'] = count(select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
                         TBL_TUTORIAL_GROUPS . '.group_status,' . TBL_TUTORIAL_GROUPS . '.is_completed,' . TBL_COURSES . '.course_name,' .
                         TBL_COURSES . '.id as course_id', $where, array(
-            'group_by' => array(TBL_TUTORIAL_GROUP_MEMBER . '.group_id'),
-            'join' => array(
-                array(
-                    'table' => TBL_TUTORIAL_GROUP_MEMBER,
-                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
-                    'join' => 'right'
-                ),
-                array(
-                    'table' => TBL_USERS,
-                    'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
-                ),
-                array(
-                    'table' => TBL_STUDENT_ACADEMIC_INFO,
-                    'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
-                ),
-                array(
-                    'table' => TBL_COURSES,
-                    'condition' => TBL_COURSES . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.course_id',
-                )
-            )
+                            'group_by' => array(TBL_TUTORIAL_GROUP_MEMBER . '.group_id'),
+                            'join' => array(
+                                array(
+                                    'table' => TBL_TUTORIAL_GROUP_MEMBER,
+                                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
+                                    'join' => 'right'
+                                ),
+                                array(
+                                    'table' => TBL_USERS,
+                                    'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
+                                ),
+                                array(
+                                    'table' => TBL_STUDENT_ACADEMIC_INFO,
+                                    'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
+                                ),
+                                array(
+                                    'table' => TBL_COURSES,
+                                    'condition' => TBL_COURSES . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.course_id',
+                                )
+                            )
                         )
         ));
 
@@ -123,74 +132,77 @@ class Group extends ADMIN_Controller {
         $this->data['all_groups'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
                 TBL_TUTORIAL_GROUPS . '.group_status,'. TBL_CLASSROOMS . '.class_name,' . TBL_TUTORIAL_GROUPS . '.is_completed,'. TBL_TUTORIAL_GROUPS . '.is_delete,' . TBL_COURSES . '.course_name,' .
                 TBL_COURSES . '.id as course_id, sum(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score) as score, count(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id) as exams', $where, array(
-            'limit' => $config['per_page'],
-            'offset' => $offset,
-            'group_by' => array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'),
-            'order_by' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score DESC',
-            'join' => array(
-                array(
-                    'table' => TBL_CLASSROOMS,
-                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_TUTORIAL_GROUPS . '.classroom_id',
-                ),
-                array(
-                    'table' => TBL_COURSES,
-                    'condition' => TBL_COURSES . '.id = ' . TBL_CLASSROOMS . '.course_id',
-                ),
-                array(
-                    'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
-                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'
-                ),
-                 array(
-                    'table' => TBL_TUTORIAL_GROUP_MEMBER,
-                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
-                    'join' => 'right'
-                ),
-                array(
-                    'table' => TBL_USERS,
-                    'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
-                ),
-                array(
-                    'table' => TBL_STUDENT_ACADEMIC_INFO,
-                    'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
-                ),
-               
-            )
+                    'limit' => $config['per_page'],
+                    'offset' => $offset,
+                    'group_by' => array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'),
+                    'order_by' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_score DESC',
+                    'join' => array(
+                        array(
+                            'table' => TBL_CLASSROOMS,
+                            'condition' => TBL_CLASSROOMS . '.id = ' . TBL_TUTORIAL_GROUPS . '.classroom_id',
+                        ),
+                        array(
+                            'table' => TBL_COURSES,
+                            'condition' => TBL_COURSES . '.id = ' . TBL_CLASSROOMS . '.course_id',
+                        ),
+                        array(
+                            'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
+                            'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'
+                        ),
+                         array(
+                            'table' => TBL_TUTORIAL_GROUP_MEMBER,
+                            'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
+                            'join' => 'right'
+                        ),
+                        array(
+                            'table' => TBL_USERS,
+                            'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
+                        ),
+                        array(
+                            'table' => TBL_STUDENT_ACADEMIC_INFO,
+                            'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
+                        ),
+                       
+                    )
                 )
         );
-    //fetch all data of group right joins with tutorial group members
+        
+        //fetch all data of group right joins with tutorial group members
         $this->data['all_groups_members'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUP_MEMBER . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.id as gid,' .
                 TBL_USERS . '.username,' . TBL_SCHOOLS . '.school_name,' . TBL_CLASSROOMS . '.class_name,' . TBL_USER_PROFILE_PICTURE . '.profile_link,' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id', FALSE, array(
-            'join' => array(
-                array(
-                    'table' => TBL_TUTORIAL_GROUP_MEMBER,
-                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
-                ),
-                array(
-                    'table' => TBL_USERS,
-                    'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
-                ),
-                array(
-                    'table' => TBL_STUDENT_ACADEMIC_INFO,
-                    'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
-                ),
-                array(
-                    'table' => TBL_SCHOOLS,
-                    'condition' => TBL_SCHOOLS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.school_id',
-                ),
-                array(
-                    'table' => TBL_CLASSROOMS,
-                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.classroom_id',
-                ),
-                array(
-                    'table' => TBL_USER_PROFILE_PICTURE,
-                    'condition' => TBL_USER_PROFILE_PICTURE . '.user_id=' . TBL_USERS . '.id'
-                )
-            )
+                    'join' => array(
+                        array(
+                            'table' => TBL_TUTORIAL_GROUP_MEMBER,
+                            'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
+                        ),
+                        array(
+                            'table' => TBL_USERS,
+                            'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
+                        ),
+                        array(
+                            'table' => TBL_STUDENT_ACADEMIC_INFO,
+                            'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
+                        ),
+                        array(
+                            'table' => TBL_SCHOOLS,
+                            'condition' => TBL_SCHOOLS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.school_id',
+                        ),
+                        array(
+                            'table' => TBL_CLASSROOMS,
+                            'condition' => TBL_CLASSROOMS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.classroom_id',
+                        ),
+                        array(
+                            'table' => TBL_USER_PROFILE_PICTURE,
+                            'condition' => TBL_USER_PROFILE_PICTURE . '.user_id=' . TBL_USERS . '.id'
+                        )
+                    )
                 )
         );
+        
 
+        //Initialize Codeigniter Pagination with $config
         $this->pagination->initialize($config);
-        $this->data['courses'] = select(TBL_COURSES, FALSE, array('where' => array('is_delete' => FALSE)), array('limit' => 10));
+
         $this->template->load('admin/default', 'admin/group/view_group', $this->data);
     }
 
@@ -201,22 +213,22 @@ class Group extends ADMIN_Controller {
         $this->data['all_groups'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUPS . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.group_type,' .
                 TBL_TUTORIAL_GROUPS . '.group_status,' . TBL_TUTORIAL_GROUPS . '.is_completed,' . TBL_COURSES . '.course_name,' .
                 TBL_COURSES . '.id as course_id, count(' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id) as exams', $where, array(
-            'single' => TRUE,
-            'group_by' => array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'),
-            'join' => array(
-                array(
-                    'table' => TBL_CLASSROOMS,
-                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_TUTORIAL_GROUPS . '.classroom_id',
-                ),
-                array(
-                    'table' => TBL_COURSES,
-                    'condition' => TBL_COURSES . '.id = ' . TBL_CLASSROOMS . '.course_id',
-                ),
-                array(
-                    'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
-                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'
-                )
-            )
+                    'single' => TRUE,
+                    'group_by' => array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'),
+                    'join' => array(
+                        array(
+                            'table' => TBL_CLASSROOMS,
+                            'condition' => TBL_CLASSROOMS . '.id = ' . TBL_TUTORIAL_GROUPS . '.classroom_id',
+                        ),
+                        array(
+                            'table' => TBL_COURSES,
+                            'condition' => TBL_COURSES . '.id = ' . TBL_CLASSROOMS . '.course_id',
+                        ),
+                        array(
+                            'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
+                            'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'
+                        )
+                    )
                 )
         );
 
@@ -224,37 +236,37 @@ class Group extends ADMIN_Controller {
         $this->data['all_groups_members'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUP_MEMBER . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.id as gid,' .
                 TBL_USERS . '.username,' . TBL_SCHOOLS . '.school_name,' . TBL_CLASSROOMS . '.class_name,' . TBL_USER_PROFILE_PICTURE . '.profile_link,' .
                 TBL_TUTORIAL_GROUP_MEMBER . '.user_id,' . TBL_USERS . '.created_date,' . TBL_TUTORIAL_GROUP_MEMBER_SCORE . '.score', $where, array(
-            'group_by' => array(TBL_USERS . '.id'),
-            'join' => array(
-                array(
-                    'table' => TBL_TUTORIAL_GROUP_MEMBER,
-                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
-                ),
-                array(
-                    'table' => TBL_USERS,
-                    'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
-                ),
-                array(
-                    'table' => TBL_STUDENT_ACADEMIC_INFO,
-                    'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
-                ),
-                array(
-                    'table' => TBL_SCHOOLS,
-                    'condition' => TBL_SCHOOLS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.school_id',
-                ),
-                array(
-                    'table' => TBL_CLASSROOMS,
-                    'condition' => TBL_CLASSROOMS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.classroom_id',
-                ),
-                array(
-                    'table' => TBL_USER_PROFILE_PICTURE,
-                    'condition' => TBL_USER_PROFILE_PICTURE . '.user_id=' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id'
-                ),
-                array(
-                    'table' => TBL_TUTORIAL_GROUP_MEMBER_SCORE,
-                    'condition' => TBL_TUTORIAL_GROUP_MEMBER_SCORE . '.member_id=' . TBL_TUTORIAL_GROUP_MEMBER . '.id'
-                ),
-            )
+                    'group_by' => array(TBL_USERS . '.id'),
+                    'join' => array(
+                        array(
+                            'table' => TBL_TUTORIAL_GROUP_MEMBER,
+                            'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.group_id',
+                        ),
+                        array(
+                            'table' => TBL_USERS,
+                            'condition' => TBL_USERS . '.id = ' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id',
+                        ),
+                        array(
+                            'table' => TBL_STUDENT_ACADEMIC_INFO,
+                            'condition' => TBL_USERS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.user_id',
+                        ),
+                        array(
+                            'table' => TBL_SCHOOLS,
+                            'condition' => TBL_SCHOOLS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.school_id',
+                        ),
+                        array(
+                            'table' => TBL_CLASSROOMS,
+                            'condition' => TBL_CLASSROOMS . '.id = ' . TBL_STUDENT_ACADEMIC_INFO . '.classroom_id',
+                        ),
+                        array(
+                            'table' => TBL_USER_PROFILE_PICTURE,
+                            'condition' => TBL_USER_PROFILE_PICTURE . '.user_id=' . TBL_TUTORIAL_GROUP_MEMBER . '.user_id'
+                        ),
+                        array(
+                            'table' => TBL_TUTORIAL_GROUP_MEMBER_SCORE,
+                            'condition' => TBL_TUTORIAL_GROUP_MEMBER_SCORE . '.member_id=' . TBL_TUTORIAL_GROUP_MEMBER . '.id'
+                        ),
+                    )
                 )
         );
 
@@ -265,27 +277,27 @@ class Group extends ADMIN_Controller {
                 TBL_TUTORIAL_TOPIC . '.topic_name,COUNT(' . TBL_TUTORIAL_GROUP_DISCUSSION . '.id) as total', 
                 array('where'=>array(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id'=>$gid)), 
                 array(
-            'group_by' => array(TBL_TUTORIAL_GROUP_DISCUSSION . '.group_id'),
-            'join' => array(
-                array(
-                    'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
-                    'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id',
-                    'join' => 'right'
-                ),
-                array(
-                    'table' => TBL_TUTORIAL_TOPIC,
-                    'condition' => TBL_TUTORIAL_TOPIC . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.topic_id',
-                ),
-                array(
-                    'table' => TBL_TUTORIAL_GROUP_DISCUSSION,
-                    'condition' => TBL_TUTORIAL_GROUP_DISCUSSION . '.topic_id=' . TBL_TUTORIAL_TOPIC . '.id',
-                    // 'join' => 'right'
-                )
-            )
+                    'group_by' => array(TBL_TUTORIAL_GROUP_DISCUSSION . '.group_id'),
+                    'join' => array(
+                        array(
+                            'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,
+                            'condition' => TBL_TUTORIAL_GROUPS . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.group_id',
+                            'join' => 'right'
+                        ),
+                        array(
+                            'table' => TBL_TUTORIAL_TOPIC,
+                            'condition' => TBL_TUTORIAL_TOPIC . '.id = ' . TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION . '.topic_id',
+                        ),
+                        array(
+                            'table' => TBL_TUTORIAL_GROUP_DISCUSSION,
+                            'condition' => TBL_TUTORIAL_GROUP_DISCUSSION . '.topic_id=' . TBL_TUTORIAL_TOPIC . '.id',
+                            // 'join' => 'right'
+                        )
+                    )
                 )
         );
-// p($this->data['all_groups_topics'], true);
-$where = "`".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`group_id` = $gid AND `".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`created_date` >= DATE_SUB(NOW(), INTERVAL 6 month)";
+        // p($this->data['all_groups_topics'], true);
+        $where = "`".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`group_id` = $gid AND `".TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION."`.`created_date` >= DATE_SUB(NOW(), INTERVAL 6 month)";
                                 
         $group_performance = select(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,'sum('.TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.".group_score) as y,".TBL_SUBJECTS . ".subject_name as name",$where,
             array(

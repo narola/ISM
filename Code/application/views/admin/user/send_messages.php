@@ -44,12 +44,23 @@
                         <div class="alert alert-danger <?php if(empty(strip_tags($msgerror,''))){ echo 'hide';} ?>">
                             <?php echo strip_tags($msgerror) ; ?>
                         </div>
-
+                        
+                        <div class="form-group">
+                            <label> Select Role </label>
+                            <select name="role_id" id="role_id" class="form-control" onchange="fetch_users(this.value)">
+                                   <option value="0"> Select Role </option> 
+                                   <?php if(!empty($roles)) { foreach($roles as $role) { ?>
+                                    <option value="<?php echo $role['id']; ?>" <?php echo set_select('role_id',$role['id']); ?> >
+                                        <?php echo ucfirst($role['role_name']); ?>
+                                    </option>
+                                   <?php } }?>
+                            </select>    
+                        </div>
 
                         <div class="form-group">
                             <label> Select Users   </label>
 
-                            <select name="all_users[]" class="js-example-basic-single form-control" multiple="multiple">
+                            <select name="all_users[]" class="js-example-basic-single form-control" multiple="multiple" id="all_users">
 
                                 <?php
                                 if(!empty($roles)) {
@@ -172,6 +183,16 @@
         }
     }
 
+    function fetch_users(role_id){
+        $.ajax({
+            url:'<?php echo base_url()."common/fetch_users"; ?>',
+            type:'POST',
+            data:{role_id:role_id},
+            success:function(data){
+                $('#all_users').html(data);
+            }   
+        });
+    }
 
     function get_message_template(msg_id){
         
