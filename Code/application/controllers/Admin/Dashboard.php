@@ -625,8 +625,6 @@ class Dashboard extends ADMIN_Controller {
 
     		}    	
     	}
-		$this->template->load('admin/default','admin/user/profile_edit',$this->data);
-
     }
 }
 

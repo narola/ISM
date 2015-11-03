@@ -109,7 +109,7 @@ class User extends ADMIN_Controller {
 		$this->data['all_users'] =   select(TBL_USERS,
 											TBL_USERS.'.id,'.TBL_USERS.'.user_status,'.TBL_USERS.'.username,'.TBL_CITIES.'.city_name,'.TBL_STATES.'.state_name,
 											'.TBL_USERS.'.role_id,'.TBL_ROLES.'.role_name,'.TBL_STUDENT_ACADEMIC_INFO.'.course_id,'.TBL_COURSES.'.course_name,
-											'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link',
+											'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link,'.TBL_USERS.'.profile_pic',
 											$where,
 											array(
 												'order_by'=>$order,
@@ -151,7 +151,8 @@ class User extends ADMIN_Controller {
 												    		)
 												)
 											);
-	
+		
+		// p($this->data['all_users'],true);
 		$this->pagination->initialize($config);
 		
 		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)));
