@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ISM Teacher</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+
+    <string name="str_personal_info">PERSONAL INFORMATION</string>
+    <string name="str_manage_credential">MANAGE CREDENTIAL</string>
+    <string name="str_teacher_tutorial_label">You are assigned group Venice Beauty,you have \n to schedule question for topic Osmosis.</string>
+    <string name="strsearchstudymatess">Search Study Mates</string>
+
+    <string name="no_internet">No Internet Connection Available...Please Try Again</string>
+    <string name="web_service_issue">Web service issue</string>
+
+    <!-- Assignment resources-->
+    <string name="stractivity">Activity</string>
+    <string name="strexam">Exam</string>
+    <string name="strassignmentinfo">Assignment Information</string>
+    <string name="strassignmentname">Assignment Name</string>
+    <string name="strcoursename">Course Name</string>
+    <string name="strsave">Save</string>
+    <string name="strsubject">Subject</string>
+    <string name="strsubmissiondate">Submission Date</string>
+    <string name="strtopic">Topic</string>
+    <string name="msg_validation_set_topic">\nPlease select your subject topic.</string>
+    <string name="msg_validation_add_text_rich_editor">\nPlease set the assignment.</string>
+    <string name="msg_validation_set_classroom">\nPlease select your classroom.</string>
+    <string name="msg_validation_set_subject">\nPlease select your subject.</string>
+    <string name="msg_validation_set_passingpercent">\nPlease select passing percent</string>
+    <string name="msg_validation_set_exam_name">\nPlease select exam name</string>
+    <string name="msg_validation_set_exam_mode">\nPlease select exam mode</string>
+    <string name="msg_validation_set_exam_duration">\nPlease select exam duration</string>
+
+    <string name="msg_validation_declare_results">\nPlease select any declare result option.</string>
+    <string name="msg_validation_negative_marking">\nPlease select any negative marking option.</string>
+    <string name="msg_validation_random_question">\nPlease select any random question option.</string>
+    <string name="msg_validation_use_score_from_questions">\nPlease select use score from question option.</string>
+
+
+    <!-- Controller String-->
+    <string name="str_classwall">Classwall</string>
+    <string name="str_notes">Notes</string>
+    <string name="str_quiz">Quiz</string>
+    <string name="str_markscript">Mark Script</string>
+    <string name="str_results">Results</string>
+    <string name="str_add">Add</string>
+    <string name="str_progressReport">Progress Report</string>
+
+
+    <!-- Assignment Exam -->
+
+    <string name="strpersonalinformation">Personal Information</string>
+    <string name="strexamname">Exam Name</string>
+    <string name="strsubjectname">Subject Name</string>
+    <string name="strpassingpercent">Passing Percent</string>
+    <string name="strexamfor">Exam For:</string>
+    <string name="strexamtype">Exam Type</string>
+    <string name="strexamduration">Exam Duration(MIN)</string>
+    <string name="strattemptcount">Attempt Count</string>
+    <string name="strexamschedule">Exam Schedule</string>
+    <string name="strstartdate">Start Date</string>
+    <string name="strenddate">End Date</string>
+    <string name="strnotifystudent">Notify Student Via SMS</string>
+    <string name="strexaminstruction">Exam Instruction</string>
+    <string name="strdeclareresults">Declare Results :</string>
+    <string name="strnegativemarking">Negative Marking :</string>
+    <string name="strrandomquestion">Random Question :</string>
+    <string name="strusescore">Use Score From Questions :</string>
+    <string name="strscorevalue">Question Score Value :</string>
+    <string name="stryes">Yes</string>
+    <string name="strno">No</string>
+    <string name="strsetquestion">set question</string>
+    <string name="strnegativemark">Question Negative Mark :</string>
+    <string name="strexammode">Exam Mode</string>
+
+    <string-array name="exammode">
+        <item>Exam Mode</item>
+        <item>Subjective</item>
+        <item>Objective</item>
+    </string-array>
+
+    <string-array name="examname">
+        <item>Exam Name</item>
+        <item>ISM_Mock</item>
+        <item>WASSCE</item>
+        <item>End Of Term</item>
+        <item>Tutorial</item>
+    </string-array>
+
+    <string-array name="question_type">
+        <item>Text</item>
+        <item>Paragraph text</item>
+        <item>Multiple choice</item>
+    </string-array>
+
+
+    <!-- Assignment Add Question-->
+    <string name="strquestionbank">question bank</string>
+    <string name="strquestion">Question</string>
+    <string name="strcategory">Category:</string>
+    <string name="strcreatedby">Created by:</string>
+    <string name="straddnewquestion">Add New Question</string>
+    <string name="straddtopreview">Add to Preview</string>
+
+    <!--Validation error message strings-->
+    <string name="required">Required!</string>
+    <string name="error_password_length">Minimum 8 characters required!</string>
+    <string name="error_confirm_password_mismatch">Confirm password mismatch!</string>
+    <string name="error_same_old_new_password">Old and new passwords can\'t be same!</string>
+    <string name="error_invalid_email">Invalid email address!</string>
+    <string name="invalid_url">Invalid url!</string>
+    <string name="password_sent">Password successfully sent to your email id.</string>
+    <string name="email_not_found">Email id not found!</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="android">Android</string>
+
+    <string name="emaamall">Emma Mall</string>
+    <string name="strsentence">Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?</string>
+    <string name="strviewall">View All</string>
+    <string name="sayit">SAY IT</string>
+    <string name="strcomments">All Comments</string>
+    <string name="strclose">Close</string>
+    <string name="strsearchstudymates">Search Users</string>
+    <string name="strtag">TAG</string>
+
+    <string name="classwall">Classwall</string>
+    <string name="lesson_notes">Lesson Notes</string>
+    <string name="assignment">Assignment</string>
+    <string name="exam">Exam</string>
+    <string name="ism_mock">ISM Mock</string>
+    <string name="wassce">Wassce</string>
+    <string name="end_of_term">End of Term</string>
+    <string name="jotter">Jotter</string>
+    <string name="favorite">Favorite</string>
+    <string name="timetable">Timetable</string>
+    <string name="books">Books</string>
+    <string name="forum">Forum</string>
+    <string name="progress_report">Progress Report</string>
+    <string name="add_notes">Add Notes</string>
+    <string name="add_new_favorite">Add new Favorite</string>
+
+    <string name="notes">Notes</string>
+    <string name="assignments">Assignments</string>
+    <string name="links">Links</string>
+    <string name="events">Events</string>
+    <string name="Authors">Authors</string>
+    <string name="add_question">Add Question</string>
+    <string name="add_book">Add Book</string>
+    <!--Login string-->
+    <string name="username">Enter Username</string>
+    <string name="password">Enter Password</string>
+    <string name="strrememberme">Remember Me</string>
+    <string name="strlogin">LOGIN</string>
+    <string name="strforgotpwd"><u>Forgot Password</u></string>
+    <string name="strdonothavecredentials">Do Not Have Credentials, </string>
+    <string name="strclickhereu"><u>Click Here</u></string>
+
+    <!--Profile Info-->
+    <string name="strprofileinformation">PROFILE INFORMATION</string>
+    <string name="stremailaddress">Email Address</string>
+    <string name="strgender">Gender</string>
+    <string name="strfullname">Full Name</string>
+    <string name="strhomeaddress">Home Address</string>
+    <string name="strstate">State</string>
+    <string name="strcity">City</string>
+    <string name="strcountry">Country</string>
+    <string name="strdateofbirth">Date of Birth</string>
+    <string name="strcontactnumber">Contact Number</string>
+    <string name="strage">Age</string>
+    <string name="struploadprofilepicture">UPLOAD PROFILE PICTURE</string>
+
+    <string name="strschoolinformation">SCHOOL INFORMATION</string>
+    <string name="stryouareregisteredforfollowingschool">You are registered for following school.</string>
+    <string name="strifitisnotyourschool">If it\'s not your school.</string>
+    <string name="strnameofschool">Name of School</string>
+    <string name="strclass">Class</string>
+    <string name="stracademicyear">Academic Year</string>
+    <string name="strdistrictofschool">District of School</string>
+    <string name="strprogramcourse">Program/ Course</string>
+    <string name="strclickhere">Click Here</string>
+
+    <string name="strmanageaccount">MANAGE ACCOUNT</string>
+    <string name="strusername">Username</string>
+    <string name="strcurrentpwd">Current Password</string>
+    <string name="strnewpwd">New Password</string>
+    <string name="strconfirmpwd">Confirm Password</string>
+    <string name="strsubmit">Submit</string>
+    <string name="strcancel">Cancel</string>
+
+    <string-array name="list">
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+    </string-array>
+    <string name="hint_search">Search</string>
+    <!--Arti-->
+    <!--right menu=> notice-->
+    <string-array name="accordion_notice">
+        <item>NOTICE</item>
+        <item>HIGH SCORE</item>
+        <item>EVENTS</item>
+    </string-array>
+
+    <integer-array name="accordion_notice_visibility">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+    <string-array name="accordion_sections">
+
+        <item>HIGH SCORE</item>
+        <item>STUDYMATES</item>
+        <item>SUGGESTED STUDYMATES</item>
+        <item>FIND MORE STUDYMATES</item>
+        <!--<item>Section E</item>-->
+    </string-array>
+
+    <integer-array name="accordion_visibility">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <!--<item>0</item>-->
+    </integer-array>
+    <string name="strpost">Post</string>
+    <string name="strcreatepost">Create Post</string>
+    <string name="strwriteyourcommenthere">Write Your Comment Here</string>
+    <string name="select">Select</string>
+
+    <!--Strings for the Submenu Of Office Menu-->
+
+    <string name="gotrending">Go Trending</string>
+    <string name="setquiz">Set Quiz</string>
+    <string name="settrial">Set Trial</string>
+    <string name="progressreport">Progress Report</string>
+
+    <!--NewsFeed -->
+
+    <string name="straddpost">ADD POST</string>
+    <string name="stradd">ADD</string>
+    <string name="straddnew">ADD NEW</string>
+    <string name="group_name">"Group Name : "</string>
+    <string name="ok">Ok</string>
+    <string name="msg_offline">You are offline!\nPlease check your internet connection.</string>
+
+</resources>

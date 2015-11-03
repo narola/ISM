@@ -46,7 +46,7 @@
     <color name="color_layer2">#31363C</color>
     <color name="color_layer3">#3C434A</color>
     <color name="color_layer4">#383F47</color>
-
-    <color name="divider">#F1F1F1</color>
     <color name="color_shade_news_feed">#90BABABA</color>
+    <color name="divider">#F1F1F1</color>
+    <color name="news_feed_post_box_color">#90BABABA</color>
 </resources>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ISM</string>
+    <string name="app_name">ISM Student</string>
 
     <string name="classwall">Classwall</string>
     <string name="lesson_notes">Lesson Notes</string>
@@ -210,4 +210,6 @@
 	<string name="title_forgot_password">Password will be sent to your email id.</string>
 	<string name="processing">Processing</string>
 	<string name="done">Done</string>
+	<string name="strclose">Close</string>
+	<string name="strcomments">Comments</string>
 </resources>
