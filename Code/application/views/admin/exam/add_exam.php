@@ -150,7 +150,6 @@
                 <div class="form-group col-sm-12 col-md-6 col-lg-3 select no-padding">
 					<label>Attemp Count</label>
                     <select class="form-control" name="attempt_count">
-                        <option value="">Attemp Count</option>
                         <option value="0" <?php echo set_select('attempt_count','0');?> >0</option>
                         <option value="1" <?php echo set_select('attempt_count','1');?> >1</option>
                         <option value="2" <?php echo set_select('attempt_count','2');?> >2</option>

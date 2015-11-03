@@ -1,3 +1,6 @@
+<?php
+    $copy = $this->uri->segment(3);
+?>
 <!--main-->
 <div class="col-sm-7 main main2 mCustomScrollbar general_cred" data-mcs-theme="minimal-dark">
     <!--breadcrumb-->
@@ -104,17 +107,22 @@
                         <?php 
                           if(!empty($all_topics)){ 
                             foreach($all_topics as $topic) {
+                                if(in_array($topic['id'],$not_in) || $copy == 'copy'){
                           ?> 
-                        <option value="<?php echo $topic['id']; ?>" 
-                                <?php 
-                                    if(in_array($topic['id'],$not_in)){ echo 'disabled="disabled"'; } 
-                                    echo set_select('topic_id',$topic['id']);
-                                ?> 
-                                > 
-                                <?php echo $topic['topic_name']; ?>
-                        </option>
+                            <option value="<?php echo $topic['id']; ?>" > 
+                                    <?php echo $topic['topic_name']; ?>
+                            </option>
 
-                        <?php }  }else{ ?>
+                        <?php }else{  ?>
+                            
+                            <option value="<?php echo $topic['id']; ?>" 
+                                    <?php if(in_array($topic['id'],$not_in)) { echo 'disabled="disabled"'; }?>
+                                    <?php echo set_select('topic_id',$topic['id']); ?> 
+                                    > 
+                                    <?php echo $topic['topic_name']; ?>
+                            </option>
+
+                        <?php } }  } else { ?>
                         <option > No Topics </option>
                         <?php } ?>
                     </select>    
@@ -161,7 +169,6 @@
                     <label>Attempt Count</label>
 
                     <select class="form-control" name="attempt_count" id="attempt_count">
-                        <option value="">Attemp Count</option>
                         <option value="0" <?php echo set_select('attempt_count','0');?> >0</option>
                         <option value="1" <?php echo set_select('attempt_count','1');?> >1</option>
                         <option value="2" <?php echo set_select('attempt_count','2');?> >2</option>
@@ -185,10 +192,11 @@
 
                <div class="form-group col-sm-6 padding_r15_">
                     <label>Exam Time</label>
-
-                   <div class="input-group bootstrap-timepicker">
+                    
+                    <div class="input-group bootstrap-timepicker">
                         <input id="timepicker1" name="start_time" type="text" 
-                        value="<?php  echo set_value("start_time") == false ? $exam["start_time"] : set_value("start_time"); ?>"class="form-control input-small">
+                               value="<?php  echo set_value("start_time") == false ? $exam["start_time"] : set_value("start_time"); ?>"
+                               class="form-control input-small" onclick="my_func()">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     </div>
                 </div> 
@@ -243,7 +251,7 @@
                 </div>
                 <div class="col-sm-12 text-center btn_group">
                     <input type="hidden" value="save" id="button_type" name="button_type">
-                    <button class="btn btn_green" onclick="set_hidden('save')" ><?php $copy = $this->uri->segment(3); if($copy == 'copy'){ echo "Save"; }else { echo "Update"; }  ?></button>
+                    <button class="btn btn_green" onclick="set_hidden('save')" ><?php  if($copy == 'copy'){ echo "Save"; }else { echo "Update"; }  ?></button>
                     <a href="<?php echo $prev_url; ?>" class="btn btn_black_normal">Cancel</a>
                 </div>
                 <div class="clearfix"></div>
@@ -276,9 +284,11 @@
         $('#subject_id').prop('disabled',true);    
         $('#topic_id').prop('disabled',true);    
         $("[name='exam_type']").prop('disabled',true);
+        $('#topic_id').val('<?php echo $exam["topic_id"] ?>');    
 
     <?php } ?>       
-    
+
+
     <?php if($exam['exam_type'] == 'subject') { ?>
         $("[name='exam_type']").prop('checked',true);    
     <?php } else { ?>        
@@ -379,11 +389,15 @@
             format: 'yyyy-mm-dd'
         });
 
-        $('#end_date input').datepicker({
-            format: 'yyyy-mm-dd'
+        $('#start_date').on('changeDate', function(ev){
+            $(this).datepicker('hide');
         });
 
     });
+
+    function my_func(){
+        $( ".input-group-addon" ).trigger( "click" );
+    }
     
      CKEDITOR.replace( 'editor1',{removePlugins : "a11yhelp,about,bidi,blockquote,clipboard," +
 "contextmenu,dialogadvtab,div,elementspath,enterkey,entities,popup," +
