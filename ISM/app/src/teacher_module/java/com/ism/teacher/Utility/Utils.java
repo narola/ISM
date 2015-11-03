@@ -162,18 +162,15 @@ public class Utils {
 
     public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-    public static String getDateInApiFormat(String dateText)
-    {
-        String newDate="";
-        try
-        {
+    public static String getDateInApiFormat(String dateText) {
+        String newDate = "";
+        try {
             Date date = DATE_FORMAT_API.parse(dateText);
-            newDate=DATE_FORMAT_API.format(date);
+            newDate = DATE_FORMAT_API.format(date);
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
-            Log.e("Exception","Date exception");
+            Log.e("Exception", "Date exception");
         }
         return newDate;
 

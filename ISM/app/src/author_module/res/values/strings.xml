@@ -149,6 +149,14 @@
     <string name="stryes">Yes</string>
     <string name="strno">No</string>
     <string name="strsetquestion">set question</string>
+    <string name="strcourse">Course</string>
+    <string name="strquestionbank">question bank</string>
+    <string name="strquestion">Question</string>
+    <string name="strcategory">Category:</string>
+    <string name="strcreatedby">Created by:</string>
+    <string name="straddnewquestion">Add New Question</string>
+    <string name="straddtopreview">Add to Preview</string>
+
 
     <string-array name="examtype">
         <item>Exam Type</item>

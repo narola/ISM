@@ -15,7 +15,7 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.utility.Debug;
 
 /**
- * these class is use for set questions for the exam.
+ * these fragment class is container of questionlist,questionaddeditfragment,previewquestionfragment.
  */
 public class AddQuestionFragment extends Fragment implements FragmentManager.OnBackStackChangedListener {
 
@@ -32,7 +32,7 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
         // Required empty public constructor
     }
 
-    FrameLayout fl_addquestionfragment_container_left, fl_addquestionfragment_container_right;
+    FrameLayout flAddquestionfragmentContainerLeft, flAddquestionfragmentContainerRight;
     public static final int FRAGMENT_QUESTIONLIST = 0, FRAGMENT_QUESTIONADDEDIT = 1, FRAGMENT_PREVIEWQUESTION = 2;
     private boolean mShowingBack = false;
 
@@ -54,8 +54,8 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
 
     private void initGlobal() {
 
-        fl_addquestionfragment_container_left = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
-        fl_addquestionfragment_container_right = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
+        flAddquestionfragmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
+        flAddquestionfragmentContainerRight = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
 
 
     }

@@ -75,6 +75,26 @@ public class Data {
     private List<String> images;
     private ArrayList<FeedImages> feed_images;
 
+
+
+    /*these are for the get questionbank*/
+
+    private String questionFormat;
+    private String questionAssetsLink;
+    private String questionHint;
+    private String questionImageLink;
+    private String evaluationNotes;
+    private String topicId;
+    private ArrayList<AnswersModel> answers;
+    private String classroomId;
+    private String bookId;
+    private String solution;
+    private String questionId;
+    private String questionText;
+    private String questionCreatorId;
+    private String questionCreatorName;
+
+
     /*these methods are for login response*/
 
     @JsonProperty("feed_images")
@@ -433,6 +453,134 @@ public class Data {
         this.images = images;
     }
 
+
+    /*these are for the get questionbank*/
+
+    @JsonProperty("question_format")
+    public String getQuestionFormat() {
+        return this.questionFormat;
+    }
+
+    public void setQuestionFormat(String questionFormat) {
+        this.questionFormat = questionFormat;
+    }
+
+    @JsonProperty("question_assets_link")
+    public String getQuestionAssetsLink() {
+        return this.questionAssetsLink;
+    }
+
+    public void setQuestionAssetsLink(String questionAssetsLink) {
+        this.questionAssetsLink = questionAssetsLink;
+    }
+
+    @JsonProperty("question_hint")
+    public String getQuestionHint() {
+        return this.questionHint;
+    }
+
+    public void setQuestionHint(String questionHint) {
+        this.questionHint = questionHint;
+    }
+
+    @JsonProperty("question_image_link")
+    public String getQuestionImageLink() {
+        return this.questionImageLink;
+    }
+
+    public void setQuestionImageLink(String questionImageLink) {
+        this.questionImageLink = questionImageLink;
+    }
+
+    @JsonProperty("evaluation_notes")
+    public String getEvaluationNotes() {
+        return this.evaluationNotes;
+    }
+
+    public void setEvaluationNotes(String evaluationNotes) {
+        this.evaluationNotes = evaluationNotes;
+    }
+
+    @JsonProperty("topic_id")
+    public String getTopicId() {
+        return this.topicId;
+    }
+
+    public void setTopicId(String topicId) {
+        this.topicId = topicId;
+    }
+
+    @JsonProperty("answers")
+    public ArrayList<AnswersModel> getAnswers() {
+        return this.answers;
+    }
+
+    public void setAnswers(ArrayList<AnswersModel> answers) {
+        this.answers = answers;
+    }
+
+    @JsonProperty("classroom_id")
+    public String getClassroomId() {
+        return this.classroomId;
+    }
+
+    public void setClassroomId(String classroomId) {
+        this.classroomId = classroomId;
+    }
+
+    @JsonProperty("book_id")
+    public String getBookId() {
+        return this.bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
+    }
+
+    @JsonProperty("solution")
+    public String getSolution() {
+        return this.solution;
+    }
+
+    public void setSolution(String solution) {
+        this.solution = solution;
+    }
+
+    @JsonProperty("question_id")
+    public String getQuestionId() {
+        return this.questionId;
+    }
+
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
+    }
+
+    @JsonProperty("question_text")
+    public String getQuestionText() {
+        return this.questionText;
+    }
+
+    public void setQuestionText(String questionText) {
+        this.questionText = questionText;
+    }
+
+    @JsonProperty("question_creator_id")
+    public String getQuestionCreatorId() {
+        return this.questionCreatorId;
+    }
+
+    public void setQuestionCreatorId(String questionCreatorId) {
+        this.questionCreatorId = questionCreatorId;
+    }
+
+    @JsonProperty("question_creator_name")
+    public String getQuestionCreatorName() {
+        return this.questionCreatorName;
+    }
+
+    public void setQuestionCreatorName(String questionCreatorName) {
+        this.questionCreatorName = questionCreatorName;
+    }
 
 
 }
