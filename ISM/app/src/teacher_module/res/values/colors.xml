@@ -25,4 +25,13 @@
     <color name="news_feed_separator_color">#BABABA</color>
     <color name="news_feed_post_box_color">#90BABABA</color>
     <color name="color_black_light">#90000000</color>
+
+
+    <!-- assignment add question-->
+    <color name="color_assignment_question">#F0F0F0</color>
+    <color name="color_bottom_add_question">#232A34</color>
+    <color name="color_selector_save_button">#FF6D5E</color>
+    <color name="color_orange">#E56B60</color>
+    <color name="color_question">#8F9396</color>
+    <color name="color_answer">#6F6F74</color>
 </resources>

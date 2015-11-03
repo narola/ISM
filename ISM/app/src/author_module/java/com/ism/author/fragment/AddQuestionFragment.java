@@ -11,8 +11,11 @@ import android.widget.FrameLayout;
 
 import com.ism.R;
 import com.ism.author.AuthorHostActivity;
+import com.ism.author.model.Data;
 import com.ism.interfaces.FragmentListener;
 import com.ism.utility.Debug;
+
+import java.util.ArrayList;
 
 /**
  * these fragment class is container of questionlist,questionaddeditfragment,previewquestionfragment.
@@ -48,6 +51,8 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
                 .add(R.id.fl_addquestionfragment_container_left, new QuestionListFragment(this))
                 .addToBackStack(String.valueOf(FRAGMENT_QUESTIONLIST))
                 .commit();
+
+        loadFragmentInRightContainer();
 
         return view;
     }
@@ -119,16 +124,29 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
     @Override
     public void onBackStackChanged() {
 
+
     }
+
+    PreviewQuestionFragment previewQuestionFragment;
 
     private void loadFragmentInRightContainer() {
 
+        previewQuestionFragment = PreviewQuestionFragment.newInstance();
+
         try {
-            getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, PreviewQuestionFragment.newInstance()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, previewQuestionFragment).commit();
+
         } catch (Exception e) {
             Debug.e(TAG, "loadFragment Exception : " + e.toString());
 
         }
+
+    }
+
+    public void addQuestionToPreviewFragment(ArrayList<Data> data) {
+
+
+        previewQuestionFragment.addQuestionsToPreviewFragment(data);
 
     }
 

@@ -15,6 +15,7 @@ public class Comment {
     private String comment;
     private String fullName;
     private String profileLink;
+    private String createdDate;
 
     @JsonProperty("id")
     public String getId() {
@@ -60,5 +61,13 @@ public class Comment {
     public void setProfileLink(String profileLink) {
         this.profileLink = profileLink;
     }
-    
+
+    @JsonProperty("created_date")
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
 }

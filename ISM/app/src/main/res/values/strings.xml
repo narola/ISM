@@ -204,4 +204,7 @@
 	<string name="msg_waiting_for_other_members">Group is not yet complete. Waiting for other members to join.</string>
 	<string name="view_all">View All</string>
 	<string name="comment">Comment</string>
+	<string name="msg_failed_comment">Failed to post comment!, please try again.</string>
+
+	<string name="strsearchstudymatess">Search Study Mates</string>
 </resources>

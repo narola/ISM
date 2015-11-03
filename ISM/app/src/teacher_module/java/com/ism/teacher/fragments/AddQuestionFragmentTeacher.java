@@ -3,6 +3,7 @@ package com.ism.teacher.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,9 @@ import android.widget.FrameLayout;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
 import com.ism.R;
+import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.login.TeacherHomeActivity;
+import com.ism.teacher.model.Data;
 import com.ism.utility.Debug;
 
 /**
@@ -25,13 +28,14 @@ public class AddQuestionFragmentTeacher extends Fragment {
     private FragmentListener fragListener;
 
     FrameLayout fl_addquestionfragment_container_left, fl_addquestionfragment_container_right;
-    public static final int FRAGMENT_QUESTIONLIST = 0, FRAGMENT_QUESTIONADDEDIT = 1, FRAGMENT_PREVIEWQUESTION = 2;
+    public static final int FRAGMENT_QUESTIONLIST = 0, FRAGMENT_QUESTIONADDEDIT = 1, FRAGMENT_PREVIEWQUESTION = 2, FRAGMENT_ADD_NEW_QUESTION = 3;
     private boolean mShowingBack = false;
 
 
     public AddQuestionFragmentTeacher() {
 
     }
+
     private int fragment;
     private static int current_fragment;
     private static final String ARG_FRAGMENT = "fragment";
@@ -56,6 +60,7 @@ public class AddQuestionFragmentTeacher extends Fragment {
                 .addToBackStack(String.valueOf(FRAGMENT_QUESTIONLIST))
                 .commit();
 
+
         return view;
     }
 
@@ -64,34 +69,18 @@ public class AddQuestionFragmentTeacher extends Fragment {
         fl_addquestionfragment_container_left = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
         fl_addquestionfragment_container_right = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
 
-
+        //  loadFragment(FRAGMENT_QUESTIONLIST);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            fragListener = (FragmentListener) activity;
-            if (fragListener != null) {
-                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_ADDQUESTION);
-            }
-        } catch (ClassCastException e) {
-            //Debug.e(TAG, "onAttach Exception : " + e.toString());
-        }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        try {
-            if (fragListener != null) {
-//                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ADDQUESTION);
-                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_ADDQUESTION);
-            }
-        } catch (ClassCastException e) {
-//            Debug.e(TAG, "onDetach Exception : " + e.toString());
-        }
-        fragListener = null;
     }
 
     public void flipCard() {
@@ -102,9 +91,10 @@ public class AddQuestionFragmentTeacher extends Fragment {
                     .setCustomAnimations(
                             R.animator.card_flip_right_in, R.animator.card_flip_right_out,
                             R.animator.card_flip_left_in, R.animator.card_flip_left_out)
-                    .add(R.id.fl_addquestionfragment_container_left, new QuestionAddEditFragment(this))
+                    .add(R.id.fl_addquestionfragment_container_left, new AddNewQuestionFromAssignment(this))
                     .addToBackStack(null)
                     .commit();
+            //loadFragment(FRAGMENT_QUESTIONADDEDIT);
 
         } else {
 
@@ -134,6 +124,42 @@ public class AddQuestionFragmentTeacher extends Fragment {
 
         }
 
+    }
+
+
+    public void loadFragment(int fragment) {
+        try {
+            switch (fragment) {
+                case FRAGMENT_QUESTIONLIST:
+                    current_fragment = FRAGMENT_QUESTIONLIST;
+                    getChildFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_left, QuestionListFragment.newInstance(FRAGMENT_QUESTIONLIST)).commit();
+                    break;
+                case FRAGMENT_QUESTIONADDEDIT:
+                    current_fragment = FRAGMENT_QUESTIONADDEDIT;
+                    getChildFragmentManager().beginTransaction().setCustomAnimations(
+                            R.animator.card_flip_right_in, R.animator.card_flip_right_out,
+                            R.animator.card_flip_left_in, R.animator.card_flip_left_out).replace(R.id.fl_addquestionfragment_container_left, QuestionAddEditFragment.newInstance(FRAGMENT_QUESTIONADDEDIT)).commit();
+                    break;
+                case FRAGMENT_ADD_NEW_QUESTION:
+                    current_fragment = FRAGMENT_ADD_NEW_QUESTION;
+                    getChildFragmentManager().beginTransaction().setCustomAnimations(
+                            R.animator.card_flip_right_in, R.animator.card_flip_right_out,
+                            R.animator.card_flip_left_in, R.animator.card_flip_left_out).replace(R.id.fl_addquestionfragment_container_left, new AddNewQuestionFromAssignment(this)).commit();
+                    break;
+                case FRAGMENT_PREVIEWQUESTION:
+                    current_fragment = FRAGMENT_PREVIEWQUESTION;
+                    //getChildFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, TeacherMarkScriptHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_MARKSCRIPT).commit();
+                    break;
+
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "loadFragment Exception : " + e.toString());
+        }
+    }
+
+    public void addItemToPreviewFragment(Data data) {
+
+//        previewQuestionFragment.addItemsToList(data);
     }
 
 }

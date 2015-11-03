@@ -19,7 +19,7 @@ public class RequestWs {
             return new WebServiceRequest(url).execute(nameValuePair, cls,
 					null);
 		} else {*/
-        return new com.ism.ws.WSRequestPost(url).execute(cls, reqCls);
+        return new com.ism.author.ws.WSRequestPost(url).execute(cls, reqCls);
 
 //		}
     }

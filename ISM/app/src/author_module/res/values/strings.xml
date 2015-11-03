@@ -156,6 +156,7 @@
     <string name="strcreatedby">Created by:</string>
     <string name="straddnewquestion">Add New Question</string>
     <string name="straddtopreview">Add to Preview</string>
+    <string name="strpreview">Preview</string>
 
 
     <string-array name="examtype">

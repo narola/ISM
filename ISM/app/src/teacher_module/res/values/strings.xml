@@ -93,5 +93,18 @@
         <item>Tutorial</item>
     </string-array>
 
+    <string-array name="question_type">
+        <item>Text</item>
+        <item>Paragraph text</item>
+        <item>Multiple choice</item>
+    </string-array>
 
+
+    <!-- Assignment Add Question-->
+    <string name="strquestionbank">question bank</string>
+    <string name="strquestion">Question</string>
+    <string name="strcategory">Category:</string>
+    <string name="strcreatedby">Created by:</string>
+    <string name="straddnewquestion">Add New Question</string>
+    <string name="straddtopreview">Add to Preview</string>
 </resources>

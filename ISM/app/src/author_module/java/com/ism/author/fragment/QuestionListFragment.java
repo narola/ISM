@@ -85,6 +85,25 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         tvQuestionlistAddPreview.setTypeface(myTypeFace.getRalewayRegular());
 
 
+        tvQuestionlistAddPreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if (questionBankListAdapter.getListOfPreviewQuestionToAdd().size() > 0) {
+
+                    ((AddQuestionFragment) mFragment).addQuestionToPreviewFragment(questionBankListAdapter.getListOfPreviewQuestionToAdd());
+
+                } else {
+                    Utils.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
+
+                }
+
+
+            }
+        });
+
+
         callApiGetQuestionBank();
 
 
@@ -149,7 +168,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 getQuestionBankResponseObject = (ResponseObject) object;
                 if (getQuestionBankResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && getQuestionBankResponseObject != null) {
                     questionBankListAdapter.addAll(getQuestionBankResponseObject.getData());
-                    Utils.showToast(getQuestionBankResponseObject.getMessage() + getQuestionBankResponseObject.getData().size(), getActivity());
                 } else {
                     Utils.showToast(getQuestionBankResponseObject.getMessage(), getActivity());
                 }

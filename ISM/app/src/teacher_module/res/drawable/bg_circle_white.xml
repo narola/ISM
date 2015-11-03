@@ -26,8 +26,8 @@
             <solid android:color="#90BABABA" />
             <corners android:radius="5dp" />
             <size
-                android:width="80dp"
-                android:height="80dp"/>
+                android:width="75dp"
+                android:height="75dp"/>
 
         </shape>
     </item>
