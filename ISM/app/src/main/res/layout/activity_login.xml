@@ -69,7 +69,7 @@
             android:checked="true"
             android:id="@+id/chk_rememberme" />
 
-        <com.ism.common.view.ActionProcessButton
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -84,13 +84,7 @@
             android:textColor="@color/color_white"
             android:onClick="onClickLogin"
             android:textSize="@dimen/d20dp"
-            android:id="@+id/btn_login"
-            app:pb_colorComplete="@color/black_99"
-            app:pb_colorNormal="@color/black_99"
-            app:pb_colorPressed="@color/black_99"
-            app:pb_colorProgress="@color/purple_progress"
-            app:pb_textComplete="Success"
-            app:pb_textProgress="Loading" />
+            android:id="@+id/btn_login" />
 
         <TextView
             android:layout_width="match_parent"
