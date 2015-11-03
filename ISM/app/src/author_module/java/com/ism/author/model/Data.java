@@ -75,7 +75,9 @@ public class Data {
     private List<String> images;
     private ArrayList<FeedImages> feed_images;
 
+    //  trial
 
+    private String role;
 
     /*these are for the get questionbank*/
 
@@ -93,6 +95,7 @@ public class Data {
     private String questionText;
     private String questionCreatorId;
     private String questionCreatorName;
+
 
 
     /*these methods are for login response*/
@@ -582,5 +585,46 @@ public class Data {
         this.questionCreatorName = questionCreatorName;
     }
 
+    @JsonProperty("role")
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    //getTrial exams
+    private  String total_student_attempted;
+    private String total_student;
+
+    @JsonProperty("exam_type")
+    public String getExam_type() {
+        return exam_type;
+    }
+
+    public void setExam_type(String exam_type) {
+        this.exam_type = exam_type;
+    }
+
+    private String exam_type;
+
+    @JsonProperty("total_student_attempted")
+    public String getTotal_student_attempted() {
+        return total_student_attempted;
+    }
+
+    public void setTotal_student_attempted(String total_student_attempted) {
+        this.total_student_attempted = total_student_attempted;
+    }
+
+    @JsonProperty("total_student")
+    public String getTotal_student() {
+        return total_student;
+    }
+
+    public void setTotal_student(String total_student) {
+        this.total_student = total_student;
+    }
 
 }

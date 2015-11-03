@@ -41,6 +41,7 @@
     <color name="color_blue">#41B1E3</color>
     <color name="color_question">#8F9396</color>
     <color name="color_answer">#6F6F74</color>
+    <color name="color_red">#D95350</color>
 
 
 </resources>
