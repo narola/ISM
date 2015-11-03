@@ -31,6 +31,9 @@ public class AddQuestionFragmentTeacher extends Fragment {
     public static final int FRAGMENT_QUESTIONLIST = 0, FRAGMENT_QUESTIONADDEDIT = 1, FRAGMENT_PREVIEWQUESTION = 2, FRAGMENT_ADD_NEW_QUESTION = 3;
     private boolean mShowingBack = false;
 
+    public PreviewQuestionFragment previewQuestionFragment;
+    public QuestionListFragment questionListFragment;
+    public QuestionAddEditFragment questionAddEditFragment;
 
     public AddQuestionFragmentTeacher() {
 
@@ -59,12 +62,16 @@ public class AddQuestionFragmentTeacher extends Fragment {
                 .add(R.id.fl_addquestionfragment_container_left, new QuestionListFragment(this))
                 .addToBackStack(String.valueOf(FRAGMENT_QUESTIONLIST))
                 .commit();
-
+        loadFragmentInRightContainer();
 
         return view;
     }
 
     private void initGlobal() {
+
+        previewQuestionFragment = new PreviewQuestionFragment(this);
+        questionListFragment = new QuestionListFragment(this);
+        questionAddEditFragment = new QuestionAddEditFragment(this);
 
         fl_addquestionfragment_container_left = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
         fl_addquestionfragment_container_right = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
@@ -84,32 +91,25 @@ public class AddQuestionFragmentTeacher extends Fragment {
     }
 
     public void flipCard() {
-        if (!mShowingBack) {
-            mShowingBack = true;
-            getFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(
-                            R.animator.card_flip_right_in, R.animator.card_flip_right_out,
-                            R.animator.card_flip_left_in, R.animator.card_flip_left_out)
-                    .add(R.id.fl_addquestionfragment_container_left, new AddNewQuestionFromAssignment(this))
-                    .addToBackStack(null)
-                    .commit();
-            //loadFragment(FRAGMENT_QUESTIONADDEDIT);
 
-        } else {
+//        if (!mShowingBack) {
+//            mShowingBack = true;
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(
+                        R.animator.card_flip_right_in, R.animator.card_flip_right_out,
+                        R.animator.card_flip_left_in, R.animator.card_flip_left_out)
+                .replace(R.id.fl_addquestionfragment_container_left, new AddNewQuestionFromAssignment(this))
+                .addToBackStack(null)
+                .commit();
+        //loadFragment(FRAGMENT_QUESTIONADDEDIT);
 
-            getFragmentManager().popBackStack();
-            mShowingBack = false;
+//        } else {
+//
+//            getFragmentManager().popBackStack();
+//            mShowingBack = false;
 
-//            FragmentManager fm = getFragmentManager();
-//            fm.beginTransaction()
-//                    .setCustomAnimations(
-//                            R.animator.card_flip_right_in, R.animator.card_flip_right_out,
-//                            R.animator.card_flip_left_in, R.animator.card_flip_left_out)
-//                    .show(getFragmentManager().findFragmentByTag(String.valueOf(FRAGMENT_QUESTIONLIST)))
-//                    .commit();
-
-        }
+//        }
 
 
     }
@@ -118,7 +118,7 @@ public class AddQuestionFragmentTeacher extends Fragment {
     private void loadFragmentInRightContainer() {
 
         try {
-            getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, PreviewQuestionFragment.newInstance()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, previewQuestionFragment).commit();
         } catch (Exception e) {
             Debug.e(TAG, "loadFragment Exception : " + e.toString());
 
@@ -127,39 +127,7 @@ public class AddQuestionFragmentTeacher extends Fragment {
     }
 
 
-    public void loadFragment(int fragment) {
-        try {
-            switch (fragment) {
-                case FRAGMENT_QUESTIONLIST:
-                    current_fragment = FRAGMENT_QUESTIONLIST;
-                    getChildFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_left, QuestionListFragment.newInstance(FRAGMENT_QUESTIONLIST)).commit();
-                    break;
-                case FRAGMENT_QUESTIONADDEDIT:
-                    current_fragment = FRAGMENT_QUESTIONADDEDIT;
-                    getChildFragmentManager().beginTransaction().setCustomAnimations(
-                            R.animator.card_flip_right_in, R.animator.card_flip_right_out,
-                            R.animator.card_flip_left_in, R.animator.card_flip_left_out).replace(R.id.fl_addquestionfragment_container_left, QuestionAddEditFragment.newInstance(FRAGMENT_QUESTIONADDEDIT)).commit();
-                    break;
-                case FRAGMENT_ADD_NEW_QUESTION:
-                    current_fragment = FRAGMENT_ADD_NEW_QUESTION;
-                    getChildFragmentManager().beginTransaction().setCustomAnimations(
-                            R.animator.card_flip_right_in, R.animator.card_flip_right_out,
-                            R.animator.card_flip_left_in, R.animator.card_flip_left_out).replace(R.id.fl_addquestionfragment_container_left, new AddNewQuestionFromAssignment(this)).commit();
-                    break;
-                case FRAGMENT_PREVIEWQUESTION:
-                    current_fragment = FRAGMENT_PREVIEWQUESTION;
-                    //getChildFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, TeacherMarkScriptHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_MARKSCRIPT).commit();
-                    break;
-
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "loadFragment Exception : " + e.toString());
-        }
+    public void addQuestionToPreviewFragment() {
+        previewQuestionFragment.addQuestionsToPreviewFragment();
     }
-
-    public void addItemToPreviewFragment(Data data) {
-
-//        previewQuestionFragment.addItemsToList(data);
-    }
-
 }

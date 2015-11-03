@@ -1,5 +1,6 @@
 package com.ism.teacher.adapters;
 
+import android.app.Fragment;
 import android.content.Context;
 
 import android.graphics.Paint;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.ism.R;
 
 import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.fragments.AddQuestionFragmentTeacher;
 import com.ism.teacher.model.AnswersModel;
 import com.ism.object.MyTypeFace;
 import com.ism.teacher.model.Data;
@@ -30,18 +32,27 @@ import java.util.ArrayList;
 public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankListAdapter.ViewHolder> {
 
 
-    private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
-
     Context mContext;
     ArrayList<Data> listOfQuestions = new ArrayList<Data>();
     MyTypeFace myTypeFace;
-    boolean dropdownFlag = false;
 
-    public QuestionBankListAdapter(Context context) {
+    Fragment mFragment;
+    boolean dropdownFlag=false;
+
+    int testposition;
+
+    public QuestionBankListAdapter(Context context, Fragment fragment) {
         this.mContext = context;
+        this.mFragment = fragment;
 
     }
 
+    public QuestionBankListAdapter(Context context,ArrayList<Data>list,int pos)
+    {
+        listOfQuestions=list;
+        this.mContext = context;
+        testposition=pos;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,12 +69,12 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
 
-        holder.tvQuestionNo.setText(holder.tvQuestionNo.getText() + " " + (position + 1));
+        holder.tvQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
         holder.tvQuestionNo.setTypeface(myTypeFace.getRalewayBold());
         holder.tvQuestionNo.setPaintFlags(holder.tvQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         holder.tvQuestionCategory.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvQuestionCategory.setText(holder.tvQuestionCategory.getText());
+        holder.tvQuestionCategory.setText(mContext.getString(R.string.strcategory));
         String category = " " + listOfQuestions.get(position).getSubject_name();
         SpannableString f = new SpannableString(category);
         f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
@@ -126,6 +137,39 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             }
         });
 
+        holder.chkSelectQuestion.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+//                if (holder.chkSelectQuestion.isChecked()) {
+//                    listOfPreviewQuestionToAdd.add(listOfQuestions.get(position));
+//                } else {
+//                    listOfPreviewQuestionToAdd.remove(listOfQuestions.get(position));
+//                }
+
+
+                if (!((AddQuestionFragmentTeacher) mFragment).previewQuestionFragment.listOfPreviewQuestions.contains(listOfQuestions.get(position))) {
+
+                    ((AddQuestionFragmentTeacher) mFragment).previewQuestionFragment.listOfPreviewQuestions.add(listOfQuestions.get(position));
+
+                } else {
+
+                    holder.chkSelectQuestion.setChecked(true);
+
+                }
+
+
+            }
+        });
+
+
+        if(position==testposition)
+        {
+            holder.chkSelectQuestion.setSelected(false);
+        }
+
+
 
     }
 
@@ -169,8 +213,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             imgQuestionAddtofavourite = (ImageView) itemView.findViewById(R.id.img_question_addtofavourite);
 
             chkSelectQuestion = (CheckBox) itemView.findViewById(R.id.chk_select_question);
-
-
         }
     }
 
@@ -185,5 +227,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
         return v;
     }
+
+
 
 }

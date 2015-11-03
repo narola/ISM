@@ -157,7 +157,7 @@
                 android:layout_marginTop="@dimen/d10dp"
                 android:background="@color/color_assignment_question"
                 android:orientation="vertical"
-                android:visibility="gone">
+                >
 
                 <EditText
                     android:id="@+id/et_answer_box"
@@ -165,7 +165,10 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_dash_border"
                     android:hint="Answer"
-                    android:minLines="2" />
+                    android:minLines="2"
+                    android:gravity="top"
+
+                    />
             </LinearLayout>
 
             <!-- Linear Layout for tags-->

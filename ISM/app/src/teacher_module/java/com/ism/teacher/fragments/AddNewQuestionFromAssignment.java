@@ -5,15 +5,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.object.MyTypeFace;
+import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.adapters.Adapters;
+import com.ism.teacher.model.AnswersModel;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,17 +44,21 @@ public class AddNewQuestionFromAssignment extends Fragment {
 
     private List<String> arrayListQuestionType;
 
+    private LinearLayout ll_questions_options;
+    int row_count = 2;
+    ImageView imgAdd, img_remove_row;
 
-   /* public static AddNewQuestionFromAssignment newInstance(int fragment) {
-        AddNewQuestionFromAssignment addNewQuestionFromAssignment = new AddNewQuestionFromAssignment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_FRAGMENT, fragment);
-        addNewQuestionFromAssignment.setArguments(args);
-        return addNewQuestionFromAssignment;
-    }
-*/
+
+    /* public static AddNewQuestionFromAssignment newInstance(int fragment) {
+         AddNewQuestionFromAssignment addNewQuestionFromAssignment = new AddNewQuestionFromAssignment();
+         Bundle args = new Bundle();
+         args.putInt(ARG_FRAGMENT, fragment);
+         addNewQuestionFromAssignment.setArguments(args);
+         return addNewQuestionFromAssignment;
+     }
+ */
     public AddNewQuestionFromAssignment(Fragment fragment) {
-        this.mFragment=fragment;
+        this.mFragment = fragment;
     }
 
 
@@ -78,7 +87,114 @@ public class AddNewQuestionFromAssignment extends Fragment {
         btnSaveNAddmoreQuestion = (Button) view.findViewById(R.id.btn_save_n_addmore_question);
 
         arrayListQuestionType = Arrays.asList(getResources().getStringArray(R.array.question_type));
-        Adapters.setUpSpinner(getActivity(), spQuestionType, arrayListQuestionType);
+        Adapters.setUpExamTypeSpinner(getActivity(), spQuestionType, arrayListQuestionType);
 
+        ll_questions_options = (LinearLayout) view.findViewById(R.id.ll_questions_options);
+
+        spQuestionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //For MCQ
+                if (spQuestionType.getSelectedItemPosition() == 0) {
+                    etAnswerBox.setVisibility(View.VISIBLE);
+                    etAnswerBox.setText("");
+                    etAnswerBox.setMinLines(2);
+
+                    ll_questions_options.removeAllViews();
+
+                } else if (spQuestionType.getSelectedItemPosition() == 1) {
+                    etAnswerBox.setVisibility(View.VISIBLE);
+                    etAnswerBox.setText("");
+                    etAnswerBox.setMinLines(5);
+                    ll_questions_options.removeAllViews();
+                } else {
+                    etAnswerBox.setVisibility(View.GONE);
+                    for (int j = 1; j <= 2; j++) {
+                        View mcq = getMCQInflaterView(j);
+                        ll_questions_options.addView(mcq);
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+    }
+
+    private View getMCQInflaterView(int row) {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        View v;
+        v = layoutInflater.inflate(R.layout.question_options_layout, null, false);
+        EditText editText = (EditText) v.findViewById(R.id.et_question_options);
+        imgAdd = (ImageView) v.findViewById(R.id.img_add_row);
+        img_remove_row = (ImageView) v.findViewById(R.id.img_remove_row);
+
+      /*  if(row==2)
+        {
+            imgAdd.setVisibility(View.VISIBLE);
+            img_remove_row.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            imgAdd.setVisibility(View.INVISIBLE);
+            img_remove_row.setVisibility(View.INVISIBLE);
+        }*/
+
+        if (row == row_count) {
+            imgAdd.setVisibility(View.VISIBLE);
+            // img_remove_row.setVisibility(View.VISIBLE);
+        } else {
+            imgAdd.setVisibility(View.INVISIBLE);
+            img_remove_row.setVisibility(View.INVISIBLE);
+        }
+
+        imgAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                imgAdd.setVisibility(View.INVISIBLE);
+                img_remove_row.setVisibility(View.INVISIBLE);
+                row_count++;
+                View v = getMCQInflaterView(row_count);
+                ll_questions_options.addView(v);
+                imgAdd.setVisibility(View.VISIBLE);
+                img_remove_row.setVisibility(View.VISIBLE);
+
+
+            }
+        });
+
+        imgAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                imgAdd.setVisibility(View.INVISIBLE);
+                img_remove_row.setVisibility(View.INVISIBLE);
+                row_count++;
+                View v = getMCQInflaterView(row_count);
+                ll_questions_options.addView(v);
+                imgAdd.setVisibility(View.VISIBLE);
+                img_remove_row.setVisibility(View.VISIBLE);
+            }
+        });
+
+       /* img_remove_row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ll_questions_options.removeViewAt(row_count);
+                row_count--;
+            }
+        });*/
+
+
+        return v;
     }
 }

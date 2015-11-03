@@ -17,24 +17,40 @@ import com.ism.R;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
 import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.QuestionBankListAdapter;
 import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.model.Data;
 import com.ism.teacher.model.Request;
 import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.ws.WebserviceWrapper;
 import com.ism.utility.Debug;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by c166 on 31/10/15.
  */
-public class QuestionListFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class QuestionListFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
 
     private static final String TAG = QuestionListFragment.class.getSimpleName();
-    private View view;
+    Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistExamType;
+    List<String> arrListExamType;
+    List<Data> arrListSubject, arrListCourses;
+    EditText etQuestionlistSearch;
+    TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview;
+    public RecyclerView rvQuestionlist;
+    QuestionBankListAdapter questionBankListAdapter;
+    ArrayList<Data> listOfQuestionBank = new ArrayList<Data>();
 
-    private FragmentListener fragListener;
-    private static final String ARG_FRAGMENT = "fragment";
+
+    MyTypeFace myTypeFace;
+    View view;
+
+    //    private FragmentListener fragListener;
     Fragment mFragment;
 
 
@@ -43,24 +59,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         this.mFragment = fragment;
     }
 
-    public QuestionListFragment(){}
-    public static QuestionListFragment newInstance(int fragment) {
-        QuestionListFragment questionListFragment = new QuestionListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_FRAGMENT, fragment);
-        questionListFragment.setArguments(args);
-        return questionListFragment;
-    }
-
-
-
-    Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistExamType;
-    EditText etQuestionlistSearch;
-    TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview;
-    RecyclerView rvQuestionlist;
-    QuestionBankListAdapter questionBankListAdapter;
-
-    MyTypeFace myTypeFace;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,6 +69,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     }
 
     private void initGlobal() {
+
         myTypeFace = new MyTypeFace(getActivity());
 
         spQuestionlistCourse = (Spinner) view.findViewById(R.id.sp_questionlist_course);
@@ -84,7 +83,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         tvQuestionlistAddPreview = (TextView) view.findViewById(R.id.tv_questionlist_add_preview);
 
         rvQuestionlist = (RecyclerView) view.findViewById(R.id.rv_questionlist);
-        questionBankListAdapter = new QuestionBankListAdapter(getActivity());
+        questionBankListAdapter = new QuestionBankListAdapter(getActivity(), mFragment);
         rvQuestionlist.setAdapter(questionBankListAdapter);
         rvQuestionlist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -93,36 +92,53 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         tvQuestionlistTitle.setTypeface(myTypeFace.getRalewayRegular());
         tvQuestionlistAddNewQuestion.setTypeface(myTypeFace.getRalewayRegular());
         tvQuestionlistAddPreview.setTypeface(myTypeFace.getRalewayRegular());
-
-        tvQuestionlistAddNewQuestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                int fragment=AddQuestionFragmentTeacher.getCurrentChildFragment();
-//
-//                getFragmentManager().beginTransaction().
-//                        setCustomAnimations(
-//                                R.animator.card_flip_right_in, R.animator.card_flip_right_out,
-//                                R.animator.card_flip_left_in, R.animator.card_flip_left_out).replace(R.id.fl_addquestionfragment_container_left, AddNewQuestionFromAssignment.newInstance(fragment)).commit();
-
-                ((AddQuestionFragmentTeacher) mFragment).flipCard();
-
-            }
-        });
-
-        tvQuestionlistAddPreview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                ((AddQuestionFragmentTeacher) mFragment).addItemToPreviewFragment(getQuestionBankResponseObject.getData().get(0));
+        tvQuestionlistAddNewQuestion.setOnClickListener(this);
+        tvQuestionlistAddPreview.setOnClickListener(this);
 
 
-            }
-        });
+        arrListExamType = new ArrayList<String>();
+        arrListExamType.add(getString(R.string.strexamtype));
+        arrListExamType = Arrays.asList(getResources().getStringArray(R.array.examtype));
+        Adapters.setUpSpinner(getActivity(), spQuestionlistExamType, arrListExamType, Adapters.ADAPTER_SMALL);
+        Adapters.setUpSpinner(getActivity(), spQuestionlistCourse, arrListExamType, Adapters.ADAPTER_SMALL);
+        Adapters.setUpSpinner(getActivity(), spQuestionlistSubject, arrListExamType, Adapters.ADAPTER_SMALL);
+
 
         callApiGetQuestionBank();
 
 
     }
+
+    private void callApiGetSubjects() {
+
+        if (Utils.isInternetConnected(getActivity())) {
+            try {
+                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebserviceWrapper.GETSUBJECT);
+            } catch (Exception e) {
+                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utils.showToast(getString(R.string.no_internet), getActivity());
+        }
+
+    }
+
+    private void callApiGetCourses() {
+
+        if (Utils.isInternetConnected(getActivity())) {
+            try {
+                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebserviceWrapper.GETCOURSES);
+            } catch (Exception e) {
+                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utils.showToast(getString(R.string.no_internet), getActivity());
+        }
+
+    }
+
 
     private void callApiGetQuestionBank() {
 
@@ -135,23 +151,12 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETQUESTIONBANK);
             } catch (Exception e) {
-//                Debug.e(TAG + getString(R.string.str), e.getLocalizedMessage());
+                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
             Utils.showToast(getString(R.string.no_internet), getActivity());
         }
 
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     ResponseObject getQuestionBankResponseObject;
@@ -161,12 +166,53 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
 
         try {
-            if (apiMethodName == WebserviceWrapper.GETQUESTIONBANK) {
+
+
+            if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
+
+                ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
+                if (callGetSubjectResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
+
+                    arrListSubject = new ArrayList<Data>();
+                    arrListSubject.addAll(callGetSubjectResponseObject.getData());
+                    List<String> subjects = new ArrayList<String>();
+                    subjects.add(getString(R.string.strsubject));
+                    for (Data subject : arrListSubject) {
+                        subjects.add(subject.getSubject_name());
+
+                    }
+                    Adapters.setUpSpinner(getActivity(), spQuestionlistSubject, subjects, Adapters.ADAPTER_SMALL);
+
+                } else {
+                    Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
+                }
+
+            } else if (apiMethodName == WebserviceWrapper.GETCOURSES) {
+
+                ResponseObject callGetCoursesResponseObject = (ResponseObject) object;
+                if (callGetCoursesResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetCoursesResponseObject != null) {
+
+                    arrListCourses = new ArrayList<Data>();
+                    arrListCourses.addAll(callGetCoursesResponseObject.getData());
+                    List<String> courses = new ArrayList<String>();
+                    courses.add(getString(R.string.strcourse));
+                    for (Data course : arrListCourses) {
+                        courses.add(course.getCourse_name());
+
+                    }
+                    Adapters.setUpSpinner(getActivity(), spQuestionlistCourse, courses, Adapters.ADAPTER_SMALL);
+                } else {
+
+                    Utils.showToast(callGetCoursesResponseObject.getMessage(), getActivity());
+                }
+
+            } else if (apiMethodName == WebserviceWrapper.GETQUESTIONBANK) {
 
                 getQuestionBankResponseObject = (ResponseObject) object;
                 if (getQuestionBankResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && getQuestionBankResponseObject != null) {
-                    questionBankListAdapter.addAll(getQuestionBankResponseObject.getData());
-                    Utils.showToast(getQuestionBankResponseObject.getMessage() + getQuestionBankResponseObject.getData().size(), getActivity());
+
+                    listOfQuestionBank.addAll(getQuestionBankResponseObject.getData());
+                    questionBankListAdapter.addAll(listOfQuestionBank);
                 } else {
                     Utils.showToast(getQuestionBankResponseObject.getMessage(), getActivity());
                 }
@@ -174,8 +220,39 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             }
         } catch (Exception e) {
 
-            //    Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
 
         }
     }
+
+    @Override
+    public void onClick(View v) {
+
+        if (v == tvQuestionlistAddPreview) {
+
+            if (((AddQuestionFragmentTeacher) mFragment).previewQuestionFragment.listOfPreviewQuestions.size() > 0) {
+
+                ((AddQuestionFragmentTeacher) mFragment).addQuestionToPreviewFragment();
+
+            } else {
+                Utils.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
+
+            }
+
+
+        } else if (v == tvQuestionlistAddNewQuestion) {
+
+            ((AddQuestionFragmentTeacher) mFragment).flipCard();
+
+        }
+
+    }
+
+    int position;
+
+    public void updateViewAfterDeleteInPreviewQuestion(Data data) {
+
+
+    }
+
 }

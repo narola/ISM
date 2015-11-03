@@ -3,6 +3,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="strerrormessage">:::error</string>
+    <string name="strcourse">Course</string>
 
     <string name="sayit">SAY IT</string>
 
@@ -40,6 +42,7 @@
     <string name="msg_validation_negative_marking">\nPlease select any negative marking option.</string>
     <string name="msg_validation_random_question">\nPlease select any random question option.</string>
     <string name="msg_validation_use_score_from_questions">\nPlease select use score from question option.</string>
+    <string name="msg_select_question_to_add_to_preview">Please select question to add to preview.</string>
 
 
 
@@ -78,6 +81,7 @@
     <string name="strsetquestion">set question</string>
     <string name="strnegativemark">Question Negative Mark :</string>
     <string name="strexammode">Exam Mode</string>
+    <string name="strpreview">Preview</string>
 
     <string-array name="exammode">
         <item>Exam Mode</item>
@@ -107,4 +111,10 @@
     <string name="strcreatedby">Created by:</string>
     <string name="straddnewquestion">Add New Question</string>
     <string name="straddtopreview">Add to Preview</string>
+
+    <string-array name="examtype">
+        <item>Exam Type</item>
+        <item>Topic</item>
+        <item>Subject</item>
+    </string-array>
 </resources>
