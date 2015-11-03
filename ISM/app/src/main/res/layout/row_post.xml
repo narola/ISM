@@ -90,7 +90,7 @@
 		android:textSize="@dimen/d18dp"/>
 
 	<ImageView
-		android:id="@+id/img_share_with"
+		android:id="@+id/img_tag_study_mates"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txt_post"
@@ -107,7 +107,7 @@
 	</LinearLayout>
 
 	<EditText
-		android:id="@+id/et_writePost"
+		android:id="@+id/et_comment"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/ll_comments"
@@ -119,6 +119,7 @@
 		android:background="@drawable/selector"
 		android:hint="@string/strwriteyourcommenthere"
 		android:padding="15sp"
+		android:inputType="textMultiLine"
 		android:textColorHint="@color/color_text_hint"/>
 
 	<Button
@@ -128,7 +129,7 @@
 		android:layout_below="@id/ll_comments"
 		android:layout_alignParentRight="true"
 		android:layout_marginRight="@dimen/d20dp"
-		android:layout_marginTop="20dp"
+		android:layout_marginTop="21dp"
 		android:background="@color/color_dark_gray"
 		android:paddingLeft="10dp"
 		android:paddingRight="10dp"

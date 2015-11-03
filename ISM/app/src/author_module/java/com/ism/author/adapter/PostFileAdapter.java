@@ -69,7 +69,7 @@ public class PostFileAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.row_post_files, parent, false);
         RelativeLayout rlMain = (RelativeLayout) convertView.findViewById(R.id.rl_image);
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.img_image);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.img_video);
         TextView videoIndicator = (TextView) convertView.findViewById(R.id.txt_video);
         ImageView imgClose = (ImageView) convertView.findViewById(R.id.img_cancel);
        ImageView imgPlay = (ImageView) convertView.findViewById(R.id.img_play);
@@ -102,14 +102,13 @@ public class PostFileAdapter extends BaseAdapter {
          mMediaMetadataRetriever.setDataSource(context, arrayList.get(position).getStrFilePath());
          bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
          imageView.setImageBitmap(bitmap);
-            videoIndicator.setText(mediaPlayer.getDuration() + "");
+         videoIndicator.setText(mediaPlayer.getDuration() + "");
             videoIndicator.setVisibility(View.VISIBLE);
             imgPlay.setVisibility(View.VISIBLE);
 
 
         } else if (arrayList.get(position).getStrFileType().equals("audio")) {
             imgClose.setVisibility(View.VISIBLE);
-            MediaPlayer mediaPlayer = new MediaPlayer();
             videoIndicator.setText(mediaPlayer.getDuration() + "");
             videoIndicator.setVisibility(View.VISIBLE);
             imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.audioplay));

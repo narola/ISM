@@ -52,6 +52,12 @@ public class RequestObject {
 	private String name;
 	private String message;
 
+	private String feedId;
+	private String commentBy;
+	private String comment;
+	private String taggedBy;
+	private String[] taggedUserIds;
+
 	public String getUserId() {
 		return this.userId;
 	}
@@ -304,4 +310,48 @@ public class RequestObject {
 		this.message = message;
 	}
 
+	public String getFeedId() {
+		return feedId;
+	}
+
+	@JsonProperty("feed_id")
+	public void setFeedId(String feedId) {
+		this.feedId = feedId;
+	}
+
+	public String getCommentBy() {
+		return commentBy;
+	}
+
+	@JsonProperty("comment_by")
+	public void setCommentBy(String commentBy) {
+		this.commentBy = commentBy;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	@JsonProperty("comment")
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String[] getTaggedUserIds() {
+		return taggedUserIds;
+	}
+
+	@JsonProperty("tagged_user_id")
+	public void setTaggedUserIds(String[] taggedUserIds) {
+		this.taggedUserIds = taggedUserIds;
+	}
+
+	public String getTaggedBy() {
+		return taggedBy;
+	}
+
+	@JsonProperty("tagged_by")
+	public void setTaggedBy(String taggedBy) {
+		this.taggedBy = taggedBy;
+	}
 }

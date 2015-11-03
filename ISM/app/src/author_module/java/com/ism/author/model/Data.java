@@ -24,6 +24,7 @@ public class Data {
     private String schoolId;
     private String academicYear;
 
+
     /*these paarmeters are of getALlFeeds response*/
     private String feedId;
     private String createdDate;
@@ -67,11 +68,13 @@ public class Data {
     private String topicDescription;
 
 
-    /*these are for the postfeed*/
+    //    postfeed
 
     private String feed_by;
-
+    private String video_thumbnail;
     private List<String> images;
+    private ArrayList<FeedImages> feed_images;
+
 
 
     /*these are for the get questionbank*/
@@ -93,6 +96,24 @@ public class Data {
 
 
     /*these methods are for login response*/
+
+    @JsonProperty("feed_images")
+    public ArrayList<FeedImages> getFeed_images() {
+        return feed_images;
+    }
+
+    public void setFeed_images(ArrayList<FeedImages> feed_images) {
+        this.feed_images = feed_images;
+    }
+    public String getVideo_thumbnail() {
+        return video_thumbnail;
+    }
+
+    public void setVideo_thumbnail(String video_thumbnail) {
+        this.video_thumbnail = video_thumbnail;
+    }
+
+
     @JsonProperty("school_name")
     public String getSchoolName() {
         return this.schoolName;
@@ -391,8 +412,6 @@ public class Data {
     public void setTopicDescription(String topicDescription) {
         this.topicDescription = topicDescription;
     }
-
-    /*these are for the postfeed*/
     @JsonProperty("feed_by")
     public String getFeed_by() {
         return feed_by;
@@ -401,7 +420,30 @@ public class Data {
     public void setFeed_by(String feed_by) {
         this.feed_by = feed_by;
     }
-
+//    @JsonProperty("feed_text")
+//    public String getFeed_text() {
+//        return feed_text;
+//    }
+//
+//    public void setFeed_text(String feed_text) {
+//        this.feed_text = feed_text;
+//    }
+//    @JsonProperty("video_link")
+//    public String getVideo_link() {
+//        return video_link;
+//    }
+//
+//    public void setVideo_link(String video_link) {
+//        this.video_link = video_link;
+//    }
+//    @JsonProperty("audio_link")
+//    public String getAudio_link() {
+//        return audio_link;
+//    }
+//
+//    public void setAudio_link(String audio_link) {
+//        this.audio_link = audio_link;
+//    }
     @JsonProperty("images")
     public List<String> getImages() {
         return images;

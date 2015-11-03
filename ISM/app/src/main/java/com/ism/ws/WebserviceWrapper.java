@@ -28,6 +28,10 @@ public class WebserviceWrapper {
 	public static final int ALLOCATE_TUTORIAL_GROUP = 9;
 	public static final int ACCEPT_TUTORIAL_GROUP = 10;
 	public static final int GET_ALL_FEEDS = 11;
+	public static final int ADD_COMMENT = 12;
+	public static final int GET_ALL_COMMENTS = 13;
+	public static final int GET_ALL_STUDY_MATES = 14;
+	public static final int TAG_STUDY_MATES = 15;
 
 	public interface WebserviceResponse {
 		public void onResponse(Object object, Exception error, int apiCode);
@@ -85,6 +89,18 @@ public class WebserviceWrapper {
 						break;
 					case GET_ALL_FEEDS:
 						responseObject = new RequestWs().getRequest(AppConstant.URL_GET_ALL_FEEDS, ResponseObject.class, requestObject);
+						break;
+					case ADD_COMMENT:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_ADD_COMMENT, ResponseObject.class, requestObject);
+						break;
+					case GET_ALL_COMMENTS:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_GET_ALL_COMMENTS, ResponseObject.class, requestObject);
+						break;
+					case GET_ALL_STUDY_MATES:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_GET_ALL_STUDY_MATES, ResponseObject.class, requestObject);
+						break;
+					case TAG_STUDY_MATES:
+						responseObject = new RequestWs().getRequest(AppConstant.URL_TAG_STUDY_MATES, ResponseObject.class, requestObject);
 						break;
 				}
 			} catch (Exception e) {
