@@ -33,6 +33,7 @@ public class WebserviceWrapper {
     public static final int CREATEASSIGNMENT = 10;
     public static final int GETCOURSES = 11;
     public static final int CREATEEXAM = 12;
+    public static final int GETQUESTIONBANK = 14;
 
 
     public static int API_METHOD_NAME;
@@ -119,6 +120,11 @@ public class WebserviceWrapper {
                     case CREATEEXAM:
                         responseObject = new RequestWs().getRequest(AppConstant.URL_CREATE_EXAM, ResponseObject.class, requestObject);
                         break;
+                    case GETQUESTIONBANK:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_GETQUESTIONBANK, ResponseObject.class, requestObject);
+                        break;
+
+
                 }
             } catch (Exception e) {
                 Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());

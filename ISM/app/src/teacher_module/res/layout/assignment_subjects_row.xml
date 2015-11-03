@@ -27,7 +27,7 @@
                 android:id="@+id/rl_top_assignment"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:background="@color/color_blue">
+                android:background="@drawable/bg_chemistry">
 
                 <TextView
                     android:id="@+id/txt_assignment_subject"
