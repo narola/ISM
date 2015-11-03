@@ -20,7 +20,12 @@
             android:padding="@dimen/d15dp"
             android:text="@string/strpreview"
             android:textColor="@color/color_question"
-            android:textSize="@dimen/d20dp" />
+            android:textSize="@dimen/d22dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shadow_separator" />
 
 
         <android.support.v7.widget.RecyclerView

@@ -15,6 +15,8 @@ import com.ism.author.model.Data;
 import com.ism.interfaces.FragmentListener;
 import com.ism.utility.Debug;
 
+import java.util.ArrayList;
+
 /**
  * these fragment class is container of questionlist,questionaddeditfragment,previewquestionfragment.
  */
@@ -141,9 +143,11 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
 
     }
 
-    public void addItemToPreviewFragment(Data data) {
+    public void addQuestionToPreviewFragment(ArrayList<Data> data) {
 
-//        previewQuestionFragment.addItemsToList(data);
+
+        previewQuestionFragment.addQuestionsToPreviewFragment(data);
+
     }
 
 

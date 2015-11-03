@@ -23,5 +23,6 @@
     <string name="msg_validation_negative_marking">\nPlease select any negative marking option.</string>
     <string name="msg_validation_random_question">\nPlease select any random question option.</string>
     <string name="msg_validation_use_score_from_questions">\nPlease select use score from question option.</string>
+    <string name="msg_select_question_to_add_to_preview">Please select question to add to preview.</string>
 
 </resources>

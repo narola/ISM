@@ -57,6 +57,8 @@ public class PreviewQuestionFragment extends Fragment {
         myTypeFace = new MyTypeFace(getActivity());
 
         tvQuestionlistTitle = (TextView) view.findViewById(R.id.tv_questionlist_title);
+        tvQuestionlistTitle.setTypeface(myTypeFace.getRalewayRegular());
+
         rvPreviewquestionlist = (RecyclerView) view.findViewById(R.id.rv_previewquestionlist);
         previewQuestionListAdapter = new PreviewQuestionListAdapter(getActivity());
         rvPreviewquestionlist.setAdapter(previewQuestionListAdapter);
@@ -91,11 +93,9 @@ public class PreviewQuestionFragment extends Fragment {
     }
 
 
-    public void addItemsToList(Data data) {
+    public void addQuestionsToPreviewFragment(ArrayList<Data> data) {
 
-        tvQuestionlistTitle.setText("dsfsf");
-        listOfPreviewQuestions.add(data);
-        previewQuestionListAdapter.addAll(listOfPreviewQuestions);
+        previewQuestionListAdapter.addAll(data);
 
 
     }

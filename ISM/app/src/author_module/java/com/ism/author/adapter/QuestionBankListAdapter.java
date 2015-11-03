@@ -34,6 +34,12 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     ArrayList<Data> listOfQuestions = new ArrayList<Data>();
     MyTypeFace myTypeFace;
 
+    public ArrayList<Data> listOfPreviewQuestionToAdd = new ArrayList<Data>();
+
+    public ArrayList<Data> getListOfPreviewQuestionToAdd() {
+        return listOfPreviewQuestionToAdd;
+    }
+
 
     public QuestionBankListAdapter(Context context) {
         this.mContext = context;
@@ -56,12 +62,12 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
 
-        holder.tvQuestionNo.setText(holder.tvQuestionNo.getText() + " " + (position + 1));
+        holder.tvQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
         holder.tvQuestionNo.setTypeface(myTypeFace.getRalewayBold());
         holder.tvQuestionNo.setPaintFlags(holder.tvQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         holder.tvQuestionCategory.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvQuestionCategory.setText(holder.tvQuestionCategory.getText());
+        holder.tvQuestionCategory.setText(mContext.getString(R.string.strcategory));
         String category = " " + listOfQuestions.get(position).getSubjectName();
         SpannableString f = new SpannableString(category);
         f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
@@ -123,6 +129,20 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                 }
 
+            }
+        });
+
+
+        holder.chkSelectQuestion.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if (holder.chkSelectQuestion.isChecked()) {
+                    listOfPreviewQuestionToAdd.add(listOfQuestions.get(position));
+                } else {
+                    listOfPreviewQuestionToAdd.remove(listOfPreviewQuestionToAdd.get(position));
+                }
             }
         });
 
