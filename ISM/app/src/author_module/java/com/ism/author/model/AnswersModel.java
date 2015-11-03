@@ -2,6 +2,7 @@ package com.ism.author.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * these is the model class for answerlist of questionbank.
@@ -20,10 +21,16 @@ public class AnswersModel {
     private String videoLink;
 
 
+    @JsonProperty("image_link")
+    public String getImageLink() {
+        return this.imageLink;
+    }
+
     public void setImageLink(String imageLink) {
         this.imageLink = imageLink;
     }
 
+    @JsonProperty("id")
     public String getId() {
         return this.id;
     }
@@ -32,6 +39,7 @@ public class AnswersModel {
         this.id = id;
     }
 
+    @JsonProperty("choice_text")
     public String getChoiceText() {
         return this.choiceText;
     }
@@ -40,6 +48,7 @@ public class AnswersModel {
         this.choiceText = choiceText;
     }
 
+    @JsonProperty("is_right")
     public String getIsRight() {
         return this.isRight;
     }
@@ -48,6 +57,7 @@ public class AnswersModel {
         this.isRight = isRight;
     }
 
+    @JsonProperty("question_id")
     public String getQuestionId() {
         return this.questionId;
     }
@@ -56,6 +66,7 @@ public class AnswersModel {
         this.questionId = questionId;
     }
 
+    @JsonProperty("audio_link")
     public String getAudioLink() {
         return this.audioLink;
     }
@@ -64,6 +75,7 @@ public class AnswersModel {
         this.audioLink = audioLink;
     }
 
+    @JsonProperty("video_link")
     public String getVideoLink() {
         return this.videoLink;
     }

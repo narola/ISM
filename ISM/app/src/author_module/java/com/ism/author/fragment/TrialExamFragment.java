@@ -165,6 +165,10 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         btn_exam_setquestion = (Button) view.findViewById(R.id.btn_exam_setquestion);
         btn_exam_cancel = (Button) view.findViewById(R.id.btn_exam_cancel);
 
+        btn_exam_save.setTypeface(myTypeFace.getRalewayRegular());
+        btn_exam_setquestion.setTypeface(myTypeFace.getRalewayRegular());
+        btn_exam_cancel.setTypeface(myTypeFace.getRalewayRegular());
+
         ll_add_questionscore = (LinearLayout) view.findViewById(R.id.ll_add_questionscore);
         ll_add_negative_mark = (LinearLayout) view.findViewById(R.id.ll_add_negative_mark);
 
