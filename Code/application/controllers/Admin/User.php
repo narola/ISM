@@ -781,8 +781,11 @@ class User extends ADMIN_Controller {
 		$this->template->load('admin/default','admin/user/my_activities',$data);
 	}	
 	
+	/*
+	*	@auther KAMLESH POKIYA
+	*	Send invitation 
+	*/
 	public function send_invitation(){
-
 		$email_id = $this->input->post('email');
 		$configs = mail_config();
         $this->load->library('email', $configs);
@@ -816,7 +819,7 @@ class User extends ADMIN_Controller {
 		                    <tr>
 		                    	<td>
 		                        	<div style="background-color:#ff6b6b; text-align:center; padding: 12px; margin:15px 0; border-radius: 5px;">
-		                            	<a href="about_us" style="color:#fff; text-decoration:none; font-weight:bold; text-transform:uppercase;">Click Here to Explore ISM</a>
+		                            	<a href="http://ism/about_us" style="color:#fff; text-decoration:none; font-weight:bold; text-transform:uppercase;">Click Here to Explore ISM</a>
 		                            </div>
 		                        </td>
 		                    </tr>
