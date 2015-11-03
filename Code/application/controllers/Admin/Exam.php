@@ -134,7 +134,6 @@ class Exam extends ADMIN_Controller {
 			array_push($not_in, $tutorial_topic_exam['tutorial_topic_id'])	;	
 		}
 
-
 		if($_POST){
 
 			$this->data['all_courses'] = select(TBL_COURSES,FALSE,array('where'=>array('is_delete'=>FALSE)));
@@ -258,10 +257,15 @@ class Exam extends ADMIN_Controller {
 		$this->form_validation->set_rules('attempt_count', 'Attempt Count', 'trim|required');
 		$this->form_validation->set_rules('start_date', 'Start Exam Date', 'trim|required|callback_valid_date');
 
+		if(!isset($_POST['exam_type'])){
+			//Form Validation Set For Topic Required
+			$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
+		}
+
 		if($this->form_validation->run() == FALSE){
 			$this->template->load('admin/default','admin/exam/add_exam',$this->data);
 		}else{
-			
+
 			if(isset($_POST['exam_type'])){
 				$exam_type = 'subject';
 			}else{	
@@ -310,7 +314,7 @@ class Exam extends ADMIN_Controller {
 				$this->session->set_flashdata('success', 'Exam has been Successfully Created');
 				redirect($this->data['prev_url']);	
 			}
-			
+
 		}
 	}
 
@@ -413,6 +417,11 @@ class Exam extends ADMIN_Controller {
 		$this->form_validation->set_rules('attempt_count', 'Attempt Count', 'trim|required');
 		$this->form_validation->set_rules('start_date', 'Start Exam Date', 'trim|required|callback_valid_date');
 
+		if(!isset($_POST['exam_type']) && $copy == 'copy' ){
+			//Form Validation Set For Topic Required
+			$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
+		}
+
 		if($this->form_validation->run() == FALSE){
 			$this->template->load('admin/default','admin/exam/edit_exam',$this->data);
 		}else{
@@ -441,6 +450,9 @@ class Exam extends ADMIN_Controller {
 					'created_by'=>$this->session->userdata('id')
 				);
 
+			p($exam_data);
+			p($_POST,true);
+
 			if($copy == 'copy'){
 				
 				$exam_id = insert(TBL_EXAMS,$exam_data); 
@@ -453,6 +465,12 @@ class Exam extends ADMIN_Controller {
 				);
 
 				$id = insert(TBL_EXAM_SCHEDULE,$exam_schedule);
+
+				if(!isset($_POST['exam_type'])){
+					$topic_id = $this->input->post('topic_id');
+					$tutoral_topic_data = array('tutorial_topic_id'=>$topic_id,'exam_id'=>$exam_id);
+					insert(TBL_TUTORIAL_TOPIC_EXAM,$tutoral_topic_data);
+				}
 
 			}else{
 				

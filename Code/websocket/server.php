@@ -11,7 +11,6 @@ require 'class.PHPWebSocket.php';
 // when a client sends data to the server
 function wsOnMessage($clientID, $message, $messageLength, $binary) {
     global $Server;
-
     $ip = long2ip($Server->wsClients[$clientID][6]);
     if ($messageLength == 0) {
         $Server->wsClose($clientID);
@@ -23,7 +22,6 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     $datas = json_decode($message, true);
     $datas['user_iddd'] = $Server->wsClients[$clientID][12];
     $datas['error'] = $datas['redirect'] = 'skip';
-    // pr($datas);
     $data = array_merge($datas, $Server->active_hours());
     $data['reload'] = 'no';
 
@@ -172,7 +170,6 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
                         } else {
                             $responce['my_score'] = 'skip';
                         }
-                        pr('Sent to : ' . $Server->wsClients[$id][12]);
                         $Server->wsSend($id, json_encode($responce));
                     }
                 }

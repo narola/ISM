@@ -32,7 +32,7 @@
                 	<div class="col-sm-12">
                         <h3><span>Topic - </span><?php echo $topic['topic_name']; ?></h3>
 
-                        <a href="javascript:void(0);" class="icon icon_expand" id="expand_q"></a>
+                        <!-- <a href="javascript:void(0);" class="icon icon_expand" id="expand_q"></a> -->
 
                        <!-- <a href="#" class="icon icon_expand"></a> -->
 

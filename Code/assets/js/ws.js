@@ -8,11 +8,9 @@ var exam_will_start;
 var time_status = 1;
 var time_spent_per_question = 0;
 var time_spent = setInterval(time_spent_counter, 1000);
-
 function time_spent_counter()
 {
-    time_spent_per_question++;
-    $('#time_spent').html(toHHMMSS(time_spent_per_question));
+    $('#time_spent').html(toHHMMSS(time_spent_per_question++));
 }
 
 function exam_started_timer()
@@ -606,6 +604,7 @@ if ("WebSocket" in window)
             $('#tagged-users').html(str);
             $('#tagged-users-id').val(ids);
         } else if (obj.type == 'file_notification') {
+            
         } else if (obj.type == 'question_responce') {
             time_spent_per_question = 0;
             $('.ques_numbers li[data-id="' + obj.question + '"]').attr('class', obj.status);
@@ -635,6 +634,7 @@ if ("WebSocket" in window)
             $('ul.ques_numbers li[data-id="' + obj.question_id + '"]').attr('class', obj.status).data('class', obj.status);
             $('ul.ques_numbers li[data-id="' + obj.qid + '"]').attr('class', 'current');
         } else if (obj.type == 'get_question') {
+            time_spent_per_question = 0;
             $('ul.ques_numbers li[class="current"]').attr('class', $('ul.ques_numbers li[class="current"]').data('class'));
             $('ul.ques_numbers li[data-id="' + obj.new_question.qid + '"]').attr('class', 'current');
 
@@ -1639,7 +1639,7 @@ $.fn.timestatus = function (msg) {
     var x = 0;
     var id = Date.now();
     this.removeClass('just_now');
-    this.addClass(""+id);
+    this.addClass("" + id);
     var dis = '';
     setInterval(function () {
         if (x > 7200) {
@@ -1660,7 +1660,7 @@ $.fn.timestatus = function (msg) {
             dis = '30 sec ago';
         } else if (x > 15) {
             dis = '15 sec ago';
-        }else{
+        } else {
             dis = 'Just Now';
         }
         $('.' + id).html(dis);
