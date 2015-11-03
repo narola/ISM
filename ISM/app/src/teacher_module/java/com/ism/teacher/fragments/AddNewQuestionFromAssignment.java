@@ -23,8 +23,7 @@ import java.util.List;
  */
 public class AddNewQuestionFromAssignment extends Fragment {
 
-    public AddNewQuestionFromAssignment() {
-    }
+    Fragment mFragment;
 
     private static final String TAG = AddNewQuestionFromAssignment.class.getSimpleName();
     private View view;
@@ -41,13 +40,18 @@ public class AddNewQuestionFromAssignment extends Fragment {
     private List<String> arrayListQuestionType;
 
 
-    public static AddNewQuestionFromAssignment newInstance(int fragment) {
+   /* public static AddNewQuestionFromAssignment newInstance(int fragment) {
         AddNewQuestionFromAssignment addNewQuestionFromAssignment = new AddNewQuestionFromAssignment();
         Bundle args = new Bundle();
         args.putInt(ARG_FRAGMENT, fragment);
         addNewQuestionFromAssignment.setArguments(args);
         return addNewQuestionFromAssignment;
     }
+*/
+    public AddNewQuestionFromAssignment(Fragment fragment) {
+        this.mFragment=fragment;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
