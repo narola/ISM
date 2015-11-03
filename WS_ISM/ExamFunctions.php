@@ -470,7 +470,7 @@ class ExamFunctions
             while($row=mysql_fetch_assoc($resultSubjectId)){
                 //$post['subject_id']=$row;
                 //$data[]=$row;
-                $queryQuestion="SELECT * FROM ".TABLE_QUESTIONS." WHERE ".$getField."=".$row[$rowParameter];
+                $queryQuestion="SELECT * FROM ".TABLE_QUESTIONS." question Inner join ".TABLE_USERS." users inner join ".TABLE_SUBJECTS." subject on question.subject_id=subject.id and question.question_creator_id=users.id  WHERE ".$getField."=".$row[$rowParameter];
                 $resultQuestion=mysql_query($queryQuestion) or  $message=mysql_error();
                 // echo $query;
                 if(mysql_num_rows($resultQuestion))
@@ -479,6 +479,7 @@ class ExamFunctions
                         $post['question_id']=$rowQuestion['id'];
                         // $post['question_title']=$rowQuestion['id'];
                         $post['question_creator_id']=$rowQuestion['question_creator_id'];
+                        $post['question_creator_name']=$rowQuestion['full_name'];
                         $post['question_format']=$rowQuestion['question_format'];
                         $post['question_hint']=$rowQuestion['question_hint'];
                         $post['question_text']=$rowQuestion['question_text'];
@@ -488,6 +489,7 @@ class ExamFunctions
                         $post['solution']=$rowQuestion['solution'];
                         $post['topic_id']=$rowQuestion['topic_id'];
                         $post['subject_id']=$rowQuestion['subject_id'];
+                        $post['subject_name']=$rowQuestion['subject_name'];
                         $post['classroom_id']=$rowQuestion['classroom_id'];
                         $post['book_id']=$rowQuestion['book_id'];
                         $choice=array();

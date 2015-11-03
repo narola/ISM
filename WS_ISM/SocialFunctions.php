@@ -62,7 +62,7 @@ class SocialFunctions
         $feed_id = validateObject ($postData , 'feed_id', "");
         $feed_id = addslashes($feed_id);
 
-        $getFields="f.id, f.comment, f.comment_by,u.full_name,p.profile_link";
+        $getFields="f.id, f.comment,f.created_date, f.comment_by,u.full_name,p.profile_link";
         $query="SELECT ".$getFields."  FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feed_id;
         $result=mysql_query($query) or $message=mysql_error();
         //echo $query;
@@ -198,7 +198,7 @@ class SocialFunctions
         $feed_id = validateObject ($postData , 'feed_id', "");
         $feed_id = addslashes($feed_id);
 
-        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = validateObject ($postData , 'tagged_user_id', "");
         //$user_id = addslashes($user_id);
 
         $tagged_by = validateObject ($postData , 'tagged_by', "");
@@ -252,6 +252,9 @@ class SocialFunctions
         $posted_on = validateObject ($postData , 'posted_on', "");
         $posted_on = addslashes($posted_on);
 
+        $video_thumbnail = validateObject ($postData , 'video_thumbnail', "");
+        $video_thumbnail = addslashes($video_thumbnail);
+
         if (!is_dir(FEEDS_MEDIA)) {
             mkdir(FEEDS_MEDIA, 0777, true);
         }
@@ -260,10 +263,18 @@ class SocialFunctions
         if (!is_dir($dir)) {
             mkdir($dir, 0777);
         }
-        $insertFields="`feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`";
-        $insertValues=$feed_by.",'".$feed_text."','".$video_link."','".$audio_link."','".$posted_on."'";
-        $queryPostFeed="INSERT INTO ".TABLE_FEEDS."(".$insertFields.") VALUES (".$insertValues.")";
+         $feed_thumb_link=null;
+        if($video_thumbnail!=null){
+            $feed_thumb = "Thumb-" . date("Ymd-his").".png";
+            $feed_thumb_link = $feed_media_dir.$feed_thumb;
+            if(!file_put_contents(FEEDS_MEDIA.$feed_thumb_link, base64_decode($video_thumbnail))){
+                $feed_thumb_link="Failed";
+            }
 
+        }
+        $insertFields="`feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`,`video_thumbnail`";
+        $insertValues=$feed_by.",'".$feed_text."','".$video_link."','".$audio_link."','".$posted_on."','".$feed_thumb_link."'";
+        $queryPostFeed="INSERT INTO ".TABLE_FEEDS."(".$insertFields.") VALUES (".$insertValues.")";
         $result=mysql_query($queryPostFeed) or $message=mysql_error();
         if($result)
         {
@@ -291,7 +302,7 @@ class SocialFunctions
                 }
             }
             $data[]=$post;
-            $message="“Post successfully submitted";
+            //$message="“Post successfully submitted";
             $status="success";
         }
         else
@@ -318,14 +329,18 @@ class SocialFunctions
         $str = substr(str_shuffle($chars), 0, 8);
         //add extension to file
         //$name = $str."_test";
-        $feed_id=$_POST['feed_id'];
-        $feed_by=$_POST['feed_by'];
-        $mediaType=$_POST['mediaType'];
+        $feed_id = $_POST['feed_id'];
+        $feed_by = $_POST['feed_by'];
+        $mediaType = $_POST['mediaType'];
 
         if (!is_dir(FEEDS_MEDIA)) {
             mkdir(FEEDS_MEDIA, 0777, true);
         }
+        
+        $data['feed_id']=$feed_id;
+        $data['mediaType']=$mediaType;
 
+        $data['feed_by']=$feed_by;
         $feed_media_dir = "user_" . $feed_by . "/";
         $dir = FEEDS_MEDIA . $feed_media_dir;
         if (!is_dir($dir)) {
@@ -583,7 +598,7 @@ class SocialFunctions
 
 
         //$queryGetAllFeeds = "select * from " . TABLE_FEEDS . " where feed_by IN ('138','140')";
-        $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." where feed_by IN (".$final_string.") Limit 20";
+        $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." where feed_by IN (".$final_string.") ORDER BY id DESC Limit 20";
         $resultGetAllFeeds = mysql_query($queryGetAllFeeds) or $errorMsg = mysql_error();
 
         //for counting the number of rows for query result
@@ -650,7 +665,7 @@ class SocialFunctions
         } else {
 
         }
-        $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." where feed_by =".$user_id." Limit 20";
+        $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." where feed_by =".$user_id." ORDER BY id DESC Limit 20";
         $resultGetAllFeeds = mysql_query($queryGetAllFeeds) or $errorMsg = mysql_error();
        // echo $queryGetAllFeeds;
         $feeds_count = mysql_num_rows($resultGetAllFeeds);
@@ -683,6 +698,7 @@ class SocialFunctions
         $feeds_array['feed_text'] = $feeds['feed_text'];
         $feeds_array['video_link'] = $feeds['video_link'];
         $feeds_array['audio_link'] = $feeds['audio_link'];
+        $feeds_array['video_thumbnail'] = $feeds['video_thumbnail'];
         $feeds_array['posted_on'] = $feeds['posted_on'];
         $feeds_array['total_like'] = $feeds['total_like'];
         $feeds_array['total_comment'] = $feeds['total_comment'];
@@ -711,7 +727,7 @@ class SocialFunctions
 
         if(sizeof($feeds_array)>0)
         {
-            $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,u.full_name,p.profile_link FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id']." Limit 2";
+            $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,f.created_date,u.full_name,p.profile_link FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id']." Limit 2";
             $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
             $allcomment=array();
             //echo "\n".$queryGetAllComments;
@@ -729,6 +745,21 @@ class SocialFunctions
             //$data['comments']=$comments_array;
 
         }
+        $queryGetImages="SELECT `id`,`image_link` FROM `feed_image` WHERE `feed_id`=".$feeds['id'];
+        $resultGetImages=mysql_query($queryGetImages) or $errorMsg=mysql_error();
+        $allImages=array();
+        //echo "\n".$queryGetAllComments;
+        //for counting the number of rows for query result
+        if(mysql_num_rows($resultGetImages))
+        {
+            while($images=mysql_fetch_assoc($resultGetImages))
+            {
+                $allImages[]=$images;
+            }
+
+
+        }
+        $feeds_array['feed_images']=$allImages;
         return $feeds_array;
     }
 
