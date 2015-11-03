@@ -33,17 +33,21 @@
                     <img src="<?php echo base_url().'assets'; ?>/images/logo_login_admin.png" class="logo">
 
                     <?php $error = $this->session->flashdata('error'); ?>
+                    <?php $success = $this->session->flashdata('success'); ?>
   
                     <form class="login_form" method="POST">
                         <div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
-                                  <?php echo strip_tags($error) ; ?>
-                          </div>
+                            <?php echo strip_tags($error) ; ?>
+                        </div>
+                        <div class="alert alert-success <?php if(empty(strip_tags($success,''))){ echo 'hide';} ?>">
+                            <?php echo strip_tags($success) ; ?>
+                        </div>
                         <div class="form-group">
                             <input placeholder="Enter Email/Username" class="form-control" type="text" name="username">
                         </div>
 
                         <div class="alert alert-danger <?php if(empty(strip_tags(form_error('username'),''))){ echo 'hide';} ?>">
-                              <?php echo strip_tags(form_error('username'),'') ; ?>
+                            <?php echo strip_tags(form_error('username'),'') ; ?>
                         </div>
 
                         <div class="form-group">

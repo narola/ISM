@@ -26,7 +26,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 text-center">
-                <h3>Admin <span>Login</span></h3>
+                <h3>Admin <span>Reset Password</span></h3>
             </div>  
             <div class="login_board text-center">
                 <div class="col-sm-12">
@@ -34,43 +34,27 @@
 
                     <?php $error = $this->session->flashdata('error'); ?>
   
-                    <form class="login_form" method="POST">
-                        <div class="alert alert-danger <?php if(empty(strip_tags($error,''))){ echo 'hide';} ?>">
-                                  <?php echo strip_tags($error) ; ?>
-                          </div>
+                     <form class="login_form" method="post" action="<?php echo site_url().'admin/reset_password'?>">
                         <div class="form-group">
-                            <input placeholder="Enter Email/Username" class="form-control" type="text" name="username">
+                            <input placeholder="Enter Password" class="form-control" type="password" name="new_password">
                         </div>
-
-                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('username'),''))){ echo 'hide';} ?>">
-                              <?php echo strip_tags(form_error('username'),'') ; ?>
+                        <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('new_password'),''))){ echo 'hide';} ?>">
+                            <?php echo strip_tags(form_error('new_password'),''); ?>
                         </div>
-
                         <div class="form-group">
-                            <input placeholder="Enter Password" class="form-control" type="password" name="password">
+                            <input placeholder="Enter Confirm Password" class="form-control" type="password" name="con_password">
                         </div>
-
-                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('password'),''))){ echo 'hide';} ?>">
-                              <?php echo strip_tags(form_error('password'),'') ; ?>
+                        <div class=" alert alert-danger <?php if(empty(strip_tags(form_error('con_password'),''))){ echo 'hide';} ?>">
+                            <?php echo strip_tags(form_error('con_password'),''); ?>
                         </div>
-
                         <div class="form-group">
-                            <div class="squaredThree">
-                                <input type="checkbox" name="remember" />
-                                <label for="squaredThree"></label>
-                                <span>Remember Me</span>
-                            </div>
-
-                            <!--<label><input type="checkbox"> Remember Me</label>-->
-                        </div>
-                        <div class="form-group">    
-                            <button type="submit" class="btn btn_black" >Login<span class="fa fa-chevron-right"></span></button>
+                            <input type="hidden" name="token" value="<?php echo isset($token)?$token:'';?>">
+                            <button type="submit" class="btn btn_black">Submit
+                                <span class="fa fa-chevron-right"></span>
+                            </button>
                         </div>
                     </form>
-                    <div class="login_links">
-                        <a href="#">Forgot Password</a>
-                        <!--<p>Do Not Have Credencials, <a href="#">Click Here</a></p>-->
-                    </div>
+                   
                 </div>
                 <div class="clearfix"></div>
             </div>

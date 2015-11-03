@@ -26,7 +26,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 text-center">
-                <h3>Admin <span>Login</span></h3>
+                <h3>Admin <span>Forgot Password</span></h3>
             </div>  
             <div class="login_board text-center">
                 <div class="col-sm-12">
