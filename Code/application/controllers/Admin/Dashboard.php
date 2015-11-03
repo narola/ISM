@@ -509,12 +509,21 @@ class Dashboard extends ADMIN_Controller {
         }
     }
 
+    /*
+    *	@author KAMLESH POKIYA
+    *	Load about us page 
+    */
+    
+    public function about_us(){
+     	$this->load->view('admin/about_us');
+    }
+
     /**
      * function Profile edit is for edit Profile for Admin
      * @author Virendra patel
      **/
     public function profile_edit(){	
-
+    	
     	$id = $this->session->userdata('id');
 		$this->data['user'] = select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>TRUE));
 
@@ -616,6 +625,8 @@ class Dashboard extends ADMIN_Controller {
 
     		}    	
     	}
+		$this->template->load('admin/default','admin/user/profile_edit',$this->data);
+
     }
 }
 

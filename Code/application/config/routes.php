@@ -84,6 +84,8 @@ $route['admin/forgot_password'] = "admin/dashboard/forgot_password";
 $route['admin/change'] = "admin/dashboard/change";
 $route['admin/reset_password'] = "admin/dashboard/reset_password";
 
+$route['about_us'] = "admin/dashboard/about_us";
+
 $route['admin/(:any)'] = "admin/$1"; 
 $route['admin/(:any)/(:any)'] = "admin/$1/$2"; 
 $route['admin/(:any)/(:any)/(:any)'] = "admin/$1/$2/$3"; 

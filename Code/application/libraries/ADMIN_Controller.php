@@ -27,7 +27,7 @@ class ADMIN_Controller extends CI_Controller {
 			$this->session->set_userdata( array('prev_url'=>$cur_url) );	
 		}
 
-		$exceptional_url = array('admin','admin/logout','admin/forgot_password','admin/change','admin/reset_password');
+		$exceptional_url = array('admin','admin/logout','admin/forgot_password','admin/change','admin/reset_password','about_us');
 
 		if(in_array(uri_string(), $exceptional_url) == FALSE && is_loggedin_admin() == FALSE){
 
