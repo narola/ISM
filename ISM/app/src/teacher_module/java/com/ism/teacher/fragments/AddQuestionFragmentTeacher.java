@@ -14,6 +14,7 @@ import com.ism.object.MyTypeFace;
 import com.ism.R;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.login.TeacherHomeActivity;
+import com.ism.teacher.model.Data;
 import com.ism.utility.Debug;
 
 /**
@@ -156,8 +157,9 @@ public class AddQuestionFragmentTeacher extends Fragment {
         }
     }
 
-    public static int getCurrentChildFragment() {
-        return current_fragment;
+    public void addItemToPreviewFragment(Data data) {
+
+//        previewQuestionFragment.addItemsToList(data);
     }
 
 }
