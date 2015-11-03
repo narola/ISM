@@ -257,6 +257,11 @@ class Exam extends ADMIN_Controller {
 		$this->form_validation->set_rules('attempt_count', 'Attempt Count', 'trim|required');
 		$this->form_validation->set_rules('start_date', 'Start Exam Date', 'trim|required|callback_valid_date');
 
+		if(!isset($_POST['exam_type'])){
+			//Form Validation Set For Topic Required
+			$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
+		}
+
 		if($this->form_validation->run() == FALSE){
 			$this->template->load('admin/default','admin/exam/add_exam',$this->data);
 		}else{
@@ -412,12 +417,15 @@ class Exam extends ADMIN_Controller {
 		$this->form_validation->set_rules('attempt_count', 'Attempt Count', 'trim|required');
 		$this->form_validation->set_rules('start_date', 'Start Exam Date', 'trim|required|callback_valid_date');
 
+		if(!isset($_POST['exam_type']) && $copy == 'copy' ){
+			//Form Validation Set For Topic Required
+			$this->form_validation->set_rules('topic_id', 'Topic', 'trim|required');
+		}
+
 		if($this->form_validation->run() == FALSE){
 			$this->template->load('admin/default','admin/exam/edit_exam',$this->data);
 		}else{
 			
-			p($_POST,true);
-
 			if(isset($_POST['exam_type'])){
 				$exam_type = 'subject';
 			}else{	
@@ -441,6 +449,9 @@ class Exam extends ADMIN_Controller {
 					'declare_results'=>$this->input->post('declare_results'),
 					'created_by'=>$this->session->userdata('id')
 				);
+
+			p($exam_data);
+			p($_POST,true);
 
 			if($copy == 'copy'){
 				

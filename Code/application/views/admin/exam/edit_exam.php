@@ -105,7 +105,12 @@
                           if(!empty($all_topics)){ 
                             foreach($all_topics as $topic) {
                           ?> 
-                        <option value="<?php echo $topic['id']; ?>" <?php if(in_array($topic['id'],$not_in)){ echo 'disabled="disabled"'; } ?> > 
+                        <option value="<?php echo $topic['id']; ?>" 
+                                <?php 
+                                    if(in_array($topic['id'],$not_in)){ echo 'disabled="disabled"'; } 
+                                    echo set_select('topic_id',$topic['id']);
+                                ?> 
+                                > 
                                 <?php echo $topic['topic_name']; ?>
                         </option>
 
@@ -256,13 +261,23 @@
     
     $('#course_id').val('<?php echo $exam["course_id"] ?>');
     $('#classroom_id').val('<?php echo $exam["classroom_id"] ?>');  
-    $('#subject_id').val('<?php echo $exam["subject_id"] ?>');  
-    $('#topic_id').val('<?php echo $exam["topic_id"] ?>');  
+    $('#subject_id').val('<?php echo $exam["subject_id"] ?>');    
 
     $('#pass_percentage').val('<?php echo $exam["pass_percentage"] ?>');  
     $('#duration').val('<?php echo $exam["duration"] ?>');  
     $('#attempt_count').val('<?php echo $exam["attempt_count"] ?>');  
     $('#exam_category').val('<?php echo $exam["exam_category"] ?>');
+
+    // If Method is not copy then All Dropdowns will be disabled.
+    <?php if($copy != 'copy') { ?>
+            
+        $('#course_id').prop('disabled',true);    
+        $('#classroom_id').prop('disabled',true);    
+        $('#subject_id').prop('disabled',true);    
+        $('#topic_id').prop('disabled',true);    
+        $("[name='exam_type']").prop('disabled',true);
+
+    <?php } ?>       
     
     <?php if($exam['exam_type'] == 'subject') { ?>
         $("[name='exam_type']").prop('checked',true);    
