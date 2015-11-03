@@ -23,11 +23,13 @@ public class QuestionAddEditFragment extends Fragment {
     private View view;
 
     private FragmentListener fragListener;
+    private static final String ARG_FRAGMENT = "fragment";
 
 //    public static QuestionAddEditFragment newInstance() {
 //        QuestionAddEditFragment questionAddEditFragment = new QuestionAddEditFragment();
 //        return questionAddEditFragment;
 //    }
+
 
     Fragment mFragment;
 
@@ -37,7 +39,21 @@ public class QuestionAddEditFragment extends Fragment {
         this.mFragment = fragment;
     }
 
+
     Button flip;
+
+    public QuestionAddEditFragment() {
+
+    }
+
+    public static QuestionAddEditFragment newInstance(int fragment) {
+        QuestionAddEditFragment questionAddEditFragment = new QuestionAddEditFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_FRAGMENT, fragment);
+        questionAddEditFragment.setArguments(args);
+        return questionAddEditFragment;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
