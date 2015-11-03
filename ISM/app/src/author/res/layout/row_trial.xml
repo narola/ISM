@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/office_tab_box"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="@dimen/office_tab_width"
+        android:layout_height="wrap_content"
+        android:background="@drawable/my_desk_title"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_subject_name"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/d50dp"
+            android:gravity="left|center"
+            android:paddingLeft="10dp"
+            android:text="@string/strmydesk"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_exam_type"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/d50dp"
+            android:background="@drawable/bg_white_10dp_corner"
+            android:gravity="left|center"
+            android:paddingLeft="10dp"
+            android:text="Exam Type :"
+            android:textAllCaps="true"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/d20dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_exam"
+        android:layout_width="@dimen/office_tab_width"
+        android:layout_height="wrap_content"
+        android:background="@drawable/office_tab_box"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txt_total_student"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/d15dp"
+                android:singleLine="false"
+                android:text="@string/strmydeskinfo"
+                android:textSize="@dimen/d20dp" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

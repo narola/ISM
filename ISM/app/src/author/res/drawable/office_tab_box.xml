@@ -5,5 +5,4 @@
         android:color="@color/news_feed_post_box_color" />
     <solid android:color="@color/color_white" />
 
-
 </shape>
