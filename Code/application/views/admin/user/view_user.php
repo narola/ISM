@@ -150,8 +150,14 @@
                               
                               <td class="username">
                                   <div class="chat_img_holder">
+                                     <?php if($user['role_id']!= '1') { ?>
                                         <img src="<?php echo base_url().'uploads/'.$user['profile_link']; ?>"
                                        onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                     <?php }else{ ?>   
+                                        <img src="<?php echo base_url().'uploads/'.$user['profile_pic']; ?>"
+                                       onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                     <?php } ?>
+                                       
                                   </div>
                                   <h4><?php echo ucfirst($user['username']); ?></h4>
                                   <?php if($user['user_status']=='active'){ 

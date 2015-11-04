@@ -37,8 +37,8 @@ class Exam extends ADMIN_Controller {
 
 			if($order == 'name_asc'){ $order = "exam.exam_name asc"; $str.='&order='.$order;  }
 			if($order == 'name_desc'){ $order = "exam.exam_name desc"; $str.='&order='.$order; }
-			if($order == 'latest'){ $order = "exam.created_date asc"; $str.='&order='.$order; }
-			if($order == 'older'){ $order = "exam.created_date desc"; $str.='&order='.$order; }
+			if($order == 'latest'){ $order = "exam.created_date desc"; $str.='&order='.$order; }
+			if($order == 'older'){ $order = "exam.created_date asc"; $str.='&order='.$order; }
 			
 			$str =  trim($str,'&');
 

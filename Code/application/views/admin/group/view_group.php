@@ -79,7 +79,7 @@
         <!--//filter-->
         <!--button div-->
     
-        <form method="post" action="<?php echo base_url().'admin/group/send_messages'; ?>"  >  <!-- Form Start -->
+        <form method="post" action="admin/group/send_messages"  >  <!-- Form Start -->
             
             <div class="div_buttons">
                  <div class="col-sm-6" style="z-index:9999">
@@ -181,21 +181,21 @@
                                     <td>
                                         <!-- <a href="#" data-toggle="tooltip" data-placement="bottom" title="Timeline" class="icon icon_timeline"></a> -->
                                         
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Books" class="icon icon_books"></a>
+                                        <a href="admin/user/books" data-toggle="tooltip" data-placement="bottom" title="Books" class="icon icon_books"></a>
                                         
-                                        <a href="<?php echo base_url().'admin/group/performance/'.$group['id']; ?>" data-toggle="tooltip" data-placement="bottom" title="Performance" class="icon icon_performance"></a>
+                                        <a href="admin/group/performance/<?php echo $group['id']; ?>" data-toggle="tooltip" data-placement="bottom" title="Performance" class="icon icon_performance"></a>
                                         
                                          <?php if($group['group_status'] == 'blocked') { ?>  
-                                          <a href="<?php echo base_url().'admin/group/active/'.$group['id']; ?>" 
+                                          <a href="admin/group/active/<?php echo $group['id']; ?>" 
                                             onclick="return active_user(this.href,event)" class="icon icon_user" data-toggle="tooltip" data-placement="bottom" title="Active" ></a>
                                           <?php }else{ ?>   
-                                          <a href="<?php echo base_url().'admin/group/blocked/'.$group['id']; ?>" onclick="return block_user(this.href,event)"
+                                          <a href="admin/group/blocked/<?php echo $group['id']; ?>" onclick="return block_user(this.href,event)"
                                              class="icon icon_blockuser" data-toggle="tooltip" data-placement="bottom" title="Block"></a>  
                                           <?php } ?>
                                         
                                         <!-- <a href="#" data-toggle="tooltip" data-placement="bottom" title="Mail"  class="icon icon_mail"></a> -->
                                         
-                                        <a href="<?php echo base_url().'admin/group/send_message/'.$group['id']; ?>" title="Message"
+                                        <a href="admin/group/send_message/<?php echo $group['id']; ?>" title="Message"
                                         data-toggle="tooltip" data-placement="bottom"  class="icon icon_chat"></a>
                                     </td>
                                 </tr>    

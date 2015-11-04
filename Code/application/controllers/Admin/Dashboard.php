@@ -17,6 +17,7 @@ class Dashboard extends ADMIN_Controller {
 		parent::__construct();
 		
 		$this->load->helper(array('csv','file','download'));	
+		$this->load->library('upload');
 	}
 
 	public function index()
@@ -95,6 +96,7 @@ class Dashboard extends ADMIN_Controller {
 						'role' => $role_data['role_name'],
 						'username'=>$fetch_data['username'],
 						'email_id'=>$fetch_data['email_id'],
+						'profile_pic'=>$fetch_data['profile_pic'],
 						'loggedin_admin' =>TRUE
 					);
 
@@ -521,7 +523,108 @@ class Dashboard extends ADMIN_Controller {
      * @author Virendra patel
      **/
     public function profile_edit(){	
-		$this->template->load('admin/default','admin/user/profile_edit',$this->data);
+    	
+    	$id = $this->session->userdata('id');
+		$this->data['user'] = select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>TRUE));
+
+    	if($_POST){
+			
+			$username = $this->input->post('username');
+			$email = $this->input->post('email_id');
+			$old = $this->input->post('old');
+			$new = $this->input->post('new');
+			$repeat = $this->input->post('repeat');
+
+			if($this->data['user']['username'] !== $username){
+				$user_rule = 'trim|required|is_unique[users.username]|alpha_numeric|max_length[8]';
+			}else{
+				$user_rule = 'trim|required|alpha_numeric|max_length[8]';
+			}
+
+			if($this->data['user']['email_id'] !== $email){
+				$email_rule = 'trim|is_unique[users.email_id]|valid_email';
+			}else{
+				$email_rule = 'trim|valid_email';
+			}
+
+			if(!empty($old) || !empty($new) || !empty($repeat)){
+				$rule='required';
+				$rule_new = 'required|matches[new]';
+			}else{
+				$rule='trim';
+				$rule_new = 'trim';
+			}
+
+			$config['upload_path'] = './uploads/admin/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			$config['max_size']  = '1000000';
+			$this->upload->initialize($config);
+			
+			if ( ! $this->upload->do_upload('profile')){
+				$this->data['error'] = $this->upload->display_errors();
+				if(strip_tags($this->data['error'],'') != 'You did not select a file to upload.'){
+					$this->session->set_flashdata('error', strip_tags($this->data['error'],''));
+					redirect('admin/dashboard/profile_edit');
+				}
+			}else{
+				$data = array('upload_data' => $this->upload->data());
+				$profile_picture = array('profile_pic'=>'admin/'.$data['upload_data']['file_name']);
+				update(TBL_USERS,$id,$profile_picture);
+			}
+
+		}else{
+			$user_rule = 'trim|required|alpha_numeric|max_length[8]';
+			$email_rule = 'trim|valid_email';
+			$rule='trim';
+			$rule_new = "trim";
+		}
+
+    	$this->form_validation->set_rules('username', 'Username', $user_rule);
+    	$this->form_validation->set_rules('email_id', 'Email', $email_rule);
+    	$this->form_validation->set_rules('old', 'Current Password', $rule);
+    	$this->form_validation->set_rules('new', 'New Password', $rule);
+    	$this->form_validation->set_rules('repeat', 'Repeat Password', $rule_new);
+
+    	if($this->form_validation->run()==FALSE){
+			$this->template->load('admin/default','admin/user/profile_edit',$this->data);
+    	}else{
+
+    		$db_pass = $this->encrypt->decode($this->data['user']['password']);
+
+    		if(!empty($new)){
+    			
+    			if($db_pass == $old){
+    				$encode_pass = $this->encrypt->encode($new);
+    				$first_name = $this->input->post('first_name');
+    				$last_name = $this->input->post('last_name');
+    				$username = $this->input->post('username');
+    				$email_id = $this->input->post('email_id');
+
+
+    				$profile_data = array('password'=>$encode_pass,'first_name'=>$first_name,
+    									  'last_name'=>$last_name,'username'=>$username,'email_id'=>$email_id);
+					update(TBL_USERS,$id,$profile_data);		
+					$this->session->set_flashdata('success', 'User Profile data has been saved Successfully.');
+	    			redirect('admin/user');
+	    		}else{
+	    			$this->session->set_flashdata('error', 'Please Enter correct Current password.');
+	    			redirect('admin/dashboard/profile_edit');
+	    		}
+
+    		}else{
+
+    			$first_name = $this->input->post('first_name');
+				$last_name = $this->input->post('last_name');
+				$username = $this->input->post('username');
+				$email_id = $this->input->post('email_id');
+
+				$profile_data = array('first_name'=>$first_name,'last_name'=>$last_name,'username'=>$username,'email_id'=>$email_id);
+				update(TBL_USERS,$id,$profile_data);		
+				$this->session->set_flashdata('success', 'User Profile data has been saved Successfully.');
+    			redirect('admin/user');
+
+    		}    	
+    	}
     }
 }
 
