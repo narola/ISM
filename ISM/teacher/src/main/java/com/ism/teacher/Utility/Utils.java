@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
@@ -143,6 +145,9 @@ public class Utils {
     }
     public static String getCharForNumber(int i) {
         return i > 0 && i < 27 ? String.valueOf((char) (i + 'A' - 1)) : null;
+    }
+    public static Spanned formatHtml(String string) {
+        return Html.fromHtml(string);
     }
 
 }

@@ -36,9 +36,6 @@ public class WebserviceWrapper {
     public static final int GETQUESTIONBANK = 14;
 
 
-    public static int API_METHOD_NAME;
-
-
     public interface WebserviceResponse {
         public void onResponse(int API_METHOD, Object object, Exception error);
     }
@@ -57,6 +54,8 @@ public class WebserviceWrapper {
 
 
     public class WebserviceCaller extends AsyncTask<Integer, Void, Object> {
+
+        int API_METHOD_NAME;
 
         @Override
         protected void onPreExecute() {
