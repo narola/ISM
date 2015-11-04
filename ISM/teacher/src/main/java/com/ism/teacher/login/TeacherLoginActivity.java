@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.LoginRequest;
@@ -79,7 +78,8 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
 
         if (view == btnLogin) {
 
-            if (isInputsValid()) {
+            /*if (isInputsValid())
+            {
                 Log.e(TAG, "inputs valid");
 
                 if (Utils.isInternetConnected(TeacherLoginActivity.this)) {
@@ -87,8 +87,8 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
                 } else {
                     Utils.showToast(getResources().getString(R.string.no_internet), TeacherLoginActivity.this);
                 }
-                //Global.launchIntent(this, com.ism.teacher.login.TeacherProfileInformation.class);
-            }
+            }*/
+            authenticateUser();
 
         }
 

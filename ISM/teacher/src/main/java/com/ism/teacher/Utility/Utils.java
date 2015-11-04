@@ -126,39 +126,6 @@ public class Utils {
     }
 
 
-//    private void showLogoutDialog() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//
-//        builder.setTitle("Logout");
-//
-//        // Setting Dialog Message
-//        builder.setMessage("Are you sure you want to Logout?");
-//
-//
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                store_preferences.clear_data();
-//                Intent loginOptionsIntent = new Intent(MainActivity.this, LoginOptionsActivity.class);
-//                startActivity(loginOptionsIntent);
-//                finish();
-//            }
-//        });
-//
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                dialogInterface.dismiss();
-//            }
-//        });
-//        builder.setCancelable(true);
-//        logoutDialog = builder.create();
-//
-//        logoutDialog.show();
-//    }
-
     public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     public static String getDateInApiFormat(String dateText) {

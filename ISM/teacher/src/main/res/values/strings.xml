@@ -11,6 +11,8 @@
     <string name="strsearchstudymatess">Search Study Mates</string>
 
     <string name="no_internet">No Internet Connection Available...Please Try Again</string>
+    <string name="strnetissue">No Internet Connection Available...Please Try Again</string>
+
     <string name="web_service_issue">Web service issue</string>
 
     <!-- Assignment resources-->
@@ -227,6 +229,7 @@
         <item>0</item>
         <!--<item>0</item>-->
     </integer-array>
+
     <string name="strpost">Post</string>
     <string name="strcreatepost">Create Post</string>
     <string name="strwriteyourcommenthere">Write Your Comment Here</string>
@@ -247,5 +250,35 @@
     <string name="group_name">"Group Name : "</string>
     <string name="ok">Ok</string>
     <string name="msg_offline">You are offline!\nPlease check your internet connection.</string>
+
+    <string-array name="examtype">
+        <item>Exam Type</item>
+        <item>Topic</item>
+        <item>Subject</item>
+    </string-array>
+    <string name="strerrormessage">:::error</string>
+    <string name="strcourse">Course</string>
+    <string name="msg_select_question_to_add_to_preview">Please select question to add to preview.</string>
+
+
+    <!-- -->
+
+    <string-array name="country">
+        <item >India</item>
+        <item>United States</item>
+        <item>Canada</item>
+        <item>Australia</item>
+        <item>United Kingdom</item>
+        <item>Philippines</item>
+        <item >Japan</item>
+        <item>Italy</item>
+        <item>Germany</item>
+        <item>Russia</item>
+        <item>Malaysia</item>
+        <item>France</item>
+        <item>Sweden</item>
+        <item>New Zealand</item>
+        <item>Singapore</item>
+    </string-array>
 
 </resources>

@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.ism.helper.CircleImageView
+        <com.ism.teacher.helper.CircleImageView
             android:id="@+id/img_dp_commenter"
             android:layout_width="@dimen/d50dp"
             android:layout_height="@dimen/d50dp"
