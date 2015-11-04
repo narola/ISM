@@ -169,8 +169,8 @@ class ExamFunctions
 //                }
                 $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_OBJECTIVE_RESPONSE . " WHERE `user_id`=" . $student_id . " and `exam_id`=" . $exam_id . " and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ")";
                 $resultStudentRes = mysql_query($queryStudentRes) or $message = mysql_error();
-                echo $queryStudentRes;
-                echo "\n".mysql_num_rows($resultStudentRes);
+               // echo $queryStudentRes;
+               // echo "\n".mysql_num_rows($resultStudentRes);
                 $evaluations=array();
                 if (mysql_num_rows($resultStudentRes)) {
                     while ($rowEvaluation = mysql_fetch_assoc($resultStudentRes)) {
@@ -763,6 +763,7 @@ class ExamFunctions
         $post['exam_name']=$rowExam['exam_name'];
         $post['classroom_id']=$rowExam['classroom_id'];
         $post['subject_id']=$rowExam['subject_id'];
+        $post['book_id']=$rowExam['book_id'];
         $query="SELECT class_name FROM ".TABLE_CLASSROOMS." WHERE id=".$rowExam['classroom_id'];
 //                        echo $query;
         $result=mysql_query($query) or  $message=mysql_error();
@@ -772,6 +773,13 @@ class ExamFunctions
                 $post['classroom_name']=$rowName['class_name'];
             }
         }
+        // total student
+        $query="SELECT * FROM ".TABLE_STUDENT_ACADEMIC_INFO." WHERE classroom_id=".$rowExam['classroom_id'];
+//                        echo $query;
+        $result=mysql_query($query) or  $message=mysql_error();
+        $post['total_student']=mysql_num_rows($result);
+
+        //subject name
         $query="SELECT subject_name FROM ".TABLE_SUBJECTS." WHERE id=".$rowExam['subject_id'];
 //                        echo $query;
         $result=mysql_query($query) or  $message=mysql_error();
@@ -789,7 +797,7 @@ class ExamFunctions
 
 
         //total questions
-        $query="SELECT `evaluation_status`, `total_questions`, `average_score` FROM `exam_evaluation` WHERE `exam_id`=".$rowExam['id'];
+        $query="SELECT `evaluation_status`, `total_questions`, `average_score`,`total_student_attempted` FROM `exam_evaluation` WHERE `exam_id`=".$rowExam['id'];
         $result=mysql_query($query) or  $message=mysql_error();
        // echo $query;
         if(mysql_num_rows($result))
@@ -798,12 +806,14 @@ class ExamFunctions
                 $post['total_question']=$rowName['total_question'];
                 $post['evaluation_status']=$rowName['evaluation_status'];
                 $post['average_score']=$rowName['average_score'];
+                $post['total_student_attempted']=$rowName['total_student_attempted'];
             }
         }
         else{
             $post['total_question']="";
             $post['evaluation_status']="";
             $post['average_score']="";
+            $post['total_student_attempted']="0";
         }
         return $post;
     }
