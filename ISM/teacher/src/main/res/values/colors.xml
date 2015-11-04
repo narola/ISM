@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#1BC4A2</color>
+    <color name="colorPrimaryDark">#14987d</color>
+    <color name="colorAccent">#1BC4A2</color>
+    <!-- Teacher Login-->
+    <!--<color name="color_pink">#FE84C1</color> -->
+    <color name="color_blue">#41B1E3</color>
+    <color name="color_teacher_headers">#D5DBDF</color>
+    <color name="color_black">#000000</color>
+    <color name="color_shade_news_feed">#90BABABA</color>
+    <color name="fragment_background_color">#F5F5F5</color>
+
+    <!-- Assignment -->
+    <color name="btn_save">#26AF61</color>
+    <color name="btn_cancel">#3C4650</color>
+
+    <!--Assignment student row-->
+    <color name="color_red_assignment">#D75651</color>
+    <color name="color_violet_assignment">#A44B99</color>
+    <color name="color_blue_assignment">#0E5198</color>
+    <color name="color_blue_assignment_type">#77C2EA</color>
+
+    <!-- Assignment student color -->
+    <color name="color_gray_assignment">#929292</color>
+
+    <color name="news_feed_separator_color">#BABABA</color>
+    <color name="news_feed_post_box_color">#90BABABA</color>
+    <color name="color_black_light">#90000000</color>
+
+
+    <!-- assignment add question-->
+    <color name="color_assignment_question">#F0F0F0</color>
+    <color name="color_bottom_add_question">#232A34</color>
+    <color name="color_selector_save_button">#FF6D5E</color>
+    <color name="color_orange">#E56B60</color>
+    <color name="color_question">#8F9396</color>
+    <color name="color_answer">#6F6F74</color>
+
+    <!-- Arti -->
+    <color name="color_green">#1BC4A2</color>
+    <color name="color_green_dark">#14987d</color>
+    <color name="color_transparent_white">#70ffffff</color>
+    <color name="color_white">#ffffff</color>
+    <color name="color_dark_gray">#333333</color>
+    <color name="color_gray">#323232</color>
+    <color name="color_gray1">#393A3C</color>
+    <color name="color_graylight">#F5F5F5</color>
+    <color name="color_green_shadow">#91E9DB</color>
+    <color name="color_text_hint">#C0C0C0</color>
+    <color name="color_text_light_green">#B5D8DC</color>
+    <color name="color_line_green">#758886</color>
+    <color name="color_actionbar">#232A34</color>
+    <color name="color_gray_profilemenu">#323941</color>
+    <color name="color_light_green">#d820ba83</color>
+
+    <color name="bg_controller_top_light">#2A343E</color>
+    <color name="bg_controller_top_medium">#262E39</color>
+    <color name="bg_controller_top_dark">#232A34</color>
+    <color name="bg_app_dark">#323941</color>
+    <color name="shadow_divider_light">#38414A</color>
+    <color name="shadow_divider_dark">#161B21</color>
+    <color name="bg_logout">#1BC4A3</color>
+    <color name="bg_tutorial">#DA534F</color>
+    <color name="bg_classroom">#FFC732</color>
+    <color name="bg_assessment">#4392CA</color>
+    <color name="bg_desk">#2BDC1E</color>
+    <color name="bg_report_card">#EF87C4</color>
+    <color name="bg_controller_left_light">#303940</color>
+    <color name="bg_controller_left_medium">#29323A</color>
+    <color name="bg_controller_left_dark">#212B33</color>
+    <color name="border_gray">#DDDDDD</color>
+
+
+</resources>

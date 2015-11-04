@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.adapter.Adapters;
+import com.ism.commonsource.view.ProcessButton;
+import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.ws.model.Data;
 import com.ism.ws.RequestObject;
 import com.ism.ws.ResponseObject;
@@ -49,6 +52,8 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 	private EditText etAge, etUserName, etNewPwd, etHomeAddress, etFirstName, etLastName,
 			etEmailAddress, etCurrentPwd, etContactNo, etConfirmPwd, etDob;
 	private ImageView imgDp;
+	private ProcessButton btnSubmit, progCountry, progState, progCity, progRequestSchoolInfo;
+	private Button btnDialogSubmit;
 
 	private MyTypeFace myTypeFace;
 	private InputValidator inputValidator;
@@ -60,6 +65,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 	private Calendar calDob;
 	private DatePickerDialog datePickerDob;
 	private AlertDialog dialogSchoolInfo;
+	private ProgressGenerator progressGenerator;
 
 	private String strUserId;
 	private String strCurrentPassword;
@@ -82,7 +88,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.layout_profile_info);
+		setContentView(R.layout.activity_profile_info);
 
 		intitGlobal();
 
@@ -111,6 +117,10 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 		txtDistrictOfSchool = (TextView) findViewById(R.id.txt_districtofschool);
 		txtProgramCourse = (TextView) findViewById(R.id.txt_programcourse);
 		txtClass = (TextView) findViewById(R.id.txt_class);
+		btnSubmit = (ProcessButton) findViewById(R.id.btn_submit);
+		progCountry = (ProcessButton) findViewById(R.id.prog_country);
+		progState = (ProcessButton) findViewById(R.id.prog_state);
+		progCity = (ProcessButton) findViewById(R.id.prog_city);
 
 		myTypeFace = new MyTypeFace(this);
 		((TextView) findViewById(R.id.txt_youare_)).setTypeface(myTypeFace.getRalewayThin());
@@ -136,6 +146,8 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 		txtClass.setTypeface(myTypeFace.getRalewayRegular());
 
 		inputValidator = new InputValidator(ProfileInformationActivity.this);
+
+		progressGenerator = new ProgressGenerator();
 
 		strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_CREDENTIAL_ID, ProfileInformationActivity.this);
 		strCurrentPassword = PreferenceData.getStringPrefs(PreferenceData.USER_PASSWORD, ProfileInformationActivity.this);
@@ -254,7 +266,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 	public void onClickSubmit(View view) {
 		if (Utility.isOnline(ProfileInformationActivity.this)) {
 
-			/*PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
+			PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
 					PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
 			PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
 			PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, "141");
@@ -263,11 +275,11 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 			Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
 			startActivity(intentWelcome);
-			finish();*/
+			finish();
 
-			if (isInputsValid()) {
+			/*if (isInputsValid()) {
                 callApiRegisterUser();
-			}
+			}*/
 		} else {
 			Utility.toastOffline(ProfileInformationActivity.this);
 		}
@@ -288,6 +300,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 		final EditText etName = (EditText) dialogView.findViewById(R.id.et_name);
 		final EditText etEmail = (EditText) dialogView.findViewById(R.id.et_email);
 		final EditText etMessage = (EditText) dialogView.findViewById(R.id.et_message);
+		progRequestSchoolInfo = (ProcessButton) dialogView.findViewById(R.id.prog_request_schoolinfo);
 
 		builder.setView(dialogView)
 				.setTitle("Request for School information correction")
@@ -306,7 +319,8 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 		builder.setCancelable(false);
 		dialogSchoolInfo = builder.create();
 		dialogSchoolInfo.show();
-		dialogSchoolInfo.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+		btnDialogSubmit = dialogSchoolInfo.getButton(DialogInterface.BUTTON_POSITIVE);
+		btnDialogSubmit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (Utility.isOnline(ProfileInformationActivity.this)) {
@@ -332,6 +346,10 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	private void callApiRequestSchoolInfo(RequestObject requestObject) {
 		try {
+			btnDialogSubmit.setEnabled(false);
+			progRequestSchoolInfo.setProgress(1);
+			progRequestSchoolInfo.setVisibility(View.VISIBLE);
+			progressGenerator.start(progRequestSchoolInfo);
 			new WebserviceWrapper(ProfileInformationActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.REQUEST_SCHOOL_INFO);
 		} catch (Exception e) {
@@ -341,6 +359,9 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	private void callApiRegisterUser() {
 		try {
+			btnSubmit.setProgress(1);
+			btnSubmit.setEnabled(false);
+			progressGenerator.start(btnSubmit);
 			RequestObject requestObject = new RequestObject();
 			requestObject.setFirstname(etFirstName.getText().toString().trim());
 			requestObject.setLastname(etLastName.getText().toString().trim());
@@ -373,6 +394,9 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	private void callApiGetCountries() {
 		try {
+			progCountry.setProgress(1);
+			progCountry.setVisibility(View.VISIBLE);
+			progressGenerator.start(progCountry);
 			new WebserviceWrapper(ProfileInformationActivity.this, null, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.GET_COUNTRIES);
 		} catch (Exception e) {
@@ -382,6 +406,9 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	private void callApiGetStates(int countryId) {
 		try {
+			progState.setProgress(1);
+			progState.setVisibility(View.VISIBLE);
+			progressGenerator.start(progState);
 			RequestObject requestObject = new RequestObject();
 
 			requestObject.setCountryId(countryId);
@@ -395,6 +422,9 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 
 	private void callApiGetCities(int stateId) {
 		try {
+			progCity.setProgress(1);
+			progCity.setVisibility(View.VISIBLE);
+			progressGenerator.start(progCity);
 			RequestObject requestObject = new RequestObject();
 			requestObject.setStateId(stateId);
 
@@ -526,110 +556,137 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 	@Override
 	public void onResponse(Object object, Exception error, int apiCode) {
 		try {
-			if (object != null) {
-				switch (apiCode) {
-					case WebserviceWrapper.GET_COUNTRIES:
-						onResponseCountries(object);
-						break;
-					case WebserviceWrapper.GET_STATES:
-						onResponseStates(object);
-						break;
-					case WebserviceWrapper.GET_CITIES:
-						onResponseCities(object);
-						break;
-					case WebserviceWrapper.REGISTER_USER:
-						onResponseRegisterUser(object);
-						break;
-					case WebserviceWrapper.REQUEST_SCHOOL_INFO:
-						onResponseRequestSchoolInfo(object);
-						break;
-				}
-			} else if (error != null) {
-				Log.e(TAG, "onResponse ApiCall Exception : " + error.toString() + "\nFor apiCode : " + apiCode);
+			switch (apiCode) {
+				case WebserviceWrapper.GET_COUNTRIES:
+					onResponseCountries(object, error);
+					break;
+				case WebserviceWrapper.GET_STATES:
+					onResponseStates(object, error);
+					break;
+				case WebserviceWrapper.GET_CITIES:
+					onResponseCities(object, error);
+					break;
+				case WebserviceWrapper.REGISTER_USER:
+					onResponseRegisterUser(object, error);
+					break;
+				case WebserviceWrapper.REQUEST_SCHOOL_INFO:
+					onResponseRequestSchoolInfo(object, error);
+					break;
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponse Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseRequestSchoolInfo(Object object) {
+	private void onResponseRequestSchoolInfo(Object object, Exception error) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				if (dialogSchoolInfo != null) {
-					dialogSchoolInfo.dismiss();
+			if (btnDialogSubmit != null) {
+				btnDialogSubmit.setEnabled(true);
+			}
+			if (progRequestSchoolInfo != null) {
+				progRequestSchoolInfo.setProgress(100);
+				progRequestSchoolInfo.setVisibility(View.INVISIBLE);
+			}
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					if (dialogSchoolInfo != null) {
+						dialogSchoolInfo.dismiss();
+					}
+					Toast.makeText(ProfileInformationActivity.this, "Request for school information updation sent to admin successfully.", Toast.LENGTH_LONG).show();
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Toast.makeText(ProfileInformationActivity.this, responseObj.getMessage(), Toast.LENGTH_LONG).show();
 				}
-				Toast.makeText(ProfileInformationActivity.this, "Request for school information updation sent to admin successfully.", Toast.LENGTH_LONG).show();
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Toast.makeText(ProfileInformationActivity.this, responseObj.getMessage(), Toast.LENGTH_LONG).show();
+			} else if (error != null) {
+				Log.e(TAG, "onResponseRequestSchoolInfo api Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseRequestSchoolInfo Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseCities(Object object) {
+	private void onResponseCities(Object object, Exception error) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				arrListCities = new ArrayList<Data>();
-				arrListCities.addAll(responseObj.getData());
-				List<String> cities = new ArrayList<String>();
-				cities.add(getString(R.string.select));
-				for (Data city : arrListCities) {
-					cities.add(city.getCityName());
+			progCity.setProgress(100);
+			progCity.setVisibility(View.INVISIBLE);
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					arrListCities = new ArrayList<Data>();
+					arrListCities.addAll(responseObj.getData());
+					List<String> cities = new ArrayList<String>();
+					cities.add(getString(R.string.select));
+					for (Data city : arrListCities) {
+						cities.add(city.getCityName());
+					}
+					Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, cities);
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseCities Failed");
 				}
-				Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, cities);
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Log.e(TAG, "onResponseCities Failed");
+			} else if (error != null) {
+				Log.e(TAG, "onResponseCities api Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseCities Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseStates(Object object) {
+	private void onResponseStates(Object object, Exception error) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				arrListStates = new ArrayList<Data>();
-				arrListStates.addAll(responseObj.getData());
-				List<String> states = new ArrayList<String>();
-				states.add(getString(R.string.select));
-				for (Data state : arrListStates) {
-					states.add(state.getStateName());
+			progState.setProgress(100);
+			progState.setVisibility(View.INVISIBLE);
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					arrListStates = new ArrayList<Data>();
+					arrListStates.addAll(responseObj.getData());
+					List<String> states = new ArrayList<String>();
+					states.add(getString(R.string.select));
+					for (Data state : arrListStates) {
+						states.add(state.getStateName());
+					}
+					Adapters.setUpSpinner(ProfileInformationActivity.this, spState, states);
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseStates Failed");
 				}
-				Adapters.setUpSpinner(ProfileInformationActivity.this, spState, states);
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Log.e(TAG, "onResponseStates Failed");
+			} else if (error != null) {
+				Log.e(TAG, "onResponseCountries api Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseStates Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseCountries(Object object) {
+	private void onResponseCountries(Object object, Exception error) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				arrListCountries = new ArrayList<Data>();
-				arrListCountries.addAll(responseObj.getData());
-				List<String> countries = new ArrayList<String>();
-				countries.add(getString(R.string.select));
-				for (Data country : arrListCountries) {
-					countries.add(country.getCountryName());
+			progCountry.setProgress(100);
+			progCountry.setVisibility(View.INVISIBLE);
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					arrListCountries = new ArrayList<Data>();
+					arrListCountries.addAll(responseObj.getData());
+					List<String> countries = new ArrayList<String>();
+					countries.add(getString(R.string.select));
+					for (Data country : arrListCountries) {
+						countries.add(country.getCountryName());
+					}
+					Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, countries);
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseCountries Failed");
 				}
-				Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, countries);
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Log.e(TAG, "onResponseCountries Failed");
+			} else if (error != null) {
+				Log.e(TAG, "onResponseCountries api Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseCountries Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseRegisterUser(Object object) {
+	private void onResponseRegisterUser(Object object, Exception error) {
 		try {
+			btnSubmit.setProgress(100);
+			btnSubmit.setEnabled(true);
 			if (object != null) {
 				ResponseObject responseObj = (ResponseObject) object;
 				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
@@ -653,6 +710,8 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 						}
 					}
 				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseRegisterUser api Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseRegisterUser Exception : " + e.toString());
