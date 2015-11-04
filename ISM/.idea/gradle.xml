@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/colorpicker" />
             <option value="$PROJECT_DIR$/richeditor" />
             <option value="$PROJECT_DIR$/richtexteditor" />
+            <option value="$PROJECT_DIR$/teacher" />
           </set>
         </option>
       </GradleProjectSettings>

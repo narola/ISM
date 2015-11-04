@@ -6,7 +6,7 @@
               android:layout_marginLeft="@dimen/d150dp"
               android:layout_marginRight="@dimen/d130dp"
               android:layout_marginTop="@dimen/d50dp"
-              android:background="@drawable/bg_news_feed"
+              android:background="@color/color_shade_news_feed"
               android:orientation="vertical">
 
 	<TextView

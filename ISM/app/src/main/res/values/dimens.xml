@@ -44,4 +44,6 @@
     <dimen name="dp_margin_list">15dp</dimen>
     <dimen name="post_text_size">18sp</dimen>
     <dimen name="comment_padding">5dp</dimen>
+    <dimen name="d150dp">150dp</dimen>
+    <dimen name="d18sp">18sp</dimen>
 </resources>

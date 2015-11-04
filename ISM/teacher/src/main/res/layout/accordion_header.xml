@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:accordion="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_mainlayout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <com.ism.helper.ToggleImageLabeledButton
+            android:id="@+id/foldButton"
+            android:layout_width="0dip"
+            android:layout_height="0dip"
+            android:layout_marginLeft="8sp"
+            android:layout_marginTop="4sp" />
+
+        <!-- paddingRight added to center text correctly -->
+
+        <TextView
+            android:id="@+id/txt_headerName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_marginLeft="8sp"
+            android:textColor="@color/color_white"
+            android:textSize="15sp"
+            android:textAllCaps="true"
+            android:paddingTop="7sp"
+            android:paddingBottom="7sp"
+            android:text="Section Name" />
+    </RelativeLayout>
+
+</LinearLayout>
