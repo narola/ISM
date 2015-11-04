@@ -38,7 +38,7 @@ public class Data {
     private String videoLink;
     private String profilePic;
     private double like;
-    private ArrayList<GetAllFeedsComment> commentList;
+    private ArrayList<PostFeedCommentsModel> commentList;
 
     /*these parameters are of GetStudyMates Response*/
 
@@ -73,7 +73,7 @@ public class Data {
     private String feed_by;
     private String video_thumbnail;
     private List<String> images;
-    private ArrayList<FeedImages> feed_images;
+    private ArrayList<PostFeedImagesModel> feed_images;
 
 
 
@@ -85,7 +85,7 @@ public class Data {
     private String questionImageLink;
     private String evaluationNotes;
     private String topicId;
-    private ArrayList<AnswersModel> answers;
+    private ArrayList<QuestionAnswersModel> answers;
     private String classroomId;
     private String bookId;
     private String solution;
@@ -105,11 +105,11 @@ public class Data {
     /*these methods are for login response*/
 
     @JsonProperty("feed_images")
-    public ArrayList<FeedImages> getFeed_images() {
+    public ArrayList<PostFeedImagesModel> getFeed_images() {
         return feed_images;
     }
 
-    public void setFeed_images(ArrayList<FeedImages> feed_images) {
+    public void setFeed_images(ArrayList<PostFeedImagesModel> feed_images) {
         this.feed_images = feed_images;
     }
 
@@ -289,11 +289,11 @@ public class Data {
     }
 
     @JsonProperty("comment_list")
-    public ArrayList<GetAllFeedsComment> getCommentList() {
+    public ArrayList<PostFeedCommentsModel> getCommentList() {
         return commentList;
     }
 
-    public void setCommentList(ArrayList<GetAllFeedsComment> commentList) {
+    public void setCommentList(ArrayList<PostFeedCommentsModel> commentList) {
         this.commentList = commentList;
     }
 
@@ -521,11 +521,11 @@ public class Data {
     }
 
     @JsonProperty("answers")
-    public ArrayList<AnswersModel> getAnswers() {
+    public ArrayList<QuestionAnswersModel> getAnswers() {
         return this.answers;
     }
 
-    public void setAnswers(ArrayList<AnswersModel> answers) {
+    public void setAnswers(ArrayList<QuestionAnswersModel> answers) {
         this.answers = answers;
     }
 

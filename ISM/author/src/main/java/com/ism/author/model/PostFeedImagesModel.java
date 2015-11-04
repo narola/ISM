@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Created by c162 on 02/11/15.
  */
-public class FeedImages {
+public class PostFeedImagesModel {
     private String image_link;
     private String id;
 

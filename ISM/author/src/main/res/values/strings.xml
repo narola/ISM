@@ -71,6 +71,7 @@
     <string name="stradd">ADD</string>
     <string name="straddnew">ADD NEW</string>
     <string name="strpost">POST</string>
+    <string name="strcomment">Comment</string>
 
 
     <!--Strings for the Submenu Of Office Menu-->

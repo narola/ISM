@@ -41,12 +41,10 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
     public QuestionListFragment questionListFragment;
     public QuestionAddEditFragment questionAddEditFragment;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_add_question, container, false);
         initGlobal();
-
 
         getFragmentManager()
                 .beginTransaction()
@@ -55,7 +53,6 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
                 .commit();
 
         loadFragmentInRightContainer();
-
         return view;
     }
 
@@ -114,14 +111,6 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
             getFragmentManager().popBackStack();
             mShowingBack = false;
 
-//            FragmentManager fm = getFragmentManager();
-//            fm.beginTransaction()
-//                    .setCustomAnimations(
-//                            R.animator.card_flip_right_in, R.animator.card_flip_right_out,
-//                            R.animator.card_flip_left_in, R.animator.card_flip_left_out)
-//                    .show(getFragmentManager().findFragmentByTag(String.valueOf(FRAGMENT_QUESTIONLIST)))
-//                    .commit();
-
         }
 
 
@@ -130,12 +119,10 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
     @Override
     public void onBackStackChanged() {
 
-
     }
 
 
     private void loadFragmentInRightContainer() {
-
         try {
             getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, previewQuestionFragment).commit();
 

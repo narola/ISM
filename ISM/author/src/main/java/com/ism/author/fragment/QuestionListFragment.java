@@ -1,6 +1,5 @@
 package com.ism.author.fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +20,7 @@ import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
-import com.ism.author.model.Request;
+import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
 
@@ -37,16 +36,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private static final String TAG = QuestionListFragment.class.getSimpleName();
     private View view;
-
-    //    private FragmentListener fragListener;
     Fragment mFragment;
 
-
     public QuestionListFragment(Fragment fragment) {
-        // Required empty public constructor
         this.mFragment = fragment;
     }
-
 
     Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistExamType;
     List<String> arrListExamType;
@@ -144,13 +138,12 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void callApiGetQuestionBank() {
 
-
         if (Utils.isInternetConnected(getActivity())) {
             try {
-                Request request = new Request();
-                request.setUser_id("370");
-                request.setRole(AppConstant.AUTHOR_ROLE_ID);
-                new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                RequestObject requestObject = new RequestObject();
+                requestObject.setUserId("370");
+                requestObject.setRole(AppConstant.AUTHOR_ROLE_ID);
+                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETQUESTIONBANK);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -161,41 +154,12 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     }
 
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-//        try {
-//            fragListener = (FragmentListener) activity;
-//            if (fragListener != null) {
-//                fragListener.onFragmentAttached(AddQuestionFragment.FRAGMENT_QUESTIONLIST);
-//            }
-//        } catch (ClassCastException e) {
-//            Debug.e(TAG, "onAttach Exception : " + e.toString());
-//        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-//        try {
-//            if (fragListener != null) {
-//                fragListener.onFragmentDetached(AddQuestionFragment.FRAGMENT_QUESTIONLIST);
-//            }
-//        } catch (ClassCastException e) {
-//            Debug.e(TAG, "onDetach Exception : " + e.toString());
-//        }
-//        fragListener = null;
-    }
-
     ResponseObject getQuestionBankResponseObject;
 
     @Override
     public void onResponse(int apiMethodName, Object object, Exception error) {
 
-
         try {
-
 
             if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
 
@@ -260,10 +224,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         if (v == tvQuestionlistAddPreview) {
 
             if (questionBankListAdapter.getListOfPreviewQuestionsToAdd().size() > 0) {
-
                 ((AddQuestionFragment) mFragment).previewQuestionFragment.addQuestionsToPreviewFragment(questionBankListAdapter.getListOfPreviewQuestionsToAdd());
                 questionBankListAdapter.getListOfPreviewQuestionsToAdd().clear();
-
             } else {
                 Utils.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
 

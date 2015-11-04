@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_orange"
+            android:background="@color/color_blue"
             android:gravity="center"
             android:paddingBottom="@dimen/d10dp"
             android:paddingTop="@dimen/d10dp"
@@ -37,7 +37,7 @@
             android:id="@+id/tv_dialog_close"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_orange"
+            android:background="@color/color_blue"
             android:gravity="center"
             android:paddingBottom="@dimen/d10dp"
             android:paddingTop="@dimen/d10dp"

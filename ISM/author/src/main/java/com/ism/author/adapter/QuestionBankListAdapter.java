@@ -19,8 +19,8 @@ import com.ism.author.R;
 import com.ism.author.Utility.Utils;
 import com.ism.author.fragment.AddQuestionFragment;
 import com.ism.author.helper.MyTypeFace;
-import com.ism.author.model.AnswersModel;
 import com.ism.author.model.Data;
+import com.ism.author.model.QuestionAnswersModel;
 
 import java.util.ArrayList;
 
@@ -91,7 +91,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
 
         holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvQuestion.setText(listOfQuestions.get(position).getQuestionText());
+        holder.tvQuestion.setText(Utils.formatHtml(listOfQuestions.get(position).getQuestionText()));
 
 
         holder.imgDropdownViewAnswer.setOnClickListener(new View.OnClickListener() {
@@ -143,9 +143,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             @Override
             public void onClick(View v) {
 
-
                 if (!((AddQuestionFragment) mFragment).previewQuestionFragment.listOfPreviewQuestions.contains(listOfQuestions.get(position))) {
-
 
                     if (holder.chkSelectQuestion.isChecked()) {
                         listOfQuestions.get(position).setIsQuestionAddedInPreview(true);
@@ -215,14 +213,14 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     }
 
 
-    private View getAnsInflaterView(AnswersModel answer, int position) {
+    private View getAnsInflaterView(QuestionAnswersModel answer, int position) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View v;
         v = layoutInflater.inflate(R.layout.row_mcq_question_answer, null, false);
         TextView tvMcqQuestionAns = (TextView) v.findViewById(R.id.tv_mcq_question_ans);
         tvMcqQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
-        tvMcqQuestionAns.setText(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText());
+        tvMcqQuestionAns.setText(Utils.formatHtml(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
 
         return v;
     }
