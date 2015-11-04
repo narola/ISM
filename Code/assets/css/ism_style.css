@@ -4038,3 +4038,7 @@ a.expand_ques + .row{
 #feed_post.form-control[disabled], #feed_post.form-control[readonly]{
 	background-color:#fff;
 }
+/*@nv*/
+.adm_cancel_btn{
+	font-size: 14px !important;
+}

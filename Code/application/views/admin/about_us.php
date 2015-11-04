@@ -213,13 +213,12 @@
             </footer>
             <!--//f0oter-->
     </div>
-        <script src="js/jquery-1.11.3.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery-1.11.3.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
         <script type="text/javascript"> 
       $(document).ready(function(){
         $('.btn_about_header').click(function(){
           $('.my_info').slideToggle();
-          
         });
       });
     </script>

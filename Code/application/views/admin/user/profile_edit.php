@@ -98,8 +98,8 @@
         </div>
         <!--buttons-->
         <div class="col-sm-12 text-center">
-        	<button class="btn btn_red" type="submit">Update</button>
-        	<a href="admin/user" class="btn btn_black_normal"> Cancel </a>
+        	<button class="btn btn_red col-sm-3 col-sm-offset-4" type="submit">Update</button>
+        	<a href="admin/user" class="btn btn_black_normal adm_cancel_btn col-sm-5"> Cancel </a>
         </div>
     </form>
     <!--//buttons-->

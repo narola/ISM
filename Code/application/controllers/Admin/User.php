@@ -791,8 +791,8 @@ class User extends ADMIN_Controller {
 		$configs = mail_config();
         $this->load->library('email', $configs);
         $this->email->initialize($configs);
-        $this->email->from($email_id,'Admin');
-        $this->email->to('kap.narola@narolainfotech.com');
+        $this->email->from('','ISM Admin');
+        $this->email->to($email_id);
         // $encoded_mail = urlencode($token);
         $msg = '';
         $msg .='<html>';
