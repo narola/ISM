@@ -1,4 +1,4 @@
-package com.ism.login;
+package com.ism.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,7 +15,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ism.HostActivity;
 import com.ism.R;
 import com.ism.adapter.Adapters;
 import com.ism.commonsource.view.ActionProcessButton;

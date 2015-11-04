@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     >
 
-    <com.ism.helper.CircleImageView
+    <com.ism.views.CircleImageView
         android:id="@+id/img_hignScoredp"
         android:layout_width="60sp"
         android:layout_height="60sp"

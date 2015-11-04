@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.ism.login.AppConstant;
+import com.ism.activity.AppConstant;
 
 /**
  * Created by c161 on 23/10/15.
