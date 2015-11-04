@@ -1,5 +1,6 @@
 package com.ism.author.adapter;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.author.Utility.Utils;
+import com.ism.author.fragment.AddQuestionFragment;
 import com.ism.author.model.AnswersModel;
 import com.ism.author.model.Data;
 import com.ism.object.MyTypeFace;
@@ -31,18 +33,23 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
 
     Context mContext;
+
+
     ArrayList<Data> listOfQuestions = new ArrayList<Data>();
-    MyTypeFace myTypeFace;
 
-    public ArrayList<Data> listOfPreviewQuestionToAdd = new ArrayList<Data>();
-
-    public ArrayList<Data> getListOfPreviewQuestionToAdd() {
-        return listOfPreviewQuestionToAdd;
+    public ArrayList<Data> getListOfPreviewQuestionsToAdd() {
+        return listOfPreviewQuestionsToAdd;
     }
 
+    ArrayList<Data> listOfPreviewQuestionsToAdd = new ArrayList<Data>();
+    MyTypeFace myTypeFace;
 
-    public QuestionBankListAdapter(Context context) {
+    Fragment mFragment;
+
+
+    public QuestionBankListAdapter(Context context, Fragment fragment) {
         this.mContext = context;
+        this.mFragment = fragment;
 
     }
 
@@ -75,7 +82,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         holder.tvQuestionCategory.append(f);
 
         holder.tvQuestionCreatedby.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvQuestionCreatedby.setText(holder.tvQuestionCreatedby.getText());
+        holder.tvQuestionCreatedby.setText(mContext.getString(R.string.strcreatedby));
         String creator = " " + listOfQuestions.get(position).getQuestionCreatorName();
         f = new SpannableString(creator);
         f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
@@ -93,8 +100,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                 holder.imgDropdownViewAnswer.setSelected(!holder.imgDropdownViewAnswer.isSelected());
                 if (holder.imgDropdownViewAnswer.isSelected()) {
-
-
                     if (!listOfQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
 
                         holder.tvQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
@@ -131,18 +136,32 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
             }
         });
-
+        holder.chkSelectQuestion.setChecked(listOfQuestions.get(position).getIsQuestionAddedInPreview());
 
         holder.chkSelectQuestion.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if (holder.chkSelectQuestion.isChecked()) {
-                    listOfPreviewQuestionToAdd.add(listOfQuestions.get(position));
+
+                if (!((AddQuestionFragment) mFragment).previewQuestionFragment.listOfPreviewQuestions.contains(listOfQuestions.get(position))) {
+
+
+                    if (holder.chkSelectQuestion.isChecked()) {
+                        listOfQuestions.get(position).setIsQuestionAddedInPreview(true);
+                        listOfPreviewQuestionsToAdd.add(listOfQuestions.get(position));
+
+                    } else {
+                        listOfQuestions.get(position).setIsQuestionAddedInPreview(false);
+                        listOfPreviewQuestionsToAdd.remove(listOfQuestions.get(position));
+                    }
+
                 } else {
-                    listOfPreviewQuestionToAdd.remove(listOfPreviewQuestionToAdd.get(position));
+                    listOfQuestions.get(position).setIsQuestionAddedInPreview(true);
                 }
+                notifyDataSetChanged();
+
+
             }
         });
 

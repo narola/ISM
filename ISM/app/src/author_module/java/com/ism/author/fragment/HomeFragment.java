@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
         llPost = (LinearLayout) view.findViewById(R.id.ll_post);
         rvPostFeeds = (RecyclerView) view.findViewById(R.id.rv_post_feeds);
-        etWritePost=(EditText)view.findViewById(R.id.et_writePost);
+        etWritePost = (EditText) view.findViewById(R.id.et_writePost);
         etWritePost.setEnabled(true);
 
         onClickAttachFile = new View.OnClickListener() {
@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
     private void onAttachFileClick(View view) {
 
-        if (view == llPost || view==etWritePost) {
+        if (view == llPost || view == etWritePost) {
             Intent intent = new Intent(getActivity(), PostActivity.class);
             startActivity(intent);
 
@@ -352,6 +352,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     }
 
     private void updatePostFeedViewAfterAddComment() {
+
         int position = getSetAddCommentRowPosition();
         responseObj.getData().get(position).setTotalComment(String.valueOf(Integer.parseInt(responseObj.getData().get(position).getTotalComment()) + 1));
         View v = rvPostFeeds.getChildAt(position);

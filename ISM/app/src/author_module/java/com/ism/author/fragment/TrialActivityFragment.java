@@ -43,7 +43,7 @@ import jp.wasabeef.richeditor.RichEditor;
 /**
  * Created by c166 on 28/10/15.
  */
-public class TrialActivityFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class TrialActivityFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
 
     private static final String TAG = TrialActivityFragment.class.getSimpleName();
@@ -125,25 +125,29 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
         tvActivityTopic.setTypeface(myTypeFace.getRalewayRegular());
 
 
-        btnActivitySave.setOnClickListener(new View.OnClickListener() {
-                                               @Override
-                                               public void onClick(View v) {
-                                                   if (isInputsValid()) {
-                                                       callApiCreateAssignment();
-                                                   }
+        btnActivitySave.setOnClickListener(this);
+        btnActivityCancel.setOnClickListener(this);
 
 
-                                               }
-                                           }
-        );
-
-        btnActivityCancel.setOnClickListener(new View.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(View v) {
-                                                     backToTrialScreen();
-                                                 }
-                                             }
-        );
+//        btnActivitySave.setOnClickListener(new View.OnClickListener() {
+//                                               @Override
+//                                               public void onClick(View v) {
+//                                                   if (isInputsValid()) {
+//                                                       callApiCreateAssignment();
+//                                                   }
+//
+//
+//                                               }
+//                                           }
+//        );
+//
+//        btnActivityCancel.setOnClickListener(new View.OnClickListener() {
+//                                                 @Override
+//                                                 public void onClick(View v) {
+//                                                     backToTrialScreen();
+//                                                 }
+//                                             }
+//        );
 
 
         etActivitySubmissionDate.setOnTouchListener(new View.OnTouchListener() {
@@ -192,7 +196,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
 
         arrListDefalt = new ArrayList<String>();
         arrListDefalt.add(getString(R.string.select));
-        Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
+        Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
 
 
         callApiGetClassRooms();
@@ -379,7 +383,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
                         classrooms.add(classroom.getClassName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms);
+                    Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms, Adapters.ADAPTER_NORMAL);
                     callApiGetSubjects();
 
                 } else {
@@ -400,7 +404,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
 
                     }
 
-                    Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects);
+                    Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects, Adapters.ADAPTER_NORMAL);
 
                 } else {
                     Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
@@ -419,11 +423,11 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
                         topics.add(topic.getTopicName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spActivityTopic, topics);
+                    Adapters.setUpSpinner(getActivity(), spActivityTopic, topics, Adapters.ADAPTER_NORMAL);
 
                 } else {
 
-                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
+                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
                     Utils.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
                 }
 
@@ -476,6 +480,20 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
     }
 
 
+    @Override
+    public void onClick(View v) {
+
+        if (v == btnActivitySave) {
+
+            if (isInputsValid()) {
+                callApiCreateAssignment();
+            }
+
+        } else if (v == btnActivityCancel) {
+            backToTrialScreen();
+        }
+
+    }
 }
 
 

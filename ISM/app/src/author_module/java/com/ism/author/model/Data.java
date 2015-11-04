@@ -105,6 +105,7 @@ public class Data {
     public void setFeed_images(ArrayList<FeedImages> feed_images) {
         this.feed_images = feed_images;
     }
+
     public String getVideo_thumbnail() {
         return video_thumbnail;
     }
@@ -412,6 +413,7 @@ public class Data {
     public void setTopicDescription(String topicDescription) {
         this.topicDescription = topicDescription;
     }
+
     @JsonProperty("feed_by")
     public String getFeed_by() {
         return feed_by;
@@ -420,7 +422,8 @@ public class Data {
     public void setFeed_by(String feed_by) {
         this.feed_by = feed_by;
     }
-//    @JsonProperty("feed_text")
+
+    //    @JsonProperty("feed_text")
 //    public String getFeed_text() {
 //        return feed_text;
 //    }
@@ -580,6 +583,16 @@ public class Data {
 
     public void setQuestionCreatorName(String questionCreatorName) {
         this.questionCreatorName = questionCreatorName;
+    }
+
+    private Boolean isQuestionAddedInPreview = false;
+
+    public Boolean getIsQuestionAddedInPreview() {
+        return isQuestionAddedInPreview;
+    }
+
+    public void setIsQuestionAddedInPreview(Boolean isQuestionAddedInPreview) {
+        this.isQuestionAddedInPreview = isQuestionAddedInPreview;
     }
 
 

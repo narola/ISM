@@ -10,4 +10,4 @@
     android:singleLine="true"
     android:text="Seletct"
     android:textColor="@color/color_text_hint"
-    android:textSize="@dimen/d18dp" />
+    android:textSize="@dimen/d15dp" />

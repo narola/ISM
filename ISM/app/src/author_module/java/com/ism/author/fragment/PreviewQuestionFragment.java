@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.author.adapter.PreviewQuestionListAdapter;
 import com.ism.author.model.Data;
+import com.ism.author.movablerecyclerviewhelper.OnStartDragListener;
 import com.ism.object.MyTypeFace;
 
 import java.util.ArrayList;
@@ -20,28 +22,32 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 31/10/15.
  */
-public class PreviewQuestionFragment extends Fragment {
+public class PreviewQuestionFragment extends Fragment implements OnStartDragListener {
 
 
     private static final String TAG = PreviewQuestionFragment.class.getSimpleName();
     private View view;
 
-//    private FragmentListener fragListener;
+    //    private FragmentListener fragListener;
 
-    public static PreviewQuestionFragment newInstance() {
-        PreviewQuestionFragment previewQuestionFragment = new PreviewQuestionFragment();
-        return previewQuestionFragment;
-    }
+    Fragment mFragment;
 
-    public PreviewQuestionFragment() {
+    public PreviewQuestionFragment(Fragment fragment) {
         // Required empty public constructor
+        this.mFragment = fragment;
     }
+
 
     TextView tvQuestionlistTitle;
     RecyclerView rvPreviewquestionlist;
     PreviewQuestionListAdapter previewQuestionListAdapter;
-    ArrayList<Data> listOfPreviewQuestions = new ArrayList<Data>();
+    //    RecyclerListAdapter adapter;
+    public ArrayList<Data> listOfPreviewQuestions = new ArrayList<Data>();
     MyTypeFace myTypeFace;
+
+
+    //this is for the movable recyclerview.
+    private ItemTouchHelper mItemTouchHelper;
 
 
     @Override
@@ -60,9 +66,20 @@ public class PreviewQuestionFragment extends Fragment {
         tvQuestionlistTitle.setTypeface(myTypeFace.getRalewayRegular());
 
         rvPreviewquestionlist = (RecyclerView) view.findViewById(R.id.rv_previewquestionlist);
-        previewQuestionListAdapter = new PreviewQuestionListAdapter(getActivity());
+        previewQuestionListAdapter = new PreviewQuestionListAdapter(getActivity(), mFragment);
         rvPreviewquestionlist.setAdapter(previewQuestionListAdapter);
         rvPreviewquestionlist.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+//        adapter = new RecyclerListAdapter(getActivity(), this);
+//        rvPreviewquestionlist.setHasFixedSize(true);
+//        rvPreviewquestionlist.setAdapter(adapter);
+//        rvPreviewquestionlist.setLayoutManager(new LinearLayoutManager(getActivity()));
+//
+//        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+//        callback.isItemViewSwipeEnabled();
+//        mItemTouchHelper = new ItemTouchHelper(callback);
+//        mItemTouchHelper.attachToRecyclerView(rvPreviewquestionlist);
 
     }
 
@@ -82,6 +99,7 @@ public class PreviewQuestionFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+
 //        try {
 //            if (fragListener != null) {
 //                fragListener.onFragmentDetached(AddQuestionFragment.FRAGMENT_PREVIEWQUESTION);
@@ -95,8 +113,19 @@ public class PreviewQuestionFragment extends Fragment {
 
     public void addQuestionsToPreviewFragment(ArrayList<Data> data) {
 
-        previewQuestionListAdapter.addAll(data);
+        if (data.size() > 0) {
 
+            listOfPreviewQuestions.addAll(data);
+            previewQuestionListAdapter.addAll(listOfPreviewQuestions);
+
+        }
+
+
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
 
     }
 }

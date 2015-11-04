@@ -11,11 +11,8 @@ import android.widget.FrameLayout;
 
 import com.ism.R;
 import com.ism.author.AuthorHostActivity;
-import com.ism.author.model.Data;
 import com.ism.interfaces.FragmentListener;
 import com.ism.utility.Debug;
-
-import java.util.ArrayList;
 
 /**
  * these fragment class is container of questionlist,questionaddeditfragment,previewquestionfragment.
@@ -39,6 +36,10 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
     public static final int FRAGMENT_QUESTIONLIST = 0, FRAGMENT_QUESTIONADDEDIT = 1, FRAGMENT_PREVIEWQUESTION = 2;
     private boolean mShowingBack = false;
 
+    public PreviewQuestionFragment previewQuestionFragment;
+    public QuestionListFragment questionListFragment;
+    public QuestionAddEditFragment questionAddEditFragment;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
 
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.fl_addquestionfragment_container_left, new QuestionListFragment(this))
+                .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
                 .addToBackStack(String.valueOf(FRAGMENT_QUESTIONLIST))
                 .commit();
 
@@ -58,6 +59,10 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
     }
 
     private void initGlobal() {
+
+        previewQuestionFragment = new PreviewQuestionFragment(this);
+        questionListFragment = new QuestionListFragment(this);
+        questionAddEditFragment = new QuestionAddEditFragment(this);
 
         flAddquestionfragmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
         flAddquestionfragmentContainerRight = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
@@ -99,7 +104,7 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
                     .setCustomAnimations(
                             R.animator.card_flip_right_in, R.animator.card_flip_right_out,
                             R.animator.card_flip_left_in, R.animator.card_flip_left_out)
-                    .add(R.id.fl_addquestionfragment_container_left, new QuestionAddEditFragment(this))
+                    .add(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
                     .addToBackStack(null)
                     .commit();
 
@@ -127,11 +132,8 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
 
     }
 
-    PreviewQuestionFragment previewQuestionFragment;
 
     private void loadFragmentInRightContainer() {
-
-        previewQuestionFragment = PreviewQuestionFragment.newInstance();
 
         try {
             getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, previewQuestionFragment).commit();
@@ -140,13 +142,6 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
             Debug.e(TAG, "loadFragment Exception : " + e.toString());
 
         }
-
-    }
-
-    public void addQuestionToPreviewFragment(ArrayList<Data> data) {
-
-
-        previewQuestionFragment.addQuestionsToPreviewFragment(data);
 
     }
 
