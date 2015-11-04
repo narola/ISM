@@ -5,6 +5,7 @@ class ISM_Controller extends CI_Controller {
 
 	var $active_h = array();
 	var $notification_list = array();
+	var $noti_cnt;
 
 	public function __construct(){
 		
@@ -46,7 +47,7 @@ class ISM_Controller extends CI_Controller {
 	     set_session($this->session->userdata('user')['id']);
 		}
 
-		get_highscore($this->session->userdata('user')['id'],$this->session->userdata('user')['classroom_id']);	
+		// get_highscore($this->session->userdata('user')['id'],$this->session->userdata('user')['classroom_id']);	
 	}
 
 	

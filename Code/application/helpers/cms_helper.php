@@ -629,6 +629,7 @@ function get_highscore($user_id,$classroom_id){
     echo '<pre>';
     qry();
     p($get_score);
+    echo '-------------------<br/>';
     p($high_score);
     exit;
 }
