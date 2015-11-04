@@ -75,9 +75,7 @@ public class Data {
     private List<String> images;
     private ArrayList<FeedImages> feed_images;
 
-    //  trial
 
-    private String role;
 
     /*these are for the get questionbank*/
 
@@ -97,6 +95,12 @@ public class Data {
     private String questionCreatorName;
 
 
+    /*these are for the get created exams*/
+    private String total_student_attempted;
+    private String total_student;
+    private String exam_type;
+    private String average_score;
+
 
     /*these methods are for login response*/
 
@@ -108,6 +112,7 @@ public class Data {
     public void setFeed_images(ArrayList<FeedImages> feed_images) {
         this.feed_images = feed_images;
     }
+
     public String getVideo_thumbnail() {
         return video_thumbnail;
     }
@@ -415,6 +420,7 @@ public class Data {
     public void setTopicDescription(String topicDescription) {
         this.topicDescription = topicDescription;
     }
+
     @JsonProperty("feed_by")
     public String getFeed_by() {
         return feed_by;
@@ -423,7 +429,8 @@ public class Data {
     public void setFeed_by(String feed_by) {
         this.feed_by = feed_by;
     }
-//    @JsonProperty("feed_text")
+
+    //    @JsonProperty("feed_text")
 //    public String getFeed_text() {
 //        return feed_text;
 //    }
@@ -585,18 +592,27 @@ public class Data {
         this.questionCreatorName = questionCreatorName;
     }
 
-    @JsonProperty("role")
-    public String getRole() {
-        return role;
+    private Boolean isQuestionAddedInPreview = false;
+
+    public Boolean getIsQuestionAddedInPreview() {
+        return isQuestionAddedInPreview;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setIsQuestionAddedInPreview(Boolean isQuestionAddedInPreview) {
+        this.isQuestionAddedInPreview = isQuestionAddedInPreview;
     }
 
-    //getTrial exams
-    private  String total_student_attempted;
-    private String total_student;
+
+    /*these are for the get created exams*/
+
+    @JsonProperty("average_score")
+    public String getAverage_score() {
+        return average_score;
+    }
+
+    public void setAverage_score(String average_score) {
+        this.average_score = average_score;
+    }
 
     @JsonProperty("exam_type")
     public String getExam_type() {
@@ -606,8 +622,6 @@ public class Data {
     public void setExam_type(String exam_type) {
         this.exam_type = exam_type;
     }
-
-    private String exam_type;
 
     @JsonProperty("total_student_attempted")
     public String getTotal_student_attempted() {
@@ -626,5 +640,6 @@ public class Data {
     public void setTotal_student(String total_student) {
         this.total_student = total_student;
     }
+
 
 }

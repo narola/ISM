@@ -16,7 +16,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.adapter.TrialExamsAdapter;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.Data;
+import com.ism.author.model.Request;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
 
@@ -54,10 +54,11 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void initGlobal() {
         gridExams = (GridView) view.findViewById(R.id.grid_trial);// The number of Columns
-        Data data = new Data();
-        data.setRole("4");
-        data.setUserId("370");
-        new WebserviceWrapper(getActivity(), data, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+
+        Request request = new Request();
+        request.setRole(4);
+        request.setUser_id("370");
+        new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                 .execute(WebserviceWrapper.GETALLEXAM);
 
     }

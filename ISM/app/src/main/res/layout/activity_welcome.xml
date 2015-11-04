@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@drawable/bgwelcom">
+
+	<com.ism.commonsource.view.ActionProcessButton
+		android:id="@+id/prog_welcome"
+		android:layout_width="match_parent"
+		android:layout_height="5dp"
+		android:visibility="invisible"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:gravity="center"
+		android:orientation="vertical">
+
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:layout_margin="@dimen/d30dp"
+			android:src="@drawable/welcomism"/>
+
+		<TextView
+			android:id="@+id/txt_welcome_msg"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:textColor="@color/color_text_light_green"
+			android:textSize="@dimen/d30dp"/>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_margin="@dimen/d70dp"
+			android:orientation="horizontal">
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:orientation="vertical">
+
+				<TextView
+					android:layout_width="300sp"
+					android:layout_height="1dp"
+					android:layout_marginBottom="2dp"
+					android:background="@color/color_line_green"/>
+
+				<TextView
+					android:layout_width="300sp"
+					android:layout_height="1dp"
+					android:layout_marginTop="2dp"
+					android:background="@color/color_line_green"/>
+			</LinearLayout>
+
+			<com.ism.helper.GIFView
+				android:id="@+id/gif_book"
+				android:layout_width="100sp"
+				android:layout_height="100sp"
+				android:layout_margin="@dimen/d10dp"
+				android:padding="@dimen/d10dp"
+				app:src="@drawable/loading3"/>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:orientation="vertical">
+
+				<TextView
+					android:layout_width="300sp"
+					android:layout_height="1dp"
+					android:layout_marginBottom="2dp"
+					android:background="@color/color_line_green"/>
+
+				<TextView
+					android:layout_width="300sp"
+					android:layout_height="1dp"
+					android:layout_marginTop="2dp"
+					android:background="@color/color_line_green"/>
+			</LinearLayout>
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/txt_tutorialgroup_"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:textColor="@color/color_white"
+			android:textSize="@dimen/d30dp"/>
+
+	</LinearLayout>
+</RelativeLayout>

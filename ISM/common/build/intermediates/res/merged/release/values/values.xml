@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <attr format="reference" name="drawerArrowStyle"/>
     <attr format="dimension" name="height"/>
@@ -23,13 +23,13 @@
     <color name="background_floating_material_light">@android:color/white</color>
     <color name="background_material_dark">@color/material_grey_850</color>
     <color name="background_material_light">@color/material_grey_50</color>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/colors.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="black_99">#1A000000</color>
     <color name="blue_normal">#ff33b5e5</color>
     <color name="blue_normal_alpha">#6633b5e5</color>
     <color name="blue_pressed">#ff0099cc</color>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <color name="bright_foreground_disabled_material_dark">#80ffffff</color>
     <color name="bright_foreground_disabled_material_light">#80000000</color>
@@ -39,7 +39,7 @@
     <color name="bright_foreground_material_light">@android:color/black</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/colors.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="colorAccent">#FF4081</color>
     <color name="colorPrimary">#3F51B5</color>
@@ -52,7 +52,7 @@
     <color name="cpb_red">#ffff4444</color>
     <color name="cpb_red_dark">#ffcd3a3a</color>
     <color name="cpb_white">@android:color/white</color>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <color name="dim_foreground_disabled_material_dark">#80bebebe</color>
     <color name="dim_foreground_disabled_material_light">#80323232</color>
@@ -60,22 +60,22 @@
     <color name="dim_foreground_material_light">#ff323232</color>
     <color name="foreground_material_dark">@android:color/white</color>
     <color name="foreground_material_light">@android:color/black</color>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/colors.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="green_complete">#ff99cc00</color>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <color name="highlighted_text_material_dark">#6680cbc4</color>
     <color name="highlighted_text_material_light">#66009688</color>
     <color name="hint_foreground_material_dark">@color/bright_foreground_disabled_material_dark</color>
     <color name="hint_foreground_material_light">@color/bright_foreground_disabled_material_light</color>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/colors.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="holo_blue_bright">#ff00ddff</color>
     <color name="holo_green_light">#ff99cc00</color>
     <color name="holo_orange_light">#ffffbb33</color>
     <color name="holo_red_light">#ffff4444</color>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <color name="material_blue_grey_800">#ff37474f</color>
     <color name="material_blue_grey_900">#ff263238</color>
@@ -97,11 +97,11 @@
     <color name="primary_text_default_material_light">#de000000</color>
     <color name="primary_text_disabled_material_dark">#4Dffffff</color>
     <color name="primary_text_disabled_material_light">#39000000</color>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/colors.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="purple_progress">#ffaa66cc</color>
     <color name="red_error">#ffff4444</color>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <color name="ripple_material_dark">#42ffffff</color>
     <color name="ripple_material_light">#1f000000</color>
@@ -203,13 +203,13 @@
     <dimen name="abc_text_size_subtitle_material_toolbar">16dp</dimen>
     <dimen name="abc_text_size_title_material">20sp</dimen>
     <dimen name="abc_text_size_title_material_toolbar">20dp</dimen>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/dimens.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="corner_radius">2dp</dimen>
     <dimen name="cpb_stroke_width">4dp</dimen>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <item name="dialog_fixed_height_major" type="dimen">80%</item>
     <item name="dialog_fixed_height_minor" type="dimen">100%</item>
@@ -217,18 +217,18 @@
     <item name="dialog_fixed_width_minor" type="dimen">320dp</item>
     <item format="float" name="disabled_alpha_material_dark" type="dimen">0.30</item>
     <item format="float" name="disabled_alpha_material_light" type="dimen">0.26</item>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/dimens.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="fab_margin">16dp</dimen>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <item format="float" name="highlight_alpha_material_colored" type="dimen">0.26</item>
     <item format="float" name="highlight_alpha_material_dark" type="dimen">0.20</item>
     <item format="float" name="highlight_alpha_material_light" type="dimen">0.12</item>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/dimens.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="layer_padding">3dp</dimen>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <dimen name="notification_large_icon_height">64dp</dimen>
     <dimen name="notification_large_icon_width">64dp</dimen>
@@ -265,17 +265,17 @@
     <string name="abc_shareactionprovider_share_with">Share with</string>
     <string name="abc_shareactionprovider_share_with_application">Share with %s</string>
     <string name="abc_toolbar_collapse_description">Collapse</string>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/strings.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="app_name">Common</string>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>
     <style name="Animation.AppCompat.Dialog" parent="Base.Animation.AppCompat.Dialog"/>
     <style name="Animation.AppCompat.DropDownUp" parent="Base.Animation.AppCompat.DropDownUp"/>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/styles.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -289,7 +289,7 @@
         <item name="windowNoTitle">true</item>
     </style>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <style name="Base.AlertDialog.AppCompat" parent="android:Widget">
         <item name="android:layout">@layout/abc_alert_dialog_material</item>

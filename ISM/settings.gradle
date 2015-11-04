@@ -1,1 +1,1 @@
-include ':app', ':colorpicker', ':richtexteditor', ':richeditor', ':author', ':author', ':teacher'
+include ':app', ':colorpicker', ':richtexteditor', ':richeditor', ':commonsource', ':author', ':author', ':teacher'

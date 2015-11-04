@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/colors.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="black_99">#1A000000</color>
     <color name="blue_normal">#ff33b5e5</color>
@@ -27,7 +27,7 @@
     <declare-styleable name="CircularProgressButton"><attr format="reference" name="cpb_selectorIdle"/><attr format="reference" name="cpb_selectorComplete"/><attr format="reference" name="cpb_selectorError"/><attr format="string" name="cpb_textComplete"/><attr format="string" name="cpb_textIdle"/><attr format="string" name="cpb_textError"/><attr format="string" name="cpb_textProgress"/><attr format="color" name="cpb_colorProgress"/><attr format="color" name="cpb_colorIndicator"/><attr format="color" name="cpb_colorIndicatorBackground"/><attr format="reference" name="cpb_iconError"/><attr format="reference" name="cpb_iconComplete"/><attr format="dimension" name="cpb_cornerRadius"/><attr format="dimension" name="cpb_paddingProgress"/></declare-styleable>
     <declare-styleable name="FlatButton"><attr format="color" name="pb_colorPressed"/><attr format="color" name="pb_colorNormal"/><attr format="dimension" name="pb_cornerRadius"/></declare-styleable>
     <declare-styleable name="ProcessButton"><attr format="string" name="pb_textProgress"/><attr format="string" name="pb_textComplete"/><attr format="string" name="pb_textError"/><attr format="color" name="pb_colorProgress"/><attr format="color" name="pb_colorComplete"/><attr format="color" name="pb_colorError"/></declare-styleable>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/dimens.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -35,10 +35,10 @@
     <dimen name="cpb_stroke_width">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="layer_padding">3dp</dimen>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/strings.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="app_name">Common</string>
-    <!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/values/styles.xml -->
+    <!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->

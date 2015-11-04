@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="#F5F5F5"
               android:orientation="vertical">
 
@@ -93,13 +94,12 @@
 		android:numColumns="2"
 		android:verticalSpacing="30sp"></GridView>
 
-	<Button
+	<com.ism.commonsource.view.ActionProcessButton
 		android:id="@+id/btn_accept"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
 		android:layout_margin="@dimen/d10dp"
-		android:background="@drawable/background_edittext"
 		android:gravity="center"
 		android:paddingBottom="@dimen/d10dp"
 		android:paddingLeft="@dimen/d60dp"
@@ -108,6 +108,13 @@
 		android:text="@string/striacceptedgroup"
 		android:onClick="onClickAccept"
 		android:textColor="@color/color_white"
-		android:textSize="@dimen/d20dp"/>
+		android:textSize="@dimen/d20dp"
+		app:pb_colorComplete="@color/color_green"
+		app:pb_colorNormal="@color/color_green"
+		app:pb_colorPressed="@color/color_green"
+		app:pb_colorProgress="@color/purple_progress"
+		app:pb_cornerRadius="@dimen/app_button_corner_radius"
+		app:pb_textComplete="@string/striacceptedgroup"
+		app:pb_textProgress="@string/processing"/>
 
 </LinearLayout>

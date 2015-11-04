@@ -19,6 +19,7 @@ import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.LoginRequest;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
+
 /**
  * this is the class for user login.
  */
@@ -138,7 +139,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this)) {
 
             chk_rememberme.setChecked(true);
-           // etUserid.setText(PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorLoginActivity.this));
+            // etUserid.setText(PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorLoginActivity.this));
 //            etPwd.setText(PreferenceData.getStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this));
 
         }

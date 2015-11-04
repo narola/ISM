@@ -4,4 +4,4 @@
     android:shape="rectangle">
     <corners android:radius="@dimen/corner_radius" />
     <solid android:color="@color/red_error" />
-</shape><!-- From: file:/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/common/src/main/res/drawable/rect_error.xml -->
+</shape><!-- From: file:/Volumes/DATA/ISMProject/Source_Code/ISM/ISM/common/src/main/res/drawable/rect_error.xml -->

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_graylight"
-    android:orientation="vertical"
-    tools:context="com.ism.login.ProfileInformationActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:background="@color/color_graylight"
+              android:orientation="vertical"
+              tools:context="com.ism.login.ProfileInformationActivity">
 
     <include layout="@layout/custom_actionbar" />
 
@@ -221,31 +222,67 @@
                         android:orientation="horizontal"
                         android:weightSum="3">
 
-                        <Spinner
-                            android:id="@+id/sp_country"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/d5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/spinner_selector"
-                            android:padding="@dimen/d20dp" />
+                        <LinearLayout
+	                        android:layout_width="0dp"
+	                        android:layout_height="wrap_content"
+	                        android:layout_marginRight="@dimen/d5dp"
+	                        android:layout_weight="1"
+                            android:orientation="vertical">
 
-                        <Spinner
-                            android:id="@+id/sp_state"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/d5dp"
-                            android:layout_weight="1"
-                            android:padding="@dimen/d20dp"
-                            android:background="@drawable/spinner_selector" />
+                            <Spinner
+                                android:id="@+id/sp_country"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/spinner_selector"
+                                android:padding="@dimen/d20dp"/>
 
-                        <Spinner
-                            android:id="@+id/sp_city"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/spinner_selector"
-                            android:padding="@dimen/d20dp" />
+                            <com.ism.commonsource.view.ActionProcessButton
+                                android:id="@+id/prog_country"
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp"
+                                android:visibility="invisible"/>
+                        </LinearLayout>
+
+	                    <LinearLayout
+		                    android:layout_width="0dp"
+		                    android:layout_height="wrap_content"
+		                    android:layout_weight="1"
+		                    android:layout_marginRight="@dimen/d5dp"
+		                    android:orientation="vertical">
+
+		                    <Spinner
+			                    android:id="@+id/sp_state"
+			                    android:layout_width="match_parent"
+			                    android:layout_height="wrap_content"
+			                    android:background="@drawable/spinner_selector"
+			                    android:padding="@dimen/d20dp"/>
+
+		                    <com.ism.commonsource.view.ActionProcessButton
+			                    android:id="@+id/prog_state"
+			                    android:layout_width="match_parent"
+			                    android:layout_height="5dp"
+			                    android:visibility="invisible"/>
+	                    </LinearLayout>
+
+	                    <LinearLayout
+		                    android:layout_width="0dp"
+		                    android:layout_height="wrap_content"
+		                    android:layout_weight="1"
+		                    android:orientation="vertical">
+
+		                    <Spinner
+			                    android:id="@+id/sp_city"
+			                    android:layout_width="match_parent"
+			                    android:layout_height="wrap_content"
+			                    android:background="@drawable/spinner_selector"
+			                    android:padding="@dimen/d20dp"/>
+
+		                    <com.ism.commonsource.view.ActionProcessButton
+			                    android:id="@+id/prog_city"
+			                    android:layout_width="match_parent"
+			                    android:layout_height="5dp"
+			                    android:visibility="invisible"/>
+	                    </LinearLayout>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -543,7 +580,8 @@
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/d20dp" />
 
-                <Button
+                <com.ism.commonsource.view.ActionProcessButton
+	                android:id="@+id/btn_submit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d10dp"
@@ -556,7 +594,14 @@
                     android:text="@string/strsubmit"
                     android:onClick="onClickSubmit"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20dp"
+                    app:pb_colorComplete="@color/color_green"
+                    app:pb_colorNormal="@color/color_green"
+                    app:pb_colorPressed="@color/color_green"
+                    app:pb_colorProgress="@color/purple_progress"
+                    app:pb_cornerRadius="@dimen/app_button_corner_radius"
+                    app:pb_textComplete="@string/strsubmit"
+                    app:pb_textProgress="@string/processing" />
             </LinearLayout>
 
         </LinearLayout>
