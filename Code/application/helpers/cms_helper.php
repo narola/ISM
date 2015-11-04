@@ -597,6 +597,42 @@ function get_recommended($user_id,$user_group_id){
     return select(TBL_TUTORIAL_GROUP_MEMBER.' m','in1.user_id,u.full_name,s.school_name,c.course_name,p.profile_link,sr.id as srid,sr.is_delete',$where,$options);
 }
 
+/*
+*   @auther KAMLESH POKIYA (KAP)
+*   Get high score
+*   display high sscore with user detail in ISM_mock test.
+*/
+    
+function get_highscore($user_id,$classroom_id){
+    
+    $where = array('where' => array('e.classroom_id' => $classroom_id,'e.is_delete' => 0,'e.exam_category' => 'ism_mock'));
+    $high_score = select(TBL_EXAMS.' e','e.id as exam_id,e.subject_id',$where);
+    qry();
+    foreach ($high_score as $key => $value) {
+        
+    }
+
+    $where = 'sc.exam_id IN (SELECT `e`.`id` as `exam_id` FROM `exams` `e` WHERE `e`.`classroom_id` = '.$classroom_id.' AND `e`.`is_delete` = 0 AND `e`.`exam_category` = "ism_mock")';
+    $options = array( 'join' => 
+                        array(
+                            array(
+                                'table' => TBL_EXAMS.' e',
+                                'condition' => 'e.id = sc.exam_id'
+                            ),
+                            array(
+                                'table' => TBL_SUBJECTS.' s',
+                                'condition' => 's.id = e.subject_id'
+                            )
+                        )
+                );
+    $get_score = select(TBL_STUDENT_EXAM_SCORE.' sc','sc.exam_id,s.subject_name,sc.user_id',$where,$options); 
+    echo '<pre>';
+    qry();
+    p($get_score);
+    p($high_score);
+    exit;
+}
+    
 /*  Filter the data to store in database
 *   @Author - SANDIP GOPANI [SAG].
 */

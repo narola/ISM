@@ -19,6 +19,7 @@ class Home extends ISM_Controller {
 		$user_data = $this->session->userdata('user');
 		$user_id = $user_data['id'];
 		$user_group_id = $user_data['group_id'];
+		$user_classroom_id = $user_data['classroom_id'];		
 
 		$my_studymates = studymates($user_id,false);
 		if(sizeof($my_studymates) > 0)
