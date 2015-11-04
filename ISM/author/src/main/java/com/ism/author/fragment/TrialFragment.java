@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -16,7 +17,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.adapter.TrialExamsAdapter;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.Data;
+import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
 
@@ -33,6 +34,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
     private FragmentListener fragListener;
     private GridView gridExams;
     private GridLayoutManager mLayoutManager;
+    private Fragment fragment;
 
     public static TrialFragment newInstance() {
         TrialFragment fragTrial = new TrialFragment();
@@ -48,16 +50,27 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
         view = inflater.inflate(R.layout.fragment_trial, container, false);
 
         initGlobal();
-
+        onClicks();
         return view;
+    }
+
+    private void onClicks() {
+        gridExams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
+
+            }
+        });
     }
 
     private void initGlobal() {
         gridExams = (GridView) view.findViewById(R.id.grid_trial);// The number of Columns
-        Data data = new Data();
-        data.setRole("4");
-        data.setUserId("370");
-        new WebserviceWrapper(getActivity(), data, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+
+        RequestObject requestObject = new RequestObject();
+        requestObject.setRole(4);
+        requestObject.setUserId("370");
+        new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                 .execute(WebserviceWrapper.GETALLEXAM);
 
     }
@@ -69,6 +82,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
                 fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_TRIAL);
+                Debug.i(TAG,"attach");
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -81,6 +95,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
         try {
             if (fragListener != null) {
                 fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_TRIAL);
+                Debug.i(TAG, "detach");
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
@@ -108,5 +123,10 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
         }
 
 
+    }
+
+    public void hadleClick(int position) {
+        ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
+//    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,TrialExamDetailFragment.newInstance()).commit();
     }
 }

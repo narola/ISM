@@ -1,5 +1,6 @@
 package com.ism.author.adapter;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +13,9 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Utils;
+import com.ism.author.fragment.AddQuestionFragment;
 import com.ism.author.helper.MyTypeFace;
-import com.ism.author.model.AnswersModel;
+import com.ism.author.model.QuestionAnswersModel;
 import com.ism.author.model.Data;
 
 import java.util.ArrayList;
@@ -29,10 +31,12 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
     Context mContext;
     ArrayList<Data> listOfPreviewQuestions = new ArrayList<Data>();
     MyTypeFace myTypeFace;
+    Fragment mFragment;
 
 
-    public PreviewQuestionListAdapter(Context context) {
+    public PreviewQuestionListAdapter(Context context, Fragment fragment) {
         this.mContext = context;
+        this.mFragment = fragment;
 
     }
 
@@ -88,6 +92,8 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
             @Override
             public void onClick(View v) {
 
+
+                ((AddQuestionFragment) mFragment).questionListFragment.updateViewAfterDeleteInPreviewQuestion(listOfPreviewQuestions.get(position));
                 listOfPreviewQuestions.remove(listOfPreviewQuestions.get(position));
                 notifyDataSetChanged();
 
@@ -139,7 +145,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         }
     }
 
-    private View getAnsInflaterView(AnswersModel answer, int position) {
+    private View getAnsInflaterView(QuestionAnswersModel answer, int position) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View v;
@@ -150,4 +156,6 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
         return v;
     }
+
+
 }

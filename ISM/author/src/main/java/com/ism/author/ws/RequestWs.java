@@ -12,7 +12,7 @@ public class RequestWs {
 //	}
 
     /**
-     * Post Request
+     * Post Request method
      **/
     public <CLS> CLS getRequest(String url, Class<CLS> cls, Object reqCls) throws Exception {
         /*if (nameValuePair != null) {

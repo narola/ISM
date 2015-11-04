@@ -16,9 +16,10 @@ import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utility;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
-import com.ism.author.model.LoginRequest;
+import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
+
 /**
  * this is the class for user login.
  */
@@ -120,11 +121,11 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
     private void authenticateUser() {
         try {
-            LoginRequest loginRequest = new LoginRequest();
-            loginRequest.setUsername("0YGAJ8793B");
-            loginRequest.setPassword("narola21");
+            RequestObject requestObject = new RequestObject();
+            requestObject.setUsername("0YGAJ8793B");
+            requestObject.setPassword("narola21");
 
-            new WebserviceWrapper(AuthorLoginActivity.this, loginRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+            new WebserviceWrapper(AuthorLoginActivity.this, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebserviceWrapper.LOGIN);
 
         } catch (Exception e) {
@@ -138,7 +139,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, AuthorLoginActivity.this)) {
 
             chk_rememberme.setChecked(true);
-           // etUserid.setText(PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorLoginActivity.this));
+            // etUserid.setText(PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AuthorLoginActivity.this));
 //            etPwd.setText(PreferenceData.getStringPrefs(PreferenceData.USER_PASSWORD, AuthorLoginActivity.this));
 
         }

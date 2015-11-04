@@ -1,6 +1,8 @@
 package com.ism.teacher.adapters;
 
+import android.app.Fragment;
 import android.content.Context;
+
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -15,7 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
+
 import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.fragments.AddQuestionFragmentTeacher;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.AnswersModel;
 import com.ism.teacher.model.Data;
@@ -31,15 +35,25 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
 
     Context mContext;
+
+
     ArrayList<Data> listOfQuestions = new ArrayList<Data>();
-    MyTypeFace myTypeFace;
-    boolean dropdownFlag = false;
 
-    public QuestionBankListAdapter(Context context) {
-        this.mContext = context;
-
+    public ArrayList<Data> getListOfPreviewQuestionsToAdd() {
+        return listOfPreviewQuestionsToAdd;
     }
 
+    ArrayList<Data> listOfPreviewQuestionsToAdd = new ArrayList<Data>();
+    MyTypeFace myTypeFace;
+
+    Fragment mFragment;
+    boolean dropdownFlag = false;
+
+    public QuestionBankListAdapter(Context context, Fragment fragment) {
+        this.mContext = context;
+        this.mFragment = fragment;
+
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -55,13 +69,12 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-
-        holder.tvQuestionNo.setText(holder.tvQuestionNo.getText() + " " + (position + 1));
+        holder.tvQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
         holder.tvQuestionNo.setTypeface(myTypeFace.getRalewayBold());
         holder.tvQuestionNo.setPaintFlags(holder.tvQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         holder.tvQuestionCategory.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvQuestionCategory.setText(holder.tvQuestionCategory.getText());
+        holder.tvQuestionCategory.setText(mContext.getString(R.string.strcategory));
         String category = " " + listOfQuestions.get(position).getSubject_name();
         SpannableString f = new SpannableString(category);
         f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
@@ -69,7 +82,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         holder.tvQuestionCategory.append(f);
 
         holder.tvQuestionCreatedby.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvQuestionCreatedby.setText(holder.tvQuestionCreatedby.getText());
+        holder.tvQuestionCreatedby.setText(mContext.getString(R.string.strcreatedby));
         String creator = " " + listOfQuestions.get(position).getQuestionCreatorName();
         f = new SpannableString(creator);
         f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
@@ -124,6 +137,35 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             }
         });
 
+        holder.chkSelectQuestion.setChecked(listOfQuestions.get(position).getIsQuestionAddedInPreview());
+
+        holder.chkSelectQuestion.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                if (!((AddQuestionFragmentTeacher) mFragment).previewQuestionFragment.listOfPreviewQuestions.contains(listOfQuestions.get(position))) {
+
+
+                    if (holder.chkSelectQuestion.isChecked()) {
+                        listOfQuestions.get(position).setIsQuestionAddedInPreview(true);
+                        listOfPreviewQuestionsToAdd.add(listOfQuestions.get(position));
+
+                    } else {
+                        listOfQuestions.get(position).setIsQuestionAddedInPreview(false);
+                        listOfPreviewQuestionsToAdd.remove(listOfQuestions.get(position));
+                    }
+
+                } else {
+                    listOfQuestions.get(position).setIsQuestionAddedInPreview(true);
+                }
+                notifyDataSetChanged();
+
+
+            }
+        });
+
 
     }
 
@@ -167,8 +209,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             imgQuestionAddtofavourite = (ImageView) itemView.findViewById(R.id.img_question_addtofavourite);
 
             chkSelectQuestion = (CheckBox) itemView.findViewById(R.id.chk_select_question);
-
-
         }
     }
 
@@ -183,5 +223,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
         return v;
     }
+
 
 }

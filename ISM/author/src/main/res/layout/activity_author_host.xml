@@ -74,43 +74,43 @@
                 android:visibility="gone"></Spinner>
 
 
-            <TextView
-                android:id="@+id/txt_one"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@id/img_back"
-                android:gravity="center"
-                android:paddingLeft="@dimen/controller_menu_text_padding"
-                android:paddingRight="@dimen/controller_menu_text_padding"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/controller_top_menu_text_size"
-                android:visibility="gone" />
+            <!--<TextView-->
+                <!--android:id="@+id/txt_one"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_toRightOf="@id/img_back"-->
+                <!--android:gravity="center"-->
+                <!--android:paddingLeft="@dimen/controller_menu_text_padding"-->
+                <!--android:paddingRight="@dimen/controller_menu_text_padding"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:textSize="@dimen/controller_top_menu_text_size"-->
+                <!--android:visibility="gone" />-->
 
-            <TextView
-                android:id="@+id/txt_two"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@id/txt_one"
-                android:background="@drawable/bg_left_controller_top_button"
-                android:gravity="center"
-                android:paddingLeft="@dimen/controller_menu_text_padding"
-                android:paddingRight="@dimen/controller_menu_text_padding"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/controller_top_menu_text_size"
-                android:visibility="gone" />
+            <!--<TextView-->
+                <!--android:id="@+id/txt_two"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_toRightOf="@id/txt_one"-->
+                <!--android:background="@drawable/bg_left_controller_top_button"-->
+                <!--android:gravity="center"-->
+                <!--android:paddingLeft="@dimen/controller_menu_text_padding"-->
+                <!--android:paddingRight="@dimen/controller_menu_text_padding"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:textSize="@dimen/controller_top_menu_text_size"-->
+                <!--android:visibility="gone" />-->
 
-            <TextView
-                android:id="@+id/txt_three"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@id/txt_two"
-                android:background="@drawable/bg_left_controller_top_button"
-                android:gravity="center"
-                android:paddingLeft="@dimen/controller_menu_text_padding"
-                android:paddingRight="@dimen/controller_menu_text_padding"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/controller_top_menu_text_size"
-                android:visibility="gone" />
+            <!--<TextView-->
+                <!--android:id="@+id/txt_three"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_toRightOf="@id/txt_two"-->
+                <!--android:background="@drawable/bg_left_controller_top_button"-->
+                <!--android:gravity="center"-->
+                <!--android:paddingLeft="@dimen/controller_menu_text_padding"-->
+                <!--android:paddingRight="@dimen/controller_menu_text_padding"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:textSize="@dimen/controller_top_menu_text_size"-->
+                <!--android:visibility="gone" />-->
 
             <TextView
                 android:id="@+id/txt_action"

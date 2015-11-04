@@ -110,8 +110,8 @@ public class TagUserDialog extends Dialog implements View.OnClickListener {
 
             String[] tagUserArray = searchStudyMatesAdapter.getTagIds().toArray(new String[searchStudyMatesAdapter.getTagIds().size()]);
             if (tagUserArray.length > 0) {
-                ((HomeFragment) fragment).tagFriendInFeedRequest.setUser_id(WebConstants.tagUserArray);
-                ((HomeFragment) fragment).callTagFriendInFeed();
+                ((HomeFragment) fragment).tagFriendInFeedRequest.setTaggedUserIds(WebConstants.tagUserArray);
+                ((HomeFragment) fragment).callApiTagFriendInFeed();
                 dismiss();
             } else {
                 Utils.showToast(mContext.getString(R.string.strselectuser), mContext);
