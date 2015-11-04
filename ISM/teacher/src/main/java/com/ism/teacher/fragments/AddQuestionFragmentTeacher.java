@@ -3,7 +3,6 @@ package com.ism.teacher.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.model.Data;
 
 /**
  * Created by c75 on 31/10/15.
@@ -57,7 +55,7 @@ public class AddQuestionFragmentTeacher extends Fragment {
 
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.fl_addquestionfragment_container_left, new QuestionListFragment(this))
+                .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
                 .addToBackStack(String.valueOf(FRAGMENT_QUESTIONLIST))
                 .commit();
         loadFragmentInRightContainer();
@@ -97,7 +95,7 @@ public class AddQuestionFragmentTeacher extends Fragment {
                 .setCustomAnimations(
                         R.animator.card_flip_right_in, R.animator.card_flip_right_out,
                         R.animator.card_flip_left_in, R.animator.card_flip_left_out)
-                .replace(R.id.fl_addquestionfragment_container_left, new AddNewQuestionFromAssignment(this))
+                .replace(R.id.fl_addquestionfragment_container_left,questionAddEditFragment)
                 .addToBackStack(null)
                 .commit();
         //loadFragment(FRAGMENT_QUESTIONADDEDIT);
@@ -108,7 +106,6 @@ public class AddQuestionFragmentTeacher extends Fragment {
 //            mShowingBack = false;
 
 //        }
-
 
     }
 
@@ -124,8 +121,4 @@ public class AddQuestionFragmentTeacher extends Fragment {
 
     }
 
-
-    public void addQuestionToPreviewFragment() {
-        previewQuestionFragment.addQuestionsToPreviewFragment();
-    }
 }

@@ -449,4 +449,15 @@ public class Data {
     public void setQuestionCreatorName(String questionCreatorName) {
         this.questionCreatorName = questionCreatorName;
     }
+
+
+    private Boolean isQuestionAddedInPreview = false;
+
+    public Boolean getIsQuestionAddedInPreview() {
+        return isQuestionAddedInPreview;
+    }
+
+    public void setIsQuestionAddedInPreview(Boolean isQuestionAddedInPreview) {
+        this.isQuestionAddedInPreview = isQuestionAddedInPreview;
+    }
 }

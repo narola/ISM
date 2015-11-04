@@ -6,24 +6,25 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/d20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_add_question_title"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@color/color_assignment_question">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Add New Question" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:background="@color/fragment_background_color"
+                android:gravity="center"
+                android:padding="@dimen/d15dp"
+                android:text="@string/straddnewquestion"
+                android:textColor="@color/color_question"
+                android:textSize="22sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -36,7 +37,8 @@
                     android:layout_height="wrap_content"
                     android:text="Question Title"
                     android:textColor="@color/color_blue"
-                    android:textSize="16sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -96,7 +98,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/d10dp"
+                        android:layout_marginTop="@dimen/d20dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -107,7 +109,9 @@
                             android:layout_marginLeft="@dimen/d15dp"
                             android:layout_marginRight="@dimen/d15dp"
                             android:text="Question Type"
-                            android:textColor="@color/color_blue" />
+                            android:textColor="@color/color_blue"
+                            android:textSize="@dimen/d20sp"
+                            android:textStyle="bold" />
 
                         <Spinner
                             android:id="@+id/sp_question_type"
@@ -154,19 +158,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/d15dp"
                 android:layout_marginRight="@dimen/d15dp"
-                android:layout_marginTop="@dimen/d10dp"
+                android:layout_marginTop="@dimen/d20dp"
                 android:background="@color/color_assignment_question"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/et_answer_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_dash_border"
+                    android:gravity="top"
                     android:hint="Answer"
                     android:minLines="2"
-                    android:gravity="top"
 
                     />
             </LinearLayout>
@@ -176,7 +179,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/d15dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_marginRight="@dimen/d15dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -187,15 +193,20 @@
                     android:layout_marginLeft="@dimen/d15dp"
                     android:layout_marginRight="@dimen/d15dp"
                     android:text="Question Type"
-                    android:textColor="@color/color_blue" />
+                    android:textColor="@color/color_blue"
+                    android:textSize="@dimen/d20sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/ll_question_tags"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="80dp"
                     android:background="@drawable/bg_news_feed"
                     android:orientation="horizontal">
-
+                    <com.ism.teacher.multiautocomplete.ChipsMultiAutoCompleteTextview
+                        android:id="@+id/autoCompleteTextview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -214,6 +225,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/d20dp"
                     android:layout_marginRight="@dimen/d15dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_news_feed"
@@ -281,8 +293,7 @@
         android:layout_height="@dimen/d50dp"
         android:layout_alignParentBottom="true"
         android:background="@color/color_bottom_add_question"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:gravity="center_vertical">
 
         <CheckBox
             android:id="@+id/chk_add_to_preview"

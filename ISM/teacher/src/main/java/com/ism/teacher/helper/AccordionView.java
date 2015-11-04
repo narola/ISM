@@ -3,6 +3,7 @@
  */
 package com.ism.teacher.helper;
 
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -18,7 +19,6 @@ import com.ism.teacher.Utility.FontUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-
 /**
  * Created by c162 on 07/10/15.
  */

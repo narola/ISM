@@ -1,30 +1,28 @@
 package com.ism.teacher.fragments;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ism.R;
-import com.ism.interfaces.FragmentListener;
-import com.ism.object.MyTypeFace;
+import com.ism.teacher.R;
+import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.QuestionBankListAdapter;
 import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
 import com.ism.teacher.model.Request;
 import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.ws.WebserviceWrapper;
-import com.ism.utility.Debug;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,18 +35,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
 
     private static final String TAG = QuestionListFragment.class.getSimpleName();
-    Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistExamType;
-    List<String> arrListExamType;
-    List<Data> arrListSubject, arrListCourses;
-    EditText etQuestionlistSearch;
-    TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview;
-    public RecyclerView rvQuestionlist;
-    QuestionBankListAdapter questionBankListAdapter;
-    ArrayList<Data> listOfQuestionBank = new ArrayList<Data>();
-
-
-    MyTypeFace myTypeFace;
-    View view;
+    private View view;
 
     //    private FragmentListener fragListener;
     Fragment mFragment;
@@ -58,6 +45,20 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         // Required empty public constructor
         this.mFragment = fragment;
     }
+
+
+    Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistExamType;
+    List<String> arrListExamType;
+    List<Data> arrListSubject, arrListCourses;
+    EditText etQuestionlistSearch;
+    TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview;
+    RecyclerView rvQuestionlist;
+    QuestionBankListAdapter questionBankListAdapter;
+
+    ArrayList<Data> listOfQuestionBank = new ArrayList<Data>();
+
+
+    MyTypeFace myTypeFace;
 
 
     @Override
@@ -154,20 +155,19 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.no_internet), getActivity());
+            Utils.showToast(getString(R.string.strnetissue), getActivity());
         }
 
     }
 
-    ResponseObject getQuestionBankResponseObject;
+
+    public ResponseObject getQuestionBankResponseObject;
 
     @Override
     public void onResponse(int apiMethodName, Object object, Exception error) {
 
 
         try {
-
-
             if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
 
                 ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
@@ -213,6 +213,9 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
                     listOfQuestionBank.addAll(getQuestionBankResponseObject.getData());
                     questionBankListAdapter.addAll(listOfQuestionBank);
+
+                    Log.e("list_size_after_api", "" + listOfQuestionBank.size());
+
                 } else {
                     Utils.showToast(getQuestionBankResponseObject.getMessage(), getActivity());
                 }
@@ -230,9 +233,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
         if (v == tvQuestionlistAddPreview) {
 
-            if (((AddQuestionFragmentTeacher) mFragment).previewQuestionFragment.listOfPreviewQuestions.size() > 0) {
+            if (questionBankListAdapter.getListOfPreviewQuestionsToAdd().size() > 0) {
 
-                ((AddQuestionFragmentTeacher) mFragment).addQuestionToPreviewFragment();
+                ((AddQuestionFragmentTeacher) mFragment).previewQuestionFragment.addQuestionsToPreviewFragment(questionBankListAdapter.getListOfPreviewQuestionsToAdd());
+                questionBankListAdapter.getListOfPreviewQuestionsToAdd().clear();
 
             } else {
                 Utils.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
@@ -241,18 +245,30 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
 
         } else if (v == tvQuestionlistAddNewQuestion) {
-
             ((AddQuestionFragmentTeacher) mFragment).flipCard();
 
         }
 
     }
 
-    int position;
-
     public void updateViewAfterDeleteInPreviewQuestion(Data data) {
+
+        //Log.e("list_sizexzxZx", "" + getQuestionBankResponseObject.getData().size());
+        // Log.e("list_size", "" + listOfQuestionBank.size());
+
+        if(listOfQuestionBank.size()>0)
+        {
+            int position = listOfQuestionBank.indexOf(data);
+            listOfQuestionBank.get(position).setIsQuestionAddedInPreview(false);
+            questionBankListAdapter.addAll(listOfQuestionBank);
+            ((AddQuestionFragmentTeacher) mFragment).previewQuestionFragment.listOfPreviewQuestions.remove(data);
+        }
+        else
+        {
+            Log.e("list_size", "" + listOfQuestionBank.size());
+        }
+
 
 
     }
-
 }

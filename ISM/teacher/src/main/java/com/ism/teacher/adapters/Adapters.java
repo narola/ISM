@@ -7,11 +7,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ism.teacher.R;
 import com.ism.teacher.helper.MyTypeFace;
 
 import java.util.List;
-
+import com.ism.teacher.R;
 /**
  * Created by c161 on 27/10/15.
  */

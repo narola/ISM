@@ -18,7 +18,7 @@
             android:background="@color/fragment_background_color"
             android:gravity="center"
             android:padding="@dimen/d15dp"
-            android:text="@string/strpreview"
+            android:text="Preview"
             android:textColor="@color/color_question"
             android:textSize="@dimen/d22dp" />
 

@@ -1,6 +1,5 @@
 package com.ism.teacher.fragments;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,12 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ism.R;
-import com.ism.interfaces.FragmentListener;
-import com.ism.object.MyTypeFace;
+import com.ism.teacher.R;
 import com.ism.teacher.adapters.PreviewQuestionListAdapter;
+import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
-import com.ism.utility.Debug;
 
 import java.util.ArrayList;
 
@@ -75,8 +72,15 @@ public class PreviewQuestionFragment extends Fragment {
     }
 
 
-    public void addQuestionsToPreviewFragment() {
-        previewQuestionListAdapter.addAll(listOfPreviewQuestions);
+    public void addQuestionsToPreviewFragment(ArrayList<Data> data) {
+
+        if (data.size() > 0) {
+
+            listOfPreviewQuestions.addAll(data);
+            previewQuestionListAdapter.addAll(listOfPreviewQuestions);
+
+        }
+
 
     }
 
