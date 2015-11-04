@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.ism.helper.CircleImageView
+        <com.ism.views.CircleImageView
             android:layout_width="100sp"
             android:layout_height="100sp"
             android:src="@drawable/userdp" />

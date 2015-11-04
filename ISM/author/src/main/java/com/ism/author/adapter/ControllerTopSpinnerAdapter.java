@@ -70,7 +70,7 @@ public class ControllerTopSpinnerAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	class ViewHolder {
+	public class ViewHolder {
 		TextView textTitle;
 	}
 

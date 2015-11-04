@@ -6,7 +6,7 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/color_graylight"
               android:orientation="vertical"
-              tools:context="com.ism.login.ProfileInformationActivity">
+              tools:context="com.ism.activity.ProfileInformationActivity">
 
     <include layout="@layout/custom_actionbar" />
 
@@ -191,7 +191,7 @@
                             android:onClick="onClickUploadImage"
                             android:orientation="vertical">
 
-                            <com.ism.helper.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            <com.ism.views.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                                 android:id="@+id/img_dp_post_creator"
                                 android:layout_width="200sp"
                                 android:layout_height="match_parent"

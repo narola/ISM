@@ -9,21 +9,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ism.HostActivity;
+import com.ism.activity.HostActivity;
 import com.ism.R;
 import com.ism.adapter.EventsAdapter;
 import com.ism.adapter.HighScoreAdapter;
 import com.ism.adapter.NoticeAdapter;
-import com.ism.helper.AccordionView;
+import com.ism.views.AccordionView;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.EventsModel;
 import com.ism.model.HighScoreModel;
 import com.ism.model.HighScoreStudentModel;
-import com.ism.model.NoticeModel;
+import com.ism.model.Notice;
 import com.ism.object.MyTypeFace;
 
 import java.util.ArrayList;
@@ -36,11 +37,13 @@ public class NotesFragment extends Fragment {
     private static final String TAG = NotesFragment.class.getSimpleName();
 
     private View view;
-
-    private FragmentListener fragListener;
     private AccordionView accordionNotes;
     private ListView lvNotice, lvEvents, lvHighScore;
-    private TextView txtViewAll;
+    private TextView txtViewAllNotice;
+
+	private HostActivity activityHost;
+	private NoticeAdapter adpNotice;
+    private FragmentListener fragListener;
 
     public static NotesFragment newInstance() {
         NotesFragment fragNotes = new NotesFragment();
@@ -56,27 +59,48 @@ public class NotesFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_notes, container, false);
 
         initGlobal(view);
-        setUpListView();
+
         return view;
     }
 
+	private void initGlobal(View v) {
+		accordionNotes = (AccordionView) v.findViewById(R.id.accordion_view_chat);
+		lvNotice = (ListView) v.findViewById(R.id.lv_notice);
+		lvEvents = (ListView) v.findViewById(R.id.lv_events);
+		lvHighScore = (ListView) v.findViewById(R.id.lv_highScore);
+		txtViewAllNotice = (TextView) v.findViewById(R.id.txt_viewAll_notice);
+
+		txtViewAllNotice.setTypeface(new MyTypeFace(getActivity()).getRalewaySemiBold());
+
+		txtViewAllNotice.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activityHost.showAllNotice();
+			}
+		});
+
+		setUpListView();
+	}
+
     private void setUpListView() {
         //NOTICE
-        NoticeModel model;
+        //logic for adapter => set  only two record for adapter. if four or more record found then setvisibilty of VIEW ALL VISIBLE.
+        ArrayList<Notice> arrayListNotice = new ArrayList<Notice>();
+        arrayListNotice.add(new Notice("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years."));
+        arrayListNotice.add(new Notice("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years. Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years."));
+        arrayListNotice.add(new Notice("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years."));
+        arrayListNotice.add(new Notice("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years. Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years."));
 
-        //logic for adapter =>set  only two record for adapter if four or more record found then setvisibilty of VIEW ALL VISIBLE
-        ArrayList<NoticeModel> arrayListNotice = new ArrayList<NoticeModel>();
-        model = new NoticeModel("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years.");
-        arrayListNotice.add(model);
-        model = new NoticeModel("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years. Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years.");
-        arrayListNotice.add(model);
-        lvNotice.setAdapter(new NoticeAdapter(getActivity(), arrayListNotice));
-        if (arrayListNotice.size() == 1)
-            lvNotice.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        if (arrayListNotice.size() > 2) {
-            txtViewAll.setVisibility(View.VISIBLE);
+	    adpNotice = new NoticeAdapter(getActivity(), arrayListNotice, activityHost);
+	    lvNotice.setAdapter(adpNotice);
+
+	    if (arrayListNotice.size() > 2) {
+            txtViewAllNotice.setVisibility(View.VISIBLE);
         } else {
-            txtViewAll.setVisibility(View.VISIBLE);
+		    if (arrayListNotice.size() == 1) {
+			    lvNotice.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		    }
+            txtViewAllNotice.setVisibility(View.GONE);
         }
 
         //EVENTS
@@ -100,31 +124,13 @@ public class NotesFragment extends Fragment {
         highScoreModel = new HighScoreModel("Science", arrayListHighScoreStudentList);
         arrayListHighScore.add(highScoreModel);
         lvHighScore.setAdapter(new HighScoreAdapter(getActivity(), arrayListHighScore));
-
-    }
-
-    private void initGlobal(View v) {
-        accordionNotes = (AccordionView) v.findViewById(R.id.accordion_view_chat);
-        //NOTICE
-        lvNotice = (ListView) v.findViewById(R.id.lv_notice);
-        lvNotice.setDivider(new ColorDrawable(Color.parseColor("#f4f4f4")));
-        lvNotice.setDividerHeight(2);
-        txtViewAll = (TextView) v.findViewById(R.id.txt_viewAll);
-        txtViewAll.setTypeface(new MyTypeFace(getActivity()).getRalewaySemiBold());
-        //EVENTS
-        lvEvents = (ListView) v.findViewById(R.id.lv_events);
-        lvEvents.setDivider(new ColorDrawable(Color.parseColor("#f4f4f4")));
-        lvEvents.setDividerHeight(2);
-
-        //HIGH SCORE
-        lvHighScore = (ListView) v.findViewById(R.id.lv_highScore);
-
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
+	        activityHost = (HostActivity) activity;
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
                 fragListener.onFragmentAttached(HostActivity.FRAGMENT_NOTES);

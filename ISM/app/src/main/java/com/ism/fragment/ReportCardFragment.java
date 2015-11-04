@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ism.HostActivity;
+import com.ism.activity.HostActivity;
 import com.ism.R;
 import com.ism.interfaces.FragmentListener;
 

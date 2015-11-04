@@ -10,11 +10,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <com.ism.helper.ToggleImageLabeledButton
+        <com.ism.views.ToggleImageLabeledButton
             android:id="@+id/foldButton"
             android:layout_width="0dip"
             android:layout_height="0dip"

@@ -50,7 +50,7 @@ public class TrialExamsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
         if (convertView == null) {
@@ -83,14 +83,15 @@ public class TrialExamsAdapter extends BaseAdapter {
             holder.txtStudentAttempted.setText(data.getData().get(position).getTotal_student_attempted());
             holder.txtStudentAttempted.setTypeface(myTypeFace.getRalewayBold());
 
+            holder.txtAverage.setText(data.getData().get(position).getAverage_score()+"%");
             holder.txtAverage.setTypeface(myTypeFace.getRalewayThin());
             holder.txtAttempted.setTypeface(myTypeFace.getRalewayThin());
 
-//            holder.llOfficeTab.setOnClickListener(new View.OnClickListener() {
+//            convertView.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
 //
-//                    ((OfficeFragment) fragment).handleTabClick(position);
+//                    ((OfficeFragment) fragment).handleTabClick(3);
 //
 //
 //                }

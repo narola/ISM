@@ -14,7 +14,7 @@
 		android:layout_marginRight="@dimen/d15dp"
 		android:background="@color/divider"/>
 
-	<com.ism.helper.CircleImageView
+	<com.ism.views.CircleImageView
 		android:id="@+id/img_dp"
 		android:layout_width="@dimen/dp_size_list"
 		android:layout_height="@dimen/dp_size_list"

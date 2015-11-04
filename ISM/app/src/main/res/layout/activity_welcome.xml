@@ -60,7 +60,7 @@
 					android:background="@color/color_line_green"/>
 			</LinearLayout>
 
-			<com.ism.helper.GIFView
+			<com.ism.views.GIFView
 				android:id="@+id/gif_book"
 				android:layout_width="100sp"
 				android:layout_height="100sp"

@@ -420,7 +420,6 @@ public class Data {
     public void setTopicDescription(String topicDescription) {
         this.topicDescription = topicDescription;
     }
-
     @JsonProperty("feed_by")
     public String getFeed_by() {
         return feed_by;
