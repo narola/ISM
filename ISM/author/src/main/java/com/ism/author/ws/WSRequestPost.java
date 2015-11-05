@@ -30,6 +30,7 @@ public class WSRequestPost {
     private static ObjectMapper mapper = null;
     private static final String LOG_TAG = "WSRequestPost";
     private String url;
+    private String TAG=WSRequestPost.class.getSimpleName();
 
     public WSRequestPost(String url) {
         this.url = url;
@@ -51,7 +52,7 @@ public class WSRequestPost {
                 if (request != null) {
                     // writer.writeValueAsString( request );
                     jsonObject = writer.writeValueAsString(request);
-                    Log.i("main", jsonObject + "");
+                    Log.i(TAG, "JSON OBJECT : "+jsonObject + "");
                 }
 
 

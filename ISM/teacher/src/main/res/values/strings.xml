@@ -293,4 +293,17 @@
     <string name="strcomment">Comment</string>
 
 
+
+    <!-- Add Edit Question-->
+    <string name="strquestiontitle">Question Title</string>
+    <string name="strquestiontype">Question Type</string>
+    <string name="strmultiplechoice">Multiple Choice</string>
+    <string name="strevaluationnotes">Evaluation Notes</string>
+    <string name="straddquestiontopreview">Add Question to preview</string>
+    <string name="strsaveandaddmore">Save &amp; Add More</string>
+    <string name="strpreview">Preview</string>
+    <string name="strhinttheiranswer">Their Answer</string>
+    <string name="strbiology">Biology</string>
+    <string name="strfreeze">Freeze</string>
+
 </resources>

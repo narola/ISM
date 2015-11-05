@@ -26,6 +26,7 @@ import com.ism.author.fragment.AddQuestionFragment;
 import com.ism.author.fragment.BooksFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.OfficeFragment;
+import com.ism.author.fragment.StudentAttemptedFragment;
 import com.ism.author.fragment.TrialAddNewFragment;
 import com.ism.author.fragment.TrialExamDetailFragment;
 import com.ism.author.fragment.TrialFragment;
@@ -33,6 +34,8 @@ import com.ism.author.helper.ControllerTopMenuItem;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.rightcontainerfragment.AuthorProfileFragment;
 import com.ism.author.rightcontainerfragment.HighScoreFragment;
+import com.ism.commonsource.view.ActionProcessButton;
+import com.ism.commonsource.view.ProgressGenerator;
 
 import java.util.ArrayList;
 
@@ -75,6 +78,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     * these are the fragments for the main fragment.
     * */
 
+
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_OFFICE = 1;
     public static final int FRAGMENT_BOOKS = 2;
@@ -87,13 +91,15 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_TRIAL = 9;
     public static final int FRAGMENT_ADDNEWTRIAL = 10;
     public static final int FRAGMENT_ADDQUESTION = 11;
-    public static final int FRAGMENT_TRIAL_EXAM_DETAILS = 15;
+    public static final int FRAGMENT_TRIAL_EXAM_DETAILS = 16;
 
     //these are the right side fragments
 
     public static final int FRAGMENT_AUTHORPROFILE = 12;
     public static final int FRAGMENT_HIGHSCORE = 13;
     public static final int FRAGMENT_CHAT = 14;
+    public static final int FRAGMENT_STUDENT_ATTEMPTED = 15;
+
 
     private InputMethodManager inputMethod;
     //these are the fragments for the author edit profile screen.
@@ -105,6 +111,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static int currentMainFragment;
     public static int currentRightFragment;
     private int currentMainFragmentBg;
+    private ActionProcessButton progress_bar;
+    private ProgressGenerator progressGenerator;
 
 
     public interface HostListener {
@@ -132,7 +140,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         llControllerLeft = (LinearLayout) findViewById(R.id.ll_controller_left);
         flFragmentContainerMain = (FrameLayout) findViewById(R.id.fl_fragment_container_main);
         flFragmentContainerRight = (FrameLayout) findViewById(R.id.fl_fragment_container_right);
-
+        progress_bar = (ActionProcessButton) findViewById(R.id.progress_bar);
+        progressGenerator=new ProgressGenerator();
 
         imgLogo = (ImageView) findViewById(R.id.img_logo);
         imgHome = (ImageView) findViewById(R.id.img_home);
@@ -147,7 +156,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
         controllerTopMenuTrial = ControllerTopMenuItem.getMenuTrial(AuthorHostActivity.this);
         controllerTopMenuHome = ControllerTopMenuItem.getMenuHome(AuthorHostActivity.this);
-        controllerTopMenuTrialMenu =ControllerTopMenuItem.getMenuTrialSubMenu(AuthorHostActivity.this);
+        controllerTopMenuTrialMenu = ControllerTopMenuItem.getMenuTrialSubMenu(AuthorHostActivity.this);
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
 
 
@@ -259,48 +268,13 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     break;
 
                 case FRAGMENT_TRIAL_EXAM_DETAILS:
-                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TrialExamDetailFragment.newInstance()).commit();
-//                    mFragmentTransaction = mFragmentManager.beginTransaction();
-//                    mFragmentTransaction.add(R.id.fl_fragment_container_main, TrialExamDetailFragment.newInstance());
-//                    mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_TRIAL_EXAM_DETAILS));
-//                    mFragmentTransaction.commit();
-
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TrialExamDetailFragment.newInstance()).commit();
 
                     break;
 
 
-//                case FRAGMENT_GOTRENDING:
-//
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GoTrendingFragment.newInstance()).commit();
-//                    break;
-//
-//                case FRAGMENT_SETQUIZ:
-//
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, SetQuizFragment.newInstance()).commit();
-//                    break;
-//
-//                case FRAGMENT_PROGRESSREPORT:
-//
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ProgressReportFragment.newInstance()).commit();
-//                    break;
-//
-//                case FRAGMENT_MYFEEDS:
-//
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyFeedsFragment.newInstance()).commit();
-//                    break;
-//
-//                case FRAGMENT_FOLLOWING:
-//
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, FollowingFragment.newInstance()).commit();
-//                    break;
-//
-//                case FRAGMENT_MYACTIVITY:
-//
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyActivityFragment.newInstance()).commit();
-//                    break;
-
-
-            }currentMainFragment = fragment;
+            }
+            currentMainFragment = fragment;
 
         } catch (Exception e) {
             Log.i(TAG, "loadFragment Exception : " + e.toString());
@@ -311,7 +285,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
 
     //these is for the load fragment in right container.
-    private void loadFragmentInRightContainer(int fragment) {
+    public void loadFragmentInRightContainer(int fragment) {
         try {
             switch (fragment) {
 
@@ -321,6 +295,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
                 case FRAGMENT_HIGHSCORE:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, HighScoreFragment.newInstance()).commit();
+                    break;
+                case FRAGMENT_STUDENT_ATTEMPTED:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedFragment.newInstance()).commit();
                     break;
             }
 
@@ -459,6 +436,19 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
                     loadControllerTopMenu(controllerTopMenuTrialMenu);
                     break;
+                case FRAGMENT_STUDENT_ATTEMPTED:
+                    currentRightFragment = fragment;
+                    currentMainFragmentBg = R.color.bg_office;
+                    imgOffice.setActivated(true);
+//                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_office);
+//                    txtAction.setTextColor(getResources().getColor(R.color.bg_office));
+//                    txtTitle.setTextColor(getResources().getColor(R.color.bg_office));
+//                    loadControllerTopMenu(controllerTopMenuTrialMenu);
+                    imgChat.setActivated(false);
+                    imgSearch.setActivated(false);
+                    imgAuthorProfile.setActivated(false);
+                    break;
+
 
             }
 
@@ -501,6 +491,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_TRIAL_EXAM_DETAILS:
                     imgOffice.setActivated(true);
                     break;
+                case FRAGMENT_STUDENT_ATTEMPTED:
+                    imgOffice.setActivated(true);
+                    break;
 
 
             }
@@ -521,11 +514,13 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                 hideControllerTopControls();
                 rlControllerTopMenu.setVisibility(View.GONE);
             } else {
+
+
                 rlControllerTopMenu.setVisibility(View.VISIBLE);
                 txtTitle.setVisibility(View.GONE);
                 hideControllerTopControls();
-                startSlideAnimation(imgBack, -1000, 0, 0, 0);
-                imgBack.setVisibility(View.VISIBLE);
+                            startSlideAnimation(imgBack, -1000, 0, 0, 0);
+                            imgBack.setVisibility(View.VISIBLE);
 
                 if (menu.get(0).getMenuItemTitle() != null) {
                     currentControllerTopMenu.get(0).setIsActive(true);
@@ -534,25 +529,25 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     txtTitle.setVisibility(View.VISIBLE);
                     spSubmenu.setVisibility(View.GONE);
 
-                } else {
+                            } else {
                     txtTitle.setText("");
                     startSlideAnimation(txtTitle, 0, rlControllerTopMenu.getWidth(), 0, 0);
                     txtTitle.setVisibility(View.GONE);
                 }
                 if (currentControllerTopMenu.get(0).getSubMenu() != null) {
                     txtTitle.setVisibility(View.GONE);
-                    spSubmenu.setVisibility(View.VISIBLE);
+                                spSubmenu.setVisibility(View.VISIBLE);
                     adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(0).getSubMenu(), AuthorHostActivity.this);
-                    spSubmenu.setAdapter(adapterControllerTopSpinner);
-                }
+                                spSubmenu.setAdapter(adapterControllerTopSpinner);
+                            }
                 if (menu.get(0).getMenuItemAction() != null) {
-                    startSlideAnimation(txtAction, rlControllerTopMenu.getWidth(), 0, 0, 0);
+                                startSlideAnimation(txtAction, rlControllerTopMenu.getWidth(), 0, 0, 0);
                     txtAction.setText(currentControllerTopMenu.get(0).getMenuItemAction());
-                    txtAction.setVisibility(View.VISIBLE);
-                } else {
-                    txtAction.setVisibility(View.GONE);
-                }
-            }
+                                txtAction.setVisibility(View.VISIBLE);
+                            } else {
+                                txtAction.setVisibility(View.GONE);
+                            }
+                            }
 
 
         } catch (Exception e) {
@@ -565,7 +560,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         try {
             if (view == imgBack) {
                 hideControllerTopControls();
-                Debug.i(TAG,"current Fragmnet"+currentMainFragment);
+                Debug.i(TAG, "current Fragmnet" + currentMainFragment);
                 onBackClick(currentMainFragment);
 
             } else if (view == txtAction) {
@@ -578,14 +573,15 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     }
 
     private void onBackClick(int currentMainFragment) {
-      if(currentMainFragment==FRAGMENT_TRIAL){
-          loadFragmentInMainContainer(FRAGMENT_OFFICE);
-      } else if(currentMainFragment==FRAGMENT_TRIAL_EXAM_DETAILS){
-          loadFragmentInMainContainer(FRAGMENT_TRIAL);
-      }
+        if (currentMainFragment == FRAGMENT_TRIAL) {
+            loadFragmentInMainContainer(FRAGMENT_OFFICE);
+        } else if (currentMainFragment == FRAGMENT_TRIAL_EXAM_DETAILS) {
+            loadFragmentInMainContainer(FRAGMENT_TRIAL);
+        }
     }
 
     private void hideControllerTopControls() {
+
 
         if (imgBack.getVisibility() == View.VISIBLE) {
             hideControllerTopBackButton();
@@ -707,7 +703,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
     @Override
     public void onBackPressed() {
-       // super.onBackPressed();
+        // super.onBackPressed();
 
 //        handleOnBackPressed();
 
@@ -730,6 +726,15 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         }
 
 
+    }
+    public void startProgress(){
+        progress_bar.setProgress(1);
+        progress_bar.setEnabled(false);
+        progressGenerator.start(progress_bar);
+    }
+    public void stopProgress(){
+        progress_bar.setProgress(100);
+        progress_bar.setVisibility(View.INVISIBLE);
     }
 
 //    private void handleOnBackPressed() {

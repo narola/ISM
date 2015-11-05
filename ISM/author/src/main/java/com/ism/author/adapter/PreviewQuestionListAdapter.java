@@ -61,7 +61,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
 
         holder.tvPreviewQuestion.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvPreviewQuestion.setText(listOfPreviewQuestions.get(position).getQuestionText());
+        holder.tvPreviewQuestion.setText(Utils.formatHtml(listOfPreviewQuestions.get(position).getQuestionText()));
 
         if (!listOfPreviewQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
 
@@ -152,7 +152,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         v = layoutInflater.inflate(R.layout.row_mcq_question_answer, null, false);
         TextView tvMcqQuestionAns = (TextView) v.findViewById(R.id.tv_mcq_question_ans);
         tvMcqQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
-        tvMcqQuestionAns.setText(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText());
+        tvMcqQuestionAns.setText(Utils.formatHtml(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
 
         return v;
     }

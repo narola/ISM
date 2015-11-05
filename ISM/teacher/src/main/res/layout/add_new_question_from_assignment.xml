@@ -135,7 +135,8 @@
                     android:background="@drawable/bg_news_feed">
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/img"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_news_feed" />
 
@@ -204,6 +205,7 @@
                     android:layout_height="80dp"
                     android:background="@drawable/bg_news_feed"
                     android:orientation="horizontal">
+
                     <com.ism.teacher.multiautocomplete.ChipsMultiAutoCompleteTextview
                         android:id="@+id/autoCompleteTextview"
                         android:layout_width="match_parent"

@@ -15,6 +15,7 @@ public class ResponseObject {
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
     public static final String DUPLICATE_ENTRY = "Duplicate entry";
+    private String TAG=ResponseObject.class.getSimpleName();
 
     public String getMessage() {
         return this.message;
@@ -25,6 +26,8 @@ public class ResponseObject {
     }
 
     public ArrayList<Data> getData() {
+       // Debug.i(TAG,"DATA OBJECT:"+ data.size() );
+
         return this.data;
     }
 

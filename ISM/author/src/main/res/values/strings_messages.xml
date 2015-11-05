@@ -9,6 +9,7 @@
     <string name="stremptycomment">Please add comment.</string>
     <string name="strnoresult">No search result found!</string>
     <string name="strselectuser">Please select user to tag.</string>
+    <string name="strnopreviewquestions">Please select question to add it to preview.</string>
 
     <string name="msg_validation_set_topic">\nPlease select your subject topic.</string>
     <string name="msg_validation_add_text_rich_editor">\nPlease set the assignment.</string>
@@ -43,4 +44,8 @@
     <!--<string name="settrial">Set Trial</string>-->
     <!--<string name="stradd">ADD</string>-->
     <!--<string name="straddnew">ADD NEW</string>-->
+
+
+    <string name="str_success_setexamquestions">Questions set for the exam.</string>
+
 </resources>

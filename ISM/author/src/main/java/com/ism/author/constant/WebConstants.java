@@ -11,6 +11,7 @@ public class WebConstants {
 
     //    path
     public static final String FEED_MEDIA = "http://192.168.1.162/ISM/WS_ISM/Feeds/";
+    public static final String USER_IMAGES = "http://192.168.1.162/ISM/WS_ISM/Images/";
 
     public static final String URL_LOGIN = URL_ARTI_HOST + "AuthenticateUser";
     public static final String URL_GETALLFEEDS = URL_ARTI_HOST + "GetAllFeeds";
@@ -29,7 +30,9 @@ public class WebConstants {
     public static final String URL_CREATE_EXAM = URL_ARTI_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_ARTI_HOST + "GetQuestionBank";
     public static final String URL_GET_ALL_EXAM = URL_ARTI_HOST + "GetAllExams";
+    public static final String URL_SET_QUESTIONS_FOR_EXAM = URL_ARTI_HOST + "SetQuestionsForExam";
 
+    public static final String URL_GET_EXAM_SUBMISSION =URL_ARTI_HOST + "GetExamSubmission";
 
     public static final String STATUS_SUCCESS = "success";
     public static final String STATUS_FAILED = "failed";

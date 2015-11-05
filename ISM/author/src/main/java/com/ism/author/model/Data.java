@@ -101,6 +101,10 @@ public class Data {
     private String exam_type;
     private String average_score;
 
+    private String studentName;
+    private String EvoluationsScore;
+    private ArrayList<Data> evoluations;
+    private String examID;
 
     /*these methods are for login response*/
 
@@ -420,6 +424,7 @@ public class Data {
     public void setTopicDescription(String topicDescription) {
         this.topicDescription = topicDescription;
     }
+
     @JsonProperty("feed_by")
     public String getFeed_by() {
         return feed_by;
@@ -640,5 +645,38 @@ public class Data {
         this.total_student = total_student;
     }
 
+    @JsonProperty("student_name")
+    public String getStudentName() {
+        return studentName;
+    }
 
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    @JsonProperty("evoluation_score")
+    public String getEvoluationsScore() {
+        return EvoluationsScore;
+    }
+
+    public void setEvoluationsScore(String evoluationsScore) {
+        EvoluationsScore = evoluationsScore;
+    }
+    @JsonProperty("evaluation")
+    public ArrayList<Data> getEvoluations() {
+        return evoluations;
+    }
+
+    public void setEvoluations(ArrayList<Data> evoluations) {
+        this.evoluations = evoluations;
+    }
+
+    public void setExamID(String examID) {
+        this.examID = examID;
+    }
+
+    @JsonProperty("exam_id")
+    public String getExamID() {
+        return examID;
+    }
 }

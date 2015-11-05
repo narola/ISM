@@ -2,7 +2,6 @@ package com.ism.author.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,10 @@ import com.ism.author.interfaces.FragmentListener;
 /**
  * these fragment class is container of questionlist,questionaddeditfragment,previewquestionfragment.
  */
-public class AddQuestionFragment extends Fragment implements FragmentManager.OnBackStackChangedListener {
+
+
+//FragmentManager.OnBackStackChangedListener
+public class AddQuestionFragment extends Fragment {
 
     private static final String TAG = AddQuestionFragment.class.getSimpleName();
     private View view;
@@ -116,10 +118,10 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
 
     }
 
-    @Override
-    public void onBackStackChanged() {
-
-    }
+//    @Override
+//    public void onBackStackChanged() {
+//
+//    }
 
 
     private void loadFragmentInRightContainer() {
