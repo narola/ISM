@@ -54,6 +54,12 @@
     <string name="strconfirmpwd">Confirm Password</string>
     <string name="strsubmit">Submit</string>
     <string name="strcancel">Cancel</string>
+    <string name="strquestiontitle">Question Title</string>
+    <string name="strquestiontype">Question Type</string>
+    <string name="strmultiplechoice">Multiple Choice</string>
+    <string name="strevaluationnotes">Evaluation Notes</string>
+    <string name="straddquestiontopreview">Add Question to preview</string>
+    <string name="strsaveandaddmore">Save &amp; Add More</string>
 
     <string-array name="list">
         <item>1</item>
@@ -158,6 +164,9 @@
     <string name="straddnewquestion">Add New Question</string>
     <string name="straddtopreview">Add to Preview</string>
     <string name="strpreview">Preview</string>
+    <string name="strhinttheiranswer">Their Answer</string>
+    <string name="strbiology">Biology</string>
+    <string name="strfreeze">Freeze</string>
 
 
     <string-array name="examtype">
@@ -213,6 +222,12 @@
         <item>SUGGESTED STUDYMATES</item>
         <item>FIND MORE STUDYMATES</item>
         <!--<item>Section E</item>-->
+    </string-array>
+
+    <string-array name="question_type">
+        <item>Text</item>
+        <item>Paragraph text</item>
+        <item>Multiple Choice</item>
     </string-array>
 
     <integer-array name="accordion_visibility">

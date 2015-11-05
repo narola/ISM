@@ -1,7 +1,6 @@
 package com.ism.author.dialog;
 
 import android.app.Dialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,8 +15,6 @@ import android.widget.TextView;
 import com.ism.author.R;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.SearchStudyMatesAdapter;
-import com.ism.author.constant.WebConstants;
-import com.ism.author.fragment.HomeFragment;
 import com.ism.author.model.Data;
 
 import java.util.ArrayList;
@@ -30,22 +27,26 @@ public class TagUserDialog extends Dialog implements View.OnClickListener {
 
     private static final String TAG = TagUserDialog.class.getSimpleName();
 
-    Context mContext;
-    Fragment fragment;
-    RecyclerView rvStudymates;
-    SearchStudyMatesAdapter searchStudyMatesAdapter;
-    TextView tvDialogClose, tvTagUsers;
-    EditText etSearchStudymates;
-    ArrayList<Data> data;
+    private Context mContext;
+    private RecyclerView rvStudymates;
+    private SearchStudyMatesAdapter searchStudyMatesAdapter;
+    private TextView tvDialogClose, tvTagUsers;
+    private EditText etSearchStudymates;
+    private ArrayList<Data> data;
+    private TagUserListener tagUserListener;
 
 
-    public TagUserDialog(Context mContext, Fragment fragment, ArrayList<Data> data) {
+    public interface TagUserListener {
+        public void tagUsers(String[] arrTagUser);
+    }
+
+
+    public TagUserDialog(Context mContext, ArrayList<Data> data, TagUserListener tagUserListener) {
         super(mContext);
 
         this.mContext = mContext;
         this.data = data;
-        this.fragment = fragment;
-
+        this.tagUserListener = tagUserListener;
 
         Window w = getWindow();
         getWindow().getAttributes().windowAnimations =
@@ -64,7 +65,7 @@ public class TagUserDialog extends Dialog implements View.OnClickListener {
 
     private void initializeDialog() {
 
-        searchStudyMatesAdapter = new SearchStudyMatesAdapter(this.fragment);
+        searchStudyMatesAdapter = new SearchStudyMatesAdapter(mContext);
         rvStudymates = (RecyclerView) findViewById(R.id.rv_studymates);
         tvDialogClose = (TextView) findViewById(R.id.tv_dialog_close);
         tvTagUsers = (TextView) findViewById(R.id.tv_tag_users);
@@ -108,10 +109,10 @@ public class TagUserDialog extends Dialog implements View.OnClickListener {
 
         } else if (v == tvTagUsers) {
 
+
             String[] tagUserArray = searchStudyMatesAdapter.getTagIds().toArray(new String[searchStudyMatesAdapter.getTagIds().size()]);
             if (tagUserArray.length > 0) {
-                ((HomeFragment) fragment).tagFriendInFeedRequest.setTaggedUserIds(WebConstants.tagUserArray);
-                ((HomeFragment) fragment).callApiTagFriendInFeed();
+                tagUserListener.tagUsers(tagUserArray);
                 dismiss();
             } else {
                 Utils.showToast(mContext.getString(R.string.strselectuser), mContext);
@@ -120,5 +121,9 @@ public class TagUserDialog extends Dialog implements View.OnClickListener {
 
         }
 
+    }
+
+    private Context getActivity() {
+        return mContext;
     }
 }

@@ -1,6 +1,5 @@
 package com.ism.author.adapter;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,8 +9,12 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ism.author.ISMAuthor;
 import com.ism.author.R;
+import com.ism.author.Utility.Utils;
 import com.ism.author.model.Data;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -22,21 +25,21 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
 
 
     private static final String TAG = SearchStudyMatesAdapter.class.getSimpleName();
-
-    Context mContext;
-    ArrayList<Data> listOfStudyMates = new ArrayList<Data>();
-    Fragment fragment;
+    private Context mContext;
+    private ArrayList<Data> listOfStudyMates = new ArrayList<Data>();
     public ArrayList<String> tagIds = new ArrayList<String>();
 
     public ArrayList<String> getTagIds() {
         return tagIds;
     }
 
-
-    public SearchStudyMatesAdapter(Fragment fragment) {
-        this.fragment = fragment;
-
+    public SearchStudyMatesAdapter(Context mContext) {
+        this.mContext = mContext;
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
     }
+
+    private ImageLoader imageLoader;
 
 
     @Override
@@ -70,6 +73,9 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
 
             }
         });
+
+
+        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgStudymateDp, ISMAuthor.options);
 
 
     }
@@ -124,10 +130,16 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
                 }
             }
             if (listOfStudyMates.size() == 0) {
-//                Utils.showToast(mContext.getString(R.string.strnoresult), mContext);
+                Utils.showToast(mContext.getString(R.string.strnoresult), mContext);
             }
         }
         notifyDataSetChanged();
+    }
+
+
+    private Context getActivity() {
+        return mContext;
+
     }
 
 }

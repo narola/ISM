@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
@@ -22,15 +21,10 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.PostActivity;
 import com.ism.author.adapter.PostFeedsAdapter;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.dialog.TagUserDialog;
-import com.ism.author.dialog.ViewAllCommentsDialog;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.Data;
 import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
-
-import java.util.ArrayList;
 
 /*
 * This is the homefragment containg the newsfeed.
@@ -85,7 +79,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         llPost.setOnClickListener(onClickAttachFile);
 
 
-        postFeedsAdapter = new PostFeedsAdapter(this, getActivity());
+        postFeedsAdapter = new PostFeedsAdapter(getActivity());
         rvPostFeeds.setAdapter(postFeedsAdapter);
         rvPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -148,40 +142,6 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     }
 
 
-    public void callApiGetStudyMates() {
-
-        if (Utils.isInternetConnected(getActivity())) {
-            try {
-                RequestObject requestObject = new RequestObject();
-                requestObject.setUserId(WebConstants.TEST_GETSTUDYMATES);
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETSTUDYMATES);
-            } catch (Exception e) {
-                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-            }
-        } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
-        }
-    }
-
-
-    public RequestObject tagFriendInFeedRequest = new RequestObject();
-
-    public void callApiTagFriendInFeed() {
-        if (Utils.isInternetConnected(getActivity())) {
-            try {
-                new WebserviceWrapper(getActivity(), tagFriendInFeedRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.TAGFRIENDINFEED);
-            } catch (Exception e) {
-                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-            }
-        } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
-        }
-
-    }
-
-
     String likePrefData, unlikePrefData;
 
     public void callApiLikeFeed() {
@@ -230,52 +190,12 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
                 } else {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
-
-            } else if (apiMethodName == WebserviceWrapper.GETSTUDYMATES) {
-
-                ResponseObject getStudyMatesResponseObject = (ResponseObject) object;
-                if (getStudyMatesResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && getStudyMatesResponseObject != null) {
-                    if (responseObj.getData().size() > 0) {
-                        openTagUserDialog(getStudyMatesResponseObject.getData());
-                    }
-                } else {
-                    Utils.showToast(getStudyMatesResponseObject.getMessage(), getActivity());
-                }
-
-            } else if (apiMethodName == WebserviceWrapper.TAGFRIENDINFEED) {
-
-                ResponseObject tagFriendInFeedResponseObject = (ResponseObject) object;
-                if (tagFriendInFeedResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && tagFriendInFeedResponseObject != null) {
-                    Log.i(TAG, "The message is::" + tagFriendInFeedResponseObject.getMessage());
-                    Toast.makeText(getActivity(), tagFriendInFeedResponseObject.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getActivity(), tagFriendInFeedResponseObject.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                }
-
             }
         } catch (Exception e) {
 
             Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
 
         }
-    }
-
-
-    private void openTagUserDialog(ArrayList<Data> data) {
-
-        TagUserDialog tagUserDialog = new TagUserDialog(getActivity(), HomeFragment.this, data);
-        tagUserDialog.show();
-
-    }
-
-
-    private void openViewAllCommentsDialog(ArrayList<Data> data) {
-
-        ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), data);
-        viewAllCommentsDialog.show();
-
     }
 
 

@@ -38,7 +38,7 @@ public class WebserviceWrapper {
     public static final int CREATEEXAM = 13;
     public static final int GETQUESTIONBANK = 14;
     public static final int GETALLEXAM = 15;
-
+    public static final int SETQUESTIONSFOREXAM = 16;
 
 
     public interface WebserviceResponse {
@@ -131,6 +131,10 @@ public class WebserviceWrapper {
 
                     case GETALLEXAM:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_ALL_EXAM, ResponseObject.class, requestObject);
+                        break;
+
+                    case SETQUESTIONSFOREXAM:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_SET_QUESTIONS_FOR_EXAM, ResponseObject.class, requestObject);
                         break;
 
 

@@ -79,7 +79,7 @@ public class QuestionAddEditFragment extends Fragment {
         ArrayList<ChipsItem> arrCountry = new ArrayList<ChipsItem>();
 
 
-        for(int i=0;i<values.length;i++){
+        for (int i = 0; i < values.length; i++) {
             arrCountry.add(new ChipsItem(values[i]));
         }
 
