@@ -86,7 +86,7 @@ public class OfficeTabGridAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
 
-                    ((OfficeFragment) fragment).handleTabClick(position);
+                    ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_TRIAL);
 
 
                 }

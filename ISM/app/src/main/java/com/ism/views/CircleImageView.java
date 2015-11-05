@@ -1,4 +1,4 @@
-package com.ism.helper;
+package com.ism.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;

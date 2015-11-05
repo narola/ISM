@@ -1,11 +1,13 @@
 package com.ism.author.ws;
 
+import com.ism.author.Utility.Debug;
+
 /**
  * Created by c166 on 23/10/15.
  */
 public class RequestWs {
 
-
+    private static final String TAG = RequestWs.class.getSimpleName();
     /** Get Request **/
 //	public <CLS> CLS getGetRequest(String url, Class<CLS> cls) throws Exception {
 //		return new WebServiceRequest(url).execute(cls);
@@ -19,6 +21,9 @@ public class RequestWs {
             return new WebServiceRequest(url).execute(nameValuePair, cls,
 					null);
 		} else {*/
+        Debug.i(TAG, "URL : " + url);
+        Debug.i(TAG, "reqCls : " + reqCls);
+
         return new WSRequestPost(url).execute(cls, reqCls);
 
 //		}

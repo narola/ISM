@@ -1,7 +1,6 @@
-package com.ism.login;
+package com.ism.activity;
 
 import android.content.Context;
-import android.content.Intent;
 
 import io.realm.Realm;
 

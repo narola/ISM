@@ -25,6 +25,8 @@ import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
+import com.ism.commonsource.view.ActionProcessButton;
+import com.ism.commonsource.view.ProgressGenerator;
 
 /*
 * This is the homefragment containg the newsfeed.
@@ -35,6 +37,8 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     private View view;
 
     private FragmentListener fragListener;
+    private ActionProcessButton progress_bar;
+    private ProgressGenerator progressGenerator;
 
     public static HomeFragment newInstance() {
         HomeFragment fragHome = new HomeFragment();

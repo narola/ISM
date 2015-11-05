@@ -1,19 +1,20 @@
 package com.ism.model;
 
 /**
- * Created by c162 on 10/10/15.
+ * Created by c161 on 04/11/15.
  */
-public class NoticeModel {
+public class AllNotice {
+
     String strNoticeName;
     String strNoticeDesc;
 
+	public AllNotice(String strNoticeName, String strNoticeDesc) {
+		this.strNoticeName = strNoticeName;
+		this.strNoticeDesc = strNoticeDesc;
+	}
+
     public String getStrNoticeName() {
         return strNoticeName;
-    }
-
-    public NoticeModel(String strNoticeName, String strNoticeDesc) {
-        this.strNoticeName = strNoticeName;
-        this.strNoticeDesc = strNoticeDesc;
     }
 
     public void setStrNoticeName(String strNoticeName) {
@@ -27,4 +28,5 @@ public class NoticeModel {
     public void setStrNoticeDesc(String strNoticeDesc) {
         this.strNoticeDesc = strNoticeDesc;
     }
+
 }

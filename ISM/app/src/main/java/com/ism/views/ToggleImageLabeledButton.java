@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2011, 2012 Sentaca Communications Ltd.
  */
-package com.ism.helper;
+package com.ism.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;

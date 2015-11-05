@@ -139,6 +139,9 @@
     <string name="strpassingpercent">Passing Percent</string>
     <string name="strexamfor">Exam For:</string>
     <string name="strexamtype">Exam Type</string>
+    <string name="strexamtype_colon">Exam Type :</string>
+    <string name="strClass_colon">Class :</string>
+
     <string name="strexammode">Exam Mode</string>
     <string name="strexamduration">Exam Duration(MIN)</string>
     <string name="strattemptcount">Attempt Count</string>
@@ -241,7 +244,7 @@
     <string name="msg_offline">You are offline!\nPlease check your internet connection.</string>
     <string name="ok">Ok</string>
 
-    <string name="classwall">Classwall</string>
+    <string name="strTrial">Trial</string>
     <string name="lesson_notes">Lesson Notes</string>
     <string name="assignment">Assignment</string>
     <string name="exam">Exam</string>
@@ -264,6 +267,13 @@
     <string name="Authors">Authors</string>
     <string name="add_question">Add Question</string>
     <string name="add_book">Add Book</string>
+    <!--c-162-->
+    <string name="strAddpost">Add Post</string>
+    <string name="strAddNew">Add New</string>
+    <string name="strcorrect_answer">Correct Answer :</string>
+    <string name="strevoluations_notes">Evoluations Notes :</string>
+    <string name="strsolutions">Solutions :</string>
+    <string name="strStudentAttempted">Student Attempted</string>
 
 
 </resources>

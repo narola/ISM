@@ -1,4 +1,4 @@
-package com.ism;
+package com.ism.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,7 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.ism.R;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
+import com.ism.fragment.AllNoticeFragment;
 import com.ism.fragment.AssessmentFragment;
 import com.ism.fragment.ChatFragment;
 import com.ism.fragment.ClassroomFragment;
@@ -29,7 +31,6 @@ import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.StudyMatesFragment;
 import com.ism.fragment.TutorialFragment;
 import com.ism.interfaces.FragmentListener;
-import com.ism.login.LoginActivity;
 import com.ism.object.ControllerTopMenuItem;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
@@ -89,8 +90,9 @@ public class HostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_REPORT_CARD = 5;
     public static final int FRAGMENT_NOTES = 6;
     public static final int FRAGMENT_STUDY_MATES = 7;
-    public static final int FRAGMENT_CHAT = 8;
-    public static int currentMainFragment;
+	public static final int FRAGMENT_CHAT = 8;
+	public static final int FRAGMENT_ALL_NOTES = 9;
+	public static int currentMainFragment;
     public static int currentRightFragment;
     private int currentMainFragmentBg;
 
@@ -296,6 +298,9 @@ public class HostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_CHAT:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, ChatFragment.newInstance()).commit();
                     break;
+                case FRAGMENT_ALL_NOTES:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AllNoticeFragment.newInstance()).commit();
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "loadFragment Exception : " + e.toString());
@@ -363,6 +368,11 @@ public class HostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_CHAT:
                     currentRightFragment = fragment;
                     imgChat.setActivated(true);
+                    break;
+                case FRAGMENT_ALL_NOTES:
+                    currentMainFragment = fragment;
+	                txtTitle.setVisibility(View.GONE);
+	                loadControllerTopMenu(null);
                     break;
             }
         } catch (Exception e) {
@@ -563,6 +573,10 @@ public class HostActivity extends Activity implements FragmentListener {
         slideOutAnimation.setDuration(500);
         slideOutAnimation.setFillAfter(true);
         view.startAnimation(slideOutAnimation);
+    }
+
+    public void showAllNotice() {
+	    loadFragment(FRAGMENT_ALL_NOTES);
     }
 
 }

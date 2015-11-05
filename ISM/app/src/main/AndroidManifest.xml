@@ -23,7 +23,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.ProfileInformationActivity"
+            android:name=".activity.ProfileInformationActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden" />
 	        <!--<intent-filter>
@@ -40,7 +40,7 @@
 	            <category android:name="android.intent.category.LAUNCHER"/>
 	        </intent-filter>-->
         <activity
-            android:name=".login.WelComeActivity"
+            android:name=".activity.WelComeActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape" >
 		    <!--<intent-filter>-->
@@ -49,7 +49,7 @@
 		    <!--</intent-filter>-->
 	    </activity>
         <activity
-            android:name=".login.AcceptTutorialGroupActivity"
+            android:name=".activity.AcceptTutorialGroupActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape">
             <!--<intent-filter>-->
@@ -58,7 +58,7 @@
             <!--</intent-filter>-->
         </activity>
         <activity
-            android:name=".HostActivity"
+            android:name=".activity.HostActivity"
             android:screenOrientation="landscape">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN"/>-->
