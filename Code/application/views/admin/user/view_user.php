@@ -114,7 +114,7 @@
             </div>
 
           <div class="col-sm-6 text-right">
-              <button class="btn btn_green">Invite Mate</button>
+              <a href="javascript:void(0);" class="btn btn_green" data-toggle="modal" data-target="#send_invitation">Invite Mate</a>
             </div>
         </div>
         <!--//button-div-->
@@ -150,12 +150,18 @@
                               
                               <td class="username">
                                   <div class="chat_img_holder">
+                                     <?php if($user['role_id']!= '1') { ?>
                                         <img src="<?php echo base_url().'uploads/'.$user['profile_link']; ?>"
                                        onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                     <?php }else{ ?>   
+                                        <img src="<?php echo base_url().'uploads/'.$user['profile_pic']; ?>"
+                                       onerror="this.src='<?php echo base_url() ?>assets/images/avatar.png'">
+                                     <?php } ?>
+                                       
                                   </div>
                                   <h4><?php echo ucfirst($user['username']); ?></h4>
                                   <?php if($user['user_status']=='active'){ 
-                                        echo '<p class="active">Active Today</p>'; 
+                                        echo '<p class="active">Active</p>'; 
                                     }elseif($user['user_status']=='blocked'){ 
                                         echo '<p style="color:red">Blocked</p>';
                                     } ?>
@@ -209,7 +215,27 @@
         <!--//row table-->
     </div>
     <!--//main-->
-
+    <div class="modal fade" id="send_invitation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:600px;margin-top:220px;">
+            <div class="modal-content">
+                <div class="modal-header notice_header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">INVITATION</h4>
+                    <small><?php echo date("d F Y",strtotime(date('Y-m-d')));?></small>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <label for="email">Email address:</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <button type="submit" class="btn btn_red" data-type="close-studymate" style="float:right;">SEND INVITATION</button></h4>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 <script type="text/javascript">
     
     // $(document).ready(function(){

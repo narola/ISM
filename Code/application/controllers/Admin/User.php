@@ -23,7 +23,11 @@ class User extends ADMIN_Controller {
 	  **/
 	 
 	public function index() {
-			
+		
+		if($this->input->post('email',TRUE) != ''){
+			$this->send_invitation();
+		}
+
 		$this->data['page_title'] = 'Users';
 		$order = '';
 		$where['where'][TBL_USERS.'.is_delete']=FALSE;
@@ -105,7 +109,7 @@ class User extends ADMIN_Controller {
 		$this->data['all_users'] =   select(TBL_USERS,
 											TBL_USERS.'.id,'.TBL_USERS.'.user_status,'.TBL_USERS.'.username,'.TBL_CITIES.'.city_name,'.TBL_STATES.'.state_name,
 											'.TBL_USERS.'.role_id,'.TBL_ROLES.'.role_name,'.TBL_STUDENT_ACADEMIC_INFO.'.course_id,'.TBL_COURSES.'.course_name,
-											'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link',
+											'.TBL_CLASSROOMS.'.class_name,'.TBL_USER_PROFILE_PICTURE.'.profile_link,'.TBL_USERS.'.profile_pic',
 											$where,
 											array(
 												'order_by'=>$order,
@@ -147,7 +151,8 @@ class User extends ADMIN_Controller {
 												    		)
 												)
 											);
-	
+		
+		// p($this->data['all_users'],true);
 		$this->pagination->initialize($config);
 		
 		$this->data['schools'] = select(TBL_SCHOOLS,FALSE,array('where'=>array('is_delete'=>FALSE)));
@@ -555,7 +560,7 @@ class User extends ADMIN_Controller {
 											)
 									);
 
-		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)),array('limit'=>10));
+		$this->data['roles'] = select(TBL_ROLES,FALSE,array('where'=>array('is_delete'=>FALSE)));
 
 		$this->form_validation->set_rules('message_title', 'Message Title', 'trim|required|alpha_numeric_spaces');	
 		$this->form_validation->set_rules('message_desc', 'Message', 'trim|required');	
@@ -776,7 +781,70 @@ class User extends ADMIN_Controller {
 		$data['my_month'] = $date_array;
 		$this->template->load('admin/default','admin/user/my_activities',$data);
 	}	
-			
+	
+	/*
+	*	@auther KAMLESH POKIYA
+	*	Send invitation 
+	*/
+	public function send_invitation(){
+		$email_id = $this->input->post('email');
+		$configs = mail_config();
+        $this->load->library('email', $configs);
+        $this->email->initialize($configs);
+        $this->email->from('','ISM Admin');
+        $this->email->to($email_id);
+        // $encoded_mail = urlencode($token);
+        $msg = '';
+        $msg .='<html>';
+        $msg .='<head><title></title></head>';
+        $msg .='<body style="background-color:#f5f5f5; background: repeating-linear-gradient(90deg, #eee, #fff 8px); color:#333; font-family:Tahoma, Geneva, sans-serif;">
+			<table align="center" style="width: 600px;">
+		    	<tr>
+		        	<td style="text-align:center; padding: 35px 0;"><img alt="ISM" height="70px" src="../images/logo_login_admin.png"></td>
+		        </tr>
+		        <tr>
+		        	<td>
+		            	<table style="padding: 15px; width:100%;background-color: #fff;border: 1px solid rgba(0,0,0,0.1);">
+		                	<tr>
+		                    	<td style="text-align: center;border-bottom: 1px solid rgba(0,0,0,0.1);">
+		                        	<h2 style="color: #ff6b6b; margin:10px 0;">Invitation</h2>
+		                        </td>
+		                    </tr>
+		                    <tr>
+		                    	<td>
+		                        	<p>Hi, <br><br>
+		                             &nbsp;&nbsp;If you are looking for an easier  way to manage education for your students then here we are with the best tools that can help you.<br><br>
+		                             &nbsp;&nbsp;We are very pleased to introduce ISM which is designed to make learning a great experience. ISM keeps all authors, teachers and student stay connected.</p>
+		                        </td>
+		                    </tr>
+		                    <tr>
+		                    	<td>
+		                        	<div style="background-color:#ff6b6b; text-align:center; padding: 12px; margin:15px 0; border-radius: 5px;">
+		                            	<a href="http://ism/about_us" style="color:#fff; text-decoration:none; font-weight:bold; text-transform:uppercase;">Click Here to Explore ISM</a>
+		                            </div>
+		                        </td>
+		                    </tr>
+		                    <tr>
+		                        <td>
+		                            <div>
+		                                Thanks, <br>
+		                                <span style="color:#ff6b6b;">ISM Admin</span>
+		                            </div>
+		                        </td>
+		                    </tr>
+		                </table>
+		            </td>
+		        </tr>
+		    </table>
+		</body>';
+        $msg .='</html>';
+        $this->email->subject('ISM - Invitation');
+        $this->email->message($msg);
+        $this->email->send();
+        $this->email->print_debugger();
+        $this->session->set_flashdata('success', 'Your request submitted successfully.');
+        redirect('admin/user');
+	}
 	// ---------------------------- User Module END --------------------------------------------
 
 }

@@ -2195,3 +2195,6 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .profile_admin .btn_red{
 	margin-right:15px;
 }
+.noti_username, .noti_username:hover {
+    color: #ff6b6b;
+}

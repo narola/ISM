@@ -27,6 +27,9 @@
                 <div class="col-sm-12">
                 	<img src="<?php echo base_url();?>assets/images/logo.png" class="logo">
                     <form class="login_form" method="post">
+                    	<label class="form_title">Forgot your Password?</label>
+                        <hr class="form_hr">
+                        <p class="font-subtitle">Send Us Your Email Id</p>
                     	<div class="form-group">
                     		<input placeholder="Enter Your Email" class="form-control" type="email" name="emailid">
                         </div>

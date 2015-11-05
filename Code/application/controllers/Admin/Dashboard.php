@@ -17,6 +17,7 @@ class Dashboard extends ADMIN_Controller {
 		parent::__construct();
 		
 		$this->load->helper(array('csv','file','download'));	
+		$this->load->library('upload');
 	}
 
 	public function index()
@@ -95,6 +96,7 @@ class Dashboard extends ADMIN_Controller {
 						'role' => $role_data['role_name'],
 						'username'=>$fetch_data['username'],
 						'email_id'=>$fetch_data['email_id'],
+						'profile_pic'=>$fetch_data['profile_pic'],
 						'loggedin_admin' =>TRUE
 					);
 
@@ -281,9 +283,13 @@ class Dashboard extends ADMIN_Controller {
 		redirect('admin');
 	}
 
+	/*
+	*	@Auther KAMLESH POKIYA (KAP).
+	*	Forgot password - administrator
+	*/
+	
 	public function forgot_password()
     {
-
         $this->form_validation->set_rules('emailid', 'Email', 'trim|required|valid_email|callback_check_email');
         if($this->form_validation->run() == FALSE){
             $this->load->view('admin/forgot_password');
@@ -291,17 +297,23 @@ class Dashboard extends ADMIN_Controller {
         else
         {
             $this->session->set_flashdata('success', 'Please click on verfication link in your email');
-            redirect('login');
+            redirect('admin');
         }
     }
 
-    //--check email is valid or not
+    /*
+	*	@Auther KAMLESH POKIYA (KAP).
+	*	check administrator email is valid or not,
+	* 	if email is valid then send varification link for reset password
+	*/
     public function check_email()
     {
         $emailid    =   $this->input->post('emailid',TRUE);
         $data       =   array('where'   =>  array('email_id' => $emailid,'is_delete'=>0,'role_id' => 1));
         $get_data   =   select(TBL_USERS,null,$data,1);
         if(sizeof($get_data)>0){
+
+            //-- check already request send or not
             $options = array(
                             'join' =>
                                 array(
@@ -317,9 +329,11 @@ class Dashboard extends ADMIN_Controller {
             $where = array('where'  =>  array('u.email_id' => $emailid));
             $chkdata = select(TBL_USERS.' u','f.token,f.complete_date,f.created_date',$where,$options);
             
+            //-- if request already send
             if(empty($chkdata['complete_date']) && $chkdata['token'] != '' && date('Y-m-d',strtotime($chkdata['created_date'])) == date('Y-m-d')){
+            		
                 $this->session->set_flashdata('error', 'Request alredy sended please check it');
-                redirect('admin/dashboard');  
+                redirect('admin');  
             }    
 
             $string =   'ABCDEFGHIJKLMNOPRSTUVWXYZabcdefghijklmnopqrstu1234567890'.time();
@@ -358,7 +372,7 @@ class Dashboard extends ADMIN_Controller {
                             <table style="padding: 15px; width:100%;background-color: #fff;border: 1px solid rgba(0,0,0,0.1);">
                                 <tr>
                                     <td style="text-align: center;border-bottom: 1px solid rgba(0,0,0,0.1);">
-                                        <h2 style="color: #1bc4a3; margin:10px 0;">Reset Password</h2>
+                                        <h2 style="color: #ff6b6b; margin:10px 0;">Reset Password</h2>
                                     </td>
                                 </tr>
                                 <tr>
@@ -390,7 +404,7 @@ class Dashboard extends ADMIN_Controller {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div style="background-color:#1bc4a3; text-align:center; padding: 12px; margin:15px 0; border-radius: 5px;">
+                                        <div style="background-color:#ff6b6b; text-align:center; padding: 12px; margin:15px 0; border-radius: 5px;">
                                             <a href="http://ism/admin/change?id='.$encoded_mail.'" style="color:#fff; text-decoration:none; font-weight:bold; text-transform:uppercase;">Reset Your Password</a>
                                         </div>
                                     </td>
@@ -406,7 +420,7 @@ class Dashboard extends ADMIN_Controller {
                 </table>
             </body>';
             $msg .='</html>';
-            $this->email->subject('ISM - Reset Password');
+            $this->email->subject('ISM - Reset Password Admin');
             $this->email->message($msg);
             $this->email->send();
             $this->email->print_debugger();
@@ -418,63 +432,200 @@ class Dashboard extends ADMIN_Controller {
         }
     }
 
-    //---encoded email id get and reset password
+
+    /*
+	*	@Auther KAMLESH POKIYA (KAP).
+	*	Once link send then get encoded email id as token,
+	* 	token is expired within 30 minutes,
+	*	within 30 minute admin can apply to reset password.
+	*/
     public function change()
     {
         $token          =   $this->input->get_post('id',TRUE);
         $token_result   =   select(TBL_USER_FORGOT_PASSWORD,null,array('where'=>array('token'=>$token)),1);
         if(sizeof($token_result)>0){
+
+        	//-- check password is already changed or not
             $complete_date = $token_result['complete_date'];
             if(!empty($complete_date))
             {
                 $this->session->set_flashdata('error', 'Your password already changed please login');
-                redirect('login');
-            }   
-            $inserted_date = date($token_result['created_date'],strtotime("+30 minutes"));
+                redirect('admin');
+            }
+
+            //-- check token is expired or not.
+            $inserted_date = date($token_result['created_date']);
             $currentDate = strtotime($inserted_date);
             $futureDate = $currentDate+(60*30);
             $formatDate = date("Y-m-d H:i:s", $futureDate);
             if(strtotime(date('Y-m-d H:i:s')) > strtotime($formatDate))
             {   
-                $update_array = array('complete_date'=>date('Y-m-d',time()));
+                $update_array = array('complete_date'=>date('Y-m-d H:i:s'));
                 update(TBL_USER_FORGOT_PASSWORD,array('id'=>$token_result['id']),$update_array);
                 $this->session->set_flashdata('error', 'Your request is expired please try again');
-                redirect('login/forgot_password');
+                redirect('admin/forgot_password');
             }
             else{
                 $data['token'] = $token;
-                $this->load->view('login/reset_forgot_password',$data);
+                $this->load->view('admin/reset_forgot_password',$data);
             }
         }
     } 
 
-    //---reset password 
+    /**
+	*@author KAMLESH POKIYA (KAP).
+	*	after verifiction of email and token accept request for change password.
+	*/
     public function reset_password(){
+
+    	//-- check if token is empty or not if token is expired then redirect to admin login
         $token = $this->input->post('token',TRUE);
         if(empty($token))
-            redirect('login');
+            redirect('admin');
+
         $this->form_validation->set_rules('new_password', 'New Password', 'trim|exact_length[8]|required');
         $this->form_validation->set_rules('con_password', 'Confirm Password', 'trim|required|matches[new_password]');
         if($this->form_validation->run() == FALSE){
             $data['token'] = $token;
-            $this->load->view('login/reset_forgot_password');
+            $this->load->view('admin/reset_forgot_password');
         }
         else{
+        	
+        	//-- if token is valid then change admin password
             $get_record =   select(TBL_USER_FORGOT_PASSWORD,null,array('where'=>array('token'=>$token)),1);
             if(sizeof($get_record)>0){
                 $user_id = $get_record['user_id'];
                 $password_data = array('password' => $this->encrypt->encode($this->input->post('new_password',TRUE)));
                 update(TBL_USERS,$user_id,$password_data);
                 update(TBL_USER_FORGOT_PASSWORD,array('token'=>$token),array('complete_date'=>date('Y-m-d H:i:s')));
-                $this->session->set_flashdata('error', 'Your password successfully changed');
-                redirect('login');
+                $this->session->set_flashdata('success', 'Your password successfully changed');
+                redirect('admin');
             }else{
+
+            	//-- if token is not empty but invalid
                 $this->session->set_flashdata('error', 'Invalid request try again');
-                redirect('login/forgot_password');
+                redirect('admin/forgot_password');
             }
         }
     }
 
+    /*
+    *	@author KAMLESH POKIYA
+    *	Load about us page 
+    */
+    
+    public function about_us(){
+     	$this->load->view('admin/about_us');
+    }
+
+    /**
+     * function Profile edit is for edit Profile for Admin
+     * @author Virendra patel
+     **/
+    public function profile_edit(){	
+    	
+    	$id = $this->session->userdata('id');
+		$this->data['user'] = select(TBL_USERS,FALSE,array('where'=>array('id'=>$id)),array('single'=>TRUE));
+
+    	if($_POST){
+			
+			$username = $this->input->post('username');
+			$email = $this->input->post('email_id');
+			$old = $this->input->post('old');
+			$new = $this->input->post('new');
+			$repeat = $this->input->post('repeat');
+
+			if($this->data['user']['username'] !== $username){
+				$user_rule = 'trim|required|is_unique[users.username]|alpha_numeric|max_length[8]';
+			}else{
+				$user_rule = 'trim|required|alpha_numeric|max_length[8]';
+			}
+
+			if($this->data['user']['email_id'] !== $email){
+				$email_rule = 'trim|is_unique[users.email_id]|valid_email';
+			}else{
+				$email_rule = 'trim|valid_email';
+			}
+
+			if(!empty($old) || !empty($new) || !empty($repeat)){
+				$rule='required';
+				$rule_new = 'required|matches[new]';
+			}else{
+				$rule='trim';
+				$rule_new = 'trim';
+			}
+
+			$config['upload_path'] = './uploads/admin/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			$config['max_size']  = '1000000';
+			$this->upload->initialize($config);
+			
+			if ( ! $this->upload->do_upload('profile')){
+				$this->data['error'] = $this->upload->display_errors();
+				if(strip_tags($this->data['error'],'') != 'You did not select a file to upload.'){
+					$this->session->set_flashdata('error', strip_tags($this->data['error'],''));
+					redirect('admin/dashboard/profile_edit');
+				}
+			}else{
+				$data = array('upload_data' => $this->upload->data());
+				$profile_picture = array('profile_pic'=>'admin/'.$data['upload_data']['file_name']);
+				update(TBL_USERS,$id,$profile_picture);
+			}
+
+		}else{
+			$user_rule = 'trim|required|alpha_numeric|max_length[8]';
+			$email_rule = 'trim|valid_email';
+			$rule='trim';
+			$rule_new = "trim";
+		}
+
+    	$this->form_validation->set_rules('username', 'Username', $user_rule);
+    	$this->form_validation->set_rules('email_id', 'Email', $email_rule);
+    	$this->form_validation->set_rules('old', 'Current Password', $rule);
+    	$this->form_validation->set_rules('new', 'New Password', $rule);
+    	$this->form_validation->set_rules('repeat', 'Repeat Password', $rule_new);
+
+    	if($this->form_validation->run()==FALSE){
+			$this->template->load('admin/default','admin/user/profile_edit',$this->data);
+    	}else{
+
+    		$db_pass = $this->encrypt->decode($this->data['user']['password']);
+
+    		if(!empty($new)){
+    			
+    			if($db_pass == $old){
+    				$encode_pass = $this->encrypt->encode($new);
+    				$first_name = $this->input->post('first_name');
+    				$last_name = $this->input->post('last_name');
+    				$username = $this->input->post('username');
+    				$email_id = $this->input->post('email_id');
+
+
+    				$profile_data = array('password'=>$encode_pass,'first_name'=>$first_name,
+    									  'last_name'=>$last_name,'username'=>$username,'email_id'=>$email_id);
+					update(TBL_USERS,$id,$profile_data);		
+					$this->session->set_flashdata('success', 'User Profile data has been saved Successfully.');
+	    			redirect('admin/user');
+	    		}else{
+	    			$this->session->set_flashdata('error', 'Please Enter correct Current password.');
+	    			redirect('admin/dashboard/profile_edit');
+	    		}
+
+    		}else{
+
+    			$first_name = $this->input->post('first_name');
+				$last_name = $this->input->post('last_name');
+				$username = $this->input->post('username');
+				$email_id = $this->input->post('email_id');
+
+				$profile_data = array('first_name'=>$first_name,'last_name'=>$last_name,'username'=>$username,'email_id'=>$email_id);
+				update(TBL_USERS,$id,$profile_data);		
+				$this->session->set_flashdata('success', 'User Profile data has been saved Successfully.');
+    			redirect('admin/user');
+
+    		}    	
+    	}
+    }
 }
 
 /* End of file Admin.php */

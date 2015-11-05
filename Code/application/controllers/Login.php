@@ -2,7 +2,9 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-/* --kap 21-09-2015-------------------- */
+/*
+*   KAMLESH POKIYA (KAP)
+*/
 
 class Login extends CI_Controller {
 
@@ -11,32 +13,27 @@ class Login extends CI_Controller {
         $this->load->model(array('common_model'));
     }
 
-    /* --For Login */
-
     public function index() {
-        // echo $this->encrypt->encode('narola21');
-        // echo $this->encrypt->decode('vxbhjXDuOZ8uncgNP7ykB2UvgLr5Q9SU31K6z+JGMYfREqZTYyr1f5E20k7jMTxNILaWMK0ImrNVS1GGn6gshA==');
-        // exit;
-        /*--- send request for credentials ---*/
-        $request_change = $this->input->post('send_request');
-        if($request_change == 'change')
-        {
-            $this->request_for_credentials();
 
+        /*
+        *   Send request for credentials
+        */
+
+        $request_change = $this->input->post('send_request');
+        if($request_change == 'change'){
+            $this->request_for_credentials();
         }
 
 
         $remember_me = get_cookie('Remember_me');
-        /* 	If Remember_key Cookie exists in browser then it wil fetch data using it's value and 
-          set sessin data and force login student */
+        
+        /* 	
+        *   If Remember_key Cookie exists in browser then it wil fetch data using it's value and 
+          set sessin data and force login student 
+        */
 
         if (isset($remember_me)) {
             $rem_data = select(TBL_USERS,null, array('where'=>array('id'=>$this->encrypt->decode($remember_me))));
-            // $array = array(
-            //     'id' => $rem_data['id'],
-            //     'loggedin' => TRUE
-            // );
-            // $this->session->set_userdata($array);
             set_session($remember_me);
         }
 
@@ -78,8 +75,11 @@ class Login extends CI_Controller {
                 $db_pass = $this->encrypt->decode($fetch_data['password']);
                 if ($db_pass === $password && $fetch_data['role_id'] != 1 && $fetch_data['is_delete'] == 0 && $fetch_data['user_status'] == 'active') {
                     
-                    /* If remember Me Checkbox is clicked */
-                    /* Set Cookie IF Start */
+                    /*
+                    *   If remember Me Checkbox is clicked
+                    *   Set Cookie 
+                    */
+
                     if (isset($_POST['remember'])) {
                         $cookie = array(
 							'name' => 'Remember_me',
@@ -87,11 +87,14 @@ class Login extends CI_Controller {
                             'expire' => '86500'
                         );
                         $this->input->set_cookie($cookie);
-                    } /* Set Cookie IF END */
+                    }
 
                     set_session($fetch_data['id']);
                     $role = $fetch_data['role_id'];
 
+                    /*
+                    *   Redirect after login role wise
+                    */
                     switch ($role) {
                         case '2':
                             $group_id   =   $this->session->userdata('user')['group_id']; 
@@ -122,7 +125,6 @@ class Login extends CI_Controller {
                 if (!empty($auto_generated_data)) {
                     $user_pass = $auto_generated_data['password']; /* Data from database */
                     $user_pass = $this->encrypt->decode($auto_generated_data['password']); 
-                    // $user_status = $auto_generated_data['status'];
                     if ($user_pass == $password) {
                         if ($user_status == 0) {
                             $this->session->set_userdata('credential_user',$username);
@@ -142,16 +144,18 @@ class Login extends CI_Controller {
         }
     }
 
-    
-
-    //----------sigun out
+    /*
+    *   Sign out
+    */
     public function logout() {
         $this->session->sess_destroy();
         delete_cookie('Remember_me');
         redirect('login');
     }
 
-    //--------request for forgot password
+    /*
+    *   Forgot password - student
+    */
     public function forgot_password()
     {
         $this->form_validation->set_rules('emailid', 'Email', 'trim|required|valid_email|callback_check_email');
@@ -165,13 +169,18 @@ class Login extends CI_Controller {
         }
     }
 
-    //--check email is valid or not
+    /*
+    *   check student email is valid or not,
+    *   if email is valid then send varification link for reset password
+    */
     public function check_email()
     {
         $emailid    =   $this->input->post('emailid',TRUE);
-        $data       =   array('where'   =>  array('email_id' => $emailid,'is_delete'=>0));
+        $data       =   array('where'   =>  array('email_id' => $emailid,'is_delete' => 0,'role_id' => 2));
         $get_data   =   select(TBL_USERS,null,$data,1);
         if(sizeof($get_data)>0){
+            
+            //-- check already request send or not
             $options = array(
                             'join' =>
                                 array(
@@ -187,6 +196,7 @@ class Login extends CI_Controller {
             $where = array('where'  =>  array('u.email_id' => $emailid));
             $chkdata = select(TBL_USERS.' u','f.token,f.complete_date,f.created_date',$where,$options);
             
+            //-- if request already send
             if(empty($chkdata['complete_date']) && $chkdata['token'] != '' && date('Y-m-d',strtotime($chkdata['created_date'])) == date('Y-m-d')){
                 $this->session->set_flashdata('error', 'Request alredy sended please check it');
                 redirect('login');  
@@ -288,18 +298,26 @@ class Login extends CI_Controller {
         }
     }
 
-    //---encoded email id get and reset password
+    /*
+    *   Once link send then get encoded email id as token,
+    *   token is expired within 30 minutes,
+    *   within 30 minute admin can apply to reset password.
+    */
     public function change()
     {
         $token          =   $this->input->get_post('id',TRUE);
         $token_result   =   select(TBL_USER_FORGOT_PASSWORD,null,array('where'=>array('token'=>$token)),1);
         if(sizeof($token_result)>0){
+
+            //-- check password is already changed or not
             $complete_date = $token_result['complete_date'];
             if(!empty($complete_date))
             {
                 $this->session->set_flashdata('error', 'Your password already changed please login');
                 redirect('login');
             }   
+
+            //-- check token is expired or not.
             $inserted_date = date($token_result['created_date'],strtotime("+30 minutes"));
             $currentDate = strtotime($inserted_date);
             $futureDate = $currentDate+(60*30);
@@ -318,8 +336,12 @@ class Login extends CI_Controller {
         }
     } 
 
-    //---reset password 
+    /*
+    *   after verifiction of email and token accept request for change password.
+    */ 
     public function reset_password(){
+
+        //-- check if token is empty or not if token is expired then redirect to student login
         $token = $this->input->post('token',TRUE);
         if(empty($token))
             redirect('login');
@@ -330,6 +352,8 @@ class Login extends CI_Controller {
             $this->load->view('login/reset_forgot_password');
         }
         else{
+
+            //-- if token is valid then change admin password
             $get_record =   select(TBL_USER_FORGOT_PASSWORD,null,array('where'=>array('token'=>$token)),1);
             if(sizeof($get_record)>0){
                 $user_id = $get_record['user_id'];
@@ -339,6 +363,8 @@ class Login extends CI_Controller {
                 $this->session->set_flashdata('error', 'Your password successfully changed');
                 redirect('login');
             }else{
+
+                //-- if token is not empty but invalid
                 $this->session->set_flashdata('error', 'Invalid request try again');
                 redirect('login/forgot_password');
             }

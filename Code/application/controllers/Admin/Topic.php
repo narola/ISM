@@ -300,7 +300,8 @@ class Topic extends ADMIN_Controller {
 	            )
               )
         );	
-	
+		
+		// p($unallocated_groups,true);
 		
 		$this->data['groups'] = $unallocated_groups;
 
@@ -455,7 +456,7 @@ class Topic extends ADMIN_Controller {
 		if(!empty($_GET['course_id']) || !empty($_GET['classroom_id']) || !empty($_GET['group_id']) ){
 			$this->data['classrooms'] = select(TBL_CLASSROOMS,FALSE,array('where'=>array('is_delete'=>0,TBL_CLASSROOMS.'.course_id'=>$_GET['course_id'])));
 			$this->data['all_groups'] = select(TBL_TUTORIAL_GROUPS,TBL_TUTORIAL_GROUPS.'.id,'.TBL_TUTORIAL_GROUPS.'.group_name',
-			array('where'=>array('classroom_id'=>$_GET['classroom_id']))
+												array('where'=>array('classroom_id'=>$_GET['classroom_id']))
 				
 			);
 		}else{

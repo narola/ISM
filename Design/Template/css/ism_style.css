@@ -614,18 +614,25 @@ div.upload input {
 .three_tabs .dropdown-menu:before{
 	content: "";
     top: -9px;
-    left: 18px;
+    left: 38px;
     position: absolute;
     border-right: 10px solid transparent;
     border-left: 10px solid transparent;
     border-bottom: 10px solid #fff;
 }
-.three_tabs .dropdown-menu>li>a{
+.three_tabs .dropdown-menu li{
 	margin:5px;
 	padding:0;
 	border-bottom: 1px solid rgba(0,0,0,0.1);
 }
-.three_tabs .dropdown-menu>li:last-child>a{
+.noti_inner {
+    height: 205px;
+    overflow: hidden;
+}
+.noti_inner #mCSB_2{
+	overflow:hidden;
+}
+.three_tabs .dropdown-menu li:last-child{
 	border-bottom:none;
 }
 .user_small_img img {
@@ -638,11 +645,13 @@ div.upload input {
 .notification_txt p{
 	margin-bottom:5px;
     white-space: normal;
+	color:#333;
 }
 .noti_time{
 	opacity:0.4;
 	font-size:12px;
 	font-style:italic;
+	color:#333;
 }
 .three_tabs .dropdown-menu>li>a:focus,
 .three_tabs .dropdown-menu>li>a:hover{
@@ -4037,4 +4046,16 @@ a.expand_ques + .row{
 }
 #feed_post.form-control[disabled], #feed_post.form-control[readonly]{
 	background-color:#fff;
+}
+.form_title{
+    font-size: 24px;
+    margin-bottom: 12px;	
+}
+.font-subtitle{
+	font-size:18px;
+}
+.form_hr{
+	border-top:2px solid #1bc4a3;
+	width: 140px;
+    margin: 0 auto 15px;
 }

@@ -175,16 +175,17 @@ $url = uri_string();
                 <!--side left-->
                 <div class="sidebar_left_container inner_pages inner_pages_admin text-center mCustomScrollbar" data-mcs-theme="minimal"><!-- scrollbar" id="style-3-->
                     <div class="user_profile_img">
-                        <img src="assets/images/user1.jpg">
+                        <img src="<?php echo base_url().'uploads/'.$this->session->userdata('profile_pic');?>">
                     </div>
                     <h4>Admin</h4>
-                    <a href="#">View Profile</a>
+                    <a href="admin/dashboard/profile_edit">View Profile</a>
                     <div class="clearfix"></div>
                     <!--notification-->
                     <ul class="three_tabs">
                         <li class="dropdown">
                             <a href="admin/notifications" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span><span class="badge bell_badge">03</span></a>
                             <ul class="dropdown-menu">
+                            	<div class="noti_inner mCustomScrollbar" data-mcs-theme="minimal-dark">
                                 <li><a href="#">
                                         <div class="user_small_img"><img src="assets/images/user2.jpg"></div>
                                         <div class="notification_txt">
@@ -217,6 +218,7 @@ $url = uri_string();
                                         </div>
                                         <div class="clearfix"></div>
                                     </a></li>
+                                </div>
                             </ul>
                         </li>
                         <li><a href="admin/messages"><span class="icon icon_message"></span><span class="badge message_badge">12</span></a></li>
