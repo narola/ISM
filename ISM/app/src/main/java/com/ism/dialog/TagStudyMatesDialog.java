@@ -27,25 +27,25 @@ public class TagStudyMatesDialog extends Dialog implements View.OnClickListener 
     private static final String TAG = TagStudyMatesDialog.class.getSimpleName();
 
     private RecyclerView rvStudymates;
-	private TextView tvDialogClose, tvDialogTag;
-	private EditText etSearchStudymates;
+    private TextView tvDialogClose, tvDialogTag;
+    private EditText etSearchStudymates;
 
-	private Context context;
-	private TagStudyMatesAdapter tagStudyMatesAdapter;
-	private ArrayList<Data> studymatesList;
-	private TagStudyMatesListener tagStudyMatesListener;
+    private Context context;
+    private TagStudyMatesAdapter tagStudyMatesAdapter;
+    private ArrayList<Data> studymatesList;
+    private TagStudyMatesListener tagStudyMatesListener;
 
 
-	public interface TagStudyMatesListener {
-		public void tagStudyMates(String[] arrTagUser);
-	}
+    public interface TagStudyMatesListener {
+        public void tagStudyMates(String[] arrTagUser);
+    }
 
     public TagStudyMatesDialog(Context context, ArrayList<Data> studymatesList, TagStudyMatesListener tagStudyMatesListener) {
         super(context);
 
         this.context = context;
         this.studymatesList = studymatesList;
-	    this.tagStudyMatesListener = tagStudyMatesListener;
+        this.tagStudyMatesListener = tagStudyMatesListener;
 
         Window w = getWindow();
         getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
@@ -99,10 +99,10 @@ public class TagStudyMatesDialog extends Dialog implements View.OnClickListener 
         } else if (v == tvDialogTag) {
             String[] tagUserArray = tagStudyMatesAdapter.getTagIds().toArray(new String[tagStudyMatesAdapter.getTagIds().size()]);
             if (tagUserArray.length > 0) {
-	            tagStudyMatesListener.tagStudyMates(tagUserArray);
+                tagStudyMatesListener.tagStudyMates(tagUserArray);
                 dismiss();
             } else {
-	            Toast.makeText(context, "Please Select Study mates to tag.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Please Select Study mates to tag.", Toast.LENGTH_LONG).show();
             }
         }
 

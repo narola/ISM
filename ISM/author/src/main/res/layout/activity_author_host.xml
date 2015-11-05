@@ -4,7 +4,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <RelativeLayout
@@ -235,7 +236,7 @@
         android:layout_width="@dimen/controller_left_width"
         android:layout_height="match_parent"
         android:layout_below="@id/rl_controller_top"
-        android:background="@drawable/bg_controller_top"
+        android:background="@drawable/sidebar"
         android:orientation="vertical">
 
 
@@ -332,6 +333,14 @@
         android:layout_below="@id/rl_controller_top"
         android:background="@android:color/darker_gray"
         android:visibility="visible"></FrameLayout>
-
+    <com.ism.commonsource.view.ActionProcessButton
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:id="@+id/progress_bar"
+        app:pb_colorComplete="@color/color_dark_gray"
+        app:pb_colorNormal="@color/color_dark_gray"
+        app:pb_colorPressed="@color/color_dark_gray"
+        app:pb_colorProgress="@color/purple_progress"
+        />
 
 </RelativeLayout>

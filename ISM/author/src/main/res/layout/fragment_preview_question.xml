@@ -11,16 +11,37 @@
         android:orientation="vertical">
 
 
-        <TextView
-            android:id="@+id/tv_questionlist_title"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/fragment_background_color"
-            android:gravity="center"
-            android:padding="@dimen/d15dp"
-            android:text="@string/strpreview"
-            android:textColor="@color/color_question"
-            android:textSize="@dimen/d22dp" />
+            android:background="@color/fragment_background_color">
+
+            <TextView
+                android:id="@+id/tv_previewquestion_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+
+                android:gravity="center"
+                android:padding="@dimen/d15dp"
+                android:text="@string/strpreview"
+                android:textColor="@color/color_question"
+                android:textSize="@dimen/d22dp" />
+
+            <TextView
+                android:id="@+id/tv_preview_questionlist_freeze"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="@dimen/d10dp"
+                android:background="@drawable/btn_freeze"
+                android:gravity="center"
+                android:text="@string/strfreeze"
+                android:textColor="@color/color_blue"
+                android:textSize="@dimen/d22dp" />
+        </RelativeLayout>
+
 
         <ImageView
             android:layout_width="wrap_content"

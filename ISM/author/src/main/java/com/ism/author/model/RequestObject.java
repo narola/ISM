@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,6 +62,8 @@ public class RequestObject {
 
     private String[] likedId;
     private String[] unlikedId;
+
+    private ArrayList<String> questionId;
 
     public String getFeedId() {
         return this.feedId;
@@ -423,6 +426,15 @@ public class RequestObject {
     @JsonProperty("unliked_id")
     public void setUnlikedId(String[] unlikedId) {
         this.unlikedId = unlikedId;
+    }
+
+    public ArrayList<String> getQuestionId() {
+        return this.questionId;
+    }
+
+    @JsonProperty("question_id")
+    public void setQuestionId(ArrayList<String> questionId) {
+        this.questionId = questionId;
     }
 
 

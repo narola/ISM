@@ -100,6 +100,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                 holder.imgDropdownViewAnswer.setSelected(!holder.imgDropdownViewAnswer.isSelected());
                 if (holder.imgDropdownViewAnswer.isSelected()) {
+                    holder.imgDropdownViewAnswer.setActivated(true);
                     if (!listOfQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
 
                         holder.tvQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
@@ -122,7 +123,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
 
                 } else {
-                    holder.imgDropdownViewAnswer.setBackgroundResource(R.drawable.dropdown_open);
+                    holder.imgDropdownViewAnswer.setActivated(false);
 
                     if (!listOfQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
                         holder.tvQuestionAns.setVisibility(View.GONE);
