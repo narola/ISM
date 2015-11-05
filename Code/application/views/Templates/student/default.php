@@ -266,78 +266,36 @@ function toHHMMSS (sec) {
                     <div class="box_header">
                         <h3>High Scores</h3>
                     </div>
-                    <div class="score_div">
-                        <h5>Science</h5>
-                        <!--item1-->
-                        <div class="score_item">
-                            <div class="score_img">
-                                <img src="assets/images/user5.jpg">
-                            </div>
-                            <div class="score_descrip">
-                                <p class="score_name">Adam Stranger</p>
-                                <p>St. Xeviers</p>
-                                <p>F.Y. CS</p>
-                            </div>
-                            <div class="score_points">
-                                <p>Score</p>
-                                <p class="score_number">500</p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--item2-->
-                        <div class="score_item">
-                            <div class="score_img">
-                                <img src="assets/images/user3.jpg">
-                            </div>
-                            <div class="score_descrip">
-                                <p class="score_name">Matt Larner</p>
-                                <p>St. Mary</p>
-                                <p>F.Y. CS</p>
-                            </div>
-                            <div class="score_points">
-                                <p>Score</p>
-                                <p class="score_number">487</p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                       
-                    </div>
-                    <div class="score_div">
-                        <h5>Arts</h5>
-                        <!--item1-->
-                        <div class="score_item">
-                            <div class="score_img">
-                                <img src="assets/images/user5.jpg">
-                            </div>
-                            <div class="score_descrip">
-                                <p class="score_name">Adam Stranger</p>
-                                <p>St. Xeviers</p>
-                                <p>F.Y. CS</p>
-                            </div>
-                            <div class="score_points">
-                                <p>Score</p>
-                                <p class="score_number">500</p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--item2-->
-                        <div class="score_item">
-                            <div class="score_img">
-                                <img src="assets/images/user3.jpg">
-                            </div>
-                            <div class="score_descrip">
-                                <p class="score_name">Matt Larner</p>
-                                <p>St. Mary</p>
-                                <p>F.Y. CS</p>
-                            </div>
-                            <div class="score_points">
-                                <p>Score</p>
-                                <p class="score_number">487</p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
+
+                     <?php 
+                        $high = get_highscore($this->session->userdata('user')['classroom_id']);
                         
-                    </div>
+                        if(!empty($high)){
+                            foreach ($high as $k => $vx) {
+                                ?>
+                                <div class="score_div">
+                                    <h5><?php echo $k; ?></h5>
+                                    <?php foreach ($vx as $key => $v) { ?>
+                                        <div class="score_item">
+                                            <div class="score_img">
+                                                <img src="<?php echo UPLOAD_URL.'/'.$v['profile_link'];  ?>">
+                                            </div>
+                                            <div class="score_descrip">
+                                                <p class="score_name"><?php echo $v['full_name']; ?></p>
+                                                <p><?php echo $v['school_name']; ?></p>
+                                            </div>
+                                            <div class="score_points">
+                                                <p>Score</p>
+                                                <p class="score_number"><?php echo $v['total_marks']; ?></p>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                                <?php
+                            }
+                        }
+                    ?>
                     <div class="clearfix"></div>
                 </div>
                 <!--//high score board-->
@@ -441,7 +399,7 @@ function toHHMMSS (sec) {
 
                         </div>
                         <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">
-                        <input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="<?php echo $active_c['user']['id'] ?>">
+                        <input type="text" class="chat_input" placeholder="Chat" data-type="chat" data-id="<?php echo $active_c['user']['id'] ?>">
                         <!-- <a href="#" class="icon icon_emoji"></a> -->
                         <a href="#" class="icon icon_pin"></a>
                         <input type="file" id="chat_file_share" class="chat_pin" data-type="single_chat_file" data-id="<?php echo $active_c['user']['id'] ?>">
