@@ -603,35 +603,61 @@ function get_recommended($user_id,$user_group_id){
 *   display high sscore with user detail in ISM_mock test.
 */
     
-function get_highscore($user_id,$classroom_id){
-    
-    $where = array('where' => array('e.classroom_id' => $classroom_id,'e.is_delete' => 0,'e.exam_category' => 'ism_mock'));
-    $high_score = select(TBL_EXAMS.' e','e.id as exam_id,e.subject_id',$where);
-    qry();
-    foreach ($high_score as $key => $value) {
-        
+function get_highscore($classroom_id = NULL){
+   $cls = "AND `e`.`classroom_id` = 2";
+    if($classroom_id == NULL){
+      $cls = "";
     }
-
-    $where = 'sc.exam_id IN (SELECT `e`.`id` as `exam_id` FROM `exams` `e` WHERE `e`.`classroom_id` = '.$classroom_id.' AND `e`.`is_delete` = 0 AND `e`.`exam_category` = "ism_mock")';
+    
+    $sel = "`u`.`id`,`u`.`full_name`,`sh`.`school_name`,`p`.`profile_link` ,`ses`.`exam_id`,`e`.`exam_name`,`e`.`subject_id`,`s`.`subject_name`,SUM((`ses`.`correct_answers` * (SELECT `config_value` FROM `admin_config` WHERE `config_key` = 'correctAnswerScore' LIMIT 1))) AS `total_marks` ";
     $options = array( 'join' => 
                         array(
                             array(
                                 'table' => TBL_EXAMS.' e',
-                                'condition' => 'e.id = sc.exam_id'
+                                'condition' => "`e`.`id` = `ses`.`exam_id` ".$cls." AND `e`.`exam_category` = 'ISM_Mock'",
+                                'join' => 'JOIN'
                             ),
                             array(
                                 'table' => TBL_SUBJECTS.' s',
-                                'condition' => 's.id = e.subject_id'
+                                'condition' => '`s`.`id` = `e`.`subject_id`',
+                                'join' => 'JOIN'
+                            ),
+                            array(
+                                'table' => TBL_USERS.' u',
+                                'condition' => '`u`.`id` = `ses`.`user_id`',
+                                'join' => 'JOIN'
+                            ),
+                            array(
+                                'table' => TBL_STUDENT_ACADEMIC_INFO.' in',
+                                'condition' => 'in.user_id = u.id',
+                            ),
+                            array(
+                                'table' => TBL_SCHOOLS.' sh',
+                                'condition' => 'sh.id = in.school_id'
+                            ),
+                            array(
+                                'table' => TBL_USER_PROFILE_PICTURE.' p',
+                                'condition' => 'u.id = p.user_id'
                             )
-                        )
+
+                        ),
+                        'group_by' => '`u`.`id`,`s`.`subject_name`',
+                        'order_by' => '`s`.`subject_name` DESC,`total_marks` DESC'
                 );
-    $get_score = select(TBL_STUDENT_EXAM_SCORE.' sc','sc.exam_id,s.subject_name,sc.user_id',$where,$options); 
-    echo '<pre>';
+$high = select(TBL_STUDENT_EXAM_SCORE.' ses',$sel,null,$options);
+    $new = array();
+    $sub_id = 0;
+    foreach ($high as $k => $v) {
+      if(!isset($new[$v['subject_name']])){
+        $new[$v['subject_name']] = array();
+      }
+      if(count($new[$v['subject_name']]) < 3){
+        $new[$v['subject_name']][] = $v;
+      }
+    }
     qry();
-    p($get_score);
-    echo '-------------------<br/>';
-    p($high_score);
-    exit;
+    die;
+   return  $new;
 }
     
 /*  Filter the data to store in database

@@ -41,7 +41,7 @@ class ISM_Controller extends CI_Controller {
         		}
 			}
 		}
-
+			p(get_highscore($this->session->userdata('user')['classroom_id']),true);
 		/* set user session again */
 		if($this->session->userdata('user')){
 	     set_session($this->session->userdata('user')['id']);
