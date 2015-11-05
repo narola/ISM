@@ -388,8 +388,8 @@ class Question extends ADMIN_Controller {
 				 "question_creator_id"=>$session_id,
 				 "assets_link"=>' ',
 				 "question_image_link"=>' ',
-				 "evaluation_notes"=>$this->input->post("evaluation_notes"),
-				 "solution"=>htmlspecialchars($this->input->post("solution")),
+				 "evaluation_notes"=>htmlentities($this->input->post("evaluation_notes")),
+				 "solution"=>htmlentities($this->input->post("solution")),
 				 "topic_id"=>$this->input->post("topic_id"),
 				 "subject_id"=>$this->input->post("subject_id"),
 				 "classroom_id"=>$this->input->post("classroom_id")
