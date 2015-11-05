@@ -26,5 +26,4 @@
                 android:textSize="@dimen/d20dp"/>
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

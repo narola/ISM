@@ -3,7 +3,6 @@ package com.ism.ws.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ism.ws.model.TutorialGroupMember;
 
 import java.util.ArrayList;
 
@@ -48,9 +47,15 @@ public class Data {
 	private String comment;
 	private String commentBy;
 	private String profileLink;
+	private String noticeId;
+	private String noticeTitle;
+	private String notice;
+	private String postedBy;
 
 	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 	private ArrayList<Comment> comments;
+
+	private boolean isFlagged;
 
 	@JsonProperty("id")
     public String getId() {
@@ -401,5 +406,49 @@ public class Data {
 
 	public void setProfileLink(String profileLink) {
 		this.profileLink = profileLink;
+	}
+
+	@JsonProperty("notice_id")
+	public String getNoticeId() {
+		return noticeId;
+	}
+
+	public void setNoticeId(String noticeId) {
+		this.noticeId = noticeId;
+	}
+
+	@JsonProperty("notice_title")
+	public String getNoticeTitle() {
+		return noticeTitle;
+	}
+
+	public void setNoticeTitle(String noticeTitle) {
+		this.noticeTitle = noticeTitle;
+	}
+
+	@JsonProperty("notice")
+	public String getNotice() {
+		return notice;
+	}
+
+	public void setNotice(String notice) {
+		this.notice = notice;
+	}
+
+	@JsonProperty("posted_by")
+	public String getPostedBy() {
+		return postedBy;
+	}
+
+	public void setPostedBy(String postedBy) {
+		this.postedBy = postedBy;
+	}
+
+	public boolean isFlagged() {
+		return isFlagged;
+	}
+
+	public void setFlagged(boolean isExpanded) {
+		this.isFlagged = isExpanded;
 	}
 }

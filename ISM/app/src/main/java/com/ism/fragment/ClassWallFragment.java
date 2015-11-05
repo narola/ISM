@@ -1,5 +1,6 @@
 package com.ism.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -11,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.adapter.PostFeedsAdapter;
-import com.ism.utility.PreferenceData;
+import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.utility.Utility;
 import com.ism.ws.RequestObject;
 import com.ism.ws.ResponseObject;
@@ -26,8 +29,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 	private RecyclerView recyclerPost;
 
 	private PostFeedsAdapter adpPostFeeds;
-
-	private String strUserId;
+	private HostActivity activityHost;
 
 	public static ClassWallFragment newInstance() {
 		ClassWallFragment fragment = new ClassWallFragment();
@@ -51,8 +53,6 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 		recyclerPost = (RecyclerView) view.findViewById(R.id.recycler_post);
 
 		recyclerPost.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-		strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, getActivity());
 
 		RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
 			@Override
@@ -79,10 +79,11 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 
 	private void callApiGetAllFeeds() {
 		try {
+			activityHost.showProgress();
 			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(strUserId);
+			requestObject.setUserId(Global.strUserId);
 			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.GET_ALL_FEEDS);
+					.execute(WebConstants.GET_ALL_FEEDS);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetAllFeeds Exception : " + e.toString());
 		}
@@ -91,33 +92,38 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 	@Override
 	public void onResponse(Object object, Exception error, int apiCode) {
 		try {
-			if (object != null) {
 				switch (apiCode) {
-					case WebserviceWrapper.GET_ALL_FEEDS:
-						onResponseGetAllFeeds(object);
+					case WebConstants.GET_ALL_FEEDS:
+						onResponseGetAllFeeds(object, error);
 						break;
 				}
-			} else if(error != null) {
-				Log.e(TAG, "onResponse apiCall Exception : " + error.toString());
-			} else {
-				Log.e(TAG, "onResponse all null");
-			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponse Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseGetAllFeeds(Object object) {
+	private void onResponseGetAllFeeds(Object object, Exception error) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				adpPostFeeds = new PostFeedsAdapter(getActivity(), responseObj.getData());
-				recyclerPost.setAdapter(adpPostFeeds);
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Log.e(TAG, "onResponseGetAllFeeds Failed : " + responseObj.getMessage());
+			activityHost.hideProgress();
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					adpPostFeeds = new PostFeedsAdapter(getActivity(), responseObj.getData());
+					recyclerPost.setAdapter(adpPostFeeds);
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseGetAllFeeds Failed : " + responseObj.getMessage());
+				}
+			} else if(error != null) {
+				Log.e(TAG, "onResponseGetAllFeeds apiCall Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseGetAllFeeds Exception : " + e.toString());
 		}
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		activityHost = (HostActivity) activity;
 	}
 }
