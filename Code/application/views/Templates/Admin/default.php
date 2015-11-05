@@ -185,6 +185,7 @@ $url = uri_string();
                         <li class="dropdown">
                             <a href="admin/notifications" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_bell"></span><span class="badge bell_badge">03</span></a>
                             <ul class="dropdown-menu">
+                            	<div class="noti_inner mCustomScrollbar" data-mcs-theme="minimal-dark">
                                 <li><a href="#">
                                         <div class="user_small_img"><img src="assets/images/user2.jpg"></div>
                                         <div class="notification_txt">
@@ -217,6 +218,7 @@ $url = uri_string();
                                         </div>
                                         <div class="clearfix"></div>
                                     </a></li>
+                                </div>
                             </ul>
                         </li>
                         <li><a href="admin/messages"><span class="icon icon_message"></span><span class="badge message_badge">12</span></a></li>
