@@ -4059,3 +4059,7 @@ a.expand_ques + .row{
 	width: 140px;
     margin: 0 auto 15px;
 }
+/*@nv*/
+.adm_cancel_btn{
+	font-size: 14px !important;
+}
