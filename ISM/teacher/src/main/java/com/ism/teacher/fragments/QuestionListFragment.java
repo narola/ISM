@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
@@ -20,6 +22,7 @@ import com.ism.teacher.adapters.QuestionBankListAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
+import com.ism.teacher.model.GetTopicsRequest;
 import com.ism.teacher.model.Request;
 import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.ws.WebserviceWrapper;
@@ -49,16 +52,19 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistExamType;
     List<String> arrListExamType;
-    List<Data> arrListSubject, arrListCourses;
+    List<Data> arrListSubject, arrListCourses, arrListTopic;
     EditText etQuestionlistSearch;
     TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview;
     RecyclerView rvQuestionlist;
     QuestionBankListAdapter questionBankListAdapter;
 
     ArrayList<Data> listOfQuestionBank = new ArrayList<Data>();
+    ArrayList<Data> copylistOfQuestionBank = new ArrayList<Data>();
 
 
     MyTypeFace myTypeFace;
+    String subjectName = "";
+    int subject_id;
 
 
     @Override
@@ -100,13 +106,121 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         arrListExamType = new ArrayList<String>();
         arrListExamType.add(getString(R.string.strexamtype));
         arrListExamType = Arrays.asList(getResources().getStringArray(R.array.examtype));
-        Adapters.setUpSpinner(getActivity(), spQuestionlistExamType, arrListExamType, Adapters.ADAPTER_SMALL);
+
+//        Adapters.setUpSpinner(getActivity(), spQuestionlistExamType, arrListExamType, Adapters.ADAPTER_SMALL);
         Adapters.setUpSpinner(getActivity(), spQuestionlistCourse, arrListExamType, Adapters.ADAPTER_SMALL);
         Adapters.setUpSpinner(getActivity(), spQuestionlistSubject, arrListExamType, Adapters.ADAPTER_SMALL);
 
+        callApiGetCourses();
+        callApiGetSubjects();
 
         callApiGetQuestionBank();
 
+
+        /*spQuestionlistExamType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (isExamTypeSet()) {
+                    if (isSubjectSet()) {
+//                        Toast.makeText(getActivity(),"Filter",Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(getActivity(), "Please select subject", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Please select exam type ", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });*/
+
+        spQuestionlistSubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (position > 0) {
+
+                    subject_id = Integer.parseInt(arrListSubject.get(position - 1).getId());
+                    subjectName = arrListSubject.get(position - 1).getSubject_name();
+                    callApiGetTopics(subject_id);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spQuestionlistExamType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (position > 0) {
+//                    Toast.makeText(getActivity(), "Filter", Toast.LENGTH_SHORT).show();
+
+                    Log.e("sub", "" + subject_id);
+                    Log.e("subname", "" + subjectName);
+                    Log.e("topics id", "" + arrListTopic.get(position - 1).getId());
+                    Log.e("topics name", "" + arrListTopic.get(position - 1).getTopic_name());
+
+//                    filterResults(subject_id,arrListTopic.get(position - 1).getId());
+                    filterResults(subject_id,"30");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+    }
+
+    private void filterResults(int subject_id, String topicid) {
+
+        if(listOfQuestionBank.size()>0)
+        {
+            for (Data wp : listOfQuestionBank) {
+                int count=0;
+                if (wp.getTopicId().equalsIgnoreCase(topicid) && wp.getSubject_id().equalsIgnoreCase(Integer.toString(subject_id))) {
+                    Log.e("filter success",""+ count++);
+                    copylistOfQuestionBank.add(wp);
+                }
+
+            }
+
+            if(copylistOfQuestionBank.size()>0)
+            {
+                questionBankListAdapter.addAll(copylistOfQuestionBank);
+
+            }
+            else
+            {
+                Toast.makeText(getActivity(), "No Questions Found to Filter", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+    }
+
+    private void callApiGetTopics(int subject_id) {
+
+        if (Utils.isInternetConnected(getActivity())) {
+            try {
+                GetTopicsRequest getTopicsRequest = new GetTopicsRequest();
+                getTopicsRequest.setSubject_id(subject_id);
+                new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebserviceWrapper.GETTOPICS);
+            } catch (Exception e) {
+                //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+        }
 
     }
 
@@ -212,6 +326,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 if (getQuestionBankResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && getQuestionBankResponseObject != null) {
 
                     listOfQuestionBank.addAll(getQuestionBankResponseObject.getData());
+//                    copylistOfQuestionBank.addAll(listOfQuestionBank);
                     questionBankListAdapter.addAll(listOfQuestionBank);
 
                     Log.e("list_size_after_api", "" + listOfQuestionBank.size());
@@ -220,7 +335,23 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     Utils.showToast(getQuestionBankResponseObject.getMessage(), getActivity());
                 }
 
+            } else if (apiMethodName == WebserviceWrapper.GETTOPICS) {
+
+                ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
+                arrListTopic = new ArrayList<Data>();
+                arrListTopic.addAll(callGetTopicsResponseObject.getData());
+
+                List<String> topics = new ArrayList<String>();
+                topics.add(getString(R.string.strtopic));
+                for (Data topic : arrListTopic) {
+                    topics.add(topic.getTopic_name());
+
+                }
+                Adapters.setUpSpinner(getActivity(), spQuestionlistExamType, topics, Adapters.ADAPTER_SMALL);
+
             }
+
+
         } catch (Exception e) {
 
             Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -256,19 +387,37 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         //Log.e("list_sizexzxZx", "" + getQuestionBankResponseObject.getData().size());
         // Log.e("list_size", "" + listOfQuestionBank.size());
 
-        if(listOfQuestionBank.size()>0)
-        {
+        if (listOfQuestionBank.size() > 0) {
             int position = listOfQuestionBank.indexOf(data);
             listOfQuestionBank.get(position).setIsQuestionAddedInPreview(false);
             questionBankListAdapter.addAll(listOfQuestionBank);
             ((AddQuestionFragmentTeacher) mFragment).previewQuestionFragment.listOfPreviewQuestions.remove(data);
-        }
-        else
-        {
+        } else {
             Log.e("list_size", "" + listOfQuestionBank.size());
         }
 
 
+    }
+
+
+    private boolean isExamTypeSet() {
+        if (arrListExamType != null && arrListExamType.size() == 0 || spQuestionlistExamType.getSelectedItemPosition() > 0) {
+            return true;
+        } else {
+            return false;
+        }
 
     }
+
+
+    private boolean isSubjectSet() {
+        if (arrListSubject != null && arrListSubject.size() == 0 || spQuestionlistSubject.getSelectedItemPosition() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
 }
