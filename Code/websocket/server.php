@@ -136,7 +136,8 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
     if (isset($responce)) {
         // $responce = replace_invalid_chars($responce);
         pr($responce, 1);
-        if ($responce['to'] == 'self') {
+
+        if ($responce['to'] == 'self' || $responce['error'] != 'skip') {
             $Server->wsSend($clientID, json_encode($responce));
         } else {
             if ($responce['type'] == 'studymate') {

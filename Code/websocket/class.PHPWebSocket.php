@@ -617,16 +617,6 @@ class PHPWebSocket {
         if (!isset($headersKeyed['Sec-WebSocket-Version']) || (int) $headersKeyed['Sec-WebSocket-Version'] < 7)
             return false; // should really be != 7, but Firefox 7 beta users send 8
 
-
-
-
-
-
-
-
-
-
-            
 // work out hash to use in Sec-WebSocket-Accept reply header
         $hash = base64_encode(sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
 
@@ -1452,7 +1442,7 @@ class PHPWebSocket {
                     // Check wherer spam word exist.
                     if (in_array($rowq['word'], $words)) {
                         $score -= $config['spamWordDeduction'];
-                        $data['error'] = 'Spam words found. <b>' . $config['spamWordDeduction'] . ' points</b> diducted!';
+                        $data['error'] = 'Spam words found. <b>' . $config['spamWordDeduction'] . ' points</b> diducted from your score!';
                         break;
                     }
                 }
