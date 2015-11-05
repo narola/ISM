@@ -144,7 +144,7 @@
                             android:background="@color/color_white"
                             android:orientation="vertical">
 
-                            <com.ism.helper.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            <com.ism.teacher.helper.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                                 android:id="@+id/img_teacher_profile_pic"
                                 android:layout_width="200dp"
                                 android:layout_height="match_parent"

@@ -15,7 +15,6 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.GetTopicsRequest;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
 
@@ -156,10 +155,10 @@ public class TrialExamDetailFragment  extends Fragment implements WebserviceWrap
 
         if (Utils.isInternetConnected(getActivity())) {
             try {
-                GetTopicsRequest getTopicsRequest = new GetTopicsRequest();
-                getTopicsRequest.setSubject_id(subject_id);
-                new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETTOPICS);
+//                GetTopicsRequest getTopicsRequest = new GetTopicsRequest();
+//                getTopicsRequest.setSubject_id(subject_id);
+//                new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+//                        .execute(WebserviceWrapper.GETTOPICS);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }

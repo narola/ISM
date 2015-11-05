@@ -9,7 +9,7 @@ public class WebConstants {
     public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
 
-//    path
+    //    path
     public static final String FEED_MEDIA = "http://192.168.1.162/ISM/WS_ISM/Feeds/";
 
     public static final String URL_LOGIN = URL_ARTI_HOST + "AuthenticateUser";
@@ -50,6 +50,7 @@ public class WebConstants {
 //            "tagged_by":134,
 //            "user_id":[141,167]
 //    }
+
 
 }
 

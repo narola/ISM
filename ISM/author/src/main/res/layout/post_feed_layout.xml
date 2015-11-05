@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_post"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/ll_post"
     tools:context="com.ism.author.fragment.HomeFragment">
 
 
@@ -33,11 +33,11 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/img_add_emoticons_in_post"
                 android:background="@android:color/transparent"
-                android:gravity="top"
                 android:enabled="false"
-                android:hint="@string/sayit"
                 android:focusable="false"
                 android:focusableInTouchMode="true"
+                android:gravity="top"
+                android:hint="@string/sayit"
                 android:lines="4"
                 android:textColorHint="@color/color_text_hint" />
         </RelativeLayout>
@@ -58,19 +58,19 @@
 
 
                 <ImageView
-                    android:id="@+id/img_attach_file_in_post"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/link" />
 
                 <ImageView
-                    android:id="@+id/img_attach_image_in_post"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/img" />
 
                 <ImageView
-                    android:id="@+id/img_tag_in_post"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/friend_post" />
@@ -81,17 +81,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2.5"
-                android:gravity="center"
                 android:background="@color/color_dark_gray"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/txt_add_post"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/d10dp"
                     android:drawableRight="@drawable/arrow"
                     android:gravity="center"
-                    android:drawablePadding="@dimen/d10dp"
                     android:text="@string/strpost"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"

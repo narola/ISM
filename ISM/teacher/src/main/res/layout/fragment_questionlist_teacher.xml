@@ -120,7 +120,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_orange_teacher"
                 android:text="@string/straddnewquestion"
-                android:textColor="@color/color_white" />
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/d16sp" />
 
             <TextView
                 android:id="@+id/tv_questionlist_add_preview"
@@ -129,7 +130,8 @@
                 android:layout_alignParentRight="true"
                 android:background="@drawable/btn_green_teacher"
                 android:text="@string/straddtopreview"
-                android:textColor="@color/color_white" />
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/d16sp" />
         </RelativeLayout>
 
     </LinearLayout>

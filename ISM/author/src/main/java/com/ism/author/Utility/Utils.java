@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -83,7 +85,6 @@ public class Utils {
         try {
             if (calDob == null) {
                 calDob = Calendar.getInstance();
-//                calDob.add(Calendar.YEAR, 100);
                 lngMaxDob = calDob.getTimeInMillis();
             }
             datePickerDob = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
@@ -96,7 +97,7 @@ public class Utils {
                     mEdittext.setText(Utility.formatDateDisplay(calDob.getTime()));
                 }
             }, calDob.get(Calendar.YEAR), calDob.get(Calendar.MONTH), calDob.get(Calendar.DAY_OF_MONTH));
-//            datePickerDob.getDatePicker().setMaxDate(lngMaxDob);
+
             datePickerDob.show();
         } catch (Exception e) {
             Log.e(TAG, "showDatePickerDob Exception : " + e.toString());
@@ -124,6 +125,10 @@ public class Utils {
 
     public static String getCharForNumber(int i) {
         return i > 0 && i < 27 ? String.valueOf((char) (i + 'A' - 1)) : null;
+    }
+
+    public static Spanned formatHtml(String string) {
+        return Html.fromHtml(string);
     }
 
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:padding="@dimen/d10dp">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/d10dp"
+   >
 
     <ImageView
         android:id="@+id/radio"
@@ -26,8 +26,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_add_row"
+        android:layout_marginLeft="5dp"
+        android:padding="5dp"
+        android:visibility="invisible"
+        android:layout_toLeftOf="@+id/img_remove_row"
+
+        />
+    <ImageView
+        android:id="@+id/img_remove_row"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_remove_row"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"
         android:padding="5dp"
+        android:visibility="invisible"
         />
 </RelativeLayout>

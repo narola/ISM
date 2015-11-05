@@ -13,7 +13,7 @@
         android:layout_marginRight="@dimen/d15dp"
         android:orientation="horizontal">
 
-        <com.ism.helper.CircleImageView
+        <com.ism.teacher.helper.CircleImageView
 
             android:id="@+id/img_dp_post_creator"
             android:layout_width="180dp"

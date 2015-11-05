@@ -1,8 +1,6 @@
 package com.ism.author.fragment;
 
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,16 +22,13 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
-import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.CreateAssignmentRequest;
 import com.ism.author.model.Data;
-import com.ism.author.model.GetTopicsRequest;
+import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import jp.wasabeef.richeditor.RichEditor;
@@ -43,12 +37,11 @@ import jp.wasabeef.richeditor.RichEditor;
 /**
  * Created by c166 on 28/10/15.
  */
-public class TrialActivityFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class TrialActivityFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
 
     private static final String TAG = TrialActivityFragment.class.getSimpleName();
     private View view;
-    private FragmentListener fragListener;
 
     public static TrialActivityFragment newInstance() {
         TrialActivityFragment trialActivityFragment = new TrialActivityFragment();
@@ -68,10 +61,8 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
     private ArrayList<Data> arrListSubject;
     private ArrayList<Data> arrListTopic;
     private List<String> arrListDefalt;
-    private DatePickerDialog datePickerDob;
-    private Calendar calDob;
-    private String strDob, strAssignmenttext = "";
-    private long lngMaxDob;
+    private String strSubmissionDate, strAssignmenttext = "";
+
     MyTypeFace myTypeFace;
     private InputValidator inputValidator;
 
@@ -125,32 +116,15 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
         tvActivityTopic.setTypeface(myTypeFace.getRalewayRegular());
 
 
-        btnActivitySave.setOnClickListener(new View.OnClickListener() {
-                                               @Override
-                                               public void onClick(View v) {
-                                                   if (isInputsValid()) {
-                                                       callApiCreateAssignment();
-                                                   }
-
-
-                                               }
-                                           }
-        );
-
-        btnActivityCancel.setOnClickListener(new View.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(View v) {
-                                                     backToTrialScreen();
-                                                 }
-                                             }
-        );
-
+        btnActivitySave.setOnClickListener(this);
+        btnActivityCancel.setOnClickListener(this);
 
         etActivitySubmissionDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    showDatePickerDob();
+                    strSubmissionDate = Utils.showDatePickerDob(getActivity(), etActivitySubmissionDate);
+
                 }
                 return true;
             }
@@ -164,7 +138,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
             public void onTextChange(String text) {
 
                 strAssignmenttext = text;
-
+//                Utils.showToast(strAssignmenttext, getActivity());
             }
         });
 
@@ -180,7 +154,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
                         Utility.toastOffline(getActivity());
                     }
                 } else {
-                    com.ism.author.adapter.Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
+                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
                 }
             }
 
@@ -192,39 +166,13 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
 
         arrListDefalt = new ArrayList<String>();
         arrListDefalt.add(getString(R.string.select));
-        Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
+        Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
 
 
         callApiGetClassRooms();
+        callApiGetSubjects();
 
 
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            fragListener = (FragmentListener) activity;
-            if (fragListener != null) {
-                fragListener.onFragmentAttached(TrialAddNewFragment.FRAGMENT_TRIAL_ACTIVITY);
-            }
-        } catch (ClassCastException e) {
-            Log.i(TAG, "onAttach Exception : " + e.toString());
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        try {
-            if (fragListener != null) {
-                fragListener.onFragmentDetached(TrialAddNewFragment.FRAGMENT_TRIAL_ACTIVITY);
-            }
-        } catch (ClassCastException e) {
-            Log.i(TAG, "onDetach Exception : " + e.toString());
-        }
-        fragListener = null;
     }
 
     private void callApiGetClassRooms() {
@@ -243,7 +191,6 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
     }
 
     private void callApiGetSubjects() {
-
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -258,12 +205,11 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
     }
 
     private void callApiGetTopics(int subject_id) {
-
         if (Utils.isInternetConnected(getActivity())) {
             try {
-                GetTopicsRequest getTopicsRequest = new GetTopicsRequest();
-                getTopicsRequest.setSubject_id(subject_id);
-                new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                RequestObject requestObject = new RequestObject();
+                requestObject.setSubjectId(subject_id);
+                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETTOPICS);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -279,22 +225,21 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
         if (Utils.isInternetConnected(getActivity())) {
 
             try {
-
-                CreateAssignmentRequest createAssignmentRequest = new CreateAssignmentRequest();
-                createAssignmentRequest.setUser_id(WebConstants.TEST_USER_ID);
-                createAssignmentRequest.setSubmission_date(strDob);
-                createAssignmentRequest.setClassroom_id(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
+                RequestObject requestObject = new RequestObject();
+                requestObject.setUserId(WebConstants.TEST_USER_ID);
+                requestObject.setSubmissionDate(strSubmissionDate);
+                requestObject.setClassroomId(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0);
-                createAssignmentRequest.setSubject_id(spActivitySubject.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
+                requestObject.setSubjectId(spActivitySubject.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
                         get(spActivitySubject.getSelectedItemPosition() - 1).getId()) : 0);
 
                 if (arrListTopic.size() > 1) {
-                    createAssignmentRequest.setTopic_id(spActivityTopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
+                    requestObject.setTopicId(spActivityTopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
                             get(spActivityTopic.getSelectedItemPosition() - 1).getId()) : 0);
                 }
-                createAssignmentRequest.setAssignment_text(strAssignmenttext);
+                requestObject.setAssignmentText(strAssignmenttext);
 
-                new WebserviceWrapper(getActivity(), createAssignmentRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.CREATEASSIGNMENT);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -379,8 +324,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
                         classrooms.add(classroom.getClassName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms);
-                    callApiGetSubjects();
+                    Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms, Adapters.ADAPTER_NORMAL);
 
                 } else {
                     Utils.showToast(callGetClassRoomsResponseObject.getMessage(), getActivity());
@@ -400,7 +344,7 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
 
                     }
 
-                    Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects);
+                    Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects, Adapters.ADAPTER_NORMAL);
 
                 } else {
                     Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
@@ -419,11 +363,10 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
                         topics.add(topic.getTopicName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spActivityTopic, topics);
+                    Adapters.setUpSpinner(getActivity(), spActivityTopic, topics, Adapters.ADAPTER_NORMAL);
 
                 } else {
-
-                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
+                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
                     Utils.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
                 }
 
@@ -445,37 +388,26 @@ public class TrialActivityFragment extends Fragment implements WebserviceWrapper
         }
     }
 
-    private void showDatePickerDob() {
-        try {
-            if (calDob == null) {
-                calDob = Calendar.getInstance();
-                calDob.add(Calendar.YEAR, -3);
-                lngMaxDob = calDob.getTimeInMillis();
-            }
-            datePickerDob = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    calDob.set(Calendar.YEAR, year);
-                    calDob.set(Calendar.MONTH, monthOfYear);
-                    calDob.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    strDob = Utility.formatDateApi(calDob.getTime());
-                    etActivitySubmissionDate.setText(Utility.formatDateDisplay(calDob.getTime()));
-                }
-            }, calDob.get(Calendar.YEAR), calDob.get(Calendar.MONTH), calDob.get(Calendar.DAY_OF_MONTH));
-            datePickerDob.getDatePicker().setMaxDate(lngMaxDob);
-            datePickerDob.show();
-        } catch (Exception e) {
-            Log.e(TAG, "showDatePickerDob Exception : " + e.toString());
-        }
-    }
-
-
     private void backToTrialScreen() {
 
         ((AuthorHostActivity) getActivity()).onBackPressed();
     }
 
 
+    @Override
+    public void onClick(View v) {
+
+        if (v == btnActivitySave) {
+
+            if (isInputsValid()) {
+                callApiCreateAssignment();
+            }
+
+        } else if (v == btnActivityCancel) {
+            backToTrialScreen();
+        }
+
+    }
 }
 
 

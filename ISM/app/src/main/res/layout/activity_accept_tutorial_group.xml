@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:background="#F5F5F5"
+              android:orientation="vertical">
+
+	<include layout="@layout/custom_actionbar"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/color_gray_profilemenu"
+		android:orientation="horizontal">
+
+		<com.ism.helper.CircleImageView
+			android:id="@+id/img_user_dp"
+			android:layout_width="150dp"
+			android:layout_height="150dp"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="10dp"
+			android:layout_marginLeft="40dp"
+			android:layout_marginRight="40dp"
+			android:padding="@dimen/d15dp"
+			android:src="@drawable/userdp"/>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:paddingBottom="@dimen/d25dp"
+			android:paddingLeft="@dimen/d5dp"
+			android:paddingTop="@dimen/d25dp">
+
+			<TextView
+				android:id="@+id/txt_welcometoism"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="0sp"
+				android:text="Welcome to ISM"
+				android:textColor="@color/color_white"
+				android:textSize="28sp"/>
+
+			<TextView
+				android:id="@+id/txt_username"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="0sp"
+				android:text="John Samuel"
+				android:textColor="@color/color_white"
+				android:textSize="@dimen/d25dp"/>
+
+			<TextView
+				android:id="@+id/txt_schoolname"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="0sp"
+				android:text="High School"
+				android:textColor="#ADB0B5"
+				android:textSize="@dimen/d20dp"/>
+
+			<TextView
+				android:id="@+id/txt_yearandcourse"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="0sp"
+				android:text="First year, Computer science"
+				android:textColor="#ADB0B5"
+				android:textSize="@dimen/d20dp"/>
+
+		</LinearLayout>
+	</LinearLayout>
+
+	<TextView
+		android:id="@+id/txt_yourtutorial_"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:padding="10sp"
+		android:text="Your Tutorial group is as per below"
+		android:textColor="@color/color_green"
+		android:textSize="@dimen/d25dp"/>
+
+	<GridView
+		android:id="@+id/gv_groupMember"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_marginLeft="220sp"
+		android:layout_marginRight="220sp"
+		android:gravity="center_horizontal"
+		android:horizontalSpacing="10sp"
+		android:numColumns="2"
+		android:verticalSpacing="30sp"></GridView>
+
+	<com.ism.commonsource.view.ActionProcessButton
+		android:id="@+id/btn_accept"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_margin="@dimen/d10dp"
+		android:gravity="center"
+		android:paddingBottom="@dimen/d10dp"
+		android:paddingLeft="@dimen/d60dp"
+		android:paddingRight="@dimen/d60dp"
+		android:paddingTop="@dimen/d10dp"
+		android:text="@string/striacceptedgroup"
+		android:onClick="onClickAccept"
+		android:textColor="@color/color_white"
+		android:textSize="@dimen/d20dp"
+		app:pb_colorComplete="@color/color_green"
+		app:pb_colorNormal="@color/color_green"
+		app:pb_colorPressed="@color/color_green"
+		app:pb_colorProgress="@color/purple_progress"
+		app:pb_cornerRadius="@dimen/app_button_corner_radius"
+		app:pb_textComplete="@string/striacceptedgroup"
+		app:pb_textProgress="@string/processing"/>
+
+</LinearLayout>

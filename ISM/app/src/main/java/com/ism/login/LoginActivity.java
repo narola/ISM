@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -17,14 +18,16 @@ import android.widget.Toast;
 import com.ism.HostActivity;
 import com.ism.R;
 import com.ism.adapter.Adapters;
-import com.ism.ws.model.Data;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
+import com.ism.commonsource.view.ActionProcessButton;
+import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.model.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +35,7 @@ import java.util.List;
 /**
  * Created by c161 on 07/10/15.
  */
-public class LoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse/*, ProgressGenerator.OnCompleteListener*/ {
+public class LoginActivity extends Activity implements WebserviceWrapper.WebserviceResponse {
 
 	private static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -40,7 +43,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private Spinner spCountry;
 	private Spinner spState;
 	private Spinner spCity;
-//	private ActionProcessButton btnLogin;
+	private ActionProcessButton btnLogin, progForgotPwd, progRequestCredentials, progCountry, progState, progCity;
+	private Button btnForgotPwdSubmit, btnCredentialsSubmit;
 
 	private InputValidator inputValidator;
 	private ArrayList<Data> arrListCountries;
@@ -48,7 +52,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private ArrayList<Data> arrListCities;
 	private List<String> arrListDefalt;
 	private AlertDialog dialogCredentials;
-//	private ProgressGenerator progressGenerator;
+	private ProgressGenerator progressGenerator;
+	private AlertDialog dialogForgotPassword;
 
 	private String strValidationMsg;
 
@@ -77,7 +82,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void initGlobal() {
 		MyTypeFace myTypeFace = new MyTypeFace(this);
-//		btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
+		btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
 		etPwd = (EditText) findViewById(R.id.et_pwd);
 		etUserid = (EditText) findViewById(R.id.et_userid);
 
@@ -96,24 +101,20 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		arrListDefalt = new ArrayList<String>();
 		arrListDefalt.add(getString(R.string.select));
 
-//		progressGenerator = new ProgressGenerator(this);
+		progressGenerator = new ProgressGenerator();
 	}
 
 	public void onClickLogin(View view) {
 		if (Utility.isOnline(LoginActivity.this)) {
 
-//			if (strValidationMsg == null || strValidationMsg.equals("")) {
-//				strValidationMsg = "1";
-//				Log.e(TAG, "started");
-//
-//				btnLogin.setProgress(10);
-//				progressGenerator.start(btnLogin);
-//			} else {
-//				strValidationMsg = "";
-//				Log.e(TAG, "stopped");
-//
-//				btnLogin.setProgress(100);
-//			}
+			/*if (strValidationMsg == null || strValidationMsg.equals("")) {
+				strValidationMsg = "1";
+				btnLogin.setProgress(1);
+				progressGenerator.start(btnLogin);
+			} else {
+				strValidationMsg = "";
+				btnLogin.setProgress(100);
+			}*/
 
 			if (isInputsValid()) {
 				callApiAuthenticateUser();
@@ -129,29 +130,38 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		LayoutInflater inflater = LayoutInflater.from(LoginActivity.this);
 		View dialogView = inflater.inflate(R.layout.dialog_forgot_password, null);
 		final EditText etEmail = (EditText) dialogView.findViewById(R.id.et_email);
+		progForgotPwd = (ActionProcessButton) dialogView.findViewById(R.id.prog_forgot_password);
 
 		builder.setView(dialogView)
-				.setTitle("Password will be sent to your email id.")
+				.setTitle(R.string.title_forgot_password)
 				.setPositiveButton(R.string.strsubmit, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						if (Utility.isOnline(LoginActivity.this)) {
-							if (inputValidator.validateAllConstraintsEmail(etEmail)) {
-								callApiForgotPassword(etEmail.getText().toString().trim());
-							}
-						} else {
-							Utility.toastOffline(LoginActivity.this);
-						}
-					}
-				}).setNegativeButton(R.string.strcancel, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
 
 					}
-				});
+				}).setNegativeButton(R.string.strclose, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+			}
+		});
 
 		builder.setCancelable(false);
-		builder.create().show();
+		dialogForgotPassword = builder.create();
+		dialogForgotPassword.show();
+		btnForgotPwdSubmit = dialogForgotPassword.getButton(DialogInterface.BUTTON_POSITIVE);
+		btnForgotPwdSubmit.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (Utility.isOnline(LoginActivity.this)) {
+					if (inputValidator.validateAllConstraintsEmail(etEmail)) {
+						callApiForgotPassword(etEmail.getText().toString().trim());
+					}
+				} else {
+					Utility.toastOffline(LoginActivity.this);
+				}
+			}
+		});
 	}
 
 	public void onClickHere(View view) {
@@ -168,6 +178,10 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		spCountry = (Spinner) dialogView.findViewById(R.id.sp_country);
 		spState = (Spinner) dialogView.findViewById(R.id.sp_state);
 		spCity = (Spinner) dialogView.findViewById(R.id.sp_city);
+		progRequestCredentials = (ActionProcessButton) dialogView.findViewById(R.id.prog_request_credentials);
+		progCountry = (ActionProcessButton) dialogView.findViewById(R.id.prog_country);
+		progState = (ActionProcessButton) dialogView.findViewById(R.id.prog_state);
+		progCity = (ActionProcessButton) dialogView.findViewById(R.id.prog_city);
 
 		if (Utility.isOnline(LoginActivity.this)) {
 			callApiGetCountries();
@@ -223,16 +237,17 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 					}
 
-				}).setNegativeButton(R.string.strcancel, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+				}).setNegativeButton(R.string.strclose, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
 
-			}
-		});
+					}
+				});
 		builder.setCancelable(false);
 		dialogCredentials = builder.create();
 		dialogCredentials.show();
-		dialogCredentials.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+		btnCredentialsSubmit = dialogCredentials.getButton(AlertDialog.BUTTON_POSITIVE);
+		btnCredentialsSubmit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (Utility.isOnline(LoginActivity.this)) {
@@ -247,6 +262,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						requestObject.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
 						requestObject.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
 						requestObject.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
+
 						callApiRequestCredentials(requestObject);
 					}
 				} else {
@@ -305,6 +321,9 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiGetCountries() {
 		try {
+			progCountry.setVisibility(View.VISIBLE);
+			progCountry.setProgress(1);
+			progressGenerator.start(progCountry);
 			new WebserviceWrapper(LoginActivity.this, null, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.GET_COUNTRIES);
 		} catch (Exception e) {
@@ -314,6 +333,9 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiGetStates(int countryId) {
 		try {
+			progState.setVisibility(View.VISIBLE);
+			progState.setProgress(1);
+			progressGenerator.start(progState);
 			RequestObject requestObject = new RequestObject();
 			requestObject.setCountryId(countryId);
 
@@ -326,6 +348,9 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiGetCities(int stateId) {
 		try {
+			progCity.setVisibility(View.VISIBLE);
+			progCity.setProgress(1);
+			progressGenerator.start(progCity);
 			RequestObject requestObject = new RequestObject();
 			requestObject.setStateId(stateId);
 
@@ -338,6 +363,10 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiRequestCredentials(RequestObject requestObject) {
 		try {
+			btnCredentialsSubmit.setEnabled(false);
+			progRequestCredentials.setVisibility(View.VISIBLE);
+			progRequestCredentials.setProgress(1);
+			progressGenerator.start(progRequestCredentials);
 			new WebserviceWrapper(LoginActivity.this, requestObject, this).new WebserviceCaller()
 					.execute(WebserviceWrapper.REQUEST_CREDENTIALS);
 		} catch (Exception e) {
@@ -352,6 +381,10 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiForgotPassword(String email) {
 		try {
+			btnForgotPwdSubmit.setEnabled(false);
+			progForgotPwd.setVisibility(View.VISIBLE);
+			progForgotPwd.setProgress(1);
+			progressGenerator.start(progForgotPwd);
 			RequestObject requestObject = new RequestObject();
 			requestObject.setEmailId(email);
 
@@ -365,8 +398,11 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 	private void callApiAuthenticateUser() {
 		try {
-//			progressGenerator.start(btnLogin);
-//			btnLogin.setEnabled(false);
+			btnLogin.setProgress(1);
+			btnLogin.setEnabled(false);
+			progressGenerator.start(btnLogin);
+
+			btnLogin.setEnabled(false);
 			RequestObject requestObject = new RequestObject();
 			requestObject.setUsername(etUserid.getText().toString().trim());
 			requestObject.setPassword(etPwd.getText().toString().trim());
@@ -384,180 +420,227 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	@Override
 	public void onResponse(Object object, Exception error, int apiCode) {
 		try {
-			if (object != null) {
-				switch (apiCode) {
-					case WebserviceWrapper.LOGIN:
-						onResponseLogin(object);
-						break;
-					case WebserviceWrapper.FORGOT_PASSWORD:
-						onResponseForgotPassword(object);
-						break;
-					case WebserviceWrapper.GET_COUNTRIES:
-						onResponseCountries(object);
-						break;
-					case WebserviceWrapper.GET_STATES:
-						onResponseStates(object);
-						break;
-					case WebserviceWrapper.GET_CITIES:
-						onResponseCities(object);
-						break;
-					case WebserviceWrapper.REQUEST_CREDENTIALS:
-						onResponseCredentials(object);
-						break;
-				}
-			} else if (error != null) {
-				Log.e(TAG, "onResponse ApiCall Exception : " + error.toString());
+			switch (apiCode) {
+				case WebserviceWrapper.LOGIN:
+					onResponseLogin(object, error);
+					break;
+				case WebserviceWrapper.FORGOT_PASSWORD:
+					onResponseForgotPassword(object, error);
+					break;
+				case WebserviceWrapper.GET_COUNTRIES:
+					onResponseCountries(object, error);
+					break;
+				case WebserviceWrapper.GET_STATES:
+					onResponseStates(object, error);
+					break;
+				case WebserviceWrapper.GET_CITIES:
+					onResponseCities(object, error);
+					break;
+				case WebserviceWrapper.REQUEST_CREDENTIALS:
+					onResponseCredentials(object, error);
+					break;
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponse Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseCities(Object object) {
+	private void onResponseCities(Object object, Exception error) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				arrListCities = new ArrayList<Data>();
-				arrListCities.addAll(responseObj.getData());
-				List<String> cities = new ArrayList<String>();
-				cities.add(getString(R.string.select));
-				for (Data city : arrListCities) {
-					cities.add(city.getCityName());
+			progCity.setProgress(100);
+			progCity.setVisibility(View.INVISIBLE);
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					arrListCities = new ArrayList<Data>();
+					arrListCities.addAll(responseObj.getData());
+					List<String> cities = new ArrayList<String>();
+					cities.add(getString(R.string.select));
+					for (Data city : arrListCities) {
+						cities.add(city.getCityName());
+					}
+					Adapters.setUpSpinner(LoginActivity.this, spCity, cities);
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseCities Failed");
 				}
-				Adapters.setUpSpinner(LoginActivity.this, spCity, cities);
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Log.e(TAG, "onResponseCities Failed");
+			} else if (error != null) {
+				Log.e(TAG, "onResponseCities api Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseCities Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseStates(Object object) {
+	private void onResponseStates(Object object, Exception error) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				arrListStates = new ArrayList<Data>();
-				arrListStates.addAll(responseObj.getData());
-				List<String> states = new ArrayList<String>();
-				states.add(getString(R.string.select));
-				for (Data state : arrListStates) {
-					states.add(state.getStateName());
+			progState.setProgress(100);
+			progState.setVisibility(View.INVISIBLE);
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					arrListStates = new ArrayList<Data>();
+					arrListStates.addAll(responseObj.getData());
+					List<String> states = new ArrayList<String>();
+					states.add(getString(R.string.select));
+					for (Data state : arrListStates) {
+						states.add(state.getStateName());
+					}
+					Adapters.setUpSpinner(LoginActivity.this, spState, states);
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseStates Failed");
 				}
-				Adapters.setUpSpinner(LoginActivity.this, spState, states);
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Log.e(TAG, "onResponseStates Failed");
+			} else if (error != null) {
+				Log.e(TAG, "onResponseStates api Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseStates Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseCountries(Object object) {
+	private void onResponseCountries(Object object, Exception error) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				arrListCountries = new ArrayList<Data>();
-				arrListCountries.addAll(responseObj.getData());
-				List<String> countries = new ArrayList<String>();
-				countries.add(getString(R.string.select));
-				for (Data country : arrListCountries) {
-					countries.add(country.getCountryName());
+			progCountry.setProgress(100);
+			progCountry.setVisibility(View.INVISIBLE);
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					arrListCountries = new ArrayList<Data>();
+					arrListCountries.addAll(responseObj.getData());
+					List<String> countries = new ArrayList<String>();
+					countries.add(getString(R.string.select));
+					for (Data country : arrListCountries) {
+						countries.add(country.getCountryName());
+					}
+					Adapters.setUpSpinner(LoginActivity.this, spCountry, countries);
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseCountries Failed");
 				}
-				Adapters.setUpSpinner(LoginActivity.this, spCountry, countries);
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Log.e(TAG, "onResponseCountries Failed");
+			} else if (error != null) {
+				Log.e(TAG, "onResponseCountries api Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseCountries Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseCredentials(Object object) {
+	private void onResponseCredentials(Object object, Exception error) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				if (dialogCredentials != null) {
-					dialogCredentials.dismiss();
+			if (btnCredentialsSubmit != null) {
+				btnCredentialsSubmit.setEnabled(true);
+			}
+			if (progRequestCredentials != null) {
+				progRequestCredentials.setProgress(100);
+				progRequestCredentials.setVisibility(View.INVISIBLE);
+			}
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					if (dialogCredentials != null) {
+						dialogCredentials.dismiss();
+					}
+					Toast.makeText(LoginActivity.this, "Request for credentials sent to admin successfully.", Toast.LENGTH_LONG).show();
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Toast.makeText(LoginActivity.this, responseObj.getMessage(), Toast.LENGTH_LONG).show();
 				}
-				Toast.makeText(LoginActivity.this, "Request for credentials sent to admin successfully.", Toast.LENGTH_LONG).show();
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Toast.makeText(LoginActivity.this, responseObj.getMessage(), Toast.LENGTH_LONG).show();
+			} else if (error != null) {
+				Log.e(TAG, "onResponseCredentials api Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseCredentials Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseForgotPassword(Object object) {
+	private void onResponseForgotPassword(Object object, Exception error) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				Toast.makeText(LoginActivity.this, R.string.password_sent, Toast.LENGTH_LONG).show();
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Toast.makeText(LoginActivity.this, R.string.email_not_found, Toast.LENGTH_LONG).show();
+			if (btnForgotPwdSubmit != null) {
+				btnForgotPwdSubmit.setEnabled(true);
+			}
+			if (progForgotPwd != null) {
+				progForgotPwd.setProgress(100);
+				progForgotPwd.setVisibility(View.INVISIBLE);
+			}
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					Toast.makeText(LoginActivity.this, R.string.password_sent, Toast.LENGTH_LONG).show();
+					dialogForgotPassword.dismiss();
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Toast.makeText(LoginActivity.this, R.string.email_not_found, Toast.LENGTH_LONG).show();
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseForgotPassword api Exception : " + error.toString());
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseForgotPassword Exception : " + e.toString());
 		}
 	}
 
-	private void onResponseLogin(Object object) {
-		ResponseObject responseObj = (ResponseObject) object;
-		if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+	private void onResponseLogin(Object object, Exception error) {
+		try {
+			btnLogin.setProgress(100);
+			btnLogin.setEnabled(true);
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
 
-			if (responseObj.getData().get(0).getUserId() == null) {
+					if (responseObj.getData().get(0).getUserId() == null) {
 
-				PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, LoginActivity.this, ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
-				PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, LoginActivity.this, responseObj.getData().get(0).getCredentialId());
-				PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, LoginActivity.this, etPwd.getText().toString().trim());
-				PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_ID, LoginActivity.this, responseObj.getData().get(0).getSchoolId());
-				PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, LoginActivity.this, responseObj.getData().get(0).getSchoolName());
-				PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, LoginActivity.this, responseObj.getData().get(0).getSchoolDestrict());
-				PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_TYPE, LoginActivity.this, responseObj.getData().get(0).getSchoolType());
-				PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_ID, LoginActivity.this, responseObj.getData().get(0).getClassId());
-				PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, LoginActivity.this, responseObj.getData().get(0).getClassName());
-				PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_ID, LoginActivity.this, responseObj.getData().get(0).getCourseId());
-				PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, LoginActivity.this, responseObj.getData().get(0).getCourseName());
-				PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, LoginActivity.this, responseObj.getData().get(0).getAcademicYear());
-				PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, LoginActivity.this, responseObj.getData().get(0).getRoleId());
+						PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, LoginActivity.this, ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
+						PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, LoginActivity.this, responseObj.getData().get(0).getCredentialId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, LoginActivity.this, etPwd.getText().toString().trim());
+						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_ID, LoginActivity.this, responseObj.getData().get(0).getSchoolId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, LoginActivity.this, responseObj.getData().get(0).getSchoolName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, LoginActivity.this, responseObj.getData().get(0).getSchoolDestrict());
+						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_TYPE, LoginActivity.this, responseObj.getData().get(0).getSchoolType());
+						PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_ID, LoginActivity.this, responseObj.getData().get(0).getClassId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, LoginActivity.this, responseObj.getData().get(0).getClassName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_ID, LoginActivity.this, responseObj.getData().get(0).getCourseId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, LoginActivity.this, responseObj.getData().get(0).getCourseName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, LoginActivity.this, responseObj.getData().get(0).getAcademicYear());
+						PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, LoginActivity.this, responseObj.getData().get(0).getRoleId());
 
-				launchProfileInfoActivity();
+						launchProfileInfoActivity();
 
-			} else {
-
-				PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this, ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
-				PreferenceData.setStringPrefs(PreferenceData.USER_ID, LoginActivity.this, responseObj.getData().get(0).getUserId());
-				PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, LoginActivity.this, responseObj.getData().get(0).getFullName());
-				PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, LoginActivity.this, responseObj.getData().get(0).getProfilePic());
-				PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, LoginActivity.this, responseObj.getData().get(0).getTutorialGroupId());
-				PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseObj.getData().get(0).getTutorialGroupName());
-
-				if (responseObj.getData().get(0).getTutorialGroupId() == null) {
-					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);
-					launchWelcomeActivity();
-				} else {
-					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, true);
-
-					if (responseObj.getData().get(0).getTutorialGroupJoiningStatus().equals("1")) {
-						PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
-
-						if (responseObj.getData().get(0).getTutorialGroupComplete().equals("1")) {
-							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this, true);
-							launchHostActivity();
-						} else {
-							launchAcceptTutorialGroupActivity();
-						}
 					} else {
-						PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, false);
-						launchAcceptTutorialGroupActivity();
+
+						PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this, ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
+						PreferenceData.setStringPrefs(PreferenceData.USER_ID, LoginActivity.this, responseObj.getData().get(0).getUserId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, LoginActivity.this, responseObj.getData().get(0).getFullName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, LoginActivity.this, responseObj.getData().get(0).getProfilePic());
+						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, LoginActivity.this, responseObj.getData().get(0).getTutorialGroupId());
+						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseObj.getData().get(0).getTutorialGroupName());
+
+						if (responseObj.getData().get(0).getTutorialGroupId() == null) {
+							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);
+							launchWelcomeActivity();
+						} else {
+							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, true);
+
+							if (responseObj.getData().get(0).getTutorialGroupJoiningStatus().equals("1")) {
+								PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
+
+								if (responseObj.getData().get(0).getTutorialGroupComplete().equals("1")) {
+									PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this, true);
+									launchHostActivity();
+								} else {
+									launchAcceptTutorialGroupActivity();
+								}
+							} else {
+								PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, false);
+								launchAcceptTutorialGroupActivity();
+							}
+						}
+
 					}
+
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Toast.makeText(LoginActivity.this, "Username or Password is wrong!", Toast.LENGTH_LONG).show();
 				}
-
+			} else if (error != null) {
+				Log.e(TAG, "onResponseLogin api Exception : " + error.toString());
 			}
-
-		} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-			Toast.makeText(LoginActivity.this, "Username or Password is wrong!", Toast.LENGTH_LONG).show();
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseLogin Exception : " + e.toString());
 		}
 	}
 
@@ -581,8 +664,4 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		finish();
 	}
 
-	/*@Override
-	public void onComplete() {
-		Log.e(TAG, "completed");
-	}*/
 }

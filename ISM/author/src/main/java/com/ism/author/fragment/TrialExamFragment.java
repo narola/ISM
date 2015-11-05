@@ -27,9 +27,8 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
-import com.ism.author.model.CreateExamRequest;
 import com.ism.author.model.Data;
-import com.ism.author.model.GetTopicsRequest;
+import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
@@ -43,14 +42,13 @@ import jp.wasabeef.richeditor.RichEditor;
 /**
  * Created by c166 on 28/10/15.
  */
-public class TrialExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class TrialExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
 
     private static final String TAG = TrialExamFragment.class.getSimpleName();
     private View view;
 
-//    private FragmentListener fragListener;
-
+    //    private FragmentListener fragListener;
     public static TrialExamFragment newInstance() {
         TrialExamFragment trialExamFragment = new TrialExamFragment();
         return trialExamFragment;
@@ -177,44 +175,21 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
 
 
         getPassingPercentSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), sp_exam_passingpercent, arrListPassingPercent);
+        Adapters.setUpSpinner(getActivity(), sp_exam_passingpercent, arrListPassingPercent, Adapters.ADAPTER_NORMAL);
 
         getExamDurationSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), sp_exam_examduration, arrListExamDuration);
+        Adapters.setUpSpinner(getActivity(), sp_exam_examduration, arrListExamDuration, Adapters.ADAPTER_NORMAL);
 
         arrListExamMode = new ArrayList<String>();
         arrListExamMode.add(getString(R.string.strexammode));
         arrListExamMode = Arrays.asList(getResources().getStringArray(R.array.exammode));
-        Adapters.setUpSpinner(getActivity(), sp_exam_exammode, arrListExamMode);
+        Adapters.setUpSpinner(getActivity(), sp_exam_exammode, arrListExamMode, Adapters.ADAPTER_NORMAL);
 
 
         arrListExamName = new ArrayList<String>();
         arrListExamName.add(getString(R.string.strexamname));
         arrListExamName = Arrays.asList(getResources().getStringArray(R.array.examname));
-        Adapters.setUpSpinner(getActivity(), sp_exam_examname, arrListExamName);
-
-//        sp_exam_subjectname.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if (arrListSubject != null && position > 0) {
-//
-//                    if (Utility.isOnline(getActivity())) {
-//
-//                        callApiGetTopics(Integer.parseInt(arrListSubject.get(position - 1).getId()));
-//                    } else {
-//                        Utility.toastOffline(getActivity());
-//                    }
-//                } else {
-//                    com.ism.adapter.Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, arrListDefalt);
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-
+        Adapters.setUpSpinner(getActivity(), sp_exam_examname, arrListExamName, Adapters.ADAPTER_NORMAL);
 
         et_exam_startdate.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -237,52 +212,18 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         });
 
 
-        btn_exam_save.setOnClickListener(new View.OnClickListener() {
-                                             @Override
-                                             public void onClick(View v) {
-                                                 if (isInputsValid()) {
-                                                     callApiCreateExam();
-                                                 }
-
-
-                                             }
-                                         }
-        );
-
-        btn_exam_setquestion.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-
-
-                                                        ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION);
-
-                                                    }
-                                                }
-        );
-
-
-        btn_exam_cancel.setOnClickListener(new View.OnClickListener() {
-                                               @Override
-                                               public void onClick(View v) {
-                                                   backToTrialScreen();
-                                               }
-                                           }
-        );
+        btn_exam_save.setOnClickListener(this);
+        btn_exam_setquestion.setOnClickListener(this);
+        btn_exam_cancel.setOnClickListener(this);
 
 
         radio_negativemarking.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                // checkedId is the RadioButton selected
-
-
                 if (((RadioButton) view.findViewById(checkedId)).getText().toString().toLowerCase().equals("yes")) {
-
                     ll_add_negative_mark.setVisibility(View.VISIBLE);
-
                 } else {
-
                     ll_add_negative_mark.setVisibility(View.GONE);
                 }
 
@@ -321,6 +262,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
             public void onTextChange(String text) {
 
                 strAssignmenttext = text;
+
 
             }
         });
@@ -390,9 +332,9 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
 
         if (Utils.isInternetConnected(getActivity())) {
             try {
-                GetTopicsRequest getTopicsRequest = new GetTopicsRequest();
-                getTopicsRequest.setSubject_id(subject_id);
-                new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                RequestObject requestObject = new RequestObject();
+                requestObject.setSubjectId(subject_id);
+                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETTOPICS);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -406,77 +348,38 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
 
     private void callApiCreateExam() {
 
-
-//        if (Utils.isInternetConnected(getActivity())) {
-//            try {
-//                CreateExamRequest createExamRequest = new CreateExamRequest();
-//
-//                createExamRequest.setExam_name(et_exam_name.getText().toString());
-//                createExamRequest.setClassroom_id(sp_exam_classroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
-//                        get(sp_exam_classroom.getSelectedItemPosition() - 1).getId()) : 0);
-//                createExamRequest.setSubject_id(sp_exam_subjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
-//                        get(sp_exam_subjectname.getSelectedItemPosition() - 1).getId()) : 0);
-//                createExamRequest.setAttempt_count(Integer.valueOf(et_exam_attemptcount.getText().toString()));
-//                createExamRequest.setExam_type(getExamType());
-//                createExamRequest.setExam_category(arrListExamName.get(sp_exam_examname.getSelectedItemPosition()));
-//                createExamRequest.setExam_mode(arrListExamMode.get(sp_exam_exammode.getSelectedItemPosition()));
-//                createExamRequest.setPassing_percent(arrListPassingPercent.get(sp_exam_passingpercent.getSelectedItemPosition()));
-//                createExamRequest.setExam_duration(arrListExamDuration.get(sp_exam_examduration.getSelectedItemPosition()));
-//                createExamRequest.setExam_instruction(strAssignmenttext);
-//                createExamRequest.setDeclare_results(getRadioGropuSelection(radio_declareresult));
-//                createExamRequest.setNegative_marking(getRadioGropuSelection(radio_negativemarking));
-//                createExamRequest.setRandom_question(getRadioGropuSelection(radio_exam_random_question));
-//                createExamRequest.setExam_start_date(et_exam_startdate.getText().toString());
-//                createExamRequest.setExam_start_time("5:00:00");
-//                createExamRequest.setUser_id("370");
-//                createExamRequest.setNegative_mark_value(et_exam_addnegativemark.getText().toString());
-//                createExamRequest.setBook_id(0);
-//
-//                new WebserviceWrapper(getActivity(), createExamRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-//                        .execute(WebserviceWrapper.CREATEEXAM);
-//            } catch (Exception e) {
-//                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-//            }
-//        } else {
-//            Utils.showToast(getString(R.string.strnetissue), getActivity());
-//        }
-
-
         if (Utils.isInternetConnected(getActivity())) {
             try {
-                CreateExamRequest createExamRequest = new CreateExamRequest();
+                RequestObject requestObject = new RequestObject();
 
-                createExamRequest.setExam_name(et_exam_name.getText().toString());
-                createExamRequest.setClassroom_id(sp_exam_classroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
+                requestObject.setExamName(et_exam_name.getText().toString());
+                requestObject.setClassroomId(sp_exam_classroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(sp_exam_classroom.getSelectedItemPosition() - 1).getId()) : 0);
-                createExamRequest.setSubject_id(sp_exam_subjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
+                requestObject.setSubjectId(sp_exam_subjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
                         get(sp_exam_subjectname.getSelectedItemPosition() - 1).getId()) : 0);
-                createExamRequest.setAttempt_count(Integer.valueOf(et_exam_attemptcount.getText().toString()));
-                createExamRequest.setExam_type(getExamType());
-                createExamRequest.setExam_category(arrListExamName.get(sp_exam_examname.getSelectedItemPosition()));
-                createExamRequest.setExam_mode(arrListExamMode.get(sp_exam_exammode.getSelectedItemPosition()));
-                createExamRequest.setPassing_percent(arrListPassingPercent.get(sp_exam_passingpercent.getSelectedItemPosition()));
-                createExamRequest.setExam_duration(arrListExamDuration.get(sp_exam_examduration.getSelectedItemPosition()));
-                createExamRequest.setExam_instruction(strAssignmenttext);
-                createExamRequest.setDeclare_results(getRadioGropuSelection(radio_declareresult));
-                createExamRequest.setNegative_marking(getRadioGropuSelection(radio_negativemarking));
-                createExamRequest.setRandom_question(getRadioGropuSelection(radio_exam_random_question));
+                requestObject.setAttemptCount(Integer.valueOf(et_exam_attemptcount.getText().toString()));
+                requestObject.setExamType(getExamType());
+                requestObject.setExamCategory(arrListExamName.get(sp_exam_examname.getSelectedItemPosition()));
+                requestObject.setExamMode(arrListExamMode.get(sp_exam_exammode.getSelectedItemPosition()));
+                requestObject.setPassingPercent(arrListPassingPercent.get(sp_exam_passingpercent.getSelectedItemPosition()));
+                requestObject.setExamDuration(arrListExamDuration.get(sp_exam_examduration.getSelectedItemPosition()));
+                requestObject.setExamInstruction(strAssignmenttext);
+                requestObject.setDeclareResults(getRadioGropuSelection(radio_declareresult));
+                requestObject.setNegativeMarking(getRadioGropuSelection(radio_negativemarking));
+                requestObject.setRandomQuestion(getRadioGropuSelection(radio_exam_random_question));
+                requestObject.setExamStartDate(Utils.getDateInApiFormat(et_exam_startdate.getText().toString()));
 
-//                createExamRequest.setExam_start_date(et_exam_startdate.getText().toString());
-                createExamRequest.setExam_start_date(Utils.getDateInApiFormat(et_exam_startdate.getText().toString()));
-                Log.e("date", "" + Utils.getDateInApiFormat(et_exam_startdate.getText().toString()));
-
-                createExamRequest.setExam_start_time("5:00:00");
-                createExamRequest.setUser_id("370");
-                if (et_exam_addnegativemark.getText().toString().equalsIgnoreCase("")) {
-                    createExamRequest.setNegative_mark_value("0");
+                requestObject.setExamStartTime("5:00:00");
+                requestObject.setUserId("370");
+                if (et_exam_addnegativemark.getText().toString().isEmpty()) {
+                    requestObject.setNegativeMarkValue("0");
                 } else {
-                    createExamRequest.setNegative_mark_value(et_exam_addnegativemark.getText().toString());
+                    requestObject.setNegativeMarkValue(et_exam_addnegativemark.getText().toString());
                 }
 
-                createExamRequest.setBook_id(0);
+                requestObject.setBookId(0);
 
-                new WebserviceWrapper(getActivity(), createExamRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.CREATEEXAM);
             } catch (Exception e) {
                 Log.e(TAG, e.getLocalizedMessage());
@@ -657,7 +560,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
                     classrooms.add(course.getClassName());
 
                 }
-                Adapters.setUpSpinner(getActivity(), sp_exam_classroom, classrooms);
+                Adapters.setUpSpinner(getActivity(), sp_exam_classroom, classrooms, Adapters.ADAPTER_NORMAL);
                 callApiGetSubjects();
 
             } else {
@@ -678,7 +581,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
 
                 }
 
-                Adapters.setUpSpinner(getActivity(), sp_exam_subjectname, subjects);
+                Adapters.setUpSpinner(getActivity(), sp_exam_subjectname, subjects, Adapters.ADAPTER_NORMAL);
 
             } else {
                 Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
@@ -697,9 +600,9 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
                     topics.add(topic.getTopicName());
 
                 }
-                Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, topics);
+                Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, topics, Adapters.ADAPTER_NORMAL);
             } else {
-                Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, arrListDefalt);
+                Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
                 Utils.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
             }
 
@@ -746,5 +649,26 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
 
     private void backToTrialScreen() {
         ((AuthorHostActivity) getActivity()).onBackPressed();
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if (v == btn_exam_save) {
+
+            if (isInputsValid()) {
+                callApiCreateExam();
+            }
+
+        } else if (v == btn_exam_setquestion) {
+
+            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION);
+
+        } else if (v == btn_exam_cancel) {
+
+            backToTrialScreen();
+
+        }
+
     }
 }

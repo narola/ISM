@@ -38,7 +38,7 @@ public class Data {
     private String videoLink;
     private String profilePic;
     private double like;
-    private ArrayList<GetAllFeedsComment> commentList;
+    private ArrayList<PostFeedCommentsModel> commentList;
 
     /*these parameters are of GetStudyMates Response*/
 
@@ -73,11 +73,9 @@ public class Data {
     private String feed_by;
     private String video_thumbnail;
     private List<String> images;
-    private ArrayList<FeedImages> feed_images;
+    private ArrayList<PostFeedImagesModel> feed_images;
 
-    //  trial
 
-    private String role;
 
     /*these are for the get questionbank*/
 
@@ -87,7 +85,7 @@ public class Data {
     private String questionImageLink;
     private String evaluationNotes;
     private String topicId;
-    private ArrayList<AnswersModel> answers;
+    private ArrayList<QuestionAnswersModel> answers;
     private String classroomId;
     private String bookId;
     private String solution;
@@ -97,17 +95,24 @@ public class Data {
     private String questionCreatorName;
 
 
+    /*these are for the get created exams*/
+    private String total_student_attempted;
+    private String total_student;
+    private String exam_type;
+    private String average_score;
+
 
     /*these methods are for login response*/
 
     @JsonProperty("feed_images")
-    public ArrayList<FeedImages> getFeed_images() {
+    public ArrayList<PostFeedImagesModel> getFeed_images() {
         return feed_images;
     }
 
-    public void setFeed_images(ArrayList<FeedImages> feed_images) {
+    public void setFeed_images(ArrayList<PostFeedImagesModel> feed_images) {
         this.feed_images = feed_images;
     }
+
     public String getVideo_thumbnail() {
         return video_thumbnail;
     }
@@ -284,11 +289,11 @@ public class Data {
     }
 
     @JsonProperty("comment_list")
-    public ArrayList<GetAllFeedsComment> getCommentList() {
+    public ArrayList<PostFeedCommentsModel> getCommentList() {
         return commentList;
     }
 
-    public void setCommentList(ArrayList<GetAllFeedsComment> commentList) {
+    public void setCommentList(ArrayList<PostFeedCommentsModel> commentList) {
         this.commentList = commentList;
     }
 
@@ -423,7 +428,8 @@ public class Data {
     public void setFeed_by(String feed_by) {
         this.feed_by = feed_by;
     }
-//    @JsonProperty("feed_text")
+
+    //    @JsonProperty("feed_text")
 //    public String getFeed_text() {
 //        return feed_text;
 //    }
@@ -514,11 +520,11 @@ public class Data {
     }
 
     @JsonProperty("answers")
-    public ArrayList<AnswersModel> getAnswers() {
+    public ArrayList<QuestionAnswersModel> getAnswers() {
         return this.answers;
     }
 
-    public void setAnswers(ArrayList<AnswersModel> answers) {
+    public void setAnswers(ArrayList<QuestionAnswersModel> answers) {
         this.answers = answers;
     }
 
@@ -585,20 +591,18 @@ public class Data {
         this.questionCreatorName = questionCreatorName;
     }
 
-    @JsonProperty("role")
-    public String getRole() {
-        return role;
+    private Boolean isQuestionAddedInPreview = false;
+
+    public Boolean getIsQuestionAddedInPreview() {
+        return isQuestionAddedInPreview;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setIsQuestionAddedInPreview(Boolean isQuestionAddedInPreview) {
+        this.isQuestionAddedInPreview = isQuestionAddedInPreview;
     }
 
-    //getTrial exams
-    private  String total_student_attempted;
-    private String total_student;
-    private String exam_type;
-    private String average_score;
+
+    /*these are for the get created exams*/
 
     @JsonProperty("average_score")
     public String getAverage_score() {
@@ -635,5 +639,6 @@ public class Data {
     public void setTotal_student(String total_student) {
         this.total_student = total_student;
     }
+
 
 }
