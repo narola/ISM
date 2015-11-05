@@ -136,7 +136,7 @@ class Dashboard extends ADMIN_Controller {
 			$this->data['schools'] = select(TBL_SCHOOLS,false,array('where'=>array('is_delete'=>0,'school_grade'=>$school_grade)),array('order_by'=>TBL_SCHOOLS.'.school_name'));
 		}
 
-		$this->data['roles'] = select(TBL_ROLES,false,array('where'=>array('is_delete'=>0)));
+		$this->data['roles'] = select(TBL_ROLES,false,array('where'=>array('is_delete'=>0,'role_name !='=>'school')));
 		$this->data['courses'] = select(TBL_COURSES,false,array('where'=>array('is_delete'=>0)));
 
 		$course_id = $this->input->post('course_id');
