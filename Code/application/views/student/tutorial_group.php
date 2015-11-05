@@ -44,7 +44,7 @@
                             <?php 
                             $topic_img  =  UPLOAD_URL.'/'.$topic['profile_link'];
                                 if($topic['profile_link'] == ''){
-                                    $topic_img = '/assets/images/avatar.png';
+                                    $topic_img = 'assets/images/avatar.png';
                                 }
                             ?>
                         	<img src="<?php echo $topic_img ; ?>">
