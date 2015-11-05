@@ -17,7 +17,7 @@ import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.dialog.TagStudyMatesDialog;
 import com.ism.dialog.ViewAllCommentsDialog;
-import com.ism.helper.CircleImageView;
+import com.ism.views.CircleImageView;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.ws.RequestObject;

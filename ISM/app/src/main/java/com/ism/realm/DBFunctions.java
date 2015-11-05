@@ -1,4 +1,4 @@
-package com.ism.database;
+package com.ism.realm;
 
 /**
  * Created by c161 on 29/10/15.

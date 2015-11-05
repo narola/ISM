@@ -4,7 +4,7 @@
                 android:layout_height="wrap_content"
 				android:background="@drawable/bg_white_border_gray">
 
-	<com.ism.helper.CircleImageView
+	<com.ism.views.CircleImageView
 		android:id="@+id/img_dp"
 		android:layout_width="@dimen/post_dp_size"
 		android:layout_height="@dimen/post_dp_size"

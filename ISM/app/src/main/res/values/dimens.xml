@@ -49,4 +49,7 @@
     <dimen name="dialog_spacing">20dp</dimen>
     <dimen name="d150dp">150dp</dimen>
     <dimen name="d18sp">18sp</dimen>
+    <dimen name="divider_height">2dp</dimen>
+    <dimen name="header_white_height">60dp</dimen>
+    <dimen name="header_white_spacing">15dp</dimen>
 </resources>

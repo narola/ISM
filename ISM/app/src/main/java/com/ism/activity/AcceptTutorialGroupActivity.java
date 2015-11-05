@@ -1,4 +1,4 @@
-package com.ism.login;
+package com.ism.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,13 +8,12 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ism.HostActivity;
 import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.adapter.TutorialGroupAdapter;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
-import com.ism.helper.CircleImageView;
+import com.ism.views.CircleImageView;
 import com.ism.ws.RequestObject;
 import com.ism.ws.ResponseObject;
 import com.ism.object.MyTypeFace;

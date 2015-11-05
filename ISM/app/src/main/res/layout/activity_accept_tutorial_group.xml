@@ -14,7 +14,7 @@
 		android:background="@color/color_gray_profilemenu"
 		android:orientation="horizontal">
 
-		<com.ism.helper.CircleImageView
+		<com.ism.views.CircleImageView
 			android:id="@+id/img_user_dp"
 			android:layout_width="150dp"
 			android:layout_height="150dp"

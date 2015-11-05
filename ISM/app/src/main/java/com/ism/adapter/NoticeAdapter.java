@@ -1,6 +1,7 @@
 package com.ism.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,74 +9,88 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.model.NoticeModel;
+import com.ism.activity.HostActivity;
+import com.ism.model.Notice;
 import com.ism.object.MyTypeFace;
 
 import java.util.ArrayList;
 
 /**
- * Created by c162 on 10/10/15.
+ * Created by c161 on 04/11/15.
  */
 public class NoticeAdapter extends BaseAdapter {
-    private final LayoutInflater inflater;
-    Context context;
-    NoticeAdapter adapter;
-    ArrayList<NoticeModel> arrayList=new ArrayList<NoticeModel>();
-    public NoticeAdapter(Context context, ArrayList<NoticeModel> arrayList) {
+
+    private static final String TAG = NoticeAdapter.class.getSimpleName();
+
+    private LayoutInflater inflater;
+    private Context context;
+    private ArrayList<Notice> arrListNotes;
+	private MyTypeFace myTypeFace;
+	private HostActivity activityHost;
+
+    public NoticeAdapter(Context context, ArrayList<Notice> arrListNotes, HostActivity activityHost) {
         this.context = context;
-        this.arrayList = arrayList;
-        this.inflater = LayoutInflater.from(context);
+        this.arrListNotes = arrListNotes;
+	    this.activityHost = activityHost;
+        inflater = LayoutInflater.from(context);
+	    myTypeFace = new MyTypeFace(context);
     }
 
     @Override
     public int getCount() {
-        return arrayList.size();
-
+        return arrListNotes.size() >= 2 ? 2 : arrListNotes.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return arrayList.get(position);
+        return arrListNotes.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = inflater.inflate(R.layout.row_notice, parent, false);
-   // if(position<=2){
-        MyTypeFace myTypeFace=new MyTypeFace(context);
-        TextView raw_txt_notice = (TextView) view.findViewById(R.id.txt_noticeName);
-        TextView raw_txt_noticeDesc = (TextView) view.findViewById(R.id.txt_noticeDesc);
-        TextView raw_txt_readmore = (TextView) view.findViewById(R.id.txt_noticeReadMore);
-     //   TextView raw_txt_viewAll = (TextView) view.findViewById(R.id.raw_txt_noticeViewAll);
-        raw_txt_notice.setTypeface(myTypeFace.getRalewayBold());
-        raw_txt_noticeDesc.setTypeface(myTypeFace.getRalewayThin());
-        raw_txt_readmore.setTypeface(myTypeFace.getRalewayLight());
-       // raw_txt_viewAll.setTypeface(myTypeFace.getRalewayRegular());
+	    ViewHolder holder;
+	    if (convertView == null) {
+		    convertView = inflater.inflate(R.layout.row_notice, parent, false);
 
-      //  if(position<2) {
+		    holder = new ViewHolder();
+		    holder.txtNotice = (TextView) convertView.findViewById(R.id.txt_noticeName);
+		    holder.txtNoticeDesc = (TextView) convertView.findViewById(R.id.txt_noticeDesc);
+		    holder.txtReadmore = (TextView) convertView.findViewById(R.id.txt_noticeReadMore);
 
-            raw_txt_notice.setVisibility(View.VISIBLE);
-            raw_txt_noticeDesc.setVisibility(View.VISIBLE);
-            raw_txt_readmore.setVisibility(View.VISIBLE);
-          //  raw_txt_viewAll.setVisibility(View.GONE);
-            raw_txt_notice.setText(arrayList.get(position).getStrNoticeName());
-            raw_txt_noticeDesc.setText(arrayList.get(position).getStrNoticeDesc());
-        //}
-//        if (position==2){
-//            raw_txt_notice.setVisibility(View.GONE);
-//            raw_txt_noticeDesc.setVisibility(View.GONE);
-//            raw_txt_readmore.setVisibility(View.GONE);
-//           // raw_txt_viewAll.setVisibility(View.VISIBLE);
-//            view.setLayoutParams( new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100));
-//        }
-//    }
-//
+		    holder.txtNotice.setTypeface(myTypeFace.getRalewayBold());
+		    holder.txtNoticeDesc.setTypeface(myTypeFace.getRalewayThin());
+		    holder.txtReadmore.setTypeface(myTypeFace.getRalewayLight());
 
-        return view;
+		    convertView.setTag(holder);
+	    } else {
+		    holder = (ViewHolder) convertView.getTag();
+	    }
+
+	    try {
+		    holder.txtNotice.setText(arrListNotes.get(position).getStrNoticeName());
+		    holder.txtNoticeDesc.setText(arrListNotes.get(position).getStrNoticeDesc());
+
+		    holder.txtReadmore.setOnClickListener(new View.OnClickListener() {
+			    @Override
+			    public void onClick(View v) {
+				    activityHost.showAllNotice();
+			    }
+		    });
+
+	    } catch (Exception e) {
+		    Log.e(TAG, "getView Exception : " + e.toString());
+	    }
+
+	    return convertView;
     }
+
+	class ViewHolder {
+		TextView txtNotice, txtNoticeDesc, txtReadmore;
+	}
+
 }

@@ -132,5 +132,4 @@ public class Utility {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
-
 }
