@@ -655,8 +655,7 @@ $high = select(TBL_STUDENT_EXAM_SCORE.' ses',$sel,null,$options);
         $new[$v['subject_name']][] = $v;
       }
     }
-    qry();
-    die;
+
    return  $new;
 }
     
