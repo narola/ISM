@@ -1,4 +1,4 @@
-package com.ism.object;
+package com.ism.model;
 
 import android.content.Context;
 import android.util.Log;
@@ -61,61 +61,61 @@ public class ControllerTopMenuItem {
         this.isActive = isActive;
     }
 
-    public static ArrayList<ControllerTopMenuItem> getMenuClassroom(Context mContext) {
+    public static ArrayList<ControllerTopMenuItem> getMenuClassroom(Context context) {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.classwall), null, null));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.lesson_notes), mContext.getString(R.string.add_notes), null));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.assignment), null, null));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.exam), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.classwall), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.lesson_notes), context.getString(R.string.add_notes), null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.assignment), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.exam), null, null));
         } catch (Exception e) {
             Log.e(TAG, "getMenuClassRoom Exception : " + e.toString());
         }
         return menu;
     }
 
-    public static ArrayList<ControllerTopMenuItem> getMenuAssessment(Context mContext) {
+    public static ArrayList<ControllerTopMenuItem> getMenuAssessment(Context context) {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.ism_mock), null, null));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.wassce), null, null));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.end_of_term), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.ism_mock), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.wassce), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.end_of_term), null, null));
         } catch (Exception e) {
             Log.e(TAG, "getMenuAssessment Exception : " + e.toString());
         }
         return menu;
     }
 
-    public static ArrayList<ControllerTopMenuItem> getMenuDesk(Context mContext) {
+    public static ArrayList<ControllerTopMenuItem> getMenuDesk(Context context) {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.jotter), mContext.getString(R.string.add_notes), null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.jotter), context.getString(R.string.add_notes), null));
             ArrayList<String> favorites = new ArrayList<String>();
-            favorites.add(mContext.getString(R.string.notes));
-            favorites.add(mContext.getString(R.string.books));
-            favorites.add(mContext.getString(R.string.assignments));
-            favorites.add(mContext.getString(R.string.exam));
-            favorites.add(mContext.getString(R.string.links));
-            favorites.add(mContext.getString(R.string.events));
-            favorites.add(mContext.getString(R.string.Authors));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.favorite), mContext.getString(R.string.add_new_favorite), favorites));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.timetable), mContext.getString(R.string.add_question), null));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.books), mContext.getString(R.string.add_book), null));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.forum), mContext.getString(R.string.add_question), null));
+            favorites.add(context.getString(R.string.notes));
+            favorites.add(context.getString(R.string.books));
+            favorites.add(context.getString(R.string.assignments));
+            favorites.add(context.getString(R.string.exam));
+            favorites.add(context.getString(R.string.links));
+            favorites.add(context.getString(R.string.events));
+            favorites.add(context.getString(R.string.Authors));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.favorite), context.getString(R.string.add_new_favorite), favorites));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.timetable), context.getString(R.string.add_question), null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.books), context.getString(R.string.add_book), null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.forum), context.getString(R.string.add_question), null));
         } catch (Exception e) {
             Log.e(TAG, "getMenuDesk Exception : " + e.toString());
         }
         return menu;
     }
 
-    public static ArrayList<ControllerTopMenuItem> getMenuReportCard(Context mContext) {
+    public static ArrayList<ControllerTopMenuItem> getMenuReportCard(Context context) {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.progress_report), null, null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.progress_report), null, null));
         } catch (Exception e) {
             Log.e(TAG, "getMenuReportCard Exception : " + e.toString());
         }
@@ -123,16 +123,16 @@ public class ControllerTopMenuItem {
     }
 
 
-    public static ArrayList<ControllerTopMenuItem> getMenuAuthorOffice(Context mContext) {
+    public static ArrayList<ControllerTopMenuItem> getMenuAuthorOffice(Context context) {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.gotrending), mContext.getString(R.string.stradd), null));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.gotrending), context.getString(R.string.stradd), null));
             ArrayList<String> setquiz = new ArrayList<String>();
-            setquiz.add(mContext.getString(R.string.setquiz));
-            setquiz.add(mContext.getString(R.string.settrial));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.setquiz), mContext.getString(R.string.straddnew), setquiz));
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.progress_report), null, null));
+            setquiz.add(context.getString(R.string.setquiz));
+            setquiz.add(context.getString(R.string.settrial));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.setquiz), context.getString(R.string.straddnew), setquiz));
+            menu.add(new ControllerTopMenuItem(context.getString(R.string.progress_report), null, null));
 
         } catch (Exception e) {
             Log.e(TAG, "getMenuAuthorOffice Exception : " + e.toString());

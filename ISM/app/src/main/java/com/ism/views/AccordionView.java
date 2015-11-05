@@ -253,7 +253,7 @@ public class AccordionView extends LinearLayout {
             lastVisible=position;
             for (int i = 0; i < sectionHeaders.length; i++) {
                 if(i==position)
-                setSectionVisibility(position, VISIBLE);
+                    setSectionVisibility(position, VISIBLE);
                 else
                     setSectionVisibility(i, GONE);
             }

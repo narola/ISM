@@ -46,7 +46,7 @@ public class RequestObject {
 	private String gender;
 	private String deviceType;
 	private int classroomId;
-	private int roleId;
+	private String roleId;
 
 //	SchoolInfoRequest
 	private String name;
@@ -283,12 +283,12 @@ public class RequestObject {
 		this.classroomId = classroomId;
 	}
 
-	public int getRoleId() {
+	public String getRoleId() {
 		return this.roleId;
 	}
 
 	@JsonProperty("role_id")
-	public void setRoleId(int roleId) {
+	public void setRoleId(String roleId) {
 		this.roleId = roleId;
 	}
 

@@ -2,8 +2,6 @@ package com.ism.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,28 +9,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ism.activity.HostActivity;
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.adapter.EventsAdapter;
 import com.ism.adapter.HighScoreAdapter;
 import com.ism.adapter.NoticeAdapter;
-import com.ism.views.AccordionView;
+import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.EventsModel;
 import com.ism.model.HighScoreModel;
 import com.ism.model.HighScoreStudentModel;
-import com.ism.model.Notice;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
+import com.ism.views.AccordionView;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
+import com.ism.ws.TestRequestObject;
+import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.model.Data;
 
 import java.util.ArrayList;
 
 /**
  * Created by c161 on --/10/15.
  */
-public class NotesFragment extends Fragment {
+public class NotesFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = NotesFragment.class.getSimpleName();
 
@@ -42,6 +45,7 @@ public class NotesFragment extends Fragment {
     private TextView txtViewAllNotice;
 
 	private HostActivity activityHost;
+	private ArrayList<Data> arrListNotice;
 	private NoticeAdapter adpNotice;
     private FragmentListener fragListener;
 
@@ -73,11 +77,13 @@ public class NotesFragment extends Fragment {
 		txtViewAllNotice.setTypeface(new MyTypeFace(getActivity()).getRalewaySemiBold());
 
 		txtViewAllNotice.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				activityHost.showAllNotice();
-			}
-		});
+            @Override
+            public void onClick(View v) {
+                activityHost.showAllNotice(arrListNotice);
+            }
+        });
+
+        callApiGetAllNotice();
 
 		setUpListView();
 	}
@@ -85,7 +91,7 @@ public class NotesFragment extends Fragment {
     private void setUpListView() {
         //NOTICE
         //logic for adapter => set  only two record for adapter. if four or more record found then setvisibilty of VIEW ALL VISIBLE.
-        ArrayList<Notice> arrayListNotice = new ArrayList<Notice>();
+        /*ArrayList<Notice> arrayListNotice = new ArrayList<Notice>();
         arrayListNotice.add(new Notice("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years."));
         arrayListNotice.add(new Notice("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years. Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years."));
         arrayListNotice.add(new Notice("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years."));
@@ -101,7 +107,7 @@ public class NotesFragment extends Fragment {
 			    lvNotice.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		    }
             txtViewAllNotice.setVisibility(View.GONE);
-        }
+        }*/
 
         //EVENTS
         EventsModel eventsModel;
@@ -152,5 +158,75 @@ public class NotesFragment extends Fragment {
         }
         fragListener = null;
     }
+
+	private void callApiGetAllNotice() {
+		try {
+			activityHost.showProgress();
+			RequestObject requestObject = new RequestObject();
+//			requestObject.setUserId(Global.strUserId);
+			requestObject.setRoleId("all");
+//			TestRequestObject requestObject = new TestRequestObject();
+//			requestObject.setUserId(Integer.valueOf(Global.strUserId));
+
+			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+					.execute(WebConstants.GET_ALL_NOTICES);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiGetAllNotice");
+		}
+	}
+
+	@Override
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.GET_ALL_NOTICES:
+					onResponseGetAllNotice(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseGetAllNotice(Object object, Exception error) {
+		try {
+			activityHost.hideProgress();
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					arrListNotice = responseObj.getData();
+					fillListNotice();
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseGetAllNotice Failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseGetAllNotice api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseGetAllNotice Exception : " + e.toString());
+		}
+	}
+
+	private void fillListNotice() {
+		try {
+			if (arrListNotice != null) {
+				adpNotice = new NoticeAdapter(getActivity(), arrListNotice, activityHost);
+				lvNotice.setAdapter(adpNotice);
+
+				if (arrListNotice.size() > 2) {
+					txtViewAllNotice.setVisibility(View.VISIBLE);
+				} else {
+					if (arrListNotice.size() == 1) {
+						lvNotice.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					}
+					txtViewAllNotice.setVisibility(View.GONE);
+				}
+			} else {
+				Log.e(TAG, "all notice list null");
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "fillListNotice Exception : " + e.toString());
+		}
+	}
 
 }

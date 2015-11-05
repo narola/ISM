@@ -26,6 +26,7 @@ import com.ism.R;
 import com.ism.adapter.Adapters;
 import com.ism.commonsource.view.ProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
+import com.ism.constant.WebConstants;
 import com.ism.ws.model.Data;
 import com.ism.ws.RequestObject;
 import com.ism.ws.ResponseObject;
@@ -266,20 +267,20 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 	public void onClickSubmit(View view) {
 		if (Utility.isOnline(ProfileInformationActivity.this)) {
 
-			PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
-					PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
-			PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
-			PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, "141");
-			PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, ProfileInformationActivity.this, "Krunal Panchal");
-			PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, "user_374/logo_test.png");
+//			PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
+//					PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
+//			PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
+//			PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, "141");
+//			PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, ProfileInformationActivity.this, "Krunal Panchal");
+//			PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, "user_374/logo_test.png");
+//
+//			Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
+//			startActivity(intentWelcome);
+//			finish();
 
-			Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
-			startActivity(intentWelcome);
-			finish();
-
-			/*if (isInputsValid()) {
+			if (isInputsValid()) {
                 callApiRegisterUser();
-			}*/
+			}
 		} else {
 			Utility.toastOffline(ProfileInformationActivity.this);
 		}
@@ -351,7 +352,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 			progRequestSchoolInfo.setVisibility(View.VISIBLE);
 			progressGenerator.start(progRequestSchoolInfo);
 			new WebserviceWrapper(ProfileInformationActivity.this, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.REQUEST_SCHOOL_INFO);
+					.execute(WebConstants.REQUEST_SCHOOL_INFO);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiRequestSchoolInfo Exception : " + e.toString());
 		}
@@ -380,13 +381,14 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 			requestObject.setClassroomId(Integer.parseInt(strClassId));
 			requestObject.setCourseId(Integer.parseInt(strCourseId));
 			requestObject.setAcademicYear(strAcademicYear);
-			requestObject.setRoleId(Integer.parseInt(strRoleId));
+//			requestObject.setRoleId(Integer.parseInt(strRoleId));
+			requestObject.setRoleId(strRoleId);
 			requestObject.setDeviceType(getString(R.string.android));
 			requestObject.setProfileImageName("image_" + System.currentTimeMillis() + ".png");
 			requestObject.setProfileImage(strDpBase64);
 
 			new WebserviceWrapper(ProfileInformationActivity.this, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.REGISTER_USER);
+					.execute(WebConstants.REGISTER_USER);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiRegisterUser Exception : " + e.getLocalizedMessage());
 		}
@@ -398,7 +400,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 			progCountry.setVisibility(View.VISIBLE);
 			progressGenerator.start(progCountry);
 			new WebserviceWrapper(ProfileInformationActivity.this, null, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.GET_COUNTRIES);
+					.execute(WebConstants.GET_COUNTRIES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
 		}
@@ -414,7 +416,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 			requestObject.setCountryId(countryId);
 
 			new WebserviceWrapper(ProfileInformationActivity.this, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.GET_STATES);
+					.execute(WebConstants.GET_STATES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
 		}
@@ -429,7 +431,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 			requestObject.setStateId(stateId);
 
 			new WebserviceWrapper(ProfileInformationActivity.this, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.GET_CITIES);
+					.execute(WebConstants.GET_CITIES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
 		}
@@ -557,19 +559,19 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 	public void onResponse(Object object, Exception error, int apiCode) {
 		try {
 			switch (apiCode) {
-				case WebserviceWrapper.GET_COUNTRIES:
+				case WebConstants.GET_COUNTRIES:
 					onResponseCountries(object, error);
 					break;
-				case WebserviceWrapper.GET_STATES:
+				case WebConstants.GET_STATES:
 					onResponseStates(object, error);
 					break;
-				case WebserviceWrapper.GET_CITIES:
+				case WebConstants.GET_CITIES:
 					onResponseCities(object, error);
 					break;
-				case WebserviceWrapper.REGISTER_USER:
+				case WebConstants.REGISTER_USER:
 					onResponseRegisterUser(object, error);
 					break;
-				case WebserviceWrapper.REQUEST_SCHOOL_INFO:
+				case WebConstants.REQUEST_SCHOOL_INFO:
 					onResponseRequestSchoolInfo(object, error);
 					break;
 			}
