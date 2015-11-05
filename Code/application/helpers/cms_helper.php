@@ -668,11 +668,11 @@ function replace_invalid_chars($data = null) {
             if (is_array($value)) {
                 $data[$key] = replace_invalid_chars($value);
             } else {
-                $data[$key] = htmlspecialchars($value, ENT_QUOTES);
+                $data[$key] = htmlentities($value, ENT_QUOTES);
             }
         }
     }else{
-        $data = htmlspecialchars($data, ENT_QUOTES);
+        $data = htmlentities($data, ENT_QUOTES);
     }
     return $data;
 }
