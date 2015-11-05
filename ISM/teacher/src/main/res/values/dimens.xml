@@ -60,5 +60,6 @@
     <dimen name="d140dp">140dp</dimen>
     <dimen name="d150dp">150dp</dimen>
     <dimen name="rich_text_editor_height">450dp</dimen>
+    <dimen name="dp_post_creater_image_width_height">160dp</dimen>
 
 </resources>

@@ -262,6 +262,25 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
 
     }
 
+    public void loadAddQuestionFragment(int fragment, String examid) {
+        try
+        {
+
+            switch (fragment)
+            {
+                case FRAGMENT_ADDQUESTION:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionFragmentTeacher.newInstance(FRAGMENT_ADDQUESTION,examid)).commit();
+                    flFragmentContainerRight.setVisibility(View.GONE);
+                    break;
+            }
+        }
+
+        catch (Exception e)
+
+        {
+            Log.e(TAG, "loadAddQuestionFragment Exception : " + e.toString());
+        }
+    }
 
     public void loadFragment(int fragment) {
         try {
@@ -285,7 +304,6 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
 //                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ReportCardFragment.newInstance()).commit();
 //                    break;
 //
-
 
 
                 case FRAGMENT_UPCOMING_EVENTS:
@@ -314,10 +332,10 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment).commit();
                     break;
 
-                case FRAGMENT_ADDQUESTION:
+               /* case FRAGMENT_ADDQUESTION:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionFragmentTeacher.newInstance(FRAGMENT_ADDQUESTION)).commit();
                     flFragmentContainerRight.setVisibility(View.GONE);
-                    break;
+                    break;*/
 
             }
         } catch (Exception e) {

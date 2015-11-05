@@ -31,7 +31,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/strpersonalinformation"
                 android:textAllCaps="true"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                         android:paddingLeft="@dimen/d20dp"
                         android:textColor="@color/color_black"
                         android:textColorHint="@color/color_text_hint"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
                     <Spinner
                         android:id="@+id/sp_exam_classroom"
@@ -118,7 +118,7 @@
                             android:hint="@string/strexamfor"
                             android:paddingLeft="@dimen/d20dp"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <ToggleButton
                             android:id="@+id/tb_exam_selectexamfor"
@@ -207,7 +207,7 @@
                         android:paddingLeft="@dimen/d20dp"
                         android:textColor="@color/color_black"
                         android:textColorHint="@color/color_text_hint"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
                 </LinearLayout>
 
@@ -232,7 +232,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/strexamschedule"
                 android:textAllCaps="true"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -274,7 +274,7 @@
                                 android:paddingLeft="@dimen/d20dp"
                                 android:textColor="@color/color_black"
                                 android:textColorHint="@color/color_text_hint"
-                                android:textSize="@dimen/d20dp" />
+                                android:textSize="@dimen/d20sp" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -296,7 +296,7 @@
                             android:padding="@dimen/d10dp"
                             android:text="@string/strnotifystudent"
                             android:textColor="@color/color_text_hint"
-                            android:textSize="@dimen/d18dp" />
+                            android:textSize="@dimen/d18sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -322,7 +322,7 @@
                                 android:paddingLeft="@dimen/d20dp"
                                 android:textColor="@color/color_black"
                                 android:textColorHint="@color/color_text_hint"
-                                android:textSize="@dimen/d20dp" />
+                                android:textSize="@dimen/d20sp" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -344,7 +344,7 @@
                             android:padding="@dimen/d10dp"
                             android:text="@string/strnotifystudent"
                             android:textColor="@color/color_text_hint"
-                            android:textSize="@dimen/d18dp" />
+                            android:textSize="@dimen/d18sp" />
                     </LinearLayout>
 
 
@@ -369,7 +369,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/strexaminstruction"
                 android:textAllCaps="true"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d18sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -400,7 +400,7 @@
                         android:layout_weight="1"
                         android:text="@string/strdeclareresults"
                         android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
 
                     <RadioGroup
@@ -570,7 +570,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/strno"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
                     </RadioGroup>
                 </LinearLayout>
 
@@ -590,7 +590,7 @@
                         android:layout_weight="1"
                         android:text="@string/strusescore"
                         android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
 
                     <RadioGroup
@@ -609,7 +609,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/stryes"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
 
                         <RadioButton
                             android:layout_width="wrap_content"
@@ -620,7 +620,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/strno"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
                     </RadioGroup>
                 </LinearLayout>
 
@@ -642,7 +642,7 @@
                         android:layout_weight="1"
                         android:text="@string/strscorevalue"
                         android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -659,7 +659,7 @@
                             android:inputType="number"
                             android:paddingLeft="@dimen/d20dp"
                             android:textColor="@color/color_black"
-                            android:textSize="@dimen/d20dp" />
+                            android:textSize="@dimen/d20sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -668,7 +668,7 @@
                     android:id="@+id/rte_trial_exam"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/rich_text_editor_height"
-                    android:layout_margin="@dimen/d15dp"></com.narola.kpa.richtexteditor.view.RichTextEditor>
+                    android:layout_margin="@dimen/d15dp"/>
             </LinearLayout>
 
 
@@ -688,7 +688,7 @@
                     android:text="@string/strsave"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
                 <Button
                     android:id="@+id/btn_exam_setquestion"
@@ -699,7 +699,8 @@
                     android:text="@string/strsetquestion"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp"
+                    android:visibility="visible"/>
 
                 <Button
                     android:id="@+id/btn_exam_cancel"
@@ -710,7 +711,7 @@
                     android:text="@string/strcancel"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20dp" />
+                    android:textSize="@dimen/d20sp" />
 
             </LinearLayout>
         </LinearLayout>

@@ -1,6 +1,8 @@
 package com.ism.teacher.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +18,7 @@ import android.widget.Spinner;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.adapters.Adapters;
-import com.ism.teacher.multiautocomplete.ChipsAdapter;
-import com.ism.teacher.multiautocomplete.ChipsItem;
-import com.ism.teacher.multiautocomplete.ChipsMultiAutoCompleteTextview;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,8 +45,9 @@ public class QuestionAddEditFragment extends Fragment {
     private LinearLayout ll_questions_options;
     int row_count = 2;
     ImageView imgAdd, img_remove_row;
-    ChipsMultiAutoCompleteTextview autoCompleteTextview;
     List<String> arrCountry;
+
+    LinearLayout ll_open_gallery;
 
     public QuestionAddEditFragment(Fragment fragment) {
         this.mFragment = fragment;
@@ -71,24 +70,7 @@ public class QuestionAddEditFragment extends Fragment {
     }
 
     private void initGlobal() {
-        autoCompleteTextview = (ChipsMultiAutoCompleteTextview) view.findViewById(R.id.autoCompleteTextview);
-        // arrCountry=Arrays.asList(getResources().getStringArray(R.array.country));
-
-        String values[] = getActivity().getResources().getStringArray(R.array.country);
-
-        ArrayList<ChipsItem> arrCountry = new ArrayList<ChipsItem>();
-
-
-        for(int i=0;i<values.length;i++){
-            arrCountry.add(new ChipsItem(values[i]));
-        }
-
-        ChipsAdapter chipsAdapter = new ChipsAdapter(getActivity(), arrCountry);
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-//                android.R.layout.simple_list_item_1, android.R.id.text1, values);
-        autoCompleteTextview.setAdapter(chipsAdapter);
-
+        ll_open_gallery = (LinearLayout) view.findViewById(R.id.ll_open_gallery);
         etQuestionTitle = (EditText) view.findViewById(R.id.et_question_title);
         etAnswerBox = (EditText) view.findViewById(R.id.et_answer_box);
         etEvaluationNotes = (EditText) view.findViewById(R.id.et_evaluation_notes);
@@ -141,6 +123,34 @@ public class QuestionAddEditFragment extends Fragment {
 
             }
         });
+
+        ll_open_gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, 1);
+            }
+        });
+    }
+
+    Uri imageUri = null;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case 1:
+                if (null != data) {
+                    imageUri = data.getData();
+                    //Do whatever that you desire here. or leave this blank
+
+
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     private View getMCQInflaterView(int row) {

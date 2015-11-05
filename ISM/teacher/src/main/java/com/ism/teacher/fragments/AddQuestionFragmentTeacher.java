@@ -26,24 +26,27 @@ public class AddQuestionFragmentTeacher extends Fragment {
     FrameLayout fl_addquestionfragment_container_left, fl_addquestionfragment_container_right;
     public static final int FRAGMENT_QUESTIONLIST = 0, FRAGMENT_QUESTIONADDEDIT = 1, FRAGMENT_PREVIEWQUESTION = 2, FRAGMENT_ADD_NEW_QUESTION = 3;
     private boolean mShowingBack = false;
+    private String exam_id = "";
+    private static final String ARG_FRAGMENT = "fragment";
 
     public PreviewQuestionFragment previewQuestionFragment;
     public QuestionListFragment questionListFragment;
     public QuestionAddEditFragment questionAddEditFragment;
 
-    public AddQuestionFragmentTeacher() {
 
+    public AddQuestionFragmentTeacher(String examid) {
+
+        this.exam_id = examid;
     }
 
-    private int fragment;
-    private static int current_fragment;
-    private static final String ARG_FRAGMENT = "fragment";
 
-    public static AddQuestionFragmentTeacher newInstance(int fragment) {
-        AddQuestionFragmentTeacher addQuestionFragmentTeacher = new AddQuestionFragmentTeacher();
+    public static AddQuestionFragmentTeacher newInstance(int fragment, String examid) {
+        AddQuestionFragmentTeacher addQuestionFragmentTeacher = new AddQuestionFragmentTeacher(examid);
         Bundle args = new Bundle();
         args.putInt(ARG_FRAGMENT, fragment);
         addQuestionFragmentTeacher.setArguments(args);
+
+
         return addQuestionFragmentTeacher;
     }
 
@@ -55,7 +58,7 @@ public class AddQuestionFragmentTeacher extends Fragment {
 
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
+                .replace(R.id.fl_addquestionfragment_container_left, questionListFragment)
                 .addToBackStack(String.valueOf(FRAGMENT_QUESTIONLIST))
                 .commit();
         loadFragmentInRightContainer();
@@ -95,7 +98,7 @@ public class AddQuestionFragmentTeacher extends Fragment {
                 .setCustomAnimations(
                         R.animator.card_flip_right_in, R.animator.card_flip_right_out,
                         R.animator.card_flip_left_in, R.animator.card_flip_left_out)
-                .replace(R.id.fl_addquestionfragment_container_left,questionAddEditFragment)
+                .replace(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
                 .addToBackStack(null)
                 .commit();
         //loadFragment(FRAGMENT_QUESTIONADDEDIT);
@@ -119,6 +122,18 @@ public class AddQuestionFragmentTeacher extends Fragment {
 
         }
 
+    }
+
+    public String getExam_id()
+    {
+        if(!exam_id.equalsIgnoreCase(""))
+        {
+            return exam_id;
+        }
+        else
+        {
+            return "";
+        }
     }
 
 }

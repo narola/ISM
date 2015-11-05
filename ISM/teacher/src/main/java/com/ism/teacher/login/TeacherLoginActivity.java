@@ -118,7 +118,8 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
         Log.e(TAG, ((ResponseObject) object).getMessage());
         if (responseObj.getStatus().equalsIgnoreCase("success")) {
             Toast.makeText(TeacherLoginActivity.this, "Login Successful!!!", Toast.LENGTH_SHORT).show();
-            Utility.launchIntent(this, com.ism.teacher.login.TeacherProfileInformation.class);
+//            Utility.launchIntent(this, com.ism.teacher.login.TeacherProfileInformation.class);
+            Utility.launchIntent(this, TeacherHomeActivity.class);
         } else {
             Toast.makeText(TeacherLoginActivity.this, "Please enter valid username and password", Toast.LENGTH_SHORT).show();
         }

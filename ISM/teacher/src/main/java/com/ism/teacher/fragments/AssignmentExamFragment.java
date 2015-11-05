@@ -52,6 +52,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     private View view;
 
     private FragmentListener fragListener;
+    String exam_id = "78";
 
     public static AssignmentExamFragment newInstance() {
         AssignmentExamFragment assignmentExamFragment = new AssignmentExamFragment();
@@ -89,7 +90,6 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     String examStartDate = "", examEndDate = "", strAssignmenttext = "";
 
     private InputValidator inputValidator;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -250,7 +250,15 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         btn_exam_setquestion.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        ((TeacherHomeActivity) getActivity()).loadFragment(TeacherHomeActivity.FRAGMENT_ADDQUESTION);
+                                                        if(exam_id!=null && !exam_id.equalsIgnoreCase(""))
+                                                        {
+                                                            Log.e("examid",exam_id);
+                                                            ((TeacherHomeActivity) getActivity()).loadAddQuestionFragment(TeacherHomeActivity.FRAGMENT_ADDQUESTION,exam_id);
+                                                        }
+                                                        else
+                                                        {
+                                                           Log.e(TAG,"Setting question with exam id null");
+                                                        }
                                                     }
                                                 }
         );
@@ -668,7 +676,10 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 ResponseObject callCreateExamResponse = (ResponseObject) object;
                 if (callCreateExamResponse.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callCreateExamResponse != null) {
 
+                    //exam_id = callCreateExamResponse.getData().get(0).getExam_id();
                     Utils.showToast("Exam Created Successfully", getActivity());
+                    btn_exam_setquestion.setVisibility(View.VISIBLE);
+
 
                 } else {
 
