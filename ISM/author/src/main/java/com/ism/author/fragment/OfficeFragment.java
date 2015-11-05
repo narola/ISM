@@ -31,7 +31,7 @@ public class OfficeFragment extends Fragment {
     OfficeTabGridAdapter officeTabGridAdapter;
 
     OfficeTabDataSet officeTabDataSet = new OfficeTabDataSet();
-    private int currentFragment=0;
+    private int currentFragment = 0;
 
 
     public static OfficeFragment newInstance() {
@@ -100,37 +100,17 @@ public class OfficeFragment extends Fragment {
     }
 
     public void loadFragment(int fragment) {
-    switch (fragment){
-        case FRAGMENT_TRIAL:
-            currentFragment=fragment;
-            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
-            break;
-        case FRAGMENT_TRIAL_EXAM_DETAILS:
-            currentFragment=fragment;
-            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
-            break;
-    }
-    }
+        switch (fragment) {
+            case FRAGMENT_TRIAL:
+                currentFragment = fragment;
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
+                break;
+            case FRAGMENT_TRIAL_EXAM_DETAILS:
+                currentFragment = fragment;
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
 
-//    public void handleTabClick(int position) {
-//
-//        if (position == 0) {
-//
-//        } else if (position == 1) {
-//
-//        } else if (position == 2) {
-//
-////            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDNEWTRIAL);
-//            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
-//
-//        } else if (position == 3) {
-//            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
-//
-//        } else if (position == 4) {
-//
-//        }
-//
-//
-//    }
+                break;
+        }
+    }
 
 }

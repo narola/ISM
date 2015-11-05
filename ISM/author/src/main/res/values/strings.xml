@@ -258,6 +258,7 @@
     <string name="strcorrect_answer">Correct Answer :</string>
     <string name="strevoluations_notes">Evoluations Notes :</string>
     <string name="strsolutions">Solutions :</string>
+    <string name="strStudentAttempted">Student Attempted</string>
 
 
 </resources>

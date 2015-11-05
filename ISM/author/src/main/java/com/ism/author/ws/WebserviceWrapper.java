@@ -3,9 +3,9 @@ package com.ism.author.ws;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.model.ResponseObject;
 
@@ -38,6 +38,7 @@ public class WebserviceWrapper {
     public static final int CREATEEXAM = 13;
     public static final int GETQUESTIONBANK = 14;
     public static final int GETALLEXAM = 15;
+    public static final int GETEXAMSUBMISSION = 16;
 
 
 
@@ -132,11 +133,15 @@ public class WebserviceWrapper {
                     case GETALLEXAM:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_ALL_EXAM, ResponseObject.class, requestObject);
                         break;
+                    case GETEXAMSUBMISSION:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_EXAM_SUBMISSION, ResponseObject.class, requestObject);
+
+                        Debug.i(TAG,"Response object :" + responseObject);break;
 
 
                 }
             } catch (Exception e) {
-                Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
+                Debug.i(TAG, "WebserviceCaller Background Exception : " + e.toString());
             }
             return responseObject;
         }
@@ -144,21 +149,9 @@ public class WebserviceWrapper {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-
-
-//            if (API_METHOD_NAME != LIKEFEED) {
-
+            Debug.i(TAG, "WebserviceCaller Response : " + o.toString());
             dismissProgressDialog();
             webserviceResponse.onResponse(API_METHOD_NAME, o, null);
-
-
-//            } else {
-//
-//                PreferenceData.setStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, "");
-//                PreferenceData.setStringPrefs(PreferenceData.UNLIKE_ID_LIST, mContext, "");
-//
-//            }
-
 
         }
     }

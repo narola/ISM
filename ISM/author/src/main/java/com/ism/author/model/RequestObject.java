@@ -424,6 +424,24 @@ public class RequestObject {
     public void setUnlikedId(String[] unlikedId) {
         this.unlikedId = unlikedId;
     }
-
+//    private int user_id;
+//
+//    public int getExam_id() {
+//        return exam_id;
+//    }
+//
+//    public void setExam_id(int exam_id) {
+//        this.exam_id = exam_id;
+//    }
+//
+//    public int getUser_id() {
+//        return user_id;
+//    }
+//
+//    public void setUser_id(int user_id) {
+//        this.user_id = user_id;
+//    }
+//
+//    private int exam_id;
 
 }

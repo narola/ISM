@@ -70,6 +70,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
         RequestObject requestObject = new RequestObject();
         requestObject.setRole(4);
         requestObject.setUserId("370");
+        ((AuthorHostActivity)getActivity()).startProgress();
         new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                 .execute(WebserviceWrapper.GETALLEXAM);
 
@@ -105,6 +106,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
+        ((AuthorHostActivity)getActivity()).stopProgress();
         try {
             ResponseObject responseObject = (ResponseObject) object;
 

@@ -29,6 +29,8 @@ import com.ism.author.model.Data;
 import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
+import com.ism.commonsource.view.ActionProcessButton;
+import com.ism.commonsource.view.ProgressGenerator;
 
 import java.util.ArrayList;
 
@@ -41,6 +43,8 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     private View view;
 
     private FragmentListener fragListener;
+    private ActionProcessButton progress_bar;
+    private ProgressGenerator progressGenerator;
 
     public static HomeFragment newInstance() {
         HomeFragment fragHome = new HomeFragment();
@@ -277,6 +281,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         viewAllCommentsDialog.show();
 
     }
+
 
 
 }
