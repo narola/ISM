@@ -395,7 +395,7 @@ class Question extends ADMIN_Controller {
 				 "classroom_id"=>$this->input->post("classroom_id")
 			);
 
-			$question_id = insert(TBL_QUESTIONS,$data_question);
+			$question_id = insert(TBL_QUESTIONS,replace_invalid_chars($data_question));
 
 			if(!empty($_GET['exam_id'])){
 
