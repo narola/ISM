@@ -25,11 +25,13 @@ public class OfficeFragment extends Fragment {
     private static final String TAG = OfficeFragment.class.getSimpleName();
     private View view;
     private FragmentListener fragListener;
-
+    public static final int FRAGMENT_TRIAL = 0;
+    public static final int FRAGMENT_TRIAL_EXAM_DETAILS = 1;
     GridView gvOfficetab;
     OfficeTabGridAdapter officeTabGridAdapter;
 
     OfficeTabDataSet officeTabDataSet = new OfficeTabDataSet();
+    private int currentFragment=0;
 
 
     public static OfficeFragment newInstance() {
@@ -89,6 +91,7 @@ public class OfficeFragment extends Fragment {
         try {
             if (fragListener != null) {
                 fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_OFFICE);
+                Debug.i(TAG, "detach");
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
@@ -96,24 +99,38 @@ public class OfficeFragment extends Fragment {
         fragListener = null;
     }
 
-
-    public void handleTabClick(int position) {
-
-        if (position == 0) {
-
-        } else if (position == 1) {
-
-        } else if (position == 2) {
-
-//            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDNEWTRIAL);
+    public void loadFragment(int fragment) {
+    switch (fragment){
+        case FRAGMENT_TRIAL:
+            currentFragment=fragment;
             ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
-
-        } else if (position == 3) {
-
-        } else if (position == 4) {
-
-        }
-
-
+            break;
+        case FRAGMENT_TRIAL_EXAM_DETAILS:
+            currentFragment=fragment;
+            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
+            break;
     }
+    }
+
+//    public void handleTabClick(int position) {
+//
+//        if (position == 0) {
+//
+//        } else if (position == 1) {
+//
+//        } else if (position == 2) {
+//
+////            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDNEWTRIAL);
+//            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
+//
+//        } else if (position == 3) {
+//            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
+//
+//        } else if (position == 4) {
+//
+//        }
+//
+//
+//    }
+
 }

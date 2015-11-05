@@ -597,6 +597,17 @@ public class Data {
     //getTrial exams
     private  String total_student_attempted;
     private String total_student;
+    private String exam_type;
+    private String average_score;
+
+    @JsonProperty("average_score")
+    public String getAverage_score() {
+        return average_score;
+    }
+
+    public void setAverage_score(String average_score) {
+        this.average_score = average_score;
+    }
 
     @JsonProperty("exam_type")
     public String getExam_type() {
@@ -606,8 +617,6 @@ public class Data {
     public void setExam_type(String exam_type) {
         this.exam_type = exam_type;
     }
-
-    private String exam_type;
 
     @JsonProperty("total_student_attempted")
     public String getTotal_student_attempted() {
