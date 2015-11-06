@@ -196,7 +196,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 						Utility.toastOffline(ProfileInformationActivity.this);
 					}
 				} else {
-					Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt);
+					Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
 				}
 			}
 
@@ -216,7 +216,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 						Utility.toastOffline(ProfileInformationActivity.this);
 					}
 				} else {
-					Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt);
+					Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
 				}
 			}
 
@@ -230,13 +230,13 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 		arrListGender.add(getString(R.string.gender));
 		arrListGender.add(getString(R.string.male));
 		arrListGender.add(getString(R.string.female));
-		Adapters.setUpSpinner(ProfileInformationActivity.this, spGender, arrListGender);
+		Adapters.setUpSpinner(ProfileInformationActivity.this, spGender, arrListGender, myTypeFace.getRalewayRegular());
 
 		arrListDefalt = new ArrayList<String>();
 		arrListDefalt.add(getString(R.string.select));
-		Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, arrListDefalt);
-		Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt);
-		Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt);
+		Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, arrListDefalt, myTypeFace.getRalewayRegular());
+		Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
+		Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
 
 	}
 
@@ -621,7 +621,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 					for (Data city : arrListCities) {
 						cities.add(city.getCityName());
 					}
-					Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, cities);
+					Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, cities, myTypeFace.getRalewayRegular());
 				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
 					Log.e(TAG, "onResponseCities Failed");
 				}
@@ -647,7 +647,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 					for (Data state : arrListStates) {
 						states.add(state.getStateName());
 					}
-					Adapters.setUpSpinner(ProfileInformationActivity.this, spState, states);
+					Adapters.setUpSpinner(ProfileInformationActivity.this, spState, states, myTypeFace.getRalewayRegular());
 				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
 					Log.e(TAG, "onResponseStates Failed");
 				}
@@ -673,7 +673,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 					for (Data country : arrListCountries) {
 						countries.add(country.getCountryName());
 					}
-					Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, countries);
+					Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, countries, myTypeFace.getRalewayRegular());
 				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
 					Log.e(TAG, "onResponseCountries Failed");
 				}

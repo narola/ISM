@@ -79,7 +79,7 @@ public class NotesFragment extends Fragment implements WebserviceWrapper.Webserv
 		txtViewAllNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activityHost.showAllNotice(arrListNotice);
+	            activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTES, arrListNotice);
             }
         });
 

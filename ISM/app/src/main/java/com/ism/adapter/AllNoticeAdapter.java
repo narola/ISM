@@ -66,7 +66,7 @@ public class AllNoticeAdapter extends RecyclerView.Adapter<AllNoticeAdapter.View
 		try {
 			holder.txtNoticeTitle.setText(arrListAllNotice.get(position).getNoticeTitle());
 			holder.txtNotice.setText(arrListAllNotice.get(position).getNotice());
-			holder.txtNoticeTime.setText("11:00 am");
+			holder.txtNoticeTime.setText(arrListAllNotice.get(position).getPostedOn());
 
 			if (arrListAllNotice.get(position).isFlagged()) {
 				expandNotice(holder);

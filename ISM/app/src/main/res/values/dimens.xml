@@ -52,4 +52,12 @@
     <dimen name="divider_height">2dp</dimen>
     <dimen name="header_white_height">60dp</dimen>
     <dimen name="header_white_spacing">15dp</dimen>
+    <dimen name="notification_margin_top">5dp</dimen>
+    <dimen name="notification_digit_radius">5dp</dimen>
+    <dimen name="notification_digit_horizontal_padding">8dp</dimen>
+    <dimen name="notification_digit_text_size">16sp</dimen>
+    <dimen name="notification_button_height">60dp</dimen>
+    <dimen name="profile_label_text">20sp</dimen>
+    <dimen name="profile_label_padding">20dp</dimen>
+    <dimen name="profile_label_height">70dp</dimen>
 </resources>

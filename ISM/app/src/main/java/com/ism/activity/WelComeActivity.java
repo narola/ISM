@@ -142,7 +142,7 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 	}
 
 	private void launchAcceptTutorialGroupActivity() {
-		Utility.launchIntent(WelComeActivity.this, AcceptTutorialGroupActivity.class);
+		Utility.launchActivity(WelComeActivity.this, AcceptTutorialGroupActivity.class);
 		finish();
 	}
 

@@ -142,7 +142,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             try {
                 RequestObject requestObject = new RequestObject();
                 requestObject.setUserId("370");
-                requestObject.setRole(AppConstant.AUTHOR_ROLE_ID);
+                requestObject.setRole(AppConstant.AUTHOR_ROLE_ID+"");
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETQUESTIONBANK);
             } catch (Exception e) {

@@ -209,7 +209,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 RequestObject requestObject = new RequestObject();
-                requestObject.setSubjectId(subject_id);
+                requestObject.setSubjectId(String.valueOf(subject_id));
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETTOPICS);
             } catch (Exception e) {
@@ -229,14 +229,14 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 RequestObject requestObject = new RequestObject();
                 requestObject.setUserId(WebConstants.TEST_USER_ID);
                 requestObject.setSubmissionDate(strSubmissionDate);
-                requestObject.setClassroomId(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
-                        get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0);
-                requestObject.setSubjectId(spActivitySubject.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
-                        get(spActivitySubject.getSelectedItemPosition() - 1).getId()) : 0);
+                requestObject.setClassroomId(String.valueOf(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
+                        get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0));
+                requestObject.setSubjectId(String.valueOf(spActivitySubject.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
+                        get(spActivitySubject.getSelectedItemPosition() - 1).getId()) : 0));
 
                 if (arrListTopic.size() > 1) {
-                    requestObject.setTopicId(spActivityTopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
-                            get(spActivityTopic.getSelectedItemPosition() - 1).getId()) : 0);
+                    requestObject.setTopicId(String.valueOf(spActivityTopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
+                            get(spActivityTopic.getSelectedItemPosition() - 1).getId()) : 0));
                 }
                 requestObject.setAssignmentText(strAssignmenttext);
 

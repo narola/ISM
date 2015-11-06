@@ -335,7 +335,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 RequestObject requestObject = new RequestObject();
-                requestObject.setSubjectId(subject_id);
+                requestObject.setSubjectId(String.valueOf(subject_id));
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETTOPICS);
             } catch (Exception e) {
@@ -355,11 +355,11 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 RequestObject requestObject = new RequestObject();
 
                 requestObject.setExamName(et_exam_name.getText().toString());
-                requestObject.setClassroomId(sp_exam_classroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
-                        get(sp_exam_classroom.getSelectedItemPosition() - 1).getId()) : 0);
-                requestObject.setSubjectId(sp_exam_subjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
-                        get(sp_exam_subjectname.getSelectedItemPosition() - 1).getId()) : 0);
-                requestObject.setAttemptCount(Integer.valueOf(et_exam_attemptcount.getText().toString()));
+                requestObject.setClassroomId(String.valueOf(sp_exam_classroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
+                        get(sp_exam_classroom.getSelectedItemPosition() - 1).getId()) : 0));
+                requestObject.setSubjectId(String.valueOf(sp_exam_subjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
+                        get(sp_exam_subjectname.getSelectedItemPosition() - 1).getId()) : 0));
+                requestObject.setAttemptCount(String.valueOf(Integer.valueOf(et_exam_attemptcount.getText().toString())));
                 requestObject.setExamType(getExamType());
                 requestObject.setExamCategory(arrListExamName.get(sp_exam_examname.getSelectedItemPosition()));
                 requestObject.setExamMode(arrListExamMode.get(sp_exam_exammode.getSelectedItemPosition()));
@@ -379,7 +379,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     requestObject.setNegativeMarkValue(et_exam_addnegativemark.getText().toString());
                 }
 
-                requestObject.setBookId(0);
+                requestObject.setBookId(String.valueOf(0));
 
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.CREATEEXAM);
@@ -676,10 +676,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         arrListPassingPercent.add(getString(R.string.strpassingpercent));
         for (int i = PASSINGPERCENT_STARTVALUE; i < PASSINGPERCENT_ENDVALUE; i += PASSINGPERCENT_INTERVAL) {
             arrListPassingPercent.add(String.valueOf(i));
-
         }
-
-
     }
 
     private void getExamDurationSpinnerValues() {
@@ -688,7 +685,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         arrListExamDuration.add(getString(R.string.strexamduration));
         for (int i = EXAMDURATION_STARTVALUE; i < EXAMDURATION_ENDVALUE; i += EXAMDURATION_INTERVAL) {
             arrListExamDuration.add(String.valueOf(i));
-
         }
 
     }

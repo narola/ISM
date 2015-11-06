@@ -1,7 +1,7 @@
 package com.ism.author.constant;
 
 /**
- * these is the common class for all the api related url.
+ * c162
  */
 public class WebConstants {
 
@@ -9,6 +9,7 @@ public class WebConstants {
     public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
 
+    //    path
     public static final String FEED_MEDIA = "http://192.168.1.162/ISM/WS_ISM/Feeds/";
     public static final String USER_IMAGES = "http://192.168.1.162/ISM/WS_ISM/Images/";
 
@@ -37,7 +38,8 @@ public class WebConstants {
     public static final int GETALLEXAM = 21;
     public static final int GETEXAMSUBMISSION = 22;
     public static final int SETQUESTIONSFOREXAM = 23;
-
+    public static final int GETEXAMEVALUATIONS = 24;
+    public static final int GETEXAMQUESTIONS=25;
 
     //	webservice url
     public static final String URL_LOGIN = URL_ARTI_HOST + "AuthenticateUser";
@@ -61,9 +63,13 @@ public class WebConstants {
     public static final String URL_CREATE_EXAM = URL_ARTI_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_ARTI_HOST + "GetQuestionBank";
     public static final String URL_GET_ALL_EXAM = URL_ARTI_HOST + "GetAllExams";
-    public static final String URL_SET_QUESTIONS_FOR_EXAM = URL_ARTI_HOST + "SetQuestionsForExam";
     public static final String URL_GET_EXAM_SUBMISSION = URL_ARTI_HOST + "GetExamSubmission";
+    public static final String URL_GET_EXAM_EVALUATIONS = URL_ARTI_HOST + "GetExamEvaluation";
+    public static final String URL_GET_EXAM_QUESTIONS = URL_ARTI_HOST + "GetExamQuestions";
+    public static final String URL_SET_QUESTIONS_FOR_EXAM = URL_ARTI_HOST + "SetQuestionsForExam";
 
+    public static final String STATUS_SUCCESS = "success";
+    public static final String STATUS_FAILED = "failed";
 
     //these are the temparory data for testing
 
