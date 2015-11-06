@@ -15,6 +15,20 @@
 
     <string name="web_service_issue">Web service issue</string>
 
+    <!-- LOgin-->
+    <string name="title_forgot_password">Password will be sent to your email id.</string>
+    <string name="processing">Processing</string>
+    <string name="done">Done</string>
+    <string name="msg_validation_country"><![CDATA[\n> Please select your country.]]></string>
+    <string name="msg_validation_state"><![CDATA[\n> Please select your state.]]></string>
+    <string name="msg_validation_city"><![CDATA[\n> Please select your city.]]></string>
+    <string name="msg_validation_gender"><![CDATA[\n> Please select your gender.]]></string>
+    <string name="msg_validaton_dob"><![CDATA[\n> Please set your date of birth.]]></string>
+    <string name="msg_wrong_current_pwd">Wrong current password.</string>
+    <string name="registration_failed">Registration failed</string>
+    <string name="msg_email_exists">Email id already exists.</string>
+    <string name="msg_username_exists">Username already exists.</string>
+
     <!-- Assignment resources-->
     <string name="stractivity">Activity</string>
     <string name="strexam">Exam</string>
@@ -250,6 +264,7 @@
     <string name="group_name">"Group Name : "</string>
     <string name="ok">Ok</string>
     <string name="msg_offline">You are offline!\nPlease check your internet connection.</string>
+    <string name="msg_failed_comment">Failed to post comment!, please try again.</string>
 
     <string-array name="examtype">
         <item>Exam Type</item>
@@ -280,5 +295,30 @@
         <item>New Zealand</item>
         <item>Singapore</item>
     </string-array>
+
+
+    <!--postActivity-->
+    <string name="strchooseimagefromgallery">Choose Image from gallery</string>
+    <string name="strchoosevideofromgallery">Choose Video from gallery</string>
+    <string name="strcaptureimageusingcamera">Capture Image using camera</string>
+    <string name="strcapturevideousingcamera">Capture Video using camera</string>
+    <string name="strrecordyouraudio">Record Your Audio</string>
+    <string name="strchooseyouraudio">Choose Your Audio</string>
+    <string name="loading">loading...</string>
+    <string name="strcomment">Comment</string>
+
+
+
+    <!-- Add Edit Question-->
+    <string name="strquestiontitle">Question Title</string>
+    <string name="strquestiontype">Question Type</string>
+    <string name="strmultiplechoice">Multiple Choice</string>
+    <string name="strevaluationnotes">Evaluation Notes</string>
+    <string name="straddquestiontopreview">Add Question to preview</string>
+    <string name="strsaveandaddmore">Save &amp; Add More</string>
+    <string name="strpreview">Preview</string>
+    <string name="strhinttheiranswer">Their Answer</string>
+    <string name="strbiology">Biology</string>
+    <string name="strfreeze">Freeze</string>
 
 </resources>

@@ -11,6 +11,10 @@ public class ResponseObject {
     private String status;
     private String total_feeds;
 
+    public static final String SUCCESS = "success";
+    public static final String FAILED = "failed";
+    public static final String DUPLICATE_ENTRY = "Duplicate entry";
+
     @JsonProperty("total_feeds")
     public String getTotal_feeds() {
         return total_feeds;

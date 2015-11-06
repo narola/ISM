@@ -3,14 +3,18 @@ package com.ism.author.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.InputValidator;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.ws.WebserviceWrapper;
@@ -18,7 +22,7 @@ import com.ism.author.ws.WebserviceWrapper;
 /**
  * Created by c162 on 04/11/15.
  */
-public class TrialExamDetailFragment  extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class TrialExamDetailFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 
     private static final String TAG = TrialExamDetailFragment.class.getSimpleName();
@@ -26,6 +30,9 @@ public class TrialExamDetailFragment  extends Fragment implements WebserviceWrap
     private FragmentListener fragListener;
     private MyTypeFace myTypeFace;
     private InputValidator inputValidator;
+    public static RecyclerView rvList;
+    TextView txtExamType, txtBookNameValue, txtBookName, txtClassName, txtClass, txtEamName, txtEamTypeName, txtExamDateValue, txtExamName, txtExamDate;
+    ImageView imgCopy,imgEdit;
 
     public static TrialExamDetailFragment newInstance() {
         TrialExamDetailFragment trialExamDetailFragment = new TrialExamDetailFragment();
@@ -50,10 +57,32 @@ public class TrialExamDetailFragment  extends Fragment implements WebserviceWrap
 
         myTypeFace = new MyTypeFace(getActivity());
         inputValidator = new InputValidator(getActivity());
+        rvList = (RecyclerView) view.findViewById(R.id.rv_list);
+        txtExamType = (TextView) view.findViewById(R.id.txt_exam_type);
+        txtExamName = (TextView) view.findViewById(R.id.txt_exam_name);
+        imgCopy = (ImageView) view.findViewById(R.id.img_copy);
+        imgEdit = (ImageView) view.findViewById(R.id.img_edit);
+        txtExamName = (TextView) view.findViewById(R.id.txt_exam_name);
 
-        ((AuthorHostActivity)getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
+        txtExamDate = (TextView) view.findViewById(R.id.txt_exam_date);
+        txtExamDateValue = (TextView) view.findViewById(R.id.txt_exam_date_value);
+        txtEamTypeName = (TextView) view.findViewById(R.id.txt_exam_type_name);
+        txtClass = (TextView) view.findViewById(R.id.txt_class);
+        txtClassName = (TextView) view.findViewById(R.id.txt_class_name);
+        txtBookName = (TextView) view.findViewById(R.id.txt_book_name);
+        txtBookNameValue = (TextView) view.findViewById(R.id.txt_book_name_value);
+        txtBookName.setTypeface(myTypeFace.getRalewayRegular());
+        txtBookNameValue.setTypeface(myTypeFace.getRalewayRegular());
+        txtClass.setTypeface(myTypeFace.getRalewayRegular());
+        txtClassName.setTypeface(myTypeFace.getRalewayRegular());
+        txtExamType.setTypeface(myTypeFace.getRalewayRegular());
+        txtExamName.setTypeface(myTypeFace.getRalewayRegular());
+        txtExamDateValue.setTypeface(myTypeFace.getRalewayRegular());
+        txtExamDate.setTypeface(myTypeFace.getRalewayRegular());
+        txtBookName.setTypeface(myTypeFace.getRalewayRegular());
+        txtEamTypeName.setTypeface(myTypeFace.getRalewayRegular());
 
-
+        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
     }
 
 
@@ -83,43 +112,28 @@ public class TrialExamDetailFragment  extends Fragment implements WebserviceWrap
         fragListener = null;
     }
 
-//    private void callApiGetClassRooms() {
-//
-//        if (Utils.isInternetConnected(getActivity())) {
-//            try {
-//                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-//                        .execute(WebserviceWrapper.GETCLASSROOMS);
-//            } catch (Exception e) {
-//                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-//            }
-//        } else {
-//            Utils.showToast(getString(R.string.strnetissue), getActivity());
-//        }
-//
-//    }
-
-
-
 
     @Override
     public void onResponse(int apiMethodName, Object object, Exception error) {
-
+        ((AuthorHostActivity) getActivity()).stopProgress();
         try {
-            if (apiMethodName == WebserviceWrapper.GETCLASSROOMS) {
-//
-//                ResponseObject callGetClassRoomsResponseObject = (ResponseObject) object;
-//                if (callGetClassRoomsResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetClassRoomsResponseObject != null) {
+            if (apiMethodName == WebConstants.GETEXAMEVALUATIONS) {
+//                ResponseObject responseObject = (ResponseObject) object;
+//                Debug.i(TAG, "Response of student attempted  ::" + responseObject.getMessage());
+//                Debug.i(TAG, "Response of student attempted  ::" + responseObject.getStatus());
+//                Debug.i(TAG, "Response of student attempted  ::" + responseObject.getData());
+//                if (responseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && responseObject != null) {
 //
 //
 //                } else {
-//                    Utils.showToast(callGetClassRoomsResponseObject.getMessage(), getActivity());
+//                    Utils.showToast(responseObject.getMessage(), getActivity());
 //                }
-
+//
             }
 
 
         } catch (Exception e) {
-            Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            Log.i(TAG, "Response Exceptions :" + e.toString());
         }
     }
 

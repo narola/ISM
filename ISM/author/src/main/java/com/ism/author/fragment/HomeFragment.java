@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
-import com.ism.author.Utility.PreferenceData;
+import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.PostActivity;
 import com.ism.author.adapter.PostFeedsAdapter;
@@ -49,14 +49,11 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         // Required empty public constructor
     }
 
-    LinearLayout llPost;
-    EditText etWritePost;
-
-    RecyclerView rvPostFeeds;
-    PostFeedsAdapter postFeedsAdapter;
-
-    OnClickListener onClickAttachFile;
-
+    private LinearLayout llPost;
+    private EditText etWritePost;
+    private RecyclerView rvPostFeeds;
+    private PostFeedsAdapter postFeedsAdapter;
+    private OnClickListener onClickAttachFile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,7 +63,6 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     }
 
     private void initGlobal(View view) {
-
         llPost = (LinearLayout) view.findViewById(R.id.ll_post);
         rvPostFeeds = (RecyclerView) view.findViewById(R.id.rv_post_feeds);
         etWritePost = (EditText) view.findViewById(R.id.et_writePost);
@@ -86,7 +82,6 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
         postFeedsAdapter = new PostFeedsAdapter(getActivity());
         rvPostFeeds.setAdapter(postFeedsAdapter);
         rvPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
-
 
         callApiGetAllPostFeeds();
 
@@ -136,7 +131,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
                 RequestObject requestObject = new RequestObject();
                 requestObject.setUserId(WebConstants.TEST_USER_ID);
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETALLFEEDS);
+                        .execute(WebConstants.GETALLFEEDS);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -146,59 +141,67 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     }
 
 
-    String likePrefData, unlikePrefData;
-
-    public void callApiLikeFeed() {
-
-        likePrefData = PreferenceData.getStringPrefs(PreferenceData.LIKE_ID_LIST, getActivity(), "");
-        unlikePrefData = PreferenceData.getStringPrefs(PreferenceData.UNLIKE_ID_LIST, getActivity(), "");
-
-        if (Utils.isInternetConnected(getActivity())) {
-            try {
-                RequestObject requestObject = new RequestObject();
-                requestObject.setUserId(WebConstants.TEST_LIKEUSERID);
-
-                if (likePrefData.length() > 0) {
-                    requestObject.setLikedId((likePrefData.substring(0, likePrefData.length() - 1)).split(","));
-//                    likeFeedRequest.setLiked_id(new String[]{"61"});
-                }
-
-                if (unlikePrefData.length() > 0) {
-                    requestObject.setUnlikedId((unlikePrefData.substring(0, unlikePrefData.length() - 1)).split(","));
-//                    likeFeedRequest.setUnliked_id(new String[]{"71", "62"});
-                }
-
-
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.LIKEFEED);
-            } catch (Exception e) {
-                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-            }
-        } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
-        }
-
-    }
-
-
-    ResponseObject responseObj;
+//    String likePrefData, unlikePrefData;
+//
+//    public void callApiLikeFeed() {
+//
+//        likePrefData = PreferenceData.getStringPrefs(PreferenceData.LIKE_ID_LIST, getActivity(), "");
+//        unlikePrefData = PreferenceData.getStringPrefs(PreferenceData.UNLIKE_ID_LIST, getActivity(), "");
+//
+//        if (Utils.isInternetConnected(getActivity())) {
+//            try {
+//                RequestObject requestObject = new RequestObject();
+//                requestObject.setUserId(WebConstants.TEST_LIKEUSERID);
+//
+//                if (likePrefData.length() > 0) {
+//                    requestObject.setLikedId((likePrefData.substring(0, likePrefData.length() - 1)).split(","));
+////                    likeFeedRequest.setLiked_id(new String[]{"61"});
+//                }
+//
+//                if (unlikePrefData.length() > 0) {
+//                    requestObject.setUnlikedId((unlikePrefData.substring(0, unlikePrefData.length() - 1)).split(","));
+////                    likeFeedRequest.setUnliked_id(new String[]{"71", "62"});
+//                }
+//
+//
+//                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+//                        .execute(WebserviceWrapper.LIKEFEED);
+//            } catch (Exception e) {
+//                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+//            }
+//        } else {
+//            Utils.showToast(getString(R.string.strnetissue), getActivity());
+//        }
+//
+//    }
 
     @Override
-    public void onResponse(int apiMethodName, Object object, Exception error) {
+    public void onResponse(int apiCode, Object object, Exception error) {
         try {
-            if (apiMethodName == WebserviceWrapper.GETALLFEEDS) {
-
-                responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(WebConstants.STATUS_SUCCESS) && responseObj != null) {
-                    postFeedsAdapter.addAll(responseObj.getData());
-                } else {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
-                }
+            switch (apiCode) {
+                case WebConstants.GETALLFEEDS:
+                    onResponseGetAllFeeds(object, error);
+                    break;
             }
         } catch (Exception e) {
+            Debug.e(TAG, "onResponse Exception : " + e.toString());
+        }
+    }
 
-            Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-
+    private void onResponseGetAllFeeds(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseObject responseObj = (ResponseObject) object;
+                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                    postFeedsAdapter.addAll(responseObj.getData());
+                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                    Utils.showToast(responseObj.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetAllFeeds api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetAllFeeds Exception : " + e.toString());
         }
     }
 

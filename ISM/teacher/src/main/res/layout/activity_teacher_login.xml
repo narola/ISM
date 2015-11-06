@@ -1,9 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="@drawable/bg_teacher_login">
+    android:background="@drawable/bg_teacher_login"
+    android:gravity="center">
 
     <LinearLayout
         android:layout_width="500sp"
@@ -67,21 +68,28 @@
             android:textColor="@color/color_gray1"
             android:textSize="@dimen/d18sp" />
 
-        <Button
+        <com.ism.commonsource.view.ActionProcessButton
             android:id="@+id/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/d20sp"
-            android:background="@drawable/backgroundbtnlogin"
-            android:drawablePadding="@dimen/d10sp"
+            android:layout_marginTop="@dimen/d20dp"
+            android:drawablePadding="@dimen/d10dp"
             android:drawableRight="@drawable/arrow"
             android:gravity="center"
-            android:paddingLeft="@dimen/d90sp"
-            android:paddingRight="@dimen/d90sp"
+            android:onClick="onClickLogin"
+            android:paddingLeft="@dimen/d90dp"
+            android:paddingRight="@dimen/d90dp"
             android:text="@string/strlogin"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/d20sp" />
+            android:textSize="@dimen/d20dp"
+            app:pb_colorComplete="@color/color_dark_gray"
+            app:pb_colorNormal="@color/color_dark_gray"
+            app:pb_colorPressed="@color/color_dark_gray"
+            app:pb_colorProgress="@color/purple_progress"
+            app:pb_cornerRadius="@dimen/app_button_corner_radius"
+            app:pb_textComplete="@string/strlogin"
+            app:pb_textProgress="@string/processing" />
 
         <TextView
             android:id="@+id/txt_forgotpwd"
@@ -89,6 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/d70sp"
             android:gravity="center"
+            android:onClick="onClickForgotPassword"
             android:text="@string/strforgotpwd"
             android:textColor="@color/color_black"
             android:textSize="@dimen/d18sp" />
@@ -114,6 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
+                android:onClick="onClickHere"
                 android:paddingLeft="@dimen/d5sp"
                 android:text="@string/strclickhereu"
                 android:textColor="@color/color_black"

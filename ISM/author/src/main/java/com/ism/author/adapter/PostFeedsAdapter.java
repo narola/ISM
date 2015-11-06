@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utils;
 import com.ism.author.constant.WebConstants;
@@ -53,7 +53,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         this.mContext = context;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-        PreferenceData.clearPreference(mContext);
+
     }
 
     @Override
@@ -315,7 +315,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 requestObject.setComment(comment);
 
                 new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.ADDCOMMENT);
+                        .execute(WebConstants.ADDCOMMENT);
             } catch (Exception e) {
                 Log.e(TAG, "callApiComment Exception : " + e.toString());
             }
@@ -333,7 +333,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 requestObject.setFeedId(listOfPostFeeds.get(position).getFeedId());
 
                 new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETALLCOMMENTS);
+                        .execute(WebConstants.GETALLCOMMENTS);
             } catch (Exception e) {
                 Log.i(TAG + getActivity().getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -351,7 +351,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 RequestObject requestObject = new RequestObject();
                 requestObject.setUserId(WebConstants.TEST_GETSTUDYMATES);
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETSTUDYMATES);
+                        .execute(WebConstants.GETSTUDYMATES);
             } catch (Exception e) {
                 Log.i(TAG + getActivity().getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -372,7 +372,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 requestObject.setTaggedUserIds(arrTagUser);
 
                 new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.TAGFRIENDINFEED);
+                        .execute(WebConstants.TAGFRIENDINFEED);
             } catch (Exception e) {
                 Log.e(TAG, "callApiTagUsers Exception : " + e.toString());
             }
@@ -391,64 +391,90 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 
     @Override
-    public void onResponse(int apiMethodName, Object object, Exception error) {
-
+    public void onResponse(int apiCode, Object object, Exception error) {
         try {
-            if (apiMethodName == WebserviceWrapper.ADDCOMMENT) {
-                try {
-                    ResponseObject responseObj = (ResponseObject) object;
-                    if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-                        listOfPostFeeds.get(addCommentFeedPosition).setTotalComment("" + (Integer.parseInt(listOfPostFeeds.get(addCommentFeedPosition).getTotalComment()) + 1));
-                        notifyDataSetChanged();
-                    } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-                        Utils.showToast(responseObj.getMessage(), mContext);
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, "onResponseAddComment Exception : " + e.toString());
+            if (object != null) {
+                switch (apiCode) {
+                    case WebConstants.ADDCOMMENT:
+                        onResponseAddComment(object);
+                        break;
+                    case WebConstants.GETALLCOMMENTS:
+                        onResponseGetAllComments(object);
+                        break;
+                    case WebConstants.GETSTUDYMATES:
+                        onResponseGetAllStudyMates(object);
+                        break;
+                    case WebConstants.TAGFRIENDINFEED:
+                        onResponseTagStudyMates(object);
+                        break;
                 }
+            } else {
+                Debug.e(TAG, "onResponse ApiCall Exception : " + error.toString());
             }
-            if (apiMethodName == WebserviceWrapper.GETALLCOMMENTS) {
-                try {
-                    ResponseObject responseObj = (ResponseObject) object;
-                    if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-                        ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseObj.getData());
-                        viewAllCommentsDialog.show();
-                    } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-                        Utils.showToast(responseObj.getMessage(), getActivity());
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, "onResponseGetAllComments Exception : " + e.toString());
-                }
-            } else if (apiMethodName == WebserviceWrapper.GETSTUDYMATES) {
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponse Exception : " + e.toString());
+        }
 
-                ResponseObject responseObject = (ResponseObject) object;
-                if (responseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && responseObject != null) {
-                    if (responseObject.getData().size() > 0) {
-                        TagUserDialog tagUserDialog = new TagUserDialog(getActivity(), responseObject.getData(), this);
-                        tagUserDialog.show();
-                    }
-                } else {
-                    Utils.showToast(responseObject.getMessage(), getActivity());
-                }
+    }
 
-            } else if (apiMethodName == WebserviceWrapper.TAGFRIENDINFEED) {
 
-                ResponseObject tagFriendInFeedResponseObject = (ResponseObject) object;
-                if (tagFriendInFeedResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && tagFriendInFeedResponseObject != null) {
-                    Log.i(TAG, "The message is::" + tagFriendInFeedResponseObject.getMessage());
-                    Toast.makeText(getActivity(), tagFriendInFeedResponseObject.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getActivity(), tagFriendInFeedResponseObject.getMessage(),
-                            Toast.LENGTH_LONG).show();
+    private void onResponseAddComment(Object object) {
+        try {
+            ResponseObject responseObj = (ResponseObject) object;
+            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                listOfPostFeeds.get(addCommentFeedPosition).setTotalComment("" + (Integer.parseInt(listOfPostFeeds.get(addCommentFeedPosition).getTotalComment()) + 1));
+                notifyDataSetChanged();
+            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                Utils.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseAddComment Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseGetAllComments(Object object) {
+        try {
+            ResponseObject responseObj = (ResponseObject) object;
+            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseObj.getData());
+                viewAllCommentsDialog.show();
+            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                Utils.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetAllComments Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseGetAllStudyMates(Object object) {
+        try {
+            ResponseObject responseObj = (ResponseObject) object;
+            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseObj.getData().size() > 0) {
+                    TagUserDialog tagUserDialog = new TagUserDialog(getActivity(), responseObj.getData(), this);
+                    tagUserDialog.show();
                 }
+            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                Utils.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetAllStudyMates Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseTagStudyMates(Object object) {
+        try {
+            ResponseObject responseObj = (ResponseObject) object;
+            tagFeedPosition = -1;
+            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                Utils.showToast(getActivity().getString(R.string.msg_tag_done), getActivity());
+            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                Utils.showToast(getActivity().getString(R.string.msg_tag_failed), getActivity());
 
             }
         } catch (Exception e) {
-            Log.i(TAG + mContext.getString(R.string.strerrormessage), e.getLocalizedMessage());
-
+            Debug.e(TAG, "onResponseTagStudyMates Exception : " + e.toString());
         }
-
     }
 
 

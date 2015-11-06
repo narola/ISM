@@ -16,6 +16,7 @@ import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.adapter.TrialExamsAdapter;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
@@ -68,11 +69,11 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
         gridExams = (GridView) view.findViewById(R.id.grid_trial);// The number of Columns
 
         RequestObject requestObject = new RequestObject();
-        requestObject.setRole(4);
+        requestObject.setRole("4");
         requestObject.setUserId("370");
-        ((AuthorHostActivity)getActivity()).startProgress();
+        ((AuthorHostActivity) getActivity()).startProgress();
         new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                .execute(WebserviceWrapper.GETALLEXAM);
+                .execute(WebConstants.GETALLEXAM);
 
     }
 
@@ -83,7 +84,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
                 fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_TRIAL);
-                Debug.i(TAG,"attach");
+                Debug.i(TAG, "attach");
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -106,16 +107,14 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        ((AuthorHostActivity)getActivity()).stopProgress();
+        ((AuthorHostActivity) getActivity()).stopProgress();
         try {
             ResponseObject responseObject = (ResponseObject) object;
 
             if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
-                if (!responseObject.getData().equals("")) {
+                if (responseObject.getData().size()!=0) {
                     arrayList = new TrialExamsAdapter(getActivity(), responseObject, this);
                     gridExams.setAdapter(arrayList);
-
-
                 }
             } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
                 Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();

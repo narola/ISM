@@ -21,15 +21,16 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.activity.TeacherHomeActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.login.TeacherHomeActivity;
 import com.ism.teacher.model.CreateAssignmentRequest;
 import com.ism.teacher.model.Data;
-import com.ism.teacher.model.GetTopicsRequest;
+import com.ism.teacher.model.RequestObject;
 import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.ws.WebserviceWrapper;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
@@ -231,7 +232,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETCLASSROOMS);
+                        .execute(WebConstants.GETCLASSROOMS);
             } catch (Exception e) {
                 //   Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -246,7 +247,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETSUBJECT);
+                        .execute(WebConstants.GETSUBJECT);
             } catch (Exception e) {
                 // Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -260,10 +261,10 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
         if (Utils.isInternetConnected(getActivity())) {
             try {
-                GetTopicsRequest getTopicsRequest = new GetTopicsRequest();
-                getTopicsRequest.setSubject_id(subject_id);
+                RequestObject getTopicsRequest = new RequestObject();
+                getTopicsRequest.setSubjectId(subject_id);
                 new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETTOPICS);
+                        .execute(WebConstants.GETTOPICS);
             } catch (Exception e) {
                 //  Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -293,7 +294,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
                 }
                 createAssignmentRequest.setAssignment_text(strAssignmenttext);
                 new WebserviceWrapper(getActivity(), createAssignmentRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.CREATEASSIGNMENT);
+                        .execute(WebConstants.CREATEASSIGNMENT);
             } catch (Exception e) {
 //                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -365,82 +366,104 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     public void onResponse(int apiMethodName, Object object, Exception error) {
 
         try {
-            if (apiMethodName == WebserviceWrapper.GETCLASSROOMS) {
 
-                ResponseObject callGetClassRoomsResponseObject = (ResponseObject) object;
-                if (callGetClassRoomsResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetClassRoomsResponseObject != null) {
-                    arrListClassRooms = new ArrayList<Data>();
-                    arrListClassRooms.addAll(callGetClassRoomsResponseObject.getData());
-                    List<String> classrooms = new ArrayList<String>();
-                    classrooms.add(getString(R.string.select));
-                    for (Data classroom : arrListClassRooms) {
-                        classrooms.add(classroom.getClass_name());
+            switch (apiMethodName)
+            {
+                case WebConstants.GETCLASSROOMS:
+                    onResponseGetClassRooms(object);
+                    break;
 
-                    }
-                    Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms);
-                    callApiGetSubjects();
+                case WebConstants.GETSUBJECT:
+                    onResponseGetSubject(object);
+                    break;
 
-                } else {
-                    Utils.showToast(callGetClassRoomsResponseObject.getMessage(), getActivity());
-                }
+                case WebConstants.GETTOPICS:
+                    onResponseGetTopics(object);
+                    break;
 
-            } else if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
-
-                ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
-                if (callGetSubjectResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
-
-                    arrListSubject = new ArrayList<Data>();
-                    arrListSubject.addAll(callGetSubjectResponseObject.getData());
-                    List<String> subjects = new ArrayList<String>();
-                    subjects.add(getString(R.string.select));
-                    for (Data subject : arrListSubject) {
-                        subjects.add(subject.getSubject_name());
-
-                    }
-
-                    Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects);
-
-                } else {
-                    Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
-                }
-
-            } else if (apiMethodName == WebserviceWrapper.GETTOPICS) {
-
-                ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
-                if (callGetTopicsResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
-
-                    arrListTopic = new ArrayList<Data>();
-                    arrListTopic.addAll(callGetTopicsResponseObject.getData());
-                    List<String> topics = new ArrayList<String>();
-                    topics.add(getString(R.string.select));
-                    for (Data topic : arrListTopic) {
-                        topics.add(topic.getTopic_name());
-
-                    }
-                    Adapters.setUpSpinner(getActivity(), spActivityTopic, topics);
-
-                } else {
-
-                    Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
-                    Utils.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
-                }
-
-            } else if (apiMethodName == WebserviceWrapper.CREATEASSIGNMENT) {
-                ResponseObject createAssignmentResponseObject = (ResponseObject) object;
-                if (createAssignmentResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && createAssignmentResponseObject != null) {
-                    backToTrialScreen();
-                    Utils.showToast(createAssignmentResponseObject.getMessage(), getActivity());
-
-                } else {
-                    Utils.showToast(createAssignmentResponseObject.getMessage(), getActivity());
-                }
-
+                case WebConstants.CREATEASSIGNMENT:
+                    onResponseCreateAssignment(object);
+                    break;
             }
-
 
         } catch (Exception e) {
 //            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
         }
+    }
+
+    private void onResponseCreateAssignment(Object object) {
+        ResponseObject createAssignmentResponseObject = (ResponseObject) object;
+        if (createAssignmentResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && createAssignmentResponseObject != null) {
+            backToTrialScreen();
+            Utils.showToast(createAssignmentResponseObject.getMessage(), getActivity());
+
+        } else {
+            Utils.showToast(createAssignmentResponseObject.getMessage(), getActivity());
+        }
+
+    }
+
+    private void onResponseGetTopics(Object object) {
+
+        ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
+        if (callGetTopicsResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
+
+            arrListTopic = new ArrayList<Data>();
+            arrListTopic.addAll(callGetTopicsResponseObject.getData());
+            List<String> topics = new ArrayList<String>();
+            topics.add(getString(R.string.select));
+            for (Data topic : arrListTopic) {
+                topics.add(topic.getTopic_name());
+
+            }
+            Adapters.setUpSpinner(getActivity(), spActivityTopic, topics);
+
+        } else {
+
+            Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
+            Utils.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
+        }
+    }
+
+    private void onResponseGetSubject(Object object) {
+
+        ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
+        if (callGetSubjectResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
+
+            arrListSubject = new ArrayList<Data>();
+            arrListSubject.addAll(callGetSubjectResponseObject.getData());
+            List<String> subjects = new ArrayList<String>();
+            subjects.add(getString(R.string.select));
+            for (Data subject : arrListSubject) {
+                subjects.add(subject.getSubject_name());
+
+            }
+
+            Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects);
+
+        } else {
+            Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
+        }
+    }
+
+    private void onResponseGetClassRooms(Object object) {
+        ResponseObject callGetClassRoomsResponseObject = (ResponseObject) object;
+        if (callGetClassRoomsResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetClassRoomsResponseObject != null) {
+            arrListClassRooms = new ArrayList<Data>();
+            arrListClassRooms.addAll(callGetClassRoomsResponseObject.getData());
+            List<String> classrooms = new ArrayList<String>();
+            classrooms.add(getString(R.string.select));
+            for (Data classroom : arrListClassRooms) {
+                classrooms.add(classroom.getClass_name());
+
+            }
+            Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms);
+            callApiGetSubjects();
+
+        } else {
+            Utils.showToast(callGetClassRoomsResponseObject.getMessage(), getActivity());
+        }
+
     }
 
     private void showDatePickerDob() {

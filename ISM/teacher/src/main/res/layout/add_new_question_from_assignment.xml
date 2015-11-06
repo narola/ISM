@@ -126,6 +126,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_open_gallery"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/d5dp"
@@ -134,7 +135,8 @@
                     android:background="@drawable/bg_news_feed">
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/img"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_news_feed" />
 

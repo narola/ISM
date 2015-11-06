@@ -16,15 +16,27 @@ import java.util.List;
 public class RequestObject {
 
 
+    private String schoolName;
+    private String homeAddress;
+    private int cityId;
+    private String lastname;
+    private String firstname;
+    private int stateId;
+    private int countryId;
+    private String contactNumber;
+    private String emailAddress;
+
+
     private String feedId;
     private String commentBy;
     private String comment;
     private String assignmentText;
-    private int classroomId;
+    private String classroomId;
     private String userId;
-    private int subjectId;
+    private String subjectId;
     private String submissionDate;
-    private int topicId;
+    private String emailId;
+    private String topicId;
 
     private String examType;
     private String examMode;
@@ -32,13 +44,13 @@ public class RequestObject {
     private String negativeMarkValue;
     private String examDuration;
     private String examInstruction;
-    private double bookId;
+    private String bookId;
     private String passingPercent;
     private String examName;
     private String declareResults;
     private String negativeMarking;
     private String randomQuestion;
-    private double attemptCount;
+    private String attemptCount;
     private String examCategory;
     private String examStartDate;
 
@@ -54,7 +66,7 @@ public class RequestObject {
     private String videoThumbnail;
 
 
-    private int role;
+    private String role;
     private String examId;
 
     private String[] taggedUserIds;
@@ -64,6 +76,8 @@ public class RequestObject {
     private String[] unlikedId;
 
     private ArrayList<String> questionId;
+
+    private String studentId;
 
     public String getFeedId() {
         return this.feedId;
@@ -105,11 +119,11 @@ public class RequestObject {
     }
 
     @JsonProperty("classroom_id")
-    public int getClassroomId() {
+    public String getClassroomId() {
         return this.classroomId;
     }
 
-    public void setClassroomId(int classroomId) {
+    public void setClassroomId(String classroomId) {
         this.classroomId = classroomId;
     }
 
@@ -123,12 +137,12 @@ public class RequestObject {
         this.userId = userId;
     }
 
-    public int getSubjectId() {
+    public String getSubjectId() {
         return this.subjectId;
     }
 
     @JsonProperty("subject_id")
-    public void setSubjectId(int subjectId) {
+    public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
     }
 
@@ -143,12 +157,12 @@ public class RequestObject {
     }
 
 
-    public int getTopicId() {
+    public String getTopicId() {
         return this.topicId;
     }
 
     @JsonProperty("topic_id")
-    public void setTopicId(int topicId) {
+    public void setTopicId(String topicId) {
         this.topicId = topicId;
     }
 
@@ -208,12 +222,12 @@ public class RequestObject {
         this.examInstruction = examInstruction;
     }
 
-    public double getBookId() {
+    public String getBookId() {
         return this.bookId;
     }
 
     @JsonProperty("book_id")
-    public void setBookId(double bookId) {
+    public void setBookId(String bookId) {
         this.bookId = bookId;
     }
 
@@ -262,12 +276,12 @@ public class RequestObject {
         this.randomQuestion = randomQuestion;
     }
 
-    public double getAttemptCount() {
+    public String getAttemptCount() {
         return this.attemptCount;
     }
 
     @JsonProperty("attempt_count")
-    public void setAttemptCount(double attemptCount) {
+    public void setAttemptCount(String attemptCount) {
         this.attemptCount = attemptCount;
     }
 
@@ -382,12 +396,12 @@ public class RequestObject {
         this.examId = examId;
     }
 
-    public int getRole() {
+    public String getRole() {
         return this.role;
     }
 
     @JsonProperty("role")
-    public void setRole(int role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -428,6 +442,15 @@ public class RequestObject {
         this.unlikedId = unlikedId;
     }
 
+    @JsonProperty("student_id")
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
     public ArrayList<String> getQuestionId() {
         return this.questionId;
     }
@@ -435,6 +458,97 @@ public class RequestObject {
     @JsonProperty("question_id")
     public void setQuestionId(ArrayList<String> questionId) {
         this.questionId = questionId;
+    }
+
+    @JsonProperty("email_id")
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+
+    public String getEmailId() {
+        return this.emailId;
+    }
+
+    public String getSchoolName() {
+        return this.schoolName;
+    }
+
+    @JsonProperty("school_name")
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
+    public String getHomeAddress() {
+        return this.homeAddress;
+    }
+
+    @JsonProperty("home_address")
+    public void setHomeAddress(String homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+    public int getCityId() {
+        return this.cityId;
+    }
+
+    @JsonProperty("city_id")
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getLastname() {
+        return this.lastname;
+    }
+
+    @JsonProperty("lastname")
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getFirstname() {
+        return this.firstname;
+    }
+
+    @JsonProperty("firstname")
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public int getStateId() {
+        return this.stateId;
+    }
+
+    @JsonProperty("state_id")
+    public void setStateId(int stateId) {
+        this.stateId = stateId;
+    }
+
+    public int getCountryId() {
+        return this.countryId;
+    }
+
+    @JsonProperty("country_id")
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
+    }
+
+    public String getContactNumber() {
+        return this.contactNumber;
+    }
+
+    @JsonProperty("contact_number")
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public String getEmailAddress() {
+        return this.emailAddress;
+    }
+
+    @JsonProperty("email_address")
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
 
