@@ -1,4 +1,4 @@
-package com.ism.teacher.login;
+package com.ism.teacher.activity;
 
 import android.app.Activity;
 import android.os.Bundle;

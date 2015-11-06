@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.ism.teacher.R;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.login.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHomeActivity;
 
 
 /**

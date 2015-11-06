@@ -14,27 +14,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.ism.teacher.login.TeacherLoginActivity"
+            android:name=".activity.TeacherLoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
-            <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".activity.TeacherProfileInformation" />
+        <activity android:name=".activity.TeacherHomeActivity">
+
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+
+            <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity android:name="com.ism.teacher.login.TeacherProfileInformation" />
-        <activity android:name="com.ism.teacher.login.TeacherHomeActivity">
-
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN"/>-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        </activity>
-        <activity android:name="com.ism.teacher.post.TeacherPostActivity" />
         <activity android:name=".PostActivity" />
 
     </application>

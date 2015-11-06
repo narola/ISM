@@ -22,8 +22,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/spinner_selector"
                 android:entries="@array/list"
-                android:padding="@dimen/d20dp"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"
+                android:padding="@dimen/d5dp"/>
 
             <Spinner
                 android:id="@+id/sp_questionlist_subject"
@@ -32,8 +32,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/spinner_selector"
                 android:entries="@array/list"
-                android:padding="@dimen/d20dp"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"
+                android:padding="@dimen/d5dp"/>
 
 
             <Spinner
@@ -43,8 +43,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/spinner_selector"
                 android:entries="@array/list"
-                android:padding="@dimen/d20dp"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"
+                android:padding="@dimen/d5dp"/>
 
             <RelativeLayout
                 android:layout_width="0dp"
