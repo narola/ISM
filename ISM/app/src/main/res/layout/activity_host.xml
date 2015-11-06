@@ -26,7 +26,7 @@
             android:layout_toRightOf="@id/img_logo"
             android:background="@drawable/bg_right_controller_top_button"
             android:scaleType="centerInside"
-            android:src="@drawable/image_home" />
+            android:src="@drawable/img_home" />
 
         <TextView
             android:id="@+id/txt_title"
@@ -155,7 +155,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_left_controller_top_button"
                 android:scaleType="centerInside"
-                android:src="@drawable/image_search" />
+                android:src="@drawable/img_search" />
 
             <EditText
                 android:id="@+id/et_search"
@@ -179,7 +179,7 @@
             android:layout_toLeftOf="@+id/img_author_profile"
             android:background="@drawable/bg_left_controller_top_button"
             android:scaleType="centerInside"
-            android:src="@drawable/image_notes" />
+            android:src="@drawable/img_notes" />
 
         <ImageView
             android:id="@+id/img_author_profile"
@@ -188,7 +188,7 @@
             android:layout_toLeftOf="@+id/img_chat"
             android:background="@drawable/bg_left_controller_top_button"
             android:scaleType="centerInside"
-            android:src="@drawable/image_study_mates" />
+            android:src="@drawable/img_study_mates" />
 
         <ImageView
             android:id="@+id/img_chat"
@@ -197,7 +197,7 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/bg_left_controller_top_button"
             android:scaleType="centerInside"
-            android:src="@drawable/image_chat" />
+            android:src="@drawable/img_chat" />
     </RelativeLayout>
 
     <LinearLayout
@@ -214,7 +214,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_controller_left_button_tutorial"
             android:scaleType="centerInside"
-            android:src="@drawable/image_tutorial" />
+            android:src="@drawable/img_tutorial" />
 
         <ImageView
             android:id="@+id/img_office"
@@ -223,7 +223,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_controller_left_button_classroom"
             android:scaleType="centerInside"
-            android:src="@drawable/image_classroom" />
+            android:src="@drawable/img_classroom" />
 
         <ImageView
             android:id="@+id/img_assessment"
@@ -232,7 +232,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_controller_left_button_assessment"
             android:scaleType="centerInside"
-            android:src="@drawable/image_assessment" />
+            android:src="@drawable/img_assessment" />
 
         <ImageView
             android:id="@+id/img_desk"
@@ -241,7 +241,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_controller_left_button_desk"
             android:scaleType="centerInside"
-            android:src="@drawable/image_desk" />
+            android:src="@drawable/img_desk" />
 
         <ImageView
             android:id="@+id/img_reportcard"
@@ -250,7 +250,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_controller_left_button_report_card"
             android:scaleType="centerInside"
-            android:src="@drawable/image_report_card" />
+            android:src="@drawable/img_report_card" />
 
         <ImageView
             android:id="@+id/img_logout"

@@ -14,22 +14,12 @@
 		android:orientation="horizontal">
 
 		<Spinner
-			android:id="@+id/sp_notice_category"
-			android:layout_width="200dp"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="2dp"
-			android:layout_marginLeft="@dimen/header_white_spacing"
-			android:background="@drawable/bg_spinner_header"
-			android:entries="@array/accordion_notice"></Spinner>
-
-		<Spinner
 			android:id="@+id/sp_notice_sortby"
-			android:layout_width="200dp"
+			android:layout_width="230dp"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="2dp"
 			android:layout_marginLeft="@dimen/header_white_spacing"
-			android:background="@drawable/bg_spinner_header"
-			android:entries="@array/accordion_notice"></Spinner>
+			android:background="@drawable/bg_spinner_header"></Spinner>
 	</LinearLayout>
 
 	<android.support.v7.widget.RecyclerView

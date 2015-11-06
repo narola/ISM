@@ -12,24 +12,24 @@ import com.ism.R;
 /**
  * Created by c161 on 06/11/15.
  */
-public class StudyMatesFragment extends Fragment {
+public class GeneralSettingsFragment extends Fragment {
 
-	private static final String TAG = StudyMatesFragment.class.getSimpleName();
+	private static final String TAG = GeneralSettingsFragment.class.getSimpleName();
 
 	private View view;
 
-	public static StudyMatesFragment newInstance() {
-		StudyMatesFragment fragment = new StudyMatesFragment();
+	public static GeneralSettingsFragment newInstance() {
+		GeneralSettingsFragment fragment = new GeneralSettingsFragment();
 		return fragment;
 	}
 
-	public StudyMatesFragment() {
+	public GeneralSettingsFragment() {
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.fragment_study_mates, container, false);
+		view = inflater.inflate(R.layout.fragment_general_settings, container, false);
 
 		initGlobal();
 

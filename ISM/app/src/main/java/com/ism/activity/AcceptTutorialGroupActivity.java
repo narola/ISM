@@ -152,7 +152,7 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 	}
 
 	private void launchHostActivity() {
-		Utility.launchIntent(AcceptTutorialGroupActivity.this, HostActivity.class);
+		Utility.launchActivity(AcceptTutorialGroupActivity.this, HostActivity.class);
 		finish();
 	}
 
