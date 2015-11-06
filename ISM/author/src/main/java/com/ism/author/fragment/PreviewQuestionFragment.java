@@ -83,7 +83,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 //        mItemTouchHelper = new ItemTouchHelper(callback);
 //        mItemTouchHelper.attachToRecyclerView(rvPreviewquestionlist);
 
-
         tvPreviewQuestionlistFreeze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,8 +98,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     private void callApiFreezeQuestions() {
 
         if (Utils.isInternetConnected(getActivity())) {
-
-
             if (listOfPreviewQuestions.size() > 0) {
                 try {
                     RequestObject requestObject = new RequestObject();
@@ -108,7 +105,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                     requestObject.setQuestionId(getQuestionIdList());
 
                     new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                            .execute(WebserviceWrapper.SETQUESTIONSFOREXAM);
+                            .execute(WebConstants.SETQUESTIONSFOREXAM);
                 } catch (Exception e) {
                     Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
                 }
@@ -147,25 +144,34 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
 
     //   @Override
-    public void onResponse(int apiMethodName, Object object, Exception error) {
-
+    public void onResponse(int apiCode, Object object, Exception error) {
         try {
-
-            if (apiMethodName == WebserviceWrapper.SETQUESTIONSFOREXAM) {
-
-                ResponseObject setQuestionsForExamResponseObject = (ResponseObject) object;
-                if (setQuestionsForExamResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && setQuestionsForExamResponseObject != null) {
-
-                    Utils.showToast(getActivity().getString(R.string.str_success_setexamquestions), getActivity());
-                } else {
-                    Utils.showToast(setQuestionsForExamResponseObject.getMessage(), getActivity());
-                }
-
+            switch (apiCode) {
+                case WebConstants.SETQUESTIONSFOREXAM:
+                    onResponseSetQuestionsForExam(object, error);
+                    break;
             }
         } catch (Exception e) {
-
-            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-
+            Debug.e(TAG, "onResponse Exception : " + e.toString());
         }
+    }
+
+    private void onResponseSetQuestionsForExam(Object object, Exception error) {
+
+        try {
+            if (object != null) {
+                ResponseObject responseObj = (ResponseObject) object;
+                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                    Utils.showToast(getActivity().getString(R.string.str_success_setexamquestions), getActivity());
+                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                    Utils.showToast(responseObj.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseSetQuestionForExam api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseSetQuestionForExam Exception : " + e.toString());
+        }
+
     }
 }

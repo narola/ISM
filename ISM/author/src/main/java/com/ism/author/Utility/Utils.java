@@ -11,7 +11,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.ism.author.fragment.TrialActivityFragment;
+import com.ism.author.fragment.CreateAssignmentFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,7 +24,7 @@ import java.util.Locale;
 public class Utils {
 
 
-    private static final String TAG = TrialActivityFragment.class.getSimpleName();
+    private static final String TAG = CreateAssignmentFragment.class.getSimpleName();
 
 
     /* these is the method to check for the internet connection*/
@@ -63,7 +63,7 @@ public class Utils {
     * */
     public static void showToast(String message, Context mContext) {
         try {
-            Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }

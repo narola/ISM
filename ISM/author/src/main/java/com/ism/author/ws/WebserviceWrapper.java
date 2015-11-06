@@ -21,26 +21,6 @@ public class WebserviceWrapper {
     private WebserviceResponse webserviceResponse;
     private Context mContext;
 
-    //	Webservice flags
-    public static final int LOGIN = 0;
-    public static final int GETALLFEEDS = 1;
-    public static final int GETALLCOMMENTS = 2;
-    public static final int ADDCOMMENT = 3;
-    public static final int GETSTUDYMATES = 4;
-    public static final int TAGFRIENDINFEED = 5;
-    public static final int LIKEFEED = 6;
-    public static final int GETCLASSROOMS = 7;
-    public static final int GETSUBJECT = 8;
-    public static final int GETTOPICS = 9;
-    public static final int CREATEASSIGNMENT = 10;
-    public static final int POSTFEED = 11;
-    public static final int GETCOURSES = 12;
-    public static final int CREATEEXAM = 13;
-    public static final int GETQUESTIONBANK = 14;
-    public static final int GETALLEXAM = 15;
-    public static final int GETEXAMSUBMISSION = 16;
-    public static final int SETQUESTIONSFOREXAM = 17;
-
 
     public interface WebserviceResponse {
         public void onResponse(int API_METHOD, Object object, Exception error);
@@ -60,7 +40,7 @@ public class WebserviceWrapper {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showProgressDialog();
+//            showProgressDialog();
         }
 
         @Override
@@ -71,76 +51,99 @@ public class WebserviceWrapper {
 
                 API_METHOD_NAME = params[0];
                 switch (API_METHOD_NAME) {
-                    case LOGIN:
+                    case WebConstants.LOGIN:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_LOGIN, ResponseObject.class, requestObject);
                         break;
 
-                    case GETALLFEEDS:
+                    case WebConstants.FORGOTPASSWORD:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_FORGOT_PASSWORD, ResponseObject.class, requestObject);
+                        break;
+
+                    case WebConstants.REQUESTCREDENTIALS:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_REQUEST_CREDENTIALS, ResponseObject.class, requestObject);
+                        break;
+
+                    case WebConstants.GETCOUNTRIES:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_COUNTRIES, ResponseObject.class, requestObject);
+                        break;
+
+                    case WebConstants.GETSTATES:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_STATES, ResponseObject.class, requestObject);
+                        break;
+
+                    case WebConstants.GETCITIES:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_CITIES, ResponseObject.class, requestObject);
+                        break;
+
+                    case WebConstants.GETALLFEEDS:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GETALLFEEDS, ResponseObject.class, requestObject);
                         break;
 
-                    case ADDCOMMENT:
+                    case WebConstants.ADDCOMMENT:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_ADDCOMMENT, ResponseObject.class, requestObject);
                         break;
 
-                    case GETSTUDYMATES:
+                    case WebConstants.GETSTUDYMATES:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GETSTUDYMATES, ResponseObject.class, requestObject);
                         break;
 
-                    case TAGFRIENDINFEED:
+                    case WebConstants.TAGFRIENDINFEED:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_TAGFRIENDINFEED, ResponseObject.class, requestObject);
                         break;
 
-                    case GETALLCOMMENTS:
+                    case WebConstants.GETALLCOMMENTS:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GETALLCOMMENTS, ResponseObject.class, requestObject);
                         break;
 
-                    case LIKEFEED:
+                    case WebConstants.LIKEFEED:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_LIKEFEED, ResponseObject.class, requestObject);
                         break;
 
-                    case GETCLASSROOMS:
+                    case WebConstants.GETCLASSROOMS:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GETCLASSROOMS, ResponseObject.class, requestObject);
                         break;
 
-                    case GETSUBJECT:
+                    case WebConstants.GETSUBJECT:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GETSUBJECT, ResponseObject.class, requestObject);
                         break;
 
-                    case GETTOPICS:
+                    case WebConstants.GETTOPICS:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GETTOPICS, ResponseObject.class, requestObject);
                         break;
 
-                    case CREATEASSIGNMENT:
+                    case WebConstants.CREATEASSIGNMENT:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_CREATEASSIGNMENT, ResponseObject.class, requestObject);
                         break;
-                    case POSTFEED:
+
+                    case WebConstants.POSTFEED:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_POSTFEED, ResponseObject.class, requestObject);
                         break;
 
-                    case GETCOURSES:
+                    case WebConstants.GETCOURSES:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_COURSES, ResponseObject.class, requestObject);
                         break;
 
-                    case CREATEEXAM:
+                    case WebConstants.CREATEEXAM:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_CREATE_EXAM, ResponseObject.class, requestObject);
                         break;
 
-                    case GETQUESTIONBANK:
+                    case WebConstants.GETQUESTIONBANK:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GETQUESTIONBANK, ResponseObject.class, requestObject);
                         break;
 
-                    case GETALLEXAM:
+                    case WebConstants.GETALLEXAM:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_ALL_EXAM, ResponseObject.class, requestObject);
                         break;
 
-                    case SETQUESTIONSFOREXAM:
+                    case WebConstants.SETQUESTIONSFOREXAM:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_SET_QUESTIONS_FOR_EXAM, ResponseObject.class, requestObject);
                         break;
-                    case GETEXAMSUBMISSION:
+
+                    case WebConstants.GETEXAMSUBMISSION:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_EXAM_SUBMISSION, ResponseObject.class, requestObject);
 
-                        Debug.i(TAG,"Response object :" + responseObject);break;
+                        Debug.i(TAG, "Response object :" + responseObject);
+                        break;
 
                 }
             } catch (Exception e) {
@@ -152,9 +155,13 @@ public class WebserviceWrapper {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            Debug.i(TAG, "WebserviceCaller Response : " + o.toString());
-            dismissProgressDialog();
-            webserviceResponse.onResponse(API_METHOD_NAME, o, null);
+            try {
+                Debug.i(TAG, "WebserviceCaller Response : " + o.toString());
+//                dismissProgressDialog();
+                webserviceResponse.onResponse(API_METHOD_NAME, o, null);
+            } catch (Exception e) {
+                Debug.i(TAG, "WebserviceCaller Response Exception : " + e.toString());
+            }
 
         }
     }

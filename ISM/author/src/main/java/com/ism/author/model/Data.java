@@ -16,16 +16,17 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Data {
 
-    /*these parameters are of login response*/
+
     private String schoolName;
+    private String credentialId;
     private String courseId;
     private String courseName;
     private String roleId;
     private String schoolId;
     private String academicYear;
-
-
-    /*these paarmeters are of getALlFeeds response*/
+    private String schoolDestrict;
+    private String schoolType;
+    private String classId;
     private String feedId;
     private String createdDate;
     private String totalComment;
@@ -38,47 +39,26 @@ public class Data {
     private String videoLink;
     private String profilePic;
     private double like;
+    private String countryName;
+    private String stateName;
+    private String cityName;
     private ArrayList<PostFeedCommentsModel> commentList;
-
-    /*these parameters are of GetStudyMates Response*/
-
     private String fullName;
-
-    /*these are for the getAllComments*/
-
     private String id;
     private String commentBy;
     private String comment;
     private String profileLink;
-
-    /*these are for the getAllClassrooms*/
-
     private String className;
     private String classNickname;
-
-    /*these are for the getSubjects*/
-
     private String subjectImage;
     private String subjectName;
-
-     /*these are for the getTopics*/
-
     private String topicName;
     private String subjectId;
     private String topicDescription;
-
-
-    //    postfeed
-
     private String feed_by;
     private String video_thumbnail;
     private List<String> images;
     private ArrayList<PostFeedImagesModel> feed_images;
-
-
-
-    /*these are for the get questionbank*/
-
     private String questionFormat;
     private String questionAssetsLink;
     private String questionHint;
@@ -93,20 +73,15 @@ public class Data {
     private String questionText;
     private String questionCreatorId;
     private String questionCreatorName;
-
-
-    /*these are for the get created exams*/
     private String total_student_attempted;
     private String total_student;
     private String exam_type;
     private String average_score;
-
     private String studentName;
     private String EvoluationsScore;
     private ArrayList<Data> evoluations;
     private String examID;
 
-    /*these methods are for login response*/
 
     @JsonProperty("feed_images")
     public ArrayList<PostFeedImagesModel> getFeed_images() {
@@ -123,6 +98,15 @@ public class Data {
 
     public void setVideo_thumbnail(String video_thumbnail) {
         this.video_thumbnail = video_thumbnail;
+    }
+
+    @JsonProperty("credential_id")
+    public String getCredentialId() {
+        return credentialId;
+    }
+
+    public void setCredentialId(String credentialId) {
+        this.credentialId = credentialId;
     }
 
 
@@ -179,9 +163,6 @@ public class Data {
     public void setAcademicYear(String academicYear) {
         this.academicYear = academicYear;
     }
-
-
-    /*these methods are for getAllfeeds response*/
 
 
     public double getLike() {
@@ -301,10 +282,6 @@ public class Data {
         this.commentList = commentList;
     }
 
-
-
-    /*these methods are for GetStudyMates response*/
-
     @JsonProperty("full_name")
     public String getFullName() {
         return this.fullName;
@@ -313,9 +290,6 @@ public class Data {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-
-
-    /*these methods are for the getCommentsList*/
 
 
     @JsonProperty("id")
@@ -355,8 +329,6 @@ public class Data {
     }
 
 
-      /*these are for the getAllClassrooms*/
-
     @JsonProperty("class_name")
     public String getClassName() {
         return this.className;
@@ -375,7 +347,6 @@ public class Data {
         this.classNickname = classNickname;
     }
 
-      /*these are for the getSubjects*/
 
     @JsonProperty("subject_image")
     public String getSubjectImage() {
@@ -395,8 +366,6 @@ public class Data {
         this.subjectName = subjectName;
     }
 
-
-    /*these are for the getTopics*/
 
     @JsonProperty("topic_name")
     public String getTopicName() {
@@ -434,30 +403,7 @@ public class Data {
         this.feed_by = feed_by;
     }
 
-    //    @JsonProperty("feed_text")
-//    public String getFeed_text() {
-//        return feed_text;
-//    }
-//
-//    public void setFeed_text(String feed_text) {
-//        this.feed_text = feed_text;
-//    }
-//    @JsonProperty("video_link")
-//    public String getVideo_link() {
-//        return video_link;
-//    }
-//
-//    public void setVideo_link(String video_link) {
-//        this.video_link = video_link;
-//    }
-//    @JsonProperty("audio_link")
-//    public String getAudio_link() {
-//        return audio_link;
-//    }
-//
-//    public void setAudio_link(String audio_link) {
-//        this.audio_link = audio_link;
-//    }
+
     @JsonProperty("images")
     public List<String> getImages() {
         return images;
@@ -467,8 +413,6 @@ public class Data {
         this.images = images;
     }
 
-
-    /*these are for the get questionbank*/
 
     @JsonProperty("question_format")
     public String getQuestionFormat() {
@@ -606,9 +550,6 @@ public class Data {
         this.isQuestionAddedInPreview = isQuestionAddedInPreview;
     }
 
-
-    /*these are for the get created exams*/
-
     @JsonProperty("average_score")
     public String getAverage_score() {
         return average_score;
@@ -662,6 +603,7 @@ public class Data {
     public void setEvoluationsScore(String evoluationsScore) {
         EvoluationsScore = evoluationsScore;
     }
+
     @JsonProperty("evaluation")
     public ArrayList<Data> getEvoluations() {
         return evoluations;
@@ -679,4 +621,60 @@ public class Data {
     public String getExamID() {
         return examID;
     }
+
+    @JsonProperty("district_name")
+    public String getSchoolDestrict() {
+        return schoolDestrict;
+    }
+
+    public void setSchoolDestrict(String schoolDestrict) {
+        this.schoolDestrict = schoolDestrict;
+    }
+
+    @JsonProperty("school_type")
+    public String getSchoolType() {
+        return schoolType;
+    }
+
+    public void setSchoolType(String schoolType) {
+        this.schoolType = schoolType;
+    }
+
+
+    @JsonProperty("class_id")
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
+    }
+
+    @JsonProperty("country_name")
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
+    @JsonProperty("state_name")
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    @JsonProperty("city_name")
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
 }

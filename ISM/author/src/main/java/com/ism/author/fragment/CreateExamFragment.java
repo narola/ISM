@@ -21,6 +21,7 @@ import android.widget.ToggleButton;
 
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.InputValidator;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
@@ -42,19 +43,19 @@ import jp.wasabeef.richeditor.RichEditor;
 /**
  * Created by c166 on 28/10/15.
  */
-public class TrialExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
+public class CreateExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
 
-    private static final String TAG = TrialExamFragment.class.getSimpleName();
+    private static final String TAG = CreateExamFragment.class.getSimpleName();
     private View view;
 
     //    private FragmentListener fragListener;
-    public static TrialExamFragment newInstance() {
-        TrialExamFragment trialExamFragment = new TrialExamFragment();
-        return trialExamFragment;
+    public static CreateExamFragment newInstance() {
+        CreateExamFragment createExamFragment = new CreateExamFragment();
+        return createExamFragment;
     }
 
-    public TrialExamFragment() {
+    public CreateExamFragment() {
         // Required empty public constructor
     }
 
@@ -89,7 +90,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_trial_exam, container, false);
+        view = inflater.inflate(R.layout.fragment_create_exam, container, false);
 
         initGlobal();
         return view;
@@ -268,6 +269,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         });
 
         callApiGetClassrooms();
+        callApiGetSubjects();
 
     }
 
@@ -277,7 +279,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
 //        try {
 //            fragListener = (FragmentListener) activity;
 //            if (fragListener != null) {
-//                fragListener.onFragmentAttached(TrialAddNewFragment.FRAGMENT_TRIAL_EXAM);
+//                fragListener.onFragmentAttached(CreateExamAssignmentContainerFragment.FRAGMENT_TRIAL_EXAM);
 //            }
 //        } catch (ClassCastException e) {
 //            Log.i(TAG, "onAttach Exception : " + e.toString());
@@ -289,7 +291,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         super.onDetach();
 //        try {
 //            if (fragListener != null) {
-//                fragListener.onFragmentDetached(TrialAddNewFragment.FRAGMENT_TRIAL_EXAM);
+//                fragListener.onFragmentDetached(CreateExamAssignmentContainerFragment.FRAGMENT_TRIAL_EXAM);
 //            }
 //        } catch (ClassCastException e) {
 //            Log.i(TAG, "onDetach Exception : " + e.toString());
@@ -302,7 +304,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETCLASSROOMS);
+                        .execute(WebConstants.GETCLASSROOMS);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -317,7 +319,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETSUBJECT);
+                        .execute(WebConstants.GETSUBJECT);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -335,7 +337,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
                 RequestObject requestObject = new RequestObject();
                 requestObject.setSubjectId(subject_id);
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETTOPICS);
+                        .execute(WebConstants.GETTOPICS);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -380,7 +382,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
                 requestObject.setBookId(0);
 
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.CREATEEXAM);
+                        .execute(WebConstants.CREATEEXAM);
             } catch (Exception e) {
                 Log.e(TAG, e.getLocalizedMessage());
             }
@@ -545,82 +547,126 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
 
 
     @Override
-    public void onResponse(int apiMethodName, Object object, Exception error) {
+    public void onResponse(int apiCode, Object object, Exception error) {
 
-        if (apiMethodName == WebserviceWrapper.GETCLASSROOMS) {
-
-            ResponseObject callGetClassRoomsResponse = (ResponseObject) object;
-            if (callGetClassRoomsResponse.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetClassRoomsResponse != null) {
-
-                arrListClassRooms = new ArrayList<Data>();
-                arrListClassRooms.addAll(callGetClassRoomsResponse.getData());
-                List<String> classrooms = new ArrayList<String>();
-                classrooms.add(getString(R.string.strclass));
-                for (Data course : arrListClassRooms) {
-                    classrooms.add(course.getClassName());
-
-                }
-                Adapters.setUpSpinner(getActivity(), sp_exam_classroom, classrooms, Adapters.ADAPTER_NORMAL);
-                callApiGetSubjects();
-
-            } else {
-                Utils.showToast(callGetClassRoomsResponse.getMessage(), getActivity());
+        try {
+            switch (apiCode) {
+                case WebConstants.GETCLASSROOMS:
+                    onResponseGetClassrooms(object, error);
+                    break;
+                case WebConstants.GETSUBJECT:
+                    onResponseGetSubjects(object, error);
+                    break;
+                case WebConstants.GETTOPICS:
+                    onResponseGetTopics(object, error);
+                    break;
+                case WebConstants.CREATEEXAM:
+                    onResponseCreateExam(object, error);
+                    break;
             }
-
-        } else if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
-
-            ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
-            if (callGetSubjectResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
-
-                arrListSubject = new ArrayList<Data>();
-                arrListSubject.addAll(callGetSubjectResponseObject.getData());
-                List<String> subjects = new ArrayList<String>();
-                subjects.add(getString(R.string.strsubjectname));
-                for (Data subject : arrListSubject) {
-                    subjects.add(subject.getSubjectName());
-
-                }
-
-                Adapters.setUpSpinner(getActivity(), sp_exam_subjectname, subjects, Adapters.ADAPTER_NORMAL);
-
-            } else {
-                Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
-            }
-
-        } else if (apiMethodName == WebserviceWrapper.GETTOPICS) {
-
-            ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
-            if (callGetTopicsResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
-
-                arrListTopic = new ArrayList<Data>();
-                arrListTopic.addAll(callGetTopicsResponseObject.getData());
-                List<String> topics = new ArrayList<String>();
-                topics.add(getString(R.string.strtopic));
-                for (Data topic : arrListTopic) {
-                    topics.add(topic.getTopicName());
-
-                }
-                Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, topics, Adapters.ADAPTER_NORMAL);
-            } else {
-                Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
-                Utils.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
-            }
-
-        } else if (apiMethodName == WebserviceWrapper.CREATEEXAM) {
-
-            ResponseObject callCreateExamResponse = (ResponseObject) object;
-            if (callCreateExamResponse.getStatus().equals(WebConstants.STATUS_SUCCESS) && callCreateExamResponse != null) {
-
-                Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
-                btn_exam_setquestion.setVisibility(View.VISIBLE);
-
-            } else {
-
-                Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
-            }
-
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponse Exception : " + e.toString());
         }
 
+    }
+
+
+    private void onResponseGetClassrooms(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseObject responseObj = (ResponseObject) object;
+                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+
+                    arrListClassRooms = new ArrayList<Data>();
+                    arrListClassRooms.addAll(responseObj.getData());
+                    List<String> classrooms = new ArrayList<String>();
+                    classrooms.add(getString(R.string.strclass));
+                    for (Data course : arrListClassRooms) {
+                        classrooms.add(course.getClassName());
+
+                    }
+                    Adapters.setUpSpinner(getActivity(), sp_exam_classroom, classrooms, Adapters.ADAPTER_NORMAL);
+
+                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                    Utils.showToast(responseObj.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetClassrooms api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetClassrooms Exception : " + e.toString());
+        }
+    }
+
+
+    private void onResponseGetSubjects(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseObject responseObj = (ResponseObject) object;
+                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+
+                    arrListSubject = new ArrayList<Data>();
+                    arrListSubject.addAll(responseObj.getData());
+                    List<String> subjects = new ArrayList<String>();
+                    subjects.add(getString(R.string.strsubjectname));
+                    for (Data subject : arrListSubject) {
+                        subjects.add(subject.getSubjectName());
+
+                    }
+                    Adapters.setUpSpinner(getActivity(), sp_exam_subjectname, subjects, Adapters.ADAPTER_NORMAL);
+                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                    Utils.showToast(responseObj.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetSubjects Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseGetTopics(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseObject responseObj = (ResponseObject) object;
+                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                    arrListTopic = new ArrayList<Data>();
+                    arrListTopic.addAll(responseObj.getData());
+                    List<String> topics = new ArrayList<String>();
+                    topics.add(getString(R.string.strtopic));
+                    for (Data topic : arrListTopic) {
+                        topics.add(topic.getTopicName());
+
+                    }
+                    Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, topics, Adapters.ADAPTER_NORMAL);
+                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                    Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Utils.showToast(responseObj.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetTopics api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetTopics Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseCreateExam(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseObject responseObj = (ResponseObject) object;
+                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                    Utils.showToast(getActivity().getString(R.string.msg_success_createexam), getActivity());
+                    btn_exam_setquestion.setVisibility(View.VISIBLE);
+                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                    Utils.showToast(responseObj.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseCreateExam api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseCreateExam Exception : " + e.toString());
+        }
     }
 
 

@@ -27,7 +27,7 @@ import com.ism.author.fragment.BooksFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.OfficeFragment;
 import com.ism.author.fragment.StudentAttemptedFragment;
-import com.ism.author.fragment.TrialAddNewFragment;
+import com.ism.author.fragment.CreateExamAssignmentContainerFragment;
 import com.ism.author.fragment.TrialExamDetailFragment;
 import com.ism.author.fragment.TrialFragment;
 import com.ism.author.helper.ControllerTopMenuItem;
@@ -141,7 +141,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         flFragmentContainerMain = (FrameLayout) findViewById(R.id.fl_fragment_container_main);
         flFragmentContainerRight = (FrameLayout) findViewById(R.id.fl_fragment_container_right);
         progress_bar = (ActionProcessButton) findViewById(R.id.progress_bar);
-        progressGenerator=new ProgressGenerator();
+        progressGenerator = new ProgressGenerator();
 
         imgLogo = (ImageView) findViewById(R.id.img_logo);
         imgHome = (ImageView) findViewById(R.id.img_home);
@@ -249,7 +249,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_ADDNEWTRIAL:
 
                     mFragmentTransaction = mFragmentManager.beginTransaction();
-                    mFragmentTransaction.add(R.id.fl_fragment_container_main, TrialAddNewFragment.newInstance());
+                    mFragmentTransaction.add(R.id.fl_fragment_container_main, CreateExamAssignmentContainerFragment.newInstance());
                     mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_ADDNEWTRIAL));
                     mFragmentTransaction.commit();
 
@@ -519,8 +519,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                 rlControllerTopMenu.setVisibility(View.VISIBLE);
                 txtTitle.setVisibility(View.GONE);
                 hideControllerTopControls();
-                            startSlideAnimation(imgBack, -1000, 0, 0, 0);
-                            imgBack.setVisibility(View.VISIBLE);
+                startSlideAnimation(imgBack, -1000, 0, 0, 0);
+                imgBack.setVisibility(View.VISIBLE);
 
                 if (menu.get(0).getMenuItemTitle() != null) {
                     currentControllerTopMenu.get(0).setIsActive(true);
@@ -529,25 +529,25 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     txtTitle.setVisibility(View.VISIBLE);
                     spSubmenu.setVisibility(View.GONE);
 
-                            } else {
+                } else {
                     txtTitle.setText("");
                     startSlideAnimation(txtTitle, 0, rlControllerTopMenu.getWidth(), 0, 0);
                     txtTitle.setVisibility(View.GONE);
                 }
                 if (currentControllerTopMenu.get(0).getSubMenu() != null) {
                     txtTitle.setVisibility(View.GONE);
-                                spSubmenu.setVisibility(View.VISIBLE);
+                    spSubmenu.setVisibility(View.VISIBLE);
                     adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(0).getSubMenu(), AuthorHostActivity.this);
-                                spSubmenu.setAdapter(adapterControllerTopSpinner);
-                            }
+                    spSubmenu.setAdapter(adapterControllerTopSpinner);
+                }
                 if (menu.get(0).getMenuItemAction() != null) {
-                                startSlideAnimation(txtAction, rlControllerTopMenu.getWidth(), 0, 0, 0);
+                    startSlideAnimation(txtAction, rlControllerTopMenu.getWidth(), 0, 0, 0);
                     txtAction.setText(currentControllerTopMenu.get(0).getMenuItemAction());
-                                txtAction.setVisibility(View.VISIBLE);
-                            } else {
-                                txtAction.setVisibility(View.GONE);
-                            }
-                            }
+                    txtAction.setVisibility(View.VISIBLE);
+                } else {
+                    txtAction.setVisibility(View.GONE);
+                }
+            }
 
 
         } catch (Exception e) {
@@ -703,8 +703,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
     @Override
     public void onBackPressed() {
-        // super.onBackPressed();
-
+        super.onBackPressed();
+/**/
 //        handleOnBackPressed();
 
 //        Utils.showToast("The backstack count is" + getFragmentManager().getBackStackEntryCount(), this);
@@ -727,12 +727,14 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
 
     }
-    public void startProgress(){
+
+    public void startProgress() {
         progress_bar.setProgress(1);
         progress_bar.setEnabled(false);
         progressGenerator.start(progress_bar);
     }
-    public void stopProgress(){
+
+    public void stopProgress() {
         progress_bar.setProgress(100);
         progress_bar.setVisibility(View.INVISIBLE);
     }

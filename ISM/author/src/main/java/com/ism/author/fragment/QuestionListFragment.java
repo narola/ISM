@@ -110,7 +110,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETSUBJECT);
+                        .execute(WebConstants.GETSUBJECT);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -125,7 +125,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETCOURSES);
+                        .execute(WebConstants.GETCOURSES);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -144,7 +144,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 requestObject.setUserId("370");
                 requestObject.setRole(AppConstant.AUTHOR_ROLE_ID);
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETQUESTIONBANK);
+                        .execute(WebConstants.GETQUESTIONBANK);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -154,20 +154,34 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     }
 
-    ResponseObject getQuestionBankResponseObject;
 
     @Override
-    public void onResponse(int apiMethodName, Object object, Exception error) {
-
+    public void onResponse(int apiCode, Object object, Exception error) {
         try {
+            switch (apiCode) {
+                case WebConstants.GETSUBJECT:
+                    onResponseGetSubjects(object, error);
+                    break;
+                case WebConstants.GETCOURSES:
+                    onResponseGetCourses(object, error);
+                    break;
+                case WebConstants.GETQUESTIONBANK:
+                    onResponseGetQuestionBank(object, error);
+                    break;
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponse Exception : " + e.toString());
+        }
+    }
 
-            if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
 
-                ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
-                if (callGetSubjectResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
-
+    private void onResponseGetSubjects(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseObject responseObj = (ResponseObject) object;
+                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
                     arrListSubject = new ArrayList<Data>();
-                    arrListSubject.addAll(callGetSubjectResponseObject.getData());
+                    arrListSubject.addAll(responseObj.getData());
                     List<String> subjects = new ArrayList<String>();
                     subjects.add(getString(R.string.strsubject));
                     for (Data subject : arrListSubject) {
@@ -175,18 +189,25 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
                     }
                     Adapters.setUpSpinner(getActivity(), spQuestionlistSubject, subjects, Adapters.ADAPTER_SMALL);
-
-                } else {
-                    Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
+                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                    Utils.showToast(responseObj.getMessage(), getActivity());
                 }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetSubjects Exception : " + e.toString());
+        }
+    }
 
-            } else if (apiMethodName == WebserviceWrapper.GETCOURSES) {
-
-                ResponseObject callGetCoursesResponseObject = (ResponseObject) object;
-                if (callGetCoursesResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetCoursesResponseObject != null) {
+    private void onResponseGetCourses(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseObject responseObj = (ResponseObject) object;
+                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
 
                     arrListCourses = new ArrayList<Data>();
-                    arrListCourses.addAll(callGetCoursesResponseObject.getData());
+                    arrListCourses.addAll(responseObj.getData());
                     List<String> courses = new ArrayList<String>();
                     courses.add(getString(R.string.strcourse));
                     for (Data course : arrListCourses) {
@@ -194,27 +215,34 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
                     }
                     Adapters.setUpSpinner(getActivity(), spQuestionlistCourse, courses, Adapters.ADAPTER_SMALL);
-                } else {
 
-                    Utils.showToast(callGetCoursesResponseObject.getMessage(), getActivity());
+                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                    Utils.showToast(responseObj.getMessage(), getActivity());
                 }
-
-            } else if (apiMethodName == WebserviceWrapper.GETQUESTIONBANK) {
-
-                getQuestionBankResponseObject = (ResponseObject) object;
-                if (getQuestionBankResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && getQuestionBankResponseObject != null) {
-
-                    listOfQuestionBank.addAll(getQuestionBankResponseObject.getData());
-                    questionBankListAdapter.addAll(listOfQuestionBank);
-                } else {
-                    Utils.showToast(getQuestionBankResponseObject.getMessage(), getActivity());
-                }
-
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetCourses api Exception : " + error.toString());
             }
         } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetCourses Exception : " + e.toString());
+        }
+    }
 
-            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
 
+    private void onResponseGetQuestionBank(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseObject responseObj = (ResponseObject) object;
+                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                    listOfQuestionBank.addAll(responseObj.getData());
+                    questionBankListAdapter.addAll(listOfQuestionBank);
+                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                    Utils.showToast(responseObj.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetCourses api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetCourses Exception : " + e.toString());
         }
     }
 
@@ -222,7 +250,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     public void onClick(View v) {
 
         if (v == tvQuestionlistAddPreview) {
-
             if (questionBankListAdapter.getListOfPreviewQuestionsToAdd().size() > 0) {
                 ((AddQuestionFragment) mFragment).previewQuestionFragment.addQuestionsToPreviewFragment(questionBankListAdapter.getListOfPreviewQuestionsToAdd());
                 questionBankListAdapter.getListOfPreviewQuestionsToAdd().clear();
@@ -230,8 +257,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Utils.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
 
             }
-
-
         } else if (v == tvQuestionlistAddNewQuestion) {
             ((AddQuestionFragment) mFragment).flipCard();
 
@@ -240,7 +265,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     }
 
     public void updateViewAfterDeleteInPreviewQuestion(Data data) {
-
         int position = listOfQuestionBank.indexOf(data);
         listOfQuestionBank.get(position).setIsQuestionAddedInPreview(false);
         questionBankListAdapter.addAll(listOfQuestionBank);

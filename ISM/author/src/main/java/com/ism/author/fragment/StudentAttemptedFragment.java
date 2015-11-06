@@ -14,6 +14,7 @@ import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.adapter.StudentAttemptedAdapter;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.Data;
 import com.ism.author.model.RequestObject;
@@ -25,12 +26,12 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 04/11/15.
  */
-public class StudentAttemptedFragment extends Fragment implements WebserviceWrapper.WebserviceResponse{
+public class StudentAttemptedFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
     private static final String TAG = StudentAttemptedFragment.class.getSimpleName();
     private View view;
     private FragmentListener fragListener;
     private RecyclerView rvList;
-    private ArrayList<Data> arrayList=new ArrayList<>();
+    private ArrayList<Data> arrayList = new ArrayList<>();
     private StudentAttemptedAdapter studentAttemptedAdapter;
 
     public static StudentAttemptedFragment newInstance() {
@@ -53,16 +54,16 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     private void initGlobal() {
 
-        rvList=(RecyclerView)view.findViewById(R.id.rv_list);
+        rvList = (RecyclerView) view.findViewById(R.id.rv_list);
         rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        RequestObject requestObject=new RequestObject();
+        RequestObject requestObject = new RequestObject();
         requestObject.setExamId("9");
         requestObject.setUserId("340");
         requestObject.setRole(3);
-       // Debug.i(TAG, "Request student attemted list : " ));
+        // Debug.i(TAG, "Request student attemted list : " ));
         ((AuthorHostActivity) getActivity()).startProgress();
         new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                .execute(WebserviceWrapper.GETEXAMSUBMISSION);
+                .execute(WebConstants.GETEXAMSUBMISSION);
 //        gvOfficetab = (GridView) view.findViewById(R.id.gv_officetab);
 //        officeTabGridAdapter = new OfficeTabGridAdapter(getActivity(), officeTabDataSet, this);
 //        gvOfficetab.setAdapter(officeTabGridAdapter);
@@ -113,23 +114,23 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
 
-        ResponseObject responseObject=(ResponseObject)object;
+        ResponseObject responseObject = (ResponseObject) object;
         Debug.i(TAG, "Response of student attempted  ::" + responseObject.getMessage());
         Debug.i(TAG, "Response of student attempted  ::" + responseObject.getStatus());
         Debug.i(TAG, "Response of student attempted  ::" + responseObject.getData().get(0).getExamID());
-        if(responseObject.getStatus().equals(ResponseObject.SUCCESS)){
-           // ((AuthorHostActivity)getActivity()).stopProgress();
-            if (responseObject.getData().size()!=0){
+        if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+            // ((AuthorHostActivity)getActivity()).stopProgress();
+            if (responseObject.getData().size() != 0) {
 
-              //  Debug.i(TAG, "Arraylist of student attempted  ::" + respon);
+                //  Debug.i(TAG, "Arraylist of student attempted  ::" + respon);
 
-                studentAttemptedAdapter=new StudentAttemptedAdapter(responseObject,getActivity(),this);
+                studentAttemptedAdapter = new StudentAttemptedAdapter(responseObject, getActivity(), this);
                 rvList.setAdapter(studentAttemptedAdapter);
                 rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
             }
 
-        }else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+        } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
             Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
         }
     }

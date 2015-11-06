@@ -21,6 +21,7 @@
     <string name="strclickhereu"><u>Click Here</u></string>
     <string name="title_activity_author_profile_information">AuthorProfileInformationActivity
     </string>
+    <string name="title_forgot_password">Password will be sent to your email id.</string>
 
 
     <!--Profile Info-->
@@ -141,6 +142,7 @@
     <string name="strexamtype">Exam Type</string>
     <string name="strexamtype_colon">Exam Type :</string>
     <string name="strClass_colon">Class :</string>
+    <string name="processing">Processing</string>
 
     <string name="strexammode">Exam Mode</string>
     <string name="strexamduration">Exam Duration(MIN)</string>

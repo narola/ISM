@@ -2,6 +2,7 @@ package com.ism.author.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,7 @@ import com.ism.author.interfaces.FragmentListener;
  */
 
 
-//FragmentManager.OnBackStackChangedListener
-public class AddQuestionFragment extends Fragment {
+public class AddQuestionFragment extends Fragment implements FragmentManager.OnBackStackChangedListener {
 
     private static final String TAG = AddQuestionFragment.class.getSimpleName();
     private View view;
@@ -118,16 +118,9 @@ public class AddQuestionFragment extends Fragment {
 
     }
 
-//    @Override
-//    public void onBackStackChanged() {
-//
-//    }
-
-
     private void loadFragmentInRightContainer() {
         try {
             getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, previewQuestionFragment).commit();
-
         } catch (Exception e) {
             Debug.e(TAG, "loadFragment Exception : " + e.toString());
 
@@ -136,4 +129,8 @@ public class AddQuestionFragment extends Fragment {
     }
 
 
+    @Override
+    public void onBackStackChanged() {
+        getFragmentManager().popBackStack();
+    }
 }

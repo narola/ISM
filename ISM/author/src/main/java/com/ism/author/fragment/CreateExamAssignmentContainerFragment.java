@@ -19,21 +19,21 @@ import com.ism.author.interfaces.FragmentListener;
 /**
  * Created by c166 on 28/10/15.
  */
-public class TrialAddNewFragment extends Fragment {
+public class CreateExamAssignmentContainerFragment extends Fragment {
 
 
-    private static final String TAG = TrialAddNewFragment.class.getSimpleName();
+    private static final String TAG = CreateExamAssignmentContainerFragment.class.getSimpleName();
     private View view;
     private FragmentListener fragListener;
     private MyTypeFace myTypeFace;
 
 
-    public static TrialAddNewFragment newInstance() {
-        TrialAddNewFragment fragTrial = new TrialAddNewFragment();
+    public static CreateExamAssignmentContainerFragment newInstance() {
+        CreateExamAssignmentContainerFragment fragTrial = new CreateExamAssignmentContainerFragment();
         return fragTrial;
     }
 
-    public TrialAddNewFragment() {
+    public CreateExamAssignmentContainerFragment() {
         // Required empty public constructor
     }
 
@@ -50,7 +50,7 @@ public class TrialAddNewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_trial_add_new, container, false);
+        view = inflater.inflate(R.layout.fragment_container_create_exam_assignment, container, false);
         initGlobal();
         return view;
 
@@ -132,10 +132,10 @@ public class TrialAddNewFragment extends Fragment {
         try {
             switch (fragment) {
                 case FRAGMENT_TRIAL_ACTIVITY:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, TrialActivityFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateAssignmentFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_TRIAL_EXAM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, TrialExamFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateExamFragment.newInstance()).commit();
                     break;
 
             }

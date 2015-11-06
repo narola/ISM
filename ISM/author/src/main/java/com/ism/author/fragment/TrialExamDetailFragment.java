@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.InputValidator;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.ws.WebserviceWrapper;
@@ -18,7 +19,7 @@ import com.ism.author.ws.WebserviceWrapper;
 /**
  * Created by c162 on 04/11/15.
  */
-public class TrialExamDetailFragment  extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class TrialExamDetailFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 
     private static final String TAG = TrialExamDetailFragment.class.getSimpleName();
@@ -51,7 +52,7 @@ public class TrialExamDetailFragment  extends Fragment implements WebserviceWrap
         myTypeFace = new MyTypeFace(getActivity());
         inputValidator = new InputValidator(getActivity());
 
-        ((AuthorHostActivity)getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
+        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
 
 
     }
@@ -99,13 +100,11 @@ public class TrialExamDetailFragment  extends Fragment implements WebserviceWrap
 //    }
 
 
-
-
     @Override
     public void onResponse(int apiMethodName, Object object, Exception error) {
 
         try {
-            if (apiMethodName == WebserviceWrapper.GETCLASSROOMS) {
+            if (apiMethodName == WebConstants.GETCLASSROOMS) {
 //
 //                ResponseObject callGetClassRoomsResponseObject = (ResponseObject) object;
 //                if (callGetClassRoomsResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetClassRoomsResponseObject != null) {
