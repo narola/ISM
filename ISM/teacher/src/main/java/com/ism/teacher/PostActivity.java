@@ -32,6 +32,7 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.adapters.PostFileAdapter;
 import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.CircularSeekBar;
 import com.ism.teacher.helper.HorizontalListView;
 import com.ism.teacher.model.PostFileModel;
@@ -309,7 +310,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 requestObject.setVideoThumbnail(strThumbnailBase64);
                 requestObject.setFeedText(etSayIt.getText().toString().trim());
                 new WebserviceWrapper(PostActivity.this, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.POSTFEED);
+                        .execute(WebConstants.POSTFEED);
 
             }
         } catch (Exception e) {

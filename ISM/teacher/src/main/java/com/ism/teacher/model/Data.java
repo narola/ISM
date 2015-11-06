@@ -11,6 +11,26 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Data {
 
+    //CityResponse
+    private String cityName;
+    private String stateName;
+    private String countryName;
+
+
+    //credential
+    private String credentialId;
+    private String schoolName;
+    private String courseId;
+    private String courseName;
+    private String roleId;
+    private String schoolId;
+    private String schoolDistrict;
+    private String academicYear;
+    private String schoolType;
+    private String classId;
+    private String className;
+
+
 
     //Login Response
     private String course_name;
@@ -49,16 +69,10 @@ public class Data {
     private String course_id;
 
     /*for the getSubjects*/
-    @JsonProperty("subject_id")
+
     private String subject_id;
 
-    public String getSubject_id() {
-        return subject_id;
-    }
 
-    public void setSubject_id(String subject_id) {
-        this.subject_id = subject_id;
-    }
 
     private String subject_image;
     private String subject_name;
@@ -86,6 +100,123 @@ public class Data {
     private String questionCreatorName;
 
 
+    //login response
+    @JsonProperty("credential_id")
+    public String getCredentialId() {
+        return credentialId;
+    }
+
+    public void setCredentialId(String credentialId) {
+        this.credentialId = credentialId;
+    }
+    @JsonProperty("school_name")
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+    @JsonProperty("course_id")
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    @JsonProperty("course_name")
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    @JsonProperty("role_id")
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    @JsonProperty("school_id")
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    @JsonProperty("district_name")
+    public String getSchoolDistrict() {
+        return schoolDistrict;
+    }
+
+    public void setSchoolDistrict(String schoolDestrict) {
+        this.schoolDistrict = schoolDestrict;
+    }
+    @JsonProperty("academic_year")
+    public String getAcademicYear() {
+        return academicYear;
+    }
+
+    public void setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
+    }
+
+    @JsonProperty("school_type")
+    public String getSchoolType() {
+        return schoolType;
+    }
+
+    public void setSchoolType(String schoolType) {
+        this.schoolType = schoolType;
+    }
+
+    @JsonProperty("class_id")
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
+    }
+
+
+    //request credentials
+    @JsonProperty("city_name")
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    @JsonProperty("state_name")
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    @JsonProperty("country_name")
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
 
     @JsonProperty("class_name")
     public String getClass_name() {
@@ -105,14 +236,6 @@ public class Data {
         this.class_nickname = class_nickname;
     }
 
-    @JsonProperty("course_id")
-    public String getCourse_id() {
-        return course_id;
-    }
-
-    public void setCourse_id(String course_id) {
-        this.course_id = course_id;
-    }
 
     @JsonProperty("subject_image")
     public String getSubject_image() {
@@ -321,16 +444,6 @@ public class Data {
     }
 
 
-    @JsonProperty("course_name")
-    public String getCourse_name() {
-        return course_name;
-    }
-
-    public void setCourse_name(String course_name) {
-        this.course_name = course_name;
-    }
-
-
 
     /*these are for the get questionbank*/
 
@@ -482,5 +595,15 @@ public class Data {
 
     public void setExam_id(String exam_id) {
         this.exam_id = exam_id;
+    }
+
+
+    @JsonProperty("subject_id")
+    public String getSubject_id() {
+        return subject_id;
+    }
+
+    public void setSubject_id(String subject_id) {
+        this.subject_id = subject_id;
     }
 }

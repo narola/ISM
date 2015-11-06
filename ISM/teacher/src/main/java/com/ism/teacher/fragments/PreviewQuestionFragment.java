@@ -15,6 +15,7 @@ import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.adapters.PreviewQuestionListAdapter;
 import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
 import com.ism.teacher.model.RequestObject;
@@ -105,7 +106,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.SET_QUESTIONS_FOR_EXAM);
+                        .execute(WebConstants.SET_QUESTIONS_FOR_EXAM);
             } catch (Exception e) {
                 // Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -130,7 +131,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     @Override
     public void onResponse(int apiMethodName, Object object, Exception error) {
         try {
-            if (apiMethodName == WebserviceWrapper.SET_QUESTIONS_FOR_EXAM) {
+            if (apiMethodName == WebConstants.SET_QUESTIONS_FOR_EXAM) {
 
                 ResponseObject callGetFreezeQuesytionResponseObject = (ResponseObject) object;
                 if (callGetFreezeQuesytionResponseObject != null && callGetFreezeQuesytionResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS)) {

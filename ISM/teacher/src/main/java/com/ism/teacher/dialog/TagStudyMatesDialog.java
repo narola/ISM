@@ -16,8 +16,6 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.adapters.TagStudyMatesAdapter;
-import com.ism.teacher.constants.AppConstant;
-import com.ism.teacher.fragments.TeacherHomeFragment;
 import com.ism.teacher.model.Data;
 
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ public class TagStudyMatesDialog extends Dialog implements View.OnClickListener 
     EditText etSearchStudymates;
     Fragment fragment;
 
-    public TagStudyMatesDialog(Context mContext, ArrayList<Data> studymatesList, Fragment fragment) {
+ /*   public TagStudyMatesDialog(Context mContext, ArrayList<Data> studymatesList, Fragment fragment) {
         super(mContext);
 
         this.mContext = mContext;
@@ -56,7 +54,36 @@ public class TagStudyMatesDialog extends Dialog implements View.OnClickListener 
 
         initializeDialog();
 
+    }*/
+
+    private TagStudyMatesListener tagStudyMatesListener;
+
+
+    public interface TagStudyMatesListener {
+        public void tagStudyMates(String[] arrTagUser);
     }
+
+    public TagStudyMatesDialog(Context context, ArrayList<Data> studymatesList, TagStudyMatesListener tagStudyMatesListener) {
+        super(context);
+
+        this.mContext = context;
+        this.studymatesList = studymatesList;
+        this.tagStudyMatesListener = tagStudyMatesListener;
+
+        Window w = getWindow();
+        getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        w.setBackgroundDrawableResource(android.R.color.transparent);
+
+        setContentView(R.layout.dialog_search_studymates_teacher);
+
+        w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        w.setBackgroundDrawableResource(android.R.color.transparent);
+
+        initializeDialog();
+    }
+
 
     private void initializeDialog() {
 
@@ -100,8 +127,7 @@ public class TagStudyMatesDialog extends Dialog implements View.OnClickListener 
         } else if (v == tvDialogTag) {
             String[] tagUserArray = tagStudyMatesAdapter.getTagIds().toArray(new String[tagStudyMatesAdapter.getTagIds().size()]);
             if (tagUserArray.length > 0) {
-                ((TeacherHomeFragment) fragment).tagFriendInFeedRequest.setUser_id(AppConstant.tagUserArray);
-                ((TeacherHomeFragment) fragment).callTagFriendInFeed();
+                tagStudyMatesListener.tagStudyMates(tagUserArray);
                 dismiss();
             } else {
                 Utils.showToast("Please Select Study mates to tag ", mContext);

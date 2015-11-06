@@ -17,6 +17,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Login-->
+    <dimen name="dialog_progress_margin">15dp</dimen>
+    <dimen name="app_button_corner_radius">5dp</dimen>
+
 
     <dimen name="d5sp">5sp</dimen>
     <dimen name="d10sp">10sp</dimen>

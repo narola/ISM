@@ -20,7 +20,7 @@ import com.ism.teacher.adapters.NoticeAdapter;
 import com.ism.teacher.helper.AccordionView;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.login.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHomeActivity;
 import com.ism.teacher.model.EventsModel;
 import com.ism.teacher.model.HighScoreModel;
 import com.ism.teacher.model.HighScoreStudentModel;
@@ -65,7 +65,7 @@ public class UpcomingEventsFragment extends Fragment {
         //NOTICE
         NoticeModel model;
 
-        //logic for allFeedsAdapter =>set  only two record for allFeedsAdapter if four or more record found then setvisibilty of VIEW ALL VISIBLE
+        //logic for postFeedsAdapter =>set  only two record for postFeedsAdapter if four or more record found then setvisibilty of VIEW ALL VISIBLE
         ArrayList<NoticeModel> arrayListNotice = new ArrayList<NoticeModel>();
         model = new NoticeModel("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years.");
         arrayListNotice.add(model);

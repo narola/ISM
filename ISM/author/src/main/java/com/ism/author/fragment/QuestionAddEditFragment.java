@@ -209,22 +209,20 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             imgAddMcqRow.setVisibility(View.GONE);
         }
 
-        imgRemoveMcqRow.setTag(position);
 
         imgAddMcqRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Utils.showToast("The position is" + position, getActivity());
 
-                if (position > 1) {
-                    imgAddMcqRow.setVisibility(View.GONE);
-                    imgRemoveMcqRow.setVisibility(View.VISIBLE);
-                } else {
+                if (position == 1) {
                     imgAddMcqRow.setVisibility(View.GONE);
                     imgRemoveMcqRow.setVisibility(View.GONE);
+                } else {
+                    imgAddMcqRow.setVisibility(View.GONE);
+                    imgRemoveMcqRow.setVisibility(View.VISIBLE);
                 }
-
-
                 llAddMcqanswer.addView(getMcqAnswerView(position + 1));
 
 
@@ -234,20 +232,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         imgRemoveMcqRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utils.showToast("The position is" + position, getActivity());
 
-
-                int pos = (Integer) imgRemoveMcqRow.getTag();
-
-                if (pos == 1) {
-
-                    View childView = llAddMcqanswer.getChildAt(pos);
-                    (childView.findViewById(R.id.img_add_mcq_row)).setVisibility(View.VISIBLE);
-
-                }
-
-                llAddMcqanswer.removeViewAt(pos - 1);
-
-
+                llAddMcqanswer.removeViewAt(position);
             }
         });
 

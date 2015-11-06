@@ -1,4 +1,4 @@
-package com.ism.teacher.login;
+package com.ism.teacher.activity;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -36,6 +36,7 @@ import java.util.ArrayList;
 /**
  * Created by c75 on 16/10/15.
  */
+
 public class TeacherHomeActivity extends Activity implements FragmentListener {
 
     private static final String TAG = TeacherHomeActivity.class.getSimpleName();

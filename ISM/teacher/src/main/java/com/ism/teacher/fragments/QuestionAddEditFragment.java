@@ -1,16 +1,13 @@
 package com.ism.teacher.fragments;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,7 +144,6 @@ public class QuestionAddEditFragment extends Fragment {
     }
 
     Uri selectedUri = null;
-    private String selectedImagePath;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -172,23 +168,16 @@ public class QuestionAddEditFragment extends Fragment {
             if (mimeType.startsWith("image")) {
                 img_add_pics.setImageURI(selectedUri);
                 Utils.showToast("Image", getActivity());
+
             } else if (mimeType.startsWith("video")) {
-//                MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
-//                mMediaMetadataRetriever.setDataSource(getActivity(), selectedUri);
-////                Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1* 1000);
-//                Log.e("uri path",selectedUri.toString());
 
-                String path = getRealPathFromURI(getActivity(), selectedUri);
-                Log.e("file path", path);
-
-//                Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND);
-
-                Bitmap icon = BitmapFactory.decodeResource(getActivity().getResources(),
-                        R.drawable.ic_remove_row);
-                Bitmap bitmap = ThumbnailUtils.extractThumbnail(icon,50,50);
+                MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+                mMediaMetadataRetriever.setDataSource(getActivity(), selectedUri);
+                Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
 
                 img_add_pics.setImageBitmap(bitmap);
                 img_play.setVisibility(View.VISIBLE);
+
             }
 
         }
@@ -196,20 +185,6 @@ public class QuestionAddEditFragment extends Fragment {
 
     }
 
-    public String getRealPathFromURI(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
 
 
     private View getMCQInflaterView(int row) {
