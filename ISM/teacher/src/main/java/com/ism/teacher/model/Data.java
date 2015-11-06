@@ -461,6 +461,8 @@ public class Data {
     }
 
 
+    //handling for previewquestions
+
     private Boolean isQuestionAddedInPreview = false;
 
     public Boolean getIsQuestionAddedInPreview() {
@@ -469,5 +471,16 @@ public class Data {
 
     public void setIsQuestionAddedInPreview(Boolean isQuestionAddedInPreview) {
         this.isQuestionAddedInPreview = isQuestionAddedInPreview;
+    }
+
+    private String exam_id;
+
+    @JsonProperty("exam_id")
+    public String getExam_id() {
+        return exam_id;
+    }
+
+    public void setExam_id(String exam_id) {
+        this.exam_id = exam_id;
     }
 }

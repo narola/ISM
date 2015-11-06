@@ -34,6 +34,7 @@ public class AppConstant {
     public static final String USERID = "USERID";
     public static final String PASSWORD = "PASSWORD";
     public static final String API_STATUS_SUCCESS = "success";
+    public static final String API_STATUS_FAIL = "fail";
 
     public static final String imageCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Images";
     public static final String videoCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
@@ -62,6 +63,8 @@ public class AppConstant {
     public static final String URL_GET_COURSES = URL_ARTI_HOST + "GetCourses";
     public static final String URL_CREATE_EXAM = URL_ARTI_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_ARTI_HOST + "GetQuestionBank";
+    public static final String URL_POSTFEED = URL_ARTI_HOST + "PostFeed";
+    public static final String URL_SET_QUESTIONS_FOR_EXAM= URL_ARTI_HOST + "SetQuestionsForExam";
 
 
    /* public static final String URL_LOGIN = URL_RAVI_HOST + "AuthenticateUser";
@@ -77,7 +80,8 @@ public class AppConstant {
     public static final String URL_CREATEASSIGNMENT = URL_RAVI_HOST + "CreateAssignment";
     public static final String URL_GET_COURSES = URL_RAVI_HOST + "GetCourses";
     public static final String URL_CREATE_EXAM = URL_RAVI_HOST + "CreateExam";
-    public static final String URL_GETQUESTIONBANK = URL_RAVI_HOST + "GetQuestionBank";*/
+    public static final String URL_GETQUESTIONBANK = URL_RAVI_HOST + "GetQuestionBank";
+    public static final String URL_POSTFEED = URL_RAVI_HOST + "PostFeed";*/
 
     public static final String TEST_USER_ID = "370";
     public static final String TEST_GET_ALL_FEEDS = "141";

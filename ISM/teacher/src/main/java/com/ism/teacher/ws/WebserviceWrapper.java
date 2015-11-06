@@ -26,14 +26,15 @@ public class WebserviceWrapper {
     public static final int GET_STUDYMATES = 4;
     public static final int TAG_FRIEND_IN_FEED = 5;
     public static final int LIKE_FEED = 6;
-
     public static final int GETCLASSROOMS = 7;
     public static final int GETSUBJECT = 8;
     public static final int GETTOPICS = 9;
     public static final int CREATEASSIGNMENT = 10;
     public static final int GETCOURSES = 11;
     public static final int CREATEEXAM = 12;
-    public static final int GETQUESTIONBANK = 14;
+    public static final int GETQUESTIONBANK = 13;
+    public static final int POSTFEED = 14;
+    public static final int SET_QUESTIONS_FOR_EXAM = 15;
 
 
     public interface WebserviceResponse {
@@ -123,6 +124,13 @@ public class WebserviceWrapper {
                         responseObject = new RequestWs().getRequest(AppConstant.URL_GETQUESTIONBANK, ResponseObject.class, requestObject);
                         break;
 
+                    case POSTFEED:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_POSTFEED, ResponseObject.class, requestObject);
+                        break;
+
+                    case SET_QUESTIONS_FOR_EXAM:
+                        responseObject = new RequestWs().getRequest(AppConstant.URL_SET_QUESTIONS_FOR_EXAM, ResponseObject.class, requestObject);
+                        break;
 
                 }
             } catch (Exception e) {

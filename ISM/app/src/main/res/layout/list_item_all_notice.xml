@@ -52,5 +52,5 @@
 		android:layout_below="@id/txt_notice_content"
 		android:layout_alignParentRight="true"
 		android:scaleType="centerInside"
-		android:src="@drawable/ic_view_more"/>
+		android:src="@drawable/ic_expand"/>
 </RelativeLayout>

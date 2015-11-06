@@ -1,10 +1,48 @@
 <resources>
     <string name="app_name">ISM Student</string>
 
-    <string name="classwall">Classwall</string>
-    <string name="lesson_notes">Lesson Notes</string>
-    <string name="assignment">Assignment</string>
-    <string name="exam">Exam</string>
+	<string-array name="list">
+		<item>1</item><item>1</item><item>1</item><item>1</item><item>1</item><item>1</item>
+	</string-array>
+
+	<string-array name="accordion_notice">
+		<item>NOTICE</item>
+		<item>HIGH SCORE</item>
+		<item>EVENTS</item>
+	</string-array>
+
+	<integer-array name="accordion_notice_visibility">
+		<item>0</item>
+		<item>0</item>
+		<item>0</item>
+	</integer-array>
+
+	<string-array name="accordion_sections">
+		<item>HIGH SCORE</item>
+		<item>STUDYMATES</item>
+		<item>SUGGESTED STUDYMATES</item>
+		<item>FIND MORE STUDYMATES</item>
+		<!--<item>Section E</item>-->
+	</string-array>
+
+	<integer-array name="accordion_visibility">
+		<item>0</item>
+		<item>0</item>
+		<item>0</item>
+		<item>0</item>
+		<!--<item>0</item>-->
+	</integer-array>
+
+	<string-array name="notice_sortby">
+		<item>Sort By</item>
+		<item>Date &amp; Time</item>
+		<item>Title</item>
+	</string-array>
+
+	<string name="classwall">Classwall</string>
+	<string name="lesson_notes">Lesson Notes</string>
+	<string name="assignment">Assignment</string>
+	<string name="exam">Exam</string>
 	<string name="ism_mock">ISM Mock</string>
 	<string name="wassce">Wassce</string>
 	<string name="end_of_term">End of Term</string>
@@ -16,7 +54,6 @@
 	<string name="progress_report">Progress Report</string>
 	<string name="add_notes">Add Notes</string>
 	<string name="add_new_favorite">Add new Favorite</string>
-
 	<string name="notes">Notes</string>
 	<string name="assignments">Assignments</string>
 	<string name="links">Links</string>
@@ -24,35 +61,7 @@
 	<string name="Authors">Authors</string>
 	<string name="add_question">Add Question</string>
 	<string name="add_book">Add Book</string>
-
-	<!--<string-array name="menu_classroom">
-	    <item>@string/classwall</item>
-	    <item>@string/lesson_notes</item>
-	    <item>@string/assignment</item>
-	    <item>@string/exam</item>
-    </string-array>-->
-
-    <!--<string-array name="menu_assessment">
-	    <item>@string/ism_mock</item>
-	    <item>@string/wassce</item>
-	    <item>@string/end_of_term</item>
-    </string-array>-->
-
-    <!--<string-array name="menu_desk">
-	    <item>@string/jotter</item>
-	    <item>@string/favorite</item>
-	    <item>@string/timetable</item>
-	    <item>@string/books</item>
-	    <item>@string/forum</item>
-    </string-array>-->
-
-
-
-
-	<!-- Arti -->
 	<string name="title_activity_login">LoginActivity</string>
-
-	<!--Login string-->
 	<string name="username">Enter Username</string>
 	<string name="password">Enter Password</string>
 	<string name="strrememberme">Remember Me</string>
@@ -60,8 +69,6 @@
 	<string name="strforgotpwd"><u>Forgot Password</u></string>
 	<string name="strdonothavecredentials">Do Not Have Credentials, </string>
 	<string name="strclickhereu"><u>Click Here</u></string>
-
-	<!--Profile Info-->
 	<string name="strprofileinformation">PROFILE INFORMATION</string>
 	<string name="stremailaddress">Email Address</string>
 	<string name="strgender">Gender</string>
@@ -74,7 +81,6 @@
 	<string name="strcontactnumber">Contact Number</string>
 	<string name="strage">Age</string>
 	<string name="struploadprofilepicture">UPLOAD PROFILE PICTURE</string>
-
 	<string name="strschoolinformation">SCHOOL INFORMATION</string>
 	<string name="stryouareregisteredforfollowingschool">You are registered for following school.</string>
 	<string name="strifitisnotyourschool">If it\'s not your school.</string>
@@ -84,7 +90,6 @@
 	<string name="strdistrictofschool">District of School</string>
 	<string name="strprogramcourse">Program/ Course</string>
 	<string name="strclickhere">Click Here</string>
-
 	<string name="strmanageaccount">MANAGE ACCOUNT</string>
 	<string name="strusername">Username</string>
 	<string name="strcurrentpwd">Current Password</string>
@@ -92,25 +97,10 @@
 	<string name="strconfirmpwd">Confirm Password</string>
 	<string name="strsubmit">Submit</string>
 	<string name="strcancel">Cancel</string>
-
-	<string-array name="list">
-		<item>1</item><item>1</item><item>1</item><item>1</item><item>1</item><item>1</item>
-	</string-array>
-
-
-	<!--welcome-->
 	<string name="welcome_msg">Your tutorial group being processed \n and will be available to you for confirmation </string>
-
-	<!--Tutorial group-->
 	<string name="striacceptedgroup">I ACCEPT GROUP</string>
-
-
-	<!--raw for post-->
 	<string name="strwriteyourcommenthere">Write Your Comment Here</string>
 	<string name="strsentence">Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?Lorem ipsum dolor sit amet.consectectur adipisicing elit. perspiciatis praesentium quaerat repudiandae soluta? Cum doloribus esses et eum facilis impedit officiis omnis optio. placeat, quia quo reprehenderit sunt velit?</string>
-
-
-	<!-- Krunal -->
 	<string name="group_name">"Group Name : "</string>
 	<string name="monday">Monday</string>
 	<string name="tuesday">Tuesday</string>
@@ -127,43 +117,6 @@
 	<string name="start_test">Start test</string>
 
 
-	<!--Arti-->
-	<!--right menu=> notice-->
-	<string-array name="accordion_notice">
-		<item>NOTICE</item>
-		<item>HIGH SCORE</item>
-		<item>EVENTS</item>
-	</string-array>
-
-	<integer-array name="accordion_notice_visibility">
-		<item>0</item>
-		<item>0</item>
-		<item>0</item>
-	</integer-array>
-	<string-array name="accordion_sections">
-
-		<item>HIGH SCORE</item>
-		<item>STUDYMATES</item>
-		<item>SUGGESTED STUDYMATES</item>
-		<item>FIND MORE STUDYMATES</item>
-		<!--<item>Section E</item>-->
-	</string-array>
-
-	<integer-array name="accordion_visibility">
-		<item>0</item>
-		<item>0</item>
-		<item>0</item>
-		<item>0</item>
-		<!--<item>0</item>-->
-	</integer-array>
-
-	<!--Create post-->
-<string name="strpost">Post</string>
-	<string name="strcreatepost">Create Post</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-	<string name="hello_blank_fragment">Hello blank fragment</string>
-	<string name="strviewall">7</string>
 
 	<!--Validation error message strings-->
 	<string name="required">Required!</string>
@@ -174,10 +127,14 @@
 	<string name="invalid_url">Invalid url!</string>
 	<string name="password_sent">Password successfully sent to your email id.</string>
 	<string name="email_not_found">Email id not found!</string>
+
+	<string name="strpost">Post</string>
+	<string name="strcreatepost">Create Post</string>
+	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="strviewall">7</string>
 	<string name="last_name">Last Name</string>
 	<string name="first_name">First Name</string>
 	<string name="android">Android</string>
-
 	<string name="gotrending">Go Trending</string>
 	<string name="setquiz">Set Quiz</string>
 	<string name="settrial">Set Trial</string>
@@ -205,11 +162,12 @@
 	<string name="view_all">View All</string>
 	<string name="comment">Comment</string>
 	<string name="msg_failed_comment">Failed to post comment!, please try again.</string>
-
 	<string name="strsearchstudymatess">Search Study Mates</string>
 	<string name="title_forgot_password">Password will be sent to your email id.</string>
 	<string name="processing">Processing</string>
 	<string name="done">Done</string>
 	<string name="strclose">Close</string>
 	<string name="strcomments">Comments</string>
+	<string name="read_more">Read more</string>
+	<string name="add_post">Add Post</string>
 </resources>

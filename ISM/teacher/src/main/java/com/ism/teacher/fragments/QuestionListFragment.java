@@ -28,7 +28,6 @@ import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.ws.WebserviceWrapper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -104,10 +103,14 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
 
         arrListExamType = new ArrayList<String>();
-        arrListExamType.add(getString(R.string.strexamtype));
-        arrListExamType = Arrays.asList(getResources().getStringArray(R.array.examtype));
+//        arrListExamType.add(getString(R.string.strexamtype));
+//        arrListExamType = Arrays.asList(getResources().getStringArray(R.array.examtype));
 
-//        Adapters.setUpSpinner(getActivity(), spQuestionlistExamType, arrListExamType, Adapters.ADAPTER_SMALL);
+        //tets for filter
+
+        arrListExamType.add(getString(R.string.strtopic));
+
+        Adapters.setUpSpinner(getActivity(), spQuestionlistExamType, arrListExamType, Adapters.ADAPTER_SMALL);
         Adapters.setUpSpinner(getActivity(), spQuestionlistCourse, arrListExamType, Adapters.ADAPTER_SMALL);
         Adapters.setUpSpinner(getActivity(), spQuestionlistSubject, arrListExamType, Adapters.ADAPTER_SMALL);
 

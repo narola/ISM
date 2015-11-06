@@ -276,4 +276,10 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/rl_controller_top"
         android:background="@android:color/darker_gray"></FrameLayout>
+
+	<com.ism.commonsource.view.ActionProcessButton
+		android:id="@+id/prog_host"
+		android:layout_width="match_parent"
+		android:layout_height="5dp"
+		android:visibility="invisible"/>
 </RelativeLayout>

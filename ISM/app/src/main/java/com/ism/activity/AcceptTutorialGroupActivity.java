@@ -13,6 +13,8 @@ import com.ism.R;
 import com.ism.adapter.TutorialGroupAdapter;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
+import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.views.CircleImageView;
 import com.ism.ws.RequestObject;
 import com.ism.ws.ResponseObject;
@@ -68,11 +70,11 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 	    imageLoader = ImageLoader.getInstance();
 	    imageLoader.init(ImageLoaderConfiguration.createDefault(AcceptTutorialGroupActivity.this));
 
-	    Global.profilePic = AppConstant.URL_IMAGE_PATH + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AcceptTutorialGroupActivity.this);
+	    Global.strProfilePic = WebConstants.URL_IMAGE_PATH + PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, AcceptTutorialGroupActivity.this);
 
-	    Global.profilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
+	    Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
 
-	    imageLoader.displayImage(Global.profilePic, imgUserDp, ISMStudent.options);
+	    imageLoader.displayImage(Global.strProfilePic, imgUserDp, ISMStudent.options);
 	    txtUserName.setText(PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, AcceptTutorialGroupActivity.this));
 	    txtUserSchoolName.setText(PreferenceData.getStringPrefs(PreferenceData.USER_SCHOOL_NAME, AcceptTutorialGroupActivity.this));
 	    txtUserYearAndCourse.setText(PreferenceData.getStringPrefs(PreferenceData.USER_CLASS_NAME, AcceptTutorialGroupActivity.this)
@@ -104,7 +106,7 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 			requestObject.setJoiningStatus("1");
 
 			new WebserviceWrapper(AcceptTutorialGroupActivity.this, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.ACCEPT_TUTORIAL_GROUP);
+					.execute(WebConstants.ACCEPT_TUTORIAL_GROUP);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiAcceptTutorialGroup Exception : " + e.toString());
 		}
@@ -114,7 +116,7 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 	public void onResponse(Object object, Exception error, int apiCode) {
 		try {
 			switch (apiCode) {
-				case WebserviceWrapper.ACCEPT_TUTORIAL_GROUP:
+				case WebConstants.ACCEPT_TUTORIAL_GROUP:
 					onResponseAcceptTutorialGroup(object, error);
 					break;
 			}

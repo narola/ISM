@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/d10dp">
+    android:padding="@dimen/d10dp"
+   >
 
     <ImageView
         android:id="@+id/radio"
@@ -15,30 +16,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/d10dp"
-        android:layout_toLeftOf="@+id/img_add_row"
-        android:layout_toRightOf="@+id/radio"
         android:background="@drawable/bg_news_feed"
-        android:minLines="2" />
+        android:minLines="2"
+        android:layout_toLeftOf="@+id/img_add_row"
+        android:layout_toRightOf="@+id/radio"/>
 
     <ImageView
         android:id="@+id/img_add_row"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_toLeftOf="@+id/img_remove_row"
         android:background="@drawable/ic_add_row"
+        android:layout_marginLeft="5dp"
         android:padding="5dp"
         android:visibility="invisible"
+        android:layout_toLeftOf="@+id/img_remove_row"
 
         />
-
     <ImageView
         android:id="@+id/img_remove_row"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/ic_remove"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/ic_remove"
         android:padding="5dp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        />
 </RelativeLayout>
