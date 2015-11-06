@@ -13,7 +13,7 @@
 
         <ImageView
             android:id="@+id/img_logo"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/controller_left_width"
             android:layout_height="match_parent"
             android:background="@drawable/bg_right_controller_top_button"
             android:scaleType="centerInside"

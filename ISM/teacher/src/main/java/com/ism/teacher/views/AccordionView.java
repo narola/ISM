@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2011, 2012 Sentaca Communications Ltd.
  */
-package com.ism.teacher.helper;
+package com.ism.teacher.views;
 
 
 import android.content.Context;

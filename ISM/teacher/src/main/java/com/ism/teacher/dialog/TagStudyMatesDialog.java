@@ -1,7 +1,6 @@
 package com.ism.teacher.dialog;
 
 import android.app.Dialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.TagStudyMatesAdapter;
 import com.ism.teacher.model.Data;
 
@@ -32,30 +31,8 @@ public class TagStudyMatesDialog extends Dialog implements View.OnClickListener 
     TextView tvDialogClose, tvDialogTag;
     ArrayList<Data> studymatesList;
     EditText etSearchStudymates;
-    Fragment fragment;
 
- /*   public TagStudyMatesDialog(Context mContext, ArrayList<Data> studymatesList, Fragment fragment) {
-        super(mContext);
-
-        this.mContext = mContext;
-        this.studymatesList = studymatesList;
-        this.fragment = fragment;
-
-        Window w = getWindow();
-        getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        w.setBackgroundDrawableResource(android.R.color.transparent);
-
-        setContentView(R.layout.dialog_search_studymates_teacher);
-
-        w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        w.setBackgroundDrawableResource(android.R.color.transparent);
-
-        initializeDialog();
-
-    }*/
-
+    //listener called from post feeds
     private TagStudyMatesListener tagStudyMatesListener;
 
 
@@ -130,7 +107,7 @@ public class TagStudyMatesDialog extends Dialog implements View.OnClickListener 
                 tagStudyMatesListener.tagStudyMates(tagUserArray);
                 dismiss();
             } else {
-                Utils.showToast("Please Select Study mates to tag ", mContext);
+                Utility.showToast("Please Select Study mates to tag ", mContext);
             }
         }
 

@@ -7,7 +7,7 @@
    >
 
 
-    <com.ism.teacher.helper.AccordionView
+    <com.ism.teacher.views.AccordionView
         android:id="@+id/accordion_view_chat"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -62,7 +62,7 @@
             android:padding="@dimen/d5dp" />
 
 
-    </com.ism.teacher.helper.AccordionView>
+    </com.ism.teacher.views.AccordionView>
 
 
 </RelativeLayout>

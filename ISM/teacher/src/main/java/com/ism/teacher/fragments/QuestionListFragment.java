@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
-import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.QuestionBankListAdapter;
 import com.ism.teacher.constants.AppConstant;
@@ -69,7 +69,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_questionlist_teacher, container, false);
-        Utils.showToast("THE QUESTION LIST FRAGMENT CALLED", getActivity());
+        Utility.showToast("THE QUESTION LIST FRAGMENT CALLED", getActivity());
         initGlobal();
         return view;
     }
@@ -208,7 +208,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void callApiGetTopics(int subject_id) {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 RequestObject getTopicsRequest = new RequestObject();
                 getTopicsRequest.setSubjectId(subject_id);
@@ -218,14 +218,14 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
 
     private void callApiGetSubjects() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
@@ -233,14 +233,14 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.no_internet), getActivity());
+            Utility.showToast(getString(R.string.no_internet), getActivity());
         }
 
     }
 
     private void callApiGetCourses() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCOURSES);
@@ -248,7 +248,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.no_internet), getActivity());
+            Utility.showToast(getString(R.string.no_internet), getActivity());
         }
 
     }
@@ -257,7 +257,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void callApiGetQuestionBank() {
 
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 RequestObject request = new RequestObject();
                 request.setUserId("370");
@@ -268,7 +268,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.showToast(getString(R.string.strnetissue), getActivity());
         }
 
     }
@@ -319,7 +319,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             Adapters.setUpSpinner(getActivity(), spQuestionlistCourse, courses, Adapters.ADAPTER_SMALL);
         } else {
 
-            Utils.showToast(callGetCoursesResponseObject.getMessage(), getActivity());
+            Utility.showToast(callGetCoursesResponseObject.getMessage(), getActivity());
         }
     }
 
@@ -334,7 +334,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             Log.e("list_size_after_api", "" + listOfQuestionBank.size());
 
         } else {
-            Utils.showToast(getQuestionBankResponseObject.getMessage(), getActivity());
+            Utility.showToast(getQuestionBankResponseObject.getMessage(), getActivity());
         }
 
     }
@@ -369,7 +369,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             Adapters.setUpSpinner(getActivity(), spQuestionlistSubject, subjects, Adapters.ADAPTER_SMALL);
 
         } else {
-            Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
+            Utility.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
         }
     }
 
@@ -384,13 +384,13 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 questionBankListAdapter.getListOfPreviewQuestionsToAdd().clear();
 
             } else {
-                Utils.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
+                Utility.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
 
             }
 
 
         } else if (v == tvQuestionlistAddNewQuestion) {
-            ((AddQuestionFragmentTeacher) mFragment).flipCard();
+            ((AddQuestionFragmentTeacher) mFragment).flipCard(null);
 
         }
 

@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ism.teacher.R;
-import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.activity.TeacherHomeActivity;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.activity.TeacherHomeActivity;
 
 /**
  * Created by c161 on --/10/15.
@@ -163,10 +163,10 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
                     break;
                 case FRAGMENT_NOTES:
                     //getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherNoteHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_NOTES).commit();
-                    Utils.showToast("teacher notes test", getActivity());
+                    Utility.showToast("teacher notes test", getActivity());
                     break;
                 case FRAGMENT_QUIZ:
-                    Utils.showToast("teacher quiz", getActivity());
+                    Utility.showToast("teacher quiz", getActivity());
                     getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AssignmentAddNewFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_MARK_SCRIPT:

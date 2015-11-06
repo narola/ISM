@@ -17,7 +17,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.adapters.EventsAdapter;
 import com.ism.teacher.adapters.HighScoreAdapter;
 import com.ism.teacher.adapters.NoticeAdapter;
-import com.ism.teacher.helper.AccordionView;
+import com.ism.teacher.views.AccordionView;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.activity.TeacherHomeActivity;

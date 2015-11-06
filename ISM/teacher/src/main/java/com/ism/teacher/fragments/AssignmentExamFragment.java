@@ -22,7 +22,6 @@ import android.widget.ToggleButton;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.activity.TeacherHomeActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.AppConstant;
@@ -219,7 +218,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    examStartDate = Utils.showDatePickerDob(getActivity(), et_exam_startdate);
+                    examStartDate = Utility.showDatePickerDob(getActivity(), et_exam_startdate);
                 }
                 return true;
             }
@@ -229,7 +228,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    examEndDate = Utils.showDatePickerDob(getActivity(), et_exam_enddate);
+                    examEndDate = Utility.showDatePickerDob(getActivity(), et_exam_enddate);
                 }
                 return true;
             }
@@ -358,7 +357,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     private void callApiGetClassRooms() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCLASSROOMS);
@@ -366,14 +365,14 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
 
     private void callApiGetSubjects() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
@@ -381,7 +380,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
@@ -389,7 +388,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     private void callApiGetTopics(int subject_id) {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 RequestObject getTopicsRequest = new RequestObject();
                 getTopicsRequest.setSubjectId(subject_id);
@@ -399,7 +398,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
@@ -408,7 +407,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     private void callApiCreateExam() {
 
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 CreateExamRequest createExamRequest = new CreateExamRequest();
 
@@ -429,8 +428,8 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 createExamRequest.setRandom_question(getRadioGropuSelection(radio_exam_random_question));
 
 //                createExamRequest.setExam_start_date(et_exam_startdate.getText().toString());
-                createExamRequest.setExam_start_date(Utils.getDateInApiFormat(et_exam_startdate.getText().toString()));
-                Log.e("date", "" + Utils.getDateInApiFormat(et_exam_startdate.getText().toString()));
+                createExamRequest.setExam_start_date(Utility.getDateInApiFormat(et_exam_startdate.getText().toString()));
+                Log.e("date", "" + Utility.getDateInApiFormat(et_exam_startdate.getText().toString()));
 
                 createExamRequest.setExam_start_time("5:00:00");
                 createExamRequest.setUser_id("370");
@@ -448,7 +447,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 Log.e(TAG, e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
@@ -650,7 +649,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             callApiGetSubjects();
 
         } else {
-            Utils.showToast(callGetClassRoomsResponse.getMessage(), getActivity());
+            Utility.showToast(callGetClassRoomsResponse.getMessage(), getActivity());
         }
     }
 
@@ -670,7 +669,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             Adapters.setUpSpinner(getActivity(), sp_exam_subjectname, subjects);
 
         } else {
-            Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
+            Utility.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
         }
     }
 
@@ -689,7 +688,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, topics);
         } else {
             Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, arrListDefalt);
-            Utils.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
+            Utility.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
         }
     }
 
@@ -699,13 +698,13 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         if (callCreateExamResponse.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callCreateExamResponse != null) {
 
             //exam_id = callCreateExamResponse.getData().get(0).getExam_id();
-            Utils.showToast("Exam Created Successfully", getActivity());
+            Utility.showToast("Exam Created Successfully", getActivity());
             btn_exam_setquestion.setVisibility(View.VISIBLE);
 
 
         } else {
 
-            Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
+            Utility.showToast(callCreateExamResponse.getMessage(), getActivity());
         }
     }
 
