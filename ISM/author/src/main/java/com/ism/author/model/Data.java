@@ -87,6 +87,10 @@ public class Data {
 
     private boolean isFlagged;
     private String studentResponse;
+    private String examDate;
+    private String examName;
+    private String bookName;
+    private String examMode;
 
     /*these methods are for login response*/
 
@@ -645,6 +649,7 @@ public class Data {
     public void setIsFlagged(boolean isFlagged) {
         this.isFlagged = isFlagged;
     }
+
     @JsonProperty("student_id")
     public String getStudentId() {
         return studentId;
@@ -718,4 +723,47 @@ public class Data {
         this.cityName = cityName;
     }
 
+    @JsonProperty("book_name")
+    public String getBookName() {
+        return bookName;
+    }
+
+//    @JsonProperty("created_date")
+//    public String getExamDate() {
+//        return examDate;
+//    }
+//
+//    public void setExamDate(String examDate) {
+//        this.examDate = examDate;
+//    }
+
+    public void setExamName(String examName) {
+        this.examName = examName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
+
+    @JsonProperty("exam_name")
+    public String getExamName() {
+        return examName;
+    }
+
+    public String getExamDate() {
+        return examDate;
+    }
+
+    public void setExamDate(String examDate) {
+        this.examDate = examDate;
+    }
+
+    public void setExamMode(String examMode) {
+        this.examMode = examMode;
+    }
+
+    @JsonProperty("exam_mode")
+    public String getExamMode() {
+        return examMode;
+    }
 }

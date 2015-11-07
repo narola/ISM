@@ -22,24 +22,24 @@ import com.ism.author.ws.WebserviceWrapper;
 /**
  * Created by c162 on 04/11/15.
  */
-public class TrialExamDetailFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class TrialExamObjectiveDetailFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 
-    private static final String TAG = TrialExamDetailFragment.class.getSimpleName();
+    private static final String TAG = TrialExamObjectiveDetailFragment.class.getSimpleName();
     private View view;
     private FragmentListener fragListener;
     private MyTypeFace myTypeFace;
     private InputValidator inputValidator;
     public static RecyclerView rvList;
-    TextView txtExamType, txtBookNameValue, txtBookName, txtClassName, txtClass, txtEamName, txtEamTypeName, txtExamDateValue, txtExamName, txtExamDate;
+    public static TextView txtExamType, txtBookNameValue,txtExamTypeName, txtBookName, txtClassName, txtClass, txtEamName, txtEamTypeName, txtExamDateValue, txtExamName, txtExamDate;
     ImageView imgCopy,imgEdit;
 
-    public static TrialExamDetailFragment newInstance() {
-        TrialExamDetailFragment trialExamDetailFragment = new TrialExamDetailFragment();
-        return trialExamDetailFragment;
+    public static TrialExamObjectiveDetailFragment newInstance() {
+        TrialExamObjectiveDetailFragment trialExamObjectiveDetailFragment = new TrialExamObjectiveDetailFragment();
+        return trialExamObjectiveDetailFragment;
     }
 
-    public TrialExamDetailFragment() {
+    public TrialExamObjectiveDetailFragment() {
         // Required empty public constructor
     }
 
@@ -62,7 +62,7 @@ public class TrialExamDetailFragment extends Fragment implements WebserviceWrapp
         txtExamName = (TextView) view.findViewById(R.id.txt_exam_name);
         imgCopy = (ImageView) view.findViewById(R.id.img_copy);
         imgEdit = (ImageView) view.findViewById(R.id.img_edit);
-        txtExamName = (TextView) view.findViewById(R.id.txt_exam_name);
+        txtExamTypeName = (TextView) view.findViewById(R.id.txt_exam_type_name);
 
         txtExamDate = (TextView) view.findViewById(R.id.txt_exam_date);
         txtExamDateValue = (TextView) view.findViewById(R.id.txt_exam_date_value);
@@ -80,8 +80,9 @@ public class TrialExamDetailFragment extends Fragment implements WebserviceWrapp
         txtExamDateValue.setTypeface(myTypeFace.getRalewayRegular());
         txtExamDate.setTypeface(myTypeFace.getRalewayRegular());
         txtBookName.setTypeface(myTypeFace.getRalewayRegular());
+        txtBookNameValue.setTypeface(myTypeFace.getRalewayRegular());
+        txtExamTypeName.setTypeface(myTypeFace.getRalewayRegular());
         txtEamTypeName.setTypeface(myTypeFace.getRalewayRegular());
-
         ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
     }
 
@@ -92,7 +93,7 @@ public class TrialExamDetailFragment extends Fragment implements WebserviceWrapp
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
             }
         } catch (ClassCastException e) {
             Log.i(TAG, "onAttach Exception : " + e.toString());
@@ -104,7 +105,7 @@ public class TrialExamDetailFragment extends Fragment implements WebserviceWrapp
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
             }
         } catch (ClassCastException e) {
             Log.i(TAG, "onDetach Exception : " + e.toString());

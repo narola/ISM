@@ -105,9 +105,9 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 //                currentFragment = fragment;
 //                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
 //                break;
-//            case FRAGMENT_TRIAL_EXAM_DETAILS:
+//            case FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS:
 //                currentFragment = fragment;
-//                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
+//                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
 //                break;
 //        }
     }
@@ -131,26 +131,32 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                         rvList.setAdapter(studentAttemptedAdapter);
                         rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
                         RequestObject requestObject = new RequestObject();
-                        requestObject.setExamId("9");
-                        requestObject.setStudentId("202");
+                        requestObject.setExamId("3");
+                        //requestObject.setStudentId("202");
                         ((AuthorHostActivity) getActivity()).startProgress();
-                        callApiGetExamEvaluations(requestObject);
+                        callapigetexamquestions(requestObject);
 
                     }
 
                 } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
                     Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
                 }
-            }else if (API_METHOD == WebConstants.GETEXAMQUESTIONS) {
+            } else if (API_METHOD == WebConstants.GETEXAMQUESTIONS) {
                 if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
-                    ((AuthorHostActivity)getActivity()).stopProgress();
+                    ((AuthorHostActivity) getActivity()).stopProgress();
                     if (responseObject.getData().size() != 0) {
-                        responseObjQuestions=responseObject;
-                       // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
+                        responseObjQuestions = responseObject;
+                        // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
 
-                        trialExamDetailsAdapter = new TrialExamDetailsAdapter(responseObjQuestions, getActivity(), this,null);
-                        TrialExamDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
-                        TrialExamDetailFragment.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        trialExamDetailsAdapter = new TrialExamDetailsAdapter(responseObjQuestions, getActivity(), this, null);
+                        TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
+                        TrialExamObjectiveDetailFragment.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        TrialExamObjectiveDetailFragment.txtBookNameValue.setText(responseObjQuestions.getData().get(0).getBookName());
+                        TrialExamObjectiveDetailFragment.txtExamTypeName.setText(responseObjQuestions.getData().get(0).getExam_type());
+                        TrialExamObjectiveDetailFragment.txtClassName.setText(responseObjQuestions.getData().get(0).getClassName());
+                        String examDate[] = responseObjQuestions.getData().get(0).getCreatedDate().split(" ");
+                        TrialExamObjectiveDetailFragment.txtExamDateValue.setText(examDate[0]);
+                        TrialExamObjectiveDetailFragment.txtExamName.setText(responseObjQuestions.getData().get(0).getExamName());
 
 
                     }
@@ -160,14 +166,13 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                 }
             }
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Debug.i(TAG, "Exceptions ::" + e.getLocalizedMessage());
         }
 
     }
 
-    private void callApiGetExamEvaluations(RequestObject requestObject) {
+    private void callapigetexamquestions(RequestObject requestObject) {
 
         if (Utils.isInternetConnected(getActivity())) {
             try {
@@ -175,7 +180,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
-                Log.i(TAG ,"callApiGetExamEvaluations ::"+ e.getLocalizedMessage());
+                Log.i(TAG, "callApi GETEXAMQUESTIONS ::" + e.getLocalizedMessage());
             }
         } else {
             Utils.showToast(getString(R.string.strnetissue), getActivity());

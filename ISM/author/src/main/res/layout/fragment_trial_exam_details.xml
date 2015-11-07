@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_highscore_subjectlist"
     android:orientation="vertical"
-    android:weightSum="10.5"
-    tools:context="com.ism.author.fragment.TrialExamDetailFragment">
+    android:weightSum="10.8"
+    tools:context="com.ism.author.fragment.TrialExamObjectiveDetailFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.5"
+            android:layout_weight="1.8"
             android:background="@drawable/shadow_bg_trial_exam_details"
             android:orientation="vertical">
 
@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/txt_exam_type"
                     android:padding="@dimen/d5dp"
-                    android:text="@string/strexamtype"
+                    android:text=""
                     android:textColor="@color/bg_assessment"
                     android:textSize="@dimen/d18sp" />
 
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:padding="@dimen/d5dp"
-                    android:text="Name of the Exam"
+                    android:text=""
                     android:textColor="@color/color_pink"
                     android:textSize="25sp" />
 
@@ -90,7 +90,7 @@
                     android:layout_below="@+id/txt_exam_type_name"
                     android:layout_toEndOf="@+id/txt_exam_type"
                     android:padding="@dimen/d5dp"
-                    android:text="@string/strclass"
+                    android:text=""
                     android:textColor="@color/bg_assessment"
                     android:textSize="@dimen/d18sp" />
 
@@ -110,8 +110,8 @@
                     android:layout_below="@+id/txt_exam_name"
                     android:layout_centerHorizontal="true"
                     android:layout_toRightOf="@+id/txt_book_name"
-                    android:padding="3dp"
-                    android:text="Name"
+                    android:padding="@dimen/d5dp"
+                    android:text=""
                     android:textColor="@color/color_green"
                     android:textSize="@dimen/d18sp" />
                 <TextView
@@ -121,7 +121,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_below="@+id/img_copy"
                     android:padding="@dimen/d5dp"
-                    android:text="29th Oct 2015"
+                    android:text=""
                     android:textColor="@color/bg_assessment"
                     android:textSize="@dimen/d18sp" />
 

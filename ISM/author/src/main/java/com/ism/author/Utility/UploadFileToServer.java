@@ -22,7 +22,7 @@ public class UploadFileToServer
 //
 //        holder.img_status_back.setBackgroundColor(context.getResources().getColor(R.color.color_blue));
 //
-//        lyfData.mediaStatus = AppConstant.Status_Uploading;
+//        lyfData.mediaStatus = AppConstant.STATUS_UPLOADING;
 //
 //
 //        Log.e(TAG, "UploadFileToServer = " + lyfData.mediaStatus);
