@@ -388,8 +388,8 @@ class Question extends ADMIN_Controller {
 				 "question_creator_id"=>$session_id,
 				 "assets_link"=>' ',
 				 "question_image_link"=>' ',
-				 "evaluation_notes"=>htmlentities($this->input->post("evaluation_notes")),
-				 "solution"=>htmlentities($this->input->post("solution")),
+				 "evaluation_notes"=>$this->input->post("evaluation_notes"),
+				 "solution"=>$this->input->post("solution"),
 				 "topic_id"=>$this->input->post("topic_id"),
 				 "subject_id"=>$this->input->post("subject_id"),
 				 "classroom_id"=>$this->input->post("classroom_id")
@@ -406,7 +406,7 @@ class Question extends ADMIN_Controller {
 					'question_id'=>$question_id
 				);
 
-				insert(TBL_EXAM_QUESTION,$data_exam_question);
+				insert(TBL_EXAM_QUESTION,replace_invalid_chars($data_exam_question));
 			}
 
 				
@@ -414,7 +414,7 @@ class Question extends ADMIN_Controller {
 			if(!empty($tags)){
 				foreach($tags as $tag){
 					$data_question_tags =array('question_id'=>$question_id,'tag_id' => $tag );	
-					insert(TBL_TAGS_QUESTION,$data_question_tags);					
+					insert(TBL_TAGS_QUESTION,replace_invalid_chars($data_question_tags));					
 				}
 			}
 
@@ -435,7 +435,7 @@ class Question extends ADMIN_Controller {
 							'video_link'=>''
 						);
 
-				insert(TBL_ANSWER_CHOICES,$data_choice);					
+				insert(TBL_ANSWER_CHOICES,replace_invalid_chars($data_choice));					
 
 				$cnt++;
 			}
@@ -625,14 +625,14 @@ class Question extends ADMIN_Controller {
 			);
 
 			if($copy == 'copy'){
-				$question_id = insert(TBL_QUESTIONS,$data_question);
+				$question_id = insert(TBL_QUESTIONS,replace_invalid_chars($data_question));
 			}else{
 				
 				delete(TBL_TAGS_QUESTION,array('question_id'=>$qid));	
 				delete(TBL_ANSWER_CHOICES,array('question_id'=>$qid));
 				
 				$data_question['modified_date'] = date('Y-m-d H:i:s');
-				update(TBL_QUESTIONS,$qid,$data_question);
+				update(TBL_QUESTIONS,$qid,replace_invalid_chars($data_question));
 				$question_id = $qid;
 			}
 
@@ -642,7 +642,7 @@ class Question extends ADMIN_Controller {
 			if(!empty($tags)){
 				foreach($tags as $tag){
 					$data_question_tags =array('question_id'=>$question_id,'tag_id' => $tag );	
-					insert(TBL_TAGS_QUESTION,$data_question_tags);					
+					insert(TBL_TAGS_QUESTION,replace_invalid_chars($data_question_tags));					
 				}
 			}
 
@@ -663,7 +663,7 @@ class Question extends ADMIN_Controller {
 							'video_link'=>''
 						);
 
-				insert(TBL_ANSWER_CHOICES,$data_choice);					
+				insert(TBL_ANSWER_CHOICES,replace_invalid_chars($data_choice));					
 
 				$cnt++;
 			}
@@ -856,7 +856,7 @@ class Question extends ADMIN_Controller {
 				'question_id'=>$qid
 			);
 
-			insert(TBL_EXAM_QUESTION,$data);
+			insert(TBL_EXAM_QUESTION,replace_invalid_chars($data));
 
 			$count = count(select(TBL_EXAM_QUESTION,FALSE,array('where'=>array('exam_id'=>$eid))));
 			

@@ -20,7 +20,7 @@
             <form method="post">
 
                 <div class="form-group select col-sm-6 no-padding half_size">
-                    
+                    <label>Course</label>
                     <select class="form-control myselect2" name="course_id" onchange="get_classes(this.value)" id="course_id">
                         <option value="">Select Course</option>
                         <?php 
@@ -40,6 +40,7 @@
                 </div>
                 
                 <div class="form-group select col-sm-6 no-padding half_size">
+                  <label>Classroom</label>
                     <select class="form-control" name="classrooms" id="classroom_id" onchange="get_subjects(this.value)">
                         <option value="">Select Classroom</option>
                         <?php if(!empty($classrooms)){ 
@@ -55,7 +56,7 @@
                 </div>
 
                 <div class="form-group select col-sm-6 no-padding half_size">
-
+                  <label>Subject</label>
                     <select class="form-control" name="subjects" id="subject_id" onchange="get_topic(this.value)">
                         <option value="">Select Subject</option>
                         
@@ -73,6 +74,7 @@
                 </div>
 
                 <div class="form-group select col-sm-6 no-padding half_size">
+                  <label>Main Topic</label>
                     <select class="form-control" name="topic_id" id="topic_id">
                         <option value="">Select Main Topic</option>
                         <?php if(!empty($topics)){ 
@@ -89,6 +91,7 @@
 
                 <div class="form-group col-sm-6 no-padding half_size">
                     <div class="form-group col-sm-12 no-padding half_size">
+                      <label>Topic Name</label>
                         <input name="topic_name" type="text" class="form-control" 
                                value="<?php  echo set_value("topic_name") == false ? $tutorial_topic["topic_name"] : set_value("topic_name"); ?>"
                                placeholder="Topic">
