@@ -1,12 +1,87 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.ism.fragment.ClassWallFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.ism.fragment.ClassWallFragment">
+
+	<RelativeLayout
+		android:id="@+id/ll_post"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="13dp"
+		android:layout_marginLeft="13dp"
+		android:layout_marginRight="13dp"
+		android:background="@drawable/news_feed_post_box">
+
+		<EditText
+			android:id="@+id/et_writePost"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@android:color/transparent"
+			android:padding="10dp"
+			android:enabled="false"
+			android:focusable="false"
+			android:focusableInTouchMode="true"
+			android:gravity="start"
+			android:hint="@string/say_it"
+			android:lines="4"
+			android:textColorHint="@color/color_text_hint"/>
+
+		<ImageView
+			android:id="@+id/img_add_emoticons"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_margin="10dp"
+			android:src="@drawable/ic_smiley"/>
+
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="45dp"
+			android:background="@color/color_green"
+			android:layout_below="@id/et_writePost">
+
+			<ImageView
+				android:id="@+id/img_link"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/ic_link"/>
+
+			<ImageView
+				android:id="@+id/img_image"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_toRightOf="@id/img_link"
+				android:src="@drawable/ic_img"/>
+
+			<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_toRightOf="@id/img_image"
+				android:src="@drawable/ic_friend_post"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:layout_alignParentRight="true"
+				android:background="@color/color_dark_gray"
+				android:paddingLeft="40dp"
+				android:paddingRight="40dp"
+				android:drawablePadding="@dimen/d10dp"
+				android:drawableRight="@drawable/arrow"
+				android:gravity="center"
+				android:text="@string/strpost"
+				android:textAllCaps="true"
+				android:textColor="@color/color_white"
+				android:textSize="@dimen/d20dp"
+				android:textStyle="bold"/>
+		</RelativeLayout>
+	</RelativeLayout>
 
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/recycler_post"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:layout_below="@id/ll_post">
 	</android.support.v7.widget.RecyclerView>
 </RelativeLayout>

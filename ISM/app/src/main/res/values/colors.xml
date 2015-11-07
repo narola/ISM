@@ -48,4 +48,6 @@
     <color name="bg_notification">#3EB1DE</color>
     <color name="bg_message">#FD4B41</color>
     <color name="bg_friend_request">#FEBA01</color>
+    <color name="text_gray">#C3C3C3</color>
+    <color name="divider_light">#EEEEEE</color>
 </resources>

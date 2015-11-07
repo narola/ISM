@@ -57,6 +57,7 @@
 		android:textSize="@dimen/notification_digit_text_size"
 		android:paddingRight="@dimen/notification_digit_horizontal_padding"
 		android:paddingLeft="@dimen/notification_digit_horizontal_padding"
+		android:visibility="gone"
 		android:textColor="@android:color/white"
 		android:layout_alignRight="@id/img_notification"/>
 
@@ -80,6 +81,7 @@
 		android:textSize="@dimen/notification_digit_text_size"
 		android:paddingRight="@dimen/notification_digit_horizontal_padding"
 		android:paddingLeft="@dimen/notification_digit_horizontal_padding"
+		android:visibility="gone"
 		android:textColor="@android:color/white"
 		android:layout_alignRight="@id/img_message"/>
 
@@ -103,6 +105,7 @@
 		android:textSize="@dimen/notification_digit_text_size"
 		android:paddingRight="@dimen/notification_digit_horizontal_padding"
 		android:paddingLeft="@dimen/notification_digit_horizontal_padding"
+		android:visibility="gone"
 		android:textColor="@android:color/white"
 		android:layout_alignRight="@id/img_friend_request"/>
 

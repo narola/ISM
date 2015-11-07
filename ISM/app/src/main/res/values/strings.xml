@@ -41,6 +41,39 @@
 		<item>Oldest First</item>
 	</string-array>
 
+	<string-array name="testing_array">
+		<item>ListItem 1</item>
+		<item>ListItem 2</item>
+		<item>ListItem 3</item>
+		<item>ListItem 4</item>
+		<item>ListItem 5</item>
+		<item>ListItem 6</item>
+		<item>ListItem 7</item>
+		<item>ListItem 8</item>
+		<item>ListItem 9</item>
+		<item>ListItem 10</item>
+		<item>ListItem 11</item>
+		<item>ListItem 12</item>
+		<item>ListItem 13</item>
+		<item>ListItem 14</item>
+		<item>ListItem 15</item>
+		<item>ListItem 16</item>
+		<item>ListItem 17</item>
+		<item>ListItem 18</item>
+		<item>ListItem 19</item>
+		<item>ListItem 20</item>
+		<item>ListItem 21</item>
+		<item>ListItem 22</item>
+		<item>ListItem 23</item>
+		<item>ListItem 24</item>
+		<item>ListItem 25</item>
+		<item>ListItem 26</item>
+		<item>ListItem 27</item>
+		<item>ListItem 28</item>
+		<item>ListItem 29</item>
+		<item>ListItem 30</item>
+	</string-array>
+
 	<string name="classwall">Classwall</string>
 	<string name="lesson_notes">Lesson Notes</string>
 	<string name="assignment">Assignment</string>
@@ -178,4 +211,5 @@
 	<string name="studymates">Studymates</string>
 	<string name="my_activity">My Activity</string>
 	<string name="my_wallet">My Wallet</string>
+	<string name="say_it">SAY IT</string>
 </resources>
