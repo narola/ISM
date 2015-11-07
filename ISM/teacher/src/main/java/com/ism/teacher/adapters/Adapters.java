@@ -7,10 +7,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.ism.teacher.R;
 import com.ism.teacher.helper.MyTypeFace;
 
 import java.util.List;
-import com.ism.teacher.R;
+
 /**
  * Created by c161 on 27/10/15.
  */
@@ -78,7 +79,6 @@ public class Adapters {
         adapter.setDropDownViewResource(R.layout.row_spinner);
         spinner.setAdapter(adapter);
     }
-
 
 
     public static void setUpSpinner(final Context context, Spinner spinner, List<String> strArr) {
@@ -159,7 +159,6 @@ public class Adapters {
         adapter.setDropDownViewResource(R.layout.row_spinner);
         spinner.setAdapter(adapter);
     }
-
 
 
 }

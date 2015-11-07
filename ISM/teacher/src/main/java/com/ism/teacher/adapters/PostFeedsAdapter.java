@@ -19,7 +19,7 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.dialog.TagStudyMatesDialog;
 import com.ism.teacher.dialog.ViewAllCommentsDialog;
-import com.ism.teacher.helper.CircleImageView;
+import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.helper.PreferenceData;
 import com.ism.teacher.model.Comment;
 import com.ism.teacher.model.Data;
@@ -197,13 +197,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             @Override
             public void onClick(View view) {
 
-//                FeedIdRequest feedIdRequest = new FeedIdRequest();
-//
-//                feedIdRequest.setFeed_id(arrayListAllFeedsData.get(position).getFeed_id());
-//
-//                ((TeacherHomeFragment) fragment).callViewAllCommentsApi(feedIdRequest);
 
-                callApiGetAllComments(position);
+
+                int total_comments = Integer.parseInt(arrayListAllFeedsData.get(position).getTotal_comment());
+                if (total_comments > 0) {
+                    callApiGetAllComments(position);
+                }
+
             }
         });
 
@@ -215,14 +215,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 if (arrayListAllFeedsData.size() > 0) {
 
                     if (validateStringPresence(holder.etWritePost)) {
-                        /*AddCommentRequest addCommentRequest = new AddCommentRequest();
 
-                        addCommentRequest.setFeed_id(arrayListAllFeedsData.get(position).getFeed_id());
-                        addCommentRequest.setComment_by(arrayListAllFeedsData.get(position).getUser_id());
-                        addCommentRequest.setComment(holder.etWritePost.getText().toString());
-
-                        ((TeacherHomeFragment) fragment).callAddCommentApi(addCommentRequest);
-                        ((TeacherHomeFragment) fragment).setSetAddCommentRowPosition(position);*/
                         callApiComment(position, holder.etWritePost.getText().toString());
                     }
 
@@ -234,9 +227,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         holder.imgTagStudymates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*((TeacherHomeFragment) fragment).tagFriendInFeedRequest.setFeed_id("240");
-                ((TeacherHomeFragment) fragment).tagFriendInFeedRequest.setTagged_by("134");
-                ((TeacherHomeFragment) fragment).callGetStudyMates();*/
+
                 if (Utility.isOnline(context)) {
                     tagFeedPosition = position;
                     callApiGetStudyMates();
@@ -409,6 +400,17 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     }
 
     private void onResponseTagStudyMates(Object object) {
+        try {
+            ResponseObject responseObj = (ResponseObject) object;
+            tagFeedPosition = -1;
+            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                Toast.makeText(context, "Tag done!", Toast.LENGTH_SHORT).show();
+            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                Toast.makeText(context, "Tag failed!", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onResponseTagStudyMates Exception : " + e.toString());
+        }
 
     }
 

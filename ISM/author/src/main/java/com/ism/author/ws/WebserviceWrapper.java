@@ -21,7 +21,6 @@ public class WebserviceWrapper {
     private WebserviceResponse webserviceResponse;
     private Context mContext;
 
-
     public interface WebserviceResponse {
         public void onResponse(int API_METHOD, Object object, Exception error);
     }
@@ -142,6 +141,12 @@ public class WebserviceWrapper {
                     case WebConstants.GETALLEXAM:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_ALL_EXAM, ResponseObject.class, requestObject);
                         break;
+                    case WebConstants.GETEXAMEVALUATIONS:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_EXAM_EVALUATIONS, ResponseObject.class, requestObject);
+                        break;
+                    case WebConstants.GETEXAMQUESTIONS:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_EXAM_QUESTIONS, ResponseObject.class, requestObject);
+                        break;
 
                     case WebConstants.SETQUESTIONSFOREXAM:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_SET_QUESTIONS_FOR_EXAM, ResponseObject.class, requestObject);
@@ -163,6 +168,9 @@ public class WebserviceWrapper {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
+            Debug.i(TAG, "WebserviceCaller Response : " + o);
+            dismissProgressDialog();
+            webserviceResponse.onResponse(API_METHOD_NAME, o, null);
             try {
                 Debug.i(TAG, "WebserviceCaller Response : " + o.toString());
 //                dismissProgressDialog();

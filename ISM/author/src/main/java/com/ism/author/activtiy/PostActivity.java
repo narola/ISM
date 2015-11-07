@@ -793,10 +793,10 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 Locale.getDefault()).format(new Date());
         File mediaFile;
         if (type == CAPTURE_IMAGE) {
-            mediaFile = new File(AppConstant.imageCapturePath + File.separator
+            mediaFile = new File(AppConstant.IMAGE_CAPTURE_PATH + File.separator
                     + "IMG_" + timeStamp + ".jpg");
         } else if (type == CAPTURE_VIDEO) {
-            mediaFile = new File(AppConstant.videoCapturePath + File.separator
+            mediaFile = new File(AppConstant.VIDEO_CAPTURE_PATH + File.separator
                     + "VID_" + timeStamp + ".mp4");
         } else {
             return null;
@@ -808,12 +808,12 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
                 Locale.getDefault()).format(new Date());
-        mFileName = AppConstant.audioCapturePath + File.separator + "AUDIO_" + timeStamp + ".3gpp";
+        mFileName = AppConstant.AUDIO_CAPTURE_PATH + File.separator + "AUDIO_" + timeStamp + ".3gpp";
         return mFileName;
     }
 
     public void makeDirectories() {
-        File mediaStorageDir = new File(AppConstant.audioCapturePath + File.separator);
+        File mediaStorageDir = new File(AppConstant.AUDIO_CAPTURE_PATH + File.separator);
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -821,7 +821,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                         + "ISM" + " directory");
             }
         }
-        mediaStorageDir = new File(AppConstant.imageCapturePath + File.separator);
+        mediaStorageDir = new File(AppConstant.IMAGE_CAPTURE_PATH + File.separator);
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -830,7 +830,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
 
             }
         }
-        mediaStorageDir = new File(AppConstant.videoCapturePath + File.separator);
+        mediaStorageDir = new File(AppConstant.VIDEO_CAPTURE_PATH + File.separator);
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {

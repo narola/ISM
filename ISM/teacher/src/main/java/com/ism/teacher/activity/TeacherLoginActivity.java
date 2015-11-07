@@ -20,7 +20,6 @@ import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.InputValidator;
@@ -151,7 +150,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
         btnForgotPwdSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utils.isInternetConnected(TeacherLoginActivity.this)) {
+                if (Utility.isInternetConnected(TeacherLoginActivity.this)) {
                     if (inputValidator.validateAllConstraintsEmail(etEmail)) {
                         callApiForgotPassword(etEmail.getText().toString().trim());
                     }

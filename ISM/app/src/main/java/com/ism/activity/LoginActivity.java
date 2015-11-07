@@ -54,6 +54,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private AlertDialog dialogCredentials;
 	private ProgressGenerator progressGenerator;
 	private AlertDialog dialogForgotPassword;
+	private MyTypeFace myTypeFace;
 
 	private String strValidationMsg;
 
@@ -81,7 +82,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	}
 
 	private void initGlobal() {
-		MyTypeFace myTypeFace = new MyTypeFace(this);
+		myTypeFace = new MyTypeFace(this);
 		btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
 		etPwd = (EditText) findViewById(R.id.et_pwd);
 		etUserid = (EditText) findViewById(R.id.et_userid);
@@ -199,7 +200,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						Utility.toastOffline(LoginActivity.this);
 					}
 				} else {
-					Adapters.setUpSpinner(LoginActivity.this, spState, arrListDefalt);
+					Adapters.setUpSpinner(LoginActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
 				}
 			}
 
@@ -219,7 +220,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						Utility.toastOffline(LoginActivity.this);
 					}
 				} else {
-					Adapters.setUpSpinner(LoginActivity.this, spCity, arrListDefalt);
+					Adapters.setUpSpinner(LoginActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
 				}
 			}
 
@@ -459,7 +460,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 					for (Data city : arrListCities) {
 						cities.add(city.getCityName());
 					}
-					Adapters.setUpSpinner(LoginActivity.this, spCity, cities);
+					Adapters.setUpSpinner(LoginActivity.this, spCity, cities, myTypeFace.getRalewayRegular());
 				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
 					Log.e(TAG, "onResponseCities Failed");
 				}
@@ -485,7 +486,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 					for (Data state : arrListStates) {
 						states.add(state.getStateName());
 					}
-					Adapters.setUpSpinner(LoginActivity.this, spState, states);
+					Adapters.setUpSpinner(LoginActivity.this, spState, states, myTypeFace.getRalewayRegular());
 				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
 					Log.e(TAG, "onResponseStates Failed");
 				}
@@ -511,7 +512,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 					for (Data country : arrListCountries) {
 						countries.add(country.getCountryName());
 					}
-					Adapters.setUpSpinner(LoginActivity.this, spCountry, countries);
+					Adapters.setUpSpinner(LoginActivity.this, spCountry, countries, myTypeFace.getRalewayRegular());
 				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
 					Log.e(TAG, "onResponseCountries Failed");
 				}
@@ -645,22 +646,22 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	}
 
 	private void launchProfileInfoActivity() {
-		Utility.launchIntent(LoginActivity.this, ProfileInformationActivity.class);
+		Utility.launchActivity(LoginActivity.this, ProfileInformationActivity.class);
 		finish();
 	}
 
 	private void launchHostActivity() {
-		Utility.launchIntent(LoginActivity.this, HostActivity.class);
+		Utility.launchActivity(LoginActivity.this, HostActivity.class);
 		finish();
 	}
 
 	private void launchWelcomeActivity() {
-		Utility.launchIntent(LoginActivity.this, WelComeActivity.class);
+		Utility.launchActivity(LoginActivity.this, WelComeActivity.class);
 		finish();
 	}
 
 	private void launchAcceptTutorialGroupActivity() {
-		Utility.launchIntent(LoginActivity.this, AcceptTutorialGroupActivity.class);
+		Utility.launchActivity(LoginActivity.this, AcceptTutorialGroupActivity.class);
 		finish();
 	}
 

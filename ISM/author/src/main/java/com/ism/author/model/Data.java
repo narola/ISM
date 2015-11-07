@@ -78,10 +78,21 @@ public class Data {
     private String exam_type;
     private String average_score;
     private String studentName;
-    private String EvoluationsScore;
-    private ArrayList<Data> evoluations;
-    private String examID;
+    private String EvaluationsScore;
+    private ArrayList<Data> evaluations;
 
+    private ArrayList<Data> questions;
+    private String examID;
+    private String studentId;
+
+    private boolean isFlagged;
+    private String studentResponse;
+    private String examDate;
+    private String examName;
+    private String bookName;
+    private String examMode;
+
+    /*these methods are for login response*/
 
     @JsonProperty("feed_images")
     public ArrayList<PostFeedImagesModel> getFeed_images() {
@@ -596,21 +607,21 @@ public class Data {
     }
 
     @JsonProperty("evoluation_score")
-    public String getEvoluationsScore() {
-        return EvoluationsScore;
+    public String getEvaluationsScore() {
+        return EvaluationsScore;
     }
 
-    public void setEvoluationsScore(String evoluationsScore) {
-        EvoluationsScore = evoluationsScore;
+    public void setEvaluationsScore(String evaluationsScore) {
+        EvaluationsScore = evaluationsScore;
     }
 
     @JsonProperty("evaluation")
-    public ArrayList<Data> getEvoluations() {
-        return evoluations;
+    public ArrayList<Data> getEvaluations() {
+        return evaluations;
     }
 
-    public void setEvoluations(ArrayList<Data> evoluations) {
-        this.evoluations = evoluations;
+    public void setEvaluations(ArrayList<Data> evaluations) {
+        this.evaluations = evaluations;
     }
 
     public void setExamID(String examID) {
@@ -620,6 +631,41 @@ public class Data {
     @JsonProperty("exam_id")
     public String getExamID() {
         return examID;
+    }
+
+    @JsonProperty("questions")
+    public ArrayList<Data> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(ArrayList<Data> questions) {
+        this.questions = questions;
+    }
+
+    public boolean isFlagged() {
+        return isFlagged;
+    }
+
+    public void setIsFlagged(boolean isFlagged) {
+        this.isFlagged = isFlagged;
+    }
+
+    @JsonProperty("student_id")
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setStudentResponse(String studentResponse) {
+        this.studentResponse = studentResponse;
+    }
+
+    @JsonProperty("student_response")
+    public String getStudentResponse() {
+        return studentResponse;
     }
 
     @JsonProperty("district_name")
@@ -677,4 +723,47 @@ public class Data {
         this.cityName = cityName;
     }
 
+    @JsonProperty("book_name")
+    public String getBookName() {
+        return bookName;
+    }
+
+//    @JsonProperty("created_date")
+//    public String getExamDate() {
+//        return examDate;
+//    }
+//
+//    public void setExamDate(String examDate) {
+//        this.examDate = examDate;
+//    }
+
+    public void setExamName(String examName) {
+        this.examName = examName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
+
+    @JsonProperty("exam_name")
+    public String getExamName() {
+        return examName;
+    }
+
+    public String getExamDate() {
+        return examDate;
+    }
+
+    public void setExamDate(String examDate) {
+        this.examDate = examDate;
+    }
+
+    public void setExamMode(String examMode) {
+        this.examMode = examMode;
+    }
+
+    @JsonProperty("exam_mode")
+    public String getExamMode() {
+        return examMode;
+    }
 }

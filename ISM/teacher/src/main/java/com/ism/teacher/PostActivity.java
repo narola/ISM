@@ -29,15 +29,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.adapters.PostFileAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.helper.CircularSeekBar;
-import com.ism.teacher.helper.HorizontalListView;
 import com.ism.teacher.model.PostFileModel;
 import com.ism.teacher.model.RequestObject;
 import com.ism.teacher.model.ResponseObject;
+import com.ism.teacher.views.CircularSeekBar;
+import com.ism.teacher.views.HorizontalListView;
 import com.ism.teacher.ws.WebserviceWrapper;
 
 import java.io.BufferedReader;
@@ -306,7 +305,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 requestObject.setImages(listImages);
                 requestObject.setVideoLink("");
                 requestObject.setAudioLink("");
-                requestObject.setPostedOn(Utils.getDate());
+                requestObject.setPostedOn(Utility.getDate());
                 requestObject.setVideoThumbnail(strThumbnailBase64);
                 requestObject.setFeedText(etSayIt.getText().toString().trim());
                 new WebserviceWrapper(PostActivity.this, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()

@@ -382,7 +382,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             requestObject.setPassword(etNewPwd.getText().toString().trim());
             requestObject.setDeviceToken(Utility.getDeviceTokenId(getActivity()));
             requestObject.setSchoolId(Integer.parseInt(strSchoolId));
-            requestObject.setClassroomId(Integer.parseInt(strClassId));
+            requestObject.setClassroomId(strClassId);
             requestObject.setCourseId(Integer.parseInt(strCourseId));
             requestObject.setAcademicYear(strAcademicYear);
 //			requestObject.setRoleId(Integer.parseInt(strRoleId));

@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.ResponseObject;
 
@@ -87,15 +89,18 @@ public class TrialExamsAdapter extends BaseAdapter {
             holder.txtAverage.setTypeface(myTypeFace.getRalewayThin());
             holder.txtAttempted.setTypeface(myTypeFace.getRalewayThin());
 
-//            convertView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                    ((OfficeFragment) fragment).handleTabClick(3);
-//
-//
-//                }
-//            });
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    // send the value of exam_id,role_id
+                    if(data.getData().get(position).getExamMode().equals(AppConstant.EXAM_MODE_OBJECTIVE))
+                    ((AuthorHostActivity)context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
+                    else if(data.getData().get(position).getExamMode().equals(AppConstant.EXAM_MODE_SUBJECTIVE))
+                        ((AuthorHostActivity)context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
+
+                }
+            });
 
 
         } catch (Exception e) {

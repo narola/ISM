@@ -107,7 +107,7 @@ public class OfficeFragment extends Fragment {
                 break;
             case FRAGMENT_TRIAL_EXAM_DETAILS:
                 currentFragment = fragment;
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
 
                 break;
         }

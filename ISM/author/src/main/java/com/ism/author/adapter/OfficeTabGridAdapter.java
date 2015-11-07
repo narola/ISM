@@ -81,11 +81,11 @@ public class OfficeTabGridAdapter extends BaseAdapter {
             holder.tvOfficetabInfo.setText(officeTabDataSet.getOfficeTabInfoList()[position]);
             holder.tvOfficetabInfo.setCompoundDrawablesWithIntrinsicBounds(officeTabDataSet.getOfficeTabInfoImages()[position], 0, 0, 0);
 
-
             holder.llOfficeTab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
+                    if(position==2)
                     ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_TRIAL);
 
 

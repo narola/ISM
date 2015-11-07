@@ -11,6 +11,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.Settings;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -18,9 +19,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ism.R;
+import com.ism.ws.model.Data;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -28,6 +33,8 @@ import java.util.Locale;
  * Created by c161 on 12/10/15.
  */
 public class Utility {
+
+	private static final String TAG = Utility.class.getSimpleName();
 
 	public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 	public static final SimpleDateFormat DATE_FORMAT_DISPLAY = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -130,10 +137,76 @@ public class Utility {
 		return DATE_FORMAT_DISPLAY.format(date);
 	}
 
-	public static void launchIntent(Context context, Class classToOpen) {
+	/**
+	 * Arti
+	 * Launch any activity
+	 * @param context
+	 * @param classToOpen
+	 */
+	public static void launchActivity(Context context, Class classToOpen) {
 		Intent intent = new Intent(context, classToOpen);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
+	}
+
+	/**
+	 * Krunal Panchal
+	 * Sort ArrayList of Data by PostedBy date in ascending order
+	 * @param arrListData
+	 */
+	public static void sortPostedOnAsc(ArrayList<Data> arrListData) {
+		Collections.sort(arrListData, new Comparator<Data>() {
+			@Override
+			public int compare(Data lData, Data rData) {
+				int compare = lData.getPostedOn().compareTo(rData.getPostedOn());
+				return compare;
+			}
+		});
+	}
+
+	/**
+	 * Krunal Panchal
+	 * Sort ArrayList of Data by PostedBy date in descending order
+	 * @param arrListData
+	 */
+	public static void sortPostedOnDesc(ArrayList<Data> arrListData) {
+		Collections.sort(arrListData, new Comparator<Data>() {
+			@Override
+			public int compare(Data lData, Data rData) {
+				int compare = rData.getPostedOn().compareTo(lData.getPostedOn());
+				return compare;
+			}
+		});
+	}
+
+	/**
+	 * Krunal Panchal
+	 * Sort ArrayList of Data by NoticeTitle date in ascending order
+	 * @param arrListData
+	 */
+	public static void sortNoticeTitleAsc(ArrayList<Data> arrListData) {
+		Collections.sort(arrListData, new Comparator<Data>() {
+			@Override
+			public int compare(Data lData, Data rData) {
+				int compare = lData.getNoticeTitle().compareToIgnoreCase(rData.getNoticeTitle());
+				return compare;
+			}
+		});
+	}
+
+	/**
+	 * Krunal Panchal
+	 * Sort ArrayList of Data by NoticeTitle date in descending order
+	 * @param arrListData
+	 */
+	public static void sortNoticeTitleDesc(ArrayList<Data> arrListData) {
+		Collections.sort(arrListData, new Comparator<Data>() {
+			@Override
+			public int compare(Data lData, Data rData) {
+				int compare = rData.getNoticeTitle().compareToIgnoreCase(lData.getNoticeTitle());
+				return compare;
+			}
+		});
 	}
 
 }

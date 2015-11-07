@@ -49,9 +49,6 @@ public class AppConstant {
     public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
 
 
-
-
-
    /* public static final String URL_LOGIN = URL_RAVI_HOST + "AuthenticateUser";
     public static final String URL_GET_ALL_FEEDS = URL_RAVI_HOST+ "GetAllFeeds";
     public static final String URL_GET_ALL_COMMENTS = URL_RAVI_HOST+"GetAllComments";
@@ -88,5 +85,10 @@ public class AppConstant {
     public static final String FRAGMENT_TAG_TEACHER_PROGRESS_REPORT = "teacher_progress_report";
 
 
+    /**
+     * Bundle Tag
+     */
+
+    public static final String BUNDLE_EDIT_QUESTION_FRAGMENT="edit_question";
 
 }
