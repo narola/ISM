@@ -75,7 +75,7 @@ public class WebConstants {
     public static final String STATUS_SUCCESS = "success";
     public static final String STATUS_FAILED = "failed";
 
-    //these are the temparory data for testing
+    //these are the temparory questionData for testing
 
     public static final String TEST_USER_ID = "370";
     public static final String TEST_GET_ALL_FEEDS = "141";

@@ -118,7 +118,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
         ResponseObject responseObject = (ResponseObject) object;
 //        Debug.i(TAG, "Response of student attempted  ::" + responseObject.getMessage());
 //        Debug.i(TAG, "Response of student attempted  ::" + responseObject.getStatus());
-//        Debug.i(TAG, "Response of student attempted  ::" + responseObject.getData().get(0).getExamID());
+//        Debug.i(TAG, "Response of student attempted  ::" + responseObject.getQuestionData().get(0).getExamID());
         try {
             if (API_METHOD == WebConstants.GETEXAMSUBMISSION) {
                 if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
@@ -146,7 +146,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                     ((AuthorHostActivity) getActivity()).stopProgress();
                     if (responseObject.getData().size() != 0) {
                         responseObjQuestions = responseObject;
-                        // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
+                        // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getQuestionData().get(0).getEvaluations());
 
                         trialExamDetailsAdapter = new TrialExamDetailsAdapter(responseObjQuestions, getActivity(), this, null);
                         TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);

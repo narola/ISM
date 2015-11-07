@@ -17,9 +17,8 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Utils;
-import com.ism.author.fragment.AddQuestionDataFragment;
+import com.ism.author.fragment.AddQuestionContainerFragment;
 import com.ism.author.helper.MyTypeFace;
-import com.ism.author.interfaces.FlipCardListener;
 import com.ism.author.model.Data;
 import com.ism.author.model.QuestionAnswersModel;
 
@@ -37,23 +36,12 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
 
     ArrayList<Data> listOfQuestions = new ArrayList<Data>();
-
-    public ArrayList<Data> getListOfPreviewQuestionsToAdd() {
-        return listOfPreviewQuestionsToAdd;
-    }
-
-    ArrayList<Data> listOfPreviewQuestionsToAdd = new ArrayList<Data>();
     MyTypeFace myTypeFace;
-
     Fragment mFragment;
-
-    FlipCardListener flipCardListener;
-
 
     public QuestionBankListAdapter(Context context, Fragment fragment) {
         this.mContext = context;
         this.mFragment = fragment;
-
     }
 
 
@@ -147,15 +135,15 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             @Override
             public void onClick(View v) {
 
-                if (!((AddQuestionDataFragment) mFragment).previewQuestionFragment.listOfPreviewQuestions.contains(listOfQuestions.get(position))) {
+                if (!((AddQuestionContainerFragment) mFragment).getListOfPreviewQuestion().contains(listOfQuestions.get(position))) {
 
                     if (holder.chkSelectQuestion.isChecked()) {
                         listOfQuestions.get(position).setIsQuestionAddedInPreview(true);
-                        listOfPreviewQuestionsToAdd.add(listOfQuestions.get(position));
+                        ((AddQuestionContainerFragment) mFragment).listOfPreviewQuestionsToAdd.add(listOfQuestions.get(position));
 
                     } else {
                         listOfQuestions.get(position).setIsQuestionAddedInPreview(false);
-                        listOfPreviewQuestionsToAdd.remove(listOfQuestions.get(position));
+                        ((AddQuestionContainerFragment) mFragment).listOfPreviewQuestionsToAdd.remove(listOfQuestions.get(position));
                     }
 
                 } else {
@@ -171,8 +159,9 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             @Override
             public void onClick(View v) {
 
-                flipCardListener = (FlipCardListener) mFragment;
-                flipCardListener.onFlipCard(true, listOfQuestions.get(position));
+                ((AddQuestionContainerFragment) mFragment).setQuestionData(listOfQuestions.get(position));
+                ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
+                ((AddQuestionContainerFragment) mFragment).flipCard();
 
             }
         });
@@ -182,8 +171,9 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             public void onClick(View v) {
 
 
-                flipCardListener = (FlipCardListener) mFragment;
-                flipCardListener.onFlipCard(true, listOfQuestions.get(position));
+                ((AddQuestionContainerFragment) mFragment).setQuestionData(listOfQuestions.get(position));
+                ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
+                ((AddQuestionContainerFragment) mFragment).flipCard();
 
             }
         });

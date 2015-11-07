@@ -36,18 +36,15 @@ import java.util.List;
 /**
  * Created by c166 on 31/10/15.
  */
-public class QuestionAddEditFragment extends Fragment implements TokenCompleteTextView.TokenListener {
+public class QuestionAddEditFragment extends Fragment implements TokenCompleteTextView.TokenListener, View.OnClickListener {
 
     private static final String TAG = QuestionAddEditFragment.class.getSimpleName();
     private View view;
     Fragment mFragment;
-    Boolean isSetData;
-    Data data;
 
-    public QuestionAddEditFragment(Fragment fragment, Boolean isSetData, Data data) {
+
+    public QuestionAddEditFragment(Fragment fragment) {
         this.mFragment = fragment;
-        this.isSetData = isSetData;
-        this.data = data;
     }
 
     /*these is for the tag add functionality.*/
@@ -128,6 +125,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         tvEvaluationNote2 = (TextView) view.findViewById(R.id.tv_evaluation_note2);
         tvAddquestionSave = (TextView) view.findViewById(R.id.tv_addquestion_save);
         tvAddquestionSaveAddmore = (TextView) view.findViewById(R.id.tv_addquestion_save_addmore);
+        tvAddquestionSave.setOnClickListener(this);
+        tvAddquestionSaveAddmore.setOnClickListener(this);
 
 
         tvAddquestionHeader.setTypeface(myTypeFace.getRalewayRegular());
@@ -172,10 +171,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
         for (int i = 0; i <= 1; i++) {
             llAddMcqanswer.addView(getMcqAnswerView(i));
-        }
-
-        if (isSetData) {
-            setQuestionData(this.data);
         }
 
 
@@ -260,7 +255,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
 
-    /*these is for set question data for copy and edit question.*/
+    /*these is for set question questionData for copy and edit question.*/
     private ImageLoader imageLoader;
 
     public void setQuestionData(Data data) {
@@ -276,7 +271,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             setSpinnerData(data.getQuestionFormat());
 
         } catch (Exception e) {
-            Debug.e(TAG, "setQuestionData Exception : " + e.toString());
+            Debug.e(TAG, "isSetQuestionData Exception : " + e.toString());
         }
 
 
@@ -299,6 +294,20 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
         }
 
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+        if (v == tvAddquestionSave) {
+
+            ((AddQuestionContainerFragment) mFragment).flipCard();
+
+        } else if (v == tvAddquestionSaveAddmore) {
+
+        }
 
     }
 }

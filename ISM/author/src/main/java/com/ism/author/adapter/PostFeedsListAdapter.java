@@ -89,7 +89,7 @@ public class PostFeedsListAdapter extends BaseAdapter {
         }
 
         try {
-            //set data here
+            //set questionData here
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -122,7 +122,7 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
 //                ResponseObject responseObject = (ResponseObject) object;
 //                Debug.i(TAG, "Response of student attempted  ::" + responseObject.getMessage());
 //                Debug.i(TAG, "Response of student attempted  ::" + responseObject.getStatus());
-//                Debug.i(TAG, "Response of student attempted  ::" + responseObject.getData());
+//                Debug.i(TAG, "Response of student attempted  ::" + responseObject.getQuestionData());
 //                if (responseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && responseObject != null) {
 //
 //

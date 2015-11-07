@@ -10,7 +10,7 @@ public class Debug {
 
 
     public static final boolean DEBUG = true; // Disable logs and default test
-    // data
+    // questionData
 
     public static void e(String tag, String msg) {
         if (DEBUG) {
