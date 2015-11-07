@@ -658,6 +658,31 @@ $high = select(TBL_STUDENT_EXAM_SCORE.' ses',$sel,null,$options);
 
    return  $new;
 }
+
+function group_high_score(){
+
+
+$options = array(
+  'join' => array(
+      array(
+          'table' => TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION.' tga',
+          'condition' => "`tga`.`group_id` = `tg`.`id`",
+          'join' => 'JOIN'
+      ),
+       array(
+          'table' => TBL_CLASSROOMS.' c',
+          'condition' => "`c`.`id` = `tg`.`classroom_id`",
+          'join' => 'JOIN'
+      )
+    ),
+  'group_by' => '`tga`.`group_id`',
+  'order_by' => '`total_score` DESC',
+  'limit' => 5
+  );
+
+return select(TBL_TUTORIAL_GROUPS.' tg','`tg`.`group_profile_pic` ,`c`.`class_name`,`tg`.`group_name`,SUM(`tga`.`group_score`) AS `total_score`',null,$options);
+
+}
     
 /*  Filter the data to store in database
 *   @Author - SANDIP GOPANI [SAG].

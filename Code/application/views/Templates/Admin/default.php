@@ -370,87 +370,39 @@ $url = uri_string();
                         <div class="box_header">
                             <h3>Top Groups</h3>
                         </div>
-                        <!--item1-->
-                        <div class="score_item">
-                            <div class="score_img">
-                                <img src="assets/images/group1.jpg">
-                            </div>
-                            <div class="score_descrip">
-                                <p class="score_name">Venice Beauty</p>
-                                <p>St. Xeviers F.Y. CS</p>
-                                <p>Score</p>
-                                <p class="score_number">5000</p>
-                            </div>
-                            <div class="score_rank">
-                                <p>1<sup>st</sup></p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--item2-->
-                        <div class="score_item">
-                            <div class="score_img">
-                                <img src="assets/images/group2.jpg">
-                            </div>
-                            <div class="score_descrip">
-                                <p class="score_name">Happy Club</p>
-                                <p>St. Mary F.Y. CS</p>
-                                <p>Score</p>
-                                <p class="score_number">4870</p>
-                            </div>
-                            <div class="score_rank">
-                                <p>2<sup>nd</sup></p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--item1-->
-                        <div class="score_item">
-                            <div class="score_img">
-                                <img src="assets/images/group3.jpg">
-                            </div>
-                            <div class="score_descrip">
-                                <p class="score_name">Rankers</p>
-                                <p>St. Xeviers F.Y. CS</p>
-                                <p>Score</p>
-                                <p class="score_number">4700</p>
-                            </div>
-                            <div class="score_rank">
-                                <p>3<sup>rd</sup></p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--item2-->
-                        <div class="score_item">
-                            <div class="score_img">
-                                <img src="assets/images/avatar_group.png">
-                            </div>
-                            <div class="score_descrip">
-                                <p class="score_name">Allrounders</p>
-                                <p>St. Mary F.Y. CS</p>
-                                <p>Score</p>
-                                <p class="score_number">4690</p>
-                            </div>
-                            <div class="score_rank">
-                                <p>4<sup>th</sup></p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--item2-->
-                        <div class="score_item">
-                            <div class="score_img">
-                                <img src="assets/images/group1.jpg">
-                            </div>
-                            <div class="score_descrip">
-                                <p class="score_name">Cool Group</p>
-                                <p>St. Mary F.Y. CS</p>
-                                <p>Score</p>
-                                <p class="score_number">4650</p>
-                            </div>
-                            <div class="score_rank">
-                                <p>5<sup>th</sup></p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
+                        <?php $top_group = group_high_score();  
+                        if(!empty($top_group)){
+                            $i = 0;
+                            foreach ($top_group as $k => $v) {
+                                $i++;
+                                ?>
+                                <div class="score_item">
+                                    <div class="score_img">
+                                        <?php
+                                         if(empty($v['group_profile_pic'])){
+                                            $v['group_profile_pic'] = 'assets/images/avatar_group.png';
+                                        }else{
+                                            $v['group_profile_pic'] = UPLOAD_URL.'/'.$v['group_profile_pic'];
+                                        }
+                                         ?>
+                                        <img src="<?php echo $v['group_profile_pic']; ?>">
+                                    </div>
+                                    <div class="score_descrip">
+                                        <p class="score_name"><?php echo $v['group_name']; ?></p>
+                                        <p><?php echo $v['class_name']; ?></p>
+                                        <p>Score</p>
+                                        <p class="score_number"><?php echo $v['total_score']; ?></p>
+                                    </div>
+                                    <div class="score_rank">
+                                        <p><?php echo $i; ?><sup>st</sup></p>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
 
+                                <?php
+                            }
+                        }
+                        ?>
                     </div>
                     <!--//STM-->
 
