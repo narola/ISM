@@ -122,7 +122,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
     private void callAllFeedsApi() {
         try {
             GetAllFeedsTeacherRequest getAllFeedsTeacherRequest = new GetAllFeedsTeacherRequest();
-            getAllFeedsTeacherRequest.setUser_id("141");
+            getAllFeedsTeacherRequest.setUser_id("370");
 
             new WebserviceWrapper(getActivity(), getAllFeedsTeacherRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_FEEDS);

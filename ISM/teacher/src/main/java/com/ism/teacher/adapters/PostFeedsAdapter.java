@@ -19,12 +19,13 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.dialog.TagStudyMatesDialog;
 import com.ism.teacher.dialog.ViewAllCommentsDialog;
-import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.helper.PreferenceData;
 import com.ism.teacher.model.Comment;
 import com.ism.teacher.model.Data;
+import com.ism.teacher.model.PostFeedImagesModel;
 import com.ism.teacher.model.RequestObject;
 import com.ism.teacher.model.ResponseObject;
+import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.WebserviceWrapper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -123,7 +124,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         // for any view that will be set as you render a row
         public TextView txtUsernamePostCreator, txtPostContent, txtPostLikeCounter, txtPostCommentsCounter, txtViewAllComments, txtSubmitPost;
         public EditText etWritePost;
-        public ImageView imgDpPostCreator, imgTagStudymates, imgLikePost, imgComments;
+        public ImageView imgDpPostCreator, imgTagStudymates, imgLikePost, imgComments, imgAudio, imgImage, imgPlay, imgVideo;
         public LinearLayout llParentTeacherPost, llCommentRowInflater;
 
         // We also create a constructor that accepts the entire item row
@@ -146,6 +147,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             imgTagStudymates = (ImageView) itemView.findViewById(R.id.img_tag_studymates);
             imgLikePost = (ImageView) itemView.findViewById(R.id.img_like_post);
             imgComments = (ImageView) itemView.findViewById(R.id.img_comments);
+
+
+            imgAudio = (ImageView) itemView.findViewById(R.id.img_audio);
+            imgImage = (ImageView) itemView.findViewById(R.id.img_image);
+            imgVideo = (ImageView) itemView.findViewById(R.id.img_video);
+            imgPlay = (ImageView) itemView.findViewById(R.id.img_play);
         }
 
 
@@ -196,7 +203,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         holder.txtViewAllComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
 
                 int total_comments = Integer.parseInt(arrayListAllFeedsData.get(position).getTotal_comment());
@@ -266,6 +272,46 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             }
 
         });
+
+
+        holder.imgVideo.setVisibility(View.GONE);
+        holder.imgPlay.setVisibility(View.GONE);
+        holder.imgAudio.setVisibility(View.GONE);
+        holder.imgImage.setVisibility(View.GONE);
+
+        // holder.rlImage.setVisibility(View.GONE);
+        //video
+        if (arrayListAllFeedsData.get(position).getVideo_thumbnail() != "") {
+
+            holder.imgVideo.setVisibility(View.VISIBLE);
+            holder.imgPlay.setVisibility(View.VISIBLE);
+
+            Log.i(TAG, WebConstants.FEED_MEDIA + arrayListAllFeedsData.get(position).getVideo_thumbnail() + "");
+            imageLoader.displayImage(WebConstants.FEED_MEDIA + arrayListAllFeedsData.get(position).getVideo_thumbnail(), holder.imgVideo,ISMTeacher.options);
+
+        }
+        //audio
+        if (arrayListAllFeedsData.get(position).getAudioLink() != "") {
+
+            holder.imgAudio.setVisibility(View.VISIBLE);
+        }
+        // images
+        if (arrayListAllFeedsData.get(position).getFeed_images().size() != 0) {
+
+            holder.imgImage.setVisibility(View.VISIBLE);
+
+            ArrayList<PostFeedImagesModel> listImages = new ArrayList<PostFeedImagesModel>();
+            listImages = arrayListAllFeedsData.get(position).getFeed_images();
+            for (int i = 0; i < listImages.size(); i++) {
+                Log.i(TAG, WebConstants.FEED_MEDIA + listImages.get(i).getImage_link() + "");
+                imageLoader.displayImage(WebConstants.FEED_MEDIA + listImages.get(i).getImage_link(), holder.imgImage, ISMTeacher.options);
+
+            }
+
+        }
+
+
+
 
 
     }

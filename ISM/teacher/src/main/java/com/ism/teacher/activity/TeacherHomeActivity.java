@@ -22,7 +22,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.ControllerTopMenuItem;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.ControllerTopSpinnerAdapter;
-import com.ism.teacher.fragments.AddQuestionFragmentTeacher;
+import com.ism.teacher.fragments.AddQuestionContainerFragment;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
 import com.ism.teacher.fragments.TeacherOfficeFragment;
@@ -270,7 +270,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
             switch (fragment)
             {
                 case FRAGMENT_ADDQUESTION:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionFragmentTeacher.newInstance(FRAGMENT_ADDQUESTION,examid)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance(FRAGMENT_ADDQUESTION, examid)).commit();
                     flFragmentContainerRight.setVisibility(View.GONE);
                     break;
             }
@@ -334,7 +334,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     break;
 
                /* case FRAGMENT_ADDQUESTION:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionFragmentTeacher.newInstance(FRAGMENT_ADDQUESTION)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance(FRAGMENT_ADDQUESTION)).commit();
                     flFragmentContainerRight.setVisibility(View.GONE);
                     break;*/
 
