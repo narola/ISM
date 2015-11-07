@@ -69,6 +69,7 @@ class Exam extends ADMIN_Controller {
 	  									 				)
 	  									 	)
 	  									 );
+		// p($config['total_rows'], true);
 		$config['per_page'] = 15;
 
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
@@ -101,7 +102,7 @@ class Exam extends ADMIN_Controller {
 	  	$this->data['all_exams'] = select(
 	  									 TBL_EXAMS." exam",
 	  									 "exam.id,exam.exam_name,exam.classroom_id,exam.subject_id,exam.exam_type,exam.exam_category,exam.exam_mode,
-	  									 exam.attempt_count,sub.subject_name,sub.subject_image",
+	  									 exam.attempt_count ,sub.subject_name,sub.subject_image,class.class_name, count(user_id) as students_attempted",
 	  									 $where,
 	  									 array(
 	  									 		'order_by'=>$order,
@@ -110,12 +111,22 @@ class Exam extends ADMIN_Controller {
 	  									 		'join'=>array(
 	  									 					array(
 	  									 						'table'=>TBL_SUBJECTS." sub",
-	  									 						'condition'=>'sub.id=exam.subject_id'
+	  									 						'condition'=>'sub.id=exam.subject_id',
+	  									 					),
+	  									 					array(
+	  									 						'table'=>TBL_CLASSROOMS." class",
+	  									 						'condition'=>'class.id=exam.classroom_id',
+	  									 					),
+	  									 					array(
+	  									 						'table'=>TBL_STUDENT_EXAM_SCORE." exam_score",
+	  									 						'condition'=>'exam_score.exam_id=exam.id',
+	  									 						// 'join'=>'right'
 	  									 					)
-	  									 				)
+	  									 				),
+	  									 		'group_by'=>'exam_score.exam_id',
 	  									 	)
 	  									 );
-
+		// qry();
 	    // p($this->data['all_exams'],true);
 
 	  	$this->data['all_subjects'] = select(TBL_SUBJECTS); // Fetch All Subjects 

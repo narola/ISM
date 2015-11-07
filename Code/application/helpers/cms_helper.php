@@ -460,7 +460,7 @@ $diff = $timeSecond - $timeFirst;
   }else if($diff < 86400*2){
     $output = 'yesterday'; 
   }else{
-    $output = date_format( date_create($t), 'M d Y g:i a');
+    $output = date_format( date_create($t), 'M d, Y g:i a');
   }
 return $output; 
 }

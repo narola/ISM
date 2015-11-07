@@ -101,7 +101,7 @@
             </div>
             <div class="exams_holder">
             	<div class="exam_year">
-                	<p>Year : <span>Second Year CS</span></p>
+                	<p>Year : <span><?php echo $exam['class_name']; ?></span></p>
                     <a style="cursor:pointer;" class="icon icon_option_dark"></a>
                     <div class="popover bottom" role="tooltip">
                         <div class="arrow"></div>
@@ -118,7 +118,19 @@
                 	<div class="exam_cat"><p>Category</p><p><?php echo ucfirst($exam['exam_category']); ?></p></div>
                     <div class="clearfix"></div>
                 </div>
-                <div class="exam_attempted"><p><?php echo $exam['attempt_count']; ?> Students Attempted</p></div>
+                <div class="exam_attempted"><p><?php
+                $count = $exam['students_attempted'];
+                    if($count > 1){
+                        echo $count.' Students '; 
+                    }else {
+                        if($count == 0)
+                            echo 'Not Yet ';
+                        else{
+                            echo $count.' Student ';
+                        }
+                    } ?>
+                    Attempted
+                </p></div>
             </div>
          </div>
      	</div>

@@ -44,7 +44,7 @@
             <div class="box">
                 <div class="notice_content">
                     <div class="col-md-12">
-                        <h3><?php echo $value['notice_title'];?><span>Date:<?php $old_date = strtotime($value['created_date']);echo date("M j, Y",$old_date);?></span></h3>
+                        <h3><?php echo $value['notice_title'];?><span><?php $old_date = strtotime($value['created_date']);echo date("M j, Y",$old_date);?></span></h3>
                     </div>
                     <div class="col-sm-12 notice_description">
                         <p><?php echo $value['notice'];?></p>

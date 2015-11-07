@@ -27,7 +27,7 @@ class ISM_Controller extends CI_Controller {
 			  redirect('login');
 
 		} else{
-			$data['error'] = 'Chat and topic exam are bdisabled! Because your group is blocked by admin!';
+			$data['error'] = 'Chat and topic exam are disabled! Because your group is blocked by admin!';
                     $data['redirect'] = '/student/home';
 			$role = $this->session->userdata('role');
 			if($role != 'admin'){
