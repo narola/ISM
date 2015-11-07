@@ -99,7 +99,28 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
             }
         });
 
+        holder.imgPreviewQuestionEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddEditQuestionFragment(position);
+            }
+        });
 
+        holder.imgPreviewQuestionCopy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddEditQuestionFragment(position);
+            }
+        });
+
+
+    }
+
+    private void openAddEditQuestionFragment(int position) {
+
+        ((AddQuestionContainerFragment) mFragment).setQuestionData(listOfPreviewQuestions.get(position));
+        ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
+        ((AddQuestionContainerFragment) mFragment).flipCard();
     }
 
 
