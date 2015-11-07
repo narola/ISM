@@ -2,7 +2,13 @@ package com.ism.author.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +64,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
             tvAddquestionSave, tvAddquestionSaveAddmore;
-    private ImageView imgEditQuestion, imgCopyQuestion, imgDeleteQuestion, imgSelectImage;
+    private ImageView imgEditQuestion, imgCopyQuestion, imgDeleteQuestion, imgSelectImage, imgPlay;
     private EditText etAddquestionTitle, etAddquestionAnswer, etEvaluationNote1, etEvaluationNote2;
     private Spinner spAddquestionType;
     private CheckBox chkAddquestionPreview;
@@ -81,7 +87,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         myTypeFace = new MyTypeFace(getActivity());
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-
         //this is for to set tag..
         tags = new TagsModel[]{
                 new TagsModel("Physics", "1"),
@@ -145,6 +150,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         imgCopyQuestion = (ImageView) view.findViewById(R.id.img_copy_question);
         imgDeleteQuestion = (ImageView) view.findViewById(R.id.img_delete_question);
         imgSelectImage = (ImageView) view.findViewById(R.id.img_select_image);
+        imgSelectImage.setOnClickListener(this);
 
         etAddquestionTitle = (EditText) view.findViewById(R.id.et_addquestion_title);
         etAddquestionAnswer = (EditText) view.findViewById(R.id.et_addquestion_answer);
@@ -173,6 +179,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         spAddquestionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 if (position == 1) {
                     llAddMcqanswer.setVisibility(View.GONE);
                     etAddquestionAnswer.setVisibility(View.VISIBLE);
@@ -191,7 +198,56 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
         });
 
+
+        imgSelectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
+
+
+    //intiGlobalEnds
+
+    Uri selectedUri = null;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data != null) {
+            selectedUri = data.getData();
+            String[] columns = {MediaStore.Images.Media.DATA,
+                    MediaStore.Images.Media.MIME_TYPE};
+
+            Cursor cursor = getActivity().getContentResolver().query(selectedUri, columns, null, null, null);
+            cursor.moveToFirst();
+
+            int pathColumnIndex = cursor.getColumnIndex(columns[0]);
+            int mimeTypeColumnIndex = cursor.getColumnIndex(columns[1]);
+
+            String contentPath = cursor.getString(pathColumnIndex);
+            String mimeType = cursor.getString(mimeTypeColumnIndex);
+            cursor.close();
+
+            if (mimeType.startsWith("image")) {
+                imgSelectImage.setImageURI(selectedUri);
+            } else if (mimeType.startsWith("video")) {
+
+                MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+                mMediaMetadataRetriever.setDataSource(getActivity(), selectedUri);
+                Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+
+                imgSelectImage.setImageBitmap(bitmap);
+                imgPlay.setVisibility(View.VISIBLE);
+
+            }
+
+        }
+    }
+
 
     private void updateTokenConfirmation() {
         StringBuilder sb = new StringBuilder("Current tokens:\n");
@@ -362,17 +418,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void setSpinnerData(String questionType) {
         if (questionType.equalsIgnoreCase("MCQ")) {
-            spAddquestionType.setSelection(2);
+            spAddquestionType.setSelection(3);
             questionAnswersModelArrayList.clear();
             llAddMcqanswer.removeAllViews();
             llAddMcqanswer.setVisibility(View.VISIBLE);
             etAddquestionAnswer.setVisibility(View.GONE);
         } else if (questionType.equalsIgnoreCase("descriptive")) {
-            spAddquestionType.setSelection(0);
+            spAddquestionType.setSelection(1);
             llAddMcqanswer.setVisibility(View.GONE);
             etAddquestionAnswer.setVisibility(View.VISIBLE);
         } else if (questionType.equalsIgnoreCase("'Fill ups'")) {
-            spAddquestionType.setSelection(1);
+            spAddquestionType.setSelection(2);
             llAddMcqanswer.setVisibility(View.GONE);
             etAddquestionAnswer.setVisibility(View.VISIBLE);
         }
@@ -394,6 +450,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             ((AddQuestionContainerFragment) mFragment).flipCard();
         } else if (v == tvAddquestionSaveAddmore) {
 
+        } else if (v == imgSelectImage) {
+            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("*/*");
+            startActivityForResult(intent, 1);
         }
 
     }

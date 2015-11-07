@@ -54,7 +54,6 @@ public class AddQuestionContainerFragment extends Fragment {
         initGlobal();
         if (savedInstanceState == null) {
 
-
             getFragmentManager()
                     .beginTransaction()
                     .add(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
@@ -115,8 +114,7 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
     public void flipCard() {
-
-        Utils.showToast("FLIPCARD CALELD", getActivity());
+        Utils.showToast("FLIPCARD CALLED", getActivity());
         showHideFragment(questionListFragment);
         showHideFragment(questionAddEditFragment);
 
@@ -127,8 +125,6 @@ public class AddQuestionContainerFragment extends Fragment {
         } else {
             isFrontVisible = true;
         }
-
-
     }
 
     private void loadFragmentInRightContainer() {

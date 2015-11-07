@@ -159,9 +159,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             @Override
             public void onClick(View v) {
 
-                ((AddQuestionContainerFragment) mFragment).setQuestionData(listOfQuestions.get(position));
-                ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
-                ((AddQuestionContainerFragment) mFragment).flipCard();
+                openAddEditQuestionFragment(position);
 
             }
         });
@@ -170,15 +168,18 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             @Override
             public void onClick(View v) {
 
-
-                ((AddQuestionContainerFragment) mFragment).setQuestionData(listOfQuestions.get(position));
-                ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
-                ((AddQuestionContainerFragment) mFragment).flipCard();
-
+                openAddEditQuestionFragment(position);
             }
         });
 
 
+    }
+
+    private void openAddEditQuestionFragment(int position) {
+
+        ((AddQuestionContainerFragment) mFragment).setQuestionData(listOfQuestions.get(position));
+        ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
+        ((AddQuestionContainerFragment) mFragment).flipCard();
     }
 
 
