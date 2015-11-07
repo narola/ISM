@@ -45,5 +45,14 @@
     <string name="msg_tag_done">Tag done!</string>
     <string name="msg_success_createassignment">Assignment Created Successfully.</string>
     <string name="msg_success_createexam">Exam Created Successfully.</string>
+    <string name="msg_mcq_ans_limit">You can only add up to 6 MCQ Answers.</string>
+    <string name="msg_wrong_current_pwd">Wrong current password.</string>
+    <string name="msg_validaton_dob"><![CDATA[\n> Please set your date of birth.]]></string>
+    <string name="msg_validation_gender"><![CDATA[\n> Please select your gender.]]></string>
+    <string name="msg_validation_set_dp"><![CDATA[> Please set your Profile picture.]]></string>
+    <string name="msg_school_info_request_sent">Request for school information updation sent to admin successfully.</string>
+    <string name="registration_failed">Registration failed</string>
+    <string name="msg_email_exists">Email id already exists.</string>
+    <string name="msg_username_exists">Username already exists.</string>
 
 </resources>

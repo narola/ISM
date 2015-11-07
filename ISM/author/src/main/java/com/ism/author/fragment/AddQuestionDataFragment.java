@@ -12,7 +12,10 @@ import android.widget.FrameLayout;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.Utils;
+import com.ism.author.interfaces.FlipCardListener;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.model.Data;
 
 
 /**
@@ -20,18 +23,18 @@ import com.ism.author.interfaces.FragmentListener;
  */
 
 
-public class AddQuestionFragment extends Fragment implements FragmentManager.OnBackStackChangedListener {
+public class AddQuestionDataFragment extends Fragment implements FragmentManager.OnBackStackChangedListener, FlipCardListener {
 
-    private static final String TAG = AddQuestionFragment.class.getSimpleName();
+    private static final String TAG = AddQuestionDataFragment.class.getSimpleName();
     private View view;
     private FragmentListener fragListener;
 
-    public static AddQuestionFragment newInstance() {
-        AddQuestionFragment fragAddQuestions = new AddQuestionFragment();
+    public static AddQuestionDataFragment newInstance() {
+        AddQuestionDataFragment fragAddQuestions = new AddQuestionDataFragment();
         return fragAddQuestions;
     }
 
-    public AddQuestionFragment() {
+    public AddQuestionDataFragment() {
         // Required empty public constructor
     }
 
@@ -48,11 +51,12 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
         view = inflater.inflate(R.layout.fragment_add_question, container, false);
         initGlobal();
 
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
-                .addToBackStack(String.valueOf(FRAGMENT_QUESTIONLIST))
-                .commit();
+        if (savedInstanceState == null) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
+                    .commit();
+        }
 
         loadFragmentInRightContainer();
         return view;
@@ -62,7 +66,7 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
 
         previewQuestionFragment = new PreviewQuestionFragment(this);
         questionListFragment = new QuestionListFragment(this);
-        questionAddEditFragment = new QuestionAddEditFragment(this);
+
 
         flAddquestionfragmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
         flAddquestionfragmentContainerRight = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
@@ -96,27 +100,52 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
         fragListener = null;
     }
 
-    public void flipCard() {
-        if (!mShowingBack) {
-            mShowingBack = true;
-            getFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(
-                            R.animator.card_flip_right_in, R.animator.card_flip_right_out,
-                            R.animator.card_flip_left_in, R.animator.card_flip_left_out)
-                    .add(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
-                    .addToBackStack(null)
-                    .commit();
+    private void flipCard(Boolean isSetData, Data data) {
 
-        } else {
 
-            getFragmentManager().popBackStack();
-            mShowingBack = false;
+        if (mShowingBack) {
+            Utils.showToast("FRAGMENT BACKSTACK CALLED", getActivity());
+//            getFragmentManager().popBackStack();
 
         }
 
+        questionAddEditFragment = new QuestionAddEditFragment(this, isSetData, data);
 
+        // Flip to the back.
+
+        mShowingBack = true;
+
+        // Create and commit a new fragment transaction that adds the fragment for the back of
+        // the card, uses custom animations, and is part of the fragment manager's back stack.
+
+        getFragmentManager()
+                .beginTransaction()
+
+                        // Replace the default fragment animations with animator resources representing
+                        // rotations when switching to the back of the card, as well as animator
+                        // resources representing rotations when flipping back to the front (e.g. when
+                        // the system Back button is pressed).
+                .setCustomAnimations(
+                        R.animator.card_flip_right_in, R.animator.card_flip_right_out,
+                        R.animator.card_flip_left_in, R.animator.card_flip_left_out)
+
+                        // Replace any fragments currently in the container view with a fragment
+                        // representing the next page (indicated by the just-incremented currentPage
+                        // variable).
+                .replace(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
+
+                        // Add this transaction to the back stack, allowing users to press Back
+                        // to get to the front of the card.
+                .addToBackStack(null)
+
+                        // Commit the transaction.
+                .commit();
+
+        if (isSetData) {
+            questionAddEditFragment.setQuestionData(data);
+        }
     }
+
 
     private void loadFragmentInRightContainer() {
         try {
@@ -131,6 +160,15 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
 
     @Override
     public void onBackStackChanged() {
-        getFragmentManager().popBackStack();
+
+
     }
+
+    @Override
+    public void onFlipCard(Boolean isSetData, Data data) {
+
+        flipCard(isSetData, data);
+    }
+
+
 }

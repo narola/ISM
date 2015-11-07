@@ -17,8 +17,9 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Utils;
-import com.ism.author.fragment.AddQuestionFragment;
+import com.ism.author.fragment.AddQuestionDataFragment;
 import com.ism.author.helper.MyTypeFace;
+import com.ism.author.interfaces.FlipCardListener;
 import com.ism.author.model.Data;
 import com.ism.author.model.QuestionAnswersModel;
 
@@ -45,6 +46,8 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     MyTypeFace myTypeFace;
 
     Fragment mFragment;
+
+    FlipCardListener flipCardListener;
 
 
     public QuestionBankListAdapter(Context context, Fragment fragment) {
@@ -144,7 +147,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             @Override
             public void onClick(View v) {
 
-                if (!((AddQuestionFragment) mFragment).previewQuestionFragment.listOfPreviewQuestions.contains(listOfQuestions.get(position))) {
+                if (!((AddQuestionDataFragment) mFragment).previewQuestionFragment.listOfPreviewQuestions.contains(listOfQuestions.get(position))) {
 
                     if (holder.chkSelectQuestion.isChecked()) {
                         listOfQuestions.get(position).setIsQuestionAddedInPreview(true);
@@ -160,6 +163,27 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                 }
                 notifyDataSetChanged();
 
+
+            }
+        });
+
+        holder.imgQuestionCopy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                flipCardListener = (FlipCardListener) mFragment;
+                flipCardListener.onFlipCard(true, listOfQuestions.get(position));
+
+            }
+        });
+
+        holder.imgQuestionEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                flipCardListener = (FlipCardListener) mFragment;
+                flipCardListener.onFlipCard(true, listOfQuestions.get(position));
 
             }
         });

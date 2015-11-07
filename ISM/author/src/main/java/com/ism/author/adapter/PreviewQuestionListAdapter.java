@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Utils;
-import com.ism.author.fragment.AddQuestionFragment;
+import com.ism.author.fragment.AddQuestionDataFragment;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.QuestionAnswersModel;
 import com.ism.author.model.Data;
@@ -93,7 +93,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
             public void onClick(View v) {
 
 
-                ((AddQuestionFragment) mFragment).questionListFragment.updateViewAfterDeleteInPreviewQuestion(listOfPreviewQuestions.get(position));
+                ((AddQuestionDataFragment) mFragment).questionListFragment.updateViewAfterDeleteInPreviewQuestion(listOfPreviewQuestions.get(position));
                 listOfPreviewQuestions.remove(listOfPreviewQuestions.get(position));
                 notifyDataSetChanged();
 

@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
-import com.ism.author.fragment.AddQuestionFragment;
+import com.ism.author.fragment.AddQuestionDataFragment;
 import com.ism.author.fragment.BooksFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.OfficeFragment;
@@ -260,7 +260,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
 
                     mFragmentTransaction = mFragmentManager.beginTransaction();
-                    mFragmentTransaction.add(R.id.fl_fragment_container_main, AddQuestionFragment.newInstance());
+                    mFragmentTransaction.add(R.id.fl_fragment_container_main, AddQuestionDataFragment.newInstance());
                     mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_ADDQUESTION));
                     mFragmentTransaction.commit();
 

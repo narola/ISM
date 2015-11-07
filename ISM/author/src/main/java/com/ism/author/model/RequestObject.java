@@ -25,6 +25,19 @@ public class RequestObject {
     private int countryId;
     private String contactNumber;
     private String emailAddress;
+    private String name;
+    private String message;
+
+    private String profileImage;
+    private int courseId;
+    private int schoolId;
+    private String deviceToken;
+    private String academicYear;
+    private String profileImageName;
+    private String birthdate;
+    private String gender;
+    private String deviceType;
+    private String roleId;
 
 
     private String feedId;
@@ -538,6 +551,116 @@ public class RequestObject {
     @JsonProperty("email_address")
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    @JsonProperty("message")
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getProfileImage() {
+        return this.profileImage;
+    }
+
+    @JsonProperty("profile_image")
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+
+    public int getCourseId() {
+        return this.courseId;
+    }
+
+    @JsonProperty("course_id")
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public int getSchoolId() {
+        return this.schoolId;
+    }
+
+    @JsonProperty("school_id")
+    public void setSchoolId(int schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    public String getDeviceToken() {
+        return this.deviceToken;
+    }
+
+    @JsonProperty("device_token")
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
+    }
+
+    public String getAcademicYear() {
+        return this.academicYear;
+    }
+
+    @JsonProperty("academic_year")
+    public void setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
+    }
+
+    public String getProfileImageName() {
+        return this.profileImageName;
+    }
+
+    @JsonProperty("profile_image_name")
+    public void setProfileImageName(String profileImageName) {
+        this.profileImageName = profileImageName;
+    }
+
+    public String getBirthdate() {
+        return this.birthdate;
+    }
+
+    @JsonProperty("birthdate")
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getGender() {
+        return this.gender;
+    }
+
+    @JsonProperty("gender")
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDeviceType() {
+        return this.deviceType;
+    }
+
+    @JsonProperty("device_type")
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
+
+    public String getRoleId() {
+        return this.roleId;
+    }
+
+    @JsonProperty("role_id")
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
 

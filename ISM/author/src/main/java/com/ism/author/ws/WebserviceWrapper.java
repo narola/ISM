@@ -75,6 +75,14 @@ public class WebserviceWrapper {
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_CITIES, ResponseObject.class, requestObject);
                         break;
 
+                    case WebConstants.REQUESTSCHOOLINFO:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_REQUEST_SCHOOL_INFO, ResponseObject.class, requestObject);
+                        break;
+
+                    case WebConstants.REGISTERUSER:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_REGISTER_USER, ResponseObject.class, requestObject);
+                        break;
+
                     case WebConstants.GETALLFEEDS:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GETALLFEEDS, ResponseObject.class, requestObject);
                         break;

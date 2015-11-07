@@ -37,6 +37,8 @@ public class WebConstants {
     public static final int GETALLEXAM = 21;
     public static final int GETEXAMSUBMISSION = 22;
     public static final int SETQUESTIONSFOREXAM = 23;
+    public static final int REQUESTSCHOOLINFO = 24;
+    public static final int REGISTERUSER = 25;
 
 
     //	webservice url
@@ -46,6 +48,8 @@ public class WebConstants {
     public static final String URL_GET_COUNTRIES = URL_ARTI_HOST + "GetCountries";
     public static final String URL_GET_STATES = URL_ARTI_HOST + "GetStates";
     public static final String URL_GET_CITIES = URL_ARTI_HOST + "GetCities";
+    public static final String URL_REQUEST_SCHOOL_INFO = URL_ARTI_HOST + "RequestForSchoolInfoUpdation";
+    public static final String URL_REGISTER_USER = URL_ARTI_HOST + "RegisterUser";
     public static final String URL_GETALLFEEDS = URL_ARTI_HOST + "GetAllFeeds";
     public static final String URL_ADDCOMMENT = URL_ARTI_HOST + "AddComment";
     public static final String URL_GETSTUDYMATES = URL_ARTI_HOST + "GetStudymates";

@@ -19,6 +19,7 @@ import com.ism.author.adapter.QuestionBankListAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
+import com.ism.author.interfaces.FlipCardListener;
 import com.ism.author.model.Data;
 import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
@@ -246,19 +247,24 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
     }
 
+    FlipCardListener flipCardListener;
+
     @Override
     public void onClick(View v) {
 
         if (v == tvQuestionlistAddPreview) {
             if (questionBankListAdapter.getListOfPreviewQuestionsToAdd().size() > 0) {
-                ((AddQuestionFragment) mFragment).previewQuestionFragment.addQuestionsToPreviewFragment(questionBankListAdapter.getListOfPreviewQuestionsToAdd());
+                ((AddQuestionDataFragment) mFragment).previewQuestionFragment.addQuestionsToPreviewFragment(questionBankListAdapter.getListOfPreviewQuestionsToAdd());
                 questionBankListAdapter.getListOfPreviewQuestionsToAdd().clear();
             } else {
                 Utils.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
 
             }
         } else if (v == tvQuestionlistAddNewQuestion) {
-            ((AddQuestionFragment) mFragment).flipCard();
+
+            flipCardListener = (FlipCardListener) mFragment;
+            flipCardListener.onFlipCard(false, null);
+
 
         }
 
@@ -268,8 +274,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         int position = listOfQuestionBank.indexOf(data);
         listOfQuestionBank.get(position).setIsQuestionAddedInPreview(false);
         questionBankListAdapter.addAll(listOfQuestionBank);
-        ((AddQuestionFragment) mFragment).previewQuestionFragment.listOfPreviewQuestions.remove(data);
-
-
+        ((AddQuestionDataFragment) mFragment).previewQuestionFragment.listOfPreviewQuestions.remove(data);
     }
+
+
 }
