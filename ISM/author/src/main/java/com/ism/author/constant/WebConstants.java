@@ -1,7 +1,7 @@
 package com.ism.author.constant;
 
 /**
- * c162
+ * these is the common class for all the api related url.
  */
 public class WebConstants {
 
@@ -9,7 +9,6 @@ public class WebConstants {
     public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
 
-    //    path
     public static final String FEED_MEDIA = "http://192.168.1.162/ISM/WS_ISM/Feeds/";
     public static final String USER_IMAGES = "http://192.168.1.162/ISM/WS_ISM/Images/";
 
@@ -38,8 +37,11 @@ public class WebConstants {
     public static final int GETALLEXAM = 21;
     public static final int GETEXAMSUBMISSION = 22;
     public static final int SETQUESTIONSFOREXAM = 23;
-    public static final int GETEXAMEVALUATIONS = 24;
-    public static final int GETEXAMQUESTIONS=25;
+    public static final int REQUESTSCHOOLINFO = 24;
+    public static final int REGISTERUSER = 25;
+    public static final int GETEXAMEVALUATIONS = 26;
+    public static final int GETEXAMQUESTIONS = 27;
+
 
     //	webservice url
     public static final String URL_LOGIN = URL_ARTI_HOST + "AuthenticateUser";
@@ -48,6 +50,8 @@ public class WebConstants {
     public static final String URL_GET_COUNTRIES = URL_ARTI_HOST + "GetCountries";
     public static final String URL_GET_STATES = URL_ARTI_HOST + "GetStates";
     public static final String URL_GET_CITIES = URL_ARTI_HOST + "GetCities";
+    public static final String URL_REQUEST_SCHOOL_INFO = URL_ARTI_HOST + "RequestForSchoolInfoUpdation";
+    public static final String URL_REGISTER_USER = URL_ARTI_HOST + "RegisterUser";
     public static final String URL_GETALLFEEDS = URL_ARTI_HOST + "GetAllFeeds";
     public static final String URL_ADDCOMMENT = URL_ARTI_HOST + "AddComment";
     public static final String URL_GETSTUDYMATES = URL_ARTI_HOST + "GetStudymates";
@@ -71,7 +75,7 @@ public class WebConstants {
     public static final String STATUS_SUCCESS = "success";
     public static final String STATUS_FAILED = "failed";
 
-    //these are the temparory data for testing
+    //these are the temparory questionData for testing
 
     public static final String TEST_USER_ID = "370";
     public static final String TEST_GET_ALL_FEEDS = "141";

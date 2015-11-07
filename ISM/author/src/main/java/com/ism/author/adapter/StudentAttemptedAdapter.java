@@ -15,7 +15,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.StudentAttemptedFragment;
-import com.ism.author.fragment.TrialExamDetailFragment;
+import com.ism.author.fragment.TrialExamObjectiveDetailFragment;
 import com.ism.author.helper.CircleImageView;
 import com.ism.author.helper.ImageLoaderInit;
 import com.ism.author.helper.MyTypeFace;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
  */
 public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttemptedAdapter.Viewholder> implements WebserviceWrapper.WebserviceResponse {
     ArrayList<Data> arrayList = new ArrayList<Data>();
-    ResponseObject responseObject;
+    ResponseObject resObjStudentAttempted;
     private Context context;
     Fragment fragment;
     LayoutInflater inflater;
@@ -40,11 +40,11 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     ImageLoader imageLoader;
     private static String TAG = StudentAttemptedAdapter.class.getSimpleName();
     private int lastSelected = -1;
-    private ResponseObject responseObjectEval;
     private String studentName;
+    private ResponseObject responseObjectEval;
 
-    public StudentAttemptedAdapter(ResponseObject responseObject, Context context, Fragment fragment) {
-        this.responseObject = responseObject;
+    public StudentAttemptedAdapter(ResponseObject resObjStudentAttempted, Context context, Fragment fragment) {
+        this.resObjStudentAttempted = resObjStudentAttempted;
         this.context = context;
         this.fragment = fragment;
         inflater = LayoutInflater.from(context);
@@ -63,7 +63,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 
     @Override
     public void onBindViewHolder(final Viewholder viewholder, final int position) {
-        final ArrayList<Data> arrayList = responseObject.getData().get(0).getEvaluations();
+        final ArrayList<Data> arrayList = resObjStudentAttempted.getData().get(0).getEvaluations();
         try {
             // Debug.i(TAG, "FullName:" + arrayList.get(position).getFullName());
             studentName = arrayList.get(position).getFullName();
@@ -95,12 +95,16 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                     }
                     if (arrayList.get(position).isFlagged()) {
                         ((AuthorHostActivity) context).startProgress();
-                          callAPIStudentEvaluations(arrayList.get(position).getStudentId(), responseObject.getData().get(0).getExamID(), studentName);
+                          callAPIStudentEvaluations(arrayList.get(position).getStudentId(), resObjStudentAttempted.getData().get(0).getExamID(), studentName);
+                    }
+                    else{
+                        ((AuthorHostActivity) context).startProgress();
+                        TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context,fragment,null);
+                        TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
+                        trialExamDetailsAdapter.notifyDataSetChanged();
+                        ((AuthorHostActivity) context).stopProgress();
                     }
                     notifyDataSetChanged();
-//                    if (arrayList.get(position).isFlagged()){
-//                        viewholder.txt
-//                    }
 
 
                 }
@@ -118,7 +122,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                 ((AuthorHostActivity) context).startProgress();
                 RequestObject requestObject = new RequestObject();
                 requestObject.setStudentId("202");
-                requestObject.setExamId("9");
+                requestObject.setExamId("3");
                 new WebserviceWrapper(context, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } else {
@@ -133,29 +137,30 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 
     @Override
     public long getItemId(int position) {
-        return responseObject.getData().get(0).getEvaluations().size();
+        return resObjStudentAttempted.getData().get(0).getEvaluations().size();
     }
 
     @Override
     public int getItemCount() {
-        return responseObject.getData().get(0).getEvaluations().size();
+        return resObjStudentAttempted.getData().get(0).getEvaluations().size();
     }
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
         try {
             ((AuthorHostActivity) context).stopProgress();
-            responseObjectEval = (ResponseObject) object;
-            if (API_METHOD == WebConstants.GETEXAMEVALUATIONS) {
-                if (responseObjectEval.getStatus().equals(WebConstants.STATUS_SUCCESS)) {
-                    if (responseObjectEval.getData().get(0).getEvaluations().size() != 0) {
 
+            if (API_METHOD == WebConstants.GETEXAMEVALUATIONS) {
+                ResponseObject responseObject = (ResponseObject) object;
+                if (responseObject.getStatus().equals(WebConstants.STATUS_SUCCESS)) {
+                    if (responseObject.getData().get(0).getEvaluations().size() != 0) {
+                        responseObjectEval= responseObject;
                         TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context,fragment,responseObjectEval);
-                        TrialExamDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
+                        TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
                         trialExamDetailsAdapter.notifyDataSetChanged();
                     }
                 } else {
-                    Debug.i(TAG, "Response :" + WebConstants.GETEXAMEVALUATIONS + " :" + responseObjectEval.getStatus());
+                    Debug.i(TAG, "Response :" + WebConstants.GETEXAMEVALUATIONS + " :" + resObjStudentAttempted.getStatus());
                 }
             }
 

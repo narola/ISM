@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.activity.TeacherHomeActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.AppConstant;
@@ -229,7 +228,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
     private void callApiGetClassRooms() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCLASSROOMS);
@@ -237,14 +236,14 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
                 //   Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
 
     private void callApiGetSubjects() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
@@ -252,14 +251,14 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
                 // Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
 
     private void callApiGetTopics(int subject_id) {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 RequestObject getTopicsRequest = new RequestObject();
                 getTopicsRequest.setSubjectId(subject_id);
@@ -269,14 +268,14 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
                 //  Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
 
     private void callApiCreateAssignment() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
 
             try {
 
@@ -299,7 +298,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 //                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
@@ -395,10 +394,10 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
         ResponseObject createAssignmentResponseObject = (ResponseObject) object;
         if (createAssignmentResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && createAssignmentResponseObject != null) {
             backToTrialScreen();
-            Utils.showToast(createAssignmentResponseObject.getMessage(), getActivity());
+            Utility.showToast(createAssignmentResponseObject.getMessage(), getActivity());
 
         } else {
-            Utils.showToast(createAssignmentResponseObject.getMessage(), getActivity());
+            Utility.showToast(createAssignmentResponseObject.getMessage(), getActivity());
         }
 
     }
@@ -421,7 +420,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
         } else {
 
             Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
-            Utils.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
+            Utility.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
         }
     }
 
@@ -442,7 +441,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
             Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects);
 
         } else {
-            Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
+            Utility.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
         }
     }
 
@@ -461,7 +460,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
             callApiGetSubjects();
 
         } else {
-            Utils.showToast(callGetClassRoomsResponseObject.getMessage(), getActivity());
+            Utility.showToast(callGetClassRoomsResponseObject.getMessage(), getActivity());
         }
 
     }

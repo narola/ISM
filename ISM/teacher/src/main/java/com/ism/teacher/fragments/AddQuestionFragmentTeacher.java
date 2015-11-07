@@ -89,10 +89,12 @@ public class AddQuestionFragmentTeacher extends Fragment {
         super.onDetach();
     }
 
-    public void flipCard() {
+    public void flipCard(Bundle dataForEdit) {
+        if (dataForEdit != null) {
 
-//        if (!mShowingBack) {
-//            mShowingBack = true;
+            questionAddEditFragment.setArguments(dataForEdit);
+        }
+
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(
@@ -101,15 +103,6 @@ public class AddQuestionFragmentTeacher extends Fragment {
                 .replace(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
                 .addToBackStack(null)
                 .commit();
-        //loadFragment(FRAGMENT_QUESTIONADDEDIT);
-
-//        } else {
-//
-//            getFragmentManager().popBackStack();
-//            mShowingBack = false;
-
-//        }
-
     }
 
 
@@ -124,14 +117,10 @@ public class AddQuestionFragmentTeacher extends Fragment {
 
     }
 
-    public String getExam_id()
-    {
-        if(!exam_id.equalsIgnoreCase(""))
-        {
+    public String getExam_id() {
+        if (!exam_id.equalsIgnoreCase("")) {
             return exam_id;
-        }
-        else
-        {
+        } else {
             return "";
         }
     }

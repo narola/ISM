@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
-import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.PreviewQuestionListAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
@@ -95,7 +95,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
                     callFreezeQuestionApi();
                 }
-                Utils.showToast(((AddQuestionFragmentTeacher) mFragment).getExam_id(), getActivity());
+                Utility.showToast(((AddQuestionFragmentTeacher) mFragment).getExam_id(), getActivity());
 //                        ((AddQuestionFragmentTeacher) mFragment).getExam_id();
             }
         });
@@ -103,7 +103,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
     public void callFreezeQuestionApi() {
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.SET_QUESTIONS_FOR_EXAM);
@@ -111,7 +111,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 // Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
     }
 
@@ -136,10 +136,10 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 ResponseObject callGetFreezeQuesytionResponseObject = (ResponseObject) object;
                 if (callGetFreezeQuesytionResponseObject != null && callGetFreezeQuesytionResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS)) {
 
-                    Utils.showToast("Freeze question successful", getActivity());
+                    Utility.showToast("Freeze question successful", getActivity());
 
                 } else {
-                    Utils.showToast("Freeze question not successful", getActivity());
+                    Utility.showToast("Freeze question not successful", getActivity());
                 }
 
             }

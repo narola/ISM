@@ -61,6 +61,9 @@
     <string name="strevaluationnotes">Evaluation Notes</string>
     <string name="straddquestiontopreview">Add Question to preview</string>
     <string name="strsaveandaddmore">Save &amp; Add More</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
 
     <string-array name="list">
         <item>1</item>
@@ -100,7 +103,7 @@
     <string name="strmyactivity">My activity</string>
 
 
-    <!--these are the dummy data strings-->
+    <!--these are the dummy questionData strings-->
 
      
     <string name="emaamall">Emma Mall</string>
@@ -115,7 +118,6 @@
 
     <string name="strmydesk">My Desk</string>
     <string name="strgotrending">Go Trending</string>
-    <string name="strtrial">Trial</string>
     <string name="strmy30th">My 30th</string>
     <string name="strassessment">Assessment</string>
 
@@ -230,6 +232,7 @@
     </string-array>
 
     <string-array name="question_type">
+        <item>Question Type</item>
         <item>Text</item>
         <item>Paragraph text</item>
         <item>Multiple Choice</item>
@@ -276,6 +279,8 @@
     <string name="strevoluations_notes">Evoluations Notes :</string>
     <string name="strsolutions">Solutions :</string>
     <string name="strStudentAttempted">Student Attempted</string>
+    <string name="strScore">Score</string>
+    <string name="strComments">Comments</string>
 
 
 </resources>

@@ -73,7 +73,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_gravity=""
                 android:layout_marginRight="10dp"
-                android:background="@drawable/ic_home_active" />
+                android:background="@drawable/ic_home_active_teacher" />
         </RelativeLayout>
 
 

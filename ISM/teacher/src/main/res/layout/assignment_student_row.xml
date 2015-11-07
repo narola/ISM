@@ -86,7 +86,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="10dp">
 
-                <com.ism.teacher.helper.CircleImageView
+                <com.ism.teacher.views.CircleImageView
                     android:id="@+id/img_dp_commenter"
                     android:layout_width="@dimen/d70dp"
                     android:layout_height="@dimen/d70dp"

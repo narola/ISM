@@ -55,7 +55,7 @@ public class OfficeFragment extends Fragment {
     private void initGlobal() {
 
 
-        officeTabDataSet.setOfficeTabTitleList(new String[]{getString(R.string.strmydesk), getString(R.string.strgotrending), getString(R.string.strtrial),
+        officeTabDataSet.setOfficeTabTitleList(new String[]{getString(R.string.strmydesk), getString(R.string.strgotrending), getString(R.string.strTrial),
                 getString(R.string.strmy30th), getString(R.string.strassessment)});
         officeTabDataSet.setOfficeTabInfoList(new String[]{getString(R.string.strmydeskinfo), getString(R.string.strgotrendinginfo),
                 getString(R.string.strtrialinfo), getString(R.string.strmy30thinfo), getString(R.string.strassessmentinfo)});
@@ -107,7 +107,7 @@ public class OfficeFragment extends Fragment {
                 break;
             case FRAGMENT_TRIAL_EXAM_DETAILS:
                 currentFragment = fragment;
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
 
                 break;
         }

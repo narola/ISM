@@ -1,7 +1,7 @@
 package com.ism.author.model;
 
 /**
- * these is the set data class for office tab.
+ * these is the set questionData class for office tab.
  */
 public class OfficeTabDataSet {
 

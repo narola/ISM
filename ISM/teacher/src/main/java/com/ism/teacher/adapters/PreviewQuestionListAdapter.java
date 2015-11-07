@@ -12,9 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-
-
-import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.fragments.AddQuestionFragmentTeacher;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.AnswersModel;
@@ -154,7 +152,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         v = layoutInflater.inflate(R.layout.row_mcq_question_answer, null, false);
         TextView tvMcqQuestionAns = (TextView) v.findViewById(R.id.tv_mcq_question_ans);
         tvMcqQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
-        tvMcqQuestionAns.setText(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText());
+        tvMcqQuestionAns.setText(Utility.getCharForNumber(position + 1) + ": " + answer.getChoiceText());
 
         return v;
     }

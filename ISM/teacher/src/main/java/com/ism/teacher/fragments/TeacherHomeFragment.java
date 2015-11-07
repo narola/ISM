@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.ism.teacher.PostActivity;
 import com.ism.teacher.R;
-import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHomeActivity;
 import com.ism.teacher.adapters.PostFeedsAdapter;
 import com.ism.teacher.adapters.TagStudyMatesAdapter;
@@ -88,7 +88,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     private void initGlobal(View rootview) {
         recyclerviewPost = (RecyclerView) rootview.findViewById(R.id.recyclerview_post);
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             callAllFeedsApi();
         }
 
@@ -177,7 +177,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
                         Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Utils.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
+                    Utility.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
                 }
 
 
@@ -194,7 +194,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
                         Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Utils.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
+                    Utility.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
                 }
 
 
@@ -213,7 +213,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
                         Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Utils.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
+                    Utility.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
 
                 }
 
@@ -232,7 +232,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
 
                 } else {
-                    Utils.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
+                    Utility.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
 
                 }
 
@@ -248,7 +248,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
                         Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+                    Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
 
                 }
 
@@ -272,7 +272,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     public void callGetStudyMates() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
 
             try {
                 GetAllFeedsTeacherRequest getAllFeedsRequest = new GetAllFeedsTeacherRequest();
@@ -286,12 +286,12 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
                 // Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
     }
 
     public void callTagFriendInFeed() {
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), tagFriendInFeedRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.TAG_FRIEND_IN_FEED);
@@ -299,7 +299,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
                 // Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
+            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
         }
 
     }
@@ -332,7 +332,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
         unlikePrefData = PreferenceData.getStringPrefs(PreferenceData.UNLIKE_ID_LIST, getActivity(), "");
 
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isInternetConnected(getActivity())) {
             try {
                 LIkeFeedRequest likeFeedRequest = new LIkeFeedRequest();
                 likeFeedRequest.setUser_id(AppConstant.TEST_USER_ID);

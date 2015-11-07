@@ -22,7 +22,7 @@ public class UploadFileToServer
 //
 //        holder.img_status_back.setBackgroundColor(context.getResources().getColor(R.color.color_blue));
 //
-//        lyfData.mediaStatus = AppConstant.Status_Uploading;
+//        lyfData.mediaStatus = AppConstant.STATUS_UPLOADING;
 //
 //
 //        Log.e(TAG, "UploadFileToServer = " + lyfData.mediaStatus);
@@ -269,17 +269,17 @@ public class UploadFileToServer
 //
 //            if (response.getStatus() == 1) {
 //
-//                UploadData data = response.getData();
+//                UploadData questionData = response.getQuestionData();
 //
-//                if (data != null) {
+//                if (questionData != null) {
 //
-//                    if (data.getMedia_name().length() > 0) {
+//                    if (questionData.getMedia_name().length() > 0) {
 //
 //                        try {
 //
 //                            lyfData.mediaStatus = AppConstants.MediaStatus.Status_Uploaded;
 //
-//                            lyfData.media_name = data.getMedia_name();
+//                            lyfData.media_name = questionData.getMedia_name();
 //
 //                            sendMediaNotification();
 //

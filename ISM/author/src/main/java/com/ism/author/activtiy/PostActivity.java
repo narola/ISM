@@ -426,34 +426,34 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
 
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Connection", "Keep-Alive");
-            conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+            conn.setRequestProperty("ENCTYPE", "multipart/form-questionData");
+            conn.setRequestProperty("Content-Type", "multipart/form-questionData;boundary=" + boundary);
             //conn.setRequestProperty("mediaFile", fileName);
             dos = new DataOutputStream(conn.getOutputStream());
             dos.writeBytes(twoHyphens + boundary + lineEnd);
             //dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=\"mediaFile\";filename=\"" + sourceFile.getName() + "\"" + lineEnd);
+            dos.writeBytes("Content-Disposition: form-questionData; name=\"mediaFile\";filename=\"" + sourceFile.getName() + "\"" + lineEnd);
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
 
-            //dos.writeBytes("Content-Disposition: form-data; name=\"feed_by1\""+ lineEnd);
+            //dos.writeBytes("Content-Disposition: form-questionData; name=\"feed_by1\""+ lineEnd);
             dos.writeBytes(lineEnd);
             // dos.writeBytes("370");
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
 
-            dos.writeBytes("Content-Disposition: form-data; name=\"feed_id\"" + lineEnd);
+            dos.writeBytes("Content-Disposition: form-questionData; name=\"feed_id\"" + lineEnd);
             dos.writeBytes(lineEnd);
             dos.writeBytes(feed_id);
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
 
-            dos.writeBytes("Content-Disposition: form-data; name=\"mediaType\"" + lineEnd);
+            dos.writeBytes("Content-Disposition: form-questionData; name=\"mediaType\"" + lineEnd);
             dos.writeBytes(lineEnd);
             dos.writeBytes(type);
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=\"feed_by\"" + lineEnd);
+            dos.writeBytes("Content-Disposition: form-questionData; name=\"feed_by\"" + lineEnd);
             dos.writeBytes(lineEnd);
             dos.writeBytes(feed_by);
             dos.writeBytes(lineEnd);
@@ -477,7 +477,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 bytesRead = fileInputStream.read(buffer, 0, bufferSize);
             }
 
-            // send multipart form data necesssary after file data...
+            // send multipart form questionData necesssary after file questionData...
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
@@ -793,10 +793,10 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 Locale.getDefault()).format(new Date());
         File mediaFile;
         if (type == CAPTURE_IMAGE) {
-            mediaFile = new File(AppConstant.imageCapturePath + File.separator
+            mediaFile = new File(AppConstant.IMAGE_CAPTURE_PATH + File.separator
                     + "IMG_" + timeStamp + ".jpg");
         } else if (type == CAPTURE_VIDEO) {
-            mediaFile = new File(AppConstant.videoCapturePath + File.separator
+            mediaFile = new File(AppConstant.VIDEO_CAPTURE_PATH + File.separator
                     + "VID_" + timeStamp + ".mp4");
         } else {
             return null;
@@ -808,12 +808,12 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
                 Locale.getDefault()).format(new Date());
-        mFileName = AppConstant.audioCapturePath + File.separator + "AUDIO_" + timeStamp + ".3gpp";
+        mFileName = AppConstant.AUDIO_CAPTURE_PATH + File.separator + "AUDIO_" + timeStamp + ".3gpp";
         return mFileName;
     }
 
     public void makeDirectories() {
-        File mediaStorageDir = new File(AppConstant.audioCapturePath + File.separator);
+        File mediaStorageDir = new File(AppConstant.AUDIO_CAPTURE_PATH + File.separator);
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -821,7 +821,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                         + "ISM" + " directory");
             }
         }
-        mediaStorageDir = new File(AppConstant.imageCapturePath + File.separator);
+        mediaStorageDir = new File(AppConstant.IMAGE_CAPTURE_PATH + File.separator);
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -830,7 +830,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
 
             }
         }
-        mediaStorageDir = new File(AppConstant.videoCapturePath + File.separator);
+        mediaStorageDir = new File(AppConstant.VIDEO_CAPTURE_PATH + File.separator);
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {

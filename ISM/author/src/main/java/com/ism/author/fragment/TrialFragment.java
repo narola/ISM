@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -56,18 +55,18 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     private void onClicks() {
-        gridExams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
-
-            }
-        });
+//        gridExams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                arrayList.getItem(position);
+////                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
+//
+//            }
+//        });
     }
 
     private void initGlobal() {
         gridExams = (GridView) view.findViewById(R.id.grid_trial);// The number of Columns
-
         RequestObject requestObject = new RequestObject();
         requestObject.setRole("4");
         requestObject.setUserId("370");
@@ -110,14 +109,15 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
         ((AuthorHostActivity) getActivity()).stopProgress();
         try {
             ResponseObject responseObject = (ResponseObject) object;
-
-            if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
-                if (responseObject.getData().size()!=0) {
-                    arrayList = new TrialExamsAdapter(getActivity(), responseObject, this);
-                    gridExams.setAdapter(arrayList);
+            if (API_METHOD == WebConstants.GETALLEXAM) {
+                if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+                    if (responseObject.getData().size() != 0) {
+                        arrayList = new TrialExamsAdapter(getActivity(), responseObject, this);
+                        gridExams.setAdapter(arrayList);
+                    }
+                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+                    Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
                 }
-            } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
-                Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
             Log.i(TAG, e.toString() + "");
@@ -126,8 +126,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
 
     }
 
-    public void hadleClick(int position) {
-        ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_DETAILS);
-//    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,TrialExamDetailFragment.newInstance()).commit();
-    }
+//    public void hadleClick(int position) {
+//        ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
+//    }
 }

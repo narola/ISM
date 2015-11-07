@@ -2,8 +2,8 @@ package com.ism.teacher.adapters;
 
 import android.app.Fragment;
 import android.content.Context;
-
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -17,8 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-
-import com.ism.teacher.Utility.Utils;
+import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.fragments.AddQuestionFragmentTeacher;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.AnswersModel;
@@ -55,6 +55,17 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     }
 
+    public void addAll(ArrayList<Data> data) {
+        try {
+            this.listOfQuestions.clear();
+            this.listOfQuestions.addAll(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        notifyDataSetChanged();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -64,6 +75,32 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         View questionListview = inflater.inflate(R.layout.row_questionlist_teacher, parent, false);
         ViewHolder viewHolder = new ViewHolder(questionListview);
         return viewHolder;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvQuestionNo, tvQuestionCategory, tvQuestionCreatedby, tvQuestion, tvQuestionAns;
+        LinearLayout llQuestionAnswers;
+        ImageView imgDropdownViewAnswer, imgQuestionEdit, imgQuestionCopy, imgQuestionAddtofavourite;
+        CheckBox chkSelectQuestion;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            tvQuestionNo = (TextView) itemView.findViewById(R.id.tv_question_no);
+            tvQuestionCategory = (TextView) itemView.findViewById(R.id.tv_question_category);
+            tvQuestionCreatedby = (TextView) itemView.findViewById(R.id.tv_question_createdby);
+            tvQuestion = (TextView) itemView.findViewById(R.id.tv_question);
+            tvQuestionAns = (TextView) itemView.findViewById(R.id.tv_question_ans);
+
+            llQuestionAnswers = (LinearLayout) itemView.findViewById(R.id.ll_question_answers);
+
+            imgDropdownViewAnswer = (ImageView) itemView.findViewById(R.id.img_dropdown_view_answer);
+            imgQuestionEdit = (ImageView) itemView.findViewById(R.id.img_question_edit);
+            imgQuestionCopy = (ImageView) itemView.findViewById(R.id.img_question_copy);
+            imgQuestionAddtofavourite = (ImageView) itemView.findViewById(R.id.img_question_addtofavourite);
+
+            chkSelectQuestion = (CheckBox) itemView.findViewById(R.id.chk_select_question);
+        }
     }
 
     @Override
@@ -167,50 +204,24 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         });
 
 
+        holder.imgQuestionCopy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Bundle args = new Bundle();
+                args.putSerializable(AppConstant.BUNDLE_EDIT_QUESTION_FRAGMENT, listOfQuestions.get(position));
+                ((AddQuestionFragmentTeacher) mFragment).flipCard(args);
+            }
+        });
+
     }
 
-
-    public void addAll(ArrayList<Data> data) {
-        try {
-            this.listOfQuestions.clear();
-            this.listOfQuestions.addAll(data);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getItemCount() {
         return listOfQuestions.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvQuestionNo, tvQuestionCategory, tvQuestionCreatedby, tvQuestion, tvQuestionAns;
-        LinearLayout llQuestionAnswers;
-        ImageView imgDropdownViewAnswer, imgQuestionEdit, imgQuestionCopy, imgQuestionAddtofavourite;
-        CheckBox chkSelectQuestion;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            tvQuestionNo = (TextView) itemView.findViewById(R.id.tv_question_no);
-            tvQuestionCategory = (TextView) itemView.findViewById(R.id.tv_question_category);
-            tvQuestionCreatedby = (TextView) itemView.findViewById(R.id.tv_question_createdby);
-            tvQuestion = (TextView) itemView.findViewById(R.id.tv_question);
-            tvQuestionAns = (TextView) itemView.findViewById(R.id.tv_question_ans);
-
-            llQuestionAnswers = (LinearLayout) itemView.findViewById(R.id.ll_question_answers);
-
-            imgDropdownViewAnswer = (ImageView) itemView.findViewById(R.id.img_dropdown_view_answer);
-            imgQuestionEdit = (ImageView) itemView.findViewById(R.id.img_question_edit);
-            imgQuestionCopy = (ImageView) itemView.findViewById(R.id.img_question_copy);
-            imgQuestionAddtofavourite = (ImageView) itemView.findViewById(R.id.img_question_addtofavourite);
-
-            chkSelectQuestion = (CheckBox) itemView.findViewById(R.id.chk_select_question);
-        }
-    }
 
     private View getAnsInflaterView(AnswersModel answer, int position) {
 
@@ -219,7 +230,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         v = layoutInflater.inflate(R.layout.row_mcq_question_answer, null, false);
         TextView tvMcqQuestionAns = (TextView) v.findViewById(R.id.tv_mcq_question_ans);
         tvMcqQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
-        tvMcqQuestionAns.setText(Utils.formatHtml(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
+        tvMcqQuestionAns.setText(Utility.formatHtml(Utility.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
 
         return v;
     }

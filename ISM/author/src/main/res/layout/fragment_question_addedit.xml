@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_white">
+    android:background="@color/color_white"
+    android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_addquestion_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fragment_background_color"
+        android:gravity="center"
+        android:padding="@dimen/d15dp"
+        android:text="@string/straddnewquestion"
+        android:textColor="@color/color_question"
+        android:textSize="@dimen/d22dp" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="@dimen/d20dp">
-
+        android:layout_marginBottom="@dimen/d20dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-
-            <TextView
-                android:id="@+id/tv_addquestion_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/fragment_background_color"
-                android:gravity="center"
-                android:padding="@dimen/d15dp"
-                android:text="@string/straddnewquestion"
-                android:textColor="@color/color_question"
-                android:textSize="@dimen/d22dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,7 +49,6 @@
                         android:textColor="@color/color_blue"
                         android:textSize="20sp"
                         android:textStyle="bold" />
-
 
                     <ImageView
                         android:id="@+id/img_edit_question"
@@ -119,7 +117,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/shadow_gray"
+                                android:background="@drawable/shadow_grey_small_size"
                                 android:entries="@array/question_type"
                                 android:spinnerMode="dropdown" />
 
@@ -127,13 +125,29 @@
 
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/img_select_image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d20dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/news_feed_post_box" />
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/img_select_image"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/news_feed_post_box"
+                            android:scaleType="centerCrop" />
+
+                        <ImageView
+                            android:id="@+id/img_play"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/audio_play"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+
 
                 </LinearLayout>
 
@@ -156,12 +170,6 @@
                     android:orientation="vertical">
 
                 </LinearLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_mcq_ansList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
 
 
                 <LinearLayout
@@ -192,6 +200,7 @@
                         android:imeOptions="actionDone"
                         android:inputType="text|textNoSuggestions|textMultiLine"
                         android:nextFocusDown="@+id/editText"
+                        android:paddingLeft="@dimen/d10dp"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="@dimen/d20dp" />
 
@@ -231,6 +240,7 @@
                             android:id="@+id/et_evaluation_note1"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/d170dp"
+                            android:background="@android:color/transparent"
                             android:gravity="top"
                             android:hint=""
                             android:inputType="textMultiLine"
@@ -265,6 +275,7 @@
                             android:id="@+id/et_evaluation_note2"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/d170dp"
+                            android:background="@android:color/transparent"
                             android:gravity="top"
                             android:hint=""
                             android:inputType="textMultiLine" />
@@ -283,7 +294,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:background="@color/bg_app_dark"
         android:padding="@dimen/d15dp">
 
@@ -337,4 +347,4 @@
         </LinearLayout>
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>
