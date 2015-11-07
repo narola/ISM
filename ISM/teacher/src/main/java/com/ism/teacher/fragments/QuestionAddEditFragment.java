@@ -9,10 +9,10 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -56,7 +56,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private Button btnSaveQuestion, btnSaveNAddmoreQuestion;
     private CheckBox chkAddQuestionToPreview;
 
-    private List<String> arrayListQuestionType;
+    private List<String> arrayListQuestionType = new ArrayList<>();
 
     private LinearLayout llAddMcqanswer;
 
@@ -156,6 +156,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         btnSaveQuestion = (Button) view.findViewById(R.id.btn_save_question);
         btnSaveNAddmoreQuestion = (Button) view.findViewById(R.id.btn_save_n_addmore_question);
 
+        arrayListQuestionType.add(getString(R.string.strquestiontype));
         arrayListQuestionType = Arrays.asList(getResources().getStringArray(R.array.question_type));
         Adapters.setUpSpinner(getActivity(), spQuestionType, arrayListQuestionType, Adapters.ADAPTER_SMALL);
 
@@ -179,8 +180,41 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         }
 
 
+        spQuestionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1) {
+                    llAddMcqanswer.setVisibility(View.GONE);
+                    etAnswerBox.setVisibility(View.VISIBLE);
+                } else if (position == 2) {
+                    llAddMcqanswer.setVisibility(View.GONE);
+                    etAnswerBox.setVisibility(View.VISIBLE);
+                } else if (position == 3) {
+                    llAddMcqanswer.setVisibility(View.VISIBLE);
+                    etAnswerBox.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
+    public void setViewForAddEditQuestion() {
+
+        if (((AddQuestionContainerFragment) mFragment).getIsSetQuestionData()) {
+            setQuestionData(((AddQuestionContainerFragment) mFragment).getQuestionData());
+        } else {
+            llAddMcqanswer.removeAllViews();
+            for (int i = 0; i <= 1; i++) {
+                llAddMcqanswer.addView(getMcqAnswerView(i));
+            }
+        }
+
+    }
 
     /*these is for set question questionData for copy and edit question.*/
     private ImageLoader imageLoader;
@@ -198,10 +232,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 }
                 //  imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", img_add_pics, ISMTeacher.options);
                 setSpinnerData(data.getQuestionFormat());
-
-                if (data.getAnswers().size() > 0) {
-                    loadMCQOptions(data.getAnswers());
-                }
+                setMcqAnswers(data);
 
             }
 
@@ -210,40 +241,56 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             Debug.e(TAG, "isSetQuestionData Exception : " + e.toString());
         }
 
+    }
+
+    /*this is to add row in inflater view*/
+    private void addRow(int viewPositionToAdd, ImageView imgAddMcqRow, ImageView imgRemoveMcqRow) {
+        if (llAddMcqanswer.getChildCount() < 6) {
+            imgAddMcqRow.setVisibility(View.GONE);
+            imgRemoveMcqRow.setVisibility(View.VISIBLE);
+            llAddMcqanswer.addView(getMcqAnswerView(viewPositionToAdd + 1));
+        } else {
+            Utility.showToast(getActivity().getResources().getString(R.string.msg_mcq_ans_limit), getActivity());
+        }
+    }
+
+    /*this is to remove row in inflater view*/
+    private void removeRow(int viewPositionToRemove) {
+        llAddMcqanswer.removeViewAt(viewPositionToRemove);
+        refreshViewPositions();
 
     }
 
     private void setSpinnerData(String questionType) {
-
-        if (questionType.equalsIgnoreCase(QUESTION_TYPE_MCQ)) {
-
+        if (questionType.equalsIgnoreCase("MCQ")) {
             spQuestionType.setSelection(2);
+            questionAnswersModelArrayList.clear();
+            llAddMcqanswer.removeAllViews();
+            llAddMcqanswer.setVisibility(View.VISIBLE);
             etAnswerBox.setVisibility(View.GONE);
-
-
-        } else if (questionType.equalsIgnoreCase(QUESTION_TYPE_TEXT)) {
-
+        } else if (questionType.equalsIgnoreCase("descriptive")) {
             spQuestionType.setSelection(0);
-
-        } else if (questionType.equalsIgnoreCase(QUESTION_TYPE_PARAGRAPH)) {
-
+            llAddMcqanswer.setVisibility(View.GONE);
+            etAnswerBox.setVisibility(View.VISIBLE);
+        } else if (questionType.equalsIgnoreCase("'Fill ups'")) {
             spQuestionType.setSelection(1);
-
+            llAddMcqanswer.setVisibility(View.GONE);
+            etAnswerBox.setVisibility(View.VISIBLE);
         }
-
-
     }
 
 
-    private void loadMCQOptions(ArrayList<AnswersModel> arrayListAnswers) {
-        for (int count = 0; count < arrayListAnswers.size(); count++) {
-            llAddMcqanswer.addView(getMcqTestAnswerView(arrayListAnswers, count));
-        }
+    ArrayList<AnswersModel> questionAnswersModelArrayList = new ArrayList<AnswersModel>();
 
+    private void setMcqAnswers(Data data) {
+        questionAnswersModelArrayList.addAll(data.getAnswers());
+        for (int i = 0; i < data.getAnswers().size(); i++) {
+            llAddMcqanswer.addView(setMCQ(i, data.getAnswers().get(i).getChoiceText()));
+        }
     }
 
-
-    private View getMcqTestAnswerView(ArrayList<AnswersModel> arrayListAnswers, int count) {
+    /*this method is for inflating views for edit and copy question*/
+    private View setMCQ(int position, String text) {
         View v = null;
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         v = layoutInflater.inflate(R.layout.row_mcq_answer, null, false);
@@ -252,50 +299,32 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         EditText etAddMcqAnswer = (EditText) v.findViewById(R.id.et_add_mcq_answer);
         final ImageView imgAddMcqRow = (ImageView) v.findViewById(R.id.img_add_mcq_row);
         final ImageView imgRemoveMcqRow = (ImageView) v.findViewById(R.id.img_remove_mcq_row);
+        etAddMcqAnswer.setText(text);
 
-        if (count >= arrayListAnswers.size()) {
-            etAddMcqAnswer.setText("");
-            imgRemoveMcqRow.setVisibility(View.VISIBLE);
-
-        } else {
-            etAddMcqAnswer.setText(arrayListAnswers.get(count).getChoiceText());
+        if (position < 1) {
+            imgAddMcqRow.setVisibility(View.GONE);
             imgRemoveMcqRow.setVisibility(View.GONE);
-            Log.e("option value", "" + arrayListAnswers.get(count).getChoiceText());
-
-        }
-
-        if (count > 0) {
+        } else if (position == questionAnswersModelArrayList.size() - 1) {
             imgAddMcqRow.setVisibility(View.VISIBLE);
+            imgRemoveMcqRow.setVisibility(View.GONE);
         } else {
             imgAddMcqRow.setVisibility(View.GONE);
+            imgRemoveMcqRow.setVisibility(View.VISIBLE);
         }
-        imgRemoveMcqRow.setTag(count);
+        imgRemoveMcqRow.setTag(position);
         imgAddMcqRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int viewPositionToAdd = (Integer) imgRemoveMcqRow.getTag();
-                imgAddMcqRow.setVisibility(View.GONE);
-                imgRemoveMcqRow.setVisibility(View.VISIBLE);
-//                imgRemoveMcqRow.setVisibility(View.VISIBLE);
-
-                if (llAddMcqanswer.getChildCount() < 6) {
-                    llAddMcqanswer.addView(getMcqTestAnswerView(objData.getAnswers(), viewPositionToAdd + 1));
-                } else {
-
-                }
+                addRow((Integer) imgRemoveMcqRow.getTag(), imgAddMcqRow, imgRemoveMcqRow);
             }
         });
-
         imgRemoveMcqRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int viewPositionToRemove = (Integer) imgRemoveMcqRow.getTag();
-                llAddMcqanswer.removeViewAt(viewPositionToRemove);
-                refreshViewPositions();
+                removeRow((Integer) imgRemoveMcqRow.getTag());
 
             }
         });
-
         return v;
     }
 

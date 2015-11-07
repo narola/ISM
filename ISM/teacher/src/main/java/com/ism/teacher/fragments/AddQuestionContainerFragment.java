@@ -143,9 +143,7 @@ public class AddQuestionContainerFragment extends Fragment {
 
         if (isFrontVisible) {
             isFrontVisible = false;
-            if (getIsSetQuestionData()) {
-                questionAddEditFragment.setQuestionData(getQuestionData());
-            }
+            questionAddEditFragment.setViewForAddEditQuestion();
         } else {
             isFrontVisible = true;
         }

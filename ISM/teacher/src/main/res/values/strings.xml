@@ -118,6 +118,7 @@
     <string name="strcreatedby">Created by:</string>
     <string name="straddnewquestion">Add New Question</string>
     <string name="straddtopreview">Add to Preview</string>
+    <string name="msg_mcq_ans_limit">You can only add up to 6 MCQ Answers.</string>
 
     <!--Validation error message strings-->
     <string name="required">Required!</string>
