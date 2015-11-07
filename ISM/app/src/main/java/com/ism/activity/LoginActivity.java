@@ -19,6 +19,7 @@ import com.ism.R;
 import com.ism.adapter.Adapters;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
+import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
@@ -324,7 +325,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			progCountry.setProgress(1);
 			progressGenerator.start(progCountry);
 			new WebserviceWrapper(LoginActivity.this, null, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.GET_COUNTRIES);
+					.execute(WebConstants.GET_COUNTRIES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
 		}
@@ -339,7 +340,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			requestObject.setCountryId(countryId);
 
 			new WebserviceWrapper(LoginActivity.this, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.GET_STATES);
+					.execute(WebConstants.GET_STATES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetStates Exception : " + e.getLocalizedMessage());
 		}
@@ -354,7 +355,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			requestObject.setStateId(stateId);
 
 			new WebserviceWrapper(LoginActivity.this, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.GET_CITIES);
+					.execute(WebConstants.GET_CITIES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetCities Exception : " + e.getLocalizedMessage());
 		}
@@ -367,7 +368,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			progRequestCredentials.setProgress(1);
 			progressGenerator.start(progRequestCredentials);
 			new WebserviceWrapper(LoginActivity.this, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.REQUEST_CREDENTIALS);
+					.execute(WebConstants.REQUEST_CREDENTIALS);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiRequestCredentials Exception : " + e.getLocalizedMessage());
 		}
@@ -388,7 +389,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			requestObject.setEmailId(email);
 
 			new WebserviceWrapper(LoginActivity.this, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.FORGOT_PASSWORD);
+					.execute(WebConstants.FORGOT_PASSWORD);
 
 		} catch (Exception e) {
 			Log.e(TAG, "callApiForgotPassword Exception : " + e.getLocalizedMessage());
@@ -409,7 +410,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 //			requestObject.setPassword("narola21");
 
 			new WebserviceWrapper(LoginActivity.this, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.LOGIN);
+					.execute(WebConstants.LOGIN);
 
 		} catch (Exception e) {
 			Log.e(TAG, "callApiAuthenticateUser Exception : " + e.getLocalizedMessage());
@@ -420,22 +421,22 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	public void onResponse(Object object, Exception error, int apiCode) {
 		try {
 			switch (apiCode) {
-				case WebserviceWrapper.LOGIN:
+				case WebConstants.LOGIN:
 					onResponseLogin(object, error);
 					break;
-				case WebserviceWrapper.FORGOT_PASSWORD:
+				case WebConstants.FORGOT_PASSWORD:
 					onResponseForgotPassword(object, error);
 					break;
-				case WebserviceWrapper.GET_COUNTRIES:
+				case WebConstants.GET_COUNTRIES:
 					onResponseCountries(object, error);
 					break;
-				case WebserviceWrapper.GET_STATES:
+				case WebConstants.GET_STATES:
 					onResponseStates(object, error);
 					break;
-				case WebserviceWrapper.GET_CITIES:
+				case WebConstants.GET_CITIES:
 					onResponseCities(object, error);
 					break;
-				case WebserviceWrapper.REQUEST_CREDENTIALS:
+				case WebConstants.REQUEST_CREDENTIALS:
 					onResponseCredentials(object, error);
 					break;
 			}

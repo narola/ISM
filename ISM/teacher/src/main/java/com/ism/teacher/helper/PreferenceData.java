@@ -8,8 +8,31 @@ public class PreferenceData {
     public static final String PREFS_ISM = "SharedPreferenceISM";
 
     public static final String IS_REMEMBER_ME = "isRememberMe";
+
+    //	ProfileInfo  ============================
+    public static final String IS_REMEMBER_ME_FIRST_LOGIN = "isFirstLoginRememberMe";
+    public static final String USER_PASSWORD = "userPassword";
+    public static final String USER_CREDENTIAL_ID = "userCredentialId";
+    public static final String USER_SCHOOL_ID = "userSchoolId";
+    public static final String USER_SCHOOL_NAME = "userSchoolName";
+    public static final String USER_SCHOOL_DISTRICT = "userSchoolDistrict";
+    public static final String USER_SCHOOL_TYPE = "userSchoolType";
+    public static final String USER_CLASS_ID = "userClassId";
+    public static final String USER_CLASS_NAME = "userClassName";
+    public static final String USER_COURSE_ID = "userCourseId";
+    public static final String USER_COURSE_NAME = "userCourseName";
+    public static final String USER_ACADEMIC_YEAR = "userAcademicYear";
+    public static final String USER_ROLE_ID = "userRoleId";
+//	=========================================
+
+    public static final String USER_SCHOOL_GRADE = "userSchoolGrade";
+    public static final String IS_TUTORIAL_GROUP_ALLOCATED = "isTutorialGroupAllocated";
+    public static final String IS_TUTORIAL_GROUP_ACCEPTED = "isTutorialGroupAccepted";
+    public static final String IS_TUTORIAL_GROUP_COMPLETED = "isTutorialGroupCompleted";
+    public static final String TUTORIAL_GROUP_ID = "tutorialGroupId";
+    public static final String TUTORIAL_GROUP_NAME = "tutorialGroupName";
     public static final String USER_ID = "userId";
-    public static final String USER_NAME = "userName";
+    public static final String USER_FULL_NAME = "userFullName";
     public static final String LIKE_ID_LIST = "likeIdList";
     public static final String UNLIKE_ID_LIST = "unlikeIdList";
 

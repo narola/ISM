@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.ism.R;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
+import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.ws.RequestObject;
 import com.ism.ws.ResponseObject;
 import com.ism.ws.model.TutorialGroupMember;
@@ -55,7 +57,7 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 
 	    progressGenerator = new ProgressGenerator();
 
-	    Global.userId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, WelComeActivity.this);
+	    Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, WelComeActivity.this);
 
 	    if (Utility.isOnline(WelComeActivity.this)) {
 		    callApiAllocateTutorialGroup();
@@ -70,10 +72,10 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 			progWelcome.setVisibility(View.VISIBLE);
 			progressGenerator.start(progWelcome);
 			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(Global.userId);
+			requestObject.setUserId(Global.strUserId);
 
 			new WebserviceWrapper(WelComeActivity.this, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.ALLOCATE_TUTORIAL_GROUP);
+					.execute(WebConstants.ALLOCATE_TUTORIAL_GROUP);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiAllocateTutorialGroup Exception : " + e.toString());
 		}
@@ -83,7 +85,7 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 	public void onResponse(Object object, Exception error, int apiCode) {
 		try {
 			switch (apiCode) {
-				case WebserviceWrapper.ALLOCATE_TUTORIAL_GROUP:
+				case WebConstants.ALLOCATE_TUTORIAL_GROUP:
 					onResponseAllocateTutorialGroup(object, error);
 					break;
 			}
@@ -108,7 +110,7 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, WelComeActivity.this, responseObj.getData().get(0).getTutorialGroupName());
 
 						for (TutorialGroupMember member : responseObj.getData().get(0).getTutorialGroupMembers()) {
-							if (member.getUserId().equals(Global.userId)) {
+							if (member.getUserId().equals(Global.strUserId)) {
 								PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, WelComeActivity.this, member.getCourseName());
 								PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, WelComeActivity.this, member.getAcademicYear());
 								PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, WelComeActivity.this, member.getProfilePic());

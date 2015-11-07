@@ -15,10 +15,11 @@ import android.widget.Toast;
 
 import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.constant.WebConstants;
 import com.ism.dialog.TagStudyMatesDialog;
 import com.ism.dialog.ViewAllCommentsDialog;
+import com.ism.object.Global;
 import com.ism.views.CircleImageView;
-import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.ws.RequestObject;
 import com.ism.ws.ResponseObject;
@@ -44,14 +45,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 	private int addCommentFeedPosition = -1;
 	private int tagFeedPosition = -1;
-	private String strUserId;
 
 	public PostFeedsAdapter(Context context, ArrayList<Data> arrListFeeds) {
 		this.context = context;
 		this.arrListFeeds = arrListFeeds;
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-		strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, context);
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -194,11 +193,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 			addCommentFeedPosition = position;
 			RequestObject requestObject = new RequestObject();
 			requestObject.setFeedId(arrListFeeds.get(position).getFeedId());
-			requestObject.setCommentBy(strUserId);
+			requestObject.setCommentBy(Global.strUserId);
 			requestObject.setComment(comment);
 
 			new WebserviceWrapper(context, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.ADD_COMMENT);
+					.execute(WebConstants.ADD_COMMENT);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiComment Exception : " + e.toString());
 		}
@@ -211,7 +210,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 			requestObject.setFeedId(arrListFeeds.get(position).getFeedId());
 
 			new WebserviceWrapper(context, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.GET_ALL_COMMENTS);
+					.execute(WebConstants.GET_ALL_COMMENTS);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetAllComments Exception : " + e.toString());
 		}
@@ -220,10 +219,10 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 	public void callApiGetStudyMates() {
 		try {
 			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(strUserId);
+			requestObject.setUserId(Global.strUserId);
 
 			new WebserviceWrapper(context, requestObject, this).new WebserviceCaller()
-					.execute(WebserviceWrapper.GET_ALL_STUDY_MATES);
+					.execute(WebConstants.GET_ALL_STUDY_MATES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetStudyMates Exception : " + e.toString());
 		}
@@ -235,11 +234,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 			try {
 				RequestObject requestObject = new RequestObject();
 				requestObject.setFeedId(arrListFeeds.get(tagFeedPosition).getFeedId());
-				requestObject.setTaggedBy(strUserId);
+				requestObject.setTaggedBy(Global.strUserId);
 				requestObject.setTaggedUserIds(arrTagUser);
 
 				new WebserviceWrapper(context, requestObject, this).new WebserviceCaller()
-						.execute(WebserviceWrapper.TAG_STUDY_MATES);
+						.execute(WebConstants.TAG_STUDY_MATES);
 			} catch (Exception e) {
 				Log.e(TAG, "callApiGetStudyMates Exception : " + e.toString());
 			}
@@ -253,16 +252,16 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 		try {
 			if (object != null) {
 				switch (apiCode) {
-					case WebserviceWrapper.ADD_COMMENT:
+					case WebConstants.ADD_COMMENT:
 						onResponseAddComment(object);
 						break;
-					case WebserviceWrapper.GET_ALL_COMMENTS:
+					case WebConstants.GET_ALL_COMMENTS:
 						onResponseGetAllComments(object);
 						break;
-					case WebserviceWrapper.GET_ALL_STUDY_MATES:
+					case WebConstants.GET_ALL_STUDY_MATES:
 						onResponseGetAllStudyMates(object);
 						break;
-					case WebserviceWrapper.TAG_STUDY_MATES:
+					case WebConstants.TAG_STUDY_MATES:
 						onResponseTagStudyMates(object);
 						break;
 				}

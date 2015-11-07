@@ -36,7 +36,7 @@
         android:id="@+id/img_remove_row"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_remove_row"
+        android:background="@drawable/ic_remove"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"
         android:padding="5dp"

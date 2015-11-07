@@ -1,7 +1,13 @@
 package com.ism.teacher.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +17,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.adapters.Adapters;
-import com.ism.teacher.multiautocomplete.ChipsAdapter;
-import com.ism.teacher.multiautocomplete.ChipsItem;
-import com.ism.teacher.multiautocomplete.ChipsMultiAutoCompleteTextview;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,8 +50,9 @@ public class QuestionAddEditFragment extends Fragment {
     private LinearLayout ll_questions_options;
     int row_count = 2;
     ImageView imgAdd, img_remove_row;
-    ChipsMultiAutoCompleteTextview autoCompleteTextview;
-    List<String> arrCountry;
+
+    RelativeLayout rl_image;
+    ImageView img_add_pics, img_play;
 
     public QuestionAddEditFragment(Fragment fragment) {
         this.mFragment = fragment;
@@ -62,7 +66,7 @@ public class QuestionAddEditFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.add_new_question_from_assignment, container, false);
+        view = inflater.inflate(R.layout.fragment_question_addedit, container, false);
         initGlobal();
 
         Utils.showToast("THE QUESTION ADD EDIT FRAGMENT CALLED", getActivity());
@@ -71,28 +75,14 @@ public class QuestionAddEditFragment extends Fragment {
     }
 
     private void initGlobal() {
-        autoCompleteTextview = (ChipsMultiAutoCompleteTextview) view.findViewById(R.id.autoCompleteTextview);
-        // arrCountry=Arrays.asList(getResources().getStringArray(R.array.country));
-
-        String values[] = getActivity().getResources().getStringArray(R.array.country);
-
-        ArrayList<ChipsItem> arrCountry = new ArrayList<ChipsItem>();
-
-
-        for(int i=0;i<values.length;i++){
-            arrCountry.add(new ChipsItem(values[i]));
-        }
-
-        ChipsAdapter chipsAdapter = new ChipsAdapter(getActivity(), arrCountry);
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-//                android.R.layout.simple_list_item_1, android.R.id.text1, values);
-        autoCompleteTextview.setAdapter(chipsAdapter);
-
+        rl_image = (RelativeLayout) view.findViewById(R.id.rl_image);
         etQuestionTitle = (EditText) view.findViewById(R.id.et_question_title);
         etAnswerBox = (EditText) view.findViewById(R.id.et_answer_box);
         etEvaluationNotes = (EditText) view.findViewById(R.id.et_evaluation_notes);
         etSolution = (EditText) view.findViewById(R.id.et_solution);
+
+        img_add_pics = (ImageView) view.findViewById(R.id.img_add_pics);
+        img_play = (ImageView) view.findViewById(R.id.img_play);
 
         imgEditQuestion = (ImageView) view.findViewById(R.id.img_edit_question);
         imgCopyQuestion = (ImageView) view.findViewById(R.id.img_copy_question);
@@ -141,7 +131,61 @@ public class QuestionAddEditFragment extends Fragment {
 
             }
         });
+
+        rl_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("*/*");
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, 1);
+            }
+        });
     }
+
+    Uri selectedUri = null;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data != null) {
+            selectedUri = data.getData();
+            //Do whatever that you desire here. or leave this blank
+            String[] columns = {MediaStore.Images.Media.DATA,
+                    MediaStore.Images.Media.MIME_TYPE};
+
+            Cursor cursor = getActivity().getContentResolver().query(selectedUri, columns, null, null, null);
+            cursor.moveToFirst();
+
+            int pathColumnIndex = cursor.getColumnIndex(columns[0]);
+            int mimeTypeColumnIndex = cursor.getColumnIndex(columns[1]);
+
+            String contentPath = cursor.getString(pathColumnIndex);
+            String mimeType = cursor.getString(mimeTypeColumnIndex);
+            cursor.close();
+
+            if (mimeType.startsWith("image")) {
+                img_add_pics.setImageURI(selectedUri);
+                Utils.showToast("Image", getActivity());
+
+            } else if (mimeType.startsWith("video")) {
+
+                MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
+                mMediaMetadataRetriever.setDataSource(getActivity(), selectedUri);
+                Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
+
+                img_add_pics.setImageBitmap(bitmap);
+                img_play.setVisibility(View.VISIBLE);
+
+            }
+
+        }
+
+
+    }
+
+
 
     private View getMCQInflaterView(int row) {
 

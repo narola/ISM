@@ -9,7 +9,7 @@
     <string name="stremptycomment">Please add comment.</string>
     <string name="strnoresult">No search result found!</string>
     <string name="strselectuser">Please select user to tag.</string>
-
+    <string name="strnopreviewquestions">Please select question to add it to preview.</string>
     <string name="msg_validation_set_topic">\nPlease select your subject topic.</string>
     <string name="msg_validation_add_text_rich_editor">\nPlease set the assignment.</string>
     <string name="msg_validation_set_classroom">\nPlease select your classroom.</string>
@@ -18,14 +18,11 @@
     <string name="msg_validation_set_exam_name">\nPlease select exam name</string>
     <string name="msg_validation_set_exam_mode">\nPlease select exam mode</string>
     <string name="msg_validation_set_exam_duration">\nPlease select exam duration</string>
-
     <string name="msg_validation_declare_results">\nPlease select any declare result option.</string>
     <string name="msg_validation_negative_marking">\nPlease select any negative marking option.</string>
     <string name="msg_validation_random_question">\nPlease select any random question option.</string>
     <string name="msg_validation_use_score_from_questions">\nPlease select use score from question option.</string>
     <string name="msg_select_question_to_add_to_preview">Please select question to add to preview.</string>
-
-    <!--Validation error message strings-->
     <string name="required">Required!</string>
     <string name="error_password_length">Minimum 8 characters required!</string>
     <string name="error_confirm_password_mismatch">Confirm password mismatch!</string>
@@ -37,10 +34,16 @@
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
     <string name="android">Android</string>
+    <string name="str_success_setexamquestions">Questions set for the exam.</string>
+    <string name="msg_invalid_username_password">Username or Password is wrong!</string>
+    <string name="msg_validation_country"><![CDATA[\n> Please select your country.]]></string>
+    <string name="msg_validation_state"><![CDATA[\n> Please select your state.]]></string>
+    <string name="msg_validation_city"><![CDATA[\n> Please select your city.]]></string>
+    <string name="msg_success_sent_credential">Request for credentials sent to admin successfully.</string>
+    <string name="msg_failed_comment">Failed to post comment!, please try again.</string>
+    <string name="msg_tag_failed">Tag failed!</string>
+    <string name="msg_tag_done">Tag done!</string>
+    <string name="msg_success_createassignment">Assignment Created Successfully.</string>
+    <string name="msg_success_createexam">Exam Created Successfully.</string>
 
-    <!--<string name="gotrending">Go Trending</string>-->
-    <!--<string name="setquiz">Set Quiz</string>-->
-    <!--<string name="settrial">Set Trial</string>-->
-    <!--<string name="stradd">ADD</string>-->
-    <!--<string name="straddnew">ADD NEW</string>-->
 </resources>

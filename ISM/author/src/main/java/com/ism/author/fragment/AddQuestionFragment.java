@@ -18,6 +18,8 @@ import com.ism.author.interfaces.FragmentListener;
 /**
  * these fragment class is container of questionlist,questionaddeditfragment,previewquestionfragment.
  */
+
+
 public class AddQuestionFragment extends Fragment implements FragmentManager.OnBackStackChangedListener {
 
     private static final String TAG = AddQuestionFragment.class.getSimpleName();
@@ -116,16 +118,9 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
 
     }
 
-    @Override
-    public void onBackStackChanged() {
-
-    }
-
-
     private void loadFragmentInRightContainer() {
         try {
             getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, previewQuestionFragment).commit();
-
         } catch (Exception e) {
             Debug.e(TAG, "loadFragment Exception : " + e.toString());
 
@@ -134,4 +129,8 @@ public class AddQuestionFragment extends Fragment implements FragmentManager.OnB
     }
 
 
+    @Override
+    public void onBackStackChanged() {
+        getFragmentManager().popBackStack();
+    }
 }

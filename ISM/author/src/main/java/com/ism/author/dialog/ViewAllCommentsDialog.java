@@ -51,7 +51,7 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
 
     private void initializeDialog() {
 
-        postFeedCommentsAdapter = new PostFeedCommentsAdapter();
+        postFeedCommentsAdapter = new PostFeedCommentsAdapter(mContext);
         rvPostFeedsComments = (RecyclerView) findViewById(R.id.rv_post_feeds_comments);
         tvDialogClose = (TextView) findViewById(R.id.tv_dialog_close);
         tvDialogClose.setOnClickListener(this);

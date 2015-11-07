@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="160sp"
+    android:layout_height="wrap_content"
     android:background="@color/color_white"
     android:orientation="vertical">
 
@@ -35,7 +35,7 @@
         android:layout_marginRight="@dimen/d5dp"
         android:gravity="right"
         android:padding="5dp"
-        android:text="Read more"
+        android:text="@string/read_more"
         android:textColor="@color/color_green"
         android:textSize="@dimen/d15dp" />
 </LinearLayout>

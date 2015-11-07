@@ -1,6 +1,5 @@
 package com.ism.author.adapter;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,11 +14,12 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utils;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.dialog.TagUserDialog;
 import com.ism.author.dialog.ViewAllCommentsDialog;
-import com.ism.author.fragment.HomeFragment;
 import com.ism.author.helper.CircleImageView;
 import com.ism.author.helper.ImageLoaderInit;
 import com.ism.author.model.Data;
@@ -36,28 +36,24 @@ import java.util.ArrayList;
 /**
  * these adapter class is for getting all the postfeeds.
  */
-public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.ViewHolder> implements WebserviceWrapper.WebserviceResponse {
+public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.ViewHolder> implements WebserviceWrapper.WebserviceResponse, TagUserDialog.TagUserListener {
 
     private static final String TAG = PostFeedsAdapter.class.getSimpleName();
 
 
-    Context mContext;
-    Fragment fragment;
-    ArrayList<Data> listOfPostFeeds = new ArrayList<Data>();
+    private Context mContext;
+    private ArrayList<Data> listOfPostFeeds = new ArrayList<Data>();
     String likePrefData, unlikePrefData;
     private ImageLoader imageLoader;
     private int addCommentFeedPosition = -1;
+    private int tagFeedPosition = -1;
+
 
     public PostFeedsAdapter(Context context) {
         this.mContext = context;
-    }
-
-    public PostFeedsAdapter(Fragment fragment, Context context) {
-        this.mContext = context;
-        this.fragment = fragment;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-        PreferenceData.clearPreference(mContext);
+
     }
 
     @Override
@@ -126,30 +122,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
             @Override
             public void onClick(View v) {
-
-//                if (holder.etWriteComment.getText() != null
-//                        && holder.etWriteComment.getText().toString().trim().length() != 0) {
-//
-//                    ((HomeFragment) fragment).setSetAddCommentRowPosition(position);
-//                    RequestObject requestObject = new RequestObject();
-//                    requestObject.setComment(holder.etWriteComment.getText().toString());
-//                    requestObject.setCommentBy("370");
-//                    requestObject.setFeedId(listOfPostFeeds.get(position).getFeedId());
-//
-//                    ((HomeFragment) fragment).callApiAddComment(requestObject);
-//
-//                    int totalComment = Integer.parseInt(holder.txtPostTotalCommentCount.getText().toString()) + 1;
-//                    if (totalComment > 2) {
-//                        holder.txtCommentViewAll.setVisibility(View.VISIBLE);
-//                    }
-//                    holder.txtPostTotalCommentCount.setText("" + totalComment);
-//                    holder.etWriteComment.setText("");
-//
-//                } else {
-//                    Utils.showToast(mContext.getString(R.string.stremptycomment), mContext);
-//                }
-
-
                 String comment = holder.etWriteComment.getText().toString().trim();
                 if (comment != null && comment.length() > 0) {
                     callApiComment(position, comment);
@@ -163,11 +135,14 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
             @Override
             public void onClick(View v) {
+                if (Utils.isInternetConnected(getActivity())) {
+                    tagFeedPosition = position;
+                    callApiGetStudyMates();
+                } else {
+                    Utils.showToast(getActivity().getString(R.string.strnetissue), getActivity());
+                }
 
 
-                ((HomeFragment) fragment).tagFriendInFeedRequest.setFeedId(WebConstants.TEST_FEEDID);
-                ((HomeFragment) fragment).tagFriendInFeedRequest.setTaggedBy(WebConstants.TEST_TAGGED_BY);
-                ((HomeFragment) fragment).callApiGetStudyMates();
             }
         });
 
@@ -175,7 +150,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
             @Override
             public void onClick(View v) {
-
 
                 likePrefData = PreferenceData.getStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, "");
                 unlikePrefData = PreferenceData.getStringPrefs(PreferenceData.UNLIKE_ID_LIST, mContext, "");
@@ -241,7 +215,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     }
 
-
     private void setPrefForLike(String feed_id) {
 
         PreferenceData.setStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, likePrefData + feed_id);
@@ -253,7 +226,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     }
 
     private void setPrefForUnlike(String feed_id) {
-
         PreferenceData.setStringPrefs(PreferenceData.UNLIKE_ID_LIST, mContext, unlikePrefData + feed_id);
         if (likePrefData != null && likePrefData.length() > 0) {
             PreferenceData.setStringPrefs(PreferenceData.LIKE_ID_LIST, mContext, likePrefData.replaceAll(feed_id, ""));
@@ -275,43 +247,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             e.printStackTrace();
         }
         notifyDataSetChanged();
-    }
-
-    @Override
-    public void onResponse(int apiMethodName, Object object, Exception error) {
-
-        try {
-            if (apiMethodName == WebserviceWrapper.ADDCOMMENT) {
-                try {
-                    ResponseObject responseObj = (ResponseObject) object;
-                    if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-                        listOfPostFeeds.get(addCommentFeedPosition).setTotalComment("" + (Integer.parseInt(listOfPostFeeds.get(addCommentFeedPosition).getTotalComment()) + 1));
-                        notifyDataSetChanged();
-                    } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-                        Utils.showToast(responseObj.getMessage(), mContext);
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, "onResponseAddComment Exception : " + e.toString());
-                }
-            }
-            if (apiMethodName == WebserviceWrapper.GETALLCOMMENTS) {
-                try {
-                    ResponseObject responseObj = (ResponseObject) object;
-                    if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-                        ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseObj.getData());
-                        viewAllCommentsDialog.show();
-                    } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-                        Utils.showToast(responseObj.getMessage(), getActivity());
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, "onResponseGetAllComments Exception : " + e.toString());
-                }
-            }
-        } catch (Exception e) {
-            Log.i(TAG + mContext.getString(R.string.strerrormessage), e.getLocalizedMessage());
-
-        }
-
     }
 
 
@@ -350,33 +285,25 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private View getCommetInflaterView(PostFeedCommentsModel commentData) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        CommentsViewHolder holder;
+
         View v;
-
         v = layoutInflater.inflate(R.layout.row_post_commenter, null, false);
-        holder = new CommentsViewHolder();
-        holder.txtCommenterUsername = (TextView) v.findViewById(R.id.txt_commenter_username);
-        holder.txtCommenterComment = (TextView) v.findViewById(R.id.txt_commenter_comment);
-        holder.txtCommentDuration = (TextView) v.findViewById(R.id.txt_comment_duration);
-        v.setTag(holder);
+
+        TextView txtCommenterUsername = (TextView) v.findViewById(R.id.txt_commenter_username);
+        TextView txtCommenterComment = (TextView) v.findViewById(R.id.txt_commenter_comment);
+        TextView txtCommentDuration = (TextView) v.findViewById(R.id.txt_comment_duration);
+
+        ImageView imgCommenterDp = (ImageView) v.findViewById(R.id.img_commenter_dp);
 
 
-        holder.txtCommenterUsername.setText(commentData.getUsername());
-        holder.txtCommenterComment.setText(commentData.getComment());
-        holder.txtCommentDuration.setText(commentData.getCommentBy());
+        txtCommenterUsername.setText(commentData.getUsername());
+        txtCommenterComment.setText(commentData.getComment());
+        txtCommentDuration.setText(commentData.getCommentBy());
+
+        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", imgCommenterDp, ISMAuthor.options);
 
         return v;
     }
-
-
-    public class CommentsViewHolder {
-
-        TextView txtCommenterUsername;
-        TextView txtCommenterComment;
-        TextView txtCommentDuration;
-
-    }
-
 
     private void callApiComment(int position, String comment) {
         if (Utils.isInternetConnected(getActivity())) {
@@ -388,7 +315,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 requestObject.setComment(comment);
 
                 new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.ADDCOMMENT);
+                        .execute(WebConstants.ADDCOMMENT);
             } catch (Exception e) {
                 Log.e(TAG, "callApiComment Exception : " + e.toString());
             }
@@ -398,7 +325,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     }
 
 
-    public void callApiGetAllComments(int position) {
+    private void callApiGetAllComments(int position) {
         if (Utils.isInternetConnected(getActivity())) {
             try {
 
@@ -406,7 +333,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 requestObject.setFeedId(listOfPostFeeds.get(position).getFeedId());
 
                 new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETALLCOMMENTS);
+                        .execute(WebConstants.GETALLCOMMENTS);
             } catch (Exception e) {
                 Log.i(TAG + getActivity().getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -415,9 +342,139 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         }
     }
 
+
+    private void callApiGetStudyMates() {
+
+        if (Utils.isInternetConnected(getActivity())) {
+
+            try {
+                RequestObject requestObject = new RequestObject();
+                requestObject.setUserId(WebConstants.TEST_GETSTUDYMATES);
+                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.GETSTUDYMATES);
+            } catch (Exception e) {
+                Log.i(TAG + getActivity().getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utils.showToast(getActivity().getString(R.string.strnetissue), getActivity());
+        }
+    }
+
+
+    @Override
+    public void tagUsers(String[] arrTagUser) {
+
+        if (Utils.isInternetConnected(getActivity())) {
+            try {
+                RequestObject requestObject = new RequestObject();
+                requestObject.setFeedId(listOfPostFeeds.get(tagFeedPosition).getFeedId());
+                requestObject.setTaggedBy(WebConstants.TEST_TAGGED_BY);
+                requestObject.setTaggedUserIds(arrTagUser);
+
+                new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+                        .execute(WebConstants.TAGFRIENDINFEED);
+            } catch (Exception e) {
+                Log.e(TAG, "callApiTagUsers Exception : " + e.toString());
+            }
+        } else {
+            Utils.showToast(getActivity().getString(R.string.strnetissue), getActivity());
+        }
+
+
+    }
+
+
     private Context getActivity() {
         return mContext;
 
+    }
+
+
+    @Override
+    public void onResponse(int apiCode, Object object, Exception error) {
+        try {
+            if (object != null) {
+                switch (apiCode) {
+                    case WebConstants.ADDCOMMENT:
+                        onResponseAddComment(object);
+                        break;
+                    case WebConstants.GETALLCOMMENTS:
+                        onResponseGetAllComments(object);
+                        break;
+                    case WebConstants.GETSTUDYMATES:
+                        onResponseGetAllStudyMates(object);
+                        break;
+                    case WebConstants.TAGFRIENDINFEED:
+                        onResponseTagStudyMates(object);
+                        break;
+                }
+            } else {
+                Debug.e(TAG, "onResponse ApiCall Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponse Exception : " + e.toString());
+        }
+
+    }
+
+
+    private void onResponseAddComment(Object object) {
+        try {
+            ResponseObject responseObj = (ResponseObject) object;
+            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                listOfPostFeeds.get(addCommentFeedPosition).setTotalComment("" + (Integer.parseInt(listOfPostFeeds.get(addCommentFeedPosition).getTotalComment()) + 1));
+                notifyDataSetChanged();
+            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                Utils.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseAddComment Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseGetAllComments(Object object) {
+        try {
+            ResponseObject responseObj = (ResponseObject) object;
+            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseObj.getData());
+                viewAllCommentsDialog.show();
+            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                Utils.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetAllComments Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseGetAllStudyMates(Object object) {
+        try {
+            ResponseObject responseObj = (ResponseObject) object;
+            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseObj.getData().size() > 0) {
+                    TagUserDialog tagUserDialog = new TagUserDialog(getActivity(), responseObj.getData(), this);
+                    tagUserDialog.show();
+                }
+            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                Utils.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetAllStudyMates Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseTagStudyMates(Object object) {
+        try {
+            ResponseObject responseObj = (ResponseObject) object;
+            tagFeedPosition = -1;
+            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                Utils.showToast(getActivity().getString(R.string.msg_tag_done), getActivity());
+            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                Utils.showToast(getActivity().getString(R.string.msg_tag_failed), getActivity());
+
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseTagStudyMates Exception : " + e.toString());
+        }
     }
 
 

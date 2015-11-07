@@ -150,6 +150,11 @@ public class Utils {
         return Html.fromHtml(string);
     }
 
+    public static String getDate() {
+        SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        return curFormater.format(calendar.getTime());
+    }
 }
 
 

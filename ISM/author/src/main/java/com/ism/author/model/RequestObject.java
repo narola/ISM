@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +16,17 @@ import java.util.List;
 public class RequestObject {
 
 
+    private String schoolName;
+    private String homeAddress;
+    private int cityId;
+    private String lastname;
+    private String firstname;
+    private int stateId;
+    private int countryId;
+    private String contactNumber;
+    private String emailAddress;
+
+
     private String feedId;
     private String commentBy;
     private String comment;
@@ -23,6 +35,7 @@ public class RequestObject {
     private String userId;
     private String subjectId;
     private String submissionDate;
+    private String emailId;
     private String topicId;
 
     private String examType;
@@ -61,6 +74,8 @@ public class RequestObject {
 
     private String[] likedId;
     private String[] unlikedId;
+
+    private ArrayList<String> questionId;
 
     private String studentId;
 
@@ -435,24 +450,106 @@ public class RequestObject {
     public String getStudentId() {
         return studentId;
     }
-//    private int user_id;
-//
-//    public int getExam_id() {
-//        return exam_id;
-//    }
-//
-//    public void setExam_id(int exam_id) {
-//        this.exam_id = exam_id;
-//    }
-//
-//    public int getUser_id() {
-//        return user_id;
-//    }
-//
-//    public void setUser_id(int user_id) {
-//        this.user_id = user_id;
-//    }
-//
-//    private int exam_id;
+
+    public ArrayList<String> getQuestionId() {
+        return this.questionId;
+    }
+
+    @JsonProperty("question_id")
+    public void setQuestionId(ArrayList<String> questionId) {
+        this.questionId = questionId;
+    }
+
+    @JsonProperty("email_id")
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+
+    public String getEmailId() {
+        return this.emailId;
+    }
+
+    public String getSchoolName() {
+        return this.schoolName;
+    }
+
+    @JsonProperty("school_name")
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
+    public String getHomeAddress() {
+        return this.homeAddress;
+    }
+
+    @JsonProperty("home_address")
+    public void setHomeAddress(String homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+    public int getCityId() {
+        return this.cityId;
+    }
+
+    @JsonProperty("city_id")
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getLastname() {
+        return this.lastname;
+    }
+
+    @JsonProperty("lastname")
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getFirstname() {
+        return this.firstname;
+    }
+
+    @JsonProperty("firstname")
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public int getStateId() {
+        return this.stateId;
+    }
+
+    @JsonProperty("state_id")
+    public void setStateId(int stateId) {
+        this.stateId = stateId;
+    }
+
+    public int getCountryId() {
+        return this.countryId;
+    }
+
+    @JsonProperty("country_id")
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
+    }
+
+    public String getContactNumber() {
+        return this.contactNumber;
+    }
+
+    @JsonProperty("contact_number")
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public String getEmailAddress() {
+        return this.emailAddress;
+    }
+
+    @JsonProperty("email_address")
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.ism.adapter;
 
 import android.content.Context;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,8 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.model.Notice;
 import com.ism.object.MyTypeFace;
+import com.ism.ws.model.Data;
 
 import java.util.ArrayList;
 
@@ -24,11 +25,11 @@ public class NoticeAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private Context context;
-    private ArrayList<Notice> arrListNotes;
+    private ArrayList<Data> arrListNotes;
 	private MyTypeFace myTypeFace;
 	private HostActivity activityHost;
 
-    public NoticeAdapter(Context context, ArrayList<Notice> arrListNotes, HostActivity activityHost) {
+    public NoticeAdapter(Context context, ArrayList<Data> arrListNotes, HostActivity activityHost) {
         this.context = context;
         this.arrListNotes = arrListNotes;
 	    this.activityHost = activityHost;
@@ -58,12 +59,12 @@ public class NoticeAdapter extends BaseAdapter {
 		    convertView = inflater.inflate(R.layout.row_notice, parent, false);
 
 		    holder = new ViewHolder();
-		    holder.txtNotice = (TextView) convertView.findViewById(R.id.txt_noticeName);
-		    holder.txtNoticeDesc = (TextView) convertView.findViewById(R.id.txt_noticeDesc);
+		    holder.txtNoticeTitle = (TextView) convertView.findViewById(R.id.txt_noticeName);
+		    holder.txtNotice = (TextView) convertView.findViewById(R.id.txt_noticeDesc);
 		    holder.txtReadmore = (TextView) convertView.findViewById(R.id.txt_noticeReadMore);
 
-		    holder.txtNotice.setTypeface(myTypeFace.getRalewayBold());
-		    holder.txtNoticeDesc.setTypeface(myTypeFace.getRalewayThin());
+		    holder.txtNoticeTitle.setTypeface(myTypeFace.getRalewayBold());
+		    holder.txtNotice.setTypeface(myTypeFace.getRalewayThin());
 		    holder.txtReadmore.setTypeface(myTypeFace.getRalewayLight());
 
 		    convertView.setTag(holder);
@@ -72,13 +73,13 @@ public class NoticeAdapter extends BaseAdapter {
 	    }
 
 	    try {
-		    holder.txtNotice.setText(arrListNotes.get(position).getStrNoticeName());
-		    holder.txtNoticeDesc.setText(arrListNotes.get(position).getStrNoticeDesc());
+		    holder.txtNoticeTitle.setText(arrListNotes.get(position).getNoticeTitle());
+		    holder.txtNotice.setText(arrListNotes.get(position).getNotice());
 
 		    holder.txtReadmore.setOnClickListener(new View.OnClickListener() {
 			    @Override
 			    public void onClick(View v) {
-				    activityHost.showAllNotice();
+				    activityHost.showAllNotice(arrListNotes);
 			    }
 		    });
 
@@ -90,7 +91,7 @@ public class NoticeAdapter extends BaseAdapter {
     }
 
 	class ViewHolder {
-		TextView txtNotice, txtNoticeDesc, txtReadmore;
+		TextView txtNoticeTitle, txtNotice, txtReadmore;
 	}
 
 }

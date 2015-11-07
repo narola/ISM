@@ -1,6 +1,5 @@
 package com.ism.author.fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,9 +11,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.PreviewQuestionListAdapter;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
+import com.ism.author.model.RequestObject;
+import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.WebserviceWrapper;
 
 import java.util.ArrayList;
 
@@ -23,29 +28,24 @@ import java.util.ArrayList;
  */
 //implements OnStartDragListener
 
-public class PreviewQuestionFragment extends Fragment  {
+public class PreviewQuestionFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 
     private static final String TAG = PreviewQuestionFragment.class.getSimpleName();
     private View view;
-
-    //    private FragmentListener fragListener;
-
     Fragment mFragment;
 
     public PreviewQuestionFragment(Fragment fragment) {
-        // Required empty public constructor
         this.mFragment = fragment;
     }
 
 
-    TextView tvQuestionlistTitle;
-    RecyclerView rvPreviewquestionlist;
-    PreviewQuestionListAdapter previewQuestionListAdapter;
+    private TextView tvPreviewQuestionlistTitle, tvPreviewQuestionlistFreeze;
+    private RecyclerView rvPreviewquestionlist;
+    private PreviewQuestionListAdapter previewQuestionListAdapter;
     //    RecyclerListAdapter adapter;
     public ArrayList<Data> listOfPreviewQuestions = new ArrayList<Data>();
     MyTypeFace myTypeFace;
-
 
     //this is for the movable recyclerview.
     private ItemTouchHelper mItemTouchHelper;
@@ -63,14 +63,15 @@ public class PreviewQuestionFragment extends Fragment  {
 
         myTypeFace = new MyTypeFace(getActivity());
 
-        tvQuestionlistTitle = (TextView) view.findViewById(R.id.tv_questionlist_title);
-        tvQuestionlistTitle.setTypeface(myTypeFace.getRalewayRegular());
+        tvPreviewQuestionlistTitle = (TextView) view.findViewById(R.id.tv_previewquestion_title);
+        tvPreviewQuestionlistTitle.setTypeface(myTypeFace.getRalewayRegular());
+        tvPreviewQuestionlistFreeze = (TextView) view.findViewById(R.id.tv_preview_questionlist_freeze);
+        tvPreviewQuestionlistFreeze.setTypeface(myTypeFace.getRalewayRegular());
 
         rvPreviewquestionlist = (RecyclerView) view.findViewById(R.id.rv_previewquestionlist);
         previewQuestionListAdapter = new PreviewQuestionListAdapter(getActivity(), mFragment);
         rvPreviewquestionlist.setAdapter(previewQuestionListAdapter);
         rvPreviewquestionlist.setLayoutManager(new LinearLayoutManager(getActivity()));
-
 
 //        adapter = new RecyclerListAdapter(getActivity(), this);
 //        rvPreviewquestionlist.setHasFixedSize(true);
@@ -82,40 +83,57 @@ public class PreviewQuestionFragment extends Fragment  {
 //        mItemTouchHelper = new ItemTouchHelper(callback);
 //        mItemTouchHelper.attachToRecyclerView(rvPreviewquestionlist);
 
+        tvPreviewQuestionlistFreeze.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                callApiFreezeQuestions();
+
+            }
+        });
+
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-//        try {
-//            fragListener = (FragmentListener) activity;
-//            if (fragListener != null) {
-//                fragListener.onFragmentAttached(AddQuestionFragment.FRAGMENT_PREVIEWQUESTION);
-//            }
-//        } catch (ClassCastException e) {
-//            Debug.e(TAG, "onAttach Exception : " + e.toString());
-//        }
+
+    private void callApiFreezeQuestions() {
+
+        if (Utils.isInternetConnected(getActivity())) {
+            if (listOfPreviewQuestions.size() > 0) {
+                try {
+                    RequestObject requestObject = new RequestObject();
+                    requestObject.setExamId("61");
+                    requestObject.setQuestionId(getQuestionIdList());
+
+                    new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                            .execute(WebConstants.SETQUESTIONSFOREXAM);
+                } catch (Exception e) {
+                    Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+                }
+
+            } else {
+                Utils.showToast(getString(R.string.strnopreviewquestions), getActivity());
+            }
+        } else {
+            Utils.showToast(getString(R.string.strnetissue), getActivity());
+        }
+
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    private ArrayList<String> questionIdList = new ArrayList<String>();
 
-//        try {
-//            if (fragListener != null) {
-//                fragListener.onFragmentDetached(AddQuestionFragment.FRAGMENT_PREVIEWQUESTION);
-//            }
-//        } catch (ClassCastException e) {
-//            Debug.e(TAG, "onDetach Exception : " + e.toString());
-//        }
-//        fragListener = null;
+    private ArrayList<String> getQuestionIdList() {
+
+        for (int i = 0; i < listOfPreviewQuestions.size(); i++) {
+            questionIdList.add(listOfPreviewQuestions.get(i).getQuestionId());
+        }
+        return questionIdList;
+
     }
 
 
     public void addQuestionsToPreviewFragment(ArrayList<Data> data) {
 
         if (data.size() > 0) {
-
             listOfPreviewQuestions.addAll(data);
             previewQuestionListAdapter.addAll(listOfPreviewQuestions);
 
@@ -124,9 +142,36 @@ public class PreviewQuestionFragment extends Fragment  {
 
     }
 
-//    @Override
-//    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-//        mItemTouchHelper.startDrag(viewHolder);
-//
-//    }
+
+    //   @Override
+    public void onResponse(int apiCode, Object object, Exception error) {
+        try {
+            switch (apiCode) {
+                case WebConstants.SETQUESTIONSFOREXAM:
+                    onResponseSetQuestionsForExam(object, error);
+                    break;
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponse Exception : " + e.toString());
+        }
+    }
+
+    private void onResponseSetQuestionsForExam(Object object, Exception error) {
+
+        try {
+            if (object != null) {
+                ResponseObject responseObj = (ResponseObject) object;
+                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                    Utils.showToast(getActivity().getString(R.string.str_success_setexamquestions), getActivity());
+                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                    Utils.showToast(responseObj.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseSetQuestionForExam api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseSetQuestionForExam Exception : " + e.toString());
+        }
+
+    }
 }

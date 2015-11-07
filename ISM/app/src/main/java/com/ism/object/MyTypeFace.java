@@ -3,7 +3,7 @@ package com.ism.object;
 import android.content.Context;
 import android.graphics.Typeface;
 
-import com.ism.activity.AppConstant;
+import com.ism.constant.AppConstant;
 
 /**
  * Created by c162 on 09/10/15.

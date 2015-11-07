@@ -12,7 +12,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utils;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.login.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHomeActivity;
 
 /**
  * Created by c161 on --/10/15.

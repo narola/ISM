@@ -24,10 +24,10 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
 import com.ism.author.fragment.AddQuestionFragment;
 import com.ism.author.fragment.BooksFragment;
+import com.ism.author.fragment.CreateAssignmentFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.OfficeFragment;
 import com.ism.author.fragment.StudentAttemptedFragment;
-import com.ism.author.fragment.TrialAddNewFragment;
 import com.ism.author.fragment.TrialExamDetailFragment;
 import com.ism.author.fragment.TrialFragment;
 import com.ism.author.helper.ControllerTopMenuItem;
@@ -140,7 +140,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         flFragmentContainerMain = (FrameLayout) findViewById(R.id.fl_fragment_container_main);
         flFragmentContainerRight = (FrameLayout) findViewById(R.id.fl_fragment_container_right);
         progress_bar = (ActionProcessButton) findViewById(R.id.progress_bar);
-        progressGenerator = new ProgressGenerator();
+        progressGenerator=new ProgressGenerator();
 
         imgLogo = (ImageView) findViewById(R.id.img_logo);
         imgHome = (ImageView) findViewById(R.id.img_home);
@@ -237,7 +237,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
                     break;
                 case FRAGMENT_ADDNEWTRIAL:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TrialAddNewFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, CreateAssignmentFragment.newInstance()).commit();
 //                    mFragmentTransaction = mFragmentManager.beginTransaction();
 //                    mFragmentTransaction.add(R.id.fl_fragment_container_main, TrialAddNewFragment.newInstance());
 //                    mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_ADDNEWTRIAL));
@@ -472,7 +472,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     imgOffice.setActivated(true);
                     break;
                 case FRAGMENT_STUDENT_ATTEMPTED:
-
                     imgOffice.setActivated(true);
                     break;
 

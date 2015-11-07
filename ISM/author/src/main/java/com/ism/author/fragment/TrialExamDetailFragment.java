@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.InputValidator;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.ws.WebserviceWrapper;
@@ -46,6 +47,7 @@ public class TrialExamDetailFragment extends Fragment implements WebserviceWrapp
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_trial_exam_details, container, false);
+
         initGlobal();
 
         return view;
@@ -115,7 +117,7 @@ public class TrialExamDetailFragment extends Fragment implements WebserviceWrapp
     public void onResponse(int apiMethodName, Object object, Exception error) {
         ((AuthorHostActivity) getActivity()).stopProgress();
         try {
-            if (apiMethodName == WebserviceWrapper.GETEXAMEVALUATIONS) {
+            if (apiMethodName == WebConstants.GETEXAMEVALUATIONS) {
 //                ResponseObject responseObject = (ResponseObject) object;
 //                Debug.i(TAG, "Response of student attempted  ::" + responseObject.getMessage());
 //                Debug.i(TAG, "Response of student attempted  ::" + responseObject.getStatus());

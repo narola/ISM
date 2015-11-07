@@ -120,7 +120,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                 requestObject.setStudentId("202");
                 requestObject.setExamId("9");
                 new WebserviceWrapper(context, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETEXAMEVALUATIONS);
+                        .execute(WebConstants.GETEXAMEVALUATIONS);
             } else {
                 Utils.showToast(context.getString(R.string.strnetissue), context);
             }
@@ -146,7 +146,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
         try {
             ((AuthorHostActivity) context).stopProgress();
             responseObjectEval = (ResponseObject) object;
-            if (API_METHOD == WebserviceWrapper.GETEXAMEVALUATIONS) {
+            if (API_METHOD == WebConstants.GETEXAMEVALUATIONS) {
                 if (responseObjectEval.getStatus().equals(WebConstants.STATUS_SUCCESS)) {
                     if (responseObjectEval.getData().get(0).getEvaluations().size() != 0) {
 
@@ -155,7 +155,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                         trialExamDetailsAdapter.notifyDataSetChanged();
                     }
                 } else {
-                    Debug.i(TAG, "Response :" + WebserviceWrapper.GETEXAMEVALUATIONS + " :" + responseObjectEval.getStatus());
+                    Debug.i(TAG, "Response :" + WebConstants.GETEXAMEVALUATIONS + " :" + responseObjectEval.getStatus());
                 }
             }
 

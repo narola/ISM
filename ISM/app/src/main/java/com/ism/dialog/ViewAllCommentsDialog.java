@@ -20,49 +20,49 @@ import java.util.ArrayList;
  */
 public class ViewAllCommentsDialog extends Dialog implements View.OnClickListener {
 
-	Context mContext;
-	RecyclerView rvPostFeedsComments;
-	PostFeedCommentsAdapter postFeedCommentsAdapter;
-	TextView tvDialogClose;
-	ArrayList<Data> commentsList;
+    private Context mContext;
+    private RecyclerView rvPostFeedsComments;
+    private PostFeedCommentsAdapter postFeedCommentsAdapter;
+    private TextView tvDialogClose;
+    private ArrayList<Data> commentsList;
 
-	public ViewAllCommentsDialog(Context mContext, ArrayList<Data> commentsList) {
-		super(mContext);
+    public ViewAllCommentsDialog(Context mContext, ArrayList<Data> commentsList) {
+        super(mContext);
 
-		this.mContext = mContext;
-		this.commentsList = commentsList;
+        this.mContext = mContext;
+        this.commentsList = commentsList;
 
-		Window w = getWindow();
-		getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Window w = getWindow();
+        getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		w.setBackgroundDrawableResource(android.R.color.transparent);
-		setContentView(R.layout.dialog_view_all_comments_student);
-		w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-		w.setBackgroundDrawableResource(android.R.color.transparent);
+        w.setBackgroundDrawableResource(android.R.color.transparent);
+        setContentView(R.layout.dialog_view_all_comments_student);
+        w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        w.setBackgroundDrawableResource(android.R.color.transparent);
 
-		initializeDialog();
+        initializeDialog();
 
-	}
+    }
 
-	private void initializeDialog() {
+    private void initializeDialog() {
 
-		postFeedCommentsAdapter = new PostFeedCommentsAdapter();
-		rvPostFeedsComments = (RecyclerView) findViewById(R.id.rv_post_feeds_comments);
-		tvDialogClose = (TextView) findViewById(R.id.tv_dialog_close);
-		tvDialogClose.setOnClickListener(this);
-		// Attach the adapter to the recyclerview to populate items
-		rvPostFeedsComments.setAdapter(postFeedCommentsAdapter);
-		// Set layout manager to position the items
-		rvPostFeedsComments.setLayoutManager(new LinearLayoutManager(mContext));
-		postFeedCommentsAdapter.addAll(commentsList);
+        postFeedCommentsAdapter = new PostFeedCommentsAdapter();
+        rvPostFeedsComments = (RecyclerView) findViewById(R.id.rv_post_feeds_comments);
+        tvDialogClose = (TextView) findViewById(R.id.tv_dialog_close);
+        tvDialogClose.setOnClickListener(this);
+        // Attach the adapter to the recyclerview to populate items
+        rvPostFeedsComments.setAdapter(postFeedCommentsAdapter);
+        // Set layout manager to position the items
+        rvPostFeedsComments.setLayoutManager(new LinearLayoutManager(mContext));
+        postFeedCommentsAdapter.addAll(commentsList);
 
-	}
+    }
 
-	@Override
-	public void onClick(View v) {
-		if (v == tvDialogClose) {
-			dismiss();
-		}
-	}
+    @Override
+    public void onClick(View v) {
+        if (v == tvDialogClose) {
+            dismiss();
+        }
+    }
 }

@@ -17,6 +17,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.StudentAttemptedAdapter;
 import com.ism.author.adapter.TrialExamDetailsAdapter;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.Data;
 import com.ism.author.model.RequestObject;
@@ -67,7 +68,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
         // Debug.i(TAG, "Request student attemted list : " ));
         ((AuthorHostActivity) getActivity()).startProgress();
         new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                .execute(WebserviceWrapper.GETEXAMSUBMISSION);
+                .execute(WebConstants.GETEXAMSUBMISSION);
 
     }
 
@@ -119,7 +120,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 //        Debug.i(TAG, "Response of student attempted  ::" + responseObject.getStatus());
 //        Debug.i(TAG, "Response of student attempted  ::" + responseObject.getData().get(0).getExamID());
         try {
-            if (API_METHOD == WebserviceWrapper.GETEXAMSUBMISSION) {
+            if (API_METHOD == WebConstants.GETEXAMSUBMISSION) {
                 if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
                     // ((AuthorHostActivity)getActivity()).stopProgress();
                     if (responseObject.getData().size() != 0) {
@@ -140,7 +141,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                 } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
                     Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
                 }
-            }else if (API_METHOD == WebserviceWrapper.GETEXAMQUESTIONS) {
+            }else if (API_METHOD == WebConstants.GETEXAMQUESTIONS) {
                 if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
                     ((AuthorHostActivity)getActivity()).stopProgress();
                     if (responseObject.getData().size() != 0) {
@@ -172,7 +173,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebserviceWrapper.GETEXAMQUESTIONS);
+                        .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
                 Log.i(TAG ,"callApiGetExamEvaluations ::"+ e.getLocalizedMessage());
             }

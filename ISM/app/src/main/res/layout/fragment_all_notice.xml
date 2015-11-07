@@ -14,7 +14,7 @@
 		android:orientation="horizontal">
 
 		<Spinner
-			android:id="@+id/spinner_notice_category"
+			android:id="@+id/sp_notice_category"
 			android:layout_width="200dp"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="2dp"
@@ -23,7 +23,7 @@
 			android:entries="@array/accordion_notice"></Spinner>
 
 		<Spinner
-			android:id="@+id/spinner_notice_sortby"
+			android:id="@+id/sp_notice_sortby"
 			android:layout_width="200dp"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="2dp"
