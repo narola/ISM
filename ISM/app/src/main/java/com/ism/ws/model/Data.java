@@ -51,11 +51,28 @@ public class Data {
 	private String noticeTitle;
 	private String notice;
 	private String postedBy;
+	private String notificationDate;
+	private String notificationFromId;
+	private String navigateTo;
+	private String notificationToId;
+	private String notificationText;
+	private String notificationToName;
+	private String notificationId;
+	private String notificationFromName;
+	private String isRead;
 
 	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 	private ArrayList<Comment> comments;
 
 	private boolean isFlagged;
+
+	public boolean isFlagged() {
+		return isFlagged;
+	}
+
+	public void setFlagged(boolean isExpanded) {
+		this.isFlagged = isExpanded;
+	}
 
 	@JsonProperty("id")
     public String getId() {
@@ -444,11 +461,84 @@ public class Data {
 		this.postedBy = postedBy;
 	}
 
-	public boolean isFlagged() {
-		return isFlagged;
+	@JsonProperty("notification_date")
+	public String getNotificationDate() {
+		return this.notificationDate;
 	}
 
-	public void setFlagged(boolean isExpanded) {
-		this.isFlagged = isExpanded;
+	public void setNotificationDate(String notificationDate) {
+		this.notificationDate = notificationDate;
+	}
+
+	@JsonProperty("notification_from_id")
+	public String getNotificationFromId() {
+		return this.notificationFromId;
+	}
+
+	public void setNotificationFromId(String notificationFromId) {
+		this.notificationFromId = notificationFromId;
+	}
+
+	@JsonProperty("navigate_to")
+	public String getNavigateTo() {
+		return this.navigateTo;
+	}
+
+	public void setNavigateTo(String navigateTo) {
+		this.navigateTo = navigateTo;
+	}
+
+	@JsonProperty("notification_to_id")
+	public String getNotificationToId() {
+		return this.notificationToId;
+	}
+
+	public void setNotificationToId(String notificationToId) {
+		this.notificationToId = notificationToId;
+	}
+
+	@JsonProperty("notification_text")
+	public String getNotificationText() {
+		return this.notificationText;
+	}
+
+	public void setNotificationText(String notificationText) {
+		this.notificationText = notificationText;
+	}
+
+	@JsonProperty("notification_to_name")
+	public String getNotificationToName() {
+		return this.notificationToName;
+	}
+
+	public void setNotificationToName(String notificationToName) {
+		this.notificationToName = notificationToName;
+	}
+
+	@JsonProperty("notification_id")
+	public String getNotificationId() {
+		return this.notificationId;
+	}
+
+	public void setNotificationId(String notificationId) {
+		this.notificationId = notificationId;
+	}
+
+	@JsonProperty("notification_from_name")
+	public String getNotificationFromName() {
+		return this.notificationFromName;
+	}
+
+	public void setNotificationFromName(String notificationFromName) {
+		this.notificationFromName = notificationFromName;
+	}
+
+	@JsonProperty("is_read")
+	public String getIsRead() {
+		return this.isRead;
+	}
+
+	public void setIsRead(String isRead) {
+		this.isRead = isRead;
 	}
 }
