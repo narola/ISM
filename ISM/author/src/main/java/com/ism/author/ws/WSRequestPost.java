@@ -60,12 +60,13 @@ public class WSRequestPost {
             try (OutputStream output = connection.getOutputStream()) {
                 output.write(jsonObject.getBytes());
             } catch (Exception error) {
-
+                Log.i(TAG, "JSON OBJECT  Write: "+jsonObject + "");
             }
 
-            InputStream response = connection.getInputStream();
+
 
             try {
+                InputStream response = connection.getInputStream();
                 String json;
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response, "iso-8859-1"), 8);
                 StringBuilder sb = new StringBuilder();
@@ -79,7 +80,7 @@ public class WSRequestPost {
                 ret = getMapper().readValue(json, responseType);
 
             } catch (Exception e) {
-                Log.e(LOG_TAG, "Error converting result " + e.toString());
+                Log.e(TAG, "Error converting result " + e.getLocalizedMessage());
                 return null;
             }
 

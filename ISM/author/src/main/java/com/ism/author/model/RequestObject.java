@@ -19,11 +19,11 @@ public class RequestObject {
     private String commentBy;
     private String comment;
     private String assignmentText;
-    private int classroomId;
+    private String classroomId;
     private String userId;
-    private int subjectId;
+    private String subjectId;
     private String submissionDate;
-    private int topicId;
+    private String topicId;
 
     private String examType;
     private String examMode;
@@ -31,13 +31,13 @@ public class RequestObject {
     private String negativeMarkValue;
     private String examDuration;
     private String examInstruction;
-    private double bookId;
+    private String bookId;
     private String passingPercent;
     private String examName;
     private String declareResults;
     private String negativeMarking;
     private String randomQuestion;
-    private double attemptCount;
+    private String attemptCount;
     private String examCategory;
     private String examStartDate;
 
@@ -53,7 +53,7 @@ public class RequestObject {
     private String videoThumbnail;
 
 
-    private int role;
+    private String role;
     private String examId;
 
     private String[] taggedUserIds;
@@ -61,6 +61,8 @@ public class RequestObject {
 
     private String[] likedId;
     private String[] unlikedId;
+
+    private String studentId;
 
     public String getFeedId() {
         return this.feedId;
@@ -102,11 +104,11 @@ public class RequestObject {
     }
 
     @JsonProperty("classroom_id")
-    public int getClassroomId() {
+    public String getClassroomId() {
         return this.classroomId;
     }
 
-    public void setClassroomId(int classroomId) {
+    public void setClassroomId(String classroomId) {
         this.classroomId = classroomId;
     }
 
@@ -120,12 +122,12 @@ public class RequestObject {
         this.userId = userId;
     }
 
-    public int getSubjectId() {
+    public String getSubjectId() {
         return this.subjectId;
     }
 
     @JsonProperty("subject_id")
-    public void setSubjectId(int subjectId) {
+    public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
     }
 
@@ -140,12 +142,12 @@ public class RequestObject {
     }
 
 
-    public int getTopicId() {
+    public String getTopicId() {
         return this.topicId;
     }
 
     @JsonProperty("topic_id")
-    public void setTopicId(int topicId) {
+    public void setTopicId(String topicId) {
         this.topicId = topicId;
     }
 
@@ -205,12 +207,12 @@ public class RequestObject {
         this.examInstruction = examInstruction;
     }
 
-    public double getBookId() {
+    public String getBookId() {
         return this.bookId;
     }
 
     @JsonProperty("book_id")
-    public void setBookId(double bookId) {
+    public void setBookId(String bookId) {
         this.bookId = bookId;
     }
 
@@ -259,12 +261,12 @@ public class RequestObject {
         this.randomQuestion = randomQuestion;
     }
 
-    public double getAttemptCount() {
+    public String getAttemptCount() {
         return this.attemptCount;
     }
 
     @JsonProperty("attempt_count")
-    public void setAttemptCount(double attemptCount) {
+    public void setAttemptCount(String attemptCount) {
         this.attemptCount = attemptCount;
     }
 
@@ -379,12 +381,12 @@ public class RequestObject {
         this.examId = examId;
     }
 
-    public int getRole() {
+    public String getRole() {
         return this.role;
     }
 
     @JsonProperty("role")
-    public void setRole(int role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -423,6 +425,15 @@ public class RequestObject {
     @JsonProperty("unliked_id")
     public void setUnlikedId(String[] unlikedId) {
         this.unlikedId = unlikedId;
+    }
+
+    @JsonProperty("student_id")
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getStudentId() {
+        return studentId;
     }
 //    private int user_id;
 //

@@ -68,7 +68,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
         gridExams = (GridView) view.findViewById(R.id.grid_trial);// The number of Columns
 
         RequestObject requestObject = new RequestObject();
-        requestObject.setRole(4);
+        requestObject.setRole("4");
         requestObject.setUserId("370");
         ((AuthorHostActivity)getActivity()).startProgress();
         new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -111,11 +111,9 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
             ResponseObject responseObject = (ResponseObject) object;
 
             if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
-                if (!responseObject.getData().equals("")) {
+                if (responseObject.getData().size()!=0) {
                     arrayList = new TrialExamsAdapter(getActivity(), responseObject, this);
                     gridExams.setAdapter(arrayList);
-
-
                 }
             } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
                 Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();

@@ -27,7 +27,6 @@ public class ResponseObject {
 
     public ArrayList<Data> getData() {
        // Debug.i(TAG,"DATA OBJECT:"+ data.size() );
-
         return this.data;
     }
 

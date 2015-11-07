@@ -21,6 +21,7 @@ import android.widget.ToggleButton;
 
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.InputValidator;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
@@ -333,7 +334,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         if (Utils.isInternetConnected(getActivity())) {
             try {
                 RequestObject requestObject = new RequestObject();
-                requestObject.setSubjectId(subject_id);
+                requestObject.setSubjectId(String.valueOf(subject_id));
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.GETTOPICS);
             } catch (Exception e) {
@@ -353,11 +354,11 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
                 RequestObject requestObject = new RequestObject();
 
                 requestObject.setExamName(et_exam_name.getText().toString());
-                requestObject.setClassroomId(sp_exam_classroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
-                        get(sp_exam_classroom.getSelectedItemPosition() - 1).getId()) : 0);
-                requestObject.setSubjectId(sp_exam_subjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
-                        get(sp_exam_subjectname.getSelectedItemPosition() - 1).getId()) : 0);
-                requestObject.setAttemptCount(Integer.valueOf(et_exam_attemptcount.getText().toString()));
+                requestObject.setClassroomId(String.valueOf(sp_exam_classroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
+                        get(sp_exam_classroom.getSelectedItemPosition() - 1).getId()) : 0));
+                requestObject.setSubjectId(String.valueOf(sp_exam_subjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
+                        get(sp_exam_subjectname.getSelectedItemPosition() - 1).getId()) : 0));
+                requestObject.setAttemptCount(String.valueOf(Integer.valueOf(et_exam_attemptcount.getText().toString())));
                 requestObject.setExamType(getExamType());
                 requestObject.setExamCategory(arrListExamName.get(sp_exam_examname.getSelectedItemPosition()));
                 requestObject.setExamMode(arrListExamMode.get(sp_exam_exammode.getSelectedItemPosition()));
@@ -377,7 +378,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
                     requestObject.setNegativeMarkValue(et_exam_addnegativemark.getText().toString());
                 }
 
-                requestObject.setBookId(0);
+                requestObject.setBookId(String.valueOf(0));
 
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebserviceWrapper.CREATEEXAM);
@@ -546,81 +547,83 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
 
     @Override
     public void onResponse(int apiMethodName, Object object, Exception error) {
+        try {
+            if (apiMethodName == WebserviceWrapper.GETCLASSROOMS) {
 
-        if (apiMethodName == WebserviceWrapper.GETCLASSROOMS) {
+                ResponseObject callGetClassRoomsResponse = (ResponseObject) object;
+                if (callGetClassRoomsResponse.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetClassRoomsResponse != null) {
 
-            ResponseObject callGetClassRoomsResponse = (ResponseObject) object;
-            if (callGetClassRoomsResponse.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetClassRoomsResponse != null) {
+                    arrListClassRooms = new ArrayList<Data>();
+                    arrListClassRooms.addAll(callGetClassRoomsResponse.getData());
+                    List<String> classrooms = new ArrayList<String>();
+                    classrooms.add(getString(R.string.strclass));
+                    for (Data course : arrListClassRooms) {
+                        classrooms.add(course.getClassName());
 
-                arrListClassRooms = new ArrayList<Data>();
-                arrListClassRooms.addAll(callGetClassRoomsResponse.getData());
-                List<String> classrooms = new ArrayList<String>();
-                classrooms.add(getString(R.string.strclass));
-                for (Data course : arrListClassRooms) {
-                    classrooms.add(course.getClassName());
+                    }
+                    Adapters.setUpSpinner(getActivity(), sp_exam_classroom, classrooms, Adapters.ADAPTER_NORMAL);
+                    callApiGetSubjects();
 
-                }
-                Adapters.setUpSpinner(getActivity(), sp_exam_classroom, classrooms, Adapters.ADAPTER_NORMAL);
-                callApiGetSubjects();
-
-            } else {
-                Utils.showToast(callGetClassRoomsResponse.getMessage(), getActivity());
-            }
-
-        } else if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
-
-            ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
-            if (callGetSubjectResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
-
-                arrListSubject = new ArrayList<Data>();
-                arrListSubject.addAll(callGetSubjectResponseObject.getData());
-                List<String> subjects = new ArrayList<String>();
-                subjects.add(getString(R.string.strsubjectname));
-                for (Data subject : arrListSubject) {
-                    subjects.add(subject.getSubjectName());
-
+                } else {
+                    Utils.showToast(callGetClassRoomsResponse.getMessage(), getActivity());
                 }
 
-                Adapters.setUpSpinner(getActivity(), sp_exam_subjectname, subjects, Adapters.ADAPTER_NORMAL);
+            } else if (apiMethodName == WebserviceWrapper.GETSUBJECT) {
 
-            } else {
-                Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
-            }
+                ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
+                if (callGetSubjectResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
 
-        } else if (apiMethodName == WebserviceWrapper.GETTOPICS) {
+                    arrListSubject = new ArrayList<Data>();
+                    arrListSubject.addAll(callGetSubjectResponseObject.getData());
+                    List<String> subjects = new ArrayList<String>();
+                    subjects.add(getString(R.string.strsubjectname));
+                    for (Data subject : arrListSubject) {
+                        subjects.add(subject.getSubjectName());
 
-            ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
-            if (callGetTopicsResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
+                    }
 
-                arrListTopic = new ArrayList<Data>();
-                arrListTopic.addAll(callGetTopicsResponseObject.getData());
-                List<String> topics = new ArrayList<String>();
-                topics.add(getString(R.string.strtopic));
-                for (Data topic : arrListTopic) {
-                    topics.add(topic.getTopicName());
+                    Adapters.setUpSpinner(getActivity(), sp_exam_subjectname, subjects, Adapters.ADAPTER_NORMAL);
 
+                } else {
+                    Utils.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
                 }
-                Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, topics, Adapters.ADAPTER_NORMAL);
-            } else {
-                Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
-                Utils.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
+
+            } else if (apiMethodName == WebserviceWrapper.GETTOPICS) {
+
+                ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
+                if (callGetTopicsResponseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
+
+                    arrListTopic = new ArrayList<Data>();
+                    arrListTopic.addAll(callGetTopicsResponseObject.getData());
+                    List<String> topics = new ArrayList<String>();
+                    topics.add(getString(R.string.strtopic));
+                    for (Data topic : arrListTopic) {
+                        topics.add(topic.getTopicName());
+
+                    }
+                    Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, topics, Adapters.ADAPTER_NORMAL);
+                } else {
+                    Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Utils.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
+                }
+
+            } else if (apiMethodName == WebserviceWrapper.CREATEEXAM) {
+
+                ResponseObject callCreateExamResponse = (ResponseObject) object;
+                if (callCreateExamResponse.getStatus().equals(WebConstants.STATUS_SUCCESS) && callCreateExamResponse != null) {
+
+                    Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
+                    btn_exam_setquestion.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
+                }
+
             }
-
-        } else if (apiMethodName == WebserviceWrapper.CREATEEXAM) {
-
-            ResponseObject callCreateExamResponse = (ResponseObject) object;
-            if (callCreateExamResponse.getStatus().equals(WebConstants.STATUS_SUCCESS) && callCreateExamResponse != null) {
-
-                Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
-                btn_exam_setquestion.setVisibility(View.VISIBLE);
-
-            } else {
-
-                Utils.showToast(callCreateExamResponse.getMessage(), getActivity());
-            }
-
+        } catch (Exception e) {
+            Debug.i(TAG, "Response Exceptions :" + e.toString());
         }
-
     }
 
 
@@ -630,10 +633,7 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         arrListPassingPercent.add(getString(R.string.strpassingpercent));
         for (int i = PASSINGPERCENT_STARTVALUE; i < PASSINGPERCENT_ENDVALUE; i += PASSINGPERCENT_INTERVAL) {
             arrListPassingPercent.add(String.valueOf(i));
-
         }
-
-
     }
 
     private void getExamDurationSpinnerValues() {
@@ -642,7 +642,6 @@ public class TrialExamFragment extends Fragment implements WebserviceWrapper.Web
         arrListExamDuration.add(getString(R.string.strexamduration));
         for (int i = EXAMDURATION_STARTVALUE; i < EXAMDURATION_ENDVALUE; i += EXAMDURATION_INTERVAL) {
             arrListExamDuration.add(String.valueOf(i));
-
         }
 
     }

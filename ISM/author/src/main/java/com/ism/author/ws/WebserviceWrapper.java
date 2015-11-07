@@ -39,6 +39,8 @@ public class WebserviceWrapper {
     public static final int GETQUESTIONBANK = 14;
     public static final int GETALLEXAM = 15;
     public static final int GETEXAMSUBMISSION = 16;
+    public static final int GETEXAMEVALUATIONS = 17;
+    public static final int GETEXAMQUESTIONS=18;
 
 
 
@@ -135,8 +137,13 @@ public class WebserviceWrapper {
                         break;
                     case GETEXAMSUBMISSION:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_EXAM_SUBMISSION, ResponseObject.class, requestObject);
-
-                        Debug.i(TAG,"Response object :" + responseObject);break;
+                        break;
+                    case GETEXAMEVALUATIONS:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_EXAM_EVALUATIONS, ResponseObject.class, requestObject);
+                        break;
+                    case GETEXAMQUESTIONS:
+                        responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_EXAM_QUESTIONS, ResponseObject.class, requestObject);
+                        break;
 
 
                 }
@@ -149,7 +156,7 @@ public class WebserviceWrapper {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            Debug.i(TAG, "WebserviceCaller Response : " + o.toString());
+            Debug.i(TAG, "WebserviceCaller Response : " + o);
             dismissProgressDialog();
             webserviceResponse.onResponse(API_METHOD_NAME, o, null);
 

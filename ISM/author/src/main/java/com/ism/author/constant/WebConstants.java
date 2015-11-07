@@ -30,7 +30,9 @@ public class WebConstants {
     public static final String URL_CREATE_EXAM = URL_ARTI_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_ARTI_HOST + "GetQuestionBank";
     public static final String URL_GET_ALL_EXAM = URL_ARTI_HOST + "GetAllExams";
-    public static final String URL_GET_EXAM_SUBMISSION =URL_ARTI_HOST + "GetExamSubmission";
+    public static final String URL_GET_EXAM_SUBMISSION = URL_ARTI_HOST + "GetExamSubmission";
+    public static final String URL_GET_EXAM_EVALUATIONS = URL_ARTI_HOST + "GetExamEvaluation";
+    public static final String URL_GET_EXAM_QUESTIONS = URL_ARTI_HOST + "GetExamQuestions";
 
     public static final String STATUS_SUCCESS = "success";
     public static final String STATUS_FAILED = "failed";
