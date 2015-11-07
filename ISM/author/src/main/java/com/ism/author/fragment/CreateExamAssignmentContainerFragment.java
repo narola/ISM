@@ -106,7 +106,7 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_ADDNEWTRIAL);
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -118,7 +118,7 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ADDNEWTRIAL);
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());

@@ -22,7 +22,7 @@
             android:layout_alignParentLeft="true"
             android:background="@drawable/bg_right_controller_top_button"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_logo_blue" />
+            android:src="@drawable/logo_blue" />
 
 
         <ImageView

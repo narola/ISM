@@ -46,10 +46,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="6"
-            android:layout_gravity="center"
-            android:src="@drawable/gridoption"/>
-    </LinearLayout>
 
+            android:layout_gravity="center"
+            />
+    </LinearLayout>
+    <!--android:src="@drawable/gridoption"-->
     <LinearLayout
         android:id="@+id/ll_exam"
         android:layout_width="@dimen/office_tab_width"

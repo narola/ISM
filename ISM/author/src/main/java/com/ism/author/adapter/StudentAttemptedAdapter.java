@@ -15,7 +15,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.StudentAttemptedFragment;
-import com.ism.author.fragment.TrialExamDetailFragment;
+import com.ism.author.fragment.TrialExamObjectiveDetailFragment;
 import com.ism.author.helper.CircleImageView;
 import com.ism.author.helper.ImageLoaderInit;
 import com.ism.author.helper.MyTypeFace;
@@ -97,10 +97,14 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                         ((AuthorHostActivity) context).startProgress();
                           callAPIStudentEvaluations(arrayList.get(position).getStudentId(), responseObject.getData().get(0).getExamID(), studentName);
                     }
+                    else{
+                        ((AuthorHostActivity) context).startProgress();
+                        TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context,fragment,null);
+                        TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
+                        trialExamDetailsAdapter.notifyDataSetChanged();
+                        ((AuthorHostActivity) context).stopProgress();
+                    }
                     notifyDataSetChanged();
-//                    if (arrayList.get(position).isFlagged()){
-//                        viewholder.txt
-//                    }
 
 
                 }
@@ -118,7 +122,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                 ((AuthorHostActivity) context).startProgress();
                 RequestObject requestObject = new RequestObject();
                 requestObject.setStudentId("202");
-                requestObject.setExamId("9");
+                requestObject.setExamId("3");
                 new WebserviceWrapper(context, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } else {
@@ -151,7 +155,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                     if (responseObjectEval.getData().get(0).getEvaluations().size() != 0) {
 
                         TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context,fragment,responseObjectEval);
-                        TrialExamDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
+                        TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
                         trialExamDetailsAdapter.notifyDataSetChanged();
                     }
                 } else {

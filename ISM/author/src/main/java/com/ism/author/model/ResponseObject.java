@@ -26,9 +26,9 @@ public class ResponseObject {
     }
 
     public ArrayList<Data> getData() {
-        // Debug.i(TAG,"DATA OBJECT:"+ data.size() );
+        // Debug.i(TAG,"DATA OBJECT:"+ questionData.size() );
 
-       // Debug.i(TAG,"DATA OBJECT:"+ data.size() );
+       // Debug.i(TAG,"DATA OBJECT:"+ questionData.size() );
         return this.data;
     }
 

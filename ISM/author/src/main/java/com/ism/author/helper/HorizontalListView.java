@@ -47,7 +47,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     /** The friction amount to use for the fling tracker */
     private static final float FLING_FRICTION = 0.009f;
 
-    /** Used for tracking the state data necessary to restore the HorizontalListView to its previous state after a rotation occurs */
+    /** Used for tracking the state questionData necessary to restore the HorizontalListView to its previous state after a rotation occurs */
     private static final String BUNDLE_ID_CURRENT_X = "BUNDLE_ID_CURRENT_X";
 
     /** The bundle id of the parents state. Used to restore the parent's state after a rotation occurs */
@@ -71,7 +71,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     /** Holds a cache of recycled views to be reused as needed */
     private List<Queue<View>> mRemovedViewsCache = new ArrayList<Queue<View>>();
 
-    /** Flag used to mark when the adapters data has changed, so the view can be relaid out */
+    /** Flag used to mark when the adapters questionData has changed, so the view can be relaid out */
     private boolean mDataChanged = false;
 
     /** Temporary rectangle to be used for measurements */
@@ -108,17 +108,17 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     private int mCurrentlySelectedAdapterIndex;
 
     /**
-     * Callback interface to notify listener that the user has scrolled this view to the point that it is low on data.
+     * Callback interface to notify listener that the user has scrolled this view to the point that it is low on questionData.
      */
     private RunningOutOfDataListener mRunningOutOfDataListener = null;
 
     /**
-     * This tracks the user value set of how many items from the end will be considered running out of data.
+     * This tracks the user value set of how many items from the end will be considered running out of questionData.
      */
     private int mRunningOutOfDataThreshold = 0;
 
     /**
-     * Tracks if we have told the listener that we are running low on data. We only want to tell them once.
+     * Tracks if we have told the listener that we are running low on questionData. We only want to tell them once.
      */
     private boolean mHasNotifiedRunningLowOnData = false;
 
@@ -311,13 +311,13 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         requestLayout();
     }
 
-    /** DataSetObserver used to capture adapter data change events */
+    /** DataSetObserver used to capture adapter questionData change events */
     private DataSetObserver mAdapterDataObserver = new DataSetObserver() {
         @Override
         public void onChanged() {
             mDataChanged = true;
 
-            // Clear so we can notify again as we run out of data
+            // Clear so we can notify again as we run out of questionData
             mHasNotifiedRunningLowOnData = false;
 
             unpressTouchedChild();
@@ -329,7 +329,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
         @Override
         public void onInvalidated() {
-            // Clear so we can notify again as we run out of data
+            // Clear so we can notify again as we run out of questionData
             mHasNotifiedRunningLowOnData = false;
 
             unpressTouchedChild();
@@ -358,7 +358,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         }
 
         if (adapter != null) {
-            // Clear so we can notify again as we run out of data
+            // Clear so we can notify again as we run out of questionData
             mHasNotifiedRunningLowOnData = false;
 
             mAdapter = adapter;
@@ -472,7 +472,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         // Force the OS to redraw this view
         invalidate();
 
-        // If the data changed then reset everything and render from scratch at the same offset as last time
+        // If the questionData changed then reset everything and render from scratch at the same offset as last time
         if (mDataChanged) {
             int oldCurrentX = mCurrentX;
             initView();
@@ -712,7 +712,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
             // If first view, then no divider to the left of it, otherwise add the space for the divider width
             rightEdge += (mRightViewAdapterIndex == 0 ? 0 : mDividerWidth) + child.getMeasuredWidth();
 
-            // Check if we are running low on data so we can tell listeners to go get more
+            // Check if we are running low on questionData so we can tell listeners to go get more
             determineIfLowOnData();
         }
     }
@@ -1094,13 +1094,13 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
     /**
      * Sets a listener to be called when the HorizontalListView has been scrolled to a point where it is
-     * running low on data. An example use case is wanting to auto download more data when the user
+     * running low on questionData. An example use case is wanting to auto download more questionData when the user
      * has scrolled to the point where only 10 items are left to be rendered off the right of the
      * screen. To get called back at that point just register with this function with a
      * numberOfItemsLeftConsideredLow value of 10. <br>
      * <br>
-     * This will only be called once to notify that the HorizontalListView is running low on data.
-     * Calling notifyDataSetChanged on the adapter will allow this to be called again once low on data.
+     * This will only be called once to notify that the HorizontalListView is running low on questionData.
+     * Calling notifyDataSetChanged on the adapter will allow this to be called again once low on questionData.
      *
      * @param listener The listener to be notified when the number of array adapters items left to
      * be shown is running low.
@@ -1114,16 +1114,16 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     }
 
     /**
-     * This listener is used to allow notification when the HorizontalListView is running low on data to display.
+     * This listener is used to allow notification when the HorizontalListView is running low on questionData to display.
      */
     public static interface RunningOutOfDataListener {
-        /** Called when the HorizontalListView is running out of data and has reached at least the provided threshold. */
+        /** Called when the HorizontalListView is running out of questionData and has reached at least the provided threshold. */
         void onRunningOutOfData();
     }
 
     /**
-     * Determines if we are low on data and if so will call to notify the listener, if there is one,
-     * that we are running low on data.
+     * Determines if we are low on questionData and if so will call to notify the listener, if there is one,
+     * that we are running low on questionData.
      */
     private void determineIfLowOnData() {
         // Check if the threshold has been reached and a listener is registered
