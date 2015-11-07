@@ -410,7 +410,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             Log.e("list_size", "" + listOfQuestionBank.size());
         }
 
-
     }
 
 

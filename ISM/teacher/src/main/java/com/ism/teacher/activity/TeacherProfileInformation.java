@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.CustomSpinnerAdapter;
@@ -47,6 +48,10 @@ public class TeacherProfileInformation extends Activity implements View.OnClickL
 
     private InputValidator inputValidator;
 
+
+    private MyTypeFace myTypeFace;
+    ProgressGenerator progressGenerator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +64,7 @@ public class TeacherProfileInformation extends Activity implements View.OnClickL
     }
 
     private void initView() {
+
 
         inputValidator = new InputValidator(TeacherProfileInformation.this);
         txtClickhere = (TextView) findViewById(R.id.txt_clickhere);
@@ -97,6 +103,9 @@ public class TeacherProfileInformation extends Activity implements View.OnClickL
         btnCancel.setOnClickListener(this);
         txtClickhere.setOnClickListener(this);
         llUploadProfilePic.setOnClickListener(this);
+
+        myTypeFace = new MyTypeFace(this);
+        progressGenerator = new ProgressGenerator();
 
 
     }

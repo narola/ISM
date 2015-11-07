@@ -206,7 +206,7 @@
                         android:inputType="text|textNoSuggestions|textMultiLine"
                         android:nextFocusDown="@+id/editText"
                         android:textColor="@android:color/darker_gray"
-                        android:textSize="@dimen/d20dp" />
+                        android:textSize="@dimen/d20sp" />
 
                 </LinearLayout>
 

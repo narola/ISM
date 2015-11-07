@@ -9,6 +9,7 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import com.ism.teacher.autocomplete.ContactsCompletionView;
 import com.ism.teacher.autocomplete.FilteredArrayAdapter;
 import com.ism.teacher.autocomplete.TokenCompleteTextView;
 import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.model.AnswersModel;
 import com.ism.teacher.model.Data;
 import com.ism.teacher.model.TagsModel;
 
@@ -70,6 +72,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     Data objData = new Data();
 
+    public static final String QUESTION_TYPE_TEXT = "Fill ups";
+    public static final String QUESTION_TYPE_MCQ = "MCQ";
+    public static final String QUESTION_TYPE_PARAGRAPH = "descriptive";
+
+    private int spinner_selection_flag;
+
     public QuestionAddEditFragment(Fragment fragment) {
         this.mFragment = fragment;
     }
@@ -87,17 +95,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         initGlobal();
 
         Bundle args = getArguments();
-        if (args != null) {
-            /*arrayListQuestion= (ArrayList<Data>) args.getSerializable(AppConstant.BUNDLE_EDIT_QUESTION_FRAGMENT);
 
-            if(arrayListQuestion.size()>0)
-            {
-                String question_text=arrayListQuestion.get(0).getQuestionText();
-                Utility.showToast(question_text,getActivity());
-            }*/
+        if (args != null) {
 
             objData = (Data) args.getSerializable(AppConstant.BUNDLE_EDIT_QUESTION_FRAGMENT);
-            //Utility.showToast(objData.getQuestionText(),getActivity());
+            Log.e("Add Edit", "Add Edit========");
             loadDataForCopyQuestion(objData);
 
         } else {
@@ -192,16 +194,116 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private void loadDataForCopyQuestion(Data objData) {
         etQuestionTitle.setText(objData.getQuestionText());
 
-        if (objData.getQuestionFormat().equalsIgnoreCase("MCQ")) {
-            for (int i = 0; i < arrayListQuestionType.size(); i++) {
-                if (objData.getQuestionFormat().trim().equalsIgnoreCase(arrayListQuestionType.get(i))) {
-                    spQuestionType.setSelection(i);
-                    break;
+
+        //For spinner item selection based on the
+        String question_type = objData.getQuestionFormat();
+
+        if (question_type != null && !question_type.equals("")) {
+
+
+            if (question_type.equalsIgnoreCase(QUESTION_TYPE_MCQ)) {
+                for (int position = 0; position < arrayListQuestionType.size(); position++) {
+                    if (arrayListQuestionType.get(position).trim().equalsIgnoreCase("Multiple Choice")) {
+                        spQuestionType.setSelection(position);
+
+                        if (objData.getAnswers().size() > 0) {
+                            loadMCQOptions(objData.getAnswers());
+                        }
+
+                        etAnswerBox.setVisibility(View.GONE);
+
+                        break;
+                    }
+                }
+            } else if (question_type.equalsIgnoreCase(QUESTION_TYPE_TEXT)) {
+                for (int i = 0; i < arrayListQuestionType.size(); i++) {
+                    if (arrayListQuestionType.get(i).trim().equalsIgnoreCase("Text")) {
+                        spQuestionType.setSelection(i);
+
+                        llAddMcqanswer.removeAllViews();
+                        break;
+                    }
+                }
+            } else if (question_type.equalsIgnoreCase(QUESTION_TYPE_PARAGRAPH)) {
+                for (int i = 0; i < arrayListQuestionType.size(); i++) {
+                    if (arrayListQuestionType.get(i).trim().equalsIgnoreCase("Paragraph")) {
+                        spQuestionType.setSelection(i);
+
+                        llAddMcqanswer.removeAllViews();
+                        break;
+                    }
                 }
             }
+
+        }
+
+
+    }
+
+    private void loadMCQOptions(ArrayList<AnswersModel> arrayListAnswers) {
+        for (int count = 0; count < arrayListAnswers.size(); count++) {
+            llAddMcqanswer.addView(getMcqTestAnswerView(arrayListAnswers, count));
         }
 
     }
+
+
+    private View getMcqTestAnswerView(ArrayList<AnswersModel> arrayListAnswers, int count) {
+        View v = null;
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        v = layoutInflater.inflate(R.layout.row_mcq_answer, null, false);
+
+        ImageView imgAnsRadio = (ImageView) v.findViewById(R.id.img_ans_radio);
+        EditText etAddMcqAnswer = (EditText) v.findViewById(R.id.et_add_mcq_answer);
+        final ImageView imgAddMcqRow = (ImageView) v.findViewById(R.id.img_add_mcq_row);
+        final ImageView imgRemoveMcqRow = (ImageView) v.findViewById(R.id.img_remove_mcq_row);
+
+        if (count >= arrayListAnswers.size()) {
+            etAddMcqAnswer.setText("");
+        } else {
+            etAddMcqAnswer.setText(arrayListAnswers.get(count).getChoiceText());
+            Log.e("option value", "" + arrayListAnswers.get(count).getChoiceText());
+
+        }
+
+        if (count > 0) {
+            imgAddMcqRow.setVisibility(View.VISIBLE);
+        } else {
+            imgAddMcqRow.setVisibility(View.GONE);
+        }
+        imgRemoveMcqRow.setTag(count);
+        imgAddMcqRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int viewPositionToAdd = (Integer) imgRemoveMcqRow.getTag();
+                imgAddMcqRow.setVisibility(View.GONE);
+                imgRemoveMcqRow.setVisibility(View.VISIBLE);
+
+                if (llAddMcqanswer.getChildCount() < 6) {
+                    llAddMcqanswer.addView(getMcqTestAnswerView(objData.getAnswers(), viewPositionToAdd + 1));
+                } else {
+
+                }
+            }
+        });
+
+        imgRemoveMcqRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int viewPositionToRemove = (Integer) imgRemoveMcqRow.getTag();
+                llAddMcqanswer.removeViewAt(viewPositionToRemove);
+                refreshViewPositions();
+
+            }
+        });
+
+        return v;
+    }
+
+
+    /**
+     * Add New Question Functionality
+     */
 
 
     private void loadDataForAddQuestion() {
@@ -292,7 +394,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         final ImageView imgAddMcqRow = (ImageView) v.findViewById(R.id.img_add_mcq_row);
         final ImageView imgRemoveMcqRow = (ImageView) v.findViewById(R.id.img_remove_mcq_row);
 
-        //etAddMcqAnswer.setText("Ans:::" + position);
+        etAddMcqAnswer.setText("Ans:::" + position);
         if (position > 0) {
             imgAddMcqRow.setVisibility(View.VISIBLE);
         } else {
@@ -358,4 +460,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         }
         Utility.showToast("The Tokens Are::::" + sb, getActivity());
     }
+
+
 }

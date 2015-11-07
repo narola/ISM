@@ -55,7 +55,6 @@ public class AddQuestionFragmentTeacher extends Fragment {
         view = inflater.inflate(R.layout.fragment_add_question_teacher, container, false);
         initGlobal();
 
-
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fl_addquestionfragment_container_left, questionListFragment)
@@ -75,7 +74,6 @@ public class AddQuestionFragmentTeacher extends Fragment {
         fl_addquestionfragment_container_left = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
         fl_addquestionfragment_container_right = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
 
-        //  loadFragment(FRAGMENT_QUESTIONLIST);
     }
 
     @Override
