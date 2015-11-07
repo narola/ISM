@@ -2220,6 +2220,17 @@ ul.tut_weekdays {
 	text-decoration:none;
 }
 
+.error_notification{
+	position: fixed;
+    z-index: 2;
+    bottom: 5px;
+    right: 30px;
+	width:320px;
+    color: #a94442;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+  
+}
 
 /*notice board*/
 .group_filter {
