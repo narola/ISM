@@ -69,7 +69,6 @@ public class AddQuestionContainerFragment extends Fragment {
 
             isFrontVisible = true;
 
-
         }
 
 
@@ -123,9 +122,12 @@ public class AddQuestionContainerFragment extends Fragment {
 
         if (isFrontVisible) {
             isFrontVisible = false;
+            questionAddEditFragment.setViewForAddEditQuestion();
+
         } else {
             isFrontVisible = true;
         }
+
 
     }
 
@@ -141,20 +143,16 @@ public class AddQuestionContainerFragment extends Fragment {
 
 
     public void showHideFragment(final Fragment fragment) {
-
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-
         if (isFrontVisible) {
-
+            ft.setCustomAnimations(
+                    R.animator.card_flip_right_in, R.animator.card_flip_right_out,
+                    R.animator.card_flip_left_in, R.animator.card_flip_left_out);
         } else {
-
+            ft.setCustomAnimations(
+                    R.animator.card_flip_left_in, R.animator.card_flip_left_out,
+                    R.animator.card_flip_right_in, R.animator.card_flip_right_out);
         }
-
-
-        ft.setCustomAnimations(
-                R.animator.card_flip_right_in, R.animator.card_flip_right_out,
-                R.animator.card_flip_left_in, R.animator.card_flip_left_out);
-        
 
         if (fragment.isHidden()) {
             ft.show(fragment);
