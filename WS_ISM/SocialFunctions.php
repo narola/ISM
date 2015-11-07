@@ -307,6 +307,7 @@ class SocialFunctions
         }
         else
         {
+
             $status="failed";
         }
 
@@ -681,6 +682,12 @@ class SocialFunctions
             }
         }
         $status = "success";
+        if($allfeeds==null){
+            $allfeeds=array();
+            $status = "failed";
+        }
+
+
 
         $errorMsg="";
         $data['message'] = $errorMsg;
