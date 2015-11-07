@@ -1,0 +1,173 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg_app_dark"
+                tools:context="com.ism.fragment.ProfileControllerFragment">
+
+	<com.ism.views.CircleImageView
+		android:id="@+id/img_dp"
+		android:layout_width="80dp"
+		android:layout_height="80dp"
+		android:layout_marginBottom="10dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginTop="20dp"
+		android:src="@drawable/userdp"/>
+
+	<TextView
+		android:id="@+id/txt_name"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="25dp"
+		android:layout_toRightOf="@id/img_dp"
+		android:gravity="center"
+		android:text="ADAM ROSS"
+		android:textAllCaps="true"
+		android:textColor="@android:color/white"
+		android:textSize="22sp"/>
+
+	<TextView
+		android:id="@+id/txt_edit_profile"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/txt_name"
+		android:layout_marginTop="5dp"
+		android:layout_toRightOf="@id/img_dp"
+		android:gravity="center"
+		android:text="@string/edit_profile"
+		android:textColor="@color/color_green"
+		android:textSize="20sp"/>
+
+	<ImageView
+		android:id="@+id/img_notification"
+		android:layout_width="@dimen/controller_top_button_width"
+		android:layout_height="@dimen/notification_button_height"
+		android:layout_below="@id/img_dp"
+		android:layout_marginTop="@dimen/notification_margin_top"
+		android:background="@drawable/bg_right_notification_button"
+		android:src="@drawable/img_notification"/>
+
+	<TextView
+		android:id="@+id/txt_notification"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/img_dp"
+		android:layout_marginRight="5dp"
+		android:background="@drawable/bg_notificaton"
+		android:textSize="@dimen/notification_digit_text_size"
+		android:paddingRight="@dimen/notification_digit_horizontal_padding"
+		android:paddingLeft="@dimen/notification_digit_horizontal_padding"
+		android:textColor="@android:color/white"
+		android:layout_alignRight="@id/img_notification"/>
+
+	<ImageView
+		android:id="@+id/img_message"
+		android:layout_width="@dimen/controller_top_button_width"
+		android:layout_height="@dimen/notification_button_height"
+		android:layout_below="@id/img_dp"
+		android:layout_toRightOf="@id/img_notification"
+		android:layout_marginTop="@dimen/notification_margin_top"
+		android:background="@drawable/bg_right_notification_button"
+		android:src="@drawable/img_message"/>
+
+	<TextView
+		android:id="@+id/txt_message"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/img_dp"
+		android:layout_marginRight="5dp"
+		android:background="@drawable/bg_message"
+		android:textSize="@dimen/notification_digit_text_size"
+		android:paddingRight="@dimen/notification_digit_horizontal_padding"
+		android:paddingLeft="@dimen/notification_digit_horizontal_padding"
+		android:textColor="@android:color/white"
+		android:layout_alignRight="@id/img_message"/>
+
+	<ImageView
+		android:id="@+id/img_friend_request"
+		android:layout_width="@dimen/controller_top_button_width"
+		android:layout_height="@dimen/notification_button_height"
+		android:layout_below="@id/img_dp"
+		android:layout_toRightOf="@id/img_message"
+		android:layout_marginTop="@dimen/notification_margin_top"
+		android:background="@color/bg_notification_layout"
+		android:src="@drawable/img_friend_request"/>
+
+	<TextView
+		android:id="@+id/txt_friend_request"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/img_dp"
+		android:layout_marginRight="5dp"
+		android:background="@drawable/bg_friend_request"
+		android:textSize="@dimen/notification_digit_text_size"
+		android:paddingRight="@dimen/notification_digit_horizontal_padding"
+		android:paddingLeft="@dimen/notification_digit_horizontal_padding"
+		android:textColor="@android:color/white"
+		android:layout_alignRight="@id/img_friend_request"/>
+
+	<TextView
+		android:id="@+id/txt_general_settings"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/profile_label_height"
+		android:background="@drawable/bg_profile_label"
+		android:layout_below="@id/img_notification"
+		android:gravity="center_vertical"
+		android:paddingLeft="@dimen/profile_label_padding"
+		android:text="@string/general_settings"
+		android:textSize="@dimen/profile_label_text"
+		android:textColor="@android:color/white"
+		android:textAllCaps="true"/>
+
+	<TextView
+		android:id="@+id/txt_my_feeds"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/profile_label_height"
+		android:background="@drawable/bg_profile_label"
+		android:layout_below="@id/txt_general_settings"
+		android:gravity="center_vertical"
+		android:paddingLeft="@dimen/profile_label_padding"
+		android:text="@string/my_feeds"
+		android:textSize="@dimen/profile_label_text"
+		android:textColor="@android:color/white"
+		android:textAllCaps="true"/>
+
+	<TextView
+		android:id="@+id/txt_studymates"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/profile_label_height"
+		android:background="@drawable/bg_profile_label"
+		android:layout_below="@id/txt_my_feeds"
+		android:gravity="center_vertical"
+		android:paddingLeft="@dimen/profile_label_padding"
+		android:text="@string/studymates"
+		android:textSize="@dimen/profile_label_text"
+		android:textColor="@android:color/white"
+		android:textAllCaps="true"/>
+
+	<TextView
+		android:id="@+id/txt_my_activity"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/profile_label_height"
+		android:background="@drawable/bg_profile_label"
+		android:layout_below="@id/txt_studymates"
+		android:gravity="center_vertical"
+		android:paddingLeft="@dimen/profile_label_padding"
+		android:text="@string/my_activity"
+		android:textSize="@dimen/profile_label_text"
+		android:textColor="@android:color/white"
+		android:textAllCaps="true"/>
+
+	<TextView
+		android:id="@+id/txt_my_wallet"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/profile_label_height"
+		android:background="@drawable/bg_profile_label"
+		android:layout_below="@id/txt_my_activity"
+		android:gravity="center_vertical"
+		android:paddingLeft="@dimen/profile_label_padding"
+		android:text="@string/my_wallet"
+		android:textSize="@dimen/profile_label_text"
+		android:textColor="@android:color/white"
+		android:textAllCaps="true"/>
+</RelativeLayout>

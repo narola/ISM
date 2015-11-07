@@ -20,9 +20,6 @@
     <color name="bg_controller_left_medium">#29323A</color>
     <color name="bg_controller_left_dark">#212B33</color>
     <color name="border_gray">#DDDDDD</color>
-
-
-    <!-- Arti -->
     <color name="color_green">#1BC4A2</color>
     <color name="color_green_dark">#14987d</color>
     <color name="color_transparent_white">#70ffffff</color>
@@ -40,8 +37,6 @@
     <color name="color_gray_profilemenu">#323941</color>
     <color name="color_blue">#ff3295ff</color>
     <color name="color_light_green">#d820ba83</color>
-
-    <!--profile menu shadow colors-->
     <color name="color_layer1">#242A31</color>
     <color name="color_layer2">#31363C</color>
     <color name="color_layer3">#3C434A</color>
@@ -49,4 +44,8 @@
     <color name="color_shade_news_feed">#90BABABA</color>
     <color name="divider">#E4E4E4</color>
     <color name="news_feed_post_box_color">#90BABABA</color>
+    <color name="bg_notification_layout">#232A34</color>
+    <color name="bg_notification">#3EB1DE</color>
+    <color name="bg_message">#FD4B41</color>
+    <color name="bg_friend_request">#FEBA01</color>
 </resources>

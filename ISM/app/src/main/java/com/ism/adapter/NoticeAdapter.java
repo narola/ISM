@@ -79,7 +79,7 @@ public class NoticeAdapter extends BaseAdapter {
 		    holder.txtReadmore.setOnClickListener(new View.OnClickListener() {
 			    @Override
 			    public void onClick(View v) {
-				    activityHost.showAllNotice(arrListNotes);
+				    activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTES, arrListNotes);
 			    }
 		    });
 

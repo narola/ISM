@@ -10,7 +10,7 @@
         android:gravity="center"
         android:padding="30dp">
 
-        <com.ism.teacher.helper.CircleImageView
+        <com.ism.teacher.views.CircleImageView
             android:id="@+id/img_dp_group"
             android:layout_width="150dp"
             android:layout_height="150dp"
@@ -91,7 +91,7 @@
                 android:layout_marginRight="@dimen/d15dp"
                 android:layout_weight="1">
 
-                <com.ism.teacher.helper.CircleImageView
+                <com.ism.teacher.views.CircleImageView
                     android:id="@+id/img_dp_first"
                     android:layout_width="@dimen/d50dp"
                     android:layout_height="@dimen/d50dp"
@@ -139,7 +139,7 @@
                 android:layout_marginRight="@dimen/d15dp"
                 android:layout_weight="1">
 
-                <com.ism.teacher.helper.CircleImageView
+                <com.ism.teacher.views.CircleImageView
                     android:id="@+id/img_dp_commenter"
                     android:layout_width="@dimen/d50dp"
                     android:layout_height="@dimen/d50dp"
@@ -188,7 +188,7 @@
                 android:layout_marginRight="@dimen/d15dp"
                 android:layout_weight="1">
 
-                <com.ism.teacher.helper.CircleImageView
+                <com.ism.teacher.views.CircleImageView
                     android:id="@+id/img_dp_third"
                     android:layout_width="@dimen/d50dp"
                     android:layout_height="@dimen/d50dp"
@@ -246,7 +246,7 @@
                 android:layout_marginRight="@dimen/d15dp"
                 android:layout_weight="1">
 
-                <com.ism.teacher.helper.CircleImageView
+                <com.ism.teacher.views.CircleImageView
                     android:id="@+id/img_dp_fourth"
                     android:layout_width="@dimen/d50dp"
                     android:layout_height="@dimen/d50dp"
@@ -294,7 +294,7 @@
                 android:layout_marginRight="@dimen/d15dp"
                 android:layout_weight="1">
 
-                <com.ism.teacher.helper.CircleImageView
+                <com.ism.teacher.views.CircleImageView
                     android:id="@+id/img_dp_fifth"
                     android:layout_width="@dimen/d50dp"
                     android:layout_height="@dimen/d50dp"

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:padding="@dimen/d10dp"
+    android:weightSum="4">
+
+    <ImageView
+        android:id="@+id/img_ans_radio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:src="@drawable/radio_button_unselect" />
+
+    <EditText
+        android:id="@+id/et_add_mcq_answer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/d10dp"
+        android:layout_weight="3.5"
+        android:background="@drawable/shadow_gray"
+        android:gravity="left"
+        android:padding="@dimen/d10dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/d10dp"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_add_mcq_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d10dp"
+            android:background="@drawable/ic_add_row"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/img_remove_mcq_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d10dp"
+            android:background="@drawable/ic_remove"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

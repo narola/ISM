@@ -15,25 +15,28 @@ import android.widget.Spinner;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.adapter.Adapters;
 import com.ism.adapter.AllNoticeAdapter;
-import com.ism.adapter.AllNoticeSortByAdapter;
 import com.ism.interfaces.FragmentListener;
-import com.ism.model.AllNotice;
+import com.ism.object.MyTypeFace;
+import com.ism.utility.Utility;
 import com.ism.ws.model.Data;
 
 import java.util.ArrayList;
 
+/**
+ * Created by c161 on 04/11/15.
+ */
 public class AllNoticeFragment extends Fragment {
 
 	private static final String TAG = AllNoticeFragment.class.getSimpleName();
 
 	private View view;
-	private Spinner spCategory, spSortBy;
+	private Spinner spSortBy;
 	private RecyclerView recyclerAllNotice;
 
 	private ArrayList<Data> arrListAllNotice;
 	private AllNoticeAdapter adpAllNotice;
-	private AllNoticeSortByAdapter adpSortBy;
 
 	private FragmentListener listenerFragment;
 
@@ -61,19 +64,13 @@ public class AllNoticeFragment extends Fragment {
 	}
 
 	private void initGlobal() {
-		spCategory = (Spinner) view.findViewById(R.id.sp_notice_category);
 		spSortBy = (Spinner) view.findViewById(R.id.sp_notice_sortby);
 		recyclerAllNotice = (RecyclerView) view.findViewById(R.id.recycler_all_notice);
 
-		adpSortBy = new AllNoticeSortByAdapter(getActivity());
-		spSortBy.setAdapter(adpSortBy);
+		MyTypeFace myTypeFace = new MyTypeFace(getActivity());
 
-		/*arrListAllNotice = new ArrayList<AllNotice>();
-		arrListAllNotice.add(new AllNotice("Notice title 1", "Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content."));
-		arrListAllNotice.add(new AllNotice("Notice title 2", "Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content."));
-		arrListAllNotice.add(new AllNotice("Notice title 3", "Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content."));
-		arrListAllNotice.add(new AllNotice("Notice title 4", "Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content."));
-		arrListAllNotice.add(new AllNotice("Notice title 5", "Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content. Notice content."));*/
+		Adapters.setUpSpinner(getActivity(), spSortBy, getActivity().getResources().getStringArray(R.array.notice_sortby)
+				, myTypeFace.getRalewayRegular(), R.layout.list_item_simple_light);
 
 		recyclerAllNotice.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -98,15 +95,20 @@ public class AllNoticeFragment extends Fragment {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				switch (position) {
-					case 1:
+					case 1: // NoticeTitle Ascending
+						Utility.sortNoticeTitleAsc(arrListAllNotice);
 						break;
-					case 2:
+					case 2: // NoticeTitle Descending
+						Utility.sortNoticeTitleDesc(arrListAllNotice);
 						break;
-					case 3:
+					case 3: // Latest Top
+						Utility.sortPostedOnDesc(arrListAllNotice);
 						break;
-					case 4:
+					case 4: // Oldest Top
+						Utility.sortPostedOnAsc(arrListAllNotice);
 						break;
 				}
+				adpAllNotice.notifyDataSetChanged();
 			}
 
 			@Override

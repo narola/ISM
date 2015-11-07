@@ -35,8 +35,10 @@
 
 	<string-array name="notice_sortby">
 		<item>Sort By</item>
-		<item>Date &amp; Time</item>
-		<item>Title</item>
+		<item>Name Ascending</item>
+		<item>Name Descending</item>
+		<item>Latest First</item>
+		<item>Oldest First</item>
 	</string-array>
 
 	<string name="classwall">Classwall</string>
@@ -170,4 +172,10 @@
 	<string name="strcomments">Comments</string>
 	<string name="read_more">Read more</string>
 	<string name="add_post">Add Post</string>
+	<string name="edit_profile">Edit Profile</string>
+	<string name="general_settings">General Settings</string>
+	<string name="my_feeds">My Feeds</string>
+	<string name="studymates">Studymates</string>
+	<string name="my_activity">My Activity</string>
+	<string name="my_wallet">My Wallet</string>
 </resources>
