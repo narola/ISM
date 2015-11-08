@@ -113,7 +113,7 @@ public class PreferenceData {
     }
 
     /**
-     * Clear all data in SharedPreference
+     * Clear all questionData in SharedPreference
      *
      * @param context
      */

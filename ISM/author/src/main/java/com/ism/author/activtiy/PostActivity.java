@@ -426,34 +426,34 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
 
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Connection", "Keep-Alive");
-            conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+            conn.setRequestProperty("ENCTYPE", "multipart/form-questionData");
+            conn.setRequestProperty("Content-Type", "multipart/form-questionData;boundary=" + boundary);
             //conn.setRequestProperty("mediaFile", fileName);
             dos = new DataOutputStream(conn.getOutputStream());
             dos.writeBytes(twoHyphens + boundary + lineEnd);
             //dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=\"mediaFile\";filename=\"" + sourceFile.getName() + "\"" + lineEnd);
+            dos.writeBytes("Content-Disposition: form-questionData; name=\"mediaFile\";filename=\"" + sourceFile.getName() + "\"" + lineEnd);
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
 
-            //dos.writeBytes("Content-Disposition: form-data; name=\"feed_by1\""+ lineEnd);
+            //dos.writeBytes("Content-Disposition: form-questionData; name=\"feed_by1\""+ lineEnd);
             dos.writeBytes(lineEnd);
             // dos.writeBytes("370");
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
 
-            dos.writeBytes("Content-Disposition: form-data; name=\"feed_id\"" + lineEnd);
+            dos.writeBytes("Content-Disposition: form-questionData; name=\"feed_id\"" + lineEnd);
             dos.writeBytes(lineEnd);
             dos.writeBytes(feed_id);
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
 
-            dos.writeBytes("Content-Disposition: form-data; name=\"mediaType\"" + lineEnd);
+            dos.writeBytes("Content-Disposition: form-questionData; name=\"mediaType\"" + lineEnd);
             dos.writeBytes(lineEnd);
             dos.writeBytes(type);
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=\"feed_by\"" + lineEnd);
+            dos.writeBytes("Content-Disposition: form-questionData; name=\"feed_by\"" + lineEnd);
             dos.writeBytes(lineEnd);
             dos.writeBytes(feed_by);
             dos.writeBytes(lineEnd);
@@ -477,7 +477,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 bytesRead = fileInputStream.read(buffer, 0, bufferSize);
             }
 
-            // send multipart form data necesssary after file data...
+            // send multipart form questionData necesssary after file questionData...
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 

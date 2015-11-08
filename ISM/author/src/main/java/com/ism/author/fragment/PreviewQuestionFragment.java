@@ -130,18 +130,14 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     }
 
-
     public void addQuestionsToPreviewFragment(ArrayList<Data> data) {
-
         if (data.size() > 0) {
             listOfPreviewQuestions.addAll(data);
             previewQuestionListAdapter.addAll(listOfPreviewQuestions);
 
         }
 
-
     }
-
 
     //   @Override
     public void onResponse(int apiCode, Object object, Exception error) {

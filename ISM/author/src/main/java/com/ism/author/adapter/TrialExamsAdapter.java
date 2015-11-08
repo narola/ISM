@@ -73,7 +73,7 @@ public class TrialExamsAdapter extends BaseAdapter {
         try {
 
             holder.txtSubjectName.setText(data.getData().get(position).getSubjectName());
-           // holder.txtExamType.setBackgroundResource(data.getOfficeTabTitleImages()[position]);
+           // holder.txtExamType.setBackgroundResource(questionData.getOfficeTabTitleImages()[position]);
             holder.txtSubjectName.setTypeface(myTypeFace.getRalewayBold());
 
             holder.txtExamType.setText("Exam Type : " + data.getData().get(position).getExam_type());

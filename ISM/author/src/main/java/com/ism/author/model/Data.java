@@ -1,7 +1,7 @@
 package com.ism.author.model;
 
 /**
- * these is the common class for handling all the api response data.
+ * these is the common class for handling all the api response questionData.
  */
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

@@ -28,9 +28,9 @@ import android.widget.TextView;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
-import com.ism.author.fragment.AddQuestionFragment;
+import com.ism.author.fragment.AddQuestionContainerFragment;
 import com.ism.author.fragment.BooksFragment;
-import com.ism.author.fragment.CreateAssignmentFragment;
+import com.ism.author.fragment.CreateExamAssignmentContainerFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.OfficeFragment;
 import com.ism.author.fragment.StudentAttemptedFragment;
@@ -94,7 +94,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_SETQUIZ = 7;
     public static final int FRAGMENT_PROGRESSREPORT = 8;
     public static final int FRAGMENT_TRIAL = 9;
-    public static final int FRAGMENT_ADDNEWTRIAL = 10;
+    public static final int FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT = 10;
     public static final int FRAGMENT_ADDQUESTION = 11;
     public static final int FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS = 12;
     public static final int FRAGMENT_TRIAL_EXAM_SUBJECTIVE_DETAILS = 13;
@@ -234,13 +234,19 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TrialFragment.newInstance()).commit();
 
                     break;
-                case FRAGMENT_ADDNEWTRIAL:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, CreateAssignmentFragment.newInstance()).commit();
+//                case FRAGMENT_ADDNEWTRIAL:
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, CreateAssignmentFragment.newInstance()).commit();
+                case FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, CreateExamAssignmentContainerFragment.newInstance()).commit();
+//                    mFragmentTransaction = mFragmentManager.beginTransaction();
+//                    mFragmentTransaction.add(R.id.fl_fragment_container_main, TrialAddNewFragment.newInstance());
+//                    mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT));
+//                    mFragmentTransaction.commit();
                     break;
 
                 case FRAGMENT_ADDQUESTION:
                     mFragmentTransaction = mFragmentManager.beginTransaction();
-                    mFragmentTransaction.add(R.id.fl_fragment_container_main, AddQuestionFragment.newInstance());
+                    mFragmentTransaction.add(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance());
                     mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_ADDQUESTION));
                     mFragmentTransaction.commit();
                     break;
@@ -337,7 +343,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     break;
 
 
-                case FRAGMENT_ADDNEWTRIAL:
+                case FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT:
                     imgHome.setActivated(false);
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_office;
@@ -432,7 +438,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     imgOffice.setActivated(true);
                     break;
 
-                case FRAGMENT_ADDNEWTRIAL:
+                case FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT:
                     imgOffice.setActivated(true);
                     break;
                 case FRAGMENT_ADDQUESTION:
@@ -569,7 +575,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         } else if (currentMainFragment == FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS) {
             loadFragmentInMainContainer(FRAGMENT_TRIAL);
             loadFragmentInRightContainer(currentRightFragment);
-        } else if (currentMainFragment == FRAGMENT_ADDNEWTRIAL) {
+        } else if (currentMainFragment == FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT) {
             loadFragmentInMainContainer(FRAGMENT_TRIAL);
         }
     }
@@ -696,11 +702,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
     @Override
     public void onBackPressed() {
-        // super.onBackPressed();
-
-//        handleOnBackPressed();
-
-//        Utils.showToast("The backstack count is" + getFragmentManager().getBackStackEntryCount(), this);
+//        super.onBackPressed();
     }
 
     private void handleTheActionButtonFragmentEvents() {
@@ -710,9 +712,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
         } else if (currentMainFragment == FRAGMENT_TRIAL) {
 
-            loadFragmentInMainContainer(FRAGMENT_ADDNEWTRIAL);
+            loadFragmentInMainContainer(FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT);
 
-        } else if (currentMainFragment == FRAGMENT_ADDNEWTRIAL) {
+        } else if (currentMainFragment == FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT) {
 
         } else if (currentMainFragment == FRAGMENT_ADDQUESTION) {
 

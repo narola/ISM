@@ -142,7 +142,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             try {
                 RequestObject requestObject = new RequestObject();
                 requestObject.setUserId("370");
-                requestObject.setRole(AppConstant.AUTHOR_ROLE_ID+"");
+                requestObject.setRole(AppConstant.AUTHOR_ROLE_ID + "");
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETQUESTIONBANK);
             } catch (Exception e) {
@@ -246,30 +246,37 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
     }
 
+
     @Override
     public void onClick(View v) {
 
         if (v == tvQuestionlistAddPreview) {
-            if (questionBankListAdapter.getListOfPreviewQuestionsToAdd().size() > 0) {
-                ((AddQuestionFragment) mFragment).previewQuestionFragment.addQuestionsToPreviewFragment(questionBankListAdapter.getListOfPreviewQuestionsToAdd());
-                questionBankListAdapter.getListOfPreviewQuestionsToAdd().clear();
+            if (((AddQuestionContainerFragment) mFragment).getListOfPreviewQuestionsToAdd().size() > 0) {
+//                ((AddQuestionContainerFragment) mFragment).previewQuestionFragment.
+//                        addQuestionsToPreviewFragment(((AddQuestionContainerFragment) mFragment).getListOfPreviewQuestionsToAdd());
+                ((AddQuestionContainerFragment) mFragment).addQuestionsToPreviewFragment();
+                ((AddQuestionContainerFragment) mFragment).getListOfPreviewQuestionsToAdd().clear();
             } else {
                 Utils.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
 
             }
         } else if (v == tvQuestionlistAddNewQuestion) {
-            ((AddQuestionFragment) mFragment).flipCard();
+
+            ((AddQuestionContainerFragment) mFragment).setQuestionData(null);
+            ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(false);
+            ((AddQuestionContainerFragment) mFragment).flipCard();
+
 
         }
-
     }
 
     public void updateViewAfterDeleteInPreviewQuestion(Data data) {
         int position = listOfQuestionBank.indexOf(data);
         listOfQuestionBank.get(position).setIsQuestionAddedInPreview(false);
-        questionBankListAdapter.addAll(listOfQuestionBank);
-        ((AddQuestionFragment) mFragment).previewQuestionFragment.listOfPreviewQuestions.remove(data);
-
-
+//        questionBankListAdapter.addAll(listOfQuestionBank);
+        questionBankListAdapter.notifyDataSetChanged();
+//        ((AddQuestionContainerFragment) mFragment).previewQuestionFragment.listOfPreviewQuestions.remove(data);
     }
+
+
 }
