@@ -266,7 +266,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(false);
             ((AddQuestionContainerFragment) mFragment).flipCard();
 
-
         }
     }
 
