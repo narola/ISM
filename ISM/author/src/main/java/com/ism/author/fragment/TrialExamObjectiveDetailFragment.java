@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.InputValidator;
-import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.ws.WebserviceWrapper;
@@ -33,6 +32,10 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
     public static RecyclerView rvList;
     public static TextView txtExamType, txtBookNameValue,txtExamTypeName, txtBookName, txtClassName, txtClass, txtEamName, txtEamTypeName, txtExamDateValue, txtExamName, txtExamDate;
     ImageView imgCopy,imgEdit;
+    //private ResponseObject responseObject;
+    //public static ResponseObject responseObjQuestions;
+   // public static TrialExamDetailsAdapter trialExamDetailsAdapter;
+    //public static String questionsID[];
 
     public static TrialExamObjectiveDetailFragment newInstance() {
         TrialExamObjectiveDetailFragment trialExamObjectiveDetailFragment = new TrialExamObjectiveDetailFragment();
@@ -46,7 +49,7 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_trial_exam_details, container, false);
+        view = inflater.inflate(R.layout.fragment_trial_exam_objective_details, container, false);
 
         initGlobal();
 
@@ -115,22 +118,38 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
 
 
     @Override
-    public void onResponse(int apiMethodName, Object object, Exception error) {
+    public void onResponse(int API_METHOD, Object object, Exception error) {
         ((AuthorHostActivity) getActivity()).stopProgress();
         try {
-            if (apiMethodName == WebConstants.GETEXAMEVALUATIONS) {
-//                ResponseObject responseObject = (ResponseObject) object;
-//                Debug.i(TAG, "Response of student attempted  ::" + responseObject.getMessage());
-//                Debug.i(TAG, "Response of student attempted  ::" + responseObject.getStatus());
-//                Debug.i(TAG, "Response of student attempted  ::" + responseObject.getData());
-//                if (responseObject.getStatus().equals(WebConstants.STATUS_SUCCESS) && responseObject != null) {
+            //responseObject = (ResponseObject) object;
+//           if (API_METHOD == WebConstants.GETEXAMQUESTIONS) {
+//                if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+//                    ((AuthorHostActivity) getActivity()).stopProgress();
+//                    if (responseObject.getData().size() != 0) {
+//                        responseObjQuestions = responseObject;
+//                        // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
+//
+//                        trialExamDetailsAdapter = new TrialExamDetailsAdapter(responseObjQuestions, getActivity(), this, null);
+//                        TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
+//                        TrialExamObjectiveDetailFragment.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                        TrialExamObjectiveDetailFragment.txtBookNameValue.setText(responseObjQuestions.getData().get(0).getBookName());
+//                        TrialExamObjectiveDetailFragment.txtExamTypeName.setText(responseObjQuestions.getData().get(0).getExam_type());
+//                        TrialExamObjectiveDetailFragment.txtClassName.setText(responseObjQuestions.getData().get(0).getClassName());
+//                        String examDate[] = responseObjQuestions.getData().get(0).getCreatedDate().split(" ");
+//                        TrialExamObjectiveDetailFragment.txtExamDateValue.setText(examDate[0]);
+//                        TrialExamObjectiveDetailFragment.txtExamName.setText(responseObjQuestions.getData().get(0).getExamName());
+//                        questionsID=null;
+//                        for(int i=0;i<responseObjQuestions.getData().get(0).getQuestions().size();i++){
+//                            questionsID[i]=responseObjQuestions.getData().get(0).getQuestions().get(0).getQuestionId();
+//                        }
 //
 //
-//                } else {
-//                    Utils.showToast(responseObject.getMessage(), getActivity());
+//                    }
+//
+//                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+//                    Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
 //                }
-//
-            }
+//            }
 
 
         } catch (Exception e) {
