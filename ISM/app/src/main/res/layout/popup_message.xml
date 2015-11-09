@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@drawable/bg_popup_message"
+		android:layout_marginTop="12dp">
+
+		<ListView
+			android:id="@+id/lv_message"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_above="@+id/btn_view_all"
+			android:entries="@array/testing_array"
+			android:paddingBottom="2dp"
+			android:paddingTop="2dp"
+			android:dividerHeight="2dp"
+			android:divider="@drawable/divider_gray_with_padding"></ListView>
+
+		<Button
+			android:id="@+id/btn_view_all"
+			android:layout_width="wrap_content"
+			android:layout_height="42dp"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+			android:layout_margin="15dp"
+			android:background="@drawable/bg_button_green"
+			android:paddingLeft="40dp"
+			android:paddingRight="40dp"
+			android:text="@string/view_all"
+			android:textColor="@color/bg_app_dark"
+			android:textSize="18sp"/>
+	</RelativeLayout>
+
+	<View
+		android:layout_width="25dp"
+		android:layout_height="15dp"
+		android:layout_alignParentRight="true"
+		android:layout_marginRight="100dp"
+		android:background="@drawable/shape_triangle_message"/>
+</RelativeLayout>
