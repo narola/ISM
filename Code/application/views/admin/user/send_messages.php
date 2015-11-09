@@ -200,6 +200,7 @@
     }
 
     function fetch_users(role_id){
+        console.log(role_id);
         $.ajax({
             url:'<?php echo base_url()."common/fetch_users"; ?>',
             type:'POST',
