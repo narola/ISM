@@ -36,7 +36,6 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
         getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        w.setBackgroundDrawableResource(android.R.color.transparent);
         setContentView(R.layout.dialog_view_all_comments_student);
         w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         w.setBackgroundDrawableResource(android.R.color.transparent);
