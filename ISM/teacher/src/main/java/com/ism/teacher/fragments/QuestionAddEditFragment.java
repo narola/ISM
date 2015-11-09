@@ -263,17 +263,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void setSpinnerData(String questionType) {
         if (questionType.equalsIgnoreCase("MCQ")) {
-            spQuestionType.setSelection(2);
+            spQuestionType.setSelection(3);
             questionAnswersModelArrayList.clear();
             llAddMcqanswer.removeAllViews();
             llAddMcqanswer.setVisibility(View.VISIBLE);
             etAnswerBox.setVisibility(View.GONE);
         } else if (questionType.equalsIgnoreCase("descriptive")) {
-            spQuestionType.setSelection(0);
+            spQuestionType.setSelection(1);
             llAddMcqanswer.setVisibility(View.GONE);
             etAnswerBox.setVisibility(View.VISIBLE);
         } else if (questionType.equalsIgnoreCase("'Fill ups'")) {
-            spQuestionType.setSelection(1);
+            spQuestionType.setSelection(2);
             llAddMcqanswer.setVisibility(View.GONE);
             etAnswerBox.setVisibility(View.VISIBLE);
         }
