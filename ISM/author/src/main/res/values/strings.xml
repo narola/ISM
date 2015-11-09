@@ -118,7 +118,6 @@
 
     <string name="strmydesk">My Desk</string>
     <string name="strgotrending">Go Trending</string>
-    <string name="strtrial">Trial</string>
     <string name="strmy30th">My 30th</string>
     <string name="strassessment">Assessment</string>
 
@@ -280,6 +279,8 @@
     <string name="strevoluations_notes">Evoluations Notes :</string>
     <string name="strsolutions">Solutions :</string>
     <string name="strStudentAttempted">Student Attempted</string>
+    <string name="strScore">Score</string>
+    <string name="strComments">Comments</string>
 
 
 </resources>

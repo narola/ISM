@@ -58,11 +58,6 @@ public class ControllerTopSpinnerAdapter extends BaseAdapter {
 
 		try {
 			holder.textTitle.setText(arrListMenu.get(position));
-			/*if (position == 0) {
-				convertView.setBackgroundResource(R.drawable.bg_controller_top);
-			} else {
-				convertView.setBackgroundColor(mContext.getResources().getColor(R.color.bg_controller_top_dark));
-			}*/
 		} catch (Exception e) {
 			Log.e(TAG, "getView Exception : " + e.toString());
 		}

@@ -118,9 +118,8 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
     private void openAddEditQuestionFragment(int position) {
 
-        ((AddQuestionContainerFragment) mFragment).setQuestionData(listOfPreviewQuestions.get(position));
-        ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
-        ((AddQuestionContainerFragment) mFragment).flipCard();
+        ((AddQuestionContainerFragment) mFragment).setDataOnFragmentFlip(listOfPreviewQuestions.get(position), true,
+                AddQuestionContainerFragment.FRAGMENT_PREVIEWQUESTION,position);
     }
 
 

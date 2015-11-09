@@ -56,7 +56,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
     /*these is for the tag add functionality.*/
-    private ContactsCompletionView completionView;
+    private ContactsCompletionView tagsView;
     private TagsModel[] tags;
     private ArrayAdapter<TagsModel> tagsAdapter;
 
@@ -118,10 +118,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
         };
 
-        completionView = (ContactsCompletionView) view.findViewById(R.id.searchTagView);
-        completionView.setAdapter(tagsAdapter);
-        completionView.setTokenListener(this);
-        completionView.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
+        tagsView = (ContactsCompletionView) view.findViewById(R.id.searchTagView);
+        tagsView.setAdapter(tagsAdapter);
+        tagsView.setTokenListener(this);
+        tagsView.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
 
 
         tvAddquestionHeader = (TextView) view.findViewById(R.id.tv_addquestion_header);
@@ -251,7 +251,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void updateTokenConfirmation() {
         StringBuilder sb = new StringBuilder("Current tokens:\n");
-        for (Object token : completionView.getObjects()) {
+        for (Object token : tagsView.getObjects()) {
             sb.append(token.toString());
             sb.append("\n");
         }
@@ -275,11 +275,23 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         if (((AddQuestionContainerFragment) mFragment).getIsSetQuestionData()) {
             setQuestionData(((AddQuestionContainerFragment) mFragment).getQuestionData());
         } else {
-            llAddMcqanswer.removeAllViews();
+            clearViewsData();
             for (int i = 0; i <= 1; i++) {
                 llAddMcqanswer.addView(getMcqAnswerView(i));
             }
         }
+
+    }
+
+    private void clearViewsData() {
+
+        etAddquestionTitle.setText("");
+        spAddquestionType.setSelection(1);
+        etAddquestionAnswer.setText("");
+        llAddMcqanswer.removeAllViews();
+        tagsView.clear();
+        tvEvaluationNote1.setText("");
+        tvEvaluationNote2.setText("");
 
     }
 
@@ -448,7 +460,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     public void onClick(View v) {
         if (v == tvAddquestionSave) {
             ((AddQuestionContainerFragment) mFragment).flipCard();
+
+
+
         } else if (v == tvAddquestionSaveAddmore) {
+
+            ((AddQuestionContainerFragment) mFragment).flipCard();
 
         } else if (v == imgSelectImage) {
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

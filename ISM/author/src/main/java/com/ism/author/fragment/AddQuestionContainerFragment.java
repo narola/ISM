@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utils;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.Data;
 
@@ -114,7 +113,7 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
     public void flipCard() {
-        Utils.showToast("FLIPCARD CALLED", getActivity());
+
         showHideFragment(questionListFragment);
         showHideFragment(questionAddEditFragment);
 
@@ -211,5 +210,27 @@ public class AddQuestionContainerFragment extends Fragment {
 
     }
 
+
+    private int FRAGMENT_TYPE;
+
+    public void setFragmentTypeForQuestionEdit(int FRAGMENTTYPE) {
+        this.FRAGMENT_TYPE = FRAGMENTTYPE;
+    }
+
+    private int POSITION_FOR_EDITQUESTION;
+
+    public void setPositionForEditQuestion(int POSITION_FOR_EDITQUESTION) {
+        this.POSITION_FOR_EDITQUESTION = POSITION_FOR_EDITQUESTION;
+    }
+
+    public void setDataOnFragmentFlip(Data data, Boolean isSetQuestionData, int FRAGMENT_TYPE, int POSITION_FOR_EDITQUESTION) {
+
+        setQuestionData(data);
+        setIsSetQuestionData(isSetQuestionData);
+        setFragmentTypeForQuestionEdit(FRAGMENT_TYPE);
+        setPositionForEditQuestion(POSITION_FOR_EDITQUESTION);
+        flipCard();
+
+    }
 
 }

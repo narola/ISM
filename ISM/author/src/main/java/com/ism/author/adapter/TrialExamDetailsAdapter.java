@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.fragment.StudentAttemptedFragment;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
 import com.ism.author.model.ResponseObject;
@@ -32,7 +33,6 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
     private static String TAG = TrialExamDetailsAdapter.class.getSimpleName();
     int asciiChar = 65;
     ArrayList<Data> dataArrayList = new ArrayList<Data>();
-    String [] questionID;
 
     public TrialExamDetailsAdapter(ResponseObject studentEvalResObj) {
         this.studentEvalResObj = studentEvalResObj;
@@ -64,6 +64,7 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
             holder.txtQuestionNo.setText(Html.fromHtml("<u>" + "Questions " + qno + "</u>"));
             holder.txtQuestionText.setText(arrayList.get(position).getQuestionText());
             holder.txtQuestionText.setText(arrayList.get(position).getQuestionText());
+           // questionsID[position]=arrayList.get(0).getQuestionId();
            // questionID[position]=arrayList.get(position).getQuestionId();
             asciiChar = 65;
             for (int i = 0; i < arrayList.get(position).getAnswers().size(); i++) {
@@ -85,25 +86,30 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
                 if(studentName[0]!=null)
                 holder.txtStudentNameAnswer.setText(studentName[0]+ " Answer :");
                 else{
-                    holder.txtStudentNameAnswer.setText(" Answer :");
+                    holder.txtStudentNameAnswer.setText("Answer :");
                 }
 //                while (questionID[position] == dataArrayList.get(j++).getQuestionId()){
 //                    break;
 //                }
+                String questonid;
+                Debug.i(TAG,"Position: "+position);
 
-
-                if(dataArrayList.get(j).getQuestionId()!=null){
-                    holder.txtStudentAnswered.setText(dataArrayList.get(position).getStudentResponse());
-                } else {
-                    holder.txtStudentAnswered.setText(" not answered");
-                    // holder.txtStudentAnswered.setText(dataArrayList.get(position).getStudentResponse()+" not answered");
+                for (int i=0;i<StudentAttemptedFragment.questionsID.size();i++){
+                    if(dataArrayList.get(position).getQuestionId().equals(StudentAttemptedFragment.questionsID.get(i))){
+                        holder.txtStudentAnswered.setText(dataArrayList.get(position).getStudentResponse());
+                        Debug.i(TAG,"Question Id: "+dataArrayList.get(position).getQuestionId()+"="+(StudentAttemptedFragment.questionsID.get(i)));
+                        break;
+                    } else {
+                        holder.txtStudentAnswered.setText(" not answered");
+                        // holder.txtStudentAnswered.setText(dataArrayList.get(position).getStudentResponse()+" not answered");
+                    }
                 }
 
                 notifyDataSetChanged();
             }
 
         } catch (Exception e) {
-            Debug.i(TAG, "BindViewHolder Exceptions :" + e.toString());
+            Debug.i(TAG, "BindViewHolder Exceptions :" + e.getLocalizedMessage());
         }
 
     }

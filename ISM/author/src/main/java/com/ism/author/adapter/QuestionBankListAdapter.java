@@ -177,9 +177,9 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     private void openAddEditQuestionFragment(int position) {
 
-        ((AddQuestionContainerFragment) mFragment).setQuestionData(listOfQuestions.get(position));
-        ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
-        ((AddQuestionContainerFragment) mFragment).flipCard();
+        ((AddQuestionContainerFragment) mFragment).setDataOnFragmentFlip(listOfQuestions.get(position), true,
+                AddQuestionContainerFragment.FRAGMENT_QUESTIONLIST, position);
+
     }
 
 

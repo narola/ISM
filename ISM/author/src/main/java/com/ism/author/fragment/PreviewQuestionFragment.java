@@ -170,4 +170,10 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         }
 
     }
+
+    private void updateQuestionDataAfterEdit() {
+
+    }
+
+
 }

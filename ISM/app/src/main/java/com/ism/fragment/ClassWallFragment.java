@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
@@ -27,6 +29,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 
 	private View view;
 	private RecyclerView recyclerPost;
+	private RelativeLayout llPost;
 
 	private PostFeedsAdapter adpPostFeeds;
 	private HostActivity activityHost;
@@ -51,6 +54,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 
 	private void initGlobal() {
 		recyclerPost = (RecyclerView) view.findViewById(R.id.recycler_post);
+		llPost = (RelativeLayout) view.findViewById(R.id.ll_post);
 
 		recyclerPost.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -74,6 +78,13 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 		} else {
 			Utility.toastOffline(getActivity());
 		}
+
+		llPost.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+//              Start post activity
+			}
+		});
 
 	}
 

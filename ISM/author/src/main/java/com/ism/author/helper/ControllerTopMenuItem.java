@@ -67,13 +67,11 @@ public class ControllerTopMenuItem {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            ArrayList<String> trial = new ArrayList<String>();
-            trial.add(mContext.getString(R.string.strTrial));
-            trial.add(mContext.getString(R.string.notes));
-            trial.add(mContext.getString(R.string.books));
-//            favorites.add(mContext.getString(R.string.assignments));
-//            favorites.add(mContext.getString(R.string.exam));
-            menu.add(new ControllerTopMenuItem(null, mContext.getString(R.string.strAddNew), trial));
+//            ArrayList<String> trial = new ArrayList<String>();
+//            trial.add(mContext.getString(R.string.strTrial));
+//            trial.add(mContext.getString(R.string.notes));
+//            trial.add(mContext.getString(R.string.books));
+            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.strTrial), mContext.getString(R.string.strAddNew), null));
         } catch (Exception e) {
             Log.e(TAG, "getMenuTrial Exception : " + e.toString());
         }

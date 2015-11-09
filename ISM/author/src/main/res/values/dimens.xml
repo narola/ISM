@@ -9,6 +9,7 @@
     <dimen name="d5sp">5sp</dimen>
     <dimen name="d10sp">10sp</dimen>
     <dimen name="d15sp">15sp</dimen>
+    <dimen name="d16sp">16sp</dimen>
     <dimen name="d18sp">18sp</dimen>
 
     <dimen name="d20sp">20sp</dimen>
@@ -72,6 +73,7 @@
     <dimen name="office_tab_width">315dp</dimen>
     <dimen name="rich_text_editor_height">450dp</dimen>
     <dimen name="d22sp">22sp</dimen>
+    <dimen name="d2dp">2dp</dimen>
 
 
 </resources>
