@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/color_white"
+    tools:context="com.ism.fragment.userprofile.PrivacySettingFragment">
+
+
+        <TextView
+            android:id="@+id/txt_alerts_personal_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/bg_highscore_subject"
+            android:paddingBottom="@dimen/d10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="@dimen/d20dp"
+            android:paddingTop="@dimen/d10dp"
+            android:text="@string/strWhoShouldSeeMyPersonalDetails"
+            android:textColor="#323232"
+            android:textSize="@dimen/d22sp" />
+
+        <include
+            android:layout_marginTop="@dimen/d10dp"
+            android:id="@+id/include_contact_info"
+            layout="@layout/layout_notification_comon_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_alerts_personal_details" />
+
+        <include
+            android:id="@+id/include_birthdate_info"
+            layout="@layout/layout_notification_comon_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/include_contact_info" />
+
+
+        <TextView
+            android:id="@+id/txt_alerts_academic_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/include_birthdate_info"
+            android:background="@drawable/bg_highscore_subject"
+            android:paddingBottom="@dimen/d10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="@dimen/d20dp"
+            android:paddingTop="@dimen/d10dp"
+            android:text="@string/strWhoShouldSeeMyPersonalAcademicDetails"
+            android:textColor="#323232"
+            android:textSize="@dimen/d22sp" />
+
+        <!--<include-->
+        <!--android:id="@+id/include_evaluations"-->
+        <!--layout="@layout/layout_notification_comon_row"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/txt_alerts_academic_details" />-->
+        <TextView
+            android:id="@+id/txt_alerts_exam_score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d10dp"
+            android:layout_below="@+id/txt_alerts_academic_details"
+            android:layout_margin="@dimen/d15dp"
+            android:paddingBottom="3dp"
+            android:textColor="@color/color_blue"
+            android:paddingLeft="@dimen/d30dp"
+            android:paddingRight="3dp"
+            android:paddingTop="3dp"
+            android:textSize="@dimen/d18sp" />
+
+        <Spinner
+            android:id="@+id/sp_viewers"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/txt_alerts_exam_score"
+            android:layout_below="@+id/txt_alerts_exam_score"
+            android:layout_marginLeft="@dimen/d20dp"
+            android:layout_marginStart="28dp"
+            android:background="@drawable/bg_spinner_header"
+            android:padding="@dimen/d5dp">
+
+        </Spinner>
+    <View
+        android:layout_width="16dp"
+        android:layout_height="30dp"
+        android:layout_above="@+id/include_contact_info"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/shape_triangle_general_setting" />
+    <View
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:background="@color/border_gray"/>
+
+
+</RelativeLayout>

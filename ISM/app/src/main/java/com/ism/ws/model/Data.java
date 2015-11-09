@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -65,6 +66,7 @@ public class Data {
 	private ArrayList<Comment> comments;
 
 	private boolean isFlagged;
+	private ArrayList<Data> blockedList;
 
 	public boolean isFlagged() {
 		return isFlagged;
@@ -540,5 +542,9 @@ public class Data {
 
 	public void setIsRead(String isRead) {
 		this.isRead = isRead;
+	}
+
+	public ArrayList<Data> getBlockedList() {
+		return blockedList;
 	}
 }

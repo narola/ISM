@@ -60,4 +60,8 @@
     <dimen name="profile_label_text">20sp</dimen>
     <dimen name="profile_label_padding">20dp</dimen>
     <dimen name="profile_label_height">70dp</dimen>
+    <dimen name="d3dp">3dp</dimen>
+    <dimen name="d22sp">22sp</dimen>
+    <dimen name="d110dp">100dp</dimen>
+    <dimen name="d80dp">80dp</dimen>
 </resources>

@@ -92,7 +92,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
             @Override
             public void onClick(View v) {
 
-                ((AddQuestionContainerFragment) mFragment).updateQuestionListviewAfterRemoveInPreview(listOfPreviewQuestions.get(position));
+                getFragment().updateQuestionListviewAfterRemoveInPreview(listOfPreviewQuestions.get(position));
                 listOfPreviewQuestions.remove(listOfPreviewQuestions.get(position));
                 notifyDataSetChanged();
 
@@ -117,15 +117,14 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
     }
 
     private void openAddEditQuestionFragment(int position) {
-
-        ((AddQuestionContainerFragment) mFragment).setDataOnFragmentFlip(listOfPreviewQuestions.get(position), true,
-                AddQuestionContainerFragment.FRAGMENT_PREVIEWQUESTION,position);
+        getFragment().setDataOnFragmentFlip(listOfPreviewQuestions.get(position), true,
+                AddQuestionContainerFragment.FRAGMENT_PREVIEWQUESTION, position);
     }
 
 
     public void addAll(ArrayList<Data> data) {
         try {
-//            this.listOfPreviewQuestions.clear();
+            this.listOfPreviewQuestions.clear();
             this.listOfPreviewQuestions.addAll(data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,6 +173,10 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         tvMcqQuestionAns.setText(Utils.formatHtml(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
 
         return v;
+    }
+
+    private AddQuestionContainerFragment getFragment() {
+        return (AddQuestionContainerFragment) mFragment;
     }
 
 

@@ -25,6 +25,14 @@ public class WebConstants {
 	public static final int TAG_STUDY_MATES = 15;
 	public static final int GET_ALL_NOTICES = 16;
 
+
+
+	//general settings
+	public static final int PRIVACY_SETTING = 51;
+	public static final int BLOCK_USER = 52;
+	public static final int NOTIFICATION = 53;
+	public static final int SMS_ALERTS = 54;
+
 	/**
 	 *  URLs
 	 */
@@ -50,5 +58,11 @@ public class WebConstants {
 	public static final String URL_REQUEST_CREDENTIALS = URL_HOST_162 + "RequestForCredentials";
 	public static final String URL_FORGOT_PASSWORD = URL_HOST_162 + "ForgotPassword";
 	public static final String URL_GET_ALL_NOTICES = URL_HOST_147 + "GetAllNotices";
+
+	public static final String URL_PRIVACY_SETTING = URL_HOST_147 + "GetAllNotices";
+	public static final String URL_BLOCK_USER = URL_HOST_147 + "GetAllNotices";
+	public static final String URL_NOTIFICATION = URL_HOST_147 + "GetAllNotices";
+	public static final String URL_SMS_ALERTS = URL_HOST_147 + "GetAllNotices";
+
 
 }
