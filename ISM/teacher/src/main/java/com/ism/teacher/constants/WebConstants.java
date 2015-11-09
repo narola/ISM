@@ -41,6 +41,12 @@ public class WebConstants {
 	public static final int GET_STATES = 19;
 	public static final int GET_CITIES = 20;
 
+
+    public static final int GET_ALL_EXAMS = 21;
+
+
+
+
 	/**
 	 *  URLs
 	 */
@@ -67,6 +73,11 @@ public class WebConstants {
 	public static final String URL_SET_QUESTIONS_FOR_EXAM= URL_HOST_162 + "SetQuestionsForExam";
 	public static final String URL_FORGOT_PASSWORD= URL_HOST_162 + "ForgotPassword";
 	public static final String URL_REQUEST_CREDENTIALS = URL_HOST_162 + "RequestForCredentials";
+
+
+	//used for assignment
+	public static final String URL_GET_ALL_EXAMS = URL_HOST_162 + "GetAllExams";
+
 
 	public static final String URL_GET_CITIES = URL_HOST_161 + "GetCities";
 	public static final String URL_GET_STATES = URL_HOST_161 + "GetStates";

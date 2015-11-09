@@ -104,6 +104,13 @@ public class Data implements Serializable {
     private String questionCreatorName;
 
 
+
+    //For Assignment history(exams api response)
+    private String classroom_name;
+    private String exam_mode;
+
+
+
     //login response
     @JsonProperty("credential_id")
     public String getCredentialId() {
@@ -632,6 +639,31 @@ public class Data implements Serializable {
     public void setSubject_id(String subject_id) {
         this.subject_id = subject_id;
     }
+
+
+    /**
+     * For Assignment(getallexams response)
+     */
+
+    @JsonProperty("classroom_name")
+    public String getClassroom_name() {
+        return classroom_name;
+    }
+
+    public void setClassroom_name(String classroom_name) {
+        this.classroom_name = classroom_name;
+    }
+
+
+    @JsonProperty("exam_mode")
+    public String getExam_mode() {
+        return exam_mode;
+    }
+
+    public void setExam_mode(String exam_mode) {
+        this.exam_mode = exam_mode;
+    }
+
 
 
 }

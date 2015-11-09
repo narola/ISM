@@ -123,6 +123,16 @@ public class WebserviceWrapper {
                         break;
 
 
+                    case WebConstants.GET_COUNTRIES:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_COUNTRIES, ResponseObject.class, requestObject);
+                        break;
+                    case WebConstants.GET_STATES:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_STATES, ResponseObject.class, requestObject);
+                        break;
+                    case WebConstants.GET_CITIES:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_CITIES, ResponseObject.class, requestObject);
+                        break;
+
                 }
             } catch (Exception e) {
                 Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());

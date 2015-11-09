@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:background="@drawable/spinner_selector"
             android:entries="@array/list"
-            android:padding="@dimen/d20dp"
+            android:padding="@dimen/d10dp"
             android:spinnerMode="dropdown" />
 
         <Spinner
@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:background="@drawable/spinner_selector"
             android:entries="@array/list"
-            android:padding="@dimen/d20dp"
+            android:padding="@dimen/d10dp"
             android:spinnerMode="dropdown" />
 
         <Spinner
@@ -45,7 +45,7 @@
             android:layout_weight="1"
             android:background="@drawable/spinner_selector"
             android:entries="@array/list"
-            android:padding="@dimen/d20dp"
+            android:padding="@dimen/d10dp"
             android:spinnerMode="dropdown" />
 
         <Spinner
@@ -57,7 +57,7 @@
             android:layout_weight="1"
             android:background="@drawable/spinner_selector"
             android:entries="@array/list"
-            android:padding="@dimen/d20dp"
+            android:padding="@dimen/d10dp"
             android:spinnerMode="dropdown" />
 
         <RelativeLayout
@@ -67,22 +67,27 @@
             android:layout_weight="1">
 
             <ImageView
-                android:id="@+id/img_thumbnail"
+                android:id="@+id/img_toggle_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_gravity=""
                 android:layout_marginRight="10dp"
-                android:background="@drawable/ic_home_active_teacher" />
+                android:src="@drawable/ic_grid" />
         </RelativeLayout>
 
 
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="@dimen/d5dp"
+        android:background="#DADADA" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_assignment_subjects"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
