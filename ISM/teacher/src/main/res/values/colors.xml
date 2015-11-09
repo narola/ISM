@@ -25,6 +25,8 @@
     <color name="news_feed_separator_color">#BABABA</color>
     <color name="news_feed_post_box_color">#90BABABA</color>
     <color name="color_black_light">#90000000</color>
+    <color name="color_blue_past_assignment">#4492D2</color>
+    <color name="color_green_past_assignment">#29AC60</color>
 
 
     <!-- assignment add question-->

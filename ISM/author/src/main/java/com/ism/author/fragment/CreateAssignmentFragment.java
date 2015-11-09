@@ -166,7 +166,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         });
 
         arrListDefalt = new ArrayList<String>();
-        arrListDefalt.add(getString(R.string.select));
+        arrListDefalt.add(getString(R.string.strtopic));
         Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
 
 

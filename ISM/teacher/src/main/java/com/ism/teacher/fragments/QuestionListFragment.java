@@ -378,11 +378,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
         if (v == tvQuestionlistAddPreview) {
 
-            if (questionBankListAdapter.getListOfPreviewQuestionsToAdd().size() > 0) {
-
-                ((AddQuestionFragmentTeacher) mFragment).previewQuestionFragment.addQuestionsToPreviewFragment(questionBankListAdapter.getListOfPreviewQuestionsToAdd());
-                questionBankListAdapter.getListOfPreviewQuestionsToAdd().clear();
-
+            if (((AddQuestionContainerFragment) mFragment).getListOfPreviewQuestionsToAdd().size() > 0) {
+//                ((AddQuestionContainerFragment) mFragment).previewQuestionFragment.
+//                        addQuestionsToPreviewFragment(((AddQuestionContainerFragment) mFragment).getListOfPreviewQuestionsToAdd());
+                ((AddQuestionContainerFragment) mFragment).addQuestionsToPreviewFragment();
+                ((AddQuestionContainerFragment) mFragment).getListOfPreviewQuestionsToAdd().clear();
             } else {
                 Utility.showToast(getResources().getString(R.string.msg_select_question_to_add_to_preview), getActivity());
 
@@ -390,7 +390,9 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
 
         } else if (v == tvQuestionlistAddNewQuestion) {
-            ((AddQuestionFragmentTeacher) mFragment).flipCard(null);
+            ((AddQuestionContainerFragment) mFragment).setQuestionData(null);
+            ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(false);
+            ((AddQuestionContainerFragment) mFragment).flipCard();
 
         }
 
@@ -405,11 +407,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             int position = listOfQuestionBank.indexOf(data);
             listOfQuestionBank.get(position).setIsQuestionAddedInPreview(false);
             questionBankListAdapter.addAll(listOfQuestionBank);
-            ((AddQuestionFragmentTeacher) mFragment).previewQuestionFragment.listOfPreviewQuestions.remove(data);
+            ((AddQuestionContainerFragment) mFragment).previewQuestionFragment.listOfPreviewQuestions.remove(data);
         } else {
             Log.e("list_size", "" + listOfQuestionBank.size());
         }
-
 
     }
 

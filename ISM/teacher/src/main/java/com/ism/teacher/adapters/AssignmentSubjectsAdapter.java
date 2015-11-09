@@ -1,26 +1,43 @@
 package com.ism.teacher.adapters;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
+import com.ism.teacher.fragments.TeacherExamWiseAssignments;
+import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.model.Data;
+
+import java.util.ArrayList;
 
 
 /**
- * these is the postfeedcommentsadapter
+ * these is the assignment subjects adapter
  */
 public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSubjectsAdapter.ViewHolder> {
 
     private static final String TAG = AssignmentSubjectsAdapter.class.getSimpleName();
 
     Context mContext;
-   // ArrayList<Data> listOfComments = new ArrayList<Data>();
+    ArrayList<Data> listOfAssignments = new ArrayList<Data>();
+    Fragment mFragment;
+    MyTypeFace myTypeFace;
 
+
+    public AssignmentSubjectsAdapter(Context context, Fragment fragment) {
+        this.mContext = context;
+        this.mFragment = fragment;
+        myTypeFace=new MyTypeFace(context);
+
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -29,49 +46,97 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.assignment_subjects_row, parent, false);
+//        View contactView = inflater.inflate(R.layout.assignment_student_row, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
     }
 
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-
-    }
-
-
-//    public void addAll(ArrayList<Data> data) {
-//
-//        try {
-//            this.listOfComments.clear();
-//            this.listOfComments.addAll(data);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        notifyDataSetChanged();
-//    }
-
-    @Override
-    public int getItemCount() {
-        return 7;
-    }
-
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtCommenterUsername, txtCommenterComment, txtCommentDuration;
-        ImageView imgSeparator;
-
+        LinearLayout ll_parent_assignment;
+        RelativeLayout rlTopAssignment;
+        TextView txtAssignmentCourse, txtAssignmentClassName, txtAssignmentDate, txtNumberAssessedQuestion, txtNumberUnassessedQuestion, txtNumberTotalQuestions;
+        TextView txtAssignmentSubject, txtAssessedLabel, txtUnassessedLabel, txtQuestionLabel, txtAssignmentType;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-//            txtCommenterUsername = (TextView) itemView.findViewById(R.id.txt_username_commenter);
-//            txtCommenterComment = (TextView) itemView.findViewById(R.id.txt_comments_from_commenter);
-//            txtCommentDuration = (TextView) itemView.findViewById(R.id.txt_comment_duration);
-//            imgSeparator = (ImageView) itemView.findViewById(R.id.img_separator);
+            ll_parent_assignment = (LinearLayout) itemView.findViewById(R.id.ll_parent_assignment);
+            rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_top_assignment);
+            txtAssignmentSubject = (TextView) itemView.findViewById(R.id.txt_assignment_subject);
+
+            txtAssignmentCourse = (TextView) itemView.findViewById(R.id.txt_assignment_course);
+            txtAssignmentClassName = (TextView) itemView.findViewById(R.id.txt_assignment_class_name);
+            txtAssignmentDate = (TextView) itemView.findViewById(R.id.txt_assignment_date);
+
+            txtNumberAssessedQuestion = (TextView) itemView.findViewById(R.id.txt_number_assessed_question);
+            txtNumberUnassessedQuestion = (TextView) itemView.findViewById(R.id.txt_number_unassessed_question);
+            txtNumberTotalQuestions = (TextView) itemView.findViewById(R.id.txt_number_total_questions);
+            txtAssignmentType = (TextView) itemView.findViewById(R.id.txt_assignment_type);
+
+
+            txtAssessedLabel = (TextView) itemView.findViewById(R.id.txt_assessed_label);
+            txtUnassessedLabel = (TextView) itemView.findViewById(R.id.txt_unassessed_label);
+            txtQuestionLabel = (TextView) itemView.findViewById(R.id.txt_question_label);
 
         }
+    }
+
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+
+        holder.txtAssignmentSubject.setText(listOfAssignments.get(position).getSubject_name());
+        //holder.txtAssignmentCourse.setText(listOfAssignments.get(position).getClass_name());
+        holder.txtAssignmentClassName.setText(listOfAssignments.get(position).getClassroom_name());
+//        holder.txtAssignmentDate.setText(listOfAssignments.get(position).);
+
+//        holder.txtNumberAssessedQuestion.setText(listOfAssignments.get(position).);
+//        holder.txtNumberUnassessedQuestion.setText(listOfAssignments.get(position).);
+//        holder.txtNumberTotalQuestions.setText(listOfAssignments.get(position).);
+        holder.txtAssignmentType.setText(Html.fromHtml("<font color='#77C2EA'>Assignment Type:" + listOfAssignments.get(position).getExam_mode() + "</font>"));
+
+
+        if (position % 2 == 0) {
+            holder.rlTopAssignment.setBackgroundResource(R.drawable.bg_subject_red);
+        } else {
+            holder.rlTopAssignment.setBackgroundResource(R.drawable.bg_subject_yellow);
+        }
+
+        if (listOfAssignments.get(position).getExam_mode().equalsIgnoreCase("objective")) {
+            holder.txtUnassessedLabel.setText("Average Score");
+        } else {
+            holder.txtUnassessedLabel.setText("Unassessed");
+        }
+
+
+        holder.ll_parent_assignment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                getFra().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherClassWallFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_CLASSWALL).commit();
+
+                mFragment.getFragmentManager().beginTransaction().
+                        replace(R.id.fl_teacher_office_home,new TeacherExamWiseAssignments(mFragment,listOfAssignments.get(position).getExam_id())).commit();
+            }
+        });
+    }
+
+
+    public void addAll(ArrayList<Data> data) {
+
+        try {
+            this.listOfAssignments.clear();
+            this.listOfAssignments.addAll(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemCount() {
+        return listOfAssignments.size();
     }
 
 

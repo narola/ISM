@@ -32,8 +32,7 @@ public class Data implements Serializable {
     private String className;
 
 
-
-    //Login Response
+    //Feeds Response
     private String course_name;
 
     private String feed_id;
@@ -49,6 +48,11 @@ public class Data implements Serializable {
     private String feed_text;
     private int like;
     private ArrayList<Comment> comment_list;
+
+    private String video_thumbnail;
+    private String audioLink;
+    private ArrayList<PostFeedImagesModel> feed_images;
+
 
     //For StudymatesList
 
@@ -72,7 +76,6 @@ public class Data implements Serializable {
     /*for the getSubjects*/
 
     private String subject_id;
-
 
 
     private String subject_image;
@@ -101,6 +104,22 @@ public class Data implements Serializable {
     private String questionCreatorName;
 
 
+    //For Assignment history(exams api response)
+    private String classroom_name;
+    private String exam_mode;
+
+
+    private ArrayList<EvaluationModel> arrayListEvaluation;
+
+    @JsonProperty("evaluation")
+    public ArrayList<EvaluationModel> getArrayListEvaluation() {
+        return arrayListEvaluation;
+    }
+
+    public void setArrayListEvaluation(ArrayList<EvaluationModel> arrayListEvaluation) {
+        this.arrayListEvaluation = arrayListEvaluation;
+    }
+
     //login response
     @JsonProperty("credential_id")
     public String getCredentialId() {
@@ -110,6 +129,7 @@ public class Data implements Serializable {
     public void setCredentialId(String credentialId) {
         this.credentialId = credentialId;
     }
+
     @JsonProperty("school_name")
     public String getSchoolName() {
         return schoolName;
@@ -118,6 +138,7 @@ public class Data implements Serializable {
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
     }
+
     @JsonProperty("course_id")
 
     public String getCourseId() {
@@ -163,6 +184,7 @@ public class Data implements Serializable {
     public void setSchoolDistrict(String schoolDestrict) {
         this.schoolDistrict = schoolDestrict;
     }
+
     @JsonProperty("academic_year")
     public String getAcademicYear() {
         return academicYear;
@@ -192,6 +214,7 @@ public class Data implements Serializable {
 
 
     //request credentials
+
     @JsonProperty("city_name")
     public String getCityName() {
         return cityName;
@@ -334,6 +357,33 @@ public class Data implements Serializable {
 
 
     //For feeds
+    @JsonProperty("video_thumbnail")
+    public String getVideo_thumbnail() {
+        return video_thumbnail;
+    }
+
+    public void setVideo_thumbnail(String video_thumbnail) {
+        this.video_thumbnail = video_thumbnail;
+    }
+
+    @JsonProperty("audio_link")
+    public String getAudioLink() {
+        return audioLink;
+    }
+
+    public void setAudioLink(String audioLink) {
+        this.audioLink = audioLink;
+    }
+
+    @JsonProperty("feed_images")
+    public ArrayList<PostFeedImagesModel> getFeed_images() {
+        return feed_images;
+    }
+
+    public void setFeed_images(ArrayList<PostFeedImagesModel> feed_images) {
+        this.feed_images = feed_images;
+    }
+
 
     @JsonProperty("feed_id")
     public String getFeed_id() {
@@ -396,15 +446,6 @@ public class Data implements Serializable {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
-    }
-
-    @JsonProperty("audio_link")
-    public String getAudio_link() {
-        return audio_link;
-    }
-
-    public void setAudio_link(String audio_link) {
-        this.audio_link = audio_link;
     }
 
     @JsonProperty("video_link")
@@ -607,4 +648,30 @@ public class Data implements Serializable {
     public void setSubject_id(String subject_id) {
         this.subject_id = subject_id;
     }
+
+
+    /**
+     * For Assignment(getallexams response)
+     */
+
+    @JsonProperty("classroom_name")
+    public String getClassroom_name() {
+        return classroom_name;
+    }
+
+    public void setClassroom_name(String classroom_name) {
+        this.classroom_name = classroom_name;
+    }
+
+
+    @JsonProperty("exam_mode")
+    public String getExam_mode() {
+        return exam_mode;
+    }
+
+    public void setExam_mode(String exam_mode) {
+        this.exam_mode = exam_mode;
+    }
+
+
 }

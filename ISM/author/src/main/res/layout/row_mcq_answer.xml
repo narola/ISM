@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
-        android:src="@drawable/radio_button_unselect" />
+        android:src="@drawable/mcq_selector" />
 
     <EditText
         android:id="@+id/et_add_mcq_answer"

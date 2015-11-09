@@ -31,7 +31,7 @@ import com.ism.fragment.AssessmentFragment;
 import com.ism.fragment.ChatFragment;
 import com.ism.fragment.ClassroomFragment;
 import com.ism.fragment.DeskFragment;
-import com.ism.fragment.GeneralSettingsFragment;
+import com.ism.fragment.userprofile.GeneralSettingsFragment;
 import com.ism.fragment.MyActivityFragment;
 import com.ism.fragment.MyFeedsFragment;
 import com.ism.fragment.MyWalletFragment;
@@ -43,6 +43,7 @@ import com.ism.fragment.TutorialFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.ControllerTopMenuItem;
 import com.ism.object.Global;
+import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.ws.model.Data;
@@ -82,12 +83,12 @@ public class HostActivity extends Activity implements FragmentListener {
     private TextView txtAction;
     private EditText etSearch;
     private Spinner spSubmenu;
-	private ActionProcessButton progHost;
+    private ActionProcessButton progHost;
 
     private View.OnClickListener onClickMenuItem;
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
     private HostListener listenerHost;
-	private ProgressGenerator progressGenerator;
+    private ProgressGenerator progressGenerator;
 
     private TextView arrTxtMenu[];
     private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
@@ -158,22 +159,22 @@ public class HostActivity extends Activity implements FragmentListener {
         txtAction = (TextView) findViewById(R.id.txt_action);
         etSearch = (EditText) findViewById(R.id.et_search);
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
-	    progHost = (ActionProcessButton) findViewById(R.id.prog_host);
+        progHost = (ActionProcessButton) findViewById(R.id.prog_host);
 
-	    arrTxtMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
-	    progressGenerator = new ProgressGenerator();
-	    Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, HostActivity.this);
-	    Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, HostActivity.this);
+        arrTxtMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
+        progressGenerator = new ProgressGenerator();
+        Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, HostActivity.this);
+        Global.strFullName = PreferenceData.getStringPrefs(PreferenceData.USER_FULL_NAME, HostActivity.this);
 //	    Global.strProfilePic = PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
         Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
 
-	    loadFragment(FRAGMENT_HOME, null);
-	    loadFragment(FRAGMENT_CHAT, null);
+        loadFragment(FRAGMENT_HOME, null);
+        loadFragment(FRAGMENT_CHAT, null);
 
-	    controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(HostActivity.this);
-	    controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(HostActivity.this);
-	    controllerTopMenuDesk = ControllerTopMenuItem.getMenuDesk(HostActivity.this);
-	    controllerTopMenuReportCard = ControllerTopMenuItem.getMenuReportCard(HostActivity.this);
+        controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(HostActivity.this);
+        controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(HostActivity.this);
+        controllerTopMenuDesk = ControllerTopMenuItem.getMenuDesk(HostActivity.this);
+        controllerTopMenuReportCard = ControllerTopMenuItem.getMenuReportCard(HostActivity.this);
 
 
         imgHome.setOnClickListener(new View.OnClickListener() {
@@ -221,9 +222,9 @@ public class HostActivity extends Activity implements FragmentListener {
             @Override
             public void onClick(View v) {
                 PreferenceData.clearWholePreference(HostActivity.this);
-	            Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
-	            startActivity(intentLogin);
-	            finish();
+                Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
+                startActivity(intentLogin);
+                finish();
             }
         });
 
@@ -381,8 +382,8 @@ public class HostActivity extends Activity implements FragmentListener {
                     currentMainFragmentBg = R.color.bg_classroom;
                     imgClassroom.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
-	                loadControllerTopMenu(controllerTopMenuClassroom);
-	                txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
+                    loadControllerTopMenu(controllerTopMenuClassroom);
+                    txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
                     break;
                 case FRAGMENT_ASSESSMENT:
                     currentMainFragment = fragment;
@@ -422,7 +423,12 @@ public class HostActivity extends Activity implements FragmentListener {
                     break;
                 case FRAGMENT_ALL_NOTES:
                     currentMainFragment = fragment;
-	                txtTitle.setVisibility(View.GONE);
+                    txtTitle.setVisibility(View.GONE);
+                    break;
+                case FRAGMENT_GENERAL_SETTINGS:
+                    Debug.i(TAG,"FRAGMENT_GENERAL_SETTINGS atacheched");
+                    currentMainFragment = fragment;
+                   // llControllerLeft.setVisibility(View.GONE);
                     break;
             }
         } catch (Exception e) {
@@ -439,24 +445,24 @@ public class HostActivity extends Activity implements FragmentListener {
                     break;
                 case FRAGMENT_TUTORIAL:
                     imgTutorial.setActivated(false);
-	                loadControllerTopMenu(null);
-	                txtTitle.setVisibility(View.GONE);
+                    loadControllerTopMenu(null);
+                    txtTitle.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_CLASSROOM:
                     imgClassroom.setActivated(false);
-	                loadControllerTopMenu(null);
+                    loadControllerTopMenu(null);
                     break;
                 case FRAGMENT_ASSESSMENT:
                     imgAssessment.setActivated(false);
-	                loadControllerTopMenu(null);
+                    loadControllerTopMenu(null);
                     break;
                 case FRAGMENT_DESK:
                     imgDesk.setActivated(false);
-	                loadControllerTopMenu(null);
+                    loadControllerTopMenu(null);
                     break;
                 case FRAGMENT_REPORT_CARD:
                     imgReportCard.setActivated(false);
-	                loadControllerTopMenu(null);
+                    loadControllerTopMenu(null);
                     break;
                 case FRAGMENT_NOTES:
                     imgNotes.setActivated(false);
@@ -466,6 +472,9 @@ public class HostActivity extends Activity implements FragmentListener {
                     break;
                 case FRAGMENT_CHAT:
                     imgChat.setActivated(false);
+                    break;
+                case FRAGMENT_GENERAL_SETTINGS:
+                   // llControllerLeft.setVisibility(View.VISIBLE);
                     break;
             }
         } catch (Exception e) {
@@ -632,27 +641,27 @@ public class HostActivity extends Activity implements FragmentListener {
     }
 
     public void showProgress() {
-	    try {
-		    Global.intApiCounter++;
-		    if (progHost != null && progHost.getVisibility() != View.VISIBLE) {
-			    progHost.setProgress(1);
-			    progHost.setVisibility(View.VISIBLE);
-			    progressGenerator.start(progHost);
-		    }
-	    } catch (Exception e) {
-		    Log.e(TAG, "showProgress Exception : " + e.toString());
-	    }
-	}
+        try {
+            Global.intApiCounter++;
+            if (progHost != null && progHost.getVisibility() != View.VISIBLE) {
+                progHost.setProgress(1);
+                progHost.setVisibility(View.VISIBLE);
+                progressGenerator.start(progHost);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "showProgress Exception : " + e.toString());
+        }
+    }
 
     public void hideProgress() {
-	    try {
-		    if (progHost != null && progHost.getVisibility() == View.VISIBLE && --Global.intApiCounter == 0) {
-			    progHost.setProgress(100);
-			    progHost.setVisibility(View.INVISIBLE);
-		    }
-	    } catch (Exception e) {
-		    Log.e(TAG, "hideProgress Exception : " + e.toString());
-	    }
+        try {
+            if (progHost != null && progHost.getVisibility() == View.VISIBLE && --Global.intApiCounter == 0) {
+                progHost.setProgress(100);
+                progHost.setVisibility(View.INVISIBLE);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "hideProgress Exception : " + e.toString());
+        }
     }
 
 }

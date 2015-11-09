@@ -26,6 +26,7 @@ public class QuestionAnswersModel {
         return this.imageLink;
     }
 
+
     public void setImageLink(String imageLink) {
         this.imageLink = imageLink;
     }
@@ -34,6 +35,7 @@ public class QuestionAnswersModel {
     public String getId() {
         return this.id;
     }
+
 
     public void setId(String id) {
         this.id = id;

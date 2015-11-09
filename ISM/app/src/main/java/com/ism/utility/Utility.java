@@ -5,17 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.provider.Settings;
 import android.util.Base64;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ism.R;
@@ -207,6 +202,17 @@ public class Utility {
 				return compare;
 			}
 		});
+	}
+
+	/*These is the method to show toast in android
+    * */
+	public static void showToast(String message, Context mContext) {
+		try {
+			Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }
