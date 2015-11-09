@@ -278,4 +278,9 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     }
 
 
+    private void updateQuestionDataAfterEdit() {
+
+    }
+
+
 }
