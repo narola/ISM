@@ -59,14 +59,13 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private List<String> arrayListQuestionType = new ArrayList<>();
 
     private LinearLayout llAddMcqanswer;
-
     RelativeLayout rl_image;
     ImageView img_add_pics, img_play;
 
     //Add Tag Functionality
     private TagsModel[] tags;
     private ArrayAdapter<TagsModel> tagsAdapter;
-    private ContactsCompletionView completionView;
+    private ContactsCompletionView tagsView;
 
     ArrayList<Data> arrayListQuestion = new ArrayList<>();
 
@@ -131,10 +130,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
         };
 
-        completionView = (ContactsCompletionView) view.findViewById(R.id.searchTagView);
-        completionView.setAdapter(tagsAdapter);
-        completionView.setTokenListener(this);
-        completionView.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
+        tagsView = (ContactsCompletionView) view.findViewById(R.id.searchTagView);
+        tagsView.setAdapter(tagsAdapter);
+        tagsView.setTokenListener(this);
+        tagsView.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
 
 
         rl_image = (RelativeLayout) view.findViewById(R.id.rl_image);
@@ -208,13 +207,26 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         if (((AddQuestionContainerFragment) mFragment).getIsSetQuestionData()) {
             setQuestionData(((AddQuestionContainerFragment) mFragment).getQuestionData());
         } else {
-            llAddMcqanswer.removeAllViews();
+            clearViewsData();
             for (int i = 0; i <= 1; i++) {
                 llAddMcqanswer.addView(getMcqAnswerView(i));
             }
         }
 
     }
+
+    private void clearViewsData() {
+
+        etQuestionTitle.setText("");
+        spQuestionType.setSelection(1);
+        etAnswerBox.setText("");
+        llAddMcqanswer.removeAllViews();
+        tagsView.clear();
+        etEvaluationNotes.setText("");
+        etSolution.setText("");
+
+    }
+
 
     /*these is for set question questionData for copy and edit question.*/
     private ImageLoader imageLoader;
@@ -262,17 +274,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
     private void setSpinnerData(String questionType) {
-        if (questionType.equalsIgnoreCase("MCQ")) {
+        if (questionType.equalsIgnoreCase(QUESTION_TYPE_MCQ)) {
             spQuestionType.setSelection(3);
             questionAnswersModelArrayList.clear();
             llAddMcqanswer.removeAllViews();
             llAddMcqanswer.setVisibility(View.VISIBLE);
             etAnswerBox.setVisibility(View.GONE);
-        } else if (questionType.equalsIgnoreCase("descriptive")) {
+        } else if (questionType.equalsIgnoreCase(QUESTION_TYPE_PARAGRAPH)) {
             spQuestionType.setSelection(1);
             llAddMcqanswer.setVisibility(View.GONE);
             etAnswerBox.setVisibility(View.VISIBLE);
-        } else if (questionType.equalsIgnoreCase("'Fill ups'")) {
+        } else if (questionType.equalsIgnoreCase(QUESTION_TYPE_TEXT)) {
             spQuestionType.setSelection(2);
             llAddMcqanswer.setVisibility(View.GONE);
             etAnswerBox.setVisibility(View.VISIBLE);
@@ -447,7 +459,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void updateTokenConfirmation() {
         StringBuilder sb = new StringBuilder("Current tokens:\n");
-        for (Object token : completionView.getObjects()) {
+        for (Object token : tagsView.getObjects()) {
             sb.append(token.toString());
             sb.append("\n");
         }
