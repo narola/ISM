@@ -104,12 +104,21 @@ public class Data implements Serializable {
     private String questionCreatorName;
 
 
-
     //For Assignment history(exams api response)
     private String classroom_name;
     private String exam_mode;
 
 
+    private ArrayList<EvaluationModel> arrayListEvaluation;
+
+    @JsonProperty("evaluation")
+    public ArrayList<EvaluationModel> getArrayListEvaluation() {
+        return arrayListEvaluation;
+    }
+
+    public void setArrayListEvaluation(ArrayList<EvaluationModel> arrayListEvaluation) {
+        this.arrayListEvaluation = arrayListEvaluation;
+    }
 
     //login response
     @JsonProperty("credential_id")
@@ -663,7 +672,6 @@ public class Data implements Serializable {
     public void setExam_mode(String exam_mode) {
         this.exam_mode = exam_mode;
     }
-
 
 
 }

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fragment_background_color"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_row_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <Spinner
+            android:id="@+id/sp_assignment_subject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/d5dp"
+            android:layout_marginTop="@dimen/d5dp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_selector"
+            android:entries="@array/list"
+            android:padding="@dimen/d10dp"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/sp_assignment_classwise"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/d5dp"
+            android:layout_marginTop="@dimen/d5dp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_selector"
+            android:entries="@array/list"
+            android:padding="@dimen/d10dp"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/sp_assignent_submission_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/d5dp"
+            android:layout_marginTop="@dimen/d5dp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_selector"
+            android:entries="@array/list"
+            android:padding="@dimen/d10dp"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/sp_assignent_assessed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/d5dp"
+            android:layout_marginTop="@dimen/d5dp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_selector"
+            android:entries="@array/list"
+            android:padding="@dimen/d10dp"
+            android:spinnerMode="dropdown" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/img_toggle_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity=""
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_grid" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="@dimen/d5dp"
+        android:background="#DADADA" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_examwise_assignments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

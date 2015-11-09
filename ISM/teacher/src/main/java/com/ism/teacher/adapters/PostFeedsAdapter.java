@@ -162,7 +162,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-
+        //http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_138/group1_1445832486.jpg
         imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgDpPostCreator, ISMTeacher.options);
 
         holder.txtUsernamePostCreator.setText(arrayListAllFeedsData.get(position).getFull_name());
@@ -287,7 +287,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             holder.imgPlay.setVisibility(View.VISIBLE);
 
             Log.i(TAG, WebConstants.FEED_MEDIA + arrayListAllFeedsData.get(position).getVideo_thumbnail() + "");
-            imageLoader.displayImage(WebConstants.FEED_MEDIA + arrayListAllFeedsData.get(position).getVideo_thumbnail(), holder.imgVideo,ISMTeacher.options);
+            imageLoader.displayImage(WebConstants.FEED_MEDIA + arrayListAllFeedsData.get(position).getVideo_thumbnail(), holder.imgVideo, ISMTeacher.options);
 
         }
         //audio
@@ -309,9 +309,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             }
 
         }
-
-
-
 
 
     }

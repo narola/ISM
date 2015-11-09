@@ -14,10 +14,10 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.Adapters;
-import com.ism.teacher.adapters.AssignmentSubjectsAdapter;
+import com.ism.teacher.adapters.ExamWiseAssignmentAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.model.Data;
+import com.ism.teacher.model.EvaluationModel;
 import com.ism.teacher.model.RequestObject;
 import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.ws.WebserviceWrapper;
@@ -29,37 +29,38 @@ import java.util.List;
 /**
  * Created by c161 on --/10/15.
  */
-public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class TeacherExamWiseAssignments extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
-    private static final String TAG = TeacherQuizHomeFragment.class.getSimpleName();
+    private static final String TAG = TeacherExamWiseAssignments.class.getSimpleName();
 
     private View view;
 
-    private RecyclerView recyclerAssignmentSubjects;
-    AssignmentSubjectsAdapter assignmentSubjectsAdapter;
+    private RecyclerView recyclerExamwiseAssignments;
+    ExamWiseAssignmentAdapter examWiseAssignmentAdapter;
 
     Spinner spAssignmentSubject, spAssignmentClasswise, spAssignentSubmissionDate, spAssignentAssessed;
     ImageView imgToggleList;
 
     List<String> arrayListSubjects, arrayListClasses, arrayListSubmissionDate, arrayListAssessed;
 
-    ArrayList<Data> arrayListAssignments = new ArrayList<>();
-
+    ArrayList<EvaluationModel> arrayListAssignments = new ArrayList<>();
     Fragment mFragment;
+    String examid = "";
 
-    /*public static TeacherQuizHomeFragment newInstance() {
-        TeacherQuizHomeFragment teacherQuizHomeFragment = new TeacherQuizHomeFragment(this);
-        return teacherQuizHomeFragment;
+    /*public static TeacherExamWiseAssignments newInstance() {
+        TeacherExamWiseAssignments teacherExamWiseAssignments = new TeacherExamWiseAssignments();
+        return teacherExamWiseAssignments;
     }*/
 
-    public TeacherQuizHomeFragment(Fragment fragment) {
+    public TeacherExamWiseAssignments(Fragment fragment, String examid) {
         // Required empty public constructor
         this.mFragment = fragment;
+        this.examid = examid;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_assignment_home, container, false);
+        view = inflater.inflate(R.layout.fragment_examwise_assignment, container, false);
 
         initGlobal(view);
 
@@ -67,11 +68,11 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     }
 
     private void initGlobal(View view) {
-        assignmentSubjectsAdapter = new AssignmentSubjectsAdapter(getActivity(), this);
-        recyclerAssignmentSubjects = (RecyclerView) view.findViewById(R.id.recycler_assignment_subjects);
-        recyclerAssignmentSubjects.setHasFixedSize(true);
-        recyclerAssignmentSubjects.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        recyclerAssignmentSubjects.setAdapter(assignmentSubjectsAdapter);
+        examWiseAssignmentAdapter = new ExamWiseAssignmentAdapter(getActivity(), this);
+        recyclerExamwiseAssignments = (RecyclerView) view.findViewById(R.id.recycler_examwise_assignments);
+        recyclerExamwiseAssignments.setHasFixedSize(true);
+        recyclerExamwiseAssignments.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        recyclerExamwiseAssignments.setAdapter(examWiseAssignmentAdapter);
 
         spAssignmentSubject = (Spinner) view.findViewById(R.id.sp_assignment_subject);
         spAssignmentClasswise = (Spinner) view.findViewById(R.id.sp_assignment_classwise);
@@ -96,17 +97,19 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         Adapters.setUpSpinner(getActivity(), spAssignentAssessed, arrayListAssessed, Adapters.ADAPTER_SMALL);
 
 
-        callApiGetAllAssignments();
+        callApiGetExamSubmission();
     }
 
-    private void callApiGetAllAssignments() {
+    private void callApiGetExamSubmission() {
         if (Utility.isInternetConnected(getActivity())) {
             try {
                 RequestObject request = new RequestObject();
-                request.setUserId("370");
+                request.setExamId("9");
+                request.setUserId("340");
                 request.setRole(AppConstant.TEACHER_ROLE_ID);
+
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GET_ALL_ASSIGNMENTS);
+                        .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -120,8 +123,8 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     public void onResponse(int apicode, Object object, Exception error) {
         try {
             switch (apicode) {
-                case WebConstants.GET_ALL_ASSIGNMENTS:
-                    onResponseGetAllAssignments(object);
+                case WebConstants.GET_ALL_EXAM_SUBMISSION:
+                    onResponseGetAllExamSubmission(object);
                     break;
 
             }
@@ -133,20 +136,16 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         }
     }
 
-    private void onResponseGetAllAssignments(Object object) {
+    private void onResponseGetAllExamSubmission(Object object) {
 
-        ResponseObject callGetAllAssignments = (ResponseObject) object;
-        if (callGetAllAssignments.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+        ResponseObject callGetAllExamSubmission = (ResponseObject) object;
+        if (callGetAllExamSubmission.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
 
-            arrayListAssignments.addAll(callGetAllAssignments.getData());
-            assignmentSubjectsAdapter.addAll(arrayListAssignments);
+            arrayListAssignments.addAll(callGetAllExamSubmission.getData().get(0).getArrayListEvaluation());
+            examWiseAssignmentAdapter.addAll(arrayListAssignments);
         } else {
 
             Utility.showToast(getString(R.string.web_service_issue), getActivity());
         }
     }
-
-
-
-
 }

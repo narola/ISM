@@ -13,6 +13,7 @@
     card_view:cardUseCompatPadding="true">
 
     <LinearLayout
+        android:id="@+id/ll_parent_assignment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_news_feed"
@@ -34,9 +35,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_margin="@dimen/d20dp"
-                    android:text="CHEMISTRY"
+                    android:text=""
+                    android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -48,9 +50,10 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="20dp"
                     android:background="@drawable/btn_cancel_assignment"
-                    android:text="HSC Science"
+                    android:text="static"
                     android:textColor="@color/color_white"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
 
             <FrameLayout
@@ -67,10 +70,10 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_circle_white"
                     android:gravity="center"
-                    android:padding="3dp"
-                    android:text="HSC Science"
+                    android:singleLine="false"
+                    android:text=""
                     android:textColor="@color/color_green"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
             </FrameLayout>
 
@@ -85,7 +88,7 @@
                     android:id="@+id/txt_label_assigndate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/d10dp"
+                    android:layout_marginLeft="@dimen/d5dp"
                     android:text="Assignment Date:"
                     android:textColor="@color/color_green" />
 
@@ -94,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="30 Oct 2015"
+                    android:text=""
                     android:textColor="@color/color_black" />
             </LinearLayout>
 
@@ -190,7 +193,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
-                            android:text="Unassessed" />
+                            android:text="" />
                     </LinearLayout>
 
                     <View
@@ -267,7 +270,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Assignment Type: Subjective"
+                android:text=""
                 android:textColor="@color/color_blue_assignment_type"
                 android:textSize="14sp" />
         </LinearLayout>
