@@ -42,9 +42,7 @@ public class WebConstants {
 	public static final int GET_CITIES = 20;
 
 
-    public static final int GET_ALL_EXAMS = 21;
-
-
+    public static final int GET_ALL_ASSIGNMENTS = 21;
 
 
 	/**
@@ -76,7 +74,7 @@ public class WebConstants {
 
 
 	//used for assignment
-	public static final String URL_GET_ALL_EXAMS = URL_HOST_162 + "GetAllExams";
+	public static final String URL_GET_ALL_ASSIGNMENTS = URL_HOST_162 + "GetAllExams";
 
 
 	public static final String URL_GET_CITIES = URL_HOST_161 + "GetCities";

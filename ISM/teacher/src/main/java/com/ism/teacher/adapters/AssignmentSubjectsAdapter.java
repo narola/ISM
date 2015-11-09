@@ -79,7 +79,7 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-       /* holder.txtAssignmentSubject.setText(listOfAssignments.get(position).getSubject_name());
+        holder.txtAssignmentSubject.setText(listOfAssignments.get(position).getSubject_name());
         //holder.txtAssignmentCourse.setText(listOfAssignments.get(position).getClass_name());
         holder.txtAssignmentClassName.setText(listOfAssignments.get(position).getClass_name());
 //        holder.txtAssignmentDate.setText(listOfAssignments.get(position).);
@@ -88,7 +88,7 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
 //        holder.txtNumberUnassessedQuestion.setText(listOfAssignments.get(position).);
 //        holder.txtNumberTotalQuestions.setText(listOfAssignments.get(position).);
 //
-        holder.txtAssignmentType.setText(listOfAssignments.get(position).getExam_mode());*/
+        holder.txtAssignmentType.setText(listOfAssignments.get(position).getExam_mode());
 
 
         if(position % 2 == 0){
@@ -116,7 +116,7 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
 
     @Override
     public int getItemCount() {
-        return 5;
+        return listOfAssignments.size();
     }
 
 

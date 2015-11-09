@@ -104,7 +104,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
                 request.setUserId("370");
                 request.setRole(AppConstant.TEACHER_ROLE_ID);
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETQUESTIONBANK);
+                        .execute(WebConstants.GET_ALL_ASSIGNMENTS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -118,7 +118,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     public void onResponse(int apicode, Object object, Exception error) {
         try {
             switch (apicode) {
-                case WebConstants.GET_ALL_EXAMS:
+                case WebConstants.GET_ALL_ASSIGNMENTS:
                     onResponseGetAllAssignments(object);
                     break;
 
