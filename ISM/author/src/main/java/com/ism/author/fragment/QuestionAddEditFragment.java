@@ -18,12 +18,15 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.InputValidator;
+import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.autocomplete.ContactsCompletionView;
@@ -32,6 +35,7 @@ import com.ism.author.autocomplete.TokenCompleteTextView;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
 import com.ism.author.model.QuestionAnswersModel;
+import com.ism.author.model.RequestObject;
 import com.ism.author.model.TagsModel;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -49,6 +53,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private static final String TAG = QuestionAddEditFragment.class.getSimpleName();
     private View view;
     Fragment mFragment;
+    private EditText etEvaluationNote21;
 
 
     public QuestionAddEditFragment(Fragment fragment) {
@@ -63,15 +68,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     /*these sre for the xml views*/
 
     private TextView tvAddquestionHeader, tvAddquestionTitle, tvAddquestionType, tvAddquestionCategory, tvEvaluationNote1, tvEvaluationNote2,
-            tvAddquestionSave, tvAddquestionSaveAddmore;
+            tvAddquestionSave, tvAddquestionSaveAddmore, tvAddquestionGotoquestionbank;
     private ImageView imgEditQuestion, imgCopyQuestion, imgDeleteQuestion, imgSelectImage, imgPlay;
     private EditText etAddquestionTitle, etAddquestionAnswer, etEvaluationNote1, etEvaluationNote2;
     private Spinner spAddquestionType;
     private CheckBox chkAddquestionPreview;
     List<String> arrListQuestionType;
     private LinearLayout llAddMcqanswer;
+    private RelativeLayout rlSelectImage;
 
     MyTypeFace myTypeFace;
+    private InputValidator inputValidator;
 
 
     @Override
@@ -85,6 +92,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
+        inputValidator = new InputValidator(getActivity());
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         //this is for to set tag..
@@ -132,8 +140,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         tvEvaluationNote2 = (TextView) view.findViewById(R.id.tv_evaluation_note2);
         tvAddquestionSave = (TextView) view.findViewById(R.id.tv_addquestion_save);
         tvAddquestionSaveAddmore = (TextView) view.findViewById(R.id.tv_addquestion_save_addmore);
+        tvAddquestionGotoquestionbank = (TextView) view.findViewById(R.id.tv_addquestion_gotoquestionbank);
         tvAddquestionSave.setOnClickListener(this);
         tvAddquestionSaveAddmore.setOnClickListener(this);
+        tvAddquestionGotoquestionbank.setOnClickListener(this);
 
 
         tvAddquestionHeader.setTypeface(myTypeFace.getRalewayRegular());
@@ -144,13 +154,16 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         tvEvaluationNote2.setTypeface(myTypeFace.getRalewayRegular());
         tvAddquestionSave.setTypeface(myTypeFace.getRalewayRegular());
         tvAddquestionSaveAddmore.setTypeface(myTypeFace.getRalewayRegular());
+        tvAddquestionGotoquestionbank.setTypeface(myTypeFace.getRalewayRegular());
 
 
         imgEditQuestion = (ImageView) view.findViewById(R.id.img_edit_question);
         imgCopyQuestion = (ImageView) view.findViewById(R.id.img_copy_question);
         imgDeleteQuestion = (ImageView) view.findViewById(R.id.img_delete_question);
         imgSelectImage = (ImageView) view.findViewById(R.id.img_select_image);
+        imgPlay = (ImageView) view.findViewById(R.id.img_play);
         imgSelectImage.setOnClickListener(this);
+
 
         etAddquestionTitle = (EditText) view.findViewById(R.id.et_addquestion_title);
         etAddquestionAnswer = (EditText) view.findViewById(R.id.et_addquestion_answer);
@@ -167,6 +180,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         spAddquestionType = (Spinner) view.findViewById(R.id.sp_addquestion_type);
 
         llAddMcqanswer = (LinearLayout) view.findViewById(R.id.ll_add_mcqanswer);
+        rlSelectImage = (RelativeLayout) view.findViewById(R.id.rl_select_image);
+        rlSelectImage.setOnClickListener(this);
 
         chkAddquestionPreview = (CheckBox) view.findViewById(R.id.chk_addquestion_preview);
         chkAddquestionPreview.setTypeface(myTypeFace.getRalewayRegular());
@@ -233,13 +248,15 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             cursor.close();
 
             if (mimeType.startsWith("image")) {
+
                 imgSelectImage.setImageURI(selectedUri);
+                imgPlay.setVisibility(View.GONE);
+
             } else if (mimeType.startsWith("video")) {
 
                 MediaMetadataRetriever mMediaMetadataRetriever = new MediaMetadataRetriever();
                 mMediaMetadataRetriever.setDataSource(getActivity(), selectedUri);
                 Bitmap bitmap = mMediaMetadataRetriever.getFrameAtTime(1 * 1000);
-
                 imgSelectImage.setImageBitmap(bitmap);
                 imgPlay.setVisibility(View.VISIBLE);
 
@@ -272,8 +289,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     public void setViewForAddEditQuestion() {
 
-        if (((AddQuestionContainerFragment) mFragment).getIsSetQuestionData()) {
-            setQuestionData(((AddQuestionContainerFragment) mFragment).getQuestionData());
+        if (getFragment().getIsSetQuestionData()) {
+            setQuestionData(getFragment().getQuestionData());
         } else {
             clearViewsData();
             for (int i = 0; i <= 1; i++) {
@@ -290,8 +307,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         etAddquestionAnswer.setText("");
         llAddMcqanswer.removeAllViews();
         tagsView.clear();
-        tvEvaluationNote1.setText("");
-        tvEvaluationNote2.setText("");
+        etEvaluationNote1.setText("");
+        etEvaluationNote2.setText("");
+        imgSelectImage.setImageDrawable(null);
+        imgSelectImage.setImageBitmap(null);
 
     }
 
@@ -301,8 +320,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         v = layoutInflater.inflate(R.layout.row_mcq_answer, null, false);
 
-        ImageView imgAnsRadio = (ImageView) v.findViewById(R.id.img_ans_radio);
-        EditText etAddMcqAnswer = (EditText) v.findViewById(R.id.et_add_mcq_answer);
+        final ImageView imgAnsRadio = (ImageView) v.findViewById(R.id.img_ans_radio);
         final ImageView imgAddMcqRow = (ImageView) v.findViewById(R.id.img_add_mcq_row);
         final ImageView imgRemoveMcqRow = (ImageView) v.findViewById(R.id.img_remove_mcq_row);
         if (position > 0) {
@@ -310,18 +328,19 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         } else {
             imgAddMcqRow.setVisibility(View.GONE);
         }
+
+        imgAnsRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unselectAnswers();
+                imgAnsRadio.setActivated(!imgAnsRadio.isActivated());
+
+            }
+        });
         imgRemoveMcqRow.setTag(position);
         imgAddMcqRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (llAddMcqanswer.getChildCount() < 6) {
-//                    int viewPositionToAdd = (Integer) imgRemoveMcqRow.getTag();
-//                    imgAddMcqRow.setVisibility(View.GONE);
-//                    imgRemoveMcqRow.setVisibility(View.VISIBLE);
-//                    llAddMcqanswer.addView(getMcqAnswerView(viewPositionToAdd + 1));
-//                } else {
-//                    Utils.showToast(getActivity().getResources().getString(R.string.msg_mcq_ans_limit), getActivity());
-//                }
                 addRow((Integer) imgRemoveMcqRow.getTag(), imgAddMcqRow, imgRemoveMcqRow);
 
             }
@@ -329,9 +348,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         imgRemoveMcqRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                int viewPositionToRemove = (Integer) imgRemoveMcqRow.getTag();
-//                llAddMcqanswer.removeViewAt(viewPositionToRemove);
-//                refreshViewPositions();
                 removeRow((Integer) imgRemoveMcqRow.getTag());
 
             }
@@ -341,16 +357,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
     /*this method is for inflating views for edit and copy question*/
-    private View setMCQ(int position, String text) {
+    private View setMCQ(int position, String text, Boolean isActivated) {
         View v = null;
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         v = layoutInflater.inflate(R.layout.row_mcq_answer, null, false);
 
-        ImageView imgAnsRadio = (ImageView) v.findViewById(R.id.img_ans_radio);
+        final ImageView imgAnsRadio = (ImageView) v.findViewById(R.id.img_ans_radio);
         EditText etAddMcqAnswer = (EditText) v.findViewById(R.id.et_add_mcq_answer);
         final ImageView imgAddMcqRow = (ImageView) v.findViewById(R.id.img_add_mcq_row);
         final ImageView imgRemoveMcqRow = (ImageView) v.findViewById(R.id.img_remove_mcq_row);
-        etAddMcqAnswer.setText(text);
+        etAddMcqAnswer.setText(Utils.formatHtml(text));
+        imgAnsRadio.setActivated(isActivated);
 
         if (position < 1) {
             imgAddMcqRow.setVisibility(View.GONE);
@@ -363,6 +380,15 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             imgRemoveMcqRow.setVisibility(View.VISIBLE);
         }
         imgRemoveMcqRow.setTag(position);
+
+        imgAnsRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unselectAnswers();
+                imgAnsRadio.setActivated(!imgAnsRadio.isActivated());
+
+            }
+        });
         imgAddMcqRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -377,6 +403,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
         });
         return v;
+    }
+
+    private void unselectAnswers() {
+        for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
+            ImageView imgRadio = (ImageView) llAddMcqanswer.getChildAt(i).findViewById(R.id.img_ans_radio);
+            imgRadio.setActivated(false);
+        }
+
     }
 
     /*this is to add row in inflater view*/
@@ -400,8 +434,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     /*this is to refresh view positions after remove row in inflater view*/
     private void refreshViewPositions() {
         for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
-            View childView = llAddMcqanswer.getChildAt(i);
-            ImageView imgRemoveMcqRow = (ImageView) childView.findViewById(R.id.img_remove_mcq_row);
+            ImageView imgRemoveMcqRow = (ImageView) llAddMcqanswer.getChildAt(i).findViewById(R.id.img_remove_mcq_row);
             imgRemoveMcqRow.setTag(i);
         }
 
@@ -420,8 +453,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", imgSelectImage, ISMAuthor.options);
             setSpinnerData(data.getQuestionFormat());
             setMcqAnswers(data);
-            etEvaluationNote1.setText(data.getEvaluationNotes());
-            etEvaluationNote2.setText(data.getEvaluationNotes());
+
+            if (data.getEvaluationNotes() != null) {
+                etEvaluationNote1.setText(data.getEvaluationNotes());
+                etEvaluationNote21.setText(data.getEvaluationNotes());
+            }
+
         } catch (Exception e) {
             Debug.e(TAG, "isSetQuestionData Exception : " + e.toString());
         }
@@ -452,26 +489,176 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     private void setMcqAnswers(Data data) {
         questionAnswersModelArrayList.addAll(data.getAnswers());
         for (int i = 0; i < data.getAnswers().size(); i++) {
-            llAddMcqanswer.addView(setMCQ(i, data.getAnswers().get(i).getChoiceText()));
+            llAddMcqanswer.addView(setMCQ(i, data.getAnswers().get(i).getChoiceText(), data.getAnswers().get(i).getIsRight().equals("1") ? true : false));
         }
     }
+
+
+    private Boolean isInputsValid() {
+
+        return inputValidator.validateStringPresence(etAddquestionTitle) & inputValidator.validateStringPresence(etEvaluationNote1)
+                & inputValidator.validateStringPresence(tagsView)
+                & inputValidator.validateStringPresence(etEvaluationNote2) && checkSpinnerDataValidation();
+
+    }
+
+
+    private Boolean checkSpinnerDataValidation() {
+
+        int spPosition = spAddquestionType.getSelectedItemPosition();
+        Boolean isValidate = false;
+        switch (spPosition) {
+            case 1:
+                isValidate = inputValidator.validateStringPresence(etAddquestionAnswer);
+                break;
+            case 2:
+                isValidate = inputValidator.validateStringPresence(etAddquestionAnswer);
+                break;
+            case 3:
+                for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
+                    EditText etMcqAnswer = (EditText) llAddMcqanswer.getChildAt(i).findViewById(R.id.et_add_mcq_answer);
+                    isValidate = isValidate & inputValidator.validateStringPresence(etMcqAnswer);
+                }
+                isValidate = isValidate & checkMcqAnswerSelection();
+                break;
+        }
+        return isValidate;
+    }
+
+    private Boolean checkMcqAnswerSelection() {
+        Boolean isAnswerSelect = false;
+        for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
+            ImageView etMcqAnswer = (ImageView) llAddMcqanswer.getChildAt(i).findViewById(R.id.img_ans_radio);
+            if (etMcqAnswer.isActivated()) {
+                isAnswerSelect = true;
+                break;
+            }
+        }
+        if (!isAnswerSelect) {
+            Utility.alert(getActivity(), null, getActivity().getString(R.string.msg_validation_select_answer));
+        }
+        return isAnswerSelect;
+
+    }
+
 
     @Override
     public void onClick(View v) {
         if (v == tvAddquestionSave) {
-            ((AddQuestionContainerFragment) mFragment).flipCard();
-
+            if (isInputsValid()) {
+                callApiAddQuestion();
+            }
 
 
         } else if (v == tvAddquestionSaveAddmore) {
+            if (isInputsValid()) {
 
-            ((AddQuestionContainerFragment) mFragment).flipCard();
+                callApiAddQuestion();
+            }
+            clearViewsData();
 
-        } else if (v == imgSelectImage) {
+
+        } else if (v == rlSelectImage) {
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("*/*");
             startActivityForResult(intent, 1);
+
+        } else if (v == tvAddquestionGotoquestionbank) {
+
+            getFragment().flipCard();
+
+
         }
 
     }
+
+    private void callApiAddQuestion() {
+
+        if (Utility.isOnline(getActivity())) {
+            try {
+                RequestObject requestObject = new RequestObject();
+//                requestObject.setBankQuestionId("2");
+                requestObject.setQuestionCreatorId("109");
+                requestObject.setQuestionCreatorName("");
+                requestObject.setQuestionFormat(getQuestionFormat());
+                requestObject.setQuestionHint("test");
+                requestObject.setQuestionText("test");
+                requestObject.setQuestionAssetsLink("");
+                requestObject.setQuestionImageLink("");
+                requestObject.setEvaluationNotes(etEvaluationNote1.getText().toString());
+                requestObject.setSolution(etEvaluationNote2.getText().toString());
+                requestObject.setTopicId("43");
+                requestObject.setSubjectId("3");
+                requestObject.setSubjectName("MatheMatics");
+                requestObject.setClassroomId("2");
+                requestObject.setBookId("2");
+                if (getQuestionFormat().equalsIgnoreCase("mcq")) {
+                    questionAnswersModelArrayList.clear();
+                    for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
+                        View v = llAddMcqanswer.getChildAt(i);
+                        QuestionAnswersModel questionAnswersModel = new QuestionAnswersModel();
+                        questionAnswersModel.setQuestionId("2");
+                        questionAnswersModel.setChoiceText(((EditText) v.findViewById(R.id.et_add_mcq_answer)).getText().toString());
+                        questionAnswersModel.setIsRight(getIsSelected((ImageView) v.findViewById(R.id.img_ans_radio)));
+                        questionAnswersModel.setImageLink("");
+                        questionAnswersModel.setVideoLink("");
+                        questionAnswersModel.setAudioLink("");
+                        questionAnswersModelArrayList.add(questionAnswersModel);
+                    }
+                    requestObject.setAnswers(questionAnswersModelArrayList);
+                }
+//                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+//                        .execute(WebConstants.GETALLFEEDS);
+
+                if (getFragment().getIsSetQuestionData()) {
+
+                    getFragment().setQuestionDataAfterEditQuestion();
+
+                } else {
+
+                }
+
+            } catch (Exception e) {
+                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(getActivity());
+        }
+
+    }
+
+
+    private String getQuestionFormat() {
+
+        String questionFormat = "";
+        int spPosition = spAddquestionType.getSelectedItemPosition();
+        switch (spPosition) {
+            case 1:
+                questionFormat = "text";
+                break;
+            case 2:
+                questionFormat = "text";
+                break;
+            case 3:
+                questionFormat = "MCQ";
+                break;
+        }
+
+        return questionFormat;
+    }
+
+    private String getIsSelected(ImageView imageView) {
+
+        if (imageView.isActivated()) {
+            return "1";
+        } else {
+            return "0";
+        }
+
+    }
+
+    private AddQuestionContainerFragment getFragment() {
+        return (AddQuestionContainerFragment) mFragment;
+    }
+
 }
