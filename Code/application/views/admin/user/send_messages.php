@@ -57,7 +57,7 @@
                             </select>    
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group users">
                             <label> Select Users   </label>
 
                             <select name="all_users[]" class="js-example-basic-single form-control" multiple="multiple" id="all_users">
@@ -85,6 +85,22 @@
                                 <?php } } ?>
 
                              </select>
+                            
+                        </div>
+
+                        <div class="form-group schools" style="display: none;">
+                            <label> Select Schools </label>
+
+                            <select name="all_schools[]" id="all_schools" class="js-example-basic-single form-control" multiple="multiple">
+                                <?php foreach ($schools as $school) { ?>
+                                    
+                                <option value="<?php echo $school['id'] ?>" >
+                                   <?php echo ucfirst($school['school_name']); ?>
+                                   
+                                </option> 
+
+                                <?php } ?>
+                            </select>
                             
                         </div>
 

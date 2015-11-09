@@ -1020,7 +1020,7 @@ $(document).on('click', '#mate_list', function () {
         str += '<a href="javascript:void(0);" data-type="close" data-id="' + id + '"><span class="close" >x</span></a></div>';
         str += '<div class="chat_text"></div>';
         str += ' <img class="chat_loading" src="assets/images/progress_bar_sm.gif" style="display:none">';
-        str += '<input type="text" class="chat_input" placeholder="Say It" data-type="chat" data-id="' + id + '">';
+        str += '<input type="text" class="chat_input" placeholder="Chat" data-type="chat" data-id="' + id + '">';
         str += '<!--<a href="#" class="icon icon_emoji"></a> -->';
         str += '<a href="#" class="icon icon_pin"></a>';
         str += '<input type="file" id="chat_file_share" class="chat_pin" data-type="single_chat_file" data-id="16">';
