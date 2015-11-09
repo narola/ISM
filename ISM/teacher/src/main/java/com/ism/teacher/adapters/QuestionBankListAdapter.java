@@ -3,7 +3,6 @@ package com.ism.teacher.adapters;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -18,8 +17,7 @@ import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.constants.AppConstant;
-import com.ism.teacher.fragments.AddQuestionFragmentTeacher;
+import com.ism.teacher.fragments.AddQuestionContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.AnswersModel;
 import com.ism.teacher.model.Data;
@@ -35,15 +33,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
 
     Context mContext;
-
-
     ArrayList<Data> listOfQuestions = new ArrayList<Data>();
-
-    public ArrayList<Data> getListOfPreviewQuestionsToAdd() {
-        return listOfPreviewQuestionsToAdd;
-    }
-
-    ArrayList<Data> listOfPreviewQuestionsToAdd = new ArrayList<Data>();
     MyTypeFace myTypeFace;
 
     Fragment mFragment;
@@ -182,16 +172,16 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             public void onClick(View v) {
 
 
-                if (!((AddQuestionFragmentTeacher) mFragment).previewQuestionFragment.listOfPreviewQuestions.contains(listOfQuestions.get(position))) {
+                if (!((AddQuestionContainerFragment) mFragment).previewQuestionFragment.listOfPreviewQuestions.contains(listOfQuestions.get(position))) {
 
 
                     if (holder.chkSelectQuestion.isChecked()) {
                         listOfQuestions.get(position).setIsQuestionAddedInPreview(true);
-                        listOfPreviewQuestionsToAdd.add(listOfQuestions.get(position));
+                        ((AddQuestionContainerFragment) mFragment).listOfPreviewQuestionsToAdd.add(listOfQuestions.get(position));
 
                     } else {
                         listOfQuestions.get(position).setIsQuestionAddedInPreview(false);
-                        listOfPreviewQuestionsToAdd.remove(listOfQuestions.get(position));
+                        ((AddQuestionContainerFragment) mFragment).listOfPreviewQuestionsToAdd.remove(listOfQuestions.get(position));
                     }
 
                 } else {
@@ -203,16 +193,29 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             }
         });
 
-
         holder.imgQuestionCopy.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
 
-                Bundle args = new Bundle();
-                args.putSerializable(AppConstant.BUNDLE_EDIT_QUESTION_FRAGMENT, listOfQuestions.get(position));
-                ((AddQuestionFragmentTeacher) mFragment).flipCard(args);
+                ((AddQuestionContainerFragment) mFragment).setQuestionData(listOfQuestions.get(position));
+                ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
+                ((AddQuestionContainerFragment) mFragment).flipCard();
+
             }
         });
+
+        holder.imgQuestionEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                ((AddQuestionContainerFragment) mFragment).setQuestionData(listOfQuestions.get(position));
+                ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
+                ((AddQuestionContainerFragment) mFragment).flipCard();
+
+            }
+        });
+
 
     }
 

@@ -18,8 +18,6 @@ public class WebserviceWrapper {
     private WebserviceResponse webserviceResponse;
 
 
-
-
     public interface WebserviceResponse {
         public void onResponse(int API_METHOD, Object object, Exception error);
     }
@@ -122,6 +120,19 @@ public class WebserviceWrapper {
                         responseObject = new RequestWs().getRequest(WebConstants.URL_REQUEST_CREDENTIALS, ResponseObject.class, requestObject);
                         break;
 
+                    case WebConstants.GET_COUNTRIES:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_COUNTRIES, ResponseObject.class, requestObject);
+                        break;
+                    case WebConstants.GET_STATES:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_STATES, ResponseObject.class, requestObject);
+                        break;
+                    case WebConstants.GET_CITIES:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_CITIES, ResponseObject.class, requestObject);
+                        break;
+
+                    case WebConstants.GET_ALL_ASSIGNMENTS:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ALL_ASSIGNMENTS, ResponseObject.class, requestObject);
+                        break;
 
                 }
             } catch (Exception e) {

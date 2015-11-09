@@ -105,6 +105,7 @@
     </string-array>
 
     <string-array name="question_type">
+        <item>Question Type</item>
         <item>Text</item>
         <item>Paragraph text</item>
         <item>Multiple choice</item>
@@ -118,6 +119,7 @@
     <string name="strcreatedby">Created by:</string>
     <string name="straddnewquestion">Add New Question</string>
     <string name="straddtopreview">Add to Preview</string>
+    <string name="msg_mcq_ans_limit">You can only add up to 6 MCQ Answers.</string>
 
     <!--Validation error message strings-->
     <string name="required">Required!</string>
@@ -275,28 +277,6 @@
     <string name="strcourse">Course</string>
     <string name="msg_select_question_to_add_to_preview">Please select question to add to preview.</string>
 
-
-    <!-- -->
-
-    <string-array name="country">
-        <item >India</item>
-        <item>United States</item>
-        <item>Canada</item>
-        <item>Australia</item>
-        <item>United Kingdom</item>
-        <item>Philippines</item>
-        <item >Japan</item>
-        <item>Italy</item>
-        <item>Germany</item>
-        <item>Russia</item>
-        <item>Malaysia</item>
-        <item>France</item>
-        <item>Sweden</item>
-        <item>New Zealand</item>
-        <item>Singapore</item>
-    </string-array>
-
-
     <!--postActivity-->
     <string name="strchooseimagefromgallery">Choose Image from gallery</string>
     <string name="strchoosevideofromgallery">Choose Video from gallery</string>
@@ -320,5 +300,16 @@
     <string name="strhinttheiranswer">Their Answer</string>
     <string name="strbiology">Biology</string>
     <string name="strfreeze">Freeze</string>
+
+
+
+    <!-- Assignment-->
+    <string name="classwise">Class Wise</string>
+    <string name="submission_date">Submission Date</string>
+    <string-array name="assignment_status">
+    <item>Assessed Status</item>
+    <item>Assessed</item>
+    <item>Non Assessed</item>
+    </string-array>
 
 </resources>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:card_view="http://schemas.android.com/apk/res-auto"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:orientation="vertical">-->
+<?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -26,8 +26,7 @@
             <RelativeLayout
                 android:id="@+id/rl_top_assignment"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@drawable/bg_chemistry">
+                android:layout_height="100dp">
 
                 <TextView
                     android:id="@+id/txt_assignment_subject"
@@ -41,7 +40,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/txt_assignment_class"
+                    android:id="@+id/txt_assignment_course"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -125,8 +124,7 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -134,6 +132,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/txt_number_assessed_question"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -142,6 +141,7 @@
                             android:textSize="@dimen/d18sp" />
 
                         <TextView
+                            android:id="@+id/txt_assessed_label"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -176,6 +176,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/txt_number_unassessed_question"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -184,11 +185,12 @@
                             android:textSize="@dimen/d18sp" />
 
                         <TextView
+                            android:id="@+id/txt_unassessed_label"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
-                            android:text="Assessed" />
+                            android:text="Unassessed" />
                     </LinearLayout>
 
                     <View
@@ -207,11 +209,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -219,6 +220,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/txt_number_total_questions"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -227,17 +229,26 @@
                             android:textSize="@dimen/d18sp" />
 
                         <TextView
+                            android:id="@+id/txt_question_label"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
-                            android:text="Assessed" />
+                            android:text="Question" />
                     </LinearLayout>
 
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/color_shade_news_feed" />
 
-                </LinearLayout>
+
+                </RelativeLayout>
+
 
             </LinearLayout>
+
         </LinearLayout>
 
         <ImageView
@@ -261,4 +272,6 @@
                 android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
-</android.support.v7.widget.CardView><!--</LinearLayout>-->
+
+
+</android.support.v7.widget.CardView>
