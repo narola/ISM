@@ -8,9 +8,11 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.helper.MyTypeFace;
@@ -24,9 +26,9 @@ import java.util.ArrayList;
 public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.ViewHolder> {
 
     private static final String TAG = AssignmentAdapter.class.getSimpleName();
-    Context mContext;
-    ArrayList<Data> listOfAssignments = new ArrayList<Data>();
-    MyTypeFace myTypeFace;
+    private Context mContext;
+    private ArrayList<Data> listOfAssignments = new ArrayList<Data>();
+    private MyTypeFace myTypeFace;
 
 
     public AssignmentAdapter(Context mContext) {
@@ -52,12 +54,12 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
             holder.tvAssignmentDate.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvAssignmentClassName.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvAssignmentNoofAssessed.setTypeface(myTypeFace.getRalewayBold());
-            holder.tvAssignmentAssessed.setTypeface(myTypeFace.getRalewayThin());
+            holder.tvAssignmentAssessed.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvAssignmentNoofUnassessed.setTypeface(myTypeFace.getRalewayBold());
-            holder.tvAssignmentUnassessed.setTypeface(myTypeFace.getRalewayThin());
+            holder.tvAssignmentUnassessed.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvAssignmentNoofQuestion.setTypeface(myTypeFace.getRalewayBold());
-            holder.tvAssignmentQuestion.setTypeface(myTypeFace.getRalewayThin());
-            holder.tvAssignmentType.setTypeface(myTypeFace.getRalewayBold());
+            holder.tvAssignmentQuestion.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvAssignmentType.setTypeface(myTypeFace.getRalewayRegular());
 
 
             holder.tvAssignmentSubjectName.setText(listOfAssignments.get(position).getSubjectName());
@@ -69,22 +71,33 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                     assignment_date.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.tvAssignmentDate.append(f);
 
-            holder.tvAssignmentNoofAssessed.setText(listOfAssignments.get(position).getTotalQuestion());
-            holder.tvAssignmentNoofQuestion.setText(listOfAssignments.get(position).getTotalQuestion());
+            holder.tvAssignmentNoofAssessed.setText(listOfAssignments.get(position).getTotal_student());
+            holder.tvAssignmentNoofQuestion.setText(listOfAssignments.get(position).getTotal_student());
 
             if (listOfAssignments.get(position).getExamMode().equals("subjective")) {
-
                 holder.tvAssignmentUnassessed.setText(mContext.getString(R.string.strunasssessed));
-                holder.tvAssignmentNoofUnassessed.setText(listOfAssignments.get(position).getTotalQuestion());
+                holder.tvAssignmentNoofUnassessed.setText(listOfAssignments.get(position).getTotal_student());
 
             } else if (listOfAssignments.get(position).getExamMode().equals("objective")) {
-
                 holder.tvAssignmentUnassessed.setText(mContext.getString(R.string.stravgscore));
-                holder.tvAssignmentNoofUnassessed.setText(listOfAssignments.get(position).getTotalQuestion());
+                holder.tvAssignmentNoofUnassessed.setText(listOfAssignments.get(position).getTotal_student() + " " + mContext.getString(R.string.strpercent));
             }
 
 
             holder.tvAssignmentType.setText(mContext.getString(R.string.strassignmenttype) + " " + listOfAssignments.get(position).getExamMode());
+
+            if (position % 2 == 0) {
+                holder.rlTopAssignment.setBackgroundResource(R.drawable.bg_subject_red);
+            } else {
+                holder.rlTopAssignment.setBackgroundResource(R.drawable.bg_subject_yellow);
+            }
+
+            holder.llAssignmentContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
+                }
+            });
 
 
         } catch (Exception e) {
@@ -115,6 +128,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
         TextView tvAssignmentSubjectName, tvAssignmentCourseName, tvAssignmentDate, tvAssignmentClassName, tvAssignmentNoofAssessed,
                 tvAssignmentAssessed, tvAssignmentNoofUnassessed, tvAssignmentUnassessed, tvAssignmentNoofQuestion, tvAssignmentQuestion,
                 tvAssignmentType;
+        LinearLayout llAssignmentContainer;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -131,6 +145,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
             tvAssignmentNoofQuestion = (TextView) itemView.findViewById(R.id.tv_assignment_noof_question);
             tvAssignmentQuestion = (TextView) itemView.findViewById(R.id.tv_assignment_question);
             tvAssignmentType = (TextView) itemView.findViewById(R.id.tv_assignment_type);
+            llAssignmentContainer = (LinearLayout) itemView.findViewById(R.id.ll_assignment_container);
 
 
         }
