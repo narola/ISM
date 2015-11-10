@@ -182,17 +182,23 @@ public class ProfileControllerFragment extends Fragment {
 		}
 		lvMessages.setAdapter(new MessagePopupAdapter(getActivity(), arrayList));
 
-		PopupWindow popupMessage = new PopupWindow(view, 250, 350, true);
-		popupMessage.setOutsideTouchable(true);
-		popupMessage.setBackgroundDrawable(new BitmapDrawable());
-		popupMessage.setTouchInterceptor(new View.OnTouchListener() {
+		PopupWindow popupNotification = new PopupWindow(view, 250, 350, true);
+		popupNotification.setOutsideTouchable(true);
+		popupNotification.setBackgroundDrawable(new BitmapDrawable());
+		popupNotification.setTouchInterceptor(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				imgNotification.setActivated(false);
 				return false;
 			}
 		});
-		popupMessage.showAtLocation(imgNotification, Gravity.END, 10, 60);
+
+		popupNotification.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			@Override
+			public void onDismiss() {
+				imgNotification.setActivated(false);
+			}
+		});
+		popupNotification.showAtLocation(imgNotification, Gravity.END, 10, 60);
 	}
 
 	private void showMessages() {
@@ -219,8 +225,14 @@ public class ProfileControllerFragment extends Fragment {
 		popupMessage.setTouchInterceptor(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				imgMessage.setActivated(false);
 				return false;
+			}
+		});
+
+		popupMessage.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			@Override
+			public void onDismiss() {
+				imgMessage.setActivated(false);
 			}
 		});
 		popupMessage.showAtLocation(imgMessage, Gravity.END, 10, 60);
@@ -243,17 +255,23 @@ public class ProfileControllerFragment extends Fragment {
 		}
 		lvMessages.setAdapter(new MessagePopupAdapter(getActivity(), arrayList));
 
-		PopupWindow popupMessage = new PopupWindow(view, 250, 350, true);
-		popupMessage.setOutsideTouchable(true);
-		popupMessage.setBackgroundDrawable(new BitmapDrawable());
-		popupMessage.setTouchInterceptor(new View.OnTouchListener() {
+		PopupWindow popupFriendRequest = new PopupWindow(view, 250, 350, true);
+		popupFriendRequest.setOutsideTouchable(true);
+		popupFriendRequest.setBackgroundDrawable(new BitmapDrawable());
+		popupFriendRequest.setTouchInterceptor(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				imgFriendRequest.setActivated(false);
 				return false;
 			}
 		});
-		popupMessage.showAtLocation(imgFriendRequest, Gravity.END, 10, 60);
+
+		popupFriendRequest.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			@Override
+			public void onDismiss() {
+				imgFriendRequest.setActivated(false);
+			}
+		});
+		popupFriendRequest.showAtLocation(imgFriendRequest, Gravity.END, 10, 60);
 	}
 
 	private void highlightNotificationIcon(int imgId) {

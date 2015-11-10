@@ -135,15 +135,15 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             @Override
             public void onClick(View v) {
 
-                if (!((AddQuestionContainerFragment) mFragment).getListOfPreviewQuestion().contains(listOfQuestions.get(position))) {
+                if (!getFragment().getListOfPreviewQuestion().contains(listOfQuestions.get(position))) {
 
                     if (holder.chkSelectQuestion.isChecked()) {
                         listOfQuestions.get(position).setIsQuestionAddedInPreview(true);
-                        ((AddQuestionContainerFragment) mFragment).listOfPreviewQuestionsToAdd.add(listOfQuestions.get(position));
+                        getFragment().listOfPreviewQuestionsToAdd.add(listOfQuestions.get(position));
 
                     } else {
                         listOfQuestions.get(position).setIsQuestionAddedInPreview(false);
-                        ((AddQuestionContainerFragment) mFragment).listOfPreviewQuestionsToAdd.remove(listOfQuestions.get(position));
+                        getFragment().listOfPreviewQuestionsToAdd.remove(listOfQuestions.get(position));
                     }
 
                 } else {
@@ -177,9 +177,9 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     private void openAddEditQuestionFragment(int position) {
 
-        ((AddQuestionContainerFragment) mFragment).setQuestionData(listOfQuestions.get(position));
-        ((AddQuestionContainerFragment) mFragment).setIsSetQuestionData(true);
-        ((AddQuestionContainerFragment) mFragment).flipCard();
+        getFragment().setDataOnFragmentFlip(listOfQuestions.get(position), true,
+                AddQuestionContainerFragment.FRAGMENT_QUESTIONLIST, position);
+
     }
 
 
@@ -239,6 +239,11 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         tvMcqQuestionAns.setText(Utils.formatHtml(Utils.getCharForNumber(position + 1) + ": " + answer.getChoiceText()));
 
         return v;
+    }
+
+
+    private AddQuestionContainerFragment getFragment() {
+        return (AddQuestionContainerFragment) mFragment;
     }
 
 

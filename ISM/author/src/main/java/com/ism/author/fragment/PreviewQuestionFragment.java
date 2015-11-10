@@ -170,4 +170,18 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         }
 
     }
+
+    public void updateQuestionDataAfterEditQuestion() {
+        int position = getFragment().getPOSITION_FOR_EDITQUESTION();
+        listOfPreviewQuestions.get(position).setQuestionText("test");
+        previewQuestionListAdapter.addAll(listOfPreviewQuestions);
+        previewQuestionListAdapter.notifyDataSetChanged();
+
+
+    }
+
+    private AddQuestionContainerFragment getFragment() {
+        return (AddQuestionContainerFragment) mFragment;
+    }
+
 }

@@ -27,7 +27,6 @@ public class RequestObject {
     private String emailAddress;
     private String name;
     private String message;
-
     private String profileImage;
     private int courseId;
     private int schoolId;
@@ -38,8 +37,6 @@ public class RequestObject {
     private String gender;
     private String deviceType;
     private String roleId;
-
-
     private String feedId;
     private String commentBy;
     private String comment;
@@ -50,7 +47,6 @@ public class RequestObject {
     private String submissionDate;
     private String emailId;
     private String topicId;
-
     private String examType;
     private String examMode;
     private String examStartTime;
@@ -66,10 +62,8 @@ public class RequestObject {
     private String attemptCount;
     private String examCategory;
     private String examStartDate;
-
     private String username;
     private String password;
-
     private String feedBy;
     private String feedText;
     private String videoLink;
@@ -77,20 +71,30 @@ public class RequestObject {
     private List<String> images;
     private String postedOn;
     private String videoThumbnail;
-
-
     private String role;
     private String examId;
-
     private String[] taggedUserIds;
     private String taggedBy;
-
     private String[] likedId;
     private String[] unlikedId;
-
     private ArrayList<String> questionId;
-
+    //    private String bankQuestionId;
     private String studentId;
+
+
+    //these are for the add question
+
+    private String questionFormat;
+    private String questionAssetsLink;
+    private String questionHint;
+    private String questionImageLink;
+    private String evaluationNotes;
+    private String questionCreatorName;
+    private ArrayList<QuestionAnswersModel> answers;
+    private String solution;
+    private String subjectName;
+    private String questionText;
+    private String questionCreatorId;
 
     public String getFeedId() {
         return this.feedId;
@@ -673,6 +677,117 @@ public class RequestObject {
     public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
+
+
+    /*these are for add question*/
+
+    public String getQuestionFormat() {
+        return this.questionFormat;
+    }
+
+    @JsonProperty("question_format")
+    public void setQuestionFormat(String questionFormat) {
+        this.questionFormat = questionFormat;
+    }
+
+    public String getQuestionAssetsLink() {
+        return this.questionAssetsLink;
+    }
+
+    @JsonProperty("question_assets_link")
+    public void setQuestionAssetsLink(String questionAssetsLink) {
+        this.questionAssetsLink = questionAssetsLink;
+    }
+
+    public String getQuestionHint() {
+        return this.questionHint;
+    }
+
+    @JsonProperty("question_hint")
+    public void setQuestionHint(String questionHint) {
+        this.questionHint = questionHint;
+    }
+
+    public String getQuestionImageLink() {
+        return this.questionImageLink;
+    }
+
+    @JsonProperty("question_image_link")
+    public void setQuestionImageLink(String questionImageLink) {
+        this.questionImageLink = questionImageLink;
+    }
+
+    public String getEvaluationNotes() {
+        return this.evaluationNotes;
+    }
+
+    @JsonProperty("evaluation_notes")
+    public void setEvaluationNotes(String evaluationNotes) {
+        this.evaluationNotes = evaluationNotes;
+    }
+
+    public String getQuestionCreatorName() {
+        return this.questionCreatorName;
+    }
+
+    @JsonProperty("question_creator_name")
+    public void setQuestionCreatorName(String questionCreatorName) {
+        this.questionCreatorName = questionCreatorName;
+    }
+
+    public ArrayList<QuestionAnswersModel> getAnswers() {
+        return this.answers;
+    }
+
+    @JsonProperty("answers")
+    public void setAnswers(ArrayList<QuestionAnswersModel> answers) {
+        this.answers = answers;
+    }
+
+    public String getSolution() {
+        return this.solution;
+    }
+
+    @JsonProperty("solution")
+    public void setSolution(String solution) {
+        this.solution = solution;
+    }
+
+    public String getSubjectName() {
+        return this.subjectName;
+    }
+
+    @JsonProperty("subject_name")
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public String getQuestionText() {
+        return this.questionText;
+    }
+
+    @JsonProperty("question_text")
+    public void setQuestionText(String questionText) {
+        this.questionText = questionText;
+    }
+
+    public String getQuestionCreatorId() {
+        return this.questionCreatorId;
+    }
+
+    @JsonProperty("question_creator_id")
+    public void setQuestionCreatorId(String questionCreatorId) {
+        this.questionCreatorId = questionCreatorId;
+    }
+
+//    public String getBankQuestionId() {
+//        return this.bankQuestionId;
+//    }
+//
+//    @JsonProperty("question_id")
+//    public void setBankQuestionId(String bankQuestionId) {
+//        this.bankQuestionId = questionCreatorId;
+//    }
 
 
 }

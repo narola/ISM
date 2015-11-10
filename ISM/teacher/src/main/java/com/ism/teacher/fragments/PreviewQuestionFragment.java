@@ -90,13 +90,13 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
 
                     requestObject.setList_question_ids(arrayListQuestionIds);
-                    requestObject.setExamId(((AddQuestionFragmentTeacher) mFragment).getExam_id());
+                    requestObject.setExamId(((AddQuestionContainerFragment) mFragment).getExam_id());
                     Log.e("arraylistquestion ids", requestObject.getList_question_ids().toString());
 
                     callFreezeQuestionApi();
                 }
-                Utility.showToast(((AddQuestionFragmentTeacher) mFragment).getExam_id(), getActivity());
-//                        ((AddQuestionFragmentTeacher) mFragment).getExam_id();
+                Utility.showToast(((AddQuestionContainerFragment) mFragment).getExam_id(), getActivity());
+//                        ((AddQuestionContainerFragment) mFragment).getExam_id();
             }
         });
 

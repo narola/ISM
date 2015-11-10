@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utils;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.Data;
 
@@ -54,15 +53,17 @@ public class AddQuestionContainerFragment extends Fragment {
         initGlobal();
         if (savedInstanceState == null) {
 
-            getFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
-                    .commit();
 
             getFragmentManager()
                     .beginTransaction()
                     .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
                     .commit();
+
+            getFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
+                    .commit();
+
 
             showHideFragment(questionAddEditFragment);
 
@@ -114,7 +115,7 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
     public void flipCard() {
-        Utils.showToast("FLIPCARD CALLED", getActivity());
+
         showHideFragment(questionListFragment);
         showHideFragment(questionAddEditFragment);
 
@@ -162,6 +163,37 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
 
+
+
+
+
+    /*thsese are the listofpreview questions to add */
+
+    public ArrayList<Data> listOfPreviewQuestionsToAdd = new ArrayList<Data>();
+
+    public ArrayList<Data> getListOfPreviewQuestionsToAdd() {
+        return listOfPreviewQuestionsToAdd;
+    }
+
+    /*get the list of preview question*/
+    public ArrayList<Data> getListOfPreviewQuestion() {
+        return previewQuestionFragment.listOfPreviewQuestions;
+    }
+
+    /*this is to add question to preview fragment*/
+    public void addQuestionsToPreviewFragment() {
+        previewQuestionFragment.addQuestionsToPreviewFragment(getListOfPreviewQuestionsToAdd());
+
+    }
+
+    /*this is to update check box view in questionlist after delete it from preview questions*/
+    public void updateQuestionListviewAfterRemoveInPreview(Data data) {
+        questionListFragment.updateViewAfterDeleteInPreviewQuestion(data);
+        previewQuestionFragment.listOfPreviewQuestions.remove(data);
+
+    }
+
+
     /*these is to set data in the add question fragment*/
     public Data questionData;
     public Boolean isSetQuestionData = false;
@@ -183,33 +215,45 @@ public class AddQuestionContainerFragment extends Fragment {
         this.questionData = questionData;
     }
 
+    private int FRAGMENT_TYPE;
 
-    /*thsese are the listofpreview questions to add */
+    public void setFragmentTypeForQuestionEdit(int FRAGMENTTYPE) {
+        this.FRAGMENT_TYPE = FRAGMENTTYPE;
+    }
 
-    public ArrayList<Data> listOfPreviewQuestionsToAdd = new ArrayList<Data>();
-
-    public ArrayList<Data> getListOfPreviewQuestionsToAdd() {
-        return listOfPreviewQuestionsToAdd;
+    public int getFRAGMENT_TYPE() {
+        return FRAGMENT_TYPE;
     }
 
 
-    /*get the list of preview question*/
-    public ArrayList<Data> getListOfPreviewQuestion() {
-        return previewQuestionFragment.listOfPreviewQuestions;
+    private int POSITION_FOR_EDITQUESTION;
+
+    public int getPOSITION_FOR_EDITQUESTION() {
+        return POSITION_FOR_EDITQUESTION;
     }
 
-    /*this is to add question to preview fragment*/
-    public void addQuestionsToPreviewFragment() {
-        previewQuestionFragment.addQuestionsToPreviewFragment(getListOfPreviewQuestionsToAdd());
+    public void setPositionForEditQuestion(int POSITION_FOR_EDITQUESTION) {
+        this.POSITION_FOR_EDITQUESTION = POSITION_FOR_EDITQUESTION;
+    }
+
+    public void setDataOnFragmentFlip(Data data, Boolean isSetQuestionData, int FRAGMENT_TYPE, int POSITION_FOR_EDITQUESTION) {
+
+        setQuestionData(data);
+        setIsSetQuestionData(isSetQuestionData);
+        setFragmentTypeForQuestionEdit(FRAGMENT_TYPE);
+        setPositionForEditQuestion(POSITION_FOR_EDITQUESTION);
+        flipCard();
 
     }
 
-    /*this is to update check box view in questionlist after delete it from preview questions*/
-    public void updateQuestionListviewAfterRemoveInPreview(Data data) {
-        questionListFragment.updateViewAfterDeleteInPreviewQuestion(data);
-        previewQuestionFragment.listOfPreviewQuestions.remove(data);
+    public void setQuestionDataAfterEditQuestion() {
+
+        if (getFRAGMENT_TYPE() == FRAGMENT_QUESTIONLIST) {
+            questionListFragment.updateQuestionDataAfterEditQuestion();
+        } else if (getFRAGMENT_TYPE() == FRAGMENT_PREVIEWQUESTION) {
+            previewQuestionFragment.updateQuestionDataAfterEditQuestion();
+        }
 
     }
-
 
 }

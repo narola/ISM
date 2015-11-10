@@ -73,6 +73,7 @@ public class AppConstant {
     public static final String TEST_TAGGED_BY = "134";
     public static final String[] tagUserArray = new String[]{"141", "167"};
     public static final int AUTHOR_ROLE_ID = 4;
+    public static final int TEACHER_ROLE_ID = 3;
 
     /**
      * Managing Teacher office Fragment by using tags
