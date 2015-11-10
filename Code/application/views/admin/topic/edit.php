@@ -127,7 +127,7 @@
 </div>
 <!--//main-->
             
-<script src="http://cdn.ckeditor.com/4.5.3/standard/ckeditor.js"></script>
+<script src="assets/ckeditor_std/ckeditor.js"></script>
 <script>
         
     
