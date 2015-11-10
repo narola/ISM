@@ -40,7 +40,7 @@ class Dashboard extends ADMIN_Controller {
 				'profile_pic'=>$rem_data['profile_pic'],
 				'loggedin_admin' =>TRUE
 			);
-			
+
 			$this->session->set_userdata( $array_session );
 		}
 
@@ -88,7 +88,7 @@ class Dashboard extends ADMIN_Controller {
 						$cookie = array(
 						    'name'   =>'Remember_me' ,
 						    'value'  => $this->encrypt->encode($fetch_data['id']),
-						    'expire' => '86500'
+						    'expire' => '172800' 
 						);
 
 						$this->input->set_cookie($cookie);
@@ -304,10 +304,10 @@ class Dashboard extends ADMIN_Controller {
         }
     }
 
-    /*
-	*	@Auther KAMLESH POKIYA (KAP).
-	*	check administrator email is valid or not,
-	* 	if email is valid then send varification link for reset password
+    /**
+	*@author KAMLESH POKIYA (KAP).
+	*check administrator email is valid or not,
+	*if email is valid then send varification link for reset password
 	*/
     public function check_email()
     {
