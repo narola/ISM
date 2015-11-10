@@ -804,7 +804,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .general_cred .box_body .select:after, 
 .admin_controls .select:after{
-	top:10px;
+	top:35px;
 	color:#ff6b6b;
 }
 .general_cred .box_body .three_inputs.select:after{
