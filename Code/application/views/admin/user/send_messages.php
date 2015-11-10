@@ -57,7 +57,7 @@
                             </select>    
                         </div>
 
-                        <div class="form-group users">
+                        <div class="form-group users" style="display:<?php echo ($is_scl==1) ? 'none' : 'block'; ?>" >
                             <label> Select Users   </label>
 
                             <select name="all_users[]" class="js-example-basic-single form-control" multiple="multiple" id="all_users">
@@ -88,13 +88,26 @@
                             
                         </div>
 
-                        <div class="form-group schools" style="display: none;">
+
+                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('all_users[]'),''))){ echo 'hide';} ?>">
+                          <?php echo strip_tags(form_error('all_users[]'),'') ; ?>
+                        </div>
+
+                        <?php echo flashMessage(TRUE,FALSE); ?>
+
+                        <div class="form-group schools" style="display:<?php echo ($is_scl==1) ? 'block' : 'none'; ?>">
                             <label> Select Schools </label>
 
                             <select name="all_schools[]" id="all_schools" class="js-example-basic-single form-control" multiple="multiple">
                                 <?php foreach ($schools as $school) { ?>
                                     
                                 <option value="<?php echo $school['id'] ?>" >
+                                    <?php echo set_select('all_schools', $school['id']); ?> 
+                                             <?php 
+                                                if(isset($post_schools) && !empty($post_schools)){ 
+                                                    if(in_array($school['id'],$post_schools)){ echo "selected='selected'"; } 
+                                                } ?>                                                       
+                                            >
                                    <?php echo ucfirst($school['school_name']); ?>
                                    
                                 </option> 
@@ -103,13 +116,9 @@
                             </select>
                             
                         </div>
-
-                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('all_users[]'),''))){ echo 'hide';} ?>">
-                          <?php echo strip_tags(form_error('all_users[]'),'') ; ?>
+                        <div class="alert alert-danger <?php if(empty(strip_tags(form_error('all_schools[]'),''))){ echo 'hide';} ?>">
+                          <?php echo strip_tags(form_error('all_schools[]'),'') ; ?>
                         </div>
-
-                        <?php echo flashMessage(TRUE,FALSE); ?>
-
                         <div class="form-group">
                         	<label>Title </label>
                             <input type="text" class="form-control" name="message_title" onkeyup="check_template_unique()"
@@ -200,15 +209,22 @@
     }
 
     function fetch_users(role_id){
-        console.log(role_id);
-        $.ajax({
-            url:'<?php echo base_url()."common/fetch_users"; ?>',
-            type:'POST',
-            data:{role_id:role_id},
-            success:function(data){
-                $('#all_users').html(data);
-            }   
-        });
+        var role = $.trim($("#role_id option[value="+ role_id +"]").text());
+        if(role != 'School'){
+            $(".schools").hide();
+            $(".users").show();
+            $.ajax({
+                url:'<?php echo base_url()."common/fetch_users"; ?>',
+                type:'POST',
+                data:{role_id:role_id},
+                success:function(data){
+                    $('#all_users').html(data);
+                }   
+            });
+        }else{
+            $(".users").hide();
+            $(".schools").show();
+        }
     }
 
     function get_message_template(msg_id){

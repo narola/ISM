@@ -522,13 +522,19 @@ class User extends ADMIN_Controller {
 	public function send_messages(){
 		
 		$this->data['page_title'] = 'Users Send Messages';
-
+$this->data['is_scl'] = 0;
 		if($_POST){
 			
+			// p($_POST, true);
 			if(isset($_POST['all_users'])){
 				$this->data['post_users'] = $this->input->post('all_users[]');
 				$this->data['my_cnt'] = 1;
 				$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
+			}elseif(isset($_POST['all_schools'])){
+				$this->data['post_schools'] = $this->input->post('all_schools[]');
+				$this->data['my_cnt'] = 1;
+				$this->data['is_scl'] = 1;
+				$this->form_validation->set_rules('all_schools[]', 'Schools', 'trim|required');	
 			}elseif(isset($_POST['message_title'])){
 				$this->data['my_cnt'] = 1;
 				$this->form_validation->set_rules('all_users[]', 'Users', 'trim|required');	
@@ -538,7 +544,7 @@ class User extends ADMIN_Controller {
 				$this->data['my_cnt'] = 0;	
 				$this->form_validation->set_rules('all_users[]', 'Users', 'trim');		
 			}
-
+			p($this->data, true);
 		}else{
 			$this->data['post_users'] = array();
 		} 
