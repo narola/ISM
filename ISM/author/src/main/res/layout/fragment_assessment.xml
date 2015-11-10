@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/d10dp">
+
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/d10dp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_selector"
+            android:entries="@array/list"
+            android:padding="@dimen/d10dp"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/d5dp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_selector"
+            android:entries="@array/list"
+            android:padding="@dimen/d10dp"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/d5dp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_selector"
+            android:entries="@array/list"
+            android:padding="@dimen/d10dp"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/d5dp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_selector"
+            android:entries="@array/list"
+            android:padding="@dimen/d10dp"
+            android:spinnerMode="dropdown" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/img_toggle_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_grid" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_separator" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_assignment_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/d10dp" />
+
+
+</LinearLayout>

@@ -41,6 +41,7 @@ public class WebConstants {
     public static final int REGISTERUSER = 25;
     public static final int GETEXAMEVALUATIONS = 26;
     public static final int GETEXAMQUESTIONS = 27;
+    public static final int GET_ALL_ASSIGNMENTS = 28;
 
 
     //	webservice url
@@ -71,6 +72,7 @@ public class WebConstants {
     public static final String URL_GET_EXAM_EVALUATIONS = URL_ARTI_HOST + "GetExamEvaluation";
     public static final String URL_GET_EXAM_QUESTIONS = URL_ARTI_HOST + "GetExamQuestions";
     public static final String URL_SET_QUESTIONS_FOR_EXAM = URL_ARTI_HOST + "SetQuestionsForExam";
+    public static final String URL_GET_ALL_ASSIGNMENTS = URL_ARTI_HOST + "GetAllExams";
 
     public static final String STATUS_SUCCESS = "success";
     public static final String STATUS_FAILED = "failed";
