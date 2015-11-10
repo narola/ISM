@@ -156,7 +156,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
 //                    break;
             }
         } catch (Exception e) {
-            Log.e(TAG, "loadFragment Exception : " + e.toString());
+            Log.e(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
         }
     }
 

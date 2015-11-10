@@ -54,7 +54,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
     private ArrayList<Data> arrListCountries;
     private ArrayList<Data> arrListStates;
     private ArrayList<Data> arrListCities;
-    private List<String> arrListDefalt;
+    private List<String> arrListDefault;
 
 
     private AlertDialog dialogCredentials;
@@ -95,8 +95,8 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
         txtClickhere.setTypeface(myTypeFace.getRalewayRegular());
 
 
-        arrListDefalt = new ArrayList<String>();
-        arrListDefalt.add(getString(R.string.select));
+        arrListDefault = new ArrayList<String>();
+        arrListDefault.add(getString(R.string.select));
 
         progressGenerator = new ProgressGenerator();
 
@@ -217,7 +217,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
                         Utility.toastOffline(TeacherLoginActivity.this);
                     }
                 } else {
-                    Adapters.setUpSpinner(TeacherLoginActivity.this, spState, arrListDefalt);
+                    Adapters.setUpSpinner(TeacherLoginActivity.this, spState, arrListDefault);
                 }
             }
 
@@ -237,7 +237,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
                         Utility.toastOffline(TeacherLoginActivity.this);
                     }
                 } else {
-                    Adapters.setUpSpinner(TeacherLoginActivity.this, spCity, arrListDefalt);
+                    Adapters.setUpSpinner(TeacherLoginActivity.this, spCity, arrListDefault);
                 }
             }
 

@@ -120,6 +120,7 @@
 
             <!-- First part-->
             <LinearLayout
+                android:id="@+id/ll_assessed_question"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
@@ -163,6 +164,7 @@
             </LinearLayout>
             <!-- Second-->
             <LinearLayout
+                android:id="@+id/ll_unassessed_question"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
@@ -208,6 +210,7 @@
             </LinearLayout>
             <!-- Third-->
             <LinearLayout
+                android:id="@+id/ll_view_questions"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">

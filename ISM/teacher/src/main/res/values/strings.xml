@@ -113,7 +113,7 @@
 
 
     <!-- Assignment Add Question-->
-    <string name="strquestionbank">question bank</string>
+    <string name="strquestionbank">Question Bank</string>
     <string name="strquestion">Question</string>
     <string name="strcategory">Category:</string>
     <string name="strcreatedby">Created by:</string>
@@ -312,4 +312,18 @@
     <item>Non Assessed</item>
     </string-array>
 
+
+    <!-- question -->
+    <string name="msg_validation_select_answer">Please select mcq answer.</string>
+
+    <!-- Student Attempted-->
+    <string name="strStudentAttempted">Student Attempted</string>
+    <string name="strScore">Score</string>
+    <string name="strComments">Comments</string>
+    <string name="strexamtype_colon">Exam Type :</string>
+    <string name="strClass_colon">Class :</string>
+    <string name="strcorrect_answer">Correct Answer :</string>
+    <string name="strevoluations_notes">Evoluations Notes :</string>
+    <string name="strsolutions">Solutions :</string>
+    <string name="mystudents">MY STUDENTS</string>
 </resources>

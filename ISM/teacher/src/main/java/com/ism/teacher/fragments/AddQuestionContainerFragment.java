@@ -156,7 +156,7 @@ public class AddQuestionContainerFragment extends Fragment {
         try {
             getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, previewQuestionFragment).commit();
         } catch (Exception e) {
-            Debug.e(TAG, "loadFragment Exception : " + e.toString());
+            Debug.e(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
 
         }
 
@@ -223,5 +223,47 @@ public class AddQuestionContainerFragment extends Fragment {
         previewQuestionFragment.listOfPreviewQuestions.remove(data);
 
     }
+
+    private int FRAGMENT_TYPE;
+
+    public void setFragmentTypeForQuestionEdit(int FRAGMENTTYPE) {
+        this.FRAGMENT_TYPE = FRAGMENTTYPE;
+    }
+
+    public int getFRAGMENT_TYPE() {
+        return FRAGMENT_TYPE;
+    }
+
+
+    private int POSITION_FOR_EDITQUESTION;
+
+    public int getPOSITION_FOR_EDITQUESTION() {
+        return POSITION_FOR_EDITQUESTION;
+    }
+
+    public void setPositionForEditQuestion(int POSITION_FOR_EDITQUESTION) {
+        this.POSITION_FOR_EDITQUESTION = POSITION_FOR_EDITQUESTION;
+    }
+
+    public void setDataOnFragmentFlip(Data data, Boolean isSetQuestionData, int FRAGMENT_TYPE, int POSITION_FOR_EDITQUESTION) {
+
+        setQuestionData(data);
+        setIsSetQuestionData(isSetQuestionData);
+        setFragmentTypeForQuestionEdit(FRAGMENT_TYPE);
+        setPositionForEditQuestion(POSITION_FOR_EDITQUESTION);
+        flipCard();
+
+    }
+
+    public void setQuestionDataAfterEditQuestion() {
+
+        if (getFRAGMENT_TYPE() == FRAGMENT_QUESTIONLIST) {
+            questionListFragment.updateQuestionDataAfterEditQuestion();
+        } else if (getFRAGMENT_TYPE() == FRAGMENT_PREVIEWQUESTION) {
+            previewQuestionFragment.updateQuestionDataAfterEditQuestion();
+        }
+
+    }
+
 
 }
