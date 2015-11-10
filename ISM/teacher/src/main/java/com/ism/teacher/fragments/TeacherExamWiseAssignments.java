@@ -17,7 +17,7 @@ import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.ExamWiseAssignmentAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.model.EvaluationModel;
+import com.ism.teacher.model.Data;
 import com.ism.teacher.model.RequestObject;
 import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.ws.WebserviceWrapper;
@@ -43,7 +43,7 @@ public class TeacherExamWiseAssignments extends Fragment implements WebserviceWr
 
     List<String> arrayListSubjects, arrayListClasses, arrayListSubmissionDate, arrayListAssessed;
 
-    ArrayList<EvaluationModel> arrayListAssignments = new ArrayList<>();
+    ArrayList<Data> arrayListAssignments = new ArrayList<>();
     Fragment mFragment;
     String examid = "";
 

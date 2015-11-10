@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/d5dp">
+
+    <LinearLayout
+        android:id="@+id/ll_assignment_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_assessment_box"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d140dp">
+
+            <RelativeLayout
+                android:id="@+id/rl_top_assignment"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/d100dp"
+                android:background="@drawable/bg_subject_yellow"
+                android:orientation="vertical">
+
+                <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/color_assignment_top_yellow" />-->
+
+                <TextView
+                    android:id="@+id/tv_assignment_subject_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/d10dp"
+                    android:text="@string/strtest"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/d18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_assignment_course_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="@dimen/d10dp"
+                    android:layout_marginLeft="@dimen/d15dp"
+                    android:background="@drawable/btn_dark_grey"
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/d15dp" />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rl_top_assignment"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_assignment_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/d10dp"
+                    android:text="@string/strassignmentdate"
+                    android:textColor="@color/bg_office"
+                    android:textSize="@dimen/d15dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_assignment_class_name"
+                android:layout_width="@dimen/d100dp"
+                android:layout_height="@dimen/d100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/d20dp"
+                android:layout_marginRight="@dimen/d15dp"
+                android:background="@drawable/bg_circle_white"
+                android:gravity="center"
+                android:padding="@dimen/d15dp"
+                android:singleLine="false"
+                android:text="@string/strtest"
+                android:textColor="@color/color_green"
+                android:textSize="@dimen/d18dp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/assignment_separator" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/d10dp"
+            android:paddingTop="@dimen/d10dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_assignment_noof_assessed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_violet_assignment"
+                    android:textSize="@dimen/d20dp" />
+
+                <TextView
+                    android:id="@+id/tv_assignment_assessed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/strassessed"
+                    android:textSize="@dimen/d15dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/assignment_separator" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_assignment_noof_unassessed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_violet_assignment"
+                    android:textSize="@dimen/d20dp" />
+
+                <TextView
+                    android:id="@+id/tv_assignment_unassessed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/strunasssessed"
+                    android:textSize="@dimen/d15dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/assignment_separator" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_assignment_noof_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_violet_assignment"
+                    android:textSize="@dimen/d20dp" />
+
+                <TextView
+                    android:id="@+id/tv_assignment_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/strquestion"
+                    android:textSize="@dimen/d15dp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/assignment_separator" />
+
+        <TextView
+            android:id="@+id/tv_assignment_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="2dp"
+            android:gravity="center"
+            android:padding="@dimen/d5dp"
+            android:singleLine="true"
+            android:text="@string/strassignmenttype"
+            android:textColor="@color/color_dark_blue_assignment"
+            android:textSize="@dimen/d15dp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

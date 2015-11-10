@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.model.TagsModel;
+import com.ism.author.model.HashTagsModel;
 
 /**
  * Sample token completion view for basic contact info
@@ -19,7 +19,7 @@ import com.ism.author.model.TagsModel;
  *
  * @author mgod
  */
-public class ContactsCompletionView extends TokenCompleteTextView<TagsModel> {
+public class ContactsCompletionView extends TokenCompleteTextView<HashTagsModel> {
 
     public ContactsCompletionView(Context context) {
         super(context);
@@ -34,17 +34,17 @@ public class ContactsCompletionView extends TokenCompleteTextView<TagsModel> {
     }
 
     @Override
-    protected View getViewForObject(TagsModel tagsModel) {
+    protected View getViewForObject(HashTagsModel hashTagsModel) {
 
         LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         LinearLayout view = (LinearLayout) l.inflate(R.layout.tag_layout, (ViewGroup) ContactsCompletionView.this.getParent(), false);
-        ((TextView) view.findViewById(R.id.tv_tag_name)).setText(tagsModel.getTagName());
+        ((TextView) view.findViewById(R.id.tv_tag_name)).setText(hashTagsModel.getTagName());
 
         return view;
     }
 
     @Override
-    protected TagsModel defaultObject(String completionText) {
+    protected HashTagsModel defaultObject(String completionText) {
         //Stupid simple example of guessing if we have an email or not
 
 
@@ -57,6 +57,6 @@ public class ContactsCompletionView extends TokenCompleteTextView<TagsModel> {
 
         //this is to avoid tag generation from random added text.
 
-        return new TagsModel("", "-1");
+        return new HashTagsModel("", "-1");
     }
 }

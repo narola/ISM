@@ -5,12 +5,12 @@ import java.io.Serializable;
 /**
  * Created by c166 on 05/11/15.
  */
-public class TagsModel implements Serializable {
+public class HashTagsModel implements Serializable {
 
     private String tagName;
     private String tagId;
 
-    public TagsModel(String tagName, String tagId) {
+    public HashTagsModel(String tagName, String tagId) {
         this.tagName = tagName;
         this.tagId = tagId;
 

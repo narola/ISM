@@ -1,0 +1,161 @@
+package com.ism.author.fragment;
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.ism.author.AuthorHostActivity;
+import com.ism.author.R;
+import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.Utility;
+import com.ism.author.Utility.Utils;
+import com.ism.author.adapter.AssignmentSubmittorAdapter;
+import com.ism.author.constant.AppConstant;
+import com.ism.author.constant.WebConstants;
+import com.ism.author.helper.MyTypeFace;
+import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.model.Data;
+import com.ism.author.model.RequestObject;
+import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.WebserviceWrapper;
+
+import java.util.ArrayList;
+
+/**
+ * Created by c166 on 10/11/15.
+ */
+public class GetAssignmentsSubmittorFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+
+    private static final String TAG = GetAssignmentsSubmittorFragment.class.getSimpleName();
+    private View view;
+    private TextView tvSubmittorTitle;
+    private ImageView imgToggleList;
+    private RecyclerView rvAssignmentSubmittorList;
+    private AssignmentSubmittorAdapter assignmentSubmittorAdapter;
+    private MyTypeFace myTypeFace;
+    private FragmentListener fragListener;
+    private ArrayList<Data> listOfStudents = new ArrayList<Data>();
+
+    public static GetAssignmentsSubmittorFragment newInstance() {
+        GetAssignmentsSubmittorFragment getAssignmentsSubmittorFragment = new GetAssignmentsSubmittorFragment();
+        return getAssignmentsSubmittorFragment;
+    }
+
+    public GetAssignmentsSubmittorFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_get_assignment_submittor, container, false);
+        initGlobal();
+        return view;
+    }
+
+    private void initGlobal() {
+        myTypeFace = new MyTypeFace(getActivity());
+
+        tvSubmittorTitle = (TextView) view.findViewById(R.id.tv_submittor_title);
+        imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
+        rvAssignmentSubmittorList = (RecyclerView) view.findViewById(R.id.rv_assignment_submittor_list);
+        assignmentSubmittorAdapter = new AssignmentSubmittorAdapter(getActivity());
+
+        rvAssignmentSubmittorList.setHasFixedSize(true);
+        rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        rvAssignmentSubmittorList.setAdapter(assignmentSubmittorAdapter);
+        tvSubmittorTitle.setTypeface(myTypeFace.getRalewayBold());
+
+        callApiGetExamSubmission();
+
+
+    }
+
+    private void callApiGetExamSubmission() {
+        if (Utility.isOnline(getActivity())) {
+            try {
+                RequestObject request = new RequestObject();
+                request.setExamId("9");
+                request.setUserId("340");
+                request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
+
+                new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.GET_EXAM_SUBMISSION);
+            } catch (Exception e) {
+                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(getActivity());
+        }
+    }
+
+
+    @Override
+    public void onResponse(int apicode, Object object, Exception error) {
+        try {
+            switch (apicode) {
+                case WebConstants.GET_EXAM_SUBMISSION:
+                    onResponseGetAllExamSubmission(object, error);
+                    break;
+            }
+
+        } catch (Exception e) {
+            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+        }
+    }
+
+    private void onResponseGetAllExamSubmission(Object object, Exception error) {
+        try {
+            Utility.hideProgressBar((AuthorHostActivity) getActivity());
+            if (object != null) {
+                ResponseObject responseObj = (ResponseObject) object;
+                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                    listOfStudents.addAll(responseObj.getData().get(0).getEvaluations());
+                    assignmentSubmittorAdapter.addAll(listOfStudents);
+                    assignmentSubmittorAdapter.notifyDataSetChanged();
+                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                    Utils.showToast(responseObj.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetAllAssignments api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetAllAssignments Exception : " + e.toString());
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            fragListener = (FragmentListener) activity;
+            if (fragListener != null) {
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
+                Debug.i(TAG, "attach");
+            }
+        } catch (ClassCastException e) {
+            Debug.e(TAG, "onAttach Exception : " + e.toString());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        try {
+            if (fragListener != null) {
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
+                Debug.i(TAG, "detach");
+            }
+        } catch (ClassCastException e) {
+            Debug.e(TAG, "onDetach Exception : " + e.toString());
+        }
+        fragListener = null;
+    }
+
+}

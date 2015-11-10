@@ -215,17 +215,6 @@
             android:onClick="openRightContainerFragment"
             android:scaleType="centerInside"
             android:src="@drawable/image_chat" />
-
-        <ImageView
-            android:id="@+id/img_chat"
-            android:layout_width="@dimen/controller_top_button_width"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/img_high_score"
-            android:background="@drawable/bg_left_controller_top_button"
-            android:scaleType="centerInside"
-            android:src="@drawable/image_chat"
-            android:visibility="gone" />
-
     </RelativeLayout>
 
 

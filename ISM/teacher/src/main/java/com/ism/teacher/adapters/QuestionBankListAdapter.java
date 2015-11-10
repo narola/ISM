@@ -19,7 +19,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.fragments.AddQuestionContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.AnswersModel;
+import com.ism.teacher.model.QuestionAnswersModel;
 import com.ism.teacher.model.Data;
 
 import java.util.ArrayList;
@@ -226,7 +226,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     }
 
 
-    private View getAnsInflaterView(AnswersModel answer, int position) {
+    private View getAnsInflaterView(QuestionAnswersModel answer, int position) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View v;

@@ -3,7 +3,6 @@ package com.ism.teacher.activity;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,6 +22,9 @@ import com.ism.teacher.Utility.ControllerTopMenuItem;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.ControllerTopSpinnerAdapter;
 import com.ism.teacher.fragments.AddQuestionContainerFragment;
+import com.ism.teacher.fragments.ExamObjectiveDetailFragment;
+import com.ism.teacher.fragments.ExamSubjectiveDetailFragment;
+import com.ism.teacher.fragments.StudentAttemptedFragment;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
 import com.ism.teacher.fragments.TeacherOfficeFragment;
@@ -56,12 +58,6 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom, controllerTopMenuAssessment, controllerTopMenuDesk, controllerTopMenuReportCard, currentControllerTopMenu;
 
     public static final int FRAGMENT_HOME = 0;
-    public static final int FRAGMENT_TUTORIAL = 1;
-    public static final int FRAGMENT_CLASSROOM = 2;
-    public static final int FRAGMENT_ASSESSMENT = 3;
-    public static final int FRAGMENT_DESK = 4;
-    public static final int FRAGMENT_REPORT_CARD = 5;
-
     public static final int FRAGMENT_UPCOMING_EVENTS = 6;
     public static final int FRAGMENT_TEACHER_CHAT = 7;
     public static final int FRAGMENT_USER_PROFILE = 8;
@@ -70,6 +66,10 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_TEACHER_OFFICE = 11;
 
     public static final int FRAGMENT_ADDQUESTION = 12;
+    public static final int FRAGMENT_EXAM_OBJECTIVE_DETAILS = 13;
+    public static final int FRAGMENT_EXAM_SUBJECTIVE_DETAILS = 14;
+    public static final int FRAGMENT_STUDENT_ATTEMPTED = 15;
+
 
     public static int currentMainFragment;
     public static int currentRightFragment;
@@ -146,45 +146,26 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         imgHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                loadFragment(FRAGMENT_HOME);
-                loadFragment(FRAGMENT_TEACHER_HOME);
+//                loadFragmentInMainContainer(FRAGMENT_HOME);
+                loadFragmentInMainContainer(FRAGMENT_TEACHER_HOME);
             }
         });
         imgTutorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(FRAGMENT_TEACHER_TUTORIAL_GROUP);
+                loadFragmentInMainContainer(FRAGMENT_TEACHER_TUTORIAL_GROUP);
             }
         });
 
         imgOffice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                loadFragment(FRAGMENT_CLASSROOM);
-                loadFragment(FRAGMENT_TEACHER_OFFICE);
+//                loadFragmentInMainContainer(FRAGMENT_CLASSROOM);
+                loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE);
             }
         });
 
-        imgAssessment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(FRAGMENT_ASSESSMENT);
-            }
-        });
 
-        imgDesk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(FRAGMENT_DESK);
-            }
-        });
-
-        imgReportCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(FRAGMENT_REPORT_CARD);
-            }
-        });
 
         imgLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,21 +204,21 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         imgNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(FRAGMENT_UPCOMING_EVENTS);
+                loadFragmentInRightContainer(FRAGMENT_UPCOMING_EVENTS);
             }
         });
 
         img_teacher_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(FRAGMENT_USER_PROFILE);
+                loadFragmentInRightContainer(FRAGMENT_USER_PROFILE);
             }
         });
 
         imgChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(FRAGMENT_TEACHER_CHAT);
+                loadFragmentInRightContainer(FRAGMENT_TEACHER_CHAT);
             }
         });
 
@@ -258,54 +239,73 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         txtAction.setOnClickListener(onClickMenuItem);
 
 
-        loadFragment(FRAGMENT_UPCOMING_EVENTS);
-        loadFragment(FRAGMENT_TEACHER_HOME);
+//        loadFragmentInMainContainer(FRAGMENT_UPCOMING_EVENTS);
+        loadFragmentInMainContainer(FRAGMENT_TEACHER_HOME);
+        loadFragmentInRightContainer(FRAGMENT_UPCOMING_EVENTS);
 
     }
 
     public void loadAddQuestionFragment(int fragment, String examid) {
-        try
-        {
+        try {
 
-            switch (fragment)
-            {
+            switch (fragment) {
                 case FRAGMENT_ADDQUESTION:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance(FRAGMENT_ADDQUESTION, examid)).commit();
                     flFragmentContainerRight.setVisibility(View.GONE);
                     break;
             }
-        }
-
-        catch (Exception e)
+        } catch (Exception e)
 
         {
             Log.e(TAG, "loadAddQuestionFragment Exception : " + e.toString());
         }
     }
 
-    public void loadFragment(int fragment) {
+    public void loadFragmentInMainContainer(int fragment) {
         try {
             switch (fragment) {
-//                case FRAGMENT_HOME:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, HomeFragment.newInstance()).commit();
-//                    break;
-//                case FRAGMENT_TUTORIAL:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TutorialFragment.newInstance()).commit();
-//                    break;
-//                case FRAGMENT_CLASSROOM:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ClassroomFragment.newInstance(FRAGMENT_CLASSROOM)).commit();
-//                    break;
-//                case FRAGMENT_ASSESSMENT:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AssessmentFragment.newInstance()).commit();
-//                    break;
-//                case FRAGMENT_DESK:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, DeskFragment.newInstance()).commit();
-//                    break;
-//                case FRAGMENT_REPORT_CARD:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ReportCardFragment.newInstance()).commit();
-//                    break;
-//
+                case FRAGMENT_TEACHER_HOME:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TeacherHomeFragment.newInstance()).commit();
+                    break;
 
+                case FRAGMENT_TEACHER_TUTORIAL_GROUP:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TeacherTutorialGroupFragment.newInstance()).commit();
+
+                    break;
+
+                case FRAGMENT_TEACHER_OFFICE:
+                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance(FRAGMENT_TEACHER_OFFICE);
+                    listenerHost = teacherOfficeFragment;
+                    addTopicsListener = teacherOfficeFragment;
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment).commit();
+
+                    break;
+
+                case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamObjectiveDetailFragment.newInstance()).commit();
+
+
+                    break;
+                case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamSubjectiveDetailFragment.newInstance()).commit();
+                    break;
+
+
+               /* case FRAGMENT_ADDQUESTION:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance(FRAGMENT_ADDQUESTION)).commit();
+                    flFragmentContainerRight.setVisibility(View.GONE);
+                    break;*/
+
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
+        }
+    }
+
+    //these is for the load fragment in right container.
+    public void loadFragmentInRightContainer(int fragment) {
+        try {
+            switch (fragment) {
 
                 case FRAGMENT_UPCOMING_EVENTS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, UpcomingEventsFragment.newInstance()).commit();
@@ -317,33 +317,17 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                 case FRAGMENT_USER_PROFILE:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, UserProfileFragment.newInstance()).commit();
                     break;
-
-                case FRAGMENT_TEACHER_HOME:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TeacherHomeFragment.newInstance()).commit();
+                case FRAGMENT_STUDENT_ATTEMPTED:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedFragment.newInstance()).commit();
                     break;
-
-                case FRAGMENT_TEACHER_TUTORIAL_GROUP:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TeacherTutorialGroupFragment.newInstance()).commit();
-                    break;
-
-                case FRAGMENT_TEACHER_OFFICE:
-                    TeacherOfficeFragment teacherOfficeFragment = TeacherOfficeFragment.newInstance(FRAGMENT_TEACHER_OFFICE);
-                    listenerHost = teacherOfficeFragment;
-                    addTopicsListener = teacherOfficeFragment;
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment).commit();
-                    break;
-
-               /* case FRAGMENT_ADDQUESTION:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance(FRAGMENT_ADDQUESTION)).commit();
-                    flFragmentContainerRight.setVisibility(View.GONE);
-                    break;*/
-
             }
-        } catch (Exception e) {
-            Log.e(TAG, "loadFragment Exception : " + e.toString());
-        }
-    }
 
+        } catch (Exception e) {
+            Log.i(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
+
+        }
+
+    }
 
     @Override
     public void onFragmentAttached(int fragment) {
@@ -355,53 +339,23 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     imgHome.setActivated(true);
                     loadControllerTopMenu(null);
                     txtTitle.setVisibility(View.GONE);
+                    llControllerLeft.setVisibility(View.VISIBLE);
                     break;
-                case FRAGMENT_TUTORIAL:
-                    currentMainFragment = fragment;
-                    currentMainFragmentBg = R.color.bg_tutorial;
-                    imgTutorial.setActivated(true);
-                    loadControllerTopMenu(null);
-                    txtTitle.setText(Html.fromHtml("<font color='#ffffff'>" + getString(R.string.group_name) + "</font><font color='#1BBC9B'>Venice Beauty</font>"));
-                    txtTitle.setVisibility(View.VISIBLE);
-                    break;
-
-                case FRAGMENT_ASSESSMENT:
-                    currentMainFragment = fragment;
-                    currentMainFragmentBg = R.color.bg_assessment;
-                    imgAssessment.setActivated(true);
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_assessment);
-                    txtAction.setTextColor(getResources().getColor(R.color.bg_assessment));
-                    loadControllerTopMenu(controllerTopMenuAssessment);
-                    break;
-                case FRAGMENT_DESK:
-                    currentMainFragment = fragment;
-                    currentMainFragmentBg = R.color.bg_desk;
-                    imgDesk.setActivated(true);
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_desk);
-                    txtAction.setTextColor(getResources().getColor(R.color.bg_desk));
-                    loadControllerTopMenu(controllerTopMenuDesk);
-                    break;
-                case FRAGMENT_REPORT_CARD:
-                    currentMainFragment = fragment;
-                    currentMainFragmentBg = R.color.bg_report_card;
-                    imgReportCard.setActivated(true);
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_report_card);
-                    txtAction.setTextColor(getResources().getColor(R.color.bg_report_card));
-                    loadControllerTopMenu(controllerTopMenuReportCard);
-                    break;
-
 
                 case FRAGMENT_UPCOMING_EVENTS:
                     currentRightFragment = fragment;
                     imgNotes.setActivated(true);
+                    llControllerLeft.setVisibility(View.VISIBLE);
                     break;
                 case FRAGMENT_USER_PROFILE:
                     currentRightFragment = fragment;
                     img_teacher_profile.setActivated(true);
+                    llControllerLeft.setVisibility(View.VISIBLE);
                     break;
                 case FRAGMENT_TEACHER_CHAT:
                     currentRightFragment = fragment;
                     imgChat.setActivated(true);
+                    llControllerLeft.setVisibility(View.VISIBLE);
                     break;
 
                 case FRAGMENT_TEACHER_HOME:
@@ -413,6 +367,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_report_card);
                     txtAction.setTextColor(getResources().getColor(R.color.bg_report_card));
                     rlAddPost.setVisibility(View.VISIBLE);
+                    llControllerLeft.setVisibility(View.VISIBLE);
                     break;
                 case FRAGMENT_TEACHER_TUTORIAL_GROUP:
                     currentMainFragment = fragment;
@@ -421,6 +376,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     txtTitle.setVisibility(View.GONE);
                     txtAddPost.setText("PAST");
                     rlAddPost.setVisibility(View.VISIBLE);
+                    llControllerLeft.setVisibility(View.VISIBLE);
                     break;
                 case FRAGMENT_TEACHER_OFFICE:
                     currentMainFragment = fragment;
@@ -429,6 +385,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
                     txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
                     loadControllerTopMenu(controllerTopMenuOffice);
+                    llControllerLeft.setVisibility(View.VISIBLE);
                     break;
 
 
@@ -439,6 +396,30 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
                     txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
                     loadControllerTopMenu(null);
+                    llControllerLeft.setVisibility(View.VISIBLE);
+                    break;
+
+
+                case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
+                    currentMainFragment = fragment;
+                    imgHome.setActivated(false);
+                    currentMainFragmentBg = R.color.bg_classroom;
+                    imgOffice.setActivated(true);
+                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
+                    hideControllerTopAction();
+                    txtTitle.setText("");
+                    llControllerLeft.setVisibility(View.VISIBLE);
+                    break;
+
+
+                case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
+                    currentMainFragment = fragment;
+                    imgHome.setActivated(false);
+                    currentMainFragmentBg = R.color.bg_classroom;
+                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
+                    hideControllerTopAction();
+                    txtTitle.setText("");
+                    llControllerLeft.setVisibility(View.GONE);
                     break;
 
             }
@@ -454,22 +435,6 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                 case FRAGMENT_HOME:
                     imgHome.setActivated(false);
                     break;
-                case FRAGMENT_TUTORIAL:
-                    imgTutorial.setActivated(false);
-                    break;
-                case FRAGMENT_CLASSROOM:
-                    imgOffice.setActivated(false);
-                    break;
-                case FRAGMENT_ASSESSMENT:
-                    imgAssessment.setActivated(false);
-                    break;
-                case FRAGMENT_DESK:
-                    imgDesk.setActivated(false);
-                    break;
-                case FRAGMENT_REPORT_CARD:
-                    imgReportCard.setActivated(false);
-                    break;
-
 
                 case FRAGMENT_UPCOMING_EVENTS:
                     imgNotes.setActivated(false);
@@ -497,6 +462,13 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                 case FRAGMENT_ADDQUESTION:
                     imgOffice.setActivated(false);
                     break;
+                case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
+                    imgOffice.setActivated(true);
+                    break;
+                case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
+                    llControllerLeft.setVisibility(View.VISIBLE);
+                    break;
+
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentDetached Exception : " + e.toString());

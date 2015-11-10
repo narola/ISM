@@ -36,7 +36,7 @@ import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
 import com.ism.author.model.QuestionAnswersModel;
 import com.ism.author.model.RequestObject;
-import com.ism.author.model.TagsModel;
+import com.ism.author.model.HashTagsModel;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -62,8 +62,8 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     /*these is for the tag add functionality.*/
     private ContactsCompletionView tagsView;
-    private TagsModel[] tags;
-    private ArrayAdapter<TagsModel> tagsAdapter;
+    private HashTagsModel[] tags;
+    private ArrayAdapter<HashTagsModel> tagsAdapter;
 
     /*these sre for the xml views*/
 
@@ -96,17 +96,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         //this is for to set tag..
-        tags = new TagsModel[]{
-                new TagsModel("Physics", "1"),
-                new TagsModel("Biology", "2"),
-                new TagsModel("Chemistry", "3"),
-                new TagsModel("Maths", "4"),
-                new TagsModel("Social Science", "5"),
-                new TagsModel("Drawing", "6")
+        tags = new HashTagsModel[]{
+                new HashTagsModel("Physics", "1"),
+                new HashTagsModel("Biology", "2"),
+                new HashTagsModel("Chemistry", "3"),
+                new HashTagsModel("Maths", "4"),
+                new HashTagsModel("Social Science", "5"),
+                new HashTagsModel("Drawing", "6")
         };
 
 
-        tagsAdapter = new FilteredArrayAdapter<TagsModel>(getActivity(), R.layout.tag_search_layout, tags) {
+        tagsAdapter = new FilteredArrayAdapter<HashTagsModel>(getActivity(), R.layout.tag_search_layout, tags) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
@@ -114,13 +114,13 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
                     convertView = l.inflate(R.layout.tag_search_layout, parent, false);
                 }
-                TagsModel tagModel = getItem(position);
+                HashTagsModel tagModel = getItem(position);
                 ((TextView) convertView.findViewById(R.id.tv_tag_name)).setText(tagModel.getTagName());
                 return convertView;
             }
 
             @Override
-            protected boolean keepObject(TagsModel tagModel, String mask) {
+            protected boolean keepObject(HashTagsModel tagModel, String mask) {
                 mask = mask.toLowerCase();
                 return tagModel.getTagName().toLowerCase().startsWith(mask);
             }
@@ -545,16 +545,16 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     @Override
     public void onClick(View v) {
         if (v == tvAddquestionSave) {
-            if (isInputsValid()) {
-                callApiAddQuestion();
-            }
+//            if (isInputsValid()) {
+            callApiAddQuestion();
+//            }
 
 
         } else if (v == tvAddquestionSaveAddmore) {
-            if (isInputsValid()) {
+//            if (isInputsValid()) {
 
-                callApiAddQuestion();
-            }
+            callApiAddQuestion();
+//            }
             clearViewsData();
 
 
