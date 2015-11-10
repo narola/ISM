@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.commonsource.utility.Utility;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
@@ -23,18 +24,19 @@ import java.util.ArrayList;
 /**
  * Created by c161 on 07/11/15.
  */
-public class MessagePopupAdapter extends BaseAdapter {
+public class StudymateAdapter extends BaseAdapter {
 
-	private static final String TAG = MessagePopupAdapter.class.getSimpleName();
+	private static final String TAG = StudymateAdapter.class.getSimpleName();
 
-	private ArrayList<Data> arrListMessage;
+	private ArrayList<Data> arrListStudymate;
 	private Context context;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 	private MyTypeFace myTypeFace;
+	private int listItemLimit = 0;
 
-	public MessagePopupAdapter(Context context, ArrayList<Data> arrListMessage) {
-		this.arrListMessage = arrListMessage;
+	public StudymateAdapter(Context context, ArrayList<Data> arrListStudymate) {
+		this.arrListStudymate = arrListStudymate;
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
 		imageLoader = ImageLoader.getInstance();
@@ -42,14 +44,19 @@ public class MessagePopupAdapter extends BaseAdapter {
 		myTypeFace = new MyTypeFace(context);
 	}
 
+	public StudymateAdapter(Context context, ArrayList<Data> arrListStudymate, int listItemLimit) {
+		this(context, arrListStudymate);
+		this.listItemLimit = listItemLimit;
+	}
+
 	@Override
 	public int getCount() {
-		return arrListMessage.size();
+		return arrListStudymate.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return arrListMessage.get(position);
+		return arrListStudymate.get(position);
 	}
 
 	@Override
@@ -61,12 +68,12 @@ public class MessagePopupAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.list_item_message, parent, false);
+			convertView = inflater.inflate(R.layout.list_item_notification, parent, false);
 			holder = new ViewHolder();
 			holder.imgDp = (CircleImageView) convertView.findViewById(R.id.img_dp);
-			holder.txtNameMessage = (TextView) convertView.findViewById(R.id.txt_name_message);
+			holder.txtNameRequest = (TextView) convertView.findViewById(R.id.txt_name_message);
 			holder.txtTime = (TextView) convertView.findViewById(R.id.txt_time);
-			holder.txtNameMessage.setTypeface(myTypeFace.getRalewayRegular());
+			holder.txtNameRequest.setTypeface(myTypeFace.getRalewayRegular());
 			holder.txtTime.setTypeface(myTypeFace.getRalewayRegular());
 			convertView.setTag(holder);
 		} else {
@@ -75,9 +82,9 @@ public class MessagePopupAdapter extends BaseAdapter {
 
 		try {
 			imageLoader.displayImage(Global.strProfilePic, holder.imgDp, ISMStudent.options);
-			holder.txtNameMessage.setText(Html.fromHtml("<font color='#1BC4A2'>" + arrListMessage.get(position).getUserName()
-					+ "</font><font color='#323941'> " + arrListMessage.get(position).getComment() + "</font>"));
-			holder.txtTime.setText(arrListMessage.get(position).getCreatedDate());
+			holder.txtNameRequest.setText(Html.fromHtml("<font color='#1BC4A2'>" + arrListStudymate.get(position).getRequestFromName()
+					+ "</font><font color='#323941'> " + context.getString(R.string.studymate_request) + "</font>"));
+			holder.txtTime.setText(Utility.getTimeDuration(arrListStudymate.get(position).getRequestDate()));
 		} catch (Exception e) {
 			Log.e(TAG, "getView Exception : " + e.toString());
 		}
@@ -87,7 +94,7 @@ public class MessagePopupAdapter extends BaseAdapter {
 
 	class ViewHolder {
 		CircleImageView imgDp;
-		TextView txtNameMessage, txtTime;
+		TextView txtNameRequest, txtTime;
 	}
 
 }

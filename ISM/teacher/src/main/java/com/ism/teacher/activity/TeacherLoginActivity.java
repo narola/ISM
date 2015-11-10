@@ -94,6 +94,10 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
         txtDonothave.setTypeface(myTypeFace.getRalewayRegular());
         txtClickhere.setTypeface(myTypeFace.getRalewayRegular());
 
+
+        arrListDefalt = new ArrayList<String>();
+        arrListDefalt.add(getString(R.string.select));
+
         progressGenerator = new ProgressGenerator();
 
     }

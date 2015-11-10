@@ -12,18 +12,18 @@ import com.ism.R;
 /**
  * Created by c161 on 06/11/15.
  */
-public class StudyMatesFragment extends Fragment {
+public class StudymatesFragment extends Fragment {
 
-	private static final String TAG = StudyMatesFragment.class.getSimpleName();
+	private static final String TAG = StudymatesFragment.class.getSimpleName();
 
 	private View view;
 
-	public static StudyMatesFragment newInstance() {
-		StudyMatesFragment fragment = new StudyMatesFragment();
+	public static StudymatesFragment newInstance() {
+		StudymatesFragment fragment = new StudymatesFragment();
 		return fragment;
 	}
 
-	public StudyMatesFragment() {
+	public StudymatesFragment() {
 	}
 
 	@Override
