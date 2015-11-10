@@ -142,6 +142,9 @@ public class WebserviceWrapper {
                     case WebConstants.GETEXAMEVALUATIONS:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_EXAM_EVALUATIONS, ResponseObject.class, requestObject);
                         break;
+                    case WebConstants.GET_MY_STUDENTS:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_MY_STUDENTS, ResponseObject.class, requestObject);
+                        break;
 
                 }
             } catch (Exception e) {
