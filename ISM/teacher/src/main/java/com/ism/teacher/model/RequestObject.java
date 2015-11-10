@@ -83,6 +83,28 @@ public class RequestObject {
     private String[] likedId;
     private String[] unlikedId;
 
+
+    //these are for the add question
+
+    private String questionFormat;
+    private String questionAssetsLink;
+    private String questionHint;
+    private String questionImageLink;
+    private String evaluationNotes;
+    private String questionCreatorName;
+    private ArrayList<QuestionAnswersModel> answers;
+    private String solution;
+    private String subjectName;
+    private String questionText;
+    private String questionCreatorId;
+
+
+    //For student attempted
+    private String studentId;
+
+
+
+
     public String getFeedId() {
         return this.feedId;
     }
@@ -567,5 +589,121 @@ public class RequestObject {
     }
 
 
+    /**
+     * ============For add  question ==============================
+     */
+     /*these are for add question*/
+
+    public String getQuestionFormat() {
+        return this.questionFormat;
+    }
+
+    @JsonProperty("question_format")
+    public void setQuestionFormat(String questionFormat) {
+        this.questionFormat = questionFormat;
+    }
+
+    public String getQuestionAssetsLink() {
+        return this.questionAssetsLink;
+    }
+
+    @JsonProperty("question_assets_link")
+    public void setQuestionAssetsLink(String questionAssetsLink) {
+        this.questionAssetsLink = questionAssetsLink;
+    }
+
+    public String getQuestionHint() {
+        return this.questionHint;
+    }
+
+    @JsonProperty("question_hint")
+    public void setQuestionHint(String questionHint) {
+        this.questionHint = questionHint;
+    }
+
+    public String getQuestionImageLink() {
+        return this.questionImageLink;
+    }
+
+    @JsonProperty("question_image_link")
+    public void setQuestionImageLink(String questionImageLink) {
+        this.questionImageLink = questionImageLink;
+    }
+
+    public String getEvaluationNotes() {
+        return this.evaluationNotes;
+    }
+
+    @JsonProperty("evaluation_notes")
+    public void setEvaluationNotes(String evaluationNotes) {
+        this.evaluationNotes = evaluationNotes;
+    }
+
+    public String getQuestionCreatorName() {
+        return this.questionCreatorName;
+    }
+
+    @JsonProperty("question_creator_name")
+    public void setQuestionCreatorName(String questionCreatorName) {
+        this.questionCreatorName = questionCreatorName;
+    }
+
+    public ArrayList<QuestionAnswersModel> getAnswers() {
+        return this.answers;
+    }
+
+    @JsonProperty("answers")
+    public void setAnswers(ArrayList<QuestionAnswersModel> answers) {
+        this.answers = answers;
+    }
+
+    public String getSolution() {
+        return this.solution;
+    }
+
+    @JsonProperty("solution")
+    public void setSolution(String solution) {
+        this.solution = solution;
+    }
+
+    public String getSubjectName() {
+        return this.subjectName;
+    }
+
+    @JsonProperty("subject_name")
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public String getQuestionText() {
+        return this.questionText;
+    }
+
+    @JsonProperty("question_text")
+    public void setQuestionText(String questionText) {
+        this.questionText = questionText;
+    }
+
+    public String getQuestionCreatorId() {
+        return this.questionCreatorId;
+    }
+
+    @JsonProperty("question_creator_id")
+    public void setQuestionCreatorId(String questionCreatorId) {
+        this.questionCreatorId = questionCreatorId;
+    }
+
+    /**
+     * For Student Attempted
+     */
+
+    @JsonProperty("student_id")
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
 
 }

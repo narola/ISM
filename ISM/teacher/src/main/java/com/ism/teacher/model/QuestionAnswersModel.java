@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AnswersModel implements Serializable{
+public class QuestionAnswersModel implements Serializable{
 
     private String imageLink;
     private String id;

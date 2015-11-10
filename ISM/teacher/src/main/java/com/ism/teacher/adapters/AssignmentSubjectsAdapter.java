@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
+import com.ism.teacher.activity.TeacherHomeActivity;
 import com.ism.teacher.fragments.TeacherExamWiseAssignments;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
@@ -26,6 +27,8 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
 
     private static final String TAG = AssignmentSubjectsAdapter.class.getSimpleName();
 
+    public static String EXAM_OBJECTIVE="objective";
+    public static String EXAM_SUBJECTIVE="subjective";
     Context mContext;
     ArrayList<Data> listOfAssignments = new ArrayList<Data>();
     Fragment mFragment;
@@ -35,7 +38,7 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
     public AssignmentSubjectsAdapter(Context context, Fragment fragment) {
         this.mContext = context;
         this.mFragment = fragment;
-        myTypeFace=new MyTypeFace(context);
+        myTypeFace = new MyTypeFace(context);
 
     }
 
@@ -51,9 +54,10 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
         return viewHolder;
     }
 
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        LinearLayout ll_parent_assignment;
+        LinearLayout ll_parent_assignment, llViewQuestions, llAssessedQuestion, llUnassessedQuestion;
         RelativeLayout rlTopAssignment;
         TextView txtAssignmentCourse, txtAssignmentClassName, txtAssignmentDate, txtNumberAssessedQuestion, txtNumberUnassessedQuestion, txtNumberTotalQuestions;
         TextView txtAssignmentSubject, txtAssessedLabel, txtUnassessedLabel, txtQuestionLabel, txtAssignmentType;
@@ -62,6 +66,11 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
             super(itemView);
 
             ll_parent_assignment = (LinearLayout) itemView.findViewById(R.id.ll_parent_assignment);
+
+            llAssessedQuestion = (LinearLayout) itemView.findViewById(R.id.ll_assessed_question);
+            llUnassessedQuestion = (LinearLayout) itemView.findViewById(R.id.ll_unassessed_question);
+            llViewQuestions = (LinearLayout) itemView.findViewById(R.id.ll_view_questions);
+
             rlTopAssignment = (RelativeLayout) itemView.findViewById(R.id.rl_top_assignment);
             txtAssignmentSubject = (TextView) itemView.findViewById(R.id.txt_assignment_subject);
 
@@ -78,6 +87,7 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
             txtAssessedLabel = (TextView) itemView.findViewById(R.id.txt_assessed_label);
             txtUnassessedLabel = (TextView) itemView.findViewById(R.id.txt_unassessed_label);
             txtQuestionLabel = (TextView) itemView.findViewById(R.id.txt_question_label);
+
 
         }
     }
@@ -110,15 +120,52 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
         }
 
 
-        holder.ll_parent_assignment.setOnClickListener(new View.OnClickListener() {
+        holder.llAssessedQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                getFra().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherClassWallFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_CLASSWALL).commit();
-
                 mFragment.getFragmentManager().beginTransaction().
-                        replace(R.id.fl_teacher_office_home,new TeacherExamWiseAssignments(mFragment,listOfAssignments.get(position).getExam_id())).commit();
+                        replace(R.id.fl_teacher_office_home, new TeacherExamWiseAssignments(mFragment, listOfAssignments.get(position).getExam_id())).commit();
             }
         });
+
+        holder.llUnassessedQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mFragment.getFragmentManager().beginTransaction().
+                        replace(R.id.fl_teacher_office_home, new TeacherExamWiseAssignments(mFragment, listOfAssignments.get(position).getExam_id())).commit();
+            }
+        });
+
+        holder.llViewQuestions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//                if(listOfAssignments.get(position).getExam_mode().equalsIgnoreCase(EXAM_OBJECTIVE))
+//
+//
+//                mFragment.getFragmentManager().beginTransaction().
+//                        replace(R.id.fl_teacher_office_home, new TeacherExamWiseAssignments(mFragment, listOfAssignments.get(position).getExam_id())).commit();
+                // send the value of exam_id,role_id
+                if(listOfAssignments.get(position).getExam_mode().equalsIgnoreCase(EXAM_OBJECTIVE))
+                {
+                    ((TeacherHomeActivity)mContext).loadFragmentInMainContainer(TeacherHomeActivity.FRAGMENT_EXAM_OBJECTIVE_DETAILS);
+
+                }
+
+                else if(listOfAssignments.get(position).getExam_mode().equalsIgnoreCase(EXAM_SUBJECTIVE))
+                {
+                    ((TeacherHomeActivity)mContext).loadFragmentInMainContainer(TeacherHomeActivity.FRAGMENT_EXAM_SUBJECTIVE_DETAILS);
+
+
+                }
+
+            }
+        });
+
+
+
+
     }
 
 

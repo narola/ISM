@@ -15,7 +15,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.EvaluationModel;
+import com.ism.teacher.model.Data;
 import com.ism.teacher.views.CircleImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -31,7 +31,7 @@ public class ExamWiseAssignmentAdapter extends RecyclerView.Adapter<ExamWiseAssi
     private static final String TAG = ExamWiseAssignmentAdapter.class.getSimpleName();
 
     Context mContext;
-    ArrayList<EvaluationModel> listOfAssignments = new ArrayList<EvaluationModel>();
+    ArrayList<Data> listOfAssignments = new ArrayList<Data>();
     Fragment mFragment;
     MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
@@ -96,7 +96,7 @@ public class ExamWiseAssignmentAdapter extends RecyclerView.Adapter<ExamWiseAssi
     }
 
 
-    public void addAll(ArrayList<EvaluationModel> evaluationModelArrayList) {
+    public void addAll(ArrayList<Data> evaluationModelArrayList) {
 
         try {
             this.listOfAssignments.clear();

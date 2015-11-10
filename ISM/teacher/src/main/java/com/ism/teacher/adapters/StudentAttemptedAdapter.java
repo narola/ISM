@@ -1,4 +1,4 @@
-package com.ism.author.adapter;
+package com.ism.teacher.adapters;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -9,20 +9,19 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
-import com.ism.author.R;
-import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utils;
-import com.ism.author.constant.WebConstants;
-import com.ism.author.fragment.StudentAttemptedFragment;
-import com.ism.author.fragment.TrialExamObjectiveDetailFragment;
-import com.ism.author.helper.CircleImageView;
-import com.ism.author.helper.ImageLoaderInit;
-import com.ism.author.helper.MyTypeFace;
-import com.ism.author.model.Data;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.teacher.ISMTeacher;
+import com.ism.teacher.R;
+import com.ism.teacher.Utility.Debug;
+import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.constants.WebConstants;
+import com.ism.teacher.fragments.ExamObjectiveDetailFragment;
+import com.ism.teacher.fragments.StudentAttemptedFragment;
+import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.model.Data;
+import com.ism.teacher.model.RequestObject;
+import com.ism.teacher.model.ResponseObject;
+import com.ism.teacher.views.CircleImageView;
+import com.ism.teacher.ws.WebserviceWrapper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -31,7 +30,6 @@ import java.util.ArrayList;
  * Created by c162 on 04/11/15.
  */
 public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttemptedAdapter.Viewholder> implements WebserviceWrapper.WebserviceResponse {
-    ArrayList<Data> arrayList = new ArrayList<Data>();
     ResponseObject resObjStudentAttempted;
     private Context context;
     Fragment fragment;
@@ -63,13 +61,13 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 
     @Override
     public void onBindViewHolder(final Viewholder viewholder, final int position) {
-        final ArrayList<Data> arrayList = resObjStudentAttempted.getData().get(0).getEvaluations();
+        final ArrayList<Data> arrayList = resObjStudentAttempted.getData().get(0).getArrayListEvaluation();
         try {
             // Debug.i(TAG, "FullName:" + arrayList.get(position).getFullName());
-            studentName = arrayList.get(position).getFullName();
-            viewholder.txtStudentName.setText(arrayList.get(position).getFullName());
+            studentName = arrayList.get(position).getFull_name();
+            viewholder.txtStudentName.setText(arrayList.get(position).getFull_name());
             viewholder.txtSchoolName.setText("Exam Type : " + arrayList.get(position).getSchoolName());
-            viewholder.txtClass.setText(arrayList.get(position).getClassName());
+            viewholder.txtClass.setText(arrayList.get(position).getClass_name());
             // viewholder.txtScore.setText(arrayList.get(position).getEvaluationsScore());
 
             if (arrayList.get(position).isFlagged()) {
@@ -77,11 +75,11 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
             } else {
                 viewholder.lLMain.setBackgroundResource(R.drawable.bg_student_attempted_unselected);
             }
-            imageLoader.displayImage(WebConstants.USER_IMAGES + arrayList.get(position).getProfilePic(), viewholder.imgUserPic, ImageLoaderInit.options);
+            imageLoader.displayImage(WebConstants.USER_IMAGES + arrayList.get(position).getProfile_pic(), viewholder.imgUserPic, ISMTeacher.options);
             viewholder.lLMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utils.showToast("Click " + position, context);
+                    Utility.showToast("Click " + position, context);
                     if (lastSelected == -1) {
                         arrayList.get(position).setIsFlagged(true);
                         lastSelected = position;
@@ -94,14 +92,14 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                         lastSelected = position;
                     }
                     if (arrayList.get(position).isFlagged()) {
-                        ((AuthorHostActivity) context).startProgress();
-                        callAPIStudentEvaluations(arrayList.get(position).getStudentId(), resObjStudentAttempted.getData().get(0).getExamID(), studentName);
+                        //   ((TeacherHomeActivity) context).startProgress();
+                        callAPIStudentEvaluations(arrayList.get(position).getStudent_id(), resObjStudentAttempted.getData().get(0).getExam_id(), studentName);
                     } else {
-                        ((AuthorHostActivity) context).startProgress();
+                        // ((TeacherHomeActivity) context).startProgress();
                         TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, null);
-                        TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
+                        ExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
                         trialExamDetailsAdapter.notifyDataSetChanged();
-                        ((AuthorHostActivity) context).stopProgress();
+                        //  ((TeacherHomeActivity) context).stopProgress();
                     }
                     notifyDataSetChanged();
 
@@ -116,15 +114,15 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 
     private void callAPIStudentEvaluations(String studentId, String examId, String studentName) {
         try {
-            if (Utils.isInternetConnected(context)) {
-                ((AuthorHostActivity) context).startProgress();
+            if (Utility.isInternetConnected(context)) {
+                //  ((TeacherHomeActivity) context).startProgress();
                 RequestObject requestObject = new RequestObject();
                 requestObject.setStudentId("202");
                 requestObject.setExamId("3");
                 new WebserviceWrapper(context, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } else {
-                Utils.showToast(context.getString(R.string.strnetissue), context);
+                Utility.showToast(context.getString(R.string.strnetissue), context);
             }
 
         } catch (Exception e) {
@@ -135,26 +133,26 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 
     @Override
     public long getItemId(int position) {
-        return resObjStudentAttempted.getData().get(0).getEvaluations().size();
+        return resObjStudentAttempted.getData().get(0).getArrayListEvaluation().size();
     }
 
     @Override
     public int getItemCount() {
-        return resObjStudentAttempted.getData().get(0).getEvaluations().size();
+        return resObjStudentAttempted.getData().get(0).getArrayListEvaluation().size();
     }
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
         try {
-            ((AuthorHostActivity) context).stopProgress();
+            //  ((TeacherHomeActivity) context).stopProgress();
 
             if (API_METHOD == WebConstants.GETEXAMEVALUATIONS) {
                 ResponseObject responseObject = (ResponseObject) object;
-                if (responseObject.getStatus().equals(WebConstants.STATUS_SUCCESS)) {
-                    if (responseObject.getData().get(0).getEvaluations().size() != 0) {
+                if (responseObject.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+                    if (responseObject.getData().get(0).getArrayListEvaluation().size() != 0) {
                         responseObjectEval = responseObject;
                         TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseObjectEval);
-                        TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
+                        ExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
                         trialExamDetailsAdapter.notifyDataSetChanged();
                     }
                 } else {

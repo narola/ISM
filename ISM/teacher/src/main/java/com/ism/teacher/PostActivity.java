@@ -182,7 +182,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             llContainer.setVisibility(View.VISIBLE);
             txtCaptue.setText(getResources().getString(R.string.strrecordyouraudio));
             txtChoose.setText(getResources().getString(R.string.strchooseyouraudio));
-            //loadFragment(FRAGMENT_AUDIO);
+            //loadFragmentInMainContainer(FRAGMENT_AUDIO);
         } else if (v == imgVideo) {
             toolSelected(v);
             imgCapture.setBackgroundDrawable(getResources().getDrawable(R.drawable.imgcamera));
@@ -191,7 +191,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             llContainer.setVisibility(View.VISIBLE);
             txtCaptue.setText(getResources().getString(R.string.strcapturevideousingcamera));
             txtChoose.setText(getResources().getString(R.string.strchoosevideofromgallery));
-            //loadFragment(FRAGMENT_VIDEO);
+            //loadFragmentInMainContainer(FRAGMENT_VIDEO);
         } else if (v == llChooseImg) {
             if (txtChoose.getText().toString().equals(getResources().getString(R.string.strchoosevideofromgallery))) {
                 openVideoGallery();
