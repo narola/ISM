@@ -19,6 +19,7 @@ import com.ism.adapter.NoticeAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.EventsModel;
+import com.ism.model.FragmentArgument;
 import com.ism.model.HighScoreModel;
 import com.ism.model.HighScoreStudentModel;
 import com.ism.object.Global;
@@ -79,7 +80,7 @@ public class NotesFragment extends Fragment implements WebserviceWrapper.Webserv
 		txtViewAllNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-	            activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTES, arrListNotice);
+	            activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTES, new FragmentArgument(arrListNotice));
             }
         });
 

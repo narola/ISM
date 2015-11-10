@@ -6,6 +6,7 @@
     <color name="color_teacher_headers">#D5DBDF</color>
     <color name="color_black">#000000</color>
     <color name="color_black_light">#90000000</color>
+    <color name="color_black_light_medium">#99000000</color>
     <color name="color_orange">#E56B60</color>
     <color name="color_white">#ffffff</color>
     <color name="color_gray1">#393A3C</color>
@@ -51,6 +52,11 @@
     <color name="color_violet_assignment">#A44B99</color>
     <color name="color_blue_assignment">#0E5198</color>
     <color name="color_blue_assignment_type">#77C2EA</color>
+    <color name="color_dark_blue_assignment">#76C1E9</color>
+    <color name="color_assignment_top_yellow">#90F7B324</color>
+    <color name="color_assignment_top_pink">#90F96857</color>
+    <color name="color_top_assignment_submission">#C5C5C5</color>
+    <color name="color_assignment_submission">#596068</color>
 
 
 </resources>

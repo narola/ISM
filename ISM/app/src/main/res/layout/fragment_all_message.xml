@@ -13,4 +13,13 @@
 		android:paddingRight="20dp"
 		android:dividerHeight="2dp"
 		android:divider="@drawable/divider_gray_with_padding"></ListView>
+
+	<ViewStub
+		android:id="@+id/vs_message_details"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:inflatedId="@+id/rl_message"
+		android:layout_margin="20dp"
+		android:layout="@layout/layout_detailed_message"
+		android:visibility="visible" />
 </RelativeLayout>

@@ -80,29 +80,29 @@ public class Data {
     private String studentName;
     private String EvaluationsScore;
     private ArrayList<Data> evaluations;
-
     private ArrayList<Data> questions;
     private String examID;
     private String studentId;
-
     private boolean isFlagged;
     private String studentResponse;
     private String examDate;
     private String examName;
     private String bookName;
     private String examMode;
-
-    private String examType;
-    private String totalStudentAttempted;
     private String totalQuestion;
     private String classroomName;
-    private String examId;
-    private String averageScore;
     private String duration;
     private String evaluationStatus;
     private String passPercentage;
     private String examCategory;
-    private double totalStudent;
+
+    private String remarks;
+    private String evaluationScore;
+    private String submissionDate;
+    private String examStatus;
+
+
+
 
     /*these methods are for login response*/
 
@@ -820,6 +820,43 @@ public class Data {
     public void setExamCategory(String examCategory) {
         this.examCategory = examCategory;
     }
+
+    @JsonProperty("remarks")
+    public String getRemarks() {
+        return this.remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    @JsonProperty("evaluation_score")
+    public String getEvaluationScore() {
+        return this.evaluationScore;
+    }
+
+    public void setEvaluationScore(String evaluationScore) {
+        this.evaluationScore = evaluationScore;
+    }
+
+    @JsonProperty("submission_date")
+    public String getSubmissionDate() {
+        return this.submissionDate;
+    }
+
+    public void setSubmissionDate(String submissionDate) {
+        this.submissionDate = submissionDate;
+    }
+
+    @JsonProperty("exam_status")
+    public String getExamStatus() {
+        return this.examStatus;
+    }
+
+    public void setExamStatus(String examStatus) {
+        this.examStatus = examStatus;
+    }
+
 
 }
 

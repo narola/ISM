@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.model.FragmentArgument;
 import com.ism.object.MyTypeFace;
 import com.ism.ws.model.Data;
 
@@ -79,7 +80,7 @@ public class NoticeAdapter extends BaseAdapter {
 		    holder.txtReadmore.setOnClickListener(new View.OnClickListener() {
 			    @Override
 			    public void onClick(View v) {
-				    activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTES, arrListNotes);
+				    activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTES, new FragmentArgument(arrListNotes));
 			    }
 		    });
 

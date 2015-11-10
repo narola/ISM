@@ -12,7 +12,7 @@ public class PreferenceData {
 
     public static final String IS_REMEMBER_ME = "isRememberMe";
 
-    //	ProfileInfo  ============================
+//  ============================  ProfileInfo  ============================
     public static final String IS_REMEMBER_ME_FIRST_LOGIN = "isFirstLoginRememberMe";
     public static final String USER_PASSWORD = "userPassword";
     public static final String USER_CREDENTIAL_ID = "userCredentialId";
@@ -26,7 +26,7 @@ public class PreferenceData {
     public static final String USER_COURSE_NAME = "userCourseName";
     public static final String USER_ACADEMIC_YEAR = "userAcademicYear";
     public static final String USER_ROLE_ID = "userRoleId";
-//	=========================================
+//	=======================================================================
 
     public static final String USER_SCHOOL_GRADE = "userSchoolGrade";
     public static final String IS_TUTORIAL_GROUP_ALLOCATED = "isTutorialGroupAllocated";
@@ -37,6 +37,10 @@ public class PreferenceData {
     public static final String USER_ID = "userId";
     public static final String USER_FULL_NAME = "userFullName";
     public static final String USER_PROFILE_PIC = "userProfilePic";
+
+    public static final String BADGE_COUNT_NOTIFICATION = "badgeCountNotification";
+    public static final String BADGE_COUNT_MESSAGE = "badgeCountMessage";
+    public static final String BADGE_COUNT_REQUEST = "badgeCountRequest";
 
     public static void setBooleanPrefs(String prefKey, Context context, boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_ISM, 0).edit();

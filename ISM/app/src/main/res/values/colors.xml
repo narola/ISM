@@ -50,4 +50,6 @@
     <color name="bg_friend_request">#FEBA01</color>
     <color name="text_gray">#C3C3C3</color>
     <color name="divider_light">#EEEEEE</color>
+    <color name="orange">#D65955</color>
+    <color name="studymate_tab_bg">#F2F2F2</color>
 </resources>

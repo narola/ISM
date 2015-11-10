@@ -1,9 +1,9 @@
 package com.ism.author.helper;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
 
 import java.util.ArrayList;
 
@@ -73,7 +73,18 @@ public class ControllerTopMenuItem {
 //            trial.add(mContext.getString(R.string.books));
             menu.add(new ControllerTopMenuItem(mContext.getString(R.string.strTrial), mContext.getString(R.string.strAddNew), null));
         } catch (Exception e) {
-            Log.e(TAG, "getMenuTrial Exception : " + e.toString());
+            Debug.e(TAG, "getMenuTrial Exception : " + e.toString());
+        }
+        return menu;
+    }
+
+    public static ArrayList<ControllerTopMenuItem> getMenuAssessment(Context mContext) {
+        ArrayList<ControllerTopMenuItem> menu = null;
+        try {
+            menu = new ArrayList<ControllerTopMenuItem>();
+            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.strassessment), mContext.getString(R.string.strAddNew), null));
+        } catch (Exception e) {
+            Debug.e(TAG, "getMenuAssessment Exception : " + e.toString());
         }
         return menu;
     }
@@ -85,7 +96,7 @@ public class ControllerTopMenuItem {
             menu.add(new ControllerTopMenuItem(null, mContext.getString(R.string.strAddpost), null));
 
         } catch (Exception e) {
-            Log.e(TAG, "getMenuHome Exception : " + e.toString());
+            Debug.e(TAG, "getMenuHome Exception : " + e.toString());
         }
         return menu;
     }
@@ -94,66 +105,12 @@ public class ControllerTopMenuItem {
         ArrayList<ControllerTopMenuItem> menu = null;
         try {
             menu = new ArrayList<ControllerTopMenuItem>();
-            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.strTrial),null, null));
+            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.strTrial), null, null));
 
         } catch (Exception e) {
-            Log.e(TAG, "getMenuTrialSubMenu Exception : " + e.toString());
+            Debug.e(TAG, "getMenuTrialSubMenu Exception : " + e.toString());
         }
         return menu;
     }
-
-
-//    public static ArrayList<ControllerTopMenuItem> getMenuDesk(Context mContext) {
-//        ArrayList<ControllerTopMenuItem> menu = null;
-//        try {
-//            menu = new ArrayList<ControllerTopMenuItem>();
-//            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.jotter), mContext.getString(R.string.add_notes), null));
-//            ArrayList<String> favorites = new ArrayList<String>();
-//            favorites.add(mContext.getString(R.string.notes));
-//            favorites.add(mContext.getString(R.string.books));
-//            favorites.add(mContext.getString(R.string.assignments));
-//            favorites.add(mContext.getString(R.string.exam));
-//            favorites.add(mContext.getString(R.string.links));
-//            favorites.add(mContext.getString(R.string.events));
-//            favorites.add(mContext.getString(R.string.Authors));
-//            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.favorite), mContext.getString(R.string.add_new_favorite), favorites));
-//            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.timetable), mContext.getString(R.string.add_question), null));
-//            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.books), mContext.getString(R.string.add_book), null));
-//            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.forum), mContext.getString(R.string.add_question), null));
-//        } catch (Exception e) {
-//            Log.e(TAG, "getMenuDesk Exception : " + e.toString());
-//        }
-//        return menu;
-//    }
-//
-//    public static ArrayList<ControllerTopMenuItem> getMenuReportCard(Context mContext) {
-//        ArrayList<ControllerTopMenuItem> menu = null;
-//        try {
-//            menu = new ArrayList<ControllerTopMenuItem>();
-//            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.progress_report), null, null));
-//        } catch (Exception e) {
-//            Log.e(TAG, "getMenuReportCard Exception : " + e.toString());
-//        }
-//        return menu;
-//    }
-//
-//
-//    public static ArrayList<ControllerTopMenuItem> getMenuAuthorOffice(Context mContext) {
-//        ArrayList<ControllerTopMenuItem> menu = null;
-//        try {
-//            menu = new ArrayList<ControllerTopMenuItem>();
-//            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.gotrending), mContext.getString(R.string.stradd), null));
-//            ArrayList<String> setquiz = new ArrayList<String>();
-//            setquiz.add(mContext.getString(R.string.setquiz));
-//            setquiz.add(mContext.getString(R.string.settrial));
-//            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.setquiz), mContext.getString(R.string.straddnew), setquiz));
-//            menu.add(new ControllerTopMenuItem(mContext.getString(R.string.progress_report), null, null));
-//
-//        } catch (Exception e) {
-//            Log.e(TAG, "getMenuAuthorOffice Exception : " + e.toString());
-//        }
-//        return menu;
-//
-//    }
 
 }

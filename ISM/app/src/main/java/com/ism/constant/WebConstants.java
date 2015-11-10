@@ -27,6 +27,7 @@ public class WebConstants {
 	public static final int GET_NOTIFICATION = 17;
 	public static final int GET_MESSAGES = 18;
 	public static final int GET_STUDYMATE_REQUEST = 19;
+	public static final int GET_ALL_BADGES_COUNT = 20;
 
 
 
@@ -63,11 +64,11 @@ public class WebConstants {
 	public static final String URL_GET_NOTIFICATION = URL_HOST_147 + "GetNotification";
 	public static final String URL_GET_MESSAGES = URL_HOST_147 + "GetMessages";
 	public static final String URL_GET_STUDYMATE_REQUEST = URL_HOST_147 + "GetStudymateRequest";
-
 	public static final String URL_PRIVACY_SETTING = URL_HOST_147 + "GetAllNotices";
 	public static final String URL_BLOCK_USER = URL_HOST_147 + "GetAllNotices";
 	public static final String URL_NOTIFICATION = URL_HOST_147 + "GetAllNotices";
 	public static final String URL_SMS_ALERTS = URL_HOST_147 + "GetAllNotices";
+	public static final String URL_GET_ALL_BADGES_COUNT = URL_HOST_147 + "GetAllBadgeCount";
 
 
 }

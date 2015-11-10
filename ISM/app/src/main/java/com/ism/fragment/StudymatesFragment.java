@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ism.R;
 
@@ -17,6 +18,7 @@ public class StudymatesFragment extends Fragment {
 	private static final String TAG = StudymatesFragment.class.getSimpleName();
 
 	private View view;
+	private TextView txtStudymates, txtFindStudymates;
 
 	public static StudymatesFragment newInstance() {
 		StudymatesFragment fragment = new StudymatesFragment();
@@ -37,7 +39,10 @@ public class StudymatesFragment extends Fragment {
 	}
 
 	private void initGlobal() {
+		txtStudymates = (TextView) view.findViewById(R.id.txt_studymates);
+		txtFindStudymates = (TextView) view.findViewById(R.id.txt_find_studymates);
 
+		txtStudymates.setActivated(true);
 	}
 
 	@Override
