@@ -23,7 +23,10 @@ import com.ism.R;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
+import com.ism.fragment.AllMessageFragment;
 import com.ism.fragment.AllNoticeFragment;
+import com.ism.fragment.AllNotificationFragment;
+import com.ism.fragment.AllStudymateRequestFragment;
 import com.ism.fragment.AssessmentFragment;
 import com.ism.fragment.ChatFragment;
 import com.ism.fragment.ClassroomFragment;
@@ -35,7 +38,7 @@ import com.ism.fragment.MyWalletFragment;
 import com.ism.fragment.NotesFragment;
 import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.ProfileControllerFragment;
-import com.ism.fragment.StudyMatesFragment;
+import com.ism.fragment.StudymatesFragment;
 import com.ism.fragment.TutorialFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.ControllerTopMenuItem;
@@ -102,14 +105,17 @@ public class HostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_REPORT_CARD = 5;
     public static final int FRAGMENT_NOTES = 6;
     public static final int FRAGMENT_PROFILE_CONTROLLER = 7;
-    public static final int FRAGMENT_CHAT = 8;
-    public static final int FRAGMENT_ALL_NOTES = 9;
-    public static final int FRAGMENT_GENERAL_SETTINGS = 10;
-    public static final int FRAGMENT_MY_FEEDS = 11;
-    public static final int FRAGMENT_STUDYMATES = 12;
-    public static final int FRAGMENT_MY_ACTIVITY = 13;
-    public static final int FRAGMENT_MY_WALLET = 14;
-    public static int currentMainFragment;
+	public static final int FRAGMENT_CHAT = 8;
+	public static final int FRAGMENT_ALL_NOTES = 9;
+	public static final int FRAGMENT_GENERAL_SETTINGS = 10;
+	public static final int FRAGMENT_MY_FEEDS = 11;
+	public static final int FRAGMENT_STUDYMATES = 12;
+	public static final int FRAGMENT_MY_ACTIVITY = 13;
+	public static final int FRAGMENT_MY_WALLET = 14;
+	public static final int FRAGMENT_ALL_NOTIFICATION = 15;
+	public static final int FRAGMENT_ALL_MESSAGE = 16;
+	public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 17;
+	public static int currentMainFragment;
     public static int currentRightFragment;
     private int currentMainFragmentBg;
 
@@ -332,13 +338,22 @@ public class HostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyFeedsFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_STUDYMATES:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, StudyMatesFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, StudymatesFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_MY_ACTIVITY:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyActivityFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_MY_WALLET:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyWalletFragment.newInstance()).commit();
+                    break;
+                case FRAGMENT_ALL_NOTIFICATION:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AllNotificationFragment.newInstance((ArrayList<Data>) object)).commit();
+                    break;
+                case FRAGMENT_ALL_MESSAGE:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AllMessageFragment.newInstance((ArrayList<Data>) object)).commit();
+                    break;
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AllStudymateRequestFragment.newInstance((ArrayList<Data>) object)).commit();
                     break;
             }
         } catch (Exception e) {

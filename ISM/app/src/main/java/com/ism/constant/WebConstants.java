@@ -24,6 +24,9 @@ public class WebConstants {
 	public static final int GET_ALL_STUDY_MATES = 14;
 	public static final int TAG_STUDY_MATES = 15;
 	public static final int GET_ALL_NOTICES = 16;
+	public static final int GET_NOTIFICATION = 17;
+	public static final int GET_MESSAGES = 18;
+	public static final int GET_STUDYMATE_REQUEST = 19;
 
 
 
@@ -36,7 +39,6 @@ public class WebConstants {
 	/**
 	 *  URLs
 	 */
-	private static final String URL_HOST_75 = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";    // RAVI
 	private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";  // KRUNAL
 	private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
 	private static final String URL_HOST_147 = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
@@ -58,6 +60,9 @@ public class WebConstants {
 	public static final String URL_REQUEST_CREDENTIALS = URL_HOST_162 + "RequestForCredentials";
 	public static final String URL_FORGOT_PASSWORD = URL_HOST_162 + "ForgotPassword";
 	public static final String URL_GET_ALL_NOTICES = URL_HOST_147 + "GetAllNotices";
+	public static final String URL_GET_NOTIFICATION = URL_HOST_147 + "GetNotification";
+	public static final String URL_GET_MESSAGES = URL_HOST_147 + "GetMessages";
+	public static final String URL_GET_STUDYMATE_REQUEST = URL_HOST_147 + "GetStudymateRequest";
 
 	public static final String URL_PRIVACY_SETTING = URL_HOST_147 + "GetAllNotices";
 	public static final String URL_BLOCK_USER = URL_HOST_147 + "GetAllNotices";

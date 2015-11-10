@@ -45,5 +45,12 @@
     <color name="questionlistseparator">#90D5DBDF</color>
     <color name="color_transparent_white">#70ffffff</color>
     <color name="bg_tutorial">#DA534F</color>
+    <color name="dark_grey">#3C4650</color>
+    <color name="assignment_separator">#DEDCDD</color>
+    <color name="color_red_assignment">#D75651</color>
+    <color name="color_violet_assignment">#A44B99</color>
+    <color name="color_blue_assignment">#0E5198</color>
+    <color name="color_blue_assignment_type">#77C2EA</color>
+
 
 </resources>

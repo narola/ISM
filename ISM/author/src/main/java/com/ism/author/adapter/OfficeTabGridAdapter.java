@@ -85,8 +85,11 @@ public class OfficeTabGridAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
 
-                    if(position==2)
-                    ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_TRIAL);
+                    if (position == 2)
+                        ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_TRIAL);
+
+                    if (position == 4)
+                        ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_ASSESSMENT);
 
 
                 }

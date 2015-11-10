@@ -252,4 +252,5 @@
         <item>Studymates</item>
     </string-array>
 
+	<string name="studymate_request">Please add me to your Studymates group</string>
 </resources>

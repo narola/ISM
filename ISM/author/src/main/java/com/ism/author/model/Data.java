@@ -92,6 +92,18 @@ public class Data {
     private String bookName;
     private String examMode;
 
+    private String examType;
+    private String totalStudentAttempted;
+    private String totalQuestion;
+    private String classroomName;
+    private String examId;
+    private String averageScore;
+    private String duration;
+    private String evaluationStatus;
+    private String passPercentage;
+    private String examCategory;
+    private double totalStudent;
+
     /*these methods are for login response*/
 
     @JsonProperty("feed_images")
@@ -414,7 +426,6 @@ public class Data {
         this.feed_by = feed_by;
     }
 
-
     @JsonProperty("images")
     public List<String> getImages() {
         return images;
@@ -423,7 +434,6 @@ public class Data {
     public void setImages(List<String> images) {
         this.images = images;
     }
-
 
     @JsonProperty("question_format")
     public String getQuestionFormat() {
@@ -686,7 +696,6 @@ public class Data {
         this.schoolType = schoolType;
     }
 
-
     @JsonProperty("class_id")
     public String getClassId() {
         return classId;
@@ -728,15 +737,6 @@ public class Data {
         return bookName;
     }
 
-//    @JsonProperty("created_date")
-//    public String getExamDate() {
-//        return examDate;
-//    }
-//
-//    public void setExamDate(String examDate) {
-//        this.examDate = examDate;
-//    }
-
     public void setExamName(String examName) {
         this.examName = examName;
     }
@@ -766,4 +766,62 @@ public class Data {
     public String getExamMode() {
         return examMode;
     }
+
+    @JsonProperty("total_question")
+    public String getTotalQuestion() {
+        return this.totalQuestion;
+    }
+
+    public void setTotalQuestion(String totalQuestion) {
+        this.totalQuestion = totalQuestion;
+    }
+
+    @JsonProperty("classroom_name")
+    public String getClassroomName() {
+        return this.classroomName;
+    }
+
+    public void setClassroomName(String classroomName) {
+        this.classroomName = classroomName;
+    }
+
+    @JsonProperty("duration")
+    public String getDuration() {
+        return this.duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    @JsonProperty("evaluation_status")
+    public String getEvaluationStatus() {
+        return this.evaluationStatus;
+    }
+
+    public void setEvaluationStatus(String evaluationStatus) {
+        this.evaluationStatus = evaluationStatus;
+    }
+
+    @JsonProperty("pass_percentage")
+    public String getPassPercentage() {
+        return this.passPercentage;
+    }
+
+    public void setPassPercentage(String passPercentage) {
+        this.passPercentage = passPercentage;
+    }
+
+    @JsonProperty("exam_category")
+    public String getExamCategory() {
+        return this.examCategory;
+    }
+
+    public void setExamCategory(String examCategory) {
+        this.examCategory = examCategory;
+    }
+
 }
+
+
+

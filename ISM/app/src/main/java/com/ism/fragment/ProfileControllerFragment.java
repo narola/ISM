@@ -2,19 +2,15 @@ package com.ism.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,11 +20,17 @@ import android.widget.TextView;
 import com.ism.ISMStudent;
 import com.ism.activity.HostActivity;
 import com.ism.R;
-import com.ism.adapter.MessagePopupAdapter;
+import com.ism.adapter.MessageAdapter;
+import com.ism.adapter.NotificationAdapter;
+import com.ism.adapter.StudymateAdapter;
+import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
+import com.ism.ws.WebserviceWrapper;
 import com.ism.ws.model.Data;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -38,7 +40,7 @@ import java.util.ArrayList;
 /**
  * Created by c161 on --/10/15.
  */
-public class ProfileControllerFragment extends Fragment {
+public class ProfileControllerFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = ProfileControllerFragment.class.getSimpleName();
 
@@ -48,7 +50,8 @@ public class ProfileControllerFragment extends Fragment {
     private TextView txtUserName, txtEditProfile, txtNotificationNo, txtMessageNo, txtFriendRequestNo,
 		        txtGeneralSettings, txtMyFeeds, txtStudyMates, txtMyActivity, txtWallet;
 	private ImageView imgNotification, imgMessage, imgFriendRequest;
-	private ListView lvMessages;
+	private ListView lvNotifications, lvMessages, lvStudymates;
+	private Button btnViewAll;
 
 	private TextView[] arrTxtLabel;
 	private ImageView[] arrImgNotificationIcon;
@@ -57,6 +60,12 @@ public class ProfileControllerFragment extends Fragment {
     private FragmentListener fragListener;
 	private ImageLoader imageLoader;
 	private MyTypeFace myTypeFace;
+	private ArrayList<Data> arrListNotification;
+	private ArrayList<Data> arrListMessage;
+	private ArrayList<Data> arrListStudyMateRequest;
+	private NotificationAdapter adpNotification;
+	private MessageAdapter adpMessage;
+	private StudymateAdapter adpStudymate;
 
     public static ProfileControllerFragment newInstance() {
         ProfileControllerFragment fragStudyMates = new ProfileControllerFragment();
@@ -143,7 +152,6 @@ public class ProfileControllerFragment extends Fragment {
 					    break;
 				    case R.id.img_message:
 					    showMessages();
-//					    popupDisplay();
 					    break;
 				    case R.id.img_friend_request:
 					    showFriendRequests();
@@ -168,23 +176,16 @@ public class ProfileControllerFragment extends Fragment {
 		txtNotificationNo.setVisibility(View.GONE);
 		View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_notification, null);
 
-		lvMessages = (ListView) view.findViewById(R.id.lv_message);
-		((Button)view.findViewById(R.id.btn_view_all)).setTypeface(myTypeFace.getRalewayRegular());
+		lvNotifications = (ListView) view.findViewById(R.id.lv_notification);
+		btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
+		btnViewAll.setTypeface(myTypeFace.getRalewayRegular());
 
-		ArrayList<Data> arrayList = new ArrayList<Data>();
-		for (int i = 0; i < 10; i++) {
-			Data data = new Data();
-			data.setUserName("User name " + i);
-			data.setComment("Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message " + i);
-//			data.setComment("Message " + i);
-			data.setCreatedDate("11:00 pm");
-			arrayList.add(data);
-		}
-		lvMessages.setAdapter(new MessagePopupAdapter(getActivity(), arrayList));
+		callApiGetNotifications();
 
-		PopupWindow popupNotification = new PopupWindow(view, 250, 350, true);
+		final PopupWindow popupNotification = new PopupWindow(view, 250, 350, true);
 		popupNotification.setOutsideTouchable(true);
 		popupNotification.setBackgroundDrawable(new BitmapDrawable());
+
 		popupNotification.setTouchInterceptor(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -198,7 +199,29 @@ public class ProfileControllerFragment extends Fragment {
 				imgNotification.setActivated(false);
 			}
 		});
+
+		btnViewAll.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				popupNotification.dismiss();
+				activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTIFICATION, arrListNotification);
+			}
+		});
+
 		popupNotification.showAtLocation(imgNotification, Gravity.END, 10, 60);
+	}
+
+	private void callApiGetNotifications() {
+		try {
+			activityHost.showProgress();
+			RequestObject requestObject = new RequestObject();
+			requestObject.setUserId(Global.strUserId);
+
+			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+					.execute(WebConstants.GET_NOTIFICATION);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiGetNotifications Exception : " + e.toString());
+		}
 	}
 
 	private void showMessages() {
@@ -206,22 +229,15 @@ public class ProfileControllerFragment extends Fragment {
 		View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_message, null);
 
 		lvMessages = (ListView) view.findViewById(R.id.lv_message);
-		((Button)view.findViewById(R.id.btn_view_all)).setTypeface(myTypeFace.getRalewayRegular());
+		btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
+		btnViewAll.setTypeface(myTypeFace.getRalewayRegular());
 
-		ArrayList<Data> arrayList = new ArrayList<Data>();
-		for (int i = 0; i < 10; i++) {
-			Data data = new Data();
-			data.setUserName("User name " + i);
-			data.setComment("Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message " + i);
-//			data.setComment("Message " + i);
-			data.setCreatedDate("11:00 pm");
-			arrayList.add(data);
-		}
-		lvMessages.setAdapter(new MessagePopupAdapter(getActivity(), arrayList));
+		callApiGetMessages();
 
-		PopupWindow popupMessage = new PopupWindow(view, 250, 350, true);
+		final PopupWindow popupMessage = new PopupWindow(view, 250, 350, true);
 		popupMessage.setOutsideTouchable(true);
 		popupMessage.setBackgroundDrawable(new BitmapDrawable());
+
 		popupMessage.setTouchInterceptor(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -235,29 +251,46 @@ public class ProfileControllerFragment extends Fragment {
 				imgMessage.setActivated(false);
 			}
 		});
+
+		btnViewAll.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				popupMessage.dismiss();
+				activityHost.loadFragment(HostActivity.FRAGMENT_ALL_MESSAGE, arrListMessage);
+			}
+		});
+
 		popupMessage.showAtLocation(imgMessage, Gravity.END, 10, 60);
+	}
+
+	private void callApiGetMessages() {
+		try {
+			activityHost.showProgress();
+			RequestObject requestObject = new RequestObject();
+//			requestObject.setUserId(Global.strUserId);
+			requestObject.setUserId("109");
+
+			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+					.execute(WebConstants.GET_MESSAGES);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiGetMessages Exception : " + e.toString());
+		}
 	}
 
 	private void showFriendRequests() {
 		txtFriendRequestNo.setVisibility(View.GONE);
-		View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_friend_request, null);
+		View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_studymates, null);
 
-		lvMessages = (ListView) view.findViewById(R.id.lv_message);
-		((Button)view.findViewById(R.id.btn_view_all)).setTypeface(myTypeFace.getRalewayRegular());
+		lvStudymates = (ListView) view.findViewById(R.id.lv_studymates);
+		btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
+		btnViewAll.setTypeface(myTypeFace.getRalewayRegular());
 
-		ArrayList<Data> arrayList = new ArrayList<Data>();
-		for (int i = 0; i < 10; i++) {
-			Data data = new Data();
-			data.setUserName("User name " + i);
-			data.setComment("Message Message Message Message Message Message Message Message Message " + i);
-			data.setCreatedDate("11:00 pm");
-			arrayList.add(data);
-		}
-		lvMessages.setAdapter(new MessagePopupAdapter(getActivity(), arrayList));
+		callApiGetStudymateRequests();
 
-		PopupWindow popupFriendRequest = new PopupWindow(view, 250, 350, true);
+		final PopupWindow popupFriendRequest = new PopupWindow(view, 250, 350, true);
 		popupFriendRequest.setOutsideTouchable(true);
 		popupFriendRequest.setBackgroundDrawable(new BitmapDrawable());
+
 		popupFriendRequest.setTouchInterceptor(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -271,7 +304,29 @@ public class ProfileControllerFragment extends Fragment {
 				imgFriendRequest.setActivated(false);
 			}
 		});
+
+		btnViewAll.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				popupFriendRequest.dismiss();
+				activityHost.loadFragment(HostActivity.FRAGMENT_ALL_STUDYMATE_REQUEST, arrListStudyMateRequest);
+			}
+		});
+
 		popupFriendRequest.showAtLocation(imgFriendRequest, Gravity.END, 10, 60);
+	}
+
+	private void callApiGetStudymateRequests() {
+		try {
+			activityHost.showProgress();
+			RequestObject requestObject = new RequestObject();
+			requestObject.setUserId(Global.strUserId);
+
+			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+					.execute(WebConstants.GET_STUDYMATE_REQUEST);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiGetStudymateRequests Exception : " + e.toString());
+		}
 	}
 
 	private void highlightNotificationIcon(int imgId) {
@@ -318,5 +373,108 @@ public class ProfileControllerFragment extends Fragment {
         }
         fragListener = null;
     }
+
+	@Override
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.GET_NOTIFICATION:
+					onResponseGetNotification(object, error);
+					break;
+				case WebConstants.GET_MESSAGES:
+					onResponseGetMessages(object, error);
+					break;
+				case WebConstants.GET_STUDYMATE_REQUEST:
+					onResponseGetStudymateRequest(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseGetStudymateRequest(Object object, Exception error) {
+		try {
+			activityHost.hideProgress();
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					Log.e(TAG, "onResponseGetStudymateRequest success");
+					arrListStudyMateRequest = responseObj.getData();
+					fillListStudymate();
+					btnViewAll.setVisibility(View.VISIBLE);
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseGetStudymateRequest Failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseGetStudymateRequest api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseGetStudymateRequest Exception : " + e.toString());
+		}
+	}
+
+	private void fillListStudymate() {
+		if (arrListStudyMateRequest != null) {
+			adpStudymate = new StudymateAdapter(getActivity(), arrListStudyMateRequest, 4);
+			lvStudymates.setAdapter(adpStudymate);
+		}
+	}
+
+	private void onResponseGetMessages(Object object, Exception error) {
+		try {
+			activityHost.hideProgress();
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					Log.e(TAG, "onResponseGetMessages success");
+					arrListMessage = responseObj.getData();
+					fillListMessage();
+					btnViewAll.setVisibility(View.VISIBLE);
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseGetMessages Failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseGetMessages api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseGetMessages Exception : " + e.toString());
+		}
+	}
+
+	private void fillListMessage() {
+		if (arrListMessage != null) {
+			adpMessage = new MessageAdapter(getActivity(), arrListMessage, 4);
+			lvMessages.setAdapter(adpMessage);
+		}
+	}
+
+	private void onResponseGetNotification(Object object, Exception error) {
+		try {
+			activityHost.hideProgress();
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					Log.e(TAG, "onResponseGetNotification success");
+					arrListNotification = responseObj.getData();
+					fillListNotification();
+					btnViewAll.setVisibility(View.VISIBLE);
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseGetNotification Failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseGetNotification api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseGetNotification Exception : " + e.toString());
+		}
+	}
+
+	private void fillListNotification() {
+		if (arrListNotification != null) {
+			adpNotification = new NotificationAdapter(getActivity(), arrListNotification, 4);
+			lvNotifications.setAdapter(adpNotification);
+		}
+	}
 
 }

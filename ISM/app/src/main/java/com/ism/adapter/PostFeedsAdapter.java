@@ -82,7 +82,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_post, parent, false);
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_post, parent, false);
 
 		ViewHolder viewHolder = new ViewHolder(view);
 

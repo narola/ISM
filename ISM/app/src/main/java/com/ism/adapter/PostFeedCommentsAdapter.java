@@ -20,14 +20,12 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     private static final String TAG = PostFeedCommentsAdapter.class.getSimpleName();
 
-    Context mContext;
+    Context context;
     ArrayList<Data> listOfComments = new ArrayList<Data>();
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.row_post_commenter, parent, false);

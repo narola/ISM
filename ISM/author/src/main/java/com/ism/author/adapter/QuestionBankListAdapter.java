@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,119 +60,121 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
+        try {
+            holder.tvQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
+            holder.tvQuestionNo.setTypeface(myTypeFace.getRalewayBold());
+            holder.tvQuestionNo.setPaintFlags(holder.tvQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        holder.tvQuestionNo.setText(mContext.getString(R.string.strquestion) + " " + (position + 1));
-        holder.tvQuestionNo.setTypeface(myTypeFace.getRalewayBold());
-        holder.tvQuestionNo.setPaintFlags(holder.tvQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            holder.tvQuestionCategory.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvQuestionCategory.setText(mContext.getString(R.string.strcategory));
+            String category = " " + listOfQuestions.get(position).getSubjectName();
+            SpannableString f = new SpannableString(category);
+            f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
+                    category.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.tvQuestionCategory.append(f);
 
-        holder.tvQuestionCategory.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvQuestionCategory.setText(mContext.getString(R.string.strcategory));
-        String category = " " + listOfQuestions.get(position).getSubjectName();
-        SpannableString f = new SpannableString(category);
-        f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
-                category.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        holder.tvQuestionCategory.append(f);
-
-        holder.tvQuestionCreatedby.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvQuestionCreatedby.setText(mContext.getString(R.string.strcreatedby));
-        String creator = " " + listOfQuestions.get(position).getQuestionCreatorName();
-        f = new SpannableString(creator);
-        f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
-                creator.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        holder.tvQuestionCreatedby.append(f);
-
-
-        holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvQuestion.setText(Utils.formatHtml(listOfQuestions.get(position).getQuestionText()));
+            holder.tvQuestionCreatedby.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvQuestionCreatedby.setText(mContext.getString(R.string.strcreatedby));
+            String creator = " " + listOfQuestions.get(position).getQuestionCreatorName();
+            f = new SpannableString(creator);
+            f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
+                    creator.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.tvQuestionCreatedby.append(f);
 
 
-        holder.imgDropdownViewAnswer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvQuestion.setText(Utils.formatHtml(listOfQuestions.get(position).getQuestionText()));
 
-                holder.imgDropdownViewAnswer.setSelected(!holder.imgDropdownViewAnswer.isSelected());
-                if (holder.imgDropdownViewAnswer.isSelected()) {
-                    holder.imgDropdownViewAnswer.setActivated(true);
-                    if (!listOfQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
 
-                        holder.tvQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
-                        holder.tvQuestionAns.setText(listOfQuestions.get(position).getSolution());
-                        holder.tvQuestionAns.setVisibility(View.VISIBLE);
+            holder.imgDropdownViewAnswer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                    } else {
+                    holder.imgDropdownViewAnswer.setSelected(!holder.imgDropdownViewAnswer.isSelected());
+                    if (holder.imgDropdownViewAnswer.isSelected()) {
+                        holder.imgDropdownViewAnswer.setActivated(true);
+                        if (!listOfQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
 
-                        holder.llQuestionAnswers.removeAllViews();
-                        if (holder.llQuestionAnswers.getChildCount() == 0) {
-                            for (int i = 0; i < listOfQuestions.get(position).getAnswers().size(); i++) {
-                                View ansView = getAnsInflaterView(listOfQuestions.get(position).getAnswers().get(i), i);
-                                holder.llQuestionAnswers.addView(ansView);
+                            holder.tvQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
+                            holder.tvQuestionAns.setText(listOfQuestions.get(position).getSolution());
+                            holder.tvQuestionAns.setVisibility(View.VISIBLE);
+
+                        } else {
+
+                            holder.llQuestionAnswers.removeAllViews();
+                            if (holder.llQuestionAnswers.getChildCount() == 0) {
+                                for (int i = 0; i < listOfQuestions.get(position).getAnswers().size(); i++) {
+                                    View ansView = getAnsInflaterView(listOfQuestions.get(position).getAnswers().get(i), i);
+                                    holder.llQuestionAnswers.addView(ansView);
+                                }
                             }
+
+                            holder.llQuestionAnswers.setVisibility(View.VISIBLE);
+
                         }
 
-                        holder.llQuestionAnswers.setVisibility(View.VISIBLE);
 
-                    }
-
-
-                } else {
-                    holder.imgDropdownViewAnswer.setActivated(false);
-
-                    if (!listOfQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
-                        holder.tvQuestionAns.setVisibility(View.GONE);
                     } else {
-                        holder.llQuestionAnswers.setVisibility(View.GONE);
-                        holder.llQuestionAnswers.removeAllViews();
-                    }
+                        holder.imgDropdownViewAnswer.setActivated(false);
 
+                        if (!listOfQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
+                            holder.tvQuestionAns.setVisibility(View.GONE);
+                        } else {
+                            holder.llQuestionAnswers.setVisibility(View.GONE);
+                            holder.llQuestionAnswers.removeAllViews();
+                        }
+
+
+                    }
 
                 }
+            });
+            holder.chkSelectQuestion.setChecked(listOfQuestions.get(position).getIsQuestionAddedInPreview());
 
-            }
-        });
-        holder.chkSelectQuestion.setChecked(listOfQuestions.get(position).getIsQuestionAddedInPreview());
+            holder.chkSelectQuestion.setOnClickListener(new View.OnClickListener() {
 
-        holder.chkSelectQuestion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            @Override
-            public void onClick(View v) {
+                    if (!getFragment().getListOfPreviewQuestion().contains(listOfQuestions.get(position))) {
 
-                if (!getFragment().getListOfPreviewQuestion().contains(listOfQuestions.get(position))) {
+                        if (holder.chkSelectQuestion.isChecked()) {
+                            listOfQuestions.get(position).setIsQuestionAddedInPreview(true);
+                            getFragment().listOfPreviewQuestionsToAdd.add(listOfQuestions.get(position));
 
-                    if (holder.chkSelectQuestion.isChecked()) {
+                        } else {
+                            listOfQuestions.get(position).setIsQuestionAddedInPreview(false);
+                            getFragment().listOfPreviewQuestionsToAdd.remove(listOfQuestions.get(position));
+                        }
+
+                    } else {
                         listOfQuestions.get(position).setIsQuestionAddedInPreview(true);
-                        getFragment().listOfPreviewQuestionsToAdd.add(listOfQuestions.get(position));
-
-                    } else {
-                        listOfQuestions.get(position).setIsQuestionAddedInPreview(false);
-                        getFragment().listOfPreviewQuestionsToAdd.remove(listOfQuestions.get(position));
                     }
+                    notifyDataSetChanged();
 
-                } else {
-                    listOfQuestions.get(position).setIsQuestionAddedInPreview(true);
+
                 }
-                notifyDataSetChanged();
+            });
 
+            holder.imgQuestionCopy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                    openAddEditQuestionFragment(position);
 
-        holder.imgQuestionCopy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                }
+            });
 
-                openAddEditQuestionFragment(position);
+            holder.imgQuestionEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
-
-        holder.imgQuestionEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                openAddEditQuestionFragment(position);
-            }
-        });
-
+                    openAddEditQuestionFragment(position);
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "onBindViewHolder Exception : " + e.toString());
+        }
 
     }
 

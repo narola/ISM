@@ -61,6 +61,20 @@ public class Data {
 	private String notificationId;
 	private String notificationFromName;
 	private String isRead;
+	private String status;
+	private String senderName;
+	private String messageId;
+	private String messageText;
+	private String senderProfilePic;
+	private String sentOn;
+	private String senderId;
+	private String requestDate;
+	private String requestFromName;
+	private String isSeen;
+	private String requestFromId;
+	private String requesterProfile;
+	private String requesterSchoolName;
+	private String requesterCourseName;
 
 	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 	private ArrayList<Comment> comments;
@@ -542,6 +556,132 @@ public class Data {
 
 	public void setIsRead(String isRead) {
 		this.isRead = isRead;
+	}
+
+	@JsonProperty("status")
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	@JsonProperty("sender_name")
+	public String getSenderName() {
+		return this.senderName;
+	}
+
+	public void setSenderName(String senderName) {
+		this.senderName = senderName;
+	}
+
+	@JsonProperty("message_id")
+	public String getMessageId() {
+		return this.messageId;
+	}
+
+	public void setMessageId(String messageId) {
+		this.messageId = messageId;
+	}
+
+	@JsonProperty("message_text")
+	public String getMessageText() {
+		return this.messageText;
+	}
+
+	public void setMessageText(String messageText) {
+		this.messageText = messageText;
+	}
+
+	@JsonProperty("sender_profile_pic")
+	public String getSenderProfilePic() {
+		return this.senderProfilePic;
+	}
+
+	public void setSenderProfilePic(String senderProfilePic) {
+		this.senderProfilePic = senderProfilePic;
+	}
+
+	@JsonProperty("sent_on")
+	public String getSentOn() {
+		return this.sentOn;
+	}
+
+	public void setSentOn(String sentOn) {
+		this.sentOn = sentOn;
+	}
+
+	@JsonProperty("sender_id")
+	public String getSenderId() {
+		return this.senderId;
+	}
+
+	public void setSenderId(String senderId) {
+		this.senderId = senderId;
+	}
+
+	@JsonProperty("request_date")
+	public String getRequestDate() {
+		return this.requestDate;
+	}
+
+	public void setRequestDate(String requestDate) {
+		this.requestDate = requestDate;
+	}
+
+	@JsonProperty("request_from_name")
+	public String getRequestFromName() {
+		return this.requestFromName;
+	}
+
+	public void setRequestFromName(String requestFromName) {
+		this.requestFromName = requestFromName;
+	}
+
+	@JsonProperty("is_seen")
+	public String getIsSeen() {
+		return this.isSeen;
+	}
+
+	public void setIsSeen(String isSeen) {
+		this.isSeen = isSeen;
+	}
+
+	@JsonProperty("request_from_id")
+	public String getRequestFromId() {
+		return this.requestFromId;
+	}
+
+	public void setRequestFromId(String requestFromId) {
+		this.requestFromId = requestFromId;
+	}
+
+	@JsonProperty("requester_profile")
+	public String getRequesterProfile() {
+		return this.requesterProfile;
+	}
+
+	public void setRequesterProfile(String requesterProfile) {
+		this.requesterProfile = requesterProfile;
+	}
+
+	@JsonProperty("requester_school_name")
+	public String getRequesterSchoolName() {
+		return this.requesterSchoolName;
+	}
+
+	public void setRequesterSchoolName(String requesterSchoolName) {
+		this.requesterSchoolName = requesterSchoolName;
+	}
+
+	@JsonProperty("requester_course_name")
+	public String getRequesterCourseName() {
+		return this.requesterCourseName;
+	}
+
+	public void setRequesterCourseName(String requesterCourseName) {
+		this.requesterCourseName = requesterCourseName;
 	}
 
 	public ArrayList<Data> getBlockedList() {

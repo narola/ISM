@@ -64,6 +64,11 @@
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="strassignmentdate">Assignment Date:</string>
+    <string name="strassessed">Assessed</string>
+    <string name="strunasssessed">unassessed</string>
+    <string name="strassignmenttype">Assignment Type</string>
+    <string name="stravgscore">Avrage Score</string>
 
     <string-array name="list">
         <item>1</item>
