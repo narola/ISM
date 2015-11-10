@@ -60,7 +60,7 @@
 
                         <div class="form-group">
                             <div class="squaredThree">
-                                <input type="checkbox" name="remember" />
+                                <input type="checkbox" id="squaredThree" name="remember" />
                                 <label for="squaredThree"></label>
                                 <span>Remember Me</span>
                             </div>

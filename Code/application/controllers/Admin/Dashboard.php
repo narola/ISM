@@ -31,14 +31,17 @@ class Dashboard extends ADMIN_Controller {
 
 			$remember_me_decode = $this->encrypt->decode($remember_me);
 
-			$rem_data = select(TBL_USERS,FALSE,array('where'=>array('id'=>$remember_me)),array('single'=>TRUE));	
+			$rem_data = select(TBL_USERS,FALSE,array('where'=>array('id'=>$remember_me_decode)),array('single'=>TRUE));	
 
-			$array = array(
-				'id'=>$rem_data['id'],
-				'loggedin_admin'=>TRUE
+			$array_session = array(
+				'id' => $rem_data['id'],
+				'username'=>$rem_data['username'],
+				'email_id'=>$rem_data['email_id'],
+				'profile_pic'=>$rem_data['profile_pic'],
+				'loggedin_admin' =>TRUE
 			);
 			
-			$this->session->set_userdata( $array );
+			$this->session->set_userdata( $array_session );
 		}
 
 		$loggedin = is_loggedin();
