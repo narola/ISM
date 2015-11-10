@@ -253,4 +253,7 @@
     </string-array>
 
 	<string name="studymate_request">Please add me to your Studymates group</string>
+    <string name="reply">Reply</string>
+    <string name="your_studymates">Your Studymates</string>
+    <string name="find_more_studymates">Find more Studymates</string>
 </resources>

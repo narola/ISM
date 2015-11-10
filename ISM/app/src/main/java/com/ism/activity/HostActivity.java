@@ -23,6 +23,7 @@ import com.ism.R;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
+import com.ism.constant.WebConstants;
 import com.ism.fragment.AllMessageFragment;
 import com.ism.fragment.AllNoticeFragment;
 import com.ism.fragment.AllNotificationFragment;
@@ -42,53 +43,44 @@ import com.ism.fragment.StudymatesFragment;
 import com.ism.fragment.TutorialFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.ControllerTopMenuItem;
+import com.ism.model.FragmentArgument;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
-import com.ism.ws.model.Data;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
+import com.ism.ws.WebserviceWrapper;
 
 import java.util.ArrayList;
 
 /**
  * Created by c161 on --/10/15.
  */
-public class HostActivity extends Activity implements FragmentListener {
+public class HostActivity extends Activity implements FragmentListener, WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = HostActivity.class.getName();
 
     private LinearLayout llControllerLeft;
-    private FrameLayout flFragmentContainerMain;
-    private FrameLayout flFragmentContainerRight;
+    private FrameLayout flFragmentContainerMain, flFragmentContainerRight;
     private RelativeLayout rlControllerTopMenu;
     private LinearLayout llSearch;
-    private ImageView imgHome;
-    private ImageView imgTutorial;
-    private ImageView imgClassroom;
-    private ImageView imgAssessment;
-    private ImageView imgDesk;
-    private ImageView imgReportCard;
-    private ImageView imgLogOut;
-    private ImageView imgSearch;
-    private ImageView imgNotes;
-    private ImageView imgStudyMates;
-    private ImageView imgChat;
-    private ImageView imgMenuBack;
-    private TextView txtTitle;
-    private TextView txtOne;
-    private TextView txtTwo;
-    private TextView txtThree;
-    private TextView txtFour;
-    private TextView txtFive;
-    private TextView txtAction;
+    private ImageView imgHome, imgTutorial, imgClassroom, imgAssessment, imgDesk, imgReportCard, imgLogOut,
+		                imgSearch, imgNotes, imgStudyMates, imgChat, imgMenuBack;
+    private TextView txtTitle, txtOne, txtTwo, txtThree, txtFour, txtFive, txtAction;
     private EditText etSearch;
     private Spinner spSubmenu;
     private ActionProcessButton progHost;
 
     private View.OnClickListener onClickMenuItem;
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
-    private HostListener listenerHost;
     private ProgressGenerator progressGenerator;
+
+    private HostListener listenerHost;
+	private HostListenerAllNotification listenerHostAllNotification;
+	private HostListenerAllMessage listenerHostAllMessage;
+	private HostListenerAllStudyMateRequest listenerHostAllStudyMateRequest;
+	private HostListenerProfileController listnerHostProfileController;
 
     private TextView arrTxtMenu[];
     private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
@@ -115,13 +107,29 @@ public class HostActivity extends Activity implements FragmentListener {
 	public static final int FRAGMENT_ALL_NOTIFICATION = 15;
 	public static final int FRAGMENT_ALL_MESSAGE = 16;
 	public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 17;
-	public static int currentMainFragment;
-    public static int currentRightFragment;
+	private int currentMainFragment;
+    private int currentRightFragment;
     private int currentMainFragmentBg;
 
-    public interface HostListener {
-        public void onControllerMenuItemClicked(int position);
-    }
+	public interface HostListener {
+		public void onControllerMenuItemClicked(int position);
+	}
+
+	public interface HostListenerAllNotification {
+		public void onControllerTopBackClick();
+	}
+
+	public interface HostListenerAllMessage {
+		public void onControllerTopBackClick();
+	}
+
+	public interface HostListenerAllStudyMateRequest {
+		public void onControllerTopBackClick();
+	}
+
+	public interface HostListenerProfileController {
+		public void onBadgesFetched();
+	}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +176,8 @@ public class HostActivity extends Activity implements FragmentListener {
 //	    Global.strProfilePic = PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
         Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
 
+	    callApiGetAllBadgesCount();
+
         loadFragment(FRAGMENT_HOME, null);
         loadFragment(FRAGMENT_CHAT, null);
 
@@ -175,7 +185,6 @@ public class HostActivity extends Activity implements FragmentListener {
         controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(HostActivity.this);
         controllerTopMenuDesk = ControllerTopMenuItem.getMenuDesk(HostActivity.this);
         controllerTopMenuReportCard = ControllerTopMenuItem.getMenuReportCard(HostActivity.this);
-
 
         imgHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -293,7 +302,20 @@ public class HostActivity extends Activity implements FragmentListener {
 
     }
 
-    public void loadFragment(int fragment, Object object) {
+	private void callApiGetAllBadgesCount() {
+		try {
+			showProgress();
+			RequestObject requestObject = new RequestObject();
+			requestObject.setUserId(Global.strUserId);
+
+			new WebserviceWrapper(HostActivity.this, requestObject, this).new WebserviceCaller()
+					.execute(WebConstants.GET_ALL_BADGES_COUNT);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiGetAllBadgesCount Exception : " + e.toString());
+		}
+	}
+
+	public void loadFragment(int fragment, FragmentArgument fragmentArgument) {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
@@ -329,7 +351,7 @@ public class HostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, ChatFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_ALL_NOTES:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AllNoticeFragment.newInstance((ArrayList<Data>) object)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AllNoticeFragment.newInstance(fragmentArgument.getArrayListData())).commit();
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GeneralSettingsFragment.newInstance()).commit();
@@ -347,13 +369,16 @@ public class HostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, MyWalletFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_ALL_NOTIFICATION:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AllNotificationFragment.newInstance((ArrayList<Data>) object)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AllNotificationFragment.newInstance(fragmentArgument.getArrayListData(), fragmentArgument.getPosition())).commit();
                     break;
                 case FRAGMENT_ALL_MESSAGE:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AllMessageFragment.newInstance((ArrayList<Data>) object)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AllMessageFragment.newInstance(fragmentArgument.getArrayListData(), fragmentArgument.getPosition())).commit();
                     break;
                 case FRAGMENT_ALL_STUDYMATE_REQUEST:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AllStudymateRequestFragment.newInstance((ArrayList<Data>) object)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AllStudymateRequestFragment.newInstance(fragmentArgument.getArrayListData(), fragmentArgument.getPosition())).commit();
                     break;
             }
         } catch (Exception e) {
@@ -364,13 +389,13 @@ public class HostActivity extends Activity implements FragmentListener {
     @Override
     public void onFragmentAttached(int fragment) {
         try {
-            switch (fragment) {
-                case FRAGMENT_HOME:
-                    currentMainFragment = fragment;
+	        switch (fragment) {
+	            case FRAGMENT_HOME:
+		            currentMainFragment = fragment;
                     imgHome.setActivated(true);
                     break;
                 case FRAGMENT_TUTORIAL:
-                    currentMainFragment = fragment;
+	                currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_tutorial;
                     imgTutorial.setActivated(true);
                     loadControllerTopMenu(null);
@@ -378,7 +403,7 @@ public class HostActivity extends Activity implements FragmentListener {
                     txtTitle.setVisibility(View.VISIBLE);
                     break;
                 case FRAGMENT_CLASSROOM:
-                    currentMainFragment = fragment;
+	                currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_classroom;
                     imgClassroom.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
@@ -386,7 +411,7 @@ public class HostActivity extends Activity implements FragmentListener {
                     txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
                     break;
                 case FRAGMENT_ASSESSMENT:
-                    currentMainFragment = fragment;
+	                currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_assessment;
                     imgAssessment.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_assessment);
@@ -394,7 +419,7 @@ public class HostActivity extends Activity implements FragmentListener {
                     loadControllerTopMenu(controllerTopMenuAssessment);
                     break;
                 case FRAGMENT_DESK:
-                    currentMainFragment = fragment;
+	                currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_desk;
                     imgDesk.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_desk);
@@ -402,7 +427,7 @@ public class HostActivity extends Activity implements FragmentListener {
                     loadControllerTopMenu(controllerTopMenuDesk);
                     break;
                 case FRAGMENT_REPORT_CARD:
-                    currentMainFragment = fragment;
+	                currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_report_card;
                     imgReportCard.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_report_card);
@@ -410,26 +435,38 @@ public class HostActivity extends Activity implements FragmentListener {
                     loadControllerTopMenu(controllerTopMenuReportCard);
                     break;
                 case FRAGMENT_NOTES:
-                    currentRightFragment = fragment;
+	                currentRightFragment = fragment;
                     imgNotes.setActivated(true);
                     break;
                 case FRAGMENT_PROFILE_CONTROLLER:
-                    currentRightFragment = fragment;
+	                currentRightFragment = fragment;
                     imgStudyMates.setActivated(true);
                     break;
                 case FRAGMENT_CHAT:
-                    currentRightFragment = fragment;
+	                currentRightFragment = fragment;
                     imgChat.setActivated(true);
                     break;
                 case FRAGMENT_ALL_NOTES:
-                    currentMainFragment = fragment;
+	                currentMainFragment = fragment;
                     txtTitle.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
+	                currentMainFragment = fragment;
                     Debug.i(TAG,"FRAGMENT_GENERAL_SETTINGS atacheched");
-                    currentMainFragment = fragment;
                    // llControllerLeft.setVisibility(View.GONE);
                     break;
+	            case FRAGMENT_ALL_NOTIFICATION:
+		            currentMainFragment = fragment;
+		            rlControllerTopMenu.setVisibility(View.VISIBLE);
+		            break;
+	            case FRAGMENT_ALL_MESSAGE:
+		            currentMainFragment = fragment;
+		            rlControllerTopMenu.setVisibility(View.VISIBLE);
+		            break;
+	            case FRAGMENT_ALL_STUDYMATE_REQUEST:
+		            currentMainFragment = fragment;
+		            rlControllerTopMenu.setVisibility(View.VISIBLE);
+		            break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
@@ -476,6 +513,16 @@ public class HostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_GENERAL_SETTINGS:
                    // llControllerLeft.setVisibility(View.VISIBLE);
                     break;
+	            case FRAGMENT_ALL_NOTIFICATION:
+		            hideControllerTopBackButton();
+		            loadControllerTopMenu(null);
+		            break;
+	            case FRAGMENT_ALL_MESSAGE:
+		            loadControllerTopMenu(null);
+		            break;
+	            case FRAGMENT_ALL_STUDYMATE_REQUEST:
+		            loadControllerTopMenu(null);
+		            break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentDetached Exception : " + e.toString());
@@ -487,6 +534,12 @@ public class HostActivity extends Activity implements FragmentListener {
             currentControllerTopMenu = menu;
             if (menu == null) {
                 hideControllerTopControls();
+	            for (int i = 0; i < arrTxtMenu.length; i++) {
+		            arrTxtMenu[i].setTextColor(Color.WHITE);
+		            arrTxtMenu[i].setText("");
+		            arrTxtMenu[i].setVisibility(View.GONE);
+	            }
+	            rlControllerTopMenu.setBackgroundColor(Color.TRANSPARENT);
                 rlControllerTopMenu.setVisibility(View.GONE);
             } else {
                 rlControllerTopMenu.setVisibility(View.VISIBLE);
@@ -516,12 +569,26 @@ public class HostActivity extends Activity implements FragmentListener {
             if (view == imgMenuBack) {
                 hideControllerTopControls();
 
-                for (int i = 0; i < currentControllerTopMenu.size(); i++) {
-                    arrTxtMenu[i].setTextColor(Color.WHITE);
-                    currentControllerTopMenu.get(i).setIsActive(false);
-                    startSlideAnimation(arrTxtMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
-                    arrTxtMenu[i].setVisibility(View.VISIBLE);
-                }
+	            if (currentControllerTopMenu != null) {
+		            for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+			            arrTxtMenu[i].setTextColor(Color.WHITE);
+			            currentControllerTopMenu.get(i).setIsActive(false);
+			            startSlideAnimation(arrTxtMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
+			            arrTxtMenu[i].setVisibility(View.VISIBLE);
+		            }
+	            }
+
+	            switch (currentMainFragment) {
+		            case FRAGMENT_ALL_NOTIFICATION:
+			            listenerHostAllNotification.onControllerTopBackClick();
+			            break;
+		            case FRAGMENT_ALL_MESSAGE:
+			            listenerHostAllMessage.onControllerTopBackClick();
+			            break;
+		            case FRAGMENT_ALL_STUDYMATE_REQUEST:
+			            listenerHostAllStudyMateRequest.onControllerTopBackClick();
+			            break;
+	            }
 
             } else if (view == txtAction) {
                 Log.e(TAG, "text action");
@@ -547,8 +614,7 @@ public class HostActivity extends Activity implements FragmentListener {
                             currentControllerTopMenu.get(i).setIsActive(true);
                             arrTxtMenu[i].setTextColor(getResources().getColor(currentMainFragmentBg));
 
-                            startSlideAnimation(imgMenuBack, -1000, 0, 0, 0);
-                            imgMenuBack.setVisibility(View.VISIBLE);
+                            showControllerTopBackButton();
 
                             if (currentControllerTopMenu.get(i).getSubMenu() == null) {
                                 startSlideAnimation(arrTxtMenu[i], -imgMenuBack.getWidth(), 0, 0, 0);
@@ -588,7 +654,12 @@ public class HostActivity extends Activity implements FragmentListener {
         }
     }
 
-    private void hideControllerTopControls() {
+	public void showControllerTopBackButton() {
+		startSlideAnimation(imgMenuBack, -1000, 0, 0, 0);
+		imgMenuBack.setVisibility(View.VISIBLE);
+	}
+
+	private void hideControllerTopControls() {
         if (imgMenuBack.getVisibility() == View.VISIBLE) {
             hideControllerTopBackButton();
         }
@@ -640,7 +711,15 @@ public class HostActivity extends Activity implements FragmentListener {
         view.startAnimation(slideOutAnimation);
     }
 
-    public void showProgress() {
+	public int getCurrentMainFragment() {
+		return currentMainFragment;
+	}
+
+	public int getCurrentRightFragment() {
+		return currentRightFragment;
+	}
+
+	public void showProgress() {
         try {
             Global.intApiCounter++;
             if (progHost != null && progHost.getVisibility() != View.VISIBLE) {
@@ -663,5 +742,60 @@ public class HostActivity extends Activity implements FragmentListener {
             Log.e(TAG, "hideProgress Exception : " + e.toString());
         }
     }
+
+	public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
+		this.listenerHostAllNotification = listenerHostAllNotification;
+	}
+
+	public void setListenerHostAllMessage(HostListenerAllMessage listenerHostAllMessage) {
+		this.listenerHostAllMessage = listenerHostAllMessage;
+	}
+
+	public void setListenerHostAllStudyMateRequest(HostListenerAllStudyMateRequest listenerHostAllStudyMateRequest) {
+		this.listenerHostAllStudyMateRequest = listenerHostAllStudyMateRequest;
+	}
+
+	public void setListnerHostProfileController(HostListenerProfileController listnerHostProfileController) {
+		this.listnerHostProfileController = listnerHostProfileController;
+	}
+
+	@Override
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.GET_ALL_BADGES_COUNT:
+					onResponseGetAllBadges(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseGetAllBadges(Object object, Exception error) {
+		try {
+			hideProgress();
+			if (object != null) {
+				ResponseObject responseObject = (ResponseObject) object;
+				if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+
+					String count = responseObject.getData().get(0).getNotificationCount();
+					PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_NOTIFICATION, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
+
+					count = responseObject.getData().get(0).getMessageCount();
+					PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_MESSAGE, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
+
+					count = responseObject.getData().get(0).getRequestCount();
+					PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_REQUEST, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
+				} else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "Failed to load badges count");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseGetAllBadges api Exceptiion : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseGetAllBadges Exceptiion : " + e.toString());
+		}
+	}
 
 }

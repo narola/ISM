@@ -60,6 +60,7 @@ public class Data {
 	private String notificationToName;
 	private String notificationId;
 	private String notificationFromName;
+	private String notificationFromProfilePic;
 	private String isRead;
 	private String status;
 	private String senderName;
@@ -75,6 +76,9 @@ public class Data {
 	private String requesterProfile;
 	private String requesterSchoolName;
 	private String requesterCourseName;
+	private String notificationCount;
+	private String messageCount;
+	private String requestCount;
 
 	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 	private ArrayList<Comment> comments;
@@ -549,6 +553,15 @@ public class Data {
 		this.notificationFromName = notificationFromName;
 	}
 
+	@JsonProperty("notification_from_profile_pic")
+	public String getNotificationFromProfilePic() {
+		return notificationFromProfilePic;
+	}
+
+	public void setNotificationFromProfilePic(String notificationFromProfilePic) {
+		this.notificationFromProfilePic = notificationFromProfilePic;
+	}
+
 	@JsonProperty("is_read")
 	public String getIsRead() {
 		return this.isRead;
@@ -686,5 +699,32 @@ public class Data {
 
 	public ArrayList<Data> getBlockedList() {
 		return blockedList;
+	}
+
+	@JsonProperty("request_count")
+	public String getRequestCount() {
+		return requestCount;
+	}
+
+	public void setRequestCount(String requestCount) {
+		this.requestCount = requestCount;
+	}
+
+	@JsonProperty("message_count")
+	public String getMessageCount() {
+		return messageCount;
+	}
+
+	public void setMessageCount(String messageCount) {
+		this.messageCount = messageCount;
+	}
+
+	@JsonProperty("notification_count")
+	public String getNotificationCount() {
+		return notificationCount;
+	}
+
+	public void setNotificationCount(String notificationCount) {
+		this.notificationCount = notificationCount;
 	}
 }
