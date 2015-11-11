@@ -99,6 +99,18 @@ public class WebserviceWrapper {
                         responseObject = new RequestWs().getRequest(WebConstants.URL_USER_PREFERENCES, ResponseObject.class, requestObject);
                         break;
 
+                    case WebConstants.GET_NOTIFICATION:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_NOTIFICATION, ResponseObject.class, requestObject);
+                        break;
+                    case WebConstants.GET_MESSAGES:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_MESSAGES, ResponseObject.class, requestObject);
+                        break;
+                    case WebConstants.GET_STUDYMATE_REQUEST:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_STUDYMATE_REQUEST, ResponseObject.class, requestObject);
+                        break;
+                    case WebConstants.GET_ALL_BADGES_COUNT:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ALL_BADGES_COUNT, ResponseObject.class, requestObject);
+                        break;
                 }
             } catch (Exception e) {
                 Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());

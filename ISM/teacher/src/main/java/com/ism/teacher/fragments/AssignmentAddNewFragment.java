@@ -141,7 +141,7 @@ public class AssignmentAddNewFragment extends Fragment {
             }
 
         } catch (Exception e) {
-            Debug.e(TAG, "loadFragment Exception : " + e.toString());
+            Debug.e(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
 
         }
 

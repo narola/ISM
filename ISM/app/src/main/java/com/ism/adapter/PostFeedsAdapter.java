@@ -56,13 +56,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 
 		public CircleImageView imgDp;
-
 		public ImageView imgLike, imgTagStudyMates;
-
 		public TextView txtName, txtPost, txtLikes, txtComments, txtViewAll;
 		public EditText etComment;
 		public Button btnComment;
 		public LinearLayout llComments;
+
 		public ViewHolder(View view) {
 			super(view);
 			imgDp = (CircleImageView) view.findViewById(R.id.img_dp);
@@ -82,7 +81,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_post, parent, false);
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_post, parent, false);
 
 		ViewHolder viewHolder = new ViewHolder(view);
 
@@ -205,7 +204,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 	private void callApiGetAllComments(int position) {
 		try {
-			addCommentFeedPosition = position;
 			RequestObject requestObject = new RequestObject();
 			requestObject.setFeedId(arrListFeeds.get(position).getFeedId());
 

@@ -94,7 +94,7 @@ public class Data implements Serializable {
     private String questionImageLink;
     private String evaluationNotes;
     private String topicId;
-    private ArrayList<AnswersModel> answers;
+    private ArrayList<QuestionAnswersModel> answers;
     private String classroomId;
     private String bookId;
     private String solution;
@@ -104,11 +104,21 @@ public class Data implements Serializable {
     private String questionCreatorName;
 
 
-
     //For Assignment history(exams api response)
     private String classroom_name;
     private String exam_mode;
 
+
+    //For Student Attempted
+    private boolean isFlagged;
+
+    private ArrayList<Data> arrayListEvaluation;
+    private ArrayList<Data> questions;
+    private String studentName;
+    private String studentResponse;
+    private String bookName;
+    private String createdDate;
+    private String examName;
 
 
     //login response
@@ -535,11 +545,11 @@ public class Data implements Serializable {
     }
 
     @JsonProperty("answers")
-    public ArrayList<AnswersModel> getAnswers() {
+    public ArrayList<QuestionAnswersModel> getAnswers() {
         return this.answers;
     }
 
-    public void setAnswers(ArrayList<AnswersModel> answers) {
+    public void setAnswers(ArrayList<QuestionAnswersModel> answers) {
         this.answers = answers;
     }
 
@@ -665,5 +675,132 @@ public class Data implements Serializable {
     }
 
 
+    @JsonProperty("book_name")
+    public String getBookName() {
+        return bookName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
+
+
+
+    /**
+     * For Evaluation List based on exam id(used in student attempted and TeacherExamWiseAssignment)
+     */
+
+    private String evaluation_score;
+    private String remarks;
+    private String student_id;
+    private String submission_date;
+
+    @JsonProperty("exam_status")
+    public String getExam_status() {
+        return exam_status;
+    }
+
+    public void setExam_status(String exam_status) {
+        this.exam_status = exam_status;
+    }
+
+    private String exam_status;
+
+
+    @JsonProperty("evaluation_score")
+    public String getEvaluation_score() {
+        return evaluation_score;
+    }
+
+    public void setEvaluation_score(String evaluation_score) {
+        this.evaluation_score = evaluation_score;
+    }
+
+    @JsonProperty("remarks")
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+
+    @JsonProperty("student_id")
+    public String getStudent_id() {
+        return student_id;
+    }
+
+    public void setStudent_id(String student_id) {
+        this.student_id = student_id;
+    }
+
+    @JsonProperty("submission_date")
+    public String getSubmission_date() {
+        return submission_date;
+    }
+
+    public void setSubmission_date(String submission_date) {
+        this.submission_date = submission_date;
+    }
+
+
+    /**
+     * For student attempted
+     */
+    public boolean isFlagged() {
+        return isFlagged;
+    }
+
+    public void setIsFlagged(boolean isFlagged) {
+        this.isFlagged = isFlagged;
+    }
+
+    @JsonProperty("student_name")
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    @JsonProperty("questions")
+    public ArrayList<Data> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(ArrayList<Data> questions) {
+        this.questions = questions;
+    }
+
+    @JsonProperty("evaluation")
+    public ArrayList<Data> getArrayListEvaluation() {
+        return arrayListEvaluation;
+    }
+
+    public void setArrayListEvaluation(ArrayList<Data> arrayListEvaluation) {
+        this.arrayListEvaluation = arrayListEvaluation;
+    }
+
+    public void setStudentResponse(String studentResponse) {
+        this.studentResponse = studentResponse;
+    }
+
+    @JsonProperty("student_response")
+    public String getStudentResponse() {
+        return studentResponse;
+    }
+
+
+    @JsonProperty("exam_name")
+    public String getExamName() {
+        return examName;
+    }
+
+    public void setExamName(String examName) {
+        this.examName = examName;
+    }
 
 }

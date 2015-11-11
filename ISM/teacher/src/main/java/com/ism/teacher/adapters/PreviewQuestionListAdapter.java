@@ -15,7 +15,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.fragments.AddQuestionContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.AnswersModel;
+import com.ism.teacher.model.QuestionAnswersModel;
 import com.ism.teacher.model.Data;
 
 import java.util.ArrayList;
@@ -93,7 +93,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
             public void onClick(View v) {
 
 
-                ((AddQuestionContainerFragment) mFragment).questionListFragment.updateViewAfterDeleteInPreviewQuestion(listOfPreviewQuestions.get(position));
+                getFragment().updateQuestionListviewAfterRemoveInPreview(listOfPreviewQuestions.get(position));
                 listOfPreviewQuestions.remove(listOfPreviewQuestions.get(position));
                 notifyDataSetChanged();
 
@@ -101,12 +101,31 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         });
 
 
-    }
+        holder.imgPreviewQuestionEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddEditQuestionFragment(position);
+            }
+        });
 
+        holder.imgPreviewQuestionCopy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddEditQuestionFragment(position);
+            }
+        });
+
+
+
+    }
+    private void openAddEditQuestionFragment(int position) {
+        getFragment().setDataOnFragmentFlip(listOfPreviewQuestions.get(position), true,
+                AddQuestionContainerFragment.FRAGMENT_PREVIEWQUESTION, position);
+    }
 
     public void addAll(ArrayList<Data> data) {
         try {
-//            this.listOfPreviewQuestions.clear();
+            this.listOfPreviewQuestions.clear();
             this.listOfPreviewQuestions.addAll(data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,7 +164,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         }
     }
 
-    private View getAnsInflaterView(AnswersModel answer, int position) {
+    private View getAnsInflaterView(QuestionAnswersModel answer, int position) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View v;
@@ -156,4 +175,10 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
         return v;
     }
+
+
+    private AddQuestionContainerFragment getFragment() {
+        return (AddQuestionContainerFragment) mFragment;
+    }
+
 }

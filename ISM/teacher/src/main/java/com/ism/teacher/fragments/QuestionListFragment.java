@@ -434,5 +434,16 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     }
 
+    public void updateQuestionDataAfterEditQuestion() {
+        int position = getFragment().getPOSITION_FOR_EDITQUESTION();
+        listOfQuestionBank.get(position).setQuestionText("test");
+        questionBankListAdapter.addAll(listOfQuestionBank);
+        questionBankListAdapter.notifyDataSetChanged();
+
+
+    }
+    private AddQuestionContainerFragment getFragment() {
+        return (AddQuestionContainerFragment) mFragment;
+    }
 
 }

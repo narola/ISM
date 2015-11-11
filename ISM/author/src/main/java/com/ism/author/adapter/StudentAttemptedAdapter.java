@@ -95,11 +95,10 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                     }
                     if (arrayList.get(position).isFlagged()) {
                         ((AuthorHostActivity) context).startProgress();
-                          callAPIStudentEvaluations(arrayList.get(position).getStudentId(), resObjStudentAttempted.getData().get(0).getExamID(), studentName);
-                    }
-                    else{
+                        callAPIStudentEvaluations(arrayList.get(position).getStudentId(), resObjStudentAttempted.getData().get(0).getExamID(), studentName);
+                    } else {
                         ((AuthorHostActivity) context).startProgress();
-                        TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context,fragment,null);
+                        TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, null);
                         TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
                         trialExamDetailsAdapter.notifyDataSetChanged();
                         ((AuthorHostActivity) context).stopProgress();
@@ -109,7 +108,6 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 
                 }
             });
-//            if
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -154,8 +152,8 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                 ResponseObject responseObject = (ResponseObject) object;
                 if (responseObject.getStatus().equals(WebConstants.STATUS_SUCCESS)) {
                     if (responseObject.getData().get(0).getEvaluations().size() != 0) {
-                        responseObjectEval= responseObject;
-                        TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context,fragment,responseObjectEval);
+                        responseObjectEval = responseObject;
+                        TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseObjectEval);
                         TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
                         trialExamDetailsAdapter.notifyDataSetChanged();
                     }

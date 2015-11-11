@@ -248,4 +248,22 @@ public class Utility {
 	}
 
 
+	public static String getFormattedDate(String pattern, String date){
+
+		try {
+
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+			Date date1 = sdf.parse(date);
+			sdf  = new SimpleDateFormat(pattern, Locale.ENGLISH);
+
+			return sdf.format(date1);
+		}
+		catch (Exception e) {
+
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }

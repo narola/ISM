@@ -34,11 +34,15 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
     public static final int FRAGMENT_MARK_SCRIPT = 3;
     public static final int FRAGMENT_RESULTS = 4;
     public static final int FRAGMENT_PROGRESS_REPORT = 5;
-    public static final int FRAGMENT_ADD_ASSIGNMENT = 6;
 
+    public static final int FRAGMENT_EXAM_WISE_STUDENTS=6;
 
     private int fragment;
     private static int current_fragment;
+
+
+    TeacherQuizHomeFragment teacherQuizHomeFragment;
+//    TeacherExamWiseAssignments teacherExamWiseAssignments;
 
     public static TeacherOfficeFragment newInstance(int fragment) {
         TeacherOfficeFragment fragClassroom = new TeacherOfficeFragment();
@@ -76,6 +80,9 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
 
         loadFragment(FRAGMENT_CLASSWALL);
 
+        teacherQuizHomeFragment=new TeacherQuizHomeFragment(this);
+//        teacherExamWiseAssignments=new TeacherExamWiseAssignments(this);
+
     }
 
     @Override
@@ -107,7 +114,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
         loadFragment(position);
     }
 
-    private void loadFragment(int fragment) {
+    public void loadFragment(int fragment) {
         try {
             switch (fragment) {
                 case FRAGMENT_CLASSWALL:
@@ -120,7 +127,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
                     break;
                 case FRAGMENT_QUIZ:
                     current_fragment = FRAGMENT_QUIZ;
-                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherQuizHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_QUIZ).commit();
+                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, teacherQuizHomeFragment).commit();
                     break;
                 case FRAGMENT_MARK_SCRIPT:
                     current_fragment = FRAGMENT_MARK_SCRIPT;
@@ -136,13 +143,20 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivi
                     getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherProgressReportHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_PROGRESS_REPORT).commit();
 
                     break;
+                /*case FRAGMENT_EXAM_WISE_STUDENTS:
+                    current_fragment = FRAGMENT_EXAM_WISE_STUDENTS;
+                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, teacherExamWiseAssignments).commit();
+
+                    break;*/
+
+
 //                case FRAGMENT_ADD_ASSIGNMENT:
 //                    current_fragment = FRAGMENT_ADD_ASSIGNMENT;
 //                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AddAssignmentFragment.newInstance()).commit();
 //                    break;
             }
         } catch (Exception e) {
-            Log.e(TAG, "loadFragment Exception : " + e.toString());
+            Log.e(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
         }
     }
 

@@ -64,7 +64,13 @@
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
-
+    <string name="strassignmentdate">Assignment Date:</string>
+    <string name="strassessed">Assessed</string>
+    <string name="strunasssessed">unassessed</string>
+    <string name="strassignmenttype">Assignment Type :</string>
+    <string name="stravgscore">Avrage Score</string>
+    <string name="strpercent">%</string>
+    <string name="strrollno">Roll No :</string>
     <string-array name="list">
         <item>1</item>
         <item>1</item>
@@ -82,6 +88,8 @@
     <string name="straddnew">ADD NEW</string>
     <string name="strpost">POST</string>
     <string name="strcomment">Comment</string>
+    <string name="strsubmission_date">Submission Date</string>
+    <string name="strstatus">Status</string>
 
 
     <!--Strings for the Submenu Of Office Menu-->
@@ -135,7 +143,7 @@
     <string name="strsave">Save</string>
     <string name="strsubject">Subject</string>
     <string name="strtopic">Topic</string>
-    <string name="strsubmissiondate">Submission Date</string>
+    <string name="strsubmissiondate">Submission Date:</string>
     <string name="strpersonalinformation">Personal Information</string>
     <string name="strexamname">Exam Name</string>
     <string name="strsubjectname">Subject Name</string>
@@ -174,7 +182,6 @@
     <string name="strhinttheiranswer">Their Answer</string>
     <string name="strbiology">Biology</string>
     <string name="strfreeze">Freeze</string>
-
 
     <string-array name="examtype">
         <item>Exam Type</item>
@@ -236,6 +243,12 @@
         <item>Text</item>
         <item>Paragraph text</item>
         <item>Multiple Choice</item>
+    </string-array>
+
+    <string-array name="assessment_type">
+        <item>Assessment Type</item>
+        <item>assessed</item>
+        <item>unassessed</item>
     </string-array>
 
     <integer-array name="accordion_visibility">

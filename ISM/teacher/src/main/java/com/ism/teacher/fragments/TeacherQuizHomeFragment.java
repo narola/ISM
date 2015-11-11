@@ -45,13 +45,16 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     ArrayList<Data> arrayListAssignments = new ArrayList<>();
 
-    public static TeacherQuizHomeFragment newInstance() {
-        TeacherQuizHomeFragment teacherQuizHomeFragment = new TeacherQuizHomeFragment();
-        return teacherQuizHomeFragment;
-    }
+    Fragment mFragment;
 
-    public TeacherQuizHomeFragment() {
+    /*public static TeacherQuizHomeFragment newInstance() {
+        TeacherQuizHomeFragment teacherQuizHomeFragment = new TeacherQuizHomeFragment(this);
+        return teacherQuizHomeFragment;
+    }*/
+
+    public TeacherQuizHomeFragment(Fragment fragment) {
         // Required empty public constructor
+        this.mFragment = fragment;
     }
 
     @Override
@@ -68,7 +71,6 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         recyclerAssignmentSubjects = (RecyclerView) view.findViewById(R.id.recycler_assignment_subjects);
         recyclerAssignmentSubjects.setHasFixedSize(true);
         recyclerAssignmentSubjects.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-//        recyclerAssignmentSubjects.setAdapter(new AssignmentSubjectsAdapter());
         recyclerAssignmentSubjects.setAdapter(assignmentSubjectsAdapter);
 
         spAssignmentSubject = (Spinner) view.findViewById(R.id.sp_assignment_subject);
@@ -143,4 +145,8 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
             Utility.showToast(getString(R.string.web_service_issue), getActivity());
         }
     }
+
+
+
+
 }

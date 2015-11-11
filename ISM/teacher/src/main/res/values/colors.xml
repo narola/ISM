@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Teacher Login-->
-    <!--<color name="color_pink">#FE84C1</color> -->
+    <color name="color_pink">#FE84C1</color>
     <color name="color_blue">#41B1E3</color>
     <color name="color_teacher_headers">#D5DBDF</color>
     <color name="color_black">#000000</color>
@@ -84,4 +84,8 @@
     <color name="color_layer3">#3C434A</color>
     <color name="color_layer4">#383F47</color>
     <color name="divider">#F1F1F1</color>
+
+
+    <!-- Assignment -->
+    <color name="color_red">#D95350</color>
 </resources>

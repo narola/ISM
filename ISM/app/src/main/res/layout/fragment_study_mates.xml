@@ -1,14 +1,40 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.ism.fragment.StudyMatesFragment">
+              android:orientation="vertical"
+             tools:context="com.ism.fragment.StudymatesFragment">
 
-	<TextView
-		android:layout_width="wrap_content"
+	<LinearLayout
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_centerInParent="true"
-		android:textSize="20sp"
-		android:text="Studymates"/>
+		android:orientation="horizontal">
 
-</RelativeLayout>
+		<TextView
+			android:id="@+id/txt_studymates"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textAllCaps="true"
+			android:padding="15dp"
+			android:textColor="@drawable/shape_studymate_active"
+			android:background="@drawable/bg_tab_studymate"
+			android:text="@string/your_studymates"/>
+
+		<TextView
+			android:id="@+id/txt_find_studymates"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textAllCaps="true"
+			android:padding="15dp"
+			android:textColor="@drawable/txt_color_studymate_label"
+			android:background="@drawable/bg_tab_studymate"
+			android:text="@string/find_more_studymates"/>
+	</LinearLayout>
+
+	<FrameLayout
+		android:id="@+id/fl_fragment_container"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"></FrameLayout>
+</LinearLayout>

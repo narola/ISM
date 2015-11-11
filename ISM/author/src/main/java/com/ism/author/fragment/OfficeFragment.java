@@ -27,6 +27,7 @@ public class OfficeFragment extends Fragment {
     private FragmentListener fragListener;
     public static final int FRAGMENT_TRIAL = 0;
     public static final int FRAGMENT_TRIAL_EXAM_DETAILS = 1;
+    public static final int FRAGMENT_ASSESSMENT = 2;
     GridView gvOfficetab;
     OfficeTabGridAdapter officeTabGridAdapter;
 
@@ -108,7 +109,10 @@ public class OfficeFragment extends Fragment {
             case FRAGMENT_TRIAL_EXAM_DETAILS:
                 currentFragment = fragment;
                 ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
-
+                break;
+            case FRAGMENT_ASSESSMENT:
+                currentFragment = fragment;
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT);
                 break;
         }
     }

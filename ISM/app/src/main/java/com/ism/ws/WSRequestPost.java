@@ -50,7 +50,6 @@ public class WSRequestPost {
                     Log.i("main", jsonObject + "");
                 }
 
-
             }
             try (OutputStream output = connection.getOutputStream()) {
                 output.write(jsonObject.getBytes());

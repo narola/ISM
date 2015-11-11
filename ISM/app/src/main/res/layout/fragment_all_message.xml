@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.ism.fragment.AllMessageFragment">
+
+	<ListView
+		android:id="@+id/lv_all_message"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@android:color/white"
+		android:paddingLeft="20dp"
+		android:paddingRight="20dp"
+		android:dividerHeight="2dp"
+		android:divider="@drawable/divider_gray_with_padding"></ListView>
+
+	<ViewStub
+		android:id="@+id/vs_message_details"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:inflatedId="@+id/rl_message"
+		android:layout_margin="20dp"
+		android:layout="@layout/layout_detailed_message"
+		android:visibility="visible" />
+</RelativeLayout>
