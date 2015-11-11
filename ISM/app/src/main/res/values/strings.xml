@@ -234,7 +234,7 @@
 
     <string name="strAllowsViewersToViewMyContactInfo">Allow viewers to view my contact info</string>
     <string name="strAllowsViewersToViewMyBirthdate">Allow viewers to view my birthdate</string>
-    <string name="strAllowsViewersToViewMyExamScores">Allow viewers to view my exam scores</string>
+    <string name="strAllowsViewersToViewMyExamScores">Allow viewers to view my exams 7 scores</string>
     <string name="strSmsAlertsForAssignment">Send me sms alert when there is new assignment assigned</string>
     <string name="strSmsAlertForExamEvaluations">Send me sms alert when my exam evaluation is ready</string>
     <string name="strSmsAlertForConf">Send me sms alert when any cnference is scheduled</string>

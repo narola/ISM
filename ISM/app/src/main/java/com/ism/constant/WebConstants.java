@@ -28,10 +28,12 @@ public class WebConstants {
 
 
 	//general settings
-	public static final int PRIVACY_SETTING = 51;
-	public static final int BLOCK_USER = 52;
-	public static final int NOTIFICATION = 53;
-	public static final int SMS_ALERTS = 54;
+//	public static final int PRIVACY_SETTING = 51;
+//	public static final int BLOCK_USER = 52;
+
+	public static final int GENERAL_SETTINGS = 51;
+	public static final int GENERAL_SETTING_PREFERENCES = 52;
+	public static final int GET_USER_PREFERENCES=53;
 
 	/**
 	 *  URLs
@@ -59,10 +61,13 @@ public class WebConstants {
 	public static final String URL_FORGOT_PASSWORD = URL_HOST_162 + "ForgotPassword";
 	public static final String URL_GET_ALL_NOTICES = URL_HOST_147 + "GetAllNotices";
 
-	public static final String URL_PRIVACY_SETTING = URL_HOST_147 + "GetAllNotices";
-	public static final String URL_BLOCK_USER = URL_HOST_147 + "GetAllNotices";
-	public static final String URL_NOTIFICATION = URL_HOST_147 + "GetAllNotices";
-	public static final String URL_SMS_ALERTS = URL_HOST_147 + "GetAllNotices";
+//	public static final String URL_PRIVACY_SETTING = URL_HOST_147 + "GetAllNotices";
+//	public static final String URL_BLOCK_USER = URL_HOST_147 + "GetUserPreferences";
+
+	public static final String URL_USER_PREFERENCES = URL_HOST_147 + "GetUserPreferences";
+	public static final String URL_GENERAL_SETTING_PREFERENCES = URL_HOST_147 + "GetAllPreferences";
+
+	public static final String URL_GENERAL_SETTING = URL_HOST_147 + "ManageGeneralSettings";
 
 
 }

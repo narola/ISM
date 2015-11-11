@@ -23,26 +23,30 @@ import com.ism.R;
 import com.ism.adapter.ControllerTopSpinnerAdapter;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
+import com.ism.constant.WebConstants;
 import com.ism.fragment.AllNoticeFragment;
 import com.ism.fragment.AssessmentFragment;
 import com.ism.fragment.ChatFragment;
 import com.ism.fragment.ClassroomFragment;
 import com.ism.fragment.DeskFragment;
-import com.ism.fragment.userprofile.GeneralSettingsFragment;
 import com.ism.fragment.MyActivityFragment;
 import com.ism.fragment.MyFeedsFragment;
 import com.ism.fragment.MyWalletFragment;
 import com.ism.fragment.NotesFragment;
-import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.ProfileControllerFragment;
+import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.StudyMatesFragment;
 import com.ism.fragment.TutorialFragment;
+import com.ism.fragment.userprofile.GeneralSettingsFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.ControllerTopMenuItem;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
+import com.ism.ws.WebserviceWrapper;
 import com.ism.ws.model.Data;
 
 import java.util.ArrayList;
@@ -50,7 +54,7 @@ import java.util.ArrayList;
 /**
  * Created by c161 on --/10/15.
  */
-public class HostActivity extends Activity implements FragmentListener {
+public class HostActivity extends Activity implements FragmentListener, WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = HostActivity.class.getName();
 
@@ -112,6 +116,8 @@ public class HostActivity extends Activity implements FragmentListener {
     public static int currentMainFragment;
     public static int currentRightFragment;
     private int currentMainFragmentBg;
+    private ArrayList<Data> arrayList = new ArrayList<>();
+
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -285,7 +291,22 @@ public class HostActivity extends Activity implements FragmentListener {
         txtFive.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
 
+        callApiGetGeneralSettingPreferences();
+        callApiForGETUSerPreference();
+
     }
+
+    private void callApiGetGeneralSettingPreferences() {
+        try {
+            showProgress();
+            new WebserviceWrapper(getApplicationContext(), null, HostActivity.this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTING_PREFERENCES);
+
+        } catch (Exception e) {
+
+            Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
+        }
+    }
+
 
     public void loadFragment(int fragment, Object object) {
         try {
@@ -411,9 +432,9 @@ public class HostActivity extends Activity implements FragmentListener {
                     txtTitle.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
-                    Debug.i(TAG,"FRAGMENT_GENERAL_SETTINGS atacheched");
+                    Debug.i(TAG, "FRAGMENT_GENERAL_SETTINGS atacheched");
                     currentMainFragment = fragment;
-                   // llControllerLeft.setVisibility(View.GONE);
+                    // llControllerLeft.setVisibility(View.GONE);
                     break;
             }
         } catch (Exception e) {
@@ -459,7 +480,7 @@ public class HostActivity extends Activity implements FragmentListener {
                     imgChat.setActivated(false);
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
-                   // llControllerLeft.setVisibility(View.VISIBLE);
+                    // llControllerLeft.setVisibility(View.VISIBLE);
                     break;
             }
         } catch (Exception e) {
@@ -645,8 +666,72 @@ public class HostActivity extends Activity implements FragmentListener {
                 progHost.setVisibility(View.INVISIBLE);
             }
         } catch (Exception e) {
-            Log.e(TAG, "hideProgress Exception : " + e.toString());
+            Log.e(TAG, "hideProgress Exception : " + e.getLocalizedMessage());
         }
     }
+
+    @Override
+    public void onResponse(Object object, Exception error, int apiCode) {
+        ResponseObject responseObject = (ResponseObject) object;
+        hideProgress();
+        try {
+            if (WebConstants.GENERAL_SETTING_PREFERENCES == apiCode) {
+
+                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
+                    if (responseObject.getData().size() > 0) {
+
+                        arrayList = responseObject.getData().get(0).getSmsAlert();
+                        for (int j = 0; j < arrayList.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
+                          //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                        arrayList = responseObject.getData().get(0).getNotification();
+                        for (int j = 0; j < arrayList.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
+                           // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                        arrayList = responseObject.getData().get(0).getPrivacySetting();
+                        for (int j = 0; j < arrayList.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
+                           // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                    }
+                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+
+                }
+            } else if (WebConstants.GET_USER_PREFERENCES == apiCode) {
+
+                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
+                    if (responseObject.getData().size() > 0) {
+                        for (int j = 0; j < responseObject.getData().size(); j++) {
+                            GeneralSettingsFragment.newInstance().setPreferenceList(responseObject.getData().get(j).getId(), responseObject.getData().get(j).getDefaultValue(), getApplicationContext());
+                        }
+                    } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "On response Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void callApiForGETUSerPreference() {
+        try {
+
+            showProgress();
+            RequestObject requestObject = new RequestObject();
+            requestObject.setUserId("1");
+            new WebserviceWrapper(getApplicationContext(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_USER_PREFERENCES);
+
+        } catch (Exception e) {
+
+            Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
+
+        }
+
+
+    }
+
 
 }
