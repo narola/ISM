@@ -114,7 +114,7 @@
                         <div class="col-sm-12" id="replacing_div3">
 
                             <?php if(!$_POST || $_POST['total_choices'] == 1) { ?>
-
+                            <?php echo 'if'; ?>
                             <input type="hidden" name='total_choices' id="total_choices" value="1"  >
                             <input type="hidden" name='correct_choice' id="correct_choice" >
                             <div class="choice_wrapper"> 
@@ -133,7 +133,7 @@
                             <?php
 
                                 } else {  
-                                
+                                echo 'else';
                                  $post_total_choice = $_POST['total_choices'];
                                  //$post_correct_choice = $_POST[''];   
                             ?>

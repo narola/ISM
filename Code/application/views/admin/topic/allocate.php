@@ -120,7 +120,7 @@
                                             <div class="group_score">
                                                 <hr>
                                                 <div>
-                                                    <h2 class="group_total_points"><?php echo $group['score']; ?></h2>
+                                                    <h2 class="group_total_points"><?php if($group['score']!=0){ echo $group['score']; }else{ echo 0; } ?></h2>
                                                     <p>Score</p>
                                                 </div>
                                                 <div>

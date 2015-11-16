@@ -298,7 +298,7 @@ class Question extends ADMIN_Controller {
 		$this->data['tags'] = select(TBL_TAGS,FALSE,array('where'=>array('is_delete'=>'0')));
 
 		if($_POST){
-
+			// p($_POST, true);
 			$course_id = $this->input->post('course_id'); 
 			$classroom_id = $this->input->post('classroom_id');
 			$subject_id = $this->input->post('subject_id');
