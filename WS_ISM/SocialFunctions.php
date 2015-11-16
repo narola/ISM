@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(0);
 class SocialFunctions
 {
 
@@ -45,6 +45,11 @@ class SocialFunctions
             case "GetAllComments":
             {
                 return $this->getAllComments($postData);
+            }
+                break;
+            case "GetMyFeeds":
+            {
+                return $this->getMyFeeds($postData);
             }
                 break;
         }
@@ -307,7 +312,6 @@ class SocialFunctions
         }
         else
         {
-
             $status="failed";
         }
 
@@ -353,6 +357,8 @@ class SocialFunctions
                 $message = $_FILES["mediaFile"]["error"];
 
             } else {
+                // Image 5 = Video 6 = Audio 7
+
                 $mediaName = "VIDEO".$created_date."_test.mp4";
                 $uploadDir = $dir;
                 $uploadFile = FEEDS_MEDIA.$feed_media_dir . $mediaName;
@@ -680,12 +686,6 @@ class SocialFunctions
             }
         }
         $status = "success";
-        if($allfeeds==null){
-            $allfeeds=array();
-            $status = "failed";
-        }
-
-
 
         $errorMsg="";
         $data['message'] = $errorMsg;
@@ -766,6 +766,89 @@ class SocialFunctions
         }
         $feeds_array['feed_images']=$allImages;
         return $feeds_array;
+    }
+    
+    
+     /*
+    	 * Get My Feeds
+     */
+    public function getMyFeeds($postData)
+    {
+    	$message ='';
+        $status='';
+        $post=array();
+        $data=array();
+        $response=array();
+        
+		$user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+		
+
+        $queryGetAllFeeds = "select feed.*,user.id as 'UserId',user.full_name as 'Username',user.profile_pic as 'Profile_pic' from " . TABLE_FEEDS ." feed INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id where feed.feed_by =".$user_id;
+        $resultGetAllFeeds = mysql_query($queryGetAllFeeds) or $errorMsg = mysql_error();
+        $feeds_count = mysql_num_rows($resultGetAllFeeds);
+
+        if ($feeds_count > 0) {
+            while ($feed = mysql_fetch_assoc($resultGetAllFeeds)) {
+              
+             $feeds['postId']=$feed['id']; 
+             $feeds['postText']=$feed['feed_text']; 
+             $feeds['postVideo']=$feed['video_link']; 
+             $feeds['UserId']=$feed['UserId']; 
+             $feeds['Username']=$feed['Username']; 
+             $feeds['Profile_pic']=$feed['Profile_pic']; 
+             $feeds['totalLikes']=$feed['total_like']; 
+             $feeds['totalComments']=$feed['total_comment']; 
+              
+			//Get Comments 
+            $queryGetAllComments = "SELECT f.comment as 'comment_text', f.comment_by,u.username,u.profile_pic FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u ON f.comment_by=u.id WHERE f.feed_id=".$feed['id'];
+            //echo $queryGetAllComments;
+            $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
+            $allcomment=array();
+            
+            if(mysql_num_rows($resultGetAlComments))
+            {
+                while($comments=mysql_fetch_assoc($resultGetAlComments))
+                {
+                    $allcomment[]=$comments;
+                } 
+            }
+			$feeds['Comments']=$allcomment;
+
+        
+        //Get Images
+        $queryGetImages="SELECT `id`,`image_link` FROM `feed_image` WHERE `feed_id`=".$feed['id'];
+        $resultGetImages=mysql_query($queryGetImages) or $errorMsg=mysql_error();
+        $allImages=array();
+        //for counting the number of rows for query result
+        if(mysql_num_rows($resultGetImages))
+        {
+            while($images=mysql_fetch_assoc($resultGetImages))
+            {
+                $allImages[]=$images;
+            }
+
+        }
+        $feeds['postImage']=$allImages;
+			
+                $data[]=$feeds;
+            }
+             $status="success";
+       		 $message="";
+        }
+        else
+        {
+            $status="failed";
+            $message = DEFAULT_NO_RECORDS;
+            $data="";
+        }
+
+
+		$response['data']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
     }
 
 }

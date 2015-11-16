@@ -6,7 +6,7 @@
  * Time: 10:23 AM
  */
 
-
+error_reporting(0);
 class ExamFunctions
 {
 
@@ -80,8 +80,37 @@ class ExamFunctions
                 return $this->getExamEvaluation($postData); // done
             }
                 break;
-
-
+            
+            case "CreateQuestion":
+            {
+                return $this->createQuestion($postData);//in progress
+            }
+                break;
+                
+            case "UploadMediaForQuestion":
+            {
+                return $this->uploadMediaForQuestion($postData);//in progress
+            }
+                break;
+			
+			case "GetAllResults":
+            {
+                return $this->getAllResults($postData);//in progress
+            }
+                break;
+                
+            case "GetStudentResultsByExam":
+            {
+                return $this->getStudentResultsByExam($postData);//in progress
+            }
+                break;
+                
+			case "GetHighScorers":
+			{
+                return $this->getHighScorers($postData);//in progress
+            }
+                break;
+              
         }
     }
 
@@ -102,30 +131,26 @@ class ExamFunctions
         $exam_id = validateObject ($postData , 'exam_id', "");
         $exam_id = addslashes($exam_id);
 
-        $queryUser="SELECT * FROM ".TABLE_USERS." WHERE id=".$student_id;
-        $resultUser=mysql_query($queryUser) or  $message=mysql_error();
-//        echo $queryUser;
-        if(mysql_num_rows($resultUser)){
-            $row = mysql_fetch_assoc($resultUser);
-            $post['student_name'] = $row['first_name'];
-        }
-        else{
-            $post['student_name'] = "";
-        }
+
+//        $query="SELECT * FROM `student_exam_score` WHERE `user_id`=".$student_id." and exam_id=".$exam_id;
+//        $result=mysql_query($query) or  $message=mysql_error();
+        //echo $query;
+        // echo $insertValues;
+
         $queryExam="SELECT * FROM ".TABLE_EXAMS." WHERE id=".$exam_id;
         $resultExam=mysql_query($queryExam) or  $message=mysql_error();
         //echo $queryExam;
         if(mysql_num_rows($resultExam)) {
 
             $rowExam = mysql_fetch_assoc($resultExam);
-            //$post['exam_id'] = $rowExam['id'];
-           // $post['exam_score'] = $rowExam['marks_obtained'];
+            $post['exam_id'] = $rowExam['id'];
+            $post['exam_score'] = $rowExam['marks_obtained'];
             if ($rowExam['exam_mode']=="subjective") {
 //                {
 //                    "exam_id":63,
 //                    "student_id":370
 //                }
-                $query = "SELECT * FROM " . TABLE_EXAM_SCHEDULE . " exam_schedule INNER JOIN " . TABLE_USERS . " users on exam_schedule.exam_assessor=users.id WHERE exam_id=" . $exam_id ;
+                $query = "SELECT * FROM " . TABLE_EXAM_SCHEDULE . " exam_schedule INNER JOIN " . TABLE_USERS . " users on exam_schedule.exam_assessor=users.id WHERE exam_id=" . $exam_id;
                 $result = mysql_query($query) or $message = mysql_error();
                 //echo $query;
                 $row = mysql_fetch_assoc($result);
@@ -144,7 +169,7 @@ class ExamFunctions
                     if ($rowEvaluation['evaluation_status'] == "unassesed") {
                         $evaluation['evaluation_score'] = $rowEvaluation['evaluation_status'];
                     } else {
-                        $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_SUBJECTIVE_EVALUATION . " WHERE `exam_id`=" . $exam_id . " and evaluation_by=".$row['exam_assessor']." and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ") order by question_id asc";
+                        $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_SUBJECTIVE_EVALUATION . " WHERE `exam_id`=" . $exam_id . " and evaluation_by=".$row['exam_assessor']." and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ")";
                         $resultStudentRes = mysql_query($queryStudentRes) or $message = mysql_error();
                         //echo $queryStudentRes;
                        // echo "\n".mysql_num_rows($resultStudentRes);
@@ -171,10 +196,10 @@ class ExamFunctions
 //                    "exam_id":9,
 //                    "student_id":202
 //                }
-                $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_OBJECTIVE_RESPONSE . " WHERE `user_id`=" . $student_id . " and `exam_id`=" . $exam_id . " and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ") order by question_id asc";
+                $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_OBJECTIVE_RESPONSE . " WHERE `user_id`=" . $student_id . " and `exam_id`=" . $exam_id . " and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ")";
                 $resultStudentRes = mysql_query($queryStudentRes) or $message = mysql_error();
-               // echo $queryStudentRes;
-               // echo "\n".mysql_num_rows($resultStudentRes);
+                echo $queryStudentRes;
+                echo "\n".mysql_num_rows($resultStudentRes);
                 $evaluations=array();
                 if (mysql_num_rows($resultStudentRes)) {
                     while ($rowEvaluation = mysql_fetch_assoc($resultStudentRes)) {
@@ -185,13 +210,12 @@ class ExamFunctions
                         $evaluation['answer_status'] = $rowEvaluation['answer_status'];
                         $evaluations[]=$evaluation;
                     }
-
+                    $post['evaluation']=$evaluations;
                 }
-                $post['evaluation']=$evaluations;
             }
 
             $data[]=$post;
-          //  $message="";
+            $message="";
             $status="success";
         }
         else{
@@ -247,15 +271,8 @@ class ExamFunctions
                 {
                     $rowDetails=mysql_fetch_assoc($resultStudentDetails);
                     $evaluation['student_id'] = $rowDetails['id'];
-                    $evaluation['full_name'] = $rowDetails['full_name'];
-                    $evaluation['profile_pic'] = $rowDetails['profile_pic'];
-
-
-                    $queryDetails="SELECT * FROM ".TABLE_STUDENT_ACADEMIC_INFO." student INNER JOIN ".TABLE_CLASSROOMS. " classroom INNER JOIN ".TABLE_SCHOOLS." school on student.school_id=school.id and student.classroom_id=classroom.id WHERE user_id=".$student_id;
-                    $resultDetails=mysql_query($queryDetails) or  $message=mysql_error();
-                    $rowDetail = mysql_fetch_assoc($resultDetails);
-                    $evaluation['school_name'] = $rowDetail['school_name'];
-                    $evaluation['class_name'] = $rowDetail['class_name'];
+                    $evaluation['student_name'] = $rowDetails['full_name'];
+                    $evaluation['student_profile_pic'] = $rowDetails['profile_pic'];
                     $queryStudentDetails="SELECT * FROM ".TABLE_STUDENT_EXAM_SCORE." WHERE exam_id=".$exam_id;
                     $resultStudentDetails=mysql_query($queryStudentDetails) or  $message=mysql_error();
                     if(mysql_num_rows($resultStudentDetails)) {
@@ -285,14 +302,14 @@ class ExamFunctions
         else{
 
             $status="failed";
-           // $message=DEFAULT_NO_RECORDS;
+            //$message="";
         }
 
 
         $response['data']=$data;
-       // $response['message']=$message;
+        $response['message']=$message;
         $response['status']=$status;
-        $response['message']="data";
+
         return $response;
     }
 
@@ -362,7 +379,6 @@ class ExamFunctions
         $negative_mark_value = validateObject ($postData , 'negative_mark_value', "");
         $negative_mark_value = addslashes($negative_mark_value);
 
-
         $random_question = validateObject ($postData , 'random_question', "");
         $random_question = addslashes($random_question);
 
@@ -422,25 +438,22 @@ class ExamFunctions
         $exam_id = addslashes($exam_id);
 
         $question_id = validateObject ($postData , 'question_id', "");
-        //$question_id = addslashes($question_id);
+        $question_id = addslashes($question_id);
 
+        $insertFields="`exam_id`, `question_id`";
+        $insertValues=$exam_id.",".$question_id;
 
-        foreach($question_id as $id){
-            $insertFields="`exam_id`, `question_id`";
-            $insertValues=$exam_id.",".$id;
-            $query="INSERT INTO ".TABLE_EXAM_QUESTION."(".$insertFields.") VALUES (".$insertValues.")";
-            $result=mysql_query($query) or  $message=mysql_error();
-            // echo $query;
-            if($result){
-                $status="success";
-                $message="";
-            }
-            else{
-                $status="failed";
-                // $message="";
-            }
+        $query="INSERT INTO ".TABLE_EXAM_QUESTION."(".$insertFields.") VALUES (".$insertValues.")";
+        $result=mysql_query($query) or  $message=mysql_error();
+        // echo $query;
+        if($result){
+            $status="success";
+            $message="";
         }
-
+        else{
+            $status="failed";
+            // $message="";
+        }
 
         $response['data']=$data;
         $response['message']=$message;
@@ -485,10 +498,9 @@ class ExamFunctions
             while($row=mysql_fetch_assoc($resultSubjectId)){
                 //$post['subject_id']=$row;
                 //$data[]=$row;
-                $getFields="question.id,question.question_creator_id,question.question_format,question.question_hint,question.question_text,question.assets_link,question.question_image_link,question.evaluation_notes,question.solution,question.topic_id,question.subject_id,subject.subject_name,question.classroom_id,question.book_id";
-                $queryQuestion="SELECT ".$getFields." FROM ".TABLE_QUESTIONS." question Inner join ".TABLE_USERS." users inner join ".TABLE_SUBJECTS." subject on question.subject_id=subject.id and question.question_creator_id=users.id  WHERE ".$getField."=".$row[$rowParameter];
+                $queryQuestion="SELECT * FROM ".TABLE_QUESTIONS." question Inner join ".TABLE_USERS." users inner join ".TABLE_SUBJECTS." subject on question.subject_id=subject.id and question.question_creator_id=users.id  WHERE ".$getField."=".$row[$rowParameter];
                 $resultQuestion=mysql_query($queryQuestion) or  $message=mysql_error();
-                // echo $queryQuestion;
+                // echo $query;
                 if(mysql_num_rows($resultQuestion))
                 {
                     while($rowQuestion=mysql_fetch_assoc($resultQuestion)) {
@@ -684,7 +696,6 @@ class ExamFunctions
             while($row=mysql_fetch_assoc($result)){
                 //$post['subject_id']=$row;
                 $data[]=$row;
-
             }
             $status="success";
 
@@ -699,58 +710,6 @@ class ExamFunctions
         $response['status']=$status;
 
         return $response;
-    }
-
-    /*
-    * getClassrooms Name
-   */
-    public function getClassName ($postData)
-    {
-
-        $query="SELECT `id`, `course_id`, `class_name`, `class_nickname`FROM ".TABLE_CLASSROOMS ." where id=".$postData;
-        $result=mysql_query($query) or  $message=mysql_error();
-         //echo $query;
-        if(mysql_num_rows($result))
-        {
-            while($row=mysql_fetch_assoc($result)){
-                //$post['subject_id']=$row;
-                $data=$row['class_name'];
-
-            }
-
-        }
-        else{
-        }
-       // $response['data']=$data;
-
-
-        return $data;
-    }
-
-    /*
-    * getBook name
-   */
-    public function getBookName ($postData)
-    {
-
-        $query="SELECT `book_name`FROM ".TABLE_BOOKS ." where id=".$postData;
-        $result=mysql_query($query) or  $message=mysql_error();
-//        echo $query;
-        if(mysql_num_rows($result))
-        {
-            while($row=mysql_fetch_assoc($result)){
-                //$post['subject_id']=$row;
-                $data=$row['book_name'];
-
-            }
-
-        }
-        else{
-        }
-        // $response['data']=$data;
-
-
-        return $data;
     }
 
     /*
@@ -816,7 +775,6 @@ class ExamFunctions
         if($data==null){
             $status="failed";
             $message=DEFAULT_NO_RECORDS;
-
         }
         $response['data']=$data;
         $response['message']=$message;
@@ -832,7 +790,6 @@ class ExamFunctions
         $post['exam_name']=$rowExam['exam_name'];
         $post['classroom_id']=$rowExam['classroom_id'];
         $post['subject_id']=$rowExam['subject_id'];
-        $post['book_id']=$rowExam['book_id'];
         $query="SELECT class_name FROM ".TABLE_CLASSROOMS." WHERE id=".$rowExam['classroom_id'];
 //                        echo $query;
         $result=mysql_query($query) or  $message=mysql_error();
@@ -842,13 +799,6 @@ class ExamFunctions
                 $post['classroom_name']=$rowName['class_name'];
             }
         }
-        // total student
-        $query="SELECT * FROM ".TABLE_STUDENT_ACADEMIC_INFO." WHERE classroom_id=".$rowExam['classroom_id'];
-//                        echo $query;
-        $result=mysql_query($query) or  $message=mysql_error();
-        $post['total_student']=mysql_num_rows($result);
-
-        //subject name
         $query="SELECT subject_name FROM ".TABLE_SUBJECTS." WHERE id=".$rowExam['subject_id'];
 //                        echo $query;
         $result=mysql_query($query) or  $message=mysql_error();
@@ -866,7 +816,7 @@ class ExamFunctions
 
 
         //total questions
-        $query="SELECT `evaluation_status`, `total_questions`, `average_score`,`total_student_attempted` FROM `exam_evaluation` WHERE `exam_id`=".$rowExam['id'];
+        $query="SELECT `evaluation_status`, `total_questions`, `average_score` FROM `exam_evaluation` WHERE `exam_id`=".$rowExam['id'];
         $result=mysql_query($query) or  $message=mysql_error();
        // echo $query;
         if(mysql_num_rows($result))
@@ -875,14 +825,12 @@ class ExamFunctions
                 $post['total_question']=$rowName['total_question'];
                 $post['evaluation_status']=$rowName['evaluation_status'];
                 $post['average_score']=$rowName['average_score'];
-                $post['total_student_attempted']=$rowName['total_student_attempted'];
             }
         }
         else{
             $post['total_question']="";
             $post['evaluation_status']="";
             $post['average_score']="";
-            $post['total_student_attempted']="0";
         }
         return $post;
     }
@@ -911,16 +859,9 @@ class ExamFunctions
             $row=mysql_fetch_assoc($result);
             $examData['id']=$row['id'];
             $examData['exam_name']=$row['exam_name'];
-            $examData['exam_type']=$row['exam_type'];
-            $examData['exam_mode']=$row['exam_mode'];
-            $examData['exam_name']=$row['exam_name'];
-            $examData['book_name']=$this->getBookName($row['book_id']) ;
-            $examData['class_name']=$this->getClassName($row['classroom_id']) ;
-           // $examData['classroom_id']=$row['classroom_id'];
-            $examData['created_date']=$row['created_date'];
             $examData['instruction']=$row['instruction'];
 
-            $queryExamQuestion="SELECT * FROM ".TABLE_EXAM_QUESTION." where exam_id=".$exam_id. " order by question_id asc";
+            $queryExamQuestion="SELECT * FROM ".TABLE_EXAM_QUESTION." where exam_id=".$exam_id;
             $resultExamQuestion=mysql_query($queryExamQuestion) or  $message=mysql_error();
 
             if(mysql_num_rows($resultExamQuestion))
@@ -928,7 +869,7 @@ class ExamFunctions
                 while($row=mysql_fetch_assoc($resultExamQuestion)){
                     //$post['subject_id']=$row;
                     //$data[]=$row;
-                    $queryQuestion="SELECT * FROM ".TABLE_QUESTIONS." WHERE id=".$row['question_id'] ;
+                    $queryQuestion="SELECT * FROM ".TABLE_QUESTIONS." WHERE id=".$row['question_id'];
                     $resultQuestion=mysql_query($queryQuestion) or  $message=mysql_error();
                     // echo $query;
                     if(mysql_num_rows($resultQuestion))
@@ -994,6 +935,410 @@ class ExamFunctions
         $response['message']=$message;
         $response['status']=$status;
 
+        return $response;
+    }
+    
+    
+    /*
+	*createQuestion
+	*/
+	public function createQuestion ($postData)
+    {
+        $message='';
+        $status='';
+        $data=array();
+        $post=array();
+        $response=array();
+
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        $question_text = validateObject ($postData , 'question_text', "");
+        $question_text = addslashes($question_text);
+
+        $subject_id = validateObject ($postData , 'subject_id', "");
+        $subject_id = addslashes($subject_id);
+
+        $question_score = validateObject ($postData , 'question_score', "");
+        $question_score = addslashes($question_score);
+
+        $question_format = validateObject ($postData , 'question_format', "");
+        $question_format = addslashes($question_format);
+
+       /* $question_image = validateObject ($postData , 'question_image', "");
+        $question_image = addslashes($question_image);
+
+        $question_video = validateObject ($postData , 'question_video', "");
+        $question_video = addslashes($question_video);*/
+
+        $evaluation_notes = validateObject ($postData , 'evaluation_notes', "");
+        $evaluation_notes = addslashes($evaluation_notes);
+
+        $solution = validateObject ($postData , 'solution', "");
+        $solution = addslashes($solution);
+
+        $topic_id = validateObject ($postData , 'topic_id', "");
+        $topic_id= addslashes($topic_id);
+
+        $classroom_id = validateObject ($postData , 'classroom_id', "");
+        $classroom_id = addslashes($classroom_id);
+
+        $book_id = validateObject ($postData , 'book_id', "");
+        $book_id = addslashes($book_id);
+
+        $answer_choices = validateObject ($postData , 'answer_choices', "");
+      
+		
+		
+        $insertFields="`question_text`,`question_score`, `question_format`, `question_creator_id`, `evaluation_notes`, `solution`, `topic_id`, `subject_id`, `classroom_id`,`book_id`";
+        $insertValues="'".$question_text."',".$question_score.",'".$question_format."',".$user_id. ",'".$evaluation_notes."','".$solution ."',".$topic_id.",".$subject_id.",".$classroom_id.",".$book_id;
+
+        $query="INSERT INTO ".TABLE_QUESTIONS."(".$insertFields.") VALUES (".$insertValues.")";
+        $result=mysql_query($query) or  $message=mysql_error();
+       
+    	
+       if($result)
+       {
+      	 $post['question_id']=mysql_insert_id();
+       
+        if($question_format == "MCQ")
+      	{ 	    	
+   			if(is_array($answer_choices)){
+  
+   			 foreach($answer_choices as $row){
+  		 				
+  		  
+  		           $insertChoiceFeilds="`question_id`,`choice_text`,`is_right`";
+  	               $insertChoiceValues = "".$post['question_id'].",'".$row->choice_text."',".(int) $row->is_right;
+  		 		   
+  		 		   $insertQuestionQuery="INSERT INTO " .TABLE_ANSWER_CHOICES."(".$insertChoiceFeilds.") VALUES( ".$insertChoiceValues.")";
+  		 		   $resultQuestionQuery =mysql_query($insertQuestionQuery) or $message=mysql_error();
+       			 	
+ 	 			}  
+  			}
+		 }
+		 
+		   $status="success";
+		}
+		else
+		{
+			$post['question_id']="";
+            $status="failed";
+		}
+		 
+        $data[]=$post;
+        $response['data']=$data;
+        $response['message']=$message;
+        $response['status']=$status;
+
+        return $response;
+    }
+    
+    
+    /*
+    * uploadMediaForQuestion
+    */
+    public function uploadMediaForQuestion($postData)
+    {
+    	
+        $dir = '';
+        $mediaName = '';
+        $created_date = date("Ymd-His");
+        
+        //Create Random String.
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        //generate random string with minimum 5 and maximum of 10 characters
+        $str = substr(str_shuffle($chars), 0, 8);
+        //add extension to file
+        //$name = $str."_test";
+        
+         $question_id = validateObject ($postData , 'question_id', "");
+         $question_id = addslashes($question_id);
+         
+         $mediaType = validateObject ($postData , 'mediaType', "");
+         $mediaType = addslashes($mediaType);
+         
+        //$question_id = $_POST['question_id'];
+        //$mediaType = $_POST['mediaType'];
+
+        if (!is_dir(QUESTION_IMAGE)) {
+            mkdir(QUESTION_IMAGE, 0777, true);
+        }
+        
+        $data['question_id']=$question_id;
+        $data['mediaType']=$mediaType;
+
+        $question_media_dir = "question_" . $question_id . "/";
+        
+        $dir = QUESTION_IMAGE . $question_media_dir;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777);
+        }
+        
+    
+        if("video"==$mediaType)
+        {
+            if ($_FILES["mediaFile"]["error"] > 0) {
+                $message = $_FILES["mediaFile"]["error"];
+
+            } else {
+                
+
+                $mediaName = "VIDEO".$created_date."_test.mp4";
+                $uploadDir = $dir;
+                $uploadFile = QUESTION_IMAGE.$feed_media_dir . $mediaName;
+                if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
+                
+                    //store image data.
+                    $link=$feed_media_dir . $mediaName;
+                    $procedure_insert_set = "CALL UPDATE_QUESTION_VIDEO_LINK ('".$link."','".$question_id."' )";
+                    $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
+                    $status = "success";
+                    $message = "Successfully uploaded!.";
+                } else {
+                    $status = "failed";
+                    $message = "Failed to upload media on server.";
+                }
+            }
+        }
+        else
+        {
+      	  if ($_FILES["mediaFile"]["error"] > 0) {
+                $message = $_FILES["mediaFile"]["error"];
+
+            } else {
+                
+
+                $mediaName = "IMAGE".$created_date."_test.jpg";
+                $uploadDir = $dir;
+                $uploadFile = QUESTION_IMAGE.$feed_media_dir . $mediaName;
+                if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
+                
+                    //store image data.
+                    $link=$feed_media_dir . $mediaName;
+                    $procedure_insert_set = "CALL UPDATE_QUESTION_IMAGE_LINK ('".$link."','".$question_id."' )";
+                    $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
+                    $status = "success";
+                    $message = "Successfully uploaded!.";
+                } else {
+                    $status = "failed";
+                    $message = "Failed to upload media on server.";
+                }
+            }
+       
+        $data['status']=$status;
+        $data['link']=$link;
+        $data['message']=$message;
+        return $data;
+    
+    	}
+    }
+    
+     /*
+    * GetAllResults
+    */
+    public function getAllResults ($postData)
+    {
+    	$data = array();
+        $response = array();
+		
+		$user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+		
+			
+	 	$query="SELECT exams.*,examEvaluation.evaluation_status as 'Status',examEvaluation.total_questions as 'total_questions',examEvaluation.average_score as 'score',examEvaluation.total_student_attempted as 'total_submission' FROM ".TABLE_EXAMS. " exams 
+	 	INNER JOIN ".TABLE_EXAM_SCHEDULE." exam_schedule on exams.id=exam_schedule.exam_id 
+	 	INNER JOIN ". TABLE_EXAM_EVALUATION." examEvaluation on exams.id = examEvaluation.exam_id 
+	 	WHERE exam_schedule.exam_assessor =".$user_id ." ORDER BY exams.created_date DESC";
+        $result = mysql_query($query) or $message = mysql_error();
+        
+    	 if (mysql_num_rows($result)) {
+      		  while ($val = mysql_fetch_assoc($result)){
+            $post=array();
+            
+          			 //Get Classromm name
+                	$queryForClassName="SELECT class_name FROM ".TABLE_CLASSROOMS." classrooms INNER JOIN ".TABLE_EXAMS." exams ON classrooms.id=exams.classroom_id WHERE exams.classroom_id= ".$val['classroom_id'];
+                	$resultForClassName = mysql_query($queryForClassName) or $message=mysql_error();
+                    
+                	if(mysql_num_rows($resultForClassName)) {
+            		 while ($row = mysql_fetch_row($resultForClassName)) {
+            			 $post['classroom_name']=$row[0];
+       					 
+           			 }
+                	}
+                	
+                	 //Get Subject name
+                	$queryForSubjectName="SELECT subjects.subject_name FROM ".TABLE_SUBJECTS ." subjects JOIN ".TABLE_EXAMS." exams ON subjects.id=exams.subject_id WHERE exams.subject_id=".$val['subject_id'];
+                	$resultForSubjectName = mysql_query($queryForSubjectName) or $message=mysql_error();
+                    
+                	if(mysql_num_rows($resultForSubjectName)) {
+            		 while ($row = mysql_fetch_row($resultForSubjectName)) {
+            			 $post['subject_name']=$row[0]; 
+           			 }
+                	}
+           
+         	 $post['exam_id'] = $val['id'];
+             $post['exam_name'] = $val['exam_name'];
+             $post['exam_type'] = $val['exam_type'];
+             $post['exam_category'] = $val['exam_category'];
+             $post['exam_mode'] = $val['exam_mode'];
+             $post['subject_id'] = $val['subject_id'];
+             $post['classroom_id'] = $val['classroom_id'];
+          	 $post['evaluation_status'] = $val['Status'];
+           	 $post['average_score'] = $val['score'];
+           	 $post['total_submission'] = $val['total_submission'];
+           	 $post['average_score'] = $val['score'];
+           	 $post['total_questions'] = $val['total_questions'];
+           
+             $data[]=$post;
+            
+            $status="success";
+            $message="";
+        	}
+       	}
+        else{
+            $status="failed";
+            $message=DEFAULT_NO_RECORDS;
+        }
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+    }
+    
+    /*
+    * getStudentResultsByExam
+    */
+	public function getStudentResultsByExam($postData)
+    {
+    	$data = array();
+        $response = array();
+		
+		$user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+        $exam_id = validateObject($postData, 'exam_id', "");
+        $exam_id = addslashes($exam_id);
+        
+		
+	 	$query="SELECT exam_score.*,s.username as 'username',s.user_profile_pic as 'profile_pic' FROM ".TABLE_STUDENT_EXAM_SCORE." exam_score
+	 	INNER JOIN (SELECT id,full_name as 'username',profile_pic as 'user_profile_pic' FROM ".TABLE_USERS." users WHERE id=".$user_id.") s ON s.id=".$user_id."   
+	 	WHERE exam_score.exam_id=".$exam_id." AND exam_score.user_id=".$user_id;
+	 	
+	 	
+        $result = mysql_query($query) or $message = mysql_error();
+        
+    	 if (mysql_num_rows($result)) {
+      		  while ($val = mysql_fetch_assoc($result)){
+            	$post=array();
+            
+          			
+          			 //Get Classromm name
+               		 $queryForClassName="SELECT class_name from ".TABLE_CLASSROOMS." WHERE id IN ( SELECT classroom_id FROM ".TABLE_EXAMS." e JOIN ".TABLE_CLASSROOMS." c ON e.classroom_id=c.id WHERE e.id=".$exam_id.") ";
+                	
+                	$resultForClassName = mysql_query($queryForClassName) or $message=mysql_error();
+                    
+                	if(mysql_num_rows($resultForClassName)) {
+            		 while ($row = mysql_fetch_row($resultForClassName)) {
+            			$post['classroom_name']=$row[0];
+       					 
+           			 }
+                	}
+          			
+           
+         	 $post['exam_score_id'] = $val['id'];
+             $post['exam_id'] = $val['exam_id'];
+             $post['user_id'] = $val['user_id'];
+             $post['username'] = $val['username'];
+             $post['user_profile_pic'] = $val['profile_pic'];
+             $post['grade'] = $val['grade_obtained'];
+             $post['remark'] = $val['remarks'];
+          	 $post['score_obtained'] = $val['marks_obtained'];
+           	 $post['percentage'] = $val['percentage'];
+           	 $post['incorrect_count'] = $val['incorrect_answers'];
+           	 $post['1s_count'] = $val['1s_count'];
+             $post['2s_count'] = $val['2s_count'];
+           	 $post['3s_count'] = $val['3s_count'];
+           	 $post['4s_count'] = $val['4s_count'];
+           	 $post['5s_count'] = $val['5s_count'];
+           	 
+             $data[]=$post;
+            
+            $status="success";
+            $message="";
+        	}
+       	}
+        else{
+            $status="failed";
+            $message=DEFAULT_NO_RECORDS;
+        }
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        
+        return $response;
+    }
+    
+    public function getHighScorers($postData)
+    {
+    	$message ='';
+        $status='';
+    	$data = array();
+        $response = array();
+		
+		$user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+        $role_id = validateObject($postData, 'role_id', "");
+        $role_id = addslashes($role_id);
+        
+        
+        /*
+        SELECT sai.classroom_id,cs.subject_id,e.id,se.user_id,t.school_name,u.username,u.profile_pic as 'user_profile_pic',sub.subject_name,se.marks_obtained as 'exam_score' FROM `student_academic_info` sai 
+INNER JOIN classroom_subject cs ON cs.`classroom_id`= sai.`classroom_id` 
+INNER JOIN exams e ON e.classroom_id=sai.classroom_id
+INNER JOIN student_exam_score se ON se.exam_id=e.id
+INNER JOIN (select s.school_name as 'school_name',s.id from schools s JOIN student_academic_info sa on sa.school_id=s.id) t ON t.id=sai.school_id
+INNER JOIN users u ON u.id=se.user_id
+INNER JOIN subjects sub ON sub.id=e.subject_id
+WHERE sai.user_id = 1 and e.exam_category='ISM_Mock' group by se.user_id
+        */
+       /* $selectQuery="select sai.classroom_id,cs.subject_id,t.id from student_academic_info sai join classroom_subject cs on cs.classroom_id=sai.classroom_id 
+        INNER JOIN(select id,subject_id,classroom_id from exams where  exam_category = 'ISM_Mock')t ON t.classroom_id=sai.classroom_id 
+        where sai.user_id=".$user_id;
+        //echo  $selectQuery;
+        $result = mysql_query($selectQuery) or $message = mysql_error();*/
+        
+        if($role_id=="student")
+        {
+        
+        $selectQuery=" SELECT se.user_id,u.username,u.profile_pic as 'user_profile_pic',se.marks_obtained as 'exam_score',t.school_name,sub.subject_name FROM `student_academic_info` sai 
+INNER JOIN classroom_subject cs ON cs.`classroom_id`= sai.`classroom_id` 
+INNER JOIN exams e ON e.classroom_id=sai.classroom_id
+INNER JOIN student_exam_score se ON se.exam_id=e.id
+INNER JOIN (select s.school_name as 'school_name',s.id from schools s JOIN student_academic_info sa on sa.school_id=s.id) t ON t.id=sai.school_id
+INNER JOIN users u ON u.id=se.user_id
+INNER JOIN subjects sub ON sub.id=e.subject_id
+WHERE sai.user_id = ".$user_id." and e.exam_category='ISM_Mock' group by se.user_id";
+        
+    $result = mysql_query($selectQuery) or $message = mysql_error();    
+    	 if (mysql_num_rows($result)) {
+      		  while ($val = mysql_fetch_assoc($result)){
+      		  
+      		  $data[]=$val;
+            	$status="success";
+            	}
+            }
+            else
+            {
+            $status="failed";
+            }
+        
+        }
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        
         return $response;
     }
 }

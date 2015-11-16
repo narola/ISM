@@ -96,6 +96,7 @@ define("TABLE_TUTORIAL_GROUPS",   "tutorial_groups");
 define("TABLE_TUTORIAL_TOPIC",   "tutorial_topic");
 define("TABLE_TUTORIAL_TOPIC_EXAM",   "tutorial_topic_exam");
 define("TABLE_USER_ACCOUNT_PREFERENCE",   "user_account_preference");
+define("TABLE_USER_ACTIVITY",   "user_activity");
 define("TABLE_USER_BADGE",   "user_badge");
 define("TABLE_USER_CHAT",   "user_chat");
 define("TABLE_USER_FAVORITE_AUTHOR",   "user_favorite_author");
@@ -108,6 +109,7 @@ define("TABLE_USER_NOTIFICATION",   "user_notification");
 define("TABLE_USER_PERMISSION",   "user_permission");
 define("TABLE_USER_PROFILE_PICTURE",   "user_profile_picture");
 define("TABLE_USERS",   "users");
+define("TABLE_USER_VOUCHER",   "user_voucher");
 define("TABLE_WORD_WATCH",   "word_watch");
 define("TABLE_CLASSWALL","classwall");
 
