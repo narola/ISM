@@ -23,7 +23,7 @@ import com.ism.activity.HostActivity;
 import com.ism.R;
 import com.ism.adapter.MessageAdapter;
 import com.ism.adapter.NotificationAdapter;
-import com.ism.adapter.StudymateAdapter;
+import com.ism.adapter.StudymateRequestAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.FragmentArgument;
@@ -68,7 +68,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 	private ArrayList<Data> arrListStudyMateRequest;
 	private NotificationAdapter adpNotification;
 	private MessageAdapter adpMessage;
-	private StudymateAdapter adpStudymate;
+	private StudymateRequestAdapter adpStudymate;
 
     public static ProfileControllerFragment newInstance() {
         ProfileControllerFragment fragStudyMates = new ProfileControllerFragment();
@@ -303,8 +303,8 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 		try {
 			activityHost.showProgress();
 			RequestObject requestObject = new RequestObject();
-//			requestObject.setUserId(Global.strUserId);
-			requestObject.setUserId("109");
+			requestObject.setUserId(Global.strUserId);
+//			requestObject.setUserId("109");
 
 			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
 					.execute(WebConstants.GET_MESSAGES);
@@ -438,9 +438,29 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 				case WebConstants.GET_STUDYMATE_REQUEST:
 					onResponseGetStudymateRequest(object, error);
 					break;
+				case WebConstants.UPDATE_READ_STATUS:
+					onResponseUpdateReadStatus(object, error);
+					break;
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseUpdateReadStatus(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					Log.e(TAG, "onResponseUpdateReadStatus success");
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseUpdateReadStatus failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseUpdateReadStatus api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseUpdateReadStatus Exception : " + e.toString());
 		}
 	}
 
@@ -467,8 +487,27 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 
 	private void fillListStudymate() {
 		if (arrListStudyMateRequest != null) {
-			adpStudymate = new StudymateAdapter(getActivity(), arrListStudyMateRequest, 4);
+			adpStudymate = new StudymateRequestAdapter(getActivity(), arrListStudyMateRequest, 4);
 			lvStudymates.setAdapter(adpStudymate);
+			ArrayList<String> recordIds = new ArrayList<String>();
+			for (int i = 0; i < (arrListStudyMateRequest.size() >= 4 ? 4 : arrListStudyMateRequest.size()); i++) {
+				recordIds.add(arrListStudyMateRequest.get(i).getRequestId());
+			}
+			callApiUpdateReadStatus(WebConstants.STUDYMATE_REQUEST, recordIds);
+		}
+	}
+
+	private void callApiUpdateReadStatus(String readCategory, ArrayList<String> recordId) {
+		try {
+			RequestObject requestObject = new RequestObject();
+			requestObject.setUserId(Global.strUserId);
+			requestObject.setReadCategory(readCategory);
+			requestObject.setRecordIds(recordId);
+
+			new WebserviceWrapper(activityHost, requestObject, this).new WebserviceCaller().
+					execute(WebConstants.UPDATE_READ_STATUS);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiUpdateReadStatus Exception : " + e.toString());
 		}
 	}
 
@@ -497,6 +536,11 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 		if (arrListMessage != null) {
 			adpMessage = new MessageAdapter(getActivity(), arrListMessage, 4);
 			lvMessages.setAdapter(adpMessage);
+			ArrayList<String> recordIds = new ArrayList<String>();
+			for (int i = 0; i < (arrListMessage.size() >= 4 ? 4 : arrListMessage.size()); i++) {
+				recordIds.add(arrListMessage.get(i).getMessageId());
+			}
+			callApiUpdateReadStatus(WebConstants.MESSAGES, recordIds);
 		}
 	}
 
@@ -525,6 +569,11 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 		if (arrListNotification != null) {
 			adpNotification = new NotificationAdapter(getActivity(), arrListNotification, 4);
 			lvNotifications.setAdapter(adpNotification);
+			ArrayList<String> recordIds = new ArrayList<String>();
+			for (int i = 0; i < (arrListNotification.size() >= 4 ? 4 : arrListNotification.size()); i++) {
+				recordIds.add(arrListNotification.get(i).getNotificationId());
+			}
+			callApiUpdateReadStatus(WebConstants.NOTIFICATION, recordIds);
 		}
 	}
 

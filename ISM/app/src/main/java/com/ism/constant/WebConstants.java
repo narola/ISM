@@ -28,6 +28,8 @@ public class WebConstants {
 	public static final int GET_MESSAGES = 18;
 	public static final int GET_STUDYMATE_REQUEST = 19;
 	public static final int GET_ALL_BADGES_COUNT = 20;
+	public static final int RESPOND_TO_REQUEST = 21;
+	public static final int UPDATE_READ_STATUS = 22;
 
 
 
@@ -79,6 +81,14 @@ public class WebConstants {
 	public static final String URL_NOTIFICATION = URL_HOST_147 + "GetAllNotices";
 	public static final String URL_SMS_ALERTS = URL_HOST_147 + "GetAllNotices";
 	public static final String URL_GET_ALL_BADGES_COUNT = URL_HOST_147 + "GetAllBadgeCount";
+	public static final String URL_RESPOND_TO_REQUEST = URL_HOST_147 + "AcceptRequestFromStudymate";
+	public static final String URL_UPDATE_READ_STATUS = URL_HOST_147 + "UpdateReadStatus"; // studymate_request, messages, notification
 
 
+	/**
+	 * Parameter values
+	 */
+	public static final String STUDYMATE_REQUEST = "studymate_request";
+	public static final String MESSAGES = "messages";
+	public static final String NOTIFICATION = "notification";
 }
