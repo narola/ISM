@@ -8,6 +8,7 @@
 	</item>
 	<item>
 		<shape>
+			
 			<solid android:color="@color/studymate_tab_bg" />
 		</shape>
 	</item>
