@@ -2,7 +2,6 @@ package com.ism.teacher.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -91,8 +90,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         rvQuestionlist = (RecyclerView) view.findViewById(R.id.rv_questionlist);
         questionBankListAdapter = new QuestionBankListAdapter(getActivity(), mFragment);
         rvQuestionlist.setAdapter(questionBankListAdapter);
-        rvQuestionlist.setLayoutManager(new LinearLayoutManager(getActivity()));
-
 
         etQuestionlistSearch.setTypeface(myTypeFace.getRalewayRegular());
         tvQuestionlistTitle.setTypeface(myTypeFace.getRalewayRegular());

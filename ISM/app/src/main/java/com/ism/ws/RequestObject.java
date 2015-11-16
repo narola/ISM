@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+
 /**
  * Created by c161 on 30/10/15.
  */
@@ -57,6 +59,26 @@ public class RequestObject {
 	private String comment;
 	private String taggedBy;
 	private String[] taggedUserIds;
+
+	private String keyId;
+	private String settingValue;
+	private ArrayList<RequestObject> preferences;
+
+	public String getKeyId() {
+		return keyId;
+	}
+	@JsonProperty("key_id")
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public String getSettingValue() {
+		return settingValue;
+	}
+	@JsonProperty("preference_value")
+	public void setSettingValue(String settingValue) {
+		this.settingValue = settingValue;
+	}
 
 	public String getUserId() {
 		return this.userId;
@@ -353,5 +375,14 @@ public class RequestObject {
 	@JsonProperty("tagged_by")
 	public void setTaggedBy(String taggedBy) {
 		this.taggedBy = taggedBy;
+	}
+
+	public ArrayList<RequestObject> getPreferences() {
+		return preferences;
+	}
+
+	@JsonProperty("preferences")
+	public void setPreferences(ArrayList<RequestObject> preferences) {
+		this.preferences = preferences;
 	}
 }

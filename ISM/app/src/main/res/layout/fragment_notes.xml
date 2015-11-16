@@ -51,12 +51,12 @@
             android:layout_height="450sp"
             android:background="@drawable/bg_highscore_subjectlist"/>
 
-        <ListView
-            android:id="@+id/lv_events"
-            android:layout_width="match_parent"
-            android:layout_height="480sp"
-            android:padding="@dimen/d5dp"
-            android:divider="@color/divider"
-            android:dividerHeight="@dimen/divider_height" />
+        <!--<ListView-->
+            <!--android:id="@+id/lv_events"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="480sp"-->
+            <!--android:padding="@dimen/d5dp"-->
+            <!--android:divider="@color/divider"-->
+            <!--android:dividerHeight="@dimen/divider_height" />-->
     </com.ism.views.AccordionView>
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.ism.fragment.userprofile;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.Debug;
+import com.ism.utility.PreferenceData;
 import com.ism.ws.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
 
@@ -26,6 +29,9 @@ public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.Web
     private TextView txtConference, txtAssign, txtEvaluation, txtConfNotifi, txtAssignNotifi, txtEvalNotifi;
     private RadioGroup radioGroupConf, radioGroupAssign, radioGroupEval;
     private RadioButton radioButtonYesConf, radioButtonNoconf, radioButtonYesAssign, radioButtonNoAssign, radioButtonYesEval, radioButtonNoEval;
+    private static String TAG = SMSAlertsFragment.class.getSimpleName();
+    private HostActivity activityHost;
+    private GeneralSettingsFragment generalSettingsFragment;
 
     public static SMSAlertsFragment newInstance() {
         SMSAlertsFragment fragment = new SMSAlertsFragment();
@@ -47,6 +53,7 @@ public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.Web
 
     private void initGlobal() {
         myTypeFace = new MyTypeFace(getActivity());
+        generalSettingsFragment = GeneralSettingsFragment.newInstance();
         txtAssign = (TextView) view.findViewById(R.id.txt_alerts_assignment);
         txtEvaluation = (TextView) view.findViewById(R.id.txt_alerts_evaluations);
         txtConference = (TextView) view.findViewById(R.id.txt_alerts_conference);
@@ -94,38 +101,94 @@ public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.Web
         radioButtonYesAssign.setOnClickListener(this);
         radioButtonYesConf.setOnClickListener(this);
         radioButtonYesEval.setOnClickListener(this);
-
+        setDefaultValues();
 
     }
 
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
         ResponseObject responseObject = (ResponseObject) object;
-        if (WebConstants.SMS_ALERTS == apiCode) {
+        if (WebConstants.GENERAL_SETTINGS == apiCode) {
             if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
 
             } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
-
             }
         }
-
     }
 
+    public String getKeyID(String keyPref) {
+        String key = PreferenceData.getStringPrefs(keyPref, getActivity(), "");
+        return key;
+    }
 
     @Override
     public void onClick(View v) {
+        String key_value, strPref = null, value = null;
         if (v == radioButtonNoAssign) {
-            Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_NEW_ASSIGNMENT, getActivity()), "No", getActivity());
         } else if (v == radioButtonYesAssign) {
-            Toast.makeText(getActivity(), "Yes", Toast.LENGTH_SHORT).show();
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_NEW_ASSIGNMENT, getActivity()), "Yes", getActivity());
         } else if (v == radioButtonNoconf) {
-            Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_CONFERENCE_SCHECDULE, getActivity()), "No", getActivity());
         } else if (v == radioButtonYesConf) {
-            Toast.makeText(getActivity(), "Yes", Toast.LENGTH_SHORT).show();
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_CONFERENCE_SCHECDULE, getActivity()), "Yes", getActivity());
         } else if (v == radioButtonNoEval) {
-            Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_EVALUATION_READY, getActivity()), "No", getActivity());
         } else if (v == radioButtonYesEval) {
-            Toast.makeText(getActivity(), "Yes", Toast.LENGTH_SHORT).show();
+            generalSettingsFragment.setPreferenceList(PreferenceData.getStringPrefs(PreferenceData.SA_ALERT_EVALUATION_READY, getActivity()), "Yes", getActivity());
         }
     }
+
+    public String getKeyPereference(String keyPref) {
+        String key = PreferenceData.getStringPrefs(keyPref, getActivity(), "");
+        String key_value = PreferenceData.getStringPrefs(key, getActivity(), "");
+        return key_value;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            activityHost = (HostActivity) activity;
+        } catch (ClassCastException e) {
+            Debug.e(TAG, "onAttach Exception : " + e.toString());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        try {
+        } catch (ClassCastException e) {
+            Debug.e(TAG, "onDetach Exception : " + e.toString());
+        }
+    }
+
+    private void setDefaultValues() {
+        String key_value;
+        key_value = getKeyPereference(PreferenceData.SA_ALERT_EVALUATION_READY);
+        // Debug.i(TAG,"Value: "+key+"::"+key_value);
+        if (key_value.equals("No")) {
+            radioGroupEval.check(R.id.radiobutton_no);
+
+        } else {
+            radioGroupEval.check(R.id.radiobutton_yes);
+        }
+        key_value = getKeyPereference(PreferenceData.SA_ALERT_CONFERENCE_SCHECDULE);
+        if (key_value.equals("No")) {
+            radioGroupConf.check(R.id.radiobutton_no);
+
+        } else {
+            radioGroupConf.check(R.id.radiobutton_yes);
+        }
+        key_value = getKeyPereference(PreferenceData.SA_ALERT_NEW_ASSIGNMENT);
+        if (key_value.equals("No")) {
+            radioGroupAssign.check(R.id.radiobutton_no);
+
+        } else {
+            radioGroupAssign.check(R.id.radiobutton_yes);
+        }
+
+    }
+
 }

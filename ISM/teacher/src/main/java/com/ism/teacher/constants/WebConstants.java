@@ -46,6 +46,7 @@ public class WebConstants {
     public static final int GET_ALL_EXAM_SUBMISSION = 22;
     public static final int GETEXAMQUESTIONS = 23;
     public static final int GETEXAMEVALUATIONS = 24;
+    public static final int GET_MY_STUDENTS = 25;
 
 
     /**
@@ -81,6 +82,8 @@ public class WebConstants {
     public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_HOST_162 + "GetExamSubmission";
     public static final String URL_GET_EXAM_QUESTIONS = URL_HOST_162 + "GetExamQuestions";
     public static final String URL_GET_EXAM_EVALUATIONS = URL_HOST_162 + "GetExamEvaluation";
+    public static final String URL_GET_MY_STUDENTS = URL_HOST_162 + "GetMyStudents";
+
 
 
     public static final String URL_GET_CITIES = URL_HOST_161 + "GetCities";

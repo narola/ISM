@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color_white"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical">
 
         <com.ism.teacher.views.CircleImageView
-            android:id="@+id/img_user_pic"
+            android:id="@+id/img_student_pic"
             android:layout_width="60sp"
             android:layout_height="60sp"
             android:layout_alignParentStart="true"
@@ -24,36 +25,45 @@
             android:src="@drawable/userdp" />
 
         <TextView
-            android:id="@+id/txt_student_class"
-            android:layout_width="match_parent"
+            android:id="@+id/txt_student_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d10dp"
             android:layout_marginTop="@dimen/d10dp"
-            android:layout_toEndOf="@+id/img_user_pic"
+            android:layout_toEndOf="@+id/img_student_pic"
             android:gravity="left"
-            android:padding="1sp"
-            android:text="Class name"
+            android:text="Adam"
             android:textColor="#75767A"
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/txt_student_marks"
-            android:layout_width="match_parent"
+            android:id="@+id/txt_student_rollno"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_student_class"
-            android:layout_toEndOf="@+id/img_user_pic"
+            android:layout_below="@+id/txt_student_name"
+            android:layout_marginLeft="@dimen/d10dp"
+            android:layout_marginTop="@dimen/d10dp"
+            android:layout_toEndOf="@+id/img_student_pic"
             android:gravity="left"
-            android:padding="1sp"
-            android:text="500"
-            android:textColor="@color/color_red"
-            android:textSize="@dimen/d18dp" />
+            android:text="Roll No-"
+            android:textColor="#75767A"
+            android:textSize="15sp" />
 
+        <ImageView
+            android:id="@+id/img_online"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="@dimen/d10dp"
+            android:src="@drawable/radio_button_select" />
 
-        <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:id="@+id/txt_bottom_line"-->
-        <!--android:layout_below="@+id/txt_student_marks"-->
-        <!--android:background="@color/border_gray" />-->
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/img_separator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d1dp"
+        android:background="@color/color_shade_news_feed" />
 
 </LinearLayout>
