@@ -80,7 +80,7 @@
             android:layout_marginLeft="@dimen/d20dp"
             android:layout_marginStart="28dp"
             android:background="@drawable/bg_spinner_header"
-            android:padding="@dimen/d5dp">
+           >
 
         </Spinner>
     <View

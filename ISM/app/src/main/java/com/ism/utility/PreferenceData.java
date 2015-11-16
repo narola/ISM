@@ -12,7 +12,7 @@ public class PreferenceData {
 
     public static final String IS_REMEMBER_ME = "isRememberMe";
 
-    //	ProfileInfo  ============================
+//  ============================  ProfileInfo  ============================
     public static final String IS_REMEMBER_ME_FIRST_LOGIN = "isFirstLoginRememberMe";
     public static final String USER_PASSWORD = "userPassword";
     public static final String USER_CREDENTIAL_ID = "userCredentialId";
@@ -26,7 +26,7 @@ public class PreferenceData {
     public static final String USER_COURSE_NAME = "userCourseName";
     public static final String USER_ACADEMIC_YEAR = "userAcademicYear";
     public static final String USER_ROLE_ID = "userRoleId";
-//	=========================================
+//	=======================================================================
 
     public static final String USER_SCHOOL_GRADE = "userSchoolGrade";
     public static final String IS_TUTORIAL_GROUP_ALLOCATED = "isTutorialGroupAllocated";
@@ -37,6 +37,33 @@ public class PreferenceData {
     public static final String USER_ID = "userId";
     public static final String USER_FULL_NAME = "userFullName";
     public static final String USER_PROFILE_PIC = "userProfilePic";
+
+    public static final String BADGE_COUNT_NOTIFICATION = "badgeCountNotification";
+    public static final String BADGE_COUNT_MESSAGE = "badgeCountMessage";
+    public static final String BADGE_COUNT_REQUEST = "badgeCountRequest";
+
+    //=================================================================
+    //PS=> PRIVACYSETTING
+    public static final String PS_VIWERS_VIEW_CONTACT = "ViewersViewContact";
+    public static final String PS_VIWERS_VIEW_BIRTHDATE = "ViewersViewBirthdate";
+    public static final String PS_VIWERS_VIEW_EXAMSCORE = "ViewersViewExamScore";
+
+    //SA=> SMSAlerts
+    public static final String SA_ALERT_NEW_ASSIGNMENT = "SMSAlertNewAssignment";
+    public static final String SA_ALERT_EVALUATION_READY = "SMSAlertEvaluationReady";
+    public static final String SA_ALERT_CONFERENCE_SCHECDULE = "SMSAlertConferenceSchedule";
+
+    //NOTI=> NOTIFICATION
+    public static final String NOTI_LIKE = "LikeNotification";
+    public static final String NOTI_COMMENT = "CommentNotification";
+    public static final String NOTI_FOLLOWED_AUTHOR_POST= "FollowedAuthorPostNotification";
+    public static final String NOTI_TAGGED = "TaggedNotification";
+    public static final String NOTI_NOTIFICATION_NOTICEBOARD = "NoticeboardNotiication";
+
+    //=> Block user
+
+
+
 
     public static void setBooleanPrefs(String prefKey, Context context, boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_ISM, 0).edit();

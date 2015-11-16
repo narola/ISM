@@ -1,8 +1,10 @@
 package com.ism.fragment.userprofile;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.adapter.BlockedUserAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
@@ -29,6 +32,9 @@ public class BlockUserFragment extends Fragment implements WebserviceWrapper.Web
     private ListView listView;
     private BlockedUserAdapter blockedUserAdapter;
     InputValidator inputValidator;
+    private static String TAG = BlockUserFragment.class.getSimpleName();
+    private HostActivity activityHost;
+
     public static BlockUserFragment newInstance() {
         BlockUserFragment fragment = new BlockUserFragment();
         return fragment;
@@ -92,7 +98,24 @@ public class BlockUserFragment extends Fragment implements WebserviceWrapper.Web
         listView.setAdapter(blockedUserAdapter);
         ListViewDynamicHight();
     }
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            activityHost = (HostActivity) activity;
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onAttach Exception : " + e.toString());
+        }
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        try {
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onDetach Exception : " + e.toString());
+        }
+    }
     public void ListViewDynamicHight() {
         int totalHeight = 0;
         for (int i = 0; i < blockedUserAdapter.getCount(); i++) {
@@ -115,7 +138,7 @@ public class BlockUserFragment extends Fragment implements WebserviceWrapper.Web
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
         ResponseObject responseObject=(ResponseObject)object;
-        if (WebConstants.BLOCK_USER==apiCode){
+        if (WebConstants.GENERAL_SETTINGS==apiCode){
             if(responseObject.getStatus().equals(ResponseObject.SUCCESS)){
 
             }else if(responseObject.getStatus().equals(ResponseObject.FAILED)){

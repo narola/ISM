@@ -88,6 +88,17 @@ public class WebserviceWrapper {
                     case WebConstants.GET_ALL_NOTICES:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ALL_NOTICES, ResponseObject.class, requestObject);
                         break;
+
+                    case WebConstants.GENERAL_SETTING_PREFERENCES:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GENERAL_SETTING_PREFERENCES, ResponseObject.class, requestObject);
+                        break;
+                    case WebConstants.GENERAL_SETTINGS:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GENERAL_SETTING, ResponseObject.class, requestObject);
+                        break;
+                    case WebConstants.GET_USER_PREFERENCES:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_USER_PREFERENCES, ResponseObject.class, requestObject);
+                        break;
+
                     case WebConstants.GET_NOTIFICATION:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_NOTIFICATION, ResponseObject.class, requestObject);
                         break;
@@ -96,6 +107,9 @@ public class WebserviceWrapper {
                         break;
                     case WebConstants.GET_STUDYMATE_REQUEST:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_STUDYMATE_REQUEST, ResponseObject.class, requestObject);
+                        break;
+                    case WebConstants.GET_ALL_BADGES_COUNT:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ALL_BADGES_COUNT, ResponseObject.class, requestObject);
                         break;
                 }
             } catch (Exception e) {

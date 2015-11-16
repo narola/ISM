@@ -86,6 +86,19 @@
     <color name="divider">#F1F1F1</color>
 
 
-    <!-- Assignment -->
+    <!-- Assignment Subjective-->
     <color name="color_red">#D95350</color>
+
+    <color name="color_gray_subjective_question">#74777C</color>
+    <color name="color_blue_subjective_question">#4392CA</color>
+    <color name="color_green_subjective_question">#64D26F</color>
+
+
+    <!-- subjective answer points-->
+    <color name="color_poor">#54BA7B</color>
+    <color name="color_average">#DE7272</color>
+    <color name="color_fair">#334A5C</color>
+    <color name="color_good">#4094D0</color>
+    <color name="color_excellent">#19C59F</color>
+    <color name="color_separator">#DDDEE0</color>
 </resources>

@@ -29,6 +29,7 @@ import com.ism.teacher.model.AddCommentRequest;
 import com.ism.teacher.model.Comment;
 import com.ism.teacher.model.GetAllFeedsTeacherRequest;
 import com.ism.teacher.model.LIkeFeedRequest;
+import com.ism.teacher.model.RequestObject;
 import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.model.TagFriendInFeedRequest;
 import com.ism.teacher.ws.WebserviceWrapper;
@@ -121,10 +122,12 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     private void callAllFeedsApi() {
         try {
-            GetAllFeedsTeacherRequest getAllFeedsTeacherRequest = new GetAllFeedsTeacherRequest();
-            getAllFeedsTeacherRequest.setUser_id("370");
+//            GetAllFeedsTeacherRequest getAllFeedsTeacherRequest = new GetAllFeedsTeacherRequest();
+//            getAllFeedsTeacherRequest.setUser_id("370");
 
-            new WebserviceWrapper(getActivity(), getAllFeedsTeacherRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+            RequestObject requestObject=new RequestObject();
+            requestObject.setUserId("370");
+            new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_FEEDS);
 
         } catch (Exception e) {

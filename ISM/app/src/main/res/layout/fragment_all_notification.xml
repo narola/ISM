@@ -15,7 +15,7 @@
 		android:divider="@drawable/divider_gray_with_padding"></ListView>
 
 	<ViewStub
-		android:id="@+id/vs_post"
+		android:id="@+id/vs_notification_details"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:inflatedId="@+id/rl_post"

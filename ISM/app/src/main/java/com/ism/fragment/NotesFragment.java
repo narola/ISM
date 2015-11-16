@@ -13,20 +13,18 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.adapter.EventsAdapter;
 import com.ism.adapter.HighScoreAdapter;
 import com.ism.adapter.NoticeAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.EventsModel;
+import com.ism.model.FragmentArgument;
 import com.ism.model.HighScoreModel;
 import com.ism.model.HighScoreStudentModel;
-import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.AccordionView;
 import com.ism.ws.RequestObject;
 import com.ism.ws.ResponseObject;
-import com.ism.ws.TestRequestObject;
 import com.ism.ws.WebserviceWrapper;
 import com.ism.ws.model.Data;
 
@@ -41,7 +39,7 @@ public class NotesFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private View view;
     private AccordionView accordionNotes;
-    private ListView lvNotice, lvEvents, lvHighScore;
+    private ListView lvNotice, lvHighScore;
     private TextView txtViewAllNotice;
 
 	private HostActivity activityHost;
@@ -70,7 +68,7 @@ public class NotesFragment extends Fragment implements WebserviceWrapper.Webserv
 	private void initGlobal(View v) {
 		accordionNotes = (AccordionView) v.findViewById(R.id.accordion_view_chat);
 		lvNotice = (ListView) v.findViewById(R.id.lv_notice);
-		lvEvents = (ListView) v.findViewById(R.id.lv_events);
+		//lvEvents = (ListView) v.findViewById(R.id.lv_events);
 		lvHighScore = (ListView) v.findViewById(R.id.lv_highScore);
 		txtViewAllNotice = (TextView) v.findViewById(R.id.txt_viewAll_notice);
 
@@ -79,7 +77,7 @@ public class NotesFragment extends Fragment implements WebserviceWrapper.Webserv
 		txtViewAllNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-	            activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTES, arrListNotice);
+	            activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTES, new FragmentArgument(arrListNotice));
             }
         });
 
@@ -111,9 +109,9 @@ public class NotesFragment extends Fragment implements WebserviceWrapper.Webserv
 
         //EVENTS
         EventsModel eventsModel;
-        ArrayList<EventsModel> arrayListEvent = new ArrayList<EventsModel>();
+       // ArrayList<EventsModel> arrayListEvent = new ArrayList<EventsModel>();
         eventsModel = new EventsModel("", "", "", "");
-        lvEvents.setAdapter(new EventsAdapter(getActivity(), arrayListEvent));
+       // lvEvents.setAdapter(new EventsAdapter(getActivity(), arrayListEvent));
         //notes_ll_events.addView(lvEvents);
 
         //HIGH SCORE
