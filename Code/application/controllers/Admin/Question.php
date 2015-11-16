@@ -298,7 +298,7 @@ class Question extends ADMIN_Controller {
 		$this->data['tags'] = select(TBL_TAGS,FALSE,array('where'=>array('is_delete'=>'0')));
 
 		if($_POST){
-			// p($_POST, true);
+			
 			$course_id = $this->input->post('course_id'); 
 			$classroom_id = $this->input->post('classroom_id');
 			$subject_id = $this->input->post('subject_id');
@@ -384,10 +384,10 @@ class Question extends ADMIN_Controller {
 
 			$data_question = array(
 				 "question_text"=>$this->input->post("question_text"),
-				 "question_hint"=>'  ',
+				 "question_hint"=>'',
 				 "question_creator_id"=>$session_id,
-				 "assets_link"=>' ',
-				 "question_image_link"=>' ',
+				 "assets_link"=>'',
+				 "question_image_link"=>'',
 				 "evaluation_notes"=>$this->input->post("evaluation_notes"),
 				 "solution"=>$this->input->post("solution"),
 				 "topic_id"=>$this->input->post("topic_id"),
@@ -419,13 +419,11 @@ class Question extends ADMIN_Controller {
 			}
 
 			$correct_choice =  $this->input->post('correct_choice')-1;
-
 			$cnt = 0;
 
-			foreach($choices as $choice){
 				
-				$cnt==$correct_choice ? $is_right = TRUE : $is_right= FALSE; // Set Correct Answer for Choices
-
+			foreach($choices as $choice){
+				$cnt==$correct_choice ? $is_right = TRUE : $is_right= 0; // Set Correct Answer for Choices
 				$data_choice = array(
 							'question_id'=>$question_id,
 							'choice_text'=>$choice,
@@ -436,9 +434,12 @@ class Question extends ADMIN_Controller {
 						);
 
 				insert(TBL_ANSWER_CHOICES,replace_invalid_chars($data_choice));					
-
+			
 				$cnt++;
 			}
+
+			
+
 
 			$button_type = $this->input->post('button_type');
 			

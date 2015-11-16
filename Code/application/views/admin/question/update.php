@@ -134,9 +134,11 @@
                        placeholder="Enter Choice">
 
                                         <?php if($i == 1) { ?>
-                                            <i class="fa fa-plus-circle font-21 component"></i>
+                                            <!-- <i class="fa fa-plus-circle font-21 component"></i> -->
+                                            <i class="icon icon_add_small component"></i>
                                         <?php }else{ ?>
-                                            <i class="fa fa-minus-circle font-21 component_close"></i>
+                                            <!-- <i class="fa fa-minus-circle font-21 component_close"></i> -->
+                                            <i class="icon icon_subs_small component_close"></i>
                                         <?php } ?>
 
                                     </div>
@@ -170,9 +172,11 @@
                        placeholder="Enter Choice">
 
                                         <?php if($i == 1) { ?>
-                                            <i class="fa fa-plus-circle font-21 component"></i>
+                                            <!-- <i class="fa fa-plus-circle font-21 component"></i> -->
+                                            <i class="icon icon_add_small component"></i>
                                         <?php }else{ ?>
-                                            <i class="fa fa-minus-circle font-21 component_close"></i>
+                                            <!-- <i class="fa fa-minus-circle font-21 component_close"></i> -->
+                                            <i class="icon icon_subs_small component_close"></i>
                                         <?php } ?>
 
                                     </div>
@@ -322,7 +326,7 @@
                 var html = '<div class="form-group">';
                 html += '<input type="radio" name="correct_ans" id="correct_ans" onchange="correct_choice1(this.value)" value="'+total_choice+'">';
                 html += '<input type="text" name="choices[]" class="form-control choice_detail" value=""   placeholder="Enter Choice">';
-                html += '<i class="fa fa-minus-circle font-21 component_close"></i>';
+                html += '<i class="icon icon_subs_small component_close"></i>';
                 html += '</div>';
                 $(this).parent().parent().append(html);
                 $(this).parent().parent().find('span.blank_error').remove();
