@@ -12,6 +12,7 @@
         android:background="@drawable/bg_assessment_box">
 
         <LinearLayout
+            android:id="@+id/ll_assignment_submittor_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -42,7 +43,7 @@
                         android:layout_marginTop="@dimen/d5dp"
                         android:text="@string/strtest"
                         android:textColor="@color/color_black_light_medium"
-                        android:textSize="@dimen/d15dp" />
+                        android:textSize="@dimen/d18dp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"

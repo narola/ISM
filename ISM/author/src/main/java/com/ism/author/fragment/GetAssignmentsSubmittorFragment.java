@@ -79,14 +79,16 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
 
     private void callApiGetExamSubmission() {
         if (Utility.isOnline(getActivity())) {
+
             try {
+                ((AuthorHostActivity) getActivity()).startProgress();
                 RequestObject request = new RequestObject();
                 request.setExamId("9");
                 request.setUserId("340");
                 request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
 
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GET_EXAM_SUBMISSION);
+                        .execute(WebConstants.GETEXAMSUBMISSION);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -100,7 +102,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
     public void onResponse(int apicode, Object object, Exception error) {
         try {
             switch (apicode) {
-                case WebConstants.GET_EXAM_SUBMISSION:
+                case WebConstants.GETEXAMSUBMISSION:
                     onResponseGetAllExamSubmission(object, error);
                     break;
             }
@@ -112,13 +114,14 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
 
     private void onResponseGetAllExamSubmission(Object object, Exception error) {
         try {
-            Utility.hideProgressBar((AuthorHostActivity) getActivity());
+            ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
                 ResponseObject responseObj = (ResponseObject) object;
                 if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
                     listOfStudents.addAll(responseObj.getData().get(0).getEvaluations());
                     assignmentSubmittorAdapter.addAll(listOfStudents);
                     assignmentSubmittorAdapter.notifyDataSetChanged();
+                    assignmentSubmittorAdapter.setExamId(responseObj.getData().get(0).getExamID());
                 } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
@@ -157,5 +160,6 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
         }
         fragListener = null;
     }
+
 
 }

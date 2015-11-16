@@ -133,12 +133,12 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
     private void callApiGetAllAssignments() {
         if (Utility.isOnline(getActivity())) {
             try {
-                Utility.showProgressBar((AuthorHostActivity) getActivity());
+                ((AuthorHostActivity) getActivity()).startProgress();
                 RequestObject request = new RequestObject();
                 request.setUserId("370");
                 request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GET_ALL_ASSIGNMENTS);
+                        .execute(WebConstants.GETALLASSIGNMENTS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -185,7 +185,7 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
     public void onResponse(int apiCode, Object object, Exception error) {
         try {
             switch (apiCode) {
-                case WebConstants.GET_ALL_ASSIGNMENTS:
+                case WebConstants.GETALLASSIGNMENTS:
                     onResponseGetAllAssignments(object, error);
                     break;
 
@@ -206,7 +206,7 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
     private void onResponseGetAllAssignments(Object object, Exception error) {
 
         try {
-            Utility.hideProgressBar((AuthorHostActivity) getActivity());
+            ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
                 ResponseObject responseObj = (ResponseObject) object;
                 if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {

@@ -1,10 +1,8 @@
 package com.ism.author.ws;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.model.ResponseObject;
@@ -39,7 +37,6 @@ public class WebserviceWrapper {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            showProgressDialog();
         }
 
         @Override
@@ -141,9 +138,11 @@ public class WebserviceWrapper {
                     case WebConstants.GETALLEXAM:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_ALL_EXAM, ResponseObject.class, requestObject);
                         break;
+
                     case WebConstants.GETEXAMEVALUATIONS:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_EXAM_EVALUATIONS, ResponseObject.class, requestObject);
                         break;
+
                     case WebConstants.GETEXAMQUESTIONS:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_EXAM_QUESTIONS, ResponseObject.class, requestObject);
                         break;
@@ -154,14 +153,10 @@ public class WebserviceWrapper {
 
                     case WebConstants.GETEXAMSUBMISSION:
                         responseObject = new com.ism.author.ws.RequestWs().getRequest(WebConstants.URL_GET_EXAM_SUBMISSION, ResponseObject.class, requestObject);
-                        Debug.i(TAG, "Response object :" + responseObject);
                         break;
 
-                    case WebConstants.GET_ALL_ASSIGNMENTS:
+                    case WebConstants.GETALLASSIGNMENTS:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ALL_ASSIGNMENTS, ResponseObject.class, requestObject);
-                        break;
-                    case WebConstants.GET_EXAM_SUBMISSION:
-                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_EXAM_SUBMISSION, ResponseObject.class, requestObject);
                         break;
 
 
@@ -176,12 +171,9 @@ public class WebserviceWrapper {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             Debug.i(TAG, "WebserviceCaller Response : " + o);
-            dismissProgressDialog();
-            webserviceResponse.onResponse(API_METHOD_NAME, o, null);
             try {
-                Debug.i(TAG, "WebserviceCaller Response : " + o.toString());
-//                dismissProgressDialog();
                 webserviceResponse.onResponse(API_METHOD_NAME, o, null);
+                Debug.i(TAG, "WebserviceCaller Response : " + o.toString());
             } catch (Exception e) {
                 Debug.i(TAG, "WebserviceCaller Response Exception : " + e.toString());
             }
@@ -189,20 +181,5 @@ public class WebserviceWrapper {
         }
     }
 
-    ProgressDialog pd;
-
-    private void showProgressDialog() {
-
-        pd = new ProgressDialog(mContext);
-        pd.setMessage(mContext.getString(R.string.loading));
-        pd.show();
-
-    }
-
-    private void dismissProgressDialog() {
-        if (pd != null) {
-            pd.dismiss();
-        }
-    }
 
 }

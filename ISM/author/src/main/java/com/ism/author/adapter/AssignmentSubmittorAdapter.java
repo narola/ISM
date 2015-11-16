@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ism.author.AuthorHostActivity;
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
@@ -15,6 +17,7 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.helper.CircleImageView;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
+import com.ism.author.model.RequestObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -30,10 +33,12 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
     private ArrayList<Data> listOfStudents = new ArrayList<Data>();
     private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
+    private String examId;
 
 
     public AssignmentSubmittorAdapter(Context mContext) {
         this.mContext = mContext;
+        this.examId = examId;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(this.mContext));
     }
@@ -50,23 +55,34 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
         try {
-            holder.tv_assignment_submittor_name.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_assignment_submittor_rollno.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_assignment_submission_date.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_submission_date.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_assessment_status.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_status.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvAssignmentSubmittorName.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvAssignmentSubmittorRollno.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvAssignmentSubmissionDate.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvSubmissionDate.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvAssessmentStatus.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvStatus.setTypeface(myTypeFace.getRalewayRegular());
 
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
-                    holder.img_assignment_submittor_dp, ISMAuthor.options);
+                    holder.imgAssignmentSubmittorDp, ISMAuthor.options);
 
-            holder.tv_assignment_submittor_name.setText(listOfStudents.get(position).getFullName());
-            holder.tv_assignment_submittor_rollno.setText(mContext.getString(R.string.strrollno) + " " + listOfStudents.get(position).getRoleId());/*this data set is left*/
-            holder.tv_assignment_submission_date.setText(Utility.getFormattedDate("dd-MMM-yyyy", listOfStudents.get(position).getSubmissionDate()));
-            holder.tv_assessment_status.setText(listOfStudents.get(position).getExamStatus());
+            holder.tvAssignmentSubmittorName.setText(listOfStudents.get(position).getFullName());
+            holder.tvAssignmentSubmittorRollno.setText(mContext.getString(R.string.strrollno) + " " + listOfStudents.get(position).getRoleId());/*this data set is left*/
+            holder.tvAssignmentSubmissionDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", listOfStudents.get(position).getSubmissionDate()));
+            holder.tvAssessmentStatus.setText(listOfStudents.get(position).getExamStatus());
+
+            holder.llAssignmentSubmittorContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RequestObject requestObject = new RequestObject();
+                    requestObject.setExamId(examId);
+                    requestObject.setStudentId(listOfStudents.get(position).getStudentId());
+                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS, requestObject);
+
+                }
+            });
 
         } catch (Exception e) {
             Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());
@@ -92,28 +108,36 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        CircleImageView img_assignment_submittor_dp;
-        TextView tv_assignment_submittor_name, tv_assignment_submittor_rollno, tv_assignment_submission_date, tv_submission_date, tv_assessment_status,
-                tv_status;
-        ImageView img_assignment_submittor_chat, img_assignment_submission_msg;
+        CircleImageView imgAssignmentSubmittorDp;
+        TextView tvAssignmentSubmittorName, tvAssignmentSubmittorRollno, tvAssignmentSubmissionDate, tvSubmissionDate, tvAssessmentStatus,
+                tvStatus;
+        ImageView imgAssignmentSubmittorChat, imgAssignmentSubmissionMsg;
+        LinearLayout llAssignmentSubmittorContainer;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            img_assignment_submittor_dp = (CircleImageView) itemView.findViewById(R.id.img_assignment_submittor_dp);
-            img_assignment_submittor_chat = (ImageView) itemView.findViewById(R.id.img_assignment_submittor_chat);
-            img_assignment_submission_msg = (ImageView) itemView.findViewById(R.id.img_assignment_submission_msg);
+            imgAssignmentSubmittorDp = (CircleImageView) itemView.findViewById(R.id.img_assignment_submittor_dp);
+            imgAssignmentSubmittorChat = (ImageView) itemView.findViewById(R.id.img_assignment_submittor_chat);
+            imgAssignmentSubmissionMsg = (ImageView) itemView.findViewById(R.id.img_assignment_submission_msg);
 
-            tv_assignment_submittor_name = (TextView) itemView.findViewById(R.id.tv_assignment_submittor_name);
-            tv_assignment_submittor_rollno = (TextView) itemView.findViewById(R.id.tv_assignment_submittor_rollno);
-            tv_assignment_submission_date = (TextView) itemView.findViewById(R.id.tv_assignment_submission_date);
-            tv_submission_date = (TextView) itemView.findViewById(R.id.tv_submission_date);
-            tv_assessment_status = (TextView) itemView.findViewById(R.id.tv_assessment_status);
-            tv_status = (TextView) itemView.findViewById(R.id.tv_status);
+            tvAssignmentSubmittorName = (TextView) itemView.findViewById(R.id.tv_assignment_submittor_name);
+            tvAssignmentSubmittorRollno = (TextView) itemView.findViewById(R.id.tv_assignment_submittor_rollno);
+            tvAssignmentSubmissionDate = (TextView) itemView.findViewById(R.id.tv_assignment_submission_date);
+            tvSubmissionDate = (TextView) itemView.findViewById(R.id.tv_submission_date);
+            tvAssessmentStatus = (TextView) itemView.findViewById(R.id.tv_assessment_status);
+            tvStatus = (TextView) itemView.findViewById(R.id.tv_status);
+
+            llAssignmentSubmittorContainer = (LinearLayout) itemView.findViewById(R.id.ll_assignment_submittor_container);
 
 
         }
+    }
+
+    public void setExamId(String examId) {
+        this.examId = examId;
+
     }
 
 }

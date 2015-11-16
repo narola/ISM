@@ -1,6 +1,7 @@
 package com.ism.author;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -32,6 +33,7 @@ import com.ism.author.fragment.AssessmentFragment;
 import com.ism.author.fragment.BooksFragment;
 import com.ism.author.fragment.CreateExamAssignmentContainerFragment;
 import com.ism.author.fragment.GetAssignmentsSubmittorFragment;
+import com.ism.author.fragment.GetObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.OfficeFragment;
 import com.ism.author.fragment.StudentAttemptedFragment;
@@ -40,6 +42,7 @@ import com.ism.author.fragment.TrialExamSujectiveDetailFragment;
 import com.ism.author.fragment.TrialFragment;
 import com.ism.author.helper.ControllerTopMenuItem;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.model.RequestObject;
 import com.ism.author.rightcontainerfragment.AuthorProfileFragment;
 import com.ism.author.rightcontainerfragment.HighScoreFragment;
 import com.ism.commonsource.view.ActionProcessButton;
@@ -96,6 +99,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_TRIAL_EXAM_SUBJECTIVE_DETAILS = 13;
     public static final int FRAGMENT_ASSESSMENT = 14;
     public static final int FRAGMENT_ASSIGNMENT_SUBMITTOR = 15;
+    public static final int FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS = 16;
 
     //these are the right side fragments
 
@@ -231,16 +235,40 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
                 case FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TrialExamObjectiveDetailFragment.newInstance()).commit();
-
                     break;
+
                 case FRAGMENT_TRIAL_EXAM_SUBJECTIVE_DETAILS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TrialExamSujectiveDetailFragment.newInstance()).commit();
                     break;
+
                 case FRAGMENT_ASSESSMENT:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AssessmentFragment.newInstance()).commit();
                     break;
+
                 case FRAGMENT_ASSIGNMENT_SUBMITTOR:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GetAssignmentsSubmittorFragment.newInstance()).commit();
+                    break;
+
+                case FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GetObjectiveAssignmentQuestionsFragment.newInstance()).commit();
+                    break;
+            }
+            currentMainFragment = fragment;
+
+        } catch (Exception e) {
+            Debug.i(TAG, "loadFragment Exception : " + e.toString());
+        }
+
+    }
+
+    public void loadFragmentInMainContainer(int fragment, RequestObject requestObject) {
+        try {
+            Fragment fragmentObject;
+            switch (fragment) {
+                case FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS:
+                    fragmentObject = GetObjectiveAssignmentQuestionsFragment.newInstance();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, fragmentObject).commit();
+                    ((GetObjectiveAssignmentQuestionsFragment) fragmentObject).setRequestObjectToPass(requestObject);
                     break;
             }
             currentMainFragment = fragment;
@@ -389,14 +417,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     break;
 
                 case FRAGMENT_STUDENT_ATTEMPTED:
-                    // currentRightFragment = fragment;
                     currentMainFragmentBg = R.color.bg_office;
                     imgOffice.setActivated(true);
-//                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_office);
-//                    txtAction.setTextColor(getResources().getColor(R.color.bg_office));
-//                    txtTitle.setTextColor(getResources().getColor(R.color.bg_office));
-//                    loadControllerTopMenu(controllerTopMenuTrialMenu);
-
                     imgSearch.setActivated(false);
                     imgAuthorProfile.setActivated(false);
                     break;
@@ -412,6 +434,17 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     loadControllerTopMenu(controllerTopMenuAssessment);
                     break;
                 case FRAGMENT_ASSIGNMENT_SUBMITTOR:
+                    imgHome.setActivated(false);
+                    currentMainFragment = fragment;
+                    currentMainFragmentBg = R.color.bg_office;
+                    imgOffice.setActivated(true);
+                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_office);
+                    txtAction.setTextColor(getResources().getColor(R.color.bg_office));
+                    txtTitle.setTextColor(getResources().getColor(R.color.bg_office));
+                    loadControllerTopMenu(controllerTopMenuAssessment);
+                    break;
+
+                case FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS:
                     imgHome.setActivated(false);
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_office;
@@ -467,6 +500,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     imgOffice.setActivated(true);
                     break;
                 case FRAGMENT_ASSIGNMENT_SUBMITTOR:
+                    imgOffice.setActivated(true);
+                    break;
+                case FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS:
                     imgOffice.setActivated(true);
                     break;
 
@@ -539,16 +575,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         View view = inflater.inflate(R.layout.row_trial, null);
         popupWindow = new PopupWindow(view, 400,
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT, true);
-        // popupWindow = new PopupWindow(view, 700,
-        // LayoutParams.MATCH_PARENT,true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setTouchInterceptor(customPopUpTouchListenr);
-
-        // popupWindow.showAtLocation(view, Gravity.LEFT, 70, 0);
-        // popupWindow = new PopupWindow(view, 500,
-        // LayoutParams.MATCH_PARENT, true);
         popupWindow.showAtLocation(view, Gravity.LEFT, 0, 0);
 
 
@@ -592,6 +622,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         } else if (currentMainFragment == FRAGMENT_ASSESSMENT) {
             loadFragmentInMainContainer(FRAGMENT_OFFICE);
         } else if (currentMainFragment == FRAGMENT_ASSIGNMENT_SUBMITTOR) {
+            loadFragmentInMainContainer(FRAGMENT_ASSESSMENT);
+        } else if (currentMainFragment == FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS) {
             loadFragmentInMainContainer(FRAGMENT_ASSESSMENT);
         }
     }
