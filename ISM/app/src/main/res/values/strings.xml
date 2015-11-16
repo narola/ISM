@@ -13,13 +13,13 @@
     <string-array name="accordion_notice">
         <item>NOTICE</item>
         <item>HIGH SCORE</item>
-        <item>EVENTS</item>
+        <!--<item>EVENTS</item>-->
     </string-array>
 
     <integer-array name="accordion_notice_visibility">
         <item>0</item>
         <item>0</item>
-        <item>0</item>
+        <!--<item>0</item>-->
     </integer-array>
 
     <string-array name="accordion_sections">
