@@ -42,8 +42,27 @@ public class StudymatesFragment extends Fragment {
 		txtStudymates = (TextView) view.findViewById(R.id.txt_studymates);
 		txtFindStudymates = (TextView) view.findViewById(R.id.txt_find_studymates);
 
-		txtStudymates.setActivated(true);
+		txtStudymates.setEnabled(false);
+
+		txtStudymates.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				txtStudymates.setEnabled(false);
+				txtFindStudymates.setEnabled(true);
+			}
+		});
+
+		txtFindStudymates.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				txtFindStudymates.setEnabled(false);
+				txtStudymates.setEnabled(true);
+			}
+		});
+
 	}
+
+
 
 	@Override
 	public void onAttach(Activity activity) {
