@@ -210,7 +210,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 RequestObject getTopicsRequest = new RequestObject();
                 getTopicsRequest.setSubjectId(subject_id);
                 new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETTOPICS);
+                        .execute(WebConstants.GET_TOPICS);
             } catch (Exception e) {
                 //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -225,7 +225,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETSUBJECT);
+                        .execute(WebConstants.GET_SUBJECT);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -240,7 +240,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETCOURSES);
+                        .execute(WebConstants.GET_COURSES);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -260,7 +260,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 request.setUserId("370");
                 request.setRole(AppConstant.AUTHOR_ROLE_ID);
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETQUESTIONBANK);
+                        .execute(WebConstants.GET_QUESTION_BANK);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -278,18 +278,18 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
         try {
             switch (apiMethodName) {
-                case WebConstants.GETSUBJECT:
+                case WebConstants.GET_SUBJECT:
                     onResponseGetSubject(object);
                     break;
 
-                case WebConstants.GETCOURSES:
+                case WebConstants.GET_COURSES:
                     onResponseGetCourses(object);
                     break;
 
-                case WebConstants.GETQUESTIONBANK:
+                case WebConstants.GET_QUESTION_BANK:
                     onResponseGetQuestionBank(object);
                     break;
-                case WebConstants.GETTOPICS:
+                case WebConstants.GET_TOPICS:
                     onResponseGetTopics(object);
                     break;
             }

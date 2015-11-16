@@ -15,8 +15,8 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.adapters.ObjectiveQuestionsAdapter;
 import com.ism.teacher.adapters.StudentAttemptedAdapter;
-import com.ism.teacher.adapters.TrialExamDetailsAdapter;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.model.Data;
@@ -38,7 +38,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     private RecyclerView rvList;
     private ArrayList<Data> arrayList = new ArrayList<>();
     private StudentAttemptedAdapter studentAttemptedAdapter;
-    private TrialExamDetailsAdapter trialExamDetailsAdapter;
+    private ObjectiveQuestionsAdapter objectiveQuestionsAdapter;
     public static ResponseObject responseObjQuestions;
     public static List<String> questionsID=new ArrayList<>();
     public static StudentAttemptedFragment newInstance() {
@@ -148,15 +148,15 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                     Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
                 }
             }
-            else if (API_METHOD == WebConstants.GETEXAMQUESTIONS) {
+            else if (API_METHOD == WebConstants.GET_EXAM_QUESTIONS) {
                 ResponseObject resObjQuestions = (ResponseObject) object;
                 if (resObjQuestions.getStatus().equals(ResponseObject.SUCCESS)) {
                     if (resObjQuestions.getData().size() != 0) {
                         responseObjQuestions = resObjQuestions;
                         // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
 
-                        trialExamDetailsAdapter = new TrialExamDetailsAdapter(responseObjQuestions, getActivity(), this, null);
-                        ExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
+                        objectiveQuestionsAdapter = new ObjectiveQuestionsAdapter(responseObjQuestions, getActivity(), this, null);
+                        ExamObjectiveDetailFragment.rvList.setAdapter(objectiveQuestionsAdapter);
                         ExamObjectiveDetailFragment.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
                         ExamObjectiveDetailFragment.txtBookNameValue.setText(responseObjQuestions.getData().get(0).getBookName());
                         ExamObjectiveDetailFragment.txtExamTypeName.setText(responseObjQuestions.getData().get(0).getExam_mode());
@@ -190,9 +190,9 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
             try {
                // ((AuthorHostActivity) getActivity()).startProgress();
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETEXAMQUESTIONS);
+                        .execute(WebConstants.GET_EXAM_QUESTIONS);
             } catch (Exception e) {
-                Log.i(TAG, "callApi GETEXAMQUESTIONS ::" + e.getLocalizedMessage());
+                Log.i(TAG, "callApi GET_EXAM_QUESTIONS ::" + e.getLocalizedMessage());
             }
         } else {
             Utility.showToast(getString(R.string.strnetissue), getActivity());

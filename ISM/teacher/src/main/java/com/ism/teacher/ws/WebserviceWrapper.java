@@ -78,30 +78,30 @@ public class WebserviceWrapper {
                         responseObject = new RequestWs().getRequest(WebConstants.URL_LIKE_FEED, ResponseObject.class, requestObject);
                         break;
 
-                    case WebConstants.GETCLASSROOMS:
+                    case WebConstants.GET_CLASSROOMS:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GETCLASSROOMS, ResponseObject.class, requestObject);
                         break;
 
-                    case WebConstants.GETSUBJECT:
+                    case WebConstants.GET_SUBJECT:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GETSUBJECT, ResponseObject.class, requestObject);
                         break;
 
-                    case WebConstants.GETTOPICS:
+                    case WebConstants.GET_TOPICS:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GETTOPICS, ResponseObject.class, requestObject);
                         break;
 
-                    case WebConstants.CREATEASSIGNMENT:
+                    case WebConstants.CREATE_ASSIGNMENT:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_CREATEASSIGNMENT, ResponseObject.class, requestObject);
                         break;
 
-                    case WebConstants.GETCOURSES:
+                    case WebConstants.GET_COURSES:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_COURSES, ResponseObject.class, requestObject);
                         break;
 
-                    case WebConstants.CREATEEXAM:
+                    case WebConstants.CREATE_EXAM:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_CREATE_EXAM, ResponseObject.class, requestObject);
                         break;
-                    case WebConstants.GETQUESTIONBANK:
+                    case WebConstants.GET_QUESTION_BANK:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GETQUESTIONBANK, ResponseObject.class, requestObject);
                         break;
 
@@ -136,10 +136,10 @@ public class WebserviceWrapper {
                     case WebConstants.GET_ALL_EXAM_SUBMISSION:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ALL_EXAM_SUBMISSION, ResponseObject.class, requestObject);
                         break;
-                    case WebConstants.GETEXAMQUESTIONS:
+                    case WebConstants.GET_EXAM_QUESTIONS:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_EXAM_QUESTIONS, ResponseObject.class, requestObject);
                         break;
-                    case WebConstants.GETEXAMEVALUATIONS:
+                    case WebConstants.GET_EXAM_EVALUATIONS:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_EXAM_EVALUATIONS, ResponseObject.class, requestObject);
                         break;
                     case WebConstants.GET_MY_STUDENTS:

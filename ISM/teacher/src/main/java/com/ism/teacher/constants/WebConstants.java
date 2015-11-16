@@ -24,13 +24,13 @@ public class WebConstants {
     public static final int GET_STUDYMATES = 4;
     public static final int TAG_FRIEND_IN_FEED = 5;
     public static final int LIKE_FEED = 6;
-    public static final int GETCLASSROOMS = 7;
-    public static final int GETSUBJECT = 8;
-    public static final int GETTOPICS = 9;
-    public static final int CREATEASSIGNMENT = 10;
-    public static final int GETCOURSES = 11;
-    public static final int CREATEEXAM = 12;
-    public static final int GETQUESTIONBANK = 13;
+    public static final int GET_CLASSROOMS = 7;
+    public static final int GET_SUBJECT = 8;
+    public static final int GET_TOPICS = 9;
+    public static final int CREATE_ASSIGNMENT = 10;
+    public static final int GET_COURSES = 11;
+    public static final int CREATE_EXAM = 12;
+    public static final int GET_QUESTION_BANK = 13;
     public static final int POSTFEED = 14;
     public static final int SET_QUESTIONS_FOR_EXAM = 15;
     public static final int FORGOT_PASSWORD = 16;
@@ -44,8 +44,8 @@ public class WebConstants {
 
     public static final int GET_ALL_ASSIGNMENTS = 21;
     public static final int GET_ALL_EXAM_SUBMISSION = 22;
-    public static final int GETEXAMQUESTIONS = 23;
-    public static final int GETEXAMEVALUATIONS = 24;
+    public static final int GET_EXAM_QUESTIONS = 23;
+    public static final int GET_EXAM_EVALUATIONS = 24;
     public static final int GET_MY_STUDENTS = 25;
 
 

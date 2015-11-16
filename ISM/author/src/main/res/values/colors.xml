@@ -57,6 +57,7 @@
     <color name="color_assignment_top_pink">#90F96857</color>
     <color name="color_top_assignment_submission">#C5C5C5</color>
     <color name="color_assignment_submission">#596068</color>
+    <color name="question_color">#74777C</color>
 
 
 </resources>
