@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_highscore_subjectlist"
+    android:orientation="horizontal"
     >
 
     <FrameLayout
         android:id="@+id/fragment_container_left"
-        android:layout_width="@dimen/content_right_width"
+        android:layout_width="230dp"
         android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/fragment_container_right"
         android:background="@android:color/holo_red_dark"
         />
 
@@ -18,7 +18,6 @@
         android:id="@+id/fragment_container_right"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
         android:background="@android:color/darker_gray"/>
 
-</RelativeLayout>
+</LinearLayout>

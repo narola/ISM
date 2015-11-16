@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.ism.teacher.R;
 import com.ism.teacher.adapters.MyStudentsAdapter;
@@ -26,9 +27,13 @@ import java.util.ArrayList;
 public class MyStudentsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = MyStudentsFragment.class.getSimpleName();
+
+    //views
     View rootview;
     RecyclerView rv_mystudentslist;
     MyStudentsAdapter myStudentsAdapter;
+    EditText etSearchStudents;
+
     ArrayList<Data> arrayListStudents = new ArrayList<>();
 
 
@@ -47,12 +52,12 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
 
         initGlobal(rootview);
 
-
         return rootview;
     }
 
     private void initGlobal(View rootview) {
         rv_mystudentslist = (RecyclerView) rootview.findViewById(R.id.rv_mystudentslist);
+        etSearchStudents =(EditText)rootview.findViewById(R.id.et_search_students);
 
         myStudentsAdapter = new MyStudentsAdapter(getActivity(),this);
         rv_mystudentslist.setAdapter(myStudentsAdapter);

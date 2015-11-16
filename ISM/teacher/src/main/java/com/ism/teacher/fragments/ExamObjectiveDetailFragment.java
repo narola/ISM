@@ -36,7 +36,7 @@ public class ExamObjectiveDetailFragment extends Fragment implements WebserviceW
 
     //private ResponseObject responseObject;
     //public static ResponseObject responseObjQuestions;
-    // public static TrialExamDetailsAdapter trialExamDetailsAdapter;
+    // public static ObjectiveQuestionsAdapter trialExamDetailsAdapter;
     //public static String questionsID[];
 
     public static ExamObjectiveDetailFragment newInstance() {
@@ -125,14 +125,14 @@ public class ExamObjectiveDetailFragment extends Fragment implements WebserviceW
         //((TeacherHomeActivity) getActivity()).stopProgress();
         try {
             //responseObject = (ResponseObject) object;
-//           if (API_METHOD == WebConstants.GETEXAMQUESTIONS) {
+//           if (API_METHOD == WebConstants.GET_EXAM_QUESTIONS) {
 //                if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
 //                    ((AuthorHostActivity) getActivity()).stopProgress();
 //                    if (responseObject.getData().size() != 0) {
 //                        responseObjQuestions = responseObject;
 //                        // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
 //
-//                        trialExamDetailsAdapter = new TrialExamDetailsAdapter(responseObjQuestions, getActivity(), this, null);
+//                        trialExamDetailsAdapter = new ObjectiveQuestionsAdapter(responseObjQuestions, getActivity(), this, null);
 //                        ExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
 //                        ExamObjectiveDetailFragment.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
 //                        ExamObjectiveDetailFragment.txtBookNameValue.setText(responseObjQuestions.getData().get(0).getBookName());
