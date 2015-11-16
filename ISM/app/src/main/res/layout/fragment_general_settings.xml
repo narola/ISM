@@ -31,7 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_privacy_setting"
-                android:background="@drawable/general_setting_left" android:padding="@dimen/d20dp"
+                android:background="@drawable/general_setting_left"
+                android:padding="@dimen/d20dp"
                 android:text="@string/strSmsAlerts"
                 android:textColor="@color/color_dark_gray"
                 android:textSize="@dimen/d20dp" />
@@ -52,8 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_block_users"
-                android:padding="@dimen/d20dp"
                 android:background="@drawable/general_setting_left"
+                android:padding="@dimen/d20dp"
                 android:text="@string/strNotification"
                 android:textColor="@color/color_dark_gray"
                 android:textSize="@dimen/d20dp" />

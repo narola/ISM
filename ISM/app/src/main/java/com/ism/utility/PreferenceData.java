@@ -42,6 +42,29 @@ public class PreferenceData {
     public static final String BADGE_COUNT_MESSAGE = "badgeCountMessage";
     public static final String BADGE_COUNT_REQUEST = "badgeCountRequest";
 
+    //=================================================================
+    //PS=> PRIVACYSETTING
+    public static final String PS_VIWERS_VIEW_CONTACT = "ViewersViewContact";
+    public static final String PS_VIWERS_VIEW_BIRTHDATE = "ViewersViewBirthdate";
+    public static final String PS_VIWERS_VIEW_EXAMSCORE = "ViewersViewExamScore";
+
+    //SA=> SMSAlerts
+    public static final String SA_ALERT_NEW_ASSIGNMENT = "SMSAlertNewAssignment";
+    public static final String SA_ALERT_EVALUATION_READY = "SMSAlertEvaluationReady";
+    public static final String SA_ALERT_CONFERENCE_SCHECDULE = "SMSAlertConferenceSchedule";
+
+    //NOTI=> NOTIFICATION
+    public static final String NOTI_LIKE = "LikeNotification";
+    public static final String NOTI_COMMENT = "CommentNotification";
+    public static final String NOTI_FOLLOWED_AUTHOR_POST= "FollowedAuthorPostNotification";
+    public static final String NOTI_TAGGED = "TaggedNotification";
+    public static final String NOTI_NOTIFICATION_NOTICEBOARD = "NoticeboardNotiication";
+
+    //=> Block user
+
+
+
+
     public static void setBooleanPrefs(String prefKey, Context context, boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_ISM, 0).edit();
         editor.putBoolean(prefKey, value);

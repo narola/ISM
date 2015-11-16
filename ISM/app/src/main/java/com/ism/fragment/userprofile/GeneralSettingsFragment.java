@@ -2,29 +2,38 @@ package com.ism.fragment.userprofile;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.Debug;
+import com.ism.utility.PreferenceData;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
+import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.model.Data;
+
+import java.util.ArrayList;
 
 /**
  * Created by c161 on 06/11/15.
  */
-public class GeneralSettingsFragment extends Fragment {
+public class GeneralSettingsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = GeneralSettingsFragment.class.getSimpleName();
 
     private View view;
-    private FrameLayout flFragmentContainerLeft;
-    private FrameLayout flFragmentContainer;
+//    private FrameLayout flFragmentContainerLeft;
+//    private FrameLayout flFragmentContainer;
     private static final int FRAGMENT_PRIVACY_SETTING = 0;
     private static final int FRAGMENT_SMS_ALERTS = 1;
     private static final int FRAGMENT_BLOCK_USER = 2;
@@ -33,7 +42,10 @@ public class GeneralSettingsFragment extends Fragment {
     private FragmentListener fragListener;
     private TextView txtPrivacySetting, txtSmsAlerts, txtBlockUsers, txtNotifications;
     MyTypeFace myTypeFace;
-    private int currentFragment=-1;
+    private int currentFragment = -1;
+    private ArrayList<Data> arrayList;
+    public static ArrayList<RequestObject> preferencesList;
+    private RequestObject requestObjectSetting;
 
     public static GeneralSettingsFragment newInstance() {
         GeneralSettingsFragment fragment = new GeneralSettingsFragment();
@@ -54,8 +66,9 @@ public class GeneralSettingsFragment extends Fragment {
     }
 
     private void initGlobal() {
-        flFragmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_fragment_container_left);
-        flFragmentContainer = (FrameLayout) view.findViewById(R.id.fl_fragment_container);
+        preferencesList = new ArrayList<>();
+        //flFragmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_fragment_container_left);
+        //flFragmentContainer = (FrameLayout) view.findViewById(R.id.fl_fragment_container);
         txtPrivacySetting = (TextView) view.findViewById(R.id.txt_privacy_setting);
         txtSmsAlerts = (TextView) view.findViewById(R.id.txt_sms_alerts);
         txtBlockUsers = (TextView) view.findViewById(R.id.txt_block_users);
@@ -68,8 +81,10 @@ public class GeneralSettingsFragment extends Fragment {
         txtPrivacySetting.setTypeface(myTypeFace.getRalewayRegular());
         onClicks();
         setBackGroundLeftController(txtPrivacySetting, FRAGMENT_PRIVACY_SETTING);
+//        callApiForGETUSerPreference();
 
     }
+
 
     private void onClicks() {
         txtBlockUsers.setOnClickListener(new View.OnClickListener() {
@@ -130,25 +145,26 @@ public class GeneralSettingsFragment extends Fragment {
             case FRAGMENT_PRIVACY_SETTING: {
                 currentFragment = frag;
                 PrivacySettingFragment fragment = PrivacySettingFragment.newInstance();
-                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_SMS_ALERTS: {
                 currentFragment = frag;
                 SMSAlertsFragment fragment = SMSAlertsFragment.newInstance();
-                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_BLOCK_USER: {
                 currentFragment = frag;
                 BlockUserFragment fragment = BlockUserFragment.newInstance();
-                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
+                callApiGetGeneralSettingPreferences(preferencesList);
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_NOTIFICATION: {
                 currentFragment = frag;
                 NotificationFragment fragment = NotificationFragment.newInstance();
-                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
+                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
         }
@@ -181,5 +197,77 @@ public class GeneralSettingsFragment extends Fragment {
         fragListener = null;
     }
 
+    @Override
+    public void onResponse(Object object, Exception error, int apiCode) {
+        ResponseObject responseObject = (ResponseObject) object;
+        if(activityHost!=null)
+        activityHost.hideProgress();
+        try {
+            if (WebConstants.GENERAL_SETTINGS == apiCode) {
+
+                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
+//                for (int i = 0; i < requestObjectSetting.getPreferences().size(); i++) {
+//                    PreferenceData.setStringPrefs(requestObjectSetting.getPreferences().get(i).getKeyId(), getActivity(), requestObjectSetting.getPreferences().get(i).getSettingValue());
+//                    preferencesList = new ArrayList<>();
+
+                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+                }
+
+            }
+//            else if (WebConstants.GET_USER_PREFERENCES == apiCode) {
+//
+//                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
+//                    if (responseObject.getData().size() > 0) {
+//                        for (int j = 0; j < responseObject.getData().size(); j++) {
+//                            setPreferenceList(responseObject.getData().get(j).getId(), responseObject.getData().get(j).getDefaultValue(), getActivity());
+//                        }
+//                    } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+//
+//                    }
+//                }
+//            }
+        } catch (Exception e) {
+            Debug.i(TAG, "Response Exception :" + e.getLocalizedMessage());
+        }
+
+    }
+
+
+    private void callApiGetGeneralSettingPreferences(ArrayList<RequestObject> reqObj) {
+        try {
+
+            activityHost.showProgress();
+            if (reqObj != null) {
+                requestObjectSetting = new RequestObject();
+                requestObjectSetting.setPreferences(reqObj);
+                Debug.i(TAG, "Onject" + requestObjectSetting);
+                new WebserviceWrapper(getActivity(), requestObjectSetting, this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTINGS);
+
+            } else {
+                Debug.i(TAG, "General setting Pereference list size :" + reqObj.size());
+            }
+
+        } catch (Exception e) {
+
+            Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
+
+        }
+    }
+
+    public void setPreferenceList(String key, String value, Context context) {
+        RequestObject requestObject = new RequestObject();
+        requestObject.setUserId("1");
+        requestObject.setKeyId(key);
+        requestObject.setSettingValue(value);
+        Debug.i(TAG,"setPreferenceList" +"key:"+key+"value:"+value);
+        PreferenceData.setStringPrefs(key, context, value);
+        preferencesList.add(requestObject);
+    }
+
+    private String getKeyPereference(String keyPref) {
+        String key = PreferenceData.getStringPrefs(keyPref, getActivity(), "");
+        String key_value = PreferenceData.getStringPrefs(key, getActivity(), "");
+        return key_value;
+    }
 
 }

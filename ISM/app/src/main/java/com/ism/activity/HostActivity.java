@@ -32,15 +32,15 @@ import com.ism.fragment.AssessmentFragment;
 import com.ism.fragment.ChatFragment;
 import com.ism.fragment.ClassroomFragment;
 import com.ism.fragment.DeskFragment;
-import com.ism.fragment.userprofile.GeneralSettingsFragment;
 import com.ism.fragment.MyActivityFragment;
 import com.ism.fragment.MyFeedsFragment;
 import com.ism.fragment.MyWalletFragment;
 import com.ism.fragment.NotesFragment;
-import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.ProfileControllerFragment;
+import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.StudymatesFragment;
 import com.ism.fragment.TutorialFragment;
+import com.ism.fragment.userprofile.GeneralSettingsFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.ControllerTopMenuItem;
 import com.ism.model.FragmentArgument;
@@ -51,6 +51,7 @@ import com.ism.utility.Utility;
 import com.ism.ws.RequestObject;
 import com.ism.ws.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.model.Data;
 
 import java.util.ArrayList;
 
@@ -110,10 +111,12 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 	private int currentMainFragment;
     private int currentRightFragment;
     private int currentMainFragmentBg;
+    private ArrayList<Data> arrayList = new ArrayList<>();
 
-	public interface HostListener {
-		public void onControllerMenuItemClicked(int position);
-	}
+
+    public interface HostListener {
+        public void onControllerMenuItemClicked(int position);
+    }
 
 	public interface HostListenerAllNotification {
 		public void onControllerTopBackClick();
@@ -300,7 +303,23 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         txtFive.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
 
+        callApiGetGeneralSettingPreferences();
+        callApiForGETUSerPreference();
+
     }
+
+    private void callApiGetGeneralSettingPreferences() {
+        try {
+            showProgress();
+            new WebserviceWrapper(getApplicationContext(), null, HostActivity.this).new WebserviceCaller().execute(WebConstants.GENERAL_SETTING_PREFERENCES);
+
+        } catch (Exception e) {
+
+            Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
+        }
+    }
+
+
 
 	private void callApiGetAllBadgesCount() {
 		try {
@@ -451,6 +470,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     txtTitle.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
+                    Debug.i(TAG, "FRAGMENT_GENERAL_SETTINGS atacheched");
+                    currentMainFragment = fragment;
+                    // llControllerLeft.setVisibility(View.GONE);
 	                currentMainFragment = fragment;
                     Debug.i(TAG,"FRAGMENT_GENERAL_SETTINGS atacheched");
                    // llControllerLeft.setVisibility(View.GONE);
@@ -511,7 +533,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     imgChat.setActivated(false);
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
-                   // llControllerLeft.setVisibility(View.VISIBLE);
+                    // llControllerLeft.setVisibility(View.VISIBLE);
                     break;
 	            case FRAGMENT_ALL_NOTIFICATION:
 		            hideControllerTopBackButton();
@@ -739,9 +761,77 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                 progHost.setVisibility(View.INVISIBLE);
             }
         } catch (Exception e) {
-            Log.e(TAG, "hideProgress Exception : " + e.toString());
+            Log.e(TAG, "hideProgress Exception : " + e.getLocalizedMessage());
         }
     }
+
+    @Override
+    public void onResponse(Object object, Exception error, int apiCode) {
+        ResponseObject responseObject = (ResponseObject) object;
+        hideProgress();
+        try {
+
+
+            if (WebConstants.GENERAL_SETTING_PREFERENCES == apiCode) {
+
+                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
+                    if (responseObject.getData().size() > 0) {
+
+                        arrayList = responseObject.getData().get(0).getSmsAlert();
+                        for (int j = 0; j < arrayList.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
+                          //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                        arrayList = responseObject.getData().get(0).getNotification();
+                        for (int j = 0; j < arrayList.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
+                           // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                        arrayList = responseObject.getData().get(0).getPrivacySetting();
+                        for (int j = 0; j < arrayList.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
+                           // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                    }
+                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+
+                }
+            } else if (WebConstants.GET_USER_PREFERENCES == apiCode) {
+
+                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
+                    if (responseObject.getData().size() > 0) {
+                        for (int j = 0; j < responseObject.getData().size(); j++) {
+                            GeneralSettingsFragment.newInstance().setPreferenceList(responseObject.getData().get(j).getId(), responseObject.getData().get(j).getDefaultValue(), getApplicationContext());
+                        }
+                    } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+
+                    }
+                }
+            }else if(WebConstants.GET_ALL_BADGES_COUNT==apiCode){
+                onResponseGetAllBadges(object, error);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "On response Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void callApiForGETUSerPreference() {
+        try {
+
+            showProgress();
+            RequestObject requestObject = new RequestObject();
+            requestObject.setUserId("1");
+            new WebserviceWrapper(getApplicationContext(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_USER_PREFERENCES);
+
+        } catch (Exception e) {
+
+            Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
+
+        }
+
+
+    }
+
 
 	public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
 		this.listenerHostAllNotification = listenerHostAllNotification;
@@ -759,18 +849,18 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 		this.listnerHostProfileController = listnerHostProfileController;
 	}
 
-	@Override
-	public void onResponse(Object object, Exception error, int apiCode) {
-		try {
-			switch (apiCode) {
-				case WebConstants.GET_ALL_BADGES_COUNT:
-					onResponseGetAllBadges(object, error);
-					break;
-			}
-		} catch (Exception e) {
-			Log.e(TAG, "onResponse Exception : " + e.toString());
-		}
-	}
+//	@Override
+//	public void onResponse(Object object, Exception error, int apiCode) {
+//		try {
+//			switch (apiCode) {
+//				case WebConstants.GET_ALL_BADGES_COUNT:
+//					onResponseGetAllBadges(object, error);
+//					break;
+//			}
+//		} catch (Exception e) {
+//			Log.e(TAG, "onResponse Exception : " + e.toString());
+//		}
+//	}
 
 	private void onResponseGetAllBadges(Object object, Exception error) {
 		try {

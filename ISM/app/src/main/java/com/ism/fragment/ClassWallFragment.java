@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.ism.R;
@@ -74,7 +73,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 		recyclerPost.addItemDecoration(itemDecoration);
 
 		if (Utility.isOnline(getActivity())) {
-			callApiGetAllFeeds();
+			//callApiGetAllFeeds();
 		} else {
 			Utility.toastOffline(getActivity());
 		}

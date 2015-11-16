@@ -9,9 +9,10 @@
         android:id="@+id/txt_noticeName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="@dimen/d5dp"
         android:text=""
-        android:textColor="#6b6b6b"
+        android:textColor="#313131"
         android:textSize="@dimen/d20dp" />
 
     <TextView
