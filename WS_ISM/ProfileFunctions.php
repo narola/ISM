@@ -60,7 +60,84 @@ class ProfileFunctions
                 return $this->requestForSchoolInfoUpdation($postData);//done
             }
                 break;
+            case "UploadUserProfilePic":
+            {
+                return $this->uploadUserProfilePic($postData);//done
+            }
+                break;
         }
+    }
+
+    /*
+    * uploadUserProfilePic
+    */
+
+    public function uploadUserProfilePic ($postData)
+    {
+        $data = array();
+        $response = array();
+        if (!is_dir(USER_PROFILE_PICTURE))
+            mkdir(USER_PROFILE_PICTURE, 0777, true);
+
+        $user_id = $_POST['user_id'];
+       // $user_id = addslashes($user_id);
+        //Image Saving
+        $profile_user_link="user_".$user_id."/";
+
+        $profile_image_dir=USER_PROFILE_PICTURE.$profile_user_link;
+
+        if (!is_dir(USER_PROFILE_PICTURE.$profile_user_link)) {
+            mkdir(USER_PROFILE_PICTURE.$profile_user_link, 0777, true);
+        }
+        $created_date = date("Ymd-His");
+
+        if ($_FILES["mediaFile"]["error"] > 0) {
+            $message = $_FILES["mediaFile"]["error"];
+        }
+        else {
+            $mediaName = "IMG".$created_date."_test.png";
+
+            $uploadFile = $profile_image_dir . $mediaName;
+            if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
+                //store image data.
+                $link=$profile_user_link . $mediaName;
+
+                $queryProfileImage="INSERT INTO ".TABLE_USER_PROFILE_PICTURE."(`user_id`, `profile_link`) VALUES (".$user_id.",'".$link."')";
+                $resultProfileImage=mysql_query($queryProfileImage) or $message=mysql_error();
+                if($resultProfileImage){
+                    $query="Select full_name,profile_pic from ".TABLE_USERS." where id=".$user_id;
+                    $result=mysql_query($query) or $message=mysql_error();
+                    if(mysql_num_rows($result)){
+                        $val=mysql_fetch_assoc($result);
+                        $data['user_id']=$user_id;
+                        $data['full_name']=$val['full_name'];
+                        $data['profile_pic']=$val['profile_pic'];
+                        $status = "success";
+                        $message = "Successfully uploaded!.";
+
+                    }
+                    else{
+                        $status = "failed";
+                        //$message = "";
+                    }
+
+                }
+                else{
+                    $status = "failed";
+                    //  $message = "Failed to upload media on server.";
+                }
+
+            } else {
+                $status = "failed";
+                //$message = "Failed to upload media on server.";
+            }
+        }
+
+        $response['data']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        return $response;
+
     }
     /*
     * getStudentAcademicInfo
@@ -526,18 +603,18 @@ class ProfileFunctions
         $password = validateObject ($postData , 'password', "");
         $password = addslashes($password);
 
-        $profile_image = validateObject ($postData , 'profile_image', "");
-        $profile_image_name = validateObject ($postData , 'profile_image_name', "");
-        $profile_image_name = addslashes($profile_image_name);
-        $profile_image_name_array=explode(".",$profile_image_name);
-        if (!is_dir(USER_PROFILE_PICTURE)) {
-            mkdir(USER_PROFILE_PICTURE, 0777, true);
-        }
+//        $profile_image = validateObject ($postData , 'profile_image', "");
+//        $profile_image_name = validateObject ($postData , 'profile_image_name', "");
+//        $profile_image_name = addslashes($profile_image_name);
+//        $profile_image_name_array=explode(".",$profile_image_name);
+//        if (!is_dir(USER_PROFILE_PICTURE)) {
+//            mkdir(USER_PROFILE_PICTURE, 0777, true);
+//        }
        // if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
            // die('Failed to create folders...'.USER_PROFILE_PICTURE);
        // }
         // echo $profile_image_name_array[0]."_test.".$profile_image_name_array[1];
-        $profile_image_name=$profile_image_name_array[0]."_test.".$profile_image_name_array[1];
+      //  $profile_image_name=$profile_image_name_array[0]."_test.".$profile_image_name_array[1];
         $obj = new CI_Encrypt();
 
         $insertFields="`username`, `password`,`device_type`, `first_name`, `last_name`, `full_name`,`email_id`, `contact_number`, `home_address`, `city_id`, `state_id`, `country_id`, `birthdate`, `gender`, `device_token`, `role_id`";
@@ -566,21 +643,21 @@ class ProfileFunctions
                 $insertAcademicValue="'".$user_id."', '".$school_id."', '".$classroom_id."', '".$academic_year."', '".$course_id."'";
 
 
-                //Image Saving
-                $profile_user_link="user_".$user_id."/";
-
-                $profile_image_dir=USER_PROFILE_PICTURE.$profile_user_link;
-
-                if (!is_dir(USER_PROFILE_PICTURE.$profile_user_link)) {
-                    mkdir(USER_PROFILE_PICTURE.$profile_user_link, 0777, true);
-                }
-
-                $profile_image_dir = $profile_image_dir . $profile_image_name;
-                $profile_image_link = $profile_user_link.$profile_image_name;
-                file_put_contents($profile_image_dir, base64_decode($profile_image));
-
-                $queryProfileImage="INSERT INTO ".TABLE_USER_PROFILE_PICTURE."(`user_id`, `profile_link`) VALUES (".$user_id.",'".$profile_image_link."')";
-                $resultProfileImage=mysql_query($queryProfileImage) or $message=mysql_error();
+//                //Image Saving
+//                $profile_user_link="user_".$user_id."/";
+//
+//                $profile_image_dir=USER_PROFILE_PICTURE.$profile_user_link;
+//
+//                if (!is_dir(USER_PROFILE_PICTURE.$profile_user_link)) {
+//                    mkdir(USER_PROFILE_PICTURE.$profile_user_link, 0777, true);
+//                }
+//
+//                $profile_image_dir = $profile_image_dir . $profile_image_name;
+//                $profile_image_link = $profile_user_link.$profile_image_name;
+//                file_put_contents($profile_image_dir, base64_decode($profile_image));
+//
+//                $queryProfileImage="INSERT INTO ".TABLE_USER_PROFILE_PICTURE."(`user_id`, `profile_link`) VALUES (".$user_id.",'".$profile_image_link."')";
+//                $resultProfileImage=mysql_query($queryProfileImage) or $message=mysql_error();
                 $queryAcademic="INSERT INTO ".TABLE_STUDENT_ACADEMIC_INFO."(".$insertAcademicField.") values (".$insertAcademicValue.")";
                 $resultAcademic=mysql_query($queryAcademic) or $message=mysql_error();
                 if($resultAcademic)
@@ -589,8 +666,8 @@ class ProfileFunctions
 //                    $resultAcademic=mysql_query($updateStatus) or $message=mysql_error();
                    // echo $updateStatus;
                     $post['user_id']=$user_id;
-                    $post['full_name']=$firstname." ".$lastname;
-                    $post['profile_pic']=$profile_image_link;
+                    //$post['full_name']=$firstname." ".$lastname;
+                   // $post['profile_pic']=$profile_image_link;
                     $data[]=$post;
                     $status="success";
                     $message="Registration completed successfully";

@@ -33,6 +33,7 @@ switch ($_REQUEST['Service'])
     case "ForgotPassword":
     case "GetStudentAcademicInfo":
     case "RequestForSchoolInfoUpdation":
+    case "UploadUserProfilePic":
     {
   	 include_once 'ProfileFunctions.php';
      $profile = new ProfileFunctions();

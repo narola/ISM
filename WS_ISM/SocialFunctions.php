@@ -353,8 +353,6 @@ class SocialFunctions
                 $message = $_FILES["mediaFile"]["error"];
 
             } else {
-                // Image 5 = Video 6 = Audio 7
-
                 $mediaName = "VIDEO".$created_date."_test.mp4";
                 $uploadDir = $dir;
                 $uploadFile = FEEDS_MEDIA.$feed_media_dir . $mediaName;

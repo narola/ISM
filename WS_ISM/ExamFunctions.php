@@ -125,7 +125,7 @@ class ExamFunctions
 //                    "exam_id":63,
 //                    "student_id":370
 //                }
-                $query = "SELECT * FROM " . TABLE_EXAM_SCHEDULE . " exam_schedule INNER JOIN " . TABLE_USERS . " users on exam_schedule.exam_assessor=users.id WHERE exam_id=" . $exam_id;
+                $query = "SELECT * FROM " . TABLE_EXAM_SCHEDULE . " exam_schedule INNER JOIN " . TABLE_USERS . " users on exam_schedule.exam_assessor=users.id WHERE exam_id=" . $exam_id ;
                 $result = mysql_query($query) or $message = mysql_error();
                 //echo $query;
                 $row = mysql_fetch_assoc($result);
@@ -144,7 +144,7 @@ class ExamFunctions
                     if ($rowEvaluation['evaluation_status'] == "unassesed") {
                         $evaluation['evaluation_score'] = $rowEvaluation['evaluation_status'];
                     } else {
-                        $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_SUBJECTIVE_EVALUATION . " WHERE `exam_id`=" . $exam_id . " and evaluation_by=".$row['exam_assessor']." and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ")";
+                        $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_SUBJECTIVE_EVALUATION . " WHERE `exam_id`=" . $exam_id . " and evaluation_by=".$row['exam_assessor']." and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ") order by question_id asc";
                         $resultStudentRes = mysql_query($queryStudentRes) or $message = mysql_error();
                         //echo $queryStudentRes;
                        // echo "\n".mysql_num_rows($resultStudentRes);
@@ -171,7 +171,7 @@ class ExamFunctions
 //                    "exam_id":9,
 //                    "student_id":202
 //                }
-                $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_OBJECTIVE_RESPONSE . " WHERE `user_id`=" . $student_id . " and `exam_id`=" . $exam_id . " and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ")";
+                $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_OBJECTIVE_RESPONSE . " WHERE `user_id`=" . $student_id . " and `exam_id`=" . $exam_id . " and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ") order by question_id asc";
                 $resultStudentRes = mysql_query($queryStudentRes) or $message = mysql_error();
                // echo $queryStudentRes;
                // echo "\n".mysql_num_rows($resultStudentRes);
@@ -702,6 +702,58 @@ class ExamFunctions
     }
 
     /*
+    * getClassrooms Name
+   */
+    public function getClassName ($postData)
+    {
+
+        $query="SELECT `id`, `course_id`, `class_name`, `class_nickname`FROM ".TABLE_CLASSROOMS ." where id=".$postData;
+        $result=mysql_query($query) or  $message=mysql_error();
+         //echo $query;
+        if(mysql_num_rows($result))
+        {
+            while($row=mysql_fetch_assoc($result)){
+                //$post['subject_id']=$row;
+                $data=$row['class_name'];
+
+            }
+
+        }
+        else{
+        }
+       // $response['data']=$data;
+
+
+        return $data;
+    }
+
+    /*
+    * getBook name
+   */
+    public function getBookName ($postData)
+    {
+
+        $query="SELECT `book_name`FROM ".TABLE_BOOKS ." where id=".$postData;
+        $result=mysql_query($query) or  $message=mysql_error();
+//        echo $query;
+        if(mysql_num_rows($result))
+        {
+            while($row=mysql_fetch_assoc($result)){
+                //$post['subject_id']=$row;
+                $data=$row['book_name'];
+
+            }
+
+        }
+        else{
+        }
+        // $response['data']=$data;
+
+
+        return $data;
+    }
+
+    /*
      * getAllExams
     */
     public function getAllExams ($postData)
@@ -859,9 +911,16 @@ class ExamFunctions
             $row=mysql_fetch_assoc($result);
             $examData['id']=$row['id'];
             $examData['exam_name']=$row['exam_name'];
+            $examData['exam_type']=$row['exam_type'];
+            $examData['exam_mode']=$row['exam_mode'];
+            $examData['exam_name']=$row['exam_name'];
+            $examData['book_name']=$this->getBookName($row['book_id']) ;
+            $examData['class_name']=$this->getClassName($row['classroom_id']) ;
+           // $examData['classroom_id']=$row['classroom_id'];
+            $examData['created_date']=$row['created_date'];
             $examData['instruction']=$row['instruction'];
 
-            $queryExamQuestion="SELECT * FROM ".TABLE_EXAM_QUESTION." where exam_id=".$exam_id;
+            $queryExamQuestion="SELECT * FROM ".TABLE_EXAM_QUESTION." where exam_id=".$exam_id. " order by question_id asc";
             $resultExamQuestion=mysql_query($queryExamQuestion) or  $message=mysql_error();
 
             if(mysql_num_rows($resultExamQuestion))
@@ -869,7 +928,7 @@ class ExamFunctions
                 while($row=mysql_fetch_assoc($resultExamQuestion)){
                     //$post['subject_id']=$row;
                     //$data[]=$row;
-                    $queryQuestion="SELECT * FROM ".TABLE_QUESTIONS." WHERE id=".$row['question_id'];
+                    $queryQuestion="SELECT * FROM ".TABLE_QUESTIONS." WHERE id=".$row['question_id'] ;
                     $resultQuestion=mysql_query($queryQuestion) or  $message=mysql_error();
                     // echo $query;
                     if(mysql_num_rows($resultQuestion))
