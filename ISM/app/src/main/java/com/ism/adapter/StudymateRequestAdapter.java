@@ -3,6 +3,7 @@ package com.ism.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -107,6 +108,18 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 			holder.txtNameRequest.setText(Html.fromHtml("<font color='#1BC4A2'>" + arrListStudymate.get(position).getRequestFromName()
 					+ "</font><font color='#323941'> " + context.getString(R.string.msg_studymate_request) + "</font>"));
 			holder.txtTime.setText(Utility.getTimeDuration(arrListStudymate.get(position).getRequestDate()));
+
+			if (arrListStudymate.get(position).getIsSeen().equals("1")) {
+				convertView.setBackgroundColor(Color.TRANSPARENT);
+			} else {
+				convertView.setBackgroundResource(R.drawable.shape_unread_notification);
+			}
+
+			if (arrListStudymate.get(position).getStatus().equals("1")) {
+				holder.btnRespond.setVisibility(View.GONE);
+			} else {
+				holder.btnRespond.setVisibility(View.VISIBLE);
+			}
 
 			holder.btnRespond.setOnClickListener(new View.OnClickListener() {
 				@Override

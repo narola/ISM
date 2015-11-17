@@ -238,7 +238,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			activityHost.showProgress();
 			RequestObject requestObject = new RequestObject();
 			requestObject.setUserId(Global.strUserId);
-
+			Log.e(TAG, "user id : " + Global.strUserId);
 			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
 					.execute(WebConstants.GET_NOTIFICATION);
 		} catch (Exception e) {
@@ -304,7 +304,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			activityHost.showProgress();
 			RequestObject requestObject = new RequestObject();
 			requestObject.setUserId(Global.strUserId);
-//			requestObject.setUserId("109");
 
 			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
 					.execute(WebConstants.GET_MESSAGES);
@@ -452,7 +451,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			if (object != null) {
 				ResponseObject responseObj = (ResponseObject) object;
 				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					Log.e(TAG, "onResponseUpdateReadStatus success");
+//					Log.e(TAG, "onResponseUpdateReadStatus success");
 				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
 					Log.e(TAG, "onResponseUpdateReadStatus failed");
 				}
@@ -470,7 +469,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			if (object != null) {
 				ResponseObject responseObj = (ResponseObject) object;
 				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					Log.e(TAG, "onResponseGetStudymateRequest success");
 					arrListStudyMateRequest = responseObj.getData();
 					fillListStudymate();
 					btnViewAll.setVisibility(View.VISIBLE);
@@ -491,7 +489,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			lvStudymates.setAdapter(adpStudymate);
 			ArrayList<String> recordIds = new ArrayList<String>();
 			for (int i = 0; i < (arrListStudyMateRequest.size() >= 4 ? 4 : arrListStudyMateRequest.size()); i++) {
-				recordIds.add(arrListStudyMateRequest.get(i).getRequestId());
+				recordIds.add(arrListStudyMateRequest.get(i).getRecordId());
 			}
 			callApiUpdateReadStatus(WebConstants.STUDYMATE_REQUEST, recordIds);
 		}
@@ -517,7 +515,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			if (object != null) {
 				ResponseObject responseObj = (ResponseObject) object;
 				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					Log.e(TAG, "onResponseGetMessages success");
 					arrListMessage = responseObj.getData();
 					fillListMessage();
 					btnViewAll.setVisibility(View.VISIBLE);
@@ -538,7 +535,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			lvMessages.setAdapter(adpMessage);
 			ArrayList<String> recordIds = new ArrayList<String>();
 			for (int i = 0; i < (arrListMessage.size() >= 4 ? 4 : arrListMessage.size()); i++) {
-				recordIds.add(arrListMessage.get(i).getMessageId());
+				recordIds.add(arrListMessage.get(i).getRecordId());
 			}
 			callApiUpdateReadStatus(WebConstants.MESSAGES, recordIds);
 		}
@@ -550,7 +547,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			if (object != null) {
 				ResponseObject responseObj = (ResponseObject) object;
 				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					Log.e(TAG, "onResponseGetNotification success");
 					arrListNotification = responseObj.getData();
 					fillListNotification();
 					btnViewAll.setVisibility(View.VISIBLE);
@@ -571,7 +567,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			lvNotifications.setAdapter(adpNotification);
 			ArrayList<String> recordIds = new ArrayList<String>();
 			for (int i = 0; i < (arrListNotification.size() >= 4 ? 4 : arrListNotification.size()); i++) {
-				recordIds.add(arrListNotification.get(i).getNotificationId());
+				recordIds.add(arrListNotification.get(i).getRecordId());
 			}
 			callApiUpdateReadStatus(WebConstants.NOTIFICATION, recordIds);
 		}

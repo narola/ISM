@@ -35,7 +35,7 @@ import com.ism.fragment.DeskFragment;
 import com.ism.fragment.MyActivityFragment;
 import com.ism.fragment.MyFeedsFragment;
 import com.ism.fragment.MyWalletFragment;
-import com.ism.fragment.NotesFragment;
+import com.ism.fragment.AccordionFragment;
 import com.ism.fragment.ProfileControllerFragment;
 import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.StudymatesFragment;
@@ -356,7 +356,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ReportCardFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_NOTES:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, NotesFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, AccordionFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_PROFILE_CONTROLLER:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, ProfileControllerFragment.newInstance()).commit();

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp" >
+
+	<com.ism.views.CircleImageView
+		android:id="@+id/img_dp"
+		android:layout_width="60dp"
+		android:layout_height="60dp"
+		android:layout_margin="@dimen/d5dp"
+		android:src="@drawable/userdp"/>
+
+	<TextView
+		android:id="@+id/txt_student_name"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@+id/img_dp"
+		android:layout_marginTop="@dimen/d5dp"
+		android:padding="3dp"
+		android:textColor="@color/bg_app_dark"
+		android:textSize="16sp"/>
+
+	<TextView
+		android:id="@+id/txt_school"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/txt_student_name"
+		android:layout_toRightOf="@+id/img_dp"
+		android:padding="3dp"
+		android:textColor="@color/bg_app_dark"
+		android:textSize="16sp"/>
+
+	<TextView
+		android:id="@+id/txt_score"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/txt_school"
+		android:layout_toRightOf="@+id/img_dp"
+		android:padding="3dp"
+		android:textColor="@color/color_green"
+		android:textSize="20sp"/>
+</RelativeLayout>

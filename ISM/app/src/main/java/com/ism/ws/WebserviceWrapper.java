@@ -117,6 +117,9 @@ public class WebserviceWrapper {
                     case WebConstants.UPDATE_READ_STATUS:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_UPDATE_READ_STATUS, ResponseObject.class, requestObject);
                         break;
+                    case WebConstants.GET_HIGH_SCORERS:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_HIGH_SCORERS, ResponseObject.class, requestObject);
+                        break;
                 }
             } catch (Exception e) {
                 Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
