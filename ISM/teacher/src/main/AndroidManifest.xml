@@ -33,7 +33,7 @@
             </intent-filter>-->
 
         </activity>
-        <activity android:name=".activity.TeacherHomeActivity">
+        <activity android:name=".activity.TeacherHostActivity">
 
             <!--<intent-filter>
             <action android:name="android.intent.action.MAIN"/>

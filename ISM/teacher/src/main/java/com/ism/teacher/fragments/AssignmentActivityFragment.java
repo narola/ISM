@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
@@ -492,7 +492,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
     private void backToTrialScreen() {
 
-        ((TeacherHomeActivity) getActivity()).onBackPressed();
+        ((TeacherHostActivity) getActivity()).onBackPressed();
     }
 
 

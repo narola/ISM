@@ -17,6 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.ism.commonsource.view.ActionProcessButton;
+import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.ControllerTopMenuItem;
 import com.ism.teacher.Utility.Utility;
@@ -39,9 +41,9 @@ import java.util.ArrayList;
  * Created by c75 on 16/10/15.
  */
 
-public class TeacherHomeActivity extends Activity implements FragmentListener {
+public class TeacherHostActivity extends Activity implements FragmentListener {
 
-    private static final String TAG = TeacherHomeActivity.class.getSimpleName();
+    private static final String TAG = TeacherHostActivity.class.getSimpleName();
 
     private LinearLayout llControllerLeft, llSearch;
     private FrameLayout flFragmentContainerMain, flFragmentContainerRight;
@@ -81,6 +83,9 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     private AddTopicsListener addTopicsListener;
 
 
+    private ActionProcessButton progress_bar;
+    private ProgressGenerator progressGenerator;
+
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
     }
@@ -92,13 +97,16 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teacher_home);
+        setContentView(R.layout.activity_teacher_host);
 
         initGlobal();
 
     }
 
     private void initGlobal() {
+        progress_bar = (ActionProcessButton) findViewById(R.id.progress_bar);
+        progressGenerator = new ProgressGenerator();
+
         txtAddPost = (TextView) findViewById(R.id.txt_add_post);
         rlAddPost = (RelativeLayout) findViewById(R.id.rl_add_post);
 
@@ -133,14 +141,14 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         txtsMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive, txtSix};
 
 
-        controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(TeacherHomeActivity.this);
-        controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(TeacherHomeActivity.this);
-        controllerTopMenuDesk = ControllerTopMenuItem.getMenuDesk(TeacherHomeActivity.this);
-        controllerTopMenuReportCard = ControllerTopMenuItem.getMenuReportCard(TeacherHomeActivity.this);
+        controllerTopMenuClassroom = ControllerTopMenuItem.getMenuClassroom(TeacherHostActivity.this);
+        controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(TeacherHostActivity.this);
+        controllerTopMenuDesk = ControllerTopMenuItem.getMenuDesk(TeacherHostActivity.this);
+        controllerTopMenuReportCard = ControllerTopMenuItem.getMenuReportCard(TeacherHostActivity.this);
 
         //control for office side bar menu
-        controllerTopMenuOffice = ControllerTopMenuItem.getMenuTeacherOffice(TeacherHomeActivity.this);
-        controllerTopMenuQuiz = ControllerTopMenuItem.getMenuDesk(TeacherHomeActivity.this);
+        controllerTopMenuOffice = ControllerTopMenuItem.getMenuTeacherOffice(TeacherHostActivity.this);
+        controllerTopMenuQuiz = ControllerTopMenuItem.getMenuDesk(TeacherHostActivity.this);
 
 
         imgHome.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +174,6 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         });
 
 
-
         imgLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,7 +193,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                     startSlideAnimation(etSearch, etSearch.getWidth(), 0, 0, 0);
                     startSlideAnimation(imgSearch, etSearch.getWidth(), 0, 0, 0);
                     etSearch.setVisibility(View.VISIBLE);
-                    Utility.showSoftKeyboard(etSearch, TeacherHomeActivity.this);
+                    Utility.showSoftKeyboard(etSearch, TeacherHostActivity.this);
                 }
             }
         });
@@ -563,7 +570,7 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
                                 txtsMenu[i].setVisibility(View.GONE);
                                 startSlideAnimation(spSubmenu, -imgMenuBack.getWidth(), 0, 0, 0);
                                 spSubmenu.setVisibility(View.VISIBLE);
-                                adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(i).getSubMenu(), TeacherHomeActivity.this);
+                                adapterControllerTopSpinner = new ControllerTopSpinnerAdapter(currentControllerTopMenu.get(i).getSubMenu(), TeacherHostActivity.this);
                                 spSubmenu.setAdapter(adapterControllerTopSpinner);
                             }
 
@@ -651,5 +658,23 @@ public class TeacherHomeActivity extends Activity implements FragmentListener {
         view.startAnimation(slideOutAnimation);
     }
 
+    public void startProgress() {
+        progress_bar.setProgress(1);
+        progress_bar.setEnabled(false);
+        progress_bar.setVisibility(View.VISIBLE);
+        progressGenerator.start(progress_bar);
+    }
 
+    public void stopProgress() {
+        progress_bar.setProgress(100);
+        progress_bar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e(TAG, "inside on resume host activity");
+        loadFragmentInMainContainer(FRAGMENT_TEACHER_HOME);
+
+    }
 }

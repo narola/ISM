@@ -273,11 +273,20 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             super.onBackPressed();
             //delete video or audio or image if capture
         } else if (v == txtPost) {
-            hideKeyboard();
-            callPostFeed();
+
+            if (etSayIt.getText().toString().trim().length() > 0) {
+                hideKeyboard();
+                callPostFeed();
+            } else {
+                Utility.showToast("Please add some text in the post", PostActivity.this);
+            }
+
         }
     }
 
+    /**
+     * To call post api
+     */
     private void callPostFeed() {
         String strThumbnailBase64 = null;
         List<String> listImages = new ArrayList<String>();
@@ -865,7 +874,6 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                         mediaType = "video";
 //                        fileName = getPath(arrayList.get(i).getStrFilePath());
                         uploadUri = getPath(arrayList.get(i).getStrFilePath());
-                        ;
                         new UploadFileToServer().execute();
                     } else if (arrayList.get(i).getStrFileType().equals("audio")) {
                         uploadUri = arrayList.get(i).getStrFilePath().getPath();

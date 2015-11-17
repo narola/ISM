@@ -20,7 +20,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ism.commonsource.view.ActionProcessButton;
+import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.teacher.R;
+import com.ism.teacher.activity.TeacherHostActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -264,6 +267,30 @@ public class Utility {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+
+
+	public static ProgressGenerator progressGenerator = new ProgressGenerator();
+
+	public static void showSpinnerProgress(ActionProcessButton actionProcessButton) {
+		actionProcessButton.setProgress(1);
+		actionProcessButton.setVisibility(View.VISIBLE);
+		progressGenerator.start(actionProcessButton);
+
+	}
+
+	public static void hideSpinnerProgress(ActionProcessButton actionProgressButton) {
+		actionProgressButton.setProgress(100);
+		actionProgressButton.setVisibility(View.INVISIBLE);
+	}
+
+	public static void showProgressBar(TeacherHostActivity activity) {
+		activity.startProgress();
+	}
+
+	public static void hideProgressBar(TeacherHostActivity activity) {
+		activity.stopProgress();
 	}
 
 }
