@@ -27,7 +27,7 @@ class Topic extends ADMIN_Controller {
 
 		$role = $this->input->get('role');
 		$subject  = $this->input->get('subject');
-		$q  = $this->input->get('q');
+		$q  = replace_invalid_chars($this->input->get('q'));
 		$where['where']['tut_topic.is_delete']=0;
 
 		if( !empty($role) || !empty($subject) || !empty($q) || !empty($_GET['order']) ){
@@ -158,7 +158,7 @@ class Topic extends ADMIN_Controller {
 			$tutorial_data = array('group_id'=>$gid,'interface_type'=>'','date_day'=>'','week_no'=>$week,'status'=>'',
 								   'topic_id'=>$tid,'group_score'=>0,'created_date'=>date('Y-m-d H:i:s'),
 								   'modified_date'=>'0000-00-00 00:00:00','is_delete'=>'0','is_testdata'=>'yes');
-			insert(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,$tutorial_data);
+			insert(TBL_TUTORIAL_GROUP_TOPIC_ALLOCATION,replace_invalid_chars($tutorial_data));
 			
 			$members = select(TBL_TUTORIAL_GROUP_MEMBER,TBL_TUTORIAL_GROUP_MEMBER.'.id',
 				array('where'=>array(TBL_TUTORIAL_GROUP_MEMBER.'.group_id'=>59))
@@ -169,7 +169,7 @@ class Topic extends ADMIN_Controller {
 					'score'=>0,
 					'member_id'=>$member
 					);
-				insert(TBL_TUTORIAL_GROUP_MEMBER_SCORE,$member_data);
+				insert(TBL_TUTORIAL_GROUP_MEMBER_SCORE,replace_invalid_chars($member_data));
 			}
 
 			$this->session->set_flashdata('success', 'Topic has beed allocated to group.');
@@ -477,7 +477,7 @@ class Topic extends ADMIN_Controller {
 		$data=array(
 				 "status"=>$status
 				 );
-		update('tutorial_topic',$topic_id,$data);	// Update data  using common_model.php and cms_helper.php
+		update('tutorial_topic',$topic_id,replace_invalid_chars($data));	// Update data  using common_model.php and cms_helper.php
 		
 		$response = array('topic_status'=>$status,
 			'html'=>'set_status_'.$topic_id
@@ -498,7 +498,7 @@ class Topic extends ADMIN_Controller {
 		$data=array(
 				 "is_archived"=>$new
 				 );
-		update('tutorial_topic',$topic_id,$data);	// Update data  using common_model.php and cms_helper.php
+		update('tutorial_topic',$topic_id,replace_invalid_chars($data));	// Update data  using common_model.php and cms_helper.php
 		
 		$response = array('status'=>$new,
 			'id'=>'archive_'.$topic_id
@@ -597,7 +597,7 @@ class Topic extends ADMIN_Controller {
 				 "is_archived"=>0
 				);
 
-			insert(TBL_TUTORIAL_TOPIC,$data);
+			insert(TBL_TUTORIAL_TOPIC,replace_invalid_chars($data));
 
 			$this->session->set_flashdata('success','Topic has been created.');
 			
@@ -725,7 +725,7 @@ class Topic extends ADMIN_Controller {
 				 "modified_date"=>date('Y-m-d H:i:s')
 				);
 
-			update(TBL_TUTORIAL_TOPIC,$id,$data);
+			update(TBL_TUTORIAL_TOPIC,$id,replace_invalid_chars($data));
 
 			$this->session->set_flashdata('success','Topic has been Updated.');
 			

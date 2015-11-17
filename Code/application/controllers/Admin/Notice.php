@@ -33,7 +33,7 @@ class Notice extends ADMIN_Controller {
 				$this->session->set_flashdata('success', 'Notices are successfully deleted.');
 				redirect('admin/notice');
 			}else{
-				$this->session->set_flashdata('error', 'No Notices Selected for Bulkaction.');
+				$this->session->set_flashdata('error', 'No Notices Selected for Bulk action.');
 				redirect('admin/notice');
 			}
 
@@ -181,7 +181,7 @@ class Notice extends ADMIN_Controller {
 					'is_template'=>$this->input->post('is_template')
 				);
 
-			$notice_id = insert(TBL_NOTICEBOARD,$data);
+			$notice_id = insert(TBL_NOTICEBOARD,replace_invalid_chars($data));
 
 			$noticeboard_viewer = array(
 					'notice_id'=>$notice_id,
@@ -189,7 +189,7 @@ class Notice extends ADMIN_Controller {
 					'classroom_id'=>$this->input->post('classroom_id')
 				);
 
-			insert(TBL_NOTICEBOARD_VIEWER,$noticeboard_viewer);
+			insert(TBL_NOTICEBOARD_VIEWER,replace_invalid_chars($noticeboard_viewer));
 
 			$this->session->set_flashdata('success', 'Data is Successfully created.');
 			redirect($this->data['prev_url']);
@@ -244,7 +244,7 @@ class Notice extends ADMIN_Controller {
 					'is_template'=>$this->data['notice']['is_template'],
 				);
 
-				$notice_id = insert(TBL_NOTICEBOARD,$notice_data);
+				$notice_id = insert(TBL_NOTICEBOARD,replace_invalid_chars($notice_data));
 
 				$noticeboard_viewer = array(
 					'notice_id'=>$notice_id,
@@ -252,7 +252,7 @@ class Notice extends ADMIN_Controller {
 					'classroom_id'=>$classroom_id
 				);
 
-				insert(TBL_NOTICEBOARD_VIEWER,$noticeboard_viewer);
+				insert(TBL_NOTICEBOARD_VIEWER,replace_invalid_chars($noticeboard_viewer));
 				
 				$this->session->set_flashdata('success', 'Data is Successfully Created.');
 			}else{
@@ -265,14 +265,14 @@ class Notice extends ADMIN_Controller {
 					'is_template'=>$this->data['notice']['is_template'],
 				);
 
-				update(TBL_NOTICEBOARD,$notice_id,$notice_data);
+				update(TBL_NOTICEBOARD,$notice_id,replace_invalid_chars($notice_data));
 
 				$notice_viewer_data = array(
 										'role_id'=>$this->input->post('role_id'),
 										'classroom_id'=>$classroom_id,
 										'modified_date'=>date('Y-m-d H:i:s',time()),
 									);
-				update(TBL_NOTICEBOARD_VIEWER,$notice_viewer_id,$notice_viewer_data);	
+				update(TBL_NOTICEBOARD_VIEWER,$notice_viewer_id,replace_invalid_chars($notice_viewer_data));	
 
 				$this->session->set_flashdata('success', 'Data is Successfully Updated.');
 			}

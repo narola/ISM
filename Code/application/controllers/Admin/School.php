@@ -30,7 +30,7 @@ class School extends ADMIN_Controller {
 
         if (!empty($_GET['q']) || !empty($_GET['school_grade']) || !empty($_GET['order'])) {
             
-            if (!empty($_GET['q'])) {$q = $this->input->get('q');}
+            if (!empty($_GET['q'])) {$q = replace_invalid_chars($this->input->get('q'));}
             if (!empty($_GET['school_grade'])) {$school_grade = $this->input->get('school_grade');}
             if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }       
             
@@ -205,7 +205,7 @@ class School extends ADMIN_Controller {
                 "is_delete" => 0,
             );
 
-           $school_id =  insert(TBL_SCHOOLS, $data);  // insert data into database using common_model.php and cms_helper.php
+           $school_id =  insert(TBL_SCHOOLS, replace_invalid_chars($data));  // insert data into database using common_model.php and cms_helper.php
            if(!empty($this->input->post("courses"))){
             $courses = $this->input->post("courses");
                 foreach ($courses as $course_id) {
@@ -214,7 +214,7 @@ class School extends ADMIN_Controller {
                         'school_id'=>$school_id,
                         'course_id'=>$course_id
                         );
-                    insert(TBL_SCHOOL_COURSE, $school_course);
+                    insert(TBL_SCHOOL_COURSE, replace_invalid_chars($school_course));
                     }
                 }
            }
@@ -297,7 +297,7 @@ class School extends ADMIN_Controller {
                 "is_delete" => 0,
             );
 
-            update(TBL_SCHOOLS, $id, $data); // Update data using common_model.php and cms_helper.php
+            update(TBL_SCHOOLS, $id, replace_invalid_chars($data)); // Update data using common_model.php and cms_helper.php
             $this->session->set_flashdata('success', 'Record is Successfully updated.');
             redirect($this->data['prev_url']); // Redirect to previous page set in ADMIN_Controller.php
         }

@@ -32,7 +32,7 @@ class Classroom extends ADMIN_Controller {
 
             if (!empty($_GET['q']) || !empty($_GET['order']) ) {
                 
-                $q = $this->input->get('q');
+                $q = replace_invalid_chars($this->input->get('q'));
                 
                 $order_get = $this->input->get('order');
 
@@ -170,7 +170,7 @@ class Classroom extends ADMIN_Controller {
                 "is_delete" => 0,
             );
 
-            insert(TBL_CLASSROOMS, $data);  // insert data into database using common_model.php and cms_helper.php
+            insert(TBL_CLASSROOMS, replace_invalid_chars($data));  // insert data into database using common_model.php and cms_helper.php
 
             $this->session->set_flashdata('success', 'Record is Successfully created.');
             redirect('admin/classroom');
@@ -219,7 +219,7 @@ class Classroom extends ADMIN_Controller {
                 "modified_date" => date('Y-m-d H:i:s'),
             );
 
-            update(TBL_CLASSROOMS, $id, $data); // Update data using common_model.php and cms_helper.php
+            update(TBL_CLASSROOMS, $id, replace_invalid_chars($data)); // Update data using common_model.php and cms_helper.php
             $this->session->set_flashdata('success', 'Record is Successfully updated.');
             redirect($this->data['prev_url']); // Redirect to previous page set in ADMIN_Controller.php
         }

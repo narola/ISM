@@ -21,7 +21,7 @@ class Course extends ADMIN_Controller {
         
 		$where['where'][TBL_COURSES.'.is_delete']=0;
         $category  = $this->input->get('category');
-		$q  = $this->input->get('q');
+		$q  = replace_invalid_chars($this->input->get('q'));
 		$order = '';
 		
 		$str = '';
@@ -159,7 +159,7 @@ class Course extends ADMIN_Controller {
 				 "is_delete"=>0				 				
 			);
 			
-			insert(TBL_COURSES,$data);	 // insert data into database using common_model.php and cms_helper.php
+			insert(TBL_COURSES,replace_invalid_chars($data));	 // insert data into database using common_model.php and cms_helper.php
 
 			$this->session->set_flashdata('success', 'Record is Successfully created.');
 			redirect('admin/course/lists');
@@ -205,7 +205,7 @@ class Course extends ADMIN_Controller {
 				 "is_delete"=>0				 				
 			);	
 			
-			update(TBL_COURSES,$id,$data);	// Update data using common_model.php and cms_helper.php
+			update(TBL_COURSES,$id,replace_invalid_chars($data));	// Update data using common_model.php and cms_helper.php
 			$this->session->set_flashdata('success', 'Record is Successfully updated.');
 			redirect('admin/course/lists');
         }

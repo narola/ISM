@@ -40,7 +40,7 @@ class User extends ADMIN_Controller {
 			if( !empty($_GET['school'])){ $school = $this->input->get('school'); }
 			if( !empty($_GET['year']) ) { $year = $this->input->get('year'); }
 			if( !empty($_GET['classroom']) ){  $classroom = $this->input->get('classroom'); }
-			if( !empty($_GET['q']) ){  $q = $this->input->get('q'); }
+			if( !empty($_GET['q']) ){  $q = replace_invalid_chars($this->input->get('q')); }
 			if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }		
 
 
@@ -223,7 +223,7 @@ class User extends ADMIN_Controller {
 				 "websocket_id"=>''
 			);
 			
-			insert(TBL_USERS,$data);	 // insert data into database using common_model.php and cms_helper.php
+			insert(TBL_USERS,replace_invalid_chars($data));	 // insert data into database using common_model.php and cms_helper.php
 
 			$this->session->set_flashdata('success', 'Record is Successfully created.');
 			redirect('admin/user');
@@ -314,7 +314,7 @@ class User extends ADMIN_Controller {
 				 'modified_date'=>date('Y-m-d H:i:s',time())
 			);
 	
-			update(TBL_USERS,$id,$data);	// Update data using common_model.php and cms_helper.php
+			update(TBL_USERS,$id,replace_invalid_chars($data));	// Update data using common_model.php and cms_helper.php
 			$this->session->set_flashdata('success', 'Record is Successfully updated.');
 			redirect($this->data['prev_url']); // Redirect to previous page set in ADMIN_Controller.php
 
@@ -347,7 +347,7 @@ class User extends ADMIN_Controller {
 	 **/
 	
 	public function blocked($id){
-		update(TBL_USERS,$id,array('user_status'=>'blocked','modified_date'=>date('Y-m-d H:i:s',time())));
+		update(TBL_USERS,$id,replace_invalid_chars(array('user_status'=>'blocked','modified_date'=>date('Y-m-d H:i:s',time()))));
 		$this->session->set_flashdata('success', 'User is Successfully Blocked.');
 		redirect($this->data['prev_url']);
 	}
@@ -359,7 +359,7 @@ class User extends ADMIN_Controller {
 	 **/
 	
 	public function active($id){
-		update(TBL_USERS,$id,array('user_status'=>'active','modified_date'=>date('Y-m-d H:i:s',time())));
+		update(TBL_USERS,$id,replace_invalid_chars(array('user_status'=>'active','modified_date'=>date('Y-m-d H:i:s',time()))));
 		$this->session->set_flashdata('success', 'User is Successfully Activated.');
 		redirect($this->data['prev_url']);
 	}
@@ -484,7 +484,7 @@ class User extends ADMIN_Controller {
 							);
 
 						//insert data into messages table
-						$message_id = insert(TBL_MESSAGES,$data);
+						$message_id = insert(TBL_MESSAGES,replace_invalid_chars($data));
 
 						$data_message_receiver = array(
 								'message_id'=>$message_id,
@@ -492,7 +492,7 @@ class User extends ADMIN_Controller {
 							);
 
 						// insert data into messages_receiver table using message id from message table
-						insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
+						insert(TBL_MESSAGE_RECEIVER,replace_invalid_chars($data_message_receiver));
 
 						$user_mail = select(TBL_USERS,'email_id',array('where'=>array('id'=>$user)),array('single'=>TRUE));
 
@@ -544,7 +544,7 @@ $this->data['is_scl'] = 0;
 				$this->data['my_cnt'] = 0;	
 				$this->form_validation->set_rules('all_users[]', 'Users', 'trim');		
 			}
-			p($this->data, true);
+			// p($this->data, true);
 		}else{
 			$this->data['post_users'] = array();
 		} 
@@ -630,7 +630,7 @@ $this->data['is_scl'] = 0;
 							);
 
 						//insert data into messages table
-						$message_id = insert(TBL_MESSAGES,$data);
+						$message_id = insert(TBL_MESSAGES,replace_invalid_chars($data));
 
 						$data_message_receiver = array(
 								'message_id'=>$message_id,
@@ -642,7 +642,7 @@ $this->data['is_scl'] = 0;
 							);
 
 						// insert data into messages_receiver table using message id from message table
-						insert(TBL_MESSAGE_RECEIVER,$data_message_receiver);
+						insert(TBL_MESSAGE_RECEIVER,replace_invalid_chars($data_message_receiver));
 
 						$user_mail = select(TBL_USERS,'email_id',array('where'=>array('id'=>$user)),array('single'=>TRUE));
 

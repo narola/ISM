@@ -33,7 +33,7 @@ class Group extends ADMIN_Controller {
 
             if (!empty($_GET['course'])) { $course = $this->input->get('course'); }
             if (!empty($_GET['classroom'])) { $classroom = $this->input->get('classroom'); }
-            if (!empty($_GET['q'])) { $q = $this->input->get('q'); }
+            if (!empty($_GET['q'])) { $q = replace_invalid_chars($this->input->get('q')); }
             if (!empty($_GET['year'])) { $year = $this->input->get('year'); }
 
             $str = '';
@@ -445,7 +445,7 @@ class Group extends ADMIN_Controller {
                     );
 
                     //insert data into messages table
-                    $message_id = insert(TBL_MESSAGES, $data);
+                    $message_id = insert(TBL_MESSAGES, replace_invalid_chars($data));
 
                     $data_message_receiver = array(
                         'message_id' => $message_id,
@@ -457,7 +457,7 @@ class Group extends ADMIN_Controller {
                     );
 
                     // insert data into messages_receiver table using message id from message table
-                    insert(TBL_MESSAGE_RECEIVER, $data_message_receiver);
+                    insert(TBL_MESSAGE_RECEIVER, replace_invalid_chars($data_message_receiver));
 
                     $user_mail = select(TBL_USERS, 'email_id', array('where' => array('id' => $user)), array('single' => TRUE));
 
@@ -596,7 +596,7 @@ class Group extends ADMIN_Controller {
                     );
 
                     //insert data into messages table
-                    $message_id = insert(TBL_MESSAGES, $data);
+                    $message_id = insert(TBL_MESSAGES, replace_invalid_chars($data));
 
                     $data_message_receiver = array(
                         'message_id' => $message_id,
@@ -608,7 +608,7 @@ class Group extends ADMIN_Controller {
                     );
 
                     // insert data into messages_receiver table using message id from message table
-                    insert(TBL_MESSAGE_RECEIVER, $data_message_receiver);
+                    insert(TBL_MESSAGE_RECEIVER, replace_invalid_chars($data_message_receiver));
 
                     $user_mail = select(TBL_USERS, 'email_id', array('where' => array('id' => $user)), array('single' => TRUE));
 

@@ -359,7 +359,7 @@ class Dashboard extends ADMIN_Controller {
             $configs = mail_config();
             $this->load->library('email', $configs);
             $this->email->initialize($configs);
-            $this->email->from('kap.narola@narolainfotech.com', 'Kamlesh Pokiya');
+            $this->email->from('demo.narola@gmail.com', 'ISM-Admin');
             $this->email->to($emailid);
             $encoded_mail = urlencode($token);
             $msg = '';

@@ -24,7 +24,7 @@ class Exam extends ADMIN_Controller {
 			if( !empty($_GET['exam_type']) ) { $exam_type = $this->input->get('exam_type'); }
 			if( !empty($_GET['subject']) ) { $subject = $this->input->get('subject'); }		
 			if( !empty($_GET['topic']) ) { $topic = $this->input->get('topic'); }		
-			if( !empty($_GET['q']) ) { $q = $this->input->get('q'); }
+			if( !empty($_GET['q']) ) { $q = replace_invalid_chars($this->input->get('q')); }
 			if( !empty($_GET['order']) ) { $order = $this->input->get('order'); }		
 
 			$str = '';  $where['where']=array();
@@ -301,22 +301,22 @@ class Exam extends ADMIN_Controller {
 					'created_by'=>$this->session->userdata('id')
 				);
 
-			$exam_id = insert(TBL_EXAMS,$exam_data); // Insert Data into database and return Inserted ID using common_model.php and cms_helper.php
+			$exam_id = insert(TBL_EXAMS,replace_invalid_chars($exam_data)); // Insert Data into database and return Inserted ID using common_model.php and cms_helper.php
 
 			$exam_schedule = array(
 					'exam_id'=>$exam_id,
 					'start_date'=>$this->input->post('start_date'),
 					'start_time'=>$this->input->post('start_time'),
-					'school_classroom_id'=>'1'
+					'school_classroom_id'=>1
 				);
 
-			$id = insert(TBL_EXAM_SCHEDULE,$exam_schedule);
+			$id = insert(TBL_EXAM_SCHEDULE,replace_invalid_chars($exam_schedule));
 
 			//Code For Tutorial Exam Table Entry
 			if(!isset($_POST['exam_type'])){
 				$topic_id = $this->input->post('topic_id');
 				$tutoral_topic_data = array('tutorial_topic_id'=>$topic_id,'exam_id'=>$exam_id);
-				insert(TBL_TUTORIAL_TOPIC_EXAM,$tutoral_topic_data);
+				insert(TBL_TUTORIAL_TOPIC_EXAM,replace_invalid_chars($tutoral_topic_data));
 			}
 
 			if($button_type == 'set'){
@@ -475,7 +475,7 @@ class Exam extends ADMIN_Controller {
 					'created_by'=>$this->session->userdata('id')
 				);
 				
-				$exam_id = insert(TBL_EXAMS,$exam_data); 
+				$exam_id = insert(TBL_EXAMS,replace_invalid_chars($exam_data)); 
 
 				$exam_schedule = array(
 					'exam_id'=>$exam_id,
@@ -484,12 +484,12 @@ class Exam extends ADMIN_Controller {
 					'school_classroom_id'=>'1'
 				);
 
-				$id = insert(TBL_EXAM_SCHEDULE,$exam_schedule);
+				$id = insert(TBL_EXAM_SCHEDULE,replace_invalid_chars($exam_schedule));
 
 				if(!isset($_POST['exam_type'])){
 					$topic_id = $this->input->post('topic_id');
 					$tutoral_topic_data = array('tutorial_topic_id'=>$topic_id,'exam_id'=>$exam_id);
-					insert(TBL_TUTORIAL_TOPIC_EXAM,$tutoral_topic_data);
+					insert(TBL_TUTORIAL_TOPIC_EXAM,replace_invalid_chars($tutoral_topic_data));
 				}
 				$this->session->set_flashdata('success', 'Exam has been Successfully Created.');
 
@@ -510,7 +510,7 @@ class Exam extends ADMIN_Controller {
 					'modified_date'=>date('Y-m-d H:i:s')
 				);
 				
-				$exam_id = update(TBL_EXAMS,$id,$exam_data); 
+				$exam_id = update(TBL_EXAMS,$id,replace_invalid_chars($exam_data)); 
 				
 				$exam_schedule = array(
 					'exam_id'=>$this->data['exam']['id'],
@@ -520,9 +520,9 @@ class Exam extends ADMIN_Controller {
 				);
 				
 				if(!empty($this->data['exam']['schedule_id'])){
-					$id = update(TBL_EXAM_SCHEDULE,$this->data['exam']['schedule_id'],$exam_schedule);	
+					$id = update(TBL_EXAM_SCHEDULE,$this->data['exam']['schedule_id'],replace_invalid_chars($exam_schedule));	
 				}else{
-					$id = insert(TBL_EXAM_SCHEDULE,$exam_schedule);	
+					$id = insert(TBL_EXAM_SCHEDULE,replace_invalid_chars($exam_schedule));	
 				}
 				
 				$this->session->set_flashdata('success', 'Exam has been Successfully Updated.');

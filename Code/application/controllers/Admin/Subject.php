@@ -17,7 +17,7 @@ class Subject extends ADMIN_Controller {
      */
     public function lists() {
         $this->data['page_title'] = 'Subject';
-        $q = $this->input->get('q');
+        $q = replace_invalid_chars($this->input->get('q'));
         $str = '';
         $where['where'][TBL_SUBJECTS . '.is_delete'] = 0;
 
@@ -129,7 +129,7 @@ class Subject extends ADMIN_Controller {
                 "is_delete" => 0
             );
 
-            $insertid = insert(TBL_SUBJECTS, $data);  // insert data into database using common_model.php and cms_helper.php
+            $insertid = insert(TBL_SUBJECTS, replace_invalid_chars($data));  // insert data into database using common_model.php and cms_helper.php
 
 
             /* course subject Insert data */
@@ -141,7 +141,7 @@ class Subject extends ADMIN_Controller {
                 "is_delete" => 0
             );
 
-            insert(TBL_CLASSROOM_SUBJECT, $data_cs);
+            insert(TBL_CLASSROOM_SUBJECT, replace_invalid_chars($data_cs));
 
             $path = "uploads/subjects";
 
@@ -235,7 +235,7 @@ class Subject extends ADMIN_Controller {
                 "subject_name" => $this->input->post("subject_name"),
                 "modified_date" => date('Y-m-d H:i:s')
             );
-            update(TBL_SUBJECTS, $id, $data); // Update data using common_model.php and cms_helper.php
+            update(TBL_SUBJECTS, $id, replace_invalid_chars($data)); // Update data using common_model.php and cms_helper.php
 
             /* course subject Update data */
             $data_cs = array(
@@ -245,7 +245,7 @@ class Subject extends ADMIN_Controller {
             );
 
             $cs_id = $this->input->post("cs_id");
-            update(TBL_CLASSROOM_SUBJECT, $cs_id, $data_cs); // Update data for course subject
+            update(TBL_CLASSROOM_SUBJECT, $cs_id, replace_invalid_chars($data_cs)); // Update data for course subject
 
             $path = "uploads/subjects/";
             if (!empty($_FILES['subject_image']['name'])) {
