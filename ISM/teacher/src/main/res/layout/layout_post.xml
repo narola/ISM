@@ -33,11 +33,11 @@
             android:layout_weight="1"
             android:layout_height="match_parent" />
         <TextView
+            android:id="@+id/txt_post"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textColor="@color/color_blue"
             android:textSize="@dimen/d20sp"
-            android:id="@+id/txt_post"
             android:gravity="center"
             android:layout_gravity="right"
             android:paddingLeft="5dp"

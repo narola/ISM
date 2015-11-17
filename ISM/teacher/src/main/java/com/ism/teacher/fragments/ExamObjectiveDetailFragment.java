@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.interfaces.FragmentListener;
@@ -88,7 +88,7 @@ public class ExamObjectiveDetailFragment extends Fragment implements WebserviceW
         txtBookNameValue.setTypeface(myTypeFace.getRalewayRegular());
         txtExamTypeName.setTypeface(myTypeFace.getRalewayRegular());
         txtEamTypeName.setTypeface(myTypeFace.getRalewayRegular());
-        ((TeacherHomeActivity) getActivity()).loadFragmentInRightContainer(TeacherHomeActivity.FRAGMENT_STUDENT_ATTEMPTED);
+        ((TeacherHostActivity) getActivity()).loadFragmentInRightContainer(TeacherHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
 
     }
 
@@ -99,7 +99,7 @@ public class ExamObjectiveDetailFragment extends Fragment implements WebserviceW
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_EXAM_OBJECTIVE_DETAILS);
+                fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_EXAM_OBJECTIVE_DETAILS);
             }
         } catch (ClassCastException e) {
             Log.i(TAG, "onAttach Exception : " + e.toString());
@@ -111,7 +111,7 @@ public class ExamObjectiveDetailFragment extends Fragment implements WebserviceW
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_EXAM_OBJECTIVE_DETAILS);
+                fragListener.onFragmentDetached(TeacherHostActivity.FRAGMENT_EXAM_OBJECTIVE_DETAILS);
             }
         } catch (ClassCastException e) {
             Log.i(TAG, "onDetach Exception : " + e.toString());
@@ -122,7 +122,7 @@ public class ExamObjectiveDetailFragment extends Fragment implements WebserviceW
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        //((TeacherHomeActivity) getActivity()).stopProgress();
+        //((TeacherHostActivity) getActivity()).stopProgress();
         try {
             //responseObject = (ResponseObject) object;
 //           if (API_METHOD == WebConstants.GET_EXAM_QUESTIONS) {

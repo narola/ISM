@@ -64,6 +64,7 @@
     <dimen name="d22sp">22sp</dimen>
     <dimen name="d110dp">100dp</dimen>
     <dimen name="d80dp">80dp</dimen>
+    <dimen name="d25sp">25sp</dimen>
     <dimen name="padding_header_white">20dp</dimen>
     <dimen name="text_size_header_white">20sp</dimen>
     <dimen name="padding_child_fragment_content">15dp</dimen>

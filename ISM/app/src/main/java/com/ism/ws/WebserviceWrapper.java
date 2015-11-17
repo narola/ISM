@@ -111,6 +111,12 @@ public class WebserviceWrapper {
                     case WebConstants.GET_ALL_BADGES_COUNT:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ALL_BADGES_COUNT, ResponseObject.class, requestObject);
                         break;
+//                    case WebConstants.UPLOAD_PROFILE_PIC:
+//                        responseObject = new RequestWs().getImageRequest(WebConstants.URL_PROFILE_PIC, ResponseObject.class, requestObject);
+//                        break;
+                    case WebConstants.GET_ABOUT_ME:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ABOUT_ME, ResponseObject.class, requestObject);
+                        break;
                     case WebConstants.RESPOND_TO_REQUEST:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_RESPOND_TO_REQUEST, ResponseObject.class, requestObject);
                         break;

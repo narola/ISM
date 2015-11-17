@@ -88,6 +88,8 @@ public class Data {
     private ArrayList<Data> notification;
     private ArrayList<Data> smsAlert;
     private String keyId;
+    private String birthdate;
+    private String contactNumber;
 
     @JsonProperty("preference_value")
     public String getDefaultValue() {
@@ -576,14 +578,14 @@ public class Data {
         this.notificationFromName = notificationFromName;
     }
 
-	@JsonProperty("notification_from_profile_pic")
-	public String getNotificationFromProfilePic() {
-		return notificationFromProfilePic;
-	}
+    @JsonProperty("notification_from_profile_pic")
+    public String getNotificationFromProfilePic() {
+        return notificationFromProfilePic;
+    }
 
-	public void setNotificationFromProfilePic(String notificationFromProfilePic) {
-		this.notificationFromProfilePic = notificationFromProfilePic;
-	}
+    public void setNotificationFromProfilePic(String notificationFromProfilePic) {
+        this.notificationFromProfilePic = notificationFromProfilePic;
+    }
 
     @JsonProperty("is_read")
     public String getIsRead() {
@@ -614,7 +616,7 @@ public class Data {
 
 	@JsonProperty("message_id")
 	public String getMessageId() {
-		return messageId;
+		return this.messageId;
 	}
 
 	public void setMessageId(String messageId) {
@@ -747,9 +749,10 @@ public class Data {
 		return notificationCount;
 	}
 
-	public void setNotificationCount(String notificationCount) {
-		this.notificationCount = notificationCount;
-	}
+    public void setNotificationCount(String notificationCount) {
+        this.notificationCount = notificationCount;
+    }
+
     public ArrayList<Data> getBlockedList() {
         return blockedList;
     }

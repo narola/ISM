@@ -11,9 +11,11 @@
         android:id="@+id/fragment_container_left"
         android:layout_width="230dp"
         android:layout_height="match_parent"
-        android:background="@android:color/holo_red_dark"
         />
-
+    <View
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:background="@color/color_separator" />
     <FrameLayout
         android:id="@+id/fragment_container_right"
         android:layout_width="wrap_content"

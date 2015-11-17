@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.interfaces.FragmentListener;
 
 /**
  * Created by c161 on --/10/15.
  */
-public class TeacherOfficeFragment extends Fragment implements TeacherHomeActivity.HostListener, TeacherHomeActivity.AddTopicsListener {
+public class TeacherOfficeFragment extends Fragment implements TeacherHostActivity.HostListener, TeacherHostActivity.AddTopicsListener {
 
     private static final String TAG = TeacherOfficeFragment.class.getName();
 

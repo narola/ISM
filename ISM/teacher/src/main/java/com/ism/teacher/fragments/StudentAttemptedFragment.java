@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.ObjectiveQuestionsAdapter;
 import com.ism.teacher.adapters.StudentAttemptedAdapter;
 import com.ism.teacher.constants.WebConstants;
@@ -40,7 +40,8 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     private StudentAttemptedAdapter studentAttemptedAdapter;
     private ObjectiveQuestionsAdapter objectiveQuestionsAdapter;
     public static ResponseObject responseObjQuestions;
-    public static List<String> questionsID=new ArrayList<>();
+    public static List<String> questionsID = new ArrayList<>();
+
     public static StudentAttemptedFragment newInstance() {
         StudentAttemptedFragment fragment = new StudentAttemptedFragment();
         return fragment;
@@ -68,8 +69,8 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
         requestObject.setUserId("340");
         requestObject.setRole(Integer.parseInt("3"));
         // Debug.i(TAG, "Request student attemted list : " ));
-     //
-     //   ((AuthorHostActivity) getActivity()).startProgress();
+        //
+        //   ((AuthorHostActivity) getActivity()).startProgress();
         new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                 .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
 
@@ -82,7 +83,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_STUDENT_ATTEMPTED);
+                fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -94,7 +95,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_STUDENT_ATTEMPTED);
+                fragListener.onFragmentDetached(TeacherHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
                 Debug.i(TAG, "detach");
             }
         } catch (ClassCastException e) {
@@ -118,7 +119,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-       // ((AuthorHostActivity) getActivity()).stopProgress();
+        // ((AuthorHostActivity) getActivity()).stopProgress();
 
 //        Debug.i(TAG, "Response of student attempted  ::" + responseObject.getMessage());
 //        Debug.i(TAG, "Response of student attempted  ::" + responseObject.getStatus());
@@ -139,7 +140,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                         requestObject.setExamId("3");
                         //requestObject.setStudentId("202");
 
-                       // ((AuthorHostActivity) getActivity()).startProgress();
+                        // ((AuthorHostActivity) getActivity()).startProgress();
                         callapigetexamquestions(requestObject);
 
                     }
@@ -147,8 +148,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                 } else if (resObjSubmisssion.getStatus().equals(ResponseObject.FAILED)) {
                     Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
                 }
-            }
-            else if (API_METHOD == WebConstants.GET_EXAM_QUESTIONS) {
+            } else if (API_METHOD == WebConstants.GET_EXAM_QUESTIONS) {
                 ResponseObject resObjQuestions = (ResponseObject) object;
                 if (resObjQuestions.getStatus().equals(ResponseObject.SUCCESS)) {
                     if (resObjQuestions.getData().size() != 0) {
@@ -162,12 +162,12 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                         ExamObjectiveDetailFragment.txtExamTypeName.setText(responseObjQuestions.getData().get(0).getExam_mode());
                         ExamObjectiveDetailFragment.txtClassName.setText(responseObjQuestions.getData().get(0).getClass_name());
 //                        String examDate = responseObjQuestions.getData().get(0).getCreated_date();
-                        ExamObjectiveDetailFragment.txtExamDateValue.setText(Utility.getFormattedDate("dd-MMM-yyyy",responseObjQuestions.getData().get(0).getCreated_date()));
+                        ExamObjectiveDetailFragment.txtExamDateValue.setText(Utility.getFormattedDate("dd-MMM-yyyy", responseObjQuestions.getData().get(0).getCreated_date()));
                         ExamObjectiveDetailFragment.txtExamName.setText(responseObjQuestions.getData().get(0).getExamName());
-                        questionsID=new ArrayList<>();
-                        for(int i=0;i<responseObjQuestions.getData().get(0).getQuestions().size();i++){
+                        questionsID = new ArrayList<>();
+                        for (int i = 0; i < responseObjQuestions.getData().get(0).getQuestions().size(); i++) {
                             questionsID.add(responseObjQuestions.getData().get(0).getQuestions().get(i).getQuestionId());
-                            Debug.i(TAG,"Q.ID :" +questionsID.get(i));
+                            Debug.i(TAG, "Q.ID :" + questionsID.get(i));
                         }
 
 
@@ -188,7 +188,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
         if (Utility.isInternetConnected(getActivity())) {
             try {
-               // ((AuthorHostActivity) getActivity()).startProgress();
+                // ((AuthorHostActivity) getActivity()).startProgress();
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_QUESTIONS);
             } catch (Exception e) {
