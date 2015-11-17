@@ -85,7 +85,7 @@ $url = uri_string();
                         }
                         ?>
                             dropdown">
-                            <a href="Tutorial.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_assess"></span> Assessment</a>
                             <ul class="dropdown-menu">
                                 <li <?php echo ($url == 'admin/question/set') ? 'class="active"' : ''; ?> ><a href="admin/question/set">Question Bank</a></li>
                                 <li <?php echo ($url == 'admin/exam') ? 'class="active"' : ''; ?>><a href="admin/exam">Exams</a></li>

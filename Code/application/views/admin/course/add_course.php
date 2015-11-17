@@ -28,13 +28,13 @@
 
                         <div class="form-group">
                             <label>Course Name</label>
-                            <input type="text" class="form-control" name="course_name" value="<?php echo set_value("course_name"); ?>">
+                            <input type="text" class="form-control" maxlength="50" name="course_name" value="<?php echo set_value("course_name"); ?>">
                         </div>                        
                         <?php echo myform_error('course_name'); ?>
 
                         <div class="form-group">
                             <label>Course Nickname</label>
-                            <input type="text" class="form-control" name="course_nickname" value="<?php echo set_value("course_nickname"); ?>">
+                            <input type="text" class="form-control" maxlength="15" name="course_nickname" value="<?php echo set_value("course_nickname"); ?>">
                         </div>
                         <?php echo myform_error('course_nickname'); ?>
 

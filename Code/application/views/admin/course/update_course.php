@@ -22,7 +22,7 @@
                     <div class="box_body admin_controls with_labels">
                         <div class="form-group">
                             <label>Course Name</label>
-                            <input type="text" class="form-control" name="course_name"  value="<?php  echo set_value("course_name") == false ? $course["course_name"] : set_value("course_name"); ?>">
+                            <input type="text" class="form-control" maxlength="50" name="course_name"  value="<?php  echo set_value("course_name") == false ? $course["course_name"] : set_value("course_name"); ?>">
                         </div>
                         <div class="alert alert-danger <?php if (empty(strip_tags(form_error('course_name'), ''))) { echo 'hide';} ?>">
                             <?php echo strip_tags(form_error('course_name'), ''); ?>
@@ -30,7 +30,7 @@
 
                         <div class="form-group">
                             <label>Course Nickname</label>
-                            <input type="text" class="form-control" name="course_nickname" value="<?php  echo set_value("course_nickname") == false ? $course["course_nickname"] : set_value("course_nickname"); ?>">
+                            <input type="text" class="form-control" maxlength="15" name="course_nickname" value="<?php  echo set_value("course_nickname") == false ? $course["course_nickname"] : set_value("course_nickname"); ?>">
                         </div>
                         <div class="alert alert-danger <?php if (empty(strip_tags(form_error('course_nickname'), ''))) { echo 'hide';} ?>">
                             <?php echo strip_tags(form_error('course_nickname'), ''); ?>
@@ -69,7 +69,7 @@
                         
                         <div class="form-group">
                             <label>Course Degree</label>
-                            <input type="text" class="form-control" name="course_degree" value="<?php  echo set_value("course_degree") == false ? $course["course_degree"] : set_value("course_degree"); ?>">
+                            <input type="text" maxlength="30" class="form-control" name="course_degree" value="<?php  echo set_value("course_degree") == false ? $course["course_degree"] : set_value("course_degree"); ?>">
                         </div>
                         <div class="alert alert-danger <?php if (empty(strip_tags(form_error('course_degree'), ''))) {echo 'hide';} ?>">
                             <?php echo strip_tags(form_error('course_degree'), ''); ?>
