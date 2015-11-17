@@ -65,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/d10dp"
-                    android:text="@string/strassignmentdate"
+                    android:text="@string/strassignmentdatecolon"
                     android:textColor="@color/bg_office"
                     android:textSize="@dimen/d15dp" />
 
@@ -160,6 +160,7 @@
                 android:background="@color/assignment_separator" />
 
             <LinearLayout
+                android:id="@+id/ll_view_assignment_questions"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -10,10 +10,12 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.ism.author.R;
+import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.PostFeedCommentsAdapter;
 import com.ism.author.model.Data;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by c166 on 24/10/15.
@@ -47,10 +49,11 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
         initializeDialog();
 
 
+
+
     }
 
     private void initializeDialog() {
-
         postFeedCommentsAdapter = new PostFeedCommentsAdapter(mContext);
         rvPostFeedsComments = (RecyclerView) findViewById(R.id.rv_post_feeds_comments);
         tvDialogClose = (TextView) findViewById(R.id.tv_dialog_close);
@@ -60,12 +63,10 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
         // Set layout manager to position the items
         rvPostFeedsComments.setLayoutManager(new LinearLayoutManager(mContext));
         postFeedCommentsAdapter.addAll(commentsList);
-
     }
 
     @Override
     public void onClick(View v) {
-
 
         if (v == tvDialogClose) {
             dismiss();

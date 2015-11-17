@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical"
+    tools:context="com.ism.author.fragment.GetObjectiveAssignmentQuestionsFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shadow_bg_trial_exam_details"
+            android:orientation="horizontal"
+            android:padding="@dimen/d10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_objective_assignment_subject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/strbookname"
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/d18dp" />
+
+                <TextView
+                    android:id="@+id/tv_objective_assignment_class"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d5dp"
+                    android:text="@string/strClass_colon"
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/d18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_objective_assignment_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/strassignmentno"
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/d18dp" />
+
+                <TextView
+                    android:id="@+id/tv_objective_assignment_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d5dp"
+                    android:text="@string/strtest"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_red"
+                    android:textSize="@dimen/d20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_objective_assignment_date_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/strassignmentdate"
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/d18dp" />
+
+                <TextView
+                    android:id="@+id/tv_objective_assignment_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d5dp"
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_violet_assignment"
+                    android:textSize="@dimen/d18dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_getObjective_assignment_questionslist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+</LinearLayout>

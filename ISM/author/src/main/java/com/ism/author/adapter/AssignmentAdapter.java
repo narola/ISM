@@ -2,9 +2,6 @@ package com.ism.author.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +12,7 @@ import android.widget.TextView;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.Utility;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
 
@@ -64,12 +62,13 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
 
             holder.tvAssignmentSubjectName.setText(listOfAssignments.get(position).getSubjectName());
             holder.tvAssignmentClassName.setText(listOfAssignments.get(position).getClassroomName());
-            holder.tvAssignmentDate.setText(mContext.getString(R.string.strassignmentdate));
-            String assignment_date = " " + listOfAssignments.get(position).getPassPercentage();
-            SpannableString f = new SpannableString(assignment_date);
-            f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_black)), 0,
-                    assignment_date.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.tvAssignmentDate.append(f);
+            holder.tvAssignmentDate.setText(mContext.getString(R.string.strassignmentdatecolon));
+//            String assignment_date = " " + listOfAssignments.get(position).getPassPercentage();
+//            SpannableString f = new SpannableString(assignment_date);
+//            f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_black)), 0,
+//                    assignment_date.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.tvAssignmentDate.append(Utility.getSpannableString(" " + listOfAssignments.get(position).getPassPercentage(),
+                    mContext.getResources().getColor(R.color.color_black)));
 
             holder.tvAssignmentNoofAssessed.setText(listOfAssignments.get(position).getTotal_student());
             holder.tvAssignmentNoofQuestion.setText(listOfAssignments.get(position).getTotal_student());
@@ -98,6 +97,14 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                     ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
                 }
             });
+
+            holder.llViewAssignmentQuestions.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v) {
+                                                                        ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS);
+                                                                    }
+                                                                }
+            );
 
 
         } catch (Exception e) {
@@ -128,7 +135,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
         TextView tvAssignmentSubjectName, tvAssignmentCourseName, tvAssignmentDate, tvAssignmentClassName, tvAssignmentNoofAssessed,
                 tvAssignmentAssessed, tvAssignmentNoofUnassessed, tvAssignmentUnassessed, tvAssignmentNoofQuestion, tvAssignmentQuestion,
                 tvAssignmentType;
-        LinearLayout llAssignmentContainer;
+        LinearLayout llAssignmentContainer, llViewAssignmentQuestions;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -146,6 +153,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
             tvAssignmentQuestion = (TextView) itemView.findViewById(R.id.tv_assignment_question);
             tvAssignmentType = (TextView) itemView.findViewById(R.id.tv_assignment_type);
             llAssignmentContainer = (LinearLayout) itemView.findViewById(R.id.ll_assignment_container);
+            llViewAssignmentQuestions = (LinearLayout) itemView.findViewById(R.id.ll_view_assignment_questions);
 
 
         }

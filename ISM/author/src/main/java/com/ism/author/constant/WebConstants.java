@@ -41,8 +41,7 @@ public class WebConstants {
     public static final int REGISTERUSER = 25;
     public static final int GETEXAMEVALUATIONS = 26;
     public static final int GETEXAMQUESTIONS = 27;
-    public static final int GET_ALL_ASSIGNMENTS = 28;
-    public static final int GET_EXAM_SUBMISSION = 29;
+    public static final int GETALLASSIGNMENTS = 28;
 
 
     //	webservice url

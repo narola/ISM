@@ -9,12 +9,14 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
@@ -159,14 +161,6 @@ public class Utility {
         actionProgressButton.setVisibility(View.INVISIBLE);
     }
 
-    public static void showProgressBar(AuthorHostActivity activity) {
-        activity.startProgress();
-    }
-
-    public static void hideProgressBar(AuthorHostActivity activity) {
-        activity.stopProgress();
-    }
-
     public static String getFormattedDate(String pattern, String date) {
 
         try {
@@ -178,6 +172,17 @@ public class Utility {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static SpannableString f;
+
+    public static SpannableString getSpannableString(String spanString, Integer color) {
+
+        f = new SpannableString(spanString);
+        f.setSpan(new ForegroundColorSpan(color), 0,
+                spanString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return f;
+
     }
 
 }

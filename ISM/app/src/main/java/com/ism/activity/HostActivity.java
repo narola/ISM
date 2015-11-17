@@ -80,7 +80,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private HostListener listenerHost;
 	private HostListenerAllNotification listenerHostAllNotification;
 	private HostListenerAllMessage listenerHostAllMessage;
-	private HostListenerAllStudyMateRequest listenerHostAllStudyMateRequest;
 	private HostListenerProfileController listnerHostProfileController;
 
     private TextView arrTxtMenu[];
@@ -123,10 +122,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 	}
 
 	public interface HostListenerAllMessage {
-		public void onControllerTopBackClick();
-	}
-
-	public interface HostListenerAllStudyMateRequest {
 		public void onControllerTopBackClick();
 	}
 
@@ -397,7 +392,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     break;
                 case FRAGMENT_ALL_STUDYMATE_REQUEST:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AllStudymateRequestFragment.newInstance(fragmentArgument.getArrayListData(), fragmentArgument.getPosition())).commit();
+                            AllStudymateRequestFragment.newInstance(fragmentArgument.getArrayListData())).commit();
                     break;
             }
         } catch (Exception e) {
@@ -589,6 +584,10 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void onMenuItemClick(View view) {
         try {
             if (view == imgMenuBack) {
+	            /**
+	             * Controller top back button click
+	             */
+
                 hideControllerTopControls();
 
 	            if (currentControllerTopMenu != null) {
@@ -607,12 +606,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 		            case FRAGMENT_ALL_MESSAGE:
 			            listenerHostAllMessage.onControllerTopBackClick();
 			            break;
-		            case FRAGMENT_ALL_STUDYMATE_REQUEST:
-			            listenerHostAllStudyMateRequest.onControllerTopBackClick();
-			            break;
 	            }
 
             } else if (view == txtAction) {
+	            /**
+	             * Controller top action button click
+	             */
+
                 Log.e(TAG, "text action");
                 /*switch (currentMainFragment) {
                     case FRAGMENT_CLASSROOM:
@@ -829,9 +829,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
         }
 
-
     }
-
 
 	public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
 		this.listenerHostAllNotification = listenerHostAllNotification;
@@ -839,10 +837,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
 	public void setListenerHostAllMessage(HostListenerAllMessage listenerHostAllMessage) {
 		this.listenerHostAllMessage = listenerHostAllMessage;
-	}
-
-	public void setListenerHostAllStudyMateRequest(HostListenerAllStudyMateRequest listenerHostAllStudyMateRequest) {
-		this.listenerHostAllStudyMateRequest = listenerHostAllStudyMateRequest;
 	}
 
 	public void setListnerHostProfileController(HostListenerProfileController listnerHostProfileController) {

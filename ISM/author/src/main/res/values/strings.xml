@@ -64,7 +64,8 @@
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
-    <string name="strassignmentdate">Assignment Date:</string>
+    <string name="strassignmentdatecolon">Assignment Date:</string>
+    <string name="strassignmentdate">Assignment date</string>
     <string name="strassessed">Assessed</string>
     <string name="strunasssessed">unassessed</string>
     <string name="strassignmenttype">Assignment Type :</string>
@@ -153,6 +154,7 @@
     <string name="strexamtype_colon">Exam Type :</string>
     <string name="strClass_colon">Class :</string>
     <string name="processing">Processing</string>
+    <string name="strassignmentno">Assignment No</string>
 
     <string name="strexammode">Exam Mode</string>
     <string name="strexamduration">Exam Duration(MIN)</string>
@@ -277,7 +279,7 @@
     <string name="progress_report">Progress Report</string>
     <string name="add_notes">Add Notes</string>
     <string name="add_new_favorite">Add new Favorite</string>
-
+    <string name="strbookname">Book Name</string>
     <string name="notes">Notes</string>
     <string name="assignments">Assignments</string>
     <string name="links">Links</string>
@@ -289,8 +291,9 @@
     <string name="strAddpost">Add Post</string>
     <string name="strAddNew">Add New</string>
     <string name="strcorrect_answer">Correct Answer :</string>
+    <string name="stranswer">Answer :</string>
     <string name="strevoluations_notes">Evoluations Notes :</string>
-    <string name="strsolutions">Solutions :</string>
+    <string name="strsolutions">Solution :</string>
     <string name="strStudentAttempted">Student Attempted</string>
     <string name="strScore">Score</string>
     <string name="strComments">Comments</string>

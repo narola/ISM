@@ -79,6 +79,7 @@ public class Data {
 	private String notificationCount;
 	private String messageCount;
 	private String requestCount;
+	private String requestId;
 
     private ArrayList<TutorialGroupMember> tutorialGroupMembers;
     private ArrayList<Comment> comments;
@@ -808,5 +809,14 @@ public class Data {
 
     public void setPreferenceKey(String preferenceKey) {
         this.preferenceKey = preferenceKey;
+    }
+
+    @JsonProperty("request_id")
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
 }
