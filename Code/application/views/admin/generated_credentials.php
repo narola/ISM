@@ -22,7 +22,7 @@
                       <option value="D" <?php echo set_select('school_grade', 'D'); ?>>D</option>
                       <option value="E" <?php echo set_select('school_grade', 'E'); ?>>E</option>
                   </select>
-                  <a href="#" class="icon icon_add_small"></a>
+                  
               </div>
 
               <div class="form-group three_inputs select">
@@ -40,7 +40,7 @@
                           <option disabled > No Schools Found</option>  
                       <?php } ?> 
                   </select>
-                  <a href="#" class="icon icon_add_small"></a>
+                  <a href="admin/school/add" class="icon icon_add_small"></a>
                   <?php echo form_error('school_id','<div class="alert alert-danger school_id_error">','</div>'); ?>
               </div>
 
@@ -82,7 +82,7 @@
                               <option disabled > No Course Found</option>  
                           <?php } ?>      
                       </select>
-                      <a href="#" class="icon icon_add_small"></a>
+                      <a href="admin/course/add_course" class="icon icon_add_small"></a>
                       <?php echo form_error('course_id','<div class="alert alert-danger course_id_error">','</div>'); ?>
                   </div>
 
@@ -101,7 +101,7 @@
                               <option disabled > No Classroom Found</option>  
                           <?php } ?>
                       </select>
-                      <a href="#" class="icon icon_add_small"></a>
+                      <a href="admin/classroom/add" class="icon icon_add_small"></a>
                       <?php echo form_error('classroom_id','<div class="alert alert-danger classroom_id_error">','</div>'); ?>
                   </div>
 

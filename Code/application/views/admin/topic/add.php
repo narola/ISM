@@ -35,7 +35,7 @@
                         <option > No Course</option>
                         <?php } ?>
                     </select>
-                    <a href="#" class="icon icon_add_small"></a>
+                    <a href="admin/course/add_course" class="icon icon_add_small"></a>
                     <?php echo myform_error('course_id'); ?>
                 </div>
                 
@@ -51,7 +51,7 @@
                         <?php } 
                         }?>
                     </select>
-                    <a href="#" class="icon icon_add_small"></a>
+                    <a href="admin/classroom/add" class="icon icon_add_small"></a>
                     <?php echo myform_error('classrooms'); ?>
                 </div>
 
@@ -69,7 +69,7 @@
                         }?>
 
                     </select>
-                    <a href="#" class="icon icon_add_small"></a>
+                    <a href="admin/subject/add_subject" class="icon icon_add_small"></a>
                     <?php echo myform_error('subjects'); ?>
                 </div>
 
@@ -85,7 +85,7 @@
                         <?php } 
                         }?>
                     </select>
-                    <a href="#" class="icon icon_add_small"></a>
+                    
                     <?php echo myform_error('topic_id'); ?> 
                 </div>
 

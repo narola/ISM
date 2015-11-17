@@ -9,7 +9,7 @@
             </ol>
         </div>
         <div class="col-sm-6 col-md-4 text-right">
-            <a class="btn btn_green add_topic" href="<?php echo base_url() . 'admin/classroom/add'; ?>" >Add New Classroom</a>
+            <a class="btn btn_green add_topic" href="admin/classroom/add" >Add New Classroom</a>
         </div>
     </div>
     <!--//breadcrumb-->
@@ -104,9 +104,9 @@
                                     <td><?php echo ucfirst($classroom['course_name']); ?></td>
                                     <td> <?php echo ucfirst($classroom['class_nickname']); ?> </td>
                                     <td>
-                                        <a href="<?php echo base_url() . 'admin/classroom/update/' . $classroom['id']; ?>" class="icon icon_edit"
+                                        <a href="admin/classroom/update/<?php echo $classroom['id']; ?>" class="icon icon_edit"
                                            data-toggle="tooltip" data-placement="bottom" title="Edit"> </a>
-										<!-- <a href="<?php echo base_url() . 'admin/classroom/update/' . $classroom['id']; ?>" class="icon icon_delete_color no-margin"
+										<!-- <a href="admin/classroom/update/<?php echo  $classroom['id']; ?>" class="icon icon_delete_color no-margin"
                                            data-toggle="tooltip" data-placement="bottom" title="Delete"> </a> -->
                                     </td>
                                 </tr>

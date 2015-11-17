@@ -151,7 +151,7 @@ class User extends ADMIN_Controller {
 												    		)
 												)
 											);
-		
+		qry();
 		// p($this->data['all_users'],true);
 		$this->pagination->initialize($config);
 		

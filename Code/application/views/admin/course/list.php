@@ -5,8 +5,8 @@
 		<div class="page_header">
     	<div class="col-sm-8">
         	<ol class="breadcrumb">
-              <li><a href="<?php echo base_url().'admin/user'; ?>">Manage</a></li>                          
-              <li><a href="<?php echo base_url().'admin/course/lists'; ?>">Courses</a></li>
+              <li><a href="admin/user">Manage</a></li>                          
+              <li><a href="admin/course/lists">Courses</a></li>
               <li class="active">List of Courses</li>
             </ol>
         </div>
@@ -82,10 +82,10 @@
                     </div>
                 </div>
                 <div class="topic_action">
-               		<a href="<?php echo '/admin/course/update_course/'.$course['id'];?>" data-toggle="tooltip" 
+               		<a href="admin/course/update_course/<?php echo $course['id'];?>" data-toggle="tooltip" 
                         data-placement="bottom" data-original-title="Edit" class="icon icon_edit"></a>
                     <a data-toggle="tooltip" id="delete_<?php echo $course['id']; ?>" data-placement="bottom" 
-                        href="<?php echo base_url().'admin/course/delete_course/'.$course['id']; ?>"
+                        href="admin/course/delete_course/<?php echo $course['id']; ?>"
                         onclick="return delete_course(this.href,event)"
                         data-original-title="Delete" class="delete icon icon_delete_color" ></a>
                 </div>
