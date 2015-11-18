@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.StudentAttemptedFragment;
@@ -116,7 +117,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 
     private void callAPIStudentEvaluations(String studentId, String examId, String studentName) {
         try {
-            if (Utils.isInternetConnected(context)) {
+            if (Utility.isOnline(context)) {
                 ((AuthorHostActivity) context).startProgress();
                 RequestObject requestObject = new RequestObject();
                 requestObject.setStudentId("202");
@@ -124,7 +125,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                 new WebserviceWrapper(context, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } else {
-                Utils.showToast(context.getString(R.string.strnetissue), context);
+                Utility.toastOffline(context);
             }
 
         } catch (Exception e) {

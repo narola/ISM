@@ -21,6 +21,7 @@ import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.Data;
+import com.ism.author.model.FragmentArgument;
 import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
@@ -44,10 +45,12 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter;
     private ArrayList<Data> listOfQuestions = new ArrayList<Data>();
     private RequestObject requestObjectToPass = null;
+    private FragmentArgument fragmentArgument;
 
 
-    public static GetObjectiveAssignmentQuestionsFragment newInstance() {
+    public static GetObjectiveAssignmentQuestionsFragment newInstance(FragmentArgument fragmentArgument) {
         GetObjectiveAssignmentQuestionsFragment getObjectiveAssignmentQuestionsFragment = new GetObjectiveAssignmentQuestionsFragment();
+        getObjectiveAssignmentQuestionsFragment.fragmentArgument = fragmentArgument;
         return getObjectiveAssignmentQuestionsFragment;
     }
 

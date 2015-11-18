@@ -178,7 +178,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private void callApiGetClassRooms() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCLASSROOMS);
@@ -186,13 +186,13 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }
 
     private void callApiGetSubjects() {
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
@@ -200,13 +200,13 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }
 
     private void callApiGetTopics(int subject_id) {
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 RequestObject requestObject = new RequestObject();
                 requestObject.setSubjectId(String.valueOf(subject_id));
@@ -216,14 +216,14 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }
 
     private void callApiCreateAssignment() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
 
             try {
                 RequestObject requestObject = new RequestObject();
@@ -246,7 +246,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }

@@ -15,6 +15,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
+import com.ism.author.model.FragmentArgument;
 
 import java.util.ArrayList;
 
@@ -27,24 +28,27 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
     private Context mContext;
     private ArrayList<Data> listOfAssignments = new ArrayList<Data>();
     private MyTypeFace myTypeFace;
+    private FragmentArgument fragmentArgument;
+    private LayoutInflater inflater;
 
 
     public AssignmentAdapter(Context mContext) {
         this.mContext = mContext;
+        this.inflater = LayoutInflater.from(mContext);
+        this.fragmentArgument = new FragmentArgument();
+        this.myTypeFace = new MyTypeFace(mContext);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        myTypeFace = new MyTypeFace(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
+
         View contactView = inflater.inflate(R.layout.row_assessment, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
         try {
             holder.tvAssignmentSubjectName.setTypeface(myTypeFace.getRalewayBold());
@@ -73,11 +77,11 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
             holder.tvAssignmentNoofAssessed.setText(listOfAssignments.get(position).getTotal_student());
             holder.tvAssignmentNoofQuestion.setText(listOfAssignments.get(position).getTotal_student());
 
-            if (listOfAssignments.get(position).getExamMode().equals("subjective")) {
+            if (listOfAssignments.get(position).getExamMode().equalsIgnoreCase("subjective")) {
                 holder.tvAssignmentUnassessed.setText(mContext.getString(R.string.strunasssessed));
                 holder.tvAssignmentNoofUnassessed.setText(listOfAssignments.get(position).getTotal_student());
 
-            } else if (listOfAssignments.get(position).getExamMode().equals("objective")) {
+            } else if (listOfAssignments.get(position).getExamMode().equalsIgnoreCase("objective")) {
                 holder.tvAssignmentUnassessed.setText(mContext.getString(R.string.stravgscore));
                 holder.tvAssignmentNoofUnassessed.setText(listOfAssignments.get(position).getTotal_student() + " " + mContext.getString(R.string.strpercent));
             }
@@ -94,17 +98,20 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
             holder.llAssignmentContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR);
+                    fragmentArgument.getRequestObject().setExamId(listOfAssignments.get(position).getExamID());
+                    fragmentArgument.getRequestObject().setExamMode(listOfAssignments.get(position).getExamMode());
+                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR, fragmentArgument);
+
                 }
             });
 
             holder.llViewAssignmentQuestions.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS);
-                                                                    }
-                                                                }
-            );
+                @Override
+                public void onClick(View view) {
+                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS,
+                            fragmentArgument);
+                }
+            });
 
 
         } catch (Exception e) {
@@ -158,5 +165,6 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
 
         }
     }
+
 
 }

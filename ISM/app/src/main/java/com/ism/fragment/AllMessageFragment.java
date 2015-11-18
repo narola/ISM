@@ -18,8 +18,14 @@ import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.MessageAdapter;
+import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
+import com.ism.object.Global;
+import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
+import com.ism.ws.WebserviceWrapper;
 import com.ism.ws.model.Data;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -29,7 +35,7 @@ import java.util.ArrayList;
 /**
  * Created by c161 on 09/11/15.
  */
-public class AllMessageFragment extends Fragment implements HostActivity.HostListenerAllMessage {
+public class AllMessageFragment extends Fragment implements HostActivity.HostListenerAllMessage, WebserviceWrapper.WebserviceResponse {
 
 	private static final String TAG = AllMessageFragment.class.getSimpleName();
 
@@ -37,7 +43,7 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 	private ListView lvAllMessage;
 	private RelativeLayout rlMessageDetails;
 	private CircleImageView imgDp;
-	private TextView txtName, txtMessage, txtReply;
+	private TextView txtName, txtMessage, txtReply, txtHeader;
 
 	private FragmentListener fragListener;
 	private HostActivity activityHost;
@@ -47,6 +53,7 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 
 	private static String MESSAGE_POSITION = "notificationPosition";
 	private int positionMessage;
+	private boolean isReadStatusUpdated = false;
 
 	public static AllMessageFragment newInstance(ArrayList<Data> arrListMessage, int position) {
 		AllMessageFragment fragment = new AllMessageFragment();
@@ -80,13 +87,19 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 	}
 
 	private void initGlobal() {
+		txtHeader = (TextView) view.findViewById(R.id.txt_header_white);
 		lvAllMessage = (ListView) view.findViewById(R.id.lv_all_message);
+
+		MyTypeFace myTypeFace = new MyTypeFace(activityHost);
+		txtHeader.setTypeface(myTypeFace.getRalewayRegular());
 
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
 		if (positionMessage >= 0) {
 			showMessageDetails(positionMessage);
+		} else {
+			callApiUpdateReadStatus();
 		}
 
 		if (arrListMessage != null) {
@@ -107,11 +120,14 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 			rlMessageDetails.setVisibility(View.GONE);
 		}
 		lvAllMessage.setVisibility(View.VISIBLE);
+		txtHeader.setVisibility(View.VISIBLE);
+		callApiUpdateReadStatus();
 	}
 
 	private void showMessageDetails(int position) {
 		activityHost.showControllerTopBackButton();
 		lvAllMessage.setVisibility(View.GONE);
+		txtHeader.setVisibility(View.GONE);
 		if (rlMessageDetails == null) {
 			rlMessageDetails = (RelativeLayout)((ViewStub) view.findViewById(R.id.vs_message_details)).inflate();
 			initViews();
@@ -166,8 +182,59 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 		fragListener = null;
 	}
 
+	private void callApiUpdateReadStatus() {
+		try {
+			if (!isReadStatusUpdated && arrListMessage != null && arrListMessage.size() > 0) {
+				ArrayList<String> recordIds = new ArrayList<String>();
+				for (int i = 0; i < arrListMessage.size(); i++) {
+					recordIds.add(arrListMessage.get(i).getRecordId());
+				}
+				RequestObject requestObject = new RequestObject();
+				requestObject.setUserId(Global.strUserId);
+				requestObject.setReadCategory(WebConstants.MESSAGES);
+				requestObject.setRecordIds(recordIds);
+
+				new WebserviceWrapper(activityHost, requestObject, this).new WebserviceCaller().
+						execute(WebConstants.UPDATE_READ_STATUS);
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "callApiUpdateReadStatus Exception : " + e.toString());
+		}
+	}
+
 	@Override
 	public void onControllerTopBackClick() {
 		showMessageList();
+	}
+
+	@Override
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.UPDATE_READ_STATUS:
+					onResponseUpdateReadStatus(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseUpdateReadStatus(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseObject responseObject = (ResponseObject) object;
+				if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+					isReadStatusUpdated = true;
+					Log.e(TAG, "Read status updated");
+				} else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "Read status update failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseUpdateReadStatus api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseUpdateReadStatus Exception : " + e.toString());
+		}
 	}
 }

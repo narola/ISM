@@ -2,8 +2,6 @@ package com.ism.author.Utility;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -25,39 +23,6 @@ public class Utils {
 
 
     private static final String TAG = CreateAssignmentFragment.class.getSimpleName();
-
-
-    /* these is the method to check for the internet connection*/
-    public static boolean isInternetConnected(Context mContext) {
-
-        try {
-            ConnectivityManager connect = null;
-            connect = (ConnectivityManager) mContext
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-
-            if (connect != null) {
-                NetworkInfo resultMobile = connect
-                        .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-
-                NetworkInfo resultWifi = connect
-                        .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-                if ((resultMobile != null && resultMobile
-                        .isConnectedOrConnecting())
-                        || (resultWifi != null && resultWifi
-                        .isConnectedOrConnecting())) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
 
     /*These is the method to show toast in android
     * */

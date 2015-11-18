@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/d10dp">
+
+
+        <com.ism.author.helper.CircleImageView
+            android:id="@+id/img_student_profile_pic"
+            android:layout_width="@dimen/d50dp"
+            android:layout_height="@dimen/d50dp"
+            android:background="@drawable/userdp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d15dp"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_student_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/strtest"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/d18dp" />
+
+            <TextView
+                android:id="@+id/tv_student_roll_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d5dp"
+                android:text="@string/strtest"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/d12dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d1dp"
+        android:layout_marginLeft="@dimen/d15dp"
+        android:layout_marginRight="@dimen/d15dp"
+        android:background="@color/questionlistseparator" />
+
+</LinearLayout>

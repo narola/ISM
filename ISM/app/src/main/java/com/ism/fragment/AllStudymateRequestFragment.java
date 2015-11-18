@@ -13,15 +13,21 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.StudymateRequestAdapter;
+import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
+import com.ism.object.Global;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
+import com.ism.ws.WebserviceWrapper;
 import com.ism.ws.model.Data;
 
 import java.util.ArrayList;
 
+
 /**
  * Created by c161 on 09/11/15.
  */
-public class AllStudymateRequestFragment extends Fragment {
+public class AllStudymateRequestFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 	private static final String TAG = AllStudymateRequestFragment.class.getSimpleName();
 
@@ -70,6 +76,7 @@ public class AllStudymateRequestFragment extends Fragment {
 			}
 			adpStudymate = new StudymateRequestAdapter(getActivity(), arrListStudymateRequest);
 			lvAllStudyMate.setAdapter(adpStudymate);
+			callApiUpdateReadStatus();
 		}
 
 	}
@@ -101,4 +108,53 @@ public class AllStudymateRequestFragment extends Fragment {
 		fragListener = null;
 	}
 
+	private void callApiUpdateReadStatus() {
+		try {
+			if (arrListStudymateRequest != null && arrListStudymateRequest.size() > 0) {
+				ArrayList<String> recordIds = new ArrayList<String>();
+				for (int i = 0; i < arrListStudymateRequest.size(); i++) {
+					recordIds.add(arrListStudymateRequest.get(i).getRecordId());
+				}
+				RequestObject requestObject = new RequestObject();
+				requestObject.setUserId(Global.strUserId);
+				requestObject.setReadCategory(WebConstants.STUDYMATE_REQUEST);
+				requestObject.setRecordIds(recordIds);
+
+				new WebserviceWrapper(activityHost, requestObject, this).new WebserviceCaller().
+						execute(WebConstants.UPDATE_READ_STATUS);
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "callApiUpdateReadStatus Exception : " + e.toString());
+		}
+	}
+
+	@Override
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.UPDATE_READ_STATUS:
+					onResponseUpdateReadStatus(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseUpdateReadStatus(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseObject responseObject = (ResponseObject) object;
+				if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+					Log.e(TAG, "Read status updated");
+				} else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "Read status update failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseUpdateReadStatus api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseUpdateReadStatus Exception : " + e.toString());
+		}
+	}
 }

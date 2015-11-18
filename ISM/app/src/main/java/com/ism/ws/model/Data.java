@@ -30,7 +30,7 @@ public class Data {
     private String schoolType;
     private String fullName;
 
-
+    private String requestId;
     private String tutorialGroupId;
     private String tutorialGroupJoiningStatus;
     private String tutorialGroupComplete;
@@ -59,7 +59,7 @@ public class Data {
     private String notificationToId;
     private String notificationText;
     private String notificationToName;
-    private String notificationId;
+    private String recordId;
     private String notificationFromName;
     private String notificationFromProfilePic;
     private String isRead;
@@ -80,7 +80,8 @@ public class Data {
     private String notificationCount;
     private String messageCount;
     private String requestCount;
-    private String requestId;
+    private String examScore;
+    private String subjectName;
 
     private ArrayList<TutorialGroupMember> tutorialGroupMembers;
     private ArrayList<Comment> comments;
@@ -693,13 +694,13 @@ public class Data {
         this.notificationToName = notificationToName;
     }
 
-    @JsonProperty("notification_id")
-    public String getNotificationId() {
-        return this.notificationId;
+    @JsonProperty("record_id")
+    public String getRecordId() {
+        return recordId;
     }
 
-    public void setNotificationId(String notificationId) {
-        this.notificationId = notificationId;
+    public void setRecordId(String recordId) {
+        this.recordId = recordId;
     }
 
     @JsonProperty("notification_from_name")
@@ -720,14 +721,10 @@ public class Data {
         this.notificationFromProfilePic = notificationFromProfilePic;
     }
 
-//	@JsonProperty("is_read")
-//	public String getIsRead() {
-//		return this.isRead;
-//	}
-//    @JsonProperty("is_read")
-//    public String getIsRead() {
-//        return this.isRead;
-//    }
+    @JsonProperty("is_read")
+    public String getIsRead() {
+        return isRead;
+    }
 
     public void setIsRead(String isRead) {
         this.isRead = isRead;
@@ -947,12 +944,32 @@ public class Data {
         this.preferenceKey = preferenceKey;
     }
 
-    public String getIsRead() {
-        return isRead;
+    @JsonProperty("exam_score")
+    public String getExamScore() {
+        return examScore;
     }
 
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
+    public void setExamScore(String examScore) {
+        this.examScore = examScore;
+    }
+
+    @JsonProperty("subject_name")
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+
+    @JsonProperty("request_id")
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public void setBirthdate(String birthdate) {
@@ -972,14 +989,4 @@ public class Data {
     public String getContactNumber() {
         return contactNumber;
     }
-
-    @JsonProperty("request_id")
-    public String getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
-    }
-
 }

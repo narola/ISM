@@ -1,0 +1,150 @@
+package com.ism.author.fragment;
+
+import android.app.Fragment;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.ism.author.AuthorHostActivity;
+import com.ism.author.R;
+import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.Utility;
+import com.ism.author.Utility.Utils;
+import com.ism.author.adapter.SubjectiveQuestionListAdapter;
+import com.ism.author.constant.WebConstants;
+import com.ism.author.helper.CircleImageView;
+import com.ism.author.helper.MyTypeFace;
+import com.ism.author.model.Data;
+import com.ism.author.model.FragmentArgument;
+import com.ism.author.model.RequestObject;
+import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.WebserviceWrapper;
+
+import java.util.ArrayList;
+
+/**
+ * Created by c166 on 16/11/15.
+ */
+public class GetSubjectiveQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+
+    private static final String TAG = GetSubjectiveQuestionsFragment.class.getSimpleName();
+    private View view;
+    Fragment mFragment;
+    FragmentArgument fragmentArgument;
+
+
+    public GetSubjectiveQuestionsFragment(Fragment fragment, FragmentArgument fragmentArgument) {
+        this.mFragment = fragment;
+        this.fragmentArgument = fragmentArgument;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_getsubjective_questions, container, false);
+        initGlobal();
+        return view;
+    }
+
+    private CircleImageView imgStudentProfilePic;
+    private TextView tvStudentName, tvStudentRollNo, tvAssignmentNo, tvAssignmentTitle, tvSubjectiveScore, tvSubjectiveMarks;
+    private RecyclerView rvSubjectiveQuestionsList;
+    private MyTypeFace myTypeFace;
+    private ArrayList<Data> listOfQuestions = new ArrayList<Data>();
+    private SubjectiveQuestionListAdapter subjectiveQuestionListAdapter;
+
+    private void initGlobal() {
+
+        myTypeFace = new MyTypeFace(getActivity());
+
+        imgStudentProfilePic = (CircleImageView) view.findViewById(R.id.img_student_profile_pic);
+
+        tvStudentName = (TextView) view.findViewById(R.id.tv_student_name);
+        tvStudentRollNo = (TextView) view.findViewById(R.id.tv_student_roll_no);
+        tvAssignmentNo = (TextView) view.findViewById(R.id.tv_assignment_no);
+        tvAssignmentTitle = (TextView) view.findViewById(R.id.tv_assignment_title);
+        tvSubjectiveScore = (TextView) view.findViewById(R.id.tv_subjective_score);
+        tvSubjectiveMarks = (TextView) view.findViewById(R.id.tv_subjective_marks);
+        rvSubjectiveQuestionsList = (RecyclerView) view.findViewById(R.id.rv_subjective_questions_list);
+        subjectiveQuestionListAdapter = new SubjectiveQuestionListAdapter(getActivity(), this);
+        rvSubjectiveQuestionsList.setAdapter(subjectiveQuestionListAdapter);
+        rvSubjectiveQuestionsList.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        tvStudentName.setTypeface(myTypeFace.getRalewayBold());
+        tvStudentRollNo.setTypeface(myTypeFace.getRalewayRegular());
+        tvAssignmentNo.setTypeface(myTypeFace.getRalewayRegular());
+        tvAssignmentTitle.setTypeface(myTypeFace.getRalewayBold());
+        tvSubjectiveScore.setTypeface(myTypeFace.getRalewayRegular());
+        tvSubjectiveMarks.setTypeface(myTypeFace.getRalewayBold());
+
+        callApiGetExamQuestions();
+    }
+
+
+    private void callApiGetExamQuestions() {
+        if (Utility.isOnline(getActivity())) {
+            try {
+                ((AuthorHostActivity) getActivity()).startProgress();
+                RequestObject request = new RequestObject();
+//                request.setExamId(fragmentArgument.getRequestObject().getExamId());
+                request.setExamId("11");
+                new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.GETEXAMQUESTIONS);
+            } catch (Exception e) {
+                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(getActivity());
+        }
+    }
+
+
+    @Override
+    public void onResponse(int apiCode, Object object, Exception error) {
+        try {
+            switch (apiCode) {
+                case WebConstants.GETEXAMQUESTIONS:
+                    onResponseGetAllExamQuestions(object, error);
+                    break;
+                case WebConstants.GETEXAMEVALUATIONS:
+//                    onResponseGetExamEvaluation(object, error);
+                    break;
+            }
+
+        } catch (Exception e) {
+            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+        }
+
+    }
+
+
+    private void onResponseGetAllExamQuestions(Object object, Exception error) {
+        try {
+            ((AuthorHostActivity) getActivity()).stopProgress();
+            if (object != null) {
+                ResponseObject responseObj = (ResponseObject) object;
+                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                    listOfQuestions.addAll(responseObj.getData().get(0).getQuestions());
+                    subjectiveQuestionListAdapter.addAll(listOfQuestions);
+                    subjectiveQuestionListAdapter.notifyDataSetChanged();
+//                    setAssignmentDetails(responseObj.getData().get(0));
+//
+//                    if (requestObjectToPass != null) {
+//                        callAPiGetExamEvaluation();
+//
+//                    }
+                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                    Utils.showToast(responseObj.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetAllExamQuestions api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetAllExamQuestions Exception : " + e.toString());
+        }
+    }
+}

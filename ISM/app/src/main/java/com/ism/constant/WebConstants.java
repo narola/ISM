@@ -28,13 +28,18 @@ public class WebConstants {
 	public static final int GET_MESSAGES = 18;
 	public static final int GET_STUDYMATE_REQUEST = 19;
 	public static final int GET_ALL_BADGES_COUNT = 20;
-	public static final int UPLOAD_PROFILE_PIC = 21;
-	public static final int GET_ABOUT_ME = 22;
-	public static final int RESPOND_TO_REQUEST = 23;
-	public static final int UPDATE_READ_STATUS = 24;
-	public static final int EDIT_ABOUT_ME = 25;
+//	public static final int UPLOAD_PROFILE_PIC = 21;
+//	public static final int GET_ABOUT_ME = 22;
+//	public static final int RESPOND_TO_REQUEST = 23;
+//	public static final int UPDATE_READ_STATUS = 24;
 
 
+	public static final int RESPOND_TO_REQUEST = 21;
+	public static final int UPDATE_READ_STATUS = 22;
+	public static final int GET_HIGH_SCORERS = 23;
+	public static final int UPLOAD_PROFILE_PIC = 24;
+	public static final int GET_ABOUT_ME = 25;
+	public static final int EDIT_ABOUT_ME = 26;
 
 	//general settings
 //	public static final int PRIVACY_SETTING = 51;
@@ -88,6 +93,7 @@ public class WebConstants {
 	public static final String URL_EDIT_ABOUT_ME =  URL_HOST_147 + "EditAboutMe";
 	public static final String URL_RESPOND_TO_REQUEST = URL_HOST_147 + "AcceptRequestFromStudymate";
 	public static final String URL_UPDATE_READ_STATUS = URL_HOST_147 + "UpdateReadStatus"; // studymate_request, messages, notification
+	public static final String URL_GET_HIGH_SCORERS = URL_HOST_147 + "GetHighScorers";
 
 
 	/**
@@ -96,4 +102,6 @@ public class WebConstants {
 	public static final String STUDYMATE_REQUEST = "studymate_request";
 	public static final String MESSAGES = "messages";
 	public static final String NOTIFICATION = "notification";
+	public static final String ROLE_ALL = "all";
+	public static final String ROLE_STUDENT = "student";
 }

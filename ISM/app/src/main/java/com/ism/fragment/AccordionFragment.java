@@ -17,10 +17,9 @@ import com.ism.adapter.HighScoreAdapter;
 import com.ism.adapter.NoticeAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
-import com.ism.model.EventsModel;
 import com.ism.model.FragmentArgument;
-import com.ism.model.HighScoreModel;
-import com.ism.model.HighScoreStudentModel;
+import com.ism.model.HighScoreSubject;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.AccordionView;
 import com.ism.ws.RequestObject;
@@ -33,9 +32,9 @@ import java.util.ArrayList;
 /**
  * Created by c161 on --/10/15.
  */
-public class NotesFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class AccordionFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
-    private static final String TAG = NotesFragment.class.getSimpleName();
+    private static final String TAG = AccordionFragment.class.getSimpleName();
 
     private View view;
     private AccordionView accordionNotes;
@@ -44,21 +43,23 @@ public class NotesFragment extends Fragment implements WebserviceWrapper.Webserv
 
 	private HostActivity activityHost;
 	private ArrayList<Data> arrListNotice;
+	private ArrayList<Data> arrListHighScorers;
 	private NoticeAdapter adpNotice;
+	private HighScoreAdapter adpHighScorers;
     private FragmentListener fragListener;
 
-    public static NotesFragment newInstance() {
-        NotesFragment fragNotes = new NotesFragment();
+    public static AccordionFragment newInstance() {
+        AccordionFragment fragNotes = new AccordionFragment();
         return fragNotes;
     }
 
-    public NotesFragment() {
+    public AccordionFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_notes, container, false);
+        view = inflater.inflate(R.layout.fragment_accordion, container, false);
 
         initGlobal(view);
 
@@ -82,55 +83,10 @@ public class NotesFragment extends Fragment implements WebserviceWrapper.Webserv
         });
 
         callApiGetAllNotice();
-
-		setUpListView();
+		callApiGetHighScorers();
 	}
 
-    private void setUpListView() {
-        //NOTICE
-        //logic for adapter => set  only two record for adapter. if four or more record found then setvisibilty of VIEW ALL VISIBLE.
-        /*ArrayList<Notice> arrayListNotice = new ArrayList<Notice>();
-        arrayListNotice.add(new Notice("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years."));
-        arrayListNotice.add(new Notice("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years. Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years."));
-        arrayListNotice.add(new Notice("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years."));
-        arrayListNotice.add(new Notice("Dance competition", "Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years. Our school is orgnizing a dance competition on 01-01-2016 in scholl auditorium. Minimum age limits is 23 years."));
-
-	    adpNotice = new NoticeAdapter(getActivity(), arrayListNotice, activityHost);
-	    lvNotice.setAdapter(adpNotice);
-
-	    if (arrayListNotice.size() > 2) {
-            txtViewAllNotice.setVisibility(View.VISIBLE);
-        } else {
-		    if (arrayListNotice.size() == 1) {
-			    lvNotice.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		    }
-            txtViewAllNotice.setVisibility(View.GONE);
-        }*/
-
-        //EVENTS
-        EventsModel eventsModel;
-       // ArrayList<EventsModel> arrayListEvent = new ArrayList<EventsModel>();
-        eventsModel = new EventsModel("", "", "", "");
-       // lvEvents.setAdapter(new EventsAdapter(getActivity(), arrayListEvent));
-        //notes_ll_events.addView(lvEvents);
-
-        //HIGH SCORE
-        HighScoreModel highScoreModel;
-        HighScoreStudentModel highScoreStudentModel;
-        ArrayList<HighScoreStudentModel> arrayListHighScoreStudentList = new ArrayList<>();
-        highScoreStudentModel = new HighScoreStudentModel("Adam Stanger", "St. Xaviers FY CS", "500", "");
-        arrayListHighScoreStudentList.add(highScoreStudentModel);
-        highScoreStudentModel = new HighScoreStudentModel("Adam Stanger", "St. Xaviers FY CS", "500", "");
-        arrayListHighScoreStudentList.add(highScoreStudentModel);
-        ArrayList<HighScoreModel> arrayListHighScore = new ArrayList<>();
-        highScoreModel = new HighScoreModel("Maths", arrayListHighScoreStudentList);
-        arrayListHighScore.add(highScoreModel);
-        highScoreModel = new HighScoreModel("Science", arrayListHighScoreStudentList);
-        arrayListHighScore.add(highScoreModel);
-        lvHighScore.setAdapter(new HighScoreAdapter(getActivity(), arrayListHighScore));
-    }
-
-    @Override
+	@Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -161,15 +117,27 @@ public class NotesFragment extends Fragment implements WebserviceWrapper.Webserv
 		try {
 			activityHost.showProgress();
 			RequestObject requestObject = new RequestObject();
-//			requestObject.setUserId(Global.strUserId);
-			requestObject.setRoleId("all");
-//			TestRequestObject requestObject = new TestRequestObject();
-//			requestObject.setUserId(Integer.valueOf(Global.strUserId));
+			requestObject.setRoleId(WebConstants.ROLE_ALL);
+//			requestObject.setRoleId(WebConstants.ROLE_STUDENT);
 
 			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
 					.execute(WebConstants.GET_ALL_NOTICES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetAllNotice");
+		}
+	}
+
+	private void callApiGetHighScorers() {
+		try {
+			activityHost.showProgress();
+			RequestObject requestObject = new RequestObject();
+			requestObject.setUserId(Global.strUserId);
+			requestObject.setRoleId(WebConstants.ROLE_STUDENT);
+
+			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+					.execute(WebConstants.GET_HIGH_SCORERS);
+		} catch (Exception e) {
+			Log.e(TAG, "callApiGetHighScorers");
 		}
 	}
 
@@ -179,6 +147,9 @@ public class NotesFragment extends Fragment implements WebserviceWrapper.Webserv
 			switch (apiCode) {
 				case WebConstants.GET_ALL_NOTICES:
 					onResponseGetAllNotice(object, error);
+					break;
+				case WebConstants.GET_HIGH_SCORERS:
+					onResponseGetHighScorers(object, error);
 					break;
 			}
 		} catch (Exception e) {
@@ -205,6 +176,25 @@ public class NotesFragment extends Fragment implements WebserviceWrapper.Webserv
 		}
 	}
 
+	private void onResponseGetHighScorers(Object object, Exception error) {
+		try {
+			activityHost.hideProgress();
+			if (object != null) {
+				ResponseObject responseObj = (ResponseObject) object;
+				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+					arrListHighScorers = responseObj.getData();
+					fillListHighScorers();
+				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseGetHighScorers Failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseGetHighScorers api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseGetHighScorers Exception : " + e.toString());
+		}
+	}
+
 	private void fillListNotice() {
 		try {
 			if (arrListNotice != null) {
@@ -224,6 +214,36 @@ public class NotesFragment extends Fragment implements WebserviceWrapper.Webserv
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "fillListNotice Exception : " + e.toString());
+		}
+	}
+
+	private void fillListHighScorers() {
+		try {
+			if (arrListHighScorers != null) {
+				ArrayList<HighScoreSubject> arrListHighScoreSubject = new ArrayList<HighScoreSubject>();
+				for (Data student : arrListHighScorers) {
+					boolean subjectFound = false;
+					for (HighScoreSubject highScoreSubject : arrListHighScoreSubject) {
+						if (highScoreSubject.getSubjectName().equals(student.getSubjectName())) {
+							highScoreSubject.getArrListStudent().add(student);
+							subjectFound = true;
+							break;
+						}
+					}
+					if (!subjectFound) {
+						HighScoreSubject highScoreSubject = new HighScoreSubject();
+						highScoreSubject.setSubjectName(student.getSubjectName());
+						highScoreSubject.setArrListStudent(new ArrayList<Data>());
+						arrListHighScoreSubject.add(highScoreSubject);
+					}
+				}
+				adpHighScorers = new HighScoreAdapter(activityHost, arrListHighScoreSubject);
+				lvHighScore.setAdapter(adpHighScorers);
+			} else {
+				Log.e(TAG, "high scorers list null");
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "fillListHighScorers Exception : " + e.toString());
 		}
 	}
 

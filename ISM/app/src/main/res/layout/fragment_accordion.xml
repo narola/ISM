@@ -4,13 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_white"
-    tools:context="com.ism.fragment.NotesFragment">
+    tools:context="com.ism.fragment.AccordionFragment">
 
     <com.ism.views.AccordionView
         android:id="@+id/accordion_view_chat"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="#fff5f5f5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         accordion:header_layout_fold_button_id="@id/foldButton"
         accordion:header_layout_id="@layout/accordion_header"
@@ -48,15 +47,7 @@
         <ListView
             android:id="@+id/lv_highScore"
             android:layout_width="match_parent"
-            android:layout_height="450sp"
+            android:layout_height="match_parent"
             android:background="@drawable/bg_highscore_subjectlist"/>
-
-        <!--<ListView-->
-            <!--android:id="@+id/lv_events"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="480sp"-->
-            <!--android:padding="@dimen/d5dp"-->
-            <!--android:divider="@color/divider"-->
-            <!--android:dividerHeight="@dimen/divider_height" />-->
     </com.ism.views.AccordionView>
 </RelativeLayout>
