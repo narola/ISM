@@ -12,7 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.activity.TeacherHostActivity;
+import com.ism.teacher.fragments.ExamObjectiveDetailFragment;
+import com.ism.teacher.fragments.ExamSubjectiveDetailFragment;
 import com.ism.teacher.fragments.TeacherExamWiseAssignments;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
@@ -124,7 +125,7 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
             @Override
             public void onClick(View view) {
                 mFragment.getFragmentManager().beginTransaction().
-                        replace(R.id.fl_teacher_office_home, new TeacherExamWiseAssignments(mFragment, listOfAssignments.get(position).getExam_id(),listOfAssignments.get(position).getExam_mode())).commit();
+                        replace(R.id.fl_teacher_office_home, new TeacherExamWiseAssignments(mFragment, listOfAssignments.get(position).getExam_id(), listOfAssignments.get(position).getExam_mode())).commit();
             }
         });
 
@@ -133,7 +134,7 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
             public void onClick(View view) {
 
                 mFragment.getFragmentManager().beginTransaction().
-                        replace(R.id.fl_teacher_office_home, new TeacherExamWiseAssignments(mFragment, listOfAssignments.get(position).getExam_id(),listOfAssignments.get(position).getExam_mode())).commit();
+                        replace(R.id.fl_teacher_office_home, new TeacherExamWiseAssignments(mFragment, listOfAssignments.get(position).getExam_id(), listOfAssignments.get(position).getExam_mode())).commit();
             }
         });
 
@@ -143,12 +144,14 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
 
                 if (listOfAssignments.get(position).getExam_mode().equalsIgnoreCase(EXAM_OBJECTIVE)) {
 
+                    mFragment.getFragmentManager().beginTransaction().
+                            replace(R.id.fl_teacher_office_home, ExamObjectiveDetailFragment.newInstance()).commit();
 
-                    ((TeacherHostActivity) mContext).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_EXAM_OBJECTIVE_DETAILS);
 
                 } else if (listOfAssignments.get(position).getExam_mode().equalsIgnoreCase(EXAM_SUBJECTIVE)) {
-                    ((TeacherHostActivity) mContext).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_EXAM_SUBJECTIVE_DETAILS);
 
+                    mFragment.getFragmentManager().beginTransaction().
+                            replace(R.id.fl_teacher_office_home, ExamSubjectiveDetailFragment.newInstance()).commit();
 
                 }
 

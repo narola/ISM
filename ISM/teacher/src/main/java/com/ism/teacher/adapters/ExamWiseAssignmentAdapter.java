@@ -14,8 +14,9 @@ import android.widget.TextView;
 import com.ism.teacher.ISMTeacher;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.WebConstants;
+import com.ism.teacher.fragments.ExamObjectiveDetailFragment;
+import com.ism.teacher.fragments.ExamSubjectiveDetailFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
 import com.ism.teacher.views.CircleImageView;
@@ -40,17 +41,20 @@ public class ExamWiseAssignmentAdapter extends RecyclerView.Adapter<ExamWiseAssi
     String exam_mode = "";
     public static String EXAM_OBJECTIVE = "objective";
     public static String EXAM_SUBJECTIVE = "subjective";
-    String examid="";
+    String examid = "";
+
+    ExamObjectiveDetailFragment examObjectiveDetailFragment;
+    ExamSubjectiveDetailFragment examSubjectiveDetailFragment;
 
 
-    public ExamWiseAssignmentAdapter(String examid,Context context, Fragment fragment, String exam_mode) {
+    public ExamWiseAssignmentAdapter(String examid, Context context, Fragment fragment, String exam_mode) {
         this.mContext = context;
         this.mFragment = fragment;
         myTypeFace = new MyTypeFace(context);
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         this.exam_mode = exam_mode;
-        this.examid=examid;
+        this.examid = examid;
 
     }
 
@@ -109,13 +113,13 @@ public class ExamWiseAssignmentAdapter extends RecyclerView.Adapter<ExamWiseAssi
             public void onClick(View view) {
                 if (exam_mode.equalsIgnoreCase(EXAM_OBJECTIVE)) {
 
-                    //((TeacherHostActivity) mContext).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_EXAM_OBJECTIVE_DETAILS);
-                    ((TeacherHostActivity) mContext).loadObjectiveDetailFragment(examid,listOfAssignments.get(position).getStudent_id());
+                    examObjectiveDetailFragment = new ExamObjectiveDetailFragment(mContext, examid, listOfAssignments.get(position).getStudent_id(), true);
+                    mFragment.getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, examObjectiveDetailFragment).commit();
 
                 } else if (exam_mode.equalsIgnoreCase(EXAM_SUBJECTIVE)) {
-//                    ((TeacherHostActivity) mContext).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_EXAM_SUBJECTIVE_DETAILS);
 
-                    ((TeacherHostActivity) mContext).loadSubjectiveDetailFragment(examid,listOfAssignments.get(position).getStudent_id());
+                    examSubjectiveDetailFragment = new ExamSubjectiveDetailFragment(mContext, examid, listOfAssignments.get(position).getStudent_id(), true);
+                    mFragment.getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, examSubjectiveDetailFragment).commit();
 
                 }
             }

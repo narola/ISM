@@ -35,7 +35,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
     public static final int FRAGMENT_RESULTS = 4;
     public static final int FRAGMENT_PROGRESS_REPORT = 5;
 
-    public static final int FRAGMENT_EXAM_WISE_STUDENTS=6;
+    public static final int FRAGMENT_ADD_QUESTION_CONTAINER=6;
 
     private int fragment;
     private static int current_fragment;
@@ -150,9 +150,9 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                     break;*/
 
 
-//                case FRAGMENT_ADD_ASSIGNMENT:
-//                    current_fragment = FRAGMENT_ADD_ASSIGNMENT;
-//                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AddAssignmentFragment.newInstance()).commit();
+//                case FRAGMENT_ADD_QUESTION_CONTAINER:
+//                    current_fragment = FRAGMENT_ADD_QUESTION_CONTAINER;
+//                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AddQuestionContainerFragment.newInstance(FRAGMENT_ADDQUESTION, examid)).commit();
 //                    break;
             }
         } catch (Exception e) {

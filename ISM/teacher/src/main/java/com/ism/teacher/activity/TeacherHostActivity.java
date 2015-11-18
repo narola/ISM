@@ -295,13 +295,13 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
                     break;
 
-                case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
+                /*case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamObjectiveDetailFragment.newInstance()).commit();
 
                     break;
                 case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamSubjectiveDetailFragment.newInstance()).commit();
-                    break;
+                    break;*/
 
 
                /* case FRAGMENT_ADDQUESTION:
@@ -313,18 +313,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         } catch (Exception e) {
             Log.e(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
         }
-    }
-
-    public void loadSubjectiveDetailFragment(String examid, String studentid) {
-        examSubjectiveDetailFragment = new ExamSubjectiveDetailFragment(TeacherHostActivity.this, examid, studentid, true);
-        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, examSubjectiveDetailFragment).commit();
-
-    }
-
-    public void loadObjectiveDetailFragment(String examid, String studentid) {
-        examObjectiveDetailFragment = new ExamObjectiveDetailFragment(TeacherHostActivity.this, examid, studentid, true);
-        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, examObjectiveDetailFragment).commit();
-
     }
 
 
