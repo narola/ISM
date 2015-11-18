@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.PostFileAdapter;
@@ -400,7 +401,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 //  fileName = getPath(path);
                 sourceFile = new File(file);
                 if (!sourceFile.isFile()) {
-                    Log.e(TAG, "Source File Does not exist");
+                    Debug.e(TAG, "Source File Does not exist");
                     return 0;
                 }
             } else if (type.equals("audio")) {
@@ -408,7 +409,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                 sourceFile = new File(file);
                 Log.e(TAG, "" + sourceFile);
                 if (!sourceFile.isFile()) {
-                    Log.e(TAG, "Source File Does not exist");
+                    Debug.e(TAG, "Source File Does not exist");
                     return 0;
                 }
             }
@@ -435,10 +436,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             dos.writeBytes("Content-Disposition: form-questionData; name=\"mediaFile\";filename=\"" + sourceFile.getName() + "\"" + lineEnd);
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
-
-            //dos.writeBytes("Content-Disposition: form-questionData; name=\"feed_by1\""+ lineEnd);
             dos.writeBytes(lineEnd);
-            // dos.writeBytes("370");
             dos.writeBytes(lineEnd);
             dos.writeBytes(twoHyphens + boundary + lineEnd);
 

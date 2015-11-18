@@ -156,7 +156,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void callApiGetSubjects() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
@@ -164,14 +164,14 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }
 
 
     private void callApiGetTopics(int subject_id) {
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 RequestObject requestObject = new RequestObject();
                 requestObject.setSubjectId(String.valueOf(subject_id));
@@ -181,7 +181,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }
@@ -189,7 +189,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void callApiGetCourses() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCOURSES);
@@ -197,7 +197,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }
@@ -232,7 +232,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void callApiGetQuestionBank() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 RequestObject requestObject = new RequestObject();
                 requestObject.setUserId("370");
@@ -244,7 +244,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }

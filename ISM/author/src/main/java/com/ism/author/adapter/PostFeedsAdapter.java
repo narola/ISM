@@ -16,6 +16,7 @@ import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.PreferenceData;
+import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.dialog.TagUserDialog;
@@ -47,30 +48,29 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private ImageLoader imageLoader;
     private int addCommentFeedPosition = -1;
     private int tagFeedPosition = -1;
+    private LayoutInflater inflater;
 
 
     public PostFeedsAdapter(Context context) {
         this.mContext = context;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+        inflater = LayoutInflater.from(mContext);
 
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View contactView = inflater.inflate(R.layout.row_post_feed, parent, false);
-        ViewHolder viewHolder = new ViewHolder(contactView);
-
+        View view = inflater.inflate(R.layout.row_post_feed, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgDpPostCreator, ISMAuthor.options);
+        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
+                holder.imgDpPostCreator, ISMAuthor.options);
         holder.txtPostCreaterName.setText(listOfPostFeeds.get(position).getFullName());
         holder.txtPostContent.setText(listOfPostFeeds.get(position).getFeedText());
         holder.txtPostTotalLikeCount.setText(listOfPostFeeds.get(position).getTotalLike());
@@ -137,11 +137,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
             @Override
             public void onClick(View v) {
-                if (Utils.isInternetConnected(getActivity())) {
+                if (Utility.isOnline(getActivity())) {
                     tagFeedPosition = position;
                     callApiGetStudyMates();
                 } else {
-                    Utils.showToast(getActivity().getString(R.string.strnetissue), getActivity());
+                    Utility.toastOffline(getActivity());
                 }
 
 
@@ -308,7 +308,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     }
 
     private void callApiComment(int position, String comment) {
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 addCommentFeedPosition = position;
                 RequestObject requestObject = new RequestObject();
@@ -322,13 +322,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 Log.e(TAG, "callApiComment Exception : " + e.toString());
             }
         } else {
-            Utils.showToast(getActivity().getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
     }
 
 
     private void callApiGetAllComments(int position) {
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
 
                 RequestObject requestObject = new RequestObject();
@@ -337,18 +337,17 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                         .execute(WebConstants.GETALLCOMMENTS);
 
             } catch (Exception e) {
-                Log.i(TAG + getActivity().getString(R.string.strerrormessage), e.getLocalizedMessage());
+                Debug.i(TAG + getActivity().getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
     }
 
 
     private void callApiGetStudyMates() {
 
-        if (Utils.isInternetConnected(getActivity())) {
-
+        if (Utility.isOnline(getActivity())) {
             try {
                 RequestObject requestObject = new RequestObject();
                 requestObject.setUserId(WebConstants.TEST_GETSTUDYMATES);
@@ -358,7 +357,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 Log.i(TAG + getActivity().getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
     }
 
@@ -366,7 +365,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     @Override
     public void tagUsers(String[] arrTagUser) {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 RequestObject requestObject = new RequestObject();
                 requestObject.setFeedId(listOfPostFeeds.get(tagFeedPosition).getFeedId());
@@ -379,7 +378,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 Log.e(TAG, "callApiTagUsers Exception : " + e.toString());
             }
         } else {
-            Utils.showToast(getActivity().getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
 

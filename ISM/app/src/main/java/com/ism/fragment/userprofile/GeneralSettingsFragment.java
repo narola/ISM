@@ -118,18 +118,22 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         switch (currentFragment) {
             case FRAGMENT_BLOCK_USER: {
                 txtBlockUsers.setActivated(false);
+                txtBlockUsers.setEnabled(true);
             }
             break;
             case FRAGMENT_NOTIFICATION: {
                 txtNotifications.setActivated(false);
+                txtNotifications.setEnabled(true);
             }
             break;
             case FRAGMENT_PRIVACY_SETTING: {
                 txtPrivacySetting.setActivated(false);
+                txtPrivacySetting.setEnabled(true);
             }
             break;
             case FRAGMENT_SMS_ALERTS: {
                 txtSmsAlerts.setActivated(false);
+                txtSmsAlerts.setEnabled(true);
             }
             break;
 
@@ -137,6 +141,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         if (fragment != currentFragment) {
             loadFragment(fragment);
             v.setActivated(true);
+            v.setEnabled(false);
         }
     }
 

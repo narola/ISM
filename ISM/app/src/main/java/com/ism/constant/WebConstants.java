@@ -30,8 +30,9 @@ public class WebConstants {
 	public static final int GET_ALL_BADGES_COUNT = 20;
 	public static final int RESPOND_TO_REQUEST = 21;
 	public static final int UPDATE_READ_STATUS = 22;
-
-
+	public static final int GET_HIGH_SCORERS = 23;
+	public static final int UPLOAD_PROFILE_PIC = 24;
+	public static final int GET_ABOUT_ME = 25;
 
 	//general settings
 //	public static final int PRIVACY_SETTING = 51;
@@ -48,7 +49,7 @@ public class WebConstants {
 	private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
 	private static final String URL_HOST_147 = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
 
-	public static final String URL_IMAGE_PATH = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/";
+	public static final String URL_USERS_IMAGE_PATH = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/";
 	public static final String URL_ACCEPT_TUTORIAL_GROUP = URL_HOST_161 + "AcceptTutorialGroup";
 	public static final String URL_ALLOCATE_TUTORIAL_GROUP = URL_HOST_161 + "AllocateTutorialGroup";
 	public static final String URL_GET_CITIES = URL_HOST_161 + "GetCities";
@@ -79,10 +80,12 @@ public class WebConstants {
 	public static final String URL_PRIVACY_SETTING = URL_HOST_147 + "GetAllNotices";
 	public static final String URL_BLOCK_USER = URL_HOST_147 + "GetAllNotices";
 	public static final String URL_NOTIFICATION = URL_HOST_147 + "GetAllNotices";
-	public static final String URL_SMS_ALERTS = URL_HOST_147 + "GetAllNotices";
+	public static final String URL_PROFILE_PIC = URL_HOST_162 + "UploadUserProfilePic";
 	public static final String URL_GET_ALL_BADGES_COUNT = URL_HOST_147 + "GetAllBadgeCount";
+	public static final String URL_GET_ABOUT_ME =  URL_HOST_147 + "GetAboutMe";
 	public static final String URL_RESPOND_TO_REQUEST = URL_HOST_147 + "AcceptRequestFromStudymate";
 	public static final String URL_UPDATE_READ_STATUS = URL_HOST_147 + "UpdateReadStatus"; // studymate_request, messages, notification
+	public static final String URL_GET_HIGH_SCORERS = URL_HOST_147 + "GetHighScorers";
 
 
 	/**
@@ -91,4 +94,6 @@ public class WebConstants {
 	public static final String STUDYMATE_REQUEST = "studymate_request";
 	public static final String MESSAGES = "messages";
 	public static final String NOTIFICATION = "notification";
+	public static final String ROLE_ALL = "all";
+	public static final String ROLE_STUDENT = "student";
 }

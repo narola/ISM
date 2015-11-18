@@ -31,23 +31,22 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
 
-    Context mContext;
-    ArrayList<Data> listOfQuestions = new ArrayList<Data>();
-    MyTypeFace myTypeFace;
+    private Context mContext;
+    private ArrayList<Data> listOfQuestions = new ArrayList<Data>();
+    private MyTypeFace myTypeFace;
     Fragment mFragment;
+    private LayoutInflater inflater;
 
     public QuestionBankListAdapter(Context context, Fragment fragment) {
         this.mContext = context;
         this.mFragment = fragment;
+        inflater = LayoutInflater.from(mContext);
+        myTypeFace = new MyTypeFace(context);
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-
-        myTypeFace = new MyTypeFace(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.row_questionlist, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;

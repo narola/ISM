@@ -2,6 +2,7 @@ package com.ism.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +22,14 @@ import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.NotificationAdapter;
+import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
+import com.ism.object.Global;
+import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
+import com.ism.ws.WebserviceWrapper;
 import com.ism.ws.model.Data;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -32,7 +39,7 @@ import java.util.ArrayList;
 /**
  * Created by c161 on 09/11/15.
  */
-public class AllNotificationFragment extends Fragment implements HostActivity.HostListenerAllNotification {
+public class AllNotificationFragment extends Fragment implements HostActivity.HostListenerAllNotification, WebserviceWrapper.WebserviceResponse {
 
 	private static final String TAG = AllNotificationFragment.class.getSimpleName();
 
@@ -41,7 +48,7 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 	private RelativeLayout rlNotificationDetails;
 	private CircleImageView imgDp;
 	private ImageView imgLike, imgTagStudyMates;
-	private TextView txtName, txtPost, txtLikes, txtComments, txtViewAll;
+	private TextView txtName, txtPost, txtLikes, txtComments, txtViewAll, txtHeader;
 	private EditText etComment;
 	private Button btnComment;
 	private LinearLayout llComments;
@@ -54,6 +61,7 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 
 	private static String NOTIFICATION_POSITION = "notificationPosition";
 	private int positionNotification;
+	private boolean isReadStatusUpdated = false;
 
 	public static AllNotificationFragment newInstance(ArrayList<Data> arrListNotification, int position) {
 		AllNotificationFragment fragment = new AllNotificationFragment();
@@ -87,13 +95,19 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 	}
 
 	private void initGlobal() {
+		txtHeader = (TextView) view.findViewById(R.id.txt_header_white);
 		lvAllNotification = (ListView) view.findViewById(R.id.lv_all_notification);
+
+		MyTypeFace myTypeFace = new MyTypeFace(activityHost);
+		txtHeader.setTypeface(myTypeFace.getRalewayRegular());
 
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
 		if (positionNotification >= 0) {
 			showNotificationDetails(positionNotification);
+		} else {
+			callApiUpdateReadStatus();
 		}
 
 		if (arrListNotification != null) {
@@ -115,11 +129,14 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 			rlNotificationDetails.setVisibility(View.GONE);
 		}
 		lvAllNotification.setVisibility(View.VISIBLE);
+		txtHeader.setVisibility(View.VISIBLE);
+		callApiUpdateReadStatus();
 	}
 
 	private void showNotificationDetails(int position) {
 		activityHost.showControllerTopBackButton();
 		lvAllNotification.setVisibility(View.GONE);
+		txtHeader.setVisibility(View.GONE);
 		if (rlNotificationDetails == null) {
 			rlNotificationDetails = (RelativeLayout)((ViewStub) view.findViewById(R.id.vs_notification_details)).inflate();
 			initViews();
@@ -176,8 +193,59 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 		fragListener = null;
 	}
 
+	private void callApiUpdateReadStatus() {
+		try {
+			if (!isReadStatusUpdated && arrListNotification != null && arrListNotification.size() > 0) {
+				ArrayList<String> recordIds = new ArrayList<String>();
+				for (int i = 0; i < arrListNotification.size(); i++) {
+					recordIds.add(arrListNotification.get(i).getRecordId());
+				}
+				RequestObject requestObject = new RequestObject();
+				requestObject.setUserId(Global.strUserId);
+				requestObject.setReadCategory(WebConstants.NOTIFICATION);
+				requestObject.setRecordIds(recordIds);
+
+				new WebserviceWrapper(activityHost, requestObject, this).new WebserviceCaller().
+						execute(WebConstants.UPDATE_READ_STATUS);
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "callApiUpdateReadStatus Exception : " + e.toString());
+		}
+	}
+
 	@Override
 	public void onControllerTopBackClick() {
 		showNotificationList();
+	}
+
+	@Override
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.UPDATE_READ_STATUS:
+					onResponseUpdateReadStatus(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseUpdateReadStatus(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseObject responseObject = (ResponseObject) object;
+				if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+					isReadStatusUpdated = true;
+					Log.e(TAG, "Read status updated");
+				} else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "Read status update failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseUpdateReadStatus api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseUpdateReadStatus Exception : " + e.toString());
+		}
 	}
 }

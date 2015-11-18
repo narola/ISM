@@ -32,7 +32,7 @@ public class TrialExamsAdapter extends BaseAdapter {
         this.fragment = fragment;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        myTypeFace=new MyTypeFace(context);
+        myTypeFace = new MyTypeFace(context);
 
     }
 
@@ -63,7 +63,7 @@ public class TrialExamsAdapter extends BaseAdapter {
             holder.txtStudentAttempted = (TextView) convertView.findViewById(R.id.txt_student_attempted);
             holder.txtExamType = (TextView) convertView.findViewById(R.id.txt_exam_type);
             holder.txtSubjectName = (TextView) convertView.findViewById(R.id.txt_subject_name);
-            holder.txtAverage= (TextView) convertView.findViewById(R.id.txt_average_percent);
+            holder.txtAverage = (TextView) convertView.findViewById(R.id.txt_average_percent);
             holder.txtAttempted = (TextView) convertView.findViewById(R.id.txt_attempt_status);
             convertView.setTag(holder);
         } else {
@@ -73,7 +73,7 @@ public class TrialExamsAdapter extends BaseAdapter {
         try {
 
             holder.txtSubjectName.setText(data.getData().get(position).getSubjectName());
-           // holder.txtExamType.setBackgroundResource(questionData.getOfficeTabTitleImages()[position]);
+            // holder.txtExamType.setBackgroundResource(questionData.getOfficeTabTitleImages()[position]);
             holder.txtSubjectName.setTypeface(myTypeFace.getRalewayBold());
 
             holder.txtExamType.setText("Exam Type : " + data.getData().get(position).getExam_type());
@@ -85,7 +85,7 @@ public class TrialExamsAdapter extends BaseAdapter {
             holder.txtStudentAttempted.setText(data.getData().get(position).getTotal_student_attempted());
             holder.txtStudentAttempted.setTypeface(myTypeFace.getRalewayBold());
 
-            holder.txtAverage.setText(data.getData().get(position).getAverage_score()+"%");
+            holder.txtAverage.setText(data.getData().get(position).getAverage_score() + "%");
             holder.txtAverage.setTypeface(myTypeFace.getRalewayThin());
             holder.txtAttempted.setTypeface(myTypeFace.getRalewayThin());
 
@@ -94,10 +94,10 @@ public class TrialExamsAdapter extends BaseAdapter {
                 public void onClick(View v) {
 
                     // send the value of exam_id,role_id
-                    if(data.getData().get(position).getExamMode().equals(AppConstant.EXAM_MODE_OBJECTIVE))
-                    ((AuthorHostActivity)context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
-                    else if(data.getData().get(position).getExamMode().equals(AppConstant.EXAM_MODE_SUBJECTIVE))
-                        ((AuthorHostActivity)context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
+                    if (data.getData().get(position).getExamMode().equals(AppConstant.EXAM_MODE_OBJECTIVE))
+                        ((AuthorHostActivity) context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS, null);
+                    else if (data.getData().get(position).getExamMode().equals(AppConstant.EXAM_MODE_SUBJECTIVE))
+                        ((AuthorHostActivity) context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS, null);
 
                 }
             });
@@ -111,8 +111,8 @@ public class TrialExamsAdapter extends BaseAdapter {
     }
 
 
-    public  class ViewHolder{
-        TextView txtTotalStudent,txtStudentAttempted,txtSubjectName,txtExamType,txtAverage,txtAttempted;
+    public class ViewHolder {
+        TextView txtTotalStudent, txtStudentAttempted, txtSubjectName, txtExamType, txtAverage, txtAttempted;
 
 
     }

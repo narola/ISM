@@ -14,10 +14,11 @@ import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
+import com.ism.author.Utility.Utils;
 import com.ism.author.helper.CircleImageView;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
-import com.ism.author.model.RequestObject;
+import com.ism.author.model.FragmentArgument;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -33,22 +34,23 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
     private ArrayList<Data> listOfStudents = new ArrayList<Data>();
     private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
-    private String examId;
+    private FragmentArgument fragmentArgument;
+    private LayoutInflater inflater;
 
 
-    public AssignmentSubmittorAdapter(Context mContext) {
+    public AssignmentSubmittorAdapter(Context mContext, FragmentArgument fragmentArgument) {
         this.mContext = mContext;
-        this.examId = examId;
+        this.fragmentArgument = fragmentArgument;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(this.mContext));
+        myTypeFace = new MyTypeFace(mContext);
+        inflater = LayoutInflater.from(mContext);
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        myTypeFace = new MyTypeFace(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
+
         View contactView = inflater.inflate(R.layout.row_assignment_submittor, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
@@ -76,10 +78,21 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
             holder.llAssignmentSubmittorContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RequestObject requestObject = new RequestObject();
-                    requestObject.setExamId(examId);
-                    requestObject.setStudentId(listOfStudents.get(position).getStudentId());
-                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS, requestObject);
+                    fragmentArgument.getRequestObject().setStudentId(listOfStudents.get(position).getStudentId());
+                    Utils.showToast("The Exam Id is" + fragmentArgument.getRequestObject().getExamId() +
+                            "The student id is" + fragmentArgument.getRequestObject().getStudentId(), mContext);
+
+
+                    if (fragmentArgument.getRequestObject().getExamMode().equalsIgnoreCase("subjective")) {
+
+                        ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS, fragmentArgument);
+
+                    } else if (fragmentArgument.getRequestObject().getExamMode().equalsIgnoreCase("objective")) {
+
+                        ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS, fragmentArgument);
+
+                    }
+
 
                 }
             });
@@ -135,9 +148,5 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
         }
     }
 
-    public void setExamId(String examId) {
-        this.examId = examId;
-
-    }
 
 }

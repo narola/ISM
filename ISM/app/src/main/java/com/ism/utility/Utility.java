@@ -35,7 +35,7 @@ public class Utility {
 	public static final SimpleDateFormat DATE_FORMAT_DISPLAY = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
 	/**
-	 * Krunal Panchal
+	 * Krunal Panchale
 	 * Open keyboard programmatically.
 	 * @param view
 	 * @param context
@@ -214,5 +214,6 @@ public class Utility {
 		}
 
 	}
+
 
 }

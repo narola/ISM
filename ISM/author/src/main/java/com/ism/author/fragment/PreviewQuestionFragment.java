@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.PreviewQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
@@ -97,7 +98,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     private void callApiFreezeQuestions() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             if (listOfPreviewQuestions.size() > 0) {
                 try {
                     RequestObject requestObject = new RequestObject();
@@ -114,7 +115,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 Utils.showToast(getString(R.string.strnopreviewquestions), getActivity());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }
