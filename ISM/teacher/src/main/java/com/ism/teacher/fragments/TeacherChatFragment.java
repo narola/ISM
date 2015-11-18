@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.ism.teacher.R;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHostActivity;
 
 /**
  * Created by c161 on --/10/15.
@@ -51,7 +51,7 @@ public class TeacherChatFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_TEACHER_CHAT);
+                fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_TEACHER_CHAT);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -63,7 +63,7 @@ public class TeacherChatFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_TEACHER_CHAT);
+                fragListener.onFragmentDetached(TeacherHostActivity.FRAGMENT_TEACHER_CHAT);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());

@@ -17,7 +17,7 @@
 			android:layout_weight="1"
 			android:textAllCaps="true"
 			android:padding="15dp"
-			android:textColor="@drawable/shape_studymate_active"
+			android:textColor="@drawable/txt_color_studymate_label"
 			android:background="@drawable/bg_tab_studymate"
 			android:text="@string/your_studymates"/>
 

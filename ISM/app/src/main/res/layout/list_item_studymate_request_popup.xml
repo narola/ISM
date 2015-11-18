@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <com.ism.views.CircleImageView
+        android:id="@+id/img_dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/userdp"/>
+
+    <TextView
+        android:id="@+id/txt_name_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/img_dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:textColor="@color/color_green"
+        android:textSize="17sp"/>
+
+    <TextView
+        android:id="@+id/txt_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_name_message"
+        android:layout_toRightOf="@id/img_dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/text_gray"/>
+
+	<Button
+		android:id="@+id/btn_respond"
+		android:layout_width="wrap_content"
+		android:layout_height="35dp"
+		android:layout_below="@id/txt_name_message"
+		android:layout_alignParentRight="true"
+		android:layout_margin="10dp"
+		android:paddingLeft="5dp"
+		android:paddingRight="5dp"
+		android:textColor="@android:color/white"
+		android:background="@drawable/bg_btn_dark"
+		android:textAllCaps="false"
+		android:gravity="center"
+		android:text="@string/respond_to_request"/>
+</RelativeLayout>

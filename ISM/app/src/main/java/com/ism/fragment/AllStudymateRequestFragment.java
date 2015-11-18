@@ -7,46 +7,41 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.adapter.StudymateAdapter;
+import com.ism.adapter.StudymateRequestAdapter;
+import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
+import com.ism.object.Global;
+import com.ism.ws.RequestObject;
+import com.ism.ws.ResponseObject;
+import com.ism.ws.WebserviceWrapper;
 import com.ism.ws.model.Data;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
+
 
 /**
  * Created by c161 on 09/11/15.
  */
-public class AllStudymateRequestFragment extends Fragment implements HostActivity.HostListenerAllStudyMateRequest {
+public class AllStudymateRequestFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 	private static final String TAG = AllStudymateRequestFragment.class.getSimpleName();
 
 	private View view;
 	private ListView lvAllStudyMate;
-	private RelativeLayout rlStudyMateRequestDetails;
+	private TextView txtHeader;
 
 	private FragmentListener fragListener;
 	private HostActivity activityHost;
 	private ArrayList<Data> arrListStudymateRequest;
-	private StudymateAdapter adpStudymate;
-	private ImageLoader imageLoader;
+	private StudymateRequestAdapter adpStudymate;
 
-	private static String STUDY_MATE_REQUEST_POSITION = "notificationPosition";
-	private int positionStudyMateRequest;
-
-	public static AllStudymateRequestFragment newInstance(ArrayList<Data> arrListStudymateRequest, int position) {
+	public static AllStudymateRequestFragment newInstance(ArrayList<Data> arrListStudymateRequest) {
 		AllStudymateRequestFragment fragment = new AllStudymateRequestFragment();
-		Bundle args = new Bundle();
-		args.putInt(STUDY_MATE_REQUEST_POSITION, position);
-		fragment.setArguments(args);
 		fragment.setArrListStudymateRequest(arrListStudymateRequest);
 		return fragment;
 	}
@@ -56,12 +51,6 @@ public class AllStudymateRequestFragment extends Fragment implements HostActivit
 	}
 
 	public AllStudymateRequestFragment() {
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		positionStudyMateRequest = getArguments().getInt(STUDY_MATE_REQUEST_POSITION);
 	}
 
 	@Override
@@ -75,49 +64,20 @@ public class AllStudymateRequestFragment extends Fragment implements HostActivit
 
 	private void initGlobal() {
 		lvAllStudyMate = (ListView) view.findViewById(R.id.lv_all_studymate);
-
-		imageLoader = ImageLoader.getInstance();
-		imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-
-		if (positionStudyMateRequest >= 0) {
-			showStudyMateRequestDetails(positionStudyMateRequest);
-		}
+		txtHeader = (TextView) view.findViewById(R.id.txt_header_white);
 
 		if (arrListStudymateRequest != null) {
-			adpStudymate = new StudymateAdapter(getActivity(), arrListStudymateRequest);
-			lvAllStudyMate.setAdapter(adpStudymate);
-		}
-
-		lvAllStudyMate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				showStudyMateRequestDetails(position);
+			if (arrListStudymateRequest.size() == 0) {
+				txtHeader.setText(activityHost.getString(R.string.studymate_requests));
+			} else if (arrListStudymateRequest.size() == 1) {
+				txtHeader.setText(activityHost.getString(R.string.respond_to_your) + " " + activityHost.getString(R.string.studymate_request));
+			} else if (arrListStudymateRequest.size() > 1) {
+				txtHeader.setText(activityHost.getString(R.string.respond_to_your) + " " + arrListStudymateRequest.size() + " " + activityHost.getString(R.string.studymate_requests));
 			}
-		});
-	}
-	private void showStudyMateRequestList() {
-		if (rlStudyMateRequestDetails != null) {
-			rlStudyMateRequestDetails.setVisibility(View.GONE);
+			adpStudymate = new StudymateRequestAdapter(getActivity(), arrListStudymateRequest);
+			lvAllStudyMate.setAdapter(adpStudymate);
+			callApiUpdateReadStatus();
 		}
-		lvAllStudyMate.setVisibility(View.VISIBLE);
-	}
-
-	private void showStudyMateRequestDetails(int position) {
-		activityHost.showControllerTopBackButton();
-		lvAllStudyMate.setVisibility(View.GONE);
-		if (rlStudyMateRequestDetails == null) {
-			rlStudyMateRequestDetails = (RelativeLayout)((ViewStub) view.findViewById(R.id.vs_studymate_request_details)).inflate();
-			initViews();
-		} else {
-			rlStudyMateRequestDetails.setVisibility(View.VISIBLE);
-		}
-
-//		imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", imgDp, ISMStudent.options);
-//		txtName.setText(arrListNotification.get(position).getNotificationFromName());
-//		txtPost.setText(arrListNotification.get(position).getNotificationText());
-	}
-
-	private void initViews() {
 
 	}
 
@@ -127,7 +87,6 @@ public class AllStudymateRequestFragment extends Fragment implements HostActivit
 		try {
 			fragListener = (FragmentListener) activity;
 			activityHost = (HostActivity) activity;
-			activityHost.setListenerHostAllStudyMateRequest(this);
 			if (fragListener != null) {
 				fragListener.onFragmentAttached(HostActivity.FRAGMENT_ALL_STUDYMATE_REQUEST);
 			}
@@ -149,8 +108,53 @@ public class AllStudymateRequestFragment extends Fragment implements HostActivit
 		fragListener = null;
 	}
 
+	private void callApiUpdateReadStatus() {
+		try {
+			if (arrListStudymateRequest != null && arrListStudymateRequest.size() > 0) {
+				ArrayList<String> recordIds = new ArrayList<String>();
+				for (int i = 0; i < arrListStudymateRequest.size(); i++) {
+					recordIds.add(arrListStudymateRequest.get(i).getRecordId());
+				}
+				RequestObject requestObject = new RequestObject();
+				requestObject.setUserId(Global.strUserId);
+				requestObject.setReadCategory(WebConstants.STUDYMATE_REQUEST);
+				requestObject.setRecordIds(recordIds);
+
+				new WebserviceWrapper(activityHost, requestObject, this).new WebserviceCaller().
+						execute(WebConstants.UPDATE_READ_STATUS);
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "callApiUpdateReadStatus Exception : " + e.toString());
+		}
+	}
+
 	@Override
-	public void onControllerTopBackClick() {
-		showStudyMateRequestList();
+	public void onResponse(Object object, Exception error, int apiCode) {
+		try {
+			switch (apiCode) {
+				case WebConstants.UPDATE_READ_STATUS:
+					onResponseUpdateReadStatus(object, error);
+					break;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponse Exception : " + e.toString());
+		}
+	}
+
+	private void onResponseUpdateReadStatus(Object object, Exception error) {
+		try {
+			if (object != null) {
+				ResponseObject responseObject = (ResponseObject) object;
+				if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+					Log.e(TAG, "Read status updated");
+				} else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "Read status update failed");
+				}
+			} else if (error != null) {
+				Log.e(TAG, "onResponseUpdateReadStatus api Exception : " + error.toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "onResponseUpdateReadStatus Exception : " + e.toString());
+		}
 	}
 }

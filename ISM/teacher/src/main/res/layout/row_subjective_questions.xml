@@ -2,311 +2,320 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:weightSum="6">
+    android:orientation="horizontal">
 
-
-    <!-- Question part android:layout_weight="3.3"-->
 
     <LinearLayout
-        android:id="@+id/ll_question_number"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3.3"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="6">
+        <!-- Question part android:layout_weight="3.3"-->
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/shadow_bg_trial_exam_details">
-
-            <TextView
-                android:id="@+id/txt_question_no"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/d10dp"
-                android:layout_marginRight="10dp"
-                android:gravity="left|center"
-                android:text="Question 1"
-                android:textAllCaps="true"
-                android:textColor="@color/bg_assessment"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/ll_question_number"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/d10dp"
+            android:layout_weight="3.3"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txt_question_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/d10dp"
-                android:layout_marginTop="@dimen/d10dp"
-                android:text=""
-                android:textAllCaps="false"
-                android:textColor="#74777C"
-                android:textSize="20sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color_separator" />
-
-            <TextView
-                android:id="@+id/txt_youranswer_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/d10dp"
-                android:layout_marginTop="@dimen/d10dp"
-                android:text="Your Answer:"
-                android:textAllCaps="false"
-                android:textColor="#74777C"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/txt_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/d10dp"
-                android:text=""
-                android:textAllCaps="false"
-                android:textColor="#74777C"
-                android:textSize="16sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color_separator" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/d10dp"
-                android:layout_marginTop="@dimen/d10dp"
-                android:text="Evaluation Notes:"
-                android:textAllCaps="false"
-                android:textColor="@color/color_light_green"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/et_evaluation_notes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_white"
-                android:gravity="left|top"
-                android:inputType="textMultiLine"
-                android:minLines="3" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:background="@color/color_separator" />
-
-    <!-- Score part android:layout_weight="1.3"-->
-    <LinearLayout
-        android:id="@+id/ll_question_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.3"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/shadow_bg_trial_exam_details">
-
-            <TextView
-                android:id="@+id/txt_score_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/d10dp"
-                android:gravity="left|center"
-                android:text="Score"
-                android:textAllCaps="true"
-                android:textColor="@color/color_gray_subjective_question"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/d10dp"
-            android:orientation="vertical"
-            android:weightSum="6">
-
-            <TextView
-                android:id="@+id/txt_excellent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="5 Excellent"
-                android:textColor="@color/color_excellent"
-                android:textSize="18sp" />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:background="@color/color_shade_news_feed" />
-
-
-            <TextView
-                android:id="@+id/txt_good"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="4 Good"
-                android:textColor="@color/color_good"
-                android:textSize="18sp" />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:background="@color/color_shade_news_feed" />
-
-
-            <TextView
-                android:id="@+id/txt_fair"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="3 Fair"
-                android:textColor="@color/color_fair"
-                android:textSize="18sp" />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:background="@color/color_shade_news_feed" />
-
-
-            <TextView
-                android:id="@+id/txt_average"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="2 Average"
-                android:textColor="@color/color_average"
-                android:textSize="18sp" />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:background="@color/color_shade_news_feed" />
-
-            <TextView
-                android:id="@+id/txt_poor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="1 Poor"
-                android:textColor="@color/color_poor"
-                android:textSize="18sp" />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:background="@color/color_shade_news_feed" />
-
-            <TextView
-                android:id="@+id/txt_incorrect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="0 Incorrect"
-                android:textColor="@color/color_black"
-                android:textSize="18sp" />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:background="@color/color_shade_news_feed" />
-
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:background="@color/color_separator" />
-
-    <!-- Comments part-->
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.4"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@drawable/shadow_bg_trial_exam_details">
-
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_alignParentLeft="true">
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#f7f7f7">
 
                 <TextView
-                    android:id="@+id/txt_comments_label"
+                    android:id="@+id/txt_question_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/d10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="left|center"
+                    android:text="Question 1"
+                    android:textAllCaps="true"
+                    android:textColor="@color/bg_assessment"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_question_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/d10dp"
+                    android:layout_marginTop="@dimen/d10dp"
+                    android:text=""
+                    android:textAllCaps="false"
+                    android:textColor="#74777C"
+                    android:textSize="20sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_separator" />
+
+                <TextView
+                    android:id="@+id/txt_youranswer_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/d10dp"
+                    android:layout_marginTop="@dimen/d10dp"
+                    android:text="Your Answer:"
+                    android:textAllCaps="false"
+                    android:textColor="#74777C"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txt_answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/d10dp"
+                    android:text=""
+                    android:textAllCaps="false"
+                    android:textColor="#74777C"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_separator" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/d10dp"
+                    android:layout_marginTop="@dimen/d10dp"
+                    android:text="Evaluation Notes:"
+                    android:textAllCaps="false"
+                    android:textColor="@color/color_light_green"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/et_evaluation_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:gravity="left|top"
+                    android:inputType="textMultiLine"
+                    android:minLines="3" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:background="@color/color_separator" />
+
+        <!-- Score part android:layout_weight="1.3"-->
+        <LinearLayout
+            android:id="@+id/ll_question_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.3"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/color_bg_question">
+
+                <TextView
+                    android:id="@+id/txt_score_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/d10dp"
                     android:gravity="left|center"
-                    android:text="Comments"
+                    android:text="Score"
                     android:textAllCaps="true"
                     android:textColor="@color/color_gray_subjective_question"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true">
+                android:orientation="vertical"
+                android:weightSum="6">
 
-                <ImageView
-                    android:id="@+id/img_copy_comments"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/txt_excellent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_copy_question" />
+                    android:padding="5dp"
+                    android:text="5 Excellent"
+                    android:textColor="@color/color_excellent"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="@dimen/d10dp"/>
 
-                <ImageView
-                    android:id="@+id/img_delete_comments"
+                <View
                     android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/color_shade_news_feed" />
+
+
+                <TextView
+                    android:id="@+id/txt_good"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_delete_question" />
+                    android:padding="5dp"
+                    android:text="4 Good"
+                    android:textColor="@color/color_good"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="@dimen/d10dp"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/color_shade_news_feed" />
+
+
+                <TextView
+                    android:id="@+id/txt_fair"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="3 Fair"
+                    android:textColor="@color/color_fair"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="@dimen/d10dp"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/color_shade_news_feed" />
+
+
+                <TextView
+                    android:id="@+id/txt_average"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="2 Average"
+                    android:textColor="@color/color_average"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="@dimen/d10dp"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/color_shade_news_feed" />
+
+                <TextView
+                    android:id="@+id/txt_poor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="1 Poor"
+                    android:textColor="@color/color_poor"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="@dimen/d10dp"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/color_shade_news_feed" />
+
+                <TextView
+                    android:id="@+id/txt_incorrect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="0 Incorrect"
+                    android:textColor="@color/color_black"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="@dimen/d10dp"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/color_shade_news_feed" />
+
+
             </LinearLayout>
 
-        </RelativeLayout>
 
-        <EditText
-            android:id="@+id/et_comments"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/d10dp"
-            android:background="@color/color_white"
-            android:gravity="left|top"
-            android:inputType="textMultiLine"
-            android:minLines="3" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:background="@color/color_separator" />
+        <!-- Comments part-->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@color/color_bg_question">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_alignParentLeft="true">
+
+                    <TextView
+                        android:id="@+id/txt_comments_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/d10dp"
+                        android:gravity="left|center"
+                        android:text="Comments"
+                        android:textAllCaps="true"
+                        android:textColor="@color/color_gray_subjective_question"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true">
+
+                    <ImageView
+                        android:id="@+id/img_copy_comments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_copy_question" />
+
+                    <ImageView
+                        android:id="@+id/img_delete_comments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_delete_question" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/et_comments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/d10dp"
+                android:background="@color/color_white"
+                android:gravity="left|top"
+                android:inputType="textMultiLine"
+                android:minLines="3" />
+        </LinearLayout>
     </LinearLayout>
+
 
 </LinearLayout>

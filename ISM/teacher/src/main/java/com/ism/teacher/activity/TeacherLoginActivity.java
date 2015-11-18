@@ -649,7 +649,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
     }
 
     private void launchTeacherHomeActivity() {
-        Utility.launchIntent(TeacherLoginActivity.this, TeacherHomeActivity.class);
+        Utility.launchIntent(TeacherLoginActivity.this, TeacherHostActivity.class);
         finish();
     }
 

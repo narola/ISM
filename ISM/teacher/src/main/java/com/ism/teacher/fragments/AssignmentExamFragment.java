@@ -22,7 +22,7 @@ import android.widget.ToggleButton;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
@@ -252,7 +252,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                                                     public void onClick(View v) {
                                                         if (exam_id != null && !exam_id.equalsIgnoreCase("")) {
                                                             Log.e("examid", exam_id);
-                                                            ((TeacherHomeActivity) getActivity()).loadAddQuestionFragment(TeacherHomeActivity.FRAGMENT_ADDQUESTION, exam_id);
+                                                            ((TeacherHostActivity) getActivity()).loadAddQuestionFragment(TeacherHostActivity.FRAGMENT_ADDQUESTION, exam_id);
                                                         } else {
                                                             Log.e(TAG, "Setting question with exam id null");
                                                         }
@@ -734,7 +734,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
 
     private void backToTrialScreen() {
-        ((TeacherHomeActivity) getActivity()).onBackPressed();
+        ((TeacherHostActivity) getActivity()).onBackPressed();
     }
 
 

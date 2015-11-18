@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.fragments.TeacherExamWiseAssignments;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
@@ -149,13 +149,13 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
                 // send the value of exam_id,role_id
                 if(listOfAssignments.get(position).getExam_mode().equalsIgnoreCase(EXAM_OBJECTIVE))
                 {
-                    ((TeacherHomeActivity)mContext).loadFragmentInMainContainer(TeacherHomeActivity.FRAGMENT_EXAM_OBJECTIVE_DETAILS);
+                    ((TeacherHostActivity)mContext).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_EXAM_OBJECTIVE_DETAILS);
 
                 }
 
                 else if(listOfAssignments.get(position).getExam_mode().equalsIgnoreCase(EXAM_SUBJECTIVE))
                 {
-                    ((TeacherHomeActivity)mContext).loadFragmentInMainContainer(TeacherHomeActivity.FRAGMENT_EXAM_SUBJECTIVE_DETAILS);
+                    ((TeacherHostActivity)mContext).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_EXAM_SUBJECTIVE_DETAILS);
 
 
                 }

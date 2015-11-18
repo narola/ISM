@@ -101,4 +101,5 @@
     <color name="color_good">#4094D0</color>
     <color name="color_excellent">#19C59F</color>
     <color name="color_separator">#DDDEE0</color>
+    <color name="color_bg_question">#f7f7f7</color>
 </resources>

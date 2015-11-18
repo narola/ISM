@@ -9,7 +9,7 @@
 		android:id="@+id/txt_header"
 		android:layout_width="match_parent"
 		android:layout_height="@dimen/header_white_height"
-		android:background="@drawable/bg_exam_header"
+		android:background="@drawable/bg_header_white"
 		android:padding="15dp"
 		android:text="Please Read Instructions Carefully"
 		android:textColor="@color/bg_app_dark"

@@ -16,9 +16,11 @@
 
         <!-- student part-->
         <RelativeLayout
+            android:id="@+id/rl_student_details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.8">
+            android:layout_weight="1.8"
+            android:visibility="gone">
 
             <com.ism.teacher.views.CircleImageView
                 android:id="@+id/img_student_pic"
@@ -111,7 +113,8 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/d70dp"
             android:layout_weight="0.7"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -159,8 +162,6 @@
     </LinearLayout>
 
 
-    <!--<include
-        layout="@layout/row_subjective_questions"/>-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_subjective_question_list"
         android:layout_width="match_parent"

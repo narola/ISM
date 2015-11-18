@@ -92,14 +92,14 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                         lastSelected = position;
                     }
                     if (arrayList.get(position).isFlagged()) {
-                        //   ((TeacherHomeActivity) context).startProgress();
+                        //   ((TeacherHostActivity) context).startProgress();
                         callAPIStudentEvaluations(arrayList.get(position).getStudent_id(), resObjStudentAttempted.getData().get(0).getExam_id(), studentName);
                     } else {
-                        // ((TeacherHomeActivity) context).startProgress();
+                        // ((TeacherHostActivity) context).startProgress();
                         ObjectiveQuestionsAdapter objectiveQuestionsAdapter = new ObjectiveQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, null);
                         ExamObjectiveDetailFragment.rvList.setAdapter(objectiveQuestionsAdapter);
                         objectiveQuestionsAdapter.notifyDataSetChanged();
-                        //  ((TeacherHomeActivity) context).stopProgress();
+                        //  ((TeacherHostActivity) context).stopProgress();
                     }
                     notifyDataSetChanged();
 
@@ -115,7 +115,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     private void callAPIStudentEvaluations(String studentId, String examId, String studentName) {
         try {
             if (Utility.isInternetConnected(context)) {
-                //  ((TeacherHomeActivity) context).startProgress();
+                //  ((TeacherHostActivity) context).startProgress();
                 RequestObject requestObject = new RequestObject();
                 requestObject.setStudentId("202");
                 requestObject.setExamId("3");
@@ -144,7 +144,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
         try {
-            //  ((TeacherHomeActivity) context).stopProgress();
+            //  ((TeacherHostActivity) context).stopProgress();
 
             if (API_METHOD == WebConstants.GET_EXAM_EVALUATIONS) {
                 ResponseObject responseObject = (ResponseObject) object;

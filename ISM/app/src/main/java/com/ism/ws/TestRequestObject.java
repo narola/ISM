@@ -13,6 +13,8 @@ public class TestRequestObject {
 
 	private int userId;
 	private int cityId;
+	private String readCategory;
+	private String recordId;
 
 	public int getUserId() {
 		return this.userId;
@@ -21,6 +23,24 @@ public class TestRequestObject {
 	@JsonProperty("user_id")
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public String getReadCategory() {
+		return readCategory;
+	}
+
+	@JsonProperty("read_category")
+	public void setReadCategory(String readCategory) {
+		this.readCategory = readCategory;
+	}
+
+	public String getRecordId() {
+		return recordId;
+	}
+
+	@JsonProperty("record_id")
+	public void setRecordId(String recordId) {
+		this.recordId = recordId;
 	}
 
 }

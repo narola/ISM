@@ -35,11 +35,12 @@ import com.ism.fragment.DeskFragment;
 import com.ism.fragment.MyActivityFragment;
 import com.ism.fragment.MyFeedsFragment;
 import com.ism.fragment.MyWalletFragment;
-import com.ism.fragment.NotesFragment;
+import com.ism.fragment.AccordionFragment;
 import com.ism.fragment.ProfileControllerFragment;
 import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.StudymatesFragment;
 import com.ism.fragment.TutorialFragment;
+import com.ism.fragment.userprofile.EditProfileFragment;
 import com.ism.fragment.userprofile.GeneralSettingsFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.ControllerTopMenuItem;
@@ -80,7 +81,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private HostListener listenerHost;
 	private HostListenerAllNotification listenerHostAllNotification;
 	private HostListenerAllMessage listenerHostAllMessage;
-	private HostListenerAllStudyMateRequest listenerHostAllStudyMateRequest;
 	private HostListenerProfileController listnerHostProfileController;
 
     private TextView arrTxtMenu[];
@@ -108,6 +108,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 	public static final int FRAGMENT_ALL_NOTIFICATION = 15;
 	public static final int FRAGMENT_ALL_MESSAGE = 16;
 	public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 17;
+    public static final int FRAGMENT_EDIT_PROFILE = 18;
 	private int currentMainFragment;
     private int currentRightFragment;
     private int currentMainFragmentBg;
@@ -123,10 +124,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 	}
 
 	public interface HostListenerAllMessage {
-		public void onControllerTopBackClick();
-	}
-
-	public interface HostListenerAllStudyMateRequest {
 		public void onControllerTopBackClick();
 	}
 
@@ -361,7 +358,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ReportCardFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_NOTES:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, NotesFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, AccordionFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_PROFILE_CONTROLLER:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, ProfileControllerFragment.newInstance()).commit();
@@ -397,7 +394,10 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     break;
                 case FRAGMENT_ALL_STUDYMATE_REQUEST:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AllStudymateRequestFragment.newInstance(fragmentArgument.getArrayListData(), fragmentArgument.getPosition())).commit();
+                            AllStudymateRequestFragment.newInstance(fragmentArgument.getArrayListData())).commit();
+                    break;
+                case FRAGMENT_EDIT_PROFILE:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, EditProfileFragment.newInstance()).commit();
                     break;
             }
         } catch (Exception e) {
@@ -489,6 +489,12 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 		            currentMainFragment = fragment;
 		            rlControllerTopMenu.setVisibility(View.VISIBLE);
 		            break;
+                case FRAGMENT_EDIT_PROFILE:
+                    currentMainFragment = fragment;
+
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
@@ -545,6 +551,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 	            case FRAGMENT_ALL_STUDYMATE_REQUEST:
 		            loadControllerTopMenu(null);
 		            break;
+                case FRAGMENT_EDIT_PROFILE:
+                    loadControllerTopMenu(null);
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentDetached Exception : " + e.toString());
@@ -589,6 +598,10 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void onMenuItemClick(View view) {
         try {
             if (view == imgMenuBack) {
+	            /**
+	             * Controller top back button click
+	             */
+
                 hideControllerTopControls();
 
 	            if (currentControllerTopMenu != null) {
@@ -607,12 +620,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 		            case FRAGMENT_ALL_MESSAGE:
 			            listenerHostAllMessage.onControllerTopBackClick();
 			            break;
-		            case FRAGMENT_ALL_STUDYMATE_REQUEST:
-			            listenerHostAllStudyMateRequest.onControllerTopBackClick();
-			            break;
 	            }
 
             } else if (view == txtAction) {
+	            /**
+	             * Controller top action button click
+	             */
+
                 Log.e(TAG, "text action");
                 /*switch (currentMainFragment) {
                     case FRAGMENT_CLASSROOM:
@@ -829,9 +843,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
         }
 
-
     }
-
 
 	public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
 		this.listenerHostAllNotification = listenerHostAllNotification;
@@ -839,10 +851,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
 	public void setListenerHostAllMessage(HostListenerAllMessage listenerHostAllMessage) {
 		this.listenerHostAllMessage = listenerHostAllMessage;
-	}
-
-	public void setListenerHostAllStudyMateRequest(HostListenerAllStudyMateRequest listenerHostAllStudyMateRequest) {
-		this.listenerHostAllStudyMateRequest = listenerHostAllStudyMateRequest;
 	}
 
 	public void setListnerHostProfileController(HostListenerProfileController listnerHostProfileController) {

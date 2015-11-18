@@ -8,18 +8,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.adapters.SubjectiveQuestionAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.model.Data;
 import com.ism.teacher.model.RequestObject;
 import com.ism.teacher.model.ResponseObject;
+import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.WebserviceWrapper;
-
-import java.util.ArrayList;
 
 /**
  * Created by c75 on 10/11/15.
@@ -31,14 +31,21 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     //Views
     View rootview;
-    RecyclerView rvSubjectiveQuestionList;
+    public static RecyclerView rvSubjectiveQuestionList;
     TextView txtExamName;
 
-    //ArrayList
-    ArrayList<Data> arrayListSubjectiveQuestions = new ArrayList<>();
+    public static ResponseObject responseObjQuestions;
 
     //Adapters
     SubjectiveQuestionAdapter subjectiveQuestionAdapter;
+
+
+    //Student details part
+    public static RelativeLayout rlStudentDetails;
+    public static CircleImageView img_student_pic;
+    public static TextView txt_student_name,txt_student_rollno;
+    public static ImageView img_online;
+
 
     public static SubjectiveQuestionsFragment newInstance() {
         SubjectiveQuestionsFragment myStudentsFragment = new SubjectiveQuestionsFragment();
@@ -61,8 +68,14 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private void initGlobal(View rootview) {
 
-        txtExamName = (TextView) rootview.findViewById(R.id.txt_exam_name);
+        //static
+        rlStudentDetails =(RelativeLayout)rootview.findViewById(R.id.rl_student_details);
+        img_student_pic=(CircleImageView)rootview.findViewById(R.id.img_student_pic);
+        img_online=(ImageView)rootview.findViewById(R.id.img_student_pic);
+        txt_student_name = (TextView) rootview.findViewById(R.id.txt_student_name);
+        txt_student_rollno = (TextView) rootview.findViewById(R.id.txt_student_rollno);
 
+        txtExamName = (TextView) rootview.findViewById(R.id.txt_exam_name);
         rvSubjectiveQuestionList = (RecyclerView) rootview.findViewById(R.id.rv_subjective_question_list);
 
         callGetSubjectionQuestionApi();
@@ -96,12 +109,15 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private void onResponseMySubjectiveQuestions(Object object) {
         ResponseObject responseObj = (ResponseObject) object;
+
+        responseObjQuestions = (ResponseObject) object;
+
         if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
 
             txtExamName.setText(responseObj.getData().get(0).getExamName());
 //            arrayListSubjectiveQuestions.addAll(responseObj.getData());
 //            subjectiveQuestionAdapter.addAll(arrayListSubjectiveQuestions);
-            subjectiveQuestionAdapter = new SubjectiveQuestionAdapter(responseObj,getActivity(), this);
+            subjectiveQuestionAdapter = new SubjectiveQuestionAdapter(responseObj, getActivity(), this, null);
             rvSubjectiveQuestionList.setAdapter(subjectiveQuestionAdapter);
             rvSubjectiveQuestionList.setLayoutManager(new LinearLayoutManager(getActivity()));
         }

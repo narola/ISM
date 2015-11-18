@@ -163,9 +163,9 @@ public class TeacherProfileInformation extends Activity implements View.OnClickL
 
         if (view == btnSubmit) {
 //            if (isTextFieldsInputsValid()) {
-//                Global.launchIntent(TeacherProfileInformation.this, TeacherHomeActivity.class);
+//                Global.launchIntent(TeacherProfileInformation.this, TeacherHostActivity.class);
 //            }
-            Utility.launchIntent(TeacherProfileInformation.this, TeacherHomeActivity.class);
+            Utility.launchIntent(TeacherProfileInformation.this, TeacherHostActivity.class);
 
         } else if (view == llUploadProfilePic) {
 

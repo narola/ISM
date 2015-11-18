@@ -11,15 +11,13 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.ism.teacher.R;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.model.Data;
 import com.ism.teacher.model.RequestObject;
 import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.ws.WebserviceWrapper;
-
-import java.util.ArrayList;
 
 /**
  * Created by c75 on 10/11/15.
@@ -33,9 +31,6 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
     RecyclerView rv_mystudentslist;
     MyStudentsAdapter myStudentsAdapter;
     EditText etSearchStudents;
-
-    ArrayList<Data> arrayListStudents = new ArrayList<>();
-
 
     public static MyStudentsFragment newInstance() {
         MyStudentsFragment myStudentsFragment = new MyStudentsFragment();
@@ -57,21 +52,23 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
 
     private void initGlobal(View rootview) {
         rv_mystudentslist = (RecyclerView) rootview.findViewById(R.id.rv_mystudentslist);
-        etSearchStudents =(EditText)rootview.findViewById(R.id.et_search_students);
+        etSearchStudents = (EditText) rootview.findViewById(R.id.et_search_students);
 
-        myStudentsAdapter = new MyStudentsAdapter(getActivity(),this);
-        rv_mystudentslist.setAdapter(myStudentsAdapter);
-        rv_mystudentslist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        callGetMyStudentsApi();
+        callGetExamSubmissionApi();
     }
 
-    private void callGetMyStudentsApi() {
+    private void callGetExamSubmissionApi() {
         try {
             RequestObject requestObject = new RequestObject();
-            requestObject.setUserId("319");
+            requestObject.setExamId("9");
+            requestObject.setUserId("340");
+            requestObject.setRole(Integer.parseInt("3"));
+
+               ((TeacherHostActivity) getActivity()).startProgress();
             new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                    .execute(WebConstants.GET_MY_STUDENTS);
+                    .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
+
 
         } catch (Exception e) {
             Log.e("error", e.getLocalizedMessage());
@@ -82,8 +79,9 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
     @Override
     public void onResponse(int api_code, Object object, Exception error) {
         try {
+            ((TeacherHostActivity)getActivity()).stopProgress();
             switch (api_code) {
-                case WebConstants.GET_MY_STUDENTS:
+                case WebConstants.GET_ALL_EXAM_SUBMISSION:
                     onResponseMyStudents(object);
                     break;
             }
@@ -94,10 +92,14 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
 
     private void onResponseMyStudents(Object object) {
 
-        ResponseObject responseObj = (ResponseObject) object;
-        if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
-            arrayListStudents.addAll(responseObj.getData());
-            myStudentsAdapter.addAll(arrayListStudents);
+        ResponseObject resObjStudentAttempted = (ResponseObject) object;
+        if (resObjStudentAttempted.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
+
+            myStudentsAdapter = new MyStudentsAdapter(resObjStudentAttempted, getActivity(), this);
+            rv_mystudentslist.setAdapter(myStudentsAdapter);
+            rv_mystudentslist.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
         }
     }
 }

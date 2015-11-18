@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rl_my_students"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -47,16 +48,8 @@
             android:gravity="left"
             android:text="Roll No-"
             android:textColor="#75767A"
-            android:textSize="15sp" />
-
-        <ImageView
-            android:id="@+id/img_online"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="@dimen/d10dp"
-            android:src="@drawable/radio_button_select" />
+            android:textSize="15sp"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

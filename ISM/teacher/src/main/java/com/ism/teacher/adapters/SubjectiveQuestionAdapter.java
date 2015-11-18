@@ -29,18 +29,27 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
     Fragment mFragment;
     Context context;
     public static MyTypeFace myTypeFace;
-    ResponseObject responseObject;
+    ResponseObject responseObject, studentEvalResObj;
 
-    ArrayList<Data> arrayListSubjectiveQuestions = new ArrayList<>();
+    ArrayList<Data> dataArrayList = new ArrayList<Data>();
 
-    public SubjectiveQuestionAdapter(ResponseObject responseObject, Context context, Fragment fragment) {
+    //Boolean flags
+    public boolean flag_excellent = false;
+    public boolean flag_good = false;
+    public boolean flag_fair = false;
+    public boolean flag_average = false;
+    public boolean flag_poor = false;
+    public boolean flag_incorrect = false;
+
+    public SubjectiveQuestionAdapter(ResponseObject responseObject, Context context, Fragment fragment, ResponseObject studentEvalResObj) {
         this.responseObject = responseObject;
         this.context = context;
         this.mFragment = fragment;
+        this.studentEvalResObj = studentEvalResObj;
         myTypeFace = new MyTypeFace(context);
     }
 
-    public void addAll(ArrayList<Data> data) {
+   /* public void addAll(ArrayList<Data> data) {
         try {
             this.arrayListSubjectiveQuestions.clear();
             this.arrayListSubjectiveQuestions.addAll(data);
@@ -50,7 +59,7 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
 
         notifyDataSetChanged();
     }
-
+*/
 
     @Override
     public SubjectiveQuestionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -102,39 +111,6 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
                 txtIncorrect.setTypeface(myTypeFace.getRalewayRegular());
 
 
-                /*txtQuestionNo = (TextView) itemView.findViewById(R.id.txtQuestionNo);
-                txtQuestionText = (TextView) itemView.findViewById(R.id.txtQuestionText);
-                txtQuestionsSolution = (TextView) itemView.findViewById(R.id.txt_solution);
-                txtCorrectAnswer = (TextView) itemView.findViewById(R.id.txt_correct_answer);
-                txtQuestionsAnswer = (TextView) itemView.findViewById(R.id.txtAnswer);
-                txtStudentNameAnswer = (TextView) itemView.findViewById(R.id.txt_studentname_answer);
-                txtStudentAnswered = (TextView) itemView.findViewById(R.id.txt_student_answer);
-                txtOptionA = (TextView) itemView.findViewById(R.id.txt_option_a);
-                txtOptionB = (TextView) itemView.findViewById(R.id.txt_option_b);
-                txtOptionC = (TextView) itemView.findViewById(R.id.txt_option_c);
-                txtOptionD = (TextView) itemView.findViewById(R.id.txt_option_d);
-                txtOptionE = (TextView) itemView.findViewById(R.id.txt_option_e);
-                txtOptionF = (TextView) itemView.findViewById(R.id.txt_option_f);
-
-                txtQuestionsEvaluations = (TextView) itemView.findViewById(R.id.txt_evoluations_notes);
-                etEvaluationsNotes = (EditText) itemView.findViewById(R.id.et_evoluations_notes);
-                textViewOptions = new TextView[]{txtOptionA, txtOptionB, txtOptionC, txtOptionD, txtOptionE, txtOptionF};
-                txtQuestionNo.setTypeface(myTypeFace.getRalewayBold());
-                txtQuestionText.setTypeface(myTypeFace.getRalewayRegular());
-                txtOptionA.setTypeface(myTypeFace.getRalewayRegular());
-                txtOptionB.setTypeface(myTypeFace.getRalewayRegular());
-                txtOptionC.setTypeface(myTypeFace.getRalewayRegular());
-                txtOptionD.setTypeface(myTypeFace.getRalewayRegular());
-                txtOptionE.setTypeface(myTypeFace.getRalewayRegular());
-                txtOptionF.setTypeface(myTypeFace.getRalewayRegular());
-
-                txtCorrectAnswer.setTypeface(myTypeFace.getRalewayBold());
-                txtQuestionsSolution.setTypeface(myTypeFace.getRalewayBold());
-                txtQuestionsAnswer.setTypeface(myTypeFace.getRalewayBold());
-                txtStudentNameAnswer.setTypeface(myTypeFace.getRalewayBold());
-                txtQuestionsEvaluations.setTypeface(myTypeFace.getRalewayBold());*/
-
-
             } catch (Exception e) {
                 Debug.i(TAG, "ViewHolder Exceptions :" + e.toString());
             }
@@ -144,26 +120,80 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
     }
 
     @Override
-    public void onBindViewHolder(SubjectiveQuestionAdapter.ViewHolder holder, int position) {
-        try
-        {
+    public void onBindViewHolder(final SubjectiveQuestionAdapter.ViewHolder holder, int position) {
+        try {
             ArrayList<Data> arrayList = new ArrayList<Data>();
             arrayList = responseObject.getData().get(0).getQuestions();
             int qno = position + 1;
             //holder.txtQuestionNo.setText("Questions " + qno);
-            holder.txtQuestionNo.setText(Html.fromHtml("QUESTION: " + qno + "</u>"));
+            holder.txtQuestionNo.setText(Html.fromHtml("QUESTION: " + qno));
             holder.txtQuestionText.setText(arrayList.get(position).getQuestionText());
 
 
-        }
-        catch (Exception e)
-        {
+            if (studentEvalResObj != null) {
+                dataArrayList = studentEvalResObj.getData().get(0).getArrayListEvaluation();
+
+                if (arrayList.get(position).getQuestionId().equalsIgnoreCase(dataArrayList.get(position).getQuestionId())) {
+                    holder.txtAnswer.setText(dataArrayList.get(position).getStudentResponse());
+                    holder.etEvaluationNotes.setText(dataArrayList.get(position).getEvaluationNotes());
+                }
+                notifyDataSetChanged();
+
+            }
+
+            holder.txtExcellent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (flag_excellent) {
+                        holder.txtExcellent.setTextColor(context.getResources().getColor(R.color.color_blue));
+                        flag_excellent = false;
+                    } else {
+                        holder.txtExcellent.setTextColor(context.getResources().getColor(R.color.red_error));
+                        flag_excellent = true;
+                    }
+                }
+            });
+            holder.txtGood.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            holder.txtFair.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            holder.txtAverage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            holder.txtPoor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            holder.txtIncorrect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
+
+        } catch (Exception e) {
             Debug.i(TAG, "BindViewHolder Exceptions :" + e.getLocalizedMessage());
         }
     }
 
+
     @Override
     public int getItemCount() {
-        return 3;
+        return responseObject.getData().get(0).getQuestions().size();
     }
 }
