@@ -22,6 +22,7 @@ import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.Data;
+import com.ism.author.model.FragmentArgument;
 import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
@@ -42,15 +43,18 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
     private MyTypeFace myTypeFace;
     private FragmentListener fragListener;
     private ArrayList<Data> listOfStudents = new ArrayList<Data>();
+    private FragmentArgument fragmentArgument;
 
-    public static GetAssignmentsSubmittorFragment newInstance() {
+    public static GetAssignmentsSubmittorFragment newInstance(FragmentArgument fragmentArgument) {
         GetAssignmentsSubmittorFragment getAssignmentsSubmittorFragment = new GetAssignmentsSubmittorFragment();
+        getAssignmentsSubmittorFragment.fragmentArgument = fragmentArgument;
         return getAssignmentsSubmittorFragment;
     }
 
     public GetAssignmentsSubmittorFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,7 +69,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
         tvSubmittorTitle = (TextView) view.findViewById(R.id.tv_submittor_title);
         imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
         rvAssignmentSubmittorList = (RecyclerView) view.findViewById(R.id.rv_assignment_submittor_list);
-        assignmentSubmittorAdapter = new AssignmentSubmittorAdapter(getActivity());
+        assignmentSubmittorAdapter = new AssignmentSubmittorAdapter(getActivity(), fragmentArgument);
 
         rvAssignmentSubmittorList.setHasFixedSize(true);
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -83,6 +87,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
                 RequestObject request = new RequestObject();
+//                request.setExamId(fragmentArgument.getRequestObject().getExamId());
                 request.setExamId("9");
                 request.setUserId("340");
                 request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
@@ -121,15 +126,14 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
                     listOfStudents.addAll(responseObj.getData().get(0).getEvaluations());
                     assignmentSubmittorAdapter.addAll(listOfStudents);
                     assignmentSubmittorAdapter.notifyDataSetChanged();
-                    assignmentSubmittorAdapter.setExamId(responseObj.getData().get(0).getExamID());
                 } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
-                Debug.e(TAG, "onResponseGetAllAssignments api Exception : " + error.toString());
+                Debug.e(TAG, "onResponseGetAllExamSubmission api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Debug.e(TAG, "onResponseGetAllAssignments Exception : " + e.toString());
+            Debug.e(TAG, "onResponseGetAllExamSubmission Exception : " + e.toString());
         }
     }
 

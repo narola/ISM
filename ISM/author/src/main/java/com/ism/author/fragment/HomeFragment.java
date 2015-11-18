@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.PostActivity;
 import com.ism.author.adapter.PostFeedsAdapter;
@@ -126,7 +127,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
 
     private void callApiGetAllPostFeeds() {
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 RequestObject requestObject = new RequestObject();
                 requestObject.setUserId(WebConstants.TEST_USER_ID);
@@ -136,7 +137,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
     }
 
