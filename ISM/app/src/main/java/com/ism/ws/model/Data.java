@@ -30,55 +30,55 @@ public class Data {
     private String schoolType;
     private String fullName;
 
-	private String tutorialGroupId;
-	private String tutorialGroupJoiningStatus;
-	private String tutorialGroupComplete;
-	private String tutorialGroupName;
-	private String like;
-	private String modifiedDate;
-	private String audioLink;
-	private String postedOn;
-	private String feedBy;
-	private String totalLike;
-	private String createdDate;
-	private String feedId;
-	private String videoLink;
-	private String feedText;
-	private String totalComment;
-	private String comment;
-	private String commentBy;
-	private String profileLink;
-	private String noticeId;
-	private String noticeTitle;
-	private String notice;
-	private String postedBy;
-	private String notificationDate;
-	private String notificationFromId;
-	private String navigateTo;
-	private String notificationToId;
-	private String notificationText;
-	private String notificationToName;
-	private String notificationId;
-	private String notificationFromName;
-	private String notificationFromProfilePic;
-	private String isRead;
-	private String status;
-	private String senderName;
-	private String messageId;
-	private String messageText;
-	private String senderProfilePic;
-	private String sentOn;
-	private String senderId;
-	private String requestDate;
-	private String requestFromName;
-	private String isSeen;
-	private String requestFromId;
-	private String requesterProfile;
-	private String requesterSchoolName;
-	private String requesterCourseName;
-	private String notificationCount;
-	private String messageCount;
-	private String requestCount;
+    private String tutorialGroupId;
+    private String tutorialGroupJoiningStatus;
+    private String tutorialGroupComplete;
+    private String tutorialGroupName;
+    private String like;
+    private String modifiedDate;
+    private String audioLink;
+    private String postedOn;
+    private String feedBy;
+    private String totalLike;
+    private String createdDate;
+    private String feedId;
+    private String videoLink;
+    private String feedText;
+    private String totalComment;
+    private String comment;
+    private String commentBy;
+    private String profileLink;
+    private String noticeId;
+    private String noticeTitle;
+    private String notice;
+    private String postedBy;
+    private String notificationDate;
+    private String notificationFromId;
+    private String navigateTo;
+    private String notificationToId;
+    private String notificationText;
+    private String notificationToName;
+    private String notificationId;
+    private String notificationFromName;
+    private String notificationFromProfilePic;
+    private String isRead;
+    private String status;
+    private String senderName;
+    private String messageId;
+    private String messageText;
+    private String senderProfilePic;
+    private String sentOn;
+    private String senderId;
+    private String requestDate;
+    private String requestFromName;
+    private String isSeen;
+    private String requestFromId;
+    private String requesterProfile;
+    private String requesterSchoolName;
+    private String requesterCourseName;
+    private String notificationCount;
+    private String messageCount;
+    private String requestCount;
 
     private ArrayList<TutorialGroupMember> tutorialGroupMembers;
     private ArrayList<Comment> comments;
@@ -87,6 +87,8 @@ public class Data {
     private ArrayList<Data> notification;
     private ArrayList<Data> smsAlert;
     private String keyId;
+    private String birthdate;
+    private String contactNumber;
 
     @JsonProperty("preference_value")
     public String getDefaultValue() {
@@ -575,14 +577,14 @@ public class Data {
         this.notificationFromName = notificationFromName;
     }
 
-	@JsonProperty("notification_from_profile_pic")
-	public String getNotificationFromProfilePic() {
-		return notificationFromProfilePic;
-	}
+    @JsonProperty("notification_from_profile_pic")
+    public String getNotificationFromProfilePic() {
+        return notificationFromProfilePic;
+    }
 
-	public void setNotificationFromProfilePic(String notificationFromProfilePic) {
-		this.notificationFromProfilePic = notificationFromProfilePic;
-	}
+    public void setNotificationFromProfilePic(String notificationFromProfilePic) {
+        this.notificationFromProfilePic = notificationFromProfilePic;
+    }
 
 //	@JsonProperty("is_read")
 //	public String getIsRead() {
@@ -597,162 +599,163 @@ public class Data {
         this.isRead = isRead;
     }
 
-	@JsonProperty("status")
-	public String getStatus() {
-		return this.status;
-	}
+    @JsonProperty("status")
+    public String getStatus() {
+        return this.status;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	@JsonProperty("sender_name")
-	public String getSenderName() {
-		return this.senderName;
-	}
+    @JsonProperty("sender_name")
+    public String getSenderName() {
+        return this.senderName;
+    }
 
-	public void setSenderName(String senderName) {
-		this.senderName = senderName;
-	}
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
 
-	@JsonProperty("message_id")
-	public String getMessageId() {
-		return this.messageId;
-	}
+    @JsonProperty("message_id")
+    public String getMessageId() {
+        return this.messageId;
+    }
 
-	public void setMessageId(String messageId) {
-		this.messageId = messageId;
-	}
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
 
-	@JsonProperty("message_text")
-	public String getMessageText() {
-		return this.messageText;
-	}
+    @JsonProperty("message_text")
+    public String getMessageText() {
+        return this.messageText;
+    }
 
-	public void setMessageText(String messageText) {
-		this.messageText = messageText;
-	}
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
+    }
 
-	@JsonProperty("sender_profile_pic")
-	public String getSenderProfilePic() {
-		return this.senderProfilePic;
-	}
+    @JsonProperty("sender_profile_pic")
+    public String getSenderProfilePic() {
+        return this.senderProfilePic;
+    }
 
-	public void setSenderProfilePic(String senderProfilePic) {
-		this.senderProfilePic = senderProfilePic;
-	}
+    public void setSenderProfilePic(String senderProfilePic) {
+        this.senderProfilePic = senderProfilePic;
+    }
 
-	@JsonProperty("sent_on")
-	public String getSentOn() {
-		return this.sentOn;
-	}
+    @JsonProperty("sent_on")
+    public String getSentOn() {
+        return this.sentOn;
+    }
 
-	public void setSentOn(String sentOn) {
-		this.sentOn = sentOn;
-	}
+    public void setSentOn(String sentOn) {
+        this.sentOn = sentOn;
+    }
 
-	@JsonProperty("sender_id")
-	public String getSenderId() {
-		return this.senderId;
-	}
+    @JsonProperty("sender_id")
+    public String getSenderId() {
+        return this.senderId;
+    }
 
-	public void setSenderId(String senderId) {
-		this.senderId = senderId;
-	}
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
 
-	@JsonProperty("request_date")
-	public String getRequestDate() {
-		return this.requestDate;
-	}
+    @JsonProperty("request_date")
+    public String getRequestDate() {
+        return this.requestDate;
+    }
 
-	public void setRequestDate(String requestDate) {
-		this.requestDate = requestDate;
-	}
+    public void setRequestDate(String requestDate) {
+        this.requestDate = requestDate;
+    }
 
-	@JsonProperty("request_from_name")
-	public String getRequestFromName() {
-		return this.requestFromName;
-	}
+    @JsonProperty("request_from_name")
+    public String getRequestFromName() {
+        return this.requestFromName;
+    }
 
-	public void setRequestFromName(String requestFromName) {
-		this.requestFromName = requestFromName;
-	}
+    public void setRequestFromName(String requestFromName) {
+        this.requestFromName = requestFromName;
+    }
 
-	@JsonProperty("is_seen")
-	public String getIsSeen() {
-		return this.isSeen;
-	}
+    @JsonProperty("is_seen")
+    public String getIsSeen() {
+        return this.isSeen;
+    }
 
-	public void setIsSeen(String isSeen) {
-		this.isSeen = isSeen;
-	}
+    public void setIsSeen(String isSeen) {
+        this.isSeen = isSeen;
+    }
 
-	@JsonProperty("request_from_id")
-	public String getRequestFromId() {
-		return this.requestFromId;
-	}
+    @JsonProperty("request_from_id")
+    public String getRequestFromId() {
+        return this.requestFromId;
+    }
 
-	public void setRequestFromId(String requestFromId) {
-		this.requestFromId = requestFromId;
-	}
+    public void setRequestFromId(String requestFromId) {
+        this.requestFromId = requestFromId;
+    }
 
-	@JsonProperty("requester_profile")
-	public String getRequesterProfile() {
-		return this.requesterProfile;
-	}
+    @JsonProperty("requester_profile")
+    public String getRequesterProfile() {
+        return this.requesterProfile;
+    }
 
-	public void setRequesterProfile(String requesterProfile) {
-		this.requesterProfile = requesterProfile;
-	}
+    public void setRequesterProfile(String requesterProfile) {
+        this.requesterProfile = requesterProfile;
+    }
 
-	@JsonProperty("requester_school_name")
-	public String getRequesterSchoolName() {
-		return this.requesterSchoolName;
-	}
+    @JsonProperty("requester_school_name")
+    public String getRequesterSchoolName() {
+        return this.requesterSchoolName;
+    }
 
-	public void setRequesterSchoolName(String requesterSchoolName) {
-		this.requesterSchoolName = requesterSchoolName;
-	}
+    public void setRequesterSchoolName(String requesterSchoolName) {
+        this.requesterSchoolName = requesterSchoolName;
+    }
 
-	@JsonProperty("requester_course_name")
-	public String getRequesterCourseName() {
-		return this.requesterCourseName;
-	}
+    @JsonProperty("requester_course_name")
+    public String getRequesterCourseName() {
+        return this.requesterCourseName;
+    }
 
-	public void setRequesterCourseName(String requesterCourseName) {
-		this.requesterCourseName = requesterCourseName;
-	}
+    public void setRequesterCourseName(String requesterCourseName) {
+        this.requesterCourseName = requesterCourseName;
+    }
 
-	//public ArrayList<Data> getBlockedList() {
-	//	return blockedList;
-	//}
+    //public ArrayList<Data> getBlockedList() {
+    //	return blockedList;
+    //}
 
-	@JsonProperty("request_count")
-	public String getRequestCount() {
-		return requestCount;
-	}
+    @JsonProperty("request_count")
+    public String getRequestCount() {
+        return requestCount;
+    }
 
-	public void setRequestCount(String requestCount) {
-		this.requestCount = requestCount;
-	}
+    public void setRequestCount(String requestCount) {
+        this.requestCount = requestCount;
+    }
 
-	@JsonProperty("message_count")
-	public String getMessageCount() {
-		return messageCount;
-	}
+    @JsonProperty("message_count")
+    public String getMessageCount() {
+        return messageCount;
+    }
 
-	public void setMessageCount(String messageCount) {
-		this.messageCount = messageCount;
-	}
+    public void setMessageCount(String messageCount) {
+        this.messageCount = messageCount;
+    }
 
-	@JsonProperty("notification_count")
-	public String getNotificationCount() {
-		return notificationCount;
-	}
+    @JsonProperty("notification_count")
+    public String getNotificationCount() {
+        return notificationCount;
+    }
 
-	public void setNotificationCount(String notificationCount) {
-		this.notificationCount = notificationCount;
-	}
+    public void setNotificationCount(String notificationCount) {
+        this.notificationCount = notificationCount;
+    }
+
     public ArrayList<Data> getBlockedList() {
         return blockedList;
     }
@@ -808,5 +811,31 @@ public class Data {
 
     public void setPreferenceKey(String preferenceKey) {
         this.preferenceKey = preferenceKey;
+    }
+
+    public String getIsRead() {
+        return isRead;
+    }
+
+    public void setKeyId(String keyId) {
+        this.keyId = keyId;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    @JsonProperty("birthdate")
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    @JsonProperty("contact_number")
+    public String getContactNumber() {
+        return contactNumber;
     }
 }

@@ -111,6 +111,12 @@ public class WebserviceWrapper {
                     case WebConstants.GET_ALL_BADGES_COUNT:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ALL_BADGES_COUNT, ResponseObject.class, requestObject);
                         break;
+//                    case WebConstants.UPLOAD_PROFILE_PIC:
+//                        responseObject = new RequestWs().getImageRequest(WebConstants.URL_PROFILE_PIC, ResponseObject.class, requestObject);
+//                        break;
+                    case WebConstants.GET_ABOUT_ME:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ABOUT_ME, ResponseObject.class, requestObject);
+                        break;
                 }
             } catch (Exception e) {
                 Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());

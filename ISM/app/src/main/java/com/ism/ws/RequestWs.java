@@ -9,4 +9,5 @@ public class RequestWs {
 		return new WSRequestPost(url).execute(cls, reqCls);
 	}
 
+
 }

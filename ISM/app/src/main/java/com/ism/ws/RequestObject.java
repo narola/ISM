@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -63,6 +64,7 @@ public class RequestObject {
 	private String keyId;
 	private String settingValue;
 	private ArrayList<RequestObject> preferences;
+	private File file;
 
 	public String getKeyId() {
 		return keyId;
@@ -384,5 +386,13 @@ public class RequestObject {
 	@JsonProperty("preferences")
 	public void setPreferences(ArrayList<RequestObject> preferences) {
 		this.preferences = preferences;
+	}
+	@JsonProperty("file")
+	public void setFile(File file) {
+		this.file = file;
+	}
+
+	public File getFile() {
+		return file;
 	}
 }

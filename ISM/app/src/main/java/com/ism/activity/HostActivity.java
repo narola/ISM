@@ -40,6 +40,7 @@ import com.ism.fragment.ProfileControllerFragment;
 import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.StudymatesFragment;
 import com.ism.fragment.TutorialFragment;
+import com.ism.fragment.userprofile.EditProfileFragment;
 import com.ism.fragment.userprofile.GeneralSettingsFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.ControllerTopMenuItem;
@@ -108,6 +109,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 	public static final int FRAGMENT_ALL_NOTIFICATION = 15;
 	public static final int FRAGMENT_ALL_MESSAGE = 16;
 	public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 17;
+    public static final int FRAGMENT_EDIT_PROFILE = 18;
 	private int currentMainFragment;
     private int currentRightFragment;
     private int currentMainFragmentBg;
@@ -399,6 +401,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
                             AllStudymateRequestFragment.newInstance(fragmentArgument.getArrayListData(), fragmentArgument.getPosition())).commit();
                     break;
+                case FRAGMENT_EDIT_PROFILE:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, EditProfileFragment.newInstance()).commit();
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "loadFragment Exception : " + e.toString());
@@ -489,6 +494,12 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 		            currentMainFragment = fragment;
 		            rlControllerTopMenu.setVisibility(View.VISIBLE);
 		            break;
+                case FRAGMENT_EDIT_PROFILE:
+                    currentMainFragment = fragment;
+
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
@@ -545,6 +556,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 	            case FRAGMENT_ALL_STUDYMATE_REQUEST:
 		            loadControllerTopMenu(null);
 		            break;
+                case FRAGMENT_EDIT_PROFILE:
+                    loadControllerTopMenu(null);
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentDetached Exception : " + e.toString());
