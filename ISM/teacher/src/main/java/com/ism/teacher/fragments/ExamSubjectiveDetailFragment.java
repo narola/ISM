@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.ism.teacher.R;
-import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.interfaces.FragmentListener;
 
 
@@ -72,7 +72,7 @@ public class ExamSubjectiveDetailFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_EXAM_SUBJECTIVE_DETAILS);
+                fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_EXAM_SUBJECTIVE_DETAILS);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -84,7 +84,7 @@ public class ExamSubjectiveDetailFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_EXAM_SUBJECTIVE_DETAILS);
+                fragListener.onFragmentDetached(TeacherHostActivity.FRAGMENT_EXAM_SUBJECTIVE_DETAILS);
                 // callLikeFeed();
             }
         } catch (ClassCastException e) {

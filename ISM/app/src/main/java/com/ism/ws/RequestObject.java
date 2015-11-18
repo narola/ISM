@@ -59,10 +59,13 @@ public class RequestObject {
 	private String commentBy;
 	private String comment;
 	private String taggedBy;
-	private String[] taggedUserIds;
-
 	private String keyId;
 	private String settingValue;
+	private String studymateId;
+	private String readCategory;
+	private ArrayList<String> recordIds;
+
+	private String[] taggedUserIds;
 	private ArrayList<RequestObject> preferences;
 	private File file;
 
@@ -394,5 +397,31 @@ public class RequestObject {
 
 	public File getFile() {
 		return file;
+	}
+	public String getStudymateId() {
+		return studymateId;
+	}
+
+	@JsonProperty("studymate_id")
+	public void setStudymateId(String studymateId) {
+		this.studymateId = studymateId;
+	}
+
+	public String getReadCategory() {
+		return readCategory;
+	}
+
+	@JsonProperty("read_category")
+	public void setReadCategory(String readCategory) {
+		this.readCategory = readCategory;
+	}
+
+	public ArrayList<String> getRecordIds() {
+		return recordIds;
+	}
+
+	@JsonProperty("record_id")
+	public void setRecordIds(ArrayList<String> recordIds) {
+		this.recordIds = recordIds;
 	}
 }

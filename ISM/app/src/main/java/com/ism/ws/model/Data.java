@@ -30,55 +30,57 @@ public class Data {
     private String schoolType;
     private String fullName;
 
-    private String tutorialGroupId;
-    private String tutorialGroupJoiningStatus;
-    private String tutorialGroupComplete;
-    private String tutorialGroupName;
-    private String like;
-    private String modifiedDate;
-    private String audioLink;
-    private String postedOn;
-    private String feedBy;
-    private String totalLike;
-    private String createdDate;
-    private String feedId;
-    private String videoLink;
-    private String feedText;
-    private String totalComment;
-    private String comment;
-    private String commentBy;
-    private String profileLink;
-    private String noticeId;
-    private String noticeTitle;
-    private String notice;
-    private String postedBy;
-    private String notificationDate;
-    private String notificationFromId;
-    private String navigateTo;
-    private String notificationToId;
-    private String notificationText;
-    private String notificationToName;
-    private String notificationId;
-    private String notificationFromName;
-    private String notificationFromProfilePic;
-    private String isRead;
-    private String status;
-    private String senderName;
-    private String messageId;
-    private String messageText;
-    private String senderProfilePic;
-    private String sentOn;
-    private String senderId;
-    private String requestDate;
-    private String requestFromName;
-    private String isSeen;
-    private String requestFromId;
-    private String requesterProfile;
-    private String requesterSchoolName;
-    private String requesterCourseName;
-    private String notificationCount;
-    private String messageCount;
-    private String requestCount;
+
+	private String tutorialGroupId;
+	private String tutorialGroupJoiningStatus;
+	private String tutorialGroupComplete;
+	private String tutorialGroupName;
+	private String like;
+	private String modifiedDate;
+	private String audioLink;
+	private String postedOn;
+	private String feedBy;
+	private String totalLike;
+	private String createdDate;
+	private String feedId;
+	private String videoLink;
+	private String feedText;
+	private String totalComment;
+	private String comment;
+	private String commentBy;
+	private String profileLink;
+	private String noticeId;
+	private String noticeTitle;
+	private String notice;
+	private String postedBy;
+	private String notificationDate;
+	private String notificationFromId;
+	private String navigateTo;
+	private String notificationToId;
+	private String notificationText;
+	private String notificationToName;
+	private String notificationId;
+	private String notificationFromName;
+	private String notificationFromProfilePic;
+	private String isRead;
+	private String status;
+	private String senderName;
+	private String messageId;
+	private String messageText;
+	private String senderProfilePic;
+	private String sentOn;
+	private String senderId;
+	private String requestDate;
+	private String requestFromName;
+	private String isSeen;
+	private String requestFromId;
+	private String requesterProfile;
+	private String requesterSchoolName;
+	private String requesterCourseName;
+	private String notificationCount;
+	private String messageCount;
+	private String requestCount;
+	private String requestId;
 
     private ArrayList<TutorialGroupMember> tutorialGroupMembers;
     private ArrayList<Comment> comments;
@@ -837,5 +839,13 @@ public class Data {
     @JsonProperty("contact_number")
     public String getContactNumber() {
         return contactNumber;
+    }
+    @JsonProperty("request_id")
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
 }

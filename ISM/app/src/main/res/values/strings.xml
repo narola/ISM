@@ -252,7 +252,7 @@
         <item>Studymates</item>
     </string-array>
 
-	<string name="studymate_request">Please add me to your Studymates group</string>
+	<string name="msg_studymate_request">Please add me to your Studymates group</string>
     <string name="reply">Reply</string>
     <string name="your_studymates">Your Studymates</string>
     <string name="find_more_studymates">Find more Studymates</string>
@@ -260,4 +260,15 @@
     <string name="strClickTOAddAmbitionInLife">Click to add your ambition in life</string>
     <string name="strAboutYou">ABOUT YOU</string>
     <string name="strClickToWriteAboutYourSelf">Click to write detail about your self</string>
+    <string name="notifications">Notifications</string>
+    <string name="messages">Messages</string>
+    <string name="respond_to_your">Respond to Your</string>
+    <string name="studymate_requests">Studymate Requests</string>
+    <string name="studymate_request">Studymate Request</string>
+    <string name="respond_to_request">Respond to Request</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="failed_to_execute_request">Failed to execute your request!</string>
+    <string name="accept_request">Accept Studymate Request?</string>
+    <string name="you_are_now_studymates">You are now Studymates.</string>
 </resources>

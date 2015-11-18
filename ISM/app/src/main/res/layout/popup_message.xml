@@ -15,7 +15,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_above="@+id/btn_view_all"
-			android:entries="@array/testing_array"
 			android:paddingBottom="2dp"
 			android:paddingTop="2dp"
 			android:dividerHeight="2dp"

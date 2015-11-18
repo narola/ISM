@@ -22,7 +22,7 @@ import android.widget.ToggleButton;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
@@ -252,7 +252,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                                                     public void onClick(View v) {
                                                         if (exam_id != null && !exam_id.equalsIgnoreCase("")) {
                                                             Log.e("examid", exam_id);
-                                                            ((TeacherHomeActivity) getActivity()).loadAddQuestionFragment(TeacherHomeActivity.FRAGMENT_ADDQUESTION, exam_id);
+                                                            ((TeacherHostActivity) getActivity()).loadAddQuestionFragment(TeacherHostActivity.FRAGMENT_ADDQUESTION, exam_id);
                                                         } else {
                                                             Log.e(TAG, "Setting question with exam id null");
                                                         }
@@ -360,7 +360,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETCLASSROOMS);
+                        .execute(WebConstants.GET_CLASSROOMS);
             } catch (Exception e) {
                 //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -375,7 +375,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETSUBJECT);
+                        .execute(WebConstants.GET_SUBJECT);
             } catch (Exception e) {
                 //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -393,7 +393,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 RequestObject getTopicsRequest = new RequestObject();
                 getTopicsRequest.setSubjectId(subject_id);
                 new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETTOPICS);
+                        .execute(WebConstants.GET_TOPICS);
             } catch (Exception e) {
                 //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -442,7 +442,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 createExamRequest.setBook_id(0);
 
                 new WebserviceWrapper(getActivity(), createExamRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.CREATEEXAM);
+                        .execute(WebConstants.CREATE_EXAM);
             } catch (Exception e) {
                 Log.e(TAG, e.getLocalizedMessage());
             }
@@ -612,17 +612,17 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
             switch (apiMethodName) {
 
-                case WebConstants.GETCLASSROOMS:
+                case WebConstants.GET_CLASSROOMS:
                     onResponseGetClassRooms(object);
                     break;
 
-                case WebConstants.GETSUBJECT:
+                case WebConstants.GET_SUBJECT:
                     onResponseGetSubject(object);
                     break;
-                case WebConstants.GETTOPICS:
+                case WebConstants.GET_TOPICS:
                     onResponseGetTopics(object);
                     break;
-                case WebConstants.CREATEEXAM:
+                case WebConstants.CREATE_EXAM:
                     onResponseCreateExam(object);
                     break;
             }
@@ -734,7 +734,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
 
     private void backToTrialScreen() {
-        ((TeacherHomeActivity) getActivity()).onBackPressed();
+        ((TeacherHostActivity) getActivity()).onBackPressed();
     }
 
 

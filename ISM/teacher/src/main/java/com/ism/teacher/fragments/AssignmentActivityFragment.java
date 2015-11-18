@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
@@ -231,7 +231,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
         if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETCLASSROOMS);
+                        .execute(WebConstants.GET_CLASSROOMS);
             } catch (Exception e) {
                 //   Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -246,7 +246,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
         if (Utility.isInternetConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETSUBJECT);
+                        .execute(WebConstants.GET_SUBJECT);
             } catch (Exception e) {
                 // Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -263,7 +263,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
                 RequestObject getTopicsRequest = new RequestObject();
                 getTopicsRequest.setSubjectId(subject_id);
                 new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETTOPICS);
+                        .execute(WebConstants.GET_TOPICS);
             } catch (Exception e) {
                 //  Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -293,7 +293,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
                 }
                 createAssignmentRequest.setAssignment_text(strAssignmenttext);
                 new WebserviceWrapper(getActivity(), createAssignmentRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.CREATEASSIGNMENT);
+                        .execute(WebConstants.CREATE_ASSIGNMENT);
             } catch (Exception e) {
 //                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -368,19 +368,19 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
             switch (apiMethodName)
             {
-                case WebConstants.GETCLASSROOMS:
+                case WebConstants.GET_CLASSROOMS:
                     onResponseGetClassRooms(object);
                     break;
 
-                case WebConstants.GETSUBJECT:
+                case WebConstants.GET_SUBJECT:
                     onResponseGetSubject(object);
                     break;
 
-                case WebConstants.GETTOPICS:
+                case WebConstants.GET_TOPICS:
                     onResponseGetTopics(object);
                     break;
 
-                case WebConstants.CREATEASSIGNMENT:
+                case WebConstants.CREATE_ASSIGNMENT:
                     onResponseCreateAssignment(object);
                     break;
             }
@@ -492,7 +492,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
     private void backToTrialScreen() {
 
-        ((TeacherHomeActivity) getActivity()).onBackPressed();
+        ((TeacherHostActivity) getActivity()).onBackPressed();
     }
 
 

@@ -326,4 +326,7 @@
     <string name="strevoluations_notes">Evoluations Notes :</string>
     <string name="strsolutions">Solutions :</string>
     <string name="mystudents">MY STUDENTS</string>
+
+    <!-- Dummy strings-->
+    <string name="question">For testing this question text..how this question will look like if its a very long question..will it wrap to next line? or it will behave in some unexpected way..</string>
 </resources>

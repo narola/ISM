@@ -113,7 +113,9 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
             @Override
             public void onClick(View v) {
+
                 callApiGetAllComments(position);
+
             }
         });
 
@@ -331,9 +333,9 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
                 RequestObject requestObject = new RequestObject();
                 requestObject.setFeedId(listOfPostFeeds.get(position).getFeedId());
-
                 new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
                         .execute(WebConstants.GETALLCOMMENTS);
+
             } catch (Exception e) {
                 Log.i(TAG + getActivity().getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -399,6 +401,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                         onResponseAddComment(object);
                         break;
                     case WebConstants.GETALLCOMMENTS:
+
                         onResponseGetAllComments(object);
                         break;
                     case WebConstants.GETSTUDYMATES:

@@ -38,7 +38,7 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
         this.studentEvalResObj = studentEvalResObj;
     }
 
-    public TrialExamDetailsAdapter(ResponseObject responseObject, Context context, Fragment fragment,ResponseObject studentEvalResObj) {
+    public TrialExamDetailsAdapter(ResponseObject responseObject, Context context, Fragment fragment, ResponseObject studentEvalResObj) {
         this.responseObject = responseObject;
         this.context = context;
         this.fragment = fragment;
@@ -64,8 +64,8 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
             holder.txtQuestionNo.setText(Html.fromHtml("<u>" + "Questions " + qno + "</u>"));
             holder.txtQuestionText.setText(arrayList.get(position).getQuestionText());
             holder.txtQuestionText.setText(arrayList.get(position).getQuestionText());
-           // questionsID[position]=arrayList.get(0).getQuestionId();
-           // questionID[position]=arrayList.get(position).getQuestionId();
+            // questionsID[position]=arrayList.get(0).getQuestionId();
+            // questionID[position]=arrayList.get(position).getQuestionId();
             asciiChar = 65;
             for (int i = 0; i < arrayList.get(position).getAnswers().size(); i++) {
                 setOptions(arrayList.get(position).getAnswers().get(i).getChoiceText(), holder.textViewOptions[i]);
@@ -77,27 +77,27 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
                 }
             }
             if (studentEvalResObj != null) {
-                int j=0;
+                int j = 0;
                 holder.txtStudentAnswered.setVisibility(View.VISIBLE);
                 holder.txtStudentNameAnswer.setVisibility(View.VISIBLE);
 
                 dataArrayList = studentEvalResObj.getData().get(0).getEvaluations();
-                String[] studentName=studentEvalResObj.getData().get(0).getStudentName().split(" ");
-                if(studentName[0]!=null)
-                holder.txtStudentNameAnswer.setText(studentName[0]+ " Answer :");
-                else{
+                String[] studentName = studentEvalResObj.getData().get(0).getStudentName().split(" ");
+                if (studentName[0] != null)
+                    holder.txtStudentNameAnswer.setText(studentName[0] + " Answer :");
+                else {
                     holder.txtStudentNameAnswer.setText("Answer :");
                 }
 //                while (questionID[position] == dataArrayList.get(j++).getQuestionId()){
 //                    break;
 //                }
                 String questonid;
-                Debug.i(TAG,"Position: "+position);
+                Debug.i(TAG, "Position: " + position);
 
-                for (int i=0;i<StudentAttemptedFragment.questionsID.size();i++){
-                    if(dataArrayList.get(position).getQuestionId().equals(StudentAttemptedFragment.questionsID.get(i))){
+                for (int i = 0; i < StudentAttemptedFragment.questionsID.size(); i++) {
+                    if (dataArrayList.get(position).getQuestionId().equals(StudentAttemptedFragment.questionsID.get(i))) {
                         holder.txtStudentAnswered.setText(dataArrayList.get(position).getStudentResponse());
-                        Debug.i(TAG,"Question Id: "+dataArrayList.get(position).getQuestionId()+"="+(StudentAttemptedFragment.questionsID.get(i)));
+                        Debug.i(TAG, "Question Id: " + dataArrayList.get(position).getQuestionId() + "=" + (StudentAttemptedFragment.questionsID.get(i)));
                         break;
                     } else {
                         holder.txtStudentAnswered.setText(" not answered");

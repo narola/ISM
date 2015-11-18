@@ -28,5 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_name_message"
         android:layout_toRightOf="@id/img_dp"
+        android:paddingBottom="10dp"
         android:textColor="@color/text_gray"/>
 </RelativeLayout>

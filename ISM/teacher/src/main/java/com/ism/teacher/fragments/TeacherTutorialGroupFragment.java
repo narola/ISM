@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.ism.teacher.R;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHostActivity;
 
 
 /**
@@ -52,7 +52,7 @@ public class TeacherTutorialGroupFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_USER_PROFILE);
+                fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_USER_PROFILE);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -64,7 +64,7 @@ public class TeacherTutorialGroupFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_USER_PROFILE);
+                fragListener.onFragmentDetached(TeacherHostActivity.FRAGMENT_USER_PROFILE);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());

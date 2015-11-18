@@ -20,7 +20,7 @@ import com.ism.teacher.adapters.NoticeAdapter;
 import com.ism.teacher.views.AccordionView;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.activity.TeacherHomeActivity;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.model.EventsModel;
 import com.ism.teacher.model.HighScoreModel;
 import com.ism.teacher.model.HighScoreStudentModel;
@@ -128,7 +128,7 @@ public class UpcomingEventsFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(TeacherHomeActivity.FRAGMENT_UPCOMING_EVENTS);
+                fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_UPCOMING_EVENTS);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -140,7 +140,7 @@ public class UpcomingEventsFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(TeacherHomeActivity.FRAGMENT_UPCOMING_EVENTS);
+                fragListener.onFragmentDetached(TeacherHostActivity.FRAGMENT_UPCOMING_EVENTS);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());

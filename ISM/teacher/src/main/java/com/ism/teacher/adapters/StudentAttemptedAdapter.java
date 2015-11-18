@@ -92,14 +92,14 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                         lastSelected = position;
                     }
                     if (arrayList.get(position).isFlagged()) {
-                        //   ((TeacherHomeActivity) context).startProgress();
+                        //   ((TeacherHostActivity) context).startProgress();
                         callAPIStudentEvaluations(arrayList.get(position).getStudent_id(), resObjStudentAttempted.getData().get(0).getExam_id(), studentName);
                     } else {
-                        // ((TeacherHomeActivity) context).startProgress();
-                        TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, null);
-                        ExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
-                        trialExamDetailsAdapter.notifyDataSetChanged();
-                        //  ((TeacherHomeActivity) context).stopProgress();
+                        // ((TeacherHostActivity) context).startProgress();
+                        ObjectiveQuestionsAdapter objectiveQuestionsAdapter = new ObjectiveQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, null);
+                        ExamObjectiveDetailFragment.rvList.setAdapter(objectiveQuestionsAdapter);
+                        objectiveQuestionsAdapter.notifyDataSetChanged();
+                        //  ((TeacherHostActivity) context).stopProgress();
                     }
                     notifyDataSetChanged();
 
@@ -115,12 +115,12 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     private void callAPIStudentEvaluations(String studentId, String examId, String studentName) {
         try {
             if (Utility.isInternetConnected(context)) {
-                //  ((TeacherHomeActivity) context).startProgress();
+                //  ((TeacherHostActivity) context).startProgress();
                 RequestObject requestObject = new RequestObject();
                 requestObject.setStudentId("202");
                 requestObject.setExamId("3");
                 new WebserviceWrapper(context, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETEXAMEVALUATIONS);
+                        .execute(WebConstants.GET_EXAM_EVALUATIONS);
             } else {
                 Utility.showToast(context.getString(R.string.strnetissue), context);
             }
@@ -144,19 +144,19 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
         try {
-            //  ((TeacherHomeActivity) context).stopProgress();
+            //  ((TeacherHostActivity) context).stopProgress();
 
-            if (API_METHOD == WebConstants.GETEXAMEVALUATIONS) {
+            if (API_METHOD == WebConstants.GET_EXAM_EVALUATIONS) {
                 ResponseObject responseObject = (ResponseObject) object;
                 if (responseObject.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
                     if (responseObject.getData().get(0).getArrayListEvaluation().size() != 0) {
                         responseObjectEval = responseObject;
-                        TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseObjectEval);
-                        ExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
-                        trialExamDetailsAdapter.notifyDataSetChanged();
+                        ObjectiveQuestionsAdapter objectiveQuestionsAdapter = new ObjectiveQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseObjectEval);
+                        ExamObjectiveDetailFragment.rvList.setAdapter(objectiveQuestionsAdapter);
+                        objectiveQuestionsAdapter.notifyDataSetChanged();
                     }
                 } else {
-                    Debug.i(TAG, "Response :" + WebConstants.GETEXAMEVALUATIONS + " :" + resObjStudentAttempted.getStatus());
+                    Debug.i(TAG, "Response :" + WebConstants.GET_EXAM_EVALUATIONS + " :" + resObjStudentAttempted.getStatus());
                 }
             }
 
