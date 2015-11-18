@@ -2,6 +2,7 @@ package com.ism.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -68,7 +69,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private RelativeLayout rlControllerTopMenu;
     private LinearLayout llSearch;
     private ImageView imgHome, imgTutorial, imgClassroom, imgAssessment, imgDesk, imgReportCard, imgLogOut,
-		                imgSearch, imgNotes, imgStudyMates, imgChat, imgMenuBack;
+            imgSearch, imgNotes, imgStudyMates, imgChat, imgMenuBack;
     private TextView txtTitle, txtOne, txtTwo, txtThree, txtFour, txtFive, txtAction;
     private EditText etSearch;
     private Spinner spSubmenu;
@@ -79,9 +80,10 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private ProgressGenerator progressGenerator;
 
     private HostListener listenerHost;
-	private HostListenerAllNotification listenerHostAllNotification;
-	private HostListenerAllMessage listenerHostAllMessage;
-	private HostListenerProfileController listnerHostProfileController;
+    private HostListenerAllNotification listenerHostAllNotification;
+    private HostListenerAllMessage listenerHostAllMessage;
+    private HostListenerProfileController listnerHostProfileController;
+    private HostListenerAboutMe hostListenerAboutMe;
 
     private TextView arrTxtMenu[];
     private ArrayList<ControllerTopMenuItem> controllerTopMenuClassroom;
@@ -98,38 +100,41 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     public static final int FRAGMENT_REPORT_CARD = 5;
     public static final int FRAGMENT_NOTES = 6;
     public static final int FRAGMENT_PROFILE_CONTROLLER = 7;
-	public static final int FRAGMENT_CHAT = 8;
-	public static final int FRAGMENT_ALL_NOTES = 9;
-	public static final int FRAGMENT_GENERAL_SETTINGS = 10;
-	public static final int FRAGMENT_MY_FEEDS = 11;
-	public static final int FRAGMENT_STUDYMATES = 12;
-	public static final int FRAGMENT_MY_ACTIVITY = 13;
-	public static final int FRAGMENT_MY_WALLET = 14;
-	public static final int FRAGMENT_ALL_NOTIFICATION = 15;
-	public static final int FRAGMENT_ALL_MESSAGE = 16;
-	public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 17;
+    public static final int FRAGMENT_CHAT = 8;
+    public static final int FRAGMENT_ALL_NOTES = 9;
+    public static final int FRAGMENT_GENERAL_SETTINGS = 10;
+    public static final int FRAGMENT_MY_FEEDS = 11;
+    public static final int FRAGMENT_STUDYMATES = 12;
+    public static final int FRAGMENT_MY_ACTIVITY = 13;
+    public static final int FRAGMENT_MY_WALLET = 14;
+    public static final int FRAGMENT_ALL_NOTIFICATION = 15;
+    public static final int FRAGMENT_ALL_MESSAGE = 16;
+    public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 17;
     public static final int FRAGMENT_EDIT_PROFILE = 18;
-	private int currentMainFragment;
+    private int currentMainFragment;
     private int currentRightFragment;
     private int currentMainFragmentBg;
     private ArrayList<Data> arrayList = new ArrayList<>();
 
+    public interface HostListenerAboutMe {
+        public void onSelectImage(Bitmap bitmap);
+    }
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
     }
 
-	public interface HostListenerAllNotification {
-		public void onControllerTopBackClick();
-	}
+    public interface HostListenerAllNotification {
+        public void onControllerTopBackClick();
+    }
 
-	public interface HostListenerAllMessage {
-		public void onControllerTopBackClick();
-	}
+    public interface HostListenerAllMessage {
+        public void onControllerTopBackClick();
+    }
 
-	public interface HostListenerProfileController {
-		public void onBadgesFetched();
-	}
+    public interface HostListenerProfileController {
+        public void onBadgesFetched();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +181,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 //	    Global.strProfilePic = PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
         Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
 
-	    callApiGetAllBadgesCount();
+        callApiGetAllBadgesCount();
 
         loadFragment(FRAGMENT_HOME, null);
         loadFragment(FRAGMENT_CHAT, null);
@@ -317,21 +322,20 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     }
 
 
+    private void callApiGetAllBadgesCount() {
+        try {
+            showProgress();
+            RequestObject requestObject = new RequestObject();
+            requestObject.setUserId(Global.strUserId);
 
-	private void callApiGetAllBadgesCount() {
-		try {
-			showProgress();
-			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(Global.strUserId);
+            new WebserviceWrapper(HostActivity.this, requestObject, this).new WebserviceCaller()
+                    .execute(WebConstants.GET_ALL_BADGES_COUNT);
+        } catch (Exception e) {
+            Log.e(TAG, "callApiGetAllBadgesCount Exception : " + e.toString());
+        }
+    }
 
-			new WebserviceWrapper(HostActivity.this, requestObject, this).new WebserviceCaller()
-					.execute(WebConstants.GET_ALL_BADGES_COUNT);
-		} catch (Exception e) {
-			Log.e(TAG, "callApiGetAllBadgesCount Exception : " + e.toString());
-		}
-	}
-
-	public void loadFragment(int fragment, FragmentArgument fragmentArgument) {
+    public void loadFragment(int fragment, FragmentArgument fragmentArgument) {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
@@ -408,13 +412,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     @Override
     public void onFragmentAttached(int fragment) {
         try {
-	        switch (fragment) {
-	            case FRAGMENT_HOME:
-		            currentMainFragment = fragment;
+            switch (fragment) {
+                case FRAGMENT_HOME:
+                    currentMainFragment = fragment;
                     imgHome.setActivated(true);
                     break;
                 case FRAGMENT_TUTORIAL:
-	                currentMainFragment = fragment;
+                    currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_tutorial;
                     imgTutorial.setActivated(true);
                     loadControllerTopMenu(null);
@@ -422,7 +426,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     txtTitle.setVisibility(View.VISIBLE);
                     break;
                 case FRAGMENT_CLASSROOM:
-	                currentMainFragment = fragment;
+                    currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_classroom;
                     imgClassroom.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
@@ -430,7 +434,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
                     break;
                 case FRAGMENT_ASSESSMENT:
-	                currentMainFragment = fragment;
+                    currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_assessment;
                     imgAssessment.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_assessment);
@@ -438,7 +442,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     loadControllerTopMenu(controllerTopMenuAssessment);
                     break;
                 case FRAGMENT_DESK:
-	                currentMainFragment = fragment;
+                    currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_desk;
                     imgDesk.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_desk);
@@ -446,7 +450,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     loadControllerTopMenu(controllerTopMenuDesk);
                     break;
                 case FRAGMENT_REPORT_CARD:
-	                currentMainFragment = fragment;
+                    currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_report_card;
                     imgReportCard.setActivated(true);
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_report_card);
@@ -454,41 +458,41 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     loadControllerTopMenu(controllerTopMenuReportCard);
                     break;
                 case FRAGMENT_NOTES:
-	                currentRightFragment = fragment;
+                    currentRightFragment = fragment;
                     imgNotes.setActivated(true);
                     break;
                 case FRAGMENT_PROFILE_CONTROLLER:
-	                currentRightFragment = fragment;
+                    currentRightFragment = fragment;
                     imgStudyMates.setActivated(true);
                     break;
                 case FRAGMENT_CHAT:
-	                currentRightFragment = fragment;
+                    currentRightFragment = fragment;
                     imgChat.setActivated(true);
                     break;
                 case FRAGMENT_ALL_NOTES:
-	                currentMainFragment = fragment;
+                    currentMainFragment = fragment;
                     txtTitle.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
                     Debug.i(TAG, "FRAGMENT_GENERAL_SETTINGS atacheched");
                     currentMainFragment = fragment;
                     // llControllerLeft.setVisibility(View.GONE);
-	                currentMainFragment = fragment;
-                    Debug.i(TAG,"FRAGMENT_GENERAL_SETTINGS atacheched");
-                   // llControllerLeft.setVisibility(View.GONE);
+                    currentMainFragment = fragment;
+                    Debug.i(TAG, "FRAGMENT_GENERAL_SETTINGS atacheched");
+                    // llControllerLeft.setVisibility(View.GONE);
                     break;
-	            case FRAGMENT_ALL_NOTIFICATION:
-		            currentMainFragment = fragment;
-		            rlControllerTopMenu.setVisibility(View.VISIBLE);
-		            break;
-	            case FRAGMENT_ALL_MESSAGE:
-		            currentMainFragment = fragment;
-		            rlControllerTopMenu.setVisibility(View.VISIBLE);
-		            break;
-	            case FRAGMENT_ALL_STUDYMATE_REQUEST:
-		            currentMainFragment = fragment;
-		            rlControllerTopMenu.setVisibility(View.VISIBLE);
-		            break;
+                case FRAGMENT_ALL_NOTIFICATION:
+                    currentMainFragment = fragment;
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+                case FRAGMENT_ALL_MESSAGE:
+                    currentMainFragment = fragment;
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    currentMainFragment = fragment;
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
                 case FRAGMENT_EDIT_PROFILE:
                     currentMainFragment = fragment;
 
@@ -541,16 +545,16 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                 case FRAGMENT_GENERAL_SETTINGS:
                     // llControllerLeft.setVisibility(View.VISIBLE);
                     break;
-	            case FRAGMENT_ALL_NOTIFICATION:
-		            hideControllerTopBackButton();
-		            loadControllerTopMenu(null);
-		            break;
-	            case FRAGMENT_ALL_MESSAGE:
-		            loadControllerTopMenu(null);
-		            break;
-	            case FRAGMENT_ALL_STUDYMATE_REQUEST:
-		            loadControllerTopMenu(null);
-		            break;
+                case FRAGMENT_ALL_NOTIFICATION:
+                    hideControllerTopBackButton();
+                    loadControllerTopMenu(null);
+                    break;
+                case FRAGMENT_ALL_MESSAGE:
+                    loadControllerTopMenu(null);
+                    break;
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    loadControllerTopMenu(null);
+                    break;
                 case FRAGMENT_EDIT_PROFILE:
                     loadControllerTopMenu(null);
                     break;
@@ -565,12 +569,12 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
             currentControllerTopMenu = menu;
             if (menu == null) {
                 hideControllerTopControls();
-	            for (int i = 0; i < arrTxtMenu.length; i++) {
-		            arrTxtMenu[i].setTextColor(Color.WHITE);
-		            arrTxtMenu[i].setText("");
-		            arrTxtMenu[i].setVisibility(View.GONE);
-	            }
-	            rlControllerTopMenu.setBackgroundColor(Color.TRANSPARENT);
+                for (int i = 0; i < arrTxtMenu.length; i++) {
+                    arrTxtMenu[i].setTextColor(Color.WHITE);
+                    arrTxtMenu[i].setText("");
+                    arrTxtMenu[i].setVisibility(View.GONE);
+                }
+                rlControllerTopMenu.setBackgroundColor(Color.TRANSPARENT);
                 rlControllerTopMenu.setVisibility(View.GONE);
             } else {
                 rlControllerTopMenu.setVisibility(View.VISIBLE);
@@ -598,34 +602,34 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void onMenuItemClick(View view) {
         try {
             if (view == imgMenuBack) {
-	            /**
-	             * Controller top back button click
-	             */
+                /**
+                 * Controller top back button click
+                 */
 
                 hideControllerTopControls();
 
-	            if (currentControllerTopMenu != null) {
-		            for (int i = 0; i < currentControllerTopMenu.size(); i++) {
-			            arrTxtMenu[i].setTextColor(Color.WHITE);
-			            currentControllerTopMenu.get(i).setIsActive(false);
-			            startSlideAnimation(arrTxtMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
-			            arrTxtMenu[i].setVisibility(View.VISIBLE);
-		            }
-	            }
+                if (currentControllerTopMenu != null) {
+                    for (int i = 0; i < currentControllerTopMenu.size(); i++) {
+                        arrTxtMenu[i].setTextColor(Color.WHITE);
+                        currentControllerTopMenu.get(i).setIsActive(false);
+                        startSlideAnimation(arrTxtMenu[i], rlControllerTopMenu.getWidth(), 0, 0, 0);
+                        arrTxtMenu[i].setVisibility(View.VISIBLE);
+                    }
+                }
 
-	            switch (currentMainFragment) {
-		            case FRAGMENT_ALL_NOTIFICATION:
-			            listenerHostAllNotification.onControllerTopBackClick();
-			            break;
-		            case FRAGMENT_ALL_MESSAGE:
-			            listenerHostAllMessage.onControllerTopBackClick();
-			            break;
-	            }
+                switch (currentMainFragment) {
+                    case FRAGMENT_ALL_NOTIFICATION:
+                        listenerHostAllNotification.onControllerTopBackClick();
+                        break;
+                    case FRAGMENT_ALL_MESSAGE:
+                        listenerHostAllMessage.onControllerTopBackClick();
+                        break;
+                }
 
             } else if (view == txtAction) {
-	            /**
-	             * Controller top action button click
-	             */
+                /**
+                 * Controller top action button click
+                 */
 
                 Log.e(TAG, "text action");
                 /*switch (currentMainFragment) {
@@ -690,12 +694,12 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         }
     }
 
-	public void showControllerTopBackButton() {
-		startSlideAnimation(imgMenuBack, -1000, 0, 0, 0);
-		imgMenuBack.setVisibility(View.VISIBLE);
-	}
+    public void showControllerTopBackButton() {
+        startSlideAnimation(imgMenuBack, -1000, 0, 0, 0);
+        imgMenuBack.setVisibility(View.VISIBLE);
+    }
 
-	private void hideControllerTopControls() {
+    private void hideControllerTopControls() {
         if (imgMenuBack.getVisibility() == View.VISIBLE) {
             hideControllerTopBackButton();
         }
@@ -747,15 +751,15 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         view.startAnimation(slideOutAnimation);
     }
 
-	public int getCurrentMainFragment() {
-		return currentMainFragment;
-	}
+    public int getCurrentMainFragment() {
+        return currentMainFragment;
+    }
 
-	public int getCurrentRightFragment() {
-		return currentRightFragment;
-	}
+    public int getCurrentRightFragment() {
+        return currentRightFragment;
+    }
 
-	public void showProgress() {
+    public void showProgress() {
         try {
             Global.intApiCounter++;
             if (progHost != null && progHost.getVisibility() != View.VISIBLE) {
@@ -794,17 +798,17 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                         arrayList = responseObject.getData().get(0).getSmsAlert();
                         for (int j = 0; j < arrayList.size(); j++) {
                             PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
-                          //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                            //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
                         }
                         arrayList = responseObject.getData().get(0).getNotification();
                         for (int j = 0; j < arrayList.size(); j++) {
                             PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
-                           // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
                         }
                         arrayList = responseObject.getData().get(0).getPrivacySetting();
                         for (int j = 0; j < arrayList.size(); j++) {
                             PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
-                           // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
                         }
                     }
                 } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
@@ -821,7 +825,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
                     }
                 }
-            }else if(WebConstants.GET_ALL_BADGES_COUNT==apiCode){
+            } else if (WebConstants.GET_ALL_BADGES_COUNT == apiCode) {
                 onResponseGetAllBadges(object, error);
             }
         } catch (Exception e) {
@@ -845,17 +849,22 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     }
 
-	public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
-		this.listenerHostAllNotification = listenerHostAllNotification;
-	}
+    public void setListenerHostAboutMe(HostListenerAboutMe hostListenerAboutMe) {
+        this.hostListenerAboutMe = hostListenerAboutMe;
+    }
 
-	public void setListenerHostAllMessage(HostListenerAllMessage listenerHostAllMessage) {
-		this.listenerHostAllMessage = listenerHostAllMessage;
-	}
+    public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
+        this.listenerHostAllNotification = listenerHostAllNotification;
+    }
 
-	public void setListnerHostProfileController(HostListenerProfileController listnerHostProfileController) {
-		this.listnerHostProfileController = listnerHostProfileController;
-	}
+    public void setListenerHostAllMessage(HostListenerAllMessage listenerHostAllMessage) {
+        this.listenerHostAllMessage = listenerHostAllMessage;
+    }
+
+    public void setListnerHostProfileController(HostListenerProfileController listnerHostProfileController) {
+        this.listnerHostProfileController = listnerHostProfileController;
+    }
+
 
 //	@Override
 //	public void onResponse(Object object, Exception error, int apiCode) {
@@ -870,30 +879,30 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 //		}
 //	}
 
-	private void onResponseGetAllBadges(Object object, Exception error) {
-		try {
-			hideProgress();
-			if (object != null) {
-				ResponseObject responseObject = (ResponseObject) object;
-				if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+    private void onResponseGetAllBadges(Object object, Exception error) {
+        try {
+            hideProgress();
+            if (object != null) {
+                ResponseObject responseObject = (ResponseObject) object;
+                if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
 
-					String count = responseObject.getData().get(0).getNotificationCount();
-					PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_NOTIFICATION, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
+                    String count = responseObject.getData().get(0).getNotificationCount();
+                    PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_NOTIFICATION, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
 
-					count = responseObject.getData().get(0).getMessageCount();
-					PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_MESSAGE, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
+                    count = responseObject.getData().get(0).getMessageCount();
+                    PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_MESSAGE, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
 
-					count = responseObject.getData().get(0).getRequestCount();
-					PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_REQUEST, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
-				} else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
-					Log.e(TAG, "Failed to load badges count");
-				}
-			} else if (error != null) {
-				Log.e(TAG, "onResponseGetAllBadges api Exceptiion : " + error.toString());
-			}
-		} catch (Exception e) {
-			Log.e(TAG, "onResponseGetAllBadges Exceptiion : " + e.toString());
-		}
-	}
+                    count = responseObject.getData().get(0).getRequestCount();
+                    PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_REQUEST, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
+                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+                    Log.e(TAG, "Failed to load badges count");
+                }
+            } else if (error != null) {
+                Log.e(TAG, "onResponseGetAllBadges api Exceptiion : " + error.toString());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onResponseGetAllBadges Exceptiion : " + e.toString());
+        }
+    }
 
 }

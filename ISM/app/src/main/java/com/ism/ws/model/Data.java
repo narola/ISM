@@ -31,56 +31,56 @@ public class Data {
     private String fullName;
 
 
-	private String tutorialGroupId;
-	private String tutorialGroupJoiningStatus;
-	private String tutorialGroupComplete;
-	private String tutorialGroupName;
-	private String like;
-	private String modifiedDate;
-	private String audioLink;
-	private String postedOn;
-	private String feedBy;
-	private String totalLike;
-	private String createdDate;
-	private String feedId;
-	private String videoLink;
-	private String feedText;
-	private String totalComment;
-	private String comment;
-	private String commentBy;
-	private String profileLink;
-	private String noticeId;
-	private String noticeTitle;
-	private String notice;
-	private String postedBy;
-	private String notificationDate;
-	private String notificationFromId;
-	private String navigateTo;
-	private String notificationToId;
-	private String notificationText;
-	private String notificationToName;
-	private String notificationId;
-	private String notificationFromName;
-	private String notificationFromProfilePic;
-	private String isRead;
-	private String status;
-	private String senderName;
-	private String messageId;
-	private String messageText;
-	private String senderProfilePic;
-	private String sentOn;
-	private String senderId;
-	private String requestDate;
-	private String requestFromName;
-	private String isSeen;
-	private String requestFromId;
-	private String requesterProfile;
-	private String requesterSchoolName;
-	private String requesterCourseName;
-	private String notificationCount;
-	private String messageCount;
-	private String requestCount;
-	private String requestId;
+    private String tutorialGroupId;
+    private String tutorialGroupJoiningStatus;
+    private String tutorialGroupComplete;
+    private String tutorialGroupName;
+    private String like;
+    private String modifiedDate;
+    private String audioLink;
+    private String postedOn;
+    private String feedBy;
+    private String totalLike;
+    private String createdDate;
+    private String feedId;
+    private String videoLink;
+    private String feedText;
+    private String totalComment;
+    private String comment;
+    private String commentBy;
+    private String profileLink;
+    private String noticeId;
+    private String noticeTitle;
+    private String notice;
+    private String postedBy;
+    private String notificationDate;
+    private String notificationFromId;
+    private String navigateTo;
+    private String notificationToId;
+    private String notificationText;
+    private String notificationToName;
+    private String notificationId;
+    private String notificationFromName;
+    private String notificationFromProfilePic;
+    private String isRead;
+    private String status;
+    private String senderName;
+    private String messageId;
+    private String messageText;
+    private String senderProfilePic;
+    private String sentOn;
+    private String senderId;
+    private String requestDate;
+    private String requestFromName;
+    private String isSeen;
+    private String requestFromId;
+    private String requesterProfile;
+    private String requesterSchoolName;
+    private String requesterCourseName;
+    private String notificationCount;
+    private String messageCount;
+    private String requestCount;
+    private String requestId;
 
     private ArrayList<TutorialGroupMember> tutorialGroupMembers;
     private ArrayList<Comment> comments;
@@ -91,6 +91,138 @@ public class Data {
     private String keyId;
     private String birthdate;
     private String contactNumber;
+
+    private String aboutMeText;
+    private String ambitionInLife;
+    private String totalPost;
+    private String totalStudymates;
+    private String totalAauthorsFollowed;
+    private String ismScore;
+    private String ismRank;
+    private String totalExams;
+    private String totalAssignment;
+    private String totalQuestionAsked;
+    private String totalFavoriteQuestions;
+    private String totalBadgesEarned;
+
+    @JsonProperty("total_badges_earned")
+    public String getTotalBadgesEarned() {
+        return totalBadgesEarned;
+    }
+
+    public void setTotalBadgesEarned(String totalBadgesEarned) {
+        this.totalBadgesEarned = totalBadgesEarned;
+    }
+
+    @JsonProperty("total_post")
+    public String getTotalPost() {
+        return totalPost;
+    }
+
+    public void setTotalPost(String totalPost) {
+        this.totalPost = totalPost;
+    }
+
+    @JsonProperty("total_studymates")
+    public String getTotalStudymates() {
+        return totalStudymates;
+    }
+
+    public void setTotalStudymates(String totalStudymates) {
+        this.totalStudymates = totalStudymates;
+    }
+
+    @JsonProperty("total_authors_followed")
+    public String getTotalAauthorsFollowed() {
+        return totalAauthorsFollowed;
+    }
+
+    public void setTotalAauthorsFollowed(String totalAauthorsFollowed) {
+        this.totalAauthorsFollowed = totalAauthorsFollowed;
+    }
+
+    @JsonProperty("ism_score")
+    public String getIsmScore() {
+        return ismScore;
+    }
+
+    public void setIsmScore(String ismScore) {
+        this.ismScore = ismScore;
+    }
+
+    @JsonProperty("ism_rank")
+    public String getIsmRank() {
+        return ismRank;
+    }
+
+    public void setIsmRank(String ismRank) {
+        this.ismRank = ismRank;
+    }
+
+    @JsonProperty("total_exams")
+    public String getTotalExams() {
+        return totalExams;
+    }
+
+    public void setTotalExams(String totalExams) {
+        this.totalExams = totalExams;
+    }
+
+    @JsonProperty("total_assignment")
+    public String getTotalAssignment() {
+        return totalAssignment;
+    }
+
+    public void setTotalAssignment(String totalAssignment) {
+        this.totalAssignment = totalAssignment;
+    }
+
+    @JsonProperty("total_question_asked")
+    public String getTotalQuestionAsked() {
+        return totalQuestionAsked;
+    }
+
+    public void setTotalQuestionAsked(String totalQuestionAsked) {
+        this.totalQuestionAsked = totalQuestionAsked;
+    }
+
+    @JsonProperty("total_Favorite_questions")
+    public String getTotalFavoriteQuestions() {
+        return totalFavoriteQuestions;
+    }
+
+    public void setTotalFavoriteQuestions(String totalFavoriteQuestions) {
+        this.totalFavoriteQuestions = totalFavoriteQuestions;
+    }
+
+
+//    "total_authors_followed":null,
+//            "ism_score":"1",
+//            "ism_rank":"0",
+//            "total_exams":"1",
+//            "total_assignment":null,
+//            "total_question_asked":"3",
+//            "total_Favorite_questions":"1",
+//            "total_badges_earned":"1"
+
+
+    @JsonProperty("ambitionInLife")
+    public String getAmbitionInLife() {
+        return ambitionInLife;
+    }
+
+    public void setAmbitionInLife(String ambitionInLife) {
+        this.ambitionInLife = ambitionInLife;
+    }
+
+    @JsonProperty("aboutMeText")
+    public String getAboutMeText() {
+        return aboutMeText;
+    }
+
+    public void setAboutMeText(String aboutMeText) {
+        this.aboutMeText = aboutMeText;
+    }
 
     @JsonProperty("preference_value")
     public String getDefaultValue() {
@@ -840,6 +972,7 @@ public class Data {
     public String getContactNumber() {
         return contactNumber;
     }
+
     @JsonProperty("request_id")
     public String getRequestId() {
         return requestId;
@@ -848,4 +981,5 @@ public class Data {
     public void setRequestId(String requestId) {
         this.requestId = requestId;
     }
+
 }

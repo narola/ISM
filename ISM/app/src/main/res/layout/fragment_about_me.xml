@@ -21,7 +21,6 @@
                 android:id="@+id/rr_img"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
-
                 android:layout_margin="@dimen/d10dp">
 
                 <ImageView
@@ -595,6 +594,7 @@
                 android:background="#f2f2f2"
                 android:padding="@dimen/d10dp"
                 android:text="@string/strAboutYou"
+                android:drawableRight="@drawable/edit_profile"
                 android:textSize="@dimen/d20sp" />
 
             <TextView
@@ -631,6 +631,7 @@
                 android:layout_alignParentTop="true"
                 android:background="#f2f2f2"
                 android:padding="@dimen/d10dp"
+                android:drawableRight="@drawable/edit_profile"
                 android:text="@string/strYourAmbitionInLife"
                 android:textSize="@dimen/d20sp" />
 

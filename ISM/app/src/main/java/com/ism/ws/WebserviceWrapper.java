@@ -123,6 +123,9 @@ public class WebserviceWrapper {
                     case WebConstants.UPDATE_READ_STATUS:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_UPDATE_READ_STATUS, ResponseObject.class, requestObject);
                         break;
+                    case WebConstants.EDIT_ABOUT_ME:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_EDIT_ABOUT_ME, ResponseObject.class, requestObject);
+                        break;
                 }
             } catch (Exception e) {
                 Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
