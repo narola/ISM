@@ -96,8 +96,8 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
                 tvScorePoor = (TextView) itemView.findViewById(R.id.tv_score_poor);
                 tvScoreIncorrect = (TextView) itemView.findViewById(R.id.tv_score_incorrect);
 
-                imgCopyComments = (ImageView) itemView.findViewById(R.id.img_copy_comments);
-                imgDeleteComments = (ImageView) itemView.findViewById(R.id.img_delete_comments);
+                imgCopyComments = (ImageView) itemView.findViewById(R.id.img_copy_comment);
+                imgDeleteComments = (ImageView) itemView.findViewById(R.id.img_delete_comment);
 
                 tvSubjectiveQuestionNo.setTypeface(myTypeFace.getRalewayBold());
                 tvSubjectiveQuestion.setTypeface(myTypeFace.getRalewayRegular());

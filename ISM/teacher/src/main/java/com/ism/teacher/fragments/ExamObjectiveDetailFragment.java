@@ -2,6 +2,7 @@ package com.ism.teacher.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -39,6 +40,13 @@ public class ExamObjectiveDetailFragment extends Fragment implements WebserviceW
     // public static ObjectiveQuestionsAdapter trialExamDetailsAdapter;
     //public static String questionsID[];
 
+    //test for opening evaluation for specific students after calling objective questions
+
+    Context context;
+    public String examid_from_param = "";
+    public String studentid_from_param = "";
+    public boolean callEvaluationApiFlag = false;
+
     public static ExamObjectiveDetailFragment newInstance() {
         ExamObjectiveDetailFragment examObjectiveDetailFragment = new ExamObjectiveDetailFragment();
         return examObjectiveDetailFragment;
@@ -48,13 +56,18 @@ public class ExamObjectiveDetailFragment extends Fragment implements WebserviceW
         // Required empty public constructor
     }
 
+    public ExamObjectiveDetailFragment(Context context, String examid, String studentid, boolean flag) {
+        this.context = context;
+        this.examid_from_param = examid;
+        this.studentid_from_param = studentid;
+        this.callEvaluationApiFlag = flag;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_exam_objective_details, container, false);
 
         initGlobal();
-
         return view;
     }
 
@@ -88,7 +101,20 @@ public class ExamObjectiveDetailFragment extends Fragment implements WebserviceW
         txtBookNameValue.setTypeface(myTypeFace.getRalewayRegular());
         txtExamTypeName.setTypeface(myTypeFace.getRalewayRegular());
         txtEamTypeName.setTypeface(myTypeFace.getRalewayRegular());
-        ((TeacherHostActivity) getActivity()).loadFragmentInRightContainer(TeacherHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
+
+//        ((TeacherHostActivity) getActivity()).loadFragmentInRightContainer(TeacherHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
+
+
+        if (callEvaluationApiFlag) {
+
+            //loadMyStudentsFragmentWithHighlightStudent();
+            ((TeacherHostActivity) getActivity()).loadStudentAttemptedFragmentAlongEvaluation(context, examid_from_param, studentid_from_param, callEvaluationApiFlag);
+
+//            callAPIStudentEvaluations(studentid_from_param, examid_from_param);
+//            Log.i(TAG, "subjective ques with evaluation");
+        } else {
+            ((TeacherHostActivity) getActivity()).loadFragmentInRightContainer(TeacherHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
+        }
 
     }
 
@@ -119,45 +145,8 @@ public class ExamObjectiveDetailFragment extends Fragment implements WebserviceW
         fragListener = null;
     }
 
-
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        //((TeacherHostActivity) getActivity()).stopProgress();
-        try {
-            //responseObject = (ResponseObject) object;
-//           if (API_METHOD == WebConstants.GET_EXAM_QUESTIONS) {
-//                if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
-//                    ((AuthorHostActivity) getActivity()).stopProgress();
-//                    if (responseObject.getData().size() != 0) {
-//                        responseObjQuestions = responseObject;
-//                        // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
-//
-//                        trialExamDetailsAdapter = new ObjectiveQuestionsAdapter(responseObjQuestions, getActivity(), this, null);
-//                        ExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
-//                        ExamObjectiveDetailFragment.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-//                        ExamObjectiveDetailFragment.txtBookNameValue.setText(responseObjQuestions.getData().get(0).getBookName());
-//                        ExamObjectiveDetailFragment.txtExamTypeName.setText(responseObjQuestions.getData().get(0).getExam_type());
-//                        ExamObjectiveDetailFragment.txtClassName.setText(responseObjQuestions.getData().get(0).getClassName());
-//                        String examDate[] = responseObjQuestions.getData().get(0).getCreatedDate().split(" ");
-//                        ExamObjectiveDetailFragment.txtExamDateValue.setText(examDate[0]);
-//                        ExamObjectiveDetailFragment.txtExamName.setText(responseObjQuestions.getData().get(0).getExamName());
-//                        questionsID=null;
-//                        for(int i=0;i<responseObjQuestions.getData().get(0).getQuestions().size();i++){
-//                            questionsID[i]=responseObjQuestions.getData().get(0).getQuestions().get(0).getQuestionId();
-//                        }
-//
-//
-//                    }
-//
-//                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
-//                    Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
-//                }
-//            }
-
-
-        } catch (Exception e) {
-            Log.i(TAG, "Response Exceptions :" + e.toString());
-        }
     }
 
 

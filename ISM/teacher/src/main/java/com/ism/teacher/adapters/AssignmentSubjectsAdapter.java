@@ -141,13 +141,9 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
             @Override
             public void onClick(View view) {
 
-//                if(listOfAssignments.get(position).getExam_mode().equalsIgnoreCase(EXAM_OBJECTIVE))
-//
-//
-//                mFragment.getFragmentManager().beginTransaction().
-//                        replace(R.id.fl_teacher_office_home, new TeacherExamWiseAssignments(mFragment, listOfAssignments.get(position).getExam_id())).commit();
-                // send the value of exam_id,role_id
                 if (listOfAssignments.get(position).getExam_mode().equalsIgnoreCase(EXAM_OBJECTIVE)) {
+
+
                     ((TeacherHostActivity) mContext).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_EXAM_OBJECTIVE_DETAILS);
 
                 } else if (listOfAssignments.get(position).getExam_mode().equalsIgnoreCase(EXAM_SUBJECTIVE)) {

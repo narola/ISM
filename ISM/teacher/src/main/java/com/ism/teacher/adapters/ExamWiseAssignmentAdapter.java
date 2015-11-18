@@ -108,7 +108,9 @@ public class ExamWiseAssignmentAdapter extends RecyclerView.Adapter<ExamWiseAssi
             @Override
             public void onClick(View view) {
                 if (exam_mode.equalsIgnoreCase(EXAM_OBJECTIVE)) {
-                    ((TeacherHostActivity) mContext).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_EXAM_OBJECTIVE_DETAILS);
+
+                    //((TeacherHostActivity) mContext).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_EXAM_OBJECTIVE_DETAILS);
+                    ((TeacherHostActivity) mContext).loadObjectiveDetailFragment(examid,listOfAssignments.get(position).getStudent_id());
 
                 } else if (exam_mode.equalsIgnoreCase(EXAM_SUBJECTIVE)) {
 //                    ((TeacherHostActivity) mContext).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_EXAM_SUBJECTIVE_DETAILS);

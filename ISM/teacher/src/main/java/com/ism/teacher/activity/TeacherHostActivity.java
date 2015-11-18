@@ -1,6 +1,7 @@
 package com.ism.teacher.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -89,6 +90,8 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     //test
     ExamSubjectiveDetailFragment examSubjectiveDetailFragment;
+    ExamObjectiveDetailFragment examObjectiveDetailFragment;
+    StudentAttemptedFragment studentAttemptedFragment;
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -295,7 +298,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamObjectiveDetailFragment.newInstance()).commit();
 
-
                     break;
                 case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamSubjectiveDetailFragment.newInstance()).commit();
@@ -313,12 +315,24 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         }
     }
 
-    public void loadSubjectiveDetailFragment(String examid,String studentid)
-    {
-        examSubjectiveDetailFragment=new ExamSubjectiveDetailFragment(TeacherHostActivity.this, examid,studentid,true);
+    public void loadSubjectiveDetailFragment(String examid, String studentid) {
+        examSubjectiveDetailFragment = new ExamSubjectiveDetailFragment(TeacherHostActivity.this, examid, studentid, true);
         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, examSubjectiveDetailFragment).commit();
 
     }
+
+    public void loadObjectiveDetailFragment(String examid, String studentid) {
+        examObjectiveDetailFragment = new ExamObjectiveDetailFragment(TeacherHostActivity.this, examid, studentid, true);
+        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, examObjectiveDetailFragment).commit();
+
+    }
+
+
+    public void loadStudentAttemptedFragmentAlongEvaluation(Context context, String examid, String studentid, boolean callEvaluationApiFlag) {
+        studentAttemptedFragment = new StudentAttemptedFragment(context, examid, studentid, true);
+        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, studentAttemptedFragment).commit();
+    }
+
     //these is for the load fragment in right container.
     public void loadFragmentInRightContainer(int fragment) {
         try {
@@ -345,7 +359,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         }
 
     }
-
 
 
     @Override
