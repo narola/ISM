@@ -32,6 +32,7 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
     ResponseObject responseObject, studentEvalResObj;
 
     ArrayList<Data> dataArrayList = new ArrayList<Data>();
+    ArrayList<Data> arrayListSubjectiveQuestions = new ArrayList<Data>();
 
     //Boolean flags
     public boolean flag_excellent = false;
@@ -47,9 +48,11 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
         this.mFragment = fragment;
         this.studentEvalResObj = studentEvalResObj;
         myTypeFace = new MyTypeFace(context);
+        addAll(responseObject.getData().get(0).getQuestions());
     }
 
-   /* public void addAll(ArrayList<Data> data) {
+
+    public void addAll(ArrayList<Data> data) {
         try {
             this.arrayListSubjectiveQuestions.clear();
             this.arrayListSubjectiveQuestions.addAll(data);
@@ -59,7 +62,6 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
 
         notifyDataSetChanged();
     }
-*/
 
     @Override
     public SubjectiveQuestionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -71,44 +73,43 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtQuestionNo, txtQuestionText, txtAnswer;
-        EditText etEvaluationNotes, etComments;
+        TextView tvSubjectiveQuestionNo, tvSubjectiveQuestion, tvSubjectiveQuestionAns, tvSubjectiveQuesEvaluationNotes;
+        EditText etAddComment;
 
         //Textviews for answer rating
-        TextView txtExcellent, txtGood, txtFair, txtAverage, txtPoor, txtIncorrect;
+        TextView tvScoreExcellent, tvScoreGood, tvScoreFair, tvScoreAverage, tvScorePoor, tvScoreIncorrect;
         ImageView imgCopyComments, imgDeleteComments;
 
         public ViewHolder(View itemView) {
             super(itemView);
             try {
-                txtQuestionNo = (TextView) itemView.findViewById(R.id.txt_question_no);
-                txtQuestionText = (TextView) itemView.findViewById(R.id.txt_question_text);
-                txtAnswer = (TextView) itemView.findViewById(R.id.txt_answer);
-                etEvaluationNotes = (EditText) itemView.findViewById(R.id.et_evaluation_notes);
-                etComments = (EditText) itemView.findViewById(R.id.et_comments);
+                tvSubjectiveQuestionNo = (TextView) itemView.findViewById(R.id.tv_subjective_question_no);
+                tvSubjectiveQuestion = (TextView) itemView.findViewById(R.id.tv_subjective_question);
+                tvSubjectiveQuestionAns = (TextView) itemView.findViewById(R.id.tv_subjective_question_ans);
+                tvSubjectiveQuesEvaluationNotes = (TextView) itemView.findViewById(R.id.tv_subjective_ques_evaluation_notes);
+                etAddComment = (EditText) itemView.findViewById(R.id.et_add_comment);
 
-                txtExcellent = (TextView) itemView.findViewById(R.id.txt_excellent);
-                txtGood = (TextView) itemView.findViewById(R.id.txt_good);
-                txtFair = (TextView) itemView.findViewById(R.id.txt_fair);
-                txtAverage = (TextView) itemView.findViewById(R.id.txt_average);
-                txtPoor = (TextView) itemView.findViewById(R.id.txt_poor);
-                txtIncorrect = (TextView) itemView.findViewById(R.id.txt_incorrect);
+                tvScoreExcellent = (TextView) itemView.findViewById(R.id.tv_score_excellent);
+                tvScoreGood = (TextView) itemView.findViewById(R.id.tv_score_good);
+                tvScoreFair = (TextView) itemView.findViewById(R.id.tv_score_fair);
+                tvScoreAverage = (TextView) itemView.findViewById(R.id.tv_score_average);
+                tvScorePoor = (TextView) itemView.findViewById(R.id.tv_score_poor);
+                tvScoreIncorrect = (TextView) itemView.findViewById(R.id.tv_score_incorrect);
 
                 imgCopyComments = (ImageView) itemView.findViewById(R.id.img_copy_comments);
                 imgDeleteComments = (ImageView) itemView.findViewById(R.id.img_delete_comments);
 
+                tvSubjectiveQuestionNo.setTypeface(myTypeFace.getRalewayBold());
+                tvSubjectiveQuestion.setTypeface(myTypeFace.getRalewayRegular());
+                tvSubjectiveQuestionAns.setTypeface(myTypeFace.getRalewayThin());
 
-                txtQuestionNo.setTypeface(myTypeFace.getRalewayBold());
-                txtQuestionText.setTypeface(myTypeFace.getRalewayRegular());
-                txtAnswer.setTypeface(myTypeFace.getRalewayThin());
 
-
-                txtExcellent.setTypeface(myTypeFace.getRalewayRegular());
-                txtGood.setTypeface(myTypeFace.getRalewayRegular());
-                txtFair.setTypeface(myTypeFace.getRalewayRegular());
-                txtAverage.setTypeface(myTypeFace.getRalewayRegular());
-                txtPoor.setTypeface(myTypeFace.getRalewayRegular());
-                txtIncorrect.setTypeface(myTypeFace.getRalewayRegular());
+                tvScoreExcellent.setTypeface(myTypeFace.getRalewayRegular());
+                tvScoreGood.setTypeface(myTypeFace.getRalewayRegular());
+                tvScoreFair.setTypeface(myTypeFace.getRalewayRegular());
+                tvScoreAverage.setTypeface(myTypeFace.getRalewayRegular());
+                tvScorePoor.setTypeface(myTypeFace.getRalewayRegular());
+                tvScoreIncorrect.setTypeface(myTypeFace.getRalewayRegular());
 
 
             } catch (Exception e) {
@@ -122,68 +123,24 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
     @Override
     public void onBindViewHolder(final SubjectiveQuestionAdapter.ViewHolder holder, int position) {
         try {
-            ArrayList<Data> arrayList = new ArrayList<Data>();
-            arrayList = responseObject.getData().get(0).getQuestions();
+//            ArrayList<Data> arrayList = new ArrayList<Data>();
+//            arrayList = responseObject.getData().get(0).getQuestions();
             int qno = position + 1;
-            //holder.txtQuestionNo.setText("Questions " + qno);
-            holder.txtQuestionNo.setText(Html.fromHtml("QUESTION: " + qno));
-            holder.txtQuestionText.setText(arrayList.get(position).getQuestionText());
+            //holder.tvSubjectiveQuestionNo.setText("Questions " + qno);
+            holder.tvSubjectiveQuestionNo.setText(Html.fromHtml("QUESTION: " + qno));
 
+            holder.tvSubjectiveQuestion.setText(arrayListSubjectiveQuestions.get(position).getQuestionText());
 
             if (studentEvalResObj != null) {
                 dataArrayList = studentEvalResObj.getData().get(0).getArrayListEvaluation();
 
-                if (arrayList.get(position).getQuestionId().equalsIgnoreCase(dataArrayList.get(position).getQuestionId())) {
-                    holder.txtAnswer.setText(dataArrayList.get(position).getStudentResponse());
-                    holder.etEvaluationNotes.setText(dataArrayList.get(position).getEvaluationNotes());
+                if (arrayListSubjectiveQuestions.get(position).getQuestionId().equalsIgnoreCase(dataArrayList.get(position).getQuestionId())) {
+                    holder.tvSubjectiveQuestionAns.setText(dataArrayList.get(position).getStudentResponse());
+                    holder.tvSubjectiveQuesEvaluationNotes.setText(dataArrayList.get(position).getEvaluationNotes());
                 }
                 notifyDataSetChanged();
 
             }
-
-            holder.txtExcellent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    if (flag_excellent) {
-                        holder.txtExcellent.setTextColor(context.getResources().getColor(R.color.color_blue));
-                        flag_excellent = false;
-                    } else {
-                        holder.txtExcellent.setTextColor(context.getResources().getColor(R.color.red_error));
-                        flag_excellent = true;
-                    }
-                }
-            });
-            holder.txtGood.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-            holder.txtFair.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-            holder.txtAverage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-            holder.txtPoor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-            holder.txtIncorrect.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
 
 
         } catch (Exception e) {

@@ -288,7 +288,6 @@
     <string name="strcomment">Comment</string>
 
 
-
     <!-- Add Edit Question-->
     <string name="strquestiontitle">Question Title</string>
     <string name="strquestiontype">Question Type</string>
@@ -302,14 +301,13 @@
     <string name="strfreeze">Freeze</string>
 
 
-
     <!-- Assignment-->
     <string name="classwise">Class Wise</string>
     <string name="submission_date">Submission Date</string>
     <string-array name="assignment_status">
-    <item>Assessed Status</item>
-    <item>Assessed</item>
-    <item>Non Assessed</item>
+        <item>Assessed Status</item>
+        <item>Assessed</item>
+        <item>Non Assessed</item>
     </string-array>
 
 
@@ -329,4 +327,11 @@
 
     <!-- Dummy strings-->
     <string name="question">For testing this question text..how this question will look like if its a very long question..will it wrap to next line? or it will behave in some unexpected way..</string>
+    <string name="stryouranswer">Your Answer:</string>
+    <string name="strexcellent">Excellent</string>
+    <string name="strgood">Good</string>
+    <string name="strfair">Fair</string>
+    <string name="straverage">Average</string>
+    <string name="strpoor">Poor</string>
+    <string name="strincorrect">InCorrect</string>
 </resources>

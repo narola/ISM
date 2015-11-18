@@ -32,6 +32,9 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
     MyStudentsAdapter myStudentsAdapter;
     EditText etSearchStudents;
 
+    //test
+    String student_id_to_highlight="";
+
     public static MyStudentsFragment newInstance() {
         MyStudentsFragment myStudentsFragment = new MyStudentsFragment();
         return myStudentsFragment;
@@ -39,6 +42,10 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
 
     public MyStudentsFragment() {
         // Required empty public constructor
+    }
+
+    public MyStudentsFragment(String student_id_to_highlight) {
+       this.student_id_to_highlight=student_id_to_highlight;
     }
 
     @Override
@@ -65,7 +72,7 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
             requestObject.setUserId("340");
             requestObject.setRole(Integer.parseInt("3"));
 
-               ((TeacherHostActivity) getActivity()).startProgress();
+            ((TeacherHostActivity) getActivity()).startProgress();
             new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
 
@@ -79,7 +86,7 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
     @Override
     public void onResponse(int api_code, Object object, Exception error) {
         try {
-            ((TeacherHostActivity)getActivity()).stopProgress();
+            ((TeacherHostActivity) getActivity()).stopProgress();
             switch (api_code) {
                 case WebConstants.GET_ALL_EXAM_SUBMISSION:
                     onResponseMyStudents(object);
@@ -95,7 +102,7 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
         ResponseObject resObjStudentAttempted = (ResponseObject) object;
         if (resObjStudentAttempted.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
 
-            myStudentsAdapter = new MyStudentsAdapter(resObjStudentAttempted, getActivity(), this);
+            myStudentsAdapter = new MyStudentsAdapter(student_id_to_highlight,resObjStudentAttempted, getActivity(), this);
             rv_mystudentslist.setAdapter(myStudentsAdapter);
             rv_mystudentslist.setLayoutManager(new LinearLayoutManager(getActivity()));
 

@@ -13,6 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
+import com.ism.teacher.Utility.Debug;
+import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.SubjectiveQuestionAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
@@ -43,9 +46,15 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     //Student details part
     public static RelativeLayout rlStudentDetails;
     public static CircleImageView img_student_pic;
-    public static TextView txt_student_name,txt_student_rollno;
+    public static TextView txt_student_name, txt_student_rollno;
     public static ImageView img_online;
 
+
+    //test
+    String studentid_from_param = "";
+    String examid_from_param = "";
+    boolean callEvaluationApiFlag = false;
+    public ResponseObject responseObjectEval;
 
     public static SubjectiveQuestionsFragment newInstance() {
         SubjectiveQuestionsFragment myStudentsFragment = new SubjectiveQuestionsFragment();
@@ -54,6 +63,14 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     public SubjectiveQuestionsFragment() {
         // Required empty public constructor
+    }
+
+    public SubjectiveQuestionsFragment(String studentid_from_param, String examid_from_param, boolean callEvaluationApiFlag) {
+        this.studentid_from_param = studentid_from_param;
+        this.examid_from_param = examid_from_param;
+        this.callEvaluationApiFlag = callEvaluationApiFlag;
+
+        Log.i("ExamSubjectiveDetailFragment to Subjec", "call evaluation api=" + callEvaluationApiFlag);
     }
 
     @Override
@@ -69,9 +86,9 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     private void initGlobal(View rootview) {
 
         //static
-        rlStudentDetails =(RelativeLayout)rootview.findViewById(R.id.rl_student_details);
-        img_student_pic=(CircleImageView)rootview.findViewById(R.id.img_student_pic);
-        img_online=(ImageView)rootview.findViewById(R.id.img_student_pic);
+        rlStudentDetails = (RelativeLayout) rootview.findViewById(R.id.rl_student_details);
+        img_student_pic = (CircleImageView) rootview.findViewById(R.id.img_student_pic);
+        img_online = (ImageView) rootview.findViewById(R.id.img_student_pic);
         txt_student_name = (TextView) rootview.findViewById(R.id.txt_student_name);
         txt_student_rollno = (TextView) rootview.findViewById(R.id.txt_student_rollno);
 
@@ -93,12 +110,38 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         }
     }
 
+    private void callAPIStudentEvaluations(String student_id, String exam_id) {
+        Log.i("ExamSubjectiveDetailFragment to Subjective", "called evaluation api========");
+        try {
+            if (Utility.isInternetConnected(getActivity())) {
+                ((TeacherHostActivity) getActivity()).startProgress();
+                RequestObject requestObject = new RequestObject();
+                requestObject.setStudentId(student_id);
+                requestObject.setExamId(exam_id);
+
+                Log.e("subjective exam evaluation ", "student_id:" + student_id + "examid" + exam_id);
+
+                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.GET_EXAM_EVALUATIONS);
+            } else {
+                Utility.showToast(getActivity().getString(R.string.strnetissue), getActivity());
+            }
+
+        } catch (Exception e) {
+            Debug.i(TAG, "callAPIStudentEvaluations Exceptions: " + e.getLocalizedMessage());
+        }
+    }
+
+
     @Override
     public void onResponse(int api_code, Object object, Exception error) {
         try {
             switch (api_code) {
                 case WebConstants.GET_EXAM_QUESTIONS:
                     onResponseMySubjectiveQuestions(object);
+                    break;
+                case WebConstants.GET_EXAM_EVALUATIONS:
+                    onResponseGetEvaluation(object);
                     break;
             }
         } catch (Exception e) {
@@ -120,6 +163,34 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
             subjectiveQuestionAdapter = new SubjectiveQuestionAdapter(responseObj, getActivity(), this, null);
             rvSubjectiveQuestionList.setAdapter(subjectiveQuestionAdapter);
             rvSubjectiveQuestionList.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+            if (callEvaluationApiFlag) {
+                callAPIStudentEvaluations(studentid_from_param, examid_from_param);
+            }
         }
     }
+
+    private void onResponseGetEvaluation(Object object) {
+
+        ResponseObject responseObject = (ResponseObject) object;
+        if (responseObject.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+            if (responseObject.getData().get(0).getArrayListEvaluation().size() != 0) {
+                responseObjectEval = responseObject;
+
+                if (responseObjectEval.getStatus().equalsIgnoreCase(WebConstants.API_STATUS_SUCCESS)) {
+                    SubjectiveQuestionsFragment.rlStudentDetails.setVisibility(View.VISIBLE);
+                    SubjectiveQuestionsFragment.txt_student_name.setText(responseObject.getData().get(0).getStudentName());
+                    // imageLoader.displayImage(WebConstants.USER_IMAGES + arrayListStudents.get(position).getProfile_pic(), holder.imgStudentPic, ISMTeacher.options);
+                }
+
+                SubjectiveQuestionAdapter subjectiveQuestionAdapter = new SubjectiveQuestionAdapter(SubjectiveQuestionsFragment.responseObjQuestions, getActivity(), this, responseObjectEval);
+                SubjectiveQuestionsFragment.rvSubjectiveQuestionList.setAdapter(subjectiveQuestionAdapter);
+                subjectiveQuestionAdapter.notifyDataSetChanged();
+            }
+        } else {
+            Debug.i(TAG, "Response :" + WebConstants.GET_EXAM_EVALUATIONS + " :" + responseObject.getStatus());
+        }
+    }
+
+
 }

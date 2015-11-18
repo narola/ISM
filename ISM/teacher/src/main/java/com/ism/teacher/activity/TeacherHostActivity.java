@@ -86,6 +86,10 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     private ActionProcessButton progress_bar;
     private ProgressGenerator progressGenerator;
 
+
+    //test
+    ExamSubjectiveDetailFragment examSubjectiveDetailFragment;
+
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
     }
@@ -309,6 +313,12 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         }
     }
 
+    public void loadSubjectiveDetailFragment(String examid,String studentid)
+    {
+        examSubjectiveDetailFragment=new ExamSubjectiveDetailFragment(TeacherHostActivity.this, examid,studentid,true);
+        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, examSubjectiveDetailFragment).commit();
+
+    }
     //these is for the load fragment in right container.
     public void loadFragmentInRightContainer(int fragment) {
         try {
@@ -335,6 +345,8 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         }
 
     }
+
+
 
     @Override
     public void onFragmentAttached(int fragment) {

@@ -60,7 +60,7 @@ public class ObjectiveQuestionsAdapter extends RecyclerView.Adapter<ObjectiveQue
             ArrayList<Data> arrayList = new ArrayList<Data>();
             arrayList = responseObject.getData().get(0).getQuestions();
             int qno = position + 1;
-            //holder.txtQuestionNo.setText("Questions " + qno);
+            //holder.tvSubjectiveQuestionNo.setText("Questions " + qno);
             holder.txtQuestionNo.setText(Html.fromHtml("<u>" + "Questions " + qno + "</u>"));
             holder.txtQuestionText.setText(arrayList.get(position).getQuestionText());
             // questionsID[position]=arrayList.get(0).getQuestionId();

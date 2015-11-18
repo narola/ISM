@@ -12,6 +12,8 @@ public class WebConstants {
     public static final String FEED_MEDIA = "http://192.168.1.162/ISM/WS_ISM/Feeds/";
     public static final String USER_IMAGES = "http://192.168.1.162/ISM/WS_ISM/Images/";
 
+    public static final String EXAM_ID_11_SUBJECTIVE="11";
+
 
     /**
      * Api IDs
