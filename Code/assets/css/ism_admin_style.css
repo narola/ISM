@@ -2093,7 +2093,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .question_bank .filter .form-group:nth-last-child(2){
 	margin-bottom:0;
 }
-.add_exam_form a.btn{
+.add_exam_form a.btn, .add_topic_form a.btn{
 	color:#fff;
 }
 .filter .form-group.group_search{

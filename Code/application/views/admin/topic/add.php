@@ -17,7 +17,7 @@
             <h3>Add Topic</h3>
         </div>
         <div class="box_body">  
-            <form method="post">
+            <form method="post" class="add_topic_form">
 
                 <div class="form-group select col-sm-6 no-padding half_size">
                     <label>Course</label>
