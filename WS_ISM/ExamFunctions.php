@@ -125,6 +125,10 @@ class ExamFunctions
 //                    "exam_id":63,
 //                    "student_id":370
 //                }
+//                {
+//                    "exam_id":3,
+//                    "student_id":370
+//                }
                 $query = "SELECT * FROM " . TABLE_EXAM_SCHEDULE . " exam_schedule INNER JOIN " . TABLE_USERS . " users on exam_schedule.exam_assessor=users.id WHERE exam_id=" . $exam_id ;
                 $result = mysql_query($query) or $message = mysql_error();
                 //echo $query;
@@ -146,7 +150,7 @@ class ExamFunctions
                     } else {
                         $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_SUBJECTIVE_EVALUATION . " WHERE `exam_id`=" . $exam_id . " and evaluation_by=".$row['exam_assessor']." and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ") order by question_id asc";
                         $resultStudentRes = mysql_query($queryStudentRes) or $message = mysql_error();
-                        //echo $queryStudentRes;
+                      //  echo $queryStudentRes;
                        // echo "\n".mysql_num_rows($resultStudentRes);
                         $evaluations=array();
                         if (mysql_num_rows($resultStudentRes)) {
@@ -844,8 +848,10 @@ class ExamFunctions
         }
         // total student
         $query="SELECT * FROM ".TABLE_STUDENT_ACADEMIC_INFO." WHERE classroom_id=".$rowExam['classroom_id'];
-//                        echo $query;
+        //    echo $query;
         $result=mysql_query($query) or  $message=mysql_error();
+
+       // $post['total_student']=0;// need to change
         $post['total_student']=mysql_num_rows($result);
 
         //subject name

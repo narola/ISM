@@ -64,7 +64,10 @@ define("TABLE_SCHOOL_COURSE",   "school_course");
 define("TABLE_SCHOOLS",   "schools");
 define("TABLE_STATES",   "states");
 define("TABLE_STUDENT_TEACHER",   "student_teacher");
-define("TABLE_STUDENT_ACADEMIC_INFO",   "student_academic_info");
+
+//define("TABLE_STUDENT_ACADEMIC_INFO",   "student_academic_info");
+//student_profile updated table
+define("TABLE_STUDENT_ACADEMIC_INFO",   "student_profile");
 define("TABLE_STUDENT_OBJECTIVE_RESPONSE",   "student_objective_response");
 define("TABLE_STUDENT_EXAM_SCORE",   "student_exam_score");
 define("TABLE_STUDENT_PROFILE",   "student_profile");

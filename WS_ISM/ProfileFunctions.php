@@ -80,8 +80,9 @@ class ProfileFunctions
             mkdir(USER_PROFILE_PICTURE, 0777, true);
 
         $user_id = $_POST['user_id'];
-       // $user_id = addslashes($user_id);
+      // $filedetails = explode('_',$_FILES['mediaFile']['name']);
         //Image Saving
+      //  $user_id=$filedetails[1];
         $profile_user_link="user_".$user_id."/";
 
         $profile_image_dir=USER_PROFILE_PICTURE.$profile_user_link;
@@ -135,7 +136,7 @@ class ProfileFunctions
 
         $response['data']=$data;
         $response['status']=$status;
-        $response['message']=$message;
+        $response['message']=$message; //$response['message']=$message."--".$user_id.$_FILES["mediaFile"]["name"];
         return $response;
 
     }
@@ -603,18 +604,20 @@ class ProfileFunctions
         $password = validateObject ($postData , 'password', "");
         $password = addslashes($password);
 
-//        $profile_image = validateObject ($postData , 'profile_image', "");
-//        $profile_image_name = validateObject ($postData , 'profile_image_name', "");
-//        $profile_image_name = addslashes($profile_image_name);
-//        $profile_image_name_array=explode(".",$profile_image_name);
-//        if (!is_dir(USER_PROFILE_PICTURE)) {
-//            mkdir(USER_PROFILE_PICTURE, 0777, true);
+
+        //code for base64
+        $profile_image = validateObject ($postData , 'profile_image', "");
+        $profile_image_name = validateObject ($postData , 'profile_image_name', "");
+        $profile_image_name = addslashes($profile_image_name);
+        $profile_image_name_array=explode(".",$profile_image_name);
+        if (!is_dir(USER_PROFILE_PICTURE)) {
+            mkdir(USER_PROFILE_PICTURE, 0777, true);
+        }
+//        if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
+//            die('Failed to create folders...'.USER_PROFILE_PICTURE);
 //        }
-       // if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
-           // die('Failed to create folders...'.USER_PROFILE_PICTURE);
-       // }
         // echo $profile_image_name_array[0]."_test.".$profile_image_name_array[1];
-      //  $profile_image_name=$profile_image_name_array[0]."_test.".$profile_image_name_array[1];
+        $profile_image_name=$profile_image_name_array[0]."_test.".$profile_image_name_array[1];
         $obj = new CI_Encrypt();
 
         $insertFields="`username`, `password`,`device_type`, `first_name`, `last_name`, `full_name`,`email_id`, `contact_number`, `home_address`, `city_id`, `state_id`, `country_id`, `birthdate`, `gender`, `device_token`, `role_id`";
@@ -644,20 +647,22 @@ class ProfileFunctions
 
 
 //                //Image Saving
-//                $profile_user_link="user_".$user_id."/";
-//
-//                $profile_image_dir=USER_PROFILE_PICTURE.$profile_user_link;
-//
-//                if (!is_dir(USER_PROFILE_PICTURE.$profile_user_link)) {
-//                    mkdir(USER_PROFILE_PICTURE.$profile_user_link, 0777, true);
-//                }
-//
-//                $profile_image_dir = $profile_image_dir . $profile_image_name;
-//                $profile_image_link = $profile_user_link.$profile_image_name;
-//                file_put_contents($profile_image_dir, base64_decode($profile_image));
-//
-//                $queryProfileImage="INSERT INTO ".TABLE_USER_PROFILE_PICTURE."(`user_id`, `profile_link`) VALUES (".$user_id.",'".$profile_image_link."')";
-//                $resultProfileImage=mysql_query($queryProfileImage) or $message=mysql_error();
+                $profile_user_link="user_".$user_id."/";
+
+                $profile_image_dir=USER_PROFILE_PICTURE.$profile_user_link;
+
+                if (!is_dir(USER_PROFILE_PICTURE.$profile_user_link)) {
+                    mkdir(USER_PROFILE_PICTURE.$profile_user_link, 0777, true);
+                }
+
+                $profile_image_dir = $profile_image_dir . $profile_image_name;
+                $profile_image_link = $profile_user_link.$profile_image_name;
+                file_put_contents($profile_image_dir, base64_decode($profile_image));
+
+                $queryProfileImage="INSERT INTO ".TABLE_USER_PROFILE_PICTURE."(`user_id`, `profile_link`) VALUES (".$user_id.",'".$profile_image_link."')";
+                $resultProfileImage=mysql_query($queryProfileImage) or $message=mysql_error();
+
+
                 $queryAcademic="INSERT INTO ".TABLE_STUDENT_ACADEMIC_INFO."(".$insertAcademicField.") values (".$insertAcademicValue.")";
                 $resultAcademic=mysql_query($queryAcademic) or $message=mysql_error();
                 if($resultAcademic)
