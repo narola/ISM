@@ -165,7 +165,7 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
         ResponseObject responseObject = (ResponseObject) object;
-//        if (WebConstants.GENERAL_SETTINGS == apiCode) {
+//        if (WebConstants.MANAGE_GENERAL_SETTINGS == apiCode) {
 //            if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
 //
 //            } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {

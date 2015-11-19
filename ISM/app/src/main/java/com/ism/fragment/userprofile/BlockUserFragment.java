@@ -15,16 +15,13 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.BlockedUserAdapter;
-import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.InputValidator;
-import com.ism.ws.model.ResponseObject;
-import com.ism.ws.helper.WebserviceWrapper;
 
 /**
  * Created by c162 on 09/11/15.
  */
-public class BlockUserFragment extends Fragment implements WebserviceWrapper.WebserviceResponse,View.OnClickListener{
+public class BlockUserFragment extends Fragment implements View.OnClickListener{
     private View view;
     private MyTypeFace myTypeFace;
     private TextView txtBlockAssign, txtManageBlockUser, txtContactISMAdmin, txtContactDetails, txtEmailAddress, txtBlockUser, txtNotification, txtBlock;
@@ -135,18 +132,18 @@ public class BlockUserFragment extends Fragment implements WebserviceWrapper.Web
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
-    @Override
-    public void onResponse(Object object, Exception error, int apiCode) {
-        ResponseObject responseObject=(ResponseObject)object;
-        if (WebConstants.GENERAL_SETTINGS==apiCode){
-            if(responseObject.getStatus().equals(ResponseObject.SUCCESS)){
-
-            }else if(responseObject.getStatus().equals(ResponseObject.FAILED)){
-
-            }
-        }
-
-    }
+//    @Override
+//    public void onResponse(Object object, Exception error, int apiCode) {
+//        ResponseObject responseObject=(ResponseObject)object;
+//        if (WebConstants.MANAGE_GENERAL_SETTINGS==apiCode){
+//            if(responseObject.getStatus().equals(ResponseObject.SUCCESS)){
+//
+//            }else if(responseObject.getStatus().equals(ResponseObject.FAILED)){
+//
+//            }
+//        }
+//
+//    }
 
     @Override
     public void onClick(View v) {

@@ -30,10 +30,11 @@ import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
-import com.ism.ws.helper.Attribute;
+import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.model.DataAboutMe;
+import com.ism.ws.model.RequestObject;
+import com.ism.ws.model.ResponseAboutMe;
 import com.ism.ws.model.ResponseObject;
-import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Data;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -46,11 +47,18 @@ import java.util.Date;
 /**
  * Created by c162 on 09/11/15.
  */
-public class AboutMeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener{
-    private static final int ABOUT_ME = 100;
-    private static final int YOUR_AMBITION = 101;
+public class AboutMeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
+    public static final int ABOUT_ME = 100;
+    public static final int YOUR_AMBITION = 101;
     public static final int PICK_IMAGE_REQUEST = 200;
-   // public static final int RESULT_OK = 300;
+    public static final String USERNAME = "username";
+    public static final String BIRTHDATE = "birthdate";
+    public static final String CONTACT_NUMBER = "contact_number";
+    public static final String ABOUT_ME_DETAILS = "about_me_details";
+    public static final String AMBITION = "ambition";
+    public static final String EDIT_TYPE = "type";
+
+    // public static final int RESULT_OK = 300;
     private View view;
     private TextView txtUserName, txtSchool, txtClass, txtSocial, txtTotalPost, txtTotalStudymates, txtTotalAuthorFollowed, txtPost, txtAssignment, txtAuthorFollowed, txtAcademic, txtStudymates, txtIsmScore, txtTotalIsmScore, txtIsmRank, txtTotalIsmRank, txtTotalAssignment, txtExam, txtTotalExam, txtExcellence, txtFavQuestions, txtBadgesEarned, txtQueAsked, txtTotalBadgesEarned, txtTotalQueAsked, txtTotalFavQuestions, txtYourAmbition, txtAboutMe, txtClickAddAboutMe, txtClickAddAmbitions;
     MyTypeFace myTypeFace;
@@ -68,8 +76,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private long lngMaxDob;
     private String strDob;
     private Date convertedDate;
-    private String strDetailAboutMe;
-    private String strAmbition;
+    private String strDetailAboutMe=null;
+    private String strAmbition=null;
 
     public static AboutMeFragment newInstance() {
         AboutMeFragment fragment = new AboutMeFragment();
@@ -172,12 +180,15 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         txtAboutMe.setTypeface(myTypeFace.getRalewayBold());
         txtClickAddAboutMe.setTypeface(myTypeFace.getRalewayRegular());
         txtClickAddAmbitions.setTypeface(myTypeFace.getRalewayRegular());
-
+        txtEdit.setText(R.string.strEdit);
         txtEdit.setOnClickListener(this);
         txtClickAddAboutMe.setOnClickListener(this);
         txtClickAddAmbitions.setOnClickListener(this);
+        txtAboutMe.setOnClickListener(this);
+        txtYourAmbition.setOnClickListener(this);
         imgProfileEdit.setOnClickListener(this);
-
+        txtYourAmbition.setEnabled(false);
+        txtAboutMe.setEnabled(true);
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         setEditableFalse(etDob);
@@ -236,9 +247,9 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private void callApiGetAboutMe() {
         try {
             activityHost.showProgress();
-            Attribute attribute = new Attribute();
-            attribute.setUserId("1");
-            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
+            RequestObject requestObject = new RequestObject();
+            requestObject.setUserId("1");
+            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
 
         } catch (Exception e) {
             Debug.i(TAG, "callApiGetAboutMe Exception : " + e.getLocalizedMessage());
@@ -248,19 +259,19 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private void callApiEditAboutMe() {
         try {
             activityHost.showProgress();
-            Attribute attribute = new Attribute();
-            attribute.setUserId("1");
-            attribute.setUsername(txtUserName.getText().toString().trim());
-            attribute.setContactNumber(etCno.getText().toString().trim());
-            attribute.setBirthdate(strDob);
-            attribute.setProfileImage("");
-            attribute.setAmbitionInLife(strAmbition);
-            attribute.setAboutMeText(strDetailAboutMe);
+            RequestObject requestObject = new RequestObject();
+            requestObject.setUserId("1");
+            requestObject.setUsername(txtUserName.getText().toString().trim());
+            requestObject.setContactNumber(etCno.getText().toString().trim());
+            requestObject.setBirthdate(strDob);
+            requestObject.setProfileImage("");
+            requestObject.setAmbitionInLife(strAmbition);
+            requestObject.setAboutMeText(strDetailAboutMe);
 
 //            requestObject.setAmbitionInLife("Businessman");
 //            requestObject.setAboutMeText("I am a graduate from NIFT specializing in Apparel Production. I have a holistic experience of the Apparel Industry and has worked for domestic as well as the exports market. In the Indian retail industry I have worked with Lifestyle International Pvt. Ltd. on sourcing, vendor management and product development for private labels. I then moved to Madura Fashion & Lifestyle where I worked as a buyer. Product and Margin management, optimum allocation of merchandise, meeting sales targets along with competition, market and trend analysis were some of her responsibilities. I joined ISB to fast track my career and pursue opportunities in Category & Brand Management.I am President of the Retail Club. I  proud myself.");
 
-            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
+            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
 
         } catch (Exception e) {
             Debug.i(TAG, "callApiEditAboutMe Exception : " + e.getLocalizedMessage());
@@ -275,6 +286,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -346,7 +358,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
+                ResponseAboutMe responseObj = (ResponseAboutMe) object;
                 if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
                     Log.e(TAG, "onResponseGetAboutMe success");
                     setUpData(responseObj.getData().get(0));
@@ -362,31 +374,40 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         }
     }
 
-    private void setUpData(Data data) {
-        txtUserName.setText(data.getUserName());
+    private void setUpData(DataAboutMe data) {
+        txtUserName.setText(data.getUsername());
         txtSchool.setText(data.getSchoolName());
         txtClass.setText(data.getCourseName());
         etDob.setText(dateFormat(data.getBirthdate()));
         etCno.setText(data.getContactNumber());
-       // imgProfilePic.setBackgroundColor(Color.BLACK);
+        // imgProfilePic.setBackgroundColor(Color.BLACK);
         strDetailAboutMe = data.getAboutMeText();
         strAmbition = data.getAmbitionInLife();
         if (!strDetailAboutMe.equals(" ")) {
             // txtAboutMe.setCompoundDrawables(null,null,getResources().getDrawable(R.drawable.edit_profile),null);
+            txtClickAddAboutMe.setText(data.getAboutMeText());
+            txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
+            txtAboutMe.setEnabled(true);
             Debug.i(TAG, "Details are available!");
         } else {
             Debug.i(TAG, "Details are not available!");
             txtAboutMe.setCompoundDrawables(null, null, null, null);
+            txtAboutMe.setEnabled(false);
+
         }
         if (!strAmbition.equals(" ")) {
             // txtAboutMe.setCompoundDrawables(null,null,getResources().getDrawable(R.drawable.edit_profile),null);
+            txtClickAddAmbitions.setText(data.getAmbitionInLife());
+            txtClickAddAmbitions.setCompoundDrawables(null, null, null, null);
+            txtYourAmbition.setEnabled(true);
             Debug.i(TAG, "Details are available!");
         } else {
             Debug.i(TAG, "Details are not available!");
             txtYourAmbition.setCompoundDrawables(null, null, null, null);
+            txtYourAmbition.setEnabled(false);
         }
         txtTotalAssignment.setText(data.getTotalAssignment());
-        txtTotalAuthorFollowed.setText(data.getTotalAauthorsFollowed());
+        txtTotalAuthorFollowed.setText(data.getTotalAuthorsFollowed());
         txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
         txtTotalExam.setText(data.getTotalExams());
         txtTotalFavQuestions.setText(data.getTotalFavoriteQuestions());
@@ -452,10 +473,28 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             openGallary();
             //callApiEditAboutMe();
         } else if (v == txtClickAddAboutMe) {
-            myPopup(ABOUT_ME);
+           // myPopup(ABOUT_ME);
 
-        } else if (v == txtClickAddAmbitions) {
-            myPopup(YOUR_AMBITION);
+        } else if (v == txtYourAmbition ) {
+            Intent intent=new Intent(getActivity(),EditAboutMeDetailsActivity.class);
+            intent.putExtra(USERNAME,txtUserName.getText().toString());
+            intent.putExtra(BIRTHDATE, etDob.getText().toString());
+            intent.putExtra(CONTACT_NUMBER,etCno.getText().toString());
+            intent.putExtra(AMBITION,strAmbition);
+            intent.putExtra(ABOUT_ME_DETAILS,strDetailAboutMe);
+            intent.putExtra(EDIT_TYPE, YOUR_AMBITION);
+            startActivity(intent);
+           // myPopup(YOUR_AMBITION);
+
+        } else if (v == txtAboutMe) {
+           Intent intent=new Intent(getActivity(),EditAboutMeDetailsActivity.class);
+            intent.putExtra(USERNAME,txtUserName.getText().toString());
+            intent.putExtra(BIRTHDATE, etDob.getText().toString());
+            intent.putExtra(CONTACT_NUMBER,etCno.getText().toString());
+            intent.putExtra(AMBITION,strAmbition);
+            intent.putExtra(ABOUT_ME_DETAILS,strDetailAboutMe);
+            intent.putExtra(EDIT_TYPE,ABOUT_ME);
+            startActivity(intent);
 
         }
 
@@ -533,7 +572,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         super.onAttach(activity);
         try {
             activityHost = (HostActivity) activity;
-         //   activityHost.setListenerHostAboutMe(this);
+            //   activityHost.setListenerHostAboutMe(this);
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
         }

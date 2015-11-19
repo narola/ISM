@@ -45,7 +45,7 @@ public class WebConstants {
 //	public static final int PRIVACY_SETTING = 51;
 //	public static final int BLOCK_USER = 52;
 
-	public static final int GENERAL_SETTINGS = 51;
+	public static final int MANAGE_GENERAL_SETTINGS = 51;
 	public static final int GENERAL_SETTING_PREFERENCES = 52;
 	public static final int GET_USER_PREFERENCES=53;
 
@@ -77,10 +77,12 @@ public class WebConstants {
 //	public static final String URL_PRIVACY_SETTING = URL_HOST_147 + "GetAllNotices";
 //	public static final String URL_BLOCK_USER = URL_HOST_147 + "GetUserPreferences";
 
+
+	//for general settings
 	public static final String URL_USER_PREFERENCES = URL_HOST_147 + "GetUserPreferences";
 	public static final String URL_GENERAL_SETTING_PREFERENCES = URL_HOST_147 + "GetAllPreferences";
+	public static final String URL_MANAGE_GENERAL_SETTING = URL_HOST_147 + "ManageGeneralSettings";
 
-	public static final String URL_GENERAL_SETTING = URL_HOST_147 + "ManageGeneralSettings";
 	public static final String URL_GET_NOTIFICATION = URL_HOST_147 + "GetNotification";
 	public static final String URL_GET_MESSAGES = URL_HOST_147 + "GetMessages";
 	public static final String URL_GET_STUDYMATE_REQUEST = URL_HOST_147 + "GetStudymateRequest";

@@ -97,9 +97,9 @@ public class WebserviceWrapper {
                     case WebConstants.GENERAL_SETTING_PREFERENCES:
                         responseObject = new WSRequestPost(WebConstants.URL_GENERAL_SETTING_PREFERENCES).execute(ResponseObject.class, attribute);
                         break;
-                    case WebConstants.GENERAL_SETTINGS:
-                        responseObject = new WSRequestPost(WebConstants.URL_GENERAL_SETTING).execute(ResponseObject.class, attribute);
-                        break;
+//                    case WebConstants.GENERAL_SETTINGS:
+//                        responseObject = new WSRequestPost(WebConstants.URL_GENERAL_SETTING).execute(ResponseObject.class, attribute);
+//                        break;
                     case WebConstants.GET_USER_PREFERENCES:
                         responseObject = new WSRequestPost(WebConstants.URL_USER_PREFERENCES).execute(ResponseObject.class, attribute);
                         break;

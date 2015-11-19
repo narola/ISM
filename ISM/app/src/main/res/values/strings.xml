@@ -272,6 +272,7 @@
     <string name="accept_request">Accept Studymate Request?</string>
     <string name="you_are_now_studymates">You are now Studymates.</string>
     <string name="subject">Subject</string>
+    <string name="strEdit">Edit</string>
     <string name="generate_coupon">Generate coupon</string>
     <string name="msg_generate_coupon">You can generate the coupon with amount less than wallet balance and use it in ISM Store</string>
     <string name="enter_coupon_amount">Enter Coupon Amount:</string>
