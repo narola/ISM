@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ism.fragment.userprofile.EditAboutMeDetailsActivity">
+    <!--<ScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical">-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:background="@color/color_actionbar"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_icon"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/strcancel"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/txt_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="@drawable/bg_icon"
+            android:drawableRight="@drawable/arrow"
+            android:gravity="center"
+            android:paddingLeft="5dp"
+            android:paddingRight="@dimen/d20dp"
+            android:text="@string/strEdit"
+            android:textColor="@color/color_green"
+            android:textSize="@dimen/d20sp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="670dp"
+        android:layout_weight="1"
+        android:background="@color/color_white"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_enter_here"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_white"
+            android:gravity="top"
+            android:padding="10dp" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_blank"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:visibility="visible"></LinearLayout>
+    <!--</ScrollView>-->
+</LinearLayout>
