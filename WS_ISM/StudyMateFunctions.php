@@ -6,6 +6,8 @@
  * Time: 9:56 AM
  */
 include_once 'ConstantValues.php';
+error_reporting(0);
+
 class StudyMateFunctions
 {
 
@@ -46,7 +48,12 @@ class StudyMateFunctions
                 return $this->acceptRequestFromStudymate($postData);//remaining
             }
                 break;
-
+			
+			case "GetStudymateRequest":
+            {
+                return $this->getStudymateRequest($postData);//remaining
+            }
+                break;
         }
     }
 
@@ -56,11 +63,35 @@ class StudyMateFunctions
     {
         $data=array();
         $response=array();
-        $email_id = validateObject ($postData , 'email_id', "");
-        $email_id = addslashes($email_id);
-
+        
+        $user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+        $studymate_id = validateObject ($postData , 'studymate_id', "");
+        $studymate_id = addslashes($studymate_id);
+		
+		$query="select * from ".TABLE_STUDYMATES_REQUEST." where request_from_mate_id=".$user_id. " and request_to_mate_id=". $studymate_id;
+		$result=mysql_query($query) or $message=mysql_error();
+        if(mysql_num_rows($result)>0)
+        {
+        	$updateQuery="UPDATE ".TABLE_STUDYMATES_REQUEST." SET status=1 where request_from_mate_id=".$user_id. " and request_to_mate_id=". $studymate_id;
+        	$updateResult=mysql_query($updateQuery) or $message=mysql_error();
+        	
+        	if($updateResult)
+        	{
+        	 	$message="Request accepted";
+            	$status="success";
+            }
+        }
+        else
+        {
+        	$message="";
+            $status="failed";
+        }
+        
         $response['data']=$data;
-
+		$response['message'] = $message;
+        $response['status'] = $status;
         return $response;
     }
 
@@ -361,5 +392,85 @@ class StudyMateFunctions
 
         return $response;
     }
+    
+    
+    
+     /*
+     * GetStudymateRequest
+     *
+     */
+    public function getStudymateRequest ($postData)
+    {
+        $message ='';
+        $status='';
+        $post=array();
+        $data=array();
+        $response=array();
+
+        
+        $user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+        	
+		$queryGetStudymateRequest="SELECT users.full_name as 'request_from_name',users.profile_pic as 'requester_profile',studymatesReuest.is_seen,studymatesReuest.status,
+		studymatesReuest.created_date,studymatesReuest.request_from_mate_id,studymatesReuest.id
+		 FROM ".TABLE_STUDYMATES_REQUEST." studymatesReuest
+		 
+		 INNER JOIN ".TABLE_USERS." users on users.id = studymatesReuest.request_from_mate_id
+		 
+		 WHERE studymatesReuest.request_to_mate_id = ".$user_id ;
+		
+		
+		
+		$resultGetStudymateRequest=mysql_query($queryGetStudymateRequest) or $message=mysql_error();
+		
+        if(mysql_num_rows($resultGetStudymateRequest))
+        {
+            while ($val = mysql_fetch_assoc($resultGetStudymateRequest)){
+                 
+                 $post['request_id']=$val['id'];
+                 $post['request_from_id']=$val['request_from_mate_id'];
+                 $post['request_from_name']=$val['request_from_name'];
+       			 $post['requester_profile']=$val['requester_profile'];
+                
+                	
+                 //Get Requester Scholl name and Course name
+                	$querySchollName="SELECT schools.school_name,courses.course_name FROM ". TABLE_STUDENT_ACADEMIC_INFO ." studentAcademicInfo 
+					INNER JOIN ". TABLE_SCHOOLS ." schools ON schools.id= studentAcademicInfo.school_id 
+					INNER JOIN ". TABLE_COURSES." courses ON courses.id= studentAcademicInfo.course_id
+					WHERE studentAcademicInfo.user_id = ".$val['request_from_mate_id'];
+					
+                    $resultSchollName=mysql_query($querySchollName) or $message=mysql_error();
+                    
+                    if(mysql_num_rows($resultSchollName)) {
+            		 while ($row = mysql_fetch_row($resultSchollName)) {
+       				 	 $post['requester_school_name']=$row[0];
+                 		 $post['requester_course_name']=$row[1];
+           			 }
+                    
+           		 }
+           		 
+                 $post['request_date']=$val['created_date'];
+                 $post['is_seen']=$val['is_seen'];
+                 $post['status']=$val['status'];
+              	 $data[]=$post;
+              }     
+        	
+            $status="success";
+            $message="";
+
+        }
+        else
+        {
+            $status="failed";
+            $message = DEFAULT_NO_RECORDS;
+            $data="";
+        }
+
+        $response['data']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+     }
 }
 ?>

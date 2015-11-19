@@ -33,7 +33,14 @@ switch ($_REQUEST['Service'])
     case "ForgotPassword":
     case "GetStudentAcademicInfo":
     case "RequestForSchoolInfoUpdation":
-    case "UploadUserProfilePic":
+    case "GetWalletSummary":
+    case "GenerateVoucher":
+    case "GetAboutMe":
+    case "EditAboutMe":
+    case "GetBooksForUser":
+    case "GetMyActivity":
+    case "BlockUser":
+    case "GetPastimeForUser":
     {
   	 include_once 'ProfileFunctions.php';
      $profile = new ProfileFunctions();
@@ -48,7 +55,8 @@ switch ($_REQUEST['Service'])
     case "GetSuggestedStudymates":
     case "SendRequestToStudymate":
     case "AcceptRequestFromStudymate":
-    case "GetStudymates":
+    case "GetStudymates": 
+	case "GetStudymateRequest":
     {
         include_once 'StudyMateFunctions.php';
         $studyMate = new StudyMateFunctions();
@@ -85,6 +93,11 @@ switch ($_REQUEST['Service'])
     case "GetExamQuestions":
     case "GetExamSubmission":
     case "GetExamEvaluation":
+    case "CreateQuestion":
+    case "UploadMediaForQuestion":
+    case "GetAllResults":
+	case "GetStudentResultsByExam":
+	case "GetHighScorers":
     {
         include_once 'ExamFunctions.php';
         $exam = new ExamFunctions();
@@ -99,7 +112,7 @@ switch ($_REQUEST['Service'])
     case "AddComment":
     case "LikeFeed":
     case "GetAllComments":
-
+	case "GetMyFeeds":
     {
          include_once 'SocialFunctions.php';
        	 $profile = new SocialFunctions();
@@ -130,7 +143,26 @@ switch ($_REQUEST['Service'])
 		$data = $profile -> call_service($_REQUEST['Service'], $postData);
 	}
 		break;
+		
+	/*********************  Notification Functions  ***************************************/
 
+	case "GetAllNotices":
+	case "GetAllBadgeCount":
+	case "GetNotification":
+	case "GetMessages":
+	case "GetWalletData":
+	case "UpdateReadStatus":
+	case "ManageGeneralSettings":
+	case "GetAllPreferences":
+	case "GetUserPreferences":
+	{
+		include_once 'NotificationFunctions.php';
+		$notification = new NotificationFunctions();
+		$data = $notification -> call_service($_REQUEST['Service'], $postData);
+	}
+		break;
+
+	
 	/*********************  Invalid Option to serve  ******************************/
     default:
     {
