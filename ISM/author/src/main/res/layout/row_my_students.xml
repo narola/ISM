@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/ll_my_students_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -32,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:text="@string/strtest"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/color_gray"
                 android:textSize="@dimen/d18dp" />
 
             <TextView

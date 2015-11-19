@@ -98,8 +98,10 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
             holder.llAssignmentContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    fragmentArgument.getRequestObject().setExamId(listOfAssignments.get(position).getExamID());
-                    fragmentArgument.getRequestObject().setExamMode(listOfAssignments.get(position).getExamMode());
+                    fragmentArgument.getFragmentArgumentObject().setExamId(listOfAssignments.get(position).getExamID());
+                    fragmentArgument.getFragmentArgumentObject().setExamMode(listOfAssignments.get(position).getExamMode());
+                    fragmentArgument.getFragmentArgumentObject().setAssignmentNo(position);
+                    fragmentArgument.getFragmentArgumentObject().setAssignmentName(listOfAssignments.get(position).getExamName());
                     ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR, fragmentArgument);
 
                 }

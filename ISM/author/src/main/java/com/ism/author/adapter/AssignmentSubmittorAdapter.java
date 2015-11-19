@@ -14,7 +14,6 @@ import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
 import com.ism.author.helper.CircleImageView;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
@@ -78,16 +77,17 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
             holder.llAssignmentSubmittorContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    fragmentArgument.getRequestObject().setStudentId(listOfStudents.get(position).getStudentId());
-                    Utils.showToast("The Exam Id is" + fragmentArgument.getRequestObject().getExamId() +
-                            "The student id is" + fragmentArgument.getRequestObject().getStudentId(), mContext);
 
+                    fragmentArgument.getFragmentArgumentObject().setStudentId(listOfStudents.get(position).getStudentId());
+                    fragmentArgument.getFragmentArgumentObject().setPosition(position + 1);
+                    fragmentArgument.getFragmentArgumentObject().setProfilePic(listOfStudents.get(position).getProfilePic());
+                    fragmentArgument.getFragmentArgumentObject().setStudentName(listOfStudents.get(position).getFullName());
 
-                    if (fragmentArgument.getRequestObject().getExamMode().equalsIgnoreCase("subjective")) {
+                    if (fragmentArgument.getFragmentArgumentObject().getExamMode().equalsIgnoreCase("subjective")) {
 
                         ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS, fragmentArgument);
 
-                    } else if (fragmentArgument.getRequestObject().getExamMode().equalsIgnoreCase("objective")) {
+                    } else if (fragmentArgument.getFragmentArgumentObject().getExamMode().equalsIgnoreCase("objective")) {
 
                         ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS, fragmentArgument);
 

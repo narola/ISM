@@ -40,12 +40,10 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private static final String TAG = GetStudentsFragment.class.getSimpleName();
     private View view;
     Fragment mFragment;
-    private FragmentArgument fragmentArgument;
 
-
-    public GetStudentsFragment(Fragment fragment, FragmentArgument fragmentArgument) {
+    public GetStudentsFragment(Fragment fragment) {
         this.mFragment = fragment;
-        this.fragmentArgument = fragmentArgument;
+
     }
 
     private ImageView imgSearchMystudents;
@@ -189,6 +187,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
                     listOfStudents.addAll(responseObj.getData().get(0).getEvaluations());
                     myStudentListAdapter.addAll(listOfStudents);
                     myStudentListAdapter.notifyDataSetChanged();
+
                 } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
@@ -198,5 +197,10 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         } catch (Exception e) {
             Debug.e(TAG, "onResponseGetAllExamSubmission Exception : " + e.toString());
         }
+    }
+
+    private FragmentArgument getFragmentArguments() {
+        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getFragmnetArgument();
+
     }
 }
