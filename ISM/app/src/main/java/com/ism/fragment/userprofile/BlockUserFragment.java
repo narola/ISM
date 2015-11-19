@@ -18,7 +18,7 @@ import com.ism.adapter.BlockedUserAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.InputValidator;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.model.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
 
 /**

@@ -1,4 +1,4 @@
-package com.ism.ws;
+package com.ism.ws.model;
 
 import com.ism.ws.model.Data;
 

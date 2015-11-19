@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.ism.constant.WebConstants;
+import com.ism.ws.model.ResponseObject;
 
 /**
  * Created by c161 on 23/10/15.
@@ -50,7 +51,7 @@ public class WebserviceWrapper {
                         responseObject = new RequestWs().getRequest(WebConstants.URL_REQUEST_CREDENTIALS, ResponseObject.class, requestObject);
                         break;
                     case WebConstants.GET_COUNTRIES:
-                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_COUNTRIES, ResponseObject.class, requestObject);
+	                    responseObject = new RequestWs().getRequest(WebConstants.URL_GET_COUNTRIES, ResponseObject.class, requestObject);
                         break;
                     case WebConstants.GET_STATES:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_STATES, ResponseObject.class, requestObject);
@@ -88,7 +89,6 @@ public class WebserviceWrapper {
                     case WebConstants.GET_ALL_NOTICES:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ALL_NOTICES, ResponseObject.class, requestObject);
                         break;
-
                     case WebConstants.GENERAL_SETTING_PREFERENCES:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GENERAL_SETTING_PREFERENCES, ResponseObject.class, requestObject);
                         break;
@@ -98,7 +98,6 @@ public class WebserviceWrapper {
                     case WebConstants.GET_USER_PREFERENCES:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_USER_PREFERENCES, ResponseObject.class, requestObject);
                         break;
-
                     case WebConstants.GET_NOTIFICATION:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_NOTIFICATION, ResponseObject.class, requestObject);
                         break;

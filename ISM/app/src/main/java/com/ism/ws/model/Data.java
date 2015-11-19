@@ -827,4 +827,23 @@ public class Data {
 	public void setSubjectName(String subjectName) {
 		this.subjectName = subjectName;
 	}
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    @JsonProperty("birthdate")
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    @JsonProperty("contact_number")
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
 }

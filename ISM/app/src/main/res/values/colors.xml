@@ -52,4 +52,7 @@
     <color name="divider_light">#EEEEEE</color>
     <color name="orange">#D65955</color>
     <color name="studymate_tab_bg">#F2F2F2</color>
+    <color name="blue">#4294D0</color>
+    <color name="blue_dark">#286fa3</color>
+    <color name="bg_wallet_head">#616D79</color>
 </resources>

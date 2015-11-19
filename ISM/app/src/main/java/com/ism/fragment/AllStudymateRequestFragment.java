@@ -16,8 +16,8 @@ import com.ism.adapter.StudymateRequestAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.model.RequestObject;
+import com.ism.ws.model.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
 import com.ism.ws.model.Data;
 

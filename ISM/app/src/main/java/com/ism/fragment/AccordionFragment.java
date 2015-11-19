@@ -22,8 +22,8 @@ import com.ism.model.HighScoreSubject;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.AccordionView;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.model.RequestObject;
+import com.ism.ws.model.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
 import com.ism.ws.model.Data;
 
@@ -233,7 +233,9 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 					if (!subjectFound) {
 						HighScoreSubject highScoreSubject = new HighScoreSubject();
 						highScoreSubject.setSubjectName(student.getSubjectName());
-						highScoreSubject.setArrListStudent(new ArrayList<Data>());
+						ArrayList<Data> students = new ArrayList<Data>();
+						students.add(student);
+						highScoreSubject.setArrListStudent(students);
 						arrListHighScoreSubject.add(highScoreSubject);
 					}
 				}

@@ -1,14 +1,164 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.ism.fragment.MyWalletFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:background="@color/color_graylight"
+                tools:context="com.ism.fragment.MyWalletFragment">
+
+	<ImageView
+		android:id="@+id/img_wallet"
+		android:layout_width="150dp"
+		android:layout_height="150dp"
+		android:layout_centerHorizontal="true"
+		android:src="@drawable/img_wallet"
+		android:layout_marginTop="25dp"
+		android:layout_marginBottom="15dp"/>
 
 	<TextView
-		android:layout_width="wrap_content"
+		android:id="@+id/txt_wallet_balance"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_centerInParent="true"
-		android:textSize="20sp"
-		android:text="My Wallet"/>
+		android:layout_below="@id/img_wallet"
+		android:textSize="35sp"
+		android:layout_marginBottom="10dp"
+		android:gravity="center"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@id/txt_wallet_balance"
+		android:orientation="horizontal">
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:gravity="center_horizontal"
+			android:orientation="vertical"
+			android:background="@android:color/white">
+
+			<TextView
+				android:id="@+id/txt_generate_coupon"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@drawable/bg_wallet_head"
+				android:text="@string/generate_coupon"
+				android:textAllCaps="true"
+				android:textColor="@color/color_green"
+				android:textSize="20sp"
+				android:padding="10dp"/>
+
+			<TextView
+				android:id="@+id/txt_generate_coupon_msg"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/msg_generate_coupon"
+				android:textColor="@color/bg_app_dark"
+				android:textSize="18sp"
+				android:padding="15dp"/>
+
+			<TextView
+				android:id="@+id/txt_enter_amount"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:layout_marginLeft="10dp"
+				android:text="@string/enter_coupon_amount"
+				android:textColor="@color/bg_app_dark"
+				android:textSize="18sp"
+				android:textStyle="bold"/>
+
+			<EditText
+				android:id="@+id/edit_coupon_amount"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="10dp"
+				android:inputType="numberDecimal"
+				android:textSize="25sp"
+				android:textColor="@color/bg_app_dark"
+				android:background="@drawable/bg_edit_gray"
+				android:padding="10dp"/>
+
+			<com.ism.commonsource.view.ActionProcessButton
+				android:id="@+id/btn_generate"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:paddingLeft="@dimen/d90dp"
+				android:paddingRight="@dimen/d90dp"
+				android:text="@string/generate"
+				android:textColor="@color/color_white"
+				android:textSize="@dimen/d20dp"
+				app:pb_colorComplete="@color/blue"
+				app:pb_colorNormal="@color/blue"
+				app:pb_colorPressed="@color/blue"
+				app:pb_colorProgress="@color/blue_dark"
+				app:pb_cornerRadius="@dimen/app_button_corner_radius"
+				app:pb_textComplete="@string/generate"
+				app:pb_textProgress="@string/processing" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/txt_generate_coupon2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@drawable/bg_wallet_head"
+				android:text="@string/generate_coupon"
+				android:textAllCaps="true"
+				android:textColor="@color/color_green"
+				android:textSize="20sp"
+				android:padding="10dp"/>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:background="@color/bg_wallet_head"
+				android:padding="5dp">
+
+				<TextView
+					android:id="@+id/txt_coupon_code"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="@string/coupon_code"
+					android:gravity="center"
+					android:textColor="@android:color/white"
+					android:textSize="17sp"/>
+
+				<TextView
+					android:id="@+id/txt_date"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="@string/date"
+					android:gravity="center"
+					android:textColor="@android:color/white"
+					android:textSize="17sp"/>
+
+				<TextView
+					android:id="@+id/txt_amount"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="@string/amount"
+					android:gravity="center"
+					android:textColor="@android:color/white"
+					android:textSize="17sp"/>
+			</LinearLayout>
+
+			<ListView
+				android:id="@+id/lv_coupon"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"></ListView>
+		</LinearLayout>
+	</LinearLayout>
 
 </RelativeLayout>

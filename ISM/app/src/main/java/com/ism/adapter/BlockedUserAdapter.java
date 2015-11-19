@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Utility;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.model.ResponseObject;
 import com.ism.ws.model.Data;
 
 import java.util.ArrayList;
