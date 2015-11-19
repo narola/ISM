@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
-import com.ism.author.Utility.Utils;
+import com.ism.author.Utility.Utility;
 import com.ism.author.adapter.StudentAttemptedAdapter;
 import com.ism.author.adapter.TrialExamDetailsAdapter;
 import com.ism.author.constant.WebConstants;
@@ -39,7 +39,8 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     private StudentAttemptedAdapter studentAttemptedAdapter;
     private TrialExamDetailsAdapter trialExamDetailsAdapter;
     public static ResponseObject responseObjQuestions;
-    public static List<String> questionsID=new ArrayList<>();
+    public static List<String> questionsID = new ArrayList<>();
+
     public static StudentAttemptedFragment newInstance() {
         StudentAttemptedFragment fragment = new StudentAttemptedFragment();
         return fragment;
@@ -144,8 +145,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                 } else if (resObjSubmisssion.getStatus().equals(ResponseObject.FAILED)) {
                     Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
                 }
-            }
-            else if (API_METHOD == WebConstants.GETEXAMQUESTIONS) {
+            } else if (API_METHOD == WebConstants.GETEXAMQUESTIONS) {
                 ResponseObject resObjQuestions = (ResponseObject) object;
                 if (resObjQuestions.getStatus().equals(ResponseObject.SUCCESS)) {
                     if (resObjQuestions.getData().size() != 0) {
@@ -161,10 +161,10 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                         String examDate[] = responseObjQuestions.getData().get(0).getCreatedDate().split(" ");
                         TrialExamObjectiveDetailFragment.txtExamDateValue.setText(examDate[0]);
                         TrialExamObjectiveDetailFragment.txtExamName.setText(responseObjQuestions.getData().get(0).getExamName());
-                        questionsID=new ArrayList<>();
-                        for(int i=0;i<responseObjQuestions.getData().get(0).getQuestions().size();i++){
+                        questionsID = new ArrayList<>();
+                        for (int i = 0; i < responseObjQuestions.getData().get(0).getQuestions().size(); i++) {
                             questionsID.add(responseObjQuestions.getData().get(0).getQuestions().get(i).getQuestionId());
-                            Debug.i(TAG,"Q.ID :" +questionsID.get(i));
+                            Debug.i(TAG, "Q.ID :" + questionsID.get(i));
                         }
 
 
@@ -183,7 +183,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     private void callapigetexamquestions(RequestObject requestObject) {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -192,7 +192,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                 Log.i(TAG, "callApi GETEXAMQUESTIONS ::" + e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }

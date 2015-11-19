@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_bg_trial_exam_details"
+        android:orientation="horizontal"
+        android:padding="@dimen/d10dp"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.90"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.ism.author.helper.CircleImageView
+                android:id="@+id/img_student_profile_pic"
+                android:layout_width="@dimen/d50dp"
+                android:layout_height="@dimen/d50dp"
+                android:background="@drawable/userdp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_weight="1"
+                android:gravity="top"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_student_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_blue"
+                    android:textSize="@dimen/d18dp" />
+
+                <TextView
+                    android:id="@+id/tv_student_roll_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d5dp"
+                    android:text="@string/strtest"
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/d15dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/d1dp"
+            android:layout_height="match_parent"
+            android:background="@color/questionlistseparator" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/d15dp"
+            android:layout_weight="1.65"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_assignment_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strassignmentno"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/d18dp" />
+
+            <TextView
+                android:id="@+id/tv_assignment_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d5dp"
+                android:text="@string/strtest"
+                android:textAllCaps="true"
+                android:textColor="@color/color_red"
+                android:textSize="@dimen/d20dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/d1dp"
+            android:layout_height="match_parent"
+            android:background="@color/questionlistseparator" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.45"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_subjective_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strScore"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/d15dp" />
+
+            <TextView
+                android:id="@+id/tv_subjective_marks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d5dp"
+                android:text="@string/strtest"
+                android:textAllCaps="true"
+                android:textColor="@color/color_green"
+                android:textSize="@dimen/d20dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_subjective_questions_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_app_dark"
+        android:padding="@dimen/d10dp">
+
+        <ImageView
+            android:id="@+id/img_prev_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_prev" />
+
+        <TextView
+            android:id="@+id/tv_student_evalution_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/strevaluation"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d18dp" />
+
+        <ImageView
+            android:id="@+id/img_next_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_next" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

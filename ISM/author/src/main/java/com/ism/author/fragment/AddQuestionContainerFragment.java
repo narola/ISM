@@ -14,6 +14,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.Data;
+import com.ism.author.model.FragmentArgument;
 
 import java.util.ArrayList;
 
@@ -29,8 +30,9 @@ public class AddQuestionContainerFragment extends Fragment {
     private View view;
     private FragmentListener fragListener;
 
-    public static AddQuestionContainerFragment newInstance() {
+    public static AddQuestionContainerFragment newInstance(FragmentArgument fragmentArgument) {
         AddQuestionContainerFragment addQuestionContainerFragment = new AddQuestionContainerFragment();
+        addQuestionContainerFragment.fragmentArgument = fragmentArgument;
         return addQuestionContainerFragment;
     }
 
@@ -40,12 +42,11 @@ public class AddQuestionContainerFragment extends Fragment {
 
     FrameLayout flAddquestionfragmentContainerLeft, flAddquestionfragmentContainerRight;
     public static final int FRAGMENT_QUESTIONLIST = 0, FRAGMENT_QUESTIONADDEDIT = 1, FRAGMENT_PREVIEWQUESTION = 2;
-
     public QuestionListFragment questionListFragment;
     public PreviewQuestionFragment previewQuestionFragment;
     public QuestionAddEditFragment questionAddEditFragment;
-
     private Boolean isFrontVisible = false;
+    private FragmentArgument fragmentArgument;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class AddQuestionContainerFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_ADDQUESTION);
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -106,7 +107,7 @@ public class AddQuestionContainerFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ADDQUESTION);
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
@@ -133,7 +134,6 @@ public class AddQuestionContainerFragment extends Fragment {
             getFragmentManager().beginTransaction().replace(R.id.fl_addquestionfragment_container_right, previewQuestionFragment).commit();
         } catch (Exception e) {
             Debug.e(TAG, "loadFragment Exception : " + e.toString());
-
         }
 
     }
@@ -249,9 +249,13 @@ public class AddQuestionContainerFragment extends Fragment {
     public void setQuestionDataAfterEditQuestion() {
 
         if (getFRAGMENT_TYPE() == FRAGMENT_QUESTIONLIST) {
+
             questionListFragment.updateQuestionDataAfterEditQuestion();
+
         } else if (getFRAGMENT_TYPE() == FRAGMENT_PREVIEWQUESTION) {
+
             previewQuestionFragment.updateQuestionDataAfterEditQuestion();
+
         }
 
     }

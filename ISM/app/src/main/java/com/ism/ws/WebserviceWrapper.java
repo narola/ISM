@@ -122,6 +122,9 @@ public class WebserviceWrapper {
                     case WebConstants.UPDATE_READ_STATUS:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_UPDATE_READ_STATUS, ResponseObject.class, requestObject);
                         break;
+                    case WebConstants.EDIT_ABOUT_ME:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_EDIT_ABOUT_ME, ResponseObject.class, requestObject);
+                        break;
                     case WebConstants.GET_HIGH_SCORERS:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_HIGH_SCORERS, ResponseObject.class, requestObject);
                         break;

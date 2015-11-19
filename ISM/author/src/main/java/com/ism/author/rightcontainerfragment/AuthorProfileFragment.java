@@ -108,7 +108,7 @@ public class AuthorProfileFragment extends Fragment {
 
         if (authorHostActivity != null) {
 
-            authorHostActivity.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MYFEEDS);
+            authorHostActivity.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MYFEEDS,null);
         }
 
     }

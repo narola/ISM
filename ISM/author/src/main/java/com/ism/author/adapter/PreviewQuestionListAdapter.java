@@ -27,26 +27,24 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
 
     private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
-
-    Context mContext;
-    ArrayList<Data> listOfPreviewQuestions = new ArrayList<Data>();
-    MyTypeFace myTypeFace;
+    private Context mContext;
+    private ArrayList<Data> listOfPreviewQuestions = new ArrayList<Data>();
+    private MyTypeFace myTypeFace;
     Fragment mFragment;
+    private LayoutInflater inflater;
 
 
     public PreviewQuestionListAdapter(Context context, Fragment fragment) {
         this.mContext = context;
         this.mFragment = fragment;
+        myTypeFace = new MyTypeFace(context);
+        inflater = LayoutInflater.from(mContext);
 
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-
-        myTypeFace = new MyTypeFace(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.row_preview_question, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;

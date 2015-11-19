@@ -1,7 +1,6 @@
 package com.ism.author.fragment;
 
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +28,7 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
+import com.ism.author.model.FragmentArgument;
 import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
@@ -59,25 +59,23 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         // Required empty public constructor
     }
 
-    TextView tvExamTitle, tvExamExamfor, tvExamExamschedule, tvExamExaminstruction, tvExamDeclareresult,
+    private TextView tvExamTitle, tvExamExamfor, tvExamExamschedule, tvExamExaminstruction, tvExamDeclareresult,
             tvExamNegativemarking, tvExamRandomquestion, tvExamUsescore, tvExamQuestionscorevalue, tvExamAddnegativemark;
-    Spinner spExamClassroom, spExamSubjectname, spExamSubjecttopic, spExamPassingpercent, spExamExamname, spExamExammode,
+    private Spinner spExamClassroom, spExamSubjectname, spExamSubjecttopic, spExamPassingpercent, spExamExamname, spExamExammode,
             spExamExamduration;
     private ArrayList<Data> arrListClassRooms, arrListSubject, arrListTopic;
-    List<String> arrListDefalt, arrListPassingPercent, arrListExamDuration, arrListExamMode, arrListExamName;
+    private List<String> arrListDefalt, arrListPassingPercent, arrListExamDuration, arrListExamMode, arrListExamName;
+    private ToggleButton tbExamSelectexamfor;
+    private EditText etExamName, etExamStartdate, etExamEnddate, etExamQuestionscorevalue, etExamAttemptcount, etExamAddnegativemark;
+    private CheckBox cbExamStartdateNotify, cbExamEnddateNotify;
+    private RadioGroup radioDeclareresult, radioNegativemarking, radioExamRandomQuestion, radioExamUsescore;
+    private LinearLayout llAddQuestionscore, llAddNegativeMark;
+
+    private Button btnExamSave, btnExamSetquestion, btnExamCancel;
+    private RichTextEditor rteTrialExam;
 
 
-    ToggleButton tbExamSelectexamfor;
-    EditText etExamName, etExamStartdate, etExamEnddate, etExamQuestionscorevalue, etExamAttemptcount, etExamAddnegativemark;
-    CheckBox cbExamStartdateNotify, cbExamEnddateNotify;
-    RadioGroup radioDeclareresult, radioNegativemarking, radioExamRandomQuestion, radioExamUsescore;
-    LinearLayout llAddQuestionscore, llAddNegativeMark;
-
-    Button btnExamSave, btnExamSetquestion, btnExamCancel;
-    RichTextEditor rteTrialExam;
-
-
-    MyTypeFace myTypeFace;
+    private MyTypeFace myTypeFace;
 
     private static int PASSINGPERCENT_INTERVAL = 5, PASSINGPERCENT_STARTVALUE = 30, PASSINGPERCENT_ENDVALUE = 99;
     private static int EXAMDURATION_INTERVAL = 30, EXAMDURATION_STARTVALUE = 30, EXAMDURATION_ENDVALUE = 300;
@@ -272,35 +270,9 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-//        try {
-//            fragListener = (FragmentListener) activity;
-//            if (fragListener != null) {
-//                fragListener.onFragmentAttached(CreateExamAssignmentContainerFragment.FRAGMENT_TRIAL_EXAM);
-//            }
-//        } catch (ClassCastException e) {
-//            Log.i(TAG, "onAttach Exception : " + e.toString());
-//        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-//        try {
-//            if (fragListener != null) {
-//                fragListener.onFragmentDetached(CreateExamAssignmentContainerFragment.FRAGMENT_TRIAL_EXAM);
-//            }
-//        } catch (ClassCastException e) {
-//            Log.i(TAG, "onDetach Exception : " + e.toString());
-//        }
-//        fragListener = null;
-    }
-
     private void callApiGetClassrooms() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCLASSROOMS);
@@ -308,14 +280,14 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }
 
     private void callApiGetSubjects() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
@@ -323,7 +295,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }
@@ -331,7 +303,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private void callApiGetTopics(int subject_id) {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 RequestObject requestObject = new RequestObject();
                 requestObject.setSubjectId(String.valueOf(subject_id));
@@ -341,7 +313,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }
@@ -349,7 +321,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private void callApiCreateExam() {
 
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utility.isOnline(getActivity())) {
             try {
                 RequestObject requestObject = new RequestObject();
 
@@ -386,7 +358,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 Log.e(TAG, e.getLocalizedMessage());
             }
         } else {
-            Utils.showToast(getActivity().getResources().getString(R.string.strnetissue), getActivity());
+            Utility.toastOffline(getActivity());
         }
 
     }
@@ -650,6 +622,9 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         }
     }
 
+
+    private FragmentArgument fragmentArgument = new FragmentArgument();
+
     private void onResponseCreateExam(Object object, Exception error) {
         try {
             if (object != null) {
@@ -657,6 +632,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
                     Utils.showToast(getActivity().getString(R.string.msg_success_createexam), getActivity());
                     btnExamSetquestion.setVisibility(View.VISIBLE);
+                    fragmentArgument.getFragmentArgumentObject().setExamId(responseObj.getData().get(0).getExamID());
                 } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
@@ -703,7 +679,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
         } else if (v == btnExamSetquestion) {
 
-            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION);
+            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER, fragmentArgument);
 
         } else if (v == btnExamCancel) {
 

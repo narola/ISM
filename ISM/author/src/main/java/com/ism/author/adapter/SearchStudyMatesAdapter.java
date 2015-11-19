@@ -33,10 +33,13 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
         return tagIds;
     }
 
+    private LayoutInflater inflater;
+
     public SearchStudyMatesAdapter(Context mContext) {
         this.mContext = mContext;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+        inflater = LayoutInflater.from(mContext);
     }
 
     private ImageLoader imageLoader;
@@ -44,9 +47,6 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.row_studymates, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;

@@ -39,7 +39,7 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.row_get_objective_assignment_questions, parent, false);
+        View view = inflater.inflate(R.layout.row_objective_assignment_questions, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }

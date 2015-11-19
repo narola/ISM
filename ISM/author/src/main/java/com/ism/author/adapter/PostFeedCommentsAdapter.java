@@ -26,21 +26,19 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     private Context mContext;
     private ArrayList<Data> listOfComments = new ArrayList<Data>();
     private ImageLoader imageLoader;
+    private LayoutInflater inflater;
 
 
     public PostFeedCommentsAdapter(Context context) {
         this.mContext = context;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+        inflater = LayoutInflater.from(mContext);
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.row_post_commenter, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;

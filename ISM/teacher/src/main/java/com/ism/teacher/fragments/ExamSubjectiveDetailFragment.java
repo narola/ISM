@@ -2,6 +2,7 @@ package com.ism.teacher.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.FrameLayout;
 
 import com.ism.teacher.R;
 import com.ism.teacher.activity.TeacherHostActivity;
+import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.interfaces.FragmentListener;
 
 
@@ -26,8 +28,25 @@ public class ExamSubjectiveDetailFragment extends Fragment {
     public static final int FRAGMENT_MY_STUDENTS = 0;
     public static final int FRAGMENT_SUBJECTIVE_QUESTIONS = 1;
 
+
+    //test for opening evaluation for specific students after calling subjective questions
+
+    Context context;
+    public String examid_from_param = "";
+    public String studentid_from_param = "";
+    public boolean callEvaluationApiFlag = false;
+
+    SubjectiveQuestionsFragment subjectiveQuestionsFragment;
+    MyStudentsFragment myStudentsFragment;
+
+    public ExamSubjectiveDetailFragment(Context context, String examid, String studentid, boolean flag) {
+        this.context = context;
+        this.examid_from_param = examid;
+        this.studentid_from_param = studentid;
+        this.callEvaluationApiFlag = flag;
+    }
+
     public ExamSubjectiveDetailFragment() {
-        //required
     }
 
     public static ExamSubjectiveDetailFragment newInstance() {
@@ -51,20 +70,54 @@ public class ExamSubjectiveDetailFragment extends Fragment {
         fragment_container_left = (FrameLayout) view.findViewById(R.id.fragment_container_left);
         fragment_container_right = (FrameLayout) view.findViewById(R.id.fragment_container_right);
 
-        loadFragmentInLeftContainer();
-        loadFragmentInRightContainer();
+        if (callEvaluationApiFlag) {
+
+            loadMyStudentsFragmentWithHighlightStudent();
+            loadSubjectiveQuesionWithEvaluation();
+            Log.i(TAG, "subjective ques with evaluation");
+        } else {
+            loadOnlySubjectiveQuestion();
+
+        }
+
+        loadMyStudentsFragment();
+
     }
 
-    public void loadFragmentInLeftContainer() {
+    /**
+     * Load simple container frag to show student and subjective question list.
+     * Evaluation start after teacher click on specific student list
+     */
+    public void loadMyStudentsFragment() {
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_container_left, MyStudentsFragment.newInstance()).commit();
-
     }
 
-    public void loadFragmentInRightContainer() {
+    public void loadOnlySubjectiveQuestion() {
 
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_container_right, SubjectiveQuestionsFragment.newInstance()).commit();
+    }
+
+
+    /**
+     * send studentid,examid and flag to call evaluation api after subjective question api response to bind evaluation response.
+     */
+
+    public void loadSubjectiveQuesionWithEvaluation() {
+        subjectiveQuestionsFragment = new SubjectiveQuestionsFragment(studentid_from_param, WebConstants.EXAM_ID_11_SUBJECTIVE, true);
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_container_right, subjectiveQuestionsFragment).commit();
 
     }
+
+    /**
+     * send student id to highlight the specific student because this student's evaluation started
+     */
+
+
+    public void loadMyStudentsFragmentWithHighlightStudent() {
+        myStudentsFragment=new MyStudentsFragment(studentid_from_param);
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_container_left, myStudentsFragment).commit();
+    }
+
 
     @Override
     public void onAttach(Activity activity) {

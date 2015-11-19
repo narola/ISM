@@ -26,7 +26,7 @@ public class OfficeFragment extends Fragment {
     private View view;
     private FragmentListener fragListener;
     public static final int FRAGMENT_TRIAL = 0;
-    public static final int FRAGMENT_TRIAL_EXAM_DETAILS = 1;
+    //    public static final int FRAGMENT_TRIAL_EXAM_DETAILS = 1;
     public static final int FRAGMENT_ASSESSMENT = 2;
     GridView gvOfficetab;
     OfficeTabGridAdapter officeTabGridAdapter;
@@ -104,15 +104,15 @@ public class OfficeFragment extends Fragment {
         switch (fragment) {
             case FRAGMENT_TRIAL:
                 currentFragment = fragment;
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL, null);
                 break;
-            case FRAGMENT_TRIAL_EXAM_DETAILS:
-                currentFragment = fragment;
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
-                break;
+//            case FRAGMENT_TRIAL_EXAM_DETAILS:
+//                currentFragment = fragment;
+//                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
+//                break;
             case FRAGMENT_ASSESSMENT:
                 currentFragment = fragment;
-                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT);
+                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSESSMENT, null);
                 break;
         }
     }

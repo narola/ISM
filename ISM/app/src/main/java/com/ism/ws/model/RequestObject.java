@@ -68,6 +68,25 @@ public class RequestObject {
 	private String[] taggedUserIds;
 	private ArrayList<RequestObject> preferences;
 	private File file;
+	private String aboutMeText;
+	private String ambitionInLife;
+
+	public String getAmbitionInLife() {
+		return ambitionInLife;
+	}
+	@JsonProperty("ambitionInLife")
+	public void setAmbitionInLife(String ambitionInLife) {
+		this.ambitionInLife = ambitionInLife;
+	}
+
+	public String getAboutMeText() {
+		return aboutMeText;
+	}
+	@JsonProperty("aboutMeText")
+	public void setAboutMeText(String aboutMeText) {
+		this.aboutMeText = aboutMeText;
+	}
+
 
 	public String getKeyId() {
 		return keyId;
