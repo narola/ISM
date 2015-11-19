@@ -42,12 +42,16 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
     ResponseObject resObjStudentAttempted;
     private ResponseObject responseObjectEval;
 
-    public MyStudentsAdapter(ResponseObject resObjStudentAttempted, Context context, Fragment fragment) {
+    //test
+    String student_id_to_highlight = "";
+
+    public MyStudentsAdapter(String student_id_to_highlight, ResponseObject resObjStudentAttempted, Context context, Fragment fragment) {
         this.resObjStudentAttempted = resObjStudentAttempted;
         this.mFragment = fragment;
         this.mContext = context;
         imageLoader = ImageLoader.getInstance();
         myTypeFace = new MyTypeFace(context);
+        this.student_id_to_highlight = student_id_to_highlight;
     }
 
     @Override
@@ -95,8 +99,6 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
             holder.rlMyStudents.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-
                     if (lastSelected == -1) {
                         arrayListStudents.get(position).setIsFlagged(true);
                         lastSelected = position;
@@ -119,13 +121,22 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
                         SubjectiveQuestionsFragment.rvSubjectiveQuestionList.setAdapter(subjectiveQuestionAdapter);
                         subjectiveQuestionAdapter.notifyDataSetChanged();
 
-                          ((TeacherHostActivity) mContext).stopProgress();
+                        ((TeacherHostActivity) mContext).stopProgress();
                     }
                     notifyDataSetChanged();
 
 
                 }
             });
+
+            if (student_id_to_highlight != null && !student_id_to_highlight.equals("")) {
+                for (int i = 0; i < arrayListStudents.size(); i++) {
+                    if (student_id_to_highlight.equalsIgnoreCase(arrayListStudents.get(i).getStudent_id())) {
+                        holder.txtStudentName.setTextColor(mContext.getResources().getColor(R.color.color_poor));
+                    }
+                }
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();

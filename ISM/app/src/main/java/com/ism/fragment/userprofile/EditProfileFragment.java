@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.interfaces.FragmentListener;
+import com.ism.object.MyTypeFace;
 
 /**
  * Created by c161 on --/10/15.
@@ -31,6 +32,7 @@ public class EditProfileFragment extends Fragment {
     private TextView txtAboutMe, txtBooks, txtMovies, txtRoleModels, txtPastTime;
     private int currentFragment = -1;
     private HostActivity activityHost;
+    MyTypeFace myTypeFace;
 
     public static EditProfileFragment newInstance() {
         EditProfileFragment fragChat = new EditProfileFragment();
@@ -56,8 +58,12 @@ public class EditProfileFragment extends Fragment {
         txtMovies = (TextView) view.findViewById(R.id.txt_movies);
         txtRoleModels = (TextView) view.findViewById(R.id.txt_role_models);
         txtPastTime = (TextView) view.findViewById(R.id.txt_pasttime);
-
-
+        myTypeFace = new MyTypeFace(getActivity());
+        txtAboutMe.setTypeface(myTypeFace.getRalewayRegular());
+        txtBooks.setTypeface(myTypeFace.getRalewayRegular());
+        txtMovies.setTypeface(myTypeFace.getRalewayRegular());
+        txtRoleModels.setTypeface(myTypeFace.getRalewayRegular());
+        txtPastTime.setTypeface(myTypeFace.getRalewayRegular());
         txtAboutMe.setEnabled(false);
         View.OnClickListener onClick = new View.OnClickListener() {
             @Override

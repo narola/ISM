@@ -60,11 +60,8 @@ public class ObjectiveQuestionsAdapter extends RecyclerView.Adapter<ObjectiveQue
             ArrayList<Data> arrayList = new ArrayList<Data>();
             arrayList = responseObject.getData().get(0).getQuestions();
             int qno = position + 1;
-            //holder.txtQuestionNo.setText("Questions " + qno);
             holder.txtQuestionNo.setText(Html.fromHtml("<u>" + "Questions " + qno + "</u>"));
             holder.txtQuestionText.setText(arrayList.get(position).getQuestionText());
-            // questionsID[position]=arrayList.get(0).getQuestionId();
-            // questionID[position]=arrayList.get(position).getQuestionId();
             asciiChar = 65;
             for (int i = 0; i < arrayList.get(position).getAnswers().size(); i++) {
                 setOptions(arrayList.get(position).getAnswers().get(i).getChoiceText(), holder.textViewOptions[i]);
@@ -76,6 +73,9 @@ public class ObjectiveQuestionsAdapter extends RecyclerView.Adapter<ObjectiveQue
                 }
             }
             if (studentEvalResObj != null) {
+                holder.llCorrectAnswerRow.setVisibility(View.VISIBLE);
+                holder.llEvaluationRow.setVisibility(View.VISIBLE);
+
                 int j = 0;
                 holder.txtStudentAnswered.setVisibility(View.VISIBLE);
                 holder.txtStudentNameAnswer.setVisibility(View.VISIBLE);
@@ -87,10 +87,6 @@ public class ObjectiveQuestionsAdapter extends RecyclerView.Adapter<ObjectiveQue
                 else {
                     holder.txtStudentNameAnswer.setText("Answer :");
                 }
-//                while (questionID[position] == dataArrayList.get(j++).getQuestionId()){
-//                    break;
-//                }
-                String questonid;
                 Debug.i(TAG, "Position: " + position);
 
                 for (int i = 0; i < StudentAttemptedFragment.questionsID.size(); i++) {
@@ -131,14 +127,19 @@ public class ObjectiveQuestionsAdapter extends RecyclerView.Adapter<ObjectiveQue
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtQuestionNo, txtQuestionText, txtQuestionsSolution, txtQuestionsEvaluations, txtQuestionsAnswer, txtCorrectAnswer, txtStudentNameAnswer, txtStudentAnswered, txtOptionA, txtOptionB, txtOptionC, txtOptionD, txtOptionE, txtOptionF;
-        LinearLayout llOptions;
+        TextView txtQuestionNo, txtQuestionText, txtQuestionsSolution, txtQuestionsEvaluations, txtQuestionsAnswer, txtCorrectAnswer,
+                txtStudentNameAnswer, txtStudentAnswered, txtOptionA, txtOptionB, txtOptionC, txtOptionD, txtOptionE, txtOptionF;
+        LinearLayout llOptions, llEvaluationRow, llCorrectAnswerRow;
         EditText etEvaluationsNotes;
         TextView textViewOptions[];//={txtOptionA.getId(),txtOptionB.getId(),txtOptionC.getId(),txtOptionD.getId(),txtOptionE.getId(),txtOptionF.getId()};
 
         public ViewHolder(View itemView) {
             super(itemView);
             try {
+
+                llCorrectAnswerRow =(LinearLayout)itemView.findViewById(R.id.ll_correct_answer_row);
+                llEvaluationRow =(LinearLayout)itemView.findViewById(R.id.ll_evaluation_row);
+
                 txtQuestionNo = (TextView) itemView.findViewById(R.id.txt_question_no);
                 txtQuestionText = (TextView) itemView.findViewById(R.id.txt_question_text);
                 txtQuestionsSolution = (TextView) itemView.findViewById(R.id.txt_solution);

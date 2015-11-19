@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_margin="5dp"
-                    android:src="@drawable/ic_copy_question" />
+                    android:src="@drawable/img_copy_question" />
 
                 <TextView
                     android:id="@+id/txt_class"

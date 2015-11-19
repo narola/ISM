@@ -113,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/d10dp"
-                    android:background="@drawable/ic_copy_question" />
+                    android:background="@drawable/img_copy_question" />
 
                 <ImageView
                     android:id="@+id/img_question_addtofavourite"
