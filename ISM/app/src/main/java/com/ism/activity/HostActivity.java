@@ -50,10 +50,13 @@ import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.model.Notification;
+import com.ism.ws.model.PrivacySetting;
+import com.ism.ws.model.RequestObject;
+import com.ism.ws.model.ResponseGetAllPreferences;
+import com.ism.ws.model.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.SMSAlert;
 
 import java.util.ArrayList;
 
@@ -114,7 +117,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private int currentMainFragment;
     private int currentRightFragment;
     private int currentMainFragmentBg;
-    private ArrayList<Data> arrayList = new ArrayList<>();
+    private ArrayList<Notification> arrayListNotification = new ArrayList<>();
+    private ArrayList<SMSAlert> arrayListSMSAlert = new ArrayList<>();
+    private ArrayList<PrivacySetting> arrayListPrivacySetting = new ArrayList<>();
 
     public interface HostListenerAboutMe {
         public void onSelectImage(Bitmap bitmap);
@@ -306,7 +311,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         txtAction.setOnClickListener(onClickMenuItem);
 
         callApiGetGeneralSettingPreferences();
-        callApiForGETUSerPreference();
+        callApiForGetUserPreference();
 
     }
 
@@ -785,46 +790,17 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
-        ResponseObject responseObject = (ResponseObject) object;
+
         hideProgress();
         try {
 
 
             if (WebConstants.GENERAL_SETTING_PREFERENCES == apiCode) {
+                onResponseGetAllPreference(object, error);
 
-                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
-                    if (responseObject.getData().size() > 0) {
-
-                        arrayList = responseObject.getData().get(0).getSmsAlert();
-                        for (int j = 0; j < arrayList.size(); j++) {
-                            PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
-                            //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
-                        }
-                        arrayList = responseObject.getData().get(0).getNotification();
-                        for (int j = 0; j < arrayList.size(); j++) {
-                            PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
-                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
-                        }
-                        arrayList = responseObject.getData().get(0).getPrivacySetting();
-                        for (int j = 0; j < arrayList.size(); j++) {
-                            PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
-                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
-                        }
-                    }
-                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
-
-                }
             } else if (WebConstants.GET_USER_PREFERENCES == apiCode) {
+                onResponseGetUserPreference(object, error);
 
-                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
-                    if (responseObject.getData().size() > 0) {
-                        for (int j = 0; j < responseObject.getData().size(); j++) {
-                            GeneralSettingsFragment.newInstance().setPreferenceList(responseObject.getData().get(j).getId(), responseObject.getData().get(j).getDefaultValue(), getApplicationContext());
-                        }
-                    } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
-
-                    }
-                }
             } else if (WebConstants.GET_ALL_BADGES_COUNT == apiCode) {
                 onResponseGetAllBadges(object, error);
             }
@@ -833,9 +809,74 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         }
     }
 
-    private void callApiForGETUSerPreference() {
+    private void onResponseGetAllPreference(Object object, Exception error) {
         try {
+            if (object != null) {
+                ResponseGetAllPreferences responseObject = (ResponseGetAllPreferences) object;
+                if (responseObject.getStatus().toString().equals(WebConstants.SUCCESS)) {
+                    if (responseObject.getData().size() > 0) {
 
+                        arrayListSMSAlert = responseObject.getData().get(0).getSMSAlert();
+                        for (int j = 0; j < arrayListSMSAlert.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
+                            //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                        arrayListNotification = responseObject.getData().get(0).getNotification();
+                        for (int j = 0; j < arrayListNotification.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayListNotification.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotification.get(j).getId());
+                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                        arrayListPrivacySetting = responseObject.getData().get(0).getPrivacySetting();
+                        for (int j = 0; j < arrayListPrivacySetting.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
+                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                    }
+
+                } else if (responseObject.getStatus().equals(WebConstants.FAILED)) {
+                    Log.e(TAG, "Failed to load general setting preferences");
+                }
+            } else if (error != null) {
+                Log.e(TAG, "onResponseGetAllPreference api Exceptiion : " + error.toString());
+            }
+
+
+        } catch (Exception e) {
+
+            Debug.i(TAG, "onResponseGetAllPreference :" + e.getLocalizedMessage());
+
+        }
+    }
+
+    private void onResponseGetUserPreference(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseObject responseObject = (ResponseObject) object;
+                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
+                    if (responseObject.getData().size() > 0) {
+                        for (int j = 0; j < responseObject.getData().size(); j++) {
+                            GeneralSettingsFragment.newInstance().setPreferenceList(responseObject.getData().get(j).getId(), responseObject.getData().get(j).getDefaultValue(), getApplicationContext());
+                        }
+                    }
+
+                } else if (responseObject.getStatus().equals(WebConstants.FAILED)) {
+                    Log.e(TAG, "Failed to load user setting preferences");
+                }
+            } else if (error != null) {
+                Log.e(TAG, "onResponseGetUserPreference api Exceptiion : " + error.toString());
+            }
+
+
+        } catch (Exception e) {
+
+            Debug.i(TAG, "onResponseGetUserPreference :" + e.getLocalizedMessage());
+
+        }
+    }
+
+    private void callApiForGetUserPreference() {
+
+        try {
             showProgress();
             RequestObject requestObject = new RequestObject();
             requestObject.setUserId("1");
@@ -865,19 +906,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         this.listnerHostProfileController = listnerHostProfileController;
     }
 
-
-//	@Override
-//	public void onResponse(Object object, Exception error, int apiCode) {
-//		try {
-//			switch (apiCode) {
-//				case WebConstants.GET_ALL_BADGES_COUNT:
-//					onResponseGetAllBadges(object, error);
-//					break;
-//			}
-//		} catch (Exception e) {
-//			Log.e(TAG, "onResponse Exception : " + e.toString());
-//		}
-//	}
 
     private void onResponseGetAllBadges(Object object, Exception error) {
         try {

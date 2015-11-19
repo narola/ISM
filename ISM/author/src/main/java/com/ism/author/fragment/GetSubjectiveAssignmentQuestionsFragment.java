@@ -34,6 +34,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
     public static GetSubjectiveAssignmentQuestionsFragment newInstance(FragmentArgument fragmentArgument) {
         GetSubjectiveAssignmentQuestionsFragment getSubjectiveAssignmentQuestionsFragment = new GetSubjectiveAssignmentQuestionsFragment();
         getSubjectiveAssignmentQuestionsFragment.fragmentArgument = fragmentArgument;
+
         return getSubjectiveAssignmentQuestionsFragment;
     }
 
@@ -51,8 +52,8 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
 
     private void initGlobal() {
 
-        getStudentsFragment = new GetStudentsFragment(this, fragmentArgument);
-        getSubjectiveQuestionsFragment = new GetSubjectiveQuestionsFragment(this, fragmentArgument);
+        getStudentsFragment = new GetStudentsFragment(this);
+        getSubjectiveQuestionsFragment = new GetSubjectiveQuestionsFragment(this);
         questionPaletteFragment = new QuestionPaletteFragment(this);
 
         flGetsubjectiveAssignmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_getsubjective_assignment_container_left);
@@ -103,4 +104,17 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
         }
         fragListener = null;
     }
+
+    public FragmentArgument getFragmnetArgument() {
+        return fragmentArgument;
+
+    }
+
+    public void loadStudentEvaluationData(String studentId) {
+        getFragmnetArgument().getFragmentArgumentObject().setStudentId(studentId);
+        getSubjectiveQuestionsFragment.loadStudentEvaluationData();
+
+
+    }
+
 }

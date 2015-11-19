@@ -30,10 +30,11 @@ import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.DataAboutMe;
+import com.ism.ws.model.RequestObject;
+import com.ism.ws.model.ResponseAboutMe;
+import com.ism.ws.model.ResponseObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -357,7 +358,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
+                ResponseAboutMe responseObj = (ResponseAboutMe) object;
                 if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
                     Log.e(TAG, "onResponseGetAboutMe success");
                     setUpData(responseObj.getData().get(0));
@@ -373,8 +374,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         }
     }
 
-    private void setUpData(Data data) {
-        txtUserName.setText(data.getUserName());
+    private void setUpData(DataAboutMe data) {
+        txtUserName.setText(data.getUsername());
         txtSchool.setText(data.getSchoolName());
         txtClass.setText(data.getCourseName());
         etDob.setText(dateFormat(data.getBirthdate()));
@@ -406,7 +407,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtYourAmbition.setEnabled(false);
         }
         txtTotalAssignment.setText(data.getTotalAssignment());
-        txtTotalAuthorFollowed.setText(data.getTotalAauthorsFollowed());
+        txtTotalAuthorFollowed.setText(data.getTotalAuthorsFollowed());
         txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
         txtTotalExam.setText(data.getTotalExams());
         txtTotalFavQuestions.setText(data.getTotalFavoriteQuestions());

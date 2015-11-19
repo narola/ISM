@@ -24,8 +24,8 @@ import com.ism.object.MyTypeFace;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.model.RequestObject;
+import com.ism.ws.model.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
 import com.ism.ws.model.Data;
 
@@ -506,7 +506,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 				ResponseObject responseObj = (ResponseObject) object;
 				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
 					arrListCountries = new ArrayList<Data>();
-					arrListCountries.addAll(responseObj.getData());
+				//	arrListCountries.addAll(responseObj.getData());
 					List<String> countries = new ArrayList<String>();
 					countries.add(getString(R.string.select));
 					for (Data country : arrListCountries) {

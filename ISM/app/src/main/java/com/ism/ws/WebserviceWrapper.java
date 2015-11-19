@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.ism.constant.WebConstants;
+import com.ism.ws.model.ResponseAboutMe;
+import com.ism.ws.model.ResponseGetAllPreferences;
+import com.ism.ws.model.ResponseObject;
 
 /**
  * Created by c161 on 23/10/15.
@@ -50,7 +53,7 @@ public class WebserviceWrapper {
                         responseObject = new RequestWs().getRequest(WebConstants.URL_REQUEST_CREDENTIALS, ResponseObject.class, requestObject);
                         break;
                     case WebConstants.GET_COUNTRIES:
-                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_COUNTRIES, ResponseObject.class, requestObject);
+	                    responseObject = new RequestWs().getRequest(WebConstants.URL_GET_COUNTRIES, ResponseObject.class, requestObject);
                         break;
                     case WebConstants.GET_STATES:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_STATES, ResponseObject.class, requestObject);
@@ -88,17 +91,15 @@ public class WebserviceWrapper {
                     case WebConstants.GET_ALL_NOTICES:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ALL_NOTICES, ResponseObject.class, requestObject);
                         break;
-
                     case WebConstants.GENERAL_SETTING_PREFERENCES:
-                        responseObject = new RequestWs().getRequest(WebConstants.URL_GENERAL_SETTING_PREFERENCES, ResponseObject.class, requestObject);
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GENERAL_SETTING_PREFERENCES, ResponseGetAllPreferences.class, requestObject);
                         break;
-                    case WebConstants.GENERAL_SETTINGS:
-                        responseObject = new RequestWs().getRequest(WebConstants.URL_GENERAL_SETTING, ResponseObject.class, requestObject);
+                    case WebConstants.MANAGE_GENERAL_SETTINGS:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_MANAGE_GENERAL_SETTING, ResponseObject.class, requestObject);
                         break;
                     case WebConstants.GET_USER_PREFERENCES:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_USER_PREFERENCES, ResponseObject.class, requestObject);
                         break;
-
                     case WebConstants.GET_NOTIFICATION:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_NOTIFICATION, ResponseObject.class, requestObject);
                         break;
@@ -115,7 +116,7 @@ public class WebserviceWrapper {
 //                        responseObject = new RequestWs().getImageRequest(WebConstants.URL_PROFILE_PIC, ResponseObject.class, requestObject);
 //                        break;
                     case WebConstants.GET_ABOUT_ME:
-                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ABOUT_ME, ResponseObject.class, requestObject);
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_ABOUT_ME, ResponseAboutMe.class, requestObject);
                         break;
                     case WebConstants.RESPOND_TO_REQUEST:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_RESPOND_TO_REQUEST, ResponseObject.class, requestObject);

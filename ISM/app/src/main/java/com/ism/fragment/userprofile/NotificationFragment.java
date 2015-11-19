@@ -16,7 +16,7 @@ import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.model.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
 
 /**
@@ -141,7 +141,7 @@ public class NotificationFragment extends Fragment implements WebserviceWrapper.
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
         ResponseObject responseObject = (ResponseObject) object;
-        if (WebConstants.GENERAL_SETTINGS == apiCode) {
+        if (WebConstants.MANAGE_GENERAL_SETTINGS == apiCode) {
             if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
 
             } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {

@@ -2,7 +2,6 @@ package com.ism.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +26,8 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.model.RequestObject;
+import com.ism.ws.model.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
 import com.ism.ws.model.Data;
 import com.nostra13.universalimageloader.core.ImageLoader;

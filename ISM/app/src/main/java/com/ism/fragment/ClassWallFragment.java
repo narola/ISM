@@ -18,8 +18,8 @@ import com.ism.adapter.PostFeedsAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.utility.Utility;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.model.RequestObject;
+import com.ism.ws.model.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
 
 public class ClassWallFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
@@ -73,7 +73,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 		recyclerPost.addItemDecoration(itemDecoration);
 
 		if (Utility.isOnline(getActivity())) {
-			//callApiGetAllFeeds();
+			callApiGetAllFeeds();
 		} else {
 			Utility.toastOffline(getActivity());
 		}

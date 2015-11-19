@@ -632,7 +632,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
                     Utils.showToast(getActivity().getString(R.string.msg_success_createexam), getActivity());
                     btnExamSetquestion.setVisibility(View.VISIBLE);
-                    fragmentArgument.getRequestObject().setExamId(responseObj.getData().get(0).getExamID());
+                    fragmentArgument.getFragmentArgumentObject().setExamId(responseObj.getData().get(0).getExamID());
                 } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }

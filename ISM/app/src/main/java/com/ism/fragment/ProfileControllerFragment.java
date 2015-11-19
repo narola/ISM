@@ -32,8 +32,8 @@ import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.views.CircleImageView;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.model.RequestObject;
+import com.ism.ws.model.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
 import com.ism.ws.model.Data;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -135,7 +135,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
                         activityHost.loadFragment(HostActivity.FRAGMENT_MY_WALLET, null);
                         break;
                     case R.id.txt_edit_profile:
-
                         activityHost.loadFragment(HostActivity.FRAGMENT_EDIT_PROFILE, null);
                         break;
                 }

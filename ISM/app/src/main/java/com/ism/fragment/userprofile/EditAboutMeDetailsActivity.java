@@ -15,9 +15,9 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.utility.Debug;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.model.RequestObject;
+import com.ism.ws.model.ResponseObject;
 
 /**
  * Created by c162 on 18/11/15.

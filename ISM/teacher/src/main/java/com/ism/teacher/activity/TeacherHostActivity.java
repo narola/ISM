@@ -1,6 +1,7 @@
 package com.ism.teacher.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -85,6 +86,12 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     private ActionProcessButton progress_bar;
     private ProgressGenerator progressGenerator;
+
+
+    //test
+    ExamSubjectiveDetailFragment examSubjectiveDetailFragment;
+    ExamObjectiveDetailFragment examObjectiveDetailFragment;
+    StudentAttemptedFragment studentAttemptedFragment;
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -288,14 +295,13 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
                     break;
 
-                case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
+                /*case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamObjectiveDetailFragment.newInstance()).commit();
-
 
                     break;
                 case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamSubjectiveDetailFragment.newInstance()).commit();
-                    break;
+                    break;*/
 
 
                /* case FRAGMENT_ADDQUESTION:
@@ -307,6 +313,12 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         } catch (Exception e) {
             Log.e(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
         }
+    }
+
+
+    public void loadStudentAttemptedFragmentAlongEvaluation(Context context, String examid, String studentid, boolean callEvaluationApiFlag) {
+        studentAttemptedFragment = new StudentAttemptedFragment(context, examid, studentid, true);
+        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, studentAttemptedFragment).commit();
     }
 
     //these is for the load fragment in right container.
@@ -335,6 +347,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         }
 
     }
+
 
     @Override
     public void onFragmentAttached(int fragment) {
