@@ -21,9 +21,9 @@ import com.ism.dialog.ViewAllCommentsDialog;
 import com.ism.object.Global;
 import com.ism.views.CircleImageView;
 import com.ism.utility.Utility;
-import com.ism.ws.model.RequestObject;
+import com.ism.ws.helper.Attribute;
 import com.ism.ws.model.ResponseObject;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Comment;
 import com.ism.ws.model.Data;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -190,12 +190,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 	private void callApiComment(int position, String comment) {
 		try {
 			addCommentFeedPosition = position;
-			RequestObject requestObject = new RequestObject();
-			requestObject.setFeedId(arrListFeeds.get(position).getFeedId());
-			requestObject.setCommentBy(Global.strUserId);
-			requestObject.setComment(comment);
+			Attribute attribute = new Attribute();
+			attribute.setFeedId(arrListFeeds.get(position).getFeedId());
+			attribute.setCommentBy(Global.strUserId);
+			attribute.setComment(comment);
 
-			new WebserviceWrapper(context, requestObject, this).new WebserviceCaller()
+			new WebserviceWrapper(context, attribute, this).new WebserviceCaller()
 					.execute(WebConstants.ADD_COMMENT);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiComment Exception : " + e.toString());
@@ -204,10 +204,10 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 	private void callApiGetAllComments(int position) {
 		try {
-			RequestObject requestObject = new RequestObject();
-			requestObject.setFeedId(arrListFeeds.get(position).getFeedId());
+			Attribute attribute = new Attribute();
+			attribute.setFeedId(arrListFeeds.get(position).getFeedId());
 
-			new WebserviceWrapper(context, requestObject, this).new WebserviceCaller()
+			new WebserviceWrapper(context, attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_ALL_COMMENTS);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetAllComments Exception : " + e.toString());
@@ -216,10 +216,10 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 	public void callApiGetStudyMates() {
 		try {
-			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(Global.strUserId);
+			Attribute attribute = new Attribute();
+			attribute.setUserId(Global.strUserId);
 
-			new WebserviceWrapper(context, requestObject, this).new WebserviceCaller()
+			new WebserviceWrapper(context, attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_ALL_STUDY_MATES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetStudyMates Exception : " + e.toString());
@@ -230,12 +230,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 	public void tagStudyMates(String[] arrTagUser) {
 		if (Utility.isOnline(context)) {
 			try {
-				RequestObject requestObject = new RequestObject();
-				requestObject.setFeedId(arrListFeeds.get(tagFeedPosition).getFeedId());
-				requestObject.setTaggedBy(Global.strUserId);
-				requestObject.setTaggedUserIds(arrTagUser);
+				Attribute attribute = new Attribute();
+				attribute.setFeedId(arrListFeeds.get(tagFeedPosition).getFeedId());
+				attribute.setTaggedBy(Global.strUserId);
+				attribute.setTaggedUserIds(arrTagUser);
 
-				new WebserviceWrapper(context, requestObject, this).new WebserviceCaller()
+				new WebserviceWrapper(context, attribute, this).new WebserviceCaller()
 						.execute(WebConstants.TAG_STUDY_MATES);
 			} catch (Exception e) {
 				Log.e(TAG, "callApiGetStudyMates Exception : " + e.toString());

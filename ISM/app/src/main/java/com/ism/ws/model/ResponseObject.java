@@ -1,7 +1,5 @@
 package com.ism.ws.model;
 
-import com.ism.ws.model.Data;
-
 import java.util.ArrayList;
 
 public class ResponseObject {

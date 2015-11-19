@@ -23,9 +23,9 @@ import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
-import com.ism.ws.model.RequestObject;
+import com.ism.ws.helper.Attribute;
 import com.ism.ws.model.ResponseObject;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Data;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -187,11 +187,11 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 	private void callApiRespondToRequest(String studymateId) {
 		try {
 			disableDialogButtons();
-			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(studymateId);
-			requestObject.setStudymateId(Global.strUserId);
+			Attribute attribute = new Attribute();
+			attribute.setUserId(studymateId);
+			attribute.setStudymateId(Global.strUserId);
 
-			new WebserviceWrapper(context, requestObject, this).new WebserviceCaller().
+			new WebserviceWrapper(context, attribute, this).new WebserviceCaller().
 					execute(WebConstants.RESPOND_TO_REQUEST);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiRespondToRequest Exception : " + e.toString());

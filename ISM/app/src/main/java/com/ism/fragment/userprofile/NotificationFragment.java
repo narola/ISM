@@ -17,7 +17,7 @@ import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.ws.model.ResponseObject;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.WebserviceWrapper;
 
 /**
  * Created by c162 on 09/11/15.

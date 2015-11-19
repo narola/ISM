@@ -50,9 +50,9 @@ import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
-import com.ism.ws.model.RequestObject;
+import com.ism.ws.helper.Attribute;
 import com.ism.ws.model.ResponseObject;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Data;
 
 import java.util.ArrayList;
@@ -325,10 +325,10 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void callApiGetAllBadgesCount() {
         try {
             showProgress();
-            RequestObject requestObject = new RequestObject();
-            requestObject.setUserId(Global.strUserId);
+            Attribute attribute = new Attribute();
+            attribute.setUserId(Global.strUserId);
 
-            new WebserviceWrapper(HostActivity.this, requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(HostActivity.this, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_BADGES_COUNT);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetAllBadgesCount Exception : " + e.toString());
@@ -837,9 +837,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         try {
 
             showProgress();
-            RequestObject requestObject = new RequestObject();
-            requestObject.setUserId("1");
-            new WebserviceWrapper(getApplicationContext(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_USER_PREFERENCES);
+            Attribute attribute = new Attribute();
+            attribute.setUserId("1");
+            new WebserviceWrapper(getApplicationContext(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_USER_PREFERENCES);
 
         } catch (Exception e) {
 
