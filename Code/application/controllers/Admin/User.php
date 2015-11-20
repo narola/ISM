@@ -115,6 +115,7 @@ class User extends ADMIN_Controller {
 												'order_by'=>$order,
 												'limit'=>$config['per_page'],
 												'offset'=>$offset,
+												'group_by'=>TBL_USERS.'.id',
 												'join' =>  array(
 											    			array(
 											    				'table' => TBL_ROLES,
