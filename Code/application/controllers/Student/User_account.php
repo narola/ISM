@@ -208,6 +208,7 @@ class User_account extends CI_Controller {
 						'user_id' => $insertid,
 						'school_id'=>$this->input->post('school_id'),
 						'classroom_id'=>$this->input->post('class_id'),
+						'joining_class'=>$this->input->post('class_id'),
 						'academic_year'=>$this->input->post('year_id'),
 						'course_id'=>$this->input->post('program_id')
 					);
@@ -223,6 +224,7 @@ class User_account extends CI_Controller {
 						'user_id' => $insertid,
 						'school_id'=>$query_result['school_id'],
 						'classroom_id'=>$query_result['class_id'],
+						'joining_class'=>$query_result['class_id'],
 						'academic_year'=>$query_result['academic_year'],
 						'course_id'=>$query_result['program']
 					);
