@@ -4,14 +4,14 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.ism.R;
 import com.ism.constant.WebConstants;
 import com.ism.utility.Utility;
 import com.ism.ws.model.ResponseGetCountries;
-import com.ism.ws.model.ResponseLogin;
 import com.ism.ws.model.ResponseObject;
-import com.ism.ws.model.ResponseStatus;
 
-import java.util.Objects;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by c161 on 23/10/15.
@@ -47,38 +47,46 @@ public class WebserviceWrapper {
         protected Object doInBackground(Integer... params) {
             Object responseObject = null;
             try {
-                if (Utility.isConnected(context)) {
+
+//			    Check if we can get access from the network.
+	            URL url = new URL("http://192.168.1.147/");
+	            HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+	            urlc.setRequestProperty("Connection", "close");
+	            urlc.setConnectTimeout(2000); // Timeout 2 seconds.
+	            urlc.connect();
+
+	            if (urlc.getResponseCode() == 200) { //Successful response.
                     currentApiCode = params[0];
                     switch (currentApiCode) {
                         case WebConstants.LOGIN:
-                            responseObject = new WebserviceConnector(WebConstants.URL_LOGIN).execute(ResponseLogin.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_LOGIN).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.FORGOT_PASSWORD:
-                            responseObject = new WebserviceConnector(WebConstants.URL_FORGOT_PASSWORD).execute(ResponseStatus.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_FORGOT_PASSWORD).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.REQUEST_CREDENTIALS:
-                            responseObject = new WebserviceConnector(WebConstants.URL_REQUEST_CREDENTIALS).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_REQUEST_CREDENTIALS).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_COUNTRIES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_COUNTRIES).execute(ResponseGetCountries.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_COUNTRIES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_STATES:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_STATES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_CITIES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_CITIES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_CITIES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.REGISTER_USER:
-                            responseObject = new WebserviceConnector(WebConstants.URL_REGISTER_USER).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_REGISTER_USER).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.REQUEST_SCHOOL_INFO:
-                            responseObject = new WebserviceConnector(WebConstants.URL_REQUEST_SCHOOL_INFO).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_REQUEST_SCHOOL_INFO).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.ALLOCATE_TUTORIAL_GROUP:
-                            responseObject = new WebserviceConnector(WebConstants.URL_ALLOCATE_TUTORIAL_GROUP).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_ALLOCATE_TUTORIAL_GROUP).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.ACCEPT_TUTORIAL_GROUP:
-                            responseObject = new WebserviceConnector(WebConstants.URL_ACCEPT_TUTORIAL_GROUP).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_ACCEPT_TUTORIAL_GROUP).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_ALL_FEEDS:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_FEEDS).execute(ResponseObject.class, attribute);
@@ -136,8 +144,8 @@ public class WebserviceWrapper {
                             break;
                     }
                 } else {
-                    Utility.toastOffline(context);
-                }
+		            Utility.showToast(context.getString(R.string.error_server_connection), context);
+	            }
             } catch (Exception e) {
                 Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
             }

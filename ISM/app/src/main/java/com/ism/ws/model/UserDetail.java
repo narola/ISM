@@ -7,11 +7,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 
 /**
- * Created by c161 on 19/11/15.
+ * Created by c161 on 20/11/15.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataLogin {
+public class UserDetail {
 	
     private String tutorialGroupId;
     private String tutorialGroupName;
@@ -31,9 +31,9 @@ public class DataLogin {
     private String schoolType;
     private String schoolId;
     private String courseId;
-    private ArrayList<TutorialGroupMembers> tutorialGroupMembers;
+    private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 
-	@JsonProperty("tutorial_group_id")
+    @JsonProperty("tutorial_group_id")
     public String getTutorialGroupId() {
         return this.tutorialGroupId;
     }
@@ -42,7 +42,7 @@ public class DataLogin {
         this.tutorialGroupId = tutorialGroupId;
     }
 
-	@JsonProperty("tutorial_group_name")
+    @JsonProperty("tutorial_group_name")
     public String getTutorialGroupName() {
         return this.tutorialGroupName;
     }
@@ -51,7 +51,7 @@ public class DataLogin {
         this.tutorialGroupName = tutorialGroupName;
     }
 
-	@JsonProperty("tutorial_group_joining_status")
+    @JsonProperty("tutorial_group_joining_status")
     public String getTutorialGroupJoiningStatus() {
         return this.tutorialGroupJoiningStatus;
     }
@@ -60,7 +60,7 @@ public class DataLogin {
         this.tutorialGroupJoiningStatus = tutorialGroupJoiningStatus;
     }
 
-	@JsonProperty("tutorial_group_complete")
+    @JsonProperty("tutorial_group_complete")
     public String getTutorialGroupComplete() {
         return this.tutorialGroupComplete;
     }
@@ -69,7 +69,7 @@ public class DataLogin {
         this.tutorialGroupComplete = tutorialGroupComplete;
     }
 
-	@JsonProperty("profile_pic")
+    @JsonProperty("profile_pic")
     public String getProfilePic() {
         return this.profilePic;
     }
@@ -78,7 +78,7 @@ public class DataLogin {
         this.profilePic = profilePic;
     }
 
-	@JsonProperty("full_name")
+    @JsonProperty("full_name")
     public String getFullName() {
         return this.fullName;
     }
@@ -87,7 +87,7 @@ public class DataLogin {
         this.fullName = fullName;
     }
 
-	@JsonProperty("user_id")
+    @JsonProperty("user_id")
     public String getUserId() {
         return this.userId;
     }
@@ -195,12 +195,12 @@ public class DataLogin {
 		this.courseId = courseId;
 	}
 
-	@JsonProperty("tutorial_group_members")
-    public ArrayList<TutorialGroupMembers> getTutorialGroupMembers() {
+    @JsonProperty("tutorial_group_members")
+    public ArrayList<TutorialGroupMember> getTutorialGroupMembers() {
         return this.tutorialGroupMembers;
     }
 
-    public void setTutorialGroupMembers(ArrayList<TutorialGroupMembers> tutorialGroupMembers) {
+    public void setTutorialGroupMembers(ArrayList<TutorialGroupMember> tutorialGroupMembers) {
         this.tutorialGroupMembers = tutorialGroupMembers;
     }
 
