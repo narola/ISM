@@ -45,7 +45,7 @@ public class NotificationFragment extends Fragment implements WebserviceWrapper.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.layout_notifications, container, false);
+        view = inflater.inflate(R.layout.fragment_notifications, container, false);
 
         initGlobal();
 

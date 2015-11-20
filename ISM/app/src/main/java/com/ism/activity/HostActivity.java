@@ -50,12 +50,14 @@ import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
+import com.ism.ws.model.DataUserPreferences;
 import com.ism.ws.model.Notification;
 import com.ism.ws.model.PrivacySetting;
 import com.ism.ws.model.RequestObject;
 import com.ism.ws.model.ResponseGetAllPreferences;
 import com.ism.ws.model.ResponseObject;
 import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.model.ResponseUserPreferences;
 import com.ism.ws.model.SMSAlert;
 
 import java.util.ArrayList;
@@ -479,12 +481,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     txtTitle.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
-                    Debug.i(TAG, "FRAGMENT_GENERAL_SETTINGS atacheched");
                     currentMainFragment = fragment;
-                    // llControllerLeft.setVisibility(View.GONE);
                     currentMainFragment = fragment;
-                    Debug.i(TAG, "FRAGMENT_GENERAL_SETTINGS atacheched");
-                    // llControllerLeft.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_ALL_NOTIFICATION:
                     currentMainFragment = fragment;
@@ -500,8 +498,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     break;
                 case FRAGMENT_EDIT_PROFILE:
                     currentMainFragment = fragment;
-
-                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    imgChat.setActivated(false);
                     break;
 
             }
@@ -561,7 +558,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     loadControllerTopMenu(null);
                     break;
                 case FRAGMENT_EDIT_PROFILE:
-                    loadControllerTopMenu(null);
+                   // loadControllerTopMenu(null);
                     break;
             }
         } catch (Exception e) {
@@ -851,11 +848,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void onResponseGetUserPreference(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObject = (ResponseObject) object;
+                ResponseUserPreferences responseObject = (ResponseUserPreferences) object;
                 if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
                     if (responseObject.getData().size() > 0) {
-                        for (int j = 0; j < responseObject.getData().size(); j++) {
-                            GeneralSettingsFragment.newInstance().setPreferenceList(responseObject.getData().get(j).getId(), responseObject.getData().get(j).getDefaultValue(), getApplicationContext());
+                        ArrayList<DataUserPreferences> arrayListUserPreferences=new ArrayList<>();
+                        arrayListUserPreferences=responseObject.getData();
+                        for (int j = 0; j < arrayListUserPreferences.size(); j++) {
+                            GeneralSettingsFragment.newInstance().setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getApplicationContext());
                         }
                     }
 

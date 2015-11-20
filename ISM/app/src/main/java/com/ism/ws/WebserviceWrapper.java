@@ -8,6 +8,8 @@ import com.ism.constant.WebConstants;
 import com.ism.ws.model.ResponseAboutMe;
 import com.ism.ws.model.ResponseGetAllPreferences;
 import com.ism.ws.model.ResponseObject;
+import com.ism.ws.model.ResponseUserBooks;
+import com.ism.ws.model.ResponseUserPreferences;
 
 /**
  * Created by c161 on 23/10/15.
@@ -98,7 +100,7 @@ public class WebserviceWrapper {
                         responseObject = new RequestWs().getRequest(WebConstants.URL_MANAGE_GENERAL_SETTING, ResponseObject.class, requestObject);
                         break;
                     case WebConstants.GET_USER_PREFERENCES:
-                        responseObject = new RequestWs().getRequest(WebConstants.URL_USER_PREFERENCES, ResponseObject.class, requestObject);
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_USER_PREFERENCES, ResponseUserPreferences.class, requestObject);
                         break;
                     case WebConstants.GET_NOTIFICATION:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_NOTIFICATION, ResponseObject.class, requestObject);
@@ -130,6 +132,10 @@ public class WebserviceWrapper {
                     case WebConstants.GET_HIGH_SCORERS:
                         responseObject = new RequestWs().getRequest(WebConstants.URL_GET_HIGH_SCORERS, ResponseObject.class, requestObject);
                         break;
+                    case WebConstants.GET_BOOKS_FOR_USER:
+                        responseObject = new RequestWs().getRequest(WebConstants.URL_GET_BOOKS_FOR_USER, ResponseUserBooks.class, requestObject);
+                        break;
+
                 }
             } catch (Exception e) {
                 Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());

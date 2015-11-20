@@ -170,12 +170,12 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         strAcademicYear = PreferenceData.getStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, ProfileInformationActivity.this);
         strRoleId = PreferenceData.getStringPrefs(PreferenceData.USER_ROLE_ID, ProfileInformationActivity.this);
 
-        txtNameSchool.setText(strSchoolName);
-        txtClass.setText(strClassName);
-        txtAcademicYear.setText(strAcademicYear);
-        txtDistrictOfSchool.setText(strSchoolDistrict);
-        txtSchoolGender.setText(strSchoolType);
-        txtProgramCourse.setText(strCourseName);
+//        txtNameSchool.setText(strSchoolName);
+//        txtClass.setText(strClassName);
+//        txtAcademicYear.setText(strAcademicYear);
+//        txtDistrictOfSchool.setText(strSchoolDistrict);
+//        txtSchoolGender.setText(strSchoolType);
+//        txtProgramCourse.setText(strCourseName);
 
         if (Utility.isOnline(ProfileInformationActivity.this)) {
             callApiGetCountries();

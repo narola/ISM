@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_white"
+    android:background="@color/studymate_tab_bg"
     android:orientation="vertical"
     tools:context="com.ism.fragment.userprofile.EditProfileFragment">
 
@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/d60dp"
         android:layout_alignParentTop="true"
+        android:background="@drawable/shadow_separator"
         android:orientation="horizontal">
 
         <TextView
@@ -94,10 +95,10 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/d5dp"
-        android:background="@drawable/shadow_separator" />
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/d5dp"-->
+        <!--android:background="@drawable/shadow_separator" />-->
 
     <FrameLayout
         android:id="@+id/fl_fragment_container"

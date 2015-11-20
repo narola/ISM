@@ -44,7 +44,7 @@ public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.Web
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.layout_sms_alerts, container, false);
+        view = inflater.inflate(R.layout.fragment_sms_alerts, container, false);
 
         initGlobal();
 

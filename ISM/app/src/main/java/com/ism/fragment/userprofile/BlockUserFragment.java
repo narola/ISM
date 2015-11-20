@@ -43,7 +43,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.layout_block_user, container, false);
+        view = inflater.inflate(R.layout.fragment_block_user, container, false);
 
         initGlobal();
 

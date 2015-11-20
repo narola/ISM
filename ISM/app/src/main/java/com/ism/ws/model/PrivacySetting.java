@@ -37,7 +37,7 @@ public class PrivacySetting {
     public String getDisplayValue() {
         return this.displayValue;
     }
-    @JsonProperty("")
+
     public void setDisplayValue(String displayValue) {
         this.displayValue = displayValue;
     }
