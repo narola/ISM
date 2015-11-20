@@ -16,9 +16,9 @@ import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.views.HorizontalListView;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Favorite;
-import com.ism.ws.model.RequestObject;
 import com.ism.ws.model.ResponseObject;
 import com.ism.ws.model.Suggested;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -73,7 +73,7 @@ public class UserMoviesFragment extends Fragment implements WebserviceWrapper.We
 
         userFavoriteBooksAdapter = new UserFavoriteBooksAdapter(getActivity(), arrayListFavBooks);
         listViewFavBooks.setAdapter(userFavoriteBooksAdapter);
-        
+
 
 
 
@@ -83,7 +83,7 @@ public class UserMoviesFragment extends Fragment implements WebserviceWrapper.We
     private void callApiGetBooksForUser() {
         try {
             activityHost.showProgress();
-            RequestObject requestObject = new RequestObject();
+            Attribute requestObject = new Attribute();
             requestObject.setUserId("1");
             new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
 

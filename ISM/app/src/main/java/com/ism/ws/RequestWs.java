@@ -1,5 +1,7 @@
 package com.ism.ws;
 
+import com.ism.ws.helper.WSRequestPost;
+
 public class RequestWs {
 
 	/**

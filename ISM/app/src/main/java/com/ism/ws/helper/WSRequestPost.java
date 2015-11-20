@@ -1,4 +1,4 @@
-package com.ism.ws;
+package com.ism.ws.helper;
 
 import android.util.Log;
 

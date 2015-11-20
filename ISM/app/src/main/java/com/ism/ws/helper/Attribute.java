@@ -1,4 +1,4 @@
-package com.ism.ws.model;
+package com.ism.ws.helper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RequestObject {
+public class Attribute {
 
 	//	AcceptTutorialGroupRequest
 	private String userId;
@@ -27,7 +27,7 @@ public class RequestObject {
 	private String lastname;
 	private String firstname;
 	private int stateId;
-	private int countryId;
+	private String countryId;
 	private String contactNumber;
 	private String emailAddress;
 
@@ -66,10 +66,12 @@ public class RequestObject {
 	private ArrayList<String> recordIds;
 
 	private String[] taggedUserIds;
-	private ArrayList<RequestObject> preferences;
+	private ArrayList<Attribute> preferences;
 	private File file;
 	private String aboutMeText;
 	private String ambitionInLife;
+
+	private String fileName;
 
 	public String getAmbitionInLife() {
 		return ambitionInLife;
@@ -185,12 +187,12 @@ public class RequestObject {
 		this.stateId = stateId;
 	}
 
-	public int getCountryId() {
+	public String getCountryId() {
 		return this.countryId;
 	}
 
 	@JsonProperty("country_id")
-	public void setCountryId(int countryId) {
+	public void setCountryId(String countryId) {
 		this.countryId = countryId;
 	}
 
@@ -401,12 +403,12 @@ public class RequestObject {
 		this.taggedBy = taggedBy;
 	}
 
-	public ArrayList<RequestObject> getPreferences() {
+	public ArrayList<Attribute> getPreferences() {
 		return preferences;
 	}
 
 	@JsonProperty("preferences")
-	public void setPreferences(ArrayList<RequestObject> preferences) {
+	public void setPreferences(ArrayList<Attribute> preferences) {
 		this.preferences = preferences;
 	}
 	@JsonProperty("file")
@@ -442,5 +444,13 @@ public class RequestObject {
 	@JsonProperty("record_id")
 	public void setRecordIds(ArrayList<String> recordIds) {
 		this.recordIds = recordIds;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 }

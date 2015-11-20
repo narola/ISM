@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
+import com.ism.object.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.NotificationAdapter;
@@ -26,9 +26,9 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
-import com.ism.ws.model.RequestObject;
+import com.ism.ws.helper.Attribute;
 import com.ism.ws.model.ResponseObject;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Data;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -199,12 +199,12 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 				for (int i = 0; i < arrListNotification.size(); i++) {
 					recordIds.add(arrListNotification.get(i).getRecordId());
 				}
-				RequestObject requestObject = new RequestObject();
-				requestObject.setUserId(Global.strUserId);
-				requestObject.setReadCategory(WebConstants.NOTIFICATION);
-				requestObject.setRecordIds(recordIds);
+				Attribute attribute = new Attribute();
+				attribute.setUserId(Global.strUserId);
+				attribute.setReadCategory(WebConstants.NOTIFICATION);
+				attribute.setRecordIds(recordIds);
 
-				new WebserviceWrapper(activityHost, requestObject, this).new WebserviceCaller().
+				new WebserviceWrapper(activityHost, attribute, this).new WebserviceCaller().
 						execute(WebConstants.UPDATE_READ_STATUS);
 			}
 		} catch (Exception e) {

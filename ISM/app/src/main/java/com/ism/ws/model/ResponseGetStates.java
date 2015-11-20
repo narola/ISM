@@ -4,21 +4,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.json.*;
 import java.util.ArrayList;
+
 /**
- * Created by c162 on 19/11/15.
+ * Created by c161 on 19/11/15.
  */
-
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ResponseAboutMe {
-
-    private String message;
-    private ArrayList<DataAboutMe> data;
+public class ResponseGetStates {
+	
     private String status;
+    private String message;
+    private ArrayList<DataGetStates> data;
 
-    @JsonProperty("messsage")
+    @JsonProperty("message")
     public String getMessage() {
         return this.message;
     }
@@ -26,12 +26,13 @@ public class ResponseAboutMe {
     public void setMessage(String message) {
         this.message = message;
     }
+
     @JsonProperty("data")
-    public ArrayList<DataAboutMe> getData() {
+    public ArrayList<DataGetStates> getData() {
         return this.data;
     }
 
-    public void setData(ArrayList<DataAboutMe> data) {
+    public void setData(ArrayList<DataGetStates> data) {
         this.data = data;
     }
 
@@ -43,6 +44,5 @@ public class ResponseAboutMe {
     public void setStatus(String status) {
         this.status = status;
     }
-
-
+    
 }

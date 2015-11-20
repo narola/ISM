@@ -10,16 +10,16 @@ import android.view.ViewGroup;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.adapter.UserFavoriteBooksAdapter;
 import com.ism.adapter.SuggestedBookForUserAdapter;
+import com.ism.adapter.UserFavoriteBooksAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.views.HorizontalListView;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Favorite;
-import com.ism.ws.model.RequestObject;
-import com.ism.ws.model.ResponseObject;
 import com.ism.ws.model.Suggested;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -84,7 +84,7 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
     private void callApiGetBooksForUser() {
         try {
             activityHost.showProgress();
-            RequestObject requestObject = new RequestObject();
+            Attribute requestObject = new Attribute();
             requestObject.setUserId("1");
             new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
 
@@ -114,11 +114,11 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
 
                     Log.e(TAG, "onResponseUserBooks success");
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseUserBooks Failed");
                 }
             } else if (error != null) {

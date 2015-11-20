@@ -25,6 +25,7 @@ import com.ism.adapter.ControllerTopSpinnerAdapter;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
+import com.ism.fragment.AccordionFragment;
 import com.ism.fragment.AllMessageFragment;
 import com.ism.fragment.AllNoticeFragment;
 import com.ism.fragment.AllNotificationFragment;
@@ -36,7 +37,6 @@ import com.ism.fragment.DeskFragment;
 import com.ism.fragment.MyActivityFragment;
 import com.ism.fragment.MyFeedsFragment;
 import com.ism.fragment.MyWalletFragment;
-import com.ism.fragment.AccordionFragment;
 import com.ism.fragment.ProfileControllerFragment;
 import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.StudymatesFragment;
@@ -50,14 +50,13 @@ import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.DataUserPreferences;
 import com.ism.ws.model.Notification;
 import com.ism.ws.model.PrivacySetting;
-import com.ism.ws.model.RequestObject;
-import com.ism.ws.model.ResponseGetAllPreferences;
 import com.ism.ws.model.ResponseObject;
-import com.ism.ws.WebserviceWrapper;
-import com.ism.ws.model.ResponseUserPreferences;
 import com.ism.ws.model.SMSAlert;
 
 import java.util.ArrayList;
@@ -332,10 +331,10 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void callApiGetAllBadgesCount() {
         try {
             showProgress();
-            RequestObject requestObject = new RequestObject();
-            requestObject.setUserId(Global.strUserId);
+            Attribute attribute = new Attribute();
+            attribute.setUserId(Global.strUserId);
 
-            new WebserviceWrapper(HostActivity.this, requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(HostActivity.this, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_BADGES_COUNT);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetAllBadgesCount Exception : " + e.toString());
@@ -482,7 +481,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
                     currentMainFragment = fragment;
-                    currentMainFragment = fragment;
                     break;
                 case FRAGMENT_ALL_NOTIFICATION:
                     currentMainFragment = fragment;
@@ -498,7 +496,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     break;
                 case FRAGMENT_EDIT_PROFILE:
                     currentMainFragment = fragment;
-                    imgChat.setActivated(false);
                     break;
 
             }
@@ -809,21 +806,21 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void onResponseGetAllPreference(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseGetAllPreferences responseObject = (ResponseGetAllPreferences) object;
+                ResponseHandler responseObject = (ResponseHandler) object;
                 if (responseObject.getStatus().toString().equals(WebConstants.SUCCESS)) {
-                    if (responseObject.getData().size() > 0) {
+                    if (responseObject.getPreference().size() > 0) {
 
-                        arrayListSMSAlert = responseObject.getData().get(0).getSMSAlert();
+                        arrayListSMSAlert = responseObject.getPreference().get(0).getSMSAlert();
                         for (int j = 0; j < arrayListSMSAlert.size(); j++) {
                             PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
                             //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
                         }
-                        arrayListNotification = responseObject.getData().get(0).getNotification();
+                        arrayListNotification = responseObject.getPreference().get(0).getNotification();
                         for (int j = 0; j < arrayListNotification.size(); j++) {
                             PreferenceData.setStringPrefs(arrayListNotification.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotification.get(j).getId());
                             // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
                         }
-                        arrayListPrivacySetting = responseObject.getData().get(0).getPrivacySetting();
+                        arrayListPrivacySetting = responseObject.getPreference().get(0).getPrivacySetting();
                         for (int j = 0; j < arrayListPrivacySetting.size(); j++) {
                             PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
                             // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
@@ -848,11 +845,11 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void onResponseGetUserPreference(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseUserPreferences responseObject = (ResponseUserPreferences) object;
-                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
-                    if (responseObject.getData().size() > 0) {
+                ResponseHandler responseObject = (ResponseHandler) object;
+                if (responseObject.getStatus().toString().equals(WebConstants.SUCCESS)) {
+                    if (responseObject.getPreference().size() > 0) {
                         ArrayList<DataUserPreferences> arrayListUserPreferences=new ArrayList<>();
-                        arrayListUserPreferences=responseObject.getData();
+                        arrayListUserPreferences=responseObject.getUserPreference();
                         for (int j = 0; j < arrayListUserPreferences.size(); j++) {
                             GeneralSettingsFragment.newInstance().setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getApplicationContext());
                         }
@@ -877,7 +874,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
         try {
             showProgress();
-            RequestObject requestObject = new RequestObject();
+            Attribute requestObject = new Attribute();
             requestObject.setUserId("1");
             new WebserviceWrapper(getApplicationContext(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_USER_PREFERENCES);
 
@@ -911,7 +908,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
             hideProgress();
             if (object != null) {
                 ResponseObject responseObject = (ResponseObject) object;
-                if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseObject.getStatus().equals(WebConstants.SUCCESS)) {
 
                     String count = responseObject.getData().get(0).getNotificationCount();
                     PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_NOTIFICATION, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
@@ -921,7 +918,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
                     count = responseObject.getData().get(0).getRequestCount();
                     PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_REQUEST, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
-                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObject.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "Failed to load badges count");
                 }
             } else if (error != null) {

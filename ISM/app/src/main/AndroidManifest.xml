@@ -18,7 +18,7 @@
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:name=".ISMStudent"
+        android:name=".object.ISMStudent"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 

@@ -68,4 +68,5 @@
     <dimen name="padding_header_white">20dp</dimen>
     <dimen name="text_size_header_white">20sp</dimen>
     <dimen name="padding_child_fragment_content">15dp</dimen>
+    <dimen name="edit_radius">5dp</dimen>
 </resources>

@@ -23,18 +23,17 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
+import com.ism.object.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.DataAboutMe;
-import com.ism.ws.model.RequestObject;
-import com.ism.ws.model.ResponseAboutMe;
-import com.ism.ws.model.ResponseObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -64,7 +63,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     MyTypeFace myTypeFace;
     private static String TAG = AboutMeFragment.class.getSimpleName();
     private HostActivity activityHost;
-    private String[] strArrayList;
     EditProfileFragment editProfileFragment;
     private TextView txtEdit;
     private EditText etCno, etDob;
@@ -250,11 +248,15 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void callApiGetAboutMe() {
         try {
-            activityHost.showProgress();
-            RequestObject requestObject = new RequestObject();
-            requestObject.setUserId("1");
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
-
+            if(Utility.isOnline(getActivity())) {
+                activityHost.showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setUserId("1");
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
+            }
+            else{
+                Utility.toastOffline(getActivity());
+            }
         } catch (Exception e) {
             Debug.i(TAG, "callApiGetAboutMe Exception : " + e.getLocalizedMessage());
         }
@@ -262,20 +264,25 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void callApiEditAboutMe() {
         try {
-            activityHost.showProgress();
-            RequestObject requestObject = new RequestObject();
-            requestObject.setUserId("1");
-            requestObject.setUsername(txtUserName.getText().toString().trim());
-            requestObject.setContactNumber(etCno.getText().toString().trim());
-            requestObject.setBirthdate(strDob);
-            requestObject.setProfileImage("");
-            requestObject.setAmbitionInLife(strAmbition);
-            requestObject.setAboutMeText(strDetailAboutMe);
+            if(Utility.isOnline(getActivity())) {
+                activityHost.showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setUserId("1");
+                attribute.setUsername(txtUserName.getText().toString().trim());
+                attribute.setContactNumber(etCno.getText().toString().trim());
+                attribute.setBirthdate(strDob);
+                attribute.setProfileImage("");
+                attribute.setAmbitionInLife(strAmbition);
+                attribute.setAboutMeText(strDetailAboutMe);
 
 //            requestObject.setAmbitionInLife("Businessman");
 //            requestObject.setAboutMeText("I am a graduate from NIFT specializing in Apparel Production. I have a holistic experience of the Apparel Industry and has worked for domestic as well as the exports market. In the Indian retail industry I have worked with Lifestyle International Pvt. Ltd. on sourcing, vendor management and product development for private labels. I then moved to Madura Fashion & Lifestyle where I worked as a buyer. Product and Margin management, optimum allocation of merchandise, meeting sales targets along with competition, market and trend analysis were some of her responsibilities. I joined ISB to fast track my career and pursue opportunities in Category & Brand Management.I am President of the Retail Club. I  proud myself.");
 
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
+            }
+            else{
+                Utility.toastOffline(getActivity());
+            }
 
         } catch (Exception e) {
             Debug.i(TAG, "callApiEditAboutMe Exception : " + e.getLocalizedMessage());
@@ -341,10 +348,10 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
                     Log.e(TAG, "onResponseEditAboutMe success");
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseEditAboutMe Failed");
                 }
             } else if (error != null) {
@@ -360,12 +367,12 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseAboutMe responseObj = (ResponseAboutMe) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
                     Log.e(TAG, "onResponseGetAboutMe success");
-                    setUpData(responseObj.getData().get(0));
+                    setUpData(responseObj.getUser().get(0));
 
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetAboutMe Failed");
                 }
             } else if (error != null) {
@@ -594,7 +601,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     @Override
     public void onResume() {
         super.onResume();
-        callApiGetAboutMe();
+       // callApiGetAboutMe();
     }
     //    @Override
 //    public void onSelectImage(Bitmap bitmap) {

@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
+import com.ism.object.ISMStudent;
 import com.ism.R;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;

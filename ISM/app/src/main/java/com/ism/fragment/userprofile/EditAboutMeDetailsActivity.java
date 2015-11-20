@@ -17,8 +17,9 @@ import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
-import com.ism.ws.WebserviceWrapper;
-import com.ism.ws.model.RequestObject;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.ResponseObject;
 
 /**
@@ -116,7 +117,7 @@ MyTypeFace myTypeFace;
     private void callApiEditAboutMe() {
         try {
             showProgress();
-            RequestObject requestObject = new RequestObject();
+            Attribute requestObject = new Attribute();
             requestObject.setUserId("1");
             requestObject.setUsername(strUserName);
             requestObject.setContactNumber(strCno);
@@ -161,7 +162,7 @@ MyTypeFace myTypeFace;
         try {
             hideProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
+                ResponseHandler responseObj = (ResponseHandler) object;
                 if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
                     Log.e(TAG, "onResponseEditAboutMe success");
                     hideKeyboard();
