@@ -166,8 +166,8 @@ class Group extends ADMIN_Controller {
                     )
                 )
         );
-        qry();
-        exit;
+        // qry();
+        // exit;
         // p($this->data['all_groups'], true);
         //fetch all data of group right joins with tutorial group members
         $this->data['all_groups_members'] = select(TBL_TUTORIAL_GROUPS, TBL_TUTORIAL_GROUP_MEMBER . '.id,' . TBL_TUTORIAL_GROUPS . '.group_name,' . TBL_TUTORIAL_GROUPS . '.id as gid,' .
