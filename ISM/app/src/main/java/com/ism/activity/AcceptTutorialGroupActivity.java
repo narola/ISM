@@ -88,7 +88,7 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
     }
 
 	public void onClickAccept(View view) {
-		if (Utility.isOnline(AcceptTutorialGroupActivity.this)) {
+		if (Utility.isConnected(AcceptTutorialGroupActivity.this)) {
 			callApiAcceptTutorialGroup();
 		} else {
 			Utility.toastOffline(AcceptTutorialGroupActivity.this);

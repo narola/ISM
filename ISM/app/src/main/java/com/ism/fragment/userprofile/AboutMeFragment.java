@@ -248,7 +248,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void callApiGetAboutMe() {
         try {
-            if(Utility.isOnline(getActivity())) {
+            if(Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId("1");
@@ -264,7 +264,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void callApiEditAboutMe() {
         try {
-            if(Utility.isOnline(getActivity())) {
+            if(Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId("1");

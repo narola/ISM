@@ -66,7 +66,7 @@ public class WebConstants {
 	public static final String URL_ACCEPT_TUTORIAL_GROUP = URL_HOST_161 + "AcceptTutorialGroup";
 	public static final String URL_ALLOCATE_TUTORIAL_GROUP = URL_HOST_161 + "AllocateTutorialGroup";
 	public static final String URL_GET_CITIES = URL_HOST_161 + "GetCities";
-	public static final String URL_GET_STATES = URL_HOST_161 + "GetStates";
+	public static final String URL_GET_STATES = URL_HOST_147 + "GetStates";
 	public static final String URL_GET_COUNTRIES = URL_HOST_161 + "GetCountries";
 	public static final String URL_LOGIN = URL_HOST_161 + "AuthenticateUser";
 	public static final String URL_TAG_STUDY_MATES = URL_HOST_162 + "TagFriendInFeed";

@@ -8,6 +8,7 @@ import com.ism.ws.model.DataGetAllPreferences;
 import com.ism.ws.model.DataGetCountries;
 import com.ism.ws.model.DataLogin;
 import com.ism.ws.model.DataUserPreferences;
+import com.ism.ws.model.States;
 //import com.narola.apisample.ws.model.Feed;
 //import com.narola.apisample.ws.model.Question;
 
@@ -27,6 +28,7 @@ public class ResponseHandler {
     private ArrayList<DataAboutMe> user;
     private ArrayList<DataGetAllPreferences> preference;
     private ArrayList<DataUserPreferences> userPreference;
+    private ArrayList<States> states;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -46,16 +48,16 @@ public class ResponseHandler {
         this.status = status;
     }
 
-    /*@JsonProperty("question")
-    public ArrayList<Question> getQuestion() {
-        return this.question;
+    @JsonProperty("states")
+    public ArrayList<States> getStates() {
+        return this.states;
     }
 
-    public void setQuestion(ArrayList<Question> question) {
-        this.question = question;
+    public void setStates(ArrayList<States> states) {
+        this.states = states;
     }
 
-    @JsonProperty("feed")
+  /*  @JsonProperty("feed")
     public ArrayList<Feed> getFeed() {
         return this.feed;
     }

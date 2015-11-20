@@ -177,7 +177,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 //        txtSchoolGender.setText(strSchoolType);
 //        txtProgramCourse.setText(strCourseName);
 
-        if (Utility.isOnline(ProfileInformationActivity.this)) {
+        if (Utility.isConnected(ProfileInformationActivity.this)) {
             callApiGetCountries();
         } else {
             Utility.toastOffline(ProfileInformationActivity.this);
@@ -197,7 +197,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (arrListCountries != null && position > 0) {
-                    if (Utility.isOnline(ProfileInformationActivity.this)) {
+                    if (Utility.isConnected(ProfileInformationActivity.this)) {
                         callApiGetStates(arrListCountries.get(position - 1).getId());
                     } else {
                         Utility.toastOffline(ProfileInformationActivity.this);
@@ -217,7 +217,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (arrListStates != null && position > 0) {
-                    if (Utility.isOnline(ProfileInformationActivity.this)) {
+                    if (Utility.isConnected(ProfileInformationActivity.this)) {
                         callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
                     } else {
                         Utility.toastOffline(ProfileInformationActivity.this);
@@ -285,7 +285,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
     }
 
     public void onClickSubmit(View view) {
-        if (Utility.isOnline(ProfileInformationActivity.this)) {
+        if (Utility.isConnected(ProfileInformationActivity.this)) {
 
 //			PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
 //					PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
@@ -344,7 +344,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         btnDialogSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utility.isOnline(ProfileInformationActivity.this)) {
+                if (Utility.isConnected(ProfileInformationActivity.this)) {
                     if (isInputsValidSchoolInfo()) {
                         Attribute attribute = new Attribute();
                         attribute.setName(etName.getText().toString().trim());
