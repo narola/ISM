@@ -41,7 +41,7 @@ public class SuggestedBookForUserAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return arrayList.size();
     }
 
     @Override

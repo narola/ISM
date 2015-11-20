@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
@@ -18,8 +16,6 @@ import com.ism.R;
 import com.ism.ws.model.Data;
 
 import java.io.ByteArrayOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,24 +64,24 @@ public class Utility {
 	 */
 	public static boolean isConnected(Context context) {
 		try {
-			ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo netInfo = cm.getActiveNetworkInfo();
-
-			if (netInfo != null && netInfo.isConnected()) {
-				//Network is available but check if we can get access from the network.
-				URL url = new URL("https://www.google.com/");
-				HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-				urlc.setRequestProperty("Connection", "close");
-				urlc.setConnectTimeout(2000); // Timeout 2 seconds.
-				urlc.connect();
-
-				if (urlc.getResponseCode() == 200) { //Successful response.
+//			ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+//			NetworkInfo netInfo = cm.getActiveNetworkInfo();
+//
+//			if (netInfo != null && netInfo.isConnected()) {
+//				//Network is available but check if we can get access from the network.
+//				URL url = new URL("https://www.google.com/");
+//				HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+//				urlc.setRequestProperty("Connection", "close");
+//				urlc.setConnectTimeout(2000); // Timeout 2 seconds.
+//				urlc.connect();
+//
+//				if (urlc.getResponseCode() == 200) { //Successful response.
 					return true;
-				} else {
-					Log.d("NO INTERNET", "NO INTERNET");
-					return false;
-				}
-			}
+//				} else {
+//					Log.d("NO INTERNET", "NO INTERNET");
+//					return false;
+//				}
+//			}
 		} catch (Exception e) {
 			Log.e(TAG, "isConnected Exception : " + e.toString());
 		}
@@ -207,8 +203,8 @@ public class Utility {
 		Collections.sort(arrListData, new Comparator<Data>() {
 			@Override
 			public int compare(Data lData, Data rData) {
-				int compare = lData.getNoticeTitle().compareToIgnoreCase(rData.getNoticeTitle());
-				return compare;
+				return lData.getNoticeTitle().compareToIgnoreCase(rData.getNoticeTitle());
+
 			}
 		});
 	}
@@ -222,8 +218,8 @@ public class Utility {
 		Collections.sort(arrListData, new Comparator<Data>() {
 			@Override
 			public int compare(Data lData, Data rData) {
-				int compare = rData.getNoticeTitle().compareToIgnoreCase(lData.getNoticeTitle());
-				return compare;
+				return rData.getNoticeTitle().compareToIgnoreCase(lData.getNoticeTitle());
+
 			}
 		});
 	}

@@ -3,16 +3,19 @@ package com.ism.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.ws.model.Badges;
 import com.ism.ws.model.DataAboutMe;
 import com.ism.ws.model.DataGetAllPreferences;
 import com.ism.ws.model.DataGetCountries;
 import com.ism.ws.model.DataLogin;
+import com.ism.ws.model.DataUserBooks;
 import com.ism.ws.model.DataUserPreferences;
 import com.ism.ws.model.States;
-//import com.narola.apisample.ws.model.Feed;
-//import com.narola.apisample.ws.model.Question;
 
 import java.util.ArrayList;
+
+//import com.narola.apisample.ws.model.Feed;
+//import com.narola.apisample.ws.model.Question;
 
 /**
  * Created by c161 on 19/11/15.
@@ -29,6 +32,9 @@ public class ResponseHandler {
     private ArrayList<DataGetAllPreferences> preference;
     private ArrayList<DataUserPreferences> userPreference;
     private ArrayList<States> states;
+    private ArrayList<DataUserBooks> books;
+    private ArrayList<Badges> badges;
+
 
     @JsonProperty("message")
     public String getMessage() {
@@ -92,7 +98,22 @@ public class ResponseHandler {
         this.userPreference = userPreference;
     }
 
+    @JsonProperty("books")
+    public ArrayList<DataUserBooks> getBooks() {
+        return books;
+    }
 
+    public void setBooks(ArrayList<DataUserBooks> books) {
+        this.books = books;
+    }
+    @JsonProperty("badges")
+    public ArrayList<Badges> getBadges() {
+        return this.badges;
+    }
+
+    public void setBadges(ArrayList<Badges> badges) {
+        this.badges = badges;
+    }
 
 
 }

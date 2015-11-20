@@ -69,16 +69,27 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/d5dp"
             android:layout_marginRight="@dimen/d5dp"
-            android:background="@color/color_white"
             android:layout_toLeftOf="@+id/img_next_read"
-            android:layout_toRightOf="@+id/img_prev_read" />
+            android:layout_toRightOf="@+id/img_prev_read"
+            android:background="@color/color_white" />
+
+        <TextView
+            android:id="@+id/txt_suggested_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/img_next_read"
+            android:layout_toRightOf="@+id/img_prev_read"
+            android:background="@color/color_white"
+            android:gravity="center"
+            android:text="No record found"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/img_next_read"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="@dimen/d5dp"
             android:layout_alignParentEnd="true"
+            android:padding="@dimen/d5dp"
             android:src="@drawable/right_arrow" />
 
 
@@ -151,6 +162,17 @@
             android:layout_toLeftOf="@+id/img_next_fav"
             android:layout_toRightOf="@+id/img_prev_fav"
             android:background="@color/color_white" />
+
+        <TextView
+            android:id="@+id/txt_fav_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/img_next_fav"
+            android:layout_toRightOf="@+id/img_prev_fav"
+            android:background="@color/color_white"
+            android:gravity="center"
+            android:text="No record found"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/img_next_fav"
