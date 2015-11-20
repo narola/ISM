@@ -72,7 +72,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 
 		recyclerPost.addItemDecoration(itemDecoration);
 
-		if (Utility.isOnline(getActivity())) {
+		if (Utility.isConnected(getActivity())) {
 			callApiGetAllFeeds();
 		} else {
 			Utility.toastOffline(getActivity());

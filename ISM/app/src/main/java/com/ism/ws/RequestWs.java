@@ -1,6 +1,6 @@
 package com.ism.ws;
 
-import com.ism.ws.helper.WSRequestPost;
+import com.ism.ws.helper.WebserviceConnector;
 
 public class RequestWs {
 
@@ -8,7 +8,7 @@ public class RequestWs {
 	 * Post Request
 	 **/
 	public <CLS> CLS getRequest(String url, Class<CLS> cls, Object reqCls) throws Exception {
-		return new WSRequestPost(url).execute(cls, reqCls);
+		return new WebserviceConnector(url).execute(cls, reqCls);
 	}
 
 }

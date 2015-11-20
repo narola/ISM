@@ -59,7 +59,7 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 
 	    Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, WelComeActivity.this);
 
-	    if (Utility.isOnline(WelComeActivity.this)) {
+	    if (Utility.isConnected(WelComeActivity.this)) {
 		    callApiAllocateTutorialGroup();
 	    } else {
 		    Utility.toastOffline(WelComeActivity.this);

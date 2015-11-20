@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.ws.model.DataGetCountries;
 import com.ism.ws.model.DataLogin;
+import com.ism.ws.model.States;
 //import com.narola.apisample.ws.model.Feed;
 //import com.narola.apisample.ws.model.Question;
 
@@ -21,6 +22,7 @@ public class ResponseHandler {
     private String status;
     private ArrayList<DataLogin> question;
     private ArrayList<DataGetCountries> feed;
+    private ArrayList<States> states;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -40,22 +42,13 @@ public class ResponseHandler {
         this.status = status;
     }
 
-    /*@JsonProperty("question")
-    public ArrayList<Question> getQuestion() {
-        return this.question;
+    @JsonProperty("states")
+    public ArrayList<States> getStates() {
+        return this.states;
     }
 
-    public void setQuestion(ArrayList<Question> question) {
-        this.question = question;
+    public void setStates(ArrayList<States> states) {
+        this.states = states;
     }
-
-    @JsonProperty("feed")
-    public ArrayList<Feed> getFeed() {
-        return this.feed;
-    }
-
-    public void setFeed(ArrayList<Feed> feed) {
-        this.feed = feed;
-    }*/
 
 }

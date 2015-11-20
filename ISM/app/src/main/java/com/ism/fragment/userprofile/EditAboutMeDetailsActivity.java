@@ -15,8 +15,8 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.utility.Debug;
-import com.ism.ws.WebserviceWrapper;
-import com.ism.ws.model.RequestObject;
+import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.helper.Attribute;
 import com.ism.ws.model.ResponseObject;
 
 /**
@@ -82,25 +82,25 @@ public class EditAboutMeDetailsActivity extends Activity implements View.OnClick
     private void callApiEditAboutMe() {
         try {
             ((HostActivity)getApplicationContext()).showProgress();
-            RequestObject requestObject = new RequestObject();
-            requestObject.setUserId("1");
-            requestObject.setUsername(strUserName);
-            requestObject.setContactNumber(strCno);
-            requestObject.setBirthdate(strBirthdate);
+            Attribute attribute = new Attribute();
+            attribute.setUserId("1");
+            attribute.setUsername(strUserName);
+            attribute.setContactNumber(strCno);
+            attribute.setBirthdate(strBirthdate);
             if(editType==AboutMeFragment.ABOUT_ME){
                 strAboutMe=etEnterHere.getText().toString();
             } else
             if(editType==AboutMeFragment.YOUR_AMBITION){
                 strAmbition=etEnterHere.getText().toString();
             }
-            requestObject.setProfileImage("");
-            requestObject.setAmbitionInLife(strAmbition);
-            requestObject.setAboutMeText(strAboutMe);
+            attribute.setProfileImage("");
+            attribute.setAmbitionInLife(strAmbition);
+            attribute.setAboutMeText(strAboutMe);
 
 //            requestObject.setAmbitionInLife("Businessman");
 //            requestObject.setAboutMeText("I am a graduate from NIFT specializing in Apparel Production. I have a holistic experience of the Apparel Industry and has worked for domestic as well as the exports market. In the Indian retail industry I have worked with Lifestyle International Pvt. Ltd. on sourcing, vendor management and product development for private labels. I then moved to Madura Fashion & Lifestyle where I worked as a buyer. Product and Margin management, optimum allocation of merchandise, meeting sales targets along with competition, market and trend analysis were some of her responsibilities. I joined ISB to fast track my career and pursue opportunities in Category & Brand Management.I am President of the Retail Club. I  proud myself.");
 
-            new WebserviceWrapper(getApplicationContext(), requestObject, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
+            new WebserviceWrapper(getApplicationContext(), attribute, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
 
         } catch (Exception e) {
             Debug.i(TAG, "callApiEditAboutMe Exception : " + e.getLocalizedMessage());

@@ -138,7 +138,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 			holder.imgTagStudyMates.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if (Utility.isOnline(context)) {
+					if (Utility.isConnected(context)) {
 						tagFeedPosition = position;
 						callApiGetStudyMates();
 					} else {
@@ -228,7 +228,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 	@Override
 	public void tagStudyMates(String[] arrTagUser) {
-		if (Utility.isOnline(context)) {
+		if (Utility.isConnected(context)) {
 			try {
 				Attribute attribute = new Attribute();
 				attribute.setFeedId(arrListFeeds.get(tagFeedPosition).getFeedId());
