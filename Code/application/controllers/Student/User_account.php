@@ -296,7 +296,7 @@ class User_account extends CI_Controller {
 	               //--find group where grade is instead of my grade 
 
 	           		$found_group_id = null;
-	               	foreach ($get_school_info as $key => $value) {
+	               	foreach($get_school_info as $key => $value) {
 	               		$grade_array	=	explode(',',$value['grade']);
 	               		//-- find grade not exist
 	               		if(!in_array($school_grade, $grade_array)){

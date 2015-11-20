@@ -433,6 +433,8 @@ class Login extends CI_Controller {
     /*----Load welcome page---*/
     public function welcome()
     {
-        $this->load->view('student/welcome');
+        $data = array();
+        $data['username'] = $this->session->userdata('user')['username'];
+        $this->load->view('student/welcome', $data);
     }
 }
