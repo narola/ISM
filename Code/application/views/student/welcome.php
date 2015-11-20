@@ -27,7 +27,7 @@
         <div class="row">
             <div class="col-sm-12 text-center welcome_content">
                 <img src="assets/images/welcome.png">
-                <p class="para_welcome1"> <?php echo $username; ?>, Your tutorial group is being processed and will be available to you for confirmation.</p>
+                <p class="para_welcome1"> <?php echo strtok($username, " "); ?>, Your tutorial group is being processed and will be available to you for confirmation.</p>
                 <div class="loader"></div>
                 <p class="para_welcome2"> Tutorial group is 5 members group of randomly selected students, put together to <span style="color:#80d51e;">share ideas,</span> 
 <span style="color:#e08bff;">collaborate</span> and <span style="color:#fea635;">do assignments.</span></p>

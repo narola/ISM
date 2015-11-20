@@ -434,7 +434,7 @@ class Login extends CI_Controller {
     public function welcome()
     {
         $data = array();
-        $data['username'] = $this->session->userdata('user')['username'];
+        $data['username'] = $this->session->userdata('user')['full_name'];
         $this->load->view('student/welcome', $data);
     }
 }
