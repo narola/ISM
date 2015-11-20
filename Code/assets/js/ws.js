@@ -272,7 +272,7 @@ $(document).ready(function () {
 /* Check wheather web socket is supported by browser. */
 if ("WebSocket" in window)
 {
-    var ws = new WebSocket("ws://192.168.1.124:9300");
+    var ws = new WebSocket("ws://192.168.1.21:9300");
 
     ws.onopen = function ()
     {
