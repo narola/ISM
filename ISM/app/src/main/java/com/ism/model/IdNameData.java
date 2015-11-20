@@ -3,7 +3,7 @@ package com.ism.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.model.ResponseObject;
 
 /**
  * Created by c161 on 26/10/15.

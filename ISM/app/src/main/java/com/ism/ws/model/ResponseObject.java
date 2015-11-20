@@ -1,6 +1,4 @@
-package com.ism.ws;
-
-import com.ism.ws.model.Data;
+package com.ism.ws.model;
 
 import java.util.ArrayList;
 

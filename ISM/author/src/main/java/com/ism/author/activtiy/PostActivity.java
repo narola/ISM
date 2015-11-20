@@ -509,7 +509,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         }
         return serverResponseCode;  // like 200 (Ok)
 
-    } //
+    }
 
     public void startRecording() {
         if (!isRecording) {

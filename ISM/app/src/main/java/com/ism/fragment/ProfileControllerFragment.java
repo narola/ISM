@@ -19,7 +19,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
+import com.ism.object.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.MessageAdapter;
@@ -32,9 +32,9 @@ import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.views.CircleImageView;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.model.ResponseObject;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Data;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -135,7 +135,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
                         activityHost.loadFragment(HostActivity.FRAGMENT_MY_WALLET, null);
                         break;
                     case R.id.txt_edit_profile:
-
                         activityHost.loadFragment(HostActivity.FRAGMENT_EDIT_PROFILE, null);
                         break;
                 }
@@ -243,10 +242,10 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 	private void callApiGetNotifications() {
 		try {
 			activityHost.showProgress();
-			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(Global.strUserId);
+			Attribute attribute = new Attribute();
+			attribute.setUserId(Global.strUserId);
 			Log.e(TAG, "user id : " + Global.strUserId);
-			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_NOTIFICATION);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetNotifications Exception : " + e.toString());
@@ -309,10 +308,10 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 	private void callApiGetMessages() {
 		try {
 			activityHost.showProgress();
-			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(Global.strUserId);
+			Attribute attribute = new Attribute();
+			attribute.setUserId(Global.strUserId);
 
-			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_MESSAGES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetMessages Exception : " + e.toString());
@@ -375,10 +374,10 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 	private void callApiGetStudymateRequests() {
 		try {
 			activityHost.showProgress();
-			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(Global.strUserId);
+			Attribute attribute = new Attribute();
+			attribute.setUserId(Global.strUserId);
 
-			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_STUDYMATE_REQUEST);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetStudymateRequests Exception : " + e.toString());
@@ -512,12 +511,12 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 
 	private void callApiUpdateReadStatus(String readCategory, ArrayList<String> recordId) {
 		try {
-			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(Global.strUserId);
-			requestObject.setReadCategory(readCategory);
-			requestObject.setRecordIds(recordId);
+			Attribute attribute = new Attribute();
+			attribute.setUserId(Global.strUserId);
+			attribute.setReadCategory(readCategory);
+			attribute.setRecordIds(recordId);
 
-			new WebserviceWrapper(activityHost, requestObject, this).new WebserviceCaller().
+			new WebserviceWrapper(activityHost, attribute, this).new WebserviceCaller().
 					execute(WebConstants.UPDATE_READ_STATUS);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiUpdateReadStatus Exception : " + e.toString());

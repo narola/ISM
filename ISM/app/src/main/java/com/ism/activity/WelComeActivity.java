@@ -13,13 +13,13 @@ import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.model.ResponseObject;
 import com.ism.ws.model.TutorialGroupMember;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.WebserviceWrapper;
 
 /**
  * Created by c161 on 08/10/15.
@@ -59,7 +59,7 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 
 	    Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, WelComeActivity.this);
 
-	    if (Utility.isOnline(WelComeActivity.this)) {
+	    if (Utility.isConnected(WelComeActivity.this)) {
 		    callApiAllocateTutorialGroup();
 	    } else {
 		    Utility.toastOffline(WelComeActivity.this);
@@ -71,10 +71,10 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 			progWelcome.setProgress(1);
 			progWelcome.setVisibility(View.VISIBLE);
 			progressGenerator.start(progWelcome);
-			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(Global.strUserId);
+			Attribute attribute = new Attribute();
+			attribute.setUserId(Global.strUserId);
 
-			new WebserviceWrapper(WelComeActivity.this, requestObject, this).new WebserviceCaller()
+			new WebserviceWrapper(WelComeActivity.this, attribute, this).new WebserviceCaller()
 					.execute(WebConstants.ALLOCATE_TUTORIAL_GROUP);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiAllocateTutorialGroup Exception : " + e.toString());

@@ -22,9 +22,9 @@ import com.ism.model.HighScoreSubject;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.AccordionView;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.model.ResponseObject;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Data;
 
 import java.util.ArrayList;
@@ -116,11 +116,11 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 	private void callApiGetAllNotice() {
 		try {
 			activityHost.showProgress();
-			RequestObject requestObject = new RequestObject();
-			requestObject.setRoleId(WebConstants.ROLE_ALL);
+			Attribute attribute = new Attribute();
+			attribute.setRoleId(WebConstants.ROLE_ALL);
 //			requestObject.setRoleId(WebConstants.ROLE_STUDENT);
 
-			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_ALL_NOTICES);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetAllNotice");
@@ -130,11 +130,11 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 	private void callApiGetHighScorers() {
 		try {
 			activityHost.showProgress();
-			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(Global.strUserId);
-			requestObject.setRoleId(WebConstants.ROLE_STUDENT);
+			Attribute attribute = new Attribute();
+			attribute.setUserId(Global.strUserId);
+			attribute.setRoleId(WebConstants.ROLE_STUDENT);
 
-			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_HIGH_SCORERS);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetHighScorers");
@@ -233,7 +233,9 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 					if (!subjectFound) {
 						HighScoreSubject highScoreSubject = new HighScoreSubject();
 						highScoreSubject.setSubjectName(student.getSubjectName());
-						highScoreSubject.setArrListStudent(new ArrayList<Data>());
+						ArrayList<Data> students = new ArrayList<Data>();
+						students.add(student);
+						highScoreSubject.setArrListStudent(students);
 						arrListHighScoreSubject.add(highScoreSubject);
 					}
 				}

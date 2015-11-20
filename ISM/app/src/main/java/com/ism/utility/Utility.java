@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ import com.ism.R;
 import com.ism.ws.model.Data;
 
 import java.io.ByteArrayOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,13 +62,34 @@ public class Utility {
 
 	/**
 	 * Krunal Panchal
-	 * Check if internet connection available.
+	 * Check if internet connection available and network access.
 	 * @param context
-	 * @return
+	 * @return returns whether connection to network can be made or not.
 	 */
-	public static boolean isOnline(Context context) {
-		NetworkInfo networkInfo = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-		return networkInfo != null && networkInfo.isConnectedOrConnecting();
+	public static boolean isConnected(Context context) {
+		try {
+			ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+			if (netInfo != null && netInfo.isConnected()) {
+				//Network is available but check if we can get access from the network.
+				URL url = new URL("https://www.google.com/");
+				HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+				urlc.setRequestProperty("Connection", "close");
+				urlc.setConnectTimeout(2000); // Timeout 2 seconds.
+				urlc.connect();
+
+				if (urlc.getResponseCode() == 200) { //Successful response.
+					return true;
+				} else {
+					Log.d("NO INTERNET", "NO INTERNET");
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "isConnected Exception : " + e.toString());
+		}
+		return false;
 	}
 
 	/**
