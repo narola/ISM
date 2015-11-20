@@ -79,7 +79,7 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
                 public void onClick(View v) {
 
                     fragmentArgument.getFragmentArgumentObject().setStudentId(listOfStudents.get(position).getStudentId());
-                    fragmentArgument.getFragmentArgumentObject().setPosition(position + 1);
+                    fragmentArgument.getFragmentArgumentObject().setPosition(position);
                     fragmentArgument.getFragmentArgumentObject().setProfilePic(listOfStudents.get(position).getProfilePic());
                     fragmentArgument.getFragmentArgumentObject().setStudentName(listOfStudents.get(position).getFullName());
 

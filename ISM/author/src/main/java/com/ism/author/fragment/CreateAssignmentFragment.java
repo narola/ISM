@@ -24,6 +24,7 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
+import com.ism.author.model.FragmentArgument;
 import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
@@ -43,9 +44,11 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private static final String TAG = CreateAssignmentFragment.class.getSimpleName();
     private View view;
+    private FragmentArgument fragmentArgument;
 
-    public static CreateAssignmentFragment newInstance() {
+    public static CreateAssignmentFragment newInstance(FragmentArgument fragmentArgument) {
         CreateAssignmentFragment createAssignmentFragment = new CreateAssignmentFragment();
+        createAssignmentFragment.fragmentArgument = fragmentArgument;
         return createAssignmentFragment;
     }
 
@@ -53,18 +56,17 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         // Required empty public constructor
     }
 
-    TextView tvActivityTitle, tvActivityAssignmentname, tvActivityCoursename, tvActivityClass, tvActivitySubject, tvActivitySubmissiondate, tvActivityTopic;
-    EditText etActivityAssignmentname, etActivityCoursename, etActivitySubmissionDate;
-    Button btnActivitySave, btnActivityCancel;
-    Spinner spActivityClass, spActivitySubject, spActivityTopic;
-    RichTextEditor rteTrialActivity;
-    private ArrayList<Data> arrListClassRooms;
-    private ArrayList<Data> arrListSubject;
-    private ArrayList<Data> arrListTopic;
+    private TextView tvActivityTitle, tvActivityAssignmentname, tvActivityCoursename, tvActivityClass, tvActivitySubject,
+            tvActivitySubmissiondate, tvActivityTopic;
+    private EditText etActivityAssignmentname, etActivityCoursename, etActivitySubmissionDate;
+    private Button btnActivitySave, btnActivityCancel;
+    private Spinner spActivityClass, spActivitySubject, spActivityTopic;
+    private RichTextEditor rteTrialActivity;
+    private ArrayList<Data> arrListClassRooms, arrListSubject, arrListTopic;
     private List<String> arrListDefalt;
     private String strSubmissionDate, strAssignmenttext = "";
 
-    MyTypeFace myTypeFace;
+    private MyTypeFace myTypeFace;
     private InputValidator inputValidator;
 
     @Override
@@ -197,7 +199,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
             } catch (Exception e) {
-                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
             Utility.toastOffline(getActivity());
@@ -213,7 +215,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETTOPICS);
             } catch (Exception e) {
-                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
             Utility.toastOffline(getActivity());
@@ -243,7 +245,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.CREATEASSIGNMENT);
             } catch (Exception e) {
-                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
             Utility.toastOffline(getActivity());
@@ -290,7 +292,6 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         }
 
     }
-
 
     private boolean isTopicSet() {
         return true;
@@ -439,11 +440,9 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     @Override
     public void onClick(View v) {
         if (v == btnActivitySave) {
-
             if (isInputsValid()) {
                 callApiCreateAssignment();
             }
-
         } else if (v == btnActivityCancel) {
             backToTrialScreen();
         }

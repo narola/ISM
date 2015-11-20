@@ -67,10 +67,6 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
             holder.tvAssignmentSubjectName.setText(listOfAssignments.get(position).getSubjectName());
             holder.tvAssignmentClassName.setText(listOfAssignments.get(position).getClassroomName());
             holder.tvAssignmentDate.setText(mContext.getString(R.string.strassignmentdatecolon));
-//            String assignment_date = " " + listOfAssignments.get(position).getPassPercentage();
-//            SpannableString f = new SpannableString(assignment_date);
-//            f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_black)), 0,
-//                    assignment_date.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.tvAssignmentDate.append(Utility.getSpannableString(" " + listOfAssignments.get(position).getPassPercentage(),
                     mContext.getResources().getColor(R.color.color_black)));
 
@@ -98,11 +94,21 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
             holder.llAssignmentContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     fragmentArgument.getFragmentArgumentObject().setExamId(listOfAssignments.get(position).getExamID());
+                    fragmentArgument.getFragmentArgumentObject().setExamName(listOfAssignments.get(position).getExamName());
+                    fragmentArgument.getFragmentArgumentObject().setClassroomId(listOfAssignments.get(position).getClassroomId());
+                    fragmentArgument.getFragmentArgumentObject().setStudentName(listOfAssignments.get(position).getStudentName());
+                    fragmentArgument.getFragmentArgumentObject().setPassPercentage(listOfAssignments.get(position).getPassPercentage());
+                    fragmentArgument.getFragmentArgumentObject().setExamType(listOfAssignments.get(position).getExam_type());
                     fragmentArgument.getFragmentArgumentObject().setExamMode(listOfAssignments.get(position).getExamMode());
+                    fragmentArgument.getFragmentArgumentObject().setDuration(listOfAssignments.get(position).getDuration());
                     fragmentArgument.getFragmentArgumentObject().setAssignmentNo(position);
                     fragmentArgument.getFragmentArgumentObject().setAssignmentName(listOfAssignments.get(position).getExamName());
+
+
                     ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR, fragmentArgument);
+
 
                 }
             });
@@ -111,7 +117,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                 @Override
                 public void onClick(View view) {
                     ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS,
-                            fragmentArgument);
+                            null);
                 }
             });
 

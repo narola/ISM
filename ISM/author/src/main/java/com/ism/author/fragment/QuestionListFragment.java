@@ -23,6 +23,7 @@ import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.model.Data;
+import com.ism.author.model.FragmentArgument;
 import com.ism.author.model.RequestObject;
 import com.ism.author.model.ResponseObject;
 import com.ism.author.ws.WebserviceWrapper;
@@ -40,28 +41,29 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private static final String TAG = QuestionListFragment.class.getSimpleName();
     private View view;
     Fragment mFragment;
+    private FragmentArgument fragmentArgument;
 
-    public QuestionListFragment(Fragment fragment) {
+    public QuestionListFragment(Fragment fragment, FragmentArgument fragmentArgument) {
         this.mFragment = fragment;
+        this.fragmentArgument = fragmentArgument;
+
     }
 
-    Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistTopic;
-    List<String> arrListExamType, arrListDefalt;
-    List<Data> arrListSubject, arrListCourses, arrListTopic;
-    EditText etQuestionlistSearch;
-    TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview;
-    RecyclerView rvQuestionlist;
-    QuestionBankListAdapter questionBankListAdapter;
-
-    ArrayList<Data> listOfQuestionBank = new ArrayList<Data>();
-
-
-    MyTypeFace myTypeFace;
+    private Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistTopic;
+    private List<String> arrListExamType, arrListDefalt;
+    private List<Data> arrListSubject, arrListCourses, arrListTopic;
+    private EditText etQuestionlistSearch;
+    private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview;
+    private RecyclerView rvQuestionlist;
+    private QuestionBankListAdapter questionBankListAdapter;
+    private ArrayList<Data> listOfQuestionBank = new ArrayList<Data>();
+    private MyTypeFace myTypeFace;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_questionlist, container, false);
+
         Utils.showToast("THE QUESTION LIST FRAGMENT CALLED", getActivity());
         initGlobal();
         return view;
@@ -103,11 +105,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
         arrListDefalt = new ArrayList<String>();
         arrListDefalt.add(getString(R.string.strtopic));
-        Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
-
-
-        callApiGetQuestionBank();
-        callApiGetSubjects();
+        Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, arrListDefalt, Adapters.ADAPTER_SMALL);
 
 
         spQuestionlistSubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -122,7 +120,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                         Utility.toastOffline(getActivity());
                     }
                 } else {
-                    Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, arrListDefalt, Adapters.ADAPTER_SMALL);
                 }
             }
 
@@ -152,10 +150,13 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
             }
         });
+
+
+        callApiGetQuestionBank();
+        callApiGetSubjects();
     }
 
     private void callApiGetSubjects() {
-
         if (Utility.isOnline(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -166,9 +167,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         } else {
             Utility.toastOffline(getActivity());
         }
-
     }
-
 
     private void callApiGetTopics(int subject_id) {
         if (Utility.isOnline(getActivity())) {
@@ -183,23 +182,19 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         } else {
             Utility.toastOffline(getActivity());
         }
-
     }
 
 
     private void callApiGetCourses() {
-
         if (Utility.isOnline(getActivity())) {
             try {
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GETCOURSES);
+                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller().execute(WebConstants.GETCOURSES);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
             Utility.toastOffline(getActivity());
         }
-
     }
 
 

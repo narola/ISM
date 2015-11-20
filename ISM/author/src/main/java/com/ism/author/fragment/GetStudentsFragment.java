@@ -203,4 +203,10 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getFragmnetArgument();
 
     }
+
+    public void refreshAdapterForStudentNavigation() {
+        myStudentListAdapter.notifyDataSetChanged();
+
+    }
+
 }

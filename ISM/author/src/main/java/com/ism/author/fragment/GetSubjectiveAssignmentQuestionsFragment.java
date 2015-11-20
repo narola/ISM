@@ -13,7 +13,10 @@ import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.helper.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
+
+import java.util.ArrayList;
 
 /**
  * Created by c166 on 16/11/15.
@@ -113,8 +116,22 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
     public void loadStudentEvaluationData(String studentId) {
         getFragmnetArgument().getFragmentArgumentObject().setStudentId(studentId);
         getSubjectiveQuestionsFragment.loadStudentEvaluationData();
+    }
 
+
+    public void refreshAdapterForStudentNavigation() {
+        getStudentsFragment.refreshAdapterForStudentNavigation();
+    }
+
+    public void setQuestionStatusData(ArrayList<Data> data) {
+
+        questionPaletteFragment.setQuestionStatusData(data);
 
     }
 
+    public void scrollToSpecificQuestion(int position) {
+
+        getSubjectiveQuestionsFragment.scrollToSpecificQuestion(position);
+
+    }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape>
+            <padding android:left="2dp" />
+            <solid android:color="@color/questionpalette_notattemted" />
+            <size
+                android:width="@dimen/d25dp"
+                android:height="@dimen/d25dp" />
+        </shape>
+    </item>
+</layer-list>

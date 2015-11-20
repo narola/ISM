@@ -56,7 +56,7 @@
     <string name="strassignmentdatecolon">Assignment Date:</string>
     <string name="strassignmentdate">Assignment date</string>
     <string name="strassessed">Assessed</string>
-    <string name="strunasssessed">unassessed</string>
+    <string name="strunasssessed">Unassessed</string>
     <string name="strassignmenttype">Assignment Type :</string>
     <string name="stravgscore">Avrage Score</string>
     <string name="strpercent">%</string>
@@ -197,6 +197,10 @@
     <string name="strincorrect">0 Incorrect</string>
     <string name="strevaluation">Evaluation</string>
     <string name="strof">Of</string>
+    <string name="strquestionpallete">Question Palette</string>
+    <string name="strlegend">Legend :</string>
+    <string name="strnotattemted">Not Attempted</string>
+
 
     <!--string array-->
 
@@ -248,7 +252,7 @@
     </string-array>
 
     <string-array name="examname">
-        <item>Exam Name</item>
+        <item>Exam Category</item>
         <item>ISM_Mock</item>
         <item>WASSCE</item>
         <item>End Of Term</item>

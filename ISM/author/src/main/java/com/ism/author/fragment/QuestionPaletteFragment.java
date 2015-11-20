@@ -2,11 +2,20 @@ package com.ism.author.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ism.author.R;
+import com.ism.author.adapter.QuestionPaletteAdapter;
+import com.ism.author.helper.MyTypeFace;
+import com.ism.author.model.Data;
+import com.ism.author.model.FragmentArgument;
+
+import java.util.ArrayList;
 
 /**
  * Created by c166 on 16/11/15.
@@ -22,6 +31,14 @@ public class QuestionPaletteFragment extends Fragment {
         this.mFragment = fragment;
     }
 
+    private TextView tvQuestionPaletteTitle, tvLegend, tvQuesPaletteAssessed, tvQuesPaletteNotAttempted,
+            tvQuesPaletteUnassessed;
+    private RecyclerView rvQuestionpaletteList;
+    private MyTypeFace myTypeFace;
+    private ArrayList<Data> listOfStudents = new ArrayList<Data>();
+    private QuestionPaletteAdapter questionPaletteAdapter;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_question_palette, container, false);
@@ -31,5 +48,40 @@ public class QuestionPaletteFragment extends Fragment {
 
     private void initGlobal() {
 
+        myTypeFace = new MyTypeFace(getActivity());
+
+        tvQuestionPaletteTitle = (TextView) view.findViewById(R.id.tv_question_palette_title);
+        tvLegend = (TextView) view.findViewById(R.id.tv_legend);
+        tvQuesPaletteAssessed = (TextView) view.findViewById(R.id.tv_ques_palette_assessed);
+        tvQuesPaletteNotAttempted = (TextView) view.findViewById(R.id.tv_ques_palette_not_attempted);
+        tvQuesPaletteUnassessed = (TextView) view.findViewById(R.id.tv_ques_palette_unassessed);
+        rvQuestionpaletteList = (RecyclerView) view.findViewById(R.id.rv_questionpalette_list);
+        questionPaletteAdapter = new QuestionPaletteAdapter(getActivity(), mFragment);
+        rvQuestionpaletteList.setAdapter(questionPaletteAdapter);
+        rvQuestionpaletteList.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+
+
+        tvQuestionPaletteTitle.setTypeface(myTypeFace.getRalewayRegular());
+        tvLegend.setTypeface(myTypeFace.getRalewayBold());
+        tvQuesPaletteAssessed.setTypeface(myTypeFace.getRalewayRegular());
+        tvQuesPaletteNotAttempted.setTypeface(myTypeFace.getRalewayRegular());
+        tvQuesPaletteUnassessed.setTypeface(myTypeFace.getRalewayRegular());
+
+
     }
+
+
+    private FragmentArgument getFragmentArguments() {
+        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getFragmnetArgument();
+
+    }
+
+    public void setQuestionStatusData(ArrayList<Data> data) {
+        listOfStudents.clear();
+        listOfStudents.addAll(data);
+        questionPaletteAdapter.addAll(listOfStudents);
+        questionPaletteAdapter.notifyDataSetChanged();
+    }
+
+
 }

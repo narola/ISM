@@ -76,7 +76,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
             holder.llMyStudentsContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getFragmentArgument().getFragmentArgumentObject().setPosition(position + 1);
+                    getFragmentArgument().getFragmentArgumentObject().setPosition(position);
                     getFragmentArgument().getFragmentArgumentObject().setProfilePic(listOfStudents.get(position).getProfilePic());
                     getFragmentArgument().getFragmentArgumentObject().setStudentName(listOfStudents.get(position).getFullName());
                     getFragmnet().loadStudentEvaluationData(listOfStudents.get(position).getStudentId());
