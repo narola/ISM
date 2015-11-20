@@ -9,13 +9,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
-import com.ism.author.helper.CircleImageView;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
 import com.nostra13.universalimageloader.core.ImageLoader;

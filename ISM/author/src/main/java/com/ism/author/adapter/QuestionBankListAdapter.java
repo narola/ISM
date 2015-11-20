@@ -17,7 +17,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.fragment.AddQuestionContainerFragment;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.model.Data;
 import com.ism.author.model.QuestionAnswersModel;
 

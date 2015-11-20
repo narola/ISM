@@ -1,8 +1,9 @@
-package com.ism.author.model;
+package com.ism.author.ws.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.author.model.QuestionAnswersModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RequestObject {
+public class Attribute {
 
 
     private String schoolName;

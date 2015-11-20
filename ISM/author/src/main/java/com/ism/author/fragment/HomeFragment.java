@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
@@ -23,8 +23,8 @@ import com.ism.author.activtiy.PostActivity;
 import com.ism.author.adapter.PostFeedsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.model.Attribute;
+import com.ism.author.ws.model.ResponseHandler;
 import com.ism.author.ws.WebserviceWrapper;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
@@ -129,9 +129,9 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     private void callApiGetAllPostFeeds() {
         if (Utility.isOnline(getActivity())) {
             try {
-                RequestObject requestObject = new RequestObject();
-                requestObject.setUserId(WebConstants.TEST_USER_ID);
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setUserId(WebConstants.TEST_USER_ID);
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLFEEDS);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -151,7 +151,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 //
 //        if (Utils.isInternetConnected(getActivity())) {
 //            try {
-//                RequestObject requestObject = new RequestObject();
+//                Attribute requestObject = new Attribute();
 //                requestObject.setUserId(WebConstants.TEST_LIKEUSERID);
 //
 //                if (likePrefData.length() > 0) {
@@ -192,11 +192,11 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
     private void onResponseGetAllFeeds(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-                    postFeedsAdapter.addAll(responseObj.getData());
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    postFeedsAdapter.addAll(responseHandler.getData());
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAllFeeds api Exception : " + error.toString());

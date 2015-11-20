@@ -17,7 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.InputValidator;
@@ -25,11 +25,11 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.model.Attribute;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.model.ResponseHandler;
 import com.ism.author.ws.WebserviceWrapper;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
@@ -303,9 +303,9 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private void callApiGetTopics(int subject_id) {
         if (Utility.isOnline(getActivity())) {
             try {
-                RequestObject requestObject = new RequestObject();
-                requestObject.setSubjectId(String.valueOf(subject_id));
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setSubjectId(String.valueOf(subject_id));
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETTOPICS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -320,36 +320,36 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
         if (Utility.isOnline(getActivity())) {
             try {
-                RequestObject requestObject = new RequestObject();
+                Attribute attribute = new Attribute();
 
-                requestObject.setExamName(etExamName.getText().toString());
-                requestObject.setClassroomId(String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
+                attribute.setExamName(etExamName.getText().toString());
+                attribute.setClassroomId(String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
-                requestObject.setSubjectId(String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
+                attribute.setSubjectId(String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
                         get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
-                requestObject.setAttemptCount(String.valueOf(Integer.valueOf(etExamAttemptcount.getText().toString())));
-                requestObject.setExamType(getExamType());
-                requestObject.setExamCategory(arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
-                requestObject.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
-                requestObject.setPassingPercent(arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
-                requestObject.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
-                requestObject.setExamInstruction(strAssignmenttext);
-                requestObject.setDeclareResults(getRadioGropuSelection(radioDeclareresult));
-                requestObject.setNegativeMarking(getRadioGropuSelection(radioNegativemarking));
-                requestObject.setRandomQuestion(getRadioGropuSelection(radioExamRandomQuestion));
-                requestObject.setExamStartDate(Utils.getDateInApiFormat(etExamStartdate.getText().toString()));
+                attribute.setAttemptCount(String.valueOf(Integer.valueOf(etExamAttemptcount.getText().toString())));
+                attribute.setExamType(getExamType());
+                attribute.setExamCategory(arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
+                attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
+                attribute.setPassingPercent(arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
+                attribute.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
+                attribute.setExamInstruction(strAssignmenttext);
+                attribute.setDeclareResults(getRadioGropuSelection(radioDeclareresult));
+                attribute.setNegativeMarking(getRadioGropuSelection(radioNegativemarking));
+                attribute.setRandomQuestion(getRadioGropuSelection(radioExamRandomQuestion));
+                attribute.setExamStartDate(Utils.getDateInApiFormat(etExamStartdate.getText().toString()));
 
-                requestObject.setExamStartTime("5:00:00");
-                requestObject.setUserId("370");
+                attribute.setExamStartTime("5:00:00");
+                attribute.setUserId("370");
                 if (etExamAddnegativemark.getText().toString().isEmpty()) {
-                    requestObject.setNegativeMarkValue("0");
+                    attribute.setNegativeMarkValue("0");
                 } else {
-                    requestObject.setNegativeMarkValue(etExamAddnegativemark.getText().toString());
+                    attribute.setNegativeMarkValue(etExamAddnegativemark.getText().toString());
                 }
 
-                requestObject.setBookId(String.valueOf(0));
+                attribute.setBookId(String.valueOf(0));
 
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.CREATEEXAM);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -539,8 +539,8 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private void onResponseGetClassrooms(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     arrListClassRooms = new ArrayList<Data>();
                     arrListClassRooms.addAll(responseObj.getData());
@@ -555,7 +555,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 //                        sp
 //                    }
 
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -570,8 +570,8 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private void onResponseGetSubjects(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     arrListSubject = new ArrayList<Data>();
                     arrListSubject.addAll(responseObj.getData());
@@ -584,7 +584,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 //                    if (setExamDetails) {
 //                        sp
 //                    }
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -598,8 +598,8 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private void onResponseGetTopics(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListTopic = new ArrayList<Data>();
                     arrListTopic.addAll(responseObj.getData());
                     List<String> topics = new ArrayList<String>();
@@ -608,7 +608,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                         topics.add(topic.getTopicName());
                     }
                     Adapters.setUpSpinner(getActivity(), spExamSubjecttopic, topics, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Adapters.setUpSpinner(getActivity(), spExamSubjecttopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
@@ -624,15 +624,15 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private void onResponseCreateExam(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utils.showToast(getActivity().getString(R.string.msg_success_createexam), getActivity());
                     btnExamSetquestion.setVisibility(View.VISIBLE);
                     if (fragmentArgument == null) {
                         fragmentArgument = new FragmentArgument();
                     }
                     fragmentArgument.getFragmentArgumentObject().setExamId(responseObj.getData().get(0).getExamID());
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {

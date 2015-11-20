@@ -1,4 +1,4 @@
-package com.ism.author;
+package com.ism.author.activtiy;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
@@ -41,11 +42,11 @@ import com.ism.author.fragment.StudentAttemptedFragment;
 import com.ism.author.fragment.TrialExamObjectiveDetailFragment;
 import com.ism.author.fragment.TrialExamSujectiveDetailFragment;
 import com.ism.author.fragment.TrialFragment;
-import com.ism.author.helper.ControllerTopMenuItem;
+import com.ism.author.object.ControllerTopMenuItem;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.FragmentArgument;
-import com.ism.author.rightcontainerfragment.AuthorProfileFragment;
-import com.ism.author.rightcontainerfragment.HighScoreFragment;
+import com.ism.author.fragment.rightcontainerfragment.AuthorProfileFragment;
+import com.ism.author.fragment.rightcontainerfragment.HighScoreFragment;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 

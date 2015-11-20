@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
 
-        <com.ism.author.helper.CircleImageView
+        <com.ism.author.views.CircleImageView
             android:id="@+id/img_dp_post_creator"
             android:layout_width="@dimen/dp_post_creater_image_width_height"
             android:layout_height="@dimen/dp_post_creater_image_width_height"

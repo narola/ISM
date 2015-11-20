@@ -12,19 +12,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.GetObjectiveAssignmentQuestionsAdapter;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.ws.model.Attribute;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.model.ResponseHandler;
 import com.ism.author.ws.WebserviceWrapper;
 
 import java.util.ArrayList;
@@ -143,7 +143,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         if (Utility.isOnline(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
-                RequestObject request = new RequestObject();
+                Attribute request = new Attribute();
                 request.setExamId("9");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
@@ -159,7 +159,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         if (Utility.isOnline(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
-                RequestObject request = new RequestObject();
+                Attribute request = new Attribute();
 //                request.setExamId(fragmentArgument.getFragmentArgumentObject().getExamId());
 //                request.setExamId(fragmentArgument.getFragmentArgumentObject().getStudentId());
                 request.setExamId("9");
@@ -218,14 +218,14 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     }
 
-    ResponseObject responseObjGetAllExamQuestions = null;
+    ResponseHandler responseObjGetAllExamQuestions = null;
 
     private void onResponseGetAllExamQuestions(Object object, Exception error) {
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                responseObjGetAllExamQuestions = (ResponseObject) object;
-                if (responseObjGetAllExamQuestions.getStatus().equals(ResponseObject.SUCCESS)) {
+                responseObjGetAllExamQuestions = (ResponseHandler) object;
+                if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
                     listOfQuestions.addAll(responseObjGetAllExamQuestions.getData().get(0).getQuestions());
                     getObjectiveAssignmentQuestionsAdapter.addAll(listOfQuestions);
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
@@ -236,7 +236,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                         callAPiGetExamEvaluation();
                     }
 
-                } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObjGetAllExamQuestions.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -251,13 +251,13 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     getObjectiveAssignmentQuestionsAdapter.setEvaluationData(responseObj.getData().get(0).getEvaluations());
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
 
 
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {

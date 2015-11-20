@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
@@ -17,11 +17,11 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.StudentAttemptedAssignmentAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.model.Attribute;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.model.ResponseHandler;
 import com.ism.author.ws.WebserviceWrapper;
 
 import java.util.ArrayList;
@@ -80,7 +80,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
 
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
-                RequestObject request = new RequestObject();
+                Attribute request = new Attribute();
 //                request.setExamId(fragmentArgument.getRequestObject().getExamId());
                 request.setExamId("9");
                 request.setUserId("340");
@@ -116,13 +116,13 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     listOfStudents.addAll(responseObj.getData().get(0).getEvaluations());
                     studentAttemptedAssignmentAdapter.addAll(listOfStudents);
                     studentAttemptedAssignmentAdapter.notifyDataSetChanged();
 
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {

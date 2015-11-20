@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;

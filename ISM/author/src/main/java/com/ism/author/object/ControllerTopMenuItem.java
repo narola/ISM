@@ -1,4 +1,4 @@
-package com.ism.author.helper;
+package com.ism.author.object;
 
 import android.content.Context;
 

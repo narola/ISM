@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
@@ -23,11 +23,11 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.AssignmentAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.ws.model.Attribute;
 import com.ism.author.model.Data;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.model.ResponseHandler;
 import com.ism.author.ws.WebserviceWrapper;
 import com.ism.commonsource.view.ActionProcessButton;
 
@@ -134,7 +134,7 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
         if (Utility.isOnline(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
-                RequestObject request = new RequestObject();
+                Attribute request = new Attribute();
                 request.setUserId("370");
                 request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -208,12 +208,12 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     listOfAssignment.addAll(responseObj.getData());
                     assignmentAdapter.addAll(listOfAssignment);
                     assignmentAdapter.notifyDataSetChanged();
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -228,8 +228,8 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
         try {
             Utility.hideSpinnerProgress(progAssignmentClass);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     arrListClassRooms = new ArrayList<Data>();
                     arrListClassRooms.addAll(responseObj.getData());
@@ -241,7 +241,7 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
                     }
                     Adapters.setUpSpinner(getActivity(), spAssignmentClass, classrooms, Adapters.ADAPTER_SMALL);
 
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -256,8 +256,8 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
         try {
             Utility.hideSpinnerProgress(progAssignmentSubject);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     arrListSubject = new ArrayList<Data>();
                     arrListSubject.addAll(responseObj.getData());
@@ -268,7 +268,7 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
 
                     }
                     Adapters.setUpSpinner(getActivity(), spAssignmentSubject, subjects, Adapters.ADAPTER_SMALL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {

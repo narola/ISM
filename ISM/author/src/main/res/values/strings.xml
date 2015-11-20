@@ -200,6 +200,8 @@
     <string name="strquestionpallete">Question Palette</string>
     <string name="strlegend">Legend :</string>
     <string name="strnotattemted">Not Attempted</string>
+    <string name="strsubjective">subjective</string>
+    <string name="strobjective">objective</string>
 
 
     <!--string array-->
@@ -247,8 +249,8 @@
 
     <string-array name="exammode">
         <item>Exam Mode</item>
-        <item>Subjective</item>
-        <item>Objective</item>
+        <item>@string/strsubjective</item>
+        <item>@string/strobjective</item>
     </string-array>
 
     <string-array name="examname">
@@ -271,6 +273,4 @@
         <item>0</item>
         <item>0</item>
     </integer-array>
-
-
 </resources>

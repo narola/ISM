@@ -9,11 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
 

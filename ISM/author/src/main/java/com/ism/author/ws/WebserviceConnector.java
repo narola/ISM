@@ -20,19 +20,19 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 
-
 /**
  * Created by c161 on 23/10/15.
  */
-public class WSRequestPost {
+public class WebserviceConnector {
 
+    private static final String LOG_TAG = "WebserviceConnector";
+    private String TAG = WebserviceConnector.class.getSimpleName();
     private static final Lock lock = new ReentrantLock();
     private static ObjectMapper mapper = null;
-    private static final String LOG_TAG = "WSRequestPost";
     private String url;
-    private String TAG=WSRequestPost.class.getSimpleName();
 
-    public WSRequestPost(String url) {
+
+    public WebserviceConnector(String url) {
         this.url = url;
     }
 
@@ -52,7 +52,7 @@ public class WSRequestPost {
                 if (request != null) {
                     // writer.writeValueAsString( request );
                     jsonObject = writer.writeValueAsString(request);
-                    Log.i(TAG, "JSON OBJECT : "+jsonObject + "");
+                    Log.i(TAG, "JSON OBJECT : " + jsonObject + "");
                 }
 
 
@@ -60,9 +60,8 @@ public class WSRequestPost {
             try (OutputStream output = connection.getOutputStream()) {
                 output.write(jsonObject.getBytes());
             } catch (Exception error) {
-                Log.i(TAG, "JSON OBJECT  Write: "+jsonObject + "");
+                Log.i(TAG, "JSON OBJECT  Write: " + jsonObject + "");
             }
-
 
 
             try {
@@ -96,11 +95,9 @@ public class WSRequestPost {
         if (mapper != null) {
             return mapper;
         }
-
         try {
             lock.lock();
             if (mapper == null) {
-
                 mapper = new ObjectMapper();
                 mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES,
                         false);

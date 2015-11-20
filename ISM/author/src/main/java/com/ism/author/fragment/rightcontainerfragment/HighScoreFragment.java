@@ -1,4 +1,4 @@
-package com.ism.author.rightcontainerfragment;
+package com.ism.author.fragment.rightcontainerfragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.interfaces.FragmentListener;
 

@@ -19,7 +19,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.ism.author.helper.CircleImageView
+            <com.ism.author.views.CircleImageView
                 android:id="@+id/img_student_profile_pic"
                 android:layout_width="@dimen/d50dp"
                 android:layout_height="@dimen/d50dp"

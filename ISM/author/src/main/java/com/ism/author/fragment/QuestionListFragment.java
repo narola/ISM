@@ -21,11 +21,11 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.QuestionBankListAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.model.Attribute;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.model.ResponseHandler;
 import com.ism.author.ws.WebserviceWrapper;
 
 import java.util.ArrayList;
@@ -172,9 +172,9 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void callApiGetTopics(int subject_id) {
         if (Utility.isOnline(getActivity())) {
             try {
-                RequestObject requestObject = new RequestObject();
-                requestObject.setSubjectId(String.valueOf(subject_id));
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setSubjectId(String.valueOf(subject_id));
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETTOPICS);
             } catch (Exception e) {
                 Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -201,8 +201,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void onResponseGetTopics(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListTopic = new ArrayList<Data>();
                     arrListTopic.addAll(responseObj.getData());
                     List<String> topics = new ArrayList<String>();
@@ -212,7 +212,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
                     }
                     Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, topics, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
@@ -229,10 +229,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
         if (Utility.isOnline(getActivity())) {
             try {
-                RequestObject requestObject = new RequestObject();
-                requestObject.setUserId("370");
-                requestObject.setRole(AppConstant.AUTHOR_ROLE_ID + "");
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setUserId("370");
+                attribute.setRole(AppConstant.AUTHOR_ROLE_ID + "");
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETQUESTIONBANK);
 
             } catch (Exception e) {
@@ -270,8 +270,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void onResponseGetSubjects(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListSubject = new ArrayList<Data>();
                     arrListSubject.addAll(responseObj.getData());
                     List<String> subjects = new ArrayList<String>();
@@ -281,7 +281,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
                     }
                     Adapters.setUpSpinner(getActivity(), spQuestionlistSubject, subjects, Adapters.ADAPTER_SMALL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -295,8 +295,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void onResponseGetCourses(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     arrListCourses = new ArrayList<Data>();
                     arrListCourses.addAll(responseObj.getData());
@@ -308,7 +308,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     }
                     Adapters.setUpSpinner(getActivity(), spQuestionlistCourse, courses, Adapters.ADAPTER_SMALL);
 
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -323,11 +323,11 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void onResponseGetQuestionBank(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     listOfQuestionBank.addAll(responseObj.getData());
                     questionBankListAdapter.addAll(listOfQuestionBank);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {

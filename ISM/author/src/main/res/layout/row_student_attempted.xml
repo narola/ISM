@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.ism.author.helper.CircleImageView
+        <com.ism.author.views.CircleImageView
             android:id="@+id/img_user_pic"
             android:layout_width="60sp"
             android:layout_height="60sp"

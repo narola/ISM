@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
@@ -18,12 +18,12 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.SubjectiveQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.CircleImageView;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.model.Attribute;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.model.ResponseHandler;
 import com.ism.author.ws.WebserviceWrapper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -193,7 +193,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         if (Utility.isOnline(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
-                RequestObject request = new RequestObject();
+                Attribute request = new Attribute();
 //                request.setExamId(fragmentArgument.getRequestObject().getExamId());
                 request.setExamId("11");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -211,7 +211,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         if (Utility.isOnline(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
-                RequestObject request = new RequestObject();
+                Attribute request = new Attribute();
 //                request.setExamId(getFragmentArguments().getFragmentArgumentObject().getExamId());
 //                request.setExamId(getFragmentArguments().getFragmentArgumentObject().getStudentId());
                 request.setExamId("11");
@@ -245,16 +245,16 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     }
 
-    ResponseObject responseObjGetAllExamQuestions;
+    ResponseHandler responseObjGetAllExamQuestions;
 
     private void onResponseGetAllExamQuestions(Object object, Exception error) {
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                responseObjGetAllExamQuestions = (ResponseObject) object;
-                if (responseObjGetAllExamQuestions.getStatus().equals(ResponseObject.SUCCESS)) {
+                responseObjGetAllExamQuestions = (ResponseHandler) object;
+                if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
                     loadStudentEvaluationData();
-                } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObjGetAllExamQuestions.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -265,14 +265,14 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         }
     }
 
-    ResponseObject responseObjGetExamEvaluation;
+    ResponseHandler responseObjGetExamEvaluation;
 
     private void onResponseGetExamEvaluation(Object object, Exception error) {
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                responseObjGetExamEvaluation = (ResponseObject) object;
-                if (responseObjGetExamEvaluation.getStatus().equals(ResponseObject.SUCCESS)) {
+                responseObjGetExamEvaluation = (ResponseHandler) object;
+                if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.SUCCESS)) {
 //                    canLoadMore = true;
                     loading = true;
                     subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getData().get(0).getEvaluations());
@@ -281,7 +281,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
                     setTitleDetails();
                     getBaseFragment().setQuestionStatusData(responseObjGetExamEvaluation.getData().get(0).getEvaluations());
 
-                } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObjGetExamEvaluation.getMessage(), getActivity());
                 }
             } else if (error != null) {

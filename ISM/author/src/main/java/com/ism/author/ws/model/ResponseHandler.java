@@ -1,12 +1,14 @@
-package com.ism.author.model;
+package com.ism.author.ws.model;
 
+
+import com.ism.author.model.Data;
 
 import java.util.ArrayList;
 
 /**
  * Created by c166 on 23/10/15.
  */
-public class ResponseObject {
+public class ResponseHandler {
 
     private String message;
     private ArrayList<Data> data;
@@ -15,7 +17,7 @@ public class ResponseObject {
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
     public static final String DUPLICATE_ENTRY = "Duplicate entry";
-    private String TAG = ResponseObject.class.getSimpleName();
+    private String TAG = ResponseHandler.class.getSimpleName();
 
     public String getMessage() {
         return this.message;
@@ -26,9 +28,6 @@ public class ResponseObject {
     }
 
     public ArrayList<Data> getData() {
-        // Debug.i(TAG,"DATA OBJECT:"+ questionData.size() );
-
-       // Debug.i(TAG,"DATA OBJECT:"+ questionData.size() );
         return this.data;
     }
 
@@ -43,6 +42,12 @@ public class ResponseObject {
     public void setStatus(String status) {
         this.status = status;
     }
+
+
+    /*this is the new code for the response handler*/
+
+//    private ArrayList<Data> data;
+
 
 }
 
