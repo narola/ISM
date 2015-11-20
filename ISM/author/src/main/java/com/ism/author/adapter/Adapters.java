@@ -8,7 +8,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 
 import java.util.List;
 

@@ -11,14 +11,14 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.adapter.TrialExamsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.model.Attribute;
+import com.ism.author.ws.model.ResponseHandler;
 import com.ism.author.ws.WebserviceWrapper;
 
 
@@ -67,11 +67,11 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void initGlobal() {
         gridExams = (GridView) view.findViewById(R.id.grid_trial);// The number of Columns
-        RequestObject requestObject = new RequestObject();
-        requestObject.setRole("4");
-        requestObject.setUserId("370");
+        Attribute attribute = new Attribute();
+        attribute.setRole("4");
+        attribute.setUserId("370");
         ((AuthorHostActivity) getActivity()).startProgress();
-        new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+        new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                 .execute(WebConstants.GETALLEXAM);
 
     }
@@ -108,14 +108,14 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
     public void onResponse(int API_METHOD, Object object, Exception error) {
         ((AuthorHostActivity) getActivity()).stopProgress();
         try {
-            ResponseObject responseObject = (ResponseObject) object;
+            ResponseHandler responseHandler = (ResponseHandler) object;
             if (API_METHOD == WebConstants.GETALLEXAM) {
-                if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
-                    if (responseObject.getData().size() != 0) {
-                        arrayList = new TrialExamsAdapter(getActivity(), responseObject, this);
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    if (responseHandler.getData().size() != 0) {
+                        arrayList = new TrialExamsAdapter(getActivity(), responseHandler, this);
                         gridExams.setAdapter(arrayList);
                     }
-                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
                 }
             }

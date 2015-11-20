@@ -9,11 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
+import com.ism.object.ISMStudent;
 import com.ism.R;
 import com.ism.constant.WebConstants;
 import com.ism.model.HighScoreSubject;
-import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
 import com.ism.ws.model.Data;

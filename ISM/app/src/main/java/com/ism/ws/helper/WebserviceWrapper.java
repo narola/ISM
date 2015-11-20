@@ -142,6 +142,9 @@ public class WebserviceWrapper {
                         case WebConstants.GET_HIGH_SCORERS:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_HIGH_SCORERS).execute(ResponseObject.class, attribute);
                             break;
+                        case WebConstants.GET_BOOKS_FOR_USER:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseObject.class, attribute);
+                            break;
                     }
                 } else {
 		            Utility.showToast(context.getString(R.string.error_server_connection), context);

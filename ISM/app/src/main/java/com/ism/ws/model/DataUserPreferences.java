@@ -11,13 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataUserPreferences {
-	
+
     private String displayValue;
     private String id;
     private String parentKey;
     private String preferenceValue;
     private String preferenceKey;
-    
+
 
     @JsonProperty("display_value")
     public String getDisplayValue() {
@@ -27,6 +27,7 @@ public class DataUserPreferences {
     public void setDisplayValue(String displayValue) {
         this.displayValue = displayValue;
     }
+
     @JsonProperty("id")
     public String getId() {
         return this.id;
@@ -35,6 +36,7 @@ public class DataUserPreferences {
     public void setId(String id) {
         this.id = id;
     }
+
     @JsonProperty("parent_key")
     public String getParentKey() {
         return this.parentKey;
@@ -43,6 +45,7 @@ public class DataUserPreferences {
     public void setParentKey(String parentKey) {
         this.parentKey = parentKey;
     }
+
     @JsonProperty("preference_value")
     public String getPreferenceValue() {
         return this.preferenceValue;
@@ -51,6 +54,7 @@ public class DataUserPreferences {
     public void setPreferenceValue(String preferenceValue) {
         this.preferenceValue = preferenceValue;
     }
+
     @JsonProperty("preference_key")
     public String getPreferenceKey() {
         return this.preferenceKey;
@@ -61,5 +65,4 @@ public class DataUserPreferences {
     }
 
 
-    
 }

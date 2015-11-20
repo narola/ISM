@@ -19,7 +19,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.ism.author.helper.CircleImageView
+            <com.ism.author.views.CircleImageView
                 android:id="@+id/img_student_profile_pic"
                 android:layout_width="@dimen/d50dp"
                 android:layout_height="@dimen/d50dp"
@@ -126,16 +126,25 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_app_dark"
-        android:padding="@dimen/d10dp">
+        android:background="@color/bg_app_dark">
 
-        <ImageView
-            android:id="@+id/img_prev_student"
+        <LinearLayout
+            android:id="@+id/ll_prev_student"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/btn_prev" />
+            android:gravity="center"
+            android:padding="@dimen/d20dp">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_prev" />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tv_student_evalution_no"
@@ -146,13 +155,22 @@
             android:textColor="@color/color_white"
             android:textSize="@dimen/d18dp" />
 
-        <ImageView
-            android:id="@+id/img_next_student"
+        <LinearLayout
+            android:id="@+id/ll_next_student"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/btn_next" />
+            android:gravity="center"
+            android:padding="@dimen/d20dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_next" />
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 

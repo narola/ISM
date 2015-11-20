@@ -5,14 +5,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.ws.model.City;
 import com.ism.ws.model.Country;
+import com.ism.ws.model.DataAboutMe;
+import com.ism.ws.model.DataGetAllPreferences;
+import com.ism.ws.model.DataUserPreferences;
 import com.ism.ws.model.State;
 import com.ism.ws.model.TutorialGroup;
 import com.ism.ws.model.User;
 import com.ism.ws.model.UserDetail;
-//import com.narola.apisample.ws.model.Feed;
-//import com.narola.apisample.ws.model.Question;
 
 import java.util.ArrayList;
+
+//import com.narola.apisample.ws.model.Feed;
+//import com.narola.apisample.ws.model.Question;
 
 /**
  * Created by c161 on 19/11/15.
@@ -29,6 +33,9 @@ public class ResponseHandler {
 	private ArrayList<City> cities;
 	private ArrayList<User> user;
 	private ArrayList<TutorialGroup> tutorialGroup;
+    private ArrayList<DataAboutMe> aboutMes;
+    private ArrayList<DataGetAllPreferences> preference;
+    private ArrayList<DataUserPreferences> userPreference;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -101,5 +108,38 @@ public class ResponseHandler {
 	public void setTutorialGroup(ArrayList<TutorialGroup> tutorialGroup) {
 		this.tutorialGroup = tutorialGroup;
 	}
+/*
+
+    @JsonProperty("user")
+    public ArrayList<DataAboutMe> getUser() {
+        return aboutMes;
+    }
+*/
+/*
+
+    public void setUser(ArrayList<DataAboutMe> user) {
+        this.aboutMes = user;
+    }
+*/
+
+    @JsonProperty("preference")
+    public ArrayList<DataGetAllPreferences> getPreference() {
+        return preference;
+    }
+
+    public void setPreference(ArrayList<DataGetAllPreferences> preference) {
+        this.preference = preference;
+    }
+    @JsonProperty("user_preference")
+    public ArrayList<DataUserPreferences> getUserPreference() {
+        return this.userPreference;
+    }
+
+    public void setUserPreference(ArrayList<DataUserPreferences> userPreference) {
+        this.userPreference = userPreference;
+    }
+
+
+
 
 }

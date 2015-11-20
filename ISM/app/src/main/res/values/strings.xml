@@ -281,4 +281,6 @@
     <string name="date">Date</string>
     <string name="amount">Amount</string>
     <string name="error_server_connection">Server connection failed!</string>
+    <string name="strBooksYouMayWantToRead">Books you may want to read</string>
+    <string name="strYourFavoriteBooks">Your Favorite Books</string>
 </resources>

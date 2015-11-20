@@ -17,8 +17,9 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
-import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.ResponseObject;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
     MyTypeFace myTypeFace;
     private int currentFragment = -1;
     public static ArrayList<Attribute> preferencesList;
-    private Attribute attributeSetting;
+    private Attribute attribute;
 
     public static GeneralSettingsFragment newInstance() {
         GeneralSettingsFragment fragment = new GeneralSettingsFragment();
@@ -219,7 +220,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseObject responseObject = (ResponseObject) object;
+                ResponseHandler responseObject = (ResponseHandler) object;
 
                 if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
                     Debug.i(TAG, "Updated successfully");
@@ -243,9 +244,9 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         try {
             activityHost.showProgress();
             if (reqObj != null) {
-                attributeSetting = new Attribute();
-                attributeSetting.setPreferences(reqObj);
-                new WebserviceWrapper(getActivity(), attributeSetting, this).new WebserviceCaller().execute(WebConstants.MANAGE_GENERAL_SETTINGS);
+                attribute = new Attribute();
+                attribute.setPreferences(reqObj);
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_GENERAL_SETTINGS);
 
             } else {
                 Debug.i(TAG, "General setting Pereference list size :" + reqObj.size());
@@ -260,19 +261,19 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
 
     //used for store the preferences value of general setting in arraylist
     public void setPreferenceList(String key, String value, Context context) {
-        Attribute attribute = new Attribute();
-        attribute.setUserId("1");
-        attribute.setKeyId(key);
-        attribute.setSettingValue(value);
+        Attribute requestObject = new Attribute();
+        requestObject.setUserId("1");
+        requestObject.setKeyId(key);
+        requestObject.setSettingValue(value);
         Debug.i(TAG, "setPreferenceList" + "key:" + key + "value:" + value);
         PreferenceData.setStringPrefs(key, context, value);
-        preferencesList.add(attribute);
+        preferencesList.add(requestObject);
     }
 
-    private String getKeyPereference(String keyPref) {
-        String key = PreferenceData.getStringPrefs(keyPref, getActivity(), "");
-        String key_value = PreferenceData.getStringPrefs(key, getActivity(), "");
-        return key_value;
-    }
+//    private String getKeyPereference(String keyPref) {
+//        String key = PreferenceData.getStringPrefs(keyPref, getActivity(), "");
+//        String key_value = PreferenceData.getStringPrefs(key, getActivity(), "");
+//        return key_value;
+//    }
 
 }

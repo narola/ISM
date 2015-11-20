@@ -35,11 +35,11 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.PostFileAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.CircularSeekBar;
-import com.ism.author.helper.HorizontalListView;
+import com.ism.author.views.CircularSeekBar;
+import com.ism.author.views.HorizontalListView;
+import com.ism.author.ws.model.Attribute;
 import com.ism.author.model.PostFileModel;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.model.ResponseHandler;
 import com.ism.author.ws.WebserviceWrapper;
 
 import java.io.BufferedReader;
@@ -299,16 +299,16 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                     }
                 }
 
-                RequestObject requestObject = new RequestObject();
-                requestObject.setFeedBy("370");
+                Attribute attribute = new Attribute();
+                attribute.setFeedBy("370");
 //                Log.e(TAG + "Images", "" + listImages);
-                requestObject.setImages(listImages);
-                requestObject.setVideoLink("");
-                requestObject.setAudioLink("");
-                requestObject.setPostedOn(Utils.getDate());
-                requestObject.setVideoThumbnail(strThumbnailBase64);
-                requestObject.setFeedText(etSayIt.getText().toString().trim());
-                new WebserviceWrapper(PostActivity.this, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                attribute.setImages(listImages);
+                attribute.setVideoLink("");
+                attribute.setAudioLink("");
+                attribute.setPostedOn(Utils.getDate());
+                attribute.setVideoThumbnail(strThumbnailBase64);
+                attribute.setFeedText(etSayIt.getText().toString().trim());
+                new WebserviceWrapper(PostActivity.this, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.POSTFEED);
 
             }
@@ -509,7 +509,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
         }
         return serverResponseCode;  // like 200 (Ok)
 
-    } //
+    }
 
     public void startRecording() {
         if (!isRecording) {
@@ -853,8 +853,8 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        ResponseObject responseObj = (ResponseObject) object;
-        if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+        ResponseHandler responseObj = (ResponseHandler) object;
+        if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
             feed_id = responseObj.getData().get(0).getFeedId();
             if (arrayList != null) {
                 for (int i = 0; i < arrayList.size(); i++) {
@@ -874,7 +874,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             arrayList.clear();
             super.onBackPressed();
 
-        } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+        } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
             Toast.makeText(PostActivity.this, "Please try again!", Toast.LENGTH_LONG).show();
         }
 

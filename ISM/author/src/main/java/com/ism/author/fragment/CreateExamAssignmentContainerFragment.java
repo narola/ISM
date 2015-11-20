@@ -11,11 +11,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.model.FragmentArgument;
+
 /**
  * Created by c166 on 28/10/15.
  */
@@ -26,11 +28,13 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     private View view;
     private FragmentListener fragListener;
     private MyTypeFace myTypeFace;
+    private FragmentArgument fragmentArgument;
 
 
-    public static CreateExamAssignmentContainerFragment newInstance() {
-        CreateExamAssignmentContainerFragment fragTrial = new CreateExamAssignmentContainerFragment();
-        return fragTrial;
+    public static CreateExamAssignmentContainerFragment newInstance(FragmentArgument fragmentArgument) {
+        CreateExamAssignmentContainerFragment createExamAssignmentContainerFragment = new CreateExamAssignmentContainerFragment();
+        createExamAssignmentContainerFragment.fragmentArgument = fragmentArgument;
+        return createExamAssignmentContainerFragment;
     }
 
     public CreateExamAssignmentContainerFragment() {
@@ -42,9 +46,9 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     public static final int FRAGMENT_TRIAL_EXAM = 2;
 
 
-    FrameLayout fl_tab_activity, fl_tab_exam;
-    TextView tv_tab_activity, tv_tab_exam;
-    ImageView img_sep_tab_activity, img_sep_tab_exam;
+    FrameLayout flTabActivity, flTabExam;
+    TextView tvTabActivity, tvTabExam;
+    ImageView imgSepTabActivity, imgSepTabExam;
 
 
     @Override
@@ -59,43 +63,51 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
-        loadFragmentInContainer(FRAGMENT_TRIAL_ACTIVITY);
 
-        fl_tab_activity = (FrameLayout) view.findViewById(R.id.fl_tab_activity);
-        fl_tab_exam = (FrameLayout) view.findViewById(R.id.fl_tab_exam);
+        flTabActivity = (FrameLayout) view.findViewById(R.id.fl_tab_activity);
+        flTabExam = (FrameLayout) view.findViewById(R.id.fl_tab_exam);
 
-        tv_tab_activity = (TextView) view.findViewById(R.id.tv_tab_activity);
-        tv_tab_exam = (TextView) view.findViewById(R.id.tv_tab_exam);
+        tvTabActivity = (TextView) view.findViewById(R.id.tv_tab_activity);
+        tvTabExam = (TextView) view.findViewById(R.id.tv_tab_exam);
 
-        img_sep_tab_activity = (ImageView) view.findViewById(R.id.img_sep_tab_activity);
-        img_sep_tab_exam = (ImageView) view.findViewById(R.id.img_sep_tab_exam);
+        imgSepTabActivity = (ImageView) view.findViewById(R.id.img_sep_tab_activity);
+        imgSepTabExam = (ImageView) view.findViewById(R.id.img_sep_tab_exam);
 
-        tv_tab_activity.setTypeface(myTypeFace.getRalewayRegular());
-        tv_tab_exam.setTypeface(myTypeFace.getRalewayRegular());
-
-
-        fl_tab_activity.setOnClickListener(new View.OnClickListener() {
-                                               @Override
-                                               public void onClick(View v) {
-
-                                                   initTab(0);
+        tvTabActivity.setTypeface(myTypeFace.getRalewayRegular());
+        tvTabExam.setTypeface(myTypeFace.getRalewayRegular());
 
 
-                                               }
-                                           }
+        flTabActivity.setOnClickListener(new View.OnClickListener() {
+                                             @Override
+                                             public void onClick(View v) {
+
+                                                 initTab(0);
+
+
+                                             }
+                                         }
         );
 
 
-        fl_tab_exam.setOnClickListener(new View.OnClickListener() {
-                                           @Override
-                                           public void onClick(View v) {
+        flTabExam.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
 
-                                               initTab(1);
+                                             initTab(1);
 
 
-                                           }
-                                       }
+                                         }
+                                     }
         );
+
+
+        if (fragmentArgument != null) {
+            initTab(1);
+            loadFragmentInContainer(FRAGMENT_TRIAL_EXAM);
+        } else {
+            initTab(0);
+            loadFragmentInContainer(FRAGMENT_TRIAL_ACTIVITY);
+        }
 
 
     }
@@ -132,12 +144,11 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         try {
             switch (fragment) {
                 case FRAGMENT_TRIAL_ACTIVITY:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateAssignmentFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateAssignmentFragment.newInstance(fragmentArgument)).commit();
                     break;
                 case FRAGMENT_TRIAL_EXAM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateExamFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateExamFragment.newInstance(fragmentArgument)).commit();
                     break;
-
             }
 
         } catch (Exception e) {
@@ -151,22 +162,17 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
 
         if (position == 0) {
-
-            tv_tab_activity.setTextColor(getResources().getColor(R.color.color_black));
-            img_sep_tab_activity.setVisibility(View.VISIBLE);
-            tv_tab_exam.setTextColor(getResources().getColor(R.color.color_text_hint));
-            img_sep_tab_exam.setVisibility(View.INVISIBLE);
+            tvTabActivity.setTextColor(getResources().getColor(R.color.color_black));
+            imgSepTabActivity.setVisibility(View.VISIBLE);
+            tvTabExam.setTextColor(getResources().getColor(R.color.color_text_hint));
+            imgSepTabExam.setVisibility(View.INVISIBLE);
             loadFragmentInContainer(FRAGMENT_TRIAL_ACTIVITY);
-
         } else if (position == 1) {
-
-
-            tv_tab_activity.setTextColor(getResources().getColor(R.color.color_text_hint));
-            img_sep_tab_activity.setVisibility(View.INVISIBLE);
-            tv_tab_exam.setTextColor(getResources().getColor(R.color.color_black));
-            img_sep_tab_exam.setVisibility(View.VISIBLE);
+            tvTabActivity.setTextColor(getResources().getColor(R.color.color_text_hint));
+            imgSepTabActivity.setVisibility(View.INVISIBLE);
+            tvTabExam.setTextColor(getResources().getColor(R.color.color_black));
+            imgSepTabExam.setVisibility(View.VISIBLE);
             loadFragmentInContainer(FRAGMENT_TRIAL_EXAM);
-
         }
 
     }

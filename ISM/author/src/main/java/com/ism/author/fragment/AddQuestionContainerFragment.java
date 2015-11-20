@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.interfaces.FragmentListener;
@@ -54,7 +54,6 @@ public class AddQuestionContainerFragment extends Fragment {
         initGlobal();
         if (savedInstanceState == null) {
 
-
             getFragmentManager()
                     .beginTransaction()
                     .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
@@ -72,14 +71,13 @@ public class AddQuestionContainerFragment extends Fragment {
 
         }
 
-
         loadFragmentInRightContainer();
         return view;
     }
 
     private void initGlobal() {
 
-        questionListFragment = new QuestionListFragment(this);
+        questionListFragment = new QuestionListFragment(this, fragmentArgument);
         previewQuestionFragment = new PreviewQuestionFragment(this);
         questionAddEditFragment = new QuestionAddEditFragment(this);
 
@@ -119,7 +117,6 @@ public class AddQuestionContainerFragment extends Fragment {
 
         showHideFragment(questionListFragment);
         showHideFragment(questionAddEditFragment);
-
         if (isFrontVisible) {
             isFrontVisible = false;
             questionAddEditFragment.setViewForAddEditQuestion();

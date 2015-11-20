@@ -71,6 +71,8 @@ public class Attribute {
 	private String aboutMeText;
 	private String ambitionInLife;
 
+	private String fileName;
+
 	public String getAmbitionInLife() {
 		return ambitionInLife;
 	}
@@ -442,5 +444,13 @@ public class Attribute {
 	@JsonProperty("record_id")
 	public void setRecordIds(ArrayList<String> recordIds) {
 		this.recordIds = recordIds;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 }

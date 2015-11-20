@@ -7,10 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
@@ -18,12 +18,12 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.SubjectiveQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.CircleImageView;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.model.Attribute;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.model.ResponseHandler;
 import com.ism.author.ws.WebserviceWrapper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -60,7 +60,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     private SubjectiveQuestionListAdapter subjectiveQuestionListAdapter;
     private ImageLoader imageLoader;
     private LinearLayoutManager mLayoutManager;
-    private ImageView imgPrevStudent, imgNextStudent;
+    private LinearLayout llPrevStudent, llNextStudent;
 
     private void initGlobal() {
 
@@ -78,8 +78,8 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         tvSubjectiveScore = (TextView) view.findViewById(R.id.tv_subjective_score);
         tvSubjectiveMarks = (TextView) view.findViewById(R.id.tv_subjective_marks);
         tvStudentEvalutionNo = (TextView) view.findViewById(R.id.tv_student_evalution_no);
-        imgPrevStudent = (ImageView) view.findViewById(R.id.img_prev_student);
-        imgNextStudent = (ImageView) view.findViewById(R.id.img_next_student);
+        llPrevStudent = (LinearLayout) view.findViewById(R.id.ll_prev_student);
+        llNextStudent = (LinearLayout) view.findViewById(R.id.ll_next_student);
         rvSubjectiveQuestionsList = (RecyclerView) view.findViewById(R.id.rv_subjective_questions_list);
         subjectiveQuestionListAdapter = new SubjectiveQuestionListAdapter(getActivity(), this);
         rvSubjectiveQuestionsList.setAdapter(subjectiveQuestionListAdapter);
@@ -96,20 +96,26 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         tvStudentEvalutionNo.setTypeface(myTypeFace.getRalewayRegular());
 
 
-        imgPrevStudent.setOnClickListener(new View.OnClickListener() {
+        llPrevStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.showToast(" " + getFragmentArguments().getArrayListData().size(), getActivity());
 
-//                getFragmentArguments().getFragmentArgumentObject().setStudentId(getFragmentArguments().getArrayListData().
-//                        get((getFragmentArguments().getFragmentArgumentObject().getPosition()-1).));
+                int position = getFragmentArguments().getFragmentArgumentObject().getPosition();
+                if (position >= 1) {
+                    position--;
+                    getFragmentArguments().getFragmentArgumentObject().setPosition(position);
+                    setStudentData(position);
+                }
+
 
             }
         });
 
-        imgNextStudent.setOnClickListener(new View.OnClickListener() {
+        llNextStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                loadNextStudentData();
 
             }
         });
@@ -119,22 +125,25 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         rvSubjectiveQuestionsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                if (dy > 0) //check for scroll down
-//                {
-//                    visibleItemCount = mLayoutManager.getChildCount();
-//                    totalItemCount = mLayoutManager.getItemCount();
-//                    pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
-//
-//                    if (loading) {
-//                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-//                            loading = false;
-//                            Utils.showToast("Last Item Wow !", getActivity());
-//                            //Do pagination.. i.e. fetch new data
-//
-////                            loadStudentEvaluationData();
-//                        }
-//                    }
-//                }
+
+                if (dy > 0) //check for scroll down
+                {
+                    visibleItemCount = mLayoutManager.getChildCount();
+                    totalItemCount = mLayoutManager.getItemCount();
+                    pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
+
+                    if (loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = false;
+                            Utils.showToast("Last Item Wow !", getActivity());
+                            //Do pagination.. i.e. fetch new data
+
+//                            loadStudentEvaluationData();
+
+//                            loadNextStudentData();
+                        }
+                    }
+                }
 
 //                visibleItemCount = mLayoutManager.getChildCount();
 //                totalItemCount = mLayoutManager.getItemCount();
@@ -151,6 +160,29 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     }
 
+    private void setStudentData(int position) {
+
+        getFragmentArguments().getFragmentArgumentObject().setStudentId(getFragmentArguments().getArrayListData()
+                .get(position).getStudentId());
+        getFragmentArguments().getFragmentArgumentObject().setStudentName(getFragmentArguments().getArrayListData()
+                .get(position).getFullName());
+        getFragmentArguments().getFragmentArgumentObject().setProfilePic(getFragmentArguments().getArrayListData()
+                .get(position).getProfilePic());
+
+        getBaseFragment().refreshAdapterForStudentNavigation();
+
+        loadStudentEvaluationData();
+    }
+
+    private void loadNextStudentData() {
+
+        int position = getFragmentArguments().getFragmentArgumentObject().getPosition();
+        if (position < getFragmentArguments().getArrayListData().size() - 1) {
+            position++;
+            getFragmentArguments().getFragmentArgumentObject().setPosition(position);
+            setStudentData(position);
+        }
+    }
 
     boolean canLoadMore = false;
     private boolean loading = true;
@@ -161,7 +193,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         if (Utility.isOnline(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
-                RequestObject request = new RequestObject();
+                Attribute request = new Attribute();
 //                request.setExamId(fragmentArgument.getRequestObject().getExamId());
                 request.setExamId("11");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -179,8 +211,9 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         if (Utility.isOnline(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
-                RequestObject request = new RequestObject();
-//                request.setExamId(getFragmentArguments().getRequestObject().getExamId());
+                Attribute request = new Attribute();
+//                request.setExamId(getFragmentArguments().getFragmentArgumentObject().getExamId());
+//                request.setExamId(getFragmentArguments().getFragmentArgumentObject().getStudentId());
                 request.setExamId("11");
                 request.setStudentId("202");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -212,16 +245,16 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     }
 
-    ResponseObject responseObjGetAllExamQuestions;
+    ResponseHandler responseObjGetAllExamQuestions;
 
     private void onResponseGetAllExamQuestions(Object object, Exception error) {
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                responseObjGetAllExamQuestions = (ResponseObject) object;
-                if (responseObjGetAllExamQuestions.getStatus().equals(ResponseObject.SUCCESS)) {
+                responseObjGetAllExamQuestions = (ResponseHandler) object;
+                if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
                     loadStudentEvaluationData();
-                } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObjGetAllExamQuestions.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -232,23 +265,23 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         }
     }
 
-    ResponseObject responseObjGetExamEvaluation;
+    ResponseHandler responseObjGetExamEvaluation;
 
     private void onResponseGetExamEvaluation(Object object, Exception error) {
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                responseObjGetExamEvaluation = (ResponseObject) object;
-                if (responseObjGetExamEvaluation.getStatus().equals(ResponseObject.SUCCESS)) {
-
-                    canLoadMore = true;
-
+                responseObjGetExamEvaluation = (ResponseHandler) object;
+                if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.SUCCESS)) {
+//                    canLoadMore = true;
+                    loading = true;
                     subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getData().get(0).getEvaluations());
                     subjectiveQuestionListAdapter.notifyDataSetChanged();
 
                     setTitleDetails();
+                    getBaseFragment().setQuestionStatusData(responseObjGetExamEvaluation.getData().get(0).getEvaluations());
 
-                } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObjGetExamEvaluation.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -265,38 +298,47 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     }
 
+    private GetSubjectiveAssignmentQuestionsFragment getBaseFragment() {
+        return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
+
+    }
+
     private void setQuestions() {
 
-        rvSubjectiveQuestionsList.setAdapter(null);
+//        rvSubjectiveQuestionsList.setAdapter(null);
         listOfQuestions.clear();
         listOfQuestions.addAll(responseObjGetAllExamQuestions.getData().get(0).getQuestions());
         subjectiveQuestionListAdapter.addAll(listOfQuestions);
         subjectiveQuestionListAdapter.notifyDataSetChanged();
-        rvSubjectiveQuestionsList.setAdapter(subjectiveQuestionListAdapter);
+//        rvSubjectiveQuestionsList.setAdapter(subjectiveQuestionListAdapter);
     }
 
     public void loadStudentEvaluationData() {
-
         if (getFragmentArguments().getFragmentArgumentObject().getStudentId() != null) {
             setQuestions();
             callAPiGetExamEvaluation();
-            rvSubjectiveQuestionsList.smoothScrollToPosition(0);
+            scrollToSpecificQuestion(0);
 
         }
     }
 
+    public void scrollToSpecificQuestion(int position) {
+
+        rvSubjectiveQuestionsList.smoothScrollToPosition(position);
+
+    }
 
     private void setTitleDetails() {
 
         tvStudentEvalutionNo.setText(getActivity().getResources().getString(R.string.strevaluation) + " " +
-                getFragmentArguments().getFragmentArgumentObject().getPosition() + " " +
+                (getFragmentArguments().getFragmentArgumentObject().getPosition() + 1) + " " +
                 getActivity().getResources().getString(R.string.strof) + " " + (responseObjGetExamEvaluation.getData().get(0).getEvaluations().size() + 1));
         imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                 imgStudentProfilePic, ISMAuthor.options);
 
         tvStudentName.setText(getFragmentArguments().getFragmentArgumentObject().getStudentName());
         tvStudentRollNo.setText(getResources().getString(R.string.strrollno) + " " +
-                getFragmentArguments().getFragmentArgumentObject().getPosition());
+                (getFragmentArguments().getFragmentArgumentObject().getPosition() + 1));
         tvAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + " " +
                 getFragmentArguments().getFragmentArgumentObject().getAssignmentNo());
         tvAssignmentTitle.setText(getFragmentArguments().getFragmentArgumentObject().getAssignmentName());

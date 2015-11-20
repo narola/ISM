@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.model.Data;
 
 import java.util.ArrayList;
@@ -82,6 +82,10 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
                     holder.tvSubjectiveQuestionAns.setText(Utils.formatHtml(evaluationList.get(position).getStudentResponse()));
                 }
 
+                for (int i = 0; i < holder.scoreTextArray.length; i++) {
+                    holder.scoreTextArray[i].setActivated(false);
+                }
+
                 int score = Integer.valueOf(evaluationList.get(position).getEvaluationScore());
                 if (score >= 5) {
                     setEvaluationSCore(holder.tvScoreExcellent);
@@ -135,6 +139,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
         } catch (Exception e) {
             Debug.i(TAG, "BindViewHolder Exceptions:" + e.getLocalizedMessage());
         }
+
 
     }
 
@@ -213,8 +218,6 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     View.OnClickListener evaluationClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-
             TextView[] scoreTextArray = (TextView[]) v.getTag();
 
             for (int i = 0; i < scoreTextArray.length; i++) {
@@ -227,10 +230,6 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
         }
     };
-
-    public void refreshAdapter() {
-
-    }
 
 
 }

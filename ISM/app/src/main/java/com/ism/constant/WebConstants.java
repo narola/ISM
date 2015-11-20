@@ -32,13 +32,23 @@ public class WebConstants {
 	public static final int UPDATE_READ_STATUS = 22;
 	public static final int GET_HIGH_SCORERS = 23;
 	public static final int UPLOAD_PROFILE_PIC = 24;
-	public static final int GET_ABOUT_ME = 25;
-	public static final int EDIT_ABOUT_ME = 26;
+
+
+	//general settings
+	//public static final int BLOCK_USER = 52;
 
 	public static final int MANAGE_GENERAL_SETTINGS = 51;
 	public static final int GENERAL_SETTING_PREFERENCES = 52;
 	public static final int GET_USER_PREFERENCES=53;
 
+
+
+	/*
+	edit profiles
+	 */
+	public static final int GET_BOOKS_FOR_USER = 54;
+	public static final int GET_ABOUT_ME = 55;
+	public static final int EDIT_ABOUT_ME = 56;
 
 
 	/**
@@ -76,11 +86,18 @@ public class WebConstants {
 	public static final String URL_NOTIFICATION = URL_HOST_147 + "GetAllNotices";
 	public static final String URL_PROFILE_PIC = URL_HOST_162 + "UploadUserProfilePic";
 	public static final String URL_GET_ALL_BADGES_COUNT = URL_HOST_147 + "GetAllBadgeCount";
-	public static final String URL_GET_ABOUT_ME =  URL_HOST_147 + "GetAboutMe";
-	public static final String URL_EDIT_ABOUT_ME =  URL_HOST_147 + "EditAboutMe";
 	public static final String URL_RESPOND_TO_REQUEST = URL_HOST_147 + "AcceptRequestFromStudymate";
 	public static final String URL_UPDATE_READ_STATUS = URL_HOST_147 + "UpdateReadStatus"; // studymate_request, messages, notification
 	public static final String URL_GET_HIGH_SCORERS = URL_HOST_147 + "GetHighScorers";
+
+
+	/*
+	* edit profile
+	* */
+	public static final String URL_GET_ABOUT_ME =  URL_HOST_147 + "GetAboutMe";
+	public static final String URL_EDIT_ABOUT_ME =  URL_HOST_147 + "EditAboutMe";
+	public static final String URL_GET_BOOKS_FOR_USER =  URL_HOST_147 + "GetBooksForUser";
+//	public static final String URL_EDIT_ABOUT_ME =  URL_HOST_147 + "EditAboutMe";
 
 
 
@@ -92,8 +109,6 @@ public class WebConstants {
 	public static final String NOTIFICATION = "notification";
 	public static final String ROLE_ALL = "all";
 	public static final String ROLE_STUDENT = "student";
-
-
 
 	/**
 	 * Response values

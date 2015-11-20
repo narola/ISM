@@ -23,18 +23,17 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
+import com.ism.object.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.DataAboutMe;
-import com.ism.ws.helper.Attribute;
-import com.ism.ws.model.ResponseAboutMe;
-import com.ism.ws.model.ResponseObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -64,7 +63,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     MyTypeFace myTypeFace;
     private static String TAG = AboutMeFragment.class.getSimpleName();
     private HostActivity activityHost;
-    private String[] strArrayList;
     EditProfileFragment editProfileFragment;
     private TextView txtEdit;
     private EditText etCno, etDob;
@@ -76,8 +74,9 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private long lngMaxDob;
     private String strDob;
     private Date convertedDate;
-    private String strDetailAboutMe=null;
-    private String strAmbition=null;
+    private String strDetailAboutMe = null;
+    private String strAmbition = null;
+    private ImageView imgEditAmbition, imgEditAboutMe;
 
     public static AboutMeFragment newInstance() {
         AboutMeFragment fragment = new AboutMeFragment();
@@ -111,6 +110,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         txtClass = (TextView) view.findViewById(R.id.txt_class);
         imgProfileEdit = (ImageView) view.findViewById(R.id.img_profile_edit);
         imgProfilePic = (ImageView) view.findViewById(R.id.img_profile_pic);
+        imgEditAboutMe = (ImageView) view.findViewById(R.id.img_edit_about_me);
+        imgEditAmbition = (ImageView) view.findViewById(R.id.img_edit_your_ambition);
 
         txtSocial = (TextView) view.findViewById(R.id.txt_social);
         txtTotalPost = (TextView) view.findViewById(R.id.txt_total_post);
@@ -184,11 +185,12 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         txtEdit.setOnClickListener(this);
         txtClickAddAboutMe.setOnClickListener(this);
         txtClickAddAmbitions.setOnClickListener(this);
-        txtAboutMe.setOnClickListener(this);
-        txtYourAmbition.setOnClickListener(this);
+        imgEditAboutMe.setOnClickListener(this);
+        imgEditAmbition.setOnClickListener(this);
         imgProfileEdit.setOnClickListener(this);
-        txtYourAmbition.setEnabled(false);
-        txtAboutMe.setEnabled(true);
+
+
+
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         setEditableFalse(etDob);
@@ -246,11 +248,15 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void callApiGetAboutMe() {
         try {
-            activityHost.showProgress();
-            Attribute attribute = new Attribute();
-            attribute.setUserId("1");
-            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
-
+            if(Utility.isConnected(getActivity())) {
+                activityHost.showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setUserId("1");
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
+            }
+            else{
+                Utility.toastOffline(getActivity());
+            }
         } catch (Exception e) {
             Debug.i(TAG, "callApiGetAboutMe Exception : " + e.getLocalizedMessage());
         }
@@ -258,20 +264,25 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     private void callApiEditAboutMe() {
         try {
-            activityHost.showProgress();
-            Attribute attribute = new Attribute();
-            attribute.setUserId("1");
-            attribute.setUsername(txtUserName.getText().toString().trim());
-            attribute.setContactNumber(etCno.getText().toString().trim());
-            attribute.setBirthdate(strDob);
-            attribute.setProfileImage("");
-            attribute.setAmbitionInLife(strAmbition);
-            attribute.setAboutMeText(strDetailAboutMe);
+            if(Utility.isConnected(getActivity())) {
+                activityHost.showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setUserId("1");
+                attribute.setUsername(txtUserName.getText().toString().trim());
+                attribute.setContactNumber(etCno.getText().toString().trim());
+                attribute.setBirthdate(strDob);
+                attribute.setProfileImage("");
+                attribute.setAmbitionInLife(strAmbition);
+                attribute.setAboutMeText(strDetailAboutMe);
 
 //            requestObject.setAmbitionInLife("Businessman");
 //            requestObject.setAboutMeText("I am a graduate from NIFT specializing in Apparel Production. I have a holistic experience of the Apparel Industry and has worked for domestic as well as the exports market. In the Indian retail industry I have worked with Lifestyle International Pvt. Ltd. on sourcing, vendor management and product development for private labels. I then moved to Madura Fashion & Lifestyle where I worked as a buyer. Product and Margin management, optimum allocation of merchandise, meeting sales targets along with competition, market and trend analysis were some of her responsibilities. I joined ISB to fast track my career and pursue opportunities in Category & Brand Management.I am President of the Retail Club. I  proud myself.");
 
-            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
+            }
+            else{
+                Utility.toastOffline(getActivity());
+            }
 
         } catch (Exception e) {
             Debug.i(TAG, "callApiEditAboutMe Exception : " + e.getLocalizedMessage());
@@ -325,9 +336,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 case WebConstants.EDIT_ABOUT_ME:
                     onResponseEditAboutMe(object, error);
                     break;
-                case WebConstants.GET_STUDYMATE_REQUEST:
-                    // onResponseGetStudymateRequest(object, error);
-                    break;
+
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());
@@ -339,10 +348,10 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
                     Log.e(TAG, "onResponseEditAboutMe success");
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseEditAboutMe Failed");
                 }
             } else if (error != null) {
@@ -358,12 +367,12 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseAboutMe responseObj = (ResponseAboutMe) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
                     Log.e(TAG, "onResponseGetAboutMe success");
-                    setUpData(responseObj.getData().get(0));
+                    setUpData(responseObj.getUser().get(0));
 
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseGetAboutMe Failed");
                 }
             } else if (error != null) {
@@ -383,28 +392,25 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         // imgProfilePic.setBackgroundColor(Color.BLACK);
         strDetailAboutMe = data.getAboutMeText();
         strAmbition = data.getAmbitionInLife();
-        if (!strDetailAboutMe.equals(" ")) {
-            // txtAboutMe.setCompoundDrawables(null,null,getResources().getDrawable(R.drawable.edit_profile),null);
+        if (strDetailAboutMe.length()!=0) {
             txtClickAddAboutMe.setText(data.getAboutMeText());
             txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
-            txtAboutMe.setEnabled(true);
+            imgEditAboutMe.setVisibility(View.VISIBLE);
             Debug.i(TAG, "Details are available!");
         } else {
+            txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
+            imgEditAboutMe.setVisibility(View.GONE);
             Debug.i(TAG, "Details are not available!");
-            txtAboutMe.setCompoundDrawables(null, null, null, null);
-            txtAboutMe.setEnabled(false);
-
         }
-        if (!strAmbition.equals(" ")) {
-            // txtAboutMe.setCompoundDrawables(null,null,getResources().getDrawable(R.drawable.edit_profile),null);
+        if (strAmbition.length()!=0) {
             txtClickAddAmbitions.setText(data.getAmbitionInLife());
-            txtClickAddAmbitions.setCompoundDrawables(null, null, null, null);
-            txtYourAmbition.setEnabled(true);
+            imgEditAmbition.setVisibility(View.VISIBLE);
+            txtClickAddAmbitions.setCompoundDrawables(null, null,null,null);
             Debug.i(TAG, "Details are available!");
         } else {
             Debug.i(TAG, "Details are not available!");
-            txtYourAmbition.setCompoundDrawables(null, null, null, null);
-            txtYourAmbition.setEnabled(false);
+            txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
+            imgEditAmbition.setVisibility(View.VISIBLE);
         }
         txtTotalAssignment.setText(data.getTotalAssignment());
         txtTotalAuthorFollowed.setText(data.getTotalAuthorsFollowed());
@@ -473,30 +479,35 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             openGallary();
             //callApiEditAboutMe();
         } else if (v == txtClickAddAboutMe) {
-           // myPopup(ABOUT_ME);
+            if (strDetailAboutMe.length() == 0) {
+                editDetails(ABOUT_ME);
+            }
 
-        } else if (v == txtYourAmbition ) {
-            Intent intent=new Intent(getActivity(),EditAboutMeDetailsActivity.class);
-            intent.putExtra(USERNAME,txtUserName.getText().toString());
-            intent.putExtra(BIRTHDATE, etDob.getText().toString());
-            intent.putExtra(CONTACT_NUMBER,etCno.getText().toString());
-            intent.putExtra(AMBITION,strAmbition);
-            intent.putExtra(ABOUT_ME_DETAILS,strDetailAboutMe);
-            intent.putExtra(EDIT_TYPE, YOUR_AMBITION);
-            startActivity(intent);
-           // myPopup(YOUR_AMBITION);
+        } else if (v == txtClickAddAmbitions) {
+            if (strAmbition.length() == 0) {
+                editDetails(YOUR_AMBITION);
+            }
 
-        } else if (v == txtAboutMe) {
-           Intent intent=new Intent(getActivity(),EditAboutMeDetailsActivity.class);
-            intent.putExtra(USERNAME,txtUserName.getText().toString());
-            intent.putExtra(BIRTHDATE, etDob.getText().toString());
-            intent.putExtra(CONTACT_NUMBER,etCno.getText().toString());
-            intent.putExtra(AMBITION,strAmbition);
-            intent.putExtra(ABOUT_ME_DETAILS,strDetailAboutMe);
-            intent.putExtra(EDIT_TYPE,ABOUT_ME);
-            startActivity(intent);
+        } else if (v == imgEditAmbition) {
+            editDetails(YOUR_AMBITION);
+            // myPopup(YOUR_AMBITION);
+
+        } else if (v == imgEditAboutMe) {
+            editDetails(ABOUT_ME);
 
         }
+
+    }
+
+    private void editDetails(int type) {
+        Intent intent = new Intent(getActivity(), EditAboutMeDetailsActivity.class);
+        intent.putExtra(USERNAME, txtUserName.getText().toString());
+        intent.putExtra(BIRTHDATE, strDob);
+        intent.putExtra(CONTACT_NUMBER, etCno.getText().toString());
+        intent.putExtra(AMBITION, strAmbition);
+        intent.putExtra(ABOUT_ME_DETAILS, strDetailAboutMe);
+        intent.putExtra(EDIT_TYPE, type);
+        startActivity(intent);
 
     }
 
@@ -587,8 +598,12 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         }
     }
 
-
-//    @Override
+    @Override
+    public void onResume() {
+        super.onResume();
+       // callApiGetAboutMe();
+    }
+    //    @Override
 //    public void onSelectImage(Bitmap bitmap) {
 //        imgProfilePic.setImageBitmap(bitmap);
 //
