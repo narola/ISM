@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.ism.author.R;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.object.MyTypeFace;
-import com.ism.author.ws.model.ResponseHandler;
+import com.ism.author.ws.helper.ResponseHandler;
 
 
 /**

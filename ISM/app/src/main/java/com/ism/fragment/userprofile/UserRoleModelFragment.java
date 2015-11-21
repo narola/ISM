@@ -48,6 +48,8 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
     private TextView txtFavEmpty;
     private ImageView imgNxtFav;
     private ImageView imgPrevFav;
+    private TextView txtFavBooks;
+    private TextView txtSuggestedBooks;
 
     public static UserRoleModelFragment newInstance() {
         UserRoleModelFragment fragment = new UserRoleModelFragment();
@@ -72,11 +74,18 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
 
         myTypeFace = new MyTypeFace(getActivity());
 
-        txtFavEmpty=(TextView)view.findViewById(R.id.txt_fav_empty);
-        txtSuggestedEmpty=(TextView)view.findViewById(R.id.txt_suggested_empty);
+        txtFavEmpty = (TextView) view.findViewById(R.id.txt_fav_empty);
+        txtSuggestedEmpty = (TextView) view.findViewById(R.id.txt_suggested_empty);
+        txtSuggestedBooks = (TextView) view.findViewById(R.id.txt_read_books);
+        txtFavBooks = (TextView) view.findViewById(R.id.txt_fav_books);
         //set typeface
         txtFavEmpty.setTypeface(myTypeFace.getRalewayRegular());
         txtSuggestedEmpty.setTypeface(myTypeFace.getRalewayRegular());
+        txtFavBooks.setTypeface(myTypeFace.getRalewayRegular());
+        txtSuggestedBooks.setTypeface(myTypeFace.getRalewayRegular());
+        txtSuggestedBooks.setText(R.string.strSuggestedRoleModels);
+        txtFavBooks.setText(R.string.strFavRolemodels);
+
 
         listViewFavBooks = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
         listViewSuggestedBooks = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);

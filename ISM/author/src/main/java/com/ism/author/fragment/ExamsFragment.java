@@ -14,21 +14,23 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
-import com.ism.author.adapter.AssignmentAdapter;
+import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.object.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.ws.model.Attribute;
-import com.ism.author.model.Data;
-import com.ism.author.ws.model.ResponseHandler;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.helper.Attribute;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.Classrooms;
+import com.ism.author.ws.model.Exams;
+import com.ism.author.ws.model.Subjects;
 import com.ism.commonsource.view.ActionProcessButton;
 
 import java.util.ArrayList;
@@ -38,38 +40,39 @@ import java.util.List;
 /**
  * Created by c166 on 09/11/15.
  */
-public class AssessmentFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class ExamsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
-    private static final String TAG = AssessmentFragment.class.getSimpleName();
+    private static final String TAG = ExamsFragment.class.getSimpleName();
     private View view;
-    private RecyclerView rvAssignmentList;
-    private AssignmentAdapter assignmentAdapter;
-    private ArrayList<Data> listOfAssignment = new ArrayList<Data>();
+    private RecyclerView rvExamsList;
+    private ExamsAdapter examsAdapter;
+    private ArrayList<Exams> arrListExams = new ArrayList<Exams>();
     private MyTypeFace myTypeFace;
     private FragmentListener fragListener;
-    private Spinner spAssignmentSubject, spAssignmentClass, spAssignmentAssessed;
-    private ActionProcessButton progAssignmentSubject, progAssignmentClass, progAssignmentAssessed;
+    private Spinner spExamSubject, spExamClass, spExamAssessementType;
+    private ActionProcessButton progExamSubject, progExamClass, progExamAssessed;
     private ImageView imgToggleList;
-    private ArrayList<Data> arrListClassRooms, arrListSubject;
+    private ArrayList<Subjects> arrListSubject;
+    private ArrayList<Classrooms> arrListClassRooms;
     private List<String> arrListAssessment;
 
     private TextView txtSubmissionDate;
-    private EditText etAssignmentStartdate, etAssignmentEnddate;
-    private String examStartDate = "", examEndDate = "";
+    private EditText etExamStartdate, etExamEnddate;
+    private String strExamStartDate = "", strExamEndDate = "";
 
 
-    public static AssessmentFragment newInstance() {
-        AssessmentFragment assessmentFragment = new AssessmentFragment();
-        return assessmentFragment;
+    public static ExamsFragment newInstance() {
+        ExamsFragment examsFragment = new ExamsFragment();
+        return examsFragment;
     }
 
-    public AssessmentFragment() {
+    public ExamsFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_assessment, container, false);
+        view = inflater.inflate(R.layout.fragment_exams, container, false);
         initGlobal();
         return view;
     }
@@ -77,48 +80,48 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
     private void initGlobal() {
         myTypeFace = new MyTypeFace(getActivity());
 
-        rvAssignmentList = (RecyclerView) view.findViewById(R.id.rv_assignment_list);
-        assignmentAdapter = new AssignmentAdapter(getActivity());
+        rvExamsList = (RecyclerView) view.findViewById(R.id.rv_exams_list);
+        examsAdapter = new ExamsAdapter(getActivity());
 
-        rvAssignmentList.setHasFixedSize(true);
-        rvAssignmentList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        rvAssignmentList.setAdapter(assignmentAdapter);
+        rvExamsList.setHasFixedSize(true);
+        rvExamsList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        rvExamsList.setAdapter(examsAdapter);
 
-        spAssignmentSubject = (Spinner) view.findViewById(R.id.sp_assignment_subject);
-        spAssignmentClass = (Spinner) view.findViewById(R.id.sp_assignment_class);
-        spAssignmentAssessed = (Spinner) view.findViewById(R.id.sp_assignment_assessed);
+        spExamSubject = (Spinner) view.findViewById(R.id.sp_exam_subject);
+        spExamClass = (Spinner) view.findViewById(R.id.sp_exam_class);
+        spExamAssessementType = (Spinner) view.findViewById(R.id.sp_exam_assessed);
 
-        progAssignmentSubject = (ActionProcessButton) view.findViewById(R.id.prog_assignment_subject);
-        progAssignmentClass = (ActionProcessButton) view.findViewById(R.id.prog_assignment_class);
-        progAssignmentAssessed = (ActionProcessButton) view.findViewById(R.id.prog_assignment_assessed);
+        progExamSubject = (ActionProcessButton) view.findViewById(R.id.prog_exam_subject);
+        progExamClass = (ActionProcessButton) view.findViewById(R.id.prog_exam_class);
+        progExamAssessed = (ActionProcessButton) view.findViewById(R.id.prog_exam_assessed);
 
         arrListAssessment = new ArrayList<String>();
         arrListAssessment = Arrays.asList(getResources().getStringArray(R.array.assessment_type));
-        Adapters.setUpSpinner(getActivity(), spAssignmentAssessed, arrListAssessment, Adapters.ADAPTER_SMALL);
+        Adapters.setUpSpinner(getActivity(), spExamAssessementType, arrListAssessment, Adapters.ADAPTER_SMALL);
 
         txtSubmissionDate = (TextView) view.findViewById(R.id.txt_submission_date);
-        etAssignmentStartdate = (EditText) view.findViewById(R.id.et_assignment_startdate);
-        etAssignmentEnddate = (EditText) view.findViewById(R.id.et_assignment_enddate);
+        etExamStartdate = (EditText) view.findViewById(R.id.et_exam_startdate);
+        etExamEnddate = (EditText) view.findViewById(R.id.et_exam_enddate);
 
         txtSubmissionDate.setTypeface(myTypeFace.getRalewayRegular());
-        etAssignmentStartdate.setTypeface(myTypeFace.getRalewayRegular());
-        etAssignmentEnddate.setTypeface(myTypeFace.getRalewayRegular());
+        etExamStartdate.setTypeface(myTypeFace.getRalewayRegular());
+        etExamEnddate.setTypeface(myTypeFace.getRalewayRegular());
 
-        etAssignmentStartdate.setOnTouchListener(new View.OnTouchListener() {
+        etExamStartdate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    examStartDate = Utils.showDatePickerDob(getActivity(), etAssignmentStartdate);
+                    strExamStartDate = Utils.showDatePickerDob(getActivity(), etExamStartdate);
                 }
                 return true;
             }
         });
 
-        etAssignmentEnddate.setOnTouchListener(new View.OnTouchListener() {
+        etExamEnddate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    examEndDate = Utils.showDatePickerDob(getActivity(), etAssignmentEnddate);
+                    strExamEndDate = Utils.showDatePickerDob(getActivity(), etExamEnddate);
                 }
                 return true;
             }
@@ -135,7 +138,7 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
                 Attribute request = new Attribute();
-                request.setUserId("370");
+                request.setUserId(WebConstants.TEST_USER_ID);
                 request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLASSIGNMENTS);
@@ -151,7 +154,7 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
 
         if (Utility.isOnline(getActivity())) {
             try {
-                Utility.showSpinnerProgress(progAssignmentClass);
+                Utility.showSpinnerProgress(progExamClass);
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCLASSROOMS);
 
@@ -168,7 +171,7 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
 
         if (Utility.isOnline(getActivity())) {
             try {
-                Utility.showSpinnerProgress(progAssignmentSubject);
+                Utility.showSpinnerProgress(progExamSubject);
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
             } catch (Exception e) {
@@ -208,13 +211,13 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    listOfAssignment.addAll(responseObj.getData());
-                    assignmentAdapter.addAll(listOfAssignment);
-                    assignmentAdapter.notifyDataSetChanged();
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListExams.addAll(responseHandler.getExams());
+                    examsAdapter.addAll(arrListExams);
+                    examsAdapter.notifyDataSetChanged();
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAllAssignments api Exception : " + error.toString());
@@ -226,23 +229,23 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
 
     private void onResponseGetClassrooms(Object object, Exception error) {
         try {
-            Utility.hideSpinnerProgress(progAssignmentClass);
+            Utility.hideSpinnerProgress(progExamClass);
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListClassRooms = new ArrayList<Data>();
-                    arrListClassRooms.addAll(responseObj.getData());
+                    arrListClassRooms = new ArrayList<Classrooms>();
+                    arrListClassRooms.addAll(responseHandler.getClassrooms());
                     List<String> classrooms = new ArrayList<String>();
                     classrooms.add(getString(R.string.strclass));
-                    for (Data course : arrListClassRooms) {
-                        classrooms.add(course.getClassName());
+                    for (Classrooms classroom : arrListClassRooms) {
+                        classrooms.add(classroom.getClassName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spAssignmentClass, classrooms, Adapters.ADAPTER_SMALL);
+                    Adapters.setUpSpinner(getActivity(), spExamClass, classrooms, Adapters.ADAPTER_SMALL);
 
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetClassrooms api Exception : " + error.toString());
@@ -254,22 +257,22 @@ public class AssessmentFragment extends Fragment implements WebserviceWrapper.We
 
     private void onResponseGetSubjects(Object object, Exception error) {
         try {
-            Utility.hideSpinnerProgress(progAssignmentSubject);
+            Utility.hideSpinnerProgress(progExamSubject);
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListSubject = new ArrayList<Data>();
-                    arrListSubject.addAll(responseObj.getData());
+                    arrListSubject = new ArrayList<Subjects>();
+                    arrListSubject.addAll(responseHandler.getSubjects());
                     List<String> subjects = new ArrayList<String>();
                     subjects.add(getString(R.string.strsubjectname));
-                    for (Data subject : arrListSubject) {
+                    for (Subjects subject : arrListSubject) {
                         subjects.add(subject.getSubjectName());
 
                     }
-                    Adapters.setUpSpinner(getActivity(), spAssignmentSubject, subjects, Adapters.ADAPTER_SMALL);
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                    Adapters.setUpSpinner(getActivity(), spExamSubject, subjects, Adapters.ADAPTER_SMALL);
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());

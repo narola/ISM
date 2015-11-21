@@ -25,17 +25,13 @@ import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.ResponseHandler;
-import com.ism.ws.model.DataGetCountries;
-import com.ism.ws.model.DataGetStates;
+import com.ism.ws.model.City;
+import com.ism.ws.model.Country;
 import com.ism.ws.helper.Attribute;
-import com.ism.ws.model.ResponseGetCountries;
-import com.ism.ws.model.ResponseGetStates;
-import com.ism.ws.model.ResponseLogin;
 import com.ism.ws.model.ResponseObject;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Data;
-import com.ism.ws.model.ResponseStatus;
-import com.ism.ws.model.States;
+import com.ism.ws.model.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +51,9 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 	private Button btnForgotPwdSubmit, btnCredentialsSubmit;
 
 	private InputValidator inputValidator;
-	private ArrayList<DataGetCountries> arrListCountries;
-	private ArrayList<States> arrListStates;
-	private ArrayList<Data> arrListCities;
+	private ArrayList<Country> arrListCountries;
+	private ArrayList<State> arrListStates;
+	private ArrayList<City> arrListCities;
 	private List<String> arrListDefalt;
 	private AlertDialog dialogCredentials;
 	private ProgressGenerator progressGenerator;
@@ -192,21 +188,21 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		progState = (ActionProcessButton) dialogView.findViewById(R.id.prog_state);
 		progCity = (ActionProcessButton) dialogView.findViewById(R.id.prog_city);
 
-//		if (Utility.isConnected(LoginActivity.this)) {
+		if (Utility.isConnected(LoginActivity.this)) {
 			callApiGetCountries();
-//		} else {
-//			Utility.toastOffline(LoginActivity.this);
-//		}
+		} else {
+			Utility.toastOffline(LoginActivity.this);
+		}
 
 		spCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				if (arrListCountries != null && position > 0) {
-//					if (Utility.isConnected(LoginActivity.this)) {
+					if (Utility.isConnected(LoginActivity.this)) {
 						callApiGetStates(arrListCountries.get(position - 1).getId());
-//					} else {
-//						Utility.toastOffline(LoginActivity.this);
-//					}
+					} else {
+						Utility.toastOffline(LoginActivity.this);
+					}
 				} else {
 					Adapters.setUpSpinner(LoginActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
 				}
@@ -222,11 +218,11 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				if (arrListStates != null && position > 0) {
-//					if (Utility.isConnected(LoginActivity.this)) {
+					if (Utility.isConnected(LoginActivity.this)) {
 						callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
-//					} else {
-//						Utility.toastOffline(LoginActivity.this);
-//					}
+					} else {
+						Utility.toastOffline(LoginActivity.this);
+					}
 				} else {
 					Adapters.setUpSpinner(LoginActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
 				}
@@ -459,17 +455,17 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			progCity.setProgress(100);
 			progCity.setVisibility(View.INVISIBLE);
 			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
-					arrListCities = new ArrayList<Data>();
-					arrListCities.addAll(responseObj.getData());
-					List<String> cities = new ArrayList<String>();
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					arrListCities = new ArrayList<>();
+					arrListCities.addAll(responseHandler.getCities());
+					List<String> cities = new ArrayList<>();
 					cities.add(getString(R.string.select));
-					for (Data city : arrListCities) {
+					for (City city : arrListCities) {
 						cities.add(city.getCityName());
 					}
 					Adapters.setUpSpinner(LoginActivity.this, spCity, cities, myTypeFace.getRalewayRegular());
-				} else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseCities Failed");
 				}
 			} else if (error != null) {
@@ -491,7 +487,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 					arrListStates.addAll(responseHandler.getStates());
 					List<String> states = new ArrayList<>();
 					states.add(getString(R.string.select));
-					for (States state : arrListStates) {
+					for (State state : arrListStates) {
 						states.add(state.getStateName());
 					}
 					Adapters.setUpSpinner(LoginActivity.this, spState, states, myTypeFace.getRalewayRegular());
@@ -511,17 +507,17 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			progCountry.setProgress(100);
 			progCountry.setVisibility(View.INVISIBLE);
 			if (object != null) {
-				ResponseGetCountries responseGetCountries = (ResponseGetCountries) object;
-				if (responseGetCountries.getStatus().equals(WebConstants.SUCCESS)) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					arrListCountries = new ArrayList<>();
-					arrListCountries.addAll(responseGetCountries.getData());
-					List<String> countries = new ArrayList<String>();
+					arrListCountries.addAll(responseHandler.getCountries());
+					List<String> countries = new ArrayList<>();
 					countries.add(getString(R.string.select));
-					for (DataGetCountries country : arrListCountries) {
+					for (Country country : arrListCountries) {
 						countries.add(country.getCountryName());
 					}
 					Adapters.setUpSpinner(LoginActivity.this, spCountry, countries, myTypeFace.getRalewayRegular());
-				} else if (responseGetCountries.getStatus().equals(WebConstants.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseCountries Failed");
 				}
 			} else if (error != null) {
@@ -542,14 +538,14 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 				progRequestCredentials.setVisibility(View.INVISIBLE);
 			}
 			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					if (dialogCredentials != null) {
 						dialogCredentials.dismiss();
 					}
 					Toast.makeText(LoginActivity.this, "Request for credentials sent to admin successfully.", Toast.LENGTH_LONG).show();
-				} else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
-					Toast.makeText(LoginActivity.this, responseObj.getMessage(), Toast.LENGTH_LONG).show();
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+					Toast.makeText(LoginActivity.this, responseHandler.getMessage(), Toast.LENGTH_LONG).show();
 				}
 			} else if (error != null) {
 				Log.e(TAG, "onResponseCredentials api Exception : " + error.toString());
@@ -569,11 +565,11 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 				progForgotPwd.setVisibility(View.INVISIBLE);
 			}
 			if (object != null) {
-				ResponseStatus responseObj = (ResponseStatus) object;
-				if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					Toast.makeText(LoginActivity.this, R.string.password_sent, Toast.LENGTH_LONG).show();
 					dialogForgotPassword.dismiss();
-				} else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Toast.makeText(LoginActivity.this, R.string.email_not_found, Toast.LENGTH_LONG).show();
 				}
 			} else if (error != null) {
@@ -589,46 +585,46 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 			btnLogin.setProgress(100);
 			btnLogin.setEnabled(true);
 			if (object != null) {
-				ResponseLogin responseLogin = (ResponseLogin) object;
-				if (responseLogin.getStatus().equals(WebConstants.SUCCESS)) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 
-					if (responseLogin.getData().get(0).getUserId() == null) {
+					if (responseHandler.getUser().get(0).getUserId() == null) {
 
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, LoginActivity.this, ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
-						PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, LoginActivity.this, responseLogin.getData().get(0).getCredentialId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, LoginActivity.this, responseHandler.getUser().get(0).getCredentialId());
 						PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, LoginActivity.this, etPwd.getText().toString().trim());
-						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_ID, LoginActivity.this, responseLogin.getData().get(0).getSchoolId());
-						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, LoginActivity.this, responseLogin.getData().get(0).getSchoolName());
-						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, LoginActivity.this, responseLogin.getData().get(0).getSchoolDistrict());
-						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_TYPE, LoginActivity.this, responseLogin.getData().get(0).getSchoolType());
-						PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_ID, LoginActivity.this, responseLogin.getData().get(0).getClassId());
-						PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, LoginActivity.this, responseLogin.getData().get(0).getClassName());
-						PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_ID, LoginActivity.this, responseLogin.getData().get(0).getCourseId());
-						PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, LoginActivity.this, responseLogin.getData().get(0).getCourseName());
-						PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, LoginActivity.this, responseLogin.getData().get(0).getAcademicYear());
-						PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, LoginActivity.this, responseLogin.getData().get(0).getRoleId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_ID, LoginActivity.this, responseHandler.getUser().get(0).getSchoolId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, LoginActivity.this, responseHandler.getUser().get(0).getSchoolName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, LoginActivity.this, responseHandler.getUser().get(0).getSchoolDistrict());
+						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_TYPE, LoginActivity.this, responseHandler.getUser().get(0).getSchoolType());
+						PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_ID, LoginActivity.this, responseHandler.getUser().get(0).getClassId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, LoginActivity.this, responseHandler.getUser().get(0).getClassName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_ID, LoginActivity.this, responseHandler.getUser().get(0).getCourseId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, LoginActivity.this, responseHandler.getUser().get(0).getCourseName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, LoginActivity.this, responseHandler.getUser().get(0).getAcademicYear());
+						PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, LoginActivity.this, responseHandler.getUser().get(0).getRoleId());
 
 						launchProfileInfoActivity();
 
 					} else {
 
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this, ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
-						PreferenceData.setStringPrefs(PreferenceData.USER_ID, LoginActivity.this, responseLogin.getData().get(0).getUserId());
-						PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, LoginActivity.this, responseLogin.getData().get(0).getFullName());
-						PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, LoginActivity.this, responseLogin.getData().get(0).getProfilePic());
-						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, LoginActivity.this, responseLogin.getData().get(0).getTutorialGroupId());
-						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseLogin.getData().get(0).getTutorialGroupName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_ID, LoginActivity.this, responseHandler.getUser().get(0).getUserId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, LoginActivity.this, responseHandler.getUser().get(0).getFullName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, LoginActivity.this, responseHandler.getUser().get(0).getProfilePic());
+						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupId());
+						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupName());
 
-						if (responseLogin.getData().get(0).getTutorialGroupId() == null) {
+						if (responseHandler.getUser().get(0).getTutorialGroupId() == null) {
 							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);
 							launchWelcomeActivity();
 						} else {
 							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, true);
 
-							if (responseLogin.getData().get(0).getTutorialGroupJoiningStatus().equals("1")) {
+							if (responseHandler.getUser().get(0).getTutorialGroupJoiningStatus().equals("1")) {
 								PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
 
-								if (responseLogin.getData().get(0).getTutorialGroupComplete().equals("1")) {
+								if (responseHandler.getUser().get(0).getTutorialGroupComplete().equals("1")) {
 									PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this, true);
 									launchHostActivity();
 								} else {
@@ -642,7 +638,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 
 					}
 
-				} else if (responseLogin.getStatus().equals(WebConstants.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Toast.makeText(LoginActivity.this, "Username or Password is wrong!", Toast.LENGTH_LONG).show();
 				}
 			} else if (error != null) {

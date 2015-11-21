@@ -21,11 +21,12 @@ import com.ism.author.adapter.GetObjectiveAssignmentQuestionsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.ws.model.Attribute;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
-import com.ism.author.ws.model.ResponseHandler;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.ExamQuestions;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     private RecyclerView rvGetObjectiveAssignmentQuestionslist;
     private GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter;
-    private ArrayList<Data> listOfQuestions = new ArrayList<Data>();
+    private ArrayList<ExamQuestions> listOfQuestions = new ArrayList<ExamQuestions>();
     private FragmentArgument fragmentArgument;
 
 
@@ -226,8 +227,8 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
             if (object != null) {
                 responseObjGetAllExamQuestions = (ResponseHandler) object;
                 if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    listOfQuestions.addAll(responseObjGetAllExamQuestions.getData().get(0).getQuestions());
-                    getObjectiveAssignmentQuestionsAdapter.addAll(listOfQuestions);
+                    listOfQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions());
+                    getObjectiveAssignmentQuestionsAdapter.addAll(listOfQuestions.get(0).getQuestions());
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
                     setAssignmentDetails(responseObjGetAllExamQuestions.getData().get(0));
 

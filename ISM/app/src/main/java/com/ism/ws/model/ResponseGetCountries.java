@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.json.*;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +15,7 @@ public class ResponseGetCountries {
 	
     private String status;
     private String message;
-    private ArrayList<DataGetCountries> data;
+    private ArrayList<Country> data;
 
     @JsonProperty("status")
     public String getStatus() {
@@ -37,11 +36,11 @@ public class ResponseGetCountries {
     }
 
     @JsonProperty("data")
-    public ArrayList<DataGetCountries> getData() {
+    public ArrayList<Country> getData() {
         return this.data;
     }
 
-    public void setData(ArrayList<DataGetCountries> data) {
+    public void setData(ArrayList<Country> data) {
         this.data = data;
     }
 

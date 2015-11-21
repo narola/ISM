@@ -18,6 +18,7 @@
             android:layout_alignParentTop="true"
             android:gravity="center_vertical"
             android:padding="@dimen/d5dp"
+            android:textColor="@color/bg_app_dark"
             android:text="@string/strBooksYouMayWantToRead"
             android:textSize="@dimen/d20sp" />
 
@@ -104,12 +105,13 @@
         android:paddingLeft="@dimen/d10dp">
 
         <TextView
-            android:id="@+id/txt_books"
+            android:id="@+id/txt_fav_books"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:gravity="center_vertical"
             android:padding="@dimen/d5dp"
+            android:textColor="@color/bg_app_dark"
             android:text="@string/strYourFavoriteBooks"
             android:textSize="@dimen/d20sp" />
 

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataUserBooks {
+public class UserBooks {
 	
     private ArrayList<Suggested> suggested;
     private ArrayList<Favorite> favorite;

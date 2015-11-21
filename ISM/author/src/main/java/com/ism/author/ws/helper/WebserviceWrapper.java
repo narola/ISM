@@ -1,11 +1,10 @@
-package com.ism.author.ws;
+package com.ism.author.ws.helper;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
 import com.ism.author.Utility.Debug;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.ws.model.ResponseHandler;
 
 
 /**

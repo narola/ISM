@@ -16,7 +16,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.fragment.StudentAttemptedFragment;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.model.Data;
-import com.ism.author.ws.model.ResponseHandler;
+import com.ism.author.ws.helper.ResponseHandler;
 
 import java.util.ArrayList;
 

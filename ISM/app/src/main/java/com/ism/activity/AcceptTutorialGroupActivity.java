@@ -17,6 +17,7 @@ import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.views.CircleImageView;
 import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.model.ResponseObject;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
@@ -132,16 +133,16 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 				btnAccept.setEnabled(true);
 			}
 			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
 					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
 					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, AcceptTutorialGroupActivity.this, true);
 					launchHostActivity();
-				} else if (responseObj.getStatus().equals("incomplete")) {
+				} else if (responseHandler.getStatus().equals("incomplete")) {
 					Toast.makeText(AcceptTutorialGroupActivity.this, R.string.msg_waiting_for_other_members, Toast.LENGTH_LONG).show();
 					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-					Log.e(TAG, "onResponseAcceptTutorialGroup Failed : " + responseObj.getMessage());
+				} else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseAcceptTutorialGroup Failed : " + responseHandler.getMessage());
 				}
 			} else if (error != null) {
 				Log.e(TAG, "onResponseAcceptTutorialGroup api Exception : " + error.toString());

@@ -18,8 +18,6 @@ import com.ism.R;
 import com.ism.ws.model.Data;
 
 import java.io.ByteArrayOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,29 +65,8 @@ public class Utility {
 	 * @return returns whether connection to network can be made or not.
 	 */
 	public static boolean isConnected(Context context) {
-		try {
-			ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo netInfo = cm.getActiveNetworkInfo();
-
-			if (netInfo != null && netInfo.isConnected()) {
-				//Network is available but check if we can get access from the network.
-				URL url = new URL("https://www.google.com/");
-				HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-				urlc.setRequestProperty("Connection", "close");
-				urlc.setConnectTimeout(2000); // Timeout 2 seconds.
-				urlc.connect();
-
-				if (urlc.getResponseCode() == 200) { //Successful response.
-					return true;
-				} else {
-					Log.d("NO INTERNET", "NO INTERNET");
-					return false;
-				}
-			}
-		} catch (Exception e) {
-			Log.e(TAG, "isConnected Exception : " + e.toString());
-		}
-		return false;
+		NetworkInfo networkInfo = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+		return networkInfo != null && networkInfo.isConnected();
 	}
 
 	/**
@@ -228,16 +205,17 @@ public class Utility {
 		});
 	}
 
-	/*These is the method to show toast in android
-    * */
-	public static void showToast(String message, Context mContext) {
+	/**
+	 * These is the method to show toast in android
+	 * @param message
+	 * @param context
+	 */
+	public static void showToast(String message, Context context) {
 		try {
-			Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e(TAG, "showToast Exception : " + e.toString());
 		}
-
 	}
-
 
 }

@@ -17,9 +17,9 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.adapter.TrialExamsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.ws.model.Attribute;
-import com.ism.author.ws.model.ResponseHandler;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.Attribute;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
 
 
 /**

@@ -5,14 +5,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Created by c161 on 19/11/15.
+ * Created by c161 on 20/11/15.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataGetStates {
+public class City {
 	
     private String id;
-    private String stateName;
+    private String cityName;
 
     @JsonProperty("id")
     public String getId() {
@@ -23,13 +23,13 @@ public class DataGetStates {
         this.id = id;
     }
 
-    @JsonProperty("state_name")
-    public String getStateName() {
-        return this.stateName;
+    @JsonProperty("city_name")
+    public String getCityName() {
+        return this.cityName;
     }
 
-    public void setStateName(String stateName) {
-        this.stateName = stateName;
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
 }

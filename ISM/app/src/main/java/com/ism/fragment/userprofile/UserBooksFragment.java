@@ -45,6 +45,8 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
     private ArrayList<Suggested> arrayListSuggestedBooks;
     private TextView txtSuggestedEmpty;
     private TextView txtFavEmpty;
+    private TextView txtSuggestedBooks;
+    private TextView txtFavBooks;
 
     public static UserBooksFragment newInstance() {
         UserBooksFragment fragment = new UserBooksFragment();
@@ -69,17 +71,20 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
 
         myTypeFace = new MyTypeFace(getActivity());
 
-        txtFavEmpty=(TextView)view.findViewById(R.id.txt_fav_empty);
-        txtSuggestedEmpty=(TextView)view.findViewById(R.id.txt_suggested_empty);
+        txtFavEmpty = (TextView) view.findViewById(R.id.txt_fav_empty);
+        txtSuggestedEmpty = (TextView) view.findViewById(R.id.txt_suggested_empty);
+        txtSuggestedBooks = (TextView) view.findViewById(R.id.txt_read_books);
+        txtFavBooks = (TextView) view.findViewById(R.id.txt_fav_books);
         //set typeface
         txtFavEmpty.setTypeface(myTypeFace.getRalewayRegular());
         txtSuggestedEmpty.setTypeface(myTypeFace.getRalewayRegular());
+        txtFavBooks.setTypeface(myTypeFace.getRalewayRegular());
+        txtSuggestedBooks.setTypeface(myTypeFace.getRalewayRegular());
 
         listViewFavBooks = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
         listViewSuggestedBooks = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);
 
         callApiGetBooksForUser();
-
 
 
     }
@@ -92,7 +97,7 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
                 Attribute requestObject = new Attribute();
                 requestObject.setUserId("1");
                 new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
-            }else{
+            } else {
                 Utility.toastOffline(getActivity());
             }
         } catch (Exception e) {
@@ -121,11 +126,11 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseHandler  responseHandler = (ResponseHandler) object;
+                ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                        arrayListFavBooks=responseHandler.getBooks().get(0).getFavorite();
-                        arrayListSuggestedBooks=responseHandler.getBooks().get(0).getSuggested();
-                    setUpList(arrayListFavBooks,arrayListSuggestedBooks);
+                    arrayListFavBooks = responseHandler.getBooks().get(0).getFavorite();
+                    arrayListSuggestedBooks = responseHandler.getBooks().get(0).getSuggested();
+                    setUpList(arrayListFavBooks, arrayListSuggestedBooks);
                     Debug.i(TAG, "onResponseUserBooks success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseUserBooks Failed");
@@ -140,28 +145,27 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
 
     private void setUpList(ArrayList<Favorite> arrayListFavBooks, ArrayList<Suggested> arrayListSuggestedBooks) {
         try {
-            if(!arrayListFavBooks.isEmpty()){
+            if (!arrayListFavBooks.isEmpty()) {
                 txtFavEmpty.setVisibility(View.GONE);
                 listViewFavBooks.setVisibility(View.VISIBLE);
-                userFavoriteBooksAdapter=new UserFavoriteBooksAdapter(getActivity(),arrayListFavBooks);
+                userFavoriteBooksAdapter = new UserFavoriteBooksAdapter(getActivity(), arrayListFavBooks);
                 listViewFavBooks.setAdapter(userFavoriteBooksAdapter);
 
-            }else{
+            } else {
                 txtFavEmpty.setVisibility(View.VISIBLE);
                 listViewFavBooks.setVisibility(View.GONE);
             }
-            if(!arrayListFavBooks.isEmpty()){
+            if (!arrayListFavBooks.isEmpty()) {
                 txtSuggestedEmpty.setVisibility(View.GONE);
                 listViewSuggestedBooks.setVisibility(View.VISIBLE);
-                suggestedBookForUserAdapter=new SuggestedBookAdapter(getActivity(),arrayListSuggestedBooks);
+                suggestedBookForUserAdapter = new SuggestedBookAdapter(getActivity(), arrayListSuggestedBooks);
                 listViewSuggestedBooks.setAdapter(suggestedBookForUserAdapter);
-            }else{
+            } else {
                 txtSuggestedEmpty.setVisibility(View.VISIBLE);
                 listViewSuggestedBooks.setVisibility(View.GONE);
             }
-        }
-        catch (Exception e){
-            Debug.e(TAG,"setUpList Exceptions :" +e.getLocalizedMessage());
+        } catch (Exception e) {
+            Debug.e(TAG, "setUpList Exceptions :" + e.getLocalizedMessage());
         }
     }
 

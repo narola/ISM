@@ -244,11 +244,11 @@ public class RichTextEditor extends LinearLayout {
 
                     }
                 }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                });
+            }
+        });
         dialog = alertBuilder.create();
         dialog.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {

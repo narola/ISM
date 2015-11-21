@@ -20,11 +20,11 @@ import com.ism.author.adapter.SubjectiveQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.views.CircleImageView;
 import com.ism.author.object.MyTypeFace;
-import com.ism.author.ws.model.Attribute;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
-import com.ism.author.ws.model.ResponseHandler;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
