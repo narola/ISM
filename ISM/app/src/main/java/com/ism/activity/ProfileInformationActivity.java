@@ -35,9 +35,13 @@ import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.model.City;
+import com.ism.ws.model.Country;
 import com.ism.ws.model.ResponseObject;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Data;
+import com.ism.ws.model.State;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,9 +68,9 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
     private InputValidator inputValidator;
     private List<String> arrListGender;
     private List<String> arrListDefalt;
-    private ArrayList<Data> arrListCountries;
-    private ArrayList<Data> arrListStates;
-    private ArrayList<Data> arrListCities;
+    private ArrayList<Country> arrListCountries;
+    private ArrayList<State> arrListStates;
+    private ArrayList<City> arrListCities;
     private Calendar calDob;
     private DatePickerDialog datePickerDob;
     private AlertDialog dialogSchoolInfo;
@@ -371,6 +375,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             progRequestSchoolInfo.setProgress(1);
             progRequestSchoolInfo.setVisibility(View.VISIBLE);
             progressGenerator.start(progRequestSchoolInfo);
+
             new WebserviceWrapper(ProfileInformationActivity.this, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.REQUEST_SCHOOL_INFO);
         } catch (Exception e) {
@@ -404,8 +409,8 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 //			requestObject.setRoleId(Integer.parseInt(strRoleId));
             attribute.setRoleId(strRoleId);
             attribute.setDeviceType(getString(R.string.android));
-             attribute.setProfileImageName("image_" + System.currentTimeMillis() + ".png");
-             attribute.setProfileImage(strDpBase64);
+            attribute.setProfileImageName("image_" + System.currentTimeMillis() + ".png");
+            attribute.setProfileImage(strDpBase64);
 
             new WebserviceWrapper(ProfileInformationActivity.this, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.REGISTER_USER);
@@ -689,14 +694,14 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                 progRequestSchoolInfo.setVisibility(View.INVISIBLE);
             }
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
                     if (dialogSchoolInfo != null) {
                         dialogSchoolInfo.dismiss();
                     }
                     Toast.makeText(ProfileInformationActivity.this, "Request for school information updation sent to admin successfully.", Toast.LENGTH_LONG).show();
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-                    Toast.makeText(ProfileInformationActivity.this, responseObj.getMessage(), Toast.LENGTH_LONG).show();
+                } else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+                    Toast.makeText(ProfileInformationActivity.this, responseHandler.getMessage(), Toast.LENGTH_LONG).show();
                 }
             } else if (error != null) {
                 Log.e(TAG, "onResponseRequestSchoolInfo api Exception : " + error.toString());
@@ -711,17 +716,17 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             progCity.setProgress(100);
             progCity.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-                    arrListCities = new ArrayList<Data>();
-                    arrListCities.addAll(responseObj.getData());
-                    List<String> cities = new ArrayList<String>();
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+                    arrListCities = new ArrayList<>();
+                    arrListCities.addAll(responseHandler.getCities());
+                    List<String> cities = new ArrayList<>();
                     cities.add(getString(R.string.select));
-                    for (Data city : arrListCities) {
+                    for (City city : arrListCities) {
                         cities.add(city.getCityName());
                     }
                     Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, cities, myTypeFace.getRalewayRegular());
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
                     Log.e(TAG, "onResponseCities Failed");
                 }
             } else if (error != null) {
@@ -737,17 +742,17 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             progState.setProgress(100);
             progState.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-                    arrListStates = new ArrayList<Data>();
-                    arrListStates.addAll(responseObj.getData());
-                    List<String> states = new ArrayList<String>();
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+                    arrListStates = new ArrayList<>();
+                    arrListStates.addAll(responseHandler.getStates());
+                    List<String> states = new ArrayList<>();
                     states.add(getString(R.string.select));
-                    for (Data state : arrListStates) {
+                    for (State state : arrListStates) {
                         states.add(state.getStateName());
                     }
                     Adapters.setUpSpinner(ProfileInformationActivity.this, spState, states, myTypeFace.getRalewayRegular());
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
                     Log.e(TAG, "onResponseStates Failed");
                 }
             } else if (error != null) {
@@ -763,17 +768,17 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             progCountry.setProgress(100);
             progCountry.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-                    arrListCountries = new ArrayList<Data>();
-                    arrListCountries.addAll(responseObj.getData());
-                    List<String> countries = new ArrayList<String>();
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+                    arrListCountries = new ArrayList<>();
+                    arrListCountries.addAll(responseHandler.getCountries());
+                    List<String> countries = new ArrayList<>();
                     countries.add(getString(R.string.select));
-                    for (Data country : arrListCountries) {
+                    for (Country country : arrListCountries) {
                         countries.add(country.getCountryName());
                     }
                     Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, countries, myTypeFace.getRalewayRegular());
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
                     Log.e(TAG, "onResponseCountries Failed");
                 }
             } else if (error != null) {
@@ -789,27 +794,27 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             btnSubmit.setProgress(100);
             btnSubmit.setEnabled(true);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
                     PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
-                            PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
+                    PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
                     PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
                     PreferenceData.remove(PreferenceData.USER_PASSWORD, ProfileInformationActivity.this);
-                    PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, responseObj.getData().get(0).getUserId());
-                    PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, ProfileInformationActivity.this, responseObj.getData().get(0).getFullName());
+                    PreferenceData.setStringPrefs(PreferenceData.USER_ID, ProfileInformationActivity.this, "" + responseHandler.getUser().get(0).getUserId());
+                    PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, ProfileInformationActivity.this, responseHandler.getUser().get(0).getFullName());
 //                    if (!responseObj.getData().get(0).getUserId().equals(" ")) {
 //                        callApiUploadPic(responseObj.getData().get(0).getUserId(), fileName);
 //                    }
-                    PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, responseObj.getData().get(0).getProfilePic());
+                    PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, responseHandler.getUser().get(0).getProfilePic());
 
                     Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
                     startActivity(intentWelcome);
                     finish();
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-                    if (responseObj.getMessage().contains(ResponseObject.DUPLICATE_ENTRY)) {
-                        if (responseObj.getMessage().contains("email_id")) {
+                } else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+                    if (responseHandler.getMessage().contains(ResponseObject.DUPLICATE_ENTRY)) {
+                        if (responseHandler.getMessage().contains("email_id")) {
                             Utility.alert(ProfileInformationActivity.this, getString(R.string.registration_failed), getString(R.string.msg_email_exists));
-                        } else if (responseObj.getMessage().contains("username")) {
+                        } else if (responseHandler.getMessage().contains("username")) {
                             Utility.alert(ProfileInformationActivity.this, getString(R.string.registration_failed), getString(R.string.msg_username_exists));
                         }
                     }

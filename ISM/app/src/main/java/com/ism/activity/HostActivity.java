@@ -187,7 +187,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 //	    Global.strProfilePic = PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
         Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
 
-        callApiGetAllBadgesCount();
+	    if (Utility.isConnected(HostActivity.this)) {
+		    callApiGetAllBadgesCount();
+		    callApiGetGeneralSettingPreferences();
+		    callApiForGetUserPreference();
+	    } else {
+		    Utility.toastOffline(HostActivity.this);
+	    }
 
         loadFragment(FRAGMENT_HOME, null);
         loadFragment(FRAGMENT_CHAT, null);
@@ -239,40 +245,40 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         });
 
         imgLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PreferenceData.clearWholePreference(HostActivity.this);
-                Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
-                startActivity(intentLogin);
-                finish();
-            }
+	        @Override
+	        public void onClick(View v) {
+		        PreferenceData.clearWholePreference(HostActivity.this);
+		        Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
+		        startActivity(intentLogin);
+		        finish();
+	        }
         });
 
         imgSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imgSearch.setActivated(!imgSearch.isActivated());
-                if (etSearch.getVisibility() == View.VISIBLE) {
+	        @Override
+	        public void onClick(View v) {
+		        imgSearch.setActivated(!imgSearch.isActivated());
+		        if (etSearch.getVisibility() == View.VISIBLE) {
 //		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
 //		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
-                    etSearch.setVisibility(View.GONE);
-                } else {
-                    startSlideAnimation(etSearch, etSearch.getWidth(), 0, 0, 0);
-                    startSlideAnimation(imgSearch, etSearch.getWidth(), 0, 0, 0);
-                    etSearch.setVisibility(View.VISIBLE);
-                    Utility.showSoftKeyboard(etSearch, HostActivity.this);
-                }
-            }
+			        etSearch.setVisibility(View.GONE);
+		        } else {
+			        startSlideAnimation(etSearch, etSearch.getWidth(), 0, 0, 0);
+			        startSlideAnimation(imgSearch, etSearch.getWidth(), 0, 0, 0);
+			        etSearch.setVisibility(View.VISIBLE);
+			        Utility.showSoftKeyboard(etSearch, HostActivity.this);
+		        }
+	        }
         });
 
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    Log.e(TAG, "search clicked");
-                }
-                return false;
-            }
+	        @Override
+	        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+			        Log.e(TAG, "search clicked");
+		        }
+		        return false;
+	        }
         });
 
         imgNotes.setOnClickListener(new View.OnClickListener() {
@@ -310,9 +316,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         txtFour.setOnClickListener(onClickMenuItem);
         txtFive.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
-
-        callApiGetGeneralSettingPreferences();
-        callApiForGetUserPreference();
 
     }
 
