@@ -1,15 +1,12 @@
 package com.ism.ws.helper;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.ism.R;
-import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
+import com.ism.utility.Debug;
 import com.ism.utility.Utility;
-import com.ism.ws.model.ResponseGetCountries;
 import com.ism.ws.model.ResponseObject;
 
 import java.net.HttpURLConnection;
@@ -113,10 +110,13 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_NOTICES).execute(ResponseObject.class, attribute);
                             break;
                         case WebConstants.GENERAL_SETTING_PREFERENCES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GENERAL_SETTING_PREFERENCES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GENERAL_SETTING_PREFERENCES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_USER_PREFERENCES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_USER_PREFERENCES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_USER_PREFERENCES).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.MANAGE_GENERAL_SETTINGS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_GENERAL_SETTING).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_NOTIFICATION:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_NOTIFICATION).execute(ResponseObject.class, attribute);
@@ -134,7 +134,7 @@ public class WebserviceWrapper {
 //                        responseObject = new RequestWs().getImageRequest(WebConstants.URL_PROFILE_PIC).execute(ResponseObject.class, attribute);
 //                        break;
                         case WebConstants.GET_ABOUT_ME:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ABOUT_ME).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ABOUT_ME).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.RESPOND_TO_REQUEST:
                             responseObject = new WebserviceConnector(WebConstants.URL_RESPOND_TO_REQUEST).execute(ResponseObject.class, attribute);
@@ -143,18 +143,18 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_UPDATE_READ_STATUS).execute(ResponseObject.class, attribute);
                             break;
                         case WebConstants.EDIT_ABOUT_ME:
-                            responseObject = new WebserviceConnector(WebConstants.URL_EDIT_ABOUT_ME).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_EDIT_ABOUT_ME).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_HIGH_SCORERS:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_HIGH_SCORERS).execute(ResponseObject.class, attribute);
                             break;
                         case WebConstants.GET_BOOKS_FOR_USER:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseHandler.class, attribute);
                             break;
                     }
                 }
             } catch (Exception e) {
-                Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
+                Debug.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
 	            exception = e;
             }
             return responseObject;

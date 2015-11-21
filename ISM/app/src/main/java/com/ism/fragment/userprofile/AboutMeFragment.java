@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.ism.object.ISMStudent;
+import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;

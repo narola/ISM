@@ -8,11 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.object.ISMStudent;
 import com.ism.R;
+import com.ism.ISMStudent;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
-import com.ism.ws.model.Suggested;
+import com.ism.ws.model.Favorite;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -21,15 +21,15 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class SuggestedBookForUserAdapter extends BaseAdapter {
-    private static final String TAG = UserFavoriteBooksAdapter.class.getSimpleName();
+public class UserFavoriteRoleModelsAdapter extends BaseAdapter {
+    private static final String TAG = UserFavoriteRoleModelsAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
-    ArrayList<Suggested> arrayList = new ArrayList<>();
+    ArrayList<Favorite> arrayList = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
 
-    public SuggestedBookForUserAdapter(Context context, ArrayList<Suggested> arrayList) {
+    public UserFavoriteRoleModelsAdapter(Context context, ArrayList<Favorite> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         imageLoader = ImageLoader.getInstance();
@@ -41,7 +41,7 @@ public class SuggestedBookForUserAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 10;
     }
 
     @Override
@@ -61,17 +61,12 @@ public class SuggestedBookForUserAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.row_user_books, null);
             holder = new ViewHolder();
 
-            holder.imgBook = (ImageView) convertView.findViewById(R.id.img_book_pic);
+            holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
             holder.imgBookLike = (ImageView) convertView.findViewById(R.id.img_book_like);
             holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
-            holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_book_name);
-            holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_book_author);
-
-            holder.imgBookAdd.setVisibility(View.VISIBLE);
-            holder.imgBookLike.setVisibility(View.VISIBLE);
-            holder.imgInfo.setVisibility(View.VISIBLE);
-
+            holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
+            holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -85,8 +80,8 @@ public class SuggestedBookForUserAdapter extends BaseAdapter {
 
 //			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgBook, ISMStudent.options);
-            holder.txtBookName.setText(arrayList.get(position).getBookName());
-            holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
+//            holder.txtBookName.setText(arrayList.get(position).getBookName());
+//            holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
             // if(arrayList.get(position).ge)
 
 

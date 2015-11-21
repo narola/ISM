@@ -53,10 +53,9 @@ import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.DataUserPreferences;
+import com.ism.ws.model.UserPreferences;
 import com.ism.ws.model.Notification;
 import com.ism.ws.model.PrivacySetting;
-import com.ism.ws.model.ResponseObject;
 import com.ism.ws.model.SMSAlert;
 
 import java.util.ArrayList;
@@ -245,13 +244,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         });
 
         imgLogOut.setOnClickListener(new View.OnClickListener() {
-	        @Override
-	        public void onClick(View v) {
-		        PreferenceData.clearWholePreference(HostActivity.this);
-		        Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
-		        startActivity(intentLogin);
-		        finish();
-	        }
+            @Override
+            public void onClick(View v) {
+                PreferenceData.clearWholePreference(HostActivity.this);
+                Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
+                startActivity(intentLogin);
+                finish();
+            }
         });
 
         imgSearch.setOnClickListener(new View.OnClickListener() {
@@ -272,13 +271,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         });
 
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-	        @Override
-	        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-			        Log.e(TAG, "search clicked");
-		        }
-		        return false;
-	        }
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Log.e(TAG, "search clicked");
+                }
+                return false;
+            }
         });
 
         imgNotes.setOnClickListener(new View.OnClickListener() {
@@ -848,7 +847,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                 ResponseHandler responseObject = (ResponseHandler) object;
                 if (responseObject.getStatus().toString().equals(WebConstants.SUCCESS)) {
                     if (responseObject.getPreference().size() > 0) {
-                        ArrayList<DataUserPreferences> arrayListUserPreferences=new ArrayList<>();
+                        ArrayList<UserPreferences> arrayListUserPreferences=new ArrayList<>();
                         arrayListUserPreferences=responseObject.getUserPreference();
                         for (int j = 0; j < arrayListUserPreferences.size(); j++) {
                             GeneralSettingsFragment.newInstance().setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getApplicationContext());

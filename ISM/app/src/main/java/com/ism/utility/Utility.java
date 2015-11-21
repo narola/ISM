@@ -18,8 +18,6 @@ import com.ism.R;
 import com.ism.ws.model.Data;
 
 import java.io.ByteArrayOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -186,8 +184,8 @@ public class Utility {
 		Collections.sort(arrListData, new Comparator<Data>() {
 			@Override
 			public int compare(Data lData, Data rData) {
-				int compare = lData.getNoticeTitle().compareToIgnoreCase(rData.getNoticeTitle());
-				return compare;
+				return lData.getNoticeTitle().compareToIgnoreCase(rData.getNoticeTitle());
+
 			}
 		});
 	}
@@ -201,8 +199,8 @@ public class Utility {
 		Collections.sort(arrListData, new Comparator<Data>() {
 			@Override
 			public int compare(Data lData, Data rData) {
-				int compare = rData.getNoticeTitle().compareToIgnoreCase(lData.getNoticeTitle());
-				return compare;
+				return rData.getNoticeTitle().compareToIgnoreCase(lData.getNoticeTitle());
+
 			}
 		});
 	}

@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ism.object.ISMStudent;
+import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.commonsource.utility.Utility;
 import com.ism.commonsource.view.ProcessButton;

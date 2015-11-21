@@ -7,12 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.adapter.SuggestedBookAdapter;
-import com.ism.adapter.UserFavoriteBooksAdapter;
+import com.ism.adapter.SuggestedRoleModelsAdapter;
+import com.ism.adapter.UserFavoriteRoleModelsAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
@@ -30,30 +31,32 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 09/11/15.
  */
-public class UserBooksFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
+public class UserRoleModelFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
-    private static final String TAG = UserBooksFragment.class.getSimpleName();
+    private static final String TAG = UserRoleModelFragment.class.getSimpleName();
     ImageLoader imageLoader;
     private View view;
     private MyTypeFace myTypeFace;
     private HostActivity activityHost;
     private HorizontalListView listViewFavBooks;
-    UserFavoriteBooksAdapter userFavoriteBooksAdapter;
+    UserFavoriteRoleModelsAdapter favoriteRoleModelsAdapter;
     private ArrayList<Favorite> arrayListFavBooks;
     private HorizontalListView listViewSuggestedBooks;
-    SuggestedBookAdapter suggestedBookForUserAdapter;
+    SuggestedRoleModelsAdapter suggestedRoleModelsAdapter;
     private ArrayList<Suggested> arrayListSuggestedBooks;
     private TextView txtSuggestedEmpty;
     private TextView txtFavEmpty;
-    private TextView txtSuggestedBooks;
+    private ImageView imgNxtFav;
+    private ImageView imgPrevFav;
     private TextView txtFavBooks;
+    private TextView txtSuggestedBooks;
 
-    public static UserBooksFragment newInstance() {
-        UserBooksFragment fragment = new UserBooksFragment();
+    public static UserRoleModelFragment newInstance() {
+        UserRoleModelFragment fragment = new UserRoleModelFragment();
         return fragment;
     }
 
-    public UserBooksFragment() {
+    public UserRoleModelFragment() {
     }
 
     @Override
@@ -80,15 +83,24 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
         txtSuggestedEmpty.setTypeface(myTypeFace.getRalewayRegular());
         txtFavBooks.setTypeface(myTypeFace.getRalewayRegular());
         txtSuggestedBooks.setTypeface(myTypeFace.getRalewayRegular());
+        txtSuggestedBooks.setText(R.string.strSuggestedRoleModels);
+        txtFavBooks.setText(R.string.strFavRolemodels);
+
 
         listViewFavBooks = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
         listViewSuggestedBooks = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);
 
+        imgNxtFav=(ImageView)view.findViewById(R.id.img_next_fav);
+        imgPrevFav=(ImageView)view.findViewById(R.id.img_prev_fav);
+
         callApiGetBooksForUser();
 
+        imgNxtFav.setOnClickListener(this);
+        imgPrevFav.setOnClickListener(this);
+        favoriteRoleModelsAdapter=new UserFavoriteRoleModelsAdapter(getActivity(),arrayListFavBooks);
+        listViewFavBooks.setAdapter(favoriteRoleModelsAdapter);
 
     }
-
 
     private void callApiGetBooksForUser() {
         try {
@@ -96,8 +108,9 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
                 activityHost.showProgress();
                 Attribute requestObject = new Attribute();
                 requestObject.setUserId("1");
-                new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
-            } else {
+                new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_ROLEMODEL_FOR_USER);
+            }
+            else{
                 Utility.toastOffline(getActivity());
             }
         } catch (Exception e) {
@@ -111,8 +124,8 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
 
         try {
             switch (apiCode) {
-                case WebConstants.GET_BOOKS_FOR_USER:
-                    onResponseUserBooks(object, error);
+                case WebConstants.GET_ROLEMODEL_FOR_USER:
+                    onResponseUserRoleModels(object, error);
                     break;
 
             }
@@ -122,59 +135,72 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
 
     }
 
-    private void onResponseUserBooks(Object object, Exception error) {
+    private void onResponseUserRoleModels(Object object, Exception error) {
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
+                ResponseHandler  responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    arrayListFavBooks = responseHandler.getBooks().get(0).getFavorite();
-                    arrayListSuggestedBooks = responseHandler.getBooks().get(0).getSuggested();
-                    setUpList(arrayListFavBooks, arrayListSuggestedBooks);
-                    Debug.i(TAG, "onResponseUserBooks success");
+                        arrayListFavBooks=responseHandler.getBooks().get(0).getFavorite();
+                        arrayListSuggestedBooks=responseHandler.getBooks().get(0).getSuggested();
+                    setUpList(arrayListFavBooks,arrayListSuggestedBooks);
+                    Debug.i(TAG, "onResponseUserRoleModels success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Log.i(TAG, "onResponseUserBooks Failed");
+                    Log.i(TAG, "onResponseUserRoleModels Failed");
                 }
             } else if (error != null) {
-                Log.i(TAG, "onResponseUserBooks api Exception : " + error.toString());
+                Log.i(TAG, "onResponseUserRoleModels api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Log.e(TAG, "onResponseUserBooks Exception : " + e.toString());
+            Log.e(TAG, "onResponseUserRoleModels Exception : " + e.toString());
         }
     }
 
     private void setUpList(ArrayList<Favorite> arrayListFavBooks, ArrayList<Suggested> arrayListSuggestedBooks) {
         try {
-            if (!arrayListFavBooks.isEmpty()) {
+            if(!arrayListFavBooks.isEmpty()){
                 txtFavEmpty.setVisibility(View.GONE);
                 listViewFavBooks.setVisibility(View.VISIBLE);
-                userFavoriteBooksAdapter = new UserFavoriteBooksAdapter(getActivity(), arrayListFavBooks);
-                listViewFavBooks.setAdapter(userFavoriteBooksAdapter);
+                favoriteRoleModelsAdapter=new UserFavoriteRoleModelsAdapter(getActivity(),arrayListFavBooks);
+                listViewFavBooks.setAdapter(favoriteRoleModelsAdapter);
 
-            } else {
+            }else{
                 txtFavEmpty.setVisibility(View.VISIBLE);
                 listViewFavBooks.setVisibility(View.GONE);
             }
-            if (!arrayListFavBooks.isEmpty()) {
+            if(!arrayListFavBooks.isEmpty()){
                 txtSuggestedEmpty.setVisibility(View.GONE);
                 listViewSuggestedBooks.setVisibility(View.VISIBLE);
-                suggestedBookForUserAdapter = new SuggestedBookAdapter(getActivity(), arrayListSuggestedBooks);
-                listViewSuggestedBooks.setAdapter(suggestedBookForUserAdapter);
-            } else {
+                suggestedRoleModelsAdapter =new SuggestedRoleModelsAdapter(getActivity(),arrayListSuggestedBooks);
+                listViewSuggestedBooks.setAdapter(suggestedRoleModelsAdapter);
+            }else{
                 txtSuggestedEmpty.setVisibility(View.VISIBLE);
                 listViewSuggestedBooks.setVisibility(View.GONE);
             }
-        } catch (Exception e) {
-            Debug.e(TAG, "setUpList Exceptions :" + e.getLocalizedMessage());
+        }
+        catch (Exception e){
+            Debug.e(TAG,"setUpList Exceptions :" +e.getLocalizedMessage());
         }
     }
 
 
     @Override
     public void onClick(View v) {
+        try {
+            switch (v.getId()){
+                case R.id.img_next_fav:
+                    //onNextFavorite();
+                    break;
+            }
+
+
+        }catch (Exception e){
+            Debug.e(TAG,"onClick Exception :" +e.getLocalizedMessage());
+        }
 
 
     }
+
 
     @Override
     public void onAttach(Activity activity) {

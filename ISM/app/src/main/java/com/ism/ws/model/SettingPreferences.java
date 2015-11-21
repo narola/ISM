@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 
-public class DataGetAllPreferences {
+public class SettingPreferences {
 
     private ArrayList<SMSAlert> sMSAlert;
     private ArrayList<PrivacySetting> privacySetting;

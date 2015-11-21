@@ -8,11 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.ISMStudent;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
-import com.ism.ws.model.Favorite;
+import com.ism.ws.model.Suggested;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -21,15 +21,15 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class UserFavoriteBooksAdapter extends BaseAdapter {
+public class SuggestedPastTimeAdapter extends BaseAdapter {
     private static final String TAG = UserFavoriteBooksAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
-    ArrayList<Favorite> arrayList = new ArrayList<>();
+    ArrayList<Suggested> arrayList = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
 
-    public UserFavoriteBooksAdapter(Context context, ArrayList<Favorite> arrayList) {
+    public SuggestedPastTimeAdapter(Context context, ArrayList<Suggested> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         imageLoader = ImageLoader.getInstance();
@@ -67,6 +67,11 @@ public class UserFavoriteBooksAdapter extends BaseAdapter {
             holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
             holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
+
+            holder.imgBookAdd.setVisibility(View.VISIBLE);
+            holder.imgBookLike.setVisibility(View.VISIBLE);
+            holder.imgInfo.setVisibility(View.VISIBLE);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
