@@ -29,7 +29,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
 import com.ism.author.fragment.AddQuestionContainerFragment;
-import com.ism.author.fragment.AssessmentFragment;
+import com.ism.author.fragment.ExamsFragment;
 import com.ism.author.fragment.BooksFragment;
 import com.ism.author.fragment.CreateExamAssignmentContainerFragment;
 import com.ism.author.fragment.GetAssignmentsSubmittorFragment;
@@ -248,7 +248,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     break;
 
                 case FRAGMENT_ASSESSMENT:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AssessmentFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamsFragment.newInstance()).commit();
                     break;
 
                 case FRAGMENT_ASSIGNMENT_SUBMITTOR:

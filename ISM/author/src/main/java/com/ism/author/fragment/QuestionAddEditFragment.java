@@ -35,7 +35,7 @@ import com.ism.author.autocomplete.TokenCompleteTextView;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.model.Data;
 import com.ism.author.model.QuestionAnswersModel;
-import com.ism.author.ws.model.Attribute;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.HashTagsModel;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;

@@ -1,4 +1,4 @@
-package com.ism.author.ws;
+package com.ism.author.ws.helper;
 
 /**
  * Created by c166 on 23/10/15.

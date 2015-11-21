@@ -23,9 +23,9 @@ import com.ism.author.activtiy.PostActivity;
 import com.ism.author.adapter.PostFeedsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.ws.model.Attribute;
-import com.ism.author.ws.model.ResponseHandler;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.Attribute;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 
@@ -128,6 +128,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
     private void callApiGetAllPostFeeds() {
         if (Utility.isOnline(getActivity())) {
+
             try {
                 Attribute attribute = new Attribute();
                 attribute.setUserId(WebConstants.TEST_USER_ID);
@@ -194,7 +195,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    postFeedsAdapter.addAll(responseHandler.getData());
+                    postFeedsAdapter.addAll(responseHandler.getFeeds());
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }

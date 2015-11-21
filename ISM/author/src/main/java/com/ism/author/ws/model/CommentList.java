@@ -1,6 +1,5 @@
-package com.ism.author.model;
+package com.ism.author.ws.model;
 
-/*these model class is for getALLFeedsCooment list*/
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -8,22 +7,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PostFeedCommentsModel {
+public class CommentList {
 
-    private String username;
+    private String createdDate;
     private String id;
     private String commentBy;
     private String comment;
+    private String fullName;
     private String profileLink;
 
 
-    @JsonProperty("full_name")
-    public String getUsername() {
-        return this.username;
+    @JsonProperty("created_date")
+    public String getCreatedDate() {
+        return this.createdDate;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 
     @JsonProperty("id")
@@ -51,6 +51,15 @@ public class PostFeedCommentsModel {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    @JsonProperty("full_name")
+    public String getFullName() {
+        return this.fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     @JsonProperty("profile_link")
