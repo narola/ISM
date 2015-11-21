@@ -257,8 +257,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         if (Utility.isInternetConnected(getActivity())) {
             try {
                 RequestObject request = new RequestObject();
-                request.setUserId("370");
-                request.setRole(AppConstant.AUTHOR_ROLE_ID);
+                request.setUserId(AppConstant.TEST_USER_ID);
+                request.setRole(AppConstant.TEACHER_ROLE_ID);
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_QUESTION_BANK);
             } catch (Exception e) {
@@ -328,7 +328,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 //                    copylistOfQuestionBank.addAll(listOfQuestionBank);
             questionBankListAdapter.addAll(listOfQuestionBank);
 
-            Log.e("list_size_after_api", "" + listOfQuestionBank.size());
+            Log.e("list_size_after_question bank", "" + listOfQuestionBank.size());
 
         } else {
             Utility.showToast(getQuestionBankResponseObject.getMessage(), getActivity());

@@ -15,6 +15,7 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.model.Data;
+import com.ism.teacher.model.FragmentArgument;
 
 import java.util.ArrayList;
 
@@ -40,21 +41,31 @@ public class AddQuestionContainerFragment extends Fragment {
 
     private Boolean isFrontVisible = false;
 
+    Fragment mFragment;
+    private FragmentArgument fragmentArgument;
+
 
     public AddQuestionContainerFragment(String examid) {
 
         this.exam_id = examid;
     }
 
+    public AddQuestionContainerFragment(Fragment fragment, String examid) {
 
-    public static AddQuestionContainerFragment newInstance(int fragment, String examid) {
-        AddQuestionContainerFragment addQuestionContainerFragment = new AddQuestionContainerFragment(examid);
-        Bundle args = new Bundle();
-        args.putInt(ARG_FRAGMENT, fragment);
-        addQuestionContainerFragment.setArguments(args);
+        this.exam_id = examid;
+        this.mFragment = fragment;
+    }
+
+    public AddQuestionContainerFragment() {
+
+    }
 
 
+    public static AddQuestionContainerFragment newInstance(FragmentArgument fragmentArgument) {
+        AddQuestionContainerFragment addQuestionContainerFragment = new AddQuestionContainerFragment();
+        addQuestionContainerFragment.fragmentArgument = fragmentArgument;
         return addQuestionContainerFragment;
+
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.ism.teacher.activity;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,6 +37,7 @@ import com.ism.teacher.fragments.TeacherTutorialGroupFragment;
 import com.ism.teacher.fragments.UpcomingEventsFragment;
 import com.ism.teacher.fragments.UserProfileFragment;
 import com.ism.teacher.interfaces.FragmentListener;
+import com.ism.teacher.model.FragmentArgument;
 
 import java.util.ArrayList;
 
@@ -72,6 +75,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_EXAM_OBJECTIVE_DETAILS = 13;
     public static final int FRAGMENT_EXAM_SUBJECTIVE_DETAILS = 14;
     public static final int FRAGMENT_STUDENT_ATTEMPTED = 15;
+    public static final int FRAGMENT_ADDQUESTION_CONTAINER = 16;
 
 
     public static int currentMainFragment;
@@ -88,10 +92,16 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     private ProgressGenerator progressGenerator;
 
 
-    //test
     ExamSubjectiveDetailFragment examSubjectiveDetailFragment;
     ExamObjectiveDetailFragment examObjectiveDetailFragment;
     StudentAttemptedFragment studentAttemptedFragment;
+
+
+
+    //latest changes
+
+    FragmentTransaction mFragmentTransaction;
+    FragmentManager mFragmentManager;
 
     public interface HostListener {
         public void onControllerMenuItemClicked(int position);
@@ -111,6 +121,10 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     }
 
     private void initGlobal() {
+
+        mFragmentManager = getFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+
         progress_bar = (ActionProcessButton) findViewById(R.id.progress_bar);
         progressGenerator = new ProgressGenerator();
 
@@ -259,13 +273,19 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     }
 
-    public void loadAddQuestionFragment(int fragment, String examid) {
+    public void loadAddQuestionFragment(int fragment, FragmentArgument fragmentArgument) {
         try {
 
             switch (fragment) {
+//                case FRAGMENT_ADDQUESTION:
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance(FRAGMENT_ADDQUESTION, examid)).commit();
+//                    flFragmentContainerRight.setVisibility(View.GONE);
+//                    break;
                 case FRAGMENT_ADDQUESTION:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance(FRAGMENT_ADDQUESTION, examid)).commit();
-                    flFragmentContainerRight.setVisibility(View.GONE);
+                    mFragmentTransaction = mFragmentManager.beginTransaction();
+                    mFragmentTransaction.add(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance(fragmentArgument));
+                    mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_ADDQUESTION_CONTAINER));
+                    mFragmentTransaction.commit();
                     break;
             }
         } catch (Exception e)
@@ -308,6 +328,8 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance(FRAGMENT_ADDQUESTION)).commit();
                     flFragmentContainerRight.setVisibility(View.GONE);
                     break;*/
+
+
 
             }
         } catch (Exception e) {
@@ -409,7 +431,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     break;
 
 
-                case FRAGMENT_ADDQUESTION:
+                case FRAGMENT_ADDQUESTION_CONTAINER:
                     currentMainFragment = fragment;
                     currentMainFragmentBg = R.color.bg_classroom;
                     imgOffice.setActivated(true);

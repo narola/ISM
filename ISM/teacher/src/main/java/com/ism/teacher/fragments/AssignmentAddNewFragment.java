@@ -28,6 +28,8 @@ public class AssignmentAddNewFragment extends Fragment {
     private MyTypeFace myTypeFace;
 
 
+    AssignmentExamFragment assignmentExamFragment;
+
     public static AssignmentAddNewFragment newInstance() {
         AssignmentAddNewFragment assignmentAddNewFragment = new AssignmentAddNewFragment();
         return assignmentAddNewFragment;
@@ -135,7 +137,9 @@ public class AssignmentAddNewFragment extends Fragment {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_ASSIGNMENT_EXAM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance()).commit();
+                    assignmentExamFragment=new AssignmentExamFragment(AssignmentAddNewFragment.this);
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, assignmentExamFragment).commit();
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance()).commit();
                     break;
 
             }

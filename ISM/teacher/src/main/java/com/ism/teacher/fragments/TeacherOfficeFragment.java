@@ -169,7 +169,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
         loadAddTopics(position);
     }
 
-    private void loadAddTopics(int addTopic) {
+    public void loadAddTopics(int addTopic) {
         try {
             switch (addTopic) {
                 case FRAGMENT_CLASSWALL:

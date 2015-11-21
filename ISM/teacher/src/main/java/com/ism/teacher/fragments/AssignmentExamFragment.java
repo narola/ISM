@@ -31,6 +31,7 @@ import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.model.CreateExamRequest;
 import com.ism.teacher.model.Data;
+import com.ism.teacher.model.FragmentArgument;
 import com.ism.teacher.model.RequestObject;
 import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.ws.WebserviceWrapper;
@@ -54,6 +55,8 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     private FragmentListener fragListener;
     String exam_id = "78";
 
+    Fragment mFragment;
+
     public static AssignmentExamFragment newInstance() {
         AssignmentExamFragment assignmentExamFragment = new AssignmentExamFragment();
         return assignmentExamFragment;
@@ -61,6 +64,11 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     public AssignmentExamFragment() {
         // Required empty public constructor
+    }
+
+    public AssignmentExamFragment(Fragment fragment)
+    {
+        this.mFragment=fragment;
     }
 
     TextView tv_exam_title, tv_exam_examfor, tv_exam_examschedule, tv_exam_examinstruction, tv_exam_declareresult,
@@ -90,6 +98,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     String examStartDate = "", examEndDate = "", strAssignmenttext = "";
 
     private InputValidator inputValidator;
+
+    AddQuestionContainerFragment addQuestionContainerFragment;
+    private FragmentArgument fragmentArgument = new FragmentArgument();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -252,7 +263,13 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                                                     public void onClick(View v) {
                                                         if (exam_id != null && !exam_id.equalsIgnoreCase("")) {
                                                             Log.e("examid", exam_id);
-                                                            ((TeacherHostActivity) getActivity()).loadAddQuestionFragment(TeacherHostActivity.FRAGMENT_ADDQUESTION, exam_id);
+
+//                                                            addQuestionContainerFragment=new AddQuestionContainerFragment(AssignmentExamFragment.this, exam_id);
+//                                                            mFragment.getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, addQuestionContainerFragment).commit();
+
+//                                                            ((TeacherHostActivity) getActivity()).loadAddQuestionFragment(TeacherHostActivity.FRAGMENT_ADDQUESTION, exam_id);
+
+                                                            ((TeacherHostActivity) getActivity()).loadAddQuestionFragment(TeacherHostActivity.FRAGMENT_ADDQUESTION,fragmentArgument);
                                                         } else {
                                                             Log.e(TAG, "Setting question with exam id null");
                                                         }
@@ -700,7 +717,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             //exam_id = callCreateExamResponse.getData().get(0).getExam_id();
             Utility.showToast("Exam Created Successfully", getActivity());
             btn_exam_setquestion.setVisibility(View.VISIBLE);
-
+            fragmentArgument.getRequestObject().setExamId(callCreateExamResponse.getData().get(0).getExam_id());
 
         } else {
 

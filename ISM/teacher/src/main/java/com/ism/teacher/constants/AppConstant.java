@@ -49,23 +49,6 @@ public class AppConstant {
     public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
 
 
-   /* public static final String URL_LOGIN = URL_RAVI_HOST + "AuthenticateUser";
-    public static final String URL_GET_ALL_FEEDS = URL_RAVI_HOST+ "GetAllFeeds";
-    public static final String URL_GET_ALL_COMMENTS = URL_RAVI_HOST+"GetAllComments";
-    public static final String URL_GET_STUDYMATES = URL_RAVI_HOST+"GetStudymates";
-    public static final String URL_ADD_COMMENT =URL_RAVI_HOST+"AddComment";
-    public static final String URL_TAG_FRIEND_IN_FEED = URL_RAVI_HOST+"TagFriendInFeed";
-    public static final String URL_LIKE_FEED = URL_RAVI_HOST+"LikeFeed";
-    public static final String URL_GETCLASSROOMS = URL_RAVI_HOST + "GetClassrooms";
-    public static final String URL_GETSUBJECT = URL_RAVI_HOST + "GetSubject";
-    public static final String URL_GETTOPICS = URL_RAVI_HOST + "GetTopics";
-    public static final String URL_CREATEASSIGNMENT = URL_RAVI_HOST + "CreateAssignment";
-    public static final String URL_GET_COURSES = URL_RAVI_HOST + "GetCourses";
-    public static final String URL_CREATE_EXAM = URL_RAVI_HOST + "CreateExam";
-    public static final String URL_GETQUESTIONBANK = URL_RAVI_HOST + "GetQuestionBank";
-    public static final String URL_POSTFEED = URL_RAVI_HOST + "PostFeed";
-    public static final String URL_FORGOT_PASSWORD= URL_RAVI_HOST + "ForgotPassword";*/
-
     public static final String TEST_USER_ID = "370";
     public static final String TEST_GET_ALL_FEEDS = "141";
     public static final String TEST_GETSTUDYMATES = "167";
