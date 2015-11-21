@@ -33,6 +33,8 @@ public class ResponseHandler {
     private ArrayList<DataUserPreferences> userPreference;
     private ArrayList<States> states;
     private ArrayList<DataUserBooks> books;
+//    private ArrayList<Badges> badges;
+//    private ArrayList<Badges> roleModel;
     private ArrayList<Badges> badges;
 
 

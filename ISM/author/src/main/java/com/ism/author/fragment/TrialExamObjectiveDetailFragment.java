@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.InputValidator;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.ws.WebserviceWrapper;
 
@@ -32,8 +32,8 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
     public static RecyclerView rvList;
     public static TextView txtExamType, txtBookNameValue,txtExamTypeName, txtBookName, txtClassName, txtClass, txtEamName, txtEamTypeName, txtExamDateValue, txtExamName, txtExamDate;
     ImageView imgCopy,imgEdit;
-    //private ResponseObject responseObject;
-    //public static ResponseObject responseObjQuestions;
+    //private ResponseHandler responseObject;
+    //public static ResponseHandler responseObjQuestions;
    // public static TrialExamDetailsAdapter trialExamDetailsAdapter;
     //public static String questionsID[];
 
@@ -86,7 +86,7 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
         txtBookNameValue.setTypeface(myTypeFace.getRalewayRegular());
         txtExamTypeName.setTypeface(myTypeFace.getRalewayRegular());
         txtEamTypeName.setTypeface(myTypeFace.getRalewayRegular());
-        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED);
+        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED,null);
     }
 
 
@@ -121,9 +121,9 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
     public void onResponse(int API_METHOD, Object object, Exception error) {
         ((AuthorHostActivity) getActivity()).stopProgress();
         try {
-            //responseObject = (ResponseObject) object;
+            //responseObject = (ResponseHandler) object;
 //           if (API_METHOD == WebConstants.GETEXAMQUESTIONS) {
-//                if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+//                if (responseObject.getStatus().equals(ResponseHandler.SUCCESS)) {
 //                    ((AuthorHostActivity) getActivity()).stopProgress();
 //                    if (responseObject.getData().size() != 0) {
 //                        responseObjQuestions = responseObject;
@@ -146,7 +146,7 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
 //
 //                    }
 //
-//                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+//                } else if (responseObject.getStatus().equals(ResponseHandler.FAILED)) {
 //                    Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
 //                }
 //            }

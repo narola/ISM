@@ -265,7 +265,7 @@ public class UploadFileToServer
 //
 //        try {
 //
-//            ResponseObject response = getMapper().readValue(result, ResponseObject.class);
+//            ResponseHandler response = getMapper().readValue(result, ResponseHandler.class);
 //
 //            if (response.getStatus() == 1) {
 //

@@ -1,6 +1,7 @@
 package com.ism.author.Utility;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -88,6 +89,20 @@ public class Utility {
      * @param bitmap
      * @return
      */
+
+    /**
+     * Hide Keyboard
+     *
+     * @param mContext
+     */
+    public static void hideKeyboard(Context mContext) {
+
+        InputMethodManager imm = (InputMethodManager) mContext
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(((Activity) mContext).getWindow()
+                .getCurrentFocus().getWindowToken(), 0);
+    }
+
     public static String getBase64ForImage(Bitmap bitmap) {
         ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteOutputStream);

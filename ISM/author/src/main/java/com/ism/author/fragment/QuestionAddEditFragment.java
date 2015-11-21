@@ -32,10 +32,10 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.autocomplete.ContactsCompletionView;
 import com.ism.author.autocomplete.FilteredArrayAdapter;
 import com.ism.author.autocomplete.TokenCompleteTextView;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.model.Data;
 import com.ism.author.model.QuestionAnswersModel;
-import com.ism.author.model.RequestObject;
+import com.ism.author.ws.model.Attribute;
 import com.ism.author.model.HashTagsModel;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -576,22 +576,22 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
         if (Utility.isOnline(getActivity())) {
             try {
-                RequestObject requestObject = new RequestObject();
-//                requestObject.setBankQuestionId("2");
-                requestObject.setQuestionCreatorId("109");
-                requestObject.setQuestionCreatorName("");
-                requestObject.setQuestionFormat(getQuestionFormat());
-                requestObject.setQuestionHint("test");
-                requestObject.setQuestionText("test");
-                requestObject.setQuestionAssetsLink("");
-                requestObject.setQuestionImageLink("");
-                requestObject.setEvaluationNotes(etEvaluationNote1.getText().toString());
-                requestObject.setSolution(etEvaluationNote2.getText().toString());
-                requestObject.setTopicId("43");
-                requestObject.setSubjectId("3");
-                requestObject.setSubjectName("MatheMatics");
-                requestObject.setClassroomId("2");
-                requestObject.setBookId("2");
+                Attribute attribute = new Attribute();
+//                attribute.setBankQuestionId("2");
+                attribute.setQuestionCreatorId("109");
+                attribute.setQuestionCreatorName("");
+                attribute.setQuestionFormat(getQuestionFormat());
+                attribute.setQuestionHint("test");
+                attribute.setQuestionText("test");
+                attribute.setQuestionAssetsLink("");
+                attribute.setQuestionImageLink("");
+                attribute.setEvaluationNotes(etEvaluationNote1.getText().toString());
+                attribute.setSolution(etEvaluationNote2.getText().toString());
+                attribute.setTopicId("43");
+                attribute.setSubjectId("3");
+                attribute.setSubjectName("MatheMatics");
+                attribute.setClassroomId("2");
+                attribute.setBookId("2");
                 if (getQuestionFormat().equalsIgnoreCase("mcq")) {
                     questionAnswersModelArrayList.clear();
                     for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
@@ -605,9 +605,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         questionAnswersModel.setAudioLink("");
                         questionAnswersModelArrayList.add(questionAnswersModel);
                     }
-                    requestObject.setAnswers(questionAnswersModelArrayList);
+                    attribute.setAnswers(questionAnswersModelArrayList);
                 }
-//                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+//                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
 //                        .execute(WebConstants.GETALLFEEDS);
 
                 if (getFragment().getIsSetQuestionData()) {

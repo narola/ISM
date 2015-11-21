@@ -24,7 +24,7 @@ public class RequestWs {
         Debug.i(TAG, "URL : " + url);
         Debug.i(TAG, "reqCls : " + reqCls);
 
-        return new WSRequestPost(url).execute(cls, reqCls);
+        return new WebserviceConnector(url).execute(cls, reqCls);
 
 //		}
     }

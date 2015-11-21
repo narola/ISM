@@ -11,11 +11,12 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.adapter.SuggestedBookForUserAdapter;
+import com.ism.adapter.SuggestedBookAdapter;
 import com.ism.adapter.UserFavoriteBooksAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
+import com.ism.utility.Utility;
 import com.ism.views.HorizontalListView;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
@@ -40,7 +41,7 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
     UserFavoriteBooksAdapter userFavoriteBooksAdapter;
     private ArrayList<Favorite> arrayListFavBooks;
     private HorizontalListView listViewSuggestedBooks;
-    SuggestedBookForUserAdapter suggestedBookForUserAdapter;
+    SuggestedBookAdapter suggestedBookForUserAdapter;
     private ArrayList<Suggested> arrayListSuggestedBooks;
     private TextView txtSuggestedEmpty;
     private TextView txtFavEmpty;
@@ -86,11 +87,14 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
 
     private void callApiGetBooksForUser() {
         try {
-            activityHost.showProgress();
-            Attribute requestObject = new Attribute();
-            requestObject.setUserId("1");
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
-
+            if (Utility.isConnected(getActivity())) {
+                activityHost.showProgress();
+                Attribute requestObject = new Attribute();
+                requestObject.setUserId("1");
+                new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
+            }else{
+                Utility.toastOffline(getActivity());
+            }
         } catch (Exception e) {
             Debug.i(TAG, "callApiGetBooksForUser Exception : " + e.getLocalizedMessage());
         }
@@ -149,7 +153,7 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
             if(!arrayListFavBooks.isEmpty()){
                 txtSuggestedEmpty.setVisibility(View.GONE);
                 listViewSuggestedBooks.setVisibility(View.VISIBLE);
-                suggestedBookForUserAdapter=new SuggestedBookForUserAdapter(getActivity(),arrayListSuggestedBooks);
+                suggestedBookForUserAdapter=new SuggestedBookAdapter(getActivity(),arrayListSuggestedBooks);
                 listViewSuggestedBooks.setAdapter(suggestedBookForUserAdapter);
             }else{
                 txtSuggestedEmpty.setVisibility(View.VISIBLE);

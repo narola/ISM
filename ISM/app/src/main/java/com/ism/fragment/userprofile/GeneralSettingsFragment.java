@@ -16,6 +16,7 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
+import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
@@ -241,16 +242,20 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
 
     private void callApiGetGeneralSettingPreferences(ArrayList<Attribute> reqObj) {
         try {
-            activityHost.showProgress();
-            if (reqObj != null) {
-                attribute = new Attribute();
-                attribute.setPreferences(reqObj);
-                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_GENERAL_SETTINGS);
+            if (Utility.isConnected(getActivity())) {
 
+                activityHost.showProgress();
+                if (reqObj != null) {
+                    attribute = new Attribute();
+                    attribute.setPreferences(reqObj);
+                    new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_GENERAL_SETTINGS);
+
+                } else {
+                    Debug.i(TAG, "General setting Pereference list size :" + reqObj.size());
+                }
             } else {
-                Debug.i(TAG, "General setting Pereference list size :" + reqObj.size());
+                Utility.toastOffline(getActivity());
             }
-
         } catch (Exception e) {
 
             Debug.e(TAG, "General setting Pereference :" + e.getLocalizedMessage());

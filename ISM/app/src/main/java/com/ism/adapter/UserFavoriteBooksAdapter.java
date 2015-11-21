@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.object.ISMStudent;
+import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
@@ -61,12 +61,12 @@ public class UserFavoriteBooksAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.row_user_books, null);
             holder = new ViewHolder();
 
-            holder.imgBook = (ImageView) convertView.findViewById(R.id.img_book_pic);
+            holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
             holder.imgBookLike = (ImageView) convertView.findViewById(R.id.img_book_like);
             holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
-            holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_book_name);
-            holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_book_author);
+            holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
+            holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

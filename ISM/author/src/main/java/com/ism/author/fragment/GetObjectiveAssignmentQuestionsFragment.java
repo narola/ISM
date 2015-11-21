@@ -9,21 +9,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.GetObjectiveAssignmentQuestionsAdapter;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.ws.model.Attribute;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.model.ResponseHandler;
 import com.ism.author.ws.WebserviceWrapper;
 
 import java.util.ArrayList;
@@ -40,17 +41,20 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     private TextView tvObjectiveAssignmentSubject, tvObjectiveAssignmentClass, tvObjectiveAssignmentNo, tvObjectiveAssignmentTitle,
             tvObjectiveAssignmentDateTitle, tvObjectiveAssignmentDate;
+    private ImageView imgEditExam, imgCopyExam;
 
     private RecyclerView rvGetObjectiveAssignmentQuestionslist;
     private GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter;
     private ArrayList<Data> listOfQuestions = new ArrayList<Data>();
-    private RequestObject requestObjectToPass = null;
     private FragmentArgument fragmentArgument;
 
 
     public static GetObjectiveAssignmentQuestionsFragment newInstance(FragmentArgument fragmentArgument) {
         GetObjectiveAssignmentQuestionsFragment getObjectiveAssignmentQuestionsFragment = new GetObjectiveAssignmentQuestionsFragment();
-        getObjectiveAssignmentQuestionsFragment.fragmentArgument = fragmentArgument;
+        if (fragmentArgument != null) {
+            getObjectiveAssignmentQuestionsFragment.fragmentArgument = fragmentArgument;
+            getObjectiveAssignmentQuestionsFragment.fragmentArgument.setFragment(getObjectiveAssignmentQuestionsFragment);
+        }
         return getObjectiveAssignmentQuestionsFragment;
     }
 
@@ -78,6 +82,9 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         tvObjectiveAssignmentDateTitle = (TextView) view.findViewById(R.id.tv_objective_assignment_date_title);
         tvObjectiveAssignmentDate = (TextView) view.findViewById(R.id.tv_objective_assignment_date);
 
+        imgEditExam = (ImageView) view.findViewById(R.id.img_edit_exam);
+        imgCopyExam = (ImageView) view.findViewById(R.id.img_copy_exam);
+
         tvObjectiveAssignmentSubject.setTypeface(myTypeFace.getRalewayRegular());
         tvObjectiveAssignmentClass.setTypeface(myTypeFace.getRalewayRegular());
         tvObjectiveAssignmentNo.setTypeface(myTypeFace.getRalewayRegular());
@@ -93,13 +100,50 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         callApiGetExamQuestions();
 
 
+        if (fragmentArgument != null) {
+            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT, fragmentArgument);
+        }
+
+
+        imgEditExam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setExamQuestions();
+            }
+        });
+
+        imgCopyExam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                setExamQuestions();
+
+            }
+        });
+
+
+    }
+
+
+    private void setExamQuestions() {
+
+
+        if (responseObjGetAllExamQuestions != null) {
+            fragmentArgument.getFragmentArgumentObject().setListOfQuestions(responseObjGetAllExamQuestions.getData().get(0).getQuestions());
+        }
+        ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
+                (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), fragmentArgument);
+
+        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
+                (AuthorHostActivity.FRAGMENT_HIGHSCORE), fragmentArgument);
+
     }
 
     private void callApiGetExamQuestions() {
         if (Utility.isOnline(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
-                RequestObject request = new RequestObject();
+                Attribute request = new Attribute();
                 request.setExamId("9");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
@@ -115,7 +159,9 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         if (Utility.isOnline(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
-                RequestObject request = new RequestObject();
+                Attribute request = new Attribute();
+//                request.setExamId(fragmentArgument.getFragmentArgumentObject().getExamId());
+//                request.setExamId(fragmentArgument.getFragmentArgumentObject().getStudentId());
                 request.setExamId("9");
                 request.setStudentId("202");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -172,23 +218,26 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     }
 
+    ResponseHandler responseObjGetAllExamQuestions = null;
+
     private void onResponseGetAllExamQuestions(Object object, Exception error) {
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-                    listOfQuestions.addAll(responseObj.getData().get(0).getQuestions());
+                responseObjGetAllExamQuestions = (ResponseHandler) object;
+                if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    listOfQuestions.addAll(responseObjGetAllExamQuestions.getData().get(0).getQuestions());
                     getObjectiveAssignmentQuestionsAdapter.addAll(listOfQuestions);
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
-                    setAssignmentDetails(responseObj.getData().get(0));
+                    setAssignmentDetails(responseObjGetAllExamQuestions.getData().get(0));
 
-                    if (requestObjectToPass != null) {
+                    if (fragmentArgument != null) {
+
                         callAPiGetExamEvaluation();
-
                     }
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+
+                } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseObjGetAllExamQuestions.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAllExamQuestions api Exception : " + error.toString());
@@ -202,13 +251,13 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     getObjectiveAssignmentQuestionsAdapter.setEvaluationData(responseObj.getData().get(0).getEvaluations());
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
 
 
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -225,19 +274,19 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         if (data.getBookName() != null) {
             tvObjectiveAssignmentSubject.append(Utility.getSpannableString(data.getBookName(), getResources().getColor(R.color.bg_assessment)));
         }
-
         tvObjectiveAssignmentClass.setText(getResources().getString(R.string.strclass) + ": ");
         if (data.getClassName() != null) {
             tvObjectiveAssignmentClass.append(Utility.getSpannableString(data.getClassName(), getResources().getColor(R.color.bg_assessment)));
         }
         tvObjectiveAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + ": 1");
         tvObjectiveAssignmentTitle.setText(data.getExamName());
-        tvObjectiveAssignmentDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", data.getCreatedDate()));
+        tvObjectiveAssignmentDate.setText(getActivity().getResources().getString(R.string.strassignmentdatecolon) + " " +
+                Utility.getFormattedDate("dd-MMM-yyyy", data.getCreatedDate()));
 
     }
 
-    public void setRequestObjectToPass(RequestObject requestObject) {
-        this.requestObjectToPass = requestObject;
-
+    public void loadStudentEvaluationData() {
+        callAPiGetExamEvaluation();
     }
+
 }

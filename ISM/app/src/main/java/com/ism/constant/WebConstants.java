@@ -53,6 +53,9 @@ public class WebConstants {
 	public static final int GET_BOOKS_FOR_USER = 54;
 	public static final int GET_ABOUT_ME = 55;
 	public static final int EDIT_ABOUT_ME = 56;
+	public static final int GET_ROLEMODEL_FOR_USER = 57;
+	public static final int GET_PASTTIME_FOR_USER = 58;
+	public static final int GET_MOVIES_FOR_USER = 59;
 
 
 	/**
@@ -108,7 +111,10 @@ public class WebConstants {
 	public static final String URL_GET_ABOUT_ME =  URL_HOST_147 + "GetAboutMe";
 	public static final String URL_EDIT_ABOUT_ME =  URL_HOST_147 + "EditAboutMe";
 	public static final String URL_GET_BOOKS_FOR_USER =  URL_HOST_147 + "GetBooksForUser";
-//	public static final String URL_EDIT_ABOUT_ME =  URL_HOST_147 + "EditAboutMe";
+	public static final String URL_GET_MOVIES_FOR_USER =  URL_HOST_147 + "GetMoviesForUser";
+	public static final String URL_GET_PASTTIME_FOR_USER =  URL_HOST_147 + "GetPastimeForUser";
+	public static final String URL_GET_ROLEMODEL_FOR_USER =  URL_HOST_147 + "GetRoleModelForUser";
+
 
 
 

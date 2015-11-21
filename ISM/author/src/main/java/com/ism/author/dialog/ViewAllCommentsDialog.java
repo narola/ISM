@@ -10,12 +10,10 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.PostFeedCommentsAdapter;
 import com.ism.author.model.Data;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by c166 on 24/10/15.

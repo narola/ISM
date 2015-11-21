@@ -19,7 +19,7 @@
             android:orientation="horizontal"
             android:padding="@dimen/d15dp">
 
-            <com.ism.author.helper.CircleImageView
+            <com.ism.author.views.CircleImageView
                 android:id="@+id/img_studymate_dp"
                 android:layout_width="@dimen/d50dp"
                 android:layout_height="@dimen/d50dp"
