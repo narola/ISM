@@ -23,11 +23,11 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
-import com.ism.author.ws.model.Attribute;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
-import com.ism.author.ws.model.ResponseHandler;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
 import java.util.ArrayList;

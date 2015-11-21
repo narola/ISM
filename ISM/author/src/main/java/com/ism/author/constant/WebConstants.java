@@ -84,12 +84,7 @@ public class WebConstants {
     /*these are the temparory questionData for testing*/
 
     public static final String TEST_USER_ID = "370";
-    public static final String TEST_GET_ALL_FEEDS = "141";
     public static final String TEST_GETSTUDYMATES = "167";
-    public static final String TEST_FEEDID = "240";
-    public static final String TEST_TAGGED_BY = "134";
-    public static final String[] tagUserArray = new String[]{"141", "167"};
-    public static final String TEST_LIKEUSERID = "141";
 
 
 }

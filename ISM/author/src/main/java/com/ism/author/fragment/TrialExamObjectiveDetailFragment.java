@@ -16,7 +16,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.InputValidator;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.WebserviceWrapper;
 
 /**
  * Created by c162 on 04/11/15.

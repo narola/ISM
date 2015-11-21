@@ -5,7 +5,7 @@
     android:padding="@dimen/d5dp">
 
     <LinearLayout
-        android:id="@+id/ll_assignment_container"
+        android:id="@+id/ll_exam_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_assessment_box"
@@ -16,7 +16,7 @@
             android:layout_height="@dimen/d140dp">
 
             <RelativeLayout
-                android:id="@+id/rl_top_assignment"
+                android:id="@+id/rl_top_exam"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/d100dp"
                 android:background="@drawable/bg_subject_yellow"
@@ -28,7 +28,7 @@
                 <!--android:background="@color/color_assignment_top_yellow" />-->
 
                 <TextView
-                    android:id="@+id/tv_assignment_subject_name"
+                    android:id="@+id/tv_exam_subject_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/d10dp"
@@ -39,7 +39,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_assignment_course_name"
+                    android:id="@+id/tv_exam_course_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -57,11 +57,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/rl_top_assignment"
+                android:layout_below="@+id/rl_top_exam"
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/tv_assignment_date"
+                    android:id="@+id/tv_exam_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/d10dp"
@@ -72,7 +72,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_assignment_class_name"
+                android:id="@+id/tv_exam_class_name"
                 android:layout_width="@dimen/d100dp"
                 android:layout_height="@dimen/d100dp"
                 android:layout_alignParentBottom="true"
@@ -109,7 +109,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_assignment_noof_assessed"
+                    android:id="@+id/tv_exam_noof_assessed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/strtest"
@@ -117,7 +117,7 @@
                     android:textSize="@dimen/d20dp" />
 
                 <TextView
-                    android:id="@+id/tv_assignment_assessed"
+                    android:id="@+id/tv_exam_assessed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
@@ -138,7 +138,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_assignment_noof_unassessed"
+                    android:id="@+id/tv_exam_noof_unassessed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/strtest"
@@ -146,7 +146,7 @@
                     android:textSize="@dimen/d20dp" />
 
                 <TextView
-                    android:id="@+id/tv_assignment_unassessed"
+                    android:id="@+id/tv_exam_unassessed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
@@ -160,7 +160,7 @@
                 android:background="@color/assignment_separator" />
 
             <LinearLayout
-                android:id="@+id/ll_view_assignment_questions"
+                android:id="@+id/ll_view_exam_questions"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -168,7 +168,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_assignment_noof_question"
+                    android:id="@+id/tv_exam_noof_question"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/strtest"
@@ -176,7 +176,7 @@
                     android:textSize="@dimen/d20dp" />
 
                 <TextView
-                    android:id="@+id/tv_assignment_question"
+                    android:id="@+id/tv_exam_question"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"

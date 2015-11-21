@@ -19,10 +19,10 @@ import com.ism.author.adapter.StudentAttemptedAdapter;
 import com.ism.author.adapter.TrialExamDetailsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.ws.model.Attribute;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.Data;
-import com.ism.author.ws.model.ResponseHandler;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

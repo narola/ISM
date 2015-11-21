@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
-import com.ism.author.model.Data;
+import com.ism.author.ws.model.CommentList;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -24,7 +24,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     private static final String TAG = PostFeedCommentsAdapter.class.getSimpleName();
 
     private Context mContext;
-    private ArrayList<Data> listOfComments = new ArrayList<Data>();
+    private ArrayList<CommentList> commentList = new ArrayList<CommentList>();
     private ImageLoader imageLoader;
     private LayoutInflater inflater;
 
@@ -46,18 +46,18 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.txtCommenterUsername.setText(listOfComments.get(position).getFullName());
-        holder.txtCommenterComment.setText(listOfComments.get(position).getComment());
-        holder.txtCommentDuration.setText(listOfComments.get(position).getCommentBy());
+        holder.txtCommenterUsername.setText(commentList.get(position).getFullName());
+        holder.txtCommenterComment.setText(commentList.get(position).getComment());
+        holder.txtCommentDuration.setText(commentList.get(position).getCommentBy());
 
         imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgCommenterDp, ISMAuthor.options);
     }
 
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<CommentList> commentList) {
         try {
-            this.listOfComments.clear();
-            this.listOfComments.addAll(data);
+            this.commentList.clear();
+            this.commentList.addAll(commentList);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,7 +67,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     @Override
     public int getItemCount() {
-        return listOfComments.size();
+        return commentList.size();
     }
 
 

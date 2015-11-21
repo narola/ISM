@@ -1,4 +1,4 @@
-package com.ism.author.ws.model;
+package com.ism.author.ws.helper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
