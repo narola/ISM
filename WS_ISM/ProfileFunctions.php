@@ -9,6 +9,7 @@ include_once 'Encrypt.php';
 include_once 'ConstantValues.php';
 include_once 'SendEmail.php';
 include_once 'TutorialGroup.php';
+error_reporting(0);
 class ProfileFunctions
 {
 
@@ -60,11 +61,13 @@ class ProfileFunctions
                 return $this->requestForSchoolInfoUpdation($postData);//done
             }
                 break;
-            case "UploadUserProfilePic":
+                
+            case "GetWalletSummary":
             {
-                return $this->uploadUserProfilePic($postData);//done
+                return $this->getWalletSummary($postData);//done
             }
                 break;
+<<<<<<< HEAD
         }
     }
 
@@ -131,14 +134,61 @@ class ProfileFunctions
             } else {
                 $status = "failed";
                 //$message = "Failed to upload media on server.";
+=======
+                
+            case "GenerateVoucher":
+            {
+                return $this->generateVoucher($postData);
+>>>>>>> 95d0158d17d7bc405bb57119f7db1db76fc38b82
             }
+                break;
+                
+            case "GetAboutMe":
+            {
+                return $this->getAboutMe($postData);
+            }
+                break;
+                
+             case "EditAboutMe":
+             {
+                return $this->editAboutMe($postData);
+             }
+                break;
+                
+             case "GetBooksForUser":
+            {
+                return $this->getBooksForUser($postData);
+            }
+                break;
+                
+            case "GetMyActivity":
+            {
+                return $this->getMyActivity($postData);
+            }
+                break;
+                
+            case "BlockUser":
+            {
+                return $this->blockUser($postData);
+            }
+                break;
+                
+            case "GetPastimeForUser":
+            {
+                return $this->getPastimeForUser($postData);
+            }
+                break;
+               
         }
+<<<<<<< HEAD
 
         $response['data']=$data;
         $response['status']=$status;
         $response['message']=$message; //$response['message']=$message."--".$user_id.$_FILES["mediaFile"]["name"];
         return $response;
 
+=======
+>>>>>>> 95d0158d17d7bc405bb57119f7db1db76fc38b82
     }
     /*
     * getStudentAcademicInfo
@@ -604,8 +654,11 @@ class ProfileFunctions
         $password = validateObject ($postData , 'password', "");
         $password = addslashes($password);
 
+<<<<<<< HEAD
 
         //code for base64
+=======
+>>>>>>> 95d0158d17d7bc405bb57119f7db1db76fc38b82
         $profile_image = validateObject ($postData , 'profile_image', "");
         $profile_image_name = validateObject ($postData , 'profile_image_name', "");
         $profile_image_name = addslashes($profile_image_name);
@@ -613,10 +666,18 @@ class ProfileFunctions
         if (!is_dir(USER_PROFILE_PICTURE)) {
             mkdir(USER_PROFILE_PICTURE, 0777, true);
         }
+<<<<<<< HEAD
 //        if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
 //            die('Failed to create folders...'.USER_PROFILE_PICTURE);
 //        }
         // echo $profile_image_name_array[0]."_test.".$profile_image_name_array[1];
+=======
+       // if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
+           // die('Failed to create folders...'.USER_PROFILE_PICTURE);
+       // }
+        // echo $profile_image_name_array[0]."_test.".$profile_image_name_array[1];
+        
+>>>>>>> 95d0158d17d7bc405bb57119f7db1db76fc38b82
         $profile_image_name=$profile_image_name_array[0]."_test.".$profile_image_name_array[1];
         $obj = new CI_Encrypt();
 
@@ -646,7 +707,11 @@ class ProfileFunctions
                 $insertAcademicValue="'".$user_id."', '".$school_id."', '".$classroom_id."', '".$academic_year."', '".$course_id."'";
 
 
+<<<<<<< HEAD
 //                //Image Saving
+=======
+                //Image Saving
+>>>>>>> 95d0158d17d7bc405bb57119f7db1db76fc38b82
                 $profile_user_link="user_".$user_id."/";
 
                 $profile_image_dir=USER_PROFILE_PICTURE.$profile_user_link;
@@ -661,8 +726,11 @@ class ProfileFunctions
 
                 $queryProfileImage="INSERT INTO ".TABLE_USER_PROFILE_PICTURE."(`user_id`, `profile_link`) VALUES (".$user_id.",'".$profile_image_link."')";
                 $resultProfileImage=mysql_query($queryProfileImage) or $message=mysql_error();
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 95d0158d17d7bc405bb57119f7db1db76fc38b82
                 $queryAcademic="INSERT INTO ".TABLE_STUDENT_ACADEMIC_INFO."(".$insertAcademicField.") values (".$insertAcademicValue.")";
                 $resultAcademic=mysql_query($queryAcademic) or $message=mysql_error();
                 if($resultAcademic)
@@ -671,8 +739,8 @@ class ProfileFunctions
 //                    $resultAcademic=mysql_query($updateStatus) or $message=mysql_error();
                    // echo $updateStatus;
                     $post['user_id']=$user_id;
-                    //$post['full_name']=$firstname." ".$lastname;
-                   // $post['profile_pic']=$profile_image_link;
+                    $post['full_name']=$firstname." ".$lastname;
+                    $post['profile_pic']=$profile_image_link;
                     $data[]=$post;
                     $status="success";
                     $message="Registration completed successfully";
@@ -695,6 +763,528 @@ class ProfileFunctions
 
 
         return $response;
+    }
+    
+    /*
+    *getWalletSummary
+    */
+    public function getWalletSummary($postData)
+    {
+    	$message ='';
+        $status='';
+        $post=array();
+        $data=array();
+        $response=array();
+        
+		$user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+        $queryGetSummary = "SELECT user_id,wallet_balance FROM " . TABLE_STUDENT_PROFILE ." WHERE user_id =".$user_id;
+        $resultGetSummary = mysql_query($queryGetSummary) or $message = mysql_error();
+        $summary_count = mysql_num_rows($resultGetSummary);
+
+        if ($summary_count > 0) {
+            while ($val = mysql_fetch_assoc($resultGetSummary)) {
+
+			$post=array();
+			
+			$post['user_id']=$val['user_id'];
+			$post['wallet_balance']=$val['wallet_balance'];
+			
+			//Get Voucher Details
+            $queryGetDetails = "SELECT id as 'voucher_id',voucher_code,created_date,voucher_amount as 'Amount' FROM ".TABLE_USER_VOUCHER." WHERE user_id=".$user_id;
+            $resultGetDetails = mysql_query($queryGetDetails) or $message = mysql_error();
+            $allDetails=array();
+            
+            if(mysql_num_rows($resultGetDetails))
+            {
+                while($details=mysql_fetch_assoc($resultGetDetails))
+                {
+                    $allDetails[]=$details;
+                } 
+            }
+			$post['voucher_details']=$allDetails;
+      
+            $data[]=$post;
+            }
+             $status="success";
+       		 $message="";
+        }
+        else
+        {
+            $status="failed";
+            $message = DEFAULT_NO_RECORDS;
+            $data="";
+        }
+
+
+		$response['data']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
+    
+    /*
+    *generateVoucher
+    */
+    public function generateVoucher($postData)
+    {
+   		$message ='';
+        $status='';
+        $data=array();
+        $response=array();
+        
+    
+    	$user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+        $voucher_amount = validateObject($postData, voucher_amount, "");
+        $voucher_amount = addslashes($voucher_amount);
+        
+        $queryGetWalletBal="select wallet_balance from ".TABLE_STUDENT_PROFILE." where user_id=".$user_id;
+        $resultGetWalletBal=mysql_query($queryGetWalletBal) or $message=mysql_error();
+        
+        if(mysql_num_rows($resultGetWalletBal)>0)
+        {
+       		$walletBalance=mysql_fetch_row($resultGetWalletBal);
+    	    $balance= $walletBalance[0];
+        
+        $queryGetConfigValue="select config_value from ".TABLE_ADMIN_CONFIG." where config_key='maxVoucherAmount'";
+        $resultGetConfigValue=mysql_query($queryGetConfigValue) or $message=mysql_error();
+        
+        $configValue=mysql_fetch_row($resultGetConfigValue);
+        $voucher_config_value=$configValue[0];
+        
+        $percent_value=$balance -(($balance*$voucher_config_value)/100);
+       
+       
+       //Generate random String for Voucher Code
+       
+    	$chars ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";//length:36
+    	$final_rand='';
+    	for($i=0;$i<6; $i++)
+    	{
+       		 $final_rand .= $chars[ rand(0,strlen($chars)-1)];
+   		}
+       
+       //Check, if Voucher_amont is greater than Count value or not
+       		if($voucher_amount > $percent_value)
+      	 	{
+       	  		$insertFields="`user_id`,`voucher_code`,`voucher_amount`";
+          		$insertValues="".$user_id.",'".$final_rand."',".$voucher_amount."";
+           
+          		$queryInsert="INSERT INTO ".TABLE_USER_VOUCHER."(".$insertFields.") values(".$insertValues.")";
+          		//echo $queryInsert; 
+         		$resultQuery=mysql_query($queryInsert) or $message=mysql_error();
+      	  		if($resultQuery)
+          		{
+            			$data['voucher_code']=$final_rand;
+            			$data['voucher_amount']=$voucher_amount;
+            			$status="success";
+      	  		}
+      	  		else
+      	 		{
+						$status="failed";
+      	  		}
+      		}	  
+      		else
+      		{
+       	       	$message="You cannot create coupon greater then ".$percent_value;
+       	       	$status="failed";
+       	       	
+      		}
+       } 
+       else
+       {
+       		$status="failed";
+       }
+        $response['data']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
+    
+    /*
+    *getAboutMe
+    */
+    public function getAboutMe($postData)
+    {
+    	$message ='';
+        $status='';
+        $data=array();
+        $response=array();
+        
+    
+    	$user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+        $selectQuery="SELECT j.school_name,j.class_name,student_profile.*,users.id,users.full_name,users.profile_pic,users.contact_number,users.birthdate,users.about_me 
+        FROM ".TABLE_USERS." users INNER JOIN ".TABLE_STUDENT_PROFILE." student_profile ON users.id=student_profile.user_id
+        INNER JOIN ( SELECT sa.user_id,s.school_name,c.class_name FROM ".TABLE_STUDENT_ACADEMIC_INFO." sa 
+        JOIN ".TABLE_SCHOOLS." s ON s.id=sa.school_id 
+        JOIN ".TABLE_CLASSROOMS." c ON c.id=sa.classroom_id WHERE sa.user_id=1 )j ON j.user_id=users.id
+        WHERE student_profile.user_id=".$user_id;
+        
+        //SELECT s.school_name,c.class_name FROM `student_academic_info` sa JOIN schools s ON s.id=sa.school_id JOIN classrooms c ON c.id=sa.classroom_id WHERE sa.user_id=1
+        $resultQuery=mysql_query($selectQuery) or $message=mysql_error();
+        
+        if(mysql_num_rows($resultQuery)>0)
+            {
+                while($val=mysql_fetch_assoc($resultQuery))
+                {
+                	$post=array();
+                	$post['user_id']=$val['id'];
+                	$post['username']=$val['full_name'];
+                	$post['user_profile_pic']=$val['profile_pic'];
+                	$post['school_name']=$val['school_name'];
+                	$post['course_name']=$val['class_name'];
+                	$post['contact_number']=$val['contact_number'];
+                	$post['birthdate']=$val['birthdate'];
+                	$post['aboutMeText']=$val['about_me'];
+                	$post['ambitionInLife']=$val['ambitionInLife'];
+                	$post['total_post']=$val['total_posts'];
+                	$post['total_studymates']=$val['total_studymates'];
+                	$post['total_authors_followed']=$val['otal_authors_followed'];
+                	$post['ism_score']=$val['total_score'];
+                	$post['ism_rank']=$val['rank'];
+                	$post['total_exams']=$val['total_exams'];
+                	$post['total_assignment']=$val['total_assignment'];
+                	$post['total_question_asked']=$val['total_questions_asked'];
+                	$post['total_Favorite_questions']=$val['total_favorite_questions'];
+                	$post['total_badges_earned']=$val['total_badges'];
+                    $data[]=$post;
+                } 
+                $message="Request accepted";
+                $status="success";
+            }
+       
+        else
+        {
+       		$status="failed";
+        }
+        $response['data']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
+    
+    /*
+    *editAboutMe
+    */
+    public function editAboutMe($postData)
+    {
+    	$message ='';
+        $status='';
+        $data=array();
+        $response=array();
+        
+    	$user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+    	$username = validateObject($postData, 'username', "");
+        $username = addslashes($username);
+        
+        $user_profile_pic = validateObject($postData, 'user_profile_pic', "");
+        $user_profile_pic = addslashes($user_profile_pic);
+        
+        $contact_number = validateObject($postData, 'contact_number', "");
+        $contact_number = addslashes($contact_number);
+        
+        $birthdate = validateObject($postData, 'birthdate', "");
+        //$birthdate = addslashes($user_id);
+        
+        $aboutMeText = validateObject($postData, 'aboutMeText', "");
+        //$aboutMeText = addslashes($user_id);
+    	
+    	$ambitionInLife = validateObject($postData, 'ambitionInLife', "");
+        $ambitionInLife = addslashes($ambitionInLife);
+    	
+    	$updateFeild="full_name='".$username."', profile_pic='".$user_profile_pic."', contact_number='".$contact_number."', birthdate='".$birthdate."', about_me='".$aboutMeText."'";
+    	
+    		$queryUpdate="UPDATE ".TABLE_USERS." SET ".$updateFeild ." WHERE id=".$user_id;
+    		$resultQuery=mysql_query($queryUpdate) or $message=mysql_error();
+    		
+    	 if($resultQuery)
+    	 {
+    		if($ambitionInLife != NULL)
+    		{
+    			$queryToUpdateAmbition="UPDATE ".TABLE_STUDENT_PROFILE." SET ambitionInLife='".$ambitionInLife."' WHERE user_id=".$user_id;
+    			$resultToUpdateAmbition==mysql_query($queryToUpdateAmbition) or $message=mysql_error();
+    		
+    			if($resultToUpdateAmbition)
+    			{
+    				$status="success";
+    			}    			
+    			else
+    			{
+    				$status="failed";
+    			}
+    		}
+    		$status="success";
+    		$message= "successfully updated";
+    	}
+    	else
+        {
+       		$status="failed";
+        }
+        $response['data']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
+    
+    
+     /*
+    *getBooksForUser
+    */
+    public function getBooksForUser($postData)
+    {
+    	$message ='';
+        $status='';
+        $data=array();
+        $suggested=array();
+        $favorite=array();
+        $response=array();
+        
+    	$user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+        /*$limit1 = validateObject($postData, 'limit1', "");
+        $limit1 = addslashes($limit1);
+        
+        $limit2 = validateObject($postData, 'limit2', "");
+        $limit2 = addslashes($limit2);*/
+        
+         $selectQuery="select book.*,joinQuery.full_name,joinQuery.profile_pic from ".TABLE_BOOKS ." book 
+         INNER JOIN(SELECT autotBook.user_id,autotBook.book_id,users.full_name,users.profile_pic from ".TABLE_AUTHOR_BOOK." autotBook INNER JOIN ".TABLE_USERS.
+         " users ON users.id=autotBook.user_id) joinQuery ON joinQuery.book_id=book.id LIMIT 30";
+       //$selectQuery="select * from ".TABLE_BOOKS ."order by id desc limit(". $limit1.",". $limit2 .")";
+       // echo $selectQuery;
+        $resultQuery=mysql_query($selectQuery) or $message=mysql_error();
+        
+         if(mysql_num_rows($resultQuery)>0)
+            {
+                while($val=mysql_fetch_assoc($resultQuery))
+                {
+                	$suggested['book_id']=$val['id'];
+                	$suggested['book_name']=$val['book_name'];
+                	$suggested['book_image']=$val['image_link'];
+                	$suggested['ebook_link']=$val['ebook_link'];
+                	$suggested['publisher_name']=$val['publisher_name'];
+                	$suggested['description']=$val['book_description'];
+                	$suggested['author_name']=$val['full_name'];
+                	$suggested['author_image']=$val['profile_pic'];
+                	$suggested['price']=$val['price'];
+                    $data['suggested'][]=$suggested;
+                } 
+                
+                $message="Request accepted";
+                $status="success";
+            }
+            else
+            {
+            	 $data['suggested']=array();
+            	//$status="failed";
+            }
+            
+         $selectFavoriteQuery="select book.*,joinQuery.full_name,joinQuery.profile_pic from ".TABLE_USER_FAVORITE_BOOK . " userFavoriteBook 
+         JOIN ".TABLE_BOOKS ." book ON book.id=userFavoriteBook.book_id 
+         INNER JOIN(SELECT authorBook.user_id,users.full_name,users.profile_pic from ".TABLE_USER_FAVORITE_AUTHOR." authorBook INNER JOIN ".TABLE_USERS.
+         " users ON users.id=authorBook.user_id) joinQuery ON joinQuery.user_id=userFavoriteBook.user_id
+         WHERE userFavoriteBook.user_id=".$user_id;
+        // echo  $selectFavoriteQuery;
+    	 $resultFavoriteQuery=mysql_query($selectFavoriteQuery) or $message=mysql_error();
+        
+         if(mysql_num_rows($resultFavoriteQuery)>0)
+            {
+                while($val=mysql_fetch_assoc($resultFavoriteQuery))
+                {
+                    $favorite['book_id']=$val['id'];
+                	$favorite['book_name']=$val['book_name'];
+                	$favorite['book_image']=$val['image_link'];
+                	$favorite['ebook_link']=$val['ebook_link'];
+                	$favorite['publisher_name']=$val['publisher_name'];
+                	$favorite['description']=$val['book_description'];
+                	$favorite['author_name']=$val['full_name'];
+                	$favorite['author_image']=$val['profile_pic'];
+                	$favorite['price']=$val['price'];
+                    $data['favorite'][]=$favorite;
+                } 
+                $message="Request accepted";
+                $status="success";
+            }
+            else
+            {
+            	 $data['favorite']=array();
+            	//$status="failed";
+            }
+       
+       
+    	$response['data']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
+    
+    /*
+    *getMyActivity
+    */
+    public function getMyActivity($postData)
+    {
+    	$message ='';
+        $status='';
+        $data=array();
+        $response=array();
+        
+    	$user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+        $selectQuery="SELECT user_activity.user_id,users.full_name,users.profile_pic,user_activity.display_content,user_activity.resource_id FROM ".TABLE_USER_ACTIVITY. " user_activity 
+        INNER JOIN ".TABLE_USERS." users ON user_activity.user_id=users.id WHERE user_activity.user_id=".$user_id;
+       // echo $selectQuery;
+        $resultQuery=mysql_query($selectQuery) or $message=mysql_error();
+        
+        if(mysql_num_rows($resultQuery)>0)
+            {
+                while($val=mysql_fetch_assoc($resultQuery))
+                {
+                    $data[]=$val;
+                } 
+                $message="";
+                $status="success";
+            }
+            else
+            {
+            	$status="failed";
+            }
+        
+    	$response['data']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
+    
+    /*
+     * blockUser
+     */
+    public function blockUser($postData)
+    {
+    	$message ='';
+        $status='';
+        $data=array();
+        $response=array();
+        
+        $user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+        $email_id = validateObject($postData, 'email_id', "");
+        $email_id = addslashes($email_id);
+        
+        $block_user = validateObject($postData, 'block_user', "");
+        $block_user = addslashes($block_user);
+        
+        
+        if($user_id == NULL)
+        {
+        	$selectQuery="SELECT id FROM ".TABLE_USERS." users WHERE email_id=".$email_id;
+   			$resultQuery=mysql_query($selectQuery) or $message=mysql_error();
+        	$getUserId=mysql_fetch_row($resultRequest);
+        	$userID= $requestCount[0];
+        }
+        else
+        {
+        	$userID=$user_id;
+        }
+        if(mysql_num_rows($resultQuery)>0)
+            {
+                $updateQuery="UPDATE ".TABLE_STUDYMATES_REQUEST." SET status='blocked' WHERE request_from_mate_id=".$block_user." and request_to_mate_id=".$userID;
+                $message="";
+                $status="success";
+            }
+            else
+            {
+            	$status="failed";
+            }
+        
+        }
+         
+        
+        $response['data']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
+    
+     /*
+     * getPastimeForUser
+     */
+    public function getPastimeForUser($postData)
+    {
+    	$message ='';
+        $status='';
+        $data=array();
+        $suggested=array();
+        $favorite=array();
+        $response=array();
+        
+    	$user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+        
+         $selectQuery="select id as 'pastime_id',pastime_name,pastime_image from ".TABLE_PASTIMES." LIMIT 30";
+         $resultQuery=mysql_query($selectQuery) or $message=mysql_error();
+        
+         if(mysql_num_rows($resultQuery)>0)
+            {
+                while($val=mysql_fetch_assoc($resultQuery))
+                {
+                    $data['suggested'][]=$val;
+                } 
+                
+                $message="Request accepted";
+                $status="success";
+            }
+            else
+            {
+            	 $data['suggested']=array();
+            	//$status="failed";
+            }
+            
+         $selectFavoriteQuery="select user_favorite_pastime.pastime_id,users.full_name as 'pastime_name',users.profile_pic as 'pastime_image' from " .TABLE_USER_FAVORITE_PASTIME." user_favorite_pastime 
+         INNER JOIN ".TABLE_PASTIMES." pastime ON user_favorite_pastime.pastime_id=pastime.id 
+         INNER JOIN ".TABLE_USERS." users ON users.id=user_favorite_pastime.user_id
+         WHERE user_favorite_pastime.user_id=".$user_id;
+        // echo  $selectFavoriteQuery;
+    	 $resultFavoriteQuery=mysql_query($selectFavoriteQuery) or $message=mysql_error();
+        
+         if(mysql_num_rows($resultFavoriteQuery)>0)
+            {
+                while($val=mysql_fetch_assoc($resultFavoriteQuery))
+                {
+                    $data['favorite'][]=$val;
+                } 
+                $message="Request accepted";
+                $status="success";
+            }
+            else
+            {
+            	 $data['favorite']=array();
+            	//$status="failed";
+            }
+       
+       
+    	$response['data']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+        
+	   return $response;
     }
 }
 ?>
