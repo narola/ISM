@@ -787,11 +787,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
-
         hideProgress();
         try {
-
-
             if (WebConstants.GENERAL_SETTING_PREFERENCES == apiCode) {
                 onResponseGetAllPreference(object, error);
 
@@ -910,18 +907,18 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         try {
             hideProgress();
             if (object != null) {
-                ResponseObject responseObject = (ResponseObject) object;
-                if (responseObject.getStatus().equals(WebConstants.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 
-                    String count = responseObject.getData().get(0).getNotificationCount();
+                    String count = responseHandler.getBadges().get(0).getNotificationCount();
                     PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_NOTIFICATION, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
 
-                    count = responseObject.getData().get(0).getMessageCount();
+                    count = responseHandler.getBadges().get(0).getMessageCount();
                     PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_MESSAGE, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
 
-                    count = responseObject.getData().get(0).getRequestCount();
+                    count = responseHandler.getBadges().get(0).getRequestCount();
                     PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_REQUEST, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
-                } else if (responseObject.getStatus().equals(WebConstants.FAILED)) {
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "Failed to load badges count");
                 }
             } else if (error != null) {

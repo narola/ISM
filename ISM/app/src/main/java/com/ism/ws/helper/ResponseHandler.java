@@ -3,10 +3,12 @@ package com.ism.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.ws.model.Badges;
 import com.ism.ws.model.City;
 import com.ism.ws.model.Country;
 import com.ism.ws.model.DataGetAllPreferences;
 import com.ism.ws.model.DataUserPreferences;
+import com.ism.ws.model.Feeds;
 import com.ism.ws.model.State;
 import com.ism.ws.model.TutorialGroup;
 import com.ism.ws.model.User;
@@ -29,6 +31,8 @@ public class ResponseHandler {
 	private ArrayList<TutorialGroup> tutorialGroup;
 	private ArrayList<DataGetAllPreferences> preference;
 	private ArrayList<DataUserPreferences> userPreference;
+	private ArrayList<Badges> badges;
+	private ArrayList<Feeds> feeds;
 
 	@JsonProperty("message")
 	public String getMessage() {
@@ -109,6 +113,24 @@ public class ResponseHandler {
 
 	public void setUserPreference(ArrayList<DataUserPreferences> userPreference) {
 		this.userPreference = userPreference;
+	}
+
+	@JsonProperty("badges")
+	public ArrayList<Badges> getBadges() {
+		return this.badges;
+	}
+
+	public void setBadges(ArrayList<Badges> badges) {
+		this.badges = badges;
+	}
+
+	@JsonProperty("feeds")
+	public ArrayList<Feeds> getFeeds() {
+		return this.feeds;
+	}
+
+	public void setFeeds(ArrayList<Feeds> feeds) {
+		this.feeds = feeds;
 	}
 
 }

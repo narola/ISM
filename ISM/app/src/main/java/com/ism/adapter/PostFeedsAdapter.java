@@ -22,10 +22,10 @@ import com.ism.object.Global;
 import com.ism.views.CircleImageView;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
+import com.ism.ws.model.Feeds;
 import com.ism.ws.model.ResponseObject;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Comment;
-import com.ism.ws.model.Data;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -40,13 +40,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 	private static final String TAG = PostFeedsAdapter.class.getSimpleName();
 
 	private Context context;
-	private ArrayList<Data> arrListFeeds;
+	private ArrayList<Feeds> arrListFeeds;
 	private ImageLoader imageLoader;
 
 	private int addCommentFeedPosition = -1;
 	private int tagFeedPosition = -1;
 
-	public PostFeedsAdapter(Context context, ArrayList<Data> arrListFeeds) {
+	public PostFeedsAdapter(Context context, ArrayList<Feeds> arrListFeeds) {
 		this.context = context;
 		this.arrListFeeds = arrListFeeds;
 		imageLoader = ImageLoader.getInstance();

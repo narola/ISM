@@ -26,9 +26,7 @@ public class TutorialViewActivity extends AppCompatActivity {
     private void initGlobal() {
         mTutorialView = (TutorialView) findViewById(R.id.tutorial_view);
 
-//        mTutorialView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.videoviewdemo, "1", "Android tutorial view", true);
         mTutorialView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.sm_long, "1", "Android tutorial view", true);
-//        mTutorialView.setVideoUri(Uri.parse("http://192.168.1.202/pg/sm_long.3gp"), "1", "Android tutorial view", false);
 
         mTutorialView.setOnNextClickListener(new TutorialView.OnNextClickListener() {
             @Override
@@ -44,6 +42,8 @@ public class TutorialViewActivity extends AppCompatActivity {
             }
         });
 
+//        mTutorialView.setVideoUri(Uri.parse("http://192.168.1.202/pg/sm_long.3gp"), "1", "Android tutorial view", false);
+//        mTutorialView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.videoviewdemo, "1", "Android tutorial view", true);
     }
 
     @Override

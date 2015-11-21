@@ -19,6 +19,7 @@ import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.model.ResponseObject;
 import com.ism.ws.helper.WebserviceWrapper;
 
@@ -116,12 +117,12 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 		try {
 			activityHost.hideProgress();
 			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					adpPostFeeds = new PostFeedsAdapter(getActivity(), responseObj.getData());
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+					adpPostFeeds = new PostFeedsAdapter(getActivity(), responseHandler.getFeeds());
 					recyclerPost.setAdapter(adpPostFeeds);
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-					Log.e(TAG, "onResponseGetAllFeeds Failed : " + responseObj.getMessage());
+				} else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseGetAllFeeds Failed : " + responseHandler.getMessage());
 				}
 			} else if(error != null) {
 				Log.e(TAG, "onResponseGetAllFeeds apiCall Exception : " + error.toString());

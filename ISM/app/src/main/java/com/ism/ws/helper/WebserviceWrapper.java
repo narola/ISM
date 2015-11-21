@@ -54,7 +54,8 @@ public class WebserviceWrapper {
 	        try {
 
 //			    Check if we can get access from the network.
-	            URL url = new URL("http://192.168.1.147/");
+//	            URL url = new URL("http://192.168.1.147/");
+	            URL url = new URL("http://google.com/");
 	            HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
 	            urlc.setRequestProperty("Connection", "close");
 	            urlc.setConnectTimeout(2000); // Timeout 2 seconds.
@@ -94,7 +95,7 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_ACCEPT_TUTORIAL_GROUP).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_ALL_FEEDS:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_FEEDS).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_FEEDS).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.ADD_COMMENT:
                             responseObject = new WebserviceConnector(WebConstants.URL_ADD_COMMENT).execute(ResponseObject.class, attribute);
@@ -127,7 +128,7 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_STUDYMATE_REQUEST).execute(ResponseObject.class, attribute);
                             break;
                         case WebConstants.GET_ALL_BADGES_COUNT:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BADGES_COUNT).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BADGES_COUNT).execute(ResponseHandler.class, attribute);
                             break;
 //                    case WebConstants.UPLOAD_PROFILE_PIC:
 //                        responseObject = new RequestWs().getImageRequest(WebConstants.URL_PROFILE_PIC).execute(ResponseObject.class, attribute);
