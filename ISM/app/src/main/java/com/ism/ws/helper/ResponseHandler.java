@@ -5,18 +5,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.ws.model.City;
 import com.ism.ws.model.Country;
-import com.ism.ws.model.DataAboutMe;
 import com.ism.ws.model.DataGetAllPreferences;
 import com.ism.ws.model.DataUserPreferences;
 import com.ism.ws.model.State;
 import com.ism.ws.model.TutorialGroup;
 import com.ism.ws.model.User;
-import com.ism.ws.model.UserDetail;
 
 import java.util.ArrayList;
-
-//import com.narola.apisample.ws.model.Feed;
-//import com.narola.apisample.ws.model.Question;
 
 /**
  * Created by c161 on 19/11/15.
@@ -24,54 +19,43 @@ import java.util.ArrayList;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseHandler {
-	
-    private String message;
-    private String status;
-    private ArrayList<State> states;
-    private ArrayList<UserDetail> userDetails;
+
+	private String message;
+	private String status;
+	private ArrayList<State> states;
 	private ArrayList<Country> countries;
 	private ArrayList<City> cities;
 	private ArrayList<User> user;
 	private ArrayList<TutorialGroup> tutorialGroup;
-    private ArrayList<DataAboutMe> aboutMes;
-    private ArrayList<DataGetAllPreferences> preference;
-    private ArrayList<DataUserPreferences> userPreference;
+	private ArrayList<DataGetAllPreferences> preference;
+	private ArrayList<DataUserPreferences> userPreference;
 
-    @JsonProperty("message")
-    public String getMessage() {
-        return this.message;
-    }
+	@JsonProperty("message")
+	public String getMessage() {
+		return this.message;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    @JsonProperty("status")
-    public String getStatus() {
-        return this.status;
-    }
+	@JsonProperty("status")
+	public String getStatus() {
+		return this.status;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    @JsonProperty("states")
-    public ArrayList<State> getStates() {
-        return this.states;
-    }
+	@JsonProperty("states")
+	public ArrayList<State> getStates() {
+		return this.states;
+	}
 
-    public void setStates(ArrayList<State> states) {
-        this.states = states;
-    }
-
-	@JsonProperty("user_details")
-    public ArrayList<UserDetail> getUserDetails() {
-        return this.userDetails;
-    }
-
-    public void setUserDetails(ArrayList<UserDetail> userDetails) {
-        this.userDetails = userDetails;
-    }
+	public void setStates(ArrayList<State> states) {
+		this.states = states;
+	}
 
 	@JsonProperty("countries")
 	public ArrayList<Country> getCountries() {
@@ -108,38 +92,23 @@ public class ResponseHandler {
 	public void setTutorialGroup(ArrayList<TutorialGroup> tutorialGroup) {
 		this.tutorialGroup = tutorialGroup;
 	}
-/*
 
-    @JsonProperty("user")
-    public ArrayList<DataAboutMe> getUser() {
-        return aboutMes;
-    }
-*/
-/*
+	@JsonProperty("preference")
+	public ArrayList<DataGetAllPreferences> getPreference() {
+		return preference;
+	}
 
-    public void setUser(ArrayList<DataAboutMe> user) {
-        this.aboutMes = user;
-    }
-*/
+	public void setPreference(ArrayList<DataGetAllPreferences> preference) {
+		this.preference = preference;
+	}
 
-    @JsonProperty("preference")
-    public ArrayList<DataGetAllPreferences> getPreference() {
-        return preference;
-    }
+	@JsonProperty("user_preference")
+	public ArrayList<DataUserPreferences> getUserPreference() {
+		return this.userPreference;
+	}
 
-    public void setPreference(ArrayList<DataGetAllPreferences> preference) {
-        this.preference = preference;
-    }
-    @JsonProperty("user_preference")
-    public ArrayList<DataUserPreferences> getUserPreference() {
-        return this.userPreference;
-    }
-
-    public void setUserPreference(ArrayList<DataUserPreferences> userPreference) {
-        this.userPreference = userPreference;
-    }
-
-
-
+	public void setUserPreference(ArrayList<DataUserPreferences> userPreference) {
+		this.userPreference = userPreference;
+	}
 
 }
