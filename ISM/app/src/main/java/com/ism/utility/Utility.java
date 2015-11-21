@@ -212,7 +212,7 @@ public class Utility {
 	 * @param message
 	 * @param context
 	 */
-	public static void showToast(String message, Context context) {
+	public static void showToast(Context context, String message) {
 		try {
 			Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 		} catch (Exception e) {

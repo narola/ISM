@@ -630,6 +630,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
         try {
+	        Log.e(TAG, "onResponse");
             switch (apiCode) {
                 case WebConstants.GET_COUNTRIES:
                     onResponseCountries(object, error);
@@ -756,7 +757,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                     Log.e(TAG, "onResponseStates Failed");
                 }
             } else if (error != null) {
-                Log.e(TAG, "onResponseCountries api Exception : " + error.toString());
+                Log.e(TAG, "onResponseStates api Exception : " + error.toString());
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponseStates Exception : " + e.toString());

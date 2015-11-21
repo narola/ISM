@@ -72,7 +72,7 @@ public class BlockedUserAdapter extends BaseAdapter {
         viewHolder.txtUnblock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utility.showToast("Unblock :" +position,context);
+                Utility.showToast(context, "Unblock : " + position);
             }
         });
         return convertView;

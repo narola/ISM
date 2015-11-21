@@ -1,10 +1,12 @@
 package com.ism.ws.helper;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.utility.Utility;
 import com.ism.ws.model.ResponseGetCountries;
@@ -20,7 +22,7 @@ public class WebserviceWrapper {
 
     private static final String TAG = WebserviceWrapper.class.getSimpleName();
 
-    private Object attribute;
+    private Attribute attribute;
     private WebserviceResponse webserviceResponse;
     private Context context;
 
@@ -28,7 +30,7 @@ public class WebserviceWrapper {
         public void onResponse(Object object, Exception error, int apiCode);
     }
 
-    public WebserviceWrapper(Context context, Object attribute, WebserviceResponse webserviceResponse) {
+    public WebserviceWrapper(Context context, Attribute attribute, WebserviceResponse webserviceResponse) {
         this.attribute = attribute;
         this.webserviceResponse = webserviceResponse;
         this.context = context;
@@ -37,6 +39,8 @@ public class WebserviceWrapper {
     public class WebserviceCaller extends AsyncTask<Integer, Void, Object> {
 
         private int currentApiCode;
+	    private boolean isNetworkConnected = false;
+	    private Exception exception;
 
         @Override
         protected void onPreExecute() {
@@ -46,7 +50,8 @@ public class WebserviceWrapper {
         @Override
         protected Object doInBackground(Integer... params) {
             Object responseObject = null;
-            try {
+	        currentApiCode = params[0];
+	        try {
 
 //			    Check if we can get access from the network.
 	            URL url = new URL("http://192.168.1.147/");
@@ -54,9 +59,9 @@ public class WebserviceWrapper {
 	            urlc.setRequestProperty("Connection", "close");
 	            urlc.setConnectTimeout(2000); // Timeout 2 seconds.
 	            urlc.connect();
+	            isNetworkConnected = urlc.getResponseCode() == 200; //Successful response.
 
-	            if (urlc.getResponseCode() == 200) { //Successful response.
-                    currentApiCode = params[0];
+	            if (isNetworkConnected) {
                     switch (currentApiCode) {
                         case WebConstants.LOGIN:
                             responseObject = new WebserviceConnector(WebConstants.URL_LOGIN).execute(ResponseHandler.class, attribute);
@@ -146,23 +151,21 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseObject.class, attribute);
                             break;
                     }
-                } else {
-		            Utility.showToast(context.getString(R.string.error_server_connection), context);
-	            }
+                }
             } catch (Exception e) {
                 Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
+	            exception = e;
             }
             return responseObject;
         }
 
         @Override
-        protected void onPostExecute(Object o) {
-            try {
-                webserviceResponse.onResponse(o, null, currentApiCode);
-            } catch (Exception e) {
-                webserviceResponse.onResponse(null, e, currentApiCode);
+        protected void onPostExecute(Object responseObject) {
+            if (!isNetworkConnected) {
+	            Utility.showToast(context, context.getString(R.string.error_server_connection));
             }
-            super.onPostExecute(o);
+	        webserviceResponse.onResponse(responseObject, exception, currentApiCode);
+	        super.onPostExecute(responseObject);
         }
     }
 
