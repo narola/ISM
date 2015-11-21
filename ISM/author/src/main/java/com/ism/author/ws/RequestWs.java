@@ -1,6 +1,7 @@
 package com.ism.author.ws;
 
 import com.ism.author.Utility.Debug;
+import com.ism.author.ws.helper.WebserviceConnector;
 
 /**
  * Created by c166 on 23/10/15.
@@ -24,7 +25,7 @@ public class RequestWs {
         Debug.i(TAG, "URL : " + url);
         Debug.i(TAG, "reqCls : " + reqCls);
 
-        return new WSRequestPost(url).execute(cls, reqCls);
+        return new WebserviceConnector(url).execute(cls, reqCls);
 
 //		}
     }

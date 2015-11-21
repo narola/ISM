@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.ism.author.rightcontainerfragment.AuthorProfileFragment">
+    tools:context="com.ism.author.fragment.rightcontainerfragment.AuthorProfileFragment">
 
 
     <LinearLayout
@@ -22,7 +22,7 @@
             android:orientation="horizontal"
             android:padding="@dimen/d15dp">
 
-            <com.ism.author.helper.CircleImageView
+            <com.ism.author.views.CircleImageView
                 android:layout_width="@dimen/circular_imageview_width_height"
                 android:layout_height="@dimen/circular_imageview_width_height"
                 android:src="@drawable/userdp"

@@ -18,9 +18,9 @@ import com.ism.adapter.PostFeedsAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.utility.Utility;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.model.ResponseObject;
+import com.ism.ws.helper.WebserviceWrapper;
 
 public class ClassWallFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
@@ -72,8 +72,8 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 
 		recyclerPost.addItemDecoration(itemDecoration);
 
-		if (Utility.isOnline(getActivity())) {
-			//callApiGetAllFeeds();
+		if (Utility.isConnected(getActivity())) {
+			callApiGetAllFeeds();
 		} else {
 			Utility.toastOffline(getActivity());
 		}
@@ -90,9 +90,9 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 	private void callApiGetAllFeeds() {
 		try {
 			activityHost.showProgress();
-			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(Global.strUserId);
-			new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+			Attribute attribute = new Attribute();
+			attribute.setUserId(Global.strUserId);
+			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_ALL_FEEDS);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiGetAllFeeds Exception : " + e.toString());

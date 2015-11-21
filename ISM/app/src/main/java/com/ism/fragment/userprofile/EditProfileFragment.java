@@ -123,7 +123,7 @@ public class EditProfileFragment extends Fragment {
             break;
             case FRAGMENT_BOOKS: {
                 currentFragment = frag;
-                AboutMeFragment fragment = AboutMeFragment.newInstance();
+                UserBooksFragment fragment = UserBooksFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;

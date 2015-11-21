@@ -16,11 +16,11 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.PreviewQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.Data;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
 
 import java.util.ArrayList;
 
@@ -101,11 +101,11 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         if (Utility.isOnline(getActivity())) {
             if (listOfPreviewQuestions.size() > 0) {
                 try {
-                    RequestObject requestObject = new RequestObject();
-                    requestObject.setExamId("61");
-                    requestObject.setQuestionId(getQuestionIdList());
+                    Attribute attribute = new Attribute();
+                    attribute.setExamId("61");
+                    attribute.setQuestionId(getQuestionIdList());
 
-                    new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                    new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                             .execute(WebConstants.SETQUESTIONSFOREXAM);
                 } catch (Exception e) {
                     Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -157,10 +157,10 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utils.showToast(getActivity().getString(R.string.str_success_setexamquestions), getActivity());
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {

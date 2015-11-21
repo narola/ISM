@@ -1,5 +1,7 @@
 package com.ism.author.model;
 
+import android.app.Fragment;
+
 import java.util.ArrayList;
 
 /**
@@ -9,9 +11,10 @@ public class FragmentArgument {
 
     private static final String TAG = FragmentArgument.class.getSimpleName();
 
+
+    private Fragment fragment = null;
     private ArrayList<Data> arrayListData;
-    private int intPosition;
-    private RequestObject requestObject = new RequestObject();
+    private FragmentArgumentObject fragmentArgumentObject = new FragmentArgumentObject();
 
     public FragmentArgument() {
     }
@@ -28,20 +31,20 @@ public class FragmentArgument {
         this.arrayListData = arrayListData;
     }
 
-    public int getPosition() {
-        return intPosition;
+    public FragmentArgumentObject getFragmentArgumentObject() {
+        return this.fragmentArgumentObject;
     }
 
-    public void setPosition(int intPosition) {
-        this.intPosition = intPosition;
+    public void setFragmentArgumentObject(FragmentArgumentObject fragmentArgumentObject) {
+        this.fragmentArgumentObject = fragmentArgumentObject;
     }
 
-    public RequestObject getRequestObject() {
-        return requestObject;
+    public Fragment getFragment() {
+        return this.fragment;
     }
 
-    public void setRequestObject(RequestObject requestObject) {
-        this.requestObject = requestObject;
+    public void setFragment(Fragment fragment) {
+        this.fragment = fragment;
     }
 
 }

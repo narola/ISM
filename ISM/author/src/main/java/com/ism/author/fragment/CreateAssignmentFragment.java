@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.InputValidator;
@@ -22,11 +22,12 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.Data;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.model.FragmentArgument;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
 import java.util.ArrayList;
@@ -43,9 +44,11 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private static final String TAG = CreateAssignmentFragment.class.getSimpleName();
     private View view;
+    private FragmentArgument fragmentArgument;
 
-    public static CreateAssignmentFragment newInstance() {
+    public static CreateAssignmentFragment newInstance(FragmentArgument fragmentArgument) {
         CreateAssignmentFragment createAssignmentFragment = new CreateAssignmentFragment();
+        createAssignmentFragment.fragmentArgument = fragmentArgument;
         return createAssignmentFragment;
     }
 
@@ -53,18 +56,17 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         // Required empty public constructor
     }
 
-    TextView tvActivityTitle, tvActivityAssignmentname, tvActivityCoursename, tvActivityClass, tvActivitySubject, tvActivitySubmissiondate, tvActivityTopic;
-    EditText etActivityAssignmentname, etActivityCoursename, etActivitySubmissionDate;
-    Button btnActivitySave, btnActivityCancel;
-    Spinner spActivityClass, spActivitySubject, spActivityTopic;
-    RichTextEditor rteTrialActivity;
-    private ArrayList<Data> arrListClassRooms;
-    private ArrayList<Data> arrListSubject;
-    private ArrayList<Data> arrListTopic;
+    private TextView tvActivityTitle, tvActivityAssignmentname, tvActivityCoursename, tvActivityClass, tvActivitySubject,
+            tvActivitySubmissiondate, tvActivityTopic;
+    private EditText etActivityAssignmentname, etActivityCoursename, etActivitySubmissionDate;
+    private Button btnActivitySave, btnActivityCancel;
+    private Spinner spActivityClass, spActivitySubject, spActivityTopic;
+    private RichTextEditor rteTrialActivity;
+    private ArrayList<Data> arrListClassRooms, arrListSubject, arrListTopic;
     private List<String> arrListDefalt;
     private String strSubmissionDate, strAssignmenttext = "";
 
-    MyTypeFace myTypeFace;
+    private MyTypeFace myTypeFace;
     private InputValidator inputValidator;
 
     @Override
@@ -197,7 +199,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
             } catch (Exception e) {
-                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
             Utility.toastOffline(getActivity());
@@ -208,12 +210,12 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     private void callApiGetTopics(int subject_id) {
         if (Utility.isOnline(getActivity())) {
             try {
-                RequestObject requestObject = new RequestObject();
-                requestObject.setSubjectId(String.valueOf(subject_id));
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setSubjectId(String.valueOf(subject_id));
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETTOPICS);
             } catch (Exception e) {
-                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
             Utility.toastOffline(getActivity());
@@ -226,24 +228,24 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         if (Utility.isOnline(getActivity())) {
 
             try {
-                RequestObject requestObject = new RequestObject();
-                requestObject.setUserId(WebConstants.TEST_USER_ID);
-                requestObject.setSubmissionDate(strSubmissionDate);
-                requestObject.setClassroomId(String.valueOf(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
+                Attribute attribute = new Attribute();
+                attribute.setUserId(WebConstants.TEST_USER_ID);
+                attribute.setSubmissionDate(strSubmissionDate);
+                attribute.setClassroomId(String.valueOf(spActivityClass.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
                         get(spActivityClass.getSelectedItemPosition() - 1).getId()) : 0));
-                requestObject.setSubjectId(String.valueOf(spActivitySubject.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
+                attribute.setSubjectId(String.valueOf(spActivitySubject.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
                         get(spActivitySubject.getSelectedItemPosition() - 1).getId()) : 0));
 
                 if (arrListTopic.size() > 1) {
-                    requestObject.setTopicId(String.valueOf(spActivityTopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
+                    attribute.setTopicId(String.valueOf(spActivityTopic.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListTopic.
                             get(spActivityTopic.getSelectedItemPosition() - 1).getId()) : 0));
                 }
-                requestObject.setAssignmentText(strAssignmenttext);
+                attribute.setAssignmentText(strAssignmenttext);
 
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.CREATEASSIGNMENT);
             } catch (Exception e) {
-                Log.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+                Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
         } else {
             Utility.toastOffline(getActivity());
@@ -291,7 +293,6 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     }
 
-
     private boolean isTopicSet() {
         return true;
     }
@@ -335,8 +336,8 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     private void onResponseGetClassrooms(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     arrListClassRooms = new ArrayList<Data>();
                     arrListClassRooms.addAll(responseObj.getData());
@@ -348,7 +349,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
                     }
                     Adapters.setUpSpinner(getActivity(), spActivityClass, classrooms, Adapters.ADAPTER_NORMAL);
 
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -363,8 +364,8 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     private void onResponseGetSubjects(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     arrListSubject = new ArrayList<Data>();
                     arrListSubject.addAll(responseObj.getData());
@@ -375,7 +376,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
                     }
                     Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -389,8 +390,8 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     private void onResponseGetTopics(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListTopic = new ArrayList<Data>();
                     arrListTopic.addAll(responseObj.getData());
                     List<String> topics = new ArrayList<String>();
@@ -400,7 +401,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
                     }
                     Adapters.setUpSpinner(getActivity(), spActivityTopic, topics, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
@@ -415,11 +416,11 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     private void onResponseCreateAssignment(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     backToTrialScreen();
                     Utils.showToast(getActivity().getString(R.string.msg_success_createassignment), getActivity());
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -439,11 +440,9 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     @Override
     public void onClick(View v) {
         if (v == btnActivitySave) {
-
             if (isInputsValid()) {
                 callApiCreateAssignment();
             }
-
         } else if (v == btnActivityCancel) {
             backToTrialScreen();
         }

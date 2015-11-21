@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.InputValidator;
@@ -30,11 +29,11 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.Data;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.commonsource.view.ProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 
@@ -328,11 +327,11 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             public void onClick(View v) {
                 if (Utility.isOnline(getActivity())) {
                     if (isInputsValidSchoolInfo()) {
-                        RequestObject requestObject = new RequestObject();
-                        requestObject.setName(etName.getText().toString().trim());
-                        requestObject.setEmailAddress(etEmail.getText().toString().trim());
-                        requestObject.setMessage(etMessage.getText().toString().trim());
-                        callApiRequestSchoolInfo(requestObject);
+                        Attribute attribute = new Attribute();
+                        attribute.setName(etName.getText().toString().trim());
+                        attribute.setEmailAddress(etEmail.getText().toString().trim());
+                        attribute.setMessage(etMessage.getText().toString().trim());
+                        callApiRequestSchoolInfo(attribute);
                     }
                 } else {
                     Utility.toastOffline(getActivity());
@@ -348,13 +347,13 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
     }
 
 
-    private void callApiRequestSchoolInfo(RequestObject requestObject) {
+    private void callApiRequestSchoolInfo(Attribute attribute) {
         try {
             btnDialogSubmit.setEnabled(false);
             progRequestSchoolInfo.setProgress(1);
             progRequestSchoolInfo.setVisibility(View.VISIBLE);
             progressGenerator.start(progRequestSchoolInfo);
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.REQUESTSCHOOLINFO);
         } catch (Exception e) {
             Debug.e(TAG, "callApiRequestSchoolInfo Exception : " + e.toString());
@@ -367,31 +366,31 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             btnSubmit.setProgress(1);
             btnSubmit.setEnabled(false);
             progressGenerator.start(btnSubmit);
-            RequestObject requestObject = new RequestObject();
-            requestObject.setFirstname(etFirstName.getText().toString().trim());
-            requestObject.setLastname(etLastName.getText().toString().trim());
-            requestObject.setEmailAddress(etEmailAddress.getText().toString().trim());
-            requestObject.setContactNumber(etContactNo.getText().toString().trim());
-            requestObject.setGender(arrListGender.get(spGender.getSelectedItemPosition()));
-            requestObject.setBirthdate(strDob);
-            requestObject.setHomeAddress(etHomeAddress.getText().toString().trim());
-            requestObject.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
-            requestObject.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
-            requestObject.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
-            requestObject.setUsername(etUserName.getText().toString().trim());
-            requestObject.setPassword(etNewPwd.getText().toString().trim());
-            requestObject.setDeviceToken(Utility.getDeviceTokenId(getActivity()));
-            requestObject.setSchoolId(Integer.parseInt(strSchoolId));
-            requestObject.setClassroomId(strClassId);
-            requestObject.setCourseId(Integer.parseInt(strCourseId));
-            requestObject.setAcademicYear(strAcademicYear);
-//			requestObject.setRoleId(Integer.parseInt(strRoleId));
-            requestObject.setRoleId(strRoleId);
-            requestObject.setDeviceType(getString(R.string.android));
-            requestObject.setProfileImageName("image_" + System.currentTimeMillis() + ".png");
-            requestObject.setProfileImage(strDpBase64);
+            Attribute attribute = new Attribute();
+            attribute.setFirstname(etFirstName.getText().toString().trim());
+            attribute.setLastname(etLastName.getText().toString().trim());
+            attribute.setEmailAddress(etEmailAddress.getText().toString().trim());
+            attribute.setContactNumber(etContactNo.getText().toString().trim());
+            attribute.setGender(arrListGender.get(spGender.getSelectedItemPosition()));
+            attribute.setBirthdate(strDob);
+            attribute.setHomeAddress(etHomeAddress.getText().toString().trim());
+            attribute.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
+            attribute.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
+            attribute.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
+            attribute.setUsername(etUserName.getText().toString().trim());
+            attribute.setPassword(etNewPwd.getText().toString().trim());
+            attribute.setDeviceToken(Utility.getDeviceTokenId(getActivity()));
+            attribute.setSchoolId(Integer.parseInt(strSchoolId));
+            attribute.setClassroomId(strClassId);
+            attribute.setCourseId(Integer.parseInt(strCourseId));
+            attribute.setAcademicYear(strAcademicYear);
+//			attribute.setRoleId(Integer.parseInt(strRoleId));
+            attribute.setRoleId(strRoleId);
+            attribute.setDeviceType(getString(R.string.android));
+            attribute.setProfileImageName("image_" + System.currentTimeMillis() + ".png");
+            attribute.setProfileImage(strDpBase64);
 
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.REGISTERUSER);
         } catch (Exception e) {
             Debug.e(TAG, "callApiRegisterUser Exception : " + e.getLocalizedMessage());
@@ -415,11 +414,11 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             progState.setProgress(1);
             progState.setVisibility(View.VISIBLE);
             progressGenerator.start(progState);
-            RequestObject requestObject = new RequestObject();
+            Attribute attribute = new Attribute();
 
-            requestObject.setCountryId(countryId);
+            attribute.setCountryId(countryId);
 
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GETSTATES);
         } catch (Exception e) {
             Debug.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
@@ -431,10 +430,10 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             progCity.setProgress(1);
             progCity.setVisibility(View.VISIBLE);
             progressGenerator.start(progCity);
-            RequestObject requestObject = new RequestObject();
-            requestObject.setStateId(stateId);
+            Attribute attribute = new Attribute();
+            attribute.setStateId(stateId);
 
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GETCITIES);
         } catch (Exception e) {
             Debug.e(TAG, "callApiGetCountries Exception : " + e.getLocalizedMessage());
@@ -597,14 +596,14 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                 progRequestSchoolInfo.setVisibility(View.INVISIBLE);
             }
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     if (dialogSchoolInfo != null) {
                         dialogSchoolInfo.dismiss();
                     }
 
                     Utils.showToast(getString(R.string.msg_school_info_request_sent), getActivity());
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
 
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
@@ -622,8 +621,8 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             progCity.setProgress(100);
             progCity.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListCities = new ArrayList<Data>();
                     arrListCities.addAll(responseObj.getData());
                     List<String> cities = new ArrayList<String>();
@@ -632,7 +631,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                         cities.add(city.getCityName());
                     }
                     Adapters.setUpSpinner(getActivity(), spCity, cities, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCities Failed");
                 }
             } else if (error != null) {
@@ -648,8 +647,8 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             progState.setProgress(100);
             progState.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListStates = new ArrayList<Data>();
                     arrListStates.addAll(responseObj.getData());
                     List<String> states = new ArrayList<String>();
@@ -658,7 +657,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                         states.add(state.getStateName());
                     }
                     Adapters.setUpSpinner(getActivity(), spState, states, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseStates Failed");
                 }
             } else if (error != null) {
@@ -675,8 +674,8 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             progCountry.setProgress(100);
             progCountry.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListCountries = new ArrayList<Data>();
                     arrListCountries.addAll(responseObj.getData());
                     List<String> countries = new ArrayList<String>();
@@ -685,7 +684,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                         countries.add(country.getCountryName());
                     }
                     Adapters.setUpSpinner(getActivity(), spCountry, countries, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCountries Failed");
                 }
             } else if (error != null) {
@@ -701,8 +700,8 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             btnSubmit.setProgress(100);
             btnSubmit.setEnabled(true);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, getActivity(),
                             PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity()));
                     PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity());
@@ -714,8 +713,8 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                     Intent intentWelcome = new Intent(getActivity(), AuthorHostActivity.class);
                     startActivity(intentWelcome);
                     finish();
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-                    if (responseObj.getMessage().contains(ResponseObject.DUPLICATE_ENTRY)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+                    if (responseObj.getMessage().contains(ResponseHandler.DUPLICATE_ENTRY)) {
                         if (responseObj.getMessage().contains("email_id")) {
                             Utility.alert(getActivity(), getString(R.string.registration_failed), getString(R.string.msg_email_exists));
                         } else if (responseObj.getMessage().contains("username")) {

@@ -8,7 +8,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ism.ISMStudent;
+import com.ism.object.ISMStudent;
 import com.ism.R;
 import com.ism.adapter.TutorialGroupAdapter;
 import com.ism.commonsource.view.ActionProcessButton;
@@ -16,12 +16,13 @@ import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.views.CircleImageView;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.model.ResponseObject;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -88,7 +89,7 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
     }
 
 	public void onClickAccept(View view) {
-		if (Utility.isOnline(AcceptTutorialGroupActivity.this)) {
+		if (Utility.isConnected(AcceptTutorialGroupActivity.this)) {
 			callApiAcceptTutorialGroup();
 		} else {
 			Utility.toastOffline(AcceptTutorialGroupActivity.this);
@@ -100,12 +101,12 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 			btnAccept.setProgress(1);
 			btnAccept.setEnabled(false);
 			progressGenerator.start(btnAccept);
-			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(strUserId);
-			requestObject.setGroupId(strGroupId);
-			requestObject.setJoiningStatus("1");
+			Attribute attribute = new Attribute();
+			attribute.setUserId(strUserId);
+			attribute.setGroupId(strGroupId);
+			attribute.setJoiningStatus("1");
 
-			new WebserviceWrapper(AcceptTutorialGroupActivity.this, requestObject, this).new WebserviceCaller()
+			new WebserviceWrapper(AcceptTutorialGroupActivity.this, attribute, this).new WebserviceCaller()
 					.execute(WebConstants.ACCEPT_TUTORIAL_GROUP);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiAcceptTutorialGroup Exception : " + e.toString());
@@ -132,16 +133,16 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 				btnAccept.setEnabled(true);
 			}
 			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
 					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
 					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, AcceptTutorialGroupActivity.this, true);
 					launchHostActivity();
-				} else if (responseObj.getStatus().equals("incomplete")) {
+				} else if (responseHandler.getStatus().equals("incomplete")) {
 					Toast.makeText(AcceptTutorialGroupActivity.this, R.string.msg_waiting_for_other_members, Toast.LENGTH_LONG).show();
 					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-					Log.e(TAG, "onResponseAcceptTutorialGroup Failed : " + responseObj.getMessage());
+				} else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+					Log.e(TAG, "onResponseAcceptTutorialGroup Failed : " + responseHandler.getMessage());
 				}
 			} else if (error != null) {
 				Log.e(TAG, "onResponseAcceptTutorialGroup api Exception : " + error.toString());

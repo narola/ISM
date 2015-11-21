@@ -13,13 +13,14 @@ import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
-import com.ism.ws.model.TutorialGroupMember;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.model.ResponseObject;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.TutorialGroupMember;
 
 /**
  * Created by c161 on 08/10/15.
@@ -59,7 +60,7 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 
 	    Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, WelComeActivity.this);
 
-	    if (Utility.isOnline(WelComeActivity.this)) {
+	    if (Utility.isConnected(WelComeActivity.this)) {
 		    callApiAllocateTutorialGroup();
 	    } else {
 		    Utility.toastOffline(WelComeActivity.this);
@@ -71,10 +72,10 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 			progWelcome.setProgress(1);
 			progWelcome.setVisibility(View.VISIBLE);
 			progressGenerator.start(progWelcome);
-			RequestObject requestObject = new RequestObject();
-			requestObject.setUserId(Global.strUserId);
+			Attribute attribute = new Attribute();
+			attribute.setUserId(Global.strUserId);
 
-			new WebserviceWrapper(WelComeActivity.this, requestObject, this).new WebserviceCaller()
+			new WebserviceWrapper(WelComeActivity.this, attribute, this).new WebserviceCaller()
 					.execute(WebConstants.ALLOCATE_TUTORIAL_GROUP);
 		} catch (Exception e) {
 			Log.e(TAG, "callApiAllocateTutorialGroup Exception : " + e.toString());
@@ -101,15 +102,15 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 				progWelcome.setVisibility(View.INVISIBLE);
 			}
 			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					if (responseObj.getMessage().equals("Group created")) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+					if (responseHandler.getMessage().equals("Group created")) {
 
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, WelComeActivity.this, true);
-						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, WelComeActivity.this, responseObj.getData().get(0).getTutorialGroupId());
-						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, WelComeActivity.this, responseObj.getData().get(0).getTutorialGroupName());
+						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, WelComeActivity.this, responseHandler.getTutorialGroup().get(0).getTutorialGroupId());
+						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, WelComeActivity.this, responseHandler.getTutorialGroup().get(0).getTutorialGroupName());
 
-						for (TutorialGroupMember member : responseObj.getData().get(0).getTutorialGroupMembers()) {
+						for (TutorialGroupMember member : responseHandler.getTutorialGroup().get(0).getTutorialGroupMembers()) {
 							if (member.getUserId().equals(Global.strUserId)) {
 								PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, WelComeActivity.this, member.getCourseName());
 								PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, WelComeActivity.this, member.getAcademicYear());
@@ -130,7 +131,7 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 					} else {
 						Toast.makeText(WelComeActivity.this, R.string.msg_tutorial_group_pending, Toast.LENGTH_LONG).show();
 					}
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
 					Log.e(TAG, "onResponseAllocateTutorialGroup Failed");
 				}
 			} else if (error != null) {

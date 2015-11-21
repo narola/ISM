@@ -9,21 +9,21 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.StudentAttemptedFragment;
 import com.ism.author.fragment.TrialExamObjectiveDetailFragment;
-import com.ism.author.helper.CircleImageView;
-import com.ism.author.helper.ImageLoaderInit;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.Data;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.ws.helper.WebserviceWrapper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
  */
 public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttemptedAdapter.Viewholder> implements WebserviceWrapper.WebserviceResponse {
     ArrayList<Data> arrayList = new ArrayList<Data>();
-    ResponseObject resObjStudentAttempted;
+    ResponseHandler resObjStudentAttempted;
     private Context context;
     Fragment fragment;
     LayoutInflater inflater;
@@ -42,9 +42,9 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     private static String TAG = StudentAttemptedAdapter.class.getSimpleName();
     private int lastSelected = -1;
     private String studentName;
-    private ResponseObject responseObjectEval;
+    private ResponseHandler responseHandlerEval;
 
-    public StudentAttemptedAdapter(ResponseObject resObjStudentAttempted, Context context, Fragment fragment) {
+    public StudentAttemptedAdapter(ResponseHandler resObjStudentAttempted, Context context, Fragment fragment) {
         this.resObjStudentAttempted = resObjStudentAttempted;
         this.context = context;
         this.fragment = fragment;
@@ -78,7 +78,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
             } else {
                 viewholder.lLMain.setBackgroundResource(R.drawable.bg_student_attempted_unselected);
             }
-            imageLoader.displayImage(WebConstants.USER_IMAGES + arrayList.get(position).getProfilePic(), viewholder.imgUserPic, ImageLoaderInit.options);
+            imageLoader.displayImage(WebConstants.USER_IMAGES + arrayList.get(position).getProfilePic(), viewholder.imgUserPic, ISMAuthor.options);
             viewholder.lLMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -119,10 +119,10 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
         try {
             if (Utility.isOnline(context)) {
                 ((AuthorHostActivity) context).startProgress();
-                RequestObject requestObject = new RequestObject();
-                requestObject.setStudentId("202");
-                requestObject.setExamId("9");
-                new WebserviceWrapper(context, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setStudentId("202");
+                attribute.setExamId("9");
+                new WebserviceWrapper(context, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } else {
                 Utility.toastOffline(context);
@@ -150,11 +150,11 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
             ((AuthorHostActivity) context).stopProgress();
 
             if (API_METHOD == WebConstants.GETEXAMEVALUATIONS) {
-                ResponseObject responseObject = (ResponseObject) object;
-                if (responseObject.getStatus().equals(WebConstants.STATUS_SUCCESS)) {
-                    if (responseObject.getData().get(0).getEvaluations().size() != 0) {
-                        responseObjectEval = responseObject;
-                        TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseObjectEval);
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.STATUS_SUCCESS)) {
+                    if (responseHandler.getData().get(0).getEvaluations().size() != 0) {
+                        responseHandlerEval = responseHandler;
+                        TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseHandlerEval);
                         TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
                         trialExamDetailsAdapter.notifyDataSetChanged();
                     }

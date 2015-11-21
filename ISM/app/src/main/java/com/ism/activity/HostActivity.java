@@ -25,6 +25,7 @@ import com.ism.adapter.ControllerTopSpinnerAdapter;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
+import com.ism.fragment.AccordionFragment;
 import com.ism.fragment.AllMessageFragment;
 import com.ism.fragment.AllNoticeFragment;
 import com.ism.fragment.AllNotificationFragment;
@@ -36,7 +37,6 @@ import com.ism.fragment.DeskFragment;
 import com.ism.fragment.MyActivityFragment;
 import com.ism.fragment.MyFeedsFragment;
 import com.ism.fragment.MyWalletFragment;
-import com.ism.fragment.AccordionFragment;
 import com.ism.fragment.ProfileControllerFragment;
 import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.StudymatesFragment;
@@ -50,10 +50,14 @@ import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
-import com.ism.ws.RequestObject;
-import com.ism.ws.ResponseObject;
-import com.ism.ws.WebserviceWrapper;
-import com.ism.ws.model.Data;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.DataUserPreferences;
+import com.ism.ws.model.Notification;
+import com.ism.ws.model.PrivacySetting;
+import com.ism.ws.model.ResponseObject;
+import com.ism.ws.model.SMSAlert;
 
 import java.util.ArrayList;
 
@@ -114,7 +118,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private int currentMainFragment;
     private int currentRightFragment;
     private int currentMainFragmentBg;
-    private ArrayList<Data> arrayList = new ArrayList<>();
+    private ArrayList<Notification> arrayListNotification = new ArrayList<>();
+    private ArrayList<SMSAlert> arrayListSMSAlert = new ArrayList<>();
+    private ArrayList<PrivacySetting> arrayListPrivacySetting = new ArrayList<>();
 
     public interface HostListenerAboutMe {
         public void onSelectImage(Bitmap bitmap);
@@ -181,7 +187,13 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 //	    Global.strProfilePic = PreferenceData.getStringPrefs(PreferenceData.USER_PROFILE_PIC, HostActivity.this);
         Global.strProfilePic = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png";
 
-        callApiGetAllBadgesCount();
+	    if (Utility.isConnected(HostActivity.this)) {
+		    callApiGetAllBadgesCount();
+		    callApiGetGeneralSettingPreferences();
+		    callApiForGetUserPreference();
+	    } else {
+		    Utility.toastOffline(HostActivity.this);
+	    }
 
         loadFragment(FRAGMENT_HOME, null);
         loadFragment(FRAGMENT_CHAT, null);
@@ -233,40 +245,40 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         });
 
         imgLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PreferenceData.clearWholePreference(HostActivity.this);
-                Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
-                startActivity(intentLogin);
-                finish();
-            }
+	        @Override
+	        public void onClick(View v) {
+		        PreferenceData.clearWholePreference(HostActivity.this);
+		        Intent intentLogin = new Intent(HostActivity.this, LoginActivity.class);
+		        startActivity(intentLogin);
+		        finish();
+	        }
         });
 
         imgSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imgSearch.setActivated(!imgSearch.isActivated());
-                if (etSearch.getVisibility() == View.VISIBLE) {
+	        @Override
+	        public void onClick(View v) {
+		        imgSearch.setActivated(!imgSearch.isActivated());
+		        if (etSearch.getVisibility() == View.VISIBLE) {
 //		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
 //		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
-                    etSearch.setVisibility(View.GONE);
-                } else {
-                    startSlideAnimation(etSearch, etSearch.getWidth(), 0, 0, 0);
-                    startSlideAnimation(imgSearch, etSearch.getWidth(), 0, 0, 0);
-                    etSearch.setVisibility(View.VISIBLE);
-                    Utility.showSoftKeyboard(etSearch, HostActivity.this);
-                }
-            }
+			        etSearch.setVisibility(View.GONE);
+		        } else {
+			        startSlideAnimation(etSearch, etSearch.getWidth(), 0, 0, 0);
+			        startSlideAnimation(imgSearch, etSearch.getWidth(), 0, 0, 0);
+			        etSearch.setVisibility(View.VISIBLE);
+			        Utility.showSoftKeyboard(etSearch, HostActivity.this);
+		        }
+	        }
         });
 
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    Log.e(TAG, "search clicked");
-                }
-                return false;
-            }
+	        @Override
+	        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+			        Log.e(TAG, "search clicked");
+		        }
+		        return false;
+	        }
         });
 
         imgNotes.setOnClickListener(new View.OnClickListener() {
@@ -305,9 +317,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         txtFive.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
 
-        callApiGetGeneralSettingPreferences();
-        callApiForGETUSerPreference();
-
     }
 
     private void callApiGetGeneralSettingPreferences() {
@@ -325,10 +334,10 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void callApiGetAllBadgesCount() {
         try {
             showProgress();
-            RequestObject requestObject = new RequestObject();
-            requestObject.setUserId(Global.strUserId);
+            Attribute attribute = new Attribute();
+            attribute.setUserId(Global.strUserId);
 
-            new WebserviceWrapper(HostActivity.this, requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(HostActivity.this, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_BADGES_COUNT);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetAllBadgesCount Exception : " + e.toString());
@@ -474,12 +483,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     txtTitle.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
-                    Debug.i(TAG, "FRAGMENT_GENERAL_SETTINGS atacheched");
                     currentMainFragment = fragment;
-                    // llControllerLeft.setVisibility(View.GONE);
-                    currentMainFragment = fragment;
-                    Debug.i(TAG, "FRAGMENT_GENERAL_SETTINGS atacheched");
-                    // llControllerLeft.setVisibility(View.GONE);
                     break;
                 case FRAGMENT_ALL_NOTIFICATION:
                     currentMainFragment = fragment;
@@ -495,8 +499,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     break;
                 case FRAGMENT_EDIT_PROFILE:
                     currentMainFragment = fragment;
-
-                    rlControllerTopMenu.setVisibility(View.VISIBLE);
                     break;
 
             }
@@ -556,7 +558,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     loadControllerTopMenu(null);
                     break;
                 case FRAGMENT_EDIT_PROFILE:
-                    loadControllerTopMenu(null);
+                   // loadControllerTopMenu(null);
                     break;
             }
         } catch (Exception e) {
@@ -785,46 +787,17 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
-        ResponseObject responseObject = (ResponseObject) object;
+
         hideProgress();
         try {
 
 
             if (WebConstants.GENERAL_SETTING_PREFERENCES == apiCode) {
+                onResponseGetAllPreference(object, error);
 
-                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
-                    if (responseObject.getData().size() > 0) {
-
-                        arrayList = responseObject.getData().get(0).getSmsAlert();
-                        for (int j = 0; j < arrayList.size(); j++) {
-                            PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
-                            //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
-                        }
-                        arrayList = responseObject.getData().get(0).getNotification();
-                        for (int j = 0; j < arrayList.size(); j++) {
-                            PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
-                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
-                        }
-                        arrayList = responseObject.getData().get(0).getPrivacySetting();
-                        for (int j = 0; j < arrayList.size(); j++) {
-                            PreferenceData.setStringPrefs(arrayList.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayList.get(j).getId());
-                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
-                        }
-                    }
-                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
-
-                }
             } else if (WebConstants.GET_USER_PREFERENCES == apiCode) {
+                onResponseGetUserPreference(object, error);
 
-                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
-                    if (responseObject.getData().size() > 0) {
-                        for (int j = 0; j < responseObject.getData().size(); j++) {
-                            GeneralSettingsFragment.newInstance().setPreferenceList(responseObject.getData().get(j).getId(), responseObject.getData().get(j).getDefaultValue(), getApplicationContext());
-                        }
-                    } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
-
-                    }
-                }
             } else if (WebConstants.GET_ALL_BADGES_COUNT == apiCode) {
                 onResponseGetAllBadges(object, error);
             }
@@ -833,11 +806,78 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         }
     }
 
-    private void callApiForGETUSerPreference() {
+    private void onResponseGetAllPreference(Object object, Exception error) {
         try {
+            if (object != null) {
+                ResponseHandler responseObject = (ResponseHandler) object;
+                if (responseObject.getStatus().toString().equals(WebConstants.SUCCESS)) {
+                    if (responseObject.getPreference().size() > 0) {
 
+                        arrayListSMSAlert = responseObject.getPreference().get(0).getSMSAlert();
+                        for (int j = 0; j < arrayListSMSAlert.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
+                            //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                        arrayListNotification = responseObject.getPreference().get(0).getNotification();
+                        for (int j = 0; j < arrayListNotification.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayListNotification.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotification.get(j).getId());
+                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                        arrayListPrivacySetting = responseObject.getPreference().get(0).getPrivacySetting();
+                        for (int j = 0; j < arrayListPrivacySetting.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
+                            // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
+                        }
+                    }
+
+                } else if (responseObject.getStatus().equals(WebConstants.FAILED)) {
+                    Log.e(TAG, "Failed to load general setting preferences");
+                }
+            } else if (error != null) {
+                Log.e(TAG, "onResponseGetAllPreference api Exceptiion : " + error.toString());
+            }
+
+
+        } catch (Exception e) {
+
+            Debug.i(TAG, "onResponseGetAllPreference :" + e.getLocalizedMessage());
+
+        }
+    }
+
+    private void onResponseGetUserPreference(Object object, Exception error) {
+        try {
+            if (object != null) {
+                ResponseHandler responseObject = (ResponseHandler) object;
+                if (responseObject.getStatus().toString().equals(WebConstants.SUCCESS)) {
+                    if (responseObject.getPreference().size() > 0) {
+                        ArrayList<DataUserPreferences> arrayListUserPreferences=new ArrayList<>();
+                        arrayListUserPreferences=responseObject.getUserPreference();
+                        for (int j = 0; j < arrayListUserPreferences.size(); j++) {
+                            GeneralSettingsFragment.newInstance().setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getApplicationContext());
+                        }
+                    }
+
+                } else if (responseObject.getStatus().equals(WebConstants.FAILED)) {
+                    Log.e(TAG, "Failed to load user setting preferences");
+                }
+            } else if (error != null) {
+                Log.e(TAG, "onResponseGetUserPreference api Exceptiion : " + error.toString());
+            }
+
+
+        } catch (Exception e) {
+
+            Debug.i(TAG, "onResponseGetUserPreference :" + e.getLocalizedMessage());
+
+        }
+    }
+
+    private void callApiForGetUserPreference() {
+
+        try {
             showProgress();
-            RequestObject requestObject = new RequestObject();
+            Attribute requestObject = new Attribute();
             requestObject.setUserId("1");
             new WebserviceWrapper(getApplicationContext(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_USER_PREFERENCES);
 
@@ -866,25 +906,12 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     }
 
 
-//	@Override
-//	public void onResponse(Object object, Exception error, int apiCode) {
-//		try {
-//			switch (apiCode) {
-//				case WebConstants.GET_ALL_BADGES_COUNT:
-//					onResponseGetAllBadges(object, error);
-//					break;
-//			}
-//		} catch (Exception e) {
-//			Log.e(TAG, "onResponse Exception : " + e.toString());
-//		}
-//	}
-
     private void onResponseGetAllBadges(Object object, Exception error) {
         try {
             hideProgress();
             if (object != null) {
                 ResponseObject responseObject = (ResponseObject) object;
-                if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseObject.getStatus().equals(WebConstants.SUCCESS)) {
 
                     String count = responseObject.getData().get(0).getNotificationCount();
                     PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_NOTIFICATION, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
@@ -894,7 +921,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
                     count = responseObject.getData().get(0).getRequestCount();
                     PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_REQUEST, HostActivity.this, count != null ? Integer.valueOf(count) : 0);
-                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObject.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "Failed to load badges count");
                 }
             } else if (error != null) {

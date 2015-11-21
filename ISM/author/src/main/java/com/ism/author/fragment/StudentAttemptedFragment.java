@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
@@ -19,10 +19,10 @@ import com.ism.author.adapter.StudentAttemptedAdapter;
 import com.ism.author.adapter.TrialExamDetailsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.Data;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     private ArrayList<Data> arrayList = new ArrayList<>();
     private StudentAttemptedAdapter studentAttemptedAdapter;
     private TrialExamDetailsAdapter trialExamDetailsAdapter;
-    public static ResponseObject responseObjQuestions;
+    public static ResponseHandler responseObjQuestions;
     public static List<String> questionsID = new ArrayList<>();
 
     public static StudentAttemptedFragment newInstance() {
@@ -63,13 +63,13 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
         rvList = (RecyclerView) view.findViewById(R.id.rv_list);
         rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        RequestObject requestObject = new RequestObject();
-        requestObject.setExamId("9");
-        requestObject.setUserId("340");
-        requestObject.setRole("3");
+        Attribute attribute = new Attribute();
+        attribute.setExamId("9");
+        attribute.setUserId("340");
+        attribute.setRole("3");
         // Debug.i(TAG, "Request student attemted list : " ));
         ((AuthorHostActivity) getActivity()).startProgress();
-        new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+        new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                 .execute(WebConstants.GETEXAMSUBMISSION);
 
 
@@ -124,8 +124,8 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 //        Debug.i(TAG, "Response of student attempted  ::" + responseObject.getData().get(0).getExamID());
         try {
             if (API_METHOD == WebConstants.GETEXAMSUBMISSION) {
-                ResponseObject resObjSubmisssion = (ResponseObject) object;
-                if (resObjSubmisssion.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler resObjSubmisssion = (ResponseHandler) object;
+                if (resObjSubmisssion.getStatus().equals(ResponseHandler.SUCCESS)) {
                     // ((AuthorHostActivity)getActivity()).stopProgress();
                     if (resObjSubmisssion.getData().size() != 0) {
 
@@ -134,20 +134,20 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                         studentAttemptedAdapter = new StudentAttemptedAdapter(resObjSubmisssion, getActivity(), this);
                         rvList.setAdapter(studentAttemptedAdapter);
                         rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        RequestObject requestObject = new RequestObject();
-                        requestObject.setExamId("3");
-                        //requestObject.setStudentId("202");
+                        Attribute attribute = new Attribute();
+                        attribute.setExamId("3");
+                        //attribute.setStudentId("202");
                         ((AuthorHostActivity) getActivity()).startProgress();
-                        callapigetexamquestions(requestObject);
+                        callapigetexamquestions(attribute);
 
                     }
 
-                } else if (resObjSubmisssion.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (resObjSubmisssion.getStatus().equals(ResponseHandler.FAILED)) {
                     Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
                 }
             } else if (API_METHOD == WebConstants.GETEXAMQUESTIONS) {
-                ResponseObject resObjQuestions = (ResponseObject) object;
-                if (resObjQuestions.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler resObjQuestions = (ResponseHandler) object;
+                if (resObjQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
                     if (resObjQuestions.getData().size() != 0) {
                         responseObjQuestions = resObjQuestions;
                         // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
@@ -170,7 +170,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
                     }
 
-                } else if (resObjQuestions.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (resObjQuestions.getStatus().equals(ResponseHandler.FAILED)) {
                     Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
                 }
             }
@@ -181,12 +181,12 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     }
 
-    private void callapigetexamquestions(RequestObject requestObject) {
+    private void callapigetexamquestions(Attribute attribute) {
 
         if (Utility.isOnline(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
                 Log.i(TAG, "callApi GETEXAMQUESTIONS ::" + e.getLocalizedMessage());

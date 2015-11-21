@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.InputValidator;
@@ -25,11 +24,11 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.Data;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 
@@ -247,18 +246,18 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             public void onClick(View v) {
                 if (Utility.isOnline(getActivity())) {
                     if (isInputsValid()) {
-                        RequestObject requestObject = new RequestObject();
-                        requestObject.setFirstname(etFirstName.getText().toString().trim());
-                        requestObject.setLastname(etLastName.getText().toString().trim());
-                        requestObject.setEmailAddress(etEmail.getText().toString().trim());
-                        requestObject.setHomeAddress(etHomeAddress.getText().toString().trim());
-                        requestObject.setSchoolName(etSchoolName.getText().toString().trim());
-                        requestObject.setContactNumber(etContactNo.getText().toString().trim());
-                        requestObject.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
-                        requestObject.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
-                        requestObject.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
+                        Attribute attribute = new Attribute();
+                        attribute.setFirstname(etFirstName.getText().toString().trim());
+                        attribute.setLastname(etLastName.getText().toString().trim());
+                        attribute.setEmailAddress(etEmail.getText().toString().trim());
+                        attribute.setHomeAddress(etHomeAddress.getText().toString().trim());
+                        attribute.setSchoolName(etSchoolName.getText().toString().trim());
+                        attribute.setContactNumber(etContactNo.getText().toString().trim());
+                        attribute.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
+                        attribute.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
+                        attribute.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
 
-                        callApiRequestCredentials(requestObject);
+                        callApiRequestCredentials(attribute);
                     }
                 } else {
                     Utility.toastOffline(getActivity());
@@ -332,10 +331,10 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             progState.setVisibility(View.VISIBLE);
             progState.setProgress(1);
             progressGenerator.start(progState);
-            RequestObject requestObject = new RequestObject();
-            requestObject.setCountryId(countryId);
+            Attribute attribute = new Attribute();
+            attribute.setCountryId(countryId);
 
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GETSTATES);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetStates Exception : " + e.getLocalizedMessage());
@@ -347,23 +346,23 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             progCity.setVisibility(View.VISIBLE);
             progCity.setProgress(1);
             progressGenerator.start(progCity);
-            RequestObject requestObject = new RequestObject();
-            requestObject.setStateId(stateId);
+            Attribute attribute = new Attribute();
+            attribute.setStateId(stateId);
 
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GETCITIES);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetCities Exception : " + e.getLocalizedMessage());
         }
     }
 
-    private void callApiRequestCredentials(RequestObject requestObject) {
+    private void callApiRequestCredentials(Attribute attribute) {
         try {
             btnCredentialsSubmit.setEnabled(false);
             progRequestCredentials.setVisibility(View.VISIBLE);
             progRequestCredentials.setProgress(1);
             progressGenerator.start(progRequestCredentials);
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.REQUESTCREDENTIALS);
         } catch (Exception e) {
             Log.e(TAG, "callApiRequestCredentials Exception : " + e.getLocalizedMessage());
@@ -377,13 +376,13 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             btnLogin.setEnabled(false);
             progressGenerator.start(btnLogin);
             btnLogin.setEnabled(false);
-            RequestObject requestObject = new RequestObject();
-            requestObject.setUsername(etUserid.getText().toString().trim());
-            requestObject.setPassword(etPwd.getText().toString().trim());
-//			requestObject.setUsername("0YGAJ8793B");
-//			requestObject.setPassword("narola21");
+            Attribute attribute = new Attribute();
+            attribute.setUsername(etUserid.getText().toString().trim());
+            attribute.setPassword(etPwd.getText().toString().trim());
+//			attribute.setUsername("0YGAJ8793B");
+//			attribute.setPassword("narola21");
 
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.LOGIN);
 
         } catch (Exception e) {
@@ -397,10 +396,10 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             progForgotPwd.setVisibility(View.VISIBLE);
             progForgotPwd.setProgress(1);
             progressGenerator.start(progForgotPwd);
-            RequestObject requestObject = new RequestObject();
-            requestObject.setEmailId(email);
+            Attribute attribute = new Attribute();
+            attribute.setEmailId(email);
 
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                     .execute(WebConstants.FORGOTPASSWORD);
 
         } catch (Exception e) {
@@ -453,8 +452,8 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             btnLogin.setProgress(100);
             btnLogin.setEnabled(true);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     if (responseObj.getData().get(0).getUserId() == null) {
 
@@ -477,7 +476,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                     } else {
                     }
 
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(getActivity().getString(R.string.msg_invalid_username_password), getActivity());
                 }
             } else if (error != null) {
@@ -499,11 +498,11 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                 progForgotPwd.setVisibility(View.INVISIBLE);
             }
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utils.showToast(getActivity().getString(R.string.password_sent), getActivity());
                     dialogForgotPassword.dismiss();
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(getActivity().getString(R.string.email_not_found), getActivity());
                 }
             } else if (error != null) {
@@ -519,8 +518,8 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             progState.setProgress(100);
             progState.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListStates = new ArrayList<Data>();
                     arrListStates.addAll(responseObj.getData());
                     List<String> states = new ArrayList<String>();
@@ -529,7 +528,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                         states.add(state.getStateName());
                     }
                     Adapters.setUpSpinner(getActivity(), spState, states, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseStates Failed");
                 }
             } else if (error != null) {
@@ -545,8 +544,8 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             progCountry.setProgress(100);
             progCountry.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListCountries = new ArrayList<Data>();
                     arrListCountries.addAll(responseObj.getData());
                     List<String> countries = new ArrayList<String>();
@@ -555,7 +554,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                         countries.add(country.getCountryName());
                     }
                     Adapters.setUpSpinner(getActivity(), spCountry, countries, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCountries Failed");
                 }
             } else if (error != null) {
@@ -576,13 +575,13 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                 progRequestCredentials.setVisibility(View.INVISIBLE);
             }
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     if (dialogCredentials != null) {
                         dialogCredentials.dismiss();
                     }
                     Utils.showToast(getActivity().getString(R.string.msg_success_sent_credential), getActivity());
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -599,8 +598,8 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             progCity.setProgress(100);
             progCity.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListCities = new ArrayList<Data>();
                     arrListCities.addAll(responseObj.getData());
                     List<String> cities = new ArrayList<String>();
@@ -609,7 +608,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                         cities.add(city.getCityName());
                     }
                     Adapters.setUpSpinner(getActivity(), spCity, cities, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCities Failed");
                 }
             } else if (error != null) {

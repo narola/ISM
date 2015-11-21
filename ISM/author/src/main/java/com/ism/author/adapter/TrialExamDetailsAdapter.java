@@ -14,9 +14,9 @@ import android.widget.TextView;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.fragment.StudentAttemptedFragment;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.model.Data;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.ws.helper.ResponseHandler;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetailsAdapter.ViewHolder> {
     private String studentName;
-    ResponseObject responseObject, studentEvalResObj;
+    ResponseHandler responseHandler, studentEvalResObj;
     Context context;
     LayoutInflater inflater;
     public static MyTypeFace myTypeFace;
@@ -34,12 +34,12 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
     int asciiChar = 65;
     ArrayList<Data> dataArrayList = new ArrayList<Data>();
 
-    public TrialExamDetailsAdapter(ResponseObject studentEvalResObj) {
+    public TrialExamDetailsAdapter(ResponseHandler studentEvalResObj) {
         this.studentEvalResObj = studentEvalResObj;
     }
 
-    public TrialExamDetailsAdapter(ResponseObject responseObject, Context context, Fragment fragment, ResponseObject studentEvalResObj) {
-        this.responseObject = responseObject;
+    public TrialExamDetailsAdapter(ResponseHandler responseHandler, Context context, Fragment fragment, ResponseHandler studentEvalResObj) {
+        this.responseHandler = responseHandler;
         this.context = context;
         this.fragment = fragment;
         this.studentEvalResObj = studentEvalResObj;
@@ -58,7 +58,7 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
     public void onBindViewHolder(TrialExamDetailsAdapter.ViewHolder holder, int position) {
         try {
             ArrayList<Data> arrayList = new ArrayList<Data>();
-            arrayList = responseObject.getData().get(0).getQuestions();
+            arrayList = responseHandler.getData().get(0).getQuestions();
             int qno = position + 1;
             //holder.txtQuestionNo.setText("Questions " + qno);
             holder.txtQuestionNo.setText(Html.fromHtml("<u>" + "Questions " + qno + "</u>"));
@@ -122,12 +122,12 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
 
     @Override
     public long getItemId(int position) {
-        return responseObject.getData().get(0).getQuestions().size();
+        return responseHandler.getData().get(0).getQuestions().size();
     }
 
     @Override
     public int getItemCount() {
-        return responseObject.getData().get(0).getQuestions().size();
+        return responseHandler.getData().get(0).getQuestions().size();
     }
 
 

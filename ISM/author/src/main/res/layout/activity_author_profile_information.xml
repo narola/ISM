@@ -191,7 +191,7 @@
                             android:onClick="onClickUploadImage"
                             android:orientation="vertical">
 
-                            <com.ism.author.helper.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            <com.ism.author.views.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                                 android:id="@+id/img_dp_post_creator"
                                 android:layout_width="200sp"
                                 android:layout_height="match_parent"

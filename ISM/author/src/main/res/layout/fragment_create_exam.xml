@@ -163,7 +163,7 @@
                     android:orientation="horizontal">
 
                     <Spinner
-                        android:id="@+id/sp_exam_examname"
+                        android:id="@+id/sp_exam_examcategory"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -668,7 +668,7 @@
                     android:id="@+id/rte_trial_exam"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/rich_text_editor_height"
-                    android:layout_marginLeft="@dimen/d15dp"
+                    android:layout_marginRight="@dimen/d15dp"
                     android:layout_marginTop="@dimen/d15dp">
 
                 </com.narola.kpa.richtexteditor.view.RichTextEditor>

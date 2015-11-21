@@ -7,7 +7,7 @@
     tools:context="com.ism.fragment.NotesFragment">
 
 
-    <com.ism.author.helper.AccordionView
+    <com.ism.author.views.AccordionView
         android:id="@+id/accordion_view_chat"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -62,7 +62,7 @@
             android:padding="@dimen/d5dp" />
 
 
-    </com.ism.author.helper.AccordionView>
+    </com.ism.author.views.AccordionView>
 
 
 </RelativeLayout>

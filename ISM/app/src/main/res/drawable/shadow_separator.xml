@@ -1,65 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item>
         <shape>
-            <padding
-                android:bottom="1px"
-                 />
+            <padding android:bottom="1px" />
             <solid android:color="#00bababa" />
-            <size android:height="@dimen/d3dp"/>
+            <size android:height="@dimen/d30dp" />
 
         </shape>
     </item>
     <item>
         <shape>
-            <padding
-                android:bottom="1px"
-                 />
+            <padding android:bottom="1px" />
             <solid android:color="#10bababa" />
-            <size android:height="@dimen/d3dp"/>
+            <size android:height="@dimen/d30dp" />
 
         </shape>
     </item>
     <item>
         <shape>
-            <padding
-                android:bottom="1px"
-                android:left="1px"
-                android:right="1px"
-                android:top="1px" />
+            <padding android:bottom="1px" />
             <solid android:color="#20bababa" />
-            <size android:height="@dimen/d3dp"/>
+            <size android:height="@dimen/d30dp" />
 
         </shape>
     </item>
     <item>
         <shape>
-            <padding
-                android:bottom="1px"
-                 />
+            <padding android:bottom="1px" />
             <solid android:color="#30bababa" />
-            <size android:height="@dimen/d3dp"/>
+            <size android:height="@dimen/d30dp" />
 
         </shape>
     </item>
     <item>
         <shape>
-            <padding
-                android:bottom="1px"
-                />
+            <padding android:bottom="1px" />
             <solid android:color="#20bababa" />
-            <size android:height="@dimen/d3dp"/>
+            <size android:height="@dimen/d30dp" />
 
         </shape>
     </item>
-    <!--<item>-->
-        <!--<shape>-->
-            <!--<padding android:bottom="1px" />-->
-
-            <!--<solid android:color="#ffffff" />-->
-            <!--<size android:height="@dimen/d3dp"/>-->
-        <!--</shape>-->
-    <!--</item>-->
+    <item>
+        <shape>
+            <padding android:bottom="1dp" />
+            <solid android:color="#f9f9f9" />
+            <size android:height="@dimen/d30dp" />
+        </shape>
+    </item>
 
 </layer-list>

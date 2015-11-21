@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
@@ -23,12 +23,12 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
 
 import java.util.ArrayList;
 
@@ -40,12 +40,10 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private static final String TAG = GetStudentsFragment.class.getSimpleName();
     private View view;
     Fragment mFragment;
-    private FragmentArgument fragmentArgument;
 
-
-    public GetStudentsFragment(Fragment fragment, FragmentArgument fragmentArgument) {
+    public GetStudentsFragment(Fragment fragment) {
         this.mFragment = fragment;
-        this.fragmentArgument = fragmentArgument;
+
     }
 
     private ImageView imgSearchMystudents;
@@ -148,7 +146,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
 
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
-                RequestObject request = new RequestObject();
+                Attribute request = new Attribute();
 //                request.setExamId(fragmentArgument.getRequestObject().getExamId());
                 request.setExamId("9");
                 request.setUserId("340");
@@ -184,12 +182,13 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     listOfStudents.addAll(responseObj.getData().get(0).getEvaluations());
                     myStudentListAdapter.addAll(listOfStudents);
                     myStudentListAdapter.notifyDataSetChanged();
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -199,4 +198,15 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
             Debug.e(TAG, "onResponseGetAllExamSubmission Exception : " + e.toString());
         }
     }
+
+    private FragmentArgument getFragmentArguments() {
+        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getFragmnetArgument();
+
+    }
+
+    public void refreshAdapterForStudentNavigation() {
+        myStudentListAdapter.notifyDataSetChanged();
+
+    }
+
 }

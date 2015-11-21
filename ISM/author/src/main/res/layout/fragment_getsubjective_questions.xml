@@ -15,12 +15,11 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.75"
+            android:layout_weight="0.90"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="@dimen/d10dp">
+            android:orientation="horizontal">
 
-            <com.ism.author.helper.CircleImageView
+            <com.ism.author.views.CircleImageView
                 android:id="@+id/img_student_profile_pic"
                 android:layout_width="@dimen/d50dp"
                 android:layout_height="@dimen/d50dp"
@@ -62,7 +61,8 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.75"
+            android:layout_marginLeft="@dimen/d15dp"
+            android:layout_weight="1.65"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -93,7 +93,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.50"
+            android:layout_weight="0.45"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -122,6 +122,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_app_dark">
+
+        <LinearLayout
+            android:id="@+id/ll_prev_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="@dimen/d20dp">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_prev" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_student_evalution_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/strevaluation"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d18dp" />
+
+        <LinearLayout
+            android:id="@+id/ll_next_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="@dimen/d20dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_next" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
 
 
 </LinearLayout>

@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ import com.ism.R;
 import com.ism.ws.model.Data;
 
 import java.io.ByteArrayOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,13 +62,13 @@ public class Utility {
 
 	/**
 	 * Krunal Panchal
-	 * Check if internet connection available.
+	 * Check if internet connection available and network access.
 	 * @param context
-	 * @return
+	 * @return returns whether connection to network can be made or not.
 	 */
-	public static boolean isOnline(Context context) {
+	public static boolean isConnected(Context context) {
 		NetworkInfo networkInfo = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-		return networkInfo != null && networkInfo.isConnectedOrConnecting();
+		return networkInfo != null && networkInfo.isConnected();
 	}
 
 	/**
@@ -204,16 +207,17 @@ public class Utility {
 		});
 	}
 
-	/*These is the method to show toast in android
-    * */
-	public static void showToast(String message, Context mContext) {
+	/**
+	 * These is the method to show toast in android
+	 * @param message
+	 * @param context
+	 */
+	public static void showToast(String message, Context context) {
 		try {
-			Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e(TAG, "showToast Exception : " + e.toString());
 		}
-
 	}
-
 
 }

@@ -9,16 +9,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
-import com.ism.author.Utility.Utils;
-import com.ism.author.helper.CircleImageView;
-import com.ism.author.helper.MyTypeFace;
-import com.ism.author.model.Data;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.model.FragmentArgument;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.ws.model.Examsubmittor;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -31,7 +30,7 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
 
     private static final String TAG = AssignmentSubmittorAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Data> listOfStudents = new ArrayList<Data>();
+    private ArrayList<Examsubmittor> listOfStudents = new ArrayList<Examsubmittor>();
     private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
     private FragmentArgument fragmentArgument;
@@ -70,24 +69,25 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                     holder.imgAssignmentSubmittorDp, ISMAuthor.options);
 
-            holder.tvAssignmentSubmittorName.setText(listOfStudents.get(position).getFullName());
-            holder.tvAssignmentSubmittorRollno.setText(mContext.getString(R.string.strrollno) + " " + listOfStudents.get(position).getRoleId());/*this data set is left*/
+            holder.tvAssignmentSubmittorName.setText(listOfStudents.get(position).getStudentName());
+            holder.tvAssignmentSubmittorRollno.setText(mContext.getString(R.string.strrollno) + " " + listOfStudents.get(position).getStudentId());/*this data set is left*/
             holder.tvAssignmentSubmissionDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", listOfStudents.get(position).getSubmissionDate()));
             holder.tvAssessmentStatus.setText(listOfStudents.get(position).getExamStatus());
 
             holder.llAssignmentSubmittorContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    fragmentArgument.getRequestObject().setStudentId(listOfStudents.get(position).getStudentId());
-                    Utils.showToast("The Exam Id is" + fragmentArgument.getRequestObject().getExamId() +
-                            "The student id is" + fragmentArgument.getRequestObject().getStudentId(), mContext);
 
+                    fragmentArgument.getFragmentArgumentObject().setStudentId(listOfStudents.get(position).getStudentId());
+                    fragmentArgument.getFragmentArgumentObject().setPosition(position);
+                    fragmentArgument.getFragmentArgumentObject().setProfilePic(listOfStudents.get(position).getStudentProfilePic());
+                    fragmentArgument.getFragmentArgumentObject().setStudentName(listOfStudents.get(position).getStudentName());
 
-                    if (fragmentArgument.getRequestObject().getExamMode().equalsIgnoreCase("subjective")) {
+                    if (fragmentArgument.getFragmentArgumentObject().getExamMode().equalsIgnoreCase("subjective")) {
 
                         ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS, fragmentArgument);
 
-                    } else if (fragmentArgument.getRequestObject().getExamMode().equalsIgnoreCase("objective")) {
+                    } else if (fragmentArgument.getFragmentArgumentObject().getExamMode().equalsIgnoreCase("objective")) {
 
                         ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS, fragmentArgument);
 
@@ -109,10 +109,10 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
         return listOfStudents.size();
     }
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<Examsubmittor> examsubmittor) {
         try {
             this.listOfStudents.clear();
-            this.listOfStudents.addAll(data);
+            this.listOfStudents.addAll(examsubmittor);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }

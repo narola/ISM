@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/studymate_tab_bg"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/d10dp">
+
+        <TextView
+            android:id="@+id/txt_read_books"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical"
+            android:padding="@dimen/d5dp"
+            android:text="@string/strBooksYouMayWantToRead"
+            android:textSize="@dimen/d20sp" />
+
+        <ImageView
+            android:id="@+id/img_filter_read_books"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/line1"
+            android:src="@drawable/img_filter" />
+
+        <TextView
+            android:id="@+id/line1"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/d40dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/img_search_read_books"
+            android:background="@color/color_text_hint" />
+
+        <ImageView
+            android:id="@+id/img_search_read_books"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+
+            android:src="@drawable/img_search" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_prev_read"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/d5dp"
+            android:src="@drawable/left_arrow" />
+
+        <com.ism.views.HorizontalListView
+            android:id="@+id/lv_suggested_books"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/d5dp"
+            android:layout_marginRight="@dimen/d5dp"
+            android:background="@color/color_white"
+            android:layout_toLeftOf="@+id/img_next_read"
+            android:layout_toRightOf="@+id/img_prev_read" />
+
+        <ImageView
+            android:id="@+id/img_next_read"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/d5dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/right_arrow" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/studymate_tab_bg"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/d10dp">
+
+        <TextView
+            android:id="@+id/txt_books"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical"
+            android:padding="@dimen/d5dp"
+            android:text="@string/strYourFavoriteBooks"
+            android:textSize="@dimen/d20sp" />
+
+        <ImageView
+            android:id="@+id/img_filter_fav_books"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/line2"
+            android:src="@drawable/img_filter" />
+
+        <TextView
+            android:id="@+id/line2"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/d40dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/img_search_fav_books"
+            android:background="@color/color_text_hint" />
+
+        <ImageView
+            android:id="@+id/img_search_fav_books"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/img_search" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_prev_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/d5dp"
+            android:src="@drawable/left_arrow" />
+
+        <com.ism.views.HorizontalListView
+            android:id="@+id/lv_fav_books"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/d5dp"
+            android:layout_marginRight="@dimen/d5dp"
+            android:layout_toLeftOf="@+id/img_next_fav"
+            android:layout_toRightOf="@+id/img_prev_fav"
+            android:background="@color/color_white" />
+
+        <ImageView
+            android:id="@+id/img_next_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/d5dp"
+            android:src="@drawable/right_arrow" />
+
+
+    </RelativeLayout>
+</LinearLayout>

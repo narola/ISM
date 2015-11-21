@@ -1,6 +1,7 @@
 package com.ism.author.adapter;
 
 import android.app.Fragment;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.Utility.Utils;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.model.Data;
 
 import java.util.ArrayList;
@@ -46,30 +49,97 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         try {
 
-            holder.tv_subjective_question_no.setTypeface(myTypeFace.getRalewayBold());
-            holder.tv_subjective_question_score.setTypeface(myTypeFace.getRalewayBold());
-            holder.tv_subjective_question_comment.setTypeface(myTypeFace.getRalewayBold());
+            holder.tvSubjectiveQuestionNo.setTypeface(myTypeFace.getRalewayBold());
+            holder.tvSubjectiveQuestionScore.setTypeface(myTypeFace.getRalewayBold());
+            holder.tvSubjectiveQuestionComment.setTypeface(myTypeFace.getRalewayBold());
 
-            holder.tv_subjective_question.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_subjective_question_ans_title.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_subjective_question_ans.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_subjective_ques_evaluation_notes_title.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_subjective_ques_evaluation_notes.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_score_excellent.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_score_good.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_score_fair.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_score_average.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_score_poor.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tv_score_incorrect.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvSubjectiveQuestion.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvSubjectiveQuestionAnsTitle.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvSubjectiveQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvSubjectiveQuesEvaluationNotesTitle.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvSubjectiveQuesEvaluationNotes.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvScoreExcellent.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvScoreGood.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvScoreFair.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvScoreAverage.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvScorePoor.setTypeface(myTypeFace.getRalewayRegular());
+            holder.tvScoreIncorrect.setTypeface(myTypeFace.getRalewayRegular());
+
+
+            holder.tvSubjectiveQuestionNo.setText(mContext.getResources().getString(R.string.strquestion) + " : " + (position + 1));
+
+            holder.tvSubjectiveQuestion.setText(Utils.formatHtml(listOfQuestions.get(position).getQuestionText()));
+
+            holder.tvSubjectiveQuesEvaluationNotes.setText(listOfQuestions.get(position).getEvaluationNotes());
+
+            if (evaluationList.size() > 0) {
+
+                if (evaluationList.get(position).getStudentResponse() != null) {
+                    holder.tvSubjectiveQuestionAns.setText(Utils.formatHtml(evaluationList.get(position).getStudentResponse()));
+                }
+
+                for (int i = 0; i < holder.scoreTextArray.length; i++) {
+                    holder.scoreTextArray[i].setActivated(false);
+                }
+
+                int score = Integer.valueOf(evaluationList.get(position).getEvaluationScore());
+                if (score >= 5) {
+                    setEvaluationSCore(holder.tvScoreExcellent);
+                } else if (score == 4) {
+                    setEvaluationSCore(holder.tvScoreGood);
+                } else if (score == 3) {
+                    setEvaluationSCore(holder.tvScoreFair);
+                } else if (score == 2) {
+                    setEvaluationSCore(holder.tvScoreAverage);
+                } else if (score == 1) {
+                    setEvaluationSCore(holder.tvScorePoor);
+                } else if (score == 0) {
+                    setEvaluationSCore(holder.tvScoreIncorrect);
+                }
+
+
+            }
+            holder.tvScoreExcellent.setTag(holder.scoreTextArray);
+            holder.tvScoreExcellent.setOnClickListener(evaluationClickListener);
+            holder.tvScoreGood.setTag(holder.scoreTextArray);
+            holder.tvScoreGood.setOnClickListener(evaluationClickListener);
+            holder.tvScoreFair.setTag(holder.scoreTextArray);
+            holder.tvScoreFair.setOnClickListener(evaluationClickListener);
+            holder.tvScoreAverage.setTag(holder.scoreTextArray);
+            holder.tvScoreAverage.setOnClickListener(evaluationClickListener);
+            holder.tvScorePoor.setTag(holder.scoreTextArray);
+            holder.tvScorePoor.setOnClickListener(evaluationClickListener);
+            holder.tvScoreIncorrect.setTag(holder.scoreTextArray);
+            holder.tvScoreIncorrect.setOnClickListener(evaluationClickListener);
+
+
+            holder.imgDeleteComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    holder.etAddComment.setText("");
+
+                }
+            });
+
+            holder.imgCopyComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(holder.etAddComment.getText());
+                    Toast.makeText(mContext, "Copied", Toast.LENGTH_SHORT).show();
+                }
+            });
 
 
         } catch (Exception e) {
             Debug.i(TAG, "BindViewHolder Exceptions:" + e.getLocalizedMessage());
         }
+
 
     }
 
@@ -91,36 +161,39 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_subjective_question_no, tv_subjective_question_score, tv_subjective_question_comment, tv_subjective_question,
-                tv_subjective_question_ans_title, tv_subjective_question_ans, tv_subjective_ques_evaluation_notes_title,
-                tv_subjective_ques_evaluation_notes, tv_score_excellent, tv_score_good, tv_score_fair, tv_score_average, tv_score_poor,
-                tv_score_incorrect;
-        ImageView img_copy_comment, img_delete_comment;
-        EditText et_add_comment;
+        TextView tvSubjectiveQuestionNo, tvSubjectiveQuestionScore, tvSubjectiveQuestionComment, tvSubjectiveQuestion,
+                tvSubjectiveQuestionAnsTitle, tvSubjectiveQuestionAns, tvSubjectiveQuesEvaluationNotesTitle,
+                tvSubjectiveQuesEvaluationNotes, tvScoreExcellent, tvScoreGood, tvScoreFair, tvScoreAverage, tvScorePoor,
+                tvScoreIncorrect;
+        ImageView imgCopyComment, imgDeleteComment;
+        EditText etAddComment;
+
+        TextView[] scoreTextArray;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             try {
-                tv_subjective_question_no = (TextView) itemView.findViewById(R.id.tv_subjective_question_no);
-                tv_subjective_question_score = (TextView) itemView.findViewById(R.id.tv_subjective_question_score);
-                tv_subjective_question_comment = (TextView) itemView.findViewById(R.id.tv_subjective_question_comment);
-                tv_subjective_question = (TextView) itemView.findViewById(R.id.tv_subjective_question);
-                tv_subjective_question_ans_title = (TextView) itemView.findViewById(R.id.tv_subjective_question_ans_title);
-                tv_subjective_question_ans = (TextView) itemView.findViewById(R.id.tv_subjective_question_ans);
-                tv_subjective_ques_evaluation_notes_title = (TextView) itemView.findViewById(R.id.tv_subjective_ques_evaluation_notes_title);
-                tv_subjective_ques_evaluation_notes = (TextView) itemView.findViewById(R.id.tv_subjective_ques_evaluation_notes);
-                tv_score_excellent = (TextView) itemView.findViewById(R.id.tv_score_excellent);
-                tv_score_good = (TextView) itemView.findViewById(R.id.tv_score_good);
-                tv_score_fair = (TextView) itemView.findViewById(R.id.tv_score_fair);
-                tv_score_average = (TextView) itemView.findViewById(R.id.tv_score_average);
-                tv_score_poor = (TextView) itemView.findViewById(R.id.tv_score_poor);
-                tv_score_incorrect = (TextView) itemView.findViewById(R.id.tv_score_incorrect);
+                tvSubjectiveQuestionNo = (TextView) itemView.findViewById(R.id.tv_subjective_question_no);
+                tvSubjectiveQuestionScore = (TextView) itemView.findViewById(R.id.tv_subjective_question_score);
+                tvSubjectiveQuestionComment = (TextView) itemView.findViewById(R.id.tv_subjective_question_comment);
+                tvSubjectiveQuestion = (TextView) itemView.findViewById(R.id.tv_subjective_question);
+                tvSubjectiveQuestionAnsTitle = (TextView) itemView.findViewById(R.id.tv_subjective_question_ans_title);
+                tvSubjectiveQuestionAns = (TextView) itemView.findViewById(R.id.tv_subjective_question_ans);
+                tvSubjectiveQuesEvaluationNotesTitle = (TextView) itemView.findViewById(R.id.tv_subjective_ques_evaluation_notes_title);
+                tvSubjectiveQuesEvaluationNotes = (TextView) itemView.findViewById(R.id.tv_subjective_ques_evaluation_notes);
+                tvScoreExcellent = (TextView) itemView.findViewById(R.id.tv_score_excellent);
+                tvScoreGood = (TextView) itemView.findViewById(R.id.tv_score_good);
+                tvScoreFair = (TextView) itemView.findViewById(R.id.tv_score_fair);
+                tvScoreAverage = (TextView) itemView.findViewById(R.id.tv_score_average);
+                tvScorePoor = (TextView) itemView.findViewById(R.id.tv_score_poor);
+                tvScoreIncorrect = (TextView) itemView.findViewById(R.id.tv_score_incorrect);
 
-                img_copy_comment = (ImageView) itemView.findViewById(R.id.img_copy_comment);
-                img_delete_comment = (ImageView) itemView.findViewById(R.id.img_delete_comment);
+                imgCopyComment = (ImageView) itemView.findViewById(R.id.img_copy_comment);
+                imgDeleteComment = (ImageView) itemView.findViewById(R.id.img_delete_comment);
 
-                et_add_comment = (EditText) itemView.findViewById(R.id.et_add_comment);
+                etAddComment = (EditText) itemView.findViewById(R.id.et_add_comment);
+                scoreTextArray = new TextView[]{tvScoreExcellent, tvScoreGood, tvScoreFair, tvScoreAverage, tvScorePoor, tvScoreIncorrect};
 
 
             } catch (Exception e) {
@@ -128,4 +201,35 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
             }
         }
     }
+
+    ArrayList<Data> evaluationList = new ArrayList<Data>();
+
+    public void setEvaluationData(ArrayList<Data> evaluationList) {
+        this.evaluationList = evaluationList;
+
+    }
+
+
+    private void setEvaluationSCore(TextView tv) {
+        tv.setActivated(true);
+    }
+
+
+    View.OnClickListener evaluationClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            TextView[] scoreTextArray = (TextView[]) v.getTag();
+
+            for (int i = 0; i < scoreTextArray.length; i++) {
+                if (v == scoreTextArray[i]) {
+                    scoreTextArray[i].setActivated(true);
+                } else {
+                    scoreTextArray[i].setActivated(false);
+                }
+            }
+
+        }
+    };
+
+
 }

@@ -6,15 +6,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
-import com.ism.author.helper.CircleImageView;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.fragment.GetSubjectiveAssignmentQuestionsFragment;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.model.Data;
+import com.ism.author.model.FragmentArgument;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -33,6 +36,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
     private Fragment mFragment;
     private LayoutInflater inflater;
 
+
     public MyStudentListAdapter(Context mContext, Fragment mFragment) {
         this.mContext = mContext;
         this.mFragment = mFragment;
@@ -40,6 +44,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
         imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         myTypeFace = new MyTypeFace(mContext);
         inflater = LayoutInflater.from(mContext);
+
     }
 
 
@@ -51,7 +56,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
         try {
 
@@ -61,6 +66,23 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
             holder.tvStudentRollNo.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvStudentName.setText(listOfStudents.get(position).getFullName());
             holder.tvStudentRollNo.setText(mContext.getResources().getString(R.string.strrollno) + (position + 1));
+
+            if (getFragmentArgument().getFragmentArgumentObject().getStudentId().equals(listOfStudents.get(position).getStudentId())) {
+                holder.tvStudentName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+            } else {
+                holder.tvStudentName.setTextColor(mContext.getResources().getColor(R.color.color_gray));
+            }
+
+            holder.llMyStudentsContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getFragmentArgument().getFragmentArgumentObject().setPosition(position);
+                    getFragmentArgument().getFragmentArgumentObject().setProfilePic(listOfStudents.get(position).getProfilePic());
+                    getFragmentArgument().getFragmentArgumentObject().setStudentName(listOfStudents.get(position).getFullName());
+                    getFragmnet().loadStudentEvaluationData(listOfStudents.get(position).getStudentId());
+                    notifyDataSetChanged();
+                }
+            });
 
         } catch (Exception e) {
             Debug.e(TAG, "onBindViewHolder Exception : " + e.toString());
@@ -78,6 +100,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
             this.listOfStudents.clear();
             this.listOfStudents.addAll(data);
             this.copyListOfStudents = data;
+            getFragmentArgument().setArrayListData(data);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
@@ -88,6 +111,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
 
         public CircleImageView imgStudentProfilePic;
         public TextView tvStudentName, tvStudentRollNo;
+        public LinearLayout llMyStudentsContainer;
 
         public ViewHolder(View convertView) {
             super(convertView);
@@ -96,6 +120,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
                 imgStudentProfilePic = (CircleImageView) convertView.findViewById(R.id.img_student_profile_pic);
                 tvStudentName = (TextView) convertView.findViewById(R.id.tv_student_name);
                 tvStudentRollNo = (TextView) convertView.findViewById(R.id.tv_student_roll_no);
+                llMyStudentsContainer = (LinearLayout) convertView.findViewById(R.id.ll_my_students_container);
 
             } catch (Exception e) {
                 Debug.e(TAG, "ViewHolder Exceptions :" + e.toString());
@@ -122,5 +147,17 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
         notifyDataSetChanged();
     }
 
+
+    private FragmentArgument getFragmentArgument() {
+
+        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getFragmnetArgument();
+
+    }
+
+    private GetSubjectiveAssignmentQuestionsFragment getFragmnet() {
+
+        return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
+
+    }
 
 }

@@ -5,7 +5,7 @@
         <shape>
             <padding android:bottom="1px" />
             <solid android:color="#00bababa" />
-            <size android:height="@dimen/d50dp" />
+            <size android:height="@dimen/d30dp" />
 
         </shape>
     </item>
@@ -13,7 +13,7 @@
         <shape>
             <padding android:bottom="1px" />
             <solid android:color="#10bababa" />
-            <size android:height="@dimen/d50dp" />
+            <size android:height="@dimen/d30dp" />
 
         </shape>
     </item>
@@ -21,7 +21,7 @@
         <shape>
             <padding android:bottom="1px" />
             <solid android:color="#20bababa" />
-            <size android:height="@dimen/d50dp" />
+            <size android:height="@dimen/d30dp" />
 
         </shape>
     </item>
@@ -29,7 +29,7 @@
         <shape>
             <padding android:bottom="1px" />
             <solid android:color="#30bababa" />
-            <size android:height="@dimen/d50dp" />
+            <size android:height="@dimen/d30dp" />
 
         </shape>
     </item>
@@ -37,7 +37,7 @@
         <shape>
             <padding android:bottom="1px" />
             <solid android:color="#20bababa" />
-            <size android:height="@dimen/d50dp" />
+            <size android:height="@dimen/d30dp" />
 
         </shape>
     </item>
@@ -45,7 +45,7 @@
         <shape>
             <padding android:bottom="1dp" />
             <solid android:color="#f9f9f9" />
-            <size android:height="@dimen/d50dp" />
+            <size android:height="@dimen/d30dp" />
         </shape>
     </item>
 
