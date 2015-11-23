@@ -3,20 +3,18 @@ package com.ism.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.ws.model.Badges;
 import com.ism.ws.model.City;
 import com.ism.ws.model.Country;
-import com.ism.ws.model.DataAboutMe;
-import com.ism.ws.model.DataGetAllPreferences;
-import com.ism.ws.model.DataUserPreferences;
+import com.ism.ws.model.Feeds;
+import com.ism.ws.model.SettingPreferences;
+import com.ism.ws.model.UserBooks;
+import com.ism.ws.model.UserPreferences;
 import com.ism.ws.model.State;
 import com.ism.ws.model.TutorialGroup;
 import com.ism.ws.model.User;
-import com.ism.ws.model.UserDetail;
 
 import java.util.ArrayList;
-
-//import com.narola.apisample.ws.model.Feed;
-//import com.narola.apisample.ws.model.Question;
 
 /**
  * Created by c161 on 19/11/15.
@@ -24,54 +22,46 @@ import java.util.ArrayList;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseHandler {
-	
-    private String message;
-    private String status;
-    private ArrayList<State> states;
-    private ArrayList<UserDetail> userDetails;
+
+	private String message;
+	private String status;
+	private ArrayList<State> states;
 	private ArrayList<Country> countries;
 	private ArrayList<City> cities;
 	private ArrayList<User> user;
 	private ArrayList<TutorialGroup> tutorialGroup;
-    private ArrayList<DataAboutMe> aboutMes;
-    private ArrayList<DataGetAllPreferences> preference;
-    private ArrayList<DataUserPreferences> userPreference;
+	private ArrayList<Badges> badges;
+	private ArrayList<Feeds> feeds;
+	private ArrayList<SettingPreferences> preference;
+	private ArrayList<UserPreferences> userPreference;
+    private ArrayList<UserBooks> books;
 
     @JsonProperty("message")
-    public String getMessage() {
-        return this.message;
-    }
+	public String getMessage() {
+		return this.message;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    @JsonProperty("status")
-    public String getStatus() {
-        return this.status;
-    }
+	@JsonProperty("status")
+	public String getStatus() {
+		return this.status;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    @JsonProperty("states")
-    public ArrayList<State> getStates() {
-        return this.states;
-    }
+	@JsonProperty("states")
+	public ArrayList<State> getStates() {
+		return this.states;
+	}
 
-    public void setStates(ArrayList<State> states) {
-        this.states = states;
-    }
-
-	@JsonProperty("user_details")
-    public ArrayList<UserDetail> getUserDetails() {
-        return this.userDetails;
-    }
-
-    public void setUserDetails(ArrayList<UserDetail> userDetails) {
-        this.userDetails = userDetails;
-    }
+	public void setStates(ArrayList<State> states) {
+		this.states = states;
+	}
 
 	@JsonProperty("countries")
 	public ArrayList<Country> getCountries() {
@@ -108,38 +98,47 @@ public class ResponseHandler {
 	public void setTutorialGroup(ArrayList<TutorialGroup> tutorialGroup) {
 		this.tutorialGroup = tutorialGroup;
 	}
-/*
-
-    @JsonProperty("user")
-    public ArrayList<DataAboutMe> getUser() {
-        return aboutMes;
-    }
-*/
-/*
-
-    public void setUser(ArrayList<DataAboutMe> user) {
-        this.aboutMes = user;
-    }
-*/
-
-    @JsonProperty("preference")
-    public ArrayList<DataGetAllPreferences> getPreference() {
-        return preference;
+    @JsonProperty("books")
+    public ArrayList<UserBooks> getBooks() {
+        return books;
     }
 
-    public void setPreference(ArrayList<DataGetAllPreferences> preference) {
-        this.preference = preference;
+	@JsonProperty("preference")
+	public ArrayList<SettingPreferences> getPreference() {
+		return preference;
+	}
+    public void setBooks(ArrayList<UserBooks> books) {
+        this.books = books;
     }
-    @JsonProperty("user_preference")
-    public ArrayList<DataUserPreferences> getUserPreference() {
-        return this.userPreference;
+    @JsonProperty("badges")
+    public ArrayList<Badges> getBadges() {
+        return this.badges;
     }
 
-    public void setUserPreference(ArrayList<DataUserPreferences> userPreference) {
-        this.userPreference = userPreference;
+    public void setBadges(ArrayList<Badges> badges) {
+        this.badges = badges;
     }
 
+	public void setPreference(ArrayList<SettingPreferences> preference) {
+		this.preference = preference;
+	}
 
+	@JsonProperty("user_preference")
+	public ArrayList<UserPreferences> getUserPreference() {
+		return this.userPreference;
+	}
 
+	public void setUserPreference(ArrayList<UserPreferences> userPreference) {
+		this.userPreference = userPreference;
+	}
+
+	@JsonProperty("feeds")
+	public ArrayList<Feeds> getFeeds() {
+		return this.feeds;
+	}
+
+	public void setFeeds(ArrayList<Feeds> feeds) {
+		this.feeds = feeds;
+	}
 
 }

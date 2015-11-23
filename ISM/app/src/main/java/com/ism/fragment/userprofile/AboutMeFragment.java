@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.ism.object.ISMStudent;
+import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
@@ -33,7 +33,7 @@ import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.DataAboutMe;
+import com.ism.ws.model.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -383,7 +383,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         }
     }
 
-    private void setUpData(DataAboutMe data) {
+    private void setUpData(User data) {
         txtUserName.setText(data.getUsername());
         txtSchool.setText(data.getSchoolName());
         txtClass.setText(data.getCourseName());

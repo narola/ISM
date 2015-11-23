@@ -30,9 +30,9 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 09/11/15.
  */
-public class UserBooksFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
+public class UserPastTimeFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
-    private static final String TAG = UserBooksFragment.class.getSimpleName();
+    private static final String TAG = UserPastTimeFragment.class.getSimpleName();
     ImageLoader imageLoader;
     private View view;
     private MyTypeFace myTypeFace;
@@ -45,15 +45,13 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
     private ArrayList<Suggested> arrayListSuggestedBooks;
     private TextView txtSuggestedEmpty;
     private TextView txtFavEmpty;
-    private TextView txtSuggestedBooks;
-    private TextView txtFavBooks;
 
-    public static UserBooksFragment newInstance() {
-        UserBooksFragment fragment = new UserBooksFragment();
+    public static UserPastTimeFragment newInstance() {
+        UserPastTimeFragment fragment = new UserPastTimeFragment();
         return fragment;
     }
 
-    public UserBooksFragment() {
+    public UserPastTimeFragment() {
     }
 
     @Override
@@ -71,15 +69,11 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
 
         myTypeFace = new MyTypeFace(getActivity());
 
-        txtFavEmpty = (TextView) view.findViewById(R.id.txt_fav_empty);
-        txtSuggestedEmpty = (TextView) view.findViewById(R.id.txt_suggested_empty);
-        txtSuggestedBooks = (TextView) view.findViewById(R.id.txt_read_books);
-        txtFavBooks = (TextView) view.findViewById(R.id.txt_fav_books);
+        txtFavEmpty=(TextView)view.findViewById(R.id.txt_fav_empty);
+        txtSuggestedEmpty=(TextView)view.findViewById(R.id.txt_suggested_empty);
         //set typeface
         txtFavEmpty.setTypeface(myTypeFace.getRalewayRegular());
         txtSuggestedEmpty.setTypeface(myTypeFace.getRalewayRegular());
-        txtFavBooks.setTypeface(myTypeFace.getRalewayRegular());
-        txtSuggestedBooks.setTypeface(myTypeFace.getRalewayRegular());
 
         listViewFavBooks = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
         listViewSuggestedBooks = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);
@@ -87,17 +81,19 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
         callApiGetBooksForUser();
 
 
+
     }
 
 
     private void callApiGetBooksForUser() {
         try {
-            if (Utility.isConnected(getActivity())) {
+            if(Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
-                Attribute requestObject = new Attribute();
-                requestObject.setUserId("1");
-                new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
-            } else {
+                Attribute attribute = new Attribute();
+                attribute.setUserId("1");
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
+            }
+            else{
                 Utility.toastOffline(getActivity());
             }
         } catch (Exception e) {
@@ -112,7 +108,7 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
         try {
             switch (apiCode) {
                 case WebConstants.GET_BOOKS_FOR_USER:
-                    onResponseUserBooks(object, error);
+                    onResponseUserPastTime(object, error);
                     break;
 
             }
@@ -122,50 +118,51 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
 
     }
 
-    private void onResponseUserBooks(Object object, Exception error) {
+    private void onResponseUserPastTime(Object object, Exception error) {
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
+                ResponseHandler  responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    arrayListFavBooks = responseHandler.getBooks().get(0).getFavorite();
-                    arrayListSuggestedBooks = responseHandler.getBooks().get(0).getSuggested();
-                    setUpList(arrayListFavBooks, arrayListSuggestedBooks);
-                    Debug.i(TAG, "onResponseUserBooks success");
+                        arrayListFavBooks=responseHandler.getBooks().get(0).getFavorite();
+                        arrayListSuggestedBooks=responseHandler.getBooks().get(0).getSuggested();
+                    setUpList(arrayListFavBooks,arrayListSuggestedBooks);
+                    Debug.i(TAG, "onResponseUserPastTime success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Log.i(TAG, "onResponseUserBooks Failed");
+                    Log.i(TAG, "onResponseUserPastTime Failed");
                 }
             } else if (error != null) {
-                Log.i(TAG, "onResponseUserBooks api Exception : " + error.toString());
+                Log.i(TAG, "onResponseUserPastTime api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Log.e(TAG, "onResponseUserBooks Exception : " + e.toString());
+            Log.e(TAG, "onResponseUserPastTime Exception : " + e.toString());
         }
     }
 
     private void setUpList(ArrayList<Favorite> arrayListFavBooks, ArrayList<Suggested> arrayListSuggestedBooks) {
         try {
-            if (!arrayListFavBooks.isEmpty()) {
+            if(!arrayListFavBooks.isEmpty()){
                 txtFavEmpty.setVisibility(View.GONE);
                 listViewFavBooks.setVisibility(View.VISIBLE);
-                userFavoriteBooksAdapter = new UserFavoriteBooksAdapter(getActivity(), arrayListFavBooks);
+                userFavoriteBooksAdapter=new UserFavoriteBooksAdapter(getActivity(),arrayListFavBooks);
                 listViewFavBooks.setAdapter(userFavoriteBooksAdapter);
 
-            } else {
+            }else{
                 txtFavEmpty.setVisibility(View.VISIBLE);
                 listViewFavBooks.setVisibility(View.GONE);
             }
-            if (!arrayListFavBooks.isEmpty()) {
+            if(!arrayListFavBooks.isEmpty()){
                 txtSuggestedEmpty.setVisibility(View.GONE);
                 listViewSuggestedBooks.setVisibility(View.VISIBLE);
-                suggestedBookForUserAdapter = new SuggestedBookAdapter(getActivity(), arrayListSuggestedBooks);
+                suggestedBookForUserAdapter=new SuggestedBookAdapter(getActivity(),arrayListSuggestedBooks);
                 listViewSuggestedBooks.setAdapter(suggestedBookForUserAdapter);
-            } else {
+            }else{
                 txtSuggestedEmpty.setVisibility(View.VISIBLE);
                 listViewSuggestedBooks.setVisibility(View.GONE);
             }
-        } catch (Exception e) {
-            Debug.e(TAG, "setUpList Exceptions :" + e.getLocalizedMessage());
+        }
+        catch (Exception e){
+            Debug.e(TAG,"setUpList Exceptions :" +e.getLocalizedMessage());
         }
     }
 

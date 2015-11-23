@@ -8,7 +8,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ism.object.ISMStudent;
+import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.adapter.TutorialGroupAdapter;
 import com.ism.commonsource.view.ActionProcessButton;

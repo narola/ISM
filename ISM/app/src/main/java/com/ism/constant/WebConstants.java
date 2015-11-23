@@ -49,6 +49,9 @@ public class WebConstants {
 	public static final int GET_BOOKS_FOR_USER = 54;
 	public static final int GET_ABOUT_ME = 55;
 	public static final int EDIT_ABOUT_ME = 56;
+	public static final int GET_ROLEMODEL_FOR_USER = 57;
+	public static final int GET_PASTTIME_FOR_USER = 58;
+	public static final int GET_MOVIES_FOR_USER = 59;
 
 
 	/**
@@ -60,7 +63,7 @@ public class WebConstants {
 
 	public static final String URL_USERS_IMAGE_PATH = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/";
 	public static final String URL_ACCEPT_TUTORIAL_GROUP = URL_HOST_161 + "AcceptTutorialGroup";
-	public static final String URL_ALLOCATE_TUTORIAL_GROUP = URL_HOST_161 + "AllocateTutorialGroup";
+	public static final String URL_ALLOCATE_TUTORIAL_GROUP = URL_HOST_147 + "AllocateTutorialGroup";
 	public static final String URL_GET_CITIES = URL_HOST_147 + "GetCities";
 	public static final String URL_GET_STATES = URL_HOST_147 + "GetStates";
 	public static final String URL_GET_COUNTRIES = URL_HOST_147 + "GetCountries";
@@ -69,7 +72,7 @@ public class WebConstants {
 	public static final String URL_GET_ALL_STUDY_MATES = URL_HOST_162 + "GetStudymates";
 	public static final String URL_GET_ALL_COMMENTS = URL_HOST_162 + "GetAllComments";
 	public static final String URL_ADD_COMMENT = URL_HOST_162 + "AddComment";
-	public static final String URL_GET_ALL_FEEDS = URL_HOST_162 + "GetAllFeeds";
+	public static final String URL_GET_ALL_FEEDS = URL_HOST_147 + "GetAllFeeds";
 	public static final String URL_REGISTER_USER = URL_HOST_147 + "RegisterUser";
 	public static final String URL_REQUEST_SCHOOL_INFO = URL_HOST_147 + "RequestForSchoolInfoUpdation";
 	public static final String URL_REQUEST_CREDENTIALS = URL_HOST_147 + "RequestForCredentials";
@@ -97,7 +100,10 @@ public class WebConstants {
 	public static final String URL_GET_ABOUT_ME =  URL_HOST_147 + "GetAboutMe";
 	public static final String URL_EDIT_ABOUT_ME =  URL_HOST_147 + "EditAboutMe";
 	public static final String URL_GET_BOOKS_FOR_USER =  URL_HOST_147 + "GetBooksForUser";
-//	public static final String URL_EDIT_ABOUT_ME =  URL_HOST_147 + "EditAboutMe";
+	public static final String URL_GET_MOVIES_FOR_USER =  URL_HOST_147 + "GetMoviesForUser";
+	public static final String URL_GET_PASTTIME_FOR_USER =  URL_HOST_147 + "GetPastimeForUser";
+	public static final String URL_GET_ROLEMODEL_FOR_USER =  URL_HOST_147 + "GetRoleModelForUser";
+
 
 
 

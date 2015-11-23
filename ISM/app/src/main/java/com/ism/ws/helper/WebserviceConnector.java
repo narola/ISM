@@ -24,7 +24,6 @@ public class WebserviceConnector {
 
 	private static final Lock lock = new ReentrantLock();
 	private static ObjectMapper mapper = null;
-	private static final String LOG_TAG = "WSRequestPost";
 	private String url;
 
 	public WebserviceConnector(String url) {
@@ -75,7 +74,7 @@ public class WebserviceConnector {
 				ret = getMapper().readValue(json, responseType);
 
 			} catch (Exception e) {
-				Log.e(LOG_TAG, "Error converting result " + e.toString());
+				Log.e(TAG, "Error converting result : " + e.toString());
 				return null;
 			}
 
@@ -101,7 +100,7 @@ public class WebserviceConnector {
 			lock.unlock();
 		} catch (Exception ex) {
 			if (ex != null)
-				Log.e(LOG_TAG, "Mapper Initialization Failed. Exception :: " + ex.getMessage());
+				Log.e(TAG, "Mapper Initialization Failed. Exception : " + ex.getMessage());
 		}
 
 		return mapper;

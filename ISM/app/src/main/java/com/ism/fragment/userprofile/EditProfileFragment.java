@@ -13,6 +13,7 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.Debug;
 
 /**
  * Created by c161 on --/10/15.
@@ -83,10 +84,12 @@ public class EditProfileFragment extends Fragment {
                     }
                     break;
                     case R.id.txt_role_models: {
+                        Debug.i(TAG, "loadFragment(FRAGMENT_ROLE_MODELS): " + FRAGMENT_ROLE_MODELS);
                         loadFragment(FRAGMENT_ROLE_MODELS);
                     }
                     break;
                     case R.id.txt_pasttime: {
+                        Debug.i(TAG, "loadFragment(FRAGMENT_PASTTIME):" + FRAGMENT_PASTTIME);
                         loadFragment(FRAGMENT_PASTTIME);
                     }
                     break;
@@ -129,20 +132,21 @@ public class EditProfileFragment extends Fragment {
             break;
             case FRAGMENT_MOVIES: {
                 currentFragment = frag;
-                BlockUserFragment fragment = BlockUserFragment.newInstance();
+                UserMoviesFragment fragment = UserMoviesFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_ROLE_MODELS: {
-
+                Debug.i(TAG, "call for UserRoleModelFragment ");
                 currentFragment = frag;
-                AboutMeFragment fragment = AboutMeFragment.newInstance();
+                UserRoleModelFragment fragment = UserRoleModelFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
+            break;
             case FRAGMENT_PASTTIME: {
-
+                Debug.i(TAG, "call for UserPastTimeFragment ");
                 currentFragment = frag;
-                AboutMeFragment fragment = AboutMeFragment.newInstance();
+                UserPastTimeFragment fragment = UserPastTimeFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;

@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.json.*;
 
+/**
+ * Created by c161 on 21/11/15.
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Comment {
@@ -70,4 +73,5 @@ public class Comment {
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
+
 }

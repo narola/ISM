@@ -20,14 +20,6 @@ public class TutorialGroup {
     private String tutorialGroupJoiningStatus;
     private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 
-    public TutorialGroup (JSONObject json) {
-        this.tutorialGroupId = json.optString("tutorial_group_id");
-        this.tutorialGroupComplete = json.optString("tutorial_group_complete");
-        this.tutorialGroupName = json.optString("tutorial_group_name");
-        this.tutorialGroupJoiningStatus = json.optString("tutorial_group_joining_status");
-        JSONArray arrayTutorialGroupMembers = json.optJSONArray("tutorial_group_members");
-    }
-
     @JsonProperty("tutorial_group_id")
     public String getTutorialGroupId() {
         return this.tutorialGroupId;
@@ -73,6 +65,4 @@ public class TutorialGroup {
         this.tutorialGroupMembers = tutorialGroupMembers;
     }
 
-
-    
 }

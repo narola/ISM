@@ -588,43 +588,43 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 
-					if (responseHandler.getUserDetails().get(0).getUserId() == null) {
+					if (responseHandler.getUser().get(0).getUserId() == null) {
 
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, LoginActivity.this, ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
-						PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, LoginActivity.this, responseHandler.getUserDetails().get(0).getCredentialId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, LoginActivity.this, responseHandler.getUser().get(0).getCredentialId());
 						PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, LoginActivity.this, etPwd.getText().toString().trim());
-						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_ID, LoginActivity.this, responseHandler.getUserDetails().get(0).getSchoolId());
-						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, LoginActivity.this, responseHandler.getUserDetails().get(0).getSchoolName());
-						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, LoginActivity.this, responseHandler.getUserDetails().get(0).getSchoolDistrict());
-						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_TYPE, LoginActivity.this, responseHandler.getUserDetails().get(0).getSchoolType());
-						PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_ID, LoginActivity.this, responseHandler.getUserDetails().get(0).getClassId());
-						PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, LoginActivity.this, responseHandler.getUserDetails().get(0).getClassName());
-						PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_ID, LoginActivity.this, responseHandler.getUserDetails().get(0).getCourseId());
-						PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, LoginActivity.this, responseHandler.getUserDetails().get(0).getCourseName());
-						PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, LoginActivity.this, responseHandler.getUserDetails().get(0).getAcademicYear());
-						PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, LoginActivity.this, responseHandler.getUserDetails().get(0).getRoleId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_ID, LoginActivity.this, responseHandler.getUser().get(0).getSchoolId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, LoginActivity.this, responseHandler.getUser().get(0).getSchoolName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, LoginActivity.this, responseHandler.getUser().get(0).getSchoolDistrict());
+						PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_TYPE, LoginActivity.this, responseHandler.getUser().get(0).getSchoolType());
+						PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_ID, LoginActivity.this, responseHandler.getUser().get(0).getClassId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, LoginActivity.this, responseHandler.getUser().get(0).getClassName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_ID, LoginActivity.this, responseHandler.getUser().get(0).getCourseId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, LoginActivity.this, responseHandler.getUser().get(0).getCourseName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, LoginActivity.this, responseHandler.getUser().get(0).getAcademicYear());
+						PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, LoginActivity.this, responseHandler.getUser().get(0).getRoleId());
 
 						launchProfileInfoActivity();
 
 					} else {
 
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, LoginActivity.this, ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
-						PreferenceData.setStringPrefs(PreferenceData.USER_ID, LoginActivity.this, responseHandler.getUserDetails().get(0).getUserId());
-						PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, LoginActivity.this, responseHandler.getUserDetails().get(0).getFullName());
-						PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, LoginActivity.this, responseHandler.getUserDetails().get(0).getProfilePic());
-						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, LoginActivity.this, responseHandler.getUserDetails().get(0).getTutorialGroupId());
-						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseHandler.getUserDetails().get(0).getTutorialGroupName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_ID, LoginActivity.this, responseHandler.getUser().get(0).getUserId());
+						PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, LoginActivity.this, responseHandler.getUser().get(0).getFullName());
+						PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, LoginActivity.this, responseHandler.getUser().get(0).getProfilePic());
+						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_ID, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupId());
+						PreferenceData.setStringPrefs(PreferenceData.TUTORIAL_GROUP_NAME, LoginActivity.this, responseHandler.getUser().get(0).getTutorialGroupName());
 
-						if (responseHandler.getUserDetails().get(0).getTutorialGroupId() == null) {
+						if (responseHandler.getUser().get(0).getTutorialGroupId() == null) {
 							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, false);
 							launchWelcomeActivity();
 						} else {
 							PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, LoginActivity.this, true);
 
-							if (responseHandler.getUserDetails().get(0).getTutorialGroupJoiningStatus().equals("1")) {
+							if (responseHandler.getUser().get(0).getTutorialGroupJoiningStatus().equals("1")) {
 								PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, LoginActivity.this, true);
 
-								if (responseHandler.getUserDetails().get(0).getTutorialGroupComplete().equals("1")) {
+								if (responseHandler.getUser().get(0).getTutorialGroupComplete().equals("1")) {
 									PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, LoginActivity.this, true);
 									launchHostActivity();
 								} else {
