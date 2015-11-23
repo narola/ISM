@@ -83,7 +83,6 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
 
     private void callApiGetExamSubmission() {
         if (Utility.isOnline(getActivity())) {
-
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
                 Attribute request = new Attribute();

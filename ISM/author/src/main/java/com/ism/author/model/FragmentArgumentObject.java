@@ -1,5 +1,7 @@
 package com.ism.author.model;
 
+import com.ism.author.ws.model.Questions;
+
 import java.util.ArrayList;
 
 /**
@@ -22,7 +24,7 @@ public class FragmentArgumentObject {
     private String passPercentage;
     private String duration;
     private String examCategory;
-    private ArrayList<Data> listOfQuestions;
+    private ArrayList<Questions> listOfQuestions;
 
 
     public String getExamId() {
@@ -130,11 +132,11 @@ public class FragmentArgumentObject {
         this.duration = duration;
     }
 
-    public ArrayList<Data> getArrayListOfQuestions() {
+    public ArrayList<Questions> getArrayListOfQuestions() {
         return this.listOfQuestions;
     }
 
-    public void setListOfQuestions(ArrayList<Data> listOfQuestions) {
+    public void setListOfQuestions(ArrayList<Questions> listOfQuestions) {
         this.listOfQuestions = listOfQuestions;
     }
 

@@ -16,7 +16,8 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
 import com.ism.author.object.MyTypeFace;
-import com.ism.author.model.Data;
+import com.ism.author.ws.model.Evaluation;
+import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     private static final String TAG = SubjectiveQuestionListAdapter.class.getSimpleName();
 
     private Context mContext;
-    private ArrayList<Data> listOfQuestions = new ArrayList<Data>();
+    private ArrayList<Questions> listOfQuestions = new ArrayList<Questions>();
     private MyTypeFace myTypeFace;
     private LayoutInflater inflater;
     private Fragment mFragment;
@@ -148,10 +149,10 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
         return listOfQuestions.size();
     }
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<Questions> questionsList) {
         try {
             this.listOfQuestions.clear();
-            this.listOfQuestions.addAll(data);
+            this.listOfQuestions.addAll(questionsList);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
@@ -202,9 +203,9 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
         }
     }
 
-    ArrayList<Data> evaluationList = new ArrayList<Data>();
+    ArrayList<Evaluation> evaluationList = new ArrayList<Evaluation>();
 
-    public void setEvaluationData(ArrayList<Data> evaluationList) {
+    public void setEvaluationData(ArrayList<Evaluation> evaluationList) {
         this.evaluationList = evaluationList;
 
     }

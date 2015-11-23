@@ -14,10 +14,10 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.fragment.GetSubjectiveAssignmentQuestionsFragment;
-import com.ism.author.views.CircleImageView;
-import com.ism.author.object.MyTypeFace;
-import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.ws.model.Examsubmittor;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -30,7 +30,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
 
     private static final String TAG = MyStudentListAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Data> listOfStudents = new ArrayList<Data>();
+    private ArrayList<Examsubmittor> listOfStudents = new ArrayList<Examsubmittor>();
     private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
     private Fragment mFragment;
@@ -64,7 +64,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
                     holder.imgStudentProfilePic, ISMAuthor.options);
             holder.tvStudentName.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvStudentRollNo.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvStudentName.setText(listOfStudents.get(position).getFullName());
+            holder.tvStudentName.setText(listOfStudents.get(position).getStudentName());
             holder.tvStudentRollNo.setText(mContext.getResources().getString(R.string.strrollno) + (position + 1));
 
             if (getFragmentArgument().getFragmentArgumentObject().getStudentId().equals(listOfStudents.get(position).getStudentId())) {
@@ -77,8 +77,8 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
                 @Override
                 public void onClick(View v) {
                     getFragmentArgument().getFragmentArgumentObject().setPosition(position);
-                    getFragmentArgument().getFragmentArgumentObject().setProfilePic(listOfStudents.get(position).getProfilePic());
-                    getFragmentArgument().getFragmentArgumentObject().setStudentName(listOfStudents.get(position).getFullName());
+                    getFragmentArgument().getFragmentArgumentObject().setProfilePic(listOfStudents.get(position).getStudentProfilePic());
+                    getFragmentArgument().getFragmentArgumentObject().setStudentName(listOfStudents.get(position).getStudentName());
                     getFragmnet().loadStudentEvaluationData(listOfStudents.get(position).getStudentId());
                     notifyDataSetChanged();
                 }
@@ -95,12 +95,12 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
         return listOfStudents.size();
     }
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<Examsubmittor> examSubmittor) {
         try {
             this.listOfStudents.clear();
-            this.listOfStudents.addAll(data);
-            this.copyListOfStudents = data;
-            getFragmentArgument().setArrayListData(data);
+            this.listOfStudents.addAll(examSubmittor);
+            this.copyListOfStudents = examSubmittor;
+            getFragmentArgument().setArrayListData(examSubmittor);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
@@ -128,7 +128,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
         }
     }
 
-    ArrayList<Data> copyListOfStudents;
+    ArrayList<Examsubmittor> copyListOfStudents;
 
     public void filter(CharSequence charText) {
         listOfStudents.clear();
@@ -136,8 +136,8 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
         if (charText.length() == 0) {
             listOfStudents.addAll(copyListOfStudents);
         } else {
-            for (Data wp : copyListOfStudents) {
-                if (Utility.containsString(wp.getFullName(), charText.toString(), false)) {
+            for (Examsubmittor wp : copyListOfStudents) {
+                if (Utility.containsString(wp.getStudentName(), charText.toString(), false)) {
                     listOfStudents.add(wp);
                 }
             }

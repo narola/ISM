@@ -7,12 +7,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.author.model.Data;
 import com.ism.author.ws.model.Classrooms;
 import com.ism.author.ws.model.CommentList;
+import com.ism.author.ws.model.CreateExam;
+import com.ism.author.ws.model.ExamEvaluation;
 import com.ism.author.ws.model.ExamQuestions;
 import com.ism.author.ws.model.ExamSubmission;
 import com.ism.author.ws.model.Exams;
 import com.ism.author.ws.model.Feeds;
 import com.ism.author.ws.model.Studymates;
 import com.ism.author.ws.model.Subjects;
+import com.ism.author.ws.model.Topics;
 
 import java.util.ArrayList;
 
@@ -69,6 +72,9 @@ public class ResponseHandler {
     private ArrayList<Classrooms> classrooms;
     private ArrayList<ExamQuestions> examQuestions;
     private ArrayList<ExamSubmission> examSubmission;
+    private ArrayList<ExamEvaluation> examEvaluation;
+    private ArrayList<Topics> topics;
+    private ArrayList<CreateExam> createExam;
 
     @JsonProperty("feeds")
     public ArrayList<Feeds> getFeeds() {
@@ -142,6 +148,32 @@ public class ResponseHandler {
         this.examSubmission = examSubmission;
     }
 
+    @JsonProperty("exam_evaluation")
+    public ArrayList<ExamEvaluation> getExamEvaluation() {
+        return this.examEvaluation;
+    }
+
+    public void setExamEvaluation(ArrayList<ExamEvaluation> examEvaluation) {
+        this.examEvaluation = examEvaluation;
+    }
+
+    @JsonProperty("topics")
+    public ArrayList<Topics> getTopics() {
+        return this.topics;
+    }
+
+    public void setTopics(ArrayList<Topics> topics) {
+        this.topics = topics;
+    }
+
+    @JsonProperty("exam")
+    public ArrayList<CreateExam> getCreateExam() {
+        return this.createExam;
+    }
+
+    public void setCreateExam(ArrayList<CreateExam> createExam) {
+        this.createExam = createExam;
+    }
 
 }
 

@@ -10,21 +10,21 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.SubjectiveQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.views.CircleImageView;
-import com.ism.author.object.MyTypeFace;
-import com.ism.author.ws.helper.Attribute;
-import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.Questions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -56,7 +56,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
             tvStudentEvalutionNo;
     private RecyclerView rvSubjectiveQuestionsList;
     private MyTypeFace myTypeFace;
-    private ArrayList<Data> listOfQuestions = new ArrayList<Data>();
+    private ArrayList<Questions> listOfQuestions = new ArrayList<Questions>();
     private SubjectiveQuestionListAdapter subjectiveQuestionListAdapter;
     private ImageLoader imageLoader;
     private LinearLayoutManager mLayoutManager;
@@ -165,9 +165,9 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         getFragmentArguments().getFragmentArgumentObject().setStudentId(getFragmentArguments().getArrayListData()
                 .get(position).getStudentId());
         getFragmentArguments().getFragmentArgumentObject().setStudentName(getFragmentArguments().getArrayListData()
-                .get(position).getFullName());
+                .get(position).getStudentName());
         getFragmentArguments().getFragmentArgumentObject().setProfilePic(getFragmentArguments().getArrayListData()
-                .get(position).getProfilePic());
+                .get(position).getStudentProfilePic());
 
         getBaseFragment().refreshAdapterForStudentNavigation();
 
@@ -275,11 +275,11 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
                 if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.SUCCESS)) {
 //                    canLoadMore = true;
                     loading = true;
-                    subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getData().get(0).getEvaluations());
+                    subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
                     subjectiveQuestionListAdapter.notifyDataSetChanged();
 
                     setTitleDetails();
-                    getBaseFragment().setQuestionStatusData(responseObjGetExamEvaluation.getData().get(0).getEvaluations());
+                    getBaseFragment().setQuestionStatusData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
 
                 } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObjGetExamEvaluation.getMessage(), getActivity());
@@ -307,7 +307,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
 //        rvSubjectiveQuestionsList.setAdapter(null);
         listOfQuestions.clear();
-        listOfQuestions.addAll(responseObjGetAllExamQuestions.getData().get(0).getQuestions());
+        listOfQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
         subjectiveQuestionListAdapter.addAll(listOfQuestions);
         subjectiveQuestionListAdapter.notifyDataSetChanged();
 //        rvSubjectiveQuestionsList.setAdapter(subjectiveQuestionListAdapter);

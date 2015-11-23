@@ -30,11 +30,12 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
     private MyTypeFace myTypeFace;
     private InputValidator inputValidator;
     public static RecyclerView rvList;
-    public static TextView txtExamType, txtBookNameValue,txtExamTypeName, txtBookName, txtClassName, txtClass, txtEamName, txtEamTypeName, txtExamDateValue, txtExamName, txtExamDate;
-    ImageView imgCopy,imgEdit;
+    public static TextView txtExamType, txtBookNameValue, txtExamTypeName, txtBookName, txtClassName,
+            txtClass, txtEamName, txtEamTypeName, txtExamDateValue, txtExamName, txtExamDate;
+    ImageView imgCopy, imgEdit;
     //private ResponseHandler responseObject;
     //public static ResponseHandler responseObjQuestions;
-   // public static TrialExamDetailsAdapter trialExamDetailsAdapter;
+    // public static TrialExamDetailsAdapter trialExamDetailsAdapter;
     //public static String questionsID[];
 
     public static TrialExamObjectiveDetailFragment newInstance() {
@@ -86,7 +87,7 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
         txtBookNameValue.setTypeface(myTypeFace.getRalewayRegular());
         txtExamTypeName.setTypeface(myTypeFace.getRalewayRegular());
         txtEamTypeName.setTypeface(myTypeFace.getRalewayRegular());
-        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED,null);
+        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED, null);
     }
 
 

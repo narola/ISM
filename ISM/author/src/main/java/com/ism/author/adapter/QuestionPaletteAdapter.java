@@ -12,7 +12,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.fragment.GetSubjectiveAssignmentQuestionsFragment;
 import com.ism.author.object.MyTypeFace;
-import com.ism.author.model.Data;
+import com.ism.author.ws.model.Evaluation;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
 
     private static final String TAG = QuestionPaletteAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Data> listOfStudents = new ArrayList<Data>();
+    private ArrayList<Evaluation> listOfStudents = new ArrayList<Evaluation>();
     private MyTypeFace myTypeFace;
     private Fragment mFragment;
     private LayoutInflater inflater;
@@ -68,10 +68,10 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
         return listOfStudents.size();
     }
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<Evaluation> evaluations) {
         try {
             this.listOfStudents.clear();
-            this.listOfStudents.addAll(data);
+            this.listOfStudents.addAll(evaluations);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
