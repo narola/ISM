@@ -2198,3 +2198,14 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .noti_username, .noti_username:hover {
     color: #ff6b6b;
 }
+.box.bookview h4 {
+    color: #ff6d5e;
+    text-align: center;
+}
+.box.bookview {
+    margin-top: 25px;
+}
+.bookview img {
+    height: 250px;
+    width: 250px;
+}

@@ -1,0 +1,63 @@
+<div class="col-sm-7 main main2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+            	<!--breadcrumb-->
+           		<div class="page_header">
+                	<div class="col-sm-12">
+                    	<ol class="breadcrumb">
+                          <li><a href="#">Manage</a></li>
+                          <li><a href="#">book</a></li>
+                          <li class="active">Add New Book</li>
+                        </ol>
+                    </div>
+                </div>
+                <!--//breadcrumb-->
+                <!--filter-->
+                <div class="filter  group_filter">
+                	<div class="col-sm-12">
+                    	<div class="form-group">
+                            <select class="form-control">
+                                <option>Select Author</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>Select tags</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>Sort by</option>
+                            </select>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                <!--//filter-->
+                <!--button div-->
+                
+                <!--//button-div-->
+                <!--row table-->
+              <div class="padding_b30 col-sm-12">
+
+                <?php 
+                    if(!empty($books)){
+                        foreach ($books as $book) { ?>
+
+                	<div class="col-sm-12 col-md-6 col-lg-3">
+                     <div class="box bookview">
+
+                      <img src="assets/<?php echo $book['image_link']; ?>" class="img-responsive" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'">
+                      <!-- <h4><?php echo character_limiter($book['book_name'], 20); ?></h4> -->
+                      <h4><?php echo word_limiter($book['book_name'], 3); ?></h4>
+                     
+                     </div>
+                    </div>	
+                           
+                       <?php }
+                    }
+
+                 ?>
+                    <div class="clearfix"></div>
+                </div>
+               <!--//row table-->
+            </div>
