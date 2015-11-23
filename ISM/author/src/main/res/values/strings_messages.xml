@@ -55,5 +55,6 @@
     <string name="msg_email_exists">Email id already exists.</string>
     <string name="msg_username_exists">Username already exists.</string>
     <string name="msg_validation_select_answer">Please select mcq answer.</string>
+    <string name="error_server_connection">Server connection failed!</string>
 
 </resources>

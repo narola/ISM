@@ -85,10 +85,6 @@ public class AuthorProfileFragment extends Fragment {
                     loadFragment(AuthorHostActivity.FRAGMENT_BOOKS);
                     break;
 
-                case R.id.txt_followers:
-                    loadFragment(AuthorHostActivity.FRAGMENT_FOLLOWING);
-                    break;
-
                 case R.id.txt_myactivity:
                     loadFragment(AuthorHostActivity.FRAGMENT_MYACTIVITY);
                     break;
@@ -108,7 +104,7 @@ public class AuthorProfileFragment extends Fragment {
 
         if (authorHostActivity != null) {
 
-            authorHostActivity.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MYFEEDS,null);
+            authorHostActivity.loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_MYFEEDS, null);
         }
 
     }

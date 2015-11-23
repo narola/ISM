@@ -56,7 +56,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
             tvStudentEvalutionNo;
     private RecyclerView rvSubjectiveQuestionsList;
     private MyTypeFace myTypeFace;
-    private ArrayList<Questions> listOfQuestions = new ArrayList<Questions>();
+    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private SubjectiveQuestionListAdapter subjectiveQuestionListAdapter;
     private ImageLoader imageLoader;
     private LinearLayoutManager mLayoutManager;
@@ -305,12 +305,11 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     private void setQuestions() {
 
-//        rvSubjectiveQuestionsList.setAdapter(null);
-        listOfQuestions.clear();
-        listOfQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
-        subjectiveQuestionListAdapter.addAll(listOfQuestions);
+        arrListQuestions.clear();
+        arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
+        subjectiveQuestionListAdapter.addAll(arrListQuestions);
         subjectiveQuestionListAdapter.notifyDataSetChanged();
-//        rvSubjectiveQuestionsList.setAdapter(subjectiveQuestionListAdapter);
+
     }
 
     public void loadStudentEvaluationData() {
@@ -332,7 +331,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
         tvStudentEvalutionNo.setText(getActivity().getResources().getString(R.string.strevaluation) + " " +
                 (getFragmentArguments().getFragmentArgumentObject().getPosition() + 1) + " " +
-                getActivity().getResources().getString(R.string.strof) + " " + (responseObjGetExamEvaluation.getData().get(0).getEvaluations().size() + 1));
+                getActivity().getResources().getString(R.string.strof) + " " + (responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation().size()));
         imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                 imgStudentProfilePic, ISMAuthor.options);
 

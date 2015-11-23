@@ -30,7 +30,7 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
 
     private static final String TAG = AssignmentSubmittorAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Examsubmittor> listOfStudents = new ArrayList<Examsubmittor>();
+    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
     private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
     private FragmentArgument fragmentArgument;
@@ -69,28 +69,30 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                     holder.imgAssignmentSubmittorDp, ISMAuthor.options);
 
-            holder.tvAssignmentSubmittorName.setText(listOfStudents.get(position).getStudentName());
-            holder.tvAssignmentSubmittorRollno.setText(mContext.getString(R.string.strrollno) + " " + listOfStudents.get(position).getStudentId());/*this data set is left*/
-            holder.tvAssignmentSubmissionDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", listOfStudents.get(position).getSubmissionDate()));
-            holder.tvAssessmentStatus.setText(listOfStudents.get(position).getExamStatus());
+            holder.tvAssignmentSubmittorName.setText(arrListExamSubmittor.get(position).getStudentName());
+            holder.tvAssignmentSubmittorRollno.setText(mContext.getString(R.string.strrollno) + " " + arrListExamSubmittor.get(position).getStudentId());/*this data set is left*/
+            holder.tvAssignmentSubmissionDate.setText(Utility.getFormattedDate("dd-MMM-yyyy", arrListExamSubmittor.get(position).getSubmissionDate()));
+            if (arrListExamSubmittor.get(position).getExamStatus().equalsIgnoreCase("finished")) {
+                holder.tvAssessmentStatus.setText(arrListExamSubmittor.get(position).getExamStatus());
+            } else {
+                holder.tvAssessmentStatus.setText(mContext.getResources().getString(R.string.strunasssessed));
+            }
 
             holder.llAssignmentSubmittorContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    fragmentArgument.getFragmentArgumentObject().setStudentId(listOfStudents.get(position).getStudentId());
+                    fragmentArgument.getFragmentArgumentObject().setStudentId(arrListExamSubmittor.get(position).getStudentId());
                     fragmentArgument.getFragmentArgumentObject().setPosition(position);
-                    fragmentArgument.getFragmentArgumentObject().setProfilePic(listOfStudents.get(position).getStudentProfilePic());
-                    fragmentArgument.getFragmentArgumentObject().setStudentName(listOfStudents.get(position).getStudentName());
+                    fragmentArgument.getFragmentArgumentObject().setProfilePic(arrListExamSubmittor.get(position).getStudentProfilePic());
+                    fragmentArgument.getFragmentArgumentObject().setStudentName(arrListExamSubmittor.get(position).getStudentName());
 
                     if (fragmentArgument.getFragmentArgumentObject().getExamMode().equalsIgnoreCase("subjective")) {
-
-                        ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS, fragmentArgument);
-
+                        ((AuthorHostActivity) mContext).loadFragmentInMainContainer
+                                (AuthorHostActivity.FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS, fragmentArgument);
                     } else if (fragmentArgument.getFragmentArgumentObject().getExamMode().equalsIgnoreCase("objective")) {
-
-                        ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS, fragmentArgument);
-
+                        ((AuthorHostActivity) mContext).loadFragmentInMainContainer
+                                (AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS, fragmentArgument);
                     }
 
 
@@ -106,13 +108,13 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
 
     @Override
     public int getItemCount() {
-        return listOfStudents.size();
+        return arrListExamSubmittor.size();
     }
 
     public void addAll(ArrayList<Examsubmittor> examsubmittor) {
         try {
-            this.listOfStudents.clear();
-            this.listOfStudents.addAll(examsubmittor);
+            this.arrListExamSubmittor.clear();
+            this.arrListExamSubmittor.addAll(examsubmittor);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }

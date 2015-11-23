@@ -20,7 +20,6 @@ import com.ism.author.adapter.TrialExamDetailsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.ws.helper.Attribute;
-import com.ism.author.model.Data;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
 
@@ -35,11 +34,10 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     private View view;
     private FragmentListener fragListener;
     private RecyclerView rvList;
-    private ArrayList<Data> arrayList = new ArrayList<>();
     private StudentAttemptedAdapter studentAttemptedAdapter;
     private TrialExamDetailsAdapter trialExamDetailsAdapter;
     public static ResponseHandler responseObjQuestions;
-    public static List<String> questionsID = new ArrayList<>();
+    public static List<String> arrListQuestionIds = new ArrayList<>();
 
     public static StudentAttemptedFragment newInstance() {
         StudentAttemptedFragment fragment = new StudentAttemptedFragment();
@@ -102,36 +100,20 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
         fragListener = null;
     }
 
-    public void loadFragment(int fragment) {
-//        switch (fragment) {
-//            case FRAGMENT_TRIAL:
-//                currentFragment = fragment;
-//                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL);
-//                break;
-//            case FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS:
-//                currentFragment = fragment;
-//                ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS);
-//                break;
-//        }
-    }
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
         ((AuthorHostActivity) getActivity()).stopProgress();
 
-//        Debug.i(TAG, "Response of student attempted  ::" + responseObject.getMessage());
-//        Debug.i(TAG, "Response of student attempted  ::" + responseObject.getStatus());
-//        Debug.i(TAG, "Response of student attempted  ::" + responseObject.getData().get(0).getExamID());
         try {
             if (API_METHOD == WebConstants.GETEXAMSUBMISSION) {
-                ResponseHandler resObjSubmisssion = (ResponseHandler) object;
-                if (resObjSubmisssion.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    // ((AuthorHostActivity)getActivity()).stopProgress();
-                    if (resObjSubmisssion.getData().size() != 0) {
+                ResponseHandler reponseHandler = (ResponseHandler) object;
+                if (reponseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    if (reponseHandler.getExamSubmission().size() != 0) {
 
-                        Debug.i(TAG, "Arraylist of student attempted  ::" + resObjSubmisssion);
+                        Debug.i(TAG, "Arraylist of student attempted  ::" + reponseHandler);
 
-                        studentAttemptedAdapter = new StudentAttemptedAdapter(resObjSubmisssion, getActivity(), this);
+                        studentAttemptedAdapter = new StudentAttemptedAdapter(reponseHandler, getActivity(), this);
                         rvList.setAdapter(studentAttemptedAdapter);
                         rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
                         Attribute attribute = new Attribute();
@@ -139,38 +121,34 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                         //attribute.setStudentId("202");
                         ((AuthorHostActivity) getActivity()).startProgress();
                         callapigetexamquestions(attribute);
-
                     }
 
-                } else if (resObjSubmisssion.getStatus().equals(ResponseHandler.FAILED)) {
+                } else if (reponseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
                 }
             } else if (API_METHOD == WebConstants.GETEXAMQUESTIONS) {
-                ResponseHandler resObjQuestions = (ResponseHandler) object;
-                if (resObjQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    if (resObjQuestions.getData().size() != 0) {
-                        responseObjQuestions = resObjQuestions;
-                        // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
-
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    if (responseHandler.getExamQuestions().size() != 0) {
+                        responseObjQuestions = responseHandler;
                         trialExamDetailsAdapter = new TrialExamDetailsAdapter(responseObjQuestions, getActivity(), this, null);
                         TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
                         TrialExamObjectiveDetailFragment.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        TrialExamObjectiveDetailFragment.txtBookNameValue.setText(responseObjQuestions.getData().get(0).getBookName());
-                        TrialExamObjectiveDetailFragment.txtExamTypeName.setText(responseObjQuestions.getData().get(0).getExam_type());
-                        TrialExamObjectiveDetailFragment.txtClassName.setText(responseObjQuestions.getData().get(0).getClassName());
-                        String examDate[] = responseObjQuestions.getData().get(0).getCreatedDate().split(" ");
+                        TrialExamObjectiveDetailFragment.txtBookNameValue.setText(responseObjQuestions.getExamQuestions().get(0).getBookName());
+//                        TrialExamObjectiveDetailFragment.txtExamTypeName.setText(responseObjQuestions.getExamQuestions().get(0).getEXa());
+                        TrialExamObjectiveDetailFragment.txtClassName.setText(responseObjQuestions.getExamQuestions().get(0).getClassName());
+                        String examDate[] = responseObjQuestions.getExamQuestions().get(0).getCreatedDate().split(" ");
                         TrialExamObjectiveDetailFragment.txtExamDateValue.setText(examDate[0]);
-                        TrialExamObjectiveDetailFragment.txtExamName.setText(responseObjQuestions.getData().get(0).getExamName());
-                        questionsID = new ArrayList<>();
-                        for (int i = 0; i < responseObjQuestions.getData().get(0).getQuestions().size(); i++) {
-                            questionsID.add(responseObjQuestions.getData().get(0).getQuestions().get(i).getQuestionId());
-                            Debug.i(TAG, "Q.ID :" + questionsID.get(i));
+                        TrialExamObjectiveDetailFragment.txtExamName.setText(responseObjQuestions.getExamQuestions().get(0).getExamName());
+                        arrListQuestionIds = new ArrayList<>();
+                        for (int i = 0; i < responseObjQuestions.getExamQuestions().get(0).getQuestions().size(); i++) {
+                            arrListQuestionIds.add(responseObjQuestions.getExamQuestions().get(0).getQuestions().get(i).getQuestionId());
+                            Debug.i(TAG, "Q.ID :" + arrListQuestionIds.get(i));
                         }
-
 
                     }
 
-                } else if (resObjQuestions.getStatus().equals(ResponseHandler.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
                 }
             }

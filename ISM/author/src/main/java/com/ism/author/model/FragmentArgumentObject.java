@@ -21,6 +21,7 @@ public class FragmentArgumentObject {
     private String assignmentName;
     private String studentName;
     private String subjectId;
+    private String subjectName;
     private String passPercentage;
     private String duration;
     private String examCategory;
@@ -145,6 +146,15 @@ public class FragmentArgumentObject {
     }
 
     public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
+    }
+
+
+    public String getSubjectName() {
+        return this.subjectName;
+    }
+
+    public void setSubjectName(String subjectId) {
         this.subjectId = subjectId;
     }
 

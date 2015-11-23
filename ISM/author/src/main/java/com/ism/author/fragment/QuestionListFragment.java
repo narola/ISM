@@ -21,12 +21,15 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.QuestionBankListAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
+import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
-import com.ism.author.model.Data;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.Courses;
+import com.ism.author.ws.model.Questions;
+import com.ism.author.ws.model.Subjects;
+import com.ism.author.ws.model.Topics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,12 +54,14 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistTopic;
     private List<String> arrListExamType, arrListDefalt;
-    private List<Data> arrListSubject, arrListCourses, arrListTopic;
+    private List<Subjects> arrListSubject;
+    private List<Courses> arrListCourses;
+    private List<Topics> arrListTopic;
     private EditText etQuestionlistSearch;
     private TextView tvQuestionlistTitle, tvQuestionlistAddNewQuestion, tvQuestionlistAddPreview;
     private RecyclerView rvQuestionlist;
     private QuestionBankListAdapter questionBankListAdapter;
-    private ArrayList<Data> listOfQuestionBank = new ArrayList<Data>();
+    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private MyTypeFace myTypeFace;
 
 
@@ -201,20 +206,20 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void onResponseGetTopics(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListTopic = new ArrayList<Data>();
-                    arrListTopic.addAll(responseObj.getData());
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListTopic = new ArrayList<Topics>();
+                    arrListTopic.addAll(responseHandler.getTopics());
                     List<String> topics = new ArrayList<String>();
                     topics.add(getString(R.string.select));
-                    for (Data topic : arrListTopic) {
+                    for (Topics topic : arrListTopic) {
                         topics.add(topic.getTopicName());
 
                     }
                     Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, topics, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetTopics api Exception : " + error.toString());
@@ -270,19 +275,19 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void onResponseGetSubjects(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListSubject = new ArrayList<Data>();
-                    arrListSubject.addAll(responseObj.getData());
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListSubject = new ArrayList<Subjects>();
+                    arrListSubject.addAll(responseHandler.getSubjects());
                     List<String> subjects = new ArrayList<String>();
                     subjects.add(getString(R.string.strsubject));
-                    for (Data subject : arrListSubject) {
+                    for (Subjects subject : arrListSubject) {
                         subjects.add(subject.getSubjectName());
 
                     }
                     Adapters.setUpSpinner(getActivity(), spQuestionlistSubject, subjects, Adapters.ADAPTER_SMALL);
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
@@ -295,21 +300,21 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void onResponseGetCourses(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListCourses = new ArrayList<Data>();
-                    arrListCourses.addAll(responseObj.getData());
+                    arrListCourses = new ArrayList<Courses>();
+                    arrListCourses.addAll(responseHandler.getCourses());
                     List<String> courses = new ArrayList<String>();
                     courses.add(getString(R.string.strcourse));
-                    for (Data course : arrListCourses) {
+                    for (Courses course : arrListCourses) {
                         courses.add(course.getCourseName());
 
                     }
                     Adapters.setUpSpinner(getActivity(), spQuestionlistCourse, courses, Adapters.ADAPTER_SMALL);
 
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetCourses api Exception : " + error.toString());
@@ -323,12 +328,12 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private void onResponseGetQuestionBank(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    listOfQuestionBank.addAll(responseObj.getData());
-                    questionBankListAdapter.addAll(listOfQuestionBank);
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListQuestions.addAll(responseHandler.getQuestions());
+                    questionBankListAdapter.addAll(arrListQuestions);
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetCourses api Exception : " + error.toString());
@@ -341,8 +346,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
 //    private void filterResults(int subject_id, String topicid) {
 //
-//        if (listOfQuestionBank.size() > 0) {
-//            for (Data wp : listOfQuestionBank) {
+//        if (arrListQuestions.size() > 0) {
+//            for (Data wp : arrListQuestions) {
 //                int count = 0;
 //                if (wp.getTopicId().equalsIgnoreCase(topicid) && wp.getSubject_id().equalsIgnoreCase(Integer.toString(subject_id))) {
 //                    Log.e("filter success", "" + count++);
@@ -384,17 +389,17 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
     }
 
-    public void updateViewAfterDeleteInPreviewQuestion(Data data) {
-        int position = listOfQuestionBank.indexOf(data);
-        listOfQuestionBank.get(position).setIsQuestionAddedInPreview(false);
-        questionBankListAdapter.addAll(listOfQuestionBank);
+    public void updateViewAfterDeleteInPreviewQuestion(Questions question) {
+        int position = arrListQuestions.indexOf(question);
+        arrListQuestions.get(position).setIsQuestionAddedInPreview(false);
+        questionBankListAdapter.addAll(arrListQuestions);
         questionBankListAdapter.notifyDataSetChanged();
     }
 
     public void updateQuestionDataAfterEditQuestion() {
         int position = getFragment().getPOSITION_FOR_EDITQUESTION();
-        listOfQuestionBank.get(position).setQuestionText("test");
-        questionBankListAdapter.addAll(listOfQuestionBank);
+        arrListQuestions.get(position).setQuestionText("test");
+        questionBankListAdapter.addAll(arrListQuestions);
         questionBankListAdapter.notifyDataSetChanged();
 
 

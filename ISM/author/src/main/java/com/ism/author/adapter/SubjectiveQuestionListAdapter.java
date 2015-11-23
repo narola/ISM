@@ -29,7 +29,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     private static final String TAG = SubjectiveQuestionListAdapter.class.getSimpleName();
 
     private Context mContext;
-    private ArrayList<Questions> listOfQuestions = new ArrayList<Questions>();
+    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private MyTypeFace myTypeFace;
     private LayoutInflater inflater;
     private Fragment mFragment;
@@ -73,9 +73,9 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
             holder.tvSubjectiveQuestionNo.setText(mContext.getResources().getString(R.string.strquestion) + " : " + (position + 1));
 
-            holder.tvSubjectiveQuestion.setText(Utils.formatHtml(listOfQuestions.get(position).getQuestionText()));
+            holder.tvSubjectiveQuestion.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
-            holder.tvSubjectiveQuesEvaluationNotes.setText(listOfQuestions.get(position).getEvaluationNotes());
+            holder.tvSubjectiveQuesEvaluationNotes.setText(arrListQuestions.get(position).getEvaluationNotes());
 
             if (evaluationList.size() > 0) {
 
@@ -146,13 +146,13 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
 
     @Override
     public int getItemCount() {
-        return listOfQuestions.size();
+        return arrListQuestions.size();
     }
 
     public void addAll(ArrayList<Questions> questionsList) {
         try {
-            this.listOfQuestions.clear();
-            this.listOfQuestions.addAll(questionsList);
+            this.arrListQuestions.clear();
+            this.arrListQuestions.addAll(questionsList);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
