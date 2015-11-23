@@ -40,18 +40,24 @@ public class AllNoticeFragment extends Fragment {
 
 	private FragmentListener listenerFragment;
 
-	public static AllNoticeFragment newInstance(ArrayList<Notice> arrListAllNotice) {
-		AllNoticeFragment fragment = new AllNoticeFragment();
-		fragment.setArrListNotice(arrListAllNotice);
-		return fragment;
-	}
+	public static final String ARG_ARR_LIST_NOTICE = "arrListNotice";
 
-	private void setArrListNotice(ArrayList<Notice> arrListAllNotice) {
-		this.arrListAllNotice = arrListAllNotice;
+	public static AllNoticeFragment newInstance(Bundle bundleArgument) {
+		AllNoticeFragment fragment = new AllNoticeFragment();
+		fragment.setArguments(bundleArgument);
+		return fragment;
 	}
 
 	public AllNoticeFragment() {
 		// Required empty public constructor
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			arrListAllNotice = getArguments().getParcelableArrayList(ARG_ARR_LIST_NOTICE);
+		}
 	}
 
 	@Override
@@ -136,7 +142,7 @@ public class AllNoticeFragment extends Fragment {
 		try {
 			listenerFragment = (FragmentListener) activity;
 			if (listenerFragment != null) {
-				listenerFragment.onFragmentAttached(HostActivity.FRAGMENT_ALL_NOTES);
+				listenerFragment.onFragmentAttached(HostActivity.FRAGMENT_ALL_NOTICE);
 			}
 		} catch (ClassCastException e) {
 			Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -148,7 +154,7 @@ public class AllNoticeFragment extends Fragment {
 		super.onDetach();
 		try {
 			if (listenerFragment != null) {
-				listenerFragment.onFragmentDetached(HostActivity.FRAGMENT_ALL_NOTES);
+				listenerFragment.onFragmentDetached(HostActivity.FRAGMENT_ALL_NOTICE);
 			}
 		} catch (ClassCastException e) {
 			Log.e(TAG, "onDetach Exception : " + e.toString());

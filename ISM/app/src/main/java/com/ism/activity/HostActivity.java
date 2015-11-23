@@ -45,7 +45,6 @@ import com.ism.fragment.userprofile.EditProfileFragment;
 import com.ism.fragment.userprofile.GeneralSettingsFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.ControllerTopMenuItem;
-import com.ism.model.FragmentArgument;
 import com.ism.object.Global;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
@@ -108,7 +107,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     public static final int FRAGMENT_NOTES = 6;
     public static final int FRAGMENT_PROFILE_CONTROLLER = 7;
     public static final int FRAGMENT_CHAT = 8;
-    public static final int FRAGMENT_ALL_NOTES = 9;
+    public static final int FRAGMENT_ALL_NOTICE = 9;
     public static final int FRAGMENT_GENERAL_SETTINGS = 10;
     public static final int FRAGMENT_MY_FEEDS = 11;
     public static final int FRAGMENT_STUDYMATES = 12;
@@ -347,7 +346,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         }
     }
 
-    public void loadFragment(int fragment, FragmentArgument fragmentArgument) {
+    public void loadFragment(int fragment, Bundle fragmentArguments) {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
@@ -381,8 +380,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                 case FRAGMENT_CHAT:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, ChatFragment.newInstance()).commit();
                     break;
-                case FRAGMENT_ALL_NOTES:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AllNoticeFragment.newInstance((ArrayList<Notice>) fragmentArgument.getObjectData())).commit();
+                case FRAGMENT_ALL_NOTICE:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+		                    AllNoticeFragment.newInstance(fragmentArguments)).commit();
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GeneralSettingsFragment.newInstance()).commit();
@@ -401,15 +401,15 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     break;
                 case FRAGMENT_ALL_NOTIFICATION:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AllNotificationFragment.newInstance((ArrayList<Notification>)fragmentArgument.getObjectData(), fragmentArgument.getPosition())).commit();
+		                    AllNotificationFragment.newInstance(fragmentArguments)).commit();
                     break;
                 case FRAGMENT_ALL_MESSAGE:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AllMessageFragment.newInstance((ArrayList<Message>)fragmentArgument.getObjectData(), fragmentArgument.getPosition())).commit();
+                            AllMessageFragment.newInstance(fragmentArguments)).commit();
                     break;
                 case FRAGMENT_ALL_STUDYMATE_REQUEST:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AllStudymateRequestFragment.newInstance((ArrayList<StudymateRequest>) fragmentArgument.getObjectData())).commit();
+                            AllStudymateRequestFragment.newInstance(fragmentArguments)).commit();
                     break;
                 case FRAGMENT_EDIT_PROFILE:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, EditProfileFragment.newInstance()).commit();
@@ -480,7 +480,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     currentRightFragment = fragment;
                     imgChat.setActivated(true);
                     break;
-                case FRAGMENT_ALL_NOTES:
+                case FRAGMENT_ALL_NOTICE:
                     currentMainFragment = fragment;
                     txtTitle.setVisibility(View.GONE);
                     break;

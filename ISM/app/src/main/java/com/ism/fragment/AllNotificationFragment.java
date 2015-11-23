@@ -58,21 +58,15 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 	private NotificationAdapter adpNotification;
 	private ImageLoader imageLoader;
 
-	private static String NOTIFICATION_POSITION = "notificationPosition";
+	public static String ARG_ARR_LIST_NOTIFICATION = "arrListNotification";
+	public static String ARG_NOTIFICATION_POSITION = "notificationPosition";
 	private int positionNotification;
 	private boolean isReadStatusUpdated = false;
 
-	public static AllNotificationFragment newInstance(ArrayList<Notification> arrListNotification, int position) {
+	public static AllNotificationFragment newInstance(Bundle bundleArgument) {
 		AllNotificationFragment fragment = new AllNotificationFragment();
-		Bundle args = new Bundle();
-		args.putInt(NOTIFICATION_POSITION, position);
-		fragment.setArguments(args);
-		fragment.setArrListNotification(arrListNotification);
+		fragment.setArguments(bundleArgument);
 		return fragment;
-	}
-
-	public void setArrListNotification(ArrayList<Notification> arrListNotification) {
-		this.arrListNotification = arrListNotification;
 	}
 
 	public AllNotificationFragment() {
@@ -81,7 +75,10 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		positionNotification = getArguments().getInt(NOTIFICATION_POSITION);
+		if (getArguments() != null) {
+			arrListNotification = getArguments().getParcelableArrayList(ARG_ARR_LIST_NOTIFICATION);
+			positionNotification = getArguments().getInt(ARG_NOTIFICATION_POSITION);
+		}
 	}
 
 	@Override

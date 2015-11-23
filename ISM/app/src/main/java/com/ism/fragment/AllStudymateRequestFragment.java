@@ -40,17 +40,23 @@ public class AllStudymateRequestFragment extends Fragment implements WebserviceW
 	private ArrayList<StudymateRequest> arrListStudymateRequest;
 	private StudymateRequestAdapter adpStudymate;
 
-	public static AllStudymateRequestFragment newInstance(ArrayList<StudymateRequest> arrListStudymateRequest) {
+	public static final String ARG_ARR_LIST_STUDYMATE_REQUEST = "arrListStudymateRequest";
+
+	public static AllStudymateRequestFragment newInstance(Bundle bundleArgument) {
 		AllStudymateRequestFragment fragment = new AllStudymateRequestFragment();
-		fragment.setArrListStudymateRequest(arrListStudymateRequest);
+		fragment.setArguments(bundleArgument);
 		return fragment;
 	}
 
-	public void setArrListStudymateRequest(ArrayList<StudymateRequest> arrListStudymateRequest) {
-		this.arrListStudymateRequest = arrListStudymateRequest;
+	public AllStudymateRequestFragment() {
 	}
 
-	public AllStudymateRequestFragment() {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			arrListStudymateRequest = getArguments().getParcelableArrayList(ARG_ARR_LIST_STUDYMATE_REQUEST);
+		}
 	}
 
 	@Override

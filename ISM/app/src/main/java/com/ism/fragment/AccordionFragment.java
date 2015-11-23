@@ -17,7 +17,6 @@ import com.ism.adapter.HighScoreAdapter;
 import com.ism.adapter.NoticeAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
-import com.ism.model.FragmentArgument;
 import com.ism.model.HighScoreSubject;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
@@ -79,7 +78,9 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 		txtViewAllNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-	            activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTES, new FragmentArgument(arrListNotice));
+	            Bundle bundleAllNotice = new Bundle();
+	            bundleAllNotice.putParcelableArrayList(AllNoticeFragment.ARG_ARR_LIST_NOTICE, arrListNotice);
+	            activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTICE, bundleAllNotice);
             }
         });
 

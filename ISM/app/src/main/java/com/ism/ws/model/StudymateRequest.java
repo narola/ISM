@@ -1,5 +1,8 @@
 package com.ism.ws.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StudymateRequest {
+public class StudymateRequest implements Parcelable {
 	
     private String requestDate;
     private String status;
@@ -19,7 +22,20 @@ public class StudymateRequest {
     private String requesterProfile;
     private String requestFromId;
 
-    @JsonProperty("request_date")
+	public StudymateRequest() {
+	}
+
+	public StudymateRequest(Parcel parcelStudymateRequest) {
+		this.requestDate = parcelStudymateRequest.readString();
+		this.status = parcelStudymateRequest.readString();
+		this.requestFromName = parcelStudymateRequest.readString();
+		this.recordId = parcelStudymateRequest.readString();
+		this.isSeen = parcelStudymateRequest.readString();
+		this.requesterProfile = parcelStudymateRequest.readString();
+		this.requestFromId = parcelStudymateRequest.readString();
+	}
+
+	@JsonProperty("request_date")
     public String getRequestDate() {
         return this.requestDate;
     }
@@ -81,5 +97,34 @@ public class StudymateRequest {
     public void setRequestFromId(String requestFromId) {
         this.requestFromId = requestFromId;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getRequestDate());
+        dest.writeString(getStatus());
+        dest.writeString(getRequestFromName());
+        dest.writeString(getRecordId());
+        dest.writeString(getIsSeen());
+        dest.writeString(getRequesterProfile());
+        dest.writeString(getRequestFromId());
+    }
+
+	public static final Parcelable.Creator<StudymateRequest> CREATOR = new Parcelable.Creator<StudymateRequest>() {
+
+		@Override
+		public StudymateRequest createFromParcel(Parcel source) {
+			return new StudymateRequest(source);
+		}
+
+		@Override
+		public StudymateRequest[] newArray(int size) {
+			return new StudymateRequest[size];
+		}
+	};
 
 }

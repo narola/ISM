@@ -50,21 +50,15 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 	private MessageAdapter adpMessage;
 	private ImageLoader imageLoader;
 
-	private static String MESSAGE_POSITION = "notificationPosition";
+	public static String ARG_ARR_LIST_MESSAGE = "arrListMessage";
+	public static String ARG_MESSAGE_POSITION = "notificationPosition";
 	private int positionMessage;
 	private boolean isReadStatusUpdated = false;
 
-	public static AllMessageFragment newInstance(ArrayList<Message> arrListMessage, int position) {
+	public static AllMessageFragment newInstance(Bundle bundleArgument) {
 		AllMessageFragment fragment = new AllMessageFragment();
-		Bundle args = new Bundle();
-		args.putInt(MESSAGE_POSITION, position);
-		fragment.setArguments(args);
-		fragment.setArrListMessage(arrListMessage);
+		fragment.setArguments(bundleArgument);
 		return fragment;
-	}
-
-	public void setArrListMessage(ArrayList<Message> arrListMessage) {
-		this.arrListMessage = arrListMessage;
 	}
 
 	public AllMessageFragment() {
@@ -73,7 +67,10 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		positionMessage = getArguments().getInt(MESSAGE_POSITION);
+		if (getArguments() != null) {
+			arrListMessage = getArguments().getParcelableArrayList(ARG_ARR_LIST_MESSAGE);
+			positionMessage = getArguments().getInt(ARG_MESSAGE_POSITION);
+		}
 	}
 
 	@Override

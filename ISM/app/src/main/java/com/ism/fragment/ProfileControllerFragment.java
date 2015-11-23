@@ -236,9 +236,10 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
     }
 
 	private void loadFragmentAllNotification(int position) {
-		FragmentArgument fragmentArgument = new FragmentArgument(arrListNotification);
-		fragmentArgument.setPosition(position);
-		activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTIFICATION, fragmentArgument);
+		Bundle bundleAllNotification = new Bundle();
+		bundleAllNotification.putParcelableArrayList(AllNotificationFragment.ARG_ARR_LIST_NOTIFICATION, arrListNotification);
+		bundleAllNotification.putInt(AllNotificationFragment.ARG_NOTIFICATION_POSITION, position);
+		activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTIFICATION, bundleAllNotification);
 	}
 
 	private void callApiGetNotifications() {
@@ -302,9 +303,10 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 	}
 
 	private void loadFragmentAllMessage(int position) {
-		FragmentArgument fragmentArgument = new FragmentArgument(arrListMessage);
-		fragmentArgument.setPosition(position);
-		activityHost.loadFragment(HostActivity.FRAGMENT_ALL_MESSAGE, fragmentArgument);
+		Bundle bundleAllMessage = new Bundle();
+		bundleAllMessage.putParcelableArrayList(AllMessageFragment.ARG_ARR_LIST_MESSAGE, arrListMessage);
+		bundleAllMessage.putInt(AllMessageFragment.ARG_MESSAGE_POSITION, position);
+		activityHost.loadFragment(HostActivity.FRAGMENT_ALL_MESSAGE, bundleAllMessage);
 	}
 
 	private void callApiGetMessages() {
@@ -368,9 +370,9 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 	}
 
 	private void loadFragmentAllStudymateRequest(int position) {
-		FragmentArgument fragmentArgument = new FragmentArgument(arrListStudyMateRequest);
-		fragmentArgument.setPosition(position);
-		activityHost.loadFragment(HostActivity.FRAGMENT_ALL_STUDYMATE_REQUEST, fragmentArgument);
+		Bundle bundleAllStudymateRequest = new Bundle();
+		bundleAllStudymateRequest.putParcelableArrayList(AllStudymateRequestFragment.ARG_ARR_LIST_STUDYMATE_REQUEST, arrListStudyMateRequest);
+		activityHost.loadFragment(HostActivity.FRAGMENT_ALL_STUDYMATE_REQUEST, bundleAllStudymateRequest);
 	}
 
 	private void callApiGetStudymateRequests() {

@@ -1,5 +1,8 @@
 package com.ism.ws.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Message {
+public class Message implements Parcelable {
 	
     private String status;
     private String senderName;
@@ -21,7 +24,22 @@ public class Message {
     private String senderId;
     private String isRead;
 
-    @JsonProperty("status")
+	public Message() {
+	}
+
+	public Message(Parcel parcelMessage) {
+		this.status = parcelMessage.readString();
+		this.senderName = parcelMessage.readString();
+		this.recordId = parcelMessage.readString();
+		this.messageId = parcelMessage.readString();
+		this.messageText = parcelMessage.readString();
+		this.senderProfilePic = parcelMessage.readString();
+		this.sentOn = parcelMessage.readString();
+		this.senderId = parcelMessage.readString();
+		this.isRead = parcelMessage.readString();
+	}
+
+	@JsonProperty("status")
     public String getStatus() {
         return this.status;
     }
@@ -101,5 +119,35 @@ public class Message {
     public void setIsRead(String isRead) {
         this.isRead = isRead;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(getStatus());
+	    dest.writeString(getSenderName());
+	    dest.writeString(getRecordId());
+	    dest.writeString(getMessageId());
+	    dest.writeString(getMessageText());
+	    dest.writeString(getSenderProfilePic());
+	    dest.writeString(getSentOn());
+	    dest.writeString(getSenderId());
+	    dest.writeString(getIsRead());
+    }
+
+	public static final Parcelable.Creator<Message> CREATOR = new Parcelable.Creator<Message>() {
+		@Override
+		public Message createFromParcel(Parcel source) {
+			return new Message(source);
+		}
+
+		@Override
+		public Message[] newArray(int size) {
+			return new Message[size];
+		}
+	};
 
 }

@@ -1,5 +1,8 @@
 package com.ism.ws.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Notification {
+public class Notification implements Parcelable {
 	
     private String notificationDate;
     private String notificationFromId;
@@ -22,7 +25,23 @@ public class Notification {
     private String notificationFromName;
     private String isRead;
 
-    @JsonProperty("notification_date")
+	public Notification() {
+	}
+
+	public Notification(Parcel parcelNotification) {
+		this.notificationDate = parcelNotification.readString();
+		this.notificationFromId = parcelNotification.readString();
+		this.recordId = parcelNotification.readString();
+		this.navigateTo = parcelNotification.readString();
+		this.notificationToId = parcelNotification.readString();
+		this.notificationText = parcelNotification.readString();
+		this.notificationFromProfilePic = parcelNotification.readString();
+		this.notificationToName = parcelNotification.readString();
+		this.notificationFromName = parcelNotification.readString();
+		this.isRead = parcelNotification.readString();
+	}
+
+	@JsonProperty("notification_date")
     public String getNotificationDate() {
         return this.notificationDate;
     }
@@ -111,5 +130,36 @@ public class Notification {
     public void setIsRead(String isRead) {
         this.isRead = isRead;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getNotificationDate());
+        dest.writeString(getNotificationFromId());
+        dest.writeString(getRecordId());
+        dest.writeString(getNavigateTo());
+        dest.writeString(getNotificationToId());
+        dest.writeString(getNotificationText());
+        dest.writeString(getNotificationFromProfilePic());
+        dest.writeString(getNotificationToName());
+        dest.writeString(getNotificationFromName());
+        dest.writeString(getIsRead());
+    }
+
+	public static final Parcelable.Creator<Notification> CREATOR = new Parcelable.Creator<Notification>() {
+		@Override
+		public Notification createFromParcel(Parcel source) {
+			return new Notification(source);
+		}
+
+		@Override
+		public Notification[] newArray(int size) {
+			return new Notification[size];
+		}
+	};
 
 }
