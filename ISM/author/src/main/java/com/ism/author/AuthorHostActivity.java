@@ -1,4 +1,4 @@
-package com.ism.author;
+    package com.ism.author;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -47,6 +47,7 @@ import com.ism.author.rightcontainerfragment.AuthorProfileFragment;
 import com.ism.author.rightcontainerfragment.HighScoreFragment;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
+
 
 import java.util.ArrayList;
 
@@ -132,6 +133,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         setContentView(R.layout.activity_author_host);
 
         inigGlobal();
+
+
     }
 
 
