@@ -53,10 +53,14 @@ import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.UserPreferences;
+import com.ism.ws.model.Message;
+import com.ism.ws.model.Notice;
 import com.ism.ws.model.Notification;
+import com.ism.ws.model.NotificationSetting;
 import com.ism.ws.model.PrivacySetting;
 import com.ism.ws.model.SMSAlert;
+import com.ism.ws.model.StudymateRequest;
+import com.ism.ws.model.UserPreferences;
 
 import java.util.ArrayList;
 
@@ -117,7 +121,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private int currentMainFragment;
     private int currentRightFragment;
     private int currentMainFragmentBg;
-    private ArrayList<Notification> arrayListNotification = new ArrayList<>();
+    private ArrayList<NotificationSetting> arrayListNotificationSettings = new ArrayList<>();
     private ArrayList<SMSAlert> arrayListSMSAlert = new ArrayList<>();
     private ArrayList<PrivacySetting> arrayListPrivacySetting = new ArrayList<>();
 
@@ -379,7 +383,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, ChatFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_ALL_NOTES:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AllNoticeFragment.newInstance(fragmentArgument.getArrayListData())).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AllNoticeFragment.newInstance((ArrayList<Notice>) fragmentArgument.getObjectData())).commit();
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GeneralSettingsFragment.newInstance()).commit();
@@ -398,15 +402,15 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     break;
                 case FRAGMENT_ALL_NOTIFICATION:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AllNotificationFragment.newInstance(fragmentArgument.getArrayListData(), fragmentArgument.getPosition())).commit();
+                            AllNotificationFragment.newInstance((ArrayList<Notification>)fragmentArgument.getObjectData(), fragmentArgument.getPosition())).commit();
                     break;
                 case FRAGMENT_ALL_MESSAGE:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AllMessageFragment.newInstance(fragmentArgument.getArrayListData(), fragmentArgument.getPosition())).commit();
+                            AllMessageFragment.newInstance((ArrayList<Message>)fragmentArgument.getObjectData(), fragmentArgument.getPosition())).commit();
                     break;
                 case FRAGMENT_ALL_STUDYMATE_REQUEST:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            AllStudymateRequestFragment.newInstance(fragmentArgument.getArrayListData())).commit();
+                            AllStudymateRequestFragment.newInstance((ArrayList<StudymateRequest>) fragmentArgument.getObjectData())).commit();
                     break;
                 case FRAGMENT_EDIT_PROFILE:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, EditProfileFragment.newInstance()).commit();
@@ -814,9 +818,9 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                             PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
                             //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
                         }
-                        arrayListNotification = responseObject.getPreference().get(0).getNotification();
-                        for (int j = 0; j < arrayListNotification.size(); j++) {
-                            PreferenceData.setStringPrefs(arrayListNotification.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotification.get(j).getId());
+                        arrayListNotificationSettings = responseObject.getPreference().get(0).getNotificationSettings();
+                        for (int j = 0; j < arrayListNotificationSettings.size(); j++) {
+                            PreferenceData.setStringPrefs(arrayListNotificationSettings.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotificationSettings.get(j).getId());
                             // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
                         }
                         arrayListPrivacySetting = responseObject.getPreference().get(0).getPrivacySetting();

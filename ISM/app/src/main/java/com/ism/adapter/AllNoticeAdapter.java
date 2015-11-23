@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.object.MyTypeFace;
 import com.ism.ws.model.Data;
+import com.ism.ws.model.Notice;
 
 import java.util.ArrayList;
 
@@ -24,10 +25,10 @@ public class AllNoticeAdapter extends RecyclerView.Adapter<AllNoticeAdapter.View
 	private static final String TAG = AllNoticeAdapter.class.getSimpleName();
 
 	private Context context;
-	private ArrayList<Data> arrListAllNotice;
+	private ArrayList<Notice> arrListAllNotice;
 	private static MyTypeFace myTypeFace;
 
-	public AllNoticeAdapter(Context context, ArrayList<Data> arrListAllNotice) {
+	public AllNoticeAdapter(Context context, ArrayList<Notice> arrListAllNotice) {
 		this.context = context;
 		this.arrListAllNotice = arrListAllNotice;
 		myTypeFace = new MyTypeFace(context);
@@ -68,7 +69,7 @@ public class AllNoticeAdapter extends RecyclerView.Adapter<AllNoticeAdapter.View
 			holder.txtNotice.setText(arrListAllNotice.get(position).getNotice());
 			holder.txtNoticeTime.setText(arrListAllNotice.get(position).getPostedOn());
 
-			if (arrListAllNotice.get(position).isFlagged()) {
+			if (arrListAllNotice.get(position).isExpanded()) {
 				expandNotice(holder);
 			} else {
 				restoreNotice(holder);
@@ -77,12 +78,12 @@ public class AllNoticeAdapter extends RecyclerView.Adapter<AllNoticeAdapter.View
 			holder.imgViewMore.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if (arrListAllNotice.get(position).isFlagged()) {
+					if (arrListAllNotice.get(position).isExpanded()) {
 						restoreNotice(holder);
-						arrListAllNotice.get(position).setFlagged(false);
+						arrListAllNotice.get(position).setIsExpanded(false);
 					} else {
 						expandNotice(holder);
-						arrListAllNotice.get(position).setFlagged(true);
+						arrListAllNotice.get(position).setIsExpanded(true);
 					}
 				}
 			});

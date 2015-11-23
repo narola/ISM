@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.ws.model.Comment;
 import com.ism.ws.model.Data;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     private static final String TAG = PostFeedCommentsAdapter.class.getSimpleName();
 
     Context context;
-    ArrayList<Data> listOfComments = new ArrayList<Data>();
+    ArrayList<Comment> listOfComments = new ArrayList<>();
 
 
     @Override
@@ -41,10 +42,10 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     }
 
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<Comment> comments) {
         try {
-            this.listOfComments.clear();
-            this.listOfComments.addAll(data);
+            listOfComments.clear();
+            listOfComments.addAll(comments);
         } catch (Exception e) {
             Log.e(TAG, "addAll Exception : " + e.toString());
         }

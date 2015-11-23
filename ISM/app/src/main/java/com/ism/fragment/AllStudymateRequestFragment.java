@@ -20,6 +20,7 @@ import com.ism.ws.helper.Attribute;
 import com.ism.ws.model.ResponseObject;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Data;
+import com.ism.ws.model.StudymateRequest;
 
 import java.util.ArrayList;
 
@@ -37,16 +38,16 @@ public class AllStudymateRequestFragment extends Fragment implements WebserviceW
 
 	private FragmentListener fragListener;
 	private HostActivity activityHost;
-	private ArrayList<Data> arrListStudymateRequest;
+	private ArrayList<StudymateRequest> arrListStudymateRequest;
 	private StudymateRequestAdapter adpStudymate;
 
-	public static AllStudymateRequestFragment newInstance(ArrayList<Data> arrListStudymateRequest) {
+	public static AllStudymateRequestFragment newInstance(ArrayList<StudymateRequest> arrListStudymateRequest) {
 		AllStudymateRequestFragment fragment = new AllStudymateRequestFragment();
 		fragment.setArrListStudymateRequest(arrListStudymateRequest);
 		return fragment;
 	}
 
-	public void setArrListStudymateRequest(ArrayList<Data> arrListStudymateRequest) {
+	public void setArrListStudymateRequest(ArrayList<StudymateRequest> arrListStudymateRequest) {
 		this.arrListStudymateRequest = arrListStudymateRequest;
 	}
 

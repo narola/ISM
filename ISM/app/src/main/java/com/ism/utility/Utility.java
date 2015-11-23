@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.ws.model.Data;
+import com.ism.ws.model.Notice;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -150,10 +151,10 @@ public class Utility {
 	 * Sort ArrayList of Data by PostedBy date in ascending order
 	 * @param arrListData
 	 */
-	public static void sortPostedOnAsc(ArrayList<Data> arrListData) {
-		Collections.sort(arrListData, new Comparator<Data>() {
+	public static void sortPostedOnAsc(ArrayList<Notice> arrListData) {
+		Collections.sort(arrListData, new Comparator<Notice>() {
 			@Override
-			public int compare(Data lData, Data rData) {
+			public int compare(Notice lData, Notice rData) {
 				int compare = lData.getPostedOn().compareTo(rData.getPostedOn());
 				return compare;
 			}
@@ -165,10 +166,10 @@ public class Utility {
 	 * Sort ArrayList of Data by PostedBy date in descending order
 	 * @param arrListData
 	 */
-	public static void sortPostedOnDesc(ArrayList<Data> arrListData) {
-		Collections.sort(arrListData, new Comparator<Data>() {
+	public static void sortPostedOnDesc(ArrayList<Notice> arrListData) {
+		Collections.sort(arrListData, new Comparator<Notice>() {
 			@Override
-			public int compare(Data lData, Data rData) {
+			public int compare(Notice lData, Notice rData) {
 				int compare = rData.getPostedOn().compareTo(lData.getPostedOn());
 				return compare;
 			}
@@ -180,10 +181,10 @@ public class Utility {
 	 * Sort ArrayList of Data by NoticeTitle date in ascending order
 	 * @param arrListData
 	 */
-	public static void sortNoticeTitleAsc(ArrayList<Data> arrListData) {
-		Collections.sort(arrListData, new Comparator<Data>() {
+	public static void sortNoticeTitleAsc(ArrayList<Notice> arrListData) {
+		Collections.sort(arrListData, new Comparator<Notice>() {
 			@Override
-			public int compare(Data lData, Data rData) {
+			public int compare(Notice lData, Notice rData) {
 				return lData.getNoticeTitle().compareToIgnoreCase(rData.getNoticeTitle());
 
 			}
@@ -195,10 +196,10 @@ public class Utility {
 	 * Sort ArrayList of Data by NoticeTitle date in descending order
 	 * @param arrListData
 	 */
-	public static void sortNoticeTitleDesc(ArrayList<Data> arrListData) {
-		Collections.sort(arrListData, new Comparator<Data>() {
+	public static void sortNoticeTitleDesc(ArrayList<Notice> arrListData) {
+		Collections.sort(arrListData, new Comparator<Notice>() {
 			@Override
-			public int compare(Data lData, Data rData) {
+			public int compare(Notice lData, Notice rData) {
 				return rData.getNoticeTitle().compareToIgnoreCase(lData.getNoticeTitle());
 
 			}

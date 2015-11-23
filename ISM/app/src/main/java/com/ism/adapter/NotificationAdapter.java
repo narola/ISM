@@ -18,6 +18,7 @@ import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
 import com.ism.ws.model.Data;
+import com.ism.ws.model.Notification;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -30,14 +31,14 @@ public class NotificationAdapter extends BaseAdapter {
 
 	private static final String TAG = NotificationAdapter.class.getSimpleName();
 
-	private ArrayList<Data> arrListNotification;
+	private ArrayList<Notification> arrListNotification;
 	private Context context;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 	private MyTypeFace myTypeFace;
 	private int listItemLimit = 0;
 
-	public NotificationAdapter(Context context, ArrayList<Data> arrListNotification) {
+	public NotificationAdapter(Context context, ArrayList<Notification> arrListNotification) {
 		this.arrListNotification = arrListNotification;
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
@@ -46,7 +47,7 @@ public class NotificationAdapter extends BaseAdapter {
 		myTypeFace = new MyTypeFace(context);
 	}
 
-	public NotificationAdapter(Context context, ArrayList<Data> arrListNotification, int listItemLimit) {
+	public NotificationAdapter(Context context, ArrayList<Notification> arrListNotification, int listItemLimit) {
 		this(context, arrListNotification);
 		this.listItemLimit = listItemLimit;
 	}
@@ -83,7 +84,7 @@ public class NotificationAdapter extends BaseAdapter {
 		}
 
 		try {
-			imageLoader.displayImage(WebConstants.URL_USERS_IMAGE_PATH + arrListNotification.get(position).getProfilePic(),
+			imageLoader.displayImage(WebConstants.URL_USERS_IMAGE_PATH + arrListNotification.get(position).getNotificationFromProfilePic(),
 					holder.imgDp, ISMStudent.options);
 			imageLoader.displayImage(Global.strProfilePic, holder.imgDp, ISMStudent.options);
 			holder.txtNameNotification.setText(Html.fromHtml("<font color='#1BC4A2'>" + arrListNotification.get(position).getNotificationFromName()

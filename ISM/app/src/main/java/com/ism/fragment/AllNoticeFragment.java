@@ -21,6 +21,7 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Utility;
 import com.ism.ws.model.Data;
+import com.ism.ws.model.Notice;
 
 import java.util.ArrayList;
 
@@ -35,18 +36,18 @@ public class AllNoticeFragment extends Fragment {
 	private Spinner spSortBy;
 	private RecyclerView recyclerAllNotice;
 
-	private ArrayList<Data> arrListAllNotice;
+	private ArrayList<Notice> arrListAllNotice;
 	private AllNoticeAdapter adpAllNotice;
 
 	private FragmentListener listenerFragment;
 
-	public static AllNoticeFragment newInstance(ArrayList<Data> arrListAllNotice) {
+	public static AllNoticeFragment newInstance(ArrayList<Notice> arrListAllNotice) {
 		AllNoticeFragment fragment = new AllNoticeFragment();
 		fragment.setArrListNotice(arrListAllNotice);
 		return fragment;
 	}
 
-	private void setArrListNotice(ArrayList<Data> arrListAllNotice) {
+	private void setArrListNotice(ArrayList<Notice> arrListAllNotice) {
 		this.arrListAllNotice = arrListAllNotice;
 	}
 
@@ -119,7 +120,7 @@ public class AllNoticeFragment extends Fragment {
 
 	}
 
-	private void fillListAllNotice(ArrayList<Data> arrListAllNotice) {
+	private void fillListAllNotice(ArrayList<Notice> arrListAllNotice) {
 		try {
 			if (arrListAllNotice != null) {
 				adpAllNotice = new AllNoticeAdapter(getActivity(), arrListAllNotice);

@@ -5,9 +5,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.ws.model.Badges;
 import com.ism.ws.model.City;
+import com.ism.ws.model.Comment;
 import com.ism.ws.model.Country;
 import com.ism.ws.model.Feeds;
+import com.ism.ws.model.Message;
+import com.ism.ws.model.Notice;
+import com.ism.ws.model.Notification;
 import com.ism.ws.model.SettingPreferences;
+import com.ism.ws.model.StudymateRequest;
 import com.ism.ws.model.UserBooks;
 import com.ism.ws.model.UserPreferences;
 import com.ism.ws.model.State;
@@ -29,12 +34,19 @@ public class ResponseHandler {
 	private ArrayList<Country> countries;
 	private ArrayList<City> cities;
 	private ArrayList<User> user;
+	private ArrayList<User> highScorers;
+	private ArrayList<User> studymates;
 	private ArrayList<TutorialGroup> tutorialGroup;
 	private ArrayList<Badges> badges;
 	private ArrayList<Feeds> feeds;
 	private ArrayList<SettingPreferences> preference;
 	private ArrayList<UserPreferences> userPreference;
-    private ArrayList<UserBooks> books;
+	private ArrayList<UserBooks> books;
+	private ArrayList<Comment> comments;
+	private ArrayList<Notice> notices;
+	private ArrayList<Notification> notification;
+	private ArrayList<Message> messages;
+	private ArrayList<StudymateRequest> studymateRequest;
 
     @JsonProperty("message")
 	public String getMessage() {
@@ -141,4 +153,66 @@ public class ResponseHandler {
 		this.feeds = feeds;
 	}
 
+	@JsonProperty("comments")
+	public ArrayList<Comment> getComments() {
+		return this.comments;
+	}
+
+	public void setComments(ArrayList<Comment> comments) {
+		this.comments = comments;
+	}
+
+	@JsonProperty("studymates")
+	public ArrayList<User> getStudymates() {
+		return this.studymates;
+	}
+
+	public void setStudymates(ArrayList<User> studymates) {
+		this.studymates = studymates;
+	}
+
+	@JsonProperty("notices")
+	public ArrayList<Notice> getNotices() {
+		return this.notices;
+	}
+
+	public void setNotices(ArrayList<Notice> notices) {
+		this.notices = notices;
+	}
+
+	@JsonProperty("notification")
+	public ArrayList<Notification> getNotification() {
+		return this.notification;
+	}
+
+	public void setNotification(ArrayList<Notification> notification) {
+		this.notification = notification;
+	}
+
+	@JsonProperty("messages")
+	public ArrayList<Message> getMessages() {
+		return this.messages;
+	}
+
+	public void setMessages(ArrayList<Message> messages) {
+		this.messages = messages;
+	}
+
+	@JsonProperty("studymate_request")
+	public ArrayList<StudymateRequest> getStudymateRequest() {
+		return this.studymateRequest;
+	}
+
+	public void setStudymateRequest(ArrayList<StudymateRequest> studymateRequest) {
+		this.studymateRequest = studymateRequest;
+	}
+
+	@JsonProperty("high_scorers")
+	public ArrayList<User> getHighScorers() {
+		return highScorers;
+	}
+
+	public void setHighScorers(ArrayList<User> highScorers) {
+		this.highScorers = highScorers;
+	}
 }

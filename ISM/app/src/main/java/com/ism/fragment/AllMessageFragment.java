@@ -23,9 +23,9 @@ import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
 import com.ism.ws.helper.Attribute;
-import com.ism.ws.model.ResponseObject;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.Message;
+import com.ism.ws.model.ResponseObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -46,7 +46,7 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 
 	private FragmentListener fragListener;
 	private HostActivity activityHost;
-	private ArrayList<Data> arrListMessage;
+	private ArrayList<Message> arrListMessage;
 	private MessageAdapter adpMessage;
 	private ImageLoader imageLoader;
 
@@ -54,7 +54,7 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 	private int positionMessage;
 	private boolean isReadStatusUpdated = false;
 
-	public static AllMessageFragment newInstance(ArrayList<Data> arrListMessage, int position) {
+	public static AllMessageFragment newInstance(ArrayList<Message> arrListMessage, int position) {
 		AllMessageFragment fragment = new AllMessageFragment();
 		Bundle args = new Bundle();
 		args.putInt(MESSAGE_POSITION, position);
@@ -63,7 +63,7 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 		return fragment;
 	}
 
-	public void setArrListMessage(ArrayList<Data> arrListMessage) {
+	public void setArrListMessage(ArrayList<Message> arrListMessage) {
 		this.arrListMessage = arrListMessage;
 	}
 

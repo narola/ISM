@@ -68,10 +68,10 @@ public class WebConstants {
 	public static final String URL_GET_STATES = URL_HOST_147 + "GetStates";
 	public static final String URL_GET_COUNTRIES = URL_HOST_147 + "GetCountries";
 	public static final String URL_LOGIN = URL_HOST_147 + "AuthenticateUser";
-	public static final String URL_TAG_STUDY_MATES = URL_HOST_162 + "TagFriendInFeed";
-	public static final String URL_GET_ALL_STUDY_MATES = URL_HOST_162 + "GetStudymates";
-	public static final String URL_GET_ALL_COMMENTS = URL_HOST_162 + "GetAllComments";
-	public static final String URL_ADD_COMMENT = URL_HOST_162 + "AddComment";
+	public static final String URL_TAG_STUDY_MATES = URL_HOST_147 + "TagFriendInFeed";
+	public static final String URL_GET_ALL_STUDY_MATES = URL_HOST_147 + "GetStudymates";
+	public static final String URL_GET_ALL_COMMENTS = URL_HOST_147 + "GetAllComments";
+	public static final String URL_ADD_COMMENT = URL_HOST_147 + "AddComment";
 	public static final String URL_GET_ALL_FEEDS = URL_HOST_147 + "GetAllFeeds";
 	public static final String URL_REGISTER_USER = URL_HOST_147 + "RegisterUser";
 	public static final String URL_REQUEST_SCHOOL_INFO = URL_HOST_147 + "RequestForSchoolInfoUpdation";

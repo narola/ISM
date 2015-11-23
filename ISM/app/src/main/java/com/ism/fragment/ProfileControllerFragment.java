@@ -33,9 +33,11 @@ import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.views.CircleImageView;
 import com.ism.ws.helper.Attribute;
-import com.ism.ws.model.ResponseObject;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.Message;
+import com.ism.ws.model.Notification;
+import com.ism.ws.model.StudymateRequest;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -65,9 +67,9 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
     private FragmentListener fragListener;
 	private ImageLoader imageLoader;
 	private MyTypeFace myTypeFace;
-	private ArrayList<Data> arrListNotification;
-	private ArrayList<Data> arrListMessage;
-	private ArrayList<Data> arrListStudyMateRequest;
+	private ArrayList<Notification> arrListNotification;
+	private ArrayList<Message> arrListMessage;
+	private ArrayList<StudymateRequest> arrListStudyMateRequest;
 	private NotificationAdapter adpNotification;
 	private MessageAdapter adpMessage;
 	private StudymateRequestAdapter adpStudymate;
@@ -244,7 +246,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			activityHost.showProgress();
 			Attribute attribute = new Attribute();
 			attribute.setUserId(Global.strUserId);
-			Log.e(TAG, "user id : " + Global.strUserId);
+
 			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
 					.execute(WebConstants.GET_NOTIFICATION);
 		} catch (Exception e) {
@@ -463,10 +465,10 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 	private void onResponseUpdateReadStatus(Object object, Exception error) {
 		try {
 			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 //					Log.e(TAG, "onResponseUpdateReadStatus success");
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseUpdateReadStatus failed");
 				}
 			} else if (error != null) {
@@ -481,12 +483,12 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 		try {
 			activityHost.hideProgress();
 			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					arrListStudyMateRequest = responseObj.getData();
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					arrListStudyMateRequest = responseHandler.getStudymateRequest();
 					fillListStudymate();
 					btnViewAll.setVisibility(View.VISIBLE);
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetStudymateRequest Failed");
 				}
 			} else if (error != null) {
@@ -527,12 +529,12 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 		try {
 			activityHost.hideProgress();
 			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					arrListMessage = responseObj.getData();
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					arrListMessage = responseHandler.getMessages();
 					fillListMessage();
 					btnViewAll.setVisibility(View.VISIBLE);
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetMessages Failed");
 				}
 			} else if (error != null) {
@@ -559,12 +561,12 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 		try {
 			activityHost.hideProgress();
 			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					arrListNotification = responseObj.getData();
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					arrListNotification = responseHandler.getNotification();
 					fillListNotification();
 					btnViewAll.setVisibility(View.VISIBLE);
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetNotification Failed");
 				}
 			} else if (error != null) {

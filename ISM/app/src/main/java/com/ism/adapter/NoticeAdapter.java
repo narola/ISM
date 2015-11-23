@@ -14,6 +14,7 @@ import com.ism.activity.HostActivity;
 import com.ism.model.FragmentArgument;
 import com.ism.object.MyTypeFace;
 import com.ism.ws.model.Data;
+import com.ism.ws.model.Notice;
 
 import java.util.ArrayList;
 
@@ -26,11 +27,11 @@ public class NoticeAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private Context context;
-    private ArrayList<Data> arrListNotes;
+    private ArrayList<Notice> arrListNotes;
 	private MyTypeFace myTypeFace;
 	private HostActivity activityHost;
 
-    public NoticeAdapter(Context context, ArrayList<Data> arrListNotes, HostActivity activityHost) {
+    public NoticeAdapter(Context context, ArrayList<Notice> arrListNotes, HostActivity activityHost) {
         this.context = context;
         this.arrListNotes = arrListNotes;
 	    this.activityHost = activityHost;

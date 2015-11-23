@@ -27,6 +27,7 @@ import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
 import com.ism.ws.helper.Attribute;
+import com.ism.ws.model.Notification;
 import com.ism.ws.model.ResponseObject;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Data;
@@ -54,7 +55,7 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 
 	private FragmentListener fragListener;
 	private HostActivity activityHost;
-	private ArrayList<Data> arrListNotification;
+	private ArrayList<Notification> arrListNotification;
 	private NotificationAdapter adpNotification;
 	private ImageLoader imageLoader;
 
@@ -62,7 +63,7 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 	private int positionNotification;
 	private boolean isReadStatusUpdated = false;
 
-	public static AllNotificationFragment newInstance(ArrayList<Data> arrListNotification, int position) {
+	public static AllNotificationFragment newInstance(ArrayList<Notification> arrListNotification, int position) {
 		AllNotificationFragment fragment = new AllNotificationFragment();
 		Bundle args = new Bundle();
 		args.putInt(NOTIFICATION_POSITION, position);
@@ -71,7 +72,7 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 		return fragment;
 	}
 
-	public void setArrListNotification(ArrayList<Data> arrListNotification) {
+	public void setArrListNotification(ArrayList<Notification> arrListNotification) {
 		this.arrListNotification = arrListNotification;
 	}
 
