@@ -80,7 +80,7 @@ public class UserMoviesFragment extends Fragment implements WebserviceWrapper.We
                 requestObject.setUserId("1");
                 new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_MOVIES_FOR_USER);
             }else{
-                Utility.toastOffline(getActivity());
+                Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
             Debug.i(TAG, "callApiGetMoviesForUser Exception : " + e.getLocalizedMessage());

@@ -62,7 +62,7 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 	    if (Utility.isConnected(WelComeActivity.this)) {
 		    callApiAllocateTutorialGroup();
 	    } else {
-		    Utility.toastOffline(WelComeActivity.this);
+		    Utility.alertOffline(WelComeActivity.this);
 	    }
     }
 

@@ -75,7 +75,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 		if (Utility.isConnected(getActivity())) {
 			callApiGetAllFeeds();
 		} else {
-			Utility.toastOffline(getActivity());
+			Utility.alertOffline(getActivity());
 		}
 
 		llPost.setOnClickListener(new View.OnClickListener() {

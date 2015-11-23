@@ -50,8 +50,7 @@ public class WebserviceWrapper {
 	        try {
 
 //			    Check if we can get access from the network.
-//	            URL url = new URL("http://192.168.1.147/");
-	            URL url = new URL("http://google.com/");
+	            URL url = new URL(WebConstants.HOST_147);
 	            HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
 	            urlc.setRequestProperty("Connection", "close");
 	            urlc.setConnectTimeout(2000); // Timeout 2 seconds.
@@ -161,8 +160,8 @@ public class WebserviceWrapper {
 
         @Override
         protected void onPostExecute(Object responseObject) {
-            if (!isNetworkConnected) {
-	            Utility.showToast(context, context.getString(R.string.error_server_connection));
+            if (isNetworkConnected) {
+                Utility.alert(context.getApplicationContext(), context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
             }
 	        webserviceResponse.onResponse(responseObject, exception, currentApiCode);
 	        super.onPostExecute(responseObject);

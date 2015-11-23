@@ -94,7 +94,7 @@ public class UserPastTimeFragment extends Fragment implements WebserviceWrapper.
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
             }
             else{
-                Utility.toastOffline(getActivity());
+                Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
             Debug.i(TAG, "callApiGetBooksForUser Exception : " + e.getLocalizedMessage());

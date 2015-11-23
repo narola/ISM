@@ -253,7 +253,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
                     Debug.i(TAG, "General setting Pereference list size :" + reqObj.size());
                 }
             } else {
-                Utility.toastOffline(getActivity());
+                Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
 

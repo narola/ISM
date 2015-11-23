@@ -52,13 +52,9 @@ import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Message;
-import com.ism.ws.model.Notice;
-import com.ism.ws.model.Notification;
 import com.ism.ws.model.NotificationSetting;
 import com.ism.ws.model.PrivacySetting;
 import com.ism.ws.model.SMSAlert;
-import com.ism.ws.model.StudymateRequest;
 import com.ism.ws.model.UserPreferences;
 
 import java.util.ArrayList;
@@ -194,7 +190,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 		    callApiGetGeneralSettingPreferences();
 		    callApiForGetUserPreference();
 	    } else {
-		    Utility.toastOffline(HostActivity.this);
+		    Utility.alertOffline(HostActivity.this);
 	    }
 
         loadFragment(FRAGMENT_HOME, null);

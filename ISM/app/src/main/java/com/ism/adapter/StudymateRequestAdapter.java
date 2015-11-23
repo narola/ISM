@@ -170,7 +170,7 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 					progressGenerator.start(progress);
 					callApiRespondToRequest(studymateId);
 				} else {
-					com.ism.utility.Utility.toastOffline(context);
+					com.ism.utility.Utility.alertOffline(context);
 				}
 			}
 		});
