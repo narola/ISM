@@ -52,6 +52,40 @@ class SocialFunctions
                 return $this->getMyFeeds($postData);
             }
                 break;
+            
+            case "AddQuestionToFavorite":
+            {
+                return $this->addQuestionToFavorite($postData);
+            }
+                break;
+            case "TempGetMyFeeds":
+            {
+                return $this->tempGetMyFeeds($postData);
+            }
+                break;
+                
+            case "GetSecurirty":
+             {
+                return $this->getSecurirty($postData);
+            }
+                break;
+                
+            case "GetConfigData":
+            {
+                return $this->getConfigData($postData);
+            }
+                break;
+            case "EncryptionData":
+            {
+                return $this->encryptionData($postData);
+            }
+                break;
+                
+            case "DecryptionData":
+            {
+                return $this->decryptionData($postData);
+            }
+                break;
         }
     }
 
@@ -84,7 +118,7 @@ class SocialFunctions
             $message=DEFAULT_NO_RECORDS;
         }
         $status="success";
-        $response['data']=$data;
+        $response['comments']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -143,7 +177,7 @@ class SocialFunctions
         }
         $status = "success";
         $message = "Successfully";
-        $response['data']=$data;
+        $response['like_feed']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -185,7 +219,7 @@ class SocialFunctions
             $status="failed";
             $message="";
         }
-        $response['data']=$data;
+        $response['comment']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -224,7 +258,7 @@ class SocialFunctions
             }
         }
 
-        $response['data']=$data;
+        $response['tag_friend']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -317,7 +351,7 @@ class SocialFunctions
 
         $response['status']=$status;
         $response['message']=$message;
-        $response['data']=$data;
+        $response['feed']=$data;
         return $response;
     }
 
@@ -442,7 +476,7 @@ class SocialFunctions
 
         $final_feeds = $this->getAllFeedsFromFeeds($user_id,$final_followers, $final_mates, $final_teachers, $final_groups, $final_users, $final_feeds_tagged);
 
-        $response['data']=$final_feeds['data'];
+        $response['feeds']=$final_feeds['data'];
         $response['status']=$final_feeds['status'];
         $response['message']=$final_feeds['message'];
 
@@ -844,13 +878,388 @@ class SocialFunctions
         }
 
 
-		$response['data']=$data;
+		$response['feeds']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
 
         return $response;
     }
 
+	/*
+	* AddQuestionToFavorite
+	*/
+	public function addQuestionToFavorite($postData)
+	{
+		$data = array();
+        $response = array();
+
+        $user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+        $question_id = validateObject($postData, 'question_id', "");
+        
+         if($question_id != null)
+        {
+            foreach($question_id as $record_id) {
+            
+                $queryCheckFeed = "SELECT * FROM ".TABLE_USER_FAVORITE_QUESTION." WHERE user_id=".$user_id." AND question_id =". $record_id;
+               // echo $queryCheckFeed."\n";
+                $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
+                
+                if (mysql_num_rows($resultCheckFeed) == 0) {
+                    $insertFields="`user_id`,`question_id`";
+        			$insertValues=$user_id.",". $record_id;
+
+       				$query="INSERT INTO ".TABLE_USER_FAVORITE_QUESTION."(".$insertFields.") VALUES (".$insertValues.")";
+       				//echo $query;
+        			$result=mysql_query($query) or  $message=mysql_error();
+       			
+       				if($result)
+       				{
+       					$status = "success";
+       					$message = "favorite synced";
+       				}
+       				else
+       				{
+       					$status="failed";
+            			$message="";
+       				}
+                }
+                else
+                {
+                	 $status="failed";
+            		 $message="";
+                }
+            }
+            
+        }
+        else
+        {
+        	$status="failed";
+            $message="";
+        }
+        
+
+        $response['favorite_question']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+        
+        return $response;
+	}
+	
+	
+	public function tempGetMyFeeds($postData)
+    {
+    	$message ='';
+        $status='';
+        $post=array();
+        $data=array();
+        $response=array();
+        
+		$user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+		
+
+        $queryGetAllFeeds = "select feed.*,user.id as 'UserId',user.full_name as 'Username',user.profile_pic as 'Profile_pic' from " . TABLE_FEEDS ." feed INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id where feed.feed_by =".$user_id;
+        $resultGetAllFeeds = mysql_query($queryGetAllFeeds) or $errorMsg = mysql_error();
+        $feeds_count = mysql_num_rows($resultGetAllFeeds);
+
+        if ($feeds_count > 0) {
+            while ($feed = mysql_fetch_assoc($resultGetAllFeeds)) {
+              
+             $feeds['postId']=$feed['id']; 
+             $feeds['postText']=$feed['feed_text']; 
+             $feeds['postVideo']=$feed['video_link']; 
+             $feeds['UserId']=$feed['UserId']; 
+             $feeds['Username']=$feed['Username']; 
+             $feeds['Profile_pic']=$feed['Profile_pic']; 
+             $feeds['totalLikes']=$feed['total_like']; 
+             $feeds['totalComments']=$feed['total_comment']; 
+              
+			//Get Comments 
+            $queryGetAllComments = "SELECT f.comment as 'comment_text', f.comment_by,u.username,u.profile_pic FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u ON f.comment_by=u.id WHERE f.feed_id=".$feed['id'];
+            //echo $queryGetAllComments;
+            $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
+            $allcomment=array();
+            
+            if(mysql_num_rows($resultGetAlComments))
+            {
+                while($comments=mysql_fetch_assoc($resultGetAlComments))
+                {
+                    $allcomment[]=$comments;
+                } 
+            }
+			$feeds['Comments']=$allcomment;
+
+        
+        //Get Images
+        $queryGetImages="SELECT `id`,`image_link` FROM `feed_image` WHERE `feed_id`=".$feed['id'];
+        $resultGetImages=mysql_query($queryGetImages) or $errorMsg=mysql_error();
+        $allImages=array();
+        //for counting the number of rows for query result
+        if(mysql_num_rows($resultGetImages))
+        {
+            while($images=mysql_fetch_assoc($resultGetImages))
+            {
+                $allImages[]=$images;
+            }
+
+        }
+        $feeds['postImage']=$allImages;
+			
+                $data[]=$feeds;
+            }
+             $status="success";
+       		 $message="";
+        }
+        else
+        {
+            $status="failed";
+            $message = DEFAULT_NO_RECORDS;
+            $data="";
+        }
+
+
+		$response['feed']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
+    
+    
+    public function getSecurirty($postData)
+    {
+    	$message ='';
+        $status='';
+        $post=array();
+        $data=array();
+        $response=array();
+        
+       
+  
+ /* foreach (getallheaders() as $name => $value) {
+	  
+	  echo "$name :$value\n";
+     
+  
+}*/
+        $data['agent']=$_SERVER ['HTTP_USER_AGENT'];
+    	$response['security']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
+    
+    /*
+    * getConfigData
+    */
+    public function getConfigData($postData)
+    {
+     	$status='';
+     	$message='';
+        $data=array();
+        $response=array();
+        
+     	$query = "SELECT config_key,config_value,value_unit FROM ".TABLE_ADMIN_CONFIG;
+        $result = mysql_query($query) or $message = mysql_error();
+             
+        if(mysql_num_rows($result))
+        {
+             while($row=mysql_fetch_assoc($result))
+            {
+                    $data[]=$row;
+            } 
+            $stats="success";
+        }
+       
+     	//$token= $this->getToken(10);
+     	
+     
+    	$response['admin_config']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+    }
+    
+    //Generate Token_id 
+	 function crypto_rand_secure($min, $max)
+	{
+    $range = $max - $min;
+    if ($range < 1) return $min; // not so random...
+    $log = ceil(log($range, 2));
+    $bytes = (int) ($log / 8) + 1; // length in bytes
+    $bits = (int) $log + 1; // length in bits
+    $filter = (int) (1 << $bits) - 1; // set all lower bits to 1
+    do {
+        $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
+        $rnd = $rnd & $filter; // discard irrelevant bits
+    } while ($rnd >= $range);
+    return $min + $rnd;
+	}
+
+	function getToken($length)
+	{
+	
+    	$token = "";
+    	$codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    	$codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
+    	$codeAlphabet.= "0123456789";
+    	$max = strlen($codeAlphabet) - 1;
+    	for ($i=0; $i < $length; $i++) {
+     	   $token .= $codeAlphabet[$this->crypto_rand_secure(0, $max)];
+   	 }
+    return $token;
+}
+    
+    
+    
+    function fnEncrypt($sValue, $sSecretKey) {
+    	global $iv;
+    	//$iv=mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
+    	return rtrim(base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $sSecretKey, $sValue, MCRYPT_MODE_CBC, $iv)), "\0\3");
+	}
+
+	function fnDecrypt($sValue, $sSecretKey) {
+   		 global $iv;
+   		 //$iv=mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
+   	 return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $sSecretKey, base64_decode($sValue), MCRYPT_MODE_CBC, $iv), "\0\3");
+	}
+
+	public function encryptionData($postData)
+	{
+	
+		$status='';
+     	$message='';
+        $data=array();
+        $response=array();
+        
+       
+		$query = "SELECT config_value FROM ".TABLE_ADMIN_CONFIG. " WHERE config_key='globalPassword'";
+        $result = mysql_query($query) or $message = mysql_error();
+        $secerectkey=mysql_fetch_row($result);
+        
+		
+
+	// 32 byte binary blob
+	$aes256Key = hash("SHA256", $secerectkey[0], true);
+
+	// for good entropy (for MCRYPT_RAND)
+	srand((double) microtime() * 1000000);
+	// generate random iv
+	$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
+
+
+	$crypted = $this->fnEncrypt($_POST['username'], $aes256Key);
+
+	$data['crypted']=$crypted;
+	//$newClear = $this->fnDecrypt($crypted, $aes256Key);
+
+	//echo
+	//"IV:        <code>".$iv."</code><br/>".
+	//"Encrypred: <code>".$crypted."</code><br/>".
+	//"Decrypred: <code>".$newClear."</code><br/>"; 
+	
+	
+	//====================================================
+	
+/*	# --- ENCRYPTION ---
+
+    # the key should be random binary, use scrypt, bcrypt or PBKDF2 to
+    # convert a string into a key
+    # key is specified using hexadecimal
+    $key = pack('H*', "bcb04b7e103a0cd8b54763051cef08bc55abe029fdebae5e1d417e2ffb2a00a3");
+    
+    # show key size use either 16, 24 or 32 byte keys for AES-128, 192
+    # and 256 respectively
+    $key_size =  strlen($key);
+   // echo "Key size: " . $key_size . "\n";
+    
+    $plaintext = "kinjal123";
+
+    # create a random IV to use with CBC encoding
+    $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+    $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+    
+    # creates a cipher text compatible with AES (Rijndael block size = 128)
+    # to keep the text confidential 
+    # only suitable for encoded input that never ends with value 00h
+    # (because of default zero padding)
+    $ciphertext = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key,
+                                 $_POST['username'], MCRYPT_MODE_CBC, $iv);
+
+    # prepend the IV for it to be available for decryption
+    $ciphertext = $iv . $ciphertext;
+    
+    # encode the resulting cipher text so it can be represented by a string
+    $ciphertext_base64 = base64_encode($ciphertext);
+
+    echo  $ciphertext_base64 . "\n";
+
+    # === WARNING ===
+
+    # Resulting cipher text has no integrity or authenticity added
+    # and is not protected against padding oracle attacks.
+    
+    # --- DECRYPTION ---
+    
+    $ciphertext_dec = base64_decode($ciphertext_base64);
+    
+    # retrieves the IV, iv_size should be created using mcrypt_get_iv_size()
+    $iv_dec = substr($ciphertext_dec, 0, $iv_size);
+    
+    # retrieves the cipher text (everything except the $iv_size in the front)
+    $ciphertext_dec = substr($ciphertext_dec, $iv_size);
+
+    # may remove 00h valued characters from end of plain text
+    $plaintext_dec = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key,
+                                    $ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec);
+    
+    echo  $plaintext_dec . "\n";*/
+	
+	
+	
+    	$response['data']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+
+        return $response;
+	}
+	
+	public function decryptionData($postData)
+	{
+		$status='';
+     	$message='';
+        $data=array();
+        $response=array();
+        
+	
+	$query = "SELECT config_value FROM ".TABLE_ADMIN_CONFIG. " WHERE config_key='globalPassword'";
+    $result = mysql_query($query) or $message = mysql_error();
+    $secerectkey=mysql_fetch_row($result);
+ 
+	// 32 byte binary blob
+	$aes256Key = hash("SHA256", $secerectkey[0], true);
+
+	// for good entropy (for MCRYPT_RAND)
+	//srand((double) microtime() * 1000000);
+	// generate random iv
+	$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
+
+	
+	$newClear = $this->fnDecrypt($_POST['crypted'], $aes256Key);
+		
+	
+       $data['decrpted']=$newClear;
+       
+        $response['data']=$data;
+        $response['message'] = $message;
+        $response['status'] = $status;
+       
+       return $response;
+	}
 }
 
 ?>

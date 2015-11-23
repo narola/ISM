@@ -5,7 +5,8 @@
  * Date: 26/10/15
  * Time: 11:19 AM
  */
-
+ 
+error_reporting(0); 
 class TeacherFunctions
 {
 
@@ -96,7 +97,7 @@ class TeacherFunctions
             $status = "failed";
             $message = "";
         }
-        $response['data']=$data;
+        $response['classwall']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -120,11 +121,11 @@ class TeacherFunctions
 
         if($role==2){
             //student
-            $table=TABLE_STUDENT_ACADEMIC_INFO;
+            $table=TABLE_STUDENT_PROFILE;
         }
         else if($role==3) {
             //teacher
-            $table=TABLE_TEACHER_SUBJECT_INFO;
+            $table=TABLE_STUDENT_PROFILE;
         }
         $query = "SELECT `classroom_id`FROM ".$table." WHERE `user_id`=" . $user_id;
         $result = mysql_query($query) or $message = mysql_error();
@@ -167,7 +168,7 @@ class TeacherFunctions
             $message = DEFAULT_NO_RECORDS;
         }
 
-        $response['data']=$data;
+        $response['classwall']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -200,7 +201,7 @@ class TeacherFunctions
                // echo "\n".$student_id."\n";
                // $query="SELECT * FROM ".TABLE_USERS." WHERE `id`=".$student_id;
                // $result=mysql_query($query) or $message=mysql_error();
-                $queryInnerJoin=TABLE_USERS." users INNER JOIN ".TABLE_STUDENT_ACADEMIC_INFO." studentAcademicInfo INNER JOIN ".TABLE_SCHOOLS." schools";
+                $queryInnerJoin=TABLE_USERS." users INNER JOIN ".TABLE_STUDENT_PROFILE." studentAcademicInfo INNER JOIN ".TABLE_SCHOOLS." schools";
                 $queryOn="users.id=studentAcademicInfo.user_id or schools.id=studentAcademicInfo.school_id";
 
                 $getField="users.id,schools.school_name,users.full_name,users.profile_pic,users.id";
@@ -230,7 +231,7 @@ class TeacherFunctions
             $status="success";
           //  $message=DEFAULT_NO_RECORDS;
         }
-        $response['data']=$data;
+        $response['students']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -255,7 +256,7 @@ class TeacherFunctions
 
         if($role==2){
             //student
-            $table=TABLE_STUDENT_ACADEMIC_INFO;
+            $table=TABLE_STUDENT_PROFILE;
         }
         else if($role==3) {
             //teacher
@@ -289,7 +290,7 @@ class TeacherFunctions
             $message = DEFAULT_NO_RECORDS;
         }
         $status = "success";
-        $response['data']=$data;
+        $response['class_subjects']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -314,7 +315,7 @@ class TeacherFunctions
 
         if($role==2){
             //student
-            $table=TABLE_STUDENT_ACADEMIC_INFO;
+            $table=TABLE_STUDENT_PROFILE;
         }
         else if($role==3) {
             //teacher
@@ -361,7 +362,7 @@ class TeacherFunctions
             $message = DEFAULT_NO_RECORDS;
         }
         $status = "success";
-        $response['data']=$data;
+        $response['notes']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -444,7 +445,7 @@ class TeacherFunctions
             $response['message'] = "";
         }
 
-        $response['data']=$data;
+        $response['notes']=$data;
         return $response;
 
     }
@@ -583,7 +584,7 @@ class TeacherFunctions
         $data[]=$post;
         $response['message']=$message;
         $response['status']=$status;
-        $response['data']=$data;
+        $response['assignment']=$data;
 
         return $response;
     }

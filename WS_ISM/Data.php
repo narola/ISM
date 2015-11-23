@@ -63,7 +63,7 @@ class TutorialGroup
 
 		$data['status'] = ($status > 1) ? 'failed' : 'success';
 		$data['message'] = $message;
-		$data['data'] = $countryArray;
+		$data['countries'] = $countryArray;
 
 		return $data;
 	}
@@ -102,7 +102,7 @@ class TutorialGroup
 
 		$data['status'] = ($status > 1) ? 'failed' : 'success';
 		$data['message'] = $message;
-		$data['data'] = $stateArray;
+		$data['states'] = $stateArray;
 
 		return $data;
 	}
@@ -141,7 +141,7 @@ class TutorialGroup
 
 		$data['status'] = ($status > 1) ? 'failed' : 'success';
 		$data['message'] = $message;
-		$data['data'] = $cityArray;
+		$data['cities'] = $cityArray;
 
 		return $data;
 	}

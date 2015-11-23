@@ -214,7 +214,7 @@ class TutorialGroup
 		$dataArray = array();
 		$dataArray[] = $result;
 
-		$data['data'] = $dataArray;
+		$data['tutorial_group'] = $dataArray;
 
 		return $data;
 
@@ -295,7 +295,7 @@ class TutorialGroup
 		}
 		$data['status'] = $statusText;
 		$data['message'] = $message;
-		$data['data'] = array();
+		$data['accept_tutorial_group'] = array();
 
 		return $data;
 
@@ -337,7 +337,7 @@ class TutorialGroup
 
 				$get_group_members = "SELECT " . $selectFields . "
 
-									    FROM " . TABLE_USERS . ", " . TABLE_STUDENT_ACADEMIC_INFO . " academic_info, " . TABLE_SCHOOLS . ",
+									    FROM " . TABLE_USERS . ", " . TABLE_STUDENT_PROFILE . " academic_info, " . TABLE_SCHOOLS . ",
                                             " . TABLE_CLASSROOMS . ", " . TABLE_COURSES . ", " . TABLE_USER_PROFILE_PICTURE . " pic
 
 									    WHERE users.id in (select user_id from tutorial_group_member where group_id = " . $groupId . ")

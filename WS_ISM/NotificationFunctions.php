@@ -112,7 +112,7 @@ class NotificationFunctions
             $status="failed";
             $message=DEFAULT_NO_RECORDS;
         }
-        $response['data']=$data;
+        $response['notices']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -153,7 +153,7 @@ class NotificationFunctions
     	$data['notification_count']=$notificationCount[0];
     	  
     	
-        $response['data'][]=$data;
+        $response['badges'][]=$data;
         $response['status']="success";
         $response['message']="";
         return $response;
@@ -186,12 +186,12 @@ class NotificationFunctions
            
          	 $post=array();
          	 
+         	 $post['record_id'] = $val['id'];
           	 $post['notification_to_id'] = $val['notification_to'];
            	 $post['notification_to_name'] = $val['t1']; 
            	 $post['notification_from_id'] = $val['notification_from'];
            	 $post['notification_from_name']=$val['t2'];
            	 $post['notification_from_profile_pic']=$val['profile_pic'];       
-             $post['notification_id'] = $val['notification_id'];
              $post['notification_text'] = $val['notification_text'];
              $post['navigate_to'] = $val['navigate_to'];
              $post['is_read'] = $val['is_read'];
@@ -206,7 +206,7 @@ class NotificationFunctions
             $status="failed";
             $message=DEFAULT_NO_RECORDS;
         }
-        $response['data']=$data;
+        $response['notification']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -225,10 +225,14 @@ class NotificationFunctions
         $user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
          
-        $innerJoinQuery="messageReceiver.message_id,messages.message_text,messages.sender_id,users.username as 'sender_name',users.profile_pic as 'sender_profile_pic',messages.status,messages.created_date as 'sent_on' ";
-	 	$queryMessage="SELECT ".$innerJoinQuery."FROM ".TABLE_MESSAGE_RECEIVER." messageReceiver INNER JOIN ".TABLE_MESSAGES." messages ON messageReceiver.message_id = messages.id 
+        $innerJoinQuery="messageReceiver.id as 'record_id',messageReceiver.message_id,messages.message_text,messages.sender_id,users.username as 'sender_name',
+        users.profile_pic as 'sender_profile_pic',messages.status,messages.created_date as 'sent_on',messageReceiver.is_read ";
+	 	$queryMessage="SELECT ".$innerJoinQuery."FROM ".TABLE_MESSAGE_RECEIVER." messageReceiver INNER JOIN ".TABLE_MESSAGES." messages 
+	 	ON messageReceiver.message_id = messages.id 
 	 	INNER JOIN " .TABLE_USERS." users on users.id=messages.sender_id
-	 	WHERE messages.sender_id =".$user_id;
+	 	WHERE messageReceiver.receiver_id =".$user_id;
+	 	
+	 	//WHERE messages.sender_id =".$user_id;
     
         $resultMessage = mysql_query($queryMessage) or $message = mysql_error();
         
@@ -244,7 +248,7 @@ class NotificationFunctions
             $status="failed";
             $message=DEFAULT_NO_RECORDS;
         }
-        $response['data']=$data;
+        $response['messages']=$data;
         $response['status']=$status;
         $response['message']=$message;
         return $response;
@@ -284,7 +288,7 @@ class NotificationFunctions
             $message=DEFAULT_NO_RECORDS;
         }
         
-        $response['data']=$data;
+        $response['wallet_info']=$data;
         $response['status']=$status;
         $response['message']=$message;
         
@@ -334,7 +338,7 @@ class NotificationFunctions
                 
                 if (mysql_num_rows($resultCheckFeed) > 0) {
                     $val = mysql_fetch_assoc($resultCheckFeed);
-                  	 $queryUpdate="UPDATE " .$table ." SET ".$is_read." = 1 WHERE id = ".$feed_id;
+                  	 $queryUpdate="UPDATE " .$table ." SET ".$is_read." = 1 WHERE id =".$feed_id;
             		$resultUpdate = mysql_query($queryUpdate) or $errorMsg = mysql_error();
             		//echo $queryUpdate;
             		
@@ -356,7 +360,7 @@ class NotificationFunctions
         }
         
 
-        $response['data']=$data;
+        $response['read_status']=$data;
         $response['status']=$status;
         $response['message']=$message;
         
@@ -430,7 +434,7 @@ class NotificationFunctions
         }
         
 
-        $response['data']=$data;
+        $response['general_settings']=$data;
         $response['status']=$status;
         $response['message']=$message;
         
@@ -505,7 +509,7 @@ class NotificationFunctions
        }
        
         
-        $response['data'][]=$post;
+        $response['preference'][]=$post;
         $response['status']=$status;
         $response['message']=$message;
 		return $response;
@@ -547,7 +551,7 @@ class NotificationFunctions
             
         }
         
-        $response['data']=$post;
+        $response['user_preference']=$post;
         $response['status']=$status;
         $response['message']=$message;
 		return $response;

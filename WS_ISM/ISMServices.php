@@ -41,6 +41,11 @@ switch ($_REQUEST['Service'])
     case "GetMyActivity":
     case "BlockUser":
     case "GetPastimeForUser":
+    case "GetRoleModelForUser":
+    case "GetMoviesForUser":
+    case "AddResourcesToFavorite":
+    case "FollowUser":
+    case "GetStudentProfile":
     {
   	 include_once 'ProfileFunctions.php';
      $profile = new ProfileFunctions();
@@ -98,6 +103,7 @@ switch ($_REQUEST['Service'])
     case "GetAllResults":
 	case "GetStudentResultsByExam":
 	case "GetHighScorers":
+	case "TempCreateQuestion":
     {
         include_once 'ExamFunctions.php';
         $exam = new ExamFunctions();
@@ -113,6 +119,12 @@ switch ($_REQUEST['Service'])
     case "LikeFeed":
     case "GetAllComments":
 	case "GetMyFeeds":
+	case "AddQuestionToFavorite":
+	case "TempGetMyFeeds":
+	case "GetSecurirty":
+	case "GetConfigData":
+	case "EncryptionData":
+	case "DecryptionData":
     {
          include_once 'SocialFunctions.php';
        	 $profile = new SocialFunctions();

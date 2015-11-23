@@ -89,7 +89,7 @@ class StudyMateFunctions
             $status="failed";
         }
         
-        $response['data']=$data;
+        $response['acceptRequest']=$data;
 		$response['message'] = $message;
         $response['status'] = $status;
         return $response;
@@ -100,7 +100,44 @@ class StudyMateFunctions
         $message='';
         $data=array();
         $response=array();
-
+		
+		$user_id = validateObject ($postData , 'user_id', "");
+        $user_id = addslashes($user_id);
+        
+        $studymate_id = validateObject ($postData , 'studymate_id', "");
+        $studymate_id = addslashes($studymate_id);
+		
+		$query="SELECT * FROM ".TABLE_STUDYMATES_REQUEST." where request_from_mate_id=".$user_id. " and request_to_mate_id=". $studymate_id;
+		$result=mysql_query($query) or $message=mysql_error();
+		
+        if(mysql_num_rows($result)==0)
+        {
+        	$inserFields="`request_from_mate_id`,`request_to_mate_id`.`status`";
+        	$inserValues="".$user_id.",".$studymate_id.",";
+        	
+			$insertQuery="INSERT INTO ".TABLE_STUDYMATES_REQUEST."(".$inserFields.") VALUES( ".$inserValues.")";
+			$insertResult=mysql_query($insertQuery) or $message=mysql_error();
+			
+			if($insertResult)
+			{
+				$message="Request sent.";
+            	$status="success";
+			}
+			else
+			{
+				$message="";
+           		$status="failed";
+			}
+		}
+		else
+		{
+			$message="Request already sent.";
+            $status="failed";
+		}
+		$response['sendRequest']=$data;
+		$response['message'] = $message;
+        $response['status'] = $status;
+		
         return $response;
     }
 
@@ -121,7 +158,7 @@ class StudyMateFunctions
         $user_id = addslashes($user_id);
 
         $users[]=$user_id;
-        $query="SELECT * FROM `student_academic_info` WHERE user_id=".$user_id;
+        $query="SELECT * FROM ".TABLE_STUDENT_PROFILE." WHERE user_id=".$user_id;
         $result=mysql_query($query) or $message=mysql_error();
         if(mysql_num_rows($result))
         {
@@ -129,9 +166,8 @@ class StudyMateFunctions
             $classroom_id=$val['classroom_id'];
             $course_id=$val['course_id'];
             $school_id=$val['school_id'];
-            $querySchool="SELECT * FROM `student_academic_info` WHERE school_id=".$school_id;
+            $querySchool="SELECT * FROM ".TABLE_STUDENT_PROFILE." WHERE school_id=".$school_id;
             $resultSchool=mysql_query($querySchool) or $message=mysql_error();
-            echo $querySchool;
             if(mysql_num_rows($resultSchool)){
                 while($row=mysql_fetch_assoc($resultSchool)){
                     $suggested_studymate_id=$row['user_id'];
@@ -142,7 +178,7 @@ class StudyMateFunctions
                     }
                 }
             }
-            $querySchool="SELECT * FROM `student_academic_info` WHERE classroom_id=".$classroom_id;
+            $querySchool="SELECT * FROM ".TABLE_STUDENT_PROFILE." WHERE classroom_id=".$classroom_id;
             $resultSchool=mysql_query($querySchool) or $message=mysql_error();
            // echo $querySchool;
             if(mysql_num_rows($resultSchool)){
@@ -155,55 +191,91 @@ class StudyMateFunctions
                     }
                 }
             }
-            $querySchool="SELECT * FROM `student_academic_info` WHERE course_id=".$course_id;
+            $querySchool="SELECT * FROM ".TABLE_STUDENT_PROFILE." WHERE course_id=".$course_id;
             $resultSchool=mysql_query($querySchool) or $message=mysql_error();
-            echo $querySchool;
+            //echo $querySchool;
             if(mysql_num_rows($resultSchool)){
                 while($row=mysql_fetch_assoc($resultSchool)){
                     $suggested_studymate_id=$row['user_id'];
                     if(!in_array($suggested_studymate_id,$users)){
                         $post['user_id']=$suggested_studymate_id;
                         $data[]=$post;
-
                     }
                 }
             }
 
             //favorite author
-            $querySchool="SELECT * FROM `user_favorite_author` WHERE user_id=".$user_id;
+            $querySchool="SELECT author_id FROM `user_favorite_author` WHERE user_id=".$user_id;
             $resultSchool=mysql_query($querySchool) or $message=mysql_error();
-            echo $querySchool;
-            if(mysql_num_rows($resultSchool)) {
-                $fav_author_id = $row['author_id'];
-            }
+            $author_id=mysql_fetch_row($resultSchool);
+            //echo "auth=".$fav_author_id = $author_id[0];
+            
             //favorite book
-            $querySchool="SELECT * FROM `user_favorite_book` WHERE user_id=".$user_id;
+            $querySchool="SELECT book_id FROM `user_favorite_book` WHERE user_id=".$user_id;
             $resultSchool=mysql_query($querySchool) or $message=mysql_error();
-            echo $querySchool;
-            if(mysql_num_rows($resultSchool)) {
-                $fav_book_id = $row['book_id'];
-            }
+            $book_id=mysql_fetch_row($resultSchool);
+            //echo "book=".$fav_book_id = $book_id[0];
+            
             //favorite pastime
-            $querySchool="SELECT * FROM `user_favorite_pastime` WHERE user_id=".$user_id;
+            $querySchool="SELECT pastime_id FROM `user_favorite_pastime` WHERE user_id=".$user_id;
             $resultSchool=mysql_query($querySchool) or $message=mysql_error();
-            echo $querySchool;
-            if(mysql_num_rows($resultSchool)) {
-                $fav_pastime_id = $row['pastime_id'];
-            }
+          	$pastime_id=mysql_fetch_row($resultSchool);
+            //echo "past=".$fav_pastime_id = $pastime_id[0];
+           
             //favorite movie
-            $querySchool="SELECT * FROM `user_favorite_movie` WHERE user_id=".$user_id;
+            $querySchool="SELECT movie_id FROM `user_favorite_movie` WHERE user_id=".$user_id;
             $resultSchool=mysql_query($querySchool) or $message=mysql_error();
-            echo $querySchool;
-            if(mysql_num_rows($resultSchool)) {
-                $fav_movie_id = $row['movie_id'];
-            }
+            $movie_id=mysql_fetch_row($resultSchool);
+            //echo "mov=".$fav_movie_id = $movie_id[0];
+            
             //favorite author + favorite book
-            $querySchool = "SELECT * FROM `user_favorite_author` author INNER JOIN  user_favorite_book book on author.user_id=book.user_id, book.book_id=".$fav_book_id." , author.author_id=".$fav_author_id;
+            if($fav_book_id != NULL && $fav_author_id){
+            $querySchool = "SELECT * FROM `user_favorite_author` author INNER JOIN  `user_favorite_book` book on author.user_id=book.user_id, book.book_id=".$fav_book_id." , author.author_id=".$fav_author_id;
+            $resultSchool = mysql_query($querySchool) or $message = mysql_error();
+            //echo $querySchool;
+            if (mysql_num_rows($resultSchool)>0) {
+
+                while ($row = mysql_fetch_assoc($resultSchool)) {
+                    $suggested_studymate_id1 = $row['user_id'];
+                    if (!in_array($suggested_studymate_id, $users)) {
+                        $post['user_id'] = $suggested_studymate_id1;
+                        $data[] = $post;
+                    }
+                }
+            }
+            }
+
+          //  movie INNER JOIN user_favorite_pastime passtime on passtime.user.id=movie.user_id
+
+            //favorite author + favorite book
+             if($fav_movie_id != NULL && $fav_pastime_id!= NULL){
+           $querySchool = "SELECT * FROM `user_favorite_movie` movie,user_favorite_pastime pastime WHERE movie.movie_id=" . $fav_movie_id." and pastime.pastime_id=".$fav_pastime_id;
             $resultSchool = mysql_query($querySchool) or $message = mysql_error();
             echo $querySchool;
             if (mysql_num_rows($resultSchool)) {
 
                 while ($row = mysql_fetch_assoc($resultSchool)) {
+                    $suggested_studymate_id2 = $row['user_id'];
+                    if (!in_array($suggested_studymate_id, $users)) {
+                        $post['user_id'] = $suggested_studymate_id2;
+                        $data[] = $post;
+
+                    }
+                }
+            }
+		}
+		
+		//Final step
+		 if($suggested_studymate_id1 != NULL && $suggested_studymate_id2 != NULL){
+            $querySchool = "SELECT users.id,users,full_name.users.profile_pic,studymateRequest.status FROM ".TABLE_STUDYMATES_REQUEST." studymateRequest 
+            JOIN ".TABLE_USERS."users ON users.id=studymateRequest.request_to_mate_id 
+            WHERE studymateRequest.request_from_mate_id=" . $suggested_studymate_id1." AND studymateRequest.request_from_mate_id=" . $suggested_studymate_id2.
+            " AND studymateRequest.request_to_mate_id=".$user_id;
+            $resultSchool = mysql_query($querySchool) or $message = mysql_error();
+           echo $querySchool;
+           if (mysql_num_rows($resultSchool)) {
+
+               while ($row = mysql_fetch_assoc($resultSchool)) {
                     $suggested_studymate_id = $row['user_id'];
                     if (!in_array($suggested_studymate_id, $users)) {
                         $post['user_id'] = $suggested_studymate_id;
@@ -212,59 +284,12 @@ class StudyMateFunctions
                     }
                 }
             }
-//            $querySchool = "SELECT * FROM `user_favorite_book` WHERE book_id=" . $fav_book_id;
-//            $resultSchool = mysql_query($querySchool) or $message = mysql_error();
-//            echo $querySchool;
-//            if (mysql_num_rows($resultSchool)) {
-//
-//                while ($row = mysql_fetch_assoc($resultSchool)) {
-//                    $suggested_studymate_id = $row['user_id'];
-//                    if (!in_array($suggested_studymate_id, $users)) {
-//                        $post['user_id'] = $suggested_studymate_id;
-//                        $data[] = $post;
-//
-//                    }
-//                }
-//            }
-
-          //  movie INNER JOIN user_favorite_pastime passtime on passtime.user.id=movie.user_id
-
-            //favorite author + favorite book
-//            $querySchool = "SELECT * FROM `user_favorite_movie` movie,user_favorite_pastime pastime WHERE movie.movie_id=" . $fav_movie_id." and pastime.pastime_id=".$fav_pastime_id;
-//            $resultSchool = mysql_query($querySchool) or $message = mysql_error();
-//            echo $querySchool;
-//            if (mysql_num_rows($resultSchool)) {
-//
-//                while ($row = mysql_fetch_assoc($resultSchool)) {
-//                    $suggested_studymate_id = $row['user_id'];
-//                    if (!in_array($suggested_studymate_id, $users)) {
-//                        $post['user_id'] = $suggested_studymate_id;
-//                        $data[] = $post;
-//
-//                    }
-//                }
-//            }
-
-//            $querySchool = "SELECT * FROM `user_favorite_pastime` WHERE pastime_id=" . $fav_pastime_id;
-//            $resultSchool = mysql_query($querySchool) or $message = mysql_error();
-//            echo $querySchool;
-//            if (mysql_num_rows($resultSchool)) {
-//
-//                while ($row = mysql_fetch_assoc($resultSchool)) {
-//                    $suggested_studymate_id = $row['user_id'];
-//                    if (!in_array($suggested_studymate_id, $users)) {
-//                        $post['user_id'] = $suggested_studymate_id;
-//                        $data[] = $post;
-//
-//                    }
-//                }
-//            }
-
+		}
 
         }
         $response['status'] =$status;
         $response['message'] =$message;
-        $response['data']=$data;
+        $response['suggested_studymates']=$data;
         return $response;
 
     }
@@ -323,7 +348,7 @@ class StudyMateFunctions
             $data="";
         }
 
-        $response['data']=$data;
+        $response['studymates']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
 
@@ -386,7 +411,7 @@ class StudyMateFunctions
             $data="";
         }
 
-        $response['data']=$data;
+        $response['studymate_details']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
 
@@ -427,7 +452,7 @@ class StudyMateFunctions
         {
             while ($val = mysql_fetch_assoc($resultGetStudymateRequest)){
                  
-                 $post['request_id']=$val['id'];
+                 $post['record_id']=$val['id'];
                  $post['request_from_id']=$val['request_from_mate_id'];
                  $post['request_from_name']=$val['request_from_name'];
        			 $post['requester_profile']=$val['requester_profile'];
@@ -466,7 +491,7 @@ class StudyMateFunctions
             $data="";
         }
 
-        $response['data']=$data;
+        $response['studymate_request']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
 
