@@ -142,8 +142,24 @@ class User_account extends CI_Controller {
 				$city_id = null;
 			else
 				$city_id = $this->input->post("city_id");
+
+			// remove the extra spaces from the string
+			$full_name = explode(" ", trim($this->input->post("full_name")));
+			
+			// get the first name from the full name array
+			$fname = reset($full_name);
+			
+			// pop out the first element to get the last name
+			array_shift($full_name);
+			
+			// get the last names in the array and concatenate with space
+			$lname = implode(" ", $full_name);
+			
+
 			$data_student = array(
 				"full_name"			=>	$this->input->post("full_name"),
+				"first_name"		=>	$first_name,
+				"last_name"			=>	$last_name,
 				"email_id"			=>	$this->input->post("email_id"),
 				"gender"			=>	$this->input->post("gender"),
 				"contact_number"	=>	$this->input->post("contact_number"),
