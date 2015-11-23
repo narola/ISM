@@ -24,13 +24,11 @@ import com.ism.object.MyTypeFace;
 import com.ism.utility.InputValidator;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
+import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.City;
 import com.ism.ws.model.Country;
-import com.ism.ws.helper.Attribute;
-import com.ism.ws.model.ResponseObject;
-import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Data;
 import com.ism.ws.model.State;
 
 import java.util.ArrayList;

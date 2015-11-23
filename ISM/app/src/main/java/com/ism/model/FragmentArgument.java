@@ -1,9 +1,5 @@
 package com.ism.model;
 
-import com.ism.ws.model.Data;
-
-import java.util.ArrayList;
-
 /**
  * Created by c161 on 10/11/15.
  */

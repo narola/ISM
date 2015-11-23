@@ -20,7 +20,6 @@ import com.ism.adapter.AllNoticeAdapter;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Utility;
-import com.ism.ws.model.Data;
 import com.ism.ws.model.Notice;
 
 import java.util.ArrayList;

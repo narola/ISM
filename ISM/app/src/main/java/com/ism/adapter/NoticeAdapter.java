@@ -1,7 +1,6 @@
 package com.ism.adapter;
 
 import android.content.Context;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.model.FragmentArgument;
 import com.ism.object.MyTypeFace;
-import com.ism.ws.model.Data;
 import com.ism.ws.model.Notice;
 
 import java.util.ArrayList;

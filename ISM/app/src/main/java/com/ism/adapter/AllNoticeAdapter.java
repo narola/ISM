@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.object.MyTypeFace;
-import com.ism.ws.model.Data;
 import com.ism.ws.model.Notice;
 
 import java.util.ArrayList;

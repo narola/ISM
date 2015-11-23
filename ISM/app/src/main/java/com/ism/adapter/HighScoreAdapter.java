@@ -15,7 +15,6 @@ import com.ism.constant.WebConstants;
 import com.ism.model.HighScoreSubject;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
-import com.ism.ws.model.Data;
 import com.ism.ws.model.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;

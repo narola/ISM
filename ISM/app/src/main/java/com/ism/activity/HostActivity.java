@@ -351,7 +351,6 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, HomeFragment.newInstance()).commit();
                     ClassroomFragment homeFragment = ClassroomFragment.newInstance(FRAGMENT_HOME);
                     listenerHost = homeFragment;
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, homeFragment).commit();

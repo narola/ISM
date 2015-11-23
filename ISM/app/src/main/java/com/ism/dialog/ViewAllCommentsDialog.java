@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.adapter.PostFeedCommentsAdapter;
 import com.ism.ws.model.Comment;
-import com.ism.ws.model.Data;
 
 import java.util.ArrayList;
 

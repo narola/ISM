@@ -17,9 +17,8 @@ import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.ws.helper.Attribute;
-import com.ism.ws.model.ResponseObject;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Data;
 import com.ism.ws.model.StudymateRequest;
 
 import java.util.ArrayList;
@@ -145,10 +144,10 @@ public class AllStudymateRequestFragment extends Fragment implements WebserviceW
 	private void onResponseUpdateReadStatus(Object object, Exception error) {
 		try {
 			if (object != null) {
-				ResponseObject responseObject = (ResponseObject) object;
-				if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					Log.e(TAG, "Read status updated");
-				} else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "Read status update failed");
 				}
 			} else if (error != null) {

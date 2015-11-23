@@ -24,10 +24,8 @@ import com.ism.object.MyTypeFace;
 import com.ism.views.AccordionView;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
-import com.ism.ws.model.Notice;
-import com.ism.ws.model.ResponseObject;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.Notice;
 import com.ism.ws.model.User;
 
 import java.util.ArrayList;
@@ -184,10 +182,10 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 			activityHost.hideProgress();
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
-				if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					arrListHighScorers = responseHandler.getHighScorers();
 					fillListHighScorers();
-				} else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetHighScorers Failed");
 				}
 			} else if (error != null) {

@@ -15,7 +15,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.ism.R;
-import com.ism.ws.model.Data;
 import com.ism.ws.model.Notice;
 
 import java.io.ByteArrayOutputStream;

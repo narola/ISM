@@ -13,12 +13,11 @@ import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
-import com.ism.ws.helper.Attribute;
-import com.ism.ws.helper.ResponseHandler;
-import com.ism.ws.model.ResponseObject;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.TutorialGroupMember;
 
@@ -103,7 +102,7 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 			}
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
-				if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					if (responseHandler.getMessage().equals("Group created")) {
 
 						PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ALLOCATED, WelComeActivity.this, true);
@@ -131,7 +130,7 @@ public class WelComeActivity extends Activity implements WebserviceWrapper.Webse
 					} else {
 						Toast.makeText(WelComeActivity.this, R.string.msg_tutorial_group_pending, Toast.LENGTH_LONG).show();
 					}
-				} else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseAllocateTutorialGroup Failed");
 				}
 			} else if (error != null) {

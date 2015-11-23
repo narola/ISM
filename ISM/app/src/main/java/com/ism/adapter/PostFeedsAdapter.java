@@ -19,14 +19,13 @@ import com.ism.constant.WebConstants;
 import com.ism.dialog.TagStudyMatesDialog;
 import com.ism.dialog.ViewAllCommentsDialog;
 import com.ism.object.Global;
-import com.ism.views.CircleImageView;
 import com.ism.utility.Utility;
+import com.ism.views.CircleImageView;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
-import com.ism.ws.model.Feeds;
-import com.ism.ws.model.ResponseObject;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Comment;
+import com.ism.ws.model.Feeds;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -289,12 +288,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 	private void onResponseGetAllStudyMates(Object object) {
 		try {
 			ResponseHandler responseHandler = (ResponseHandler) object;
-			if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+			if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					if (responseHandler.getStudymates().size() > 0) {
 						TagStudyMatesDialog tagStudyMatesDialog = new TagStudyMatesDialog(context, responseHandler.getStudymates(), this);
 						tagStudyMatesDialog.show();
 					}
-			} else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+			} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 				Toast.makeText(context, responseHandler.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {
@@ -305,10 +304,10 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 	private void onResponseGetAllComments(Object object) {
 		try {
 			ResponseHandler responseHandler = (ResponseHandler) object;
-			if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+			if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 				ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(context, responseHandler.getComments());
 				viewAllCommentsDialog.show();
-			} else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+			} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 				Toast.makeText(context, responseHandler.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {
@@ -319,10 +318,10 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 	private void onResponseAddComment(Object object) {
 		try {
 			ResponseHandler responseHandler = (ResponseHandler) object;
-			if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+			if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 				arrListFeeds.get(addCommentFeedPosition).setTotalComment("" + (Integer.parseInt(arrListFeeds.get(addCommentFeedPosition).getTotalComment()) + 1));
 				notifyDataSetChanged();
-			} else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+			} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 				Toast.makeText(context, R.string.msg_failed_comment, Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {

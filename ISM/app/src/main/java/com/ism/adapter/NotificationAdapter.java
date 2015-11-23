@@ -17,7 +17,6 @@ import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
-import com.ism.ws.model.Data;
 import com.ism.ws.model.Notification;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
