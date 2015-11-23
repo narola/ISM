@@ -24,9 +24,9 @@ import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
 import com.ism.ws.helper.Attribute;
-import com.ism.ws.model.ResponseObject;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.StudymateRequest;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -44,14 +44,14 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 	private Button btnAccept;
 	private ProcessButton progress;
 
-	private ArrayList<Data> arrListStudymate;
+	private ArrayList<StudymateRequest> arrListStudymate;
 	private Context context;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 	private MyTypeFace myTypeFace;
 	private int listItemLimit = -1;
 
-	public StudymateRequestAdapter(Context context, ArrayList<Data> arrListStudymate) {
+	public StudymateRequestAdapter(Context context, ArrayList<StudymateRequest> arrListStudymate) {
 		this.arrListStudymate = arrListStudymate;
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
@@ -61,7 +61,7 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 		progressGenerator = new ProgressGenerator();
 	}
 
-	public StudymateRequestAdapter(Context context, ArrayList<Data> arrListStudymate, int listItemLimit) {
+	public StudymateRequestAdapter(Context context, ArrayList<StudymateRequest> arrListStudymate, int listItemLimit) {
 		this(context, arrListStudymate);
 		this.listItemLimit = listItemLimit;
 	}
@@ -217,13 +217,13 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 			progress.setVisibility(View.GONE);
 			enableDialogButtons();
 			if (object != null) {
-				ResponseObject responseObject = (ResponseObject) object;
-				if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					Toast.makeText(context, R.string.you_are_now_studymates, Toast.LENGTH_LONG).show();
 					dialogRespond.dismiss();
-				} else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Toast.makeText(context, R.string.failed_to_execute_request, Toast.LENGTH_LONG).show();
-					Log.e(TAG, "onResponseRespondToRequest message : " + responseObject.getMessage());
+					Log.e(TAG, "onResponseRespondToRequest message : " + responseHandler.getMessage());
 				}
 			} else if(error != null) {
 				Log.e(TAG, "onResponseRespondToRequest Exception : " + error.toString());

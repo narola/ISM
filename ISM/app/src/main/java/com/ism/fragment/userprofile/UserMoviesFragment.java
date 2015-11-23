@@ -17,9 +17,9 @@ import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.views.HorizontalListView;
 import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Favorite;
-import com.ism.ws.model.ResponseObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -108,11 +108,10 @@ public class UserMoviesFragment extends Fragment implements WebserviceWrapper.We
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     Log.e(TAG, "onResponseUserMovies success");
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseUserMovies Failed");
                 }
             } else if (error != null) {

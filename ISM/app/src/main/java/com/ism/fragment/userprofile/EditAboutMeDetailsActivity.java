@@ -21,7 +21,6 @@ import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.ResponseObject;
 
 /**
  * Created by c162 on 18/11/15.
@@ -168,11 +167,11 @@ MyTypeFace myTypeFace;
             hideProgress();
             if (object != null) {
                 ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
                     Log.e(TAG, "onResponseEditAboutMe success");
                     hideKeyboard();
                     super.onBackPressed();
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
 
                     Log.e(TAG, "onResponseEditAboutMe Failed");
                 }

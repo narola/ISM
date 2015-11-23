@@ -15,7 +15,7 @@ import com.ism.constant.WebConstants;
 import com.ism.model.HighScoreSubject;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -88,7 +88,7 @@ public class HighScoreAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private View getStudentView(Data student, boolean showDivider) {
+	private View getStudentView(User student, boolean showDivider) {
 		View studentView = inflater.inflate(R.layout.list_item_highscore_student, null);
 		CircleImageView imgDp = (CircleImageView) studentView.findViewById(R.id.img_dp);
 		TextView txtName = (TextView) studentView.findViewById(R.id.txt_student_name);
@@ -101,7 +101,7 @@ public class HighScoreAdapter extends BaseAdapter {
 		txtScore.setTypeface(myTypeFace.getRalewayBold());
 
 		imageLoader.displayImage(WebConstants.URL_USERS_IMAGE_PATH + student.getProfilePic(), imgDp, ISMStudent.options);
-		txtName.setText(student.getUserName());
+		txtName.setText(student.getFullName());
 		txtSchool.setText(student.getSchoolName());
 		txtScore.setText(student.getExamScore());
 

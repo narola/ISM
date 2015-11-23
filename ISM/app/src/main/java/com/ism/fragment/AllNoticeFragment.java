@@ -20,7 +20,7 @@ import com.ism.adapter.AllNoticeAdapter;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Utility;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.Notice;
 
 import java.util.ArrayList;
 
@@ -35,23 +35,29 @@ public class AllNoticeFragment extends Fragment {
 	private Spinner spSortBy;
 	private RecyclerView recyclerAllNotice;
 
-	private ArrayList<Data> arrListAllNotice;
+	private ArrayList<Notice> arrListAllNotice;
 	private AllNoticeAdapter adpAllNotice;
 
 	private FragmentListener listenerFragment;
 
-	public static AllNoticeFragment newInstance(ArrayList<Data> arrListAllNotice) {
-		AllNoticeFragment fragment = new AllNoticeFragment();
-		fragment.setArrListNotice(arrListAllNotice);
-		return fragment;
-	}
+	public static final String ARG_ARR_LIST_NOTICE = "arrListNotice";
 
-	private void setArrListNotice(ArrayList<Data> arrListAllNotice) {
-		this.arrListAllNotice = arrListAllNotice;
+	public static AllNoticeFragment newInstance(Bundle bundleArgument) {
+		AllNoticeFragment fragment = new AllNoticeFragment();
+		fragment.setArguments(bundleArgument);
+		return fragment;
 	}
 
 	public AllNoticeFragment() {
 		// Required empty public constructor
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			arrListAllNotice = getArguments().getParcelableArrayList(ARG_ARR_LIST_NOTICE);
+		}
 	}
 
 	@Override
@@ -119,7 +125,7 @@ public class AllNoticeFragment extends Fragment {
 
 	}
 
-	private void fillListAllNotice(ArrayList<Data> arrListAllNotice) {
+	private void fillListAllNotice(ArrayList<Notice> arrListAllNotice) {
 		try {
 			if (arrListAllNotice != null) {
 				adpAllNotice = new AllNoticeAdapter(getActivity(), arrListAllNotice);
@@ -136,7 +142,7 @@ public class AllNoticeFragment extends Fragment {
 		try {
 			listenerFragment = (FragmentListener) activity;
 			if (listenerFragment != null) {
-				listenerFragment.onFragmentAttached(HostActivity.FRAGMENT_ALL_NOTES);
+				listenerFragment.onFragmentAttached(HostActivity.FRAGMENT_ALL_NOTICE);
 			}
 		} catch (ClassCastException e) {
 			Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -148,7 +154,7 @@ public class AllNoticeFragment extends Fragment {
 		super.onDetach();
 		try {
 			if (listenerFragment != null) {
-				listenerFragment.onFragmentDetached(HostActivity.FRAGMENT_ALL_NOTES);
+				listenerFragment.onFragmentDetached(HostActivity.FRAGMENT_ALL_NOTICE);
 			}
 		} catch (ClassCastException e) {
 			Log.e(TAG, "onDetach Exception : " + e.toString());

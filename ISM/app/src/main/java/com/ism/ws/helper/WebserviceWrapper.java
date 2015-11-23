@@ -7,7 +7,6 @@ import com.ism.R;
 import com.ism.constant.WebConstants;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
-import com.ism.ws.model.ResponseObject;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -95,19 +94,19 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_FEEDS).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.ADD_COMMENT:
-                            responseObject = new WebserviceConnector(WebConstants.URL_ADD_COMMENT).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_ADD_COMMENT).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_ALL_COMMENTS:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_COMMENTS).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_COMMENTS).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_ALL_STUDY_MATES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_STUDY_MATES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_STUDY_MATES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.TAG_STUDY_MATES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_TAG_STUDY_MATES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_TAG_STUDY_MATES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_ALL_NOTICES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_NOTICES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_NOTICES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GENERAL_SETTING_PREFERENCES:
                             responseObject = new WebserviceConnector(WebConstants.URL_GENERAL_SETTING_PREFERENCES).execute(ResponseHandler.class, attribute);
@@ -119,34 +118,34 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_GENERAL_SETTING).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_NOTIFICATION:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_NOTIFICATION).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_NOTIFICATION).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_MESSAGES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MESSAGES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MESSAGES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_STUDYMATE_REQUEST:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_STUDYMATE_REQUEST).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_STUDYMATE_REQUEST).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_ALL_BADGES_COUNT:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BADGES_COUNT).execute(ResponseHandler.class, attribute);
                             break;
-//                    case WebConstants.UPLOAD_PROFILE_PIC:
-//                        responseObject = new RequestWs().getImageRequest(WebConstants.URL_PROFILE_PIC).execute(ResponseObject.class, attribute);
-//                        break;
+//                        case WebConstants.UPLOAD_PROFILE_PIC:
+//                            responseObject = new RequestWs().getImageRequest(WebConstants.URL_PROFILE_PIC).execute(ResponseObject.class, attribute);
+//                            break;
                         case WebConstants.GET_ABOUT_ME:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_ABOUT_ME).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.RESPOND_TO_REQUEST:
-                            responseObject = new WebserviceConnector(WebConstants.URL_RESPOND_TO_REQUEST).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_RESPOND_TO_REQUEST).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.UPDATE_READ_STATUS:
-                            responseObject = new WebserviceConnector(WebConstants.URL_UPDATE_READ_STATUS).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_UPDATE_READ_STATUS).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.EDIT_ABOUT_ME:
                             responseObject = new WebserviceConnector(WebConstants.URL_EDIT_ABOUT_ME).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_HIGH_SCORERS:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_HIGH_SCORERS).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_HIGH_SCORERS).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_BOOKS_FOR_USER:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseHandler.class, attribute);

@@ -27,9 +27,9 @@ import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
 import com.ism.ws.helper.Attribute;
-import com.ism.ws.model.ResponseObject;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.Notification;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -54,25 +54,19 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 
 	private FragmentListener fragListener;
 	private HostActivity activityHost;
-	private ArrayList<Data> arrListNotification;
+	private ArrayList<Notification> arrListNotification;
 	private NotificationAdapter adpNotification;
 	private ImageLoader imageLoader;
 
-	private static String NOTIFICATION_POSITION = "notificationPosition";
+	public static String ARG_ARR_LIST_NOTIFICATION = "arrListNotification";
+	public static String ARG_NOTIFICATION_POSITION = "notificationPosition";
 	private int positionNotification;
 	private boolean isReadStatusUpdated = false;
 
-	public static AllNotificationFragment newInstance(ArrayList<Data> arrListNotification, int position) {
+	public static AllNotificationFragment newInstance(Bundle bundleArgument) {
 		AllNotificationFragment fragment = new AllNotificationFragment();
-		Bundle args = new Bundle();
-		args.putInt(NOTIFICATION_POSITION, position);
-		fragment.setArguments(args);
-		fragment.setArrListNotification(arrListNotification);
+		fragment.setArguments(bundleArgument);
 		return fragment;
-	}
-
-	public void setArrListNotification(ArrayList<Data> arrListNotification) {
-		this.arrListNotification = arrListNotification;
 	}
 
 	public AllNotificationFragment() {
@@ -81,7 +75,10 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		positionNotification = getArguments().getInt(NOTIFICATION_POSITION);
+		if (getArguments() != null) {
+			arrListNotification = getArguments().getParcelableArrayList(ARG_ARR_LIST_NOTIFICATION);
+			positionNotification = getArguments().getInt(ARG_NOTIFICATION_POSITION);
+		}
 	}
 
 	@Override
@@ -233,11 +230,11 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
 	private void onResponseUpdateReadStatus(Object object, Exception error) {
 		try {
 			if (object != null) {
-				ResponseObject responseObject = (ResponseObject) object;
-				if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					isReadStatusUpdated = true;
 					Log.e(TAG, "Read status updated");
-				} else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "Read status update failed");
 				}
 			} else if (error != null) {
