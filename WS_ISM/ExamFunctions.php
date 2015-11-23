@@ -182,6 +182,10 @@ class ExamFunctions
 //                    "exam_id":63,
 //                    "student_id":370
 //                }
+//                {
+//                    "exam_id":3,
+//                    "student_id":370
+//                }
                 $query = "SELECT * FROM " . TABLE_EXAM_SCHEDULE . " exam_schedule INNER JOIN " . TABLE_USERS . " users on exam_schedule.exam_assessor=users.id WHERE exam_id=" . $exam_id;
                 $result = mysql_query($query) or $message = mysql_error();
                 //echo $query;
@@ -204,7 +208,7 @@ class ExamFunctions
                     //user_id=".$student_id."
                         $queryStudentRes = "SELECT * FROM " . TABLE_STUDENT_SUBJECTIVE_EVALUATION . " WHERE  `exam_id`=" . $exam_id . " and evaluation_by=".$row['exam_assessor']." and question_id in (SELECT `question_id` FROM `exam_question` WHERE `exam_id`=" . $exam_id . ")";
                         $resultStudentRes = mysql_query($queryStudentRes) or $message = mysql_error();
-                        //echo $queryStudentRes;
+                      //  echo $queryStudentRes;
                        // echo "\n".mysql_num_rows($resultStudentRes);
                         $evaluations=array();
                         if (mysql_num_rows($resultStudentRes)) {
@@ -834,6 +838,15 @@ class ExamFunctions
                 $post['classroom_name']=$rowName['class_name'];
             }
         }
+        // total student
+        $query="SELECT * FROM ".TABLE_STUDENT_ACADEMIC_INFO." WHERE classroom_id=".$rowExam['classroom_id'];
+        //    echo $query;
+        $result=mysql_query($query) or  $message=mysql_error();
+
+       // $post['total_student']=0;// need to change
+        $post['total_student']=mysql_num_rows($result);
+
+        //subject name
         $query="SELECT subject_name FROM ".TABLE_SUBJECTS." WHERE id=".$rowExam['subject_id'];
 //                        echo $query;
         $result=mysql_query($query) or  $message=mysql_error();
@@ -1089,92 +1102,93 @@ class ExamFunctions
 
         return $response;
     }
-    
-    
+
+
     /*
-    * uploadMediaForQuestion
-    */
+   * uploadMediaForQuestion
+   */
     public function uploadMediaForQuestion($postData)
     {
         $mediaName = '';
         $created_date = date("Ymd-His");
-        
+
         //Create Random String.
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        
+
         //Generate random string with minimum 5 and maximum of 10 characters
         $str = substr(str_shuffle($chars), 0, 8);
-        
-        
-         $question_id=$_POST['question_id'];
-         $mediaType=$_POST['mediaType'];
-      
-      
+
+
+        $question_id=$_POST['question_id'];
+        $mediaType=$_POST['mediaType'];
+
+
         $question_media_dir = "question_" . $question_id . "/";
         if (!is_dir(QUESTION_IMAGE.$question_media_dir)) {
-          	 mkdir(QUESTION_IMAGE.$question_media_dir, 0777);
-       	}
-        
+            mkdir(QUESTION_IMAGE.$question_media_dir, 0777);
+        }
+
         if("video"==$mediaType)
         {
-        	$mediaName = "VIDEO".$created_date."_test.mp4";
-        	$procedure="UPDATE_QUESTION_VIDEO_LINK";
+            $mediaName = "VIDEO".$created_date."_test.mp4";
+            $procedure="UPDATE_QUESTION_VIDEO_LINK";
         }
         else if("image"==$mediaType)
         {
-        	$mediaName = "IMAGE".$created_date."_test.jpg";
-        	$procedure="UPDATE_QUESTION_IMAGE";
+            $mediaName = "IMAGE".$created_date."_test.jpg";
+            $procedure="UPDATE_QUESTION_IMAGE";
         }
-        
-        if ($_FILES["mediaFile"]["error"] > 0) {
-                $message = $_FILES["mediaFile"]["error"];
 
-        } 
+        if ($_FILES["mediaFile"]["error"] > 0) {
+            $message = $_FILES["mediaFile"]["error"];
+
+        }
         else {
-       
-        //$thisdir = getcwd(); 
-       	//$uploadFolder =  $thisdir."/".QUESTION_IMAGE.$question_media_dir;
-        
-        	$uploadFile =  QUESTION_IMAGE.$question_media_dir . $mediaName;
-                
-        	if (move_uploaded_file($_FILES['mediaFile']['tmp_name'],$uploadFile)) {
-                
-                    //store image data.
-                     $link=$question_media_dir . $mediaName;
-                
-                    $procedure_update_set = "CALL ".$procedure." ('".$link."','".$question_id."')";
-                    $result_procedure = mysql_query($procedure_update_set) or $message = mysql_error();
-                    
-                    if($result_procedure)
-                    {
-                    	 $status = "success";
-                   		 $message = "Successfully uploaded!.";
-                    }
-                    else
-                    {
-                    	$status = "failed";
-                   		$message = "failed to uploaded.";
-                    }
-                   
-                    
-               }
-			else {
+
+            //$thisdir = getcwd();
+            //$uploadFolder =  $thisdir."/".QUESTION_IMAGE.$question_media_dir;
+
+            $uploadFile =  QUESTION_IMAGE.$question_media_dir . $mediaName;
+
+            if (move_uploaded_file($_FILES['mediaFile']['tmp_name'],$uploadFile)) {
+
+                //store image data.
+                $link=$question_media_dir . $mediaName;
+
+                $procedure_update_set = "CALL ".$procedure." ('".$link."','".$question_id."')";
+                $result_procedure = mysql_query($procedure_update_set) or $message = mysql_error();
+
+                if($result_procedure)
+                {
+                    $status = "success";
+                    $message = "Successfully uploaded!.";
+                }
+                else
+                {
                     $status = "failed";
-                    $message = "Failed to upload media file on server.";
+                    $message = "failed to uploaded.";
+                }
+
+
             }
-               
-        } 
+            else {
+                $status = "failed";
+                $message = "Failed to upload media file on server.";
+            }
+
+        }
         $data['question_id']=$question_id;
         $data['mediaType']=$mediaType;
-    	$data['status']=$status;
+        $data['status']=$status;
         $data['image_link']=$link;
         $data['message']=$message;
         return $data;
     }
-    
-     /*
-    * GetAllResults
-    */
+
+
+    /*
+   * GetAllResults
+   */
     public function getAllResults ($postData)
     {
     	$data = array();
