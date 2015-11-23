@@ -13,9 +13,9 @@ import android.widget.TextView;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
-import com.ism.author.model.Data;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.Answers;
+import com.ism.author.ws.model.Evaluation;
 import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
@@ -162,9 +162,9 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
     }
 
 
-    ArrayList<Data> evaluationList = new ArrayList<Data>();
+    ArrayList<Evaluation> evaluationList = new ArrayList<Evaluation>();
 
-    public void setEvaluationData(ArrayList<Data> evaluationList) {
+    public void setEvaluationData(ArrayList<Evaluation> evaluationList) {
         this.evaluationList = evaluationList;
 
     }

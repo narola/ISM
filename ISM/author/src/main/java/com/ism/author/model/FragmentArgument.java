@@ -2,6 +2,8 @@ package com.ism.author.model;
 
 import android.app.Fragment;
 
+import com.ism.author.ws.model.Examsubmittor;
+
 import java.util.ArrayList;
 
 /**
@@ -13,21 +15,21 @@ public class FragmentArgument {
 
 
     private Fragment fragment = null;
-    private ArrayList<Data> arrayListData;
+    private ArrayList<Examsubmittor> arrayListData;
     private FragmentArgumentObject fragmentArgumentObject = new FragmentArgumentObject();
 
     public FragmentArgument() {
     }
 
-    public FragmentArgument(ArrayList<Data> arrayListData) {
-        this.arrayListData = arrayListData;
-    }
+//    public FragmentArgument(ArrayList<Data> arrayListData) {
+//        this.arrayListData = arrayListData;
+//    }
 
-    public ArrayList<Data> getArrayListData() {
+    public ArrayList<Examsubmittor> getArrayListData() {
         return arrayListData;
     }
 
-    public void setArrayListData(ArrayList<Data> arrayListData) {
+    public void setArrayListData(ArrayList<Examsubmittor> arrayListData) {
         this.arrayListData = arrayListData;
     }
 
