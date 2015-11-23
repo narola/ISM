@@ -51,7 +51,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
     private TextView tvTitleStudentattempted;
     private RecyclerView rvStudentattemptedList;
     private StudentAttemptedAssignmentAdapter studentAttemptedAssignmentAdapter;
-    private ArrayList<Examsubmittor> listOfStudents = new ArrayList<Examsubmittor>();
+    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -118,8 +118,8 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    listOfStudents.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
-                    studentAttemptedAssignmentAdapter.addAll(listOfStudents);
+                    arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
+                    studentAttemptedAssignmentAdapter.addAll(arrListExamSubmittor);
                     studentAttemptedAssignmentAdapter.notifyDataSetChanged();
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {

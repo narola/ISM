@@ -30,7 +30,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
 
     private static final String TAG = MyStudentListAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Examsubmittor> listOfStudents = new ArrayList<Examsubmittor>();
+    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
     private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
     private Fragment mFragment;
@@ -64,10 +64,10 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
                     holder.imgStudentProfilePic, ISMAuthor.options);
             holder.tvStudentName.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvStudentRollNo.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvStudentName.setText(listOfStudents.get(position).getStudentName());
+            holder.tvStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
             holder.tvStudentRollNo.setText(mContext.getResources().getString(R.string.strrollno) + (position + 1));
 
-            if (getFragmentArgument().getFragmentArgumentObject().getStudentId().equals(listOfStudents.get(position).getStudentId())) {
+            if (getFragmentArgument().getFragmentArgumentObject().getStudentId().equals(arrListExamSubmittor.get(position).getStudentId())) {
                 holder.tvStudentName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
             } else {
                 holder.tvStudentName.setTextColor(mContext.getResources().getColor(R.color.color_gray));
@@ -77,9 +77,9 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
                 @Override
                 public void onClick(View v) {
                     getFragmentArgument().getFragmentArgumentObject().setPosition(position);
-                    getFragmentArgument().getFragmentArgumentObject().setProfilePic(listOfStudents.get(position).getStudentProfilePic());
-                    getFragmentArgument().getFragmentArgumentObject().setStudentName(listOfStudents.get(position).getStudentName());
-                    getFragmnet().loadStudentEvaluationData(listOfStudents.get(position).getStudentId());
+                    getFragmentArgument().getFragmentArgumentObject().setProfilePic(arrListExamSubmittor.get(position).getStudentProfilePic());
+                    getFragmentArgument().getFragmentArgumentObject().setStudentName(arrListExamSubmittor.get(position).getStudentName());
+                    getFragmnet().loadStudentEvaluationData(arrListExamSubmittor.get(position).getStudentId());
                     notifyDataSetChanged();
                 }
             });
@@ -92,13 +92,13 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
 
     @Override
     public int getItemCount() {
-        return listOfStudents.size();
+        return arrListExamSubmittor.size();
     }
 
     public void addAll(ArrayList<Examsubmittor> examSubmittor) {
         try {
-            this.listOfStudents.clear();
-            this.listOfStudents.addAll(examSubmittor);
+            this.arrListExamSubmittor.clear();
+            this.arrListExamSubmittor.addAll(examSubmittor);
             this.copyListOfStudents = examSubmittor;
             getFragmentArgument().setArrayListData(examSubmittor);
         } catch (Exception e) {
@@ -131,17 +131,17 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
     ArrayList<Examsubmittor> copyListOfStudents;
 
     public void filter(CharSequence charText) {
-        listOfStudents.clear();
+        arrListExamSubmittor.clear();
 
         if (charText.length() == 0) {
-            listOfStudents.addAll(copyListOfStudents);
+            arrListExamSubmittor.addAll(copyListOfStudents);
         } else {
             for (Examsubmittor wp : copyListOfStudents) {
                 if (Utility.containsString(wp.getStudentName(), charText.toString(), false)) {
-                    listOfStudents.add(wp);
+                    arrListExamSubmittor.add(wp);
                 }
             }
-            if (listOfStudents.size() == 0) {
+            if (arrListExamSubmittor.size() == 0) {
             }
         }
         notifyDataSetChanged();

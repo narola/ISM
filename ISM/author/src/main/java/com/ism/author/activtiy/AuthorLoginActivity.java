@@ -26,9 +26,11 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
-import com.ism.author.model.Data;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.Cities;
+import com.ism.author.ws.model.Countries;
+import com.ism.author.ws.model.States;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 
@@ -48,7 +50,9 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
 
     private InputValidator inputValidator;
-    private ArrayList<Data> arrListCountries, arrListStates, arrListCities;
+    private ArrayList<Countries> arrListCountries;
+    private ArrayList<States> arrListStates;
+    private ArrayList<Cities> arrListCities;
     private List<String> arrListDefalt;
     private AlertDialog dialogCredentials;
     private ProgressGenerator progressGenerator;
@@ -452,31 +456,31 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             btnLogin.setProgress(100);
             btnLogin.setEnabled(true);
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    if (responseObj.getData().get(0).getUserId() == null) {
+                    if (responseHandler.getUser().get(0).getUserId() == null) {
 
                         PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity(), ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, getActivity(), responseObj.getData().get(0).getCredentialId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, getActivity(), responseHandler.getUser().get(0).getCredentialId());
                         PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, getActivity(), etPwd.getText().toString().trim());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_ID, getActivity(), responseObj.getData().get(0).getSchoolId());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, getActivity(), responseObj.getData().get(0).getSchoolName());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, getActivity(), responseObj.getData().get(0).getSchoolDestrict());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_TYPE, getActivity(), responseObj.getData().get(0).getSchoolType());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_ID, getActivity(), responseObj.getData().get(0).getClassId());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, getActivity(), responseObj.getData().get(0).getClassName());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_ID, getActivity(), responseObj.getData().get(0).getCourseId());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, getActivity(), responseObj.getData().get(0).getCourseName());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, getActivity(), responseObj.getData().get(0).getAcademicYear());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, getActivity(), responseObj.getData().get(0).getRoleId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_ID, getActivity(), responseHandler.getUser().get(0).getSchoolId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, getActivity(), responseHandler.getUser().get(0).getSchoolName());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, getActivity(), responseHandler.getUser().get(0).getDistrictName());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_TYPE, getActivity(), responseHandler.getUser().get(0).getSchoolType());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_ID, getActivity(), responseHandler.getUser().get(0).getClassId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, getActivity(), responseHandler.getUser().get(0).getClassName());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_ID, getActivity(), responseHandler.getUser().get(0).getCourseId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, getActivity(), responseHandler.getUser().get(0).getCourseName());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, getActivity(), responseHandler.getUser().get(0).getAcademicYear());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, getActivity(), responseHandler.getUser().get(0).getRoleId());
 
                         launchProfileInfoActivity();
 
                     } else {
                     }
 
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(getActivity().getString(R.string.msg_invalid_username_password), getActivity());
                 }
             } else if (error != null) {
@@ -498,11 +502,11 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                 progForgotPwd.setVisibility(View.INVISIBLE);
             }
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utils.showToast(getActivity().getString(R.string.password_sent), getActivity());
                     dialogForgotPassword.dismiss();
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(getActivity().getString(R.string.email_not_found), getActivity());
                 }
             } else if (error != null) {
@@ -518,17 +522,17 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             progState.setProgress(100);
             progState.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListStates = new ArrayList<Data>();
-                    arrListStates.addAll(responseObj.getData());
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListStates = new ArrayList<States>();
+                    arrListStates.addAll(responseHandler.getStates());
                     List<String> states = new ArrayList<String>();
                     states.add(getString(R.string.select));
-                    for (Data state : arrListStates) {
+                    for (States state : arrListStates) {
                         states.add(state.getStateName());
                     }
                     Adapters.setUpSpinner(getActivity(), spState, states, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseStates Failed");
                 }
             } else if (error != null) {
@@ -544,17 +548,17 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             progCountry.setProgress(100);
             progCountry.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListCountries = new ArrayList<Data>();
-                    arrListCountries.addAll(responseObj.getData());
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListCountries = new ArrayList<Countries>();
+                    arrListCountries.addAll(responseHandler.getCountries());
                     List<String> countries = new ArrayList<String>();
                     countries.add(getString(R.string.select));
-                    for (Data country : arrListCountries) {
+                    for (Countries country : arrListCountries) {
                         countries.add(country.getCountryName());
                     }
                     Adapters.setUpSpinner(getActivity(), spCountry, countries, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCountries Failed");
                 }
             } else if (error != null) {
@@ -575,14 +579,14 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
                 progRequestCredentials.setVisibility(View.INVISIBLE);
             }
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     if (dialogCredentials != null) {
                         dialogCredentials.dismiss();
                     }
                     Utils.showToast(getActivity().getString(R.string.msg_success_sent_credential), getActivity());
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseCredentials api Exception : " + error.toString());
@@ -598,17 +602,17 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             progCity.setProgress(100);
             progCity.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListCities = new ArrayList<Data>();
-                    arrListCities.addAll(responseObj.getData());
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListCities = new ArrayList<Cities>();
+                    arrListCities.addAll(responseHandler.getCities());
                     List<String> cities = new ArrayList<String>();
                     cities.add(getString(R.string.select));
-                    for (Data city : arrListCities) {
+                    for (Cities city : arrListCities) {
                         cities.add(city.getCityName());
                     }
                     Adapters.setUpSpinner(getActivity(), spCity, cities, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCities Failed");
                 }
             } else if (error != null) {

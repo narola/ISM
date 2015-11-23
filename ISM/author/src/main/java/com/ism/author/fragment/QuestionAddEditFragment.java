@@ -32,11 +32,11 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.autocomplete.ContactsCompletionView;
 import com.ism.author.autocomplete.FilteredArrayAdapter;
 import com.ism.author.autocomplete.TokenCompleteTextView;
-import com.ism.author.object.MyTypeFace;
-import com.ism.author.model.Data;
-import com.ism.author.model.QuestionAnswersModel;
-import com.ism.author.ws.helper.Attribute;
 import com.ism.author.model.HashTagsModel;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.helper.Attribute;
+import com.ism.author.ws.model.Answers;
+import com.ism.author.ws.model.Questions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -444,19 +444,19 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     /*these is for set question questionData for copy and edit question.*/
     private ImageLoader imageLoader;
 
-    public void setQuestionData(Data data) {
+    public void setQuestionData(Questions questions) {
         Utils.showToast("SETDATACALLED", getActivity());
         try {
-            if (data.getQuestionText() != null) {
-                etAddquestionTitle.setText(Utils.formatHtml(data.getQuestionText()));
+            if (questions.getQuestionText() != null) {
+                etAddquestionTitle.setText(Utils.formatHtml(questions.getQuestionText()));
             }
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", imgSelectImage, ISMAuthor.options);
-            setSpinnerData(data.getQuestionFormat());
-            setMcqAnswers(data);
+            setSpinnerData(questions.getQuestionFormat());
+            setMcqAnswers(questions);
 
-            if (data.getEvaluationNotes() != null) {
-                etEvaluationNote1.setText(data.getEvaluationNotes());
-                etEvaluationNote21.setText(data.getEvaluationNotes());
+            if (questions.getEvaluationNotes() != null) {
+                etEvaluationNote1.setText(questions.getEvaluationNotes());
+                etEvaluationNote21.setText(questions.getEvaluationNotes());
             }
 
         } catch (Exception e) {
@@ -484,12 +484,12 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
 
-    ArrayList<QuestionAnswersModel> questionAnswersModelArrayList = new ArrayList<QuestionAnswersModel>();
+    ArrayList<Answers> questionAnswersModelArrayList = new ArrayList<Answers>();
 
-    private void setMcqAnswers(Data data) {
-        questionAnswersModelArrayList.addAll(data.getAnswers());
-        for (int i = 0; i < data.getAnswers().size(); i++) {
-            llAddMcqanswer.addView(setMCQ(i, data.getAnswers().get(i).getChoiceText(), data.getAnswers().get(i).getIsRight().equals("1") ? true : false));
+    private void setMcqAnswers(Questions questions) {
+        questionAnswersModelArrayList.addAll(questions.getAnswers());
+        for (int i = 0; i < questions.getAnswers().size(); i++) {
+            llAddMcqanswer.addView(setMCQ(i, questions.getAnswers().get(i).getChoiceText(), questions.getAnswers().get(i).getIsRight().equals("1") ? true : false));
         }
     }
 
@@ -596,14 +596,14 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     questionAnswersModelArrayList.clear();
                     for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
                         View v = llAddMcqanswer.getChildAt(i);
-                        QuestionAnswersModel questionAnswersModel = new QuestionAnswersModel();
-                        questionAnswersModel.setQuestionId("2");
-                        questionAnswersModel.setChoiceText(((EditText) v.findViewById(R.id.et_add_mcq_answer)).getText().toString());
-                        questionAnswersModel.setIsRight(getIsSelected((ImageView) v.findViewById(R.id.img_ans_radio)));
-                        questionAnswersModel.setImageLink("");
-                        questionAnswersModel.setVideoLink("");
-                        questionAnswersModel.setAudioLink("");
-                        questionAnswersModelArrayList.add(questionAnswersModel);
+                        Answers answers = new Answers();
+                        answers.setQuestionId("2");
+                        answers.setChoiceText(((EditText) v.findViewById(R.id.et_add_mcq_answer)).getText().toString());
+                        answers.setIsRight(getIsSelected((ImageView) v.findViewById(R.id.img_ans_radio)));
+                        answers.setImageLink("");
+                        answers.setVideoLink("");
+                        answers.setAudioLink("");
+                        questionAnswersModelArrayList.add(answers);
                     }
                     attribute.setAnswers(questionAnswersModelArrayList);
                 }

@@ -46,7 +46,7 @@ public class PostFileAdapter extends BaseAdapter {
     }
 
     public ArrayList<PostFileModel> getArrayList() {
-        Log.e("ArrayList size",""+this.arrayList.size());
+        Log.e("ArrayList size", "" + this.arrayList.size());
         return this.arrayList;
     }
 

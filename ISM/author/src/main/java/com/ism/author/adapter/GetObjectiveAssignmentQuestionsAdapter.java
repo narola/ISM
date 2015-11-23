@@ -27,7 +27,7 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
 
     private static final String TAG = GetObjectiveAssignmentQuestionsAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Questions> listOfQuestions = new ArrayList<Questions>();
+    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private MyTypeFace myTypeFace;
     private LayoutInflater inflater;
 
@@ -65,12 +65,12 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
             holder.txtQuestionNo.setTypeface(myTypeFace.getRalewayBold());
             holder.txtQuestionNo.setPaintFlags(holder.txtQuestionNo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-            holder.txtQuestionText.setText(Utils.formatHtml(listOfQuestions.get(position).getQuestionText()));
+            holder.txtQuestionText.setText(Utils.formatHtml(arrListQuestions.get(position).getQuestionText()));
 
             holder.llQuestionsOptions.removeAllViews();
             if (holder.llQuestionsOptions.getChildCount() == 0) {
-                for (int i = 0; i < listOfQuestions.get(position).getAnswers().size(); i++) {
-                    View ansView = getAnsInflaterView(listOfQuestions.get(position).getAnswers().get(i), i);
+                for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
+                    View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
                     holder.llQuestionsOptions.addView(ansView);
                 }
             }
@@ -78,16 +78,16 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
             if (evaluationList.size() > 0) {
                 holder.llQuestionsEvaluationContainer.setVisibility(View.VISIBLE);
 
-                for (int i = 0; i < listOfQuestions.get(position).getAnswers().size(); i++) {
-                    if (listOfQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
-                        holder.txtAnswer.setText(Utils.formatHtml(Utils.getCharForNumber(i + 1) + ". " + listOfQuestions.get(position).getAnswers().get(position).getChoiceText()));
+                for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
+                    if (arrListQuestions.get(position).getAnswers().get(i).getIsRight().equals("1")) {
+                        holder.txtAnswer.setText(Utils.formatHtml(Utils.getCharForNumber(i + 1) + ". " + arrListQuestions.get(position).getAnswers().get(position).getChoiceText()));
                         break;
                     }
                 }
 
                 holder.txtStudentAnswer.setText(Utils.formatHtml(evaluationList.get(position).getStudentResponse()));
-                holder.etEvoluationsNotes.setText(Utils.formatHtml(listOfQuestions.get(position).getEvaluationNotes()));
-                holder.etSolution.setText(Utils.formatHtml(listOfQuestions.get(position).getSolution()));
+                holder.etEvoluationsNotes.setText(Utils.formatHtml(arrListQuestions.get(position).getEvaluationNotes()));
+                holder.etSolution.setText(Utils.formatHtml(arrListQuestions.get(position).getSolution()));
 
             } else {
                 holder.llQuestionsEvaluationContainer.setVisibility(View.GONE);
@@ -101,13 +101,13 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
 
     @Override
     public int getItemCount() {
-        return listOfQuestions.size();
+        return arrListQuestions.size();
     }
 
     public void addAll(ArrayList<Questions> listOfQuestions) {
         try {
-            this.listOfQuestions.clear();
-            this.listOfQuestions.addAll(listOfQuestions);
+            this.arrListQuestions.clear();
+            this.arrListQuestions.addAll(listOfQuestions);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
@@ -165,7 +165,8 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
     ArrayList<Evaluation> evaluationList = new ArrayList<Evaluation>();
 
     public void setEvaluationData(ArrayList<Evaluation> evaluationList) {
-        this.evaluationList = evaluationList;
+        evaluationList.clear();
+        evaluationList.addAll(evaluationList);
 
     }
 

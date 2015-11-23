@@ -52,7 +52,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
     private RecyclerView rvMystudentList;
     private MyStudentListAdapter myStudentListAdapter;
     private MyTypeFace myTypeFace;
-    private ArrayList<Examsubmittor> listOfStudents = new ArrayList<Examsubmittor>();
+    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -184,8 +184,8 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    listOfStudents.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
-                    myStudentListAdapter.addAll(listOfStudents);
+                    arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
+                    myStudentListAdapter.addAll(arrListExamSubmittor);
                     myStudentListAdapter.notifyDataSetChanged();
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {

@@ -89,7 +89,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_OFFICE = 1;
     public static final int FRAGMENT_BOOKS = 2;
     public static final int FRAGMENT_MYFEEDS = 3;
-    public static final int FRAGMENT_FOLLOWING = 4;
     public static final int FRAGMENT_MYACTIVITY = 5;
     public static final int FRAGMENT_GOTRENDING = 6;
     public static final int FRAGMENT_SETQUIZ = 7;

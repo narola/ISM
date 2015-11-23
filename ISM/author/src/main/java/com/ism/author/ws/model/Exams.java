@@ -23,6 +23,8 @@ public class Exams {
     private String passPercentage;
     private String examType;
     private String examCategory;
+    private String totalStudentAttempted;
+    private String totalStudent;
 
 
     @JsonProperty("total_question")
@@ -149,6 +151,24 @@ public class Exams {
 
     public void setExamCategory(String examCategory) {
         this.examCategory = examCategory;
+    }
+
+    @JsonProperty("total_student_attempted")
+    public String getTotalStudentAttempted() {
+        return totalStudentAttempted;
+    }
+
+    public void setTotalStudentAttempted(String totalStudentAttempted) {
+        this.totalStudentAttempted = totalStudentAttempted;
+    }
+
+    @JsonProperty("total_student")
+    public String getTotalStudent() {
+        return totalStudent;
+    }
+
+    public void setTotalStudent(String totalStudent) {
+        this.totalStudent = totalStudent;
     }
 
 

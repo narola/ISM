@@ -36,8 +36,8 @@ public class WebserviceWrapper {
     public class WebserviceCaller extends AsyncTask<Integer, Void, Object> {
 
         private int currentApiCode;
-	    private boolean isNetworkConnected = false;
-	    private Exception exception;
+        private boolean isNetworkConnected = false;
+        private Exception exception;
 
         @Override
         protected void onPreExecute() {
@@ -47,19 +47,19 @@ public class WebserviceWrapper {
         @Override
         protected Object doInBackground(Integer... params) {
             Object responseObject = null;
-	        currentApiCode = params[0];
-	        try {
+            currentApiCode = params[0];
+            try {
 
 //			    Check if we can get access from the network.
 //	            URL url = new URL("http://192.168.1.147/");
-	            URL url = new URL("http://google.com/");
-	            HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-	            urlc.setRequestProperty("Connection", "close");
-	            urlc.setConnectTimeout(2000); // Timeout 2 seconds.
-	            urlc.connect();
-	            isNetworkConnected = urlc.getResponseCode() == 200; //Successful response.
+                URL url = new URL("http://google.com/");
+                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(2000); // Timeout 2 seconds.
+                urlc.connect();
+                isNetworkConnected = urlc.getResponseCode() == 200; //Successful response.
 
-	            if (isNetworkConnected) {
+                if (isNetworkConnected) {
                     switch (currentApiCode) {
                         case WebConstants.LOGIN:
                             responseObject = new WebserviceConnector(WebConstants.URL_LOGIN).execute(ResponseHandler.class, attribute);
@@ -155,7 +155,7 @@ public class WebserviceWrapper {
                 }
             } catch (Exception e) {
                 Debug.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
-	            exception = e;
+                exception = e;
             }
             return responseObject;
         }
@@ -163,10 +163,10 @@ public class WebserviceWrapper {
         @Override
         protected void onPostExecute(Object responseObject) {
             if (!isNetworkConnected) {
-	            Utility.showToast(context, context.getString(R.string.error_server_connection));
+                Utility.showToast(context, context.getString(R.string.error_server_connection));
             }
-	        webserviceResponse.onResponse(responseObject, exception, currentApiCode);
-	        super.onPostExecute(responseObject);
+            webserviceResponse.onResponse(responseObject, exception, currentApiCode);
+            super.onPostExecute(responseObject);
         }
     }
 

@@ -23,7 +23,7 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
 
     private static final String TAG = QuestionPaletteAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Evaluation> listOfStudents = new ArrayList<Evaluation>();
+    private ArrayList<Evaluation> arrListEvaluation = new ArrayList<Evaluation>();
     private MyTypeFace myTypeFace;
     private Fragment mFragment;
     private LayoutInflater inflater;
@@ -65,13 +65,13 @@ public class QuestionPaletteAdapter extends RecyclerView.Adapter<QuestionPalette
 
     @Override
     public int getItemCount() {
-        return listOfStudents.size();
+        return arrListEvaluation.size();
     }
 
     public void addAll(ArrayList<Evaluation> evaluations) {
         try {
-            this.listOfStudents.clear();
-            this.listOfStudents.addAll(evaluations);
+            this.arrListEvaluation.clear();
+            this.arrListEvaluation.addAll(evaluations);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
