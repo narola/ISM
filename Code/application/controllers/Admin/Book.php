@@ -92,4 +92,12 @@ class Book extends ADMIN_Controller {
 		
 		$this->template->load('admin/default','admin/book/view_all',$this->data);
 	}
+
+	public function book_detail($id){
+		$where['id'] = $id;
+		$this->data['book'] = select(TBL_BOOKS, FALSE,
+										array('where'=>$where),
+										);
+		$this->template->load('admin/default','admin/book/book_detail',$this->data);
+	}
 }
