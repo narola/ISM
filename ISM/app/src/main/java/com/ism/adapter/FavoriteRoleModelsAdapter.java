@@ -12,7 +12,7 @@ import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
-import com.ism.ws.model.Favorite;
+import com.ism.ws.model.RolemodelData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -21,15 +21,15 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class UserFavoriteBooksAdapter extends BaseAdapter {
-    private static final String TAG = UserFavoriteBooksAdapter.class.getSimpleName();
+public class FavoriteRoleModelsAdapter extends BaseAdapter {
+    private static final String TAG = FavoriteRoleModelsAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
-    ArrayList<Favorite> arrayList = new ArrayList<>();
+    ArrayList<RolemodelData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
 
-    public UserFavoriteBooksAdapter(Context context, ArrayList<Favorite> arrayList) {
+    public FavoriteRoleModelsAdapter(Context context, ArrayList<RolemodelData> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         imageLoader = ImageLoader.getInstance();
@@ -63,10 +63,10 @@ public class UserFavoriteBooksAdapter extends BaseAdapter {
 
             holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
-            holder.imgBookLike = (ImageView) convertView.findViewById(R.id.img_book_like);
+            holder.imgAddToFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
             holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
             holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
-            holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
+            holder.txtOrganization = (TextView) convertView.findViewById(R.id.txt_author);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -74,14 +74,14 @@ public class UserFavoriteBooksAdapter extends BaseAdapter {
 
         try {
 
-            holder.txtBookAuthor.setTypeface(myTypeFace.getRalewayRegular());
+            holder.txtOrganization.setTypeface(myTypeFace.getRalewayRegular());
 
             holder.txtBookName.setTypeface(myTypeFace.getRalewayRegular());
 
 //			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgBook, ISMStudent.options);
-            holder.txtBookName.setText(arrayList.get(position).getBookName());
-            holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
+            holder.txtBookName.setText(arrayList.get(position).getModelName());
+            holder.txtOrganization.setText(arrayList.get(position).getOrganization());
             // if(arrayList.get(position).ge)
 
 
@@ -96,9 +96,9 @@ public class UserFavoriteBooksAdapter extends BaseAdapter {
 
         private ImageView imgBook;
         private ImageView imgInfo;
-        private ImageView imgBookLike;
+        private ImageView imgAddToFav;
         private ImageView imgBookAdd;
-        private TextView txtBookAuthor;
+        private TextView txtOrganization;
         private TextView txtBookName;
 
 

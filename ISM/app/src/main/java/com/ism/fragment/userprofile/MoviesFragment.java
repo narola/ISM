@@ -12,8 +12,9 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.adapter.SuggestedRoleModelsAdapter;
-import com.ism.adapter.UserFavoriteRoleModelsAdapter;
+import com.ism.adapter.FavoriteMoviesAdapter;
+import com.ism.adapter.SuggestedBookAdapter;
+import com.ism.adapter.SuggestedMoviesAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
@@ -22,8 +23,7 @@ import com.ism.views.HorizontalListView;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Favorite;
-import com.ism.ws.model.Suggested;
+import com.ism.ws.model.MovieData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -31,32 +31,30 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 09/11/15.
  */
-public class UserRoleModelFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
+public class MoviesFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener, SuggestedBookAdapter.AddToFavouriteListner {
 
-    private static final String TAG = UserRoleModelFragment.class.getSimpleName();
+    private static final String TAG = MoviesFragment.class.getSimpleName();
     ImageLoader imageLoader;
     private View view;
     private MyTypeFace myTypeFace;
     private HostActivity activityHost;
-    private HorizontalListView listViewFavBooks;
-    UserFavoriteRoleModelsAdapter favoriteRoleModelsAdapter;
-    private ArrayList<Favorite> arrayListFavBooks;
-    private HorizontalListView listViewSuggestedBooks;
-    SuggestedRoleModelsAdapter suggestedRoleModelsAdapter;
-    private ArrayList<Suggested> arrayListSuggestedBooks;
-    private TextView txtSuggestedEmpty;
-    private TextView txtFavEmpty;
-    private ImageView imgNxtFav;
-    private ImageView imgPrevFav;
-    private TextView txtFavBooks;
-    private TextView txtSuggestedBooks;
+    private HorizontalListView listViewMovies;
+    FavoriteMoviesAdapter userMoviesAdapter;
+    private ArrayList<MovieData> arrayListFavBooks;
+    private TextView txtFavEmpty,txtSuggestedEmpty,txtSuggestedBooks,txtFavBooks;
+    private HorizontalListView listViewFav,listViewSuggested;
+    private ImageView imgNxtFav,imgPrevFav;
+    private ArrayList<MovieData> arrayListFav;
+    private FavoriteMoviesAdapter favMovieAdapter;
+    private ArrayList<MovieData> arrayListSuggested;
+    private SuggestedMoviesAdapter suggestedMovieAdapter;
 
-    public static UserRoleModelFragment newInstance() {
-        UserRoleModelFragment fragment = new UserRoleModelFragment();
+    public static MoviesFragment newInstance() {
+        MoviesFragment fragment = new MoviesFragment();
         return fragment;
     }
 
-    public UserRoleModelFragment() {
+    public MoviesFragment() {
     }
 
     @Override
@@ -73,6 +71,7 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
+        myTypeFace = new MyTypeFace(getActivity());
 
         txtFavEmpty = (TextView) view.findViewById(R.id.txt_fav_empty);
         txtSuggestedEmpty = (TextView) view.findViewById(R.id.txt_suggested_empty);
@@ -87,34 +86,34 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
         txtFavBooks.setText(R.string.strFavRolemodels);
 
 
-        listViewFavBooks = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
-        listViewSuggestedBooks = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);
+        listViewFav = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
+        listViewSuggested = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);
 
         imgNxtFav=(ImageView)view.findViewById(R.id.img_next_fav);
         imgPrevFav=(ImageView)view.findViewById(R.id.img_prev_fav);
 
-        callApiGetBooksForUser();
+        callApiGetMoviesForUser();
 
         imgNxtFav.setOnClickListener(this);
         imgPrevFav.setOnClickListener(this);
-        favoriteRoleModelsAdapter=new UserFavoriteRoleModelsAdapter(getActivity(),arrayListFavBooks);
-        listViewFavBooks.setAdapter(favoriteRoleModelsAdapter);
+
+
 
     }
 
-    private void callApiGetBooksForUser() {
+
+    private void callApiGetMoviesForUser() {
         try {
-            if (Utility.isConnected(getActivity())) {
+            if(Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute requestObject = new Attribute();
                 requestObject.setUserId("1");
-                new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_ROLEMODEL_FOR_USER);
-            }
-            else{
-                Utility.toastOffline(getActivity());
+                new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_MOVIES_FOR_USER);
+            }else{
+                Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiGetBooksForUser Exception : " + e.getLocalizedMessage());
+            Debug.i(TAG, "callApiGetMoviesForUser Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -124,8 +123,8 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
 
         try {
             switch (apiCode) {
-                case WebConstants.GET_ROLEMODEL_FOR_USER:
-                    onResponseUserRoleModels(object, error);
+                case WebConstants.GET_MOVIES_FOR_USER:
+                    onResponseUserMovies(object, error);
                     break;
 
             }
@@ -135,72 +134,59 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
 
     }
 
-    private void onResponseUserRoleModels(Object object, Exception error) {
+    private void onResponseUserMovies(Object object, Exception error) {
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseHandler  responseHandler = (ResponseHandler) object;
+                ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                        arrayListFavBooks=responseHandler.getBooks().get(0).getFavorite();
-                        arrayListSuggestedBooks=responseHandler.getBooks().get(0).getSuggested();
-                    setUpList(arrayListFavBooks,arrayListSuggestedBooks);
-                    Debug.i(TAG, "onResponseUserRoleModels success");
+                    arrayListFav = responseHandler.getMovies().get(0).getFavoriteMovies();
+                    arrayListSuggested = responseHandler.getMovies().get(0).getSuggestedMovies();
+                    setUpList(arrayListFav, arrayListSuggested);
+                    Log.e(TAG, "onResponseUserMovies success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Log.i(TAG, "onResponseUserRoleModels Failed");
+                    Log.e(TAG, "onResponseUserMovies Failed");
                 }
             } else if (error != null) {
-                Log.i(TAG, "onResponseUserRoleModels api Exception : " + error.toString());
+                Log.e(TAG, "onResponseUserMovies api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Log.e(TAG, "onResponseUserRoleModels Exception : " + e.toString());
+            Log.e(TAG, "onResponseUserMovies Exception : " + e.toString());
         }
     }
 
-    private void setUpList(ArrayList<Favorite> arrayListFavBooks, ArrayList<Suggested> arrayListSuggestedBooks) {
+    private void setUpList(ArrayList<MovieData> arrayListFav, ArrayList<MovieData> arrayListSuggested) {
         try {
-            if(!arrayListFavBooks.isEmpty()){
+            if (!arrayListFav.isEmpty()) {
                 txtFavEmpty.setVisibility(View.GONE);
-                listViewFavBooks.setVisibility(View.VISIBLE);
-                favoriteRoleModelsAdapter=new UserFavoriteRoleModelsAdapter(getActivity(),arrayListFavBooks);
-                listViewFavBooks.setAdapter(favoriteRoleModelsAdapter);
+                listViewFav.setVisibility(View.VISIBLE);
+                favMovieAdapter = new FavoriteMoviesAdapter(getActivity(), arrayListFav);
+                listViewFav.setAdapter(favMovieAdapter);
 
-            }else{
+            } else {
                 txtFavEmpty.setVisibility(View.VISIBLE);
-                listViewFavBooks.setVisibility(View.GONE);
+                listViewFav.setVisibility(View.GONE);
             }
-            if(!arrayListFavBooks.isEmpty()){
+            if (!arrayListSuggested.isEmpty()) {
                 txtSuggestedEmpty.setVisibility(View.GONE);
-                listViewSuggestedBooks.setVisibility(View.VISIBLE);
-                suggestedRoleModelsAdapter =new SuggestedRoleModelsAdapter(getActivity(),arrayListSuggestedBooks);
-                listViewSuggestedBooks.setAdapter(suggestedRoleModelsAdapter);
-            }else{
+                listViewSuggested.setVisibility(View.VISIBLE);
+                suggestedMovieAdapter = new SuggestedMoviesAdapter(getActivity(), arrayListSuggested,this);
+                listViewSuggested.setAdapter(suggestedMovieAdapter);
+            } else {
                 txtSuggestedEmpty.setVisibility(View.VISIBLE);
-                listViewSuggestedBooks.setVisibility(View.GONE);
+                listViewSuggested.setVisibility(View.GONE);
             }
-        }
-        catch (Exception e){
-            Debug.e(TAG,"setUpList Exceptions :" +e.getLocalizedMessage());
+        } catch (Exception e) {
+            Debug.e(TAG, "setUpList Exceptions :" + e.getLocalizedMessage());
         }
     }
 
 
     @Override
     public void onClick(View v) {
-        try {
-            switch (v.getId()){
-                case R.id.img_next_fav:
-                    //onNextFavorite();
-                    break;
-            }
-
-
-        }catch (Exception e){
-            Debug.e(TAG,"onClick Exception :" +e.getLocalizedMessage());
-        }
 
 
     }
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -222,4 +208,8 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
         }
     }
 
+    @Override
+    public void onAddToFav(int position) {
+        callApiGetMoviesForUser();
+    }
 }

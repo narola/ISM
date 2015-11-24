@@ -31,9 +31,11 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
-import com.ism.author.model.Data;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.Cities;
+import com.ism.author.ws.model.Countries;
+import com.ism.author.ws.model.States;
 import com.ism.commonsource.view.ProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 
@@ -60,9 +62,9 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
     private InputValidator inputValidator;
     private List<String> arrListGender;
     private List<String> arrListDefalt;
-    private ArrayList<Data> arrListCountries;
-    private ArrayList<Data> arrListStates;
-    private ArrayList<Data> arrListCities;
+    private ArrayList<Countries> arrListCountries;
+    private ArrayList<States> arrListStates;
+    private ArrayList<Cities> arrListCities;
     private Calendar calDob;
     private DatePickerDialog datePickerDob;
     private AlertDialog dialogSchoolInfo;
@@ -596,16 +598,16 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
                 progRequestSchoolInfo.setVisibility(View.INVISIBLE);
             }
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     if (dialogSchoolInfo != null) {
                         dialogSchoolInfo.dismiss();
                     }
 
                     Utils.showToast(getString(R.string.msg_school_info_request_sent), getActivity());
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
 
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseRequestSchoolInfo api Exception : " + error.toString());
@@ -621,17 +623,17 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             progCity.setProgress(100);
             progCity.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListCities = new ArrayList<Data>();
-                    arrListCities.addAll(responseObj.getData());
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListCities = new ArrayList<Cities>();
+                    arrListCities.addAll(responseHandler.getCities());
                     List<String> cities = new ArrayList<String>();
                     cities.add(getString(R.string.select));
-                    for (Data city : arrListCities) {
+                    for (Cities city : arrListCities) {
                         cities.add(city.getCityName());
                     }
                     Adapters.setUpSpinner(getActivity(), spCity, cities, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCities Failed");
                 }
             } else if (error != null) {
@@ -647,17 +649,17 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             progState.setProgress(100);
             progState.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListStates = new ArrayList<Data>();
-                    arrListStates.addAll(responseObj.getData());
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListStates = new ArrayList<States>();
+                    arrListStates.addAll(responseHandler.getStates());
                     List<String> states = new ArrayList<String>();
                     states.add(getString(R.string.select));
-                    for (Data state : arrListStates) {
+                    for (States state : arrListStates) {
                         states.add(state.getStateName());
                     }
                     Adapters.setUpSpinner(getActivity(), spState, states, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseStates Failed");
                 }
             } else if (error != null) {
@@ -674,17 +676,17 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             progCountry.setProgress(100);
             progCountry.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    arrListCountries = new ArrayList<Data>();
-                    arrListCountries.addAll(responseObj.getData());
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListCountries = new ArrayList<Countries>();
+                    arrListCountries.addAll(responseHandler.getCountries());
                     List<String> countries = new ArrayList<String>();
                     countries.add(getString(R.string.select));
-                    for (Data country : arrListCountries) {
+                    for (Countries country : arrListCountries) {
                         countries.add(country.getCountryName());
                     }
                     Adapters.setUpSpinner(getActivity(), spCountry, countries, Adapters.ADAPTER_NORMAL);
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Debug.e(TAG, "onResponseCountries Failed");
                 }
             } else if (error != null) {
@@ -700,24 +702,24 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             btnSubmit.setProgress(100);
             btnSubmit.setEnabled(true);
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, getActivity(),
                             PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity()));
                     PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity());
                     PreferenceData.remove(PreferenceData.USER_PASSWORD, getActivity());
-                    PreferenceData.setStringPrefs(PreferenceData.USER_ID, getActivity(), responseObj.getData().get(0).getUserId());
-                    PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, getActivity(), responseObj.getData().get(0).getFullName());
-                    PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, getActivity(), responseObj.getData().get(0).getProfilePic());
+                    PreferenceData.setStringPrefs(PreferenceData.USER_ID, getActivity(), responseHandler.getUser().get(0).getUserId());
+                    PreferenceData.setStringPrefs(PreferenceData.USER_FULL_NAME, getActivity(), responseHandler.getUser().get(0).getFullName());
+                    PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, getActivity(), responseHandler.getUser().get(0).getProfilePic());
 
                     Intent intentWelcome = new Intent(getActivity(), AuthorHostActivity.class);
                     startActivity(intentWelcome);
                     finish();
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    if (responseObj.getMessage().contains(ResponseHandler.DUPLICATE_ENTRY)) {
-                        if (responseObj.getMessage().contains("email_id")) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    if (responseHandler.getMessage().contains(ResponseHandler.DUPLICATE_ENTRY)) {
+                        if (responseHandler.getMessage().contains("email_id")) {
                             Utility.alert(getActivity(), getString(R.string.registration_failed), getString(R.string.msg_email_exists));
-                        } else if (responseObj.getMessage().contains("username")) {
+                        } else if (responseHandler.getMessage().contains("username")) {
                             Utility.alert(getActivity(), getString(R.string.registration_failed), getString(R.string.msg_username_exists));
                         }
                     }

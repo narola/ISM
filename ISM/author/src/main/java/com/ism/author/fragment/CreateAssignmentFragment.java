@@ -22,7 +22,6 @@ import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -46,11 +45,10 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private static final String TAG = CreateAssignmentFragment.class.getSimpleName();
     private View view;
-    private FragmentArgument fragmentArgument;
 
-    public static CreateAssignmentFragment newInstance(FragmentArgument fragmentArgument) {
+    public static CreateAssignmentFragment newInstance(Bundle bundleArgument) {
         CreateAssignmentFragment createAssignmentFragment = new CreateAssignmentFragment();
-        createAssignmentFragment.fragmentArgument = fragmentArgument;
+        createAssignmentFragment.setArguments(bundleArgument);
         return createAssignmentFragment;
     }
 

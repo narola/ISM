@@ -20,12 +20,11 @@ import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.GetObjectiveAssignmentQuestionsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.Data;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.ExamQuestions;
 import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
@@ -47,14 +46,13 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private RecyclerView rvGetObjectiveAssignmentQuestionslist;
     private GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter;
     private ArrayList<Questions> listOfQuestions = new ArrayList<Questions>();
-    private FragmentArgument fragmentArgument;
 
 
-    public static GetObjectiveAssignmentQuestionsFragment newInstance(FragmentArgument fragmentArgument) {
+    public static GetObjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArgument) {
         GetObjectiveAssignmentQuestionsFragment getObjectiveAssignmentQuestionsFragment = new GetObjectiveAssignmentQuestionsFragment();
-        if (fragmentArgument != null) {
-            getObjectiveAssignmentQuestionsFragment.fragmentArgument = fragmentArgument;
-            getObjectiveAssignmentQuestionsFragment.fragmentArgument.setFragment(getObjectiveAssignmentQuestionsFragment);
+        if (bundleArgument != null) {
+            getObjectiveAssignmentQuestionsFragment.setArguments(bundleArgument);
+//            getObjectiveAssignmentQuestionsFragment.fragmentArgument.setFragment(getObjectiveAssignmentQuestionsFragment);
         }
         return getObjectiveAssignmentQuestionsFragment;
     }
@@ -101,8 +99,8 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         callApiGetExamQuestions();
 
 
-        if (fragmentArgument != null) {
-            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT, fragmentArgument);
+        if (getArguments() != null) {
+            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT, getArguments());
         }
 
 
@@ -129,14 +127,16 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private void setExamQuestions() {
 
 
-        if (responseObjGetAllExamQuestions != null) {
-            fragmentArgument.getFragmentArgumentObject().setListOfQuestions(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
-        }
-        ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
-                (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), fragmentArgument);
-
-        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
-                (AuthorHostActivity.FRAGMENT_HIGHSCORE), fragmentArgument);
+//        if (responseObjGetAllExamQuestions != null) {
+//
+//
+//            fragmentArgument.getFragmentArgumentObject().setListOfQuestions(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
+//        }
+//        ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
+//                (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), fragmentArgument);
+//
+//        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
+//                (AuthorHostActivity.FRAGMENT_HIGHSCORE), fragmentArgument);
 
     }
 
@@ -230,9 +230,9 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                     listOfQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
                     getObjectiveAssignmentQuestionsAdapter.addAll(listOfQuestions);
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
-                    setAssignmentDetails(responseObjGetAllExamQuestions.getData().get(0));
+                    setAssignmentDetails(responseObjGetAllExamQuestions.getExamQuestions().get(0));
 
-                    if (fragmentArgument != null) {
+                    if (getArguments() != null) {
 
                         callAPiGetExamEvaluation();
                     }
@@ -269,20 +269,20 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         }
     }
 
-    private void setAssignmentDetails(Data data) {
+    private void setAssignmentDetails(ExamQuestions examQuestions) {
 
         tvObjectiveAssignmentSubject.setText(getResources().getString(R.string.strbookname) + ": ");
-        if (data.getBookName() != null) {
-            tvObjectiveAssignmentSubject.append(Utility.getSpannableString(data.getBookName(), getResources().getColor(R.color.bg_assessment)));
+        if (examQuestions.getBookName() != null) {
+            tvObjectiveAssignmentSubject.append(Utility.getSpannableString(examQuestions.getBookName(), getResources().getColor(R.color.bg_assessment)));
         }
         tvObjectiveAssignmentClass.setText(getResources().getString(R.string.strclass) + ": ");
-        if (data.getClassName() != null) {
-            tvObjectiveAssignmentClass.append(Utility.getSpannableString(data.getClassName(), getResources().getColor(R.color.bg_assessment)));
+        if (examQuestions.getClassName() != null) {
+            tvObjectiveAssignmentClass.append(Utility.getSpannableString(examQuestions.getClassName(), getResources().getColor(R.color.bg_assessment)));
         }
         tvObjectiveAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + ": 1");
-        tvObjectiveAssignmentTitle.setText(data.getExamName());
+        tvObjectiveAssignmentTitle.setText(examQuestions.getExamName());
         tvObjectiveAssignmentDate.setText(getActivity().getResources().getString(R.string.strassignmentdatecolon) + " " +
-                Utility.getFormattedDate("dd-MMM-yyyy", data.getCreatedDate()));
+                Utility.getFormattedDate("dd-MMM-yyyy", examQuestions.getCreatedDate()));
 
     }
 

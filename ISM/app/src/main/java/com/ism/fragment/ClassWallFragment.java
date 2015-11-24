@@ -20,7 +20,6 @@ import com.ism.object.Global;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
-import com.ism.ws.model.ResponseObject;
 import com.ism.ws.helper.WebserviceWrapper;
 
 public class ClassWallFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
@@ -76,7 +75,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 		if (Utility.isConnected(getActivity())) {
 			callApiGetAllFeeds();
 		} else {
-			Utility.toastOffline(getActivity());
+			Utility.alertOffline(getActivity());
 		}
 
 		llPost.setOnClickListener(new View.OnClickListener() {
@@ -118,10 +117,10 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 			activityHost.hideProgress();
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
-				if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					adpPostFeeds = new PostFeedsAdapter(getActivity(), responseHandler.getFeeds());
 					recyclerPost.setAdapter(adpPostFeeds);
-				} else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetAllFeeds Failed : " + responseHandler.getMessage());
 				}
 			} else if(error != null) {

@@ -37,7 +37,8 @@ public class User {
     private String tutorialGroupName;
     private String tutorialGroupJoiningStatus;
     private String tutorialGroupComplete;
-	private String classId;private String academicYear;
+	private String classId;
+	private String academicYear;
 	private String roleId;
 	private String schoolDistrict;
 	private String credentialId;
@@ -45,6 +46,8 @@ public class User {
 	private String schoolType;
 	private String schoolId;
 	private String courseId;
+    private String examScore;
+    private String subjectName;
 	private ArrayList<TutorialGroupMember> tutorialGroupMembers;
 
     @JsonProperty("total_exams")
@@ -143,6 +146,7 @@ public class User {
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
     }
+
     @JsonProperty("username")
     public String getUsername() {
         return this.username;
@@ -334,5 +338,23 @@ public class User {
 	public void setTutorialGroupMembers(ArrayList<TutorialGroupMember> tutorialGroupMembers) {
 		this.tutorialGroupMembers = tutorialGroupMembers;
 	}
+
+	@JsonProperty("exam_score")
+    public String getExamScore() {
+        return this.examScore;
+    }
+
+    public void setExamScore(String examScore) {
+        this.examScore = examScore;
+    }
+
+	@JsonProperty("subject_name")
+    public String getSubjectName() {
+        return this.subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
 
 }

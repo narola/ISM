@@ -20,7 +20,6 @@ import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.ResponseObject;
 
 import java.util.ArrayList;
 
@@ -220,11 +219,11 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseHandler responseObject = (ResponseHandler) object;
+                ResponseHandler responseHandler = (ResponseHandler) object;
 
-                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
+                if (responseHandler.getStatus().toString().equals(WebConstants.SUCCESS)) {
                     Debug.i(TAG, "Updated successfully");
-                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Debug.i(TAG, "Failed to load manage general setting");
                 }
 
@@ -254,7 +253,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
                     Debug.i(TAG, "General setting Pereference list size :" + reqObj.size());
                 }
             } else {
-                Utility.toastOffline(getActivity());
+                Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
 

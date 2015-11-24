@@ -31,9 +31,9 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
 import com.ism.author.fragment.AddQuestionContainerFragment;
-import com.ism.author.fragment.ExamsFragment;
 import com.ism.author.fragment.BooksFragment;
 import com.ism.author.fragment.CreateExamAssignmentContainerFragment;
+import com.ism.author.fragment.ExamsFragment;
 import com.ism.author.fragment.GetAssignmentsSubmittorFragment;
 import com.ism.author.fragment.GetObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.GetSubjectiveAssignmentQuestionsFragment;
@@ -44,11 +44,10 @@ import com.ism.author.fragment.StudentAttemptedFragment;
 import com.ism.author.fragment.TrialExamObjectiveDetailFragment;
 import com.ism.author.fragment.TrialExamSujectiveDetailFragment;
 import com.ism.author.fragment.TrialFragment;
-import com.ism.author.object.ControllerTopMenuItem;
-import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.fragment.rightcontainerfragment.AuthorProfileFragment;
 import com.ism.author.fragment.rightcontainerfragment.HighScoreFragment;
+import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.object.ControllerTopMenuItem;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 
@@ -92,7 +91,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_OFFICE = 1;
     public static final int FRAGMENT_BOOKS = 2;
     public static final int FRAGMENT_MYFEEDS = 3;
-    public static final int FRAGMENT_FOLLOWING = 4;
     public static final int FRAGMENT_MYACTIVITY = 5;
     public static final int FRAGMENT_GOTRENDING = 6;
     public static final int FRAGMENT_SETQUIZ = 7;
@@ -216,7 +214,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         }
     }
 
-    public void loadFragmentInMainContainer(int fragment, FragmentArgument fragmentArgument) {
+    public void loadFragmentInMainContainer(int fragment, Bundle fragmentArgument) {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
@@ -235,11 +233,12 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, TrialFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, CreateExamAssignmentContainerFragment.newInstance(fragmentArgument)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            CreateExamAssignmentContainerFragment.newInstance(fragmentArgument)).commit();
                     break;
                 case FRAGMENT_ADDQUESTION_CONTAINER:
                     mFragmentTransaction = mFragmentManager.beginTransaction();
-                    mFragmentTransaction.add(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance(fragmentArgument));
+                    mFragmentTransaction.add(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance());
                     mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_ADDQUESTION_CONTAINER));
                     mFragmentTransaction.commit();
                     break;
@@ -257,15 +256,19 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     break;
 
                 case FRAGMENT_ASSIGNMENT_SUBMITTOR:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GetAssignmentsSubmittorFragment.newInstance(fragmentArgument)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            GetAssignmentsSubmittorFragment.newInstance(fragmentArgument)).commit();
                     break;
 
                 case FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GetObjectiveAssignmentQuestionsFragment.newInstance(fragmentArgument)).commit();
+                    mFragment = GetObjectiveAssignmentQuestionsFragment.newInstance(fragmentArgument);
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            GetObjectiveAssignmentQuestionsFragment.newInstance(fragmentArgument)).commit();
                     break;
 
                 case FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GetSubjectiveAssignmentQuestionsFragment.newInstance(fragmentArgument)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            GetSubjectiveAssignmentQuestionsFragment.newInstance(fragmentArgument)).commit();
                     break;
             }
             currentMainFragment = fragment;
@@ -276,8 +279,15 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
     }
 
+    private GetObjectiveAssignmentQuestionsFragment mFragment;
+
+
+    public void loadStudentEvaluationData() {
+        mFragment.loadStudentEvaluationData();
+    }
+
     //these is for the load fragment in right container.
-    public void loadFragmentInRightContainer(int fragment, FragmentArgument fragmentArgument) {
+    public void loadFragmentInRightContainer(int fragment, Bundle fragmentArgument) {
         try {
             switch (fragment) {
 

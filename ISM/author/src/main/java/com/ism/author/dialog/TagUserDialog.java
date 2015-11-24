@@ -110,7 +110,7 @@ public class TagUserDialog extends Dialog implements View.OnClickListener {
         } else if (v == tvTagUsers) {
 
 
-            String[] tagUserArray = searchStudyMatesAdapter.getTagIds().toArray(new String[searchStudyMatesAdapter.getTagIds().size()]);
+            String[] tagUserArray = searchStudyMatesAdapter.getArrListTagIds().toArray(new String[searchStudyMatesAdapter.getArrListTagIds().size()]);
             if (tagUserArray.length > 0) {
                 tagUserListener.tagUsers(tagUserArray);
                 dismiss();

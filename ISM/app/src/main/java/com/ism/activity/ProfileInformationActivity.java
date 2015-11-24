@@ -38,9 +38,7 @@ import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.model.City;
 import com.ism.ws.model.Country;
-import com.ism.ws.model.ResponseObject;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Data;
 import com.ism.ws.model.State;
 
 
@@ -188,7 +186,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         if (Utility.isConnected(ProfileInformationActivity.this)) {
             callApiGetCountries();
         } else {
-            Utility.toastOffline(ProfileInformationActivity.this);
+            Utility.alertOffline(ProfileInformationActivity.this);
         }
 
         etDob.setOnTouchListener(new View.OnTouchListener() {
@@ -208,7 +206,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                     if (Utility.isConnected(ProfileInformationActivity.this)) {
                         callApiGetStates(arrListCountries.get(position - 1).getId());
                     } else {
-                        Utility.toastOffline(ProfileInformationActivity.this);
+                        Utility.alertOffline(ProfileInformationActivity.this);
                     }
                 } else {
                     Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
@@ -228,7 +226,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                     if (Utility.isConnected(ProfileInformationActivity.this)) {
                         callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
                     } else {
-                        Utility.toastOffline(ProfileInformationActivity.this);
+                        Utility.alertOffline(ProfileInformationActivity.this);
                     }
                 } else {
                     Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
@@ -310,7 +308,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                 callApiRegisterUser();
             }
         } else {
-            Utility.toastOffline(ProfileInformationActivity.this);
+            Utility.alertOffline(ProfileInformationActivity.this);
         }
     }
 
@@ -361,7 +359,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                         callApiRequestSchoolInfo(attribute);
                     }
                 } else {
-                    Utility.toastOffline(ProfileInformationActivity.this);
+                    Utility.alertOffline(ProfileInformationActivity.this);
                 }
             }
 
@@ -661,19 +659,19 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
     }
 
     private void onResponseRequestUploadPic(Object object, Exception error) {
-        try {
+        /*try {
             btnSubmit.setProgress(100);
             btnSubmit.setEnabled(true);
             if (object != null) {
                 ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
                     PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, responseObj.getData().get(0).getProfilePic());
 
                     Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
                     startActivity(intentWelcome);
                     finish();
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-                    if (responseObj.getMessage().contains(ResponseObject.DUPLICATE_ENTRY)) {
+                } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
+                    if (responseObj.getMessage().contains(WebConstants.DUPLICATE_ENTRY)) {
                         if (responseObj.getMessage().contains("email_id")) {
                             Utility.alert(ProfileInformationActivity.this, getString(R.string.registration_failed), getString(R.string.msg_email_exists));
                         } else if (responseObj.getMessage().contains("username")) {
@@ -686,7 +684,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponseRegisterUser Exception : " + e.toString());
-        }
+        }*/
     }
 
     private void onResponseRequestSchoolInfo(Object object, Exception error) {
@@ -700,12 +698,12 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             }
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     if (dialogSchoolInfo != null) {
                         dialogSchoolInfo.dismiss();
                     }
                     Toast.makeText(ProfileInformationActivity.this, "Request for school information updation sent to admin successfully.", Toast.LENGTH_LONG).show();
-                } else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Toast.makeText(ProfileInformationActivity.this, responseHandler.getMessage(), Toast.LENGTH_LONG).show();
                 }
             } else if (error != null) {
@@ -722,7 +720,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             progCity.setVisibility(View.INVISIBLE);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrListCities = new ArrayList<>();
                     arrListCities.addAll(responseHandler.getCities());
                     List<String> cities = new ArrayList<>();
@@ -731,7 +729,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                         cities.add(city.getCityName());
                     }
                     Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, cities, myTypeFace.getRalewayRegular());
-                } else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseCities Failed");
                 }
             } else if (error != null) {
@@ -748,7 +746,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             progState.setVisibility(View.INVISIBLE);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrListStates = new ArrayList<>();
                     arrListStates.addAll(responseHandler.getStates());
                     List<String> states = new ArrayList<>();
@@ -757,7 +755,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                         states.add(state.getStateName());
                     }
                     Adapters.setUpSpinner(ProfileInformationActivity.this, spState, states, myTypeFace.getRalewayRegular());
-                } else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseStates Failed");
                 }
             } else if (error != null) {
@@ -774,7 +772,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             progCountry.setVisibility(View.INVISIBLE);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrListCountries = new ArrayList<>();
                     arrListCountries.addAll(responseHandler.getCountries());
                     List<String> countries = new ArrayList<>();
@@ -783,7 +781,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                         countries.add(country.getCountryName());
                     }
                     Adapters.setUpSpinner(ProfileInformationActivity.this, spCountry, countries, myTypeFace.getRalewayRegular());
-                } else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseCountries Failed");
                 }
             } else if (error != null) {
@@ -800,7 +798,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
             btnSubmit.setEnabled(true);
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
                     PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
                     PreferenceData.remove(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this);
@@ -822,8 +820,8 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                     Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
                     startActivity(intentWelcome);
                     finish();
-                } else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
-                    if (responseHandler.getMessage().contains(ResponseObject.DUPLICATE_ENTRY)) {
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    if (responseHandler.getMessage().contains(WebConstants.DUPLICATE_ENTRY)) {
                         if (responseHandler.getMessage().contains("email_id")) {
                             Utility.alert(ProfileInformationActivity.this, getString(R.string.registration_failed), getString(R.string.msg_email_exists));
                         } else if (responseHandler.getMessage().contains("username")) {

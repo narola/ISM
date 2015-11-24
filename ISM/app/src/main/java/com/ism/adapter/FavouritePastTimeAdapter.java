@@ -8,11 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.R;
 import com.ism.ISMStudent;
+import com.ism.R;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
-import com.ism.ws.model.Favorite;
+import com.ism.ws.model.PastimeData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -21,15 +21,15 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class UserFavoriteRoleModelsAdapter extends BaseAdapter {
-    private static final String TAG = UserFavoriteRoleModelsAdapter.class.getSimpleName();
+public class FavouritePastTimeAdapter extends BaseAdapter {
+    private static final String TAG = FavouritePastTimeAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
-    ArrayList<Favorite> arrayList = new ArrayList<>();
+    ArrayList<PastimeData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
 
-    public UserFavoriteRoleModelsAdapter(Context context, ArrayList<Favorite> arrayList) {
+    public FavouritePastTimeAdapter(Context context, ArrayList<PastimeData> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         imageLoader = ImageLoader.getInstance();
@@ -41,7 +41,7 @@ public class UserFavoriteRoleModelsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 10;
+        return arrayList.size();
     }
 
     @Override
@@ -60,13 +60,11 @@ public class UserFavoriteRoleModelsAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.row_user_books, null);
             holder = new ViewHolder();
-
-            holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
+            holder.imgPastime = (ImageView) convertView.findViewById(R.id.img_pic);
+            holder.txtPastimeName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
-            holder.imgBookLike = (ImageView) convertView.findViewById(R.id.img_book_like);
-            holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
-            holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
-            holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
+            holder.txtName = (TextView) convertView.findViewById(R.id.txt_author);
+           // holder.imgInfo.setVisibility(View.VISIBLE);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -74,15 +72,12 @@ public class UserFavoriteRoleModelsAdapter extends BaseAdapter {
 
         try {
 
-            holder.txtBookAuthor.setTypeface(myTypeFace.getRalewayRegular());
 
-            holder.txtBookName.setTypeface(myTypeFace.getRalewayRegular());
-
+            holder.txtPastimeName.setTypeface(myTypeFace.getRalewayRegular());
+            holder.txtName.setText("");
 //			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgBook, ISMStudent.options);
-//            holder.txtBookName.setText(arrayList.get(position).getBookName());
-//            holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
-            // if(arrayList.get(position).ge)
+            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgPastime, ISMStudent.options);
+            holder.txtPastimeName.setText(arrayList.get(position).getPastimeName());
 
 
         } catch (Exception e) {
@@ -94,13 +89,9 @@ public class UserFavoriteRoleModelsAdapter extends BaseAdapter {
 
     public class ViewHolder {
 
-        private ImageView imgBook;
+        private ImageView imgPastime;
+        private TextView txtPastimeName;
+        private TextView txtName;
         private ImageView imgInfo;
-        private ImageView imgBookLike;
-        private ImageView imgBookAdd;
-        private TextView txtBookAuthor;
-        private TextView txtBookName;
-
-
     }
 }

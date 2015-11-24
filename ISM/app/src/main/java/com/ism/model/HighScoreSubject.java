@@ -1,6 +1,6 @@
 package com.ism.model;
 
-import com.ism.ws.model.Data;
+import com.ism.ws.model.User;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class HighScoreSubject {
 
 	private String subjectName;
-	private ArrayList<Data> arrListStudent;
+	private ArrayList<User> arrListStudent;
 
 	public String getSubjectName() {
         return subjectName;
@@ -21,11 +21,11 @@ public class HighScoreSubject {
         this.subjectName = subjectName;
     }
 
-	public ArrayList<Data> getArrListStudent() {
+	public ArrayList<User> getArrListStudent() {
 		return arrListStudent;
 	}
 
-	public void setArrListStudent(ArrayList<Data> arrListStudent) {
+	public void setArrListStudent(ArrayList<User> arrListStudent) {
 		this.arrListStudent = arrListStudent;
 	}
 
