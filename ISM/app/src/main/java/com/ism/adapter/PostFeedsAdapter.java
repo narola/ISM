@@ -142,7 +142,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 						tagFeedPosition = position;
 						callApiGetStudyMates();
 					} else {
-						Utility.toastOffline(context);
+						Utility.alertOffline(context);
 					}
 				}
 			});
@@ -241,7 +241,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 				Log.e(TAG, "tagStudyMates Exception : " + e.toString());
 			}
 		} else {
-			Utility.toastOffline(context);
+			Utility.alertOffline(context);
 		}
 	}
 

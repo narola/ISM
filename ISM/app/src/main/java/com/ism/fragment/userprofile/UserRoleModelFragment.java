@@ -111,7 +111,7 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
                 new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_ROLEMODEL_FOR_USER);
             }
             else{
-                Utility.toastOffline(getActivity());
+                Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
             Debug.i(TAG, "callApiGetBooksForUser Exception : " + e.getLocalizedMessage());

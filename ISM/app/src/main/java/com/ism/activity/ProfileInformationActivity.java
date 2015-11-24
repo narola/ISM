@@ -182,7 +182,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
         if (Utility.isConnected(ProfileInformationActivity.this)) {
             callApiGetCountries();
         } else {
-            Utility.toastOffline(ProfileInformationActivity.this);
+            Utility.alertOffline(ProfileInformationActivity.this);
         }
 
         etDob.setOnTouchListener(new View.OnTouchListener() {
@@ -202,7 +202,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                     if (Utility.isConnected(ProfileInformationActivity.this)) {
                         callApiGetStates(arrListCountries.get(position - 1).getId());
                     } else {
-                        Utility.toastOffline(ProfileInformationActivity.this);
+                        Utility.alertOffline(ProfileInformationActivity.this);
                     }
                 } else {
                     Adapters.setUpSpinner(ProfileInformationActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
@@ -222,7 +222,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                     if (Utility.isConnected(ProfileInformationActivity.this)) {
                         callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
                     } else {
-                        Utility.toastOffline(ProfileInformationActivity.this);
+                        Utility.alertOffline(ProfileInformationActivity.this);
                     }
                 } else {
                     Adapters.setUpSpinner(ProfileInformationActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
@@ -304,7 +304,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                 callApiRegisterUser();
             }
         } else {
-            Utility.toastOffline(ProfileInformationActivity.this);
+            Utility.alertOffline(ProfileInformationActivity.this);
         }
     }
 
@@ -355,7 +355,7 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
                         callApiRequestSchoolInfo(attribute);
                     }
                 } else {
-                    Utility.toastOffline(ProfileInformationActivity.this);
+                    Utility.alertOffline(ProfileInformationActivity.this);
                 }
             }
 

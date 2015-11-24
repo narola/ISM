@@ -123,7 +123,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 				callApiAuthenticateUser();
 			}
 		} else {
-			Utility.toastOffline(LoginActivity.this);
+			Utility.alertOffline(LoginActivity.this);
 		}
 	}
 
@@ -161,7 +161,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						callApiForgotPassword(etEmail.getText().toString().trim());
 					}
 				} else {
-					Utility.toastOffline(LoginActivity.this);
+					Utility.alertOffline(LoginActivity.this);
 				}
 			}
 		});
@@ -189,7 +189,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		if (Utility.isConnected(LoginActivity.this)) {
 			callApiGetCountries();
 		} else {
-			Utility.toastOffline(LoginActivity.this);
+			Utility.alertOffline(LoginActivity.this);
 		}
 
 		spCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -199,7 +199,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 					if (Utility.isConnected(LoginActivity.this)) {
 						callApiGetStates(arrListCountries.get(position - 1).getId());
 					} else {
-						Utility.toastOffline(LoginActivity.this);
+						Utility.alertOffline(LoginActivity.this);
 					}
 				} else {
 					Adapters.setUpSpinner(LoginActivity.this, spState, arrListDefalt, myTypeFace.getRalewayRegular());
@@ -219,7 +219,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 					if (Utility.isConnected(LoginActivity.this)) {
 						callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
 					} else {
-						Utility.toastOffline(LoginActivity.this);
+						Utility.alertOffline(LoginActivity.this);
 					}
 				} else {
 					Adapters.setUpSpinner(LoginActivity.this, spCity, arrListDefalt, myTypeFace.getRalewayRegular());
@@ -269,7 +269,7 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 						callApiRequestCredentials(attribute);
 					}
 				} else {
-					Utility.toastOffline(LoginActivity.this);
+					Utility.alertOffline(LoginActivity.this);
 				}
 			}
 

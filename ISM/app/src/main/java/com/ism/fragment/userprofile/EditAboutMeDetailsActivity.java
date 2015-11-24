@@ -138,7 +138,7 @@ MyTypeFace myTypeFace;
                 new WebserviceWrapper(getApplicationContext(), requestObject, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
             }
             else{
-                Utility.toastOffline(getApplicationContext());
+                Utility.alertOffline(getApplicationContext());
             }
         } catch (Exception e) {
             Debug.i(TAG, "callApiEditAboutMe Exception : " + e.getLocalizedMessage());
