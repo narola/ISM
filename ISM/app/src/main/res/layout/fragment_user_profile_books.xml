@@ -18,6 +18,7 @@
             android:layout_alignParentTop="true"
             android:gravity="center_vertical"
             android:padding="@dimen/d5dp"
+            android:textColor="@color/bg_app_dark"
             android:text="@string/strBooksYouMayWantToRead"
             android:textSize="@dimen/d20sp" />
 
@@ -52,6 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="4"
+        android:background="@color/color_white"
         android:orientation="horizontal">
 
         <ImageView
@@ -69,16 +71,27 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/d5dp"
             android:layout_marginRight="@dimen/d5dp"
-            android:background="@color/color_white"
             android:layout_toLeftOf="@+id/img_next_read"
-            android:layout_toRightOf="@+id/img_prev_read" />
+            android:layout_toRightOf="@+id/img_prev_read"
+            android:background="@color/color_white" />
+
+        <TextView
+            android:id="@+id/txt_suggested_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/img_next_read"
+            android:layout_toRightOf="@+id/img_prev_read"
+            android:background="@color/color_white"
+            android:gravity="center"
+            android:text="No record found"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/img_next_read"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="@dimen/d5dp"
             android:layout_alignParentEnd="true"
+            android:padding="@dimen/d5dp"
             android:src="@drawable/right_arrow" />
 
 
@@ -92,12 +105,13 @@
         android:paddingLeft="@dimen/d10dp">
 
         <TextView
-            android:id="@+id/txt_books"
+            android:id="@+id/txt_fav_books"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:gravity="center_vertical"
             android:padding="@dimen/d5dp"
+            android:textColor="@color/bg_app_dark"
             android:text="@string/strYourFavoriteBooks"
             android:textSize="@dimen/d20sp" />
 
@@ -131,6 +145,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="4"
+        android:background="@color/color_white"
         android:orientation="horizontal">
 
         <ImageView
@@ -151,6 +166,17 @@
             android:layout_toLeftOf="@+id/img_next_fav"
             android:layout_toRightOf="@+id/img_prev_fav"
             android:background="@color/color_white" />
+
+        <TextView
+            android:id="@+id/txt_fav_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/img_next_fav"
+            android:layout_toRightOf="@+id/img_prev_fav"
+            android:background="@color/color_white"
+            android:gravity="center"
+            android:text="No record found"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/img_next_fav"

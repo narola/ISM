@@ -11,14 +11,18 @@ import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.ism.R;
-import com.ism.ws.model.Data;
+import com.ism.constant.WebConstants;
+import com.ism.ws.model.Notice;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -73,11 +77,44 @@ public class Utility {
 
 	/**
 	 * Krunal Panchal
+	 * Check if server connection possible
+	 * @return
+	 */
+	public static boolean isServerConnected() {
+//      Check if we can get access from the network.
+		URL url = null;
+		try {
+			url = new URL(WebConstants.HOST_147);
+			HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+			urlc.setRequestProperty("Connection", "close");
+			urlc.setConnectTimeout(2000); // Timeout 2 seconds.
+			urlc.connect();
+			return urlc.getResponseCode() == 200; //Successful response.
+		} catch (MalformedURLException e) {
+			Log.e(TAG, "isServerConnected MalformedURLException : " + e.toString());
+		} catch (IOException e) {
+			Log.e(TAG, "isServerConnected IOException : " + e.toString());
+		}
+		return false;
+	}
+
+	/**
+	 * Krunal Panchal
 	 * Toast alert when user is offline.
 	 * @param context
 	 */
-	public static void toastOffline(Context context) {
-		Toast.makeText(context, R.string.msg_offline, Toast.LENGTH_SHORT).show();
+	public static void alertOffline(Context context) {
+//		Toast.makeText(context, R.string.msg_offline, Toast.LENGTH_SHORT).show();
+		alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_offline));
+	}
+
+	/**
+	 * Krunal Panchal
+	 * Alert server can't connect
+	 * @param context
+	 */
+	public static void alertServerNotConnected(Context context) {
+		alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
 	}
 
 	/**
@@ -102,18 +139,21 @@ public class Utility {
 	 */
 	public static void alert(Context context, String title, String message) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
 		if (title != null) {
 			builder.setTitle(title);
 		}
 		if (message != null) {
 			builder.setMessage(message);
 		}
-		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
+		AlertDialog dialog = builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 
-					}
-				}).create().show();
+			}
+		}).create();
+		dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+		dialog.show();
 	}
 
 	/**
@@ -152,10 +192,10 @@ public class Utility {
 	 * Sort ArrayList of Data by PostedBy date in ascending order
 	 * @param arrListData
 	 */
-	public static void sortPostedOnAsc(ArrayList<Data> arrListData) {
-		Collections.sort(arrListData, new Comparator<Data>() {
+	public static void sortPostedOnAsc(ArrayList<Notice> arrListData) {
+		Collections.sort(arrListData, new Comparator<Notice>() {
 			@Override
-			public int compare(Data lData, Data rData) {
+			public int compare(Notice lData, Notice rData) {
 				int compare = lData.getPostedOn().compareTo(rData.getPostedOn());
 				return compare;
 			}
@@ -167,10 +207,10 @@ public class Utility {
 	 * Sort ArrayList of Data by PostedBy date in descending order
 	 * @param arrListData
 	 */
-	public static void sortPostedOnDesc(ArrayList<Data> arrListData) {
-		Collections.sort(arrListData, new Comparator<Data>() {
+	public static void sortPostedOnDesc(ArrayList<Notice> arrListData) {
+		Collections.sort(arrListData, new Comparator<Notice>() {
 			@Override
-			public int compare(Data lData, Data rData) {
+			public int compare(Notice lData, Notice rData) {
 				int compare = rData.getPostedOn().compareTo(lData.getPostedOn());
 				return compare;
 			}
@@ -182,12 +222,12 @@ public class Utility {
 	 * Sort ArrayList of Data by NoticeTitle date in ascending order
 	 * @param arrListData
 	 */
-	public static void sortNoticeTitleAsc(ArrayList<Data> arrListData) {
-		Collections.sort(arrListData, new Comparator<Data>() {
+	public static void sortNoticeTitleAsc(ArrayList<Notice> arrListData) {
+		Collections.sort(arrListData, new Comparator<Notice>() {
 			@Override
-			public int compare(Data lData, Data rData) {
-				int compare = lData.getNoticeTitle().compareToIgnoreCase(rData.getNoticeTitle());
-				return compare;
+			public int compare(Notice lData, Notice rData) {
+				return lData.getNoticeTitle().compareToIgnoreCase(rData.getNoticeTitle());
+
 			}
 		});
 	}
@@ -197,12 +237,12 @@ public class Utility {
 	 * Sort ArrayList of Data by NoticeTitle date in descending order
 	 * @param arrListData
 	 */
-	public static void sortNoticeTitleDesc(ArrayList<Data> arrListData) {
-		Collections.sort(arrListData, new Comparator<Data>() {
+	public static void sortNoticeTitleDesc(ArrayList<Notice> arrListData) {
+		Collections.sort(arrListData, new Comparator<Notice>() {
 			@Override
-			public int compare(Data lData, Data rData) {
-				int compare = rData.getNoticeTitle().compareToIgnoreCase(lData.getNoticeTitle());
-				return compare;
+			public int compare(Notice lData, Notice rData) {
+				return rData.getNoticeTitle().compareToIgnoreCase(lData.getNoticeTitle());
+
 			}
 		});
 	}
@@ -212,7 +252,7 @@ public class Utility {
 	 * @param message
 	 * @param context
 	 */
-	public static void showToast(String message, Context context) {
+	public static void showToast(Context context, String message) {
 		try {
 			Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 		} catch (Exception e) {

@@ -14,6 +14,7 @@ public class ExamSubmission {
     private ArrayList<Examsubmittor> examsubmittor;
 
 
+
     @JsonProperty("exam_id")
     public String getExamId() {
         return this.examId;
@@ -31,6 +32,8 @@ public class ExamSubmission {
     public void setExamsubmittor(ArrayList<Examsubmittor> examsubmittor) {
         this.examsubmittor = examsubmittor;
     }
+
+
 
 
 }

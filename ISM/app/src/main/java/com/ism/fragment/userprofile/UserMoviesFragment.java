@@ -10,17 +10,16 @@ import android.view.ViewGroup;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.adapter.SuggestedBookForUserAdapter;
-import com.ism.adapter.UserFavoriteBooksAdapter;
+import com.ism.adapter.UserFavMoviesAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
+import com.ism.utility.Utility;
 import com.ism.views.HorizontalListView;
 import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Favorite;
-import com.ism.ws.model.ResponseObject;
-import com.ism.ws.model.Suggested;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -35,12 +34,9 @@ public class UserMoviesFragment extends Fragment implements WebserviceWrapper.We
     private View view;
     private MyTypeFace myTypeFace;
     private HostActivity activityHost;
-    private HorizontalListView listViewFavBooks;
-    UserFavoriteBooksAdapter userFavoriteBooksAdapter;
+    private HorizontalListView listViewMovies;
+    UserFavMoviesAdapter userMoviesAdapter;
     private ArrayList<Favorite> arrayListFavBooks;
-    private HorizontalListView listViewSuggestedBooks;
-    SuggestedBookForUserAdapter suggestedBookForUserAdapter;
-    private ArrayList<Suggested> arrayListSuggestedBooks;
 
     public static UserMoviesFragment newInstance() {
         UserMoviesFragment fragment = new UserMoviesFragment();
@@ -53,7 +49,7 @@ public class UserMoviesFragment extends Fragment implements WebserviceWrapper.We
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_user_profile_books, container, false);
+        view = inflater.inflate(R.layout.fragment_user_movies, container, false);
 
         initGlobal();
 
@@ -68,27 +64,26 @@ public class UserMoviesFragment extends Fragment implements WebserviceWrapper.We
         //set typeface
         //txtClass.setTypeface(myTypeFace.getRalewayRegular());
 
-        listViewFavBooks = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
-        listViewSuggestedBooks = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);
-
-        userFavoriteBooksAdapter = new UserFavoriteBooksAdapter(getActivity(), arrayListFavBooks);
-        listViewFavBooks.setAdapter(userFavoriteBooksAdapter);
-
-
+        listViewMovies = (HorizontalListView) view.findViewById(R.id.lv_movies);
+        userMoviesAdapter=new UserFavMoviesAdapter(getActivity(),arrayListFavBooks);
+        listViewMovies.setAdapter(userMoviesAdapter);
 
 
     }
 
 
-    private void callApiGetBooksForUser() {
+    private void callApiGetMoviesForUser() {
         try {
-            activityHost.showProgress();
-            Attribute requestObject = new Attribute();
-            requestObject.setUserId("1");
-            new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
-
+            if(Utility.isConnected(getActivity())) {
+                activityHost.showProgress();
+                Attribute requestObject = new Attribute();
+                requestObject.setUserId("1");
+                new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_MOVIES_FOR_USER);
+            }else{
+                Utility.alertOffline(getActivity());
+            }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiGetBooksForUser Exception : " + e.getLocalizedMessage());
+            Debug.i(TAG, "callApiGetMoviesForUser Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -98,8 +93,8 @@ public class UserMoviesFragment extends Fragment implements WebserviceWrapper.We
 
         try {
             switch (apiCode) {
-                case WebConstants.GET_BOOKS_FOR_USER:
-                    onResponseUserBooks(object, error);
+                case WebConstants.GET_MOVIES_FOR_USER:
+                    onResponseUserMovies(object, error);
                     break;
 
             }
@@ -109,22 +104,21 @@ public class UserMoviesFragment extends Fragment implements WebserviceWrapper.We
 
     }
 
-    private void onResponseUserBooks(Object object, Exception error) {
+    private void onResponseUserMovies(Object object, Exception error) {
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-
-                    Log.e(TAG, "onResponseUserBooks success");
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-                    Log.e(TAG, "onResponseUserBooks Failed");
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                    Log.e(TAG, "onResponseUserMovies success");
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Log.e(TAG, "onResponseUserMovies Failed");
                 }
             } else if (error != null) {
-                Log.e(TAG, "onResponseUserBooks api Exception : " + error.toString());
+                Log.e(TAG, "onResponseUserMovies api Exception : " + error.toString());
             }
         } catch (Exception e) {
-            Log.e(TAG, "onResponseUserBooks Exception : " + e.toString());
+            Log.e(TAG, "onResponseUserMovies Exception : " + e.toString());
         }
     }
 

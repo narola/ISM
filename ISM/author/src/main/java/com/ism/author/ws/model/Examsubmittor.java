@@ -16,6 +16,7 @@ public class Examsubmittor {
     private String submissionDate;
     private String studentName;
     private String studentId;
+    private boolean isFlagged;
 
 
     @JsonProperty("remarks")
@@ -79,6 +80,14 @@ public class Examsubmittor {
 
     public void setStudentId(String studentId) {
         this.studentId = studentId;
+    }
+
+    public boolean isFlagged() {
+        return isFlagged;
+    }
+
+    public void setIsFlagged(boolean isFlagged) {
+        this.isFlagged = isFlagged;
     }
 
 

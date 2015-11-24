@@ -13,11 +13,11 @@ import java.util.ArrayList;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 
-public class DataGetAllPreferences {
+public class SettingPreferences {
 
     private ArrayList<SMSAlert> sMSAlert;
     private ArrayList<PrivacySetting> privacySetting;
-    private ArrayList<Notification> notification;
+    private ArrayList<NotificationSetting> notificationSettings;
 
 
 
@@ -40,12 +40,12 @@ public class DataGetAllPreferences {
     }
 
     @JsonProperty("Notification")
-    public ArrayList<Notification> getNotification() {
-        return this.notification;
+    public ArrayList<NotificationSetting> getNotificationSettings() {
+        return this.notificationSettings;
     }
 
-    public void setNotification(ArrayList<Notification> notification) {
-        this.notification = notification;
+    public void setNotificationSettings(ArrayList<NotificationSetting> notificationSettings) {
+        this.notificationSettings = notificationSettings;
     }
 
 

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +16,10 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
+import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.ResponseObject;
 
 import java.util.ArrayList;
 
@@ -183,7 +182,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
                 fragListener.onFragmentAttached(HostActivity.FRAGMENT_GENERAL_SETTINGS);
             }
         } catch (ClassCastException e) {
-            Log.e(TAG, "onAttach Exception : " + e.toString());
+            Debug.e(TAG, "onAttach Exception : " + e.toString());
         }
     }
 
@@ -195,7 +194,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
                 fragListener.onFragmentDetached(HostActivity.FRAGMENT_GENERAL_SETTINGS);
             }
         } catch (ClassCastException e) {
-            Log.e(TAG, "onDetach Exception : " + e.toString());
+            Debug.e(TAG, "onDetach Exception : " + e.toString());
         }
         fragListener = null;
     }
@@ -222,9 +221,9 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
             if (object != null) {
                 ResponseHandler responseObject = (ResponseHandler) object;
 
-                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
+                if (responseObject.getStatus().toString().equals(WebConstants.SUCCESS)) {
                     Debug.i(TAG, "Updated successfully");
-                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObject.getStatus().equals(WebConstants.FAILED)) {
                     Debug.i(TAG, "Failed to load manage general setting");
                 }
 
@@ -234,7 +233,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
 
         } catch (Exception e) {
 
-            Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
+            Debug.e(TAG, "General setting Pereference :" + e.getLocalizedMessage());
 
         }
     }
@@ -242,19 +241,23 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
 
     private void callApiGetGeneralSettingPreferences(ArrayList<Attribute> reqObj) {
         try {
-            activityHost.showProgress();
-            if (reqObj != null) {
-                attribute = new Attribute();
-                attribute.setPreferences(reqObj);
-                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_GENERAL_SETTINGS);
+            if (Utility.isConnected(getActivity())) {
 
+                activityHost.showProgress();
+                if (reqObj != null) {
+                    attribute = new Attribute();
+                    attribute.setPreferences(reqObj);
+                    new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_GENERAL_SETTINGS);
+
+                } else {
+                    Debug.i(TAG, "General setting Pereference list size :" + reqObj.size());
+                }
             } else {
-                Debug.i(TAG, "General setting Pereference list size :" + reqObj.size());
+                Utility.alertOffline(getActivity());
             }
-
         } catch (Exception e) {
 
-            Debug.i(TAG, "General setting Pereference :" + e.getLocalizedMessage());
+            Debug.e(TAG, "General setting Pereference :" + e.getLocalizedMessage());
 
         }
     }
@@ -265,7 +268,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         requestObject.setUserId("1");
         requestObject.setKeyId(key);
         requestObject.setSettingValue(value);
-        Debug.i(TAG, "setPreferenceList" + "key:" + key + "value:" + value);
+        Debug.i(TAG, "setPreferenceList " + "key:" + key + "value:" + value);
         PreferenceData.setStringPrefs(key, context, value);
         preferencesList.add(requestObject);
     }

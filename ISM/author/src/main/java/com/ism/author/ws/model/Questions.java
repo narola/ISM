@@ -24,6 +24,9 @@ public class Questions {
     private String questionId;
     private String questionText;
     private String questionCreatorId;
+    private String questionCreatorName;
+    private String subjectName;
+    private Boolean isQuestionAddedInPreview = false;
 
 
     @JsonProperty("question_format")
@@ -152,5 +155,31 @@ public class Questions {
         this.questionCreatorId = questionCreatorId;
     }
 
+    @JsonProperty("question_creator_name")
+    public String getQuestionCreatorName() {
+        return this.questionCreatorName;
+    }
+
+    public void setQuestionCreatorName(String questionCreatorName) {
+        this.questionCreatorName = questionCreatorName;
+    }
+
+    @JsonProperty("subject_name")
+    public String getSubjectName() {
+        return this.subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+
+    public Boolean getIsQuestionAddedInPreview() {
+        return isQuestionAddedInPreview;
+    }
+
+    public void setIsQuestionAddedInPreview(Boolean isQuestionAddedInPreview) {
+        this.isQuestionAddedInPreview = isQuestionAddedInPreview;
+    }
 
 }

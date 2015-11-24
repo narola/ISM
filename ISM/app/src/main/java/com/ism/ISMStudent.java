@@ -1,4 +1,4 @@
-package com.ism.object;
+package com.ism;
 
 import android.app.Application;
 import android.graphics.Bitmap;

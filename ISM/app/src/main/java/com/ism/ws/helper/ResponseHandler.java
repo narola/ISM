@@ -3,10 +3,18 @@ package com.ism.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.ws.model.Badges;
 import com.ism.ws.model.City;
+import com.ism.ws.model.Comment;
 import com.ism.ws.model.Country;
-import com.ism.ws.model.DataGetAllPreferences;
-import com.ism.ws.model.DataUserPreferences;
+import com.ism.ws.model.Feeds;
+import com.ism.ws.model.Message;
+import com.ism.ws.model.Notice;
+import com.ism.ws.model.Notification;
+import com.ism.ws.model.SettingPreferences;
+import com.ism.ws.model.StudymateRequest;
+import com.ism.ws.model.UserBooks;
+import com.ism.ws.model.UserPreferences;
 import com.ism.ws.model.State;
 import com.ism.ws.model.TutorialGroup;
 import com.ism.ws.model.User;
@@ -26,11 +34,21 @@ public class ResponseHandler {
 	private ArrayList<Country> countries;
 	private ArrayList<City> cities;
 	private ArrayList<User> user;
+	private ArrayList<User> highScorers;
+	private ArrayList<User> studymates;
 	private ArrayList<TutorialGroup> tutorialGroup;
-	private ArrayList<DataGetAllPreferences> preference;
-	private ArrayList<DataUserPreferences> userPreference;
+	private ArrayList<Badges> badges;
+	private ArrayList<Feeds> feeds;
+	private ArrayList<SettingPreferences> preference;
+	private ArrayList<UserPreferences> userPreference;
+	private ArrayList<UserBooks> books;
+	private ArrayList<Comment> comments;
+	private ArrayList<Notice> notices;
+	private ArrayList<Notification> notification;
+	private ArrayList<Message> messages;
+	private ArrayList<StudymateRequest> studymateRequest;
 
-	@JsonProperty("message")
+    @JsonProperty("message")
 	public String getMessage() {
 		return this.message;
 	}
@@ -92,23 +110,109 @@ public class ResponseHandler {
 	public void setTutorialGroup(ArrayList<TutorialGroup> tutorialGroup) {
 		this.tutorialGroup = tutorialGroup;
 	}
+    @JsonProperty("books")
+    public ArrayList<UserBooks> getBooks() {
+        return books;
+    }
 
 	@JsonProperty("preference")
-	public ArrayList<DataGetAllPreferences> getPreference() {
+	public ArrayList<SettingPreferences> getPreference() {
 		return preference;
 	}
+    public void setBooks(ArrayList<UserBooks> books) {
+        this.books = books;
+    }
+    @JsonProperty("badges")
+    public ArrayList<Badges> getBadges() {
+        return this.badges;
+    }
 
-	public void setPreference(ArrayList<DataGetAllPreferences> preference) {
+    public void setBadges(ArrayList<Badges> badges) {
+        this.badges = badges;
+    }
+
+	public void setPreference(ArrayList<SettingPreferences> preference) {
 		this.preference = preference;
 	}
 
 	@JsonProperty("user_preference")
-	public ArrayList<DataUserPreferences> getUserPreference() {
+	public ArrayList<UserPreferences> getUserPreference() {
 		return this.userPreference;
 	}
 
-	public void setUserPreference(ArrayList<DataUserPreferences> userPreference) {
+	public void setUserPreference(ArrayList<UserPreferences> userPreference) {
 		this.userPreference = userPreference;
 	}
 
+	@JsonProperty("feeds")
+	public ArrayList<Feeds> getFeeds() {
+		return this.feeds;
+	}
+
+	public void setFeeds(ArrayList<Feeds> feeds) {
+		this.feeds = feeds;
+	}
+
+	@JsonProperty("comments")
+	public ArrayList<Comment> getComments() {
+		return this.comments;
+	}
+
+	public void setComments(ArrayList<Comment> comments) {
+		this.comments = comments;
+	}
+
+	@JsonProperty("studymates")
+	public ArrayList<User> getStudymates() {
+		return this.studymates;
+	}
+
+	public void setStudymates(ArrayList<User> studymates) {
+		this.studymates = studymates;
+	}
+
+	@JsonProperty("notices")
+	public ArrayList<Notice> getNotices() {
+		return this.notices;
+	}
+
+	public void setNotices(ArrayList<Notice> notices) {
+		this.notices = notices;
+	}
+
+	@JsonProperty("notification")
+	public ArrayList<Notification> getNotification() {
+		return this.notification;
+	}
+
+	public void setNotification(ArrayList<Notification> notification) {
+		this.notification = notification;
+	}
+
+	@JsonProperty("messages")
+	public ArrayList<Message> getMessages() {
+		return this.messages;
+	}
+
+	public void setMessages(ArrayList<Message> messages) {
+		this.messages = messages;
+	}
+
+	@JsonProperty("studymate_request")
+	public ArrayList<StudymateRequest> getStudymateRequest() {
+		return this.studymateRequest;
+	}
+
+	public void setStudymateRequest(ArrayList<StudymateRequest> studymateRequest) {
+		this.studymateRequest = studymateRequest;
+	}
+
+	@JsonProperty("high_scorers")
+	public ArrayList<User> getHighScorers() {
+		return highScorers;
+	}
+
+	public void setHighScorers(ArrayList<User> highScorers) {
+		this.highScorers = highScorers;
+	}
 }

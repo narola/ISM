@@ -13,19 +13,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ism.object.ISMStudent;
+import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.TagStudyMatesDialog;
 import com.ism.dialog.ViewAllCommentsDialog;
 import com.ism.object.Global;
-import com.ism.views.CircleImageView;
 import com.ism.utility.Utility;
+import com.ism.views.CircleImageView;
 import com.ism.ws.helper.Attribute;
-import com.ism.ws.model.ResponseObject;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Comment;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.Feeds;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -40,13 +40,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 	private static final String TAG = PostFeedsAdapter.class.getSimpleName();
 
 	private Context context;
-	private ArrayList<Data> arrListFeeds;
+	private ArrayList<Feeds> arrListFeeds;
 	private ImageLoader imageLoader;
 
 	private int addCommentFeedPosition = -1;
 	private int tagFeedPosition = -1;
 
-	public PostFeedsAdapter(Context context, ArrayList<Data> arrListFeeds) {
+	public PostFeedsAdapter(Context context, ArrayList<Feeds> arrListFeeds) {
 		this.context = context;
 		this.arrListFeeds = arrListFeeds;
 		imageLoader = ImageLoader.getInstance();
@@ -142,7 +142,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 						tagFeedPosition = position;
 						callApiGetStudyMates();
 					} else {
-						Utility.toastOffline(context);
+						Utility.alertOffline(context);
 					}
 				}
 			});
@@ -238,10 +238,10 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 				new WebserviceWrapper(context, attribute, this).new WebserviceCaller()
 						.execute(WebConstants.TAG_STUDY_MATES);
 			} catch (Exception e) {
-				Log.e(TAG, "callApiGetStudyMates Exception : " + e.toString());
+				Log.e(TAG, "tagStudyMates Exception : " + e.toString());
 			}
 		} else {
-			Utility.toastOffline(context);
+			Utility.alertOffline(context);
 		}
 	}
 
@@ -273,11 +273,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 	private void onResponseTagStudyMates(Object object) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
+			ResponseHandler responseHandler = (ResponseHandler) object;
 			tagFeedPosition = -1;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+			if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 				Toast.makeText(context, "Tag done!", Toast.LENGTH_SHORT).show();
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+			} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 				Toast.makeText(context, "Tag failed!", Toast.LENGTH_SHORT).show();
 			}
 		} catch (Exception e) {
@@ -287,14 +287,14 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 	private void onResponseGetAllStudyMates(Object object) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					if (responseObj.getData().size() > 0) {
-						TagStudyMatesDialog tagStudyMatesDialog = new TagStudyMatesDialog(context, responseObj.getData(), this);
+			ResponseHandler responseHandler = (ResponseHandler) object;
+			if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					if (responseHandler.getStudymates().size() > 0) {
+						TagStudyMatesDialog tagStudyMatesDialog = new TagStudyMatesDialog(context, responseHandler.getStudymates(), this);
 						tagStudyMatesDialog.show();
 					}
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Toast.makeText(context, responseObj.getMessage(), Toast.LENGTH_LONG).show();
+			} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+				Toast.makeText(context, responseHandler.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseGetAllStudyMates Exception : " + e.toString());
@@ -303,12 +303,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 	private void onResponseGetAllComments(Object object) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-				ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(context, responseObj.getData());
+			ResponseHandler responseHandler = (ResponseHandler) object;
+			if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+				ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(context, responseHandler.getComments());
 				viewAllCommentsDialog.show();
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
-				Toast.makeText(context, responseObj.getMessage(), Toast.LENGTH_LONG).show();
+			} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+				Toast.makeText(context, responseHandler.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseGetAllComments Exception : " + e.toString());
@@ -317,11 +317,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 	private void onResponseAddComment(Object object) {
 		try {
-			ResponseObject responseObj = (ResponseObject) object;
-			if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+			ResponseHandler responseHandler = (ResponseHandler) object;
+			if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 				arrListFeeds.get(addCommentFeedPosition).setTotalComment("" + (Integer.parseInt(arrListFeeds.get(addCommentFeedPosition).getTotalComment()) + 1));
 				notifyDataSetChanged();
-			} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+			} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 				Toast.makeText(context, R.string.msg_failed_comment, Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {

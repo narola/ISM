@@ -2,13 +2,11 @@ package com.ism.ws.helper;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.ism.R;
 import com.ism.constant.WebConstants;
+import com.ism.utility.Debug;
 import com.ism.utility.Utility;
-import com.ism.ws.model.ResponseGetCountries;
-import com.ism.ws.model.ResponseObject;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -20,7 +18,7 @@ public class WebserviceWrapper {
 
     private static final String TAG = WebserviceWrapper.class.getSimpleName();
 
-    private Object attribute;
+    private Attribute attribute;
     private WebserviceResponse webserviceResponse;
     private Context context;
 
@@ -28,7 +26,7 @@ public class WebserviceWrapper {
         public void onResponse(Object object, Exception error, int apiCode);
     }
 
-    public WebserviceWrapper(Context context, Object attribute, WebserviceResponse webserviceResponse) {
+    public WebserviceWrapper(Context context, Attribute attribute, WebserviceResponse webserviceResponse) {
         this.attribute = attribute;
         this.webserviceResponse = webserviceResponse;
         this.context = context;
@@ -37,6 +35,8 @@ public class WebserviceWrapper {
     public class WebserviceCaller extends AsyncTask<Integer, Void, Object> {
 
         private int currentApiCode;
+        private boolean isNetworkConnected = false;
+        private Exception exception;
 
         @Override
         protected void onPreExecute() {
@@ -46,17 +46,18 @@ public class WebserviceWrapper {
         @Override
         protected Object doInBackground(Integer... params) {
             Object responseObject = null;
+            currentApiCode = params[0];
             try {
 
 //			    Check if we can get access from the network.
-	            URL url = new URL("http://192.168.1.147/");
+	            URL url = new URL(WebConstants.HOST_147);
 	            HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
 	            urlc.setRequestProperty("Connection", "close");
 	            urlc.setConnectTimeout(2000); // Timeout 2 seconds.
 	            urlc.connect();
+	            isNetworkConnected = urlc.getResponseCode() == 200; //Successful response.
 
-	            if (urlc.getResponseCode() == 200) { //Successful response.
-                    currentApiCode = params[0];
+	            if (isNetworkConnected) {
                     switch (currentApiCode) {
                         case WebConstants.LOGIN:
                             responseObject = new WebserviceConnector(WebConstants.URL_LOGIN).execute(ResponseHandler.class, attribute);
@@ -89,80 +90,81 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_ACCEPT_TUTORIAL_GROUP).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_ALL_FEEDS:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_FEEDS).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_FEEDS).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.ADD_COMMENT:
-                            responseObject = new WebserviceConnector(WebConstants.URL_ADD_COMMENT).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_ADD_COMMENT).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_ALL_COMMENTS:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_COMMENTS).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_COMMENTS).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_ALL_STUDY_MATES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_STUDY_MATES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_STUDY_MATES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.TAG_STUDY_MATES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_TAG_STUDY_MATES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_TAG_STUDY_MATES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_ALL_NOTICES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_NOTICES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_NOTICES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GENERAL_SETTING_PREFERENCES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GENERAL_SETTING_PREFERENCES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GENERAL_SETTING_PREFERENCES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_USER_PREFERENCES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_USER_PREFERENCES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_USER_PREFERENCES).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.MANAGE_GENERAL_SETTINGS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_GENERAL_SETTING).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_NOTIFICATION:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_NOTIFICATION).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_NOTIFICATION).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_MESSAGES:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MESSAGES).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MESSAGES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_STUDYMATE_REQUEST:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_STUDYMATE_REQUEST).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_STUDYMATE_REQUEST).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_ALL_BADGES_COUNT:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BADGES_COUNT).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BADGES_COUNT).execute(ResponseHandler.class, attribute);
                             break;
-//                    case WebConstants.UPLOAD_PROFILE_PIC:
-//                        responseObject = new RequestWs().getImageRequest(WebConstants.URL_PROFILE_PIC).execute(ResponseObject.class, attribute);
-//                        break;
+//                        case WebConstants.UPLOAD_PROFILE_PIC:
+//                            responseObject = new RequestWs().getImageRequest(WebConstants.URL_PROFILE_PIC).execute(ResponseObject.class, attribute);
+//                            break;
                         case WebConstants.GET_ABOUT_ME:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ABOUT_ME).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ABOUT_ME).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.RESPOND_TO_REQUEST:
-                            responseObject = new WebserviceConnector(WebConstants.URL_RESPOND_TO_REQUEST).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_RESPOND_TO_REQUEST).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.UPDATE_READ_STATUS:
-                            responseObject = new WebserviceConnector(WebConstants.URL_UPDATE_READ_STATUS).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_UPDATE_READ_STATUS).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.EDIT_ABOUT_ME:
-                            responseObject = new WebserviceConnector(WebConstants.URL_EDIT_ABOUT_ME).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_EDIT_ABOUT_ME).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_HIGH_SCORERS:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_HIGH_SCORERS).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_HIGH_SCORERS).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_BOOKS_FOR_USER:
-                            responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseObject.class, attribute);
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseHandler.class, attribute);
                             break;
                     }
-                } else {
-		            Utility.showToast(context.getString(R.string.error_server_connection), context);
-	            }
+                }
             } catch (Exception e) {
-                Log.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
+                Debug.e(TAG, "WebserviceCaller Background Exception : " + e.toString());
+                exception = e;
             }
             return responseObject;
         }
 
         @Override
-        protected void onPostExecute(Object o) {
-            try {
-                webserviceResponse.onResponse(o, null, currentApiCode);
-            } catch (Exception e) {
-                webserviceResponse.onResponse(null, e, currentApiCode);
+        protected void onPostExecute(Object responseObject) {
+            if (!isNetworkConnected) {
+                Utility.alert(context.getApplicationContext(), context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
             }
-            super.onPostExecute(o);
+            webserviceResponse.onResponse(responseObject, exception, currentApiCode);
+            super.onPostExecute(responseObject);
         }
     }
 

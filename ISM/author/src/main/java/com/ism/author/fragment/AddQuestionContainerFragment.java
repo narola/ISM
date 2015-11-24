@@ -9,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.Data;
-import com.ism.author.model.FragmentArgument;
+import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -30,9 +29,8 @@ public class AddQuestionContainerFragment extends Fragment {
     private View view;
     private FragmentListener fragListener;
 
-    public static AddQuestionContainerFragment newInstance(FragmentArgument fragmentArgument) {
+    public static AddQuestionContainerFragment newInstance() {
         AddQuestionContainerFragment addQuestionContainerFragment = new AddQuestionContainerFragment();
-        addQuestionContainerFragment.fragmentArgument = fragmentArgument;
         return addQuestionContainerFragment;
     }
 
@@ -46,7 +44,6 @@ public class AddQuestionContainerFragment extends Fragment {
     public PreviewQuestionFragment previewQuestionFragment;
     public QuestionAddEditFragment questionAddEditFragment;
     private Boolean isFrontVisible = false;
-    private FragmentArgument fragmentArgument;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,7 +74,7 @@ public class AddQuestionContainerFragment extends Fragment {
 
     private void initGlobal() {
 
-        questionListFragment = new QuestionListFragment(this, fragmentArgument);
+        questionListFragment = new QuestionListFragment(this);
         previewQuestionFragment = new PreviewQuestionFragment(this);
         questionAddEditFragment = new QuestionAddEditFragment(this);
 
@@ -105,7 +102,6 @@ public class AddQuestionContainerFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
@@ -166,15 +162,15 @@ public class AddQuestionContainerFragment extends Fragment {
 
     /*thsese are the listofpreview questions to add */
 
-    public ArrayList<Data> listOfPreviewQuestionsToAdd = new ArrayList<Data>();
+    public ArrayList<Questions> listOfPreviewQuestionsToAdd = new ArrayList<Questions>();
 
-    public ArrayList<Data> getListOfPreviewQuestionsToAdd() {
+    public ArrayList<Questions> getListOfPreviewQuestionsToAdd() {
         return listOfPreviewQuestionsToAdd;
     }
 
     /*get the list of preview question*/
-    public ArrayList<Data> getListOfPreviewQuestion() {
-        return previewQuestionFragment.listOfPreviewQuestions;
+    public ArrayList<Questions> getListOfPreviewQuestion() {
+        return previewQuestionFragment.arrListQuestions;
     }
 
     /*this is to add question to preview fragment*/
@@ -184,15 +180,15 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
     /*this is to update check box view in questionlist after delete it from preview questions*/
-    public void updateQuestionListviewAfterRemoveInPreview(Data data) {
-        questionListFragment.updateViewAfterDeleteInPreviewQuestion(data);
-        previewQuestionFragment.listOfPreviewQuestions.remove(data);
+    public void updateQuestionListviewAfterRemoveInPreview(Questions questions) {
+        questionListFragment.updateViewAfterDeleteInPreviewQuestion(questions);
+        previewQuestionFragment.arrListQuestions.remove(questions);
 
     }
 
 
     /*these is to set data in the add question fragment*/
-    public Data questionData;
+    public Questions questionData;
     public Boolean isSetQuestionData = false;
 
 
@@ -204,11 +200,11 @@ public class AddQuestionContainerFragment extends Fragment {
         this.isSetQuestionData = isSetQuestionData;
     }
 
-    public Data getQuestionData() {
+    public Questions getQuestionData() {
         return questionData;
     }
 
-    public void setQuestionData(Data questionData) {
+    public void setQuestionData(Questions questionData) {
         this.questionData = questionData;
     }
 
@@ -233,9 +229,9 @@ public class AddQuestionContainerFragment extends Fragment {
         this.POSITION_FOR_EDITQUESTION = POSITION_FOR_EDITQUESTION;
     }
 
-    public void setDataOnFragmentFlip(Data data, Boolean isSetQuestionData, int FRAGMENT_TYPE, int POSITION_FOR_EDITQUESTION) {
+    public void setDataOnFragmentFlip(Questions questions, Boolean isSetQuestionData, int FRAGMENT_TYPE, int POSITION_FOR_EDITQUESTION) {
 
-        setQuestionData(data);
+        setQuestionData(questions);
         setIsSetQuestionData(isSetQuestionData);
         setFragmentTypeForQuestionEdit(FRAGMENT_TYPE);
         setPositionForEditQuestion(POSITION_FOR_EDITQUESTION);

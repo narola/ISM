@@ -17,10 +17,10 @@ import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
+import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.ResponseObject;
 
 /**
  * Created by c162 on 18/11/15.
@@ -116,26 +116,30 @@ MyTypeFace myTypeFace;
 
     private void callApiEditAboutMe() {
         try {
-            showProgress();
-            Attribute requestObject = new Attribute();
-            requestObject.setUserId("1");
-            requestObject.setUsername(strUserName);
-            requestObject.setContactNumber(strCno);
-            requestObject.setBirthdate(strBirthdate);
-            if (editType == AboutMeFragment.ABOUT_ME) {
-                strAboutMe = etEnterHere.getText().toString();
-            } else if (editType == AboutMeFragment.YOUR_AMBITION) {
-                strAmbition = etEnterHere.getText().toString();
-            }
-            requestObject.setProfileImage("");
-            requestObject.setAmbitionInLife(strAmbition);
-            requestObject.setAboutMeText(strAboutMe);
+            if(Utility.isConnected(getApplicationContext())) {
+                showProgress();
+                Attribute requestObject = new Attribute();
+                requestObject.setUserId("1");
+                requestObject.setUsername(strUserName);
+                requestObject.setContactNumber(strCno);
+                requestObject.setBirthdate(strBirthdate);
+                if (editType == AboutMeFragment.ABOUT_ME) {
+                    strAboutMe = etEnterHere.getText().toString();
+                } else if (editType == AboutMeFragment.YOUR_AMBITION) {
+                    strAmbition = etEnterHere.getText().toString();
+                }
+                requestObject.setProfileImage("");
+                requestObject.setAmbitionInLife(strAmbition);
+                requestObject.setAboutMeText(strAboutMe);
 
 //            requestObject.setAmbitionInLife("Businessman");
 //            requestObject.setAboutMeText("I am a graduate from NIFT specializing in Apparel Production. I have a holistic experience of the Apparel Industry and has worked for domestic as well as the exports market. In the Indian retail industry I have worked with Lifestyle International Pvt. Ltd. on sourcing, vendor management and product development for private labels. I then moved to Madura Fashion & Lifestyle where I worked as a buyer. Product and Margin management, optimum allocation of merchandise, meeting sales targets along with competition, market and trend analysis were some of her responsibilities. I joined ISB to fast track my career and pursue opportunities in Category & Brand Management.I am President of the Retail Club. I  proud myself.");
 
-            new WebserviceWrapper(getApplicationContext(), requestObject, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
-
+                new WebserviceWrapper(getApplicationContext(), requestObject, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
+            }
+            else{
+                Utility.alertOffline(getApplicationContext());
+            }
         } catch (Exception e) {
             Debug.i(TAG, "callApiEditAboutMe Exception : " + e.getLocalizedMessage());
         }
@@ -163,11 +167,11 @@ MyTypeFace myTypeFace;
             hideProgress();
             if (object != null) {
                 ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseObj.getStatus().equals(WebConstants.SUCCESS)) {
                     Log.e(TAG, "onResponseEditAboutMe success");
                     hideKeyboard();
                     super.onBackPressed();
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(WebConstants.FAILED)) {
 
                     Log.e(TAG, "onResponseEditAboutMe Failed");
                 }

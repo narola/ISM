@@ -111,7 +111,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (API_METHOD == WebConstants.GETALLEXAM) {
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    if (responseHandler.getData().size() != 0) {
+                    if (responseHandler.getExams().size() != 0) {
                         arrayList = new TrialExamsAdapter(getActivity(), responseHandler, this);
                         gridExams.setAdapter(arrayList);
                     }

@@ -18,9 +18,9 @@ import com.ism.author.adapter.PreviewQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
-import com.ism.author.model.Data;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -45,7 +45,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     private RecyclerView rvPreviewquestionlist;
     private PreviewQuestionListAdapter previewQuestionListAdapter;
     //    RecyclerListAdapter adapter;
-    public ArrayList<Data> listOfPreviewQuestions = new ArrayList<Data>();
+    public ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     MyTypeFace myTypeFace;
 
     //this is for the movable recyclerview.
@@ -99,7 +99,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     private void callApiFreezeQuestions() {
 
         if (Utility.isOnline(getActivity())) {
-            if (listOfPreviewQuestions.size() > 0) {
+            if (arrListQuestions.size() > 0) {
                 try {
                     Attribute attribute = new Attribute();
                     attribute.setExamId("61");
@@ -124,17 +124,17 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     private ArrayList<String> getQuestionIdList() {
 
-        for (int i = 0; i < listOfPreviewQuestions.size(); i++) {
-            questionIdList.add(listOfPreviewQuestions.get(i).getQuestionId());
+        for (int i = 0; i < arrListQuestions.size(); i++) {
+            questionIdList.add(arrListQuestions.get(i).getQuestionId());
         }
         return questionIdList;
 
     }
 
-    public void addQuestionsToPreviewFragment(ArrayList<Data> data) {
+    public void addQuestionsToPreviewFragment(ArrayList<Questions> data) {
         if (data.size() > 0) {
-            listOfPreviewQuestions.addAll(data);
-            previewQuestionListAdapter.addAll(listOfPreviewQuestions);
+            arrListQuestions.addAll(data);
+            previewQuestionListAdapter.addAll(arrListQuestions);
 
         }
 
@@ -174,8 +174,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     public void updateQuestionDataAfterEditQuestion() {
         int position = getFragment().getPOSITION_FOR_EDITQUESTION();
-        listOfPreviewQuestions.get(position).setQuestionText("test");
-        previewQuestionListAdapter.addAll(listOfPreviewQuestions);
+        arrListQuestions.get(position).setQuestionText("test");
+        previewQuestionListAdapter.addAll(arrListQuestions);
         previewQuestionListAdapter.notifyDataSetChanged();
 
 

@@ -9,20 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.StudentAttemptedAssignmentAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
-import com.ism.author.model.Data;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.Examsubmittor;
 
 import java.util.ArrayList;
 
@@ -34,12 +33,10 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
 
     private static final String TAG = StudentAttemptedAssignmentFragment.class.getSimpleName();
     private View view;
-    private FragmentArgument fragmentArgument;
 
-
-    public static StudentAttemptedAssignmentFragment newInstance(FragmentArgument fragmentArgument) {
+    public static StudentAttemptedAssignmentFragment newInstance(Bundle bundleArguments) {
         StudentAttemptedAssignmentFragment studentAttemptedAssignmentFragment = new StudentAttemptedAssignmentFragment();
-        studentAttemptedAssignmentFragment.fragmentArgument = fragmentArgument;
+        studentAttemptedAssignmentFragment.setArguments(bundleArguments);
         return studentAttemptedAssignmentFragment;
     }
 
@@ -51,7 +48,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
     private TextView tvTitleStudentattempted;
     private RecyclerView rvStudentattemptedList;
     private StudentAttemptedAssignmentAdapter studentAttemptedAssignmentAdapter;
-    private ArrayList<Data> listOfStudents = new ArrayList<Data>();
+    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,7 +63,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
         myTypeFace = new MyTypeFace(getActivity());
         tvTitleStudentattempted = (TextView) view.findViewById(R.id.tv_title_studentattempted);
         rvStudentattemptedList = (RecyclerView) view.findViewById(R.id.rv_studentattempted_list);
-        studentAttemptedAssignmentAdapter = new StudentAttemptedAssignmentAdapter(getActivity(), fragmentArgument);
+        studentAttemptedAssignmentAdapter = new StudentAttemptedAssignmentAdapter(getActivity(), getArguments());
         rvStudentattemptedList.setAdapter(studentAttemptedAssignmentAdapter);
         rvStudentattemptedList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -116,14 +113,14 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
         try {
             ((AuthorHostActivity) getActivity()).stopProgress();
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    listOfStudents.addAll(responseObj.getData().get(0).getEvaluations());
-                    studentAttemptedAssignmentAdapter.addAll(listOfStudents);
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
+                    studentAttemptedAssignmentAdapter.addAll(arrListExamSubmittor);
                     studentAttemptedAssignmentAdapter.notifyDataSetChanged();
 
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utils.showToast(responseObj.getMessage(), getActivity());
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetAllExamSubmission api Exception : " + error.toString());

@@ -853,9 +853,9 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        ResponseHandler responseObj = (ResponseHandler) object;
-        if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
-            feed_id = responseObj.getData().get(0).getFeedId();
+        ResponseHandler responseHandler = (ResponseHandler) object;
+        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+            feed_id = responseHandler.getFeed().get(0).getFeedId();
             if (arrayList != null) {
                 for (int i = 0; i < arrayList.size(); i++) {
                     if (arrayList.get(i).getStrFileType().equals("video")) {
@@ -874,7 +874,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
             arrayList.clear();
             super.onBackPressed();
 
-        } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+        } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
             Toast.makeText(PostActivity.this, "Please try again!", Toast.LENGTH_LONG).show();
         }
 

@@ -3,7 +3,6 @@ package com.ism.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +10,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.ws.model.Data;
-
-import java.util.ArrayList;
 
 /**
  * Created by c161 on 06/11/15.

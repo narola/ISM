@@ -1,18 +1,17 @@
-package com.ism.ws.model;
+package com.ism.author.ws.model;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Created by c161 on 19/11/15.
- */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataGetStates {
-	
+public class Courses {
+
     private String id;
-    private String stateName;
+    private String courseName;
+
 
     @JsonProperty("id")
     public String getId() {
@@ -23,13 +22,14 @@ public class DataGetStates {
         this.id = id;
     }
 
-    @JsonProperty("state_name")
-    public String getStateName() {
-        return this.stateName;
+    @JsonProperty("course_name")
+    public String getCourseName() {
+        return this.courseName;
     }
 
-    public void setStateName(String stateName) {
-        this.stateName = stateName;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
+
 
 }

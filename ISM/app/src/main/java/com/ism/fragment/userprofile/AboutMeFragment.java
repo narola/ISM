@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.ism.object.ISMStudent;
+import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
@@ -255,7 +255,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
             }
             else{
-                Utility.toastOffline(getActivity());
+                Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
             Debug.i(TAG, "callApiGetAboutMe Exception : " + e.getLocalizedMessage());
@@ -281,7 +281,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
             }
             else{
-                Utility.toastOffline(getActivity());
+                Utility.alertOffline(getActivity());
             }
 
         } catch (Exception e) {

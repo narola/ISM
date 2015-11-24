@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.adapter.TagStudyMatesAdapter;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.User;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ public class TagStudyMatesDialog extends Dialog implements View.OnClickListener 
 
     private Context context;
     private TagStudyMatesAdapter tagStudyMatesAdapter;
-    private ArrayList<Data> studymatesList;
+    private ArrayList<User> studymatesList;
     private TagStudyMatesListener tagStudyMatesListener;
 
 
@@ -40,7 +40,7 @@ public class TagStudyMatesDialog extends Dialog implements View.OnClickListener 
         public void tagStudyMates(String[] arrTagUser);
     }
 
-    public TagStudyMatesDialog(Context context, ArrayList<Data> studymatesList, TagStudyMatesListener tagStudyMatesListener) {
+    public TagStudyMatesDialog(Context context, ArrayList<User> studymatesList, TagStudyMatesListener tagStudyMatesListener) {
         super(context);
 
         this.context = context;

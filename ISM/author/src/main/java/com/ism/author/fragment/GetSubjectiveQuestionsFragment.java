@@ -10,21 +10,20 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
+import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.adapter.SubjectiveQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.views.CircleImageView;
 import com.ism.author.object.MyTypeFace;
+import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.helper.Attribute;
-import com.ism.author.model.Data;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.Questions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -56,7 +55,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
             tvStudentEvalutionNo;
     private RecyclerView rvSubjectiveQuestionsList;
     private MyTypeFace myTypeFace;
-    private ArrayList<Data> listOfQuestions = new ArrayList<Data>();
+    private ArrayList<Questions> arrListQuestions = new ArrayList<Questions>();
     private SubjectiveQuestionListAdapter subjectiveQuestionListAdapter;
     private ImageLoader imageLoader;
     private LinearLayoutManager mLayoutManager;
@@ -100,10 +99,10 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
             @Override
             public void onClick(View v) {
 
-                int position = getFragmentArguments().getFragmentArgumentObject().getPosition();
+                int position = getArguments().getInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION);
                 if (position >= 1) {
                     position--;
-                    getFragmentArguments().getFragmentArgumentObject().setPosition(position);
+                    getArguments().putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
                     setStudentData(position);
                 }
 
@@ -162,12 +161,13 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     private void setStudentData(int position) {
 
-        getFragmentArguments().getFragmentArgumentObject().setStudentId(getFragmentArguments().getArrayListData()
-                .get(position).getStudentId());
-        getFragmentArguments().getFragmentArgumentObject().setStudentName(getFragmentArguments().getArrayListData()
-                .get(position).getFullName());
-        getFragmentArguments().getFragmentArgumentObject().setProfilePic(getFragmentArguments().getArrayListData()
-                .get(position).getProfilePic());
+
+//        getFragmentArguments().getFragmentArgumentObject().setStudentId(getFragmentArguments().getArrayListData()
+//                .get(position).getStudentId());
+//        getFragmentArguments().getFragmentArgumentObject().setStudentName(getFragmentArguments().getArrayListData()
+//                .get(position).getStudentName());
+//        getFragmentArguments().getFragmentArgumentObject().setProfilePic(getFragmentArguments().getArrayListData()
+//                .get(position).getStudentProfilePic());
 
         getBaseFragment().refreshAdapterForStudentNavigation();
 
@@ -176,12 +176,12 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     private void loadNextStudentData() {
 
-        int position = getFragmentArguments().getFragmentArgumentObject().getPosition();
-        if (position < getFragmentArguments().getArrayListData().size() - 1) {
-            position++;
-            getFragmentArguments().getFragmentArgumentObject().setPosition(position);
-            setStudentData(position);
-        }
+//        int position = getFragmentArguments().getFragmentArgumentObject().getPosition();
+//        if (position < getFragmentArguments().getArrayListData().size() - 1) {
+//            position++;
+//            getFragmentArguments().getFragmentArgumentObject().setPosition(position);
+//            setStudentData(position);
+//        }
     }
 
     boolean canLoadMore = false;
@@ -275,11 +275,11 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
                 if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.SUCCESS)) {
 //                    canLoadMore = true;
                     loading = true;
-                    subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getData().get(0).getEvaluations());
+                    subjectiveQuestionListAdapter.setEvaluationData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
                     subjectiveQuestionListAdapter.notifyDataSetChanged();
 
                     setTitleDetails();
-                    getBaseFragment().setQuestionStatusData(responseObjGetExamEvaluation.getData().get(0).getEvaluations());
+                    getBaseFragment().setQuestionStatusData(responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation());
 
                 } else if (responseObjGetExamEvaluation.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseObjGetExamEvaluation.getMessage(), getActivity());
@@ -293,10 +293,10 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     }
 
 
-    private FragmentArgument getFragmentArguments() {
-        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getFragmnetArgument();
-
-    }
+//    private Bundle getFragmentArguments() {
+//        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getFragmnetArgument();
+//
+//    }
 
     private GetSubjectiveAssignmentQuestionsFragment getBaseFragment() {
         return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
@@ -305,21 +305,20 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     private void setQuestions() {
 
-//        rvSubjectiveQuestionsList.setAdapter(null);
-        listOfQuestions.clear();
-        listOfQuestions.addAll(responseObjGetAllExamQuestions.getData().get(0).getQuestions());
-        subjectiveQuestionListAdapter.addAll(listOfQuestions);
+        arrListQuestions.clear();
+        arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
+        subjectiveQuestionListAdapter.addAll(arrListQuestions);
         subjectiveQuestionListAdapter.notifyDataSetChanged();
-//        rvSubjectiveQuestionsList.setAdapter(subjectiveQuestionListAdapter);
+
     }
 
     public void loadStudentEvaluationData() {
-        if (getFragmentArguments().getFragmentArgumentObject().getStudentId() != null) {
-            setQuestions();
-            callAPiGetExamEvaluation();
-            scrollToSpecificQuestion(0);
-
-        }
+//        if (getFragmentArguments().getFragmentArgumentObject().getStudentId() != null) {
+//            setQuestions();
+//            callAPiGetExamEvaluation();
+//            scrollToSpecificQuestion(0);
+//
+//        }
     }
 
     public void scrollToSpecificQuestion(int position) {
@@ -330,18 +329,18 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     private void setTitleDetails() {
 
-        tvStudentEvalutionNo.setText(getActivity().getResources().getString(R.string.strevaluation) + " " +
-                (getFragmentArguments().getFragmentArgumentObject().getPosition() + 1) + " " +
-                getActivity().getResources().getString(R.string.strof) + " " + (responseObjGetExamEvaluation.getData().get(0).getEvaluations().size() + 1));
-        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
-                imgStudentProfilePic, ISMAuthor.options);
-
-        tvStudentName.setText(getFragmentArguments().getFragmentArgumentObject().getStudentName());
-        tvStudentRollNo.setText(getResources().getString(R.string.strrollno) + " " +
-                (getFragmentArguments().getFragmentArgumentObject().getPosition() + 1));
-        tvAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + " " +
-                getFragmentArguments().getFragmentArgumentObject().getAssignmentNo());
-        tvAssignmentTitle.setText(getFragmentArguments().getFragmentArgumentObject().getAssignmentName());
+//        tvStudentEvalutionNo.setText(getActivity().getResources().getString(R.string.strevaluation) + " " +
+//                (getFragmentArguments().getFragmentArgumentObject().getPosition() + 1) + " " +
+//                getActivity().getResources().getString(R.string.strof) + " " + (responseObjGetExamEvaluation.getExamEvaluation().get(0).getEvaluation().size()));
+//        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
+//                imgStudentProfilePic, ISMAuthor.options);
+//
+//        tvStudentName.setText(getFragmentArguments().getFragmentArgumentObject().getStudentName());
+//        tvStudentRollNo.setText(getResources().getString(R.string.strrollno) + " " +
+//                (getFragmentArguments().getFragmentArgumentObject().getPosition() + 1));
+//        tvAssignmentNo.setText(getResources().getString(R.string.strassignmentno) + " " +
+//                getFragmentArguments().getFragmentArgumentObject().getAssignmentNo());
+//        tvAssignmentTitle.setText(getFragmentArguments().getFragmentArgumentObject().getAssignmentName());
 
 
     }

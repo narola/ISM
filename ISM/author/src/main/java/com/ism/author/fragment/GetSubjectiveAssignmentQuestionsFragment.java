@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.Data;
-import com.ism.author.model.FragmentArgument;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.model.Evaluation;
 
 import java.util.ArrayList;
 
@@ -32,11 +32,11 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
     public QuestionPaletteFragment questionPaletteFragment;
     private FrameLayout flGetsubjectiveAssignmentContainerLeft, flGetsubjectiveAssignmentContainerMiddle,
             flGetsubjectiveAssignmentContainerRight;
-    private FragmentArgument fragmentArgument;
 
-    public static GetSubjectiveAssignmentQuestionsFragment newInstance(FragmentArgument fragmentArgument) {
+
+    public static GetSubjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArgument) {
         GetSubjectiveAssignmentQuestionsFragment getSubjectiveAssignmentQuestionsFragment = new GetSubjectiveAssignmentQuestionsFragment();
-        getSubjectiveAssignmentQuestionsFragment.fragmentArgument = fragmentArgument;
+        getSubjectiveAssignmentQuestionsFragment.setArguments(bundleArgument);
 
         return getSubjectiveAssignmentQuestionsFragment;
     }
@@ -108,30 +108,33 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
         fragListener = null;
     }
 
-    public FragmentArgument getFragmnetArgument() {
-        return fragmentArgument;
+    public Bundle getBundleArgument() {
+        return getArguments();
 
     }
 
+
+    /*this is to load data for student evaluation*/
     public void loadStudentEvaluationData(String studentId) {
-        getFragmnetArgument().getFragmentArgumentObject().setStudentId(studentId);
+//        getFragmnetArgument().getFragmentArgumentObject().setStudentId(studentId);
+        getArguments().putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID, studentId);
         getSubjectiveQuestionsFragment.loadStudentEvaluationData();
     }
 
+
+    /*this is to refresh adapter on the click of next and previous button*/
 
     public void refreshAdapterForStudentNavigation() {
         getStudentsFragment.refreshAdapterForStudentNavigation();
     }
 
-    public void setQuestionStatusData(ArrayList<Data> data) {
-
-        questionPaletteFragment.setQuestionStatusData(data);
-
+    /*this is to set the question status data in question palette*/
+    public void setQuestionStatusData(ArrayList<Evaluation> evaluations) {
+        questionPaletteFragment.setQuestionStatusData(evaluations);
     }
 
+    /*this is to scroll to specific question content on the click of question palette*/
     public void scrollToSpecificQuestion(int position) {
-
         getSubjectiveQuestionsFragment.scrollToSpecificQuestion(position);
-
     }
 }
