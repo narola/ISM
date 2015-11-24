@@ -34,8 +34,8 @@ import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.QuestionAnswersModel;
 import com.ism.teacher.model.Data;
-import com.ism.teacher.model.RequestObject;
 import com.ism.teacher.model.TagsModel;
+import com.ism.teacher.ws.helper.Attribute;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -584,22 +584,22 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
         if (Utility.isOnline(getActivity())) {
             try {
-                RequestObject requestObject = new RequestObject();
+                Attribute attribute=new Attribute();
 //                requestObject.setBankQuestionId("2");
-                requestObject.setQuestionCreatorId("109");
-                requestObject.setQuestionCreatorName("");
-                requestObject.setQuestionFormat(getQuestionFormat());
-                requestObject.setQuestionHint("test");
-                requestObject.setQuestionText("test");
-                requestObject.setQuestionAssetsLink("");
-                requestObject.setQuestionImageLink("");
-                requestObject.setEvaluationNotes(etEvaluationNotes.getText().toString());
-                requestObject.setSolution(etSolution.getText().toString());
-                requestObject.setTopicId(Integer.parseInt("43"));
-                requestObject.setSubjectId(Integer.parseInt("3"));
-                requestObject.setSubjectName("MatheMatics");
-                requestObject.setClassroomId(Integer.parseInt("2"));
-                requestObject.setBookId(Integer.parseInt("2"));
+                attribute.setQuestionCreatorId("109");
+                attribute.setQuestionCreatorName("");
+                attribute.setQuestionFormat(getQuestionFormat());
+                attribute.setQuestionHint("test");
+                attribute.setQuestionText("test");
+                attribute.setQuestionAssetsLink("");
+                attribute.setQuestionImageLink("");
+                attribute.setEvaluationNotes(etEvaluationNotes.getText().toString());
+                attribute.setSolution(etSolution.getText().toString());
+                attribute.setTopicId("43");
+                attribute.setSubjectId("3");
+                attribute.setSubjectName("MatheMatics");
+                attribute.setClassroomId("2");
+                attribute.setBookId("2");
                 if (getQuestionFormat().equalsIgnoreCase("mcq")) {
                     questionQuestionAnswersModelArrayList.clear();
                     for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
@@ -613,9 +613,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                         questionQuestionAnswersModel.setAudioLink("");
                         questionQuestionAnswersModelArrayList.add(questionQuestionAnswersModel);
                     }
-                    requestObject.setAnswers(questionQuestionAnswersModelArrayList);
+                    attribute.setAnswers(questionQuestionAnswersModelArrayList);
                 }
-//                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+//                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
 //                        .execute(WebConstants.GETALLFEEDS);
 
                 if (getFragment().getIsSetQuestionData()) {

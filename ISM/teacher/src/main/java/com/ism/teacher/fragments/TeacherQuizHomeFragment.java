@@ -22,9 +22,9 @@ import com.ism.teacher.adapters.AssignmentSubjectsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.model.Data;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,10 +164,10 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         if (Utility.isInternetConnected(getActivity())) {
             try {
                 ((TeacherHostActivity) getActivity()).startProgress();
-                RequestObject request = new RequestObject();
-                request.setUserId("370");
-                request.setRole(AppConstant.TEACHER_ROLE_ID);
-                new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setUserId(WebConstants.USER_ID_370);
+                attribute.setRole(AppConstant.TEACHER_ROLE_ID + "");
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_ASSIGNMENTS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -205,8 +205,8 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         try {
             Utility.hideSpinnerProgress(progAssignmentClass);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     arrListClassRooms = new ArrayList<Data>();
                     arrListClassRooms.addAll(responseObj.getData());
@@ -218,7 +218,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
                     }
                     Adapters.setUpSpinner(getActivity(), spAssignmentClasswise, classrooms, Adapters.ADAPTER_SMALL);
 
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -233,8 +233,8 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         try {
             Utility.hideSpinnerProgress(progAssignmentSubject);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     arrListSubject = new ArrayList<Data>();
                     arrListSubject.addAll(responseObj.getData());
@@ -245,7 +245,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
                     }
                     Adapters.setUpSpinner(getActivity(), spAssignmentSubject, subjects, Adapters.ADAPTER_SMALL);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseObj.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -258,7 +258,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     private void onResponseGetAllAssignments(Object object) {
 
-        ResponseObject callGetAllAssignments = (ResponseObject) object;
+        ResponseHandler callGetAllAssignments = (ResponseHandler) object;
         if (callGetAllAssignments.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
 
             arrayListAssignments.addAll(callGetAllAssignments.getData());

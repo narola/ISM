@@ -15,7 +15,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
-import com.ism.teacher.model.ResponseObject;
+import com.ism.teacher.ws.helper.ResponseHandler;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
     Fragment mFragment;
     Context context;
     public static MyTypeFace myTypeFace;
-    ResponseObject responseObject, studentEvalResObj;
+    ResponseHandler responseObject, studentEvalResObj;
 
     ArrayList<Data> dataArrayList = new ArrayList<Data>();
     ArrayList<Data> arrayListSubjectiveQuestions = new ArrayList<Data>();
@@ -42,7 +42,7 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
     public boolean flag_poor = false;
     public boolean flag_incorrect = false;
 
-    public SubjectiveQuestionAdapter(ResponseObject responseObject, Context context, Fragment fragment, ResponseObject studentEvalResObj) {
+    public SubjectiveQuestionAdapter(ResponseHandler responseObject, Context context, Fragment fragment, ResponseHandler studentEvalResObj) {
         this.responseObject = responseObject;
         this.context = context;
         this.mFragment = fragment;

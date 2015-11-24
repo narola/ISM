@@ -1,8 +1,9 @@
-package com.ism.teacher.model;
+package com.ism.teacher.ws.helper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.teacher.model.QuestionAnswersModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,17 +14,9 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RequestObject {
+public class Attribute {
 
 
-    //ry
-
-    //	ForgotPasswordRequest
-    private String emailId;
-
-
-
-    //	CredentialsRequest
     private String schoolName;
     private String homeAddress;
     private int cityId;
@@ -33,38 +26,45 @@ public class RequestObject {
     private int countryId;
     private String contactNumber;
     private String emailAddress;
-
-    //=============ry=======
-
+    private String name;
+    private String message;
+    private String profileImage;
+    private int courseId;
+    private int schoolId;
+    private String deviceToken;
+    private String academicYear;
+    private String profileImageName;
+    private String birthdate;
+    private String gender;
+    private String deviceType;
+    private String roleId;
     private String feedId;
     private String commentBy;
     private String comment;
     private String assignmentText;
-    private int classroomId;
+    private String classroomId;
     private String userId;
-    private int subjectId;
+    private String subjectId;
     private String submissionDate;
-    private int topicId;
-
+    private String emailId;
+    private String topicId;
     private String examType;
     private String examMode;
     private String examStartTime;
     private String negativeMarkValue;
     private String examDuration;
     private String examInstruction;
-    private double bookId;
+    private String bookId;
     private String passingPercent;
     private String examName;
     private String declareResults;
     private String negativeMarking;
     private String randomQuestion;
-    private double attemptCount;
+    private String attemptCount;
     private String examCategory;
     private String examStartDate;
-
     private String username;
     private String password;
-
     private String feedBy;
     private String feedText;
     private String videoLink;
@@ -72,16 +72,15 @@ public class RequestObject {
     private List<String> images;
     private String postedOn;
     private String videoThumbnail;
-
-
-    private int role;
+    private String role;
     private String examId;
-
     private String[] taggedUserIds;
     private String taggedBy;
-
     private String[] likedId;
     private String[] unlikedId;
+    private ArrayList<String> questionId;
+    //    private String bankQuestionId;
+    private String studentId;
 
 
     //these are for the add question
@@ -97,13 +96,6 @@ public class RequestObject {
     private String subjectName;
     private String questionText;
     private String questionCreatorId;
-
-
-    //For student attempted
-    private String studentId;
-
-
-
 
     public String getFeedId() {
         return this.feedId;
@@ -145,11 +137,11 @@ public class RequestObject {
     }
 
     @JsonProperty("classroom_id")
-    public int getClassroomId() {
+    public String getClassroomId() {
         return this.classroomId;
     }
 
-    public void setClassroomId(int classroomId) {
+    public void setClassroomId(String classroomId) {
         this.classroomId = classroomId;
     }
 
@@ -163,12 +155,12 @@ public class RequestObject {
         this.userId = userId;
     }
 
-    public int getSubjectId() {
+    public String getSubjectId() {
         return this.subjectId;
     }
 
     @JsonProperty("subject_id")
-    public void setSubjectId(int subjectId) {
+    public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
     }
 
@@ -183,12 +175,12 @@ public class RequestObject {
     }
 
 
-    public int getTopicId() {
+    public String getTopicId() {
         return this.topicId;
     }
 
     @JsonProperty("topic_id")
-    public void setTopicId(int topicId) {
+    public void setTopicId(String topicId) {
         this.topicId = topicId;
     }
 
@@ -248,12 +240,12 @@ public class RequestObject {
         this.examInstruction = examInstruction;
     }
 
-    public double getBookId() {
+    public String getBookId() {
         return this.bookId;
     }
 
     @JsonProperty("book_id")
-    public void setBookId(double bookId) {
+    public void setBookId(String bookId) {
         this.bookId = bookId;
     }
 
@@ -302,12 +294,12 @@ public class RequestObject {
         this.randomQuestion = randomQuestion;
     }
 
-    public double getAttemptCount() {
+    public String getAttemptCount() {
         return this.attemptCount;
     }
 
     @JsonProperty("attempt_count")
-    public void setAttemptCount(double attemptCount) {
+    public void setAttemptCount(String attemptCount) {
         this.attemptCount = attemptCount;
     }
 
@@ -422,12 +414,12 @@ public class RequestObject {
         this.examId = examId;
     }
 
-    public int getRole() {
+    public String getRole() {
         return this.role;
     }
 
     @JsonProperty("role")
-    public void setRole(int role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -468,15 +460,37 @@ public class RequestObject {
         this.unlikedId = unlikedId;
     }
 
+    @JsonProperty("student_id")
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public ArrayList<String> getQuestionId() {
+        return this.questionId;
+    }
+
+    @JsonProperty("question_id")
+    public void setQuestionId(ArrayList<String> questionId) {
+        this.questionId = questionId;
+    }
+
+    @JsonProperty("email_id")
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
 
 
+    public String getEmailId() {
+        return this.emailId;
+    }
 
-    //ry
-
-
-    /**
-     * For request credentials ==============================
-     */
+    public String getSchoolName() {
+        return this.schoolName;
+    }
 
     @JsonProperty("school_name")
     public void setSchoolName(String schoolName) {
@@ -555,44 +569,118 @@ public class RequestObject {
         this.emailAddress = emailAddress;
     }
 
-    /**
-     * =======================For request credentials ==============================
-     */
-
-
-    /**
-     * For freeze question ==============================
-     */
-
-    public ArrayList<String> list_question_ids;
-
-
-    public ArrayList<String> getList_question_ids() {
-        return list_question_ids;
+    public String getName() {
+        return this.name;
     }
 
-    @JsonProperty("question_id")
-    public void setList_question_ids(ArrayList<String> list_question_ids) {
-        this.list_question_ids = list_question_ids;
-    }
-    /**
-     * ============For freeze question ==============================
-     */
-
-    @JsonProperty("email_id")
-    public String getEmailId() {
-        return emailId;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
+    public String getMessage() {
+        return this.message;
+    }
+
+    @JsonProperty("message")
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getProfileImage() {
+        return this.profileImage;
+    }
+
+    @JsonProperty("profile_image")
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
 
-    /**
-     * ============For add  question ==============================
-     */
-     /*these are for add question*/
+    public int getCourseId() {
+        return this.courseId;
+    }
+
+    @JsonProperty("course_id")
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public int getSchoolId() {
+        return this.schoolId;
+    }
+
+    @JsonProperty("school_id")
+    public void setSchoolId(int schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    public String getDeviceToken() {
+        return this.deviceToken;
+    }
+
+    @JsonProperty("device_token")
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
+    }
+
+    public String getAcademicYear() {
+        return this.academicYear;
+    }
+
+    @JsonProperty("academic_year")
+    public void setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
+    }
+
+    public String getProfileImageName() {
+        return this.profileImageName;
+    }
+
+    @JsonProperty("profile_image_name")
+    public void setProfileImageName(String profileImageName) {
+        this.profileImageName = profileImageName;
+    }
+
+    public String getBirthdate() {
+        return this.birthdate;
+    }
+
+    @JsonProperty("birthdate")
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getGender() {
+        return this.gender;
+    }
+
+    @JsonProperty("gender")
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDeviceType() {
+        return this.deviceType;
+    }
+
+    @JsonProperty("device_type")
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
+
+    public String getRoleId() {
+        return this.roleId;
+    }
+
+    @JsonProperty("role_id")
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+
+    /*these are for add question*/
 
     public String getQuestionFormat() {
         return this.questionFormat;
@@ -693,17 +781,14 @@ public class RequestObject {
         this.questionCreatorId = questionCreatorId;
     }
 
-    /**
-     * For Student Attempted
-     */
+//    public String getBankQuestionId() {
+//        return this.bankQuestionId;
+//    }
+//
+//    @JsonProperty("question_id")
+//    public void setBankQuestionId(String bankQuestionId) {
+//        this.bankQuestionId = questionCreatorId;
+//    }
 
-    @JsonProperty("student_id")
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
-
-    public String getStudentId() {
-        return studentId;
-    }
 
 }

@@ -22,10 +22,10 @@ import com.ism.teacher.adapters.PostFeedsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.model.TagFriendInFeedRequest;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 
 
 /**
@@ -110,9 +110,9 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
         try {
 
             ((TeacherHostActivity) getActivity()).startProgress();
-            RequestObject requestObject = new RequestObject();
-            requestObject.setUserId("370");
-            new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+            Attribute attribute=new Attribute();
+            attribute.setUserId(WebConstants.USER_ID_370);
+            new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_FEEDS);
 
         } catch (Exception e) {
@@ -147,14 +147,14 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
         fragListener = null;
     }
 
-    ResponseObject responseObj;
+    ResponseHandler responseObj;
 
     @Override
     public void onResponse(int apiMethod, Object object, Exception error) {
         try {
             ((TeacherHostActivity) getActivity()).stopProgress();
             if (apiMethod == WebConstants.GET_ALL_FEEDS) {
-                responseObj = (ResponseObject) object;
+                responseObj = (ResponseHandler) object;
                 if (responseObj != null) {
                     if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
                         if (responseObj.getData().size() > 0) {

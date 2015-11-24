@@ -20,10 +20,10 @@ import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.fragments.SubjectiveQuestionsFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.views.CircleImageView;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -39,13 +39,13 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
     public static MyTypeFace myTypeFace;
 
     private int lastSelected = -1;
-    ResponseObject resObjStudentAttempted;
-    private ResponseObject responseObjectEval;
+    ResponseHandler resObjStudentAttempted;
+    private ResponseHandler responseObjectEval;
 
     //test
     String student_id_to_highlight = "";
 
-    public MyStudentsAdapter(String student_id_to_highlight, ResponseObject resObjStudentAttempted, Context context, Fragment fragment) {
+    public MyStudentsAdapter(String student_id_to_highlight, ResponseHandler resObjStudentAttempted, Context context, Fragment fragment) {
         this.resObjStudentAttempted = resObjStudentAttempted;
         this.mFragment = fragment;
         this.mContext = context;
@@ -150,13 +150,13 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
         try {
             if (Utility.isInternetConnected(mContext)) {
                 ((TeacherHostActivity) mContext).startProgress();
-                RequestObject requestObject = new RequestObject();
-                requestObject.setStudentId(student_id);
-                requestObject.setExamId(exam_id);
+                Attribute attribute = new Attribute();
+                attribute.setStudentId(student_id);
+                attribute.setExamId(exam_id);
 
                 Log.e("subjective exam evaluation ", "student_id:" + student_id + "examid" + exam_id);
 
-                new WebserviceWrapper(mContext, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_EVALUATIONS);
             } else {
                 Utility.showToast(mContext.getString(R.string.strnetissue), mContext);
@@ -181,7 +181,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
             ((TeacherHostActivity) mContext).stopProgress();
             switch (api_code) {
                 case WebConstants.GET_EXAM_EVALUATIONS:
-                    ResponseObject responseObject = (ResponseObject) object;
+                    ResponseHandler responseObject = (ResponseHandler) object;
                     if (responseObject.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
                         if (responseObject.getData().get(0).getArrayListEvaluation().size() != 0) {
                             responseObjectEval = responseObject;

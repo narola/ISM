@@ -1,5 +1,7 @@
 package com.ism.teacher.model;
 
+import com.ism.teacher.ws.helper.Attribute;
+
 import java.util.ArrayList;
 
 /**
@@ -11,7 +13,7 @@ public class FragmentArgument {
 
     private ArrayList<Data> arrayListData;
     private int intPosition;
-    private RequestObject requestObject = new RequestObject();
+    private Attribute attribute = new Attribute();
 
     public FragmentArgument() {
     }
@@ -36,12 +38,12 @@ public class FragmentArgument {
         this.intPosition = intPosition;
     }
 
-    public RequestObject getRequestObject() {
-        return requestObject;
+    public Attribute getRequestObject() {
+        return attribute;
     }
 
-    public void setRequestObject(RequestObject requestObject) {
-        this.requestObject = requestObject;
+    public void setRequestObject(Attribute attribute) {
+        this.attribute = attribute;
     }
 
 }

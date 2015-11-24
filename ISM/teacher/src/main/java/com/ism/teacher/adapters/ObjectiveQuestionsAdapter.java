@@ -16,7 +16,7 @@ import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.fragments.StudentAttemptedFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
-import com.ism.teacher.model.ResponseObject;
+import com.ism.teacher.ws.helper.ResponseHandler;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 public class ObjectiveQuestionsAdapter extends RecyclerView.Adapter<ObjectiveQuestionsAdapter.ViewHolder> {
     private String studentName;
-    ResponseObject responseObject, studentEvalResObj;
+    ResponseHandler responseObject, studentEvalResObj;
     Context context;
     LayoutInflater inflater;
     public static MyTypeFace myTypeFace;
@@ -34,11 +34,11 @@ public class ObjectiveQuestionsAdapter extends RecyclerView.Adapter<ObjectiveQue
     int asciiChar = 65;
     ArrayList<Data> dataArrayList = new ArrayList<Data>();
 
-    public ObjectiveQuestionsAdapter(ResponseObject studentEvalResObj) {
+    public ObjectiveQuestionsAdapter(ResponseHandler studentEvalResObj) {
         this.studentEvalResObj = studentEvalResObj;
     }
 
-    public ObjectiveQuestionsAdapter(ResponseObject responseObject, Context context, Fragment fragment, ResponseObject studentEvalResObj) {
+    public ObjectiveQuestionsAdapter(ResponseHandler responseObject, Context context, Fragment fragment, ResponseHandler studentEvalResObj) {
         this.responseObject = responseObject;
         this.context = context;
         this.fragment = fragment;

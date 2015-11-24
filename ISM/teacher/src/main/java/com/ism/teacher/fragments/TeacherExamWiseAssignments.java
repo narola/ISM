@@ -18,9 +18,9 @@ import com.ism.teacher.adapters.ExamWiseAssignmentAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.model.Data;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,12 +101,12 @@ public class TeacherExamWiseAssignments extends Fragment implements WebserviceWr
     private void callApiGetExamSubmission() {
         if (Utility.isInternetConnected(getActivity())) {
             try {
-                RequestObject request = new RequestObject();
-                request.setExamId("9");
-                request.setUserId("340");
-                request.setRole(AppConstant.TEACHER_ROLE_ID);
+                Attribute attribute=new Attribute();
+                attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
+                attribute.setUserId(WebConstants.USER_ID_340);
+                attribute.setRole(AppConstant.TEACHER_ROLE_ID + "");
 
-                new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -136,7 +136,7 @@ public class TeacherExamWiseAssignments extends Fragment implements WebserviceWr
 
     private void onResponseGetAllExamSubmission(Object object) {
 
-        ResponseObject callGetAllExamSubmission = (ResponseObject) object;
+        ResponseHandler callGetAllExamSubmission = (ResponseHandler) object;
         if (callGetAllExamSubmission.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
 
             examWiseAssignmentAdapter = new ExamWiseAssignmentAdapter(callGetAllExamSubmission.getData().get(0).getExam_id(),getActivity(), this,exam_mode);

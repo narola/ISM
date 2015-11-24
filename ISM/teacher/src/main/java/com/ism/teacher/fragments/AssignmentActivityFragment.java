@@ -29,9 +29,9 @@ import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.model.CreateAssignmentRequest;
 import com.ism.teacher.model.Data;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
 import java.util.ArrayList;
@@ -260,9 +260,9 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
         if (Utility.isInternetConnected(getActivity())) {
             try {
-                RequestObject getTopicsRequest = new RequestObject();
-                getTopicsRequest.setSubjectId(subject_id);
-                new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute=new Attribute();
+                attribute.setSubjectId(String.valueOf(subject_id));
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_TOPICS);
             } catch (Exception e) {
                 //  Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -391,24 +391,24 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     }
 
     private void onResponseCreateAssignment(Object object) {
-        ResponseObject createAssignmentResponseObject = (ResponseObject) object;
-        if (createAssignmentResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && createAssignmentResponseObject != null) {
+        ResponseHandler createAssignmentResponseHandler = (ResponseHandler) object;
+        if (createAssignmentResponseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && createAssignmentResponseHandler != null) {
             backToTrialScreen();
-            Utility.showToast(createAssignmentResponseObject.getMessage(), getActivity());
+            Utility.showToast(createAssignmentResponseHandler.getMessage(), getActivity());
 
         } else {
-            Utility.showToast(createAssignmentResponseObject.getMessage(), getActivity());
+            Utility.showToast(createAssignmentResponseHandler.getMessage(), getActivity());
         }
 
     }
 
     private void onResponseGetTopics(Object object) {
 
-        ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
-        if (callGetTopicsResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
+        ResponseHandler callGetTopicsResponseHandler = (ResponseHandler) object;
+        if (callGetTopicsResponseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetTopicsResponseHandler != null) {
 
             arrListTopic = new ArrayList<Data>();
-            arrListTopic.addAll(callGetTopicsResponseObject.getData());
+            arrListTopic.addAll(callGetTopicsResponseHandler.getData());
             List<String> topics = new ArrayList<String>();
             topics.add(getString(R.string.select));
             for (Data topic : arrListTopic) {
@@ -420,17 +420,17 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
         } else {
 
             Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
-            Utility.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
+            Utility.showToast(callGetTopicsResponseHandler.getMessage(), getActivity());
         }
     }
 
     private void onResponseGetSubject(Object object) {
 
-        ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
-        if (callGetSubjectResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
+        ResponseHandler callGetSubjectResponseHandler = (ResponseHandler) object;
+        if (callGetSubjectResponseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetSubjectResponseHandler != null) {
 
             arrListSubject = new ArrayList<Data>();
-            arrListSubject.addAll(callGetSubjectResponseObject.getData());
+            arrListSubject.addAll(callGetSubjectResponseHandler.getData());
             List<String> subjects = new ArrayList<String>();
             subjects.add(getString(R.string.select));
             for (Data subject : arrListSubject) {
@@ -441,15 +441,15 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
             Adapters.setUpSpinner(getActivity(), spActivitySubject, subjects);
 
         } else {
-            Utility.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
+            Utility.showToast(callGetSubjectResponseHandler.getMessage(), getActivity());
         }
     }
 
     private void onResponseGetClassRooms(Object object) {
-        ResponseObject callGetClassRoomsResponseObject = (ResponseObject) object;
-        if (callGetClassRoomsResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetClassRoomsResponseObject != null) {
+        ResponseHandler callGetClassRoomsResponseHandler = (ResponseHandler) object;
+        if (callGetClassRoomsResponseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetClassRoomsResponseHandler != null) {
             arrListClassRooms = new ArrayList<Data>();
-            arrListClassRooms.addAll(callGetClassRoomsResponseObject.getData());
+            arrListClassRooms.addAll(callGetClassRoomsResponseHandler.getData());
             List<String> classrooms = new ArrayList<String>();
             classrooms.add(getString(R.string.select));
             for (Data classroom : arrListClassRooms) {
@@ -460,7 +460,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
             callApiGetSubjects();
 
         } else {
-            Utility.showToast(callGetClassRoomsResponseObject.getMessage(), getActivity());
+            Utility.showToast(callGetClassRoomsResponseHandler.getMessage(), getActivity());
         }
 
     }

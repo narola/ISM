@@ -23,10 +23,10 @@ import com.ism.teacher.helper.PreferenceData;
 import com.ism.teacher.model.Comment;
 import com.ism.teacher.model.Data;
 import com.ism.teacher.model.PostFeedImagesModel;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.views.CircleImageView;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -100,12 +100,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         if (Utility.isOnline(context)) {
             try {
-                RequestObject requestObject = new RequestObject();
-                requestObject.setFeedId(arrayListAllFeedsData.get(tagFeedPosition).getFeed_id());
-                requestObject.setTaggedBy(arrayListAllFeedsData.get(tagFeedPosition).getUser_id());
-                requestObject.setTaggedUserIds(arrTagUser);
+                Attribute attribute=new Attribute();
+                attribute.setFeedId(arrayListAllFeedsData.get(tagFeedPosition).getFeed_id());
+                attribute.setTaggedBy(arrayListAllFeedsData.get(tagFeedPosition).getUser_id());
+                attribute.setTaggedUserIds(arrTagUser);
 
-                new WebserviceWrapper(context, requestObject, this).new WebserviceCaller()
+                new WebserviceWrapper(context, attribute, this).new WebserviceCaller()
                         .execute(WebConstants.TAG_FRIEND_IN_FEED);
             } catch (Exception e) {
                 Log.e(TAG, "callApiGetStudyMates Exception : " + e.toString());
@@ -315,11 +315,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     public void callApiGetStudyMates() {
         try {
-            RequestObject requestObject = new RequestObject();
+            Attribute attribute=new Attribute();
 //            requestObject.setUserId(Global.strUserId);
-            requestObject.setUserId("167");
+            attribute.setUserId("167");
 
-            new WebserviceWrapper(context, requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(context, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GET_STUDYMATES);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetStudyMates Exception : " + e.toString());
@@ -330,12 +330,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private void callApiComment(int position, String comment) {
         try {
             addCommentFeedPosition = position;
-            RequestObject requestObject = new RequestObject();
-            requestObject.setFeedId(arrayListAllFeedsData.get(position).getFeed_id());
-            requestObject.setCommentBy(arrayListAllFeedsData.get(position).getUser_id());
-            requestObject.setComment(comment);
+            Attribute attribute=new Attribute();
+            attribute.setFeedId(arrayListAllFeedsData.get(position).getFeed_id());
+            attribute.setCommentBy(arrayListAllFeedsData.get(position).getUser_id());
+            attribute.setComment(comment);
 
-            new WebserviceWrapper(context, requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(context, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.ADD_COMMENTS);
         } catch (Exception e) {
             Log.e(TAG, "callApiComment Exception : " + e.toString());
@@ -348,10 +348,10 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         try {
             addCommentFeedPosition = position;
-            RequestObject requestObject = new RequestObject();
-            requestObject.setFeedId(arrayListAllFeedsData.get(position).getFeed_id());
+            Attribute attribute=new Attribute();
+            attribute.setFeedId(arrayListAllFeedsData.get(position).getFeed_id());
 
-            new WebserviceWrapper(context, requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(context, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_COMMENTS);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetAllComments Exception : " + e.toString());
@@ -444,11 +444,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private void onResponseTagStudyMates(Object object) {
         try {
-            ResponseObject responseObj = (ResponseObject) object;
+            ResponseHandler responseObj = (ResponseHandler) object;
             tagFeedPosition = -1;
-            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+            if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                 Toast.makeText(context, "Tag done!", Toast.LENGTH_SHORT).show();
-            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+            } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                 Toast.makeText(context, "Tag failed!", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
@@ -460,13 +460,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private void onResponseGetAllStudyMates(Object object) {
 
         try {
-            ResponseObject responseObj = (ResponseObject) object;
-            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+            ResponseHandler responseObj = (ResponseHandler) object;
+            if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                 if (responseObj.getData().size() > 0) {
                     TagStudyMatesDialog tagStudyMatesDialog = new TagStudyMatesDialog(context, responseObj.getData(), this);
                     tagStudyMatesDialog.show();
                 }
-            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+            } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                 Toast.makeText(context, responseObj.getMessage(), Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
@@ -477,11 +477,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private void onResponseGetAllComments(Object object) {
 
         try {
-            ResponseObject responseObj = (ResponseObject) object;
-            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+            ResponseHandler responseObj = (ResponseHandler) object;
+            if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                 ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(context, responseObj.getData());
                 viewAllCommentsDialog.show();
-            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+            } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                 Toast.makeText(context, responseObj.getMessage(), Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
@@ -493,11 +493,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private void onResponseAddComment(Object object) {
         try {
-            ResponseObject responseObj = (ResponseObject) object;
-            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+            ResponseHandler responseObj = (ResponseHandler) object;
+            if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                 arrayListAllFeedsData.get(addCommentFeedPosition).setTotal_comment("" + (Integer.parseInt(arrayListAllFeedsData.get(addCommentFeedPosition).getTotal_comment()) + 1));
                 notifyDataSetChanged();
-            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+            } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                 Toast.makeText(context, R.string.msg_failed_comment, Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {

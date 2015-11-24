@@ -1,4 +1,8 @@
-package com.ism.teacher.ws;
+package com.ism.teacher.ws.helper;
+
+/**
+ * Created by c166 on 23/10/15.
+ */
 
 import android.util.Log;
 
@@ -15,17 +19,20 @@ import java.net.URLConnection;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+
 /**
  * Created by c161 on 23/10/15.
  */
-public class WSRequestPost {
+public class WebserviceConnector {
 
+    private static final String LOG_TAG = "WebserviceConnector";
+    private String TAG = WebserviceConnector.class.getSimpleName();
     private static final Lock lock = new ReentrantLock();
     private static ObjectMapper mapper = null;
-    private static final String LOG_TAG = "WSRequestPost";
     private String url;
 
-    public WSRequestPost(String url) {
+
+    public WebserviceConnector(String url) {
         this.url = url;
     }
 
@@ -45,7 +52,7 @@ public class WSRequestPost {
                 if (request != null) {
                     // writer.writeValueAsString( request );
                     jsonObject = writer.writeValueAsString(request);
-                    Log.i("main", jsonObject + "");
+                    Log.i(TAG, "JSON OBJECT : " + jsonObject + "");
                 }
 
 
@@ -53,12 +60,12 @@ public class WSRequestPost {
             try (OutputStream output = connection.getOutputStream()) {
                 output.write(jsonObject.getBytes());
             } catch (Exception error) {
-
+                Log.i(TAG, "JSON OBJECT  Write: " + jsonObject + "");
             }
 
-            InputStream response = connection.getInputStream();
 
             try {
+                InputStream response = connection.getInputStream();
                 String json;
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response, "iso-8859-1"), 8);
                 StringBuilder sb = new StringBuilder();
@@ -71,10 +78,8 @@ public class WSRequestPost {
 
                 ret = getMapper().readValue(json, responseType);
 
-                Log.e("api_response:", json);
-
             } catch (Exception e) {
-                Log.e(LOG_TAG, "Error converting result " + e.toString());
+                Log.e(TAG, "Error converting result " + e.getLocalizedMessage());
                 return null;
             }
 
@@ -90,11 +95,9 @@ public class WSRequestPost {
         if (mapper != null) {
             return mapper;
         }
-
         try {
             lock.lock();
             if (mapper == null) {
-
                 mapper = new ObjectMapper();
                 mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES,
                         false);

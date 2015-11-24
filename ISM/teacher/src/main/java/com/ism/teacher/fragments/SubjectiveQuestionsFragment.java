@@ -19,10 +19,10 @@ import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.SubjectiveQuestionAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.views.CircleImageView;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 
 /**
  * Created by c75 on 10/11/15.
@@ -37,7 +37,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     public static RecyclerView rvSubjectiveQuestionList;
     TextView txtExamName;
 
-    public static ResponseObject responseObjQuestions;
+    public static ResponseHandler responseObjQuestions;
 
     //Adapters
     SubjectiveQuestionAdapter subjectiveQuestionAdapter;
@@ -54,7 +54,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     String studentid_from_param = "";
     String examid_from_param = "";
     boolean callEvaluationApiFlag = false;
-    public ResponseObject responseObjectEval;
+    public ResponseHandler responseObjectEval;
 
     public static SubjectiveQuestionsFragment newInstance() {
         SubjectiveQuestionsFragment myStudentsFragment = new SubjectiveQuestionsFragment();
@@ -100,9 +100,9 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private void callGetSubjectionQuestionApi() {
         try {
-            RequestObject requestObject = new RequestObject();
-            requestObject.setExamId("11");
-            new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+            Attribute attribute=new Attribute();
+            attribute.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
+            new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebConstants.GET_EXAM_QUESTIONS);
 
         } catch (Exception e) {
@@ -115,13 +115,13 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         try {
             if (Utility.isInternetConnected(getActivity())) {
                 ((TeacherHostActivity) getActivity()).startProgress();
-                RequestObject requestObject = new RequestObject();
-                requestObject.setStudentId(student_id);
-                requestObject.setExamId(exam_id);
+                Attribute attribute=new Attribute();
+                attribute.setStudentId(student_id);
+                attribute.setExamId(exam_id);
 
                 Log.e("subjective exam evaluation ", "student_id:" + student_id + "examid" + exam_id);
 
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_EVALUATIONS);
             } else {
                 Utility.showToast(getActivity().getString(R.string.strnetissue), getActivity());
@@ -151,9 +151,9 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
 
     private void onResponseMySubjectiveQuestions(Object object) {
-        ResponseObject responseObj = (ResponseObject) object;
+        ResponseHandler responseObj = (ResponseHandler) object;
 
-        responseObjQuestions = (ResponseObject) object;
+        responseObjQuestions = (ResponseHandler) object;
 
         if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
 
@@ -172,7 +172,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private void onResponseGetEvaluation(Object object) {
 
-        ResponseObject responseObject = (ResponseObject) object;
+        ResponseHandler responseObject = (ResponseHandler) object;
         if (responseObject.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
             if (responseObject.getData().get(0).getArrayListEvaluation().size() != 0) {
                 responseObjectEval = responseObject;

@@ -19,10 +19,10 @@ import com.ism.teacher.fragments.ExamObjectiveDetailFragment;
 import com.ism.teacher.fragments.StudentAttemptedFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.views.CircleImageView;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * Created by c162 on 04/11/15.
  */
 public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttemptedAdapter.Viewholder> implements WebserviceWrapper.WebserviceResponse {
-    ResponseObject resObjStudentAttempted;
+    ResponseHandler resObjStudentAttempted;
     private Context context;
     Fragment fragment;
     LayoutInflater inflater;
@@ -40,9 +40,9 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     private static String TAG = StudentAttemptedAdapter.class.getSimpleName();
     private int lastSelected = -1;
     private String studentName;
-    private ResponseObject responseObjectEval;
+    private ResponseHandler responseObjectEval;
 
-    public StudentAttemptedAdapter(ResponseObject resObjStudentAttempted, Context context, Fragment fragment) {
+    public StudentAttemptedAdapter(ResponseHandler resObjStudentAttempted, Context context, Fragment fragment) {
         this.resObjStudentAttempted = resObjStudentAttempted;
         this.context = context;
         this.fragment = fragment;
@@ -117,10 +117,10 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
         try {
             if (Utility.isInternetConnected(context)) {
                   ((TeacherHostActivity) context).startProgress();
-                RequestObject requestObject = new RequestObject();
-                requestObject.setStudentId(WebConstants.STUDENT_ID_202_OBJECCTIVE);
-                requestObject.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
-                new WebserviceWrapper(context, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute=new Attribute();
+                attribute.setStudentId(WebConstants.STUDENT_ID_202_OBJECCTIVE);
+                attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
+                new WebserviceWrapper(context, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_EVALUATIONS);
             } else {
                 Utility.showToast(context.getString(R.string.strnetissue), context);
@@ -148,7 +148,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
               ((TeacherHostActivity) context).stopProgress();
 
             if (API_METHOD == WebConstants.GET_EXAM_EVALUATIONS) {
-                ResponseObject responseObject = (ResponseObject) object;
+                ResponseHandler responseObject = (ResponseHandler) object;
                 if (responseObject.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
                     if (responseObject.getData().get(0).getArrayListEvaluation().size() != 0) {
                         responseObjectEval = responseObject;

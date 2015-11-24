@@ -32,9 +32,9 @@ import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.model.CreateExamRequest;
 import com.ism.teacher.model.Data;
 import com.ism.teacher.model.FragmentArgument;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.narola.kpa.richtexteditor.view.RichTextEditor;
 
 import java.util.ArrayList;
@@ -407,9 +407,9 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
         if (Utility.isInternetConnected(getActivity())) {
             try {
-                RequestObject getTopicsRequest = new RequestObject();
-                getTopicsRequest.setSubjectId(subject_id);
-                new WebserviceWrapper(getActivity(), getTopicsRequest, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute=new Attribute();
+                attribute.setSubjectId(String.valueOf(subject_id));
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_TOPICS);
             } catch (Exception e) {
                 //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -651,7 +651,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     }
 
     private void onResponseGetClassRooms(Object object) {
-        ResponseObject callGetClassRoomsResponse = (ResponseObject) object;
+        ResponseHandler callGetClassRoomsResponse = (ResponseHandler) object;
         if (callGetClassRoomsResponse.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetClassRoomsResponse != null) {
 
             arrListClassRooms = new ArrayList<Data>();
@@ -671,11 +671,11 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     }
 
     private void onResponseGetSubject(Object object) {
-        ResponseObject callGetSubjectResponseObject = (ResponseObject) object;
-        if (callGetSubjectResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetSubjectResponseObject != null) {
+        ResponseHandler callGetSubjectResponseHandler = (ResponseHandler) object;
+        if (callGetSubjectResponseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetSubjectResponseHandler != null) {
 
             arrListSubject = new ArrayList<Data>();
-            arrListSubject.addAll(callGetSubjectResponseObject.getData());
+            arrListSubject.addAll(callGetSubjectResponseHandler.getData());
             List<String> subjects = new ArrayList<String>();
             subjects.add(getString(R.string.strsubjectname));
             for (Data subject : arrListSubject) {
@@ -686,16 +686,16 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             Adapters.setUpSpinner(getActivity(), sp_exam_subjectname, subjects);
 
         } else {
-            Utility.showToast(callGetSubjectResponseObject.getMessage(), getActivity());
+            Utility.showToast(callGetSubjectResponseHandler.getMessage(), getActivity());
         }
     }
 
     private void onResponseGetTopics(Object object) {
-        ResponseObject callGetTopicsResponseObject = (ResponseObject) object;
-        if (callGetTopicsResponseObject.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetTopicsResponseObject != null) {
+        ResponseHandler callGetTopicsResponseHandler = (ResponseHandler) object;
+        if (callGetTopicsResponseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callGetTopicsResponseHandler != null) {
 
             arrListTopic = new ArrayList<Data>();
-            arrListTopic.addAll(callGetTopicsResponseObject.getData());
+            arrListTopic.addAll(callGetTopicsResponseHandler.getData());
             List<String> topics = new ArrayList<String>();
             topics.add(getString(R.string.strtopic));
             for (Data topic : arrListTopic) {
@@ -705,13 +705,13 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, topics);
         } else {
             Adapters.setUpSpinner(getActivity(), sp_exam_subjecttopic, arrListDefalt);
-            Utility.showToast(callGetTopicsResponseObject.getMessage(), getActivity());
+            Utility.showToast(callGetTopicsResponseHandler.getMessage(), getActivity());
         }
     }
 
     private void onResponseCreateExam(Object object) {
 
-        ResponseObject callCreateExamResponse = (ResponseObject) object;
+        ResponseHandler callCreateExamResponse = (ResponseHandler) object;
         if (callCreateExamResponse.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && callCreateExamResponse != null) {
 
             //exam_id = callCreateExamResponse.getData().get(0).getExam_id();

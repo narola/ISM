@@ -33,11 +33,11 @@ import com.ism.teacher.adapters.PostFileAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.model.PostFileModel;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.views.CircularSeekBar;
 import com.ism.teacher.views.HorizontalListView;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -308,16 +308,16 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                     }
                 }
 
-                RequestObject requestObject = new RequestObject();
-                requestObject.setFeedBy("370");
+                Attribute attribute=new Attribute();
+                attribute.setFeedBy(WebConstants.USER_ID_370);
 //                Log.e(TAG + "Images", "" + listImages);
-                requestObject.setImages(listImages);
-                requestObject.setVideoLink("");
-                requestObject.setAudioLink("");
-                requestObject.setPostedOn(Utility.getDate());
-                requestObject.setVideoThumbnail(strThumbnailBase64);
-                requestObject.setFeedText(etSayIt.getText().toString().trim());
-                new WebserviceWrapper(PostActivity.this, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                attribute.setImages(listImages);
+                attribute.setVideoLink("");
+                attribute.setAudioLink("");
+                attribute.setPostedOn(Utility.getDate());
+                attribute.setVideoThumbnail(strThumbnailBase64);
+                attribute.setFeedText(etSayIt.getText().toString().trim());
+                new WebserviceWrapper(PostActivity.this, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.POSTFEED);
 
             }
@@ -865,7 +865,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        ResponseObject responseObj = (ResponseObject) object;
+        ResponseHandler responseObj = (ResponseHandler) object;
         if (responseObj.getStatus().equals(AppConstant.API_STATUS_SUCCESS)) {
             feed_id = responseObj.getData().get(0).getFeed_id();
             if (arrayList != null) {
