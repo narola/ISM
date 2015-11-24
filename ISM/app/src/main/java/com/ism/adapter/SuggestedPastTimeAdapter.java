@@ -124,7 +124,7 @@ public class SuggestedPastTimeAdapter extends BaseAdapter implements WebserviceW
 
                 new WebserviceWrapper(context, attribute, this).new WebserviceCaller().execute(WebConstants.ADD_RESOURCE_TO_FAVORITE);
             } else {
-                Utility.toastOffline(context);
+                Utility.alertOffline(context);
             }
         } catch (Exception e) {
             Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());

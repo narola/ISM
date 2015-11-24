@@ -118,7 +118,7 @@ public class UserBooksFragment extends Fragment implements WebserviceWrapper.Web
                 attribute.setUserId("1");
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
             } else {
-                Utility.toastOffline(getActivity());
+                Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
             Debug.i(TAG, "callApiGetBooksForUser Exception : " + e.toString());

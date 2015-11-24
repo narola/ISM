@@ -4,15 +4,24 @@ package com.ism.author.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ism.author.model.Data;
+import com.ism.author.ws.model.Cities;
 import com.ism.author.ws.model.Classrooms;
 import com.ism.author.ws.model.CommentList;
+import com.ism.author.ws.model.Countries;
+import com.ism.author.ws.model.Courses;
+import com.ism.author.ws.model.CreateExam;
+import com.ism.author.ws.model.ExamEvaluation;
 import com.ism.author.ws.model.ExamQuestions;
 import com.ism.author.ws.model.ExamSubmission;
 import com.ism.author.ws.model.Exams;
+import com.ism.author.ws.model.Feed;
 import com.ism.author.ws.model.Feeds;
+import com.ism.author.ws.model.Questions;
+import com.ism.author.ws.model.States;
 import com.ism.author.ws.model.Studymates;
 import com.ism.author.ws.model.Subjects;
+import com.ism.author.ws.model.Topics;
+import com.ism.author.ws.model.User;
 
 import java.util.ArrayList;
 
@@ -25,7 +34,6 @@ import java.util.ArrayList;
 public class ResponseHandler {
 
     private String message;
-    private ArrayList<Data> data;
     private String status;
 
     public static final String SUCCESS = "success";
@@ -39,14 +47,6 @@ public class ResponseHandler {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public ArrayList<Data> getData() {
-        return this.data;
-    }
-
-    public void setData(ArrayList<Data> data) {
-        this.data = data;
     }
 
     public String getStatus() {
@@ -69,6 +69,17 @@ public class ResponseHandler {
     private ArrayList<Classrooms> classrooms;
     private ArrayList<ExamQuestions> examQuestions;
     private ArrayList<ExamSubmission> examSubmission;
+    private ArrayList<ExamEvaluation> examEvaluation;
+    private ArrayList<Topics> topics;
+    private ArrayList<CreateExam> createExam;
+    private ArrayList<Countries> countries;
+    private ArrayList<States> states;
+    private ArrayList<Cities> cities;
+    private ArrayList<User> user;
+    private ArrayList<Feed> feed;
+    private ArrayList<Courses> courses;
+    private ArrayList<Questions> questions;
+
 
     @JsonProperty("feeds")
     public ArrayList<Feeds> getFeeds() {
@@ -142,6 +153,95 @@ public class ResponseHandler {
         this.examSubmission = examSubmission;
     }
 
+    @JsonProperty("exam_evaluation")
+    public ArrayList<ExamEvaluation> getExamEvaluation() {
+        return this.examEvaluation;
+    }
+
+    public void setExamEvaluation(ArrayList<ExamEvaluation> examEvaluation) {
+        this.examEvaluation = examEvaluation;
+    }
+
+    @JsonProperty("topics")
+    public ArrayList<Topics> getTopics() {
+        return this.topics;
+    }
+
+    public void setTopics(ArrayList<Topics> topics) {
+        this.topics = topics;
+    }
+
+    @JsonProperty("exam")
+    public ArrayList<CreateExam> getCreateExam() {
+        return this.createExam;
+    }
+
+    public void setCreateExam(ArrayList<CreateExam> createExam) {
+        this.createExam = createExam;
+    }
+
+    @JsonProperty("countries")
+    public ArrayList<Countries> getCountries() {
+        return this.countries;
+    }
+
+    public void setCountries(ArrayList<Countries> countries) {
+        this.countries = countries;
+    }
+
+    @JsonProperty("states")
+    public ArrayList<States> getStates() {
+        return this.states;
+    }
+
+    public void setStates(ArrayList<States> states) {
+        this.states = states;
+    }
+
+    @JsonProperty("cities")
+    public ArrayList<Cities> getCities() {
+        return this.cities;
+    }
+
+    public void setCities(ArrayList<Cities> cities) {
+        this.cities = cities;
+    }
+
+    @JsonProperty("user")
+    public ArrayList<User> getUser() {
+        return this.user;
+    }
+
+    public void setUser(ArrayList<User> user) {
+        this.user = user;
+    }
+
+    @JsonProperty("feed")
+    public ArrayList<Feed> getFeed() {
+        return this.feed;
+    }
+
+    public void setFeed(ArrayList<Feed> feed) {
+        this.feed = feed;
+    }
+
+    @JsonProperty("courses")
+    public ArrayList<Courses> getCourses() {
+        return this.courses;
+    }
+
+    public void setCourses(ArrayList<Courses> courses) {
+        this.courses = courses;
+    }
+
+    @JsonProperty("questions")
+    public ArrayList<Questions> getQuestions() {
+        return this.questions;
+    }
+
+    public void setQuestions(ArrayList<Questions> questions) {
+        this.questions = questions;
+    }
 
 }
 

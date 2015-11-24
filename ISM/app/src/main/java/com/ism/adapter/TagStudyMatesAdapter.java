@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.R;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.User;
 
 import java.util.ArrayList;
 
@@ -23,10 +23,10 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
     private static final String TAG = TagStudyMatesAdapter.class.getSimpleName();
 
     Context context;
-    ArrayList<Data> listOfAllStudyMates = new ArrayList<>();
-    ArrayList<Data> copyListOfStudyMates = new ArrayList<>();
+    ArrayList<User> listOfAllStudyMates = new ArrayList<>();
+    ArrayList<User> copyListOfStudyMates = new ArrayList<>();
 
-    public TagStudyMatesAdapter(Context context, ArrayList<Data> listOfStudyMates) {
+    public TagStudyMatesAdapter(Context context, ArrayList<User> listOfStudyMates) {
         this.context = context;
         this.listOfAllStudyMates = listOfStudyMates;
         this.copyListOfStudyMates.addAll(listOfAllStudyMates);
@@ -89,9 +89,9 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
         if (charText.length() == 0) {
             listOfAllStudyMates.addAll(copyListOfStudyMates);
         } else {
-            for (Data wp : copyListOfStudyMates) {
-                if (wp.getFullName().contains(charText)) {
-                    listOfAllStudyMates.add(wp);
+            for (User studymate : copyListOfStudyMates) {
+                if (studymate.getFullName().contains(charText)) {
+                    listOfAllStudyMates.add(studymate);
                 }
             }
             if (listOfAllStudyMates.size() == 0) {

@@ -15,7 +15,7 @@ import com.ism.commonsource.utility.Utility;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.Message;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -28,14 +28,14 @@ public class MessageAdapter extends BaseAdapter {
 
 	private static final String TAG = MessageAdapter.class.getSimpleName();
 
-	private ArrayList<Data> arrListMessage;
+	private ArrayList<Message> arrListMessage;
 	private Context context;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 	private MyTypeFace myTypeFace;
 	private int listItemLimit = 0;
 
-	public MessageAdapter(Context context, ArrayList<Data> arrListMessage) {
+	public MessageAdapter(Context context, ArrayList<Message> arrListMessage) {
 		this.arrListMessage = arrListMessage;
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
@@ -44,7 +44,7 @@ public class MessageAdapter extends BaseAdapter {
 		myTypeFace = new MyTypeFace(context);
 	}
 
-	public MessageAdapter(Context context, ArrayList<Data> arrListMessage, int listItemLimit) {
+	public MessageAdapter(Context context, ArrayList<Message> arrListMessage, int listItemLimit) {
 		this(context, arrListMessage);
 		this.listItemLimit = listItemLimit;
 	}

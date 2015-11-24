@@ -30,12 +30,13 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
     private MyTypeFace myTypeFace;
     private InputValidator inputValidator;
     public static RecyclerView rvList;
-    public static TextView txtExamType, txtBookNameValue,txtExamTypeName, txtBookName, txtClassName, txtClass, txtEamName, txtEamTypeName, txtExamDateValue, txtExamName, txtExamDate;
-    ImageView imgCopy,imgEdit;
+    public static TextView txtExamType, txtBookNameValue, txtExamTypeName, txtBookName, txtClassName,
+            txtClass, txtEamName, txtEamTypeName, txtExamDateValue, txtExamName, txtExamDate;
+    ImageView imgCopy, imgEdit;
     //private ResponseHandler responseObject;
     //public static ResponseHandler responseObjQuestions;
-   // public static TrialExamDetailsAdapter trialExamDetailsAdapter;
-    //public static String questionsID[];
+    // public static TrialExamDetailsAdapter trialExamDetailsAdapter;
+    //public static String arrListQuestionIds[];
 
     public static TrialExamObjectiveDetailFragment newInstance() {
         TrialExamObjectiveDetailFragment trialExamObjectiveDetailFragment = new TrialExamObjectiveDetailFragment();
@@ -86,7 +87,7 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
         txtBookNameValue.setTypeface(myTypeFace.getRalewayRegular());
         txtExamTypeName.setTypeface(myTypeFace.getRalewayRegular());
         txtEamTypeName.setTypeface(myTypeFace.getRalewayRegular());
-        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED,null);
+        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED, null);
     }
 
 
@@ -138,9 +139,9 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
 //                        String examDate[] = responseObjQuestions.getData().get(0).getCreatedDate().split(" ");
 //                        TrialExamObjectiveDetailFragment.txtExamDateValue.setText(examDate[0]);
 //                        TrialExamObjectiveDetailFragment.txtExamName.setText(responseObjQuestions.getData().get(0).getExamName());
-//                        questionsID=null;
+//                        arrListQuestionIds=null;
 //                        for(int i=0;i<responseObjQuestions.getData().get(0).getQuestions().size();i++){
-//                            questionsID[i]=responseObjQuestions.getData().get(0).getQuestions().get(0).getQuestionId();
+//                            arrListQuestionIds[i]=responseObjQuestions.getData().get(0).getQuestions().get(0).getQuestionId();
 //                        }
 //
 //

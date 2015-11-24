@@ -5,17 +5,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Created by c162 on 20/11/15.
+ * Created by c161 on 21/11/15.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-
 public class Badges {
-
+	
     private String requestCount;
     private String notificationCount;
     private String messageCount;
-
 
     @JsonProperty("request_count")
     public String getRequestCount() {
@@ -43,6 +41,5 @@ public class Badges {
     public void setMessageCount(String messageCount) {
         this.messageCount = messageCount;
     }
-
 
 }

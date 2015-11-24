@@ -15,8 +15,9 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.fragment.StudentAttemptedFragment;
 import com.ism.author.object.MyTypeFace;
-import com.ism.author.model.Data;
 import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.model.Evaluation;
+import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,7 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
     Fragment fragment;
     private static String TAG = TrialExamDetailsAdapter.class.getSimpleName();
     int asciiChar = 65;
-    ArrayList<Data> dataArrayList = new ArrayList<Data>();
+    ArrayList<Evaluation> dataArrayList = new ArrayList<Evaluation>();
 
     public TrialExamDetailsAdapter(ResponseHandler studentEvalResObj) {
         this.studentEvalResObj = studentEvalResObj;
@@ -57,14 +58,14 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
     @Override
     public void onBindViewHolder(TrialExamDetailsAdapter.ViewHolder holder, int position) {
         try {
-            ArrayList<Data> arrayList = new ArrayList<Data>();
-            arrayList = responseHandler.getData().get(0).getQuestions();
+            ArrayList<Questions> arrayList = new ArrayList<Questions>();
+            arrayList = responseHandler.getExamQuestions().get(0).getQuestions();
             int qno = position + 1;
             //holder.txtQuestionNo.setText("Questions " + qno);
             holder.txtQuestionNo.setText(Html.fromHtml("<u>" + "Questions " + qno + "</u>"));
             holder.txtQuestionText.setText(arrayList.get(position).getQuestionText());
             holder.txtQuestionText.setText(arrayList.get(position).getQuestionText());
-            // questionsID[position]=arrayList.get(0).getQuestionId();
+            // arrListQuestionIds[position]=arrayList.get(0).getQuestionId();
             // questionID[position]=arrayList.get(position).getQuestionId();
             asciiChar = 65;
             for (int i = 0; i < arrayList.get(position).getAnswers().size(); i++) {
@@ -81,23 +82,23 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
                 holder.txtStudentAnswered.setVisibility(View.VISIBLE);
                 holder.txtStudentNameAnswer.setVisibility(View.VISIBLE);
 
-                dataArrayList = studentEvalResObj.getData().get(0).getEvaluations();
-                String[] studentName = studentEvalResObj.getData().get(0).getStudentName().split(" ");
-                if (studentName[0] != null)
-                    holder.txtStudentNameAnswer.setText(studentName[0] + " Answer :");
-                else {
-                    holder.txtStudentNameAnswer.setText("Answer :");
-                }
+                dataArrayList = studentEvalResObj.getExamEvaluation().get(0).getEvaluation();
+//                String[] studentName = studentEvalResObj.getExamEvaluation().get(0).get().split(" ");
+//                if (studentName[0] != null)
+//                    holder.txtStudentNameAnswer.setText(studentName[0] + " Answer :");
+//                else {
+//                    holder.txtStudentNameAnswer.setText("Answer :");
+//                }
 //                while (questionID[position] == dataArrayList.get(j++).getQuestionId()){
 //                    break;
 //                }
                 String questonid;
                 Debug.i(TAG, "Position: " + position);
 
-                for (int i = 0; i < StudentAttemptedFragment.questionsID.size(); i++) {
-                    if (dataArrayList.get(position).getQuestionId().equals(StudentAttemptedFragment.questionsID.get(i))) {
+                for (int i = 0; i < StudentAttemptedFragment.arrListQuestionIds.size(); i++) {
+                    if (dataArrayList.get(position).getQuestionId().equals(StudentAttemptedFragment.arrListQuestionIds.get(i))) {
                         holder.txtStudentAnswered.setText(dataArrayList.get(position).getStudentResponse());
-                        Debug.i(TAG, "Question Id: " + dataArrayList.get(position).getQuestionId() + "=" + (StudentAttemptedFragment.questionsID.get(i)));
+                        Debug.i(TAG, "Question Id: " + dataArrayList.get(position).getQuestionId() + "=" + (StudentAttemptedFragment.arrListQuestionIds.get(i)));
                         break;
                     } else {
                         holder.txtStudentAnswered.setText(" not answered");
@@ -122,12 +123,12 @@ public class TrialExamDetailsAdapter extends RecyclerView.Adapter<TrialExamDetai
 
     @Override
     public long getItemId(int position) {
-        return responseHandler.getData().get(0).getQuestions().size();
+        return responseHandler.getExamQuestions().get(0).getQuestions().size();
     }
 
     @Override
     public int getItemCount() {
-        return responseHandler.getData().get(0).getQuestions().size();
+        return responseHandler.getExamQuestions().get(0).getQuestions().size();
     }
 
 

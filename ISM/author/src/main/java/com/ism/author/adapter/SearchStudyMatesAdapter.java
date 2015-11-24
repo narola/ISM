@@ -27,11 +27,11 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
 
     private static final String TAG = SearchStudyMatesAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Studymates> listOfStudyMates = new ArrayList<Studymates>();
-    private ArrayList<String> tagIds = new ArrayList<String>();
+    private ArrayList<Studymates> arrListStudyMates = new ArrayList<Studymates>();
+    private ArrayList<String> arrListTagIds = new ArrayList<String>();
 
-    public ArrayList<String> getTagIds() {
-        return tagIds;
+    public ArrayList<String> getArrListTagIds() {
+        return arrListTagIds;
     }
 
     private LayoutInflater inflater;
@@ -55,16 +55,16 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        holder.txtStudymateName.setText(listOfStudyMates.get(position).getFullName());
+        holder.txtStudymateName.setText(arrListStudyMates.get(position).getFullName());
 
         holder.chkAddusertotag.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 if (holder.chkAddusertotag.isChecked()) {
-                    tagIds.add(listOfStudyMates.get(position).getUserId());
+                    arrListTagIds.add(arrListStudyMates.get(position).getUserId());
                 } else {
-                    tagIds.remove(listOfStudyMates.get(position).getUserId());
+                    arrListTagIds.remove(arrListStudyMates.get(position).getUserId());
                 }
 
 
@@ -80,8 +80,8 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
     public void addAll(ArrayList<Studymates> studyMates) {
         try {
 
-            this.listOfStudyMates.clear();
-            this.listOfStudyMates.addAll(studyMates);
+            this.arrListStudyMates.clear();
+            this.arrListStudyMates.addAll(studyMates);
             this.copyListOfStudyMates = studyMates;
 
         } catch (Exception e) {
@@ -93,7 +93,7 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
 
     @Override
     public int getItemCount() {
-        return listOfStudyMates.size();
+        return arrListStudyMates.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -115,17 +115,17 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
     ArrayList<Studymates> copyListOfStudyMates;
 
     public void filter(CharSequence charText) {
-        listOfStudyMates.clear();
+        arrListStudyMates.clear();
 
         if (charText.length() == 0) {
-            listOfStudyMates.addAll(copyListOfStudyMates);
+            arrListStudyMates.addAll(copyListOfStudyMates);
         } else {
             for (Studymates wp : copyListOfStudyMates) {
                 if (Utility.containsString(wp.getFullName(), charText.toString(), false)) {
-                    listOfStudyMates.add(wp);
+                    arrListStudyMates.add(wp);
                 }
             }
-            if (listOfStudyMates.size() == 0) {
+            if (arrListStudyMates.size() == 0) {
                 Utils.showToast(mContext.getString(R.string.strnoresult), mContext);
             }
         }

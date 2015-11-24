@@ -61,22 +61,24 @@ public class WebConstants {
 	 */
 	private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";  // KRUNAL
 	private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
-	private static final String URL_HOST_147 = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
+
+	public static final String HOST_147 = "http://192.168.1.147/";      // KINJAL
+	private static final String URL_HOST_147 = HOST_147 + "WS_ISM/ISMServices.php?Service=";      // KINJAL
 
 	private static final String URL_IMAGE_PATH = "http://192.168.1.147/WS_ISM/Images";
 
 	public static final String URL_USERS_IMAGE_PATH = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/";
-	public static final String URL_ACCEPT_TUTORIAL_GROUP = URL_HOST_161 + "AcceptTutorialGroup";
-	public static final String URL_ALLOCATE_TUTORIAL_GROUP = URL_HOST_161 + "AllocateTutorialGroup";
+	public static final String URL_ACCEPT_TUTORIAL_GROUP = URL_HOST_147 + "AcceptTutorialGroup";
+	public static final String URL_ALLOCATE_TUTORIAL_GROUP = URL_HOST_147 + "AllocateTutorialGroup";
 	public static final String URL_GET_CITIES = URL_HOST_147 + "GetCities";
 	public static final String URL_GET_STATES = URL_HOST_147 + "GetStates";
 	public static final String URL_GET_COUNTRIES = URL_HOST_147 + "GetCountries";
 	public static final String URL_LOGIN = URL_HOST_147 + "AuthenticateUser";
-	public static final String URL_TAG_STUDY_MATES = URL_HOST_162 + "TagFriendInFeed";
-	public static final String URL_GET_ALL_STUDY_MATES = URL_HOST_162 + "GetStudymates";
-	public static final String URL_GET_ALL_COMMENTS = URL_HOST_162 + "GetAllComments";
-	public static final String URL_ADD_COMMENT = URL_HOST_162 + "AddComment";
-	public static final String URL_GET_ALL_FEEDS = URL_HOST_162 + "GetAllFeeds";
+	public static final String URL_TAG_STUDY_MATES = URL_HOST_147 + "TagFriendInFeed";
+	public static final String URL_GET_ALL_STUDY_MATES = URL_HOST_147 + "GetStudymates";
+	public static final String URL_GET_ALL_COMMENTS = URL_HOST_147 + "GetAllComments";
+	public static final String URL_ADD_COMMENT = URL_HOST_147 + "AddComment";
+	public static final String URL_GET_ALL_FEEDS = URL_HOST_147 + "GetAllFeeds";
 	public static final String URL_REGISTER_USER = URL_HOST_147 + "RegisterUser";
 	public static final String URL_REQUEST_SCHOOL_INFO = URL_HOST_147 + "RequestForSchoolInfoUpdation";
 	public static final String URL_REQUEST_CREDENTIALS = URL_HOST_147 + "RequestForCredentials";

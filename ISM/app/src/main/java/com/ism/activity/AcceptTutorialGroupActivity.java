@@ -15,13 +15,12 @@ import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
-import com.ism.views.CircleImageView;
-import com.ism.ws.helper.Attribute;
-import com.ism.ws.helper.ResponseHandler;
-import com.ism.ws.model.ResponseObject;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
+import com.ism.views.CircleImageView;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -92,7 +91,7 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 		if (Utility.isConnected(AcceptTutorialGroupActivity.this)) {
 			callApiAcceptTutorialGroup();
 		} else {
-			Utility.toastOffline(AcceptTutorialGroupActivity.this);
+			Utility.alertOffline(AcceptTutorialGroupActivity.this);
 		}
 	}
 
@@ -134,14 +133,14 @@ public class AcceptTutorialGroupActivity extends Activity implements WebserviceW
 			}
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
-				if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
 					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_COMPLETED, AcceptTutorialGroupActivity.this, true);
 					launchHostActivity();
 				} else if (responseHandler.getStatus().equals("incomplete")) {
 					Toast.makeText(AcceptTutorialGroupActivity.this, R.string.msg_waiting_for_other_members, Toast.LENGTH_LONG).show();
 					PreferenceData.setBooleanPrefs(PreferenceData.IS_TUTORIAL_GROUP_ACCEPTED, AcceptTutorialGroupActivity.this, true);
-				} else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseAcceptTutorialGroup Failed : " + responseHandler.getMessage());
 				}
 			} else if (error != null) {

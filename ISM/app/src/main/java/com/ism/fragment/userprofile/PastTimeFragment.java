@@ -99,7 +99,7 @@ public class PastTimeFragment extends Fragment implements WebserviceWrapper.Webs
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_PASTTIME_FOR_USER);
             }
             else{
-                Utility.toastOffline(getActivity());
+                Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
             Debug.i(TAG, "callApiGetPastimeForUser Exception : " + e.getLocalizedMessage());

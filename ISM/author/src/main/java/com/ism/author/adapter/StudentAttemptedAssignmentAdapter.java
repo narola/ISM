@@ -12,10 +12,10 @@ import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.fragment.GetObjectiveAssignmentQuestionsFragment;
-import com.ism.author.views.CircleImageView;
-import com.ism.author.object.MyTypeFace;
-import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.ws.model.Examsubmittor;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -28,7 +28,7 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
 
     private static final String TAG = StudentAttemptedAssignmentAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Data> listOfStudents = new ArrayList<Data>();
+    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
     private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
     private LayoutInflater inflater;
@@ -66,12 +66,12 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
             holder.txtStudentMarks.setTypeface(myTypeFace.getRalewayRegular());
             holder.txtStudentClass.setTypeface(myTypeFace.getRalewayRegular());
 
-            holder.txtStudentName.setText(listOfStudents.get(position).getFullName());
-            holder.txtStudentSchool.setText(listOfStudents.get(position).getSchoolName());
-            holder.txtStudentMarks.setText(listOfStudents.get(position).getEvaluationScore());
-            holder.txtStudentSchool.setText(listOfStudents.get(position).getClassName());
+            holder.txtStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
+//            holder.txtStudentSchool.setText(arrListExamSubmittor.get(position).getSchoolName());
+            holder.txtStudentMarks.setText(arrListExamSubmittor.get(position).getEvaluationScore());
+//            holder.txtStudentSchool.setText(arrListExamSubmittor.get(position).getClassName());
 
-            if (fragmentArgument.getFragmentArgumentObject().getStudentId().equals(listOfStudents.get(position).getStudentId())) {
+            if (fragmentArgument.getFragmentArgumentObject().getStudentId().equals(arrListExamSubmittor.get(position).getStudentId())) {
                 holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.fragment_background_color));
                 holder.txt_bottom_line.setBackgroundColor(mContext.getResources().getColor(R.color.color_blue));
             } else {
@@ -83,7 +83,7 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
                 @Override
                 public void onClick(View v) {
 
-                    fragmentArgument.getFragmentArgumentObject().setStudentId(listOfStudents.get(position).getStudentId());
+                    fragmentArgument.getFragmentArgumentObject().setStudentId(arrListExamSubmittor.get(position).getStudentId());
                     notifyDataSetChanged();
                     ((GetObjectiveAssignmentQuestionsFragment) fragmentArgument.getFragment()).loadStudentEvaluationData();
 
@@ -99,13 +99,13 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
 
     @Override
     public int getItemCount() {
-        return listOfStudents.size();
+        return arrListExamSubmittor.size();
     }
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<Examsubmittor> examSubmittors) {
         try {
-            this.listOfStudents.clear();
-            this.listOfStudents.addAll(data);
+            this.arrListExamSubmittor.clear();
+            this.arrListExamSubmittor.addAll(examSubmittors);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }

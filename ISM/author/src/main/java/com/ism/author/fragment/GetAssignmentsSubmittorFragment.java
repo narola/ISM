@@ -42,7 +42,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
     private AssignmentSubmittorAdapter assignmentSubmittorAdapter;
     private MyTypeFace myTypeFace;
     private FragmentListener fragListener;
-    private ArrayList<Examsubmittor> listOfStudents = new ArrayList<Examsubmittor>();
+    private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
     private FragmentArgument fragmentArgument;
 
     public static GetAssignmentsSubmittorFragment newInstance(FragmentArgument fragmentArgument) {
@@ -75,6 +75,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rvAssignmentSubmittorList.setAdapter(assignmentSubmittorAdapter);
         tvSubmittorTitle.setTypeface(myTypeFace.getRalewayBold());
+        tvSubmittorTitle.setText(fragmentArgument.getFragmentArgumentObject().getStudentName());
 
         callApiGetExamSubmission();
 
@@ -83,7 +84,6 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
 
     private void callApiGetExamSubmission() {
         if (Utility.isOnline(getActivity())) {
-
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
                 Attribute request = new Attribute();
@@ -123,8 +123,8 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    listOfStudents.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
-                    assignmentSubmittorAdapter.addAll(listOfStudents);
+                    arrListExamSubmittor.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
+                    assignmentSubmittorAdapter.addAll(arrListExamSubmittor);
                     assignmentSubmittorAdapter.notifyDataSetChanged();
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());

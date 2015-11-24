@@ -23,9 +23,9 @@ import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
 import com.ism.ws.helper.Attribute;
-import com.ism.ws.model.ResponseObject;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.Message;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -46,25 +46,19 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 
 	private FragmentListener fragListener;
 	private HostActivity activityHost;
-	private ArrayList<Data> arrListMessage;
+	private ArrayList<Message> arrListMessage;
 	private MessageAdapter adpMessage;
 	private ImageLoader imageLoader;
 
-	private static String MESSAGE_POSITION = "notificationPosition";
+	public static String ARG_ARR_LIST_MESSAGE = "arrListMessage";
+	public static String ARG_MESSAGE_POSITION = "notificationPosition";
 	private int positionMessage;
 	private boolean isReadStatusUpdated = false;
 
-	public static AllMessageFragment newInstance(ArrayList<Data> arrListMessage, int position) {
+	public static AllMessageFragment newInstance(Bundle bundleArgument) {
 		AllMessageFragment fragment = new AllMessageFragment();
-		Bundle args = new Bundle();
-		args.putInt(MESSAGE_POSITION, position);
-		fragment.setArguments(args);
-		fragment.setArrListMessage(arrListMessage);
+		fragment.setArguments(bundleArgument);
 		return fragment;
-	}
-
-	public void setArrListMessage(ArrayList<Data> arrListMessage) {
-		this.arrListMessage = arrListMessage;
 	}
 
 	public AllMessageFragment() {
@@ -73,7 +67,10 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		positionMessage = getArguments().getInt(MESSAGE_POSITION);
+		if (getArguments() != null) {
+			arrListMessage = getArguments().getParcelableArrayList(ARG_ARR_LIST_MESSAGE);
+			positionMessage = getArguments().getInt(ARG_MESSAGE_POSITION);
+		}
 	}
 
 	@Override
@@ -222,11 +219,11 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 	private void onResponseUpdateReadStatus(Object object, Exception error) {
 		try {
 			if (object != null) {
-				ResponseObject responseObject = (ResponseObject) object;
-				if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					isReadStatusUpdated = true;
 					Log.e(TAG, "Read status updated");
-				} else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "Read status update failed");
 				}
 			} else if (error != null) {

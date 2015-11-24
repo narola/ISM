@@ -24,7 +24,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     private static final String TAG = PostFeedCommentsAdapter.class.getSimpleName();
 
     private Context mContext;
-    private ArrayList<CommentList> commentList = new ArrayList<CommentList>();
+    private ArrayList<CommentList> arrListComment = new ArrayList<CommentList>();
     private ImageLoader imageLoader;
     private LayoutInflater inflater;
 
@@ -46,9 +46,9 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.txtCommenterUsername.setText(commentList.get(position).getFullName());
-        holder.txtCommenterComment.setText(commentList.get(position).getComment());
-        holder.txtCommentDuration.setText(commentList.get(position).getCommentBy());
+        holder.txtCommenterUsername.setText(arrListComment.get(position).getFullName());
+        holder.txtCommenterComment.setText(arrListComment.get(position).getComment());
+        holder.txtCommentDuration.setText(arrListComment.get(position).getCommentBy());
 
         imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgCommenterDp, ISMAuthor.options);
     }
@@ -56,8 +56,8 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     public void addAll(ArrayList<CommentList> commentList) {
         try {
-            this.commentList.clear();
-            this.commentList.addAll(commentList);
+            this.arrListComment.clear();
+            this.arrListComment.addAll(commentList);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,7 +67,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     @Override
     public int getItemCount() {
-        return commentList.size();
+        return arrListComment.size();
     }
 
 

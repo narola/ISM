@@ -91,7 +91,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener{
     }
 
     private void setUpList() {
-        blockedUserAdapter = new BlockedUserAdapter(null, getActivity(), this);
+        blockedUserAdapter = new BlockedUserAdapter(getActivity(), this);
         listView.setAdapter(blockedUserAdapter);
         ListViewDynamicHight();
     }

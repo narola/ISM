@@ -24,7 +24,6 @@ import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.MovieData;
-import com.ism.ws.model.ResponseObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -111,7 +110,7 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
                 requestObject.setUserId("1");
                 new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller().execute(WebConstants.GET_MOVIES_FOR_USER);
             }else{
-                Utility.toastOffline(getActivity());
+                Utility.alertOffline(getActivity());
             }
         } catch (Exception e) {
             Debug.i(TAG, "callApiGetMoviesForUser Exception : " + e.getLocalizedMessage());
@@ -140,12 +139,12 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
             activityHost.hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(ResponseObject.SUCCESS)) {
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrayListFav = responseHandler.getMovies().get(0).getFavoriteMovies();
                     arrayListSuggested = responseHandler.getMovies().get(0).getSuggestedMovies();
                     setUpList(arrayListFav, arrayListSuggested);
                     Log.e(TAG, "onResponseUserMovies success");
-                } else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseUserMovies Failed");
                 }
             } else if (error != null) {

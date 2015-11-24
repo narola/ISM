@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * Created by c162 on 19/11/15.
  */
 public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWrapper.WebserviceResponse {
-    private static final String TAG = FavoriteBooksAdapter.class.getSimpleName();
+    private static final String TAG = SuggestedMoviesAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
     ArrayList<MovieData> arrayList = new ArrayList<>();
@@ -104,6 +104,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
                 @Override
                 public void onClick(View v) {
                     addToFavItemId = position;
+                    callApiAddResourceToFav(position);
 
                 }
             });
@@ -125,7 +126,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
 
                 new WebserviceWrapper(context, attribute, this).new WebserviceCaller().execute(WebConstants.ADD_RESOURCE_TO_FAVORITE);
             } else {
-                Utility.toastOffline(context);
+                Utility.alertOffline(context);
             }
         } catch (Exception e) {
             Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());

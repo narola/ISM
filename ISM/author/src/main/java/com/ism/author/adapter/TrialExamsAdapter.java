@@ -37,12 +37,12 @@ public class TrialExamsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return data.getData().size();
+        return data.getExams().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return data.getData().get(position);
+        return data.getExams().get(position);
     }
 
     @Override
@@ -71,20 +71,20 @@ public class TrialExamsAdapter extends BaseAdapter {
 
         try {
 
-            holder.txtSubjectName.setText(data.getData().get(position).getSubjectName());
+            holder.txtSubjectName.setText(data.getExams().get(position).getSubjectName());
             // holder.txtExamType.setBackgroundResource(questionData.getOfficeTabTitleImages()[position]);
             holder.txtSubjectName.setTypeface(myTypeFace.getRalewayBold());
 
-            holder.txtExamType.setText("Exam Type : " + data.getData().get(position).getExam_type());
+            holder.txtExamType.setText("Exam Type : " + data.getExams().get(position).getExamType());
             holder.txtExamType.setTypeface(myTypeFace.getRalewayThin());
 
-            holder.txtTotalStudent.setText(data.getData().get(position).getTotal_student() + " Student");
+            holder.txtTotalStudent.setText(data.getExams().get(position).getTotalStudent() + " Student");
             holder.txtTotalStudent.setTypeface(myTypeFace.getRalewayBold());
 
-            holder.txtStudentAttempted.setText(data.getData().get(position).getTotal_student_attempted());
+            holder.txtStudentAttempted.setText(data.getExams().get(position).getTotalStudentAttempted());
             holder.txtStudentAttempted.setTypeface(myTypeFace.getRalewayBold());
 
-            holder.txtAverage.setText(data.getData().get(position).getAverage_score() + "%");
+            holder.txtAverage.setText(data.getExams().get(position).getAverageScore() + "%");
             holder.txtAverage.setTypeface(myTypeFace.getRalewayThin());
             holder.txtAttempted.setTypeface(myTypeFace.getRalewayThin());
 
@@ -93,9 +93,9 @@ public class TrialExamsAdapter extends BaseAdapter {
                 public void onClick(View v) {
 
                     // send the value of exam_id,role_id
-                    if (data.getData().get(position).getExamMode().equalsIgnoreCase(context.getResources().getString(R.string.strobjective)))
+                    if (data.getExams().get(position).getExamMode().equalsIgnoreCase(context.getResources().getString(R.string.strobjective)))
                         ((AuthorHostActivity) context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS, null);
-                    else if (data.getData().get(position).getExamMode().equals(context.getResources().getString(R.string.strobjective)))
+                    else if (data.getExams().get(position).getExamMode().equals(context.getResources().getString(R.string.strobjective)))
                         ((AuthorHostActivity) context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS, null);
 
                 }

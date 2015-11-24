@@ -17,15 +17,15 @@ import com.ism.adapter.HighScoreAdapter;
 import com.ism.adapter.NoticeAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
-import com.ism.model.FragmentArgument;
 import com.ism.model.HighScoreSubject;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.AccordionView;
 import com.ism.ws.helper.Attribute;
-import com.ism.ws.model.ResponseObject;
+import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Data;
+import com.ism.ws.model.Notice;
+import com.ism.ws.model.User;
 
 import java.util.ArrayList;
 
@@ -42,8 +42,8 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
     private TextView txtViewAllNotice;
 
 	private HostActivity activityHost;
-	private ArrayList<Data> arrListNotice;
-	private ArrayList<Data> arrListHighScorers;
+	private ArrayList<Notice> arrListNotice;
+	private ArrayList<User> arrListHighScorers;
 	private NoticeAdapter adpNotice;
 	private HighScoreAdapter adpHighScorers;
     private FragmentListener fragListener;
@@ -78,7 +78,9 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 		txtViewAllNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-	            activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTES, new FragmentArgument(arrListNotice));
+	            Bundle bundleAllNotice = new Bundle();
+	            bundleAllNotice.putParcelableArrayList(AllNoticeFragment.ARG_ARR_LIST_NOTICE, arrListNotice);
+	            activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTICE, bundleAllNotice);
             }
         });
 
@@ -161,11 +163,11 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 		try {
 			activityHost.hideProgress();
 			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					arrListNotice = responseObj.getData();
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					arrListNotice = responseHandler.getNotices();
 					fillListNotice();
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetAllNotice Failed");
 				}
 			} else if (error != null) {
@@ -180,11 +182,11 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 		try {
 			activityHost.hideProgress();
 			if (object != null) {
-				ResponseObject responseObj = (ResponseObject) object;
-				if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-					arrListHighScorers = responseObj.getData();
+				ResponseHandler responseHandler = (ResponseHandler) object;
+				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+					arrListHighScorers = responseHandler.getHighScorers();
 					fillListHighScorers();
-				} else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetHighScorers Failed");
 				}
 			} else if (error != null) {
@@ -221,7 +223,7 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 		try {
 			if (arrListHighScorers != null) {
 				ArrayList<HighScoreSubject> arrListHighScoreSubject = new ArrayList<HighScoreSubject>();
-				for (Data student : arrListHighScorers) {
+				for (User student : arrListHighScorers) {
 					boolean subjectFound = false;
 					for (HighScoreSubject highScoreSubject : arrListHighScoreSubject) {
 						if (highScoreSubject.getSubjectName().equals(student.getSubjectName())) {
@@ -233,7 +235,7 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 					if (!subjectFound) {
 						HighScoreSubject highScoreSubject = new HighScoreSubject();
 						highScoreSubject.setSubjectName(student.getSubjectName());
-						ArrayList<Data> students = new ArrayList<Data>();
+						ArrayList<User> students = new ArrayList<>();
 						students.add(student);
 						highScoreSubject.setArrListStudent(students);
 						arrListHighScoreSubject.add(highScoreSubject);

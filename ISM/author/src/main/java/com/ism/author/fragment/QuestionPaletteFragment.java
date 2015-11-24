@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.adapter.QuestionPaletteAdapter;
-import com.ism.author.object.MyTypeFace;
-import com.ism.author.model.Data;
 import com.ism.author.model.FragmentArgument;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.model.Evaluation;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,7 @@ public class QuestionPaletteFragment extends Fragment {
             tvQuesPaletteUnassessed;
     private RecyclerView rvQuestionpaletteList;
     private MyTypeFace myTypeFace;
-    private ArrayList<Data> listOfStudents = new ArrayList<Data>();
+    private ArrayList<Evaluation> arrListEvaluation = new ArrayList<Evaluation>();
     private QuestionPaletteAdapter questionPaletteAdapter;
 
 
@@ -76,10 +76,10 @@ public class QuestionPaletteFragment extends Fragment {
 
     }
 
-    public void setQuestionStatusData(ArrayList<Data> data) {
-        listOfStudents.clear();
-        listOfStudents.addAll(data);
-        questionPaletteAdapter.addAll(listOfStudents);
+    public void setQuestionStatusData(ArrayList<Evaluation> evaluations) {
+        arrListEvaluation.clear();
+        arrListEvaluation.addAll(evaluations);
+        questionPaletteAdapter.addAll(arrListEvaluation);
         questionPaletteAdapter.notifyDataSetChanged();
     }
 

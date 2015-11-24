@@ -42,7 +42,7 @@ public class FavoriteMoviesAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return arrayList.size();
     }
 
     @Override

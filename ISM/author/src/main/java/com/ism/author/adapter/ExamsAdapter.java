@@ -65,23 +65,30 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 
 
             holder.tvExamSubjectName.setText(arrListExams.get(position).getSubjectName());
+            holder.tvExamCourseName.setText(arrListExams.get(position).getClassroomName());
             holder.tvExamClassName.setText(arrListExams.get(position).getClassroomName());
             holder.tvExamDate.setText(mContext.getString(R.string.strassignmentdatecolon));
             holder.tvExamDate.append(Utility.getSpannableString(" " + arrListExams.get(position).getPassPercentage(),
                     mContext.getResources().getColor(R.color.color_black)));
 
-//            holder.tvExamNoofAssessed.setText(arrListExams.get(position).getTotal_student());
+            holder.tvExamNoofAssessed.setText(arrListExams.get(position).getTotalStudent());
             holder.tvExamNoofAssessed.setText("1");
-            holder.tvExamNoofQuestion.setText(arrListExams.get(position).getTotalQuestion());
+            if (!arrListExams.get(position).getTotalQuestion().isEmpty()) {
+                holder.tvExamNoofQuestion.setText(arrListExams.get(position).getTotalQuestion());
+
+            } else {
+                holder.tvExamNoofQuestion.setText("0");
+
+            }
 
             if (arrListExams.get(position).getExamMode().equalsIgnoreCase("subjective")) {
                 holder.tvExamUnassessed.setText(mContext.getString(R.string.strunasssessed));
-//                holder.tvExamNoofUnassessed.setText(arrListExams.get(position).getTotal_student());
+                holder.tvExamNoofUnassessed.setText(arrListExams.get(position).getTotalStudent());
                 holder.tvExamNoofUnassessed.setText("1");
 
             } else if (arrListExams.get(position).getExamMode().equalsIgnoreCase("objective")) {
                 holder.tvExamUnassessed.setText(mContext.getString(R.string.stravgscore));
-//                holder.tvExamNoofUnassessed.setText(arrListExams.get(position).getTotal_student() + " " + mContext.getString(R.string.strpercent));
+                holder.tvExamNoofUnassessed.setText(arrListExams.get(position).getTotalStudent() + mContext.getString(R.string.strpercent));
                 holder.tvExamNoofUnassessed.setText("1  " + mContext.getString(R.string.strpercent));
             }
 
@@ -101,6 +108,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
                     fragmentArgument.getFragmentArgumentObject().setExamId(arrListExams.get(position).getExamId());
                     fragmentArgument.getFragmentArgumentObject().setExamName(arrListExams.get(position).getExamName());
                     fragmentArgument.getFragmentArgumentObject().setClassroomId(arrListExams.get(position).getClassroomId());
+                    fragmentArgument.getFragmentArgumentObject().setSubjectName(arrListExams.get(position).getSubjectName());
 //                    fragmentArgument.getFragmentArgumentObject().setStudentName(arrListExams.get(position).getStudentName());
                     fragmentArgument.getFragmentArgumentObject().setPassPercentage(arrListExams.get(position).getPassPercentage());
                     fragmentArgument.getFragmentArgumentObject().setExamType(arrListExams.get(position).getExamType());
