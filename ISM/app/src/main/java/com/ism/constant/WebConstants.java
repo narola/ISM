@@ -32,6 +32,8 @@ public class WebConstants {
 	public static final int UPDATE_READ_STATUS = 22;
 	public static final int GET_HIGH_SCORERS = 23;
 	public static final int UPLOAD_PROFILE_PIC = 24;
+	public static final int GET_WALLET_SUMMARY = 25;
+	public static final int GENERATE_VOUCHER = 26;
 
 
 	//general settings
@@ -52,6 +54,8 @@ public class WebConstants {
 	public static final int GET_ROLEMODEL_FOR_USER = 57;
 	public static final int GET_PASTTIME_FOR_USER = 58;
 	public static final int GET_MOVIES_FOR_USER = 59;
+	public static final int ADD_RESOURCE_TO_FAVORITE = 60;
+
 
 
 	/**
@@ -62,6 +66,9 @@ public class WebConstants {
 
 	public static final String HOST_147 = "http://192.168.1.147/";      // KINJAL
 	private static final String URL_HOST_147 = HOST_147 + "WS_ISM/ISMServices.php?Service=";      // KINJAL
+
+//	private static final String URL_IMAGE_PATH = "http://192.168.1.147/WS_ISM/Images";
+	public static final String URL_HOST_202 = "http://192.168.1.202/pg/ISM/WS_ISM/";
 
 	public static final String URL_USERS_IMAGE_PATH = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/";
 	public static final String URL_ACCEPT_TUTORIAL_GROUP = URL_HOST_147 + "AcceptTutorialGroup";
@@ -94,6 +101,8 @@ public class WebConstants {
 	public static final String URL_RESPOND_TO_REQUEST = URL_HOST_147 + "AcceptRequestFromStudymate";
 	public static final String URL_UPDATE_READ_STATUS = URL_HOST_147 + "UpdateReadStatus"; // studymate_request, messages, notification
 	public static final String URL_GET_HIGH_SCORERS = URL_HOST_147 + "GetHighScorers";
+	public static final String URL_GET_WALLET_SUMMARY = URL_HOST_147 + "GetWalletSummary";
+	public static final String URL_GENERATE_VOUCHER = URL_HOST_147 + "GenerateVoucher";
 
 
 	/*
@@ -105,7 +114,7 @@ public class WebConstants {
 	public static final String URL_GET_MOVIES_FOR_USER =  URL_HOST_147 + "GetMoviesForUser";
 	public static final String URL_GET_PASTTIME_FOR_USER =  URL_HOST_147 + "GetPastimeForUser";
 	public static final String URL_GET_ROLEMODEL_FOR_USER =  URL_HOST_147 + "GetRoleModelForUser";
-
+	public static final String URL_ADD_RESOURCE_TO_FAVORITE =  URL_HOST_147 + "AddResourcesToFavorite";
 
 
 

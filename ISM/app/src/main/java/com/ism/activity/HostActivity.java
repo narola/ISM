@@ -1,6 +1,7 @@
 package com.ism.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -84,7 +86,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private HostListener listenerHost;
     private HostListenerAllNotification listenerHostAllNotification;
     private HostListenerAllMessage listenerHostAllMessage;
-    private HostListenerProfileController listnerHostProfileController;
+    private HostListenerProfileController listenerHostProfileController;
     private HostListenerAboutMe hostListenerAboutMe;
 
     private TextView arrTxtMenu[];
@@ -119,6 +121,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private ArrayList<NotificationSetting> arrayListNotificationSettings = new ArrayList<>();
     private ArrayList<SMSAlert> arrayListSMSAlert = new ArrayList<>();
     private ArrayList<PrivacySetting> arrayListPrivacySetting = new ArrayList<>();
+    private InputMethodManager inputMethod;
 
     public interface HostListenerAboutMe {
         public void onSelectImage(Bitmap bitmap);
@@ -138,6 +141,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     public interface HostListenerProfileController {
         public void onBadgesFetched();
+        public void onSubFragmentAttached(int fragmentId);
+        public void onSubFragmentDetached(int fragmentId);
     }
 
     @Override
@@ -177,7 +182,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         etSearch = (EditText) findViewById(R.id.et_search);
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
         progHost = (ActionProcessButton) findViewById(R.id.prog_host);
-
+        inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         arrTxtMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
         progressGenerator = new ProgressGenerator();
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, HostActivity.this);
@@ -260,6 +265,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 //		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
 //		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
 			        etSearch.setVisibility(View.GONE);
+                    Utility.hideKeyboard(getApplicationContext(), getCurrentFocus());
 		        } else {
 			        startSlideAnimation(etSearch, etSearch.getWidth(), 0, 0, 0);
 			        startSlideAnimation(imgSearch, etSearch.getWidth(), 0, 0, 0);
@@ -278,6 +284,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                 return false;
             }
         });
+
 
         imgNotes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -315,6 +322,12 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         txtFive.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
 
+    }
+    public void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     private void callApiGetGeneralSettingPreferences() {
@@ -482,23 +495,40 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
                     currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
                     break;
-                case FRAGMENT_ALL_NOTIFICATION:
+                case FRAGMENT_MY_FEEDS:
                     currentMainFragment = fragment;
-                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
                     break;
-                case FRAGMENT_ALL_MESSAGE:
+                case FRAGMENT_STUDYMATES:
                     currentMainFragment = fragment;
-                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
                     break;
-                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                case FRAGMENT_MY_ACTIVITY:
                     currentMainFragment = fragment;
-                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
                     break;
-                case FRAGMENT_EDIT_PROFILE:
+                case FRAGMENT_MY_WALLET:
                     currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
                     break;
-
+	            case FRAGMENT_EDIT_PROFILE:
+		            currentMainFragment = fragment;
+		            listenerHostProfileController.onSubFragmentAttached(fragment);
+		            break;
+	            case FRAGMENT_ALL_NOTIFICATION:
+		            currentMainFragment = fragment;
+		            rlControllerTopMenu.setVisibility(View.VISIBLE);
+		            break;
+	            case FRAGMENT_ALL_MESSAGE:
+		            currentMainFragment = fragment;
+		            rlControllerTopMenu.setVisibility(View.VISIBLE);
+		            break;
+	            case FRAGMENT_ALL_STUDYMATE_REQUEST:
+		            currentMainFragment = fragment;
+		            rlControllerTopMenu.setVisibility(View.VISIBLE);
+		            break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
@@ -543,21 +573,33 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     imgChat.setActivated(false);
                     break;
                 case FRAGMENT_GENERAL_SETTINGS:
-                    // llControllerLeft.setVisibility(View.VISIBLE);
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
                     break;
-                case FRAGMENT_ALL_NOTIFICATION:
-                    hideControllerTopBackButton();
-                    loadControllerTopMenu(null);
+                case FRAGMENT_MY_FEEDS:
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
                     break;
-                case FRAGMENT_ALL_MESSAGE:
-                    loadControllerTopMenu(null);
+                case FRAGMENT_STUDYMATES:
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
                     break;
-                case FRAGMENT_ALL_STUDYMATE_REQUEST:
-                    loadControllerTopMenu(null);
+                case FRAGMENT_MY_ACTIVITY:
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
                     break;
-                case FRAGMENT_EDIT_PROFILE:
-                   // loadControllerTopMenu(null);
+                case FRAGMENT_MY_WALLET:
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
                     break;
+	            case FRAGMENT_EDIT_PROFILE:
+		            listenerHostProfileController.onSubFragmentDetached(fragment);
+		            break;
+	            case FRAGMENT_ALL_NOTIFICATION:
+		            hideControllerTopBackButton();
+		            loadControllerTopMenu(null);
+		            break;
+	            case FRAGMENT_ALL_MESSAGE:
+		            loadControllerTopMenu(null);
+		            break;
+	            case FRAGMENT_ALL_STUDYMATE_REQUEST:
+		            loadControllerTopMenu(null);
+		            break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentDetached Exception : " + e.toString());
@@ -896,8 +938,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         this.listenerHostAllMessage = listenerHostAllMessage;
     }
 
-    public void setListnerHostProfileController(HostListenerProfileController listnerHostProfileController) {
-        this.listnerHostProfileController = listnerHostProfileController;
+    public void setListenerHostProfileController(HostListenerProfileController listenerHostProfileController) {
+        this.listenerHostProfileController = listenerHostProfileController;
     }
 
 

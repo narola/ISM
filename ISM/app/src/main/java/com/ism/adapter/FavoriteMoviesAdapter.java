@@ -1,6 +1,7 @@
 package com.ism.adapter;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,27 +10,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.ISMStudent;
+import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
-import com.ism.ws.model.Favorite;
+import com.ism.utility.Utility;
+import com.ism.ws.model.MovieData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
 /**
- * Created by c162 on 19/11/15.
+ * Created by c162 on 20/11/15.
  */
-public class UserFavoriteRoleModelsAdapter extends BaseAdapter {
-    private static final String TAG = UserFavoriteRoleModelsAdapter.class.getSimpleName();
+public class FavoriteMoviesAdapter extends BaseAdapter {
+    private static final String TAG = FavoriteMoviesAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
-    ArrayList<Favorite> arrayList = new ArrayList<>();
+    ArrayList<MovieData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
 
-    public UserFavoriteRoleModelsAdapter(Context context, ArrayList<Favorite> arrayList) {
+    public FavoriteMoviesAdapter(Context context, ArrayList<MovieData> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         imageLoader = ImageLoader.getInstance();
@@ -41,7 +43,7 @@ public class UserFavoriteRoleModelsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 10;
+        return arrayList.size();
     }
 
     @Override
@@ -61,12 +63,15 @@ public class UserFavoriteRoleModelsAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.row_user_books, null);
             holder = new ViewHolder();
 
-            holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
+            holder.imgMovie = (ImageView) convertView.findViewById(R.id.img_pic);
+            holder.txtMovieName = (TextView) convertView.findViewById(R.id.txt_name);
+            holder.txtYear = (TextView) convertView.findViewById(R.id.txt_author);
+            holder.imgLike = (ImageView) convertView.findViewById(R.id.img_add_fav);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
-            holder.imgBookLike = (ImageView) convertView.findViewById(R.id.img_book_like);
-            holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
-            holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
-            holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
+            holder.imgLike.setVisibility(View.VISIBLE);
+            holder.imgInfo.setVisibility(View.VISIBLE);
+
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -74,14 +79,14 @@ public class UserFavoriteRoleModelsAdapter extends BaseAdapter {
 
         try {
 
-            holder.txtBookAuthor.setTypeface(myTypeFace.getRalewayRegular());
-
-            holder.txtBookName.setTypeface(myTypeFace.getRalewayRegular());
-
-//			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgBook, ISMStudent.options);
-//            holder.txtBookName.setText(arrayList.get(position).getBookName());
-//            holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
+            holder.txtMovieName.setTypeface(myTypeFace.getRalewayRegular());
+            holder.txtYear.setTypeface(myTypeFace.getRalewayRegular());
+            holder.txtMovieName.setGravity(Gravity.LEFT);
+            holder.txtYear.setGravity(Gravity.LEFT);
+            holder.imgLike.setBackgroundResource(R.drawable.img_like_red);
+            imageLoader.displayImage(WebConstants.URL_HOST_202+arrayList.get(position).getMovieImage(), holder.imgMovie, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
+            holder.txtMovieName.setText(arrayList.get(position).getMovieName());
+            holder.txtYear.setText(arrayList.get(position).getMovieGenre());
             // if(arrayList.get(position).ge)
 
 
@@ -94,13 +99,10 @@ public class UserFavoriteRoleModelsAdapter extends BaseAdapter {
 
     public class ViewHolder {
 
-        private ImageView imgBook;
-        private ImageView imgInfo;
-        private ImageView imgBookLike;
-        private ImageView imgBookAdd;
-        private TextView txtBookAuthor;
-        private TextView txtBookName;
-
-
+        private ImageView imgMovie;
+        private TextView txtMovieName;
+        private TextView txtYear;
+        public ImageView imgLike;
+        public ImageView imgInfo;
     }
 }

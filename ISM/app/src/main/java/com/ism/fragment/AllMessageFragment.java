@@ -21,6 +21,7 @@ import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
@@ -96,7 +97,11 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
         if (positionMessage >= 0) {
             showMessageDetails(positionMessage);
         } else {
-            callApiUpdateReadStatus();
+            if (Utility.isConnected(activityHost)) {
+                callApiUpdateReadStatus();
+            } else {
+                Utility.alertOffline(activityHost);
+            }
         }
 
         if (arrListMessage != null) {
@@ -118,7 +123,11 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
         }
         lvAllMessage.setVisibility(View.VISIBLE);
         txtHeader.setVisibility(View.VISIBLE);
-        callApiUpdateReadStatus();
+	    if (Utility.isConnected(activityHost)) {
+		    callApiUpdateReadStatus();
+	    } else {
+		    Utility.alertOffline(activityHost);
+	    }
     }
 
     private void showMessageDetails(int position) {

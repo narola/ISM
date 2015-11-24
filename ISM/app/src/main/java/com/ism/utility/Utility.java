@@ -18,12 +18,14 @@ import android.widget.Toast;
 import com.ism.R;
 import com.ism.constant.WebConstants;
 import com.ism.ws.model.Notice;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,8 +40,14 @@ public class Utility {
 
 	private static final String TAG = Utility.class.getSimpleName();
 
+	private static AlertDialog dialogOffline;
+	private static AlertDialog dialogServerAlert;
+
+	public static final SimpleDateFormat DATE_FORMAT_PHP = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 	public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 	public static final SimpleDateFormat DATE_FORMAT_DISPLAY = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+	public static final SimpleDateFormat DATE_FORMAT_DMY = new SimpleDateFormat("dd MMM yy", Locale.getDefault());
+	private static InputMethodManager inputMethod;
 
 	/**
 	 * Krunal Panchale
@@ -104,8 +112,9 @@ public class Utility {
 	 * @param context
 	 */
 	public static void alertOffline(Context context) {
-//		Toast.makeText(context, R.string.msg_offline, Toast.LENGTH_SHORT).show();
-		alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_offline));
+		if (dialogOffline == null || !dialogOffline.isShowing()) {
+			dialogOffline = alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_offline));
+		}
 	}
 
 	/**
@@ -114,7 +123,9 @@ public class Utility {
 	 * @param context
 	 */
 	public static void alertServerNotConnected(Context context) {
-		alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
+		if (dialogServerAlert == null || !dialogServerAlert.isShowing()) {
+			dialogServerAlert = alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
+		}
 	}
 
 	/**
@@ -137,9 +148,8 @@ public class Utility {
 	 * @param title
 	 * @param message
 	 */
-	public static void alert(Context context, String title, String message) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
+	public static AlertDialog alert(Context context, String title, String message) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppDialogTheme);
 		if (title != null) {
 			builder.setTitle(title);
 		}
@@ -154,6 +164,7 @@ public class Utility {
 		}).create();
 		dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 		dialog.show();
+		return dialog;
 	}
 
 	/**
@@ -173,6 +184,20 @@ public class Utility {
 	 */
 	public static String formatDateDisplay(Date date) {
 		return DATE_FORMAT_DISPLAY.format(date);
+	}
+
+	/**
+	 * Krunal Panchal
+	 * @param strDate
+	 * @return String : fromatted date. eg. : 6 jul 15
+	 */
+	public static String formatPHPDateToDMY(String strDate) {
+		try {
+			return DATE_FORMAT_DMY.format(DATE_FORMAT_PHP.parse(strDate));
+		} catch (ParseException e) {
+			Log.e(TAG, "formatPHPDateToDMY Exception : " + e.toString());
+			return null;
+		}
 	}
 
 	/**
@@ -259,5 +284,43 @@ public class Utility {
 			Log.e(TAG, "showToast Exception : " + e.toString());
 		}
 	}
+	/**
+	 * Arti Patel
+	 * initialization of Imageloader
+	 * @param failed
+	 * @param placeholder
+	 */
+	public static DisplayImageOptions getDisplayImageOption(int failed, int placeholder) {
+		try {
+			return new DisplayImageOptions.Builder()
+					.cacheInMemory(true)
+					.showImageOnLoading(R.drawable.ic_classmates_active)
+					.showImageForEmptyUri(placeholder)
+					.showImageOnFail(failed)
+					.cacheOnDisk(true)
+					.considerExifParams(true)
+					.bitmapConfig(Bitmap.Config.RGB_565)
+					.build();
+		} catch (Exception e) {
+			Log.e(TAG, "intiImageLoader Exception : " + e.toString());
+			return null;
+		}
+
+
+	}
+
+	/**
+	 * Arti Patel
+	 * hide keyboard
+	 * @param context
+	 * @param view
+	 */
+	public static void hideKeyboard(Context context,View view) {
+		inputMethod = (InputMethodManager)context. getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (view != null) {
+			inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
+	}
+
 
 }
