@@ -12,7 +12,7 @@ import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
-import com.ism.ws.model.Favorite;
+import com.ism.ws.model.Book;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -21,15 +21,15 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class UserFavoriteBooksAdapter extends BaseAdapter {
-    private static final String TAG = UserFavoriteBooksAdapter.class.getSimpleName();
+public class FavoriteBooksAdapter extends BaseAdapter {
+    private static final String TAG = FavoriteBooksAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
-    ArrayList<Favorite> arrayList = new ArrayList<>();
+    ArrayList<Book> arrayList = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
 
-    public UserFavoriteBooksAdapter(Context context, ArrayList<Favorite> arrayList) {
+    public FavoriteBooksAdapter(Context context, ArrayList<Book> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         imageLoader = ImageLoader.getInstance();
@@ -63,10 +63,11 @@ public class UserFavoriteBooksAdapter extends BaseAdapter {
 
             holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
-            holder.imgBookLike = (ImageView) convertView.findViewById(R.id.img_book_like);
+            holder.imgBookLike = (ImageView) convertView.findViewById(R.id.img_add_fav);
             holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
             holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
+           // holder.imgInfo.setVisibility(View.VISIBLE);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

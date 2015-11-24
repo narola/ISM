@@ -19,7 +19,6 @@ import com.ism.activity.HostActivity;
 import com.ism.adapter.Adapters;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
-import com.ism.ws.model.ResponseObject;
 import com.ism.ws.helper.WebserviceWrapper;
 
 /**
@@ -164,7 +163,7 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
 
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
-        ResponseObject responseObject = (ResponseObject) object;
+     //   ResponseObject responseObject = (ResponseObject) object;
 //        if (WebConstants.MANAGE_GENERAL_SETTINGS == apiCode) {
 //            if (responseObject.getStatus().equals(ResponseObject.SUCCESS)) {
 //

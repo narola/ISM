@@ -1,6 +1,7 @@
 package com.ism.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,16 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.ISMStudent;
+import com.ism.activity.HostActivity;
+import com.ism.constant.AppConstant;
+import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
-import com.ism.ws.model.Suggested;
+import com.ism.utility.Utility;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
+import com.ism.ws.model.PastimeData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -21,17 +29,20 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class SuggestedPastTimeAdapter extends BaseAdapter {
-    private static final String TAG = UserFavoriteBooksAdapter.class.getSimpleName();
+public class SuggestedPastTimeAdapter extends BaseAdapter implements WebserviceWrapper.WebserviceResponse {
+    private static final String TAG = SuggestedPastTimeAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
-    ArrayList<Suggested> arrayList = new ArrayList<>();
+    ArrayList<PastimeData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
+    SuggestedBookAdapter.AddToFavouriteListner addToFavouriteListner;
+    private int addToFavItem;
 
-    public SuggestedPastTimeAdapter(Context context, ArrayList<Suggested> arrayList) {
+    public SuggestedPastTimeAdapter(Context context, ArrayList<PastimeData> arrayList, SuggestedBookAdapter.AddToFavouriteListner addToFavouriteListner) {
         this.context = context;
         this.arrayList = arrayList;
+        this.addToFavouriteListner = addToFavouriteListner;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         inflater = LayoutInflater.from(context);
@@ -55,21 +66,20 @@ public class SuggestedPastTimeAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.row_user_books, null);
             holder = new ViewHolder();
 
-            holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
+            holder.imgPastime = (ImageView) convertView.findViewById(R.id.img_pic);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
-            holder.imgBookLike = (ImageView) convertView.findViewById(R.id.img_book_like);
-            holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
-            holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
-            holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
+            holder.imgAddToFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
+            holder.txtPastimeName = (TextView) convertView.findViewById(R.id.txt_name);
+            holder.txtName = (TextView) convertView.findViewById(R.id.txt_author);
 
-            holder.imgBookAdd.setVisibility(View.VISIBLE);
-            holder.imgBookLike.setVisibility(View.VISIBLE);
+
+            holder.imgAddToFav.setVisibility(View.VISIBLE);
             holder.imgInfo.setVisibility(View.VISIBLE);
 
             convertView.setTag(holder);
@@ -79,15 +89,21 @@ public class SuggestedPastTimeAdapter extends BaseAdapter {
 
         try {
 
-            holder.txtBookAuthor.setTypeface(myTypeFace.getRalewayRegular());
 
-            holder.txtBookName.setTypeface(myTypeFace.getRalewayRegular());
+            holder.txtPastimeName.setTypeface(myTypeFace.getRalewayRegular());
 
 //			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgBook, ISMStudent.options);
-            holder.txtBookName.setText(arrayList.get(position).getBookName());
-            holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
-            // if(arrayList.get(position).ge)
+            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgPastime, ISMStudent.options);
+            holder.txtPastimeName.setText(arrayList.get(position).getPastimeName());
+            holder.txtName.setText("");
+            holder.imgAddToFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addToFavItem = position;
+                    Debug.i(TAG, "onClickAddToFav : " + position);
+                    callApiAddResourceToFav(position);
+                }
+            });
 
 
         } catch (Exception e) {
@@ -97,14 +113,64 @@ public class SuggestedPastTimeAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private void callApiAddResourceToFav(int position) {
+        try {
+            if (Utility.isConnected(context)) {
+                ((HostActivity) context).showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setUserId("1");
+                attribute.setResourceId(arrayList.get(position).getPastimeId());
+                attribute.setResourceName(AppConstant.RESOURCE_PASTTIMES);
+
+                new WebserviceWrapper(context, attribute, this).new WebserviceCaller().execute(WebConstants.ADD_RESOURCE_TO_FAVORITE);
+            } else {
+                Utility.toastOffline(context);
+            }
+        } catch (Exception e) {
+            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void onResponseAddResourceToFavorite(Object object, Exception error) {
+        try {
+            ((HostActivity) context).hideProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                    Debug.i(TAG, "onResponseAddResourceToFavorite success");
+                    addToFavouriteListner.onAddToFav(addToFavItem);
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
+                }
+            } else if (error != null) {
+                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
+        }
+    }
+
+    @Override
+    public void onResponse(Object object, Exception error, int apiCode) {
+        try {
+            switch (apiCode) {
+                case WebConstants.ADD_RESOURCE_TO_FAVORITE:
+                    onResponseAddResourceToFavorite(object, error);
+                    break;
+
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onResponse Exception : " + e.toString());
+        }
+    }
+
     public class ViewHolder {
 
-        private ImageView imgBook;
+        private ImageView imgPastime;
         private ImageView imgInfo;
-        private ImageView imgBookLike;
-        private ImageView imgBookAdd;
-        private TextView txtBookAuthor;
-        private TextView txtBookName;
+        private ImageView imgAddToFav;
+        private TextView txtPastimeName;
+        private TextView txtName;
 
 
     }

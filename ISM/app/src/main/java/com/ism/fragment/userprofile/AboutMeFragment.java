@@ -74,8 +74,8 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     private long lngMaxDob;
     private String strDob;
     private Date convertedDate;
-    private String strDetailAboutMe = null;
-    private String strAmbition = null;
+    public static String strDetailAboutMe = null;
+    public static String strAmbition = null;
     private ImageView imgEditAmbition, imgEditAboutMe;
 
     public static AboutMeFragment newInstance() {
@@ -521,62 +521,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 
     };
 
-    public PopupWindow myPopup(final int type) {
 
-        LayoutInflater inflater = (LayoutInflater) getActivity()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View view = inflater.inflate(R.layout.layout_add_about_yourself, null);
-
-        final PopupWindow popupWindow = new PopupWindow(view,
-                400,
-                400, true);
-
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setTouchable(true);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        // popupWindow.setTouchInterceptor(customPopUpTouchListenr);
-
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-        // TextView txtDetails = (TextView) view.findViewById(R.id.txt_about_me_details);
-        final EditText etAboutMe = (EditText) view
-                .findViewById(R.id.et_clickAddAboutMe);
-        final TextView txtAboutMe = (TextView) view
-                .findViewById(R.id.txt_about_me);
-        TextView txtCancel = (TextView) view
-                .findViewById(R.id.txt_cancel);
-        if (type == ABOUT_ME) {
-            txtAboutMe.setText(R.string.strAboutYou);
-            etAboutMe.setText(strDetailAboutMe);
-            etAboutMe.setHint("Write about your self");
-        } else if (type == YOUR_AMBITION) {
-            txtAboutMe.setText(R.string.strYourAmbitionInLife);
-            etAboutMe.setText(strAmbition);
-            etAboutMe.setHint("Write about your ambition in life");
-        }
-
-        etAboutMe.setText(strDetailAboutMe);
-        txtCancel.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                if (type == ABOUT_ME) {
-                    strDetailAboutMe = etAboutMe.getText().toString().trim();
-                } else if (type == YOUR_AMBITION) {
-                    strAmbition = etAboutMe.getText().toString().trim();
-                }
-                popupWindow.dismiss();
-
-            }
-        });
-        popupWindow.setFocusable(true);
-        popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        popupWindow.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
-        popupWindow.setContentView(view);
-        return popupWindow;
-
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -603,9 +548,5 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         super.onResume();
        // callApiGetAboutMe();
     }
-    //    @Override
-//    public void onSelectImage(Bitmap bitmap) {
-//        imgProfilePic.setImageBitmap(bitmap);
-//
-//    }
+
 }

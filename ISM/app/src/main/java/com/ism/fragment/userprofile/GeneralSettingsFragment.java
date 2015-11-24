@@ -220,11 +220,11 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         try {
             activityHost.hideProgress();
             if (object != null) {
-                ResponseHandler responseObject = (ResponseHandler) object;
+                ResponseHandler responseHandler = (ResponseHandler) object;
 
-                if (responseObject.getStatus().toString().equals(ResponseObject.SUCCESS)) {
+                if (responseHandler.getStatus().toString().equals(ResponseObject.SUCCESS)) {
                     Debug.i(TAG, "Updated successfully");
-                } else if (responseObject.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseObject.FAILED)) {
                     Debug.i(TAG, "Failed to load manage general setting");
                 }
 

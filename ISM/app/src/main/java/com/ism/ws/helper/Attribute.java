@@ -72,6 +72,25 @@ public class Attribute {
 	private String ambitionInLife;
 
 	private String fileName;
+	private String resourceId;
+	private String resourceName;
+
+
+	public String getResourceName() {
+		return resourceName;
+	}
+	@JsonProperty("resource_name")
+	public void setResourceName(String resourceName) {
+		this.resourceName = resourceName;
+	}
+
+	public String getResourceId() {
+		return resourceId;
+	}
+	@JsonProperty("resource_id")
+	public void setResourceId(String resourceId) {
+		this.resourceId = resourceId;
+	}
 
 	public String getAmbitionInLife() {
 		return ambitionInLife;

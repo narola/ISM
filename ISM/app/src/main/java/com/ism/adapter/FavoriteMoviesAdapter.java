@@ -9,11 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.R;
 import com.ism.ISMStudent;
+import com.ism.R;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
-import com.ism.ws.model.Favorite;
+import com.ism.ws.model.MovieData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -22,15 +22,15 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 20/11/15.
  */
-public class UserFavMoviesAdapter extends BaseAdapter {
-    private static final String TAG = UserFavMoviesAdapter.class.getSimpleName();
+public class FavoriteMoviesAdapter extends BaseAdapter {
+    private static final String TAG = FavoriteMoviesAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
-    ArrayList<Favorite> arrayList = new ArrayList<>();
+    ArrayList<MovieData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
 
-    public UserFavMoviesAdapter(Context context, ArrayList<Favorite> arrayList) {
+    public FavoriteMoviesAdapter(Context context, ArrayList<MovieData> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         imageLoader = ImageLoader.getInstance();
@@ -79,8 +79,8 @@ public class UserFavMoviesAdapter extends BaseAdapter {
 
 //			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
             imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgMovie, ISMStudent.options);
-            holder.txtMovieName.setText(arrayList.get(position).getBookName());
-            holder.txtYear.setText(arrayList.get(position).getAuthorName());
+            holder.txtMovieName.setText(arrayList.get(position).getMovieName());
+            holder.txtYear.setText(arrayList.get(position).getMovieGenre());
             // if(arrayList.get(position).ge)
 
 

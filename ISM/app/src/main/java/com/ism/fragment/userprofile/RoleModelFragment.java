@@ -12,8 +12,9 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.adapter.SuggestedBookAdapter;
 import com.ism.adapter.SuggestedRoleModelsAdapter;
-import com.ism.adapter.UserFavoriteRoleModelsAdapter;
+import com.ism.adapter.FavoriteRoleModelsAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
@@ -22,8 +23,7 @@ import com.ism.views.HorizontalListView;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Favorite;
-import com.ism.ws.model.Suggested;
+import com.ism.ws.model.RolemodelData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -31,32 +31,32 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 09/11/15.
  */
-public class UserRoleModelFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
+public class RoleModelFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener ,SuggestedBookAdapter.AddToFavouriteListner{
 
-    private static final String TAG = UserRoleModelFragment.class.getSimpleName();
+    private static final String TAG = RoleModelFragment.class.getSimpleName();
     ImageLoader imageLoader;
     private View view;
     private MyTypeFace myTypeFace;
     private HostActivity activityHost;
-    private HorizontalListView listViewFavBooks;
-    UserFavoriteRoleModelsAdapter favoriteRoleModelsAdapter;
-    private ArrayList<Favorite> arrayListFavBooks;
-    private HorizontalListView listViewSuggestedBooks;
+    private HorizontalListView listViewFav;
+    FavoriteRoleModelsAdapter favoriteRoleModelsAdapter;
+    private ArrayList<RolemodelData> arrayListFav;
+    private HorizontalListView listViewSuggested;
     SuggestedRoleModelsAdapter suggestedRoleModelsAdapter;
-    private ArrayList<Suggested> arrayListSuggestedBooks;
+    private ArrayList<RolemodelData> arrayListSuggested;
     private TextView txtSuggestedEmpty;
     private TextView txtFavEmpty;
     private ImageView imgNxtFav;
     private ImageView imgPrevFav;
-    private TextView txtFavBooks;
-    private TextView txtSuggestedBooks;
+    private TextView txtFavRoleModels;
+    private TextView txtSuggestedRoleModels;
 
-    public static UserRoleModelFragment newInstance() {
-        UserRoleModelFragment fragment = new UserRoleModelFragment();
+    public static RoleModelFragment newInstance() {
+        RoleModelFragment fragment = new RoleModelFragment();
         return fragment;
     }
 
-    public UserRoleModelFragment() {
+    public RoleModelFragment() {
     }
 
     @Override
@@ -76,33 +76,31 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
 
         txtFavEmpty = (TextView) view.findViewById(R.id.txt_fav_empty);
         txtSuggestedEmpty = (TextView) view.findViewById(R.id.txt_suggested_empty);
-        txtSuggestedBooks = (TextView) view.findViewById(R.id.txt_read_books);
-        txtFavBooks = (TextView) view.findViewById(R.id.txt_fav_books);
+        txtSuggestedRoleModels = (TextView) view.findViewById(R.id.txt_read_books);
+        txtFavRoleModels = (TextView) view.findViewById(R.id.txt_fav_books);
         //set typeface
         txtFavEmpty.setTypeface(myTypeFace.getRalewayRegular());
         txtSuggestedEmpty.setTypeface(myTypeFace.getRalewayRegular());
-        txtFavBooks.setTypeface(myTypeFace.getRalewayRegular());
-        txtSuggestedBooks.setTypeface(myTypeFace.getRalewayRegular());
-        txtSuggestedBooks.setText(R.string.strSuggestedRoleModels);
-        txtFavBooks.setText(R.string.strFavRolemodels);
+        txtFavRoleModels.setTypeface(myTypeFace.getRalewayRegular());
+        txtSuggestedRoleModels.setTypeface(myTypeFace.getRalewayRegular());
+        txtSuggestedRoleModels.setText(R.string.strSuggestedRoleModels);
+        txtFavRoleModels.setText(R.string.strFavRolemodels);
 
 
-        listViewFavBooks = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
-        listViewSuggestedBooks = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);
+        listViewFav = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
+        listViewSuggested = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);
 
         imgNxtFav=(ImageView)view.findViewById(R.id.img_next_fav);
         imgPrevFav=(ImageView)view.findViewById(R.id.img_prev_fav);
 
-        callApiGetBooksForUser();
+        callApiGetRoleModelsForUser();
 
         imgNxtFav.setOnClickListener(this);
         imgPrevFav.setOnClickListener(this);
-        favoriteRoleModelsAdapter=new UserFavoriteRoleModelsAdapter(getActivity(),arrayListFavBooks);
-        listViewFavBooks.setAdapter(favoriteRoleModelsAdapter);
 
     }
 
-    private void callApiGetBooksForUser() {
+    private void callApiGetRoleModelsForUser() {
         try {
             if (Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
@@ -114,7 +112,7 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
                 Utility.toastOffline(getActivity());
             }
         } catch (Exception e) {
-            Debug.i(TAG, "callApiGetBooksForUser Exception : " + e.getLocalizedMessage());
+            Debug.i(TAG, "callApiGetRoleModelsForUser Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -141,9 +139,9 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
             if (object != null) {
                 ResponseHandler  responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                        arrayListFavBooks=responseHandler.getBooks().get(0).getFavorite();
-                        arrayListSuggestedBooks=responseHandler.getBooks().get(0).getSuggested();
-                    setUpList(arrayListFavBooks,arrayListSuggestedBooks);
+                        arrayListFav =responseHandler.getRoleModel().get(0).getFavoriteRolemodel();
+                        arrayListSuggested =responseHandler.getRoleModel().get(0).getSuggestedRolemodel();
+                    setUpList(arrayListFav, arrayListSuggested);
                     Debug.i(TAG, "onResponseUserRoleModels success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseUserRoleModels Failed");
@@ -156,26 +154,27 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
         }
     }
 
-    private void setUpList(ArrayList<Favorite> arrayListFavBooks, ArrayList<Suggested> arrayListSuggestedBooks) {
+    private void setUpList(ArrayList<RolemodelData> arrayListFav, ArrayList<RolemodelData> arrayListSuggested) {
         try {
-            if(!arrayListFavBooks.isEmpty()){
+            Debug.i(TAG, "setUpList :arrayListFav="+arrayListFav.size());
+            if(!arrayListFav.isEmpty()){
                 txtFavEmpty.setVisibility(View.GONE);
-                listViewFavBooks.setVisibility(View.VISIBLE);
-                favoriteRoleModelsAdapter=new UserFavoriteRoleModelsAdapter(getActivity(),arrayListFavBooks);
-                listViewFavBooks.setAdapter(favoriteRoleModelsAdapter);
+                listViewFav.setVisibility(View.VISIBLE);
+                favoriteRoleModelsAdapter=new FavoriteRoleModelsAdapter(getActivity(),arrayListFav);
+                listViewFav.setAdapter(favoriteRoleModelsAdapter);
 
             }else{
                 txtFavEmpty.setVisibility(View.VISIBLE);
-                listViewFavBooks.setVisibility(View.GONE);
+                listViewFav.setVisibility(View.GONE);
             }
-            if(!arrayListFavBooks.isEmpty()){
+            if(!arrayListSuggested.isEmpty()){
                 txtSuggestedEmpty.setVisibility(View.GONE);
-                listViewSuggestedBooks.setVisibility(View.VISIBLE);
-                suggestedRoleModelsAdapter =new SuggestedRoleModelsAdapter(getActivity(),arrayListSuggestedBooks);
-                listViewSuggestedBooks.setAdapter(suggestedRoleModelsAdapter);
+                listViewSuggested.setVisibility(View.VISIBLE);
+                suggestedRoleModelsAdapter =new SuggestedRoleModelsAdapter(getActivity(),arrayListSuggested,this);
+                listViewSuggested.setAdapter(suggestedRoleModelsAdapter);
             }else{
                 txtSuggestedEmpty.setVisibility(View.VISIBLE);
-                listViewSuggestedBooks.setVisibility(View.GONE);
+                listViewSuggested.setVisibility(View.GONE);
             }
         }
         catch (Exception e){
@@ -222,4 +221,8 @@ public class UserRoleModelFragment extends Fragment implements WebserviceWrapper
         }
     }
 
+    @Override
+    public void onAddToFav(int position) {
+       callApiGetRoleModelsForUser();
+    }
 }

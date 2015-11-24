@@ -285,4 +285,6 @@
     <string name="strYourFavoriteBooks">Your Favorite Books</string>
     <string name="strSuggestedRoleModels">Suggested role models</string>
     <string name="strFavRolemodels">Your favorite role models</string>
+    <string name="strSuggestedPastimes">Suggested pastimes</string>
+    <string name="strFavPastimes">Your favorite pastimes</string>
 </resources>
