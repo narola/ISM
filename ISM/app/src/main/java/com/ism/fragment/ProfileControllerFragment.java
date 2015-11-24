@@ -140,7 +140,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
                         activityHost.loadFragment(HostActivity.FRAGMENT_EDIT_PROFILE, null);
                         break;
                 }
-                highlightLabel(v.getId());
             }
         };
 
@@ -292,19 +291,19 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         });
 
         lvMessages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                popupMessage.dismiss();
-                loadFragmentAllMessage(position);
-            }
+	        @Override
+	        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		        popupMessage.dismiss();
+		        loadFragmentAllMessage(position);
+	        }
         });
 
         btnViewAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupMessage.dismiss();
-                loadFragmentAllMessage(-1);
-            }
+	        @Override
+	        public void onClick(View v) {
+		        popupMessage.dismiss();
+		        loadFragmentAllMessage(-1);
+	        }
         });
 
         popupMessage.showAtLocation(imgMessage, Gravity.END, 10, 60);
@@ -406,23 +405,34 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         }
     }
 
-    private void highlightLabel(int txtId) {
-        for (int i = 0; i < arrTxtLabel.length; i++) {
-            if (arrTxtLabel[i].getId() == txtId) {
-                arrTxtLabel[i].setTextColor(getActivity().getResources().getColor(R.color.color_green));
-                arrTxtLabel[i].setEnabled(false);
-            } else {
-                arrTxtLabel[i].setTextColor(Color.WHITE);
-                arrTxtLabel[i].setEnabled(true);
-            }
-        }
-        if (txtId == R.id.txt_edit_profile) {
-            txtEditProfile.setText(Html.fromHtml("<u>Edit Profile</u>"));
-            txtEditProfile.setEnabled(false);
-        } else {
-            txtEditProfile.setText(Html.fromHtml("Edit Profile"));
-            txtEditProfile.setEnabled(true);
-        }
+    private void highlightLabel(int fragmentId, boolean attached) {
+	    int textColor = attached ? getActivity().getResources().getColor(R.color.color_green) : Color.WHITE;
+	    switch (fragmentId) {
+		    case HostActivity.FRAGMENT_GENERAL_SETTINGS:
+			    txtGeneralSettings.setTextColor(textColor);
+			    txtGeneralSettings.setEnabled(!attached);
+			    break;
+		    case HostActivity.FRAGMENT_MY_FEEDS:
+			    txtMyFeeds.setTextColor(textColor);
+			    txtMyFeeds.setEnabled(!attached);
+			    break;
+		    case HostActivity.FRAGMENT_STUDYMATES:
+			    txtStudyMates.setTextColor(textColor);
+			    txtStudyMates.setEnabled(!attached);
+			    break;
+		    case HostActivity.FRAGMENT_MY_ACTIVITY:
+			    txtMyActivity.setTextColor(textColor);
+			    txtMyActivity.setEnabled(!attached);
+			    break;
+		    case HostActivity.FRAGMENT_MY_WALLET:
+			    txtWallet.setTextColor(textColor);
+			    txtWallet.setEnabled(!attached);
+			    break;
+		    case HostActivity.FRAGMENT_EDIT_PROFILE:
+			    txtEditProfile.setText(attached ? Html.fromHtml("<u>" + activityHost.getString(R.string.edit_profile) + "</u>") : activityHost.getString(R.string.edit_profile));
+			    txtEditProfile.setEnabled(!attached);
+			    break;
+	    }
     }
 
     @Override
@@ -431,7 +441,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         try {
             activityHost = (HostActivity) activity;
             fragListener = (FragmentListener) activity;
-            activityHost.setListnerHostProfileController(this);
+            activityHost.setListenerHostProfileController(this);
             if (fragListener != null) {
                 fragListener.onFragmentAttached(HostActivity.FRAGMENT_PROFILE_CONTROLLER);
             }
@@ -620,7 +630,13 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
     }
 
     @Override
-    public void onEditProfileDetached() {
-        highlightLabel(0);
+    public void onSubFragmentAttached(int fragmentId) {
+        highlightLabel(fragmentId, true);
     }
+
+    @Override
+    public void onSubFragmentDetached(int fragmentId) {
+	    highlightLabel(fragmentId, false);
+    }
+
 }

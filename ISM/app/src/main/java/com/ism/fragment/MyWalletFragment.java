@@ -18,8 +18,10 @@ import com.ism.adapter.VoucherAdapter;
 import com.ism.commonsource.view.ProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
+import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
@@ -46,6 +48,7 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 	private ArrayList<Voucher> arrListVoucher;
 	private VoucherAdapter adpVoucher;
 	private ProgressGenerator progressGenerator;
+	private FragmentListener fragListener;
 
 	private double dBalance;
 
@@ -143,9 +146,26 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 		super.onAttach(activity);
 		try {
 			activityHost = (HostActivity) activity;
+			fragListener = (FragmentListener) activity;
+			if (fragListener != null) {
+				fragListener.onFragmentAttached(HostActivity.FRAGMENT_MY_WALLET);
+			}
 		} catch (ClassCastException e) {
-			Log.e(TAG, "onAttach Exception : " + e.toString());
+			Debug.e(TAG, "onAttach Exception : " + e.toString());
 		}
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		try {
+			if (fragListener != null) {
+				fragListener.onFragmentDetached(HostActivity.FRAGMENT_MY_WALLET);
+			}
+		} catch (ClassCastException e) {
+			Debug.e(TAG, "onDetach Exception : " + e.toString());
+		}
+		fragListener = null;
 	}
 
 	@Override
