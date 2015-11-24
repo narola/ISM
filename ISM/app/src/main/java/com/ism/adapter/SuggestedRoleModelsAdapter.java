@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.AppConstant;
@@ -71,31 +70,24 @@ public class SuggestedRoleModelsAdapter extends BaseAdapter implements Webservic
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.row_user_books, null);
             holder = new ViewHolder();
-
-            holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
+            holder.imgRoleModel = (ImageView) convertView.findViewById(R.id.img_pic);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
             holder.imgAddToFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
             holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
             holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.txtOrganization = (TextView) convertView.findViewById(R.id.txt_author);
-
             holder.imgBookAdd.setVisibility(View.GONE);
             holder.imgAddToFav.setVisibility(View.VISIBLE);
             holder.imgInfo.setVisibility(View.VISIBLE);
-
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         try {
-
             holder.txtOrganization.setTypeface(myTypeFace.getRalewayRegular());
-
             holder.txtBookName.setTypeface(myTypeFace.getRalewayRegular());
-
-//			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgBook, ISMStudent.options);
+            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getModelImage(), holder.imgRoleModel, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getModelName());
             holder.txtOrganization.setText(arrayList.get(position).getOrganization());
 //            holder.txtOrganization.setText(arrayList.get(position).getAchievements());
@@ -170,7 +162,7 @@ public class SuggestedRoleModelsAdapter extends BaseAdapter implements Webservic
 
     public class ViewHolder {
 
-        private ImageView imgBook;
+        private ImageView imgRoleModel;
         private ImageView imgInfo;
         private ImageView imgAddToFav;
         private ImageView imgBookAdd;

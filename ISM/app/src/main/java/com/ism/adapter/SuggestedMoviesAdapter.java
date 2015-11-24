@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.AppConstant;
@@ -80,7 +79,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
             holder.txtMovieName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.txtMovieYear = (TextView) convertView.findViewById(R.id.txt_author);
 
-            holder.imgBookAdd.setVisibility(View.VISIBLE);
+         //   holder.imgBookAdd.setVisibility(View.VISIBLE);
             holder.imgMovieToFav.setVisibility(View.VISIBLE);
             holder.imgInfo.setVisibility(View.VISIBLE);
 
@@ -90,16 +89,13 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
         }
 
         try {
-
             holder.txtMovieYear.setTypeface(myTypeFace.getRalewayRegular());
             holder.txtMovieName.setTypeface(myTypeFace.getRalewayRegular());
             holder.txtMovieName.setGravity(Gravity.LEFT);
             holder.txtMovieYear.setGravity(Gravity.LEFT);
-//			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgBook, ISMStudent.options);
             holder.txtMovieName.setText(arrayList.get(position).getMovieName());
             holder.txtMovieYear.setText(arrayList.get(position).getMovieGenre());
-            // if(arrayList.get(position).ge)
+            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getMovieImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.imgMovieToFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -115,6 +111,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
 
         return convertView;
     }
+
     private void callApiAddResourceToFav(int position) {
         try {
             if (Utility.isConnected(context)) {
@@ -139,8 +136,8 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite success"+addToFavouriteListner);
-                    if(addToFavouriteListner!=null)
+                    Debug.i(TAG, "onResponseAddResourceToFavorite success" + addToFavouriteListner);
+                    if (addToFavouriteListner != null)
                         addToFavouriteListner.onAddToFav(addToFavItemId);
 
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
@@ -167,6 +164,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
             Log.e(TAG, "onResponse Exception : " + e.toString());
         }
     }
+
     public class ViewHolder {
 
         private ImageView imgBook;

@@ -41,11 +41,15 @@ import com.ism.ws.model.Country;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.State;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import model.User;
+import model.UserHelper;
 
 /**
  * Created by c161 on 07/10/15.
@@ -805,6 +809,13 @@ public class ProfileInformationActivity extends Activity implements WebserviceWr
 //                        callApiUploadPic(responseObj.getData().get(0).getUserId(), fileName);
 //                    }
                     PreferenceData.setStringPrefs(PreferenceData.USER_PROFILE_PIC, ProfileInformationActivity.this, responseHandler.getUser().get(0).getProfilePic());
+
+                     User user = new User();
+                     user.setFullName(responseHandler.getUser().get(0).getFullName());
+                     user.setProfilePicture(responseHandler.getUser().get(0).getProfilePic());
+                     user.setUserId(Integer.parseInt(responseHandler.getUser().get(0).getUserId()));
+
+                     new UserHelper(user,this).saveUser();
 
                     Intent intentWelcome = new Intent(ProfileInformationActivity.this, WelComeActivity.class);
                     startActivity(intentWelcome);
