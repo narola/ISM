@@ -20,6 +20,7 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
@@ -146,7 +147,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
                 Attribute request = new Attribute();
-//                request.setExamId(fragmentArgument.getRequestObject().getExamId());
+                request.setExamId(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 request.setExamId("9");
                 request.setUserId("340");
                 request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
@@ -198,13 +199,16 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         }
     }
 
-    private Bundle getBundleArguments() {
-        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getBundleArgument();
+
+    /*this is to refresh adapter for student navigation button in subjective questions fragment*/
+
+    public void setBundleArgument(int position) {
+        myStudentListAdapter.setBundleArgument(position);
 
     }
 
-    public void refreshAdapterForStudentNavigation() {
-        myStudentListAdapter.notifyDataSetChanged();
+    private GetSubjectiveAssignmentQuestionsFragment getBaseFragment() {
+        return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
 
     }
 

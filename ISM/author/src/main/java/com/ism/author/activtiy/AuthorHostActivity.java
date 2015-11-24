@@ -209,7 +209,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         }
     }
 
-    public void loadFragmentInMainContainer(int fragment, Bundle fragmentArgument) {
+    public void loadFragmentInMainContainer(int fragment, Bundle bundleArgument) {
         try {
             switch (fragment) {
                 case FRAGMENT_HOME:
@@ -229,7 +229,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     break;
                 case FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            CreateExamAssignmentContainerFragment.newInstance(fragmentArgument)).commit();
+                            CreateExamAssignmentContainerFragment.newInstance(bundleArgument)).commit();
                     break;
                 case FRAGMENT_ADDQUESTION_CONTAINER:
                     mFragmentTransaction = mFragmentManager.beginTransaction();
@@ -252,18 +252,18 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
                 case FRAGMENT_ASSIGNMENT_SUBMITTOR:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            GetAssignmentsSubmittorFragment.newInstance(fragmentArgument)).commit();
+                            GetAssignmentsSubmittorFragment.newInstance(bundleArgument)).commit();
                     break;
 
                 case FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS:
-                    mFragment = GetObjectiveAssignmentQuestionsFragment.newInstance(fragmentArgument);
+                    mFragment = GetObjectiveAssignmentQuestionsFragment.newInstance(bundleArgument);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            GetObjectiveAssignmentQuestionsFragment.newInstance(fragmentArgument)).commit();
+                            mFragment).commit();
                     break;
 
                 case FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            GetSubjectiveAssignmentQuestionsFragment.newInstance(fragmentArgument)).commit();
+                            GetSubjectiveAssignmentQuestionsFragment.newInstance(bundleArgument)).commit();
                     break;
             }
             currentMainFragment = fragment;
@@ -278,11 +278,13 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
 
     public void loadStudentEvaluationData() {
-        mFragment.loadStudentEvaluationData();
+        if (mFragment != null) {
+            ((GetObjectiveAssignmentQuestionsFragment) mFragment).loadStudentEvaluationData();
+        }
     }
 
     //these is for the load fragment in right container.
-    public void loadFragmentInRightContainer(int fragment, Bundle fragmentArgument) {
+    public void loadFragmentInRightContainer(int fragment, Bundle bundleArgument) {
         try {
             switch (fragment) {
 
@@ -298,7 +300,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     break;
 
                 case FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedAssignmentFragment.newInstance(fragmentArgument)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedAssignmentFragment.newInstance(bundleArgument)).commit();
                     break;
             }
 
