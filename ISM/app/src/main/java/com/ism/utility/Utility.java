@@ -10,13 +10,17 @@ import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.constant.WebConstants;
+import com.ism.object.MyTypeFace;
 import com.ism.ws.model.Notice;
 
 import java.io.ByteArrayOutputStream;
@@ -152,6 +156,39 @@ public class Utility {
 
 			}
 		}).create();
+		dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+		dialog.show();
+	}
+
+	public static void alertSystem(Context context, String title, String message) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppDialogTheme);
+
+		LayoutInflater inflater = LayoutInflater.from(context);
+		View view = inflater.inflate(R.layout.dialog_alert, null);
+		MyTypeFace myTypeFace = new MyTypeFace(context);
+
+		if (title != null) {
+			TextView txtTitle = (TextView) view.findViewById(R.id.txt_title);
+			txtTitle.setText(title);
+			txtTitle.setTypeface(myTypeFace.getRalewayBold());
+		}
+
+		if (message != null) {
+			TextView txtMessage = (TextView) view.findViewById(R.id.txt_message);
+			txtMessage.setText(message);
+			txtMessage.setTypeface(myTypeFace.getRalewayRegular());
+		}
+
+		Button btnOk = (Button) view.findViewById(R.id.btn_ok);
+
+		final AlertDialog dialog = builder.setView(view)
+									.create();
+		btnOk.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
 		dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 		dialog.show();
 	}

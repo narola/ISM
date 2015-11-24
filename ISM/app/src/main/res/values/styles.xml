@@ -10,6 +10,13 @@
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorAccent">@color/colorAccent</item>
     </style>
+
+	<style name="AppDialogTheme" parent="android:Theme.Material.Light">
+		<item name="android:colorPrimary">@color/colorPrimary</item>
+		<item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="android:colorAccent">@color/colorAccent</item>
+	</style>
+
     <style name="DialogOpenAnimation">
         <item name="android:windowEnterAnimation">@anim/popup_appear</item>
         <item name="android:windowExitAnimation">@anim/popup_disappear</item>

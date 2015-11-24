@@ -160,8 +160,8 @@ public class WebserviceWrapper {
 
         @Override
         protected void onPostExecute(Object responseObject) {
-            if (!isNetworkConnected) {
-                Utility.alert(context.getApplicationContext(), context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
+            if (isNetworkConnected) {
+                Utility.alertSystem(context.getApplicationContext(), context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
             }
             webserviceResponse.onResponse(responseObject, exception, currentApiCode);
             super.onPostExecute(responseObject);
