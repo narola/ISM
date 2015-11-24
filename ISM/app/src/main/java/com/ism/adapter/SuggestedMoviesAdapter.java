@@ -121,7 +121,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
                 Attribute attribute = new Attribute();
                 attribute.setUserId("1");
                 attribute.setResourceId(arrayList.get(position).getMovieId());
-                attribute.setResourceName(AppConstant.RESOURCE_ROLEMODEL);
+                attribute.setResourceName(AppConstant.RESOURCE_MOVIES);
 
                 new WebserviceWrapper(context, attribute, this).new WebserviceCaller().execute(WebConstants.ADD_RESOURCE_TO_FAVORITE);
             } else {
