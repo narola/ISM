@@ -31,6 +31,7 @@ import com.ism.model.FragmentArgument;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
+import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
@@ -53,9 +54,8 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
     private View view;
 
     private CircleImageView imgDp;
-    public static TextView txtEditProfile;
     private TextView txtUserName, txtNotificationNo, txtMessageNo, txtRequestNo,
-            txtGeneralSettings, txtMyFeeds, txtStudyMates, txtMyActivity, txtWallet;
+            txtGeneralSettings, txtMyFeeds, txtStudyMates, txtMyActivity, txtWallet, txtEditProfile;
     private ImageView imgNotification, imgMessage, imgFriendRequest;
     private ListView lvNotifications, lvMessages, lvStudymates;
     private Button btnViewAll;
@@ -196,7 +196,11 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
         btnViewAll.setTypeface(myTypeFace.getRalewayRegular());
 
-        callApiGetNotifications();
+	    if (Utility.isConnected(activityHost)) {
+		    callApiGetNotifications();
+	    } else {
+		    Utility.alertOffline(activityHost);
+	    }
 
         final PopupWindow popupNotification = new PopupWindow(view, 250, 350, true);
         popupNotification.setOutsideTouchable(true);
@@ -217,19 +221,19 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         });
 
         lvNotifications.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                popupNotification.dismiss();
-                loadFragmentAllNotification(position);
-            }
+	        @Override
+	        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		        popupNotification.dismiss();
+		        loadFragmentAllNotification(position);
+	        }
         });
 
         btnViewAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupNotification.dismiss();
-                loadFragmentAllNotification(-1);
-            }
+	        @Override
+	        public void onClick(View v) {
+		        popupNotification.dismiss();
+		        loadFragmentAllNotification(-1);
+	        }
         });
 
         popupNotification.showAtLocation(imgNotification, Gravity.END, 10, 60);
@@ -263,7 +267,11 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 		btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
 		btnViewAll.setTypeface(myTypeFace.getRalewayRegular());
 
-		callApiGetMessages();
+		if (Utility.isConnected(activityHost)) {
+			callApiGetMessages();
+		} else {
+			Utility.alertOffline(activityHost);
+		}
 
 		final PopupWindow popupMessage = new PopupWindow(view, 250, 350, true);
 		popupMessage.setOutsideTouchable(true);
@@ -330,7 +338,11 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 		btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
 		btnViewAll.setTypeface(myTypeFace.getRalewayRegular());
 
-		callApiGetStudymateRequests();
+		if (Utility.isConnected(activityHost)) {
+			callApiGetStudymateRequests();
+		} else {
+			Utility.alertOffline(activityHost);
+		}
 
 		final PopupWindow popupFriendRequest = new PopupWindow(view, 250, 350, true);
 		popupFriendRequest.setOutsideTouchable(true);
@@ -509,7 +521,11 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			for (int i = 0; i < (arrListStudyMateRequest.size() >= 4 ? 4 : arrListStudyMateRequest.size()); i++) {
 				recordIds.add(arrListStudyMateRequest.get(i).getRecordId());
 			}
-			callApiUpdateReadStatus(WebConstants.STUDYMATE_REQUEST, recordIds);
+			if (Utility.isConnected(activityHost)) {
+				callApiUpdateReadStatus(WebConstants.STUDYMATE_REQUEST, recordIds);
+			} else {
+				Utility.alertOffline(activityHost);
+			}
 		}
 	}
 
@@ -555,7 +571,11 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			for (int i = 0; i < (arrListMessage.size() >= 4 ? 4 : arrListMessage.size()); i++) {
 				recordIds.add(arrListMessage.get(i).getRecordId());
 			}
-			callApiUpdateReadStatus(WebConstants.MESSAGES, recordIds);
+			if (Utility.isConnected(activityHost)) {
+				callApiUpdateReadStatus(WebConstants.MESSAGES, recordIds);
+			} else {
+				Utility.alertOffline(activityHost);
+			}
 		}
 	}
 
@@ -587,7 +607,11 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			for (int i = 0; i < (arrListNotification.size() >= 4 ? 4 : arrListNotification.size()); i++) {
 				recordIds.add(arrListNotification.get(i).getRecordId());
 			}
-			callApiUpdateReadStatus(WebConstants.NOTIFICATION, recordIds);
+			if (Utility.isConnected(activityHost)) {
+				callApiUpdateReadStatus(WebConstants.NOTIFICATION, recordIds);
+			} else {
+				Utility.alertOffline(activityHost);
+			}
 		}
 	}
 

@@ -32,6 +32,8 @@ public class WebConstants {
 	public static final int UPDATE_READ_STATUS = 22;
 	public static final int GET_HIGH_SCORERS = 23;
 	public static final int UPLOAD_PROFILE_PIC = 24;
+	public static final int GET_WALLET_SUMMARY = 25;
+	public static final int GENERATE_VOUCHER = 26;
 
 
 	//general settings
@@ -98,6 +100,8 @@ public class WebConstants {
 	public static final String URL_RESPOND_TO_REQUEST = URL_HOST_147 + "AcceptRequestFromStudymate";
 	public static final String URL_UPDATE_READ_STATUS = URL_HOST_147 + "UpdateReadStatus"; // studymate_request, messages, notification
 	public static final String URL_GET_HIGH_SCORERS = URL_HOST_147 + "GetHighScorers";
+	public static final String URL_GET_WALLET_SUMMARY = URL_HOST_147 + "GetWalletSummary";
+	public static final String URL_GENERATE_VOUCHER = URL_HOST_147 + "GenerateVoucher";
 
 
 	/*

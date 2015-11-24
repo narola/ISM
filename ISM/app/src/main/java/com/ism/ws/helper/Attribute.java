@@ -74,6 +74,7 @@ public class Attribute {
 	private String fileName;
 	private String resourceId;
 	private String resourceName;
+	private String voucherAmount;
 
 
 	public String getResourceName() {
@@ -471,5 +472,14 @@ public class Attribute {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	@JsonProperty("voucher_amount")
+	public String getVoucherAmount() {
+		return voucherAmount;
+	}
+
+	public void setVoucherAmount(String voucherAmount) {
+		this.voucherAmount = voucherAmount;
 	}
 }

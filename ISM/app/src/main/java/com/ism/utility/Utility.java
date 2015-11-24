@@ -10,17 +10,13 @@ import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.constant.WebConstants;
-import com.ism.object.MyTypeFace;
 import com.ism.ws.model.Notice;
 
 import java.io.ByteArrayOutputStream;
@@ -28,6 +24,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,8 +39,13 @@ public class Utility {
 
 	private static final String TAG = Utility.class.getSimpleName();
 
+	private static AlertDialog dialogOffline;
+	private static AlertDialog dialogServerAlert;
+
+	public static final SimpleDateFormat DATE_FORMAT_PHP = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 	public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 	public static final SimpleDateFormat DATE_FORMAT_DISPLAY = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+	public static final SimpleDateFormat DATE_FORMAT_DMY = new SimpleDateFormat("dd MMM yy", Locale.getDefault());
 
 	/**
 	 * Krunal Panchale
@@ -108,8 +110,9 @@ public class Utility {
 	 * @param context
 	 */
 	public static void alertOffline(Context context) {
-//		Toast.makeText(context, R.string.msg_offline, Toast.LENGTH_SHORT).show();
-		alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_offline));
+		if (dialogOffline == null || !dialogOffline.isShowing()) {
+			dialogOffline = alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_offline));
+		}
 	}
 
 	/**
@@ -118,7 +121,9 @@ public class Utility {
 	 * @param context
 	 */
 	public static void alertServerNotConnected(Context context) {
-		alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
+		if (dialogServerAlert == null || !dialogServerAlert.isShowing()) {
+			dialogServerAlert = alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
+		}
 	}
 
 	/**
@@ -141,9 +146,8 @@ public class Utility {
 	 * @param title
 	 * @param message
 	 */
-	public static void alert(Context context, String title, String message) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
+	public static AlertDialog alert(Context context, String title, String message) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppDialogTheme);
 		if (title != null) {
 			builder.setTitle(title);
 		}
@@ -158,39 +162,7 @@ public class Utility {
 		}).create();
 		dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 		dialog.show();
-	}
-
-	public static void alertSystem(Context context, String title, String message) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppDialogTheme);
-
-		LayoutInflater inflater = LayoutInflater.from(context);
-		View view = inflater.inflate(R.layout.dialog_alert, null);
-		MyTypeFace myTypeFace = new MyTypeFace(context);
-
-		if (title != null) {
-			TextView txtTitle = (TextView) view.findViewById(R.id.txt_title);
-			txtTitle.setText(title);
-			txtTitle.setTypeface(myTypeFace.getRalewayBold());
-		}
-
-		if (message != null) {
-			TextView txtMessage = (TextView) view.findViewById(R.id.txt_message);
-			txtMessage.setText(message);
-			txtMessage.setTypeface(myTypeFace.getRalewayRegular());
-		}
-
-		Button btnOk = (Button) view.findViewById(R.id.btn_ok);
-
-		final AlertDialog dialog = builder.setView(view)
-									.create();
-		btnOk.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
-			}
-		});
-		dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-		dialog.show();
+		return dialog;
 	}
 
 	/**
@@ -210,6 +182,20 @@ public class Utility {
 	 */
 	public static String formatDateDisplay(Date date) {
 		return DATE_FORMAT_DISPLAY.format(date);
+	}
+
+	/**
+	 * Krunal Panchal
+	 * @param strDate
+	 * @return String : fromatted date. eg. : 6 jul 15
+	 */
+	public static String formatPHPDateToDMY(String strDate) {
+		try {
+			return DATE_FORMAT_DMY.format(DATE_FORMAT_PHP.parse(strDate));
+		} catch (ParseException e) {
+			Log.e(TAG, "formatPHPDateToDMY Exception : " + e.toString());
+			return null;
+		}
 	}
 
 	/**

@@ -160,7 +160,7 @@ public class EditProfileFragment extends Fragment {
             activityHost = (HostActivity) activity;
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(HostActivity.FRAGMENT_CHAT);
+                fragListener.onFragmentAttached(HostActivity.FRAGMENT_EDIT_PROFILE);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -172,7 +172,7 @@ public class EditProfileFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(HostActivity.FRAGMENT_CHAT);
+                fragListener.onFragmentDetached(HostActivity.FRAGMENT_EDIT_PROFILE);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
