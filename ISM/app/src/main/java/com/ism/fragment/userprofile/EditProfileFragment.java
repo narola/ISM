@@ -132,21 +132,21 @@ public class EditProfileFragment extends Fragment {
             break;
             case FRAGMENT_MOVIES: {
                 currentFragment = frag;
-                UserMoviesFragment fragment = UserMoviesFragment.newInstance();
+                MoviesFragment fragment = MoviesFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_ROLE_MODELS: {
-                Debug.i(TAG, "call for UserRoleModelFragment ");
+                Debug.i(TAG, "call for RoleModelFragment ");
                 currentFragment = frag;
-                UserRoleModelFragment fragment = UserRoleModelFragment.newInstance();
+                RoleModelFragment fragment = RoleModelFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_PASTTIME: {
-                Debug.i(TAG, "call for UserPastTimeFragment ");
+                Debug.i(TAG, "call for PastTimeFragment ");
                 currentFragment = frag;
-                UserPastTimeFragment fragment = UserPastTimeFragment.newInstance();
+                PastTimeFragment fragment = PastTimeFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;

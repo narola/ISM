@@ -12,25 +12,25 @@ import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserBooks {
+public class Books {
 	
-    private ArrayList<Suggested> suggested;
-    private ArrayList<Favorite> favorite;
+    private ArrayList<Book> suggested;
+    private ArrayList<Book> favorite;
 
-    @JsonProperty("suggested")
-    public ArrayList<Suggested> getSuggested() {
+    @JsonProperty("suggested_book")
+    public ArrayList<Book> getSuggested() {
         return this.suggested;
     }
 
-    public void setSuggested(ArrayList<Suggested> suggested) {
+    public void setSuggested(ArrayList<Book> suggested) {
         this.suggested = suggested;
     }
-    @JsonProperty("favorite")
-    public ArrayList<Favorite> getFavorite() {
+    @JsonProperty("favorite_book")
+    public ArrayList<Book> getFavorite() {
         return this.favorite;
     }
 
-    public void setFavorite(ArrayList<Favorite> favorite) {
+    public void setFavorite(ArrayList<Book> favorite) {
         this.favorite = favorite;
     }
 

@@ -17,7 +17,6 @@ import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.StudentAttemptedAssignmentAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -34,12 +33,10 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
 
     private static final String TAG = StudentAttemptedAssignmentFragment.class.getSimpleName();
     private View view;
-    private FragmentArgument fragmentArgument;
 
-
-    public static StudentAttemptedAssignmentFragment newInstance(FragmentArgument fragmentArgument) {
+    public static StudentAttemptedAssignmentFragment newInstance(Bundle bundleArguments) {
         StudentAttemptedAssignmentFragment studentAttemptedAssignmentFragment = new StudentAttemptedAssignmentFragment();
-        studentAttemptedAssignmentFragment.fragmentArgument = fragmentArgument;
+        studentAttemptedAssignmentFragment.setArguments(bundleArguments);
         return studentAttemptedAssignmentFragment;
     }
 
@@ -66,7 +63,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
         myTypeFace = new MyTypeFace(getActivity());
         tvTitleStudentattempted = (TextView) view.findViewById(R.id.tv_title_studentattempted);
         rvStudentattemptedList = (RecyclerView) view.findViewById(R.id.rv_studentattempted_list);
-        studentAttemptedAssignmentAdapter = new StudentAttemptedAssignmentAdapter(getActivity(), fragmentArgument);
+        studentAttemptedAssignmentAdapter = new StudentAttemptedAssignmentAdapter(getActivity(), getArguments());
         rvStudentattemptedList.setAdapter(studentAttemptedAssignmentAdapter);
         rvStudentattemptedList.setLayoutManager(new LinearLayoutManager(getActivity()));
 

@@ -21,7 +21,6 @@ import com.ism.author.adapter.Adapters;
 import com.ism.author.adapter.QuestionBankListAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -44,12 +43,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     private static final String TAG = QuestionListFragment.class.getSimpleName();
     private View view;
     Fragment mFragment;
-    private FragmentArgument fragmentArgument;
 
-    public QuestionListFragment(Fragment fragment, FragmentArgument fragmentArgument) {
+
+    public QuestionListFragment(Fragment fragment) {
         this.mFragment = fragment;
-        this.fragmentArgument = fragmentArgument;
-
     }
 
     private Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistTopic;

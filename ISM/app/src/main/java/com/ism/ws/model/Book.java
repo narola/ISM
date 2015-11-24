@@ -10,9 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-
-public class Suggested {
-
+public class Book {
+	
     private String ebookLink;
     private String authorImage;
     private String price;
@@ -106,4 +105,6 @@ public class Suggested {
     }
 
 
+
+    
 }

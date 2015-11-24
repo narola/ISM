@@ -24,8 +24,8 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.Adapters;
+import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -49,12 +49,13 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private static final String TAG = CreateExamFragment.class.getSimpleName();
     private View view;
-    private FragmentArgument fragmentArgument;
+    private Bundle bundleArgument;
 
     //    private FragmentListener fragListener;
-    public static CreateExamFragment newInstance(FragmentArgument fragmentArgument) {
+    public static CreateExamFragment newInstance(Bundle bundleArgument) {
         CreateExamFragment createExamFragment = new CreateExamFragment();
-        createExamFragment.fragmentArgument = fragmentArgument;
+        createExamFragment.setArguments(bundleArgument);
+        createExamFragment.bundleArgument = bundleArgument;
         return createExamFragment;
     }
 
@@ -254,7 +255,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             }
         });
 
-        if (fragmentArgument != null) {
+        if (getArguments() != null) {
             Utils.showToast("NOTNULL", getActivity());
             setExamDetails = true;
             setExamDetails();
@@ -268,12 +269,12 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
 
     private void setExamDetails() {
-        etExamName.setText(fragmentArgument.getFragmentArgumentObject().getExamName());
-        spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(fragmentArgument.getFragmentArgumentObject().getPassPercentage()));
-        setExamType(fragmentArgument.getFragmentArgumentObject().getExamType());
-        spExamExamCategory.setSelection(arrListExamCategory.indexOf(fragmentArgument.getFragmentArgumentObject().getExamCategory()));
-        spExamExammode.setSelection(arrListExamMode.indexOf(fragmentArgument.getFragmentArgumentObject().getExamMode().toLowerCase()));
-        spExamExamduration.setSelection(arrListExamDuration.indexOf(fragmentArgument.getFragmentArgumentObject().getDuration()));
+        etExamName.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
+        spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(ExamsAdapter.ARG_PASS_PERCENTAGE)));
+        setExamType((getArguments().getString(ExamsAdapter.ARG_EXAM_TYPE)));
+//        spExamExamCategory.setSelection(arrListExamCategory.indexOf(fragmentArgument.getFragmentArgumentObject().getExamCategory()));
+        spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).toLowerCase()));
+        spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_DURATION)));
 
     }
 
@@ -626,10 +627,11 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utils.showToast(getActivity().getString(R.string.msg_success_createexam), getActivity());
                     btnExamSetquestion.setVisibility(View.VISIBLE);
-                    if (fragmentArgument == null) {
-                        fragmentArgument = new FragmentArgument();
+                    if (getArguments() == null) {
+                        bundleArgument = new Bundle();
                     }
-                    fragmentArgument.getFragmentArgumentObject().setExamId(String.valueOf(responseHandler.getCreateExam().get(0).getExamId()));
+                    bundleArgument.putString(ExamsAdapter.ARG_EXAM_ID, String.valueOf(responseHandler.getCreateExam().get(0).getExamId()));
+//                    fragmentArgument.getFragmentArgumentObject().setExamId(String.valueOf(responseHandler.getCreateExam().get(0).getExamId()));
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
@@ -670,7 +672,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 callApiCreateExam();
             }
         } else if (v == btnExamSetquestion) {
-            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER, fragmentArgument);
+            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER, null);
         } else if (v == btnExamCancel) {
             backToTrialScreen();
         }

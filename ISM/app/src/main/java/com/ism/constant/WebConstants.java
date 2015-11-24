@@ -52,6 +52,8 @@ public class WebConstants {
 	public static final int GET_ROLEMODEL_FOR_USER = 57;
 	public static final int GET_PASTTIME_FOR_USER = 58;
 	public static final int GET_MOVIES_FOR_USER = 59;
+	public static final int ADD_RESOURCE_TO_FAVORITE = 60;
+
 
 
 	/**
@@ -62,6 +64,8 @@ public class WebConstants {
 
 	public static final String HOST_147 = "http://192.168.1.147/";      // KINJAL
 	private static final String URL_HOST_147 = HOST_147 + "WS_ISM/ISMServices.php?Service=";      // KINJAL
+
+	private static final String URL_IMAGE_PATH = "http://192.168.1.147/WS_ISM/Images";
 
 	public static final String URL_USERS_IMAGE_PATH = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/";
 	public static final String URL_ACCEPT_TUTORIAL_GROUP = URL_HOST_147 + "AcceptTutorialGroup";
@@ -105,7 +109,7 @@ public class WebConstants {
 	public static final String URL_GET_MOVIES_FOR_USER =  URL_HOST_147 + "GetMoviesForUser";
 	public static final String URL_GET_PASTTIME_FOR_USER =  URL_HOST_147 + "GetPastimeForUser";
 	public static final String URL_GET_ROLEMODEL_FOR_USER =  URL_HOST_147 + "GetRoleModelForUser";
-
+	public static final String URL_ADD_RESOURCE_TO_FAVORITE =  URL_HOST_147 + "AddResourcesToFavorite";
 
 
 

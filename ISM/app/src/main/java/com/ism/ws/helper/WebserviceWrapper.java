@@ -149,6 +149,18 @@ public class WebserviceWrapper {
                         case WebConstants.GET_BOOKS_FOR_USER:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseHandler.class, attribute);
                             break;
+                        case WebConstants.GET_MOVIES_FOR_USER:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MOVIES_FOR_USER).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_PASTTIME_FOR_USER:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_PASTTIME_FOR_USER).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_ROLEMODEL_FOR_USER:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ROLEMODEL_FOR_USER).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.ADD_RESOURCE_TO_FAVORITE:
+                            responseObject = new WebserviceConnector(WebConstants.URL_ADD_RESOURCE_TO_FAVORITE).execute(ResponseHandler.class, attribute);
+                            break;
                     }
                 }
             } catch (Exception e) {

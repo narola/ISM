@@ -44,4 +44,14 @@ public class AppConstant {
     public static final String videoCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
     public static final String audioCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Audios";
 
+    /*
+    *  resource name for edit profile
+    */
+
+    public  static final String RESOURCE_BOOKS="books";
+    public  static final String RESOURCE_ROLEMODEL="rolemodel";
+    public  static final String RESOURCE_PASTTIMES="pastimes";
+    public  static final String RESOURCE_MOVIES="movies";
+
+
 }

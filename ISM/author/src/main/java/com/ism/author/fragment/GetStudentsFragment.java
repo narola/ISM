@@ -23,7 +23,6 @@ import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.MyStudentListAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -199,8 +198,8 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
         }
     }
 
-    private FragmentArgument getFragmentArguments() {
-        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getFragmnetArgument();
+    private Bundle getBundleArguments() {
+        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getBundleArgument();
 
     }
 

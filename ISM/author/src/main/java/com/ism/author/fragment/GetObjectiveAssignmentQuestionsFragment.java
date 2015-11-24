@@ -20,7 +20,6 @@ import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.GetObjectiveAssignmentQuestionsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -47,14 +46,13 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private RecyclerView rvGetObjectiveAssignmentQuestionslist;
     private GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter;
     private ArrayList<Questions> listOfQuestions = new ArrayList<Questions>();
-    private FragmentArgument fragmentArgument;
 
 
-    public static GetObjectiveAssignmentQuestionsFragment newInstance(FragmentArgument fragmentArgument) {
+    public static GetObjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArgument) {
         GetObjectiveAssignmentQuestionsFragment getObjectiveAssignmentQuestionsFragment = new GetObjectiveAssignmentQuestionsFragment();
-        if (fragmentArgument != null) {
-            getObjectiveAssignmentQuestionsFragment.fragmentArgument = fragmentArgument;
-            getObjectiveAssignmentQuestionsFragment.fragmentArgument.setFragment(getObjectiveAssignmentQuestionsFragment);
+        if (bundleArgument != null) {
+            getObjectiveAssignmentQuestionsFragment.setArguments(bundleArgument);
+//            getObjectiveAssignmentQuestionsFragment.fragmentArgument.setFragment(getObjectiveAssignmentQuestionsFragment);
         }
         return getObjectiveAssignmentQuestionsFragment;
     }
@@ -101,8 +99,8 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         callApiGetExamQuestions();
 
 
-        if (fragmentArgument != null) {
-            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT, fragmentArgument);
+        if (getArguments() != null) {
+            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT, getArguments());
         }
 
 
@@ -129,16 +127,16 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     private void setExamQuestions() {
 
 
-        if (responseObjGetAllExamQuestions != null) {
-
-
-            fragmentArgument.getFragmentArgumentObject().setListOfQuestions(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
-        }
-        ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
-                (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), fragmentArgument);
-
-        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
-                (AuthorHostActivity.FRAGMENT_HIGHSCORE), fragmentArgument);
+//        if (responseObjGetAllExamQuestions != null) {
+//
+//
+//            fragmentArgument.getFragmentArgumentObject().setListOfQuestions(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
+//        }
+//        ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
+//                (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), fragmentArgument);
+//
+//        ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
+//                (AuthorHostActivity.FRAGMENT_HIGHSCORE), fragmentArgument);
 
     }
 
@@ -147,7 +145,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
                 Attribute request = new Attribute();
-                request.setExamId("3");
+                request.setExamId("9");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
@@ -165,7 +163,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                 Attribute request = new Attribute();
 //                request.setExamId(fragmentArgument.getFragmentArgumentObject().getExamId());
 //                request.setExamId(fragmentArgument.getFragmentArgumentObject().getStudentId());
-                request.setExamId("3");
+                request.setExamId("9");
                 request.setStudentId("202");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
@@ -234,7 +232,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
                     setAssignmentDetails(responseObjGetAllExamQuestions.getExamQuestions().get(0));
 
-                    if (fragmentArgument != null) {
+                    if (getArguments() != null) {
 
                         callAPiGetExamEvaluation();
                     }
