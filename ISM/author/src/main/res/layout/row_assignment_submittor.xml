@@ -151,7 +151,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <com.ism.author.helper.CircleImageView
+        <com.ism.author.views.CircleImageView
             android:id="@+id/img_assignment_submittor_dp"
             android:layout_width="@dimen/d70dp"
             android:layout_height="@dimen/d70dp"

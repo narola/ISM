@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.ism.author.helper.CircleImageView
+        <com.ism.author.views.CircleImageView
             android:id="@+id/img_user_pic"
             android:layout_width="60sp"
             android:layout_height="60sp"
@@ -34,7 +34,7 @@
             android:gravity="left"
             android:padding="1sp"
             android:text="Student name"
-            android:textColor="#343434"
+            android:textColor="@color/color_question"
             android:textSize="16sp" />
 
         <TextView
@@ -75,12 +75,12 @@
             android:textColor="#75767A"
             android:textSize="15sp" />
 
-        <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:id="@+id/txt_bottom_line"-->
-        <!--android:layout_below="@+id/txt_student_marks"-->
-        <!--android:background="@color/border_gray" />-->
+        <TextView
+            android:id="@+id/txt_bottom_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/txt_student_marks"
+            android:background="@color/border_gray" />
     </RelativeLayout>
 
 </LinearLayout>

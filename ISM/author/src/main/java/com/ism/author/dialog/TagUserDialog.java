@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.ism.author.R;
 import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.SearchStudyMatesAdapter;
-import com.ism.author.model.Data;
+import com.ism.author.ws.model.Studymates;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ public class TagUserDialog extends Dialog implements View.OnClickListener {
     private SearchStudyMatesAdapter searchStudyMatesAdapter;
     private TextView tvDialogClose, tvTagUsers;
     private EditText etSearchStudymates;
-    private ArrayList<Data> data;
+    private ArrayList<Studymates> studyMates;
     private TagUserListener tagUserListener;
 
 
@@ -41,11 +41,11 @@ public class TagUserDialog extends Dialog implements View.OnClickListener {
     }
 
 
-    public TagUserDialog(Context mContext, ArrayList<Data> data, TagUserListener tagUserListener) {
+    public TagUserDialog(Context mContext, ArrayList<Studymates> studyMates, TagUserListener tagUserListener) {
         super(mContext);
 
         this.mContext = mContext;
-        this.data = data;
+        this.studyMates = studyMates;
         this.tagUserListener = tagUserListener;
 
         Window w = getWindow();
@@ -76,7 +76,7 @@ public class TagUserDialog extends Dialog implements View.OnClickListener {
 
         rvStudymates.setAdapter(searchStudyMatesAdapter);
         rvStudymates.setLayoutManager(new LinearLayoutManager(mContext));
-        searchStudyMatesAdapter.addAll(data);
+        searchStudyMatesAdapter.addAll(studyMates);
 
 
         etSearchStudymates.addTextChangedListener(new TextWatcher() {

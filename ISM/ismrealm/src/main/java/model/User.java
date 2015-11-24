@@ -2,8 +2,15 @@ package model;
 
 
 
+import android.content.Context;
+
+import com.realm.ismrealm.RealmAdaptor;
+
+import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
+
 
 /**
  * Created by c85 on 19/11/15.
@@ -18,6 +25,8 @@ public class User extends RealmObject {
     private String firstName;
     private String lastName;
     private String fullName;
+    private String profilePicture;
+
 
 
     public int getUserId() {
@@ -59,4 +68,16 @@ public class User extends RealmObject {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+
+
+
 }

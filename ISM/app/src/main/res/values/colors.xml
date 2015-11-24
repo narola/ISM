@@ -55,4 +55,5 @@
     <color name="blue">#4294D0</color>
     <color name="blue_dark">#286fa3</color>
     <color name="bg_wallet_head">#616D79</color>
+    <color name="edit_shadow">#32000000</color>
 </resources>

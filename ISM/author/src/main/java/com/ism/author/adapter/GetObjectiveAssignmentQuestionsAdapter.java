@@ -13,9 +13,10 @@ import android.widget.TextView;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utils;
-import com.ism.author.helper.MyTypeFace;
-import com.ism.author.model.Data;
-import com.ism.author.model.QuestionAnswersModel;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.model.Answers;
+import com.ism.author.ws.model.Evaluation;
+import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
 
     private static final String TAG = GetObjectiveAssignmentQuestionsAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Data> listOfQuestions = new ArrayList<Data>();
+    private ArrayList<Questions> listOfQuestions = new ArrayList<Questions>();
     private MyTypeFace myTypeFace;
     private LayoutInflater inflater;
 
@@ -103,10 +104,10 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
         return listOfQuestions.size();
     }
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<Questions> listOfQuestions) {
         try {
             this.listOfQuestions.clear();
-            this.listOfQuestions.addAll(data);
+            this.listOfQuestions.addAll(listOfQuestions);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
@@ -148,7 +149,7 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
     }
 
 
-    private View getAnsInflaterView(QuestionAnswersModel answer, int position) {
+    private View getAnsInflaterView(Answers answer, int position) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View v;
@@ -161,9 +162,9 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
     }
 
 
-    ArrayList<Data> evaluationList = new ArrayList<Data>();
+    ArrayList<Evaluation> evaluationList = new ArrayList<Evaluation>();
 
-    public void setEvaluationData(ArrayList<Data> evaluationList) {
+    public void setEvaluationData(ArrayList<Evaluation> evaluationList) {
         this.evaluationList = evaluationList;
 
     }

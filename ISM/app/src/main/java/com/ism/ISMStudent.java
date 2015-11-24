@@ -3,9 +3,8 @@ package com.ism;
 import android.app.Application;
 import android.graphics.Bitmap;
 
+import com.ism.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.fragment.OfficeFragment;
-import com.ism.author.helper.MyTypeFace;
+import com.ism.author.object.MyTypeFace;
 import com.ism.author.model.OfficeTabDataSet;
 
 

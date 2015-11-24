@@ -1,5 +1,9 @@
 package com.ism.author.model;
 
+import com.ism.author.ws.model.Questions;
+
+import java.util.ArrayList;
+
 /**
  * Created by c166 on 18/11/15.
  */
@@ -8,12 +12,20 @@ public class FragmentArgumentObject {
     private String examId;
     private String examType;
     private String examMode;
+    private String examName;
+    private String classroomId;
     private String studentId;
     private int position;
     private String profilePic;
     private int assignmentNo;
     private String assignmentName;
     private String studentName;
+    private String subjectId;
+    private String passPercentage;
+    private String duration;
+    private String examCategory;
+    private ArrayList<Questions> listOfQuestions;
+
 
     public String getExamId() {
         return this.examId;
@@ -87,4 +99,62 @@ public class FragmentArgumentObject {
     public String getStudentName() {
         return studentName;
     }
+
+    public void setExamName(String examName) {
+        this.examName = examName;
+    }
+
+    public String getExamName() {
+        return examName;
+    }
+
+    public String getClassroomId() {
+        return this.classroomId;
+    }
+
+    public void setClassroomId(String classroomId) {
+        this.classroomId = classroomId;
+    }
+
+    public String getPassPercentage() {
+        return this.passPercentage;
+    }
+
+    public void setPassPercentage(String passPercentage) {
+        this.passPercentage = passPercentage;
+    }
+
+    public String getDuration() {
+        return this.duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public ArrayList<Questions> getArrayListOfQuestions() {
+        return this.listOfQuestions;
+    }
+
+    public void setListOfQuestions(ArrayList<Questions> listOfQuestions) {
+        this.listOfQuestions = listOfQuestions;
+    }
+
+    public String getSubjectId() {
+        return this.subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public String getExamCategory() {
+        return this.examCategory;
+    }
+
+    public void setExamCategory(String examCategory) {
+        this.examCategory = examCategory;
+    }
+
+
 }

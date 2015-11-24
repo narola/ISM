@@ -18,17 +18,17 @@ import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.dialog.TagUserDialog;
 import com.ism.author.dialog.ViewAllCommentsDialog;
-import com.ism.author.helper.CircleImageView;
-import com.ism.author.helper.ImageLoaderInit;
-import com.ism.author.model.Data;
-import com.ism.author.model.PostFeedCommentsModel;
-import com.ism.author.model.PostFeedImagesModel;
-import com.ism.author.model.RequestObject;
-import com.ism.author.model.ResponseObject;
-import com.ism.author.ws.WebserviceWrapper;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.ws.helper.Attribute;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.CommentList;
+import com.ism.author.ws.model.FeedImages;
+import com.ism.author.ws.model.Feeds;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -43,7 +43,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 
     private Context mContext;
-    private ArrayList<Data> listOfPostFeeds = new ArrayList<Data>();
+    private ArrayList<Feeds> listOfPostFeeds = new ArrayList<Feeds>();
     String likePrefData, unlikePrefData;
     private ImageLoader imageLoader;
     private int addCommentFeedPosition = -1;
@@ -83,7 +83,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             addCommentFeedPosition = -1;
         }
 
-        if (listOfPostFeeds.get(position).getLike() == 1) {
+        if (Integer.valueOf(listOfPostFeeds.get(position).getLike()) == 1) {
             holder.imgPostLike.setSelected(true);
         } else {
             holder.imgPostLike.setSelected(false);
@@ -126,7 +126,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             public void onClick(View v) {
                 String comment = holder.etWriteComment.getText().toString().trim();
                 if (comment != null && comment.length() > 0) {
-                    callApiComment(position, comment);
+                    callApiAddComment(position, comment);
                 }
 
 
@@ -159,12 +159,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                 holder.imgPostLike.setSelected(!holder.imgPostLike.isSelected());
 
                 if (holder.imgPostLike.isSelected()) {
-                    listOfPostFeeds.get(position).setLike(1);
+                    listOfPostFeeds.get(position).setLike(String.valueOf(AppConstant.LIKE));
                     listOfPostFeeds.get(position).setTotalLike(String.valueOf(Integer.parseInt(listOfPostFeeds.get(position).getTotalLike()) + 1));
 
                     setPrefForLike(listOfPostFeeds.get(position).getFeedId() + ",");
                 } else {
-                    listOfPostFeeds.get(position).setLike(0);
+                    listOfPostFeeds.get(position).setLike(String.valueOf(AppConstant.DISLIKE));
                     listOfPostFeeds.get(position).setTotalLike(String.valueOf(Integer.parseInt(listOfPostFeeds.get(position).getTotalLike()) - 1));
 
                     setPrefForUnlike(listOfPostFeeds.get(position).getFeedId() + ",");
@@ -185,13 +185,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         // holder.rlImage.setVisibility(View.GONE);
         //video
-        if (listOfPostFeeds.get(position).getVideo_thumbnail() != "") {
+        if (listOfPostFeeds.get(position).getVideoThumbnail() != "") {
 
             holder.imgVideo.setVisibility(View.VISIBLE);
             holder.imgPlay.setVisibility(View.VISIBLE);
 
-            Log.i(TAG, WebConstants.FEED_MEDIA + listOfPostFeeds.get(position).getVideo_thumbnail() + "");
-            imageLoader.displayImage(WebConstants.FEED_MEDIA + listOfPostFeeds.get(position).getVideo_thumbnail(), holder.imgVideo, ImageLoaderInit.options);
+            Log.i(TAG, WebConstants.FEED_MEDIA + listOfPostFeeds.get(position).getVideoThumbnail() + "");
+            imageLoader.displayImage(WebConstants.FEED_MEDIA + listOfPostFeeds.get(position).getVideoThumbnail(), holder.imgVideo, ISMAuthor.options);
 
         }
         //audio
@@ -200,15 +200,15 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             holder.imgAudio.setVisibility(View.VISIBLE);
         }
         // images
-        if (listOfPostFeeds.get(position).getFeed_images().size() != 0) {
+        if (listOfPostFeeds.get(position).getFeedImages().size() != 0) {
 
             holder.imgImage.setVisibility(View.VISIBLE);
 
-            ArrayList<PostFeedImagesModel> listImages = new ArrayList<PostFeedImagesModel>();
-            listImages = listOfPostFeeds.get(position).getFeed_images();
-            for (int i = 0; i < listImages.size(); i++) {
-                Log.i(TAG, WebConstants.FEED_MEDIA + listImages.get(i).getImage_link() + "");
-                imageLoader.displayImage(WebConstants.FEED_MEDIA + listImages.get(i).getImage_link(), holder.imgImage, ImageLoaderInit.options);
+            ArrayList<FeedImages> feedImages = new ArrayList<FeedImages>();
+            feedImages = listOfPostFeeds.get(position).getFeedImages();
+            for (int i = 0; i < feedImages.size(); i++) {
+                Log.i(TAG, WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink() + "");
+                imageLoader.displayImage(WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink(), holder.imgImage, ISMAuthor.options);
 
             }
 
@@ -240,11 +240,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         return listOfPostFeeds.size();
     }
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<Feeds> feeds) {
 
         try {
             this.listOfPostFeeds.clear();
-            this.listOfPostFeeds.addAll(data);
+            this.listOfPostFeeds.addAll(feeds);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -285,7 +285,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         }
     }
 
-    private View getCommetInflaterView(PostFeedCommentsModel commentData) {
+    private View getCommetInflaterView(CommentList commentList) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
 
         View v;
@@ -298,28 +298,28 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         ImageView imgCommenterDp = (ImageView) v.findViewById(R.id.img_commenter_dp);
 
 
-        txtCommenterUsername.setText(commentData.getUsername());
-        txtCommenterComment.setText(commentData.getComment());
-        txtCommentDuration.setText(commentData.getCommentBy());
+        txtCommenterUsername.setText(commentList.getFullName());
+        txtCommenterComment.setText(commentList.getComment());
+        txtCommentDuration.setText("5 min");
 
         imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", imgCommenterDp, ISMAuthor.options);
 
         return v;
     }
 
-    private void callApiComment(int position, String comment) {
+    private void callApiAddComment(int position, String comment) {
         if (Utility.isOnline(getActivity())) {
             try {
                 addCommentFeedPosition = position;
-                RequestObject requestObject = new RequestObject();
-                requestObject.setFeedId(listOfPostFeeds.get(position).getFeedId());
-                requestObject.setCommentBy(WebConstants.TEST_USER_ID);
-                requestObject.setComment(comment);
+                Attribute attribute = new Attribute();
+                attribute.setFeedId(listOfPostFeeds.get(position).getFeedId());
+                attribute.setCommentBy(WebConstants.TEST_USER_ID);
+                attribute.setComment(comment);
 
-                new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.ADDCOMMENT);
             } catch (Exception e) {
-                Log.e(TAG, "callApiComment Exception : " + e.toString());
+                Log.e(TAG, "callApiAddComment Exception : " + e.toString());
             }
         } else {
             Utility.toastOffline(getActivity());
@@ -331,9 +331,9 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         if (Utility.isOnline(getActivity())) {
             try {
 
-                RequestObject requestObject = new RequestObject();
-                requestObject.setFeedId(listOfPostFeeds.get(position).getFeedId());
-                new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setFeedId(listOfPostFeeds.get(position).getFeedId());
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.GETALLCOMMENTS);
 
             } catch (Exception e) {
@@ -349,9 +349,9 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         if (Utility.isOnline(getActivity())) {
             try {
-                RequestObject requestObject = new RequestObject();
-                requestObject.setUserId(WebConstants.TEST_GETSTUDYMATES);
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setUserId(WebConstants.TEST_GETSTUDYMATES);
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSTUDYMATES);
             } catch (Exception e) {
                 Log.i(TAG + getActivity().getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -367,12 +367,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
         if (Utility.isOnline(getActivity())) {
             try {
-                RequestObject requestObject = new RequestObject();
-                requestObject.setFeedId(listOfPostFeeds.get(tagFeedPosition).getFeedId());
-                requestObject.setTaggedBy(WebConstants.TEST_TAGGED_BY);
-                requestObject.setTaggedUserIds(arrTagUser);
+                Attribute attribute = new Attribute();
+                attribute.setFeedId(listOfPostFeeds.get(tagFeedPosition).getFeedId());
+                attribute.setTaggedBy(WebConstants.TEST_USER_ID);
+                attribute.setTaggedUserIds(arrTagUser);
 
-                new WebserviceWrapper(getActivity(), requestObject, this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
                         .execute(WebConstants.TAGFRIENDINFEED);
             } catch (Exception e) {
                 Log.e(TAG, "callApiTagUsers Exception : " + e.toString());
@@ -400,7 +400,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
                         onResponseAddComment(object);
                         break;
                     case WebConstants.GETALLCOMMENTS:
-
                         onResponseGetAllComments(object);
                         break;
                     case WebConstants.GETSTUDYMATES:
@@ -422,11 +421,12 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private void onResponseAddComment(Object object) {
         try {
-            ResponseObject responseObj = (ResponseObject) object;
-            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-                listOfPostFeeds.get(addCommentFeedPosition).setTotalComment("" + (Integer.parseInt(listOfPostFeeds.get(addCommentFeedPosition).getTotalComment()) + 1));
+            ResponseHandler responseHandler = (ResponseHandler) object;
+            if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                listOfPostFeeds.get(addCommentFeedPosition).
+                        setTotalComment("" + (Integer.parseInt(listOfPostFeeds.get(addCommentFeedPosition).getTotalComment()) + 1));
                 notifyDataSetChanged();
-            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+            } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                 Utils.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
             }
         } catch (Exception e) {
@@ -436,11 +436,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private void onResponseGetAllComments(Object object) {
         try {
-            ResponseObject responseObj = (ResponseObject) object;
-            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-                ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseObj.getData());
+            ResponseHandler responseHandler = (ResponseHandler) object;
+            if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseHandler.getComments());
                 viewAllCommentsDialog.show();
-            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+            } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                 Utils.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
             }
         } catch (Exception e) {
@@ -450,13 +450,13 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private void onResponseGetAllStudyMates(Object object) {
         try {
-            ResponseObject responseObj = (ResponseObject) object;
-            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
-                if (responseObj.getData().size() > 0) {
-                    TagUserDialog tagUserDialog = new TagUserDialog(getActivity(), responseObj.getData(), this);
+            ResponseHandler responseHandler = (ResponseHandler) object;
+            if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                if (responseHandler.getStudymates().size() > 0) {
+                    TagUserDialog tagUserDialog = new TagUserDialog(getActivity(), responseHandler.getStudymates(), this);
                     tagUserDialog.show();
                 }
-            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+            } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                 Utils.showToast(getActivity().getString(R.string.msg_failed_comment), getActivity());
             }
         } catch (Exception e) {
@@ -466,11 +466,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private void onResponseTagStudyMates(Object object) {
         try {
-            ResponseObject responseObj = (ResponseObject) object;
+            ResponseHandler responseObj = (ResponseHandler) object;
             tagFeedPosition = -1;
-            if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+            if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                 Utils.showToast(getActivity().getString(R.string.msg_tag_done), getActivity());
-            } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+            } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                 Utils.showToast(getActivity().getString(R.string.msg_tag_failed), getActivity());
 
             }

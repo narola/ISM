@@ -17,8 +17,7 @@ public class RealmAdaptor {
     * @return
             */
     public static Realm getInstance(Context context){
-
-        RealmConfiguration configuration = new RealmConfiguration.Builder(context)
+         RealmConfiguration configuration = new RealmConfiguration.Builder(context)
                 .name("ISM.realm")
                 .schemaVersion(0)
                 .migration(new Migration(0))

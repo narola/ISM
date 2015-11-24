@@ -8,11 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.ism.author.AuthorHostActivity;
 import com.ism.author.R;
-import com.ism.author.constant.AppConstant;
-import com.ism.author.helper.MyTypeFace;
-import com.ism.author.model.ResponseObject;
+import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.helper.ResponseHandler;
 
 
 /**
@@ -22,11 +21,11 @@ public class TrialExamsAdapter extends BaseAdapter {
 
     private Context context;
     LayoutInflater inflater;
-    ResponseObject data;
+    ResponseHandler data;
     Fragment fragment;
     private MyTypeFace myTypeFace;
 
-    public TrialExamsAdapter(Context context, ResponseObject data, Fragment fragment) {
+    public TrialExamsAdapter(Context context, ResponseHandler data, Fragment fragment) {
         this.context = context;
         this.data = data;
         this.fragment = fragment;
@@ -94,9 +93,9 @@ public class TrialExamsAdapter extends BaseAdapter {
                 public void onClick(View v) {
 
                     // send the value of exam_id,role_id
-                    if (data.getData().get(position).getExamMode().equals(AppConstant.EXAM_MODE_OBJECTIVE))
+                    if (data.getData().get(position).getExamMode().equalsIgnoreCase(context.getResources().getString(R.string.strobjective)))
                         ((AuthorHostActivity) context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS, null);
-                    else if (data.getData().get(position).getExamMode().equals(AppConstant.EXAM_MODE_SUBJECTIVE))
+                    else if (data.getData().get(position).getExamMode().equals(context.getResources().getString(R.string.strobjective)))
                         ((AuthorHostActivity) context).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS, null);
 
                 }

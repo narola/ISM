@@ -1,9 +1,6 @@
 package com.ism.author.constant;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Environment;
-import android.view.inputmethod.InputMethodManager;
 
 import java.io.File;
 
@@ -13,7 +10,7 @@ import java.io.File;
 public class AppConstant {
 
 
-    //All fonts
+    /*all fonts*/
 
     public static final String RalewayBlack = "Raleway-Black.ttf";
     public static final String RalewayBlackItalic = "Raleway-BlackItalic.ttf";
@@ -43,22 +40,9 @@ public class AppConstant {
 
 
     public static final String STATUS_UPLOADING = "uploading";
-    public static final String EXAM_MODE_OBJECTIVE = "objective";
-    public static final String EXAM_MODE_SUBJECTIVE = "subjective";
     public static final int AUTHOR_ROLE_ID = 4;
-
-    /**
-     * Hide Keyboard
-     *
-     * @param mContext
-     */
-    public static void hideKeyboard(Context mContext) {
-
-        InputMethodManager imm = (InputMethodManager) mContext
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(((Activity) mContext).getWindow()
-                .getCurrentFocus().getWindowToken(), 0);
-    }
+    public static final int LIKE = 1;
+    public static final int DISLIKE = 0;
 
 
 }

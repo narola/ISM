@@ -11,8 +11,9 @@ import android.widget.TextView;
 
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
+import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
-import com.ism.author.model.Data;
+import com.ism.author.ws.model.Studymates;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -26,14 +27,15 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
 
     private static final String TAG = SearchStudyMatesAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<Data> listOfStudyMates = new ArrayList<Data>();
-    public ArrayList<String> tagIds = new ArrayList<String>();
+    private ArrayList<Studymates> listOfStudyMates = new ArrayList<Studymates>();
+    private ArrayList<String> tagIds = new ArrayList<String>();
 
     public ArrayList<String> getTagIds() {
         return tagIds;
     }
 
     private LayoutInflater inflater;
+    private ImageLoader imageLoader;
 
     public SearchStudyMatesAdapter(Context mContext) {
         this.mContext = mContext;
@@ -41,8 +43,6 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         inflater = LayoutInflater.from(mContext);
     }
-
-    private ImageLoader imageLoader;
 
 
     @Override
@@ -61,11 +61,8 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
 
             @Override
             public void onClick(View v) {
-
                 if (holder.chkAddusertotag.isChecked()) {
-
                     tagIds.add(listOfStudyMates.get(position).getUserId());
-
                 } else {
                     tagIds.remove(listOfStudyMates.get(position).getUserId());
                 }
@@ -80,12 +77,12 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
 
     }
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<Studymates> studyMates) {
         try {
 
             this.listOfStudyMates.clear();
-            this.listOfStudyMates.addAll(data);
-            this.copyListOfStudyMates = data;
+            this.listOfStudyMates.addAll(studyMates);
+            this.copyListOfStudyMates = studyMates;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,7 +112,7 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
     }
 
 
-    ArrayList<Data> copyListOfStudyMates;
+    ArrayList<Studymates> copyListOfStudyMates;
 
     public void filter(CharSequence charText) {
         listOfStudyMates.clear();
@@ -123,9 +120,8 @@ public class SearchStudyMatesAdapter extends RecyclerView.Adapter<SearchStudyMat
         if (charText.length() == 0) {
             listOfStudyMates.addAll(copyListOfStudyMates);
         } else {
-
-            for (Data wp : copyListOfStudyMates) {
-                if (wp.getFullName().contains(charText)) {
+            for (Studymates wp : copyListOfStudyMates) {
+                if (Utility.containsString(wp.getFullName(), charText.toString(), false)) {
                     listOfStudyMates.add(wp);
                 }
             }

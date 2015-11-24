@@ -10,12 +10,10 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.ism.author.R;
-import com.ism.author.Utility.Utils;
 import com.ism.author.adapter.PostFeedCommentsAdapter;
-import com.ism.author.model.Data;
+import com.ism.author.ws.model.CommentList;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by c166 on 24/10/15.
@@ -23,19 +21,18 @@ import java.util.Random;
 public class ViewAllCommentsDialog extends Dialog implements View.OnClickListener {
 
 
-    Context mContext;
-    RecyclerView rvPostFeedsComments;
-    PostFeedCommentsAdapter postFeedCommentsAdapter;
-    TextView tvDialogClose;
-    ArrayList<Data> commentsList;
+    private Context mContext;
+    private RecyclerView rvPostFeedsComments;
+    private PostFeedCommentsAdapter postFeedCommentsAdapter;
+    private TextView tvDialogClose;
+    private ArrayList<CommentList> commentList;
 
 
-    public ViewAllCommentsDialog(Context mContext, ArrayList<Data> commentsList) {
+    public ViewAllCommentsDialog(Context mContext, ArrayList<CommentList> commentList) {
         super(mContext);
 
         this.mContext = mContext;
-        this.commentsList = commentsList;
-
+        this.commentList = commentList;
         Window w = getWindow();
         getWindow().getAttributes().windowAnimations =
                 R.style.DialogOpenAnimation;
@@ -49,8 +46,6 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
         initializeDialog();
 
 
-
-
     }
 
     private void initializeDialog() {
@@ -58,11 +53,9 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
         rvPostFeedsComments = (RecyclerView) findViewById(R.id.rv_post_feeds_comments);
         tvDialogClose = (TextView) findViewById(R.id.tv_dialog_close);
         tvDialogClose.setOnClickListener(this);
-        // Attach the adapter to the recyclerview to populate items
         rvPostFeedsComments.setAdapter(postFeedCommentsAdapter);
-        // Set layout manager to position the items
         rvPostFeedsComments.setLayoutManager(new LinearLayoutManager(mContext));
-        postFeedCommentsAdapter.addAll(commentsList);
+        postFeedCommentsAdapter.addAll(commentList);
     }
 
     @Override

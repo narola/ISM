@@ -1,13 +1,14 @@
 package com.ism.author.constant;
 
 /**
- * these is the common class for all the api related url.
+ * these is the common class for all the api related url and apiCode.
  */
 public class WebConstants {
 
     private static final String URL_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
     public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
+    public static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";
 
     public static final String FEED_MEDIA = "http://192.168.1.162/ISM/WS_ISM/Feeds/";
     public static final String USER_IMAGES = "http://192.168.1.162/ISM/WS_ISM/Images/";
@@ -43,49 +44,47 @@ public class WebConstants {
     public static final int GETEXAMQUESTIONS = 27;
     public static final int GETALLASSIGNMENTS = 28;
 
+   /*webservice url*/
 
-    //	webservice url
-    public static final String URL_LOGIN = URL_ARTI_HOST + "AuthenticateUser";
-    public static final String URL_FORGOT_PASSWORD = URL_ARTI_HOST + "ForgotPassword";
-    public static final String URL_REQUEST_CREDENTIALS = URL_ARTI_HOST + "RequestForCredentials";
-    public static final String URL_GET_COUNTRIES = URL_ARTI_HOST + "GetCountries";
-    public static final String URL_GET_STATES = URL_ARTI_HOST + "GetStates";
-    public static final String URL_GET_CITIES = URL_ARTI_HOST + "GetCities";
-    public static final String URL_REQUEST_SCHOOL_INFO = URL_ARTI_HOST + "RequestForSchoolInfoUpdation";
-    public static final String URL_REGISTER_USER = URL_ARTI_HOST + "RegisterUser";
-    public static final String URL_GETALLFEEDS = URL_ARTI_HOST + "GetAllFeeds";
-    public static final String URL_ADDCOMMENT = URL_ARTI_HOST + "AddComment";
-    public static final String URL_GETSTUDYMATES = URL_ARTI_HOST + "GetStudymates";
-    public static final String URL_TAGFRIENDINFEED = URL_ARTI_HOST + "TagFriendInFeed";
-    public static final String URL_GETALLCOMMENTS = URL_ARTI_HOST + "GetAllComments";
-    public static final String URL_LIKEFEED = URL_ARTI_HOST + "LikeFeed";
-    public static final String URL_GETCLASSROOMS = URL_ARTI_HOST + "GetClassrooms";
-    public static final String URL_GETSUBJECT = URL_ARTI_HOST + "GetSubject";
-    public static final String URL_GETTOPICS = URL_ARTI_HOST + "GetTopics";
-    public static final String URL_CREATEASSIGNMENT = URL_ARTI_HOST + "CreateAssignment";
-    public static final String URL_POSTFEED = URL_ARTI_HOST + "PostFeed";
-    public static final String URL_GET_COURSES = URL_ARTI_HOST + "GetCourses";
-    public static final String URL_CREATE_EXAM = URL_ARTI_HOST + "CreateExam";
-    public static final String URL_GETQUESTIONBANK = URL_ARTI_HOST + "GetQuestionBank";
-    public static final String URL_GET_ALL_EXAM = URL_ARTI_HOST + "GetAllExams";
-    public static final String URL_GET_EXAM_SUBMISSION = URL_ARTI_HOST + "GetExamSubmission";
-    public static final String URL_GET_EXAM_EVALUATIONS = URL_ARTI_HOST + "GetExamEvaluation";
-    public static final String URL_GET_EXAM_QUESTIONS = URL_ARTI_HOST + "GetExamQuestions";
-    public static final String URL_SET_QUESTIONS_FOR_EXAM = URL_ARTI_HOST + "SetQuestionsForExam";
-    public static final String URL_GET_ALL_ASSIGNMENTS = URL_ARTI_HOST + "GetAllExams";
+    public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
+    public static final String URL_FORGOTPASSWORD = URL_KINJAL_HOST + "ForgotPassword";
+    public static final String URL_REQUESTCREDENTIALS = URL_KINJAL_HOST + "RequestForCredentials";
+    public static final String URL_GETCOUNTRIES = URL_KINJAL_HOST + "GetCountries";
+    public static final String URL_GETSTATES = URL_KINJAL_HOST + "GetStates";
+    public static final String URL_GETCITIES = URL_KINJAL_HOST + "GetCities";
+    public static final String URL_REQUESTSCHOOLINFO = URL_KINJAL_HOST + "RequestForSchoolInfoUpdation";
+    public static final String URL_REGISTERUSER = URL_KINJAL_HOST + "RegisterUser";
+    public static final String URL_GETALLFEEDS = URL_KINJAL_HOST + "GetAllFeeds";
+    public static final String URL_ADDCOMMENT = URL_KINJAL_HOST + "AddComment";
+    public static final String URL_GETSTUDYMATES = URL_KINJAL_HOST + "GetStudymates";
+    public static final String URL_TAGFRIENDINFEED = URL_KINJAL_HOST + "TagFriendInFeed";
+    public static final String URL_GETALLCOMMENTS = URL_KINJAL_HOST + "GetAllComments";
+    public static final String URL_LIKEFEED = URL_KINJAL_HOST + "LikeFeed";
+    public static final String URL_GETCLASSROOMS = URL_KINJAL_HOST + "GetClassrooms";
+    public static final String URL_GETSUBJECT = URL_KINJAL_HOST + "GetSubject";
+    public static final String URL_GETTOPICS = URL_KINJAL_HOST + "GetTopics";
+    public static final String URL_CREATEASSIGNMENT = URL_KINJAL_HOST + "CreateAssignment";
+    public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
+    public static final String URL_GETCOURSES = URL_KINJAL_HOST + "GetCourses";
+    public static final String URL_CREATEEXAM = URL_KINJAL_HOST + "CreateExam";
+    public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
+    public static final String URL_GETALLEXAM = URL_KINJAL_HOST + "GetAllExams";
+    public static final String URL_GETEXAMSUBMISSION = URL_KINJAL_HOST + "GetExamSubmission";
+    public static final String URL_GETEXAMEVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
+    public static final String URL_GETEXAMQUESTIONS = URL_KINJAL_HOST + "GetExamQuestions";
+    public static final String URL_SETQUESTIONSFOREXAM = URL_KINJAL_HOST + "SetQuestionsForExam";
+    public static final String URL_GETALLASSIGNMENTS = URL_KINJAL_HOST + "GetAllExams";
+
+    /*status for apisuccess ans apifailed*/
 
     public static final String STATUS_SUCCESS = "success";
     public static final String STATUS_FAILED = "failed";
 
-    //these are the temparory questionData for testing
+
+    /*these are the temparory questionData for testing*/
 
     public static final String TEST_USER_ID = "370";
-    public static final String TEST_GET_ALL_FEEDS = "141";
     public static final String TEST_GETSTUDYMATES = "167";
-    public static final String TEST_FEEDID = "240";
-    public static final String TEST_TAGGED_BY = "134";
-    public static final String[] tagUserArray = new String[]{"141", "167"};
-    public static final String TEST_LIKEUSERID = "141";
 
 
 }

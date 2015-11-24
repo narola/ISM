@@ -22,9 +22,9 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
-import com.ism.ws.model.RequestObject;
+import com.ism.ws.helper.Attribute;
 import com.ism.ws.model.ResponseObject;
-import com.ism.ws.WebserviceWrapper;
+import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.Data;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -188,12 +188,12 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
 				for (int i = 0; i < arrListMessage.size(); i++) {
 					recordIds.add(arrListMessage.get(i).getRecordId());
 				}
-				RequestObject requestObject = new RequestObject();
-				requestObject.setUserId(Global.strUserId);
-				requestObject.setReadCategory(WebConstants.MESSAGES);
-				requestObject.setRecordIds(recordIds);
+				Attribute attribute = new Attribute();
+				attribute.setUserId(Global.strUserId);
+				attribute.setReadCategory(WebConstants.MESSAGES);
+				attribute.setRecordIds(recordIds);
 
-				new WebserviceWrapper(activityHost, requestObject, this).new WebserviceCaller().
+				new WebserviceWrapper(activityHost, attribute, this).new WebserviceCaller().
 						execute(WebConstants.UPDATE_READ_STATUS);
 			}
 		} catch (Exception e) {

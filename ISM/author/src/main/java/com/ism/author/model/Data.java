@@ -42,7 +42,6 @@ public class Data {
     private String countryName;
     private String stateName;
     private String cityName;
-    private ArrayList<PostFeedCommentsModel> commentList;
     private String fullName;
     private String id;
     private String commentBy;
@@ -296,14 +295,6 @@ public class Data {
         this.profilePic = profilePic;
     }
 
-    @JsonProperty("comment_list")
-    public ArrayList<PostFeedCommentsModel> getCommentList() {
-        return commentList;
-    }
-
-    public void setCommentList(ArrayList<PostFeedCommentsModel> commentList) {
-        this.commentList = commentList;
-    }
 
     @JsonProperty("full_name")
     public String getFullName() {

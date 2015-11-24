@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape>
+            <solid android:color="@color/shadow_divider_dark" />
+            <size
+                android:width="@dimen/d25dp"
+                android:height="@dimen/d25dp" />
+        </shape>
+    </item>
+
+    <item
+        android:bottom="@dimen/d3dp"
+        android:drawable="@drawable/round_blue"
+        android:left="@dimen/d3dp"
+        android:right="@dimen/d3dp"
+        android:top="@dimen/d3dp" />
+</layer-list>
