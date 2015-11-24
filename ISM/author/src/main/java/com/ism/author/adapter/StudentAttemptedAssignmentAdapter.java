@@ -1,6 +1,7 @@
 package com.ism.author.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,7 @@ import android.widget.TextView;
 import com.ism.author.ISMAuthor;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
-import com.ism.author.fragment.GetObjectiveAssignmentQuestionsFragment;
-import com.ism.author.model.FragmentArgument;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.model.Examsubmittor;
@@ -32,16 +32,16 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
     private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
     private LayoutInflater inflater;
-    private FragmentArgument fragmentArgument;
+    private Bundle bundleArgument;
 
 
-    public StudentAttemptedAssignmentAdapter(Context mContext, FragmentArgument fragmentArgument) {
+    public StudentAttemptedAssignmentAdapter(Context mContext, Bundle bundleArgument) {
         this.mContext = mContext;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         myTypeFace = new MyTypeFace(mContext);
         inflater = LayoutInflater.from(mContext);
-        this.fragmentArgument = fragmentArgument;
+        this.bundleArgument = bundleArgument;
 
     }
 
@@ -71,7 +71,7 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
             holder.txtStudentMarks.setText(arrListExamSubmittor.get(position).getEvaluationScore());
 //            holder.txtStudentSchool.setText(arrListExamSubmittor.get(position).getClassName());
 
-            if (fragmentArgument.getFragmentArgumentObject().getStudentId().equals(arrListExamSubmittor.get(position).getStudentId())) {
+            if (bundleArgument.getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
                 holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.fragment_background_color));
                 holder.txt_bottom_line.setBackgroundColor(mContext.getResources().getColor(R.color.color_blue));
             } else {
@@ -83,9 +83,10 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
                 @Override
                 public void onClick(View v) {
 
-                    fragmentArgument.getFragmentArgumentObject().setStudentId(arrListExamSubmittor.get(position).getStudentId());
+                    bundleArgument.putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID, arrListExamSubmittor.get(position).getStudentId());
                     notifyDataSetChanged();
-                    ((GetObjectiveAssignmentQuestionsFragment) fragmentArgument.getFragment()).loadStudentEvaluationData();
+//                    ((GetObjectiveAssignmentQuestionsFragment) fragmentArgument.getFragment()).loadStudentEvaluationData();
+                    ((AuthorHostActivity) mContext).loadStudentEvaluationData();
 
                 }
             });

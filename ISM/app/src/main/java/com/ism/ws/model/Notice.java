@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Notice implements Parcelable {
-	
+
     private String notice;
     private String postedBy;
     private String noticeTitle;
@@ -21,21 +21,21 @@ public class Notice implements Parcelable {
     private String noticeId;
     private boolean isExpanded;
 
-	public Notice() {
-	}
+    public Notice() {
+    }
 
-	public Notice(Parcel parcelNotice) {
-		this.notice = parcelNotice.readString();
-		this.postedBy = parcelNotice.readString();
-		this.noticeTitle = parcelNotice.readString();
-		this.postedOn = parcelNotice.readString();
-		this.noticeId = parcelNotice.readString();
-		boolean[] arrayBoolean = new boolean[1];
-		parcelNotice.readBooleanArray(arrayBoolean);
-		this.isExpanded = arrayBoolean[0];
-	}
+    public Notice(Parcel parcelNotice) {
+        this.notice = parcelNotice.readString();
+        this.postedBy = parcelNotice.readString();
+        this.noticeTitle = parcelNotice.readString();
+        this.postedOn = parcelNotice.readString();
+        this.noticeId = parcelNotice.readString();
+        boolean[] arrayBoolean = new boolean[1];
+        parcelNotice.readBooleanArray(arrayBoolean);
+        this.isExpanded = arrayBoolean[0];
+    }
 
-	@JsonProperty("notice")
+    @JsonProperty("notice")
     public String getNotice() {
         return this.notice;
     }
@@ -88,31 +88,31 @@ public class Notice implements Parcelable {
         this.isExpanded = isExpanded;
     }
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(getNotice());
-		dest.writeString(getPostedBy());
-		dest.writeString(getNoticeTitle());
-		dest.writeString(getPostedOn());
-		dest.writeString(getNoticeId());
-		dest.writeBooleanArray(new boolean[]{isExpanded()});
-	}
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getNotice());
+        dest.writeString(getPostedBy());
+        dest.writeString(getNoticeTitle());
+        dest.writeString(getPostedOn());
+        dest.writeString(getNoticeId());
+        dest.writeBooleanArray(new boolean[]{isExpanded()});
+    }
 
-	public static final Parcelable.Creator<Notice> CREATOR = new Parcelable.Creator<Notice>() {
-		@Override
-		public Notice createFromParcel(Parcel source) {
-			return new Notice(source);
-		}
+    public static final Parcelable.Creator<Notice> CREATOR = new Parcelable.Creator<Notice>() {
+        @Override
+        public Notice createFromParcel(Parcel source) {
+            return new Notice(source);
+        }
 
-		@Override
-		public Notice[] newArray(int size) {
-			return new Notice[size];
-		}
-	};
+        @Override
+        public Notice[] newArray(int size) {
+            return new Notice[size];
+        }
+    };
 
 }

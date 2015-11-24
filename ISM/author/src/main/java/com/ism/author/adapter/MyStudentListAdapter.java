@@ -2,6 +2,7 @@ package com.ism.author.adapter;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,6 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.fragment.GetSubjectiveAssignmentQuestionsFragment;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.model.Examsubmittor;
@@ -67,7 +67,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
             holder.tvStudentName.setText(arrListExamSubmittor.get(position).getStudentName());
             holder.tvStudentRollNo.setText(mContext.getResources().getString(R.string.strrollno) + (position + 1));
 
-            if (getFragmentArgument().getFragmentArgumentObject().getStudentId().equals(arrListExamSubmittor.get(position).getStudentId())) {
+            if (getBundleArgument().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID).equals(arrListExamSubmittor.get(position).getStudentId())) {
                 holder.tvStudentName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
             } else {
                 holder.tvStudentName.setTextColor(mContext.getResources().getColor(R.color.color_gray));
@@ -76,9 +76,13 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
             holder.llMyStudentsContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getFragmentArgument().getFragmentArgumentObject().setPosition(position);
-                    getFragmentArgument().getFragmentArgumentObject().setProfilePic(arrListExamSubmittor.get(position).getStudentProfilePic());
-                    getFragmentArgument().getFragmentArgumentObject().setStudentName(arrListExamSubmittor.get(position).getStudentName());
+
+                    getBundleArgument().putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
+                    getBundleArgument().putString(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
+                            arrListExamSubmittor.get(position).getStudentProfilePic());
+                    getBundleArgument().putString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME,
+                            arrListExamSubmittor.get(position).getStudentName());
+
                     getFragmnet().loadStudentEvaluationData(arrListExamSubmittor.get(position).getStudentId());
                     notifyDataSetChanged();
                 }
@@ -100,7 +104,7 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
             this.arrListExamSubmittor.clear();
             this.arrListExamSubmittor.addAll(examSubmittor);
             this.copyListOfStudents = examSubmittor;
-            getFragmentArgument().setArrayListData(examSubmittor);
+//            getFragmentArgument().setArrayListData(examSubmittor);
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
@@ -148,9 +152,9 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
     }
 
 
-    private FragmentArgument getFragmentArgument() {
+    private Bundle getBundleArgument() {
 
-        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getFragmnetArgument();
+        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getBundleArgument();
 
     }
 

@@ -11,12 +11,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
-import com.ism.author.object.MyTypeFace;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.FragmentArgument;
+import com.ism.author.object.MyTypeFace;
 
 /**
  * Created by c166 on 28/10/15.
@@ -28,12 +27,11 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     private View view;
     private FragmentListener fragListener;
     private MyTypeFace myTypeFace;
-    private FragmentArgument fragmentArgument;
 
 
-    public static CreateExamAssignmentContainerFragment newInstance(FragmentArgument fragmentArgument) {
+    public static CreateExamAssignmentContainerFragment newInstance(Bundle bundleArgument) {
         CreateExamAssignmentContainerFragment createExamAssignmentContainerFragment = new CreateExamAssignmentContainerFragment();
-        createExamAssignmentContainerFragment.fragmentArgument = fragmentArgument;
+        createExamAssignmentContainerFragment.setArguments(bundleArgument);
         return createExamAssignmentContainerFragment;
     }
 
@@ -101,7 +99,7 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         );
 
 
-        if (fragmentArgument != null) {
+        if (getArguments() != null) {
             initTab(1);
             loadFragmentInContainer(FRAGMENT_TRIAL_EXAM);
         } else {
@@ -144,10 +142,10 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         try {
             switch (fragment) {
                 case FRAGMENT_TRIAL_ACTIVITY:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateAssignmentFragment.newInstance(fragmentArgument)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateAssignmentFragment.newInstance(getArguments())).commit();
                     break;
                 case FRAGMENT_TRIAL_EXAM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateExamFragment.newInstance(fragmentArgument)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateExamFragment.newInstance(getArguments())).commit();
                     break;
             }
 

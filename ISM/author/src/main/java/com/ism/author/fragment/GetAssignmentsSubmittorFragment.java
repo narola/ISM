@@ -17,10 +17,10 @@ import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.AssignmentSubmittorAdapter;
+import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -43,11 +43,10 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
     private MyTypeFace myTypeFace;
     private FragmentListener fragListener;
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
-    private FragmentArgument fragmentArgument;
 
-    public static GetAssignmentsSubmittorFragment newInstance(FragmentArgument fragmentArgument) {
+    public static GetAssignmentsSubmittorFragment newInstance(Bundle bundleArgument) {
         GetAssignmentsSubmittorFragment getAssignmentsSubmittorFragment = new GetAssignmentsSubmittorFragment();
-        getAssignmentsSubmittorFragment.fragmentArgument = fragmentArgument;
+        getAssignmentsSubmittorFragment.setArguments(bundleArgument);
         return getAssignmentsSubmittorFragment;
     }
 
@@ -69,13 +68,13 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
         tvSubmittorTitle = (TextView) view.findViewById(R.id.tv_submittor_title);
         imgToggleList = (ImageView) view.findViewById(R.id.img_toggle_list);
         rvAssignmentSubmittorList = (RecyclerView) view.findViewById(R.id.rv_assignment_submittor_list);
-        assignmentSubmittorAdapter = new AssignmentSubmittorAdapter(getActivity(), fragmentArgument);
+        assignmentSubmittorAdapter = new AssignmentSubmittorAdapter(getActivity(), getArguments());
 
         rvAssignmentSubmittorList.setHasFixedSize(true);
         rvAssignmentSubmittorList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rvAssignmentSubmittorList.setAdapter(assignmentSubmittorAdapter);
         tvSubmittorTitle.setTypeface(myTypeFace.getRalewayBold());
-        tvSubmittorTitle.setText(fragmentArgument.getFragmentArgumentObject().getStudentName());
+        tvSubmittorTitle.setText(getArguments().getString(ExamsAdapter.ARG_SUBJECT_NAME));
 
         callApiGetExamSubmission();
 

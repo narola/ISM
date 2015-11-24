@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.adapter.QuestionPaletteAdapter;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.Evaluation;
 
@@ -71,8 +70,8 @@ public class QuestionPaletteFragment extends Fragment {
     }
 
 
-    private FragmentArgument getFragmentArguments() {
-        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getFragmnetArgument();
+    private Bundle getBundleArgument() {
+        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getBundleArgument();
 
     }
 
