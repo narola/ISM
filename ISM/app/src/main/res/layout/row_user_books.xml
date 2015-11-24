@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:layout_alignParentTop="true"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:src="@color/color_black" />
 
             <ImageView
@@ -62,7 +62,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
                     android:layout_margin="@dimen/d5dp"
-                    android:src="@drawable/selector_like_unlike"
+                    android:src="@drawable/img_unlike_red"
                     android:visibility="gone" />
             </RelativeLayout>
 

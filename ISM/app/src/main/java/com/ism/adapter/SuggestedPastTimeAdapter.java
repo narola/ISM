@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.ISMStudent;
 import com.ism.activity.HostActivity;
 import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
@@ -71,29 +70,21 @@ public class SuggestedPastTimeAdapter extends BaseAdapter implements WebserviceW
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.row_user_books, null);
             holder = new ViewHolder();
-
             holder.imgPastime = (ImageView) convertView.findViewById(R.id.img_pic);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
             holder.imgAddToFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
             holder.txtPastimeName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.txtName = (TextView) convertView.findViewById(R.id.txt_author);
-
-
             holder.imgAddToFav.setVisibility(View.VISIBLE);
             holder.imgInfo.setVisibility(View.VISIBLE);
-
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         try {
-
-
             holder.txtPastimeName.setTypeface(myTypeFace.getRalewayRegular());
-
-//			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgPastime, ISMStudent.options);
+            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getPastimeImage(), holder.imgPastime, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
             holder.txtPastimeName.setText(arrayList.get(position).getPastimeName());
             holder.txtName.setText("");
             holder.imgAddToFav.setOnClickListener(new View.OnClickListener() {

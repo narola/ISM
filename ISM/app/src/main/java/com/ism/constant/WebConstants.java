@@ -65,7 +65,8 @@ public class WebConstants {
 	public static final String HOST_147 = "http://192.168.1.147/";      // KINJAL
 	private static final String URL_HOST_147 = HOST_147 + "WS_ISM/ISMServices.php?Service=";      // KINJAL
 
-	private static final String URL_IMAGE_PATH = "http://192.168.1.147/WS_ISM/Images";
+//	private static final String URL_IMAGE_PATH = "http://192.168.1.147/WS_ISM/Images";
+	public static final String URL_HOST_202 = "http://192.168.1.202/pg/ISM/WS_ISM/";
 
 	public static final String URL_USERS_IMAGE_PATH = "http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/";
 	public static final String URL_ACCEPT_TUTORIAL_GROUP = URL_HOST_147 + "AcceptTutorialGroup";

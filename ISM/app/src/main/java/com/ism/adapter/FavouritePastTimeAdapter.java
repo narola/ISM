@@ -8,10 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
+import com.ism.utility.Utility;
 import com.ism.ws.model.PastimeData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -64,21 +65,20 @@ public class FavouritePastTimeAdapter extends BaseAdapter {
             holder.txtPastimeName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
             holder.txtName = (TextView) convertView.findViewById(R.id.txt_author);
-           // holder.imgInfo.setVisibility(View.VISIBLE);
+            holder.imgLike = (ImageView) convertView.findViewById(R.id.img_add_fav);
+            holder.imgLike.setVisibility(View.VISIBLE);
+            holder.imgInfo.setVisibility(View.VISIBLE);
+            holder.imgLike.setBackgroundResource(R.drawable.img_like_red);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         try {
-
-
             holder.txtPastimeName.setTypeface(myTypeFace.getRalewayRegular());
             holder.txtName.setText("");
-//			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgPastime, ISMStudent.options);
             holder.txtPastimeName.setText(arrayList.get(position).getPastimeName());
-
+            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getPastimeImage(), holder.imgPastime, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
 
         } catch (Exception e) {
             Debug.i(TAG, "getView Exception : " + e.getLocalizedMessage());
@@ -93,5 +93,6 @@ public class FavouritePastTimeAdapter extends BaseAdapter {
         private TextView txtPastimeName;
         private TextView txtName;
         private ImageView imgInfo;
+        public ImageView imgLike;
     }
 }

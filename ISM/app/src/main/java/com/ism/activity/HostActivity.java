@@ -1,6 +1,7 @@
 package com.ism.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -119,6 +121,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private ArrayList<NotificationSetting> arrayListNotificationSettings = new ArrayList<>();
     private ArrayList<SMSAlert> arrayListSMSAlert = new ArrayList<>();
     private ArrayList<PrivacySetting> arrayListPrivacySetting = new ArrayList<>();
+    private InputMethodManager inputMethod;
 
     public interface HostListenerAboutMe {
         public void onSelectImage(Bitmap bitmap);
@@ -138,6 +141,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 
     public interface HostListenerProfileController {
         public void onBadgesFetched();
+        public void onEditProfileDetached();
     }
 
     @Override
@@ -177,7 +181,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         etSearch = (EditText) findViewById(R.id.et_search);
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
         progHost = (ActionProcessButton) findViewById(R.id.prog_host);
-
+        inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         arrTxtMenu = new TextView[]{txtOne, txtTwo, txtThree, txtFour, txtFive};
         progressGenerator = new ProgressGenerator();
         Global.strUserId = PreferenceData.getStringPrefs(PreferenceData.USER_ID, HostActivity.this);
@@ -260,6 +264,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
 //		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
 //		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
 			        etSearch.setVisibility(View.GONE);
+                    Utility.hideKeyboard(getApplicationContext(), getCurrentFocus());
 		        } else {
 			        startSlideAnimation(etSearch, etSearch.getWidth(), 0, 0, 0);
 			        startSlideAnimation(imgSearch, etSearch.getWidth(), 0, 0, 0);
@@ -278,6 +283,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                 return false;
             }
         });
+
 
         imgNotes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -315,6 +321,12 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         txtFive.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
 
+    }
+    public void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     private void callApiGetGeneralSettingPreferences() {
@@ -556,6 +568,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                     loadControllerTopMenu(null);
                     break;
                 case FRAGMENT_EDIT_PROFILE:
+
                    // loadControllerTopMenu(null);
                     break;
             }

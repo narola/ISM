@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.ism.R;
 import com.ism.constant.WebConstants;
 import com.ism.ws.model.Notice;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class Utility {
 
 	public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 	public static final SimpleDateFormat DATE_FORMAT_DISPLAY = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+	private static InputMethodManager inputMethod;
 
 	/**
 	 * Krunal Panchale
@@ -259,5 +261,43 @@ public class Utility {
 			Log.e(TAG, "showToast Exception : " + e.toString());
 		}
 	}
+	/**
+	 * Arti Patel
+	 * initialization of Imageloader
+	 * @param failed
+	 * @param placeholder
+	 */
+	public static DisplayImageOptions getDisplayImageOption(int failed, int placeholder) {
+		try {
+			return new DisplayImageOptions.Builder()
+					.cacheInMemory(true)
+					.showImageOnLoading(R.drawable.ic_classmates_active)
+					.showImageForEmptyUri(placeholder)
+					.showImageOnFail(failed)
+					.cacheOnDisk(true)
+					.considerExifParams(true)
+					.bitmapConfig(Bitmap.Config.RGB_565)
+					.build();
+		} catch (Exception e) {
+			Log.e(TAG, "intiImageLoader Exception : " + e.toString());
+			return null;
+		}
+
+
+	}
+
+	/**
+	 * Arti Patel
+	 * hide keyboard
+	 * @param context
+	 * @param view
+	 */
+	public static void hideKeyboard(Context context,View view) {
+		inputMethod = (InputMethodManager)context. getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (view != null) {
+			inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
+	}
+
 
 }

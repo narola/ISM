@@ -8,10 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
 import com.ism.R;
+import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
+import com.ism.utility.Utility;
 import com.ism.ws.model.RolemodelData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -67,24 +68,20 @@ public class FavoriteRoleModelsAdapter extends BaseAdapter {
             holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
             holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.txtOrganization = (TextView) convertView.findViewById(R.id.txt_author);
+            holder.imgAddToFav.setVisibility(View.VISIBLE);
+            holder.imgAddToFav.setBackgroundResource(R.drawable.img_like_red);
+            holder.imgInfo.setVisibility(View.VISIBLE);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         try {
-
             holder.txtOrganization.setTypeface(myTypeFace.getRalewayRegular());
-
             holder.txtBookName.setTypeface(myTypeFace.getRalewayRegular());
-
-//			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgBook, ISMStudent.options);
             holder.txtBookName.setText(arrayList.get(position).getModelName());
             holder.txtOrganization.setText(arrayList.get(position).getOrganization());
-            // if(arrayList.get(position).ge)
-
-
+            imageLoader.displayImage(WebConstants.URL_HOST_202 + arrayList.get(position).getModelImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available, R.drawable.img_no_cover_available));
         } catch (Exception e) {
             Debug.i(TAG, "getView Exception : " + e.getLocalizedMessage());
         }
