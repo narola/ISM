@@ -1,6 +1,7 @@
 package com.ism.author.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,6 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.model.Examsubmittor;
@@ -33,13 +33,18 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
     private ArrayList<Examsubmittor> arrListExamSubmittor = new ArrayList<Examsubmittor>();
     private MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
-    private FragmentArgument fragmentArgument;
+    private Bundle bundleArgument;
     private LayoutInflater inflater;
 
+    public static String ARG_STUDENT_ID = "studenId";
+    public static String ARG_STUDENT_POSITION = "studenPosition";
+    public static String ARG_STUDENT_PROFILE_PIC = "studentProfilePic";
+    public static String ARG_STUDENT_NAME = "studentName";
 
-    public AssignmentSubmittorAdapter(Context mContext, FragmentArgument fragmentArgument) {
+
+    public AssignmentSubmittorAdapter(Context mContext, Bundle bundleArgument) {
         this.mContext = mContext;
-        this.fragmentArgument = fragmentArgument;
+        this.bundleArgument = bundleArgument;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(this.mContext));
         myTypeFace = new MyTypeFace(mContext);
@@ -82,17 +87,18 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
                 @Override
                 public void onClick(View v) {
 
-                    fragmentArgument.getFragmentArgumentObject().setStudentId(arrListExamSubmittor.get(position).getStudentId());
-                    fragmentArgument.getFragmentArgumentObject().setPosition(position);
-                    fragmentArgument.getFragmentArgumentObject().setProfilePic(arrListExamSubmittor.get(position).getStudentProfilePic());
-                    fragmentArgument.getFragmentArgumentObject().setStudentName(arrListExamSubmittor.get(position).getStudentName());
+                    bundleArgument.putString(ARG_STUDENT_ID, arrListExamSubmittor.get(position).getStudentId());
+                    bundleArgument.putInt(ARG_STUDENT_POSITION, position);
+                    bundleArgument.putString(ARG_STUDENT_PROFILE_PIC, arrListExamSubmittor.get(position).getStudentProfilePic());
+                    bundleArgument.putString(ARG_STUDENT_NAME, arrListExamSubmittor.get(position).getStudentName());
 
-                    if (fragmentArgument.getFragmentArgumentObject().getExamMode().equalsIgnoreCase("subjective")) {
+
+                    if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase("subjective")) {
                         ((AuthorHostActivity) mContext).loadFragmentInMainContainer
-                                (AuthorHostActivity.FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS, fragmentArgument);
-                    } else if (fragmentArgument.getFragmentArgumentObject().getExamMode().equalsIgnoreCase("objective")) {
+                                (AuthorHostActivity.FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS, bundleArgument);
+                    } else if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase("objective")) {
                         ((AuthorHostActivity) mContext).loadFragmentInMainContainer
-                                (AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS, fragmentArgument);
+                                (AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS, bundleArgument);
                     }
 
 

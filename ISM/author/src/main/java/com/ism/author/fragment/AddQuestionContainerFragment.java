@@ -13,7 +13,6 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.interfaces.FragmentListener;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.ws.model.Questions;
 
 import java.util.ArrayList;
@@ -30,9 +29,8 @@ public class AddQuestionContainerFragment extends Fragment {
     private View view;
     private FragmentListener fragListener;
 
-    public static AddQuestionContainerFragment newInstance(FragmentArgument fragmentArgument) {
+    public static AddQuestionContainerFragment newInstance() {
         AddQuestionContainerFragment addQuestionContainerFragment = new AddQuestionContainerFragment();
-        addQuestionContainerFragment.fragmentArgument = fragmentArgument;
         return addQuestionContainerFragment;
     }
 
@@ -46,7 +44,6 @@ public class AddQuestionContainerFragment extends Fragment {
     public PreviewQuestionFragment previewQuestionFragment;
     public QuestionAddEditFragment questionAddEditFragment;
     private Boolean isFrontVisible = false;
-    private FragmentArgument fragmentArgument;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,7 +74,7 @@ public class AddQuestionContainerFragment extends Fragment {
 
     private void initGlobal() {
 
-        questionListFragment = new QuestionListFragment(this, fragmentArgument);
+        questionListFragment = new QuestionListFragment(this);
         previewQuestionFragment = new PreviewQuestionFragment(this);
         questionAddEditFragment = new QuestionAddEditFragment(this);
 

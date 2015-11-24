@@ -1,6 +1,7 @@
 package com.ism.author.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.model.FragmentArgument;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.Exams;
 
@@ -28,14 +28,22 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     private Context mContext;
     private ArrayList<Exams> arrListExams = new ArrayList<Exams>();
     private MyTypeFace myTypeFace;
-    private FragmentArgument fragmentArgument;
     private LayoutInflater inflater;
+
+    public static String ARG_EXAM_ID = "examId";
+    public static String ARG_EXAM_NAME = "examName";
+    public static String ARG_CLASSROOM_ID = "classRoomId";
+    public static String ARG_SUBJECT_NAME = "subjectName";
+    public static String ARG_PASS_PERCENTAGE = "passPercentage";
+    public static String ARG_EXAM_TYPE = "examType";
+    public static String ARG_EXAM_MODE = "examMode";
+    public static String ARG_EXAM_DURATION = "examDuration";
+    public static String ARG_ASSIGNMENT_NO = "examAssignmentNo";
 
 
     public ExamsAdapter(Context mContext) {
         this.mContext = mContext;
         this.inflater = LayoutInflater.from(mContext);
-        this.fragmentArgument = new FragmentArgument();
         this.myTypeFace = new MyTypeFace(mContext);
     }
 
@@ -73,13 +81,9 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 
             holder.tvExamNoofAssessed.setText(arrListExams.get(position).getTotalStudent());
             holder.tvExamNoofAssessed.setText("1");
-            if (!arrListExams.get(position).getTotalQuestion().isEmpty()) {
-                holder.tvExamNoofQuestion.setText(arrListExams.get(position).getTotalQuestion());
 
-            } else {
-                holder.tvExamNoofQuestion.setText("0");
+            holder.tvExamNoofQuestion.setText(arrListExams.get(position).getTotalQuestion());
 
-            }
 
             if (arrListExams.get(position).getExamMode().equalsIgnoreCase("subjective")) {
                 holder.tvExamUnassessed.setText(mContext.getString(R.string.strunasssessed));
@@ -105,20 +109,18 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
                 @Override
                 public void onClick(View view) {
 
-                    fragmentArgument.getFragmentArgumentObject().setExamId(arrListExams.get(position).getExamId());
-                    fragmentArgument.getFragmentArgumentObject().setExamName(arrListExams.get(position).getExamName());
-                    fragmentArgument.getFragmentArgumentObject().setClassroomId(arrListExams.get(position).getClassroomId());
-                    fragmentArgument.getFragmentArgumentObject().setSubjectName(arrListExams.get(position).getSubjectName());
-//                    fragmentArgument.getFragmentArgumentObject().setStudentName(arrListExams.get(position).getStudentName());
-                    fragmentArgument.getFragmentArgumentObject().setPassPercentage(arrListExams.get(position).getPassPercentage());
-                    fragmentArgument.getFragmentArgumentObject().setExamType(arrListExams.get(position).getExamType());
-                    fragmentArgument.getFragmentArgumentObject().setExamMode(arrListExams.get(position).getExamMode());
-                    fragmentArgument.getFragmentArgumentObject().setDuration(arrListExams.get(position).getDuration());
-                    fragmentArgument.getFragmentArgumentObject().setAssignmentNo(position);
-                    fragmentArgument.getFragmentArgumentObject().setAssignmentName(arrListExams.get(position).getExamName());
+                    Bundle bundleExamDetails = new Bundle();
+                    bundleExamDetails.putString(ARG_EXAM_ID, arrListExams.get(position).getExamId());
+                    bundleExamDetails.putString(ARG_EXAM_NAME, arrListExams.get(position).getExamName());
+                    bundleExamDetails.putString(ARG_CLASSROOM_ID, arrListExams.get(position).getClassroomId());
+                    bundleExamDetails.putString(ARG_SUBJECT_NAME, arrListExams.get(position).getSubjectName());
+                    bundleExamDetails.putString(ARG_PASS_PERCENTAGE, arrListExams.get(position).getPassPercentage());
+                    bundleExamDetails.putString(ARG_EXAM_TYPE, arrListExams.get(position).getExamType());
+                    bundleExamDetails.putString(ARG_EXAM_MODE, arrListExams.get(position).getExamMode());
+                    bundleExamDetails.putString(ARG_EXAM_DURATION, arrListExams.get(position).getDuration());
+                    bundleExamDetails.putInt(ARG_ASSIGNMENT_NO, position);
 
-
-                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR, fragmentArgument);
+                    ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR, bundleExamDetails);
 
 
                 }
