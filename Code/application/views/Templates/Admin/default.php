@@ -116,7 +116,7 @@ $url = uri_string();
                                 <span class="icon icon_menu_manage"></span> Manage
                             </a>
                             <ul class="dropdown-menu">
-                                <li <?php echo ($url == 'admin/books') ? 'class="active"' : ''; ?>><a href="admin/books">Book</a></li>
+                                <li <?php echo ($url == 'admin/book') ? 'class="active"' : ''; ?>><a href="admin/book">Book</a></li>
                                 <li <?php echo ($url == 'admin/author') ? 'class="active"' : ''; ?>><a href="admin/author">Author</a></li>
                                 <li <?php echo ($url == 'admin/school') ? 'class="active"' : ''; ?>><a href="admin/school">School</a></li>                                
                                 <li class="<?php echo ($url == 'admin/subjects/lists' || $url == 'admin/subjects/add_subject' ) ? 'active' : ''; ?> dropdown sub_menu">
@@ -175,7 +175,7 @@ $url = uri_string();
                 <!--side left-->
                 <div class="sidebar_left_container inner_pages inner_pages_admin text-center mCustomScrollbar" data-mcs-theme="minimal"><!-- scrollbar" id="style-3-->
                     <div class="user_profile_img">
-                        <img src="<?php echo base_url().'uploads/'.$this->session->userdata('profile_pic');?>">
+                        <img src="<?php echo base_url().'uploads/admin/'.$this->session->userdata('profile_pic');?>" onerror="this.src='assets/images/avatar.png'">
                     </div>
                     <h4>Admin</h4>
                     <a href="admin/dashboard/profile_edit">View Profile</a>

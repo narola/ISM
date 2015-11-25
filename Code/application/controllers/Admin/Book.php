@@ -94,10 +94,37 @@ class Book extends ADMIN_Controller {
 	}
 
 	public function book_detail($id){
-		$where['id'] = $id;
-		$this->data['book'] = select(TBL_BOOKS, FALSE,
-										array('where'=>$where),
+		
+		$book = select(TBL_BOOKS, FALSE,
+										array('where'=>array(TBL_BOOKS.'.id'=> $id)),
+										array('single'=>true)
 										);
+
+
+		$book_author = select(TBL_AUTHOR_BOOK,TBL_AUTHOR_BOOK.'.user_id' ,
+										array('where'=>array(TBL_AUTHOR_BOOK.'.book_id'=> $id))
+										);
+
+		$book_detail = array();
+		$book_detail = $book;
+		foreach ($book_author as $author) {
+
+			$author_profile = select(TBL_AUTHOR_PROFILE,TBL_USERS.'.full_name,'.TBL_AUTHOR_PROFILE.'.about_author',
+										array('where'=>array(TBL_AUTHOR_PROFILE.'.user_id'=> $author['user_id'])),
+										array('join'=> array(
+												array(
+							    				'table' => TBL_USERS,
+							    				'condition' => TBL_USERS.".id = ".TBL_AUTHOR_PROFILE.".user_id",
+							    				),
+							    			),
+										'single'=>true
+										)
+									);
+			$book_detail['authors'][] = $author_profile;
+		}
+
+		$this->data['book_detail'] = $book_detail;
+		// p($book_detail, true);
 		$this->template->load('admin/default','admin/book/book_detail',$this->data);
 	}
 }

@@ -48,7 +48,7 @@
 
                       <img src="assets/<?php echo $book['image_link']; ?>" class="img-responsive" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'">
                       <!-- <h4><?php echo character_limiter($book['book_name'], 20); ?></h4> -->
-                      <h4><?php echo word_limiter($book['book_name'], 3); ?></h4>
+                      <a href="admin/book/book_detail/<?php echo $book['id']; ?>"><h4><?php echo word_limiter($book['book_name'], 3); ?></h4></a>
                      
                      </div>
                     </div>	

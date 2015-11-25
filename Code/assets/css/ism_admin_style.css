@@ -2209,3 +2209,16 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     height: 250px;
     width: 250px;
 }
+.bookview a{
+	text-decoration: none;
+}
+.detailtex p > span {
+    color: #878484;
+    margin-left: 17px;
+}
+.bookdetail .btn_blue {
+    background-color: #4294d0;
+    color: #fff;
+    margin-top: 0;
+    text-transform: uppercase;
+}
