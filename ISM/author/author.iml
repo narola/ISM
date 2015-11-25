@@ -6,12 +6,6 @@
         <option name="GRADLE_PROJECT_PATH" value=":author" />
       </configuration>
     </facet>
-    <facet type="java-gradle" name="Java-Gradle">
-      <configuration>
-        <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" />
-        <option name="BUILDABLE" value="false" />
-      </configuration>
-    </facet>
     <facet type="android" name="Android">
       <configuration>
         <option name="SELECTED_BUILD_VARIANT" value="debug" />
@@ -94,6 +88,12 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+<<<<<<< HEAD
+=======
+    <orderEntry type="library" exported="" name="jackson-databind-2.3.1" level="project" />
+    <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="httpmime-4.2.2" level="project" />
+>>>>>>> 9a8dcfbf3b3bc29521a0aae6962216711c1c9246
     <orderEntry type="library" exported="" name="cardview-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.1.0" level="project" />
     <orderEntry type="library" exported="" name="realm-0.84.1" level="project" />
@@ -107,5 +107,6 @@
     <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
     <orderEntry type="module" module-name="commonsource" exported="" />
     <orderEntry type="module" module-name="richtexteditor" exported="" />
+    <orderEntry type="module" module-name="ismrealm" exported="" />
   </component>
 </module>

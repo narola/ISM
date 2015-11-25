@@ -35,9 +35,11 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
     private ImageLoader imageLoader;
     private Fragment mFragment;
     private LayoutInflater inflater;
+    public static String ARG_ARR_LIST_STUDENTS = "arrListStudents";
 
 
     public MyStudentListAdapter(Context mContext, Fragment mFragment) {
+
         this.mContext = mContext;
         this.mFragment = mFragment;
         imageLoader = ImageLoader.getInstance();
@@ -76,15 +78,8 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
             holder.llMyStudentsContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    getBundleArgument().putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
-                    getBundleArgument().putString(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
-                            arrListExamSubmittor.get(position).getStudentProfilePic());
-                    getBundleArgument().putString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME,
-                            arrListExamSubmittor.get(position).getStudentName());
-
+                    setBundleArgument(position);
                     getFragmnet().loadStudentEvaluationData(arrListExamSubmittor.get(position).getStudentId());
-                    notifyDataSetChanged();
                 }
             });
 
@@ -104,7 +99,8 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
             this.arrListExamSubmittor.clear();
             this.arrListExamSubmittor.addAll(examSubmittor);
             this.copyListOfStudents = examSubmittor;
-//            getFragmentArgument().setArrayListData(examSubmittor);
+            getBundleArgument().putParcelableArrayList(ARG_ARR_LIST_STUDENTS, examSubmittor);
+
         } catch (Exception e) {
             Debug.e(TAG, "addAllData Exception : " + e.toString());
         }
@@ -135,8 +131,8 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
     ArrayList<Examsubmittor> copyListOfStudents;
 
     public void filter(CharSequence charText) {
-        arrListExamSubmittor.clear();
 
+        arrListExamSubmittor.clear();
         if (charText.length() == 0) {
             arrListExamSubmittor.addAll(copyListOfStudents);
         } else {
@@ -151,17 +147,28 @@ public class MyStudentListAdapter extends RecyclerView.Adapter<MyStudentListAdap
         notifyDataSetChanged();
     }
 
+    public void setBundleArgument(int position) {
+
+        getBundleArgument().putInt(AssignmentSubmittorAdapter.ARG_STUDENT_POSITION, position);
+        getBundleArgument().putString(AssignmentSubmittorAdapter.ARG_STUDENT_PROFILE_PIC,
+                arrListExamSubmittor.get(position).getStudentProfilePic());
+        getBundleArgument().putString(AssignmentSubmittorAdapter.ARG_STUDENT_NAME,
+                arrListExamSubmittor.get(position).getStudentName());
+        getBundleArgument().putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID,
+                arrListExamSubmittor.get(position).getStudentId());
+
+        notifyDataSetChanged();
+
+    }
+
 
     private Bundle getBundleArgument() {
-
-        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getBundleArgument();
+        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getArguments();
 
     }
 
     private GetSubjectiveAssignmentQuestionsFragment getFragmnet() {
-
         return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
-
     }
 
 }

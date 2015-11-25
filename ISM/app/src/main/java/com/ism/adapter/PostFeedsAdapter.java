@@ -131,7 +131,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 			holder.txtViewAll.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					callApiGetAllComments(position);
+					if (Utility.isConnected(context)) {
+						callApiGetAllComments(position);
+					} else {
+						Utility.alertOffline(context);
+					}
 				}
 			});
 
@@ -152,7 +156,11 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 				public void onClick(View v) {
 					String comment = holder.etComment.getText().toString().trim();
 					if (comment != null && comment.length() > 0) {
-						callApiComment(position, comment);
+						if (Utility.isConnected(context)) {
+							callApiComment(position, comment);
+						} else {
+							Utility.alertOffline(context);
+						}
 					}
 				}
 			});

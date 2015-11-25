@@ -18,7 +18,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txt_about_me"
+                android:id="@+id/txt_book_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_green"
@@ -27,20 +27,20 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginRight="2dp"
                 android:padding="@dimen/d10dp"
-                android:text="@string/strAboutYou"
+                android:text="Book Details"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/d20sp" />
-
-            <EditText
-                android:id="@+id/et_clickAddAboutMe"
+            <TextView
+                android:id="@+id/txt_book_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/d10dp"
                 android:background="@color/color_white"
-                android:gravity="top|left"
-                android:hint="Write about your self"
+                android:gravity="center"
+                android:text="Write about your self"
                 android:padding="@dimen/d10dp"
                 android:textSize="@dimen/d20sp" />
+
 
         </LinearLayout>
 

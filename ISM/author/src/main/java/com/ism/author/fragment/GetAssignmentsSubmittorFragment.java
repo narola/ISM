@@ -46,7 +46,9 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
 
     public static GetAssignmentsSubmittorFragment newInstance(Bundle bundleArgument) {
         GetAssignmentsSubmittorFragment getAssignmentsSubmittorFragment = new GetAssignmentsSubmittorFragment();
+
         getAssignmentsSubmittorFragment.setArguments(bundleArgument);
+
         return getAssignmentsSubmittorFragment;
     }
 

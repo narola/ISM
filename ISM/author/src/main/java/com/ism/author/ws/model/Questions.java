@@ -1,5 +1,8 @@
 package com.ism.author.ws.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,7 +11,7 @@ import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Questions {
+public class Questions implements Parcelable {
 
     private String questionFormat;
     private String questionAssetsLink;
@@ -28,6 +31,31 @@ public class Questions {
     private String subjectName;
     private Boolean isQuestionAddedInPreview = false;
 
+    public Questions() {
+    }
+
+    String answerString;
+
+    public Questions(Parcel parcelQuestions) {
+        this.questionFormat = parcelQuestions.readString();
+        this.questionAssetsLink = parcelQuestions.readString();
+        this.questionHint = parcelQuestions.readString();
+        this.questionImageLink = parcelQuestions.readString();
+        this.evaluationNotes = parcelQuestions.readString();
+        this.topicId = parcelQuestions.readString();
+        this.classroomId = parcelQuestions.readString();
+        this.subjectId = parcelQuestions.readString();
+        this.bookId = parcelQuestions.readString();
+        this.solution = parcelQuestions.readString();
+        this.questionId = parcelQuestions.readString();
+        this.questionText = parcelQuestions.readString();
+        this.questionCreatorId = parcelQuestions.readString();
+        this.questionCreatorName = parcelQuestions.readString();
+        this.subjectName = parcelQuestions.readString();
+        parcelQuestions.readTypedList(answers, Answers.CREATOR);
+
+
+    }
 
     @JsonProperty("question_format")
     public String getQuestionFormat() {
@@ -182,4 +210,41 @@ public class Questions {
         this.isQuestionAddedInPreview = isQuestionAddedInPreview;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeString(getQuestionFormat());
+        dest.writeString(getQuestionAssetsLink());
+        dest.writeString(getQuestionHint());
+        dest.writeString(getQuestionImageLink());
+        dest.writeString(getEvaluationNotes());
+        dest.writeString(getTopicId());
+        dest.writeTypedList(answers);
+        dest.writeString(getClassroomId());
+        dest.writeString(getSubjectId());
+        dest.writeString(getBookId());
+        dest.writeString(getSolution());
+        dest.writeString(getQuestionId());
+        dest.writeString(getQuestionText());
+        dest.writeString(getQuestionCreatorId());
+        dest.writeString(getQuestionCreatorName());
+        dest.writeString(getSubjectName());
+    }
+
+    public static final Parcelable.Creator<Questions> CREATOR = new Parcelable.Creator<Questions>() {
+        @Override
+        public Questions createFromParcel(Parcel source) {
+            return new Questions(source);
+        }
+
+        @Override
+        public Questions[] newArray(int size) {
+            return new Questions[size];
+        }
+    };
 }

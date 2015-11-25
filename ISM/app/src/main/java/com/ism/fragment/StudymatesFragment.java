@@ -10,6 +10,9 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.activity.HostActivity;
+import com.ism.interfaces.FragmentListener;
+import com.ism.utility.Debug;
 
 /**
  * Created by c161 on 06/11/15.
@@ -21,6 +24,9 @@ public class StudymatesFragment extends Fragment {
 	private View view;
 	private TextView txtStudymates, txtFindStudymates;
 	private FrameLayout flFragmentContainer;
+
+	private HostActivity activityHost;
+	private FragmentListener fragListener;
 
 	public static StudymatesFragment newInstance() {
 		StudymatesFragment fragment = new StudymatesFragment();
@@ -67,11 +73,28 @@ public class StudymatesFragment extends Fragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		try {
+			activityHost = (HostActivity) activity;
+			fragListener = (FragmentListener) activity;
+			if (fragListener != null) {
+				fragListener.onFragmentAttached(HostActivity.FRAGMENT_STUDYMATES);
+			}
+		} catch (ClassCastException e) {
+			Debug.e(TAG, "onAttach Exception : " + e.toString());
+		}
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
+		try {
+			if (fragListener != null) {
+				fragListener.onFragmentDetached(HostActivity.FRAGMENT_STUDYMATES);
+			}
+		} catch (ClassCastException e) {
+			Debug.e(TAG, "onDetach Exception : " + e.toString());
+		}
+		fragListener = null;
 	}
 
 }

@@ -33,6 +33,8 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     public static String ARG_EXAM_ID = "examId";
     public static String ARG_EXAM_NAME = "examName";
     public static String ARG_CLASSROOM_ID = "classRoomId";
+    public static String ARG_CLASSROOM_NAME = "classRoomName";
+    public static String ARG_EXAM_CATEGORY = "examCategory";
     public static String ARG_SUBJECT_NAME = "subjectName";
     public static String ARG_PASS_PERCENTAGE = "passPercentage";
     public static String ARG_EXAM_TYPE = "examType";
@@ -82,7 +84,11 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             holder.tvExamNoofAssessed.setText(arrListExams.get(position).getTotalStudent());
             holder.tvExamNoofAssessed.setText("1");
 
-            holder.tvExamNoofQuestion.setText(arrListExams.get(position).getTotalQuestion());
+            if (arrListExams.get(position).getTotalQuestion() == null || arrListExams.get(position).getTotalQuestion().equals("")) {
+                holder.tvExamNoofQuestion.setText("0");
+            } else {
+                holder.tvExamNoofQuestion.setText(arrListExams.get(position).getTotalQuestion());
+            }
 
 
             if (arrListExams.get(position).getExamMode().equalsIgnoreCase("subjective")) {
@@ -93,7 +99,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             } else if (arrListExams.get(position).getExamMode().equalsIgnoreCase("objective")) {
                 holder.tvExamUnassessed.setText(mContext.getString(R.string.stravgscore));
                 holder.tvExamNoofUnassessed.setText(arrListExams.get(position).getTotalStudent() + mContext.getString(R.string.strpercent));
-                holder.tvExamNoofUnassessed.setText("1  " + mContext.getString(R.string.strpercent));
+                holder.tvExamNoofUnassessed.setText("1" + mContext.getString(R.string.strpercent));
             }
 
 
@@ -110,14 +116,16 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
                 public void onClick(View view) {
 
                     Bundle bundleExamDetails = new Bundle();
-                    bundleExamDetails.putString(ARG_EXAM_ID, arrListExams.get(position).getExamId());
+                    bundleExamDetails.putString(ARG_EXAM_ID, "9");
                     bundleExamDetails.putString(ARG_EXAM_NAME, arrListExams.get(position).getExamName());
                     bundleExamDetails.putString(ARG_CLASSROOM_ID, arrListExams.get(position).getClassroomId());
+                    bundleExamDetails.putString(ARG_EXAM_CATEGORY, arrListExams.get(position).getExamCategory());
                     bundleExamDetails.putString(ARG_SUBJECT_NAME, arrListExams.get(position).getSubjectName());
                     bundleExamDetails.putString(ARG_PASS_PERCENTAGE, arrListExams.get(position).getPassPercentage());
                     bundleExamDetails.putString(ARG_EXAM_TYPE, arrListExams.get(position).getExamType());
                     bundleExamDetails.putString(ARG_EXAM_MODE, arrListExams.get(position).getExamMode());
                     bundleExamDetails.putString(ARG_EXAM_DURATION, arrListExams.get(position).getDuration());
+                    bundleExamDetails.putString(ARG_CLASSROOM_NAME, arrListExams.get(position).getClassroomName());
                     bundleExamDetails.putInt(ARG_ASSIGNMENT_NO, position);
 
                     ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR, bundleExamDetails);
