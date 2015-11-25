@@ -79,6 +79,7 @@ public class ResponseHandler {
     private ArrayList<Feed> feed;
     private ArrayList<Courses> courses;
     private ArrayList<Questions> questions;
+    private ArrayList<Questions> questionBank;
 
 
     @JsonProperty("feeds")
@@ -241,6 +242,16 @@ public class ResponseHandler {
 
     public void setQuestions(ArrayList<Questions> questions) {
         this.questions = questions;
+    }
+
+
+    @JsonProperty("question_bank")
+    public ArrayList<Questions> getQuestionBank() {
+        return this.questionBank;
+    }
+
+    public void setQuestionBank(ArrayList<Questions> questionBank) {
+        this.questionBank = questionBank;
     }
 
 }

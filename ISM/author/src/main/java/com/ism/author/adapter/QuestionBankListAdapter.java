@@ -62,19 +62,13 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
             holder.tvQuestionCategory.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvQuestionCategory.setText(mContext.getString(R.string.strcategory));
-//            String category = " " + arrListQuestions.get(position).getSubjectName();
-//            SpannableString f = new SpannableString(category);
-//            f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
-//                    category.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
             holder.tvQuestionCategory.append(Utility.getSpannableString(" " + arrListQuestions.get(position).getSubjectName(),
                     mContext.getResources().getColor(R.color.color_green)));
 
             holder.tvQuestionCreatedby.setTypeface(myTypeFace.getRalewayRegular());
             holder.tvQuestionCreatedby.setText(mContext.getString(R.string.strcreatedby));
-//            String creator = " " + arrListQuestions.get(position).getQuestionCreatorName();
-//            f = new SpannableString(creator);
-//            f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
-//                    creator.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            
             holder.tvQuestionCreatedby.append(Utility.getSpannableString(" " + arrListQuestions.get(position).getQuestionCreatorName(),
                     mContext.getResources().getColor(R.color.color_green)));
 
@@ -183,10 +177,10 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     }
 
 
-    public void addAll(ArrayList<Questions> questions) {
+    public void addAll(ArrayList<Questions> arrListQuestionBank) {
         try {
             this.arrListQuestions.clear();
-            this.arrListQuestions.addAll(questions);
+            this.arrListQuestions.addAll(arrListQuestionBank);
         } catch (Exception e) {
             e.printStackTrace();
         }

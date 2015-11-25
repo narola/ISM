@@ -94,11 +94,19 @@ public class AssignmentSubmittorAdapter extends RecyclerView.Adapter<AssignmentS
 
 
                     if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase("subjective")) {
+//                        bundleArgument.putString(ARG_STUDENT_ID, "11");
                         ((AuthorHostActivity) mContext).loadFragmentInMainContainer
                                 (AuthorHostActivity.FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS, bundleArgument);
                     } else if (bundleArgument.getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase("objective")) {
+//                        bundleArgument.putString(ARG_STUDENT_ID, "9");
                         ((AuthorHostActivity) mContext).loadFragmentInMainContainer
                                 (AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS, bundleArgument);
+
+                         /*if arguments are there then call the students in the right fragment*/
+                        if (bundleArgument != null) {
+                            ((AuthorHostActivity) mContext).loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT, bundleArgument);
+                        }
+
                     }
 
 

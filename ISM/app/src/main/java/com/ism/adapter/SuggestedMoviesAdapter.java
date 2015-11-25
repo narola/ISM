@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +16,8 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
+import com.ism.dialog.MovieDetailsDialog;
+import com.ism.fragment.userprofile.MoviesFragment;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -29,7 +33,7 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWrapper.WebserviceResponse {
+public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWrapper.WebserviceResponse, Filterable {
     private static final String TAG = SuggestedMoviesAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
@@ -38,6 +42,8 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
     MyTypeFace myTypeFace;
     SuggestedBookAdapter.AddToFavouriteListner addToFavouriteListner;
     private int addToFavItemId;
+    MovieFilter movieFilter;
+    private ArrayList<MovieData> arrayListFilter=new ArrayList<>();
 
     public SuggestedMoviesAdapter(Context context, ArrayList<MovieData> arrayList, SuggestedBookAdapter.AddToFavouriteListner addToFavouriteListner) {
         this.context = context;
@@ -79,7 +85,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
             holder.txtMovieName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.txtMovieYear = (TextView) convertView.findViewById(R.id.txt_author);
 
-         //   holder.imgBookAdd.setVisibility(View.VISIBLE);
+            //   holder.imgBookAdd.setVisibility(View.VISIBLE);
             holder.imgMovieToFav.setVisibility(View.VISIBLE);
             holder.imgInfo.setVisibility(View.VISIBLE);
 
@@ -102,6 +108,14 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
                     addToFavItemId = position;
                     callApiAddResourceToFav(position);
 
+                }
+            });
+            holder.imgInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    myPopup(position);
+                    MovieDetailsDialog movieDetailsDialog = new MovieDetailsDialog(context, arrayList, position, imageLoader);
+                    movieDetailsDialog.show();
                 }
             });
 
@@ -163,6 +177,80 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());
         }
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (movieFilter == null) {
+            movieFilter = new MovieFilter();
+        }
+        return movieFilter;
+    }
+
+    class MovieFilter extends Filter {
+
+        // Invoked in a worker thread to filter the data according to the
+        // constraint.
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            try {
+
+                Debug.i(TAG, "Search string : " + constraint);
+
+                if (constraint != null) {
+                    Debug.i(TAG, "Search string : " + constraint);
+                    ArrayList<MovieData> filterList = new ArrayList<MovieData>();
+                    for (int i = 0; i < arrayListFilter.size(); i++) {
+                        if (arrayListFilter.get(i).getMovieName().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getMovieGenre().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getScreenplay().toLowerCase().contains(constraint.toString().toLowerCase())) {
+
+//                            if (arrayListFilter.get(i).getAuthorName().contains(constraint) || arrayListFilter.get(i).getBookName().contains(constraint) || arrayListFilter.get(i).getPublisherName().contains(constraint)) {
+                            Debug.i(TAG, "i : " + i);
+                            MovieData movieData = new MovieData();
+                            movieData.setDescription(arrayListFilter.get(i).getDescription());
+                            movieData.setMovieImage(arrayListFilter.get(i).getMovieImage());
+                            movieData.setMovieGenre(arrayListFilter.get(i).getMovieGenre());
+                            movieData.setMovieId(arrayListFilter.get(i).getMovieId());
+                            movieData.setScreenplay(arrayListFilter.get(i).getScreenplay());
+                            movieData.setMovieName(arrayListFilter.get(i).getMovieName());
+                            filterList.add(movieData);
+
+                        }
+                    }
+                    results.count = filterList.size();
+                    results.values = filterList;
+                } else {
+                    results.count = arrayListFilter.size();
+                    results.values = arrayListFilter;
+                }
+                return results;
+            } catch (Exception e) {
+                Debug.i(TAG, "FilterResults Exceptions : " + e.getLocalizedMessage());
+                return null;
+
+            }
+
+
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            try {
+
+                arrayList = (ArrayList<MovieData>) results.values;
+                if (arrayList.size() == 0) {
+                    MoviesFragment.txtSuggestedEmpty.setVisibility(View.VISIBLE);
+                    MoviesFragment.listViewSuggested.setVisibility(View.GONE);
+                } else {
+                    MoviesFragment.txtSuggestedEmpty.setVisibility(View.GONE);
+                    MoviesFragment.listViewSuggested.setVisibility(View.VISIBLE);
+                }
+                notifyDataSetChanged();
+            } catch (Exception e) {
+                Debug.i(TAG, "publishResults on Exception :  " + e.getLocalizedMessage());
+            }
+        }
+
     }
 
     public class ViewHolder {

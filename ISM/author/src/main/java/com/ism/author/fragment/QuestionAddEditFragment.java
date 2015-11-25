@@ -1,5 +1,6 @@
 package com.ism.author.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -55,7 +56,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     Fragment mFragment;
     private EditText etEvaluationNote21;
 
+    public QuestionAddEditFragment() {
+    }
 
+    @SuppressLint("ValidFragment")
     public QuestionAddEditFragment(Fragment fragment) {
         this.mFragment = fragment;
     }
@@ -84,7 +88,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_question_addedit, container, false);
-        Utils.showToast("THE QUESTION ADD EDIT FRAGMENT CALLED", getActivity());
+//        Utils.showToast("THE QUESTION ADD EDIT FRAGMENT CALLED", getActivity());
         initGlobal();
         return view;
     }

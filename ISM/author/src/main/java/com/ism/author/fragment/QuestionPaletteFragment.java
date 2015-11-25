@@ -70,10 +70,10 @@ public class QuestionPaletteFragment extends Fragment {
     }
 
 
-    private Bundle getBundleArgument() {
-        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getBundleArgument();
-
-    }
+//    private Bundle getBundleArgument() {
+//        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getBundleArgument();
+//
+//    }
 
     public void setQuestionStatusData(ArrayList<Evaluation> evaluations) {
         arrListEvaluation.clear();

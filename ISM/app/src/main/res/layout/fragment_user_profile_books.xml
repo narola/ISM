@@ -64,7 +64,7 @@
                 android:inputType="text"
                 android:padding="10dp"
                 android:textColor="@color/colorPrimary"
-                android:textColorHint="@color/color_gray_light"
+                android:textColorHint="@color/border_gray"
                 android:visibility="gone" />
         </LinearLayout>
         <!--<ImageView-->
@@ -185,7 +185,7 @@
                 android:inputType="text"
                 android:padding="10dp"
                 android:textColor="@color/colorPrimary"
-                android:textColorHint="@color/color_gray_light"
+                android:textColorHint="@color/border_gray"
                 android:visibility="gone" />
         </LinearLayout>
         <!--<ImageView-->

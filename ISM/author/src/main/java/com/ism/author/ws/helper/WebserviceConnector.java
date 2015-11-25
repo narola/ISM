@@ -76,6 +76,8 @@ public class WebserviceConnector {
                 response.close();
                 json = sb.toString();
 
+//                Debug.e(TAG,"The Response is:::"+sb.toString());
+
                 ret = getMapper().readValue(json, responseType);
 
             } catch (Exception e) {

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Notification implements Parcelable {
-	
+
     private String notificationDate;
     private String notificationFromId;
     private String recordId;
@@ -25,23 +25,23 @@ public class Notification implements Parcelable {
     private String notificationFromName;
     private String isRead;
 
-	public Notification() {
-	}
+    public Notification() {
+    }
 
-	public Notification(Parcel parcelNotification) {
-		this.notificationDate = parcelNotification.readString();
-		this.notificationFromId = parcelNotification.readString();
-		this.recordId = parcelNotification.readString();
-		this.navigateTo = parcelNotification.readString();
-		this.notificationToId = parcelNotification.readString();
-		this.notificationText = parcelNotification.readString();
-		this.notificationFromProfilePic = parcelNotification.readString();
-		this.notificationToName = parcelNotification.readString();
-		this.notificationFromName = parcelNotification.readString();
-		this.isRead = parcelNotification.readString();
-	}
+    public Notification(Parcel parcelNotification) {
+        this.notificationDate = parcelNotification.readString();
+        this.notificationFromId = parcelNotification.readString();
+        this.recordId = parcelNotification.readString();
+        this.navigateTo = parcelNotification.readString();
+        this.notificationToId = parcelNotification.readString();
+        this.notificationText = parcelNotification.readString();
+        this.notificationFromProfilePic = parcelNotification.readString();
+        this.notificationToName = parcelNotification.readString();
+        this.notificationFromName = parcelNotification.readString();
+        this.isRead = parcelNotification.readString();
+    }
 
-	@JsonProperty("notification_date")
+    @JsonProperty("notification_date")
     public String getNotificationDate() {
         return this.notificationDate;
     }
@@ -150,16 +150,16 @@ public class Notification implements Parcelable {
         dest.writeString(getIsRead());
     }
 
-	public static final Parcelable.Creator<Notification> CREATOR = new Parcelable.Creator<Notification>() {
-		@Override
-		public Notification createFromParcel(Parcel source) {
-			return new Notification(source);
-		}
+    public static final Parcelable.Creator<Notification> CREATOR = new Parcelable.Creator<Notification>() {
+        @Override
+        public Notification createFromParcel(Parcel source) {
+            return new Notification(source);
+        }
 
-		@Override
-		public Notification[] newArray(int size) {
-			return new Notification[size];
-		}
-	};
+        @Override
+        public Notification[] newArray(int size) {
+            return new Notification[size];
+        }
+    };
 
 }

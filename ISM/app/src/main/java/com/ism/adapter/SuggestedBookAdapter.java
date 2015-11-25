@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import com.ism.activity.HostActivity;
 import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.BookDetailsDialog;
+import com.ism.fragment.userprofile.BooksFragment;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -29,19 +32,21 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapper.WebserviceResponse {
+public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapper.WebserviceResponse,Filterable {
     private static final String TAG = SuggestedBookAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
     ArrayList<Book> arrayList = new ArrayList<>();
+    ArrayList<Book> arrayListFilter = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
     private int addToFavItem;
     AddToFavouriteListner addToFavouriteListner;
-
+    SuggestedBookFilter suggestedBookFilter;
     public SuggestedBookAdapter(Context context, ArrayList<Book> arrayList, AddToFavouriteListner favouriteBooksListner) {
         this.context = context;
         this.arrayList = arrayList;
+        this.arrayListFilter=arrayList;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         inflater = LayoutInflater.from(context);
@@ -270,7 +275,84 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
         }
     }
 
+    @Override
+    public Filter getFilter() {
+        if (suggestedBookFilter == null) {
+            suggestedBookFilter = new SuggestedBookFilter();
+        }
+        return suggestedBookFilter;
+    }
 
+    class SuggestedBookFilter extends Filter {
+
+        // Invoked in a worker thread to filter the data according to the
+        // constraint.
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            try {
+
+                Debug.i(TAG, "Search string : " + constraint);
+
+                if (constraint!= null) {
+                    Debug.i(TAG, "Search string : " + constraint);
+                    ArrayList<Book> filterList = new ArrayList<Book>();
+                    for (int i = 0; i < arrayListFilter.size(); i++) {
+                        if (arrayListFilter.get(i).getBookName().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getPublisherName().toLowerCase().contains(constraint.toString().toLowerCase()) ) {
+
+//                            if (arrayListFilter.get(i).getAuthorName().contains(constraint) || arrayListFilter.get(i).getBookName().contains(constraint) || arrayListFilter.get(i).getPublisherName().contains(constraint)) {
+                            Debug.i(TAG, "i : " + i);
+                            Book book = new Book();
+                            book.setDescription(arrayListFilter.get(i).getDescription());
+                            book.setAuthorImage(arrayListFilter.get(i).getAuthorImage());
+                            book.setAuthorName(arrayListFilter.get(i).getAuthorName());
+                            book.setBookId(arrayListFilter.get(i).getBookId());
+                            book.setBookImage(arrayListFilter.get(i).getBookImage());
+                            book.setBookName(arrayListFilter.get(i).getBookName());
+                            book.setEbookLink(arrayListFilter.get(i).getEbookLink());
+                            book.setPrice(arrayListFilter.get(i).getPrice());
+                            book.setPublisherName(arrayListFilter.get(i).getPublisherName());
+                            filterList.add(book);
+
+                        }
+                    }
+                    results.count = filterList.size();
+                    results.values = filterList;
+                } else {
+                    results.count = arrayListFilter.size();
+                    results.values = arrayListFilter;
+                }
+                return results;
+            } catch (Exception e) {
+                Debug.i(TAG, "FilterResults Exceptions : " + e.getLocalizedMessage());
+                return null;
+
+            }
+
+
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            try {
+
+                arrayList = (ArrayList<Book>) results.values;
+                if(arrayList.size()==0)
+                {
+                    BooksFragment.txtSuggestedEmpty.setVisibility(View.VISIBLE);
+                    BooksFragment.listViewSuggestedBooks.setVisibility(View.GONE);
+                }
+                else{
+                    BooksFragment.txtSuggestedEmpty.setVisibility(View.GONE);
+                    BooksFragment.listViewSuggestedBooks.setVisibility(View.VISIBLE);
+                }
+                notifyDataSetChanged();
+            } catch (Exception e) {
+                Debug.i(TAG, "publishResults on Exception :  " + e.getLocalizedMessage());
+            }
+        }
+
+    }
     public class ViewHolder {
 
         private ImageView imgBook;
