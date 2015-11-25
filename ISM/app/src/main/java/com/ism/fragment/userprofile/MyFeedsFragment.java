@@ -1,4 +1,4 @@
-package com.ism.fragment;
+package com.ism.fragment.userprofile;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -16,15 +16,20 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.PostFeedsAdapter;
 import com.ism.constant.WebConstants;
+import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
+import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 
-public class ClassWallFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+/**
+ * Created by c161 on 06/11/15.
+ */
+public class MyFeedsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
-	private static final String TAG = ClassWallFragment.class.getSimpleName();
+	private static final String TAG = MyFeedsFragment.class.getSimpleName();
 
 	private View view;
 	private RecyclerView recyclerPostFeeds;
@@ -32,19 +37,20 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 
 	private PostFeedsAdapter adpPostFeeds;
 	private HostActivity activityHost;
+	private FragmentListener fragListener;
 
-	public static ClassWallFragment newInstance() {
-		ClassWallFragment fragment = new ClassWallFragment();
+	public static MyFeedsFragment newInstance() {
+		MyFeedsFragment fragment = new MyFeedsFragment();
 		return fragment;
 	}
 
-	public ClassWallFragment() {
-		// Required empty public constructor
+	public MyFeedsFragment() {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.fragment_class_wall, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.fragment_my_feeds, container, false);
 
 		initGlobal();
 
@@ -56,7 +62,6 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 		rlNewPost = (RelativeLayout) view.findViewById(R.id.rl_new_post);
 
 		recyclerPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
-
 		RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
 			@Override
 			public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -69,11 +74,10 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 				}
 			}
 		};
-
 		recyclerPostFeeds.addItemDecoration(itemDecoration);
 
 		if (Utility.isConnected(getActivity())) {
-			callApiGetAllFeeds();
+			callApiGetMyFeeds();
 		} else {
 			Utility.alertOffline(getActivity());
 		}
@@ -84,18 +88,18 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 //              Start post activity
 			}
 		});
-
 	}
 
-	private void callApiGetAllFeeds() {
+	private void callApiGetMyFeeds() {
 		try {
 			activityHost.showProgress();
 			Attribute attribute = new Attribute();
 			attribute.setUserId(Global.strUserId);
+
 			new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
-					.execute(WebConstants.GET_ALL_FEEDS);
+					.execute(WebConstants.GET_MY_FEEDS);
 		} catch (Exception e) {
-			Log.e(TAG, "callApiGetAllFeeds Exception : " + e.toString());
+			Log.e(TAG, "callApiGetMyFeeds Exception : " + e.toString());
 		}
 	}
 
@@ -103,8 +107,8 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 	public void onResponse(Object object, Exception error, int apiCode) {
 		try {
 			switch (apiCode) {
-				case WebConstants.GET_ALL_FEEDS:
-					onResponseGetAllFeeds(object, error);
+				case WebConstants.GET_MY_FEEDS:
+					onResponseGetMyFeeds(object, error);
 					break;
 			}
 		} catch (Exception e) {
@@ -112,7 +116,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 		}
 	}
 
-	private void onResponseGetAllFeeds(Object object, Exception error) {
+	private void onResponseGetMyFeeds(Object object, Exception error) {
 		try {
 			activityHost.hideProgress();
 			if (object != null) {
@@ -121,19 +125,41 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 					adpPostFeeds = new PostFeedsAdapter(getActivity(), responseHandler.getFeeds());
 					recyclerPostFeeds.setAdapter(adpPostFeeds);
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-					Log.e(TAG, "onResponseGetAllFeeds Failed : " + responseHandler.getMessage());
+					Log.e(TAG, "onResponseGetMyFeeds Failed : " + responseHandler.getMessage());
 				}
 			} else if(error != null) {
-				Log.e(TAG, "onResponseGetAllFeeds apiCall Exception : " + error.toString());
+				Log.e(TAG, "onResponseGetMyFeeds apiCall Exception : " + error.toString());
 			}
 		} catch (Exception e) {
-			Log.e(TAG, "onResponseGetAllFeeds Exception : " + e.toString());
+			Log.e(TAG, "onResponseGetMyFeeds Exception : " + e.toString());
 		}
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		activityHost = (HostActivity) activity;
+		try {
+			activityHost = (HostActivity) activity;
+			fragListener = (FragmentListener) activity;
+			if (fragListener != null) {
+				fragListener.onFragmentAttached(HostActivity.FRAGMENT_MY_FEEDS);
+			}
+		} catch (ClassCastException e) {
+			Debug.e(TAG, "onAttach Exception : " + e.toString());
+		}
 	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		try {
+			if (fragListener != null) {
+				fragListener.onFragmentDetached(HostActivity.FRAGMENT_MY_FEEDS);
+			}
+		} catch (ClassCastException e) {
+			Debug.e(TAG, "onDetach Exception : " + e.toString());
+		}
+		fragListener = null;
+	}
+
 }

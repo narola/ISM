@@ -5,10 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Created by c161 on 19/11/15.
- */
-
-/**
  * Created by c161 on 21/11/15.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -19,7 +15,7 @@ public class Comment {
     private String commentBy;
     private String comment;
     private String fullName;
-    private String profileLink;
+    private String profilePic;
     private String createdDate;
 
     @JsonProperty("id")
@@ -58,13 +54,13 @@ public class Comment {
         this.fullName = fullName;
     }
 
-    @JsonProperty("profile_link")
-    public String getProfileLink() {
-        return this.profileLink;
+    @JsonProperty("profile_pic")
+    public String getProfilePic() {
+        return this.profilePic;
     }
 
-    public void setProfileLink(String profileLink) {
-        this.profileLink = profileLink;
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
 
     @JsonProperty("created_date")

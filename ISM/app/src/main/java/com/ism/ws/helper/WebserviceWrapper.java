@@ -167,6 +167,9 @@ public class WebserviceWrapper {
                         case WebConstants.GENERATE_VOUCHER:
                             responseObject = new WebserviceConnector(WebConstants.URL_GENERATE_VOUCHER).execute(ResponseHandler.class, attribute);
                             break;
+                        case WebConstants.GET_MY_FEEDS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_FEEDS).execute(ResponseHandler.class, attribute);
+                            break;
                     }
                 }
             } catch (Exception e) {

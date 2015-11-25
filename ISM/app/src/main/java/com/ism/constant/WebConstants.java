@@ -34,6 +34,7 @@ public class WebConstants {
 	public static final int UPLOAD_PROFILE_PIC = 24;
 	public static final int GET_WALLET_SUMMARY = 25;
 	public static final int GENERATE_VOUCHER = 26;
+	public static final int GET_MY_FEEDS = 27;
 
 
 	//general settings
@@ -103,6 +104,7 @@ public class WebConstants {
 	public static final String URL_GET_HIGH_SCORERS = URL_HOST_147 + "GetHighScorers";
 	public static final String URL_GET_WALLET_SUMMARY = URL_HOST_147 + "GetWalletSummary";
 	public static final String URL_GENERATE_VOUCHER = URL_HOST_147 + "GenerateVoucher";
+	public static final String URL_GET_MY_FEEDS = URL_HOST_147 + "GetMyFeeds";
 
 
 	/*
