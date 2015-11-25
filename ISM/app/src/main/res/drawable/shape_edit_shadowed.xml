@@ -26,7 +26,7 @@
 				android:centerColor="@android:color/transparent"
 				android:endColor="@color/edit_shadow"
 				android:angle="180"
-				android:centerX="1.5" />
+				android:centerX="0.99" />
 
 			<corners android:radius="@dimen/edit_radius" />
 		</shape>
@@ -39,7 +39,7 @@
 				android:centerColor="@android:color/transparent"
 				android:endColor="@color/edit_shadow"
 				android:angle="360"
-				android:centerX="0.999" />
+				android:centerX="0.99" />
 
 			<corners android:radius="@dimen/edit_radius" />
 		</shape>
@@ -72,22 +72,4 @@
 			<corners android:radius="@dimen/edit_radius" />
 		</shape>
 	</item>
-
-	<!-- over top shadow -->
-	<!--<item
-		android:bottom="5dp"
-		android:left="5dp"
-		android:right="5dp"
-		android:top="5dp">
-		<shape android:shape="rectangle" >
-			<gradient
-				android:angle="270"
-				android:startColor="@color/button_dark_start"
-				android:centerColor="@color/button_dark_end"
-				android:endColor="@color/button_dark_end"
-				android:centerY="0.15"
-				android:type="linear" />
-			<corners android:radius="@dimen/button_dark_corner_radius" />
-		</shape>
-	</item>-->
 </layer-list>

@@ -21,6 +21,7 @@ import com.ism.ws.model.StudymateRequest;
 import com.ism.ws.model.TutorialGroup;
 import com.ism.ws.model.User;
 import com.ism.ws.model.UserPreferences;
+import com.ism.ws.model.Wallet;
 
 import java.util.ArrayList;
 
@@ -53,6 +54,7 @@ public class ResponseHandler {
     private ArrayList<Movies> movies;
     private ArrayList<Pastime> pastime;
 	private ArrayList<Feeds> feeds;
+	private ArrayList<Wallet> wallet;
 
 	@JsonProperty("message")
     public String getMessage() {
@@ -248,4 +250,14 @@ public class ResponseHandler {
 	public void setHighScorers(ArrayList<User> highScorers) {
 		this.highScorers = highScorers;
 	}
+
+	@JsonProperty("wallet_summary")
+	public ArrayList<Wallet> getWallet() {
+		return this.wallet;
+	}
+
+	public void setWallet(ArrayList<Wallet> wallet) {
+		this.wallet = wallet;
+	}
+
 }

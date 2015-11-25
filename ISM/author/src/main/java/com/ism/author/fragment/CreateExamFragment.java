@@ -49,13 +49,11 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private static final String TAG = CreateExamFragment.class.getSimpleName();
     private View view;
-    private Bundle bundleArgument;
 
     //    private FragmentListener fragListener;
     public static CreateExamFragment newInstance(Bundle bundleArgument) {
         CreateExamFragment createExamFragment = new CreateExamFragment();
         createExamFragment.setArguments(bundleArgument);
-        createExamFragment.bundleArgument = bundleArgument;
         return createExamFragment;
     }
 
@@ -89,7 +87,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     String examStartDate = "", examEndDate = "", strAssignmenttext = "";
 
     private InputValidator inputValidator;
-    private Boolean setExamDetails = false;
 
 
     @Override
@@ -186,13 +183,11 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         Adapters.setUpSpinner(getActivity(), spExamExamduration, arrListExamDuration, Adapters.ADAPTER_NORMAL);
 
         arrListExamMode = new ArrayList<String>();
-        arrListExamMode.add(getString(R.string.strexammode));
         arrListExamMode = Arrays.asList(getResources().getStringArray(R.array.exammode));
         Adapters.setUpSpinner(getActivity(), spExamExammode, arrListExamMode, Adapters.ADAPTER_NORMAL);
 
 
         arrListExamCategory = new ArrayList<String>();
-        arrListExamCategory.add(getString(R.string.strexamname));
         arrListExamCategory = Arrays.asList(getResources().getStringArray(R.array.examname));
         Adapters.setUpSpinner(getActivity(), spExamExamCategory, arrListExamCategory, Adapters.ADAPTER_NORMAL);
 
@@ -256,11 +251,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         });
 
         if (getArguments() != null) {
-            Utils.showToast("NOTNULL", getActivity());
-            setExamDetails = true;
             setExamDetails();
-        } else {
-            Utils.showToast("NULL", getActivity());
         }
         callApiGetClassrooms();
         callApiGetSubjects();
@@ -269,11 +260,12 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
 
     private void setExamDetails() {
+
         etExamName.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
         spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(ExamsAdapter.ARG_PASS_PERCENTAGE)));
-        setExamType((getArguments().getString(ExamsAdapter.ARG_EXAM_TYPE)));
-//        spExamExamCategory.setSelection(arrListExamCategory.indexOf(fragmentArgument.getFragmentArgumentObject().getExamCategory()));
-        spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).toLowerCase()));
+        setExamType(getArguments().getString(ExamsAdapter.ARG_EXAM_TYPE));
+        spExamExamCategory.setSelection(arrListExamCategory.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_CATEGORY)));
+        spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_MODE)));
         spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_DURATION)));
 
     }
@@ -550,12 +542,17 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     arrListClassRooms = new ArrayList<Classrooms>();
                     arrListClassRooms.addAll(responseHandler.getClassrooms());
                     List<String> classrooms = new ArrayList<String>();
-                    classrooms.add(getString(R.string.strclass));
+                    classrooms.add(getActivity().getString(R.string.strclass));
                     for (Classrooms classroom : arrListClassRooms) {
                         classrooms.add(classroom.getClassName());
-//                        Utils.showToast("The class name is::" + classroom.getClassName(), getActivity());
+
                     }
                     Adapters.setUpSpinner(getActivity(), spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL);
+                    if (getArguments() != null) {
+                        Debug.e(TAG, "The index for subject is:::" + arrListClassRooms.indexOf(getArguments().getString(ExamsAdapter.ARG_CLASSROOM_NAME)));
+                        spExamClassroom.setSelection(arrListClassRooms.indexOf(getArguments().getString(ExamsAdapter.ARG_CLASSROOM_NAME)) + 1);
+                    }
+
 
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
@@ -583,6 +580,11 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                         subjects.add(subject.getSubjectName());
                     }
                     Adapters.setUpSpinner(getActivity(), spExamSubjectname, subjects, Adapters.ADAPTER_NORMAL);
+
+                    if (getArguments() != null) {
+                        Debug.e(TAG, "The index for subject is:::" + arrListSubject.indexOf(getArguments().getString(ExamsAdapter.ARG_SUBJECT_NAME)));
+                        spExamSubjectname.setSelection(arrListSubject.indexOf(getArguments().getString(ExamsAdapter.ARG_SUBJECT_NAME)) + 1);
+                    }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
@@ -627,10 +629,10 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Utils.showToast(getActivity().getString(R.string.msg_success_createexam), getActivity());
                     btnExamSetquestion.setVisibility(View.VISIBLE);
-                    if (getArguments() == null) {
-                        bundleArgument = new Bundle();
-                    }
-                    bundleArgument.putString(ExamsAdapter.ARG_EXAM_ID, String.valueOf(responseHandler.getCreateExam().get(0).getExamId()));
+//                    if (getArguments() == null) {
+//                        bundleArgument = new Bundle();
+//                    }
+//                    bundleArgument.putString(ExamsAdapter.ARG_EXAM_ID, String.valueOf(responseHandler.getCreateExam().get(0).getExamId()));
 //                    fragmentArgument.getFragmentArgumentObject().setExamId(String.valueOf(responseHandler.getCreateExam().get(0).getExamId()));
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());

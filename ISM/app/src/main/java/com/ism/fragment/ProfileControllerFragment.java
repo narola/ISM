@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.activity.HostActivity.HostListenerProfileController;
 import com.ism.adapter.MessageAdapter;
 import com.ism.adapter.NotificationAdapter;
 import com.ism.adapter.StudymateRequestAdapter;
@@ -30,6 +31,7 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
+import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
@@ -45,16 +47,15 @@ import java.util.ArrayList;
 /**
  * Created by c161 on --/10/15.
  */
-public class ProfileControllerFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, HostActivity.HostListenerProfileController {
+public class ProfileControllerFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, HostListenerProfileController {
 
     private static final String TAG = ProfileControllerFragment.class.getSimpleName();
 
     private View view;
 
     private CircleImageView imgDp;
-    public static TextView txtEditProfile;
     private TextView txtUserName, txtNotificationNo, txtMessageNo, txtRequestNo,
-            txtGeneralSettings, txtMyFeeds, txtStudyMates, txtMyActivity, txtWallet;
+            txtGeneralSettings, txtMyFeeds, txtStudyMates, txtMyActivity, txtWallet, txtEditProfile;
     private ImageView imgNotification, imgMessage, imgFriendRequest;
     private ListView lvNotifications, lvMessages, lvStudymates;
     private Button btnViewAll;
@@ -64,14 +65,14 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 
     private HostActivity activityHost;
     private FragmentListener fragListener;
-    private ImageLoader imageLoader;
-    private MyTypeFace myTypeFace;
-    private ArrayList<Notification> arrListNotification;
-    private ArrayList<Message> arrListMessage;
-    private ArrayList<StudymateRequest> arrListStudyMateRequest;
-    private NotificationAdapter adpNotification;
-    private MessageAdapter adpMessage;
-    private StudymateRequestAdapter adpStudymate;
+	private ImageLoader imageLoader;
+	private MyTypeFace myTypeFace;
+	private ArrayList<Notification> arrListNotification;
+	private ArrayList<Message> arrListMessage;
+	private ArrayList<StudymateRequest> arrListStudyMateRequest;
+	private NotificationAdapter adpNotification;
+	private MessageAdapter adpMessage;
+	private StudymateRequestAdapter adpStudymate;
 
     public static ProfileControllerFragment newInstance() {
         ProfileControllerFragment fragStudyMates = new ProfileControllerFragment();
@@ -83,7 +84,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_profile_controller, container, false);
+	    view = inflater.inflate(R.layout.fragment_profile_controller, container, false);
 
         initGlobal();
 
@@ -139,7 +140,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
                         activityHost.loadFragment(HostActivity.FRAGMENT_EDIT_PROFILE, null);
                         break;
                 }
-                highlightLabel(v.getId());
             }
         };
 
@@ -195,7 +195,11 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
         btnViewAll.setTypeface(myTypeFace.getRalewayRegular());
 
-        callApiGetNotifications();
+	    if (Utility.isConnected(activityHost)) {
+		    callApiGetNotifications();
+	    } else {
+		    Utility.alertOffline(activityHost);
+	    }
 
         final PopupWindow popupNotification = new PopupWindow(view, 250, 350, true);
         popupNotification.setOutsideTouchable(true);
@@ -216,30 +220,30 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         });
 
         lvNotifications.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                popupNotification.dismiss();
-                loadFragmentAllNotification(position);
-            }
+	        @Override
+	        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		        popupNotification.dismiss();
+		        loadFragmentAllNotification(position);
+	        }
         });
 
         btnViewAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupNotification.dismiss();
-                loadFragmentAllNotification(-1);
-            }
+	        @Override
+	        public void onClick(View v) {
+		        popupNotification.dismiss();
+		        loadFragmentAllNotification(-1);
+	        }
         });
 
         popupNotification.showAtLocation(imgNotification, Gravity.END, 10, 60);
     }
 
-    private void loadFragmentAllNotification(int position) {
-        Bundle bundleAllNotification = new Bundle();
-        bundleAllNotification.putParcelableArrayList(AllNotificationFragment.ARG_ARR_LIST_NOTIFICATION, arrListNotification);
-        bundleAllNotification.putInt(AllNotificationFragment.ARG_NOTIFICATION_POSITION, position);
-        activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTIFICATION, bundleAllNotification);
-    }
+	private void loadFragmentAllNotification(int position) {
+		Bundle bundleAllNotification = new Bundle();
+		bundleAllNotification.putParcelableArrayList(AllNotificationFragment.ARG_ARR_LIST_NOTIFICATION, arrListNotification);
+		bundleAllNotification.putInt(AllNotificationFragment.ARG_NOTIFICATION_POSITION, position);
+		activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTIFICATION, bundleAllNotification);
+	}
 
     private void callApiGetNotifications() {
         try {
@@ -262,7 +266,11 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
         btnViewAll.setTypeface(myTypeFace.getRalewayRegular());
 
-        callApiGetMessages();
+		if (Utility.isConnected(activityHost)) {
+			callApiGetMessages();
+		} else {
+			Utility.alertOffline(activityHost);
+		}
 
         final PopupWindow popupMessage = new PopupWindow(view, 250, 350, true);
         popupMessage.setOutsideTouchable(true);
@@ -283,19 +291,19 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         });
 
         lvMessages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                popupMessage.dismiss();
-                loadFragmentAllMessage(position);
-            }
+	        @Override
+	        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		        popupMessage.dismiss();
+		        loadFragmentAllMessage(position);
+	        }
         });
 
         btnViewAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupMessage.dismiss();
-                loadFragmentAllMessage(-1);
-            }
+	        @Override
+	        public void onClick(View v) {
+		        popupMessage.dismiss();
+		        loadFragmentAllMessage(-1);
+	        }
         });
 
         popupMessage.showAtLocation(imgMessage, Gravity.END, 10, 60);
@@ -329,7 +337,11 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
         btnViewAll.setTypeface(myTypeFace.getRalewayRegular());
 
-        callApiGetStudymateRequests();
+		if (Utility.isConnected(activityHost)) {
+			callApiGetStudymateRequests();
+		} else {
+			Utility.alertOffline(activityHost);
+		}
 
         final PopupWindow popupFriendRequest = new PopupWindow(view, 250, 350, true);
         popupFriendRequest.setOutsideTouchable(true);
@@ -393,23 +405,34 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         }
     }
 
-    private void highlightLabel(int txtId) {
-        for (int i = 0; i < arrTxtLabel.length; i++) {
-            if (arrTxtLabel[i].getId() == txtId) {
-                arrTxtLabel[i].setTextColor(getActivity().getResources().getColor(R.color.color_green));
-                arrTxtLabel[i].setEnabled(false);
-            } else {
-                arrTxtLabel[i].setTextColor(Color.WHITE);
-                arrTxtLabel[i].setEnabled(true);
-            }
-        }
-        if (txtId == R.id.txt_edit_profile) {
-            txtEditProfile.setText(Html.fromHtml("<u>Edit Profile</u>"));
-            txtEditProfile.setEnabled(false);
-        } else {
-            txtEditProfile.setText(Html.fromHtml("Edit Profile"));
-            txtEditProfile.setEnabled(true);
-        }
+    private void highlightLabel(int fragmentId, boolean attached) {
+	    int textColor = attached ? getActivity().getResources().getColor(R.color.color_green) : Color.WHITE;
+	    switch (fragmentId) {
+		    case HostActivity.FRAGMENT_GENERAL_SETTINGS:
+			    txtGeneralSettings.setTextColor(textColor);
+			    txtGeneralSettings.setEnabled(!attached);
+			    break;
+		    case HostActivity.FRAGMENT_MY_FEEDS:
+			    txtMyFeeds.setTextColor(textColor);
+			    txtMyFeeds.setEnabled(!attached);
+			    break;
+		    case HostActivity.FRAGMENT_STUDYMATES:
+			    txtStudyMates.setTextColor(textColor);
+			    txtStudyMates.setEnabled(!attached);
+			    break;
+		    case HostActivity.FRAGMENT_MY_ACTIVITY:
+			    txtMyActivity.setTextColor(textColor);
+			    txtMyActivity.setEnabled(!attached);
+			    break;
+		    case HostActivity.FRAGMENT_MY_WALLET:
+			    txtWallet.setTextColor(textColor);
+			    txtWallet.setEnabled(!attached);
+			    break;
+		    case HostActivity.FRAGMENT_EDIT_PROFILE:
+			    txtEditProfile.setText(attached ? Html.fromHtml("<u>" + activityHost.getString(R.string.edit_profile) + "</u>") : activityHost.getString(R.string.edit_profile));
+			    txtEditProfile.setEnabled(!attached);
+			    break;
+	    }
     }
 
     @Override
@@ -418,7 +441,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         try {
             activityHost = (HostActivity) activity;
             fragListener = (FragmentListener) activity;
-            activityHost.setListnerHostProfileController(this);
+            activityHost.setListenerHostProfileController(this);
             if (fragListener != null) {
                 fragListener.onFragmentAttached(HostActivity.FRAGMENT_PROFILE_CONTROLLER);
             }
@@ -499,17 +522,21 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         }
     }
 
-    private void fillListStudymate() {
-        if (arrListStudyMateRequest != null) {
-            adpStudymate = new StudymateRequestAdapter(getActivity(), arrListStudyMateRequest, 4);
-            lvStudymates.setAdapter(adpStudymate);
-            ArrayList<String> recordIds = new ArrayList<String>();
-            for (int i = 0; i < (arrListStudyMateRequest.size() >= 4 ? 4 : arrListStudyMateRequest.size()); i++) {
-                recordIds.add(arrListStudyMateRequest.get(i).getRecordId());
-            }
-            callApiUpdateReadStatus(WebConstants.STUDYMATE_REQUEST, recordIds);
-        }
-    }
+	private void fillListStudymate() {
+		if (arrListStudyMateRequest != null) {
+			adpStudymate = new StudymateRequestAdapter(getActivity(), arrListStudyMateRequest, 4);
+			lvStudymates.setAdapter(adpStudymate);
+			ArrayList<String> recordIds = new ArrayList<String>();
+			for (int i = 0; i < (arrListStudyMateRequest.size() >= 4 ? 4 : arrListStudyMateRequest.size()); i++) {
+				recordIds.add(arrListStudyMateRequest.get(i).getRecordId());
+			}
+			if (Utility.isConnected(activityHost)) {
+				callApiUpdateReadStatus(WebConstants.STUDYMATE_REQUEST, recordIds);
+			} else {
+				Utility.alertOffline(activityHost);
+			}
+		}
+	}
 
     private void callApiUpdateReadStatus(String readCategory, ArrayList<String> recordId) {
         try {
@@ -545,17 +572,21 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         }
     }
 
-    private void fillListMessage() {
-        if (arrListMessage != null) {
-            adpMessage = new MessageAdapter(getActivity(), arrListMessage, 4);
-            lvMessages.setAdapter(adpMessage);
-            ArrayList<String> recordIds = new ArrayList<String>();
-            for (int i = 0; i < (arrListMessage.size() >= 4 ? 4 : arrListMessage.size()); i++) {
-                recordIds.add(arrListMessage.get(i).getRecordId());
-            }
-            callApiUpdateReadStatus(WebConstants.MESSAGES, recordIds);
-        }
-    }
+	private void fillListMessage() {
+		if (arrListMessage != null) {
+			adpMessage = new MessageAdapter(getActivity(), arrListMessage, 4);
+			lvMessages.setAdapter(adpMessage);
+			ArrayList<String> recordIds = new ArrayList<String>();
+			for (int i = 0; i < (arrListMessage.size() >= 4 ? 4 : arrListMessage.size()); i++) {
+				recordIds.add(arrListMessage.get(i).getRecordId());
+			}
+			if (Utility.isConnected(activityHost)) {
+				callApiUpdateReadStatus(WebConstants.MESSAGES, recordIds);
+			} else {
+				Utility.alertOffline(activityHost);
+			}
+		}
+	}
 
     private void onResponseGetNotification(Object object, Exception error) {
         try {
@@ -577,17 +608,21 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         }
     }
 
-    private void fillListNotification() {
-        if (arrListNotification != null) {
-            adpNotification = new NotificationAdapter(getActivity(), arrListNotification, 4);
-            lvNotifications.setAdapter(adpNotification);
-            ArrayList<String> recordIds = new ArrayList<String>();
-            for (int i = 0; i < (arrListNotification.size() >= 4 ? 4 : arrListNotification.size()); i++) {
-                recordIds.add(arrListNotification.get(i).getRecordId());
-            }
-            callApiUpdateReadStatus(WebConstants.NOTIFICATION, recordIds);
-        }
-    }
+	private void fillListNotification() {
+		if (arrListNotification != null) {
+			adpNotification = new NotificationAdapter(getActivity(), arrListNotification, 4);
+			lvNotifications.setAdapter(adpNotification);
+			ArrayList<String> recordIds = new ArrayList<String>();
+			for (int i = 0; i < (arrListNotification.size() >= 4 ? 4 : arrListNotification.size()); i++) {
+				recordIds.add(arrListNotification.get(i).getRecordId());
+			}
+			if (Utility.isConnected(activityHost)) {
+				callApiUpdateReadStatus(WebConstants.NOTIFICATION, recordIds);
+			} else {
+				Utility.alertOffline(activityHost);
+			}
+		}
+	}
 
     @Override
     public void onBadgesFetched() {
@@ -595,7 +630,13 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
     }
 
     @Override
-    public void onEditProfileDetached() {
-        highlightLabel(0);
+    public void onSubFragmentAttached(int fragmentId) {
+        highlightLabel(fragmentId, true);
     }
+
+    @Override
+    public void onSubFragmentDetached(int fragmentId) {
+	    highlightLabel(fragmentId, false);
+    }
+
 }
