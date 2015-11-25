@@ -8,13 +8,13 @@
 
 define("SERVER_PATH" , $_SERVER["DOCUMENT_ROOT"]  . '/');
 
-define("USER_PROFILE_PICTURE",  'Images/Users_Images/');
+define("USER_PROFILE_PICTURE",  'images/users_images/');
 
-define("QUESTION_IMAGE",  'Question_Images/');
+define("QUESTION_IMAGE",  'question_images/');
 
-define("FEEDS_MEDIA",  'Feeds/');
+define("FEEDS_MEDIA",  'feeds/');
 
-define("NOTES_MEDIA",  'Notes/');
+define("NOTES_MEDIA",  'notes/');
 
 
 ?>

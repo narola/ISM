@@ -65,9 +65,6 @@ define("TABLE_SCHOOL_COURSE",   "school_course");
 define("TABLE_SCHOOLS",   "schools");
 define("TABLE_STATES",   "states");
 define("TABLE_STUDENT_TEACHER",   "student_teacher");
-//define("TABLE_STUDENT_ACADEMIC_INFO",   "student_academic_info");
-//student_profile updated table
-define("TABLE_STUDENT_ACADEMIC_INFO",   "student_profile");
 
 define("TABLE_STUDENT_OBJECTIVE_RESPONSE",   "student_objective_response");
 define("TABLE_STUDENT_EXAM_SCORE",   "student_exam_score");
@@ -91,6 +88,7 @@ define("TABLE_TAGS_QUESTION",   "tags_question");
 define("TABLE_TEACHER_PROFILE",   "teacher_profile");
 define("TABLE_TEACHER_SUBJECT_INFO",   "teacher_subject_info");
 define("TABLE_TOPICS",   "topics");
+define("TABLE_TOKENS",   "tokens");
 define("TABLE_TUTORIAL_GROUP_DISCUSSION",   "tutorial_group_discussion");
 define("TABLE_TUTORIAL_GROUP_MEMBER",   "tutorial_group_member");
 define("TABLE_TUTORIAL_GROUP_MEMBER_SCORE",   "tutorial_group_member_score");

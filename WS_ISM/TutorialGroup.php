@@ -61,13 +61,13 @@ class TutorialGroup
 			$selectFields = "users.id, schools.school_grade, courses.course_name";
 
 			$get_students_query = "SELECT " . $selectFields . "
-                                FROM " . TABLE_USERS . ", " . TABLE_STUDENT_ACADEMIC_INFO . " academic_info, " . TABLE_SCHOOLS . ",
+                                FROM " . TABLE_USERS . ", " . TABLE_STUDENT_PROFILE . " academic_info, " . TABLE_SCHOOLS . ",
                                     " . TABLE_CLASSROOMS . ", " . TABLE_COURSES . ", " . TABLE_USER_PROFILE_PICTURE . " pic,
                                     (select * from " . TABLE_STUDENT_ACADEMIC_INFO . " where user_id = " . $user_id . ") user
                                 WHERE users.role_id = 2
-	                                and users.id in (select user_id from " . TABLE_STUDENT_ACADEMIC_INFO . " where school_id in
+	                                and users.id in (select user_id from " . TABLE_STUDENT_PROFILE . " where school_id in
 	                                    (select id from " . TABLE_SCHOOLS . " where school_grade != (select school_grade from
-	                                    " . TABLE_SCHOOLS . " where id = (select school_id from " . TABLE_STUDENT_ACADEMIC_INFO . "
+	                                    " . TABLE_SCHOOLS . " where id = (select school_id from " . TABLE_STUDENT_PROFILE . "
 	                                     where user_id = user.user_id))))
 	                                and users.id = academic_info.user_id
 	                                and academic_info.school_id = schools.id

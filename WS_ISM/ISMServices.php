@@ -11,6 +11,7 @@ include_once 'paths.php';
 include_once 'ConstantValues.php';
 include_once 'HelperFunctions.php';
 include_once 'table_vars.php';
+include_once 'SecurityFunctions.php';
 
 $post_body = file_get_contents('php://input');
 $post_body = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($post_body));
@@ -43,9 +44,10 @@ switch ($_REQUEST['Service'])
     case "GetPastimeForUser":
     case "GetRoleModelForUser":
     case "GetMoviesForUser":
-    case "AddResourcesToFavorite":
+    case "ManageFavorite":
     case "FollowUser":
     case "GetStudentProfile":
+    case "ManageBookLibrary":
     {
   	 include_once 'ProfileFunctions.php';
      $profile = new ProfileFunctions();
@@ -125,6 +127,8 @@ switch ($_REQUEST['Service'])
 	case "GetConfigData":
 	case "EncryptionData":
 	case "DecryptionData":
+    case "Hashtag":
+    case "GetAllHashtag":
     {
          include_once 'SocialFunctions.php';
        	 $profile = new SocialFunctions();

@@ -20,4 +20,8 @@ define("CREDENTIALS_ARE_DEACTIVATED_OR_ALREADY_TAKEN","Credentials are deactivat
 
 define("CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM","Credentials do not exist in our system.");
 
+define("MOZILLA","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36");
+
+define("MALICIOUS_SOURCE","Malicious source detected");
+
 ?>
