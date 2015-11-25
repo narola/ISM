@@ -151,8 +151,12 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            arrayList = (ArrayList<Book>) results.values;
-            notifyDataSetChanged();
+            try {
+                arrayList = (ArrayList<Book>) results.values;
+                notifyDataSetChanged();
+            } catch (Exception e) {
+                Debug.i(TAG, "publishResults on Exception :  " + e.getLocalizedMessage());
+            }
         }
 
     }
