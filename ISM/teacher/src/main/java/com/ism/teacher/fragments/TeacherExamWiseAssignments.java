@@ -106,7 +106,7 @@ public class TeacherExamWiseAssignments extends Fragment implements WebserviceWr
                 Attribute attribute = new Attribute();
                 attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
                 attribute.setUserId(WebConstants.USER_ID_340);
-                attribute.setRole(AppConstant.TEACHER_ROLE_ID + "");
+                attribute.setRole(AppConstant.TEACHER_ROLE_ID);
 
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);

@@ -101,7 +101,7 @@ public class WebserviceWrapper {
                         responseObject = new WebserviceConnector(WebConstants.URL_CREATE_EXAM).execute(ResponseHandler.class, attribute);
                         break;
                     case WebConstants.GET_QUESTION_BANK:
-                        responseObject = new WebserviceConnector(WebConstants.URL_GETQUESTIONBANK).execute(ResponseHandler.class, attribute);
+                        responseObject = new WebserviceConnector(WebConstants.URL_GET_QUESTION_BANK).execute(ResponseHandler.class, attribute);
                         break;
 
                     case WebConstants.POSTFEED:

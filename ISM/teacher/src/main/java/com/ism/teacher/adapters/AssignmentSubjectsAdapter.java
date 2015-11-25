@@ -16,7 +16,6 @@ import com.ism.teacher.fragments.ExamObjectiveDetailFragment;
 import com.ism.teacher.fragments.ExamSubjectiveDetailFragment;
 import com.ism.teacher.fragments.TeacherExamWiseAssignments;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.Data;
 import com.ism.teacher.ws.model.Exams;
 
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        LinearLayout ll_parent_assignment, llViewQuestions, llAssessedQuestion, llUnassessedQuestion;
+        LinearLayout llParentAssignment, llViewQuestions, llAssessedQuestion, llUnassessedQuestion;
         RelativeLayout rlTopAssignment;
         TextView txtAssignmentCourse, txtAssignmentClassName, txtAssignmentDate, txtNumberAssessedQuestion, txtNumberUnassessedQuestion, txtNumberTotalQuestions;
         TextView txtAssignmentSubject, txtAssessedLabel, txtUnassessedLabel, txtQuestionLabel, txtAssignmentType;
@@ -67,7 +66,7 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
         public ViewHolder(View itemView) {
             super(itemView);
 
-            ll_parent_assignment = (LinearLayout) itemView.findViewById(R.id.ll_parent_assignment);
+            llParentAssignment = (LinearLayout) itemView.findViewById(R.id.ll_parent_assignment);
 
             llAssessedQuestion = (LinearLayout) itemView.findViewById(R.id.ll_assessed_question);
             llUnassessedQuestion = (LinearLayout) itemView.findViewById(R.id.ll_unassessed_question);
@@ -121,19 +120,9 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
             holder.txtUnassessedLabel.setText("Unassessed");
         }
 
-
-        holder.llAssessedQuestion.setOnClickListener(new View.OnClickListener() {
+        holder.llParentAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFragment.getFragmentManager().beginTransaction().
-                        replace(R.id.fl_teacher_office_home, new TeacherExamWiseAssignments(mFragment, listOfAssignments.get(position).getExamId(), listOfAssignments.get(position).getExamMode())).commit();
-            }
-        });
-
-        holder.llUnassessedQuestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
                 mFragment.getFragmentManager().beginTransaction().
                         replace(R.id.fl_teacher_office_home, new TeacherExamWiseAssignments(mFragment, listOfAssignments.get(position).getExamId(), listOfAssignments.get(position).getExamMode())).commit();
             }

@@ -16,7 +16,7 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.fragments.AddQuestionContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Answers;
-import com.ism.teacher.ws.model.QuestionBank;
+import com.ism.teacher.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
     private static final String TAG = PreviewQuestionListAdapter.class.getSimpleName();
 
     Context mContext;
-    ArrayList<QuestionBank> listOfPreviewQuestions = new ArrayList<>();
+    ArrayList<Questions> listOfPreviewQuestions = new ArrayList<>();
     MyTypeFace myTypeFace;
     Fragment mFragment;
 
@@ -123,7 +123,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
                 AddQuestionContainerFragment.FRAGMENT_PREVIEWQUESTION, position);
     }
 
-    public void addAll(ArrayList<QuestionBank> data) {
+    public void addAll(ArrayList<Questions> data) {
         try {
             this.listOfPreviewQuestions.clear();
             this.listOfPreviewQuestions.addAll(data);

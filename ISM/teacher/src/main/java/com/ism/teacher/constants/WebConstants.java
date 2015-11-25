@@ -12,12 +12,12 @@ public class WebConstants {
     public static final String FEED_MEDIA = "http://192.168.1.162/ISM/WS_ISM/Feeds/";
     public static final String USER_IMAGES = "http://192.168.1.162/ISM/WS_ISM/Images/";
 
-    public static final String EXAM_ID_11_SUBJECTIVE="11";
-    public static final String EXAM_ID_3_OBJECTIVE="3";
-    public static final String EXAM_ID_9_OBJECTIVE="9";
-    public static final String STUDENT_ID_202_OBJECCTIVE="202";
-    public static final String USER_ID_370="370";
-    public static final String USER_ID_340="340";
+    public static final String EXAM_ID_11_SUBJECTIVE = "11";
+    public static final String EXAM_ID_3_OBJECTIVE = "3";
+    public static final String EXAM_ID_9_OBJECTIVE = "9";
+    public static final String STUDENT_ID_202_OBJECCTIVE = "202";
+    public static final String USER_ID_370 = "370";
+    public static final String USER_ID_340 = "340";
     public static final String TEST_GETSTUDYMATES = "167";
 
 
@@ -81,7 +81,7 @@ public class WebConstants {
     public static final String URL_CREATEASSIGNMENT = URL_KINJAL_HOST + "CreateAssignment";
     public static final String URL_GET_COURSES = URL_KINJAL_HOST + "GetCourses";
     public static final String URL_CREATE_EXAM = URL_KINJAL_HOST + "CreateExam";
-    public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
+    public static final String URL_GET_QUESTION_BANK = URL_KINJAL_HOST + "GetQuestionBank";
     public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
     public static final String URL_SET_QUESTIONS_FOR_EXAM = URL_KINJAL_HOST + "SetQuestionsForExam";
     public static final String URL_FORGOT_PASSWORD = URL_KINJAL_HOST + "ForgotPassword";
@@ -94,7 +94,6 @@ public class WebConstants {
     public static final String URL_GET_EXAM_QUESTIONS = URL_KINJAL_HOST + "GetExamQuestions";
     public static final String URL_GET_EXAM_EVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
     public static final String URL_GET_MY_STUDENTS = URL_KINJAL_HOST + "GetMyStudents";
-
 
 
     public static final String URL_GET_CITIES = URL_KINJAL_HOST + "GetCities";

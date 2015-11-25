@@ -56,7 +56,7 @@ public class AppConstant {
     public static final String TEST_TAGGED_BY = "134";
     public static final String[] tagUserArray = new String[]{"141", "167"};
     public static final int AUTHOR_ROLE_ID = 4;
-    public static final int TEACHER_ROLE_ID = 3;
+    public static final String TEACHER_ROLE_ID = "3";
 
     /**
      * Managing Teacher office Fragment by using tags
@@ -78,7 +78,17 @@ public class AppConstant {
      * Bundle Tags
      */
 
-    public static final String BUNDLE_EXAM_ID="exam_id";
+    public static final String ARG_EXAM_ID ="exam_id";
+    public static String ARG_EXAM_NAME = "examName";
+    public static String ARG_CLASSROOM_ID = "classRoomId";
+    public static String ARG_CLASSROOM_NAME = "classRoomName";
+    public static String ARG_EXAM_CATEGORY = "examCategory";
+    public static String ARG_SUBJECT_NAME = "subjectName";
+    public static String ARG_PASS_PERCENTAGE = "passPercentage";
+    public static String ARG_EXAM_TYPE = "examType";
+    public static String ARG_EXAM_MODE = "examMode";
+    public static String ARG_EXAM_DURATION = "examDuration";
+    public static String ARG_ASSIGNMENT_NO = "examAssignmentNo";
 
 
 }

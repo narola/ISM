@@ -16,7 +16,7 @@ import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.ws.model.QuestionBank;
+import com.ism.teacher.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -95,7 +95,7 @@ public class AddQuestionContainerFragment extends Fragment {
     public static AddQuestionContainerFragment newInstance(Bundle bundleArgument) {
         AddQuestionContainerFragment addQuestionContainerFragment = new AddQuestionContainerFragment();
         if (bundleArgument != null) {
-            Log.e(TAG, bundleArgument.getString(AppConstant.BUNDLE_EXAM_ID));
+            Log.e(TAG, bundleArgument.getString(AppConstant.ARG_EXAM_ID));
 
         }
         return addQuestionContainerFragment;
@@ -106,7 +106,7 @@ public class AddQuestionContainerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            exam_id_received_from_bundle = getArguments().getString(AppConstant.BUNDLE_EXAM_ID);
+            exam_id_received_from_bundle = getArguments().getString(AppConstant.ARG_EXAM_ID);
         }
     }
 
@@ -221,7 +221,7 @@ public class AddQuestionContainerFragment extends Fragment {
     /*these is to set data in the add question fragment*/
 
 
-    public QuestionBank questionData;
+    public Questions questionData;
     public Boolean isSetQuestionData = false;
 
 
@@ -233,26 +233,26 @@ public class AddQuestionContainerFragment extends Fragment {
         this.isSetQuestionData = isSetQuestionData;
     }
 
-    public QuestionBank getQuestionData() {
+    public Questions getQuestionData() {
         return questionData;
     }
 
-    public void setQuestionData(QuestionBank questionData) {
+    public void setQuestionData(Questions questionData) {
         this.questionData = questionData;
     }
 
 
     /*thsese are the listofpreview questions to add */
 
-    public ArrayList<QuestionBank> listOfPreviewQuestionsToAdd = new ArrayList<>();
+    public ArrayList<Questions> listOfPreviewQuestionsToAdd = new ArrayList<>();
 
-    public ArrayList<QuestionBank> getListOfPreviewQuestionsToAdd() {
+    public ArrayList<Questions> getListOfPreviewQuestionsToAdd() {
         return listOfPreviewQuestionsToAdd;
     }
 
 
     /*get the list of preview question*/
-    public ArrayList<QuestionBank> getListOfPreviewQuestion() {
+    public ArrayList<Questions> getListOfPreviewQuestion() {
         return previewQuestionFragment.listOfPreviewQuestions;
     }
 
@@ -263,7 +263,7 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
     /*this is to update check box view in questionlist after delete it from preview questions*/
-    public void updateQuestionListviewAfterRemoveInPreview(QuestionBank data) {
+    public void updateQuestionListviewAfterRemoveInPreview(Questions data) {
         questionListFragment.updateViewAfterDeleteInPreviewQuestion(data);
         previewQuestionFragment.listOfPreviewQuestions.remove(data);
 
@@ -290,7 +290,7 @@ public class AddQuestionContainerFragment extends Fragment {
         this.POSITION_FOR_EDITQUESTION = POSITION_FOR_EDITQUESTION;
     }
 
-    public void setDataOnFragmentFlip(QuestionBank data, Boolean isSetQuestionData, int FRAGMENT_TYPE, int POSITION_FOR_EDITQUESTION) {
+    public void setDataOnFragmentFlip(Questions data, Boolean isSetQuestionData, int FRAGMENT_TYPE, int POSITION_FOR_EDITQUESTION) {
 
         setQuestionData(data);
         setIsSetQuestionData(isSetQuestionData);

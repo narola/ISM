@@ -35,7 +35,7 @@ import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.TagsModel;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.model.Answers;
-import com.ism.teacher.ws.model.QuestionBank;
+import com.ism.teacher.ws.model.Questions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -79,7 +79,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     //Objects
     MyTypeFace myTypeFace;
-    QuestionBank objData = new QuestionBank();
+    Questions objData = new Questions();
     private ImageLoader imageLoader;
     private InputValidator inputValidator;
 
@@ -238,7 +238,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     /*these is for set question questionData for copy and edit question.*/
 
-    public void setQuestionData(QuestionBank data) {
+    public void setQuestionData(Questions data) {
 
         Utility.showToast("SETDATACALLED", getActivity());
 
@@ -323,7 +323,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     ArrayList<Answers> questionQuestionAnswersModelArrayList = new ArrayList<>();
 
-    private void setMcqAnswers(QuestionBank data) {
+    private void setMcqAnswers(Questions data) {
         questionQuestionAnswersModelArrayList.addAll(data.getAnswers());
         for (int i = 0; i < data.getAnswers().size(); i++) {
             llAddMcqanswer.addView(setMCQ(i, data.getAnswers().get(i).getChoiceText(), data.getAnswers().get(i).getIsRight().equals("1") ? true : false));

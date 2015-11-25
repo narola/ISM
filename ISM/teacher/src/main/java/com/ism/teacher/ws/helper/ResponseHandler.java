@@ -16,13 +16,12 @@ import com.ism.teacher.ws.model.ExamSubmission;
 import com.ism.teacher.ws.model.Exams;
 import com.ism.teacher.ws.model.Feed;
 import com.ism.teacher.ws.model.Feeds;
-import com.ism.teacher.ws.model.QuestionBank;
 import com.ism.teacher.ws.model.Questions;
 import com.ism.teacher.ws.model.States;
-import com.ism.teacher.ws.model.Topics;
-import com.ism.teacher.ws.model.User;
 import com.ism.teacher.ws.model.Studymates;
 import com.ism.teacher.ws.model.Subjects;
+import com.ism.teacher.ws.model.Topics;
+import com.ism.teacher.ws.model.User;
 
 import java.util.ArrayList;
 
@@ -90,15 +89,15 @@ public class ResponseHandler {
     private ArrayList<Questions> questions;
     private ArrayList<User> user;
 
-    private ArrayList<QuestionBank> questionBanks;
+    private ArrayList<Questions> questionBanks;
 
 
     @JsonProperty("question_bank")
-    public ArrayList<QuestionBank> getQuestionBanks() {
+    public ArrayList<Questions> getQuestionBanks() {
         return questionBanks;
     }
 
-    public ResponseHandler setQuestionBanks(ArrayList<QuestionBank> questionBanks) {
+    public ResponseHandler setQuestionBanks(ArrayList<Questions> questionBanks) {
         this.questionBanks = questionBanks;
         return this;
     }

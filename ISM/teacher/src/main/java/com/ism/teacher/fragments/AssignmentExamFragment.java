@@ -558,7 +558,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             if (getArguments() == null) {
                 bundleArgument = new Bundle();
                 exam_id_after_creating_exam = responseHandler.getCreateExam().get(0).getExamId();
-                bundleArgument.putString(AppConstant.BUNDLE_EXAM_ID, exam_id_after_creating_exam);
+                bundleArgument.putString(AppConstant.ARG_EXAM_ID, exam_id_after_creating_exam);
 
             }
             // bundleArgument.putString(ExamsAdapter.ARG_EXAM_ID, String.valueOf(responseHandler.getCreateExam().get(0).getExamId()));

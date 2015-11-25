@@ -1,13 +1,16 @@
 package com.ism.teacher.ws.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Answers {
+public class Answers implements Parcelable {
 
     private String imageLink;
     private String id;
@@ -16,6 +19,19 @@ public class Answers {
     private String questionId;
     private String audioLink;
     private String videoLink;
+
+    public Answers() {
+    }
+
+    public Answers(Parcel parcelAnswers) {
+        this.imageLink = parcelAnswers.readString();
+        this.id = parcelAnswers.readString();
+        this.choiceText = parcelAnswers.readString();
+        this.isRight = parcelAnswers.readString();
+        this.questionId = parcelAnswers.readString();
+        this.audioLink = parcelAnswers.readString();
+        this.videoLink = parcelAnswers.readString();
+    }
 
 
     @JsonProperty("image_link")
@@ -80,5 +96,33 @@ public class Answers {
     public void setVideoLink(String videoLink) {
         this.videoLink = videoLink;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int i) {
+        dest.writeString(getImageLink());
+        dest.writeString(getId());
+        dest.writeString(getChoiceText());
+        dest.writeString(getIsRight());
+        dest.writeString(getQuestionId());
+        dest.writeString(getAudioLink());
+        dest.writeString(getVideoLink());
+    }
+
+    public static final Parcelable.Creator<Answers> CREATOR = new Parcelable.Creator<Answers>() {
+        @Override
+        public Answers createFromParcel(Parcel source) {
+            return new Answers(source);
+        }
+
+        @Override
+        public Answers[] newArray(int size) {
+            return new Answers[size];
+        }
+    };
 
 }

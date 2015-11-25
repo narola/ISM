@@ -372,27 +372,27 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
                 //called when add question container is replaced in main fragment instead of from inside Teacher Office fragment
 
-                case FRAGMENT_ADDQUESTION_CONTAINER:
-                    imgHome.setActivated(false);
-                    flFragmentContainerRight.setVisibility(View.GONE);
-                    currentMainFragment = fragment;
-
-                    currentMainFragmentBg = R.color.bg_classroom;
-                    txtAction.setVisibility(View.GONE);
-                    imgOffice.setActivated(false);
-                    rlControllerTopMenu.setVisibility(View.VISIBLE);
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
-                    txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
-
-                    txtAction.setVisibility(View.GONE);
-                    txtTitle.setVisibility(View.VISIBLE);
-                    txtTitle.setText(getString(R.string.assignment));
-                    txtTitle.setTextColor(getResources().getColor(R.color.bg_classroom));
-
-                    imgBack.setVisibility(View.VISIBLE);
-                    //  loadControllerTopMenu(null);
-                    llControllerLeft.setVisibility(View.VISIBLE);
-                    break;
+//                case FRAGMENT_ADDQUESTION_CONTAINER:
+//                    imgHome.setActivated(false);
+//                    flFragmentContainerRight.setVisibility(View.GONE);
+//                    currentMainFragment = fragment;
+//
+//                    currentMainFragmentBg = R.color.bg_classroom;
+//                    txtAction.setVisibility(View.GONE);
+//                    imgOffice.setActivated(false);
+//                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+//                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
+//                    txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
+//
+//                    txtAction.setVisibility(View.GONE);
+//                    txtTitle.setVisibility(View.VISIBLE);
+//                    txtTitle.setText(getString(R.string.assignment));
+//                    txtTitle.setTextColor(getResources().getColor(R.color.bg_classroom));
+//
+//                    imgBack.setVisibility(View.VISIBLE);
+//                    //  loadControllerTopMenu(null);
+//                    llControllerLeft.setVisibility(View.VISIBLE);
+//                    break;
 
                 case FRAGMENT_HOME:
                     currentMainFragment = fragment;
@@ -484,10 +484,10 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
             switch (fragment) {
 
                 //called when question container is detached from main container frag
-                case FRAGMENT_ADDQUESTION_CONTAINER:
-                    imgOffice.setActivated(false);
-                    flFragmentContainerRight.setVisibility(View.VISIBLE);
-                    break;
+//                case FRAGMENT_ADDQUESTION_CONTAINER:
+//                    imgOffice.setActivated(false);
+//                    flFragmentContainerRight.setVisibility(View.VISIBLE);
+//                    break;
 
 
                 case FRAGMENT_HOME:

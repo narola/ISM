@@ -19,7 +19,7 @@ import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
-import com.ism.teacher.ws.model.QuestionBank;
+import com.ism.teacher.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -41,7 +41,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
 
     //ArrayList
-    public ArrayList<QuestionBank> listOfPreviewQuestions = new ArrayList<>();
+    public ArrayList<Questions> listOfPreviewQuestions = new ArrayList<>();
 
 
     public PreviewQuestionFragment(Fragment fragment) {
@@ -49,9 +49,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         this.mFragment = fragment;
     }
 
-    public PreviewQuestionFragment() {
-    }
-
+    public PreviewQuestionFragment(){}
     Attribute attribute = new Attribute();
 
     @Override
@@ -129,7 +127,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
 
-    public void addQuestionsToPreviewFragment(ArrayList<QuestionBank> data) {
+    public void addQuestionsToPreviewFragment(ArrayList<Questions> data) {
 
         if (data.size() > 0) {
 

@@ -66,14 +66,15 @@
 
                 <TextView
                     android:id="@+id/txt_assignment_class_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/d100dp"
+                    android:layout_height="@dimen/d100dp"
                     android:background="@drawable/bg_circle_white"
                     android:gravity="center"
                     android:singleLine="false"
                     android:text=""
                     android:textColor="@color/color_green"
-                    android:textSize="12sp" />
+                    android:textSize="18sp"
+                    android:padding="@dimen/d15dp"/>
 
             </FrameLayout>
 
