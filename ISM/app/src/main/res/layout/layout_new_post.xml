@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="13dp"
+                android:layout_marginRight="13dp"
+                android:layout_marginTop="13dp"
+                android:background="@drawable/news_feed_post_box">
+
+	<EditText
+		android:id="@+id/et_writePost"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@android:color/transparent"
+		android:enabled="false"
+		android:focusable="false"
+		android:focusableInTouchMode="true"
+		android:gravity="start"
+		android:hint="@string/say_it"
+		android:lines="4"
+		android:padding="10dp"
+		android:textColorHint="@color/color_text_hint"/>
+
+	<ImageView
+		android:id="@+id/img_add_emoticons"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_margin="10dp"
+		android:src="@drawable/ic_smiley"/>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="45dp"
+		android:layout_below="@id/et_writePost"
+		android:background="@color/color_green">
+
+		<ImageView
+			android:id="@+id/img_link"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/ic_link"/>
+
+		<ImageView
+			android:id="@+id/img_image"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/img_link"
+			android:src="@drawable/ic_img"/>
+
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/img_image"
+			android:src="@drawable/ic_friend_post"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_alignParentRight="true"
+			android:background="@color/color_dark_gray"
+			android:drawablePadding="@dimen/d10dp"
+			android:drawableRight="@drawable/arrow"
+			android:gravity="center"
+			android:paddingLeft="40dp"
+			android:paddingRight="40dp"
+			android:text="@string/strpost"
+			android:textAllCaps="true"
+			android:textColor="@color/color_white"
+			android:textSize="@dimen/d20dp"
+			android:textStyle="bold"/>
+	</RelativeLayout>
+</RelativeLayout>

@@ -1,11 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-              android:orientation="vertical"
-             tools:context="com.ism.fragment.StudymatesFragment">
+             tools:context=".fragment.userprofile.StudymatesFragment">
 
 	<LinearLayout
+		android:id="@+id/ll_header"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal">
@@ -36,5 +36,13 @@
 	<FrameLayout
 		android:id="@+id/fl_fragment_container"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"></FrameLayout>
-</LinearLayout>
+		android:layout_height="match_parent"
+		android:layout_below="@id/ll_header"></FrameLayout>
+
+	<View
+		android:layout_width="20dp"
+		android:layout_height="30dp"
+		android:layout_marginTop="337dp"
+		android:layout_alignParentRight="true"
+		android:background="@drawable/shape_triangle_profile_controller" />
+</RelativeLayout>

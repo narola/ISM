@@ -2,13 +2,22 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.ism.fragment.MyFeedsFragment">
+             tools:context=".fragment.userprofile.MyFeedsFragment">
 
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textSize="20sp"
-		android:layout_centerInParent="true"
-		android:text="My Feeds"/>
+	<include android:id="@+id/rl_new_post"
+	         layout="@layout/layout_new_post"/>
 
+	<android.support.v7.widget.RecyclerView
+		android:id="@+id/recycler_post"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@id/rl_new_post">
+	</android.support.v7.widget.RecyclerView>
+
+	<View
+		android:layout_width="20dp"
+		android:layout_height="30dp"
+		android:layout_marginTop="266dp"
+		android:layout_alignParentRight="true"
+		android:background="@drawable/shape_triangle_profile_controller" />
 </RelativeLayout>
