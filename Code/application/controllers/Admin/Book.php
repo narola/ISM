@@ -11,6 +11,53 @@ class Book extends ADMIN_Controller {
 	}
 
 	public function index(){
+		$authors = select(TBL_USERS,TBL_USERS.'.id',
+										array('where'=>array(
+											TBL_ROLES.'.role_name'=>'author',
+											TBL_USERS.'.is_delete'=>0
+											)),
+										array(
+											'join'=> array(
+													array(
+								    				'table' => TBL_ROLES,
+								    				'condition' => TBL_ROLES.".id = ".TBL_USERS.".role_id",
+								    				),
+												)
+											)
+								);
+		
+		$authors_ids = array_column($authors, 'id');
+		// p($authors_ids);
+		$author_books = array();
+		foreach ($authors_ids as $author_id) {
+			$author = select(TBL_USERS, TBL_USERS.'.id,'.TBL_USERS.'.full_name',
+										array('where'=>array(TBL_USERS.'.id'=> $author_id)),
+										array('single'=>true)
+										);
+			$array['author'] = $author;
+			$books = select(TBL_AUTHOR_BOOK,TBL_BOOKS.'.*',
+										array('where'=>array(
+											TBL_AUTHOR_BOOK.'.user_id'=> $author_id,
+											)
+										),
+										array('join'=> array(
+												array(
+								    				'table' => TBL_BOOKS,
+								    				'condition' => TBL_BOOKS.".id = ".TBL_AUTHOR_BOOK.".book_id",
+							    				)
+							    			),
+										)
+									);
+			$array['books'] = $books;
+			$author_books[] = $array;
+		}
+		// p($author_books, true);
+		$this->data['author_books'] = $author_books;
+		$this->template->load('admin/default','admin/book/list',$this->data);
+	
+	}
+
+	public function view_all(){
 		if( !empty($_GET['author']) || !empty($_GET['tags']) || !empty($_GET['order']) ){
 
 			if( !empty($_GET['author']) ) { $role = $this->input->get('author'); }	
@@ -115,7 +162,7 @@ class Book extends ADMIN_Controller {
 												array(
 							    				'table' => TBL_USERS,
 							    				'condition' => TBL_USERS.".id = ".TBL_AUTHOR_PROFILE.".user_id",
-							    				),
+							    				)
 							    			),
 										'single'=>true
 										)

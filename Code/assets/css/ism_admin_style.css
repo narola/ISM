@@ -2222,3 +2222,17 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     margin-top: 0;
     text-transform: uppercase;
 }
+.title {
+    background-color: #dfdddd;
+    display: block;
+    padding: 1px;
+    width: 100%;
+}
+.title h3 {
+    margin-bottom: 6px;
+    margin-left: 20px;
+    margin-top: 6px;
+}
+.authorbook {
+    margin: 15px 0;
+}
