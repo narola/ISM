@@ -1,4 +1,4 @@
-package com.ism.author.fragment;
+package com.ism.author.fragment.rightcontainerfragment;
 
 import android.app.Fragment;
 import android.os.Bundle;

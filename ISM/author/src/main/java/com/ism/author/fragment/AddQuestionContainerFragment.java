@@ -29,13 +29,15 @@ public class AddQuestionContainerFragment extends Fragment {
     private View view;
     private FragmentListener fragListener;
 
-    public static AddQuestionContainerFragment newInstance() {
+    public static AddQuestionContainerFragment newInstance(Bundle bundleArgument) {
         AddQuestionContainerFragment addQuestionContainerFragment = new AddQuestionContainerFragment();
+        addQuestionContainerFragment.setArguments(bundleArgument);
         return addQuestionContainerFragment;
     }
 
     public AddQuestionContainerFragment() {
         // Required empty public constructor
+
     }
 
     FrameLayout flAddquestionfragmentContainerLeft, flAddquestionfragmentContainerRight;
@@ -50,6 +52,7 @@ public class AddQuestionContainerFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_add_question_container, container, false);
         initGlobal();
         if (savedInstanceState == null) {
+
 
             getFragmentManager()
                     .beginTransaction()
@@ -74,7 +77,7 @@ public class AddQuestionContainerFragment extends Fragment {
 
     private void initGlobal() {
 
-        questionListFragment = new QuestionListFragment(this);
+        questionListFragment = new QuestionListFragment(this, getArguments());
         previewQuestionFragment = new PreviewQuestionFragment(this);
         questionAddEditFragment = new QuestionAddEditFragment(this);
 
@@ -113,6 +116,7 @@ public class AddQuestionContainerFragment extends Fragment {
 
         showHideFragment(questionListFragment);
         showHideFragment(questionAddEditFragment);
+
         if (isFrontVisible) {
             isFrontVisible = false;
             questionAddEditFragment.setViewForAddEditQuestion();
@@ -133,6 +137,7 @@ public class AddQuestionContainerFragment extends Fragment {
 
 
     public void showHideFragment(final Fragment fragment) {
+
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         if (isFrontVisible) {
             ft.setCustomAnimations(

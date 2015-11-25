@@ -20,6 +20,7 @@ public class Questions implements Parcelable {
     private String evaluationNotes;
     private String topicId;
     private ArrayList<Answers> answers;
+    private ArrayList<Tags> tags;
     private String classroomId;
     private String subjectId;
     private String bookId;
@@ -53,6 +54,7 @@ public class Questions implements Parcelable {
         this.questionCreatorName = parcelQuestions.readString();
         this.subjectName = parcelQuestions.readString();
         parcelQuestions.readTypedList(answers, Answers.CREATOR);
+        parcelQuestions.readTypedList(tags, Tags.CREATOR);
 
 
     }
@@ -234,6 +236,7 @@ public class Questions implements Parcelable {
         dest.writeString(getQuestionCreatorId());
         dest.writeString(getQuestionCreatorName());
         dest.writeString(getSubjectName());
+        dest.writeTypedList(tags);
     }
 
     public static final Parcelable.Creator<Questions> CREATOR = new Parcelable.Creator<Questions>() {
@@ -247,4 +250,14 @@ public class Questions implements Parcelable {
             return new Questions[size];
         }
     };
+
+
+    @JsonProperty("tags")
+    public ArrayList<Tags> getTags() {
+        return this.tags;
+    }
+
+    public void setTags(ArrayList<Tags> tags) {
+        this.tags = tags;
+    }
 }

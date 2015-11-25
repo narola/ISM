@@ -39,7 +39,7 @@ import com.ism.author.fragment.GetObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.GetSubjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.OfficeFragment;
-import com.ism.author.fragment.StudentAttemptedAssignmentFragment;
+import com.ism.author.fragment.rightcontainerfragment.StudentAttemptedAssignmentFragment;
 import com.ism.author.fragment.StudentAttemptedFragment;
 import com.ism.author.fragment.TrialExamObjectiveDetailFragment;
 import com.ism.author.fragment.TrialExamSujectiveDetailFragment;
@@ -237,10 +237,13 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                             CreateExamAssignmentContainerFragment.newInstance(bundleArgument)).commit();
                     break;
                 case FRAGMENT_ADDQUESTION_CONTAINER:
-                    mFragmentTransaction = mFragmentManager.beginTransaction();
-                    mFragmentTransaction.add(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance());
-                    mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_ADDQUESTION_CONTAINER));
-                    mFragmentTransaction.commit();
+//                    mFragmentTransaction = mFragmentManager.beginTransaction();
+//                    mFragmentTransaction.add(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance());
+//                    mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_ADDQUESTION_CONTAINER));
+//                    mFragmentTransaction.commit();
+
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AddQuestionContainerFragment.newInstance(bundleArgument)).commit();
                     break;
 
                 case FRAGMENT_TRIAL_EXAM_OBJECTIVE_DETAILS:
