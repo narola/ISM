@@ -76,7 +76,9 @@ public class WebserviceConnector {
                 response.close();
                 json = sb.toString();
 
+
                 ret = getMapper().readValue(json, responseType);
+                Log.e("api_response",json);
 
             } catch (Exception e) {
                 Log.e(TAG, "Error converting result " + e.getLocalizedMessage());

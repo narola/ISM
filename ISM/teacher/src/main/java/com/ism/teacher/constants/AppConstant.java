@@ -61,6 +61,7 @@ public class AppConstant {
     /**
      * Managing Teacher office Fragment by using tags
      */
+
     public static final String FRAGMENT_TAG_TEACHER_CLASSWALL = "teacher_classwall";
     public static final String FRAGMENT_TAG_TEACHER_NOTES = "teacher_notes";
     public static final String FRAGMENT_TAG_TEACHER_QUIZ = "teacher_quiz";
@@ -69,14 +70,15 @@ public class AppConstant {
     public static final String FRAGMENT_TAG_TEACHER_PROGRESS_REPORT = "teacher_progress_report";
 
 
-    /**
-     * Bundle Tag
-     */
-
-    public static final String BUNDLE_EDIT_QUESTION_FRAGMENT="edit_question";
-
     public static final int LIKE = 1;
     public static final int DISLIKE = 0;
+
+
+    /**
+     * Bundle Tags
+     */
+
+    public static final String BUNDLE_EXAM_ID="exam_id";
 
 
 }

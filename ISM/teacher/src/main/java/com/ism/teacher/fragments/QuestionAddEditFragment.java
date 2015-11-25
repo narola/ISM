@@ -32,10 +32,10 @@ import com.ism.teacher.autocomplete.FilteredArrayAdapter;
 import com.ism.teacher.autocomplete.TokenCompleteTextView;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.QuestionAnswersModel;
-import com.ism.teacher.model.Data;
 import com.ism.teacher.model.TagsModel;
 import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.model.Answers;
+import com.ism.teacher.ws.model.QuestionBank;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -79,7 +79,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     //Objects
     MyTypeFace myTypeFace;
-    Data objData = new Data();
+    QuestionBank objData = new QuestionBank();
     private ImageLoader imageLoader;
     private InputValidator inputValidator;
 
@@ -238,7 +238,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     /*these is for set question questionData for copy and edit question.*/
 
-    public void setQuestionData(Data data) {
+    public void setQuestionData(QuestionBank data) {
 
         Utility.showToast("SETDATACALLED", getActivity());
 
@@ -321,9 +321,9 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     }
 
 
-    ArrayList<QuestionAnswersModel> questionQuestionAnswersModelArrayList = new ArrayList<QuestionAnswersModel>();
+    ArrayList<Answers> questionQuestionAnswersModelArrayList = new ArrayList<>();
 
-    private void setMcqAnswers(Data data) {
+    private void setMcqAnswers(QuestionBank data) {
         questionQuestionAnswersModelArrayList.addAll(data.getAnswers());
         for (int i = 0; i < data.getAnswers().size(); i++) {
             llAddMcqanswer.addView(setMCQ(i, data.getAnswers().get(i).getChoiceText(), data.getAnswers().get(i).getIsRight().equals("1") ? true : false));
@@ -584,7 +584,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
         if (Utility.isOnline(getActivity())) {
             try {
-                Attribute attribute=new Attribute();
+                Attribute attribute = new Attribute();
 //                requestObject.setBankQuestionId("2");
                 attribute.setQuestionCreatorId("109");
                 attribute.setQuestionCreatorName("");
@@ -604,7 +604,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     questionQuestionAnswersModelArrayList.clear();
                     for (int i = 0; i < llAddMcqanswer.getChildCount(); i++) {
                         View v = llAddMcqanswer.getChildAt(i);
-                        QuestionAnswersModel questionQuestionAnswersModel = new QuestionAnswersModel();
+                        Answers questionQuestionAnswersModel = new Answers();
                         questionQuestionAnswersModel.setQuestionId("2");
                         questionQuestionAnswersModel.setChoiceText(((EditText) v.findViewById(R.id.et_add_mcq_answer)).getText().toString());
                         questionQuestionAnswersModel.setIsRight(getIsSelected((ImageView) v.findViewById(R.id.img_ans_radio)));

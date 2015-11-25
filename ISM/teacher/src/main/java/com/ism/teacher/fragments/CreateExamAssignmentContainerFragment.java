@@ -8,12 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.interfaces.FragmentListener;
 
 
 /**
@@ -24,7 +24,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
     private static final String TAG = CreateExamAssignmentContainerFragment.class.getSimpleName();
     private View view;
-    private FragmentListener fragListener;
     private MyTypeFace myTypeFace;
 
 
@@ -35,6 +34,7 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         createExamAssignmentContainerFragment.setArguments(bundleArgument);
         return createExamAssignmentContainerFragment;
     }
+
     public CreateExamAssignmentContainerFragment() {
         // Required empty public constructor
     }
@@ -48,6 +48,8 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     TextView tv_tab_activity, tv_tab_exam;
     ImageView img_sep_tab_activity, img_sep_tab_exam;
 
+    //to hide the topbar_assignment
+    public LinearLayout ll_topbar_assignment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,6 +64,8 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
         myTypeFace = new MyTypeFace(getActivity());
 
+        //to hide the topbar_assignment
+        ll_topbar_assignment = (LinearLayout) view.findViewById(R.id.ll_topbar_assignment);
 
         fl_tab_activity = (FrameLayout) view.findViewById(R.id.fl_tab_activity);
         fl_tab_exam = (FrameLayout) view.findViewById(R.id.fl_tab_exam);
@@ -114,27 +118,27 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            fragListener = (FragmentListener) activity;
-            if (fragListener != null) {
-//                fragListener.onFragmentAttached();
-            }
-        } catch (ClassCastException e) {
-            Debug.e(TAG, "onAttach Exception : " + e.toString());
-        }
+//        try {
+//            fragListener = (FragmentListener) activity;
+//            if (fragListener != null) {
+////                fragListener.onFragmentAttached();
+//            }
+//        } catch (ClassCastException e) {
+//            Debug.e(TAG, "onAttach Exception : " + e.toString());
+//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        try {
-            if (fragListener != null) {
-//                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ADDNEWTRIAL);
-            }
-        } catch (ClassCastException e) {
-            Debug.e(TAG, "onDetach Exception : " + e.toString());
-        }
-        fragListener = null;
+//        try {
+//            if (fragListener != null) {
+////                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ADDNEWTRIAL);
+//            }
+//        } catch (ClassCastException e) {
+//            Debug.e(TAG, "onDetach Exception : " + e.toString());
+//        }
+//        fragListener = null;
     }
 
 
@@ -143,12 +147,12 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
         try {
             switch (fragment) {
                 case FRAGMENT_ASSIGNMENT_ACTIVITY:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance(getArguments())).commit();
                     break;
                 case FRAGMENT_ASSIGNMENT_EXAM:
-                    assignmentExamFragment = new AssignmentExamFragment(CreateExamAssignmentContainerFragment.this);
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, assignmentExamFragment).commit();
-//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance()).commit();
+//                    assignmentExamFragment = new AssignmentExamFragment(CreateExamAssignmentContainerFragment.this);
+//                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, assignmentExamFragment).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance(this, getArguments())).commit();
                     break;
 
             }
@@ -180,6 +184,10 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
         }
 
+    }
+
+    public void hideTopBar() {
+        ll_topbar_assignment.setVisibility(View.GONE);
     }
 
 

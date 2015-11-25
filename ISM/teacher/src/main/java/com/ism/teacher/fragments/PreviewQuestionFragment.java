@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +16,10 @@ import com.ism.teacher.adapters.PreviewQuestionListAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.Data;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
+import com.ism.teacher.ws.model.QuestionBank;
 
 import java.util.ArrayList;
 
@@ -36,14 +35,21 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     TextView tvQuestionlistTitle, tv_freeze_question;
     RecyclerView rvPreviewquestionlist;
     PreviewQuestionListAdapter previewQuestionListAdapter;
-    public ArrayList<Data> listOfPreviewQuestions = new ArrayList<Data>();
+
     MyTypeFace myTypeFace;
     Fragment mFragment;
-    ArrayList<String> arrayListQuestionIds = new ArrayList<>();
+
+
+    //ArrayList
+    public ArrayList<QuestionBank> listOfPreviewQuestions = new ArrayList<>();
+
 
     public PreviewQuestionFragment(Fragment fragment) {
         // Required empty public constructor
         this.mFragment = fragment;
+    }
+
+    public PreviewQuestionFragment() {
     }
 
     Attribute attribute = new Attribute();
@@ -123,7 +129,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
 
-    public void addQuestionsToPreviewFragment(ArrayList<Data> data) {
+    public void addQuestionsToPreviewFragment(ArrayList<QuestionBank> data) {
 
         if (data.size() > 0) {
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,10 @@ import android.widget.FrameLayout;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
-import com.ism.teacher.helper.MyTypeFace;
+import com.ism.teacher.activity.TeacherHostActivity;
+import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.model.Data;
-import com.ism.teacher.model.FragmentArgument;
+import com.ism.teacher.ws.model.QuestionBank;
 
 import java.util.ArrayList;
 
@@ -25,56 +26,101 @@ import java.util.ArrayList;
 public class AddQuestionContainerFragment extends Fragment {
     private static final String TAG = AddQuestionContainerFragment.class.getSimpleName();
     private View view;
-    private MyTypeFace myTypeFace;
-
-    private FragmentListener fragListener;
 
     FrameLayout fl_addquestionfragment_container_left, fl_addquestionfragment_container_right;
-    public static final int FRAGMENT_QUESTIONLIST = 0, FRAGMENT_QUESTIONADDEDIT = 1, FRAGMENT_PREVIEWQUESTION = 2, FRAGMENT_ADD_NEW_QUESTION = 3;
-    private boolean mShowingBack = false;
-    private String exam_id = "";
-    private static final String ARG_FRAGMENT = "fragment";
+
+    public static final int FRAGMENT_QUESTIONLIST = 0, FRAGMENT_PREVIEWQUESTION = 1;
+    private String exam_id_received_from_bundle = "";
 
     public PreviewQuestionFragment previewQuestionFragment;
     public QuestionListFragment questionListFragment;
     public QuestionAddEditFragment questionAddEditFragment;
 
     private Boolean isFrontVisible = false;
+    private Bundle bundleArgument;
 
-    Fragment mFragment;
-    private FragmentArgument fragmentArgument;
-
-
-    public AddQuestionContainerFragment(String examid) {
-
-        this.exam_id = examid;
-    }
-
-    public AddQuestionContainerFragment(Fragment fragment, String examid) {
-
-        this.exam_id = examid;
-        this.mFragment = fragment;
-    }
+    private FragmentListener fragListener;
 
     public AddQuestionContainerFragment() {
 
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((TeacherHostActivity) getActivity()).hideRightContainerFragment();
+    }
 
-    public static AddQuestionContainerFragment newInstance(FragmentArgument fragmentArgument) {
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((TeacherHostActivity) getActivity()).showRightContainerFragment();
+    }
+
+    /**
+     * Uncomment if we want to replace question container in main(not from teacher office)
+     */
+
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        try {
+//            fragListener = (FragmentListener) activity;
+//            if (fragListener != null) {
+//                fragListener.onFragmentAttached(TeacherHostActivity.FRAGMENT_ADDQUESTION_CONTAINER);
+//            }
+//        } catch (ClassCastException e) {
+//            Debug.e(TAG, "onAttach Exception : " + e.toString());
+//        }
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        try {
+//            if (fragListener != null) {
+//                fragListener.onFragmentDetached(TeacherHostActivity.FRAGMENT_ADDQUESTION_CONTAINER);
+//            }
+//        } catch (ClassCastException e) {
+//            Debug.e(TAG, "onDetach Exception : " + e.toString());
+//        }
+//        fragListener = null;
+//    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
+    public static AddQuestionContainerFragment newInstance(Bundle bundleArgument) {
         AddQuestionContainerFragment addQuestionContainerFragment = new AddQuestionContainerFragment();
-        addQuestionContainerFragment.fragmentArgument = fragmentArgument;
+        if (bundleArgument != null) {
+            Log.e(TAG, bundleArgument.getString(AppConstant.BUNDLE_EXAM_ID));
+
+        }
         return addQuestionContainerFragment;
 
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            exam_id_received_from_bundle = getArguments().getString(AppConstant.BUNDLE_EXAM_ID);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_add_question_teacher, container, false);
+
+        /**
+         * initialize three frags
+         */
+
         initGlobal();
 
         if (savedInstanceState == null) {
-
 
             getFragmentManager()
                     .beginTransaction()
@@ -84,18 +130,28 @@ public class AddQuestionContainerFragment extends Fragment {
             getFragmentManager()
                     .beginTransaction()
                     .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
+                            //.add(R.id.fl_addquestionfragment_container_left, QuestionListFragment.newInstance(getArguments()))
                     .commit();
 
             showHideFragment(questionAddEditFragment);
 
             isFrontVisible = true;
-
-
         }
 
 
         loadFragmentInRightContainer();
         return view;
+    }
+
+    private void initGlobal() {
+
+        previewQuestionFragment = new PreviewQuestionFragment(this);
+        questionListFragment = new QuestionListFragment(this);
+        questionAddEditFragment = new QuestionAddEditFragment(this);
+
+        fl_addquestionfragment_container_left = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
+        fl_addquestionfragment_container_right = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
+
     }
 
     public void showHideFragment(final Fragment fragment) {
@@ -125,28 +181,6 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
 
-    private void initGlobal() {
-
-        previewQuestionFragment = new PreviewQuestionFragment(this);
-        questionListFragment = new QuestionListFragment(this);
-        questionAddEditFragment = new QuestionAddEditFragment(this);
-
-        fl_addquestionfragment_container_left = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
-        fl_addquestionfragment_container_right = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
-
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
     public void flipCard() {
         Utility.showToast("FLIPCARD CALLED", getActivity());
         showHideFragment(questionListFragment);
@@ -173,9 +207,9 @@ public class AddQuestionContainerFragment extends Fragment {
 
     }
 
-    public String getExam_id() {
-        if (!exam_id.equalsIgnoreCase("")) {
-            return exam_id;
+    public String getExam_id_received_from_bundle() {
+        if (!exam_id_received_from_bundle.equalsIgnoreCase("")) {
+            return exam_id_received_from_bundle;
         } else {
             return "";
         }
@@ -187,7 +221,7 @@ public class AddQuestionContainerFragment extends Fragment {
     /*these is to set data in the add question fragment*/
 
 
-    public Data questionData;
+    public QuestionBank questionData;
     public Boolean isSetQuestionData = false;
 
 
@@ -199,26 +233,26 @@ public class AddQuestionContainerFragment extends Fragment {
         this.isSetQuestionData = isSetQuestionData;
     }
 
-    public Data getQuestionData() {
+    public QuestionBank getQuestionData() {
         return questionData;
     }
 
-    public void setQuestionData(Data questionData) {
+    public void setQuestionData(QuestionBank questionData) {
         this.questionData = questionData;
     }
 
 
     /*thsese are the listofpreview questions to add */
 
-    public ArrayList<Data> listOfPreviewQuestionsToAdd = new ArrayList<Data>();
+    public ArrayList<QuestionBank> listOfPreviewQuestionsToAdd = new ArrayList<>();
 
-    public ArrayList<Data> getListOfPreviewQuestionsToAdd() {
+    public ArrayList<QuestionBank> getListOfPreviewQuestionsToAdd() {
         return listOfPreviewQuestionsToAdd;
     }
 
 
     /*get the list of preview question*/
-    public ArrayList<Data> getListOfPreviewQuestion() {
+    public ArrayList<QuestionBank> getListOfPreviewQuestion() {
         return previewQuestionFragment.listOfPreviewQuestions;
     }
 
@@ -229,7 +263,7 @@ public class AddQuestionContainerFragment extends Fragment {
     }
 
     /*this is to update check box view in questionlist after delete it from preview questions*/
-    public void updateQuestionListviewAfterRemoveInPreview(Data data) {
+    public void updateQuestionListviewAfterRemoveInPreview(QuestionBank data) {
         questionListFragment.updateViewAfterDeleteInPreviewQuestion(data);
         previewQuestionFragment.listOfPreviewQuestions.remove(data);
 
@@ -256,7 +290,7 @@ public class AddQuestionContainerFragment extends Fragment {
         this.POSITION_FOR_EDITQUESTION = POSITION_FOR_EDITQUESTION;
     }
 
-    public void setDataOnFragmentFlip(Data data, Boolean isSetQuestionData, int FRAGMENT_TYPE, int POSITION_FOR_EDITQUESTION) {
+    public void setDataOnFragmentFlip(QuestionBank data, Boolean isSetQuestionData, int FRAGMENT_TYPE, int POSITION_FOR_EDITQUESTION) {
 
         setQuestionData(data);
         setIsSetQuestionData(isSetQuestionData);

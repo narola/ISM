@@ -230,7 +230,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
                 // call evaluation api only if flag is true from examassignadapter-->Host->Objectivedetail->StudentAttempted
                 if (callEvaluationApiFlag) {
-                    Log.i(TAG, "student_id:" + studentid_from_param + "===exam_id" + examid_from_param);
+                    Log.i(TAG, "student_id:" + studentid_from_param + "===exam_id_after_creating_exam" + examid_from_param);
                     //      callAPIStudentEvaluations(studentid_from_param,examid_from_param);
 
                     //static

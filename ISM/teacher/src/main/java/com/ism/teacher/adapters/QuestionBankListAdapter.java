@@ -19,8 +19,8 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.fragments.AddQuestionContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.QuestionAnswersModel;
-import com.ism.teacher.model.Data;
+import com.ism.teacher.ws.model.Answers;
+import com.ism.teacher.ws.model.QuestionBank;
 
 import java.util.ArrayList;
 
@@ -33,7 +33,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
 
     Context mContext;
-    ArrayList<Data> listOfQuestions = new ArrayList<Data>();
+    ArrayList<QuestionBank> listOfQuestions = new ArrayList<>();
     MyTypeFace myTypeFace;
 
     Fragment mFragment;
@@ -45,7 +45,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     }
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<QuestionBank> data) {
         try {
             this.listOfQuestions.clear();
             this.listOfQuestions.addAll(data);
@@ -102,7 +102,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
         holder.tvQuestionCategory.setTypeface(myTypeFace.getRalewayRegular());
         holder.tvQuestionCategory.setText(mContext.getString(R.string.strcategory));
-        String category = " " + listOfQuestions.get(position).getSubject_name();
+        String category = " " + listOfQuestions.get(position).getSubjectName();
         SpannableString f = new SpannableString(category);
         f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
                 category.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -226,7 +226,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     }
 
 
-    private View getAnsInflaterView(QuestionAnswersModel answer, int position) {
+    private View getAnsInflaterView(Answers answer, int position) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View v;

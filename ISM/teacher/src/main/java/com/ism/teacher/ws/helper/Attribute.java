@@ -3,7 +3,7 @@ package com.ism.teacher.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ism.teacher.model.QuestionAnswersModel;
+import com.ism.teacher.ws.model.Answers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +91,7 @@ public class Attribute {
     private String questionImageLink;
     private String evaluationNotes;
     private String questionCreatorName;
-    private ArrayList<QuestionAnswersModel> answers;
+    private ArrayList<Answers> answers;
     private String solution;
     private String subjectName;
     private String questionText;
@@ -736,12 +736,12 @@ public class Attribute {
         this.questionCreatorName = questionCreatorName;
     }
 
-    public ArrayList<QuestionAnswersModel> getAnswers() {
+    public ArrayList<Answers> getAnswers() {
         return this.answers;
     }
 
     @JsonProperty("answers")
-    public void setAnswers(ArrayList<QuestionAnswersModel> answers) {
+    public void setAnswers(ArrayList<Answers> answers) {
         this.answers = answers;
     }
 

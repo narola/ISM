@@ -115,7 +115,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
                     }
                     if (arrayListStudents.get(position).isFlagged()) {
                         ((TeacherHostActivity) mContext).startProgress();
-                        // callAPIStudentEvaluations(arrayListStudents.get(position).getStudent_id(), resObjStudentAttempted.getData().get(0).getExam_id());
+                        // callAPIStudentEvaluations(arrayListStudents.get(position).getStudent_id(), resObjStudentAttempted.getData().get(0).getExam_id_received_from_bundle());
                         student_name = arrayListStudents.get(position).getStudentName();
                         callAPIStudentEvaluations(WebConstants.STUDENT_ID_1, WebConstants.EXAM_ID_11_SUBJECTIVE);
 //                        callAPIStudentEvaluations(arrayListStudents.get(position).getStudentId(), WebConstants.EXAM_ID_11_SUBJECTIVE);

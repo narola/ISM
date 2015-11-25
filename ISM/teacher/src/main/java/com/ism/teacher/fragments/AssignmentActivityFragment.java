@@ -28,7 +28,6 @@ import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.model.CreateAssignmentRequest;
-import com.ism.teacher.model.Data;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -53,8 +52,9 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     private View view;
     private FragmentListener fragListener;
 
-    public static AssignmentActivityFragment newInstance() {
+    public static AssignmentActivityFragment newInstance(Bundle bundleArgument) {
         AssignmentActivityFragment assignmentActivityFragment = new AssignmentActivityFragment();
+        assignmentActivityFragment.setArguments(bundleArgument);
         return assignmentActivityFragment;
     }
 
