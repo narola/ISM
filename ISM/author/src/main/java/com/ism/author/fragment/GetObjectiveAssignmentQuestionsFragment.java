@@ -55,7 +55,6 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
         GetObjectiveAssignmentQuestionsFragment getObjectiveAssignmentQuestionsFragment = new GetObjectiveAssignmentQuestionsFragment();
         if (bundleArgument != null) {
             getObjectiveAssignmentQuestionsFragment.setArguments(bundleArgument);
-            Debug.e(TAG, "The exam id is:::" + bundleArgument.getString(ExamsAdapter.ARG_EXAM_ID));
 //            getObjectiveAssignmentQuestionsFragment.fragmentArgument.setFragment(getObjectiveAssignmentQuestionsFragment);
         }
         return getObjectiveAssignmentQuestionsFragment;
@@ -122,11 +121,9 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     private void setExamQuestions() {
 
-
         if (responseObjGetAllExamQuestions != null) {
-
-            getArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, responseObjGetAllExamQuestions.getQuestions());
-            getArguments().putString(ARG_EXAM_TYPE, getActivity().getString(R.string.strexamtype));
+            getArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
+            getArguments().putString(ARG_EXAM_TYPE, "test");
 
             ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
                     (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getArguments());

@@ -190,6 +190,7 @@ public class WebserviceWrapper {
             if (!isNetworkConnected) {
                 Utils.showToast(mContext.getString(R.string.error_server_connection), mContext);
             }
+
             webserviceResponse.onResponse(currentApiCode, responseObject, null);
             super.onPostExecute(responseObject);
 

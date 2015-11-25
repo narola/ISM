@@ -43,14 +43,14 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     private View view;
     private MyTypeFace myTypeFace;
     private HostActivity activityHost;
-    private HorizontalListView listViewFavBooks;
+    public static HorizontalListView listViewFavBooks;
     FavoriteBooksAdapter favoriteBooksAdapter;
     private ArrayList<Book> arrayListFavBooks;
-    private HorizontalListView listViewSuggestedBooks;
-    SuggestedBookAdapter suggestedBookForUserAdapter;
+    public static HorizontalListView listViewSuggestedBooks;
+    SuggestedBookAdapter suggestedBooksAdapter;
     private ArrayList<Book> arrayListSuggestedBooks;
-    private TextView txtSuggestedEmpty;
-    private TextView txtFavEmpty;
+    public static TextView txtSuggestedEmpty;
+    public static TextView txtFavEmpty;
     private TextView txtSuggestedBooks;
     private TextView txtFavBooks;
     private int addToFavItem;
@@ -105,15 +105,42 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         imgFavSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (etFavSearch.getVisibility() == View.VISIBLE) {
+//		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
+//		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
+                    etFavSearch.setVisibility(View.GONE);
+                    View view = getActivity().getCurrentFocus();
+                    Utility.hideKeyboard(getActivity(), getView());
+                    setUpFavList(arrayListFavBooks);
+                    etFavSearch.setText("");
 
-                inSearch(imgFavSearch, etFavSearch);
+                } else {
+                    startSlideAnimation(etFavSearch, etFavSearch.getWidth(), 0, 0, 0);
+                    startSlideAnimation(imgFavSearch, etFavSearch.getWidth(), 0, 0, 0);
+                    etFavSearch.setVisibility(View.VISIBLE);
+                    Utility.showSoftKeyboard(etFavSearch, getActivity());
+                }
+
             }
         });
         imgSuggestedSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                inSearch(imgSuggestedSearch,etSuggestedSearch);
+                if (etSuggestedSearch.getVisibility() == View.VISIBLE) {
+//		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
+//		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
+                    etSuggestedSearch.setVisibility(View.GONE);
+                    View view=getActivity().getCurrentFocus();
+                    Utility.hideKeyboard(getActivity(), getView());
+                    setUpSuggestedList(arrayListSuggestedBooks);
+                    etSuggestedSearch.setText("");
+                } else {
+                    startSlideAnimation(etSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
+                    startSlideAnimation(imgSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
+                    etSuggestedSearch.setVisibility(View.VISIBLE);
+                    Utility.showSoftKeyboard(etSuggestedSearch, getActivity());
+                }
             }
         });
         etFavSearch
@@ -125,27 +152,28 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                             favoriteBooksAdapter.getFilter()
                                     .filter(etFavSearch.getText().toString()
                                             .trim());
+                            Utility.hideKeyboard(getActivity(),getView());
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+        etSuggestedSearch
+                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId,
+                                                  KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                            suggestedBooksAdapter.getFilter()
+                                    .filter(etSuggestedSearch.getText().toString()
+                                            .trim());
+                            Utility.hideKeyboard(getActivity(), getView());
                             return true;
                         }
                         return false;
                     }
                 });
 
-    }
-
-    private void inSearch(ImageView imgSearch, EditText etSearch) {
-        if (etSearch.getVisibility() == View.VISIBLE) {
-//		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
-//		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
-            etSearch.setVisibility(View.GONE);
-            View view=getActivity().getCurrentFocus();
-            Utility.hideKeyboard(getActivity(), getView());
-        } else {
-            startSlideAnimation(etSearch, etSearch.getWidth(), 0, 0, 0);
-            startSlideAnimation(imgSearch, etSearch.getWidth(), 0, 0, 0);
-            etSearch.setVisibility(View.VISIBLE);
-            Utility.showSoftKeyboard(etSearch, getActivity());
-        }
     }
 
     private void startSlideAnimation(final View view, int fromX, int toX, int fromY, int toY) {
@@ -235,7 +263,8 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrayListFavBooks = responseHandler.getBooks().get(0).getFavorite();
                     arrayListSuggestedBooks = responseHandler.getBooks().get(0).getSuggested();
-                    setUpList(arrayListFavBooks, arrayListSuggestedBooks);
+                    setUpSuggestedList( arrayListSuggestedBooks);
+                    setUpFavList(arrayListFavBooks);
                     Debug.i(TAG, "onResponseUserBooks success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.i(TAG, "onResponseUserBooks Failed");
@@ -248,7 +277,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         }
     }
 
-    private void setUpList(ArrayList<Book> arrayListFavBooks, ArrayList<Book> arrayListSuggestedBooks) {
+    public void setUpFavList(ArrayList<Book> arrayListFavBooks){
         try {
             if (!arrayListFavBooks.isEmpty()) {
                 txtFavEmpty.setVisibility(View.GONE);
@@ -260,19 +289,27 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
             } else {
                 txtFavEmpty.setVisibility(View.VISIBLE);
                 listViewFavBooks.setVisibility(View.GONE);
+//                listViewFavBooks.setEmptyView(txtFavEmpty);
             }
+
+        } catch (Exception e) {
+            Debug.e(TAG, "setUpFavList Exceptions :" + e.getLocalizedMessage());
+        }
+    }
+    public void setUpSuggestedList(ArrayList<Book> arrayListSuggestedBooks) {
+        try {
             if (!arrayListSuggestedBooks.isEmpty()) {
                 txtSuggestedEmpty.setVisibility(View.GONE);
                 listViewSuggestedBooks.setVisibility(View.VISIBLE);
-                suggestedBookForUserAdapter = new SuggestedBookAdapter(getActivity(), arrayListSuggestedBooks, this);
-                listViewSuggestedBooks.setAdapter(suggestedBookForUserAdapter);
-                suggestedBookForUserAdapter.notifyDataSetChanged();
+                suggestedBooksAdapter = new SuggestedBookAdapter(getActivity(), arrayListSuggestedBooks, this);
+                listViewSuggestedBooks.setAdapter(suggestedBooksAdapter);
+                suggestedBooksAdapter.notifyDataSetChanged();
             } else {
-                txtSuggestedEmpty.setVisibility(View.VISIBLE);
+               txtSuggestedEmpty.setVisibility(View.VISIBLE);
                 listViewSuggestedBooks.setVisibility(View.GONE);
             }
         } catch (Exception e) {
-            Debug.e(TAG, "setUpList Exceptions :" + e.getLocalizedMessage());
+            Debug.e(TAG, "setUpSuggestedList Exceptions :" + e.getLocalizedMessage());
         }
     }
 

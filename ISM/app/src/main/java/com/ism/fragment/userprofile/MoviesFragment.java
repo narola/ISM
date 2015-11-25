@@ -4,9 +4,14 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,16 +43,17 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
     private View view;
     private MyTypeFace myTypeFace;
     private HostActivity activityHost;
-    private HorizontalListView listViewMovies;
     FavoriteMoviesAdapter userMoviesAdapter;
-    private ArrayList<MovieData> arrayListFavBooks;
-    private TextView txtFavEmpty,txtSuggestedEmpty,txtSuggestedBooks,txtFavBooks;
-    private HorizontalListView listViewFav,listViewSuggested;
+    public static TextView txtFavEmpty,txtSuggestedEmpty;
+    TextView txtSuggestedBooks,txtFavBooks;
+    public static HorizontalListView listViewFav,listViewSuggested;
     private ImageView imgNxtFav,imgPrevFav;
     private ArrayList<MovieData> arrayListFav;
     private FavoriteMoviesAdapter favMovieAdapter;
     private ArrayList<MovieData> arrayListSuggested;
     private SuggestedMoviesAdapter suggestedMovieAdapter;
+    private ImageView imgFavSearch,imgSuggestedSearch;
+    private EditText etFavSearch,etSuggestedSearch;
 
     public static MoviesFragment newInstance() {
         MoviesFragment fragment = new MoviesFragment();
@@ -77,13 +83,17 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
         txtSuggestedEmpty = (TextView) view.findViewById(R.id.txt_suggested_empty);
         txtSuggestedBooks = (TextView) view.findViewById(R.id.txt_read_books);
         txtFavBooks = (TextView) view.findViewById(R.id.txt_fav_books);
+        imgFavSearch = (ImageView) view.findViewById(R.id.img_search_fav);
+        etFavSearch = (EditText) view.findViewById(R.id.et_search_fav);
+        imgSuggestedSearch = (ImageView) view.findViewById(R.id.img_search_suggested);
+        etSuggestedSearch = (EditText) view.findViewById(R.id.et_search_suggested);
         //set typeface
         txtFavEmpty.setTypeface(myTypeFace.getRalewayRegular());
         txtSuggestedEmpty.setTypeface(myTypeFace.getRalewayRegular());
         txtFavBooks.setTypeface(myTypeFace.getRalewayRegular());
         txtSuggestedBooks.setTypeface(myTypeFace.getRalewayRegular());
-        txtSuggestedBooks.setText(R.string.strSuggestedRoleModels);
-        txtFavBooks.setText(R.string.strFavRolemodels);
+        txtSuggestedBooks.setText(R.string.strSuggestedMovies);
+        txtFavBooks.setText(R.string.strFavMovies);
 
 
         listViewFav = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
@@ -94,11 +104,114 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
 
         callApiGetMoviesForUser();
 
-        imgNxtFav.setOnClickListener(this);
-        imgPrevFav.setOnClickListener(this);
+        imgFavSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etFavSearch.getVisibility() == View.VISIBLE) {
+//		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
+//		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
+                    etFavSearch.setVisibility(View.GONE);
+                    View view = getActivity().getCurrentFocus();
+                    Utility.hideKeyboard(getActivity(), getView());
+                    setUpFavList(arrayListFav);
+                    etFavSearch.setText("");
+
+                } else {
+                    startSlideAnimation(etFavSearch, etFavSearch.getWidth(), 0, 0, 0);
+                    startSlideAnimation(imgFavSearch, etFavSearch.getWidth(), 0, 0, 0);
+                    etFavSearch.setVisibility(View.VISIBLE);
+                    Utility.showSoftKeyboard(etFavSearch, getActivity());
+                }
+
+            }
+        });
+        imgSuggestedSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (etSuggestedSearch.getVisibility() == View.VISIBLE) {
+//		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
+//		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
+                    etSuggestedSearch.setVisibility(View.GONE);
+                    View view = getActivity().getCurrentFocus();
+                    Utility.hideKeyboard(getActivity(), getView());
+                    setUpSuggestedList(arrayListSuggested);
+                    etSuggestedSearch.setText("");
+                } else {
+                    startSlideAnimation(etSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
+                    startSlideAnimation(imgSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
+                    etSuggestedSearch.setVisibility(View.VISIBLE);
+                    Utility.showSoftKeyboard(etSuggestedSearch, getActivity());
+                }
+            }
+        });
+        etFavSearch
+                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId,
+                                                  KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                            favMovieAdapter.getFilter()
+                                    .filter(etFavSearch.getText().toString()
+                                            .trim());
+                            Utility.hideKeyboard(getActivity(), getView());
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+        etSuggestedSearch
+                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId,
+                                                  KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                            suggestedMovieAdapter.getFilter()
+                                    .filter(etSuggestedSearch.getText().toString()
+                                            .trim());
+                            Utility.hideKeyboard(getActivity(), getView());
+                            return true;
+                        }
+                        return false;
+                    }
+                });
 
 
 
+    }
+
+    private void setUpFavList(ArrayList<MovieData> arrayList) {
+        try {
+            if (!arrayList.isEmpty()) {
+                txtFavEmpty.setVisibility(View.GONE);
+                listViewFav.setVisibility(View.VISIBLE);
+                favMovieAdapter = new FavoriteMoviesAdapter(getActivity(), arrayList);
+                listViewFav.setAdapter(favMovieAdapter);
+
+            } else {
+                txtFavEmpty.setVisibility(View.VISIBLE);
+                listViewFav.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "setUpFavList Exceptions :" + e.getLocalizedMessage());
+        }
+    }
+
+    private void setUpSuggestedList(ArrayList<MovieData> arrayList) {
+        try {
+
+            if (!arrayList.isEmpty()) {
+                txtSuggestedEmpty.setVisibility(View.GONE);
+                listViewSuggested.setVisibility(View.VISIBLE);
+                suggestedMovieAdapter = new SuggestedMoviesAdapter(getActivity(), arrayList,this);
+                listViewSuggested.setAdapter(suggestedMovieAdapter);
+            } else {
+                txtSuggestedEmpty.setVisibility(View.VISIBLE);
+                listViewSuggested.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "setUpSuggestedList Exceptions :" + e.getLocalizedMessage());
+        }
     }
 
 
@@ -117,7 +230,28 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
         }
     }
 
+    private void startSlideAnimation(final View view, int fromX, int toX, int fromY, int toY) {
+        TranslateAnimation slideOutAnimation = new TranslateAnimation(fromX, toX, fromY, toY);
+        slideOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
 
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.clearAnimation();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        slideOutAnimation.setDuration(500);
+        slideOutAnimation.setFillAfter(true);
+        view.startAnimation(slideOutAnimation);
+    }
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
 
@@ -142,7 +276,8 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrayListFav = responseHandler.getMovies().get(0).getFavoriteMovies();
                     arrayListSuggested = responseHandler.getMovies().get(0).getSuggestedMovies();
-                    setUpList(arrayListFav, arrayListSuggested);
+                    setUpFavList(arrayListFav);
+                    setUpSuggestedList(arrayListSuggested);
                     Log.e(TAG, "onResponseUserMovies success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "onResponseUserMovies Failed");
@@ -155,31 +290,31 @@ public class MoviesFragment extends Fragment implements WebserviceWrapper.Webser
         }
     }
 
-    private void setUpList(ArrayList<MovieData> arrayListFav, ArrayList<MovieData> arrayListSuggested) {
-        try {
-            if (!arrayListFav.isEmpty()) {
-                txtFavEmpty.setVisibility(View.GONE);
-                listViewFav.setVisibility(View.VISIBLE);
-                favMovieAdapter = new FavoriteMoviesAdapter(getActivity(), arrayListFav);
-                listViewFav.setAdapter(favMovieAdapter);
-
-            } else {
-                txtFavEmpty.setVisibility(View.VISIBLE);
-                listViewFav.setVisibility(View.GONE);
-            }
-            if (!arrayListSuggested.isEmpty()) {
-                txtSuggestedEmpty.setVisibility(View.GONE);
-                listViewSuggested.setVisibility(View.VISIBLE);
-                suggestedMovieAdapter = new SuggestedMoviesAdapter(getActivity(), arrayListSuggested,this);
-                listViewSuggested.setAdapter(suggestedMovieAdapter);
-            } else {
-                txtSuggestedEmpty.setVisibility(View.VISIBLE);
-                listViewSuggested.setVisibility(View.GONE);
-            }
-        } catch (Exception e) {
-            Debug.e(TAG, "setUpList Exceptions :" + e.getLocalizedMessage());
-        }
-    }
+//    private void setUpList(ArrayList<MovieData> arrayListFav, ArrayList<MovieData> arrayListSuggested) {
+//        try {
+//            if (!arrayListFav.isEmpty()) {
+//                txtFavEmpty.setVisibility(View.GONE);
+//                listViewFav.setVisibility(View.VISIBLE);
+//                favMovieAdapter = new FavoriteMoviesAdapter(getActivity(), arrayListFav);
+//                listViewFav.setAdapter(favMovieAdapter);
+//
+//            } else {
+//                txtFavEmpty.setVisibility(View.VISIBLE);
+//                listViewFav.setVisibility(View.GONE);
+//            }
+//            if (!arrayListSuggested.isEmpty()) {
+//                txtSuggestedEmpty.setVisibility(View.GONE);
+//                listViewSuggested.setVisibility(View.VISIBLE);
+//                suggestedMovieAdapter = new SuggestedMoviesAdapter(getActivity(), arrayListSuggested,this);
+//                listViewSuggested.setAdapter(suggestedMovieAdapter);
+//            } else {
+//                txtSuggestedEmpty.setVisibility(View.VISIBLE);
+//                listViewSuggested.setVisibility(View.GONE);
+//            }
+//        } catch (Exception e) {
+//            Debug.e(TAG, "setUpList Exceptions :" + e.getLocalizedMessage());
+//        }
+//    }
 
 
     @Override
