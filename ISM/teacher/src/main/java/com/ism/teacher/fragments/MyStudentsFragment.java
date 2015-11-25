@@ -68,9 +68,9 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
     private void callGetExamSubmissionApi() {
         try {
             Attribute attribute=new Attribute();
-            attribute.setExamId("9");
-            attribute.setUserId("340");
-            attribute.setRole("3");
+            attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
+            attribute.setUserId(WebConstants.USER_ID_340);
+            attribute.setRole(WebConstants.TEACHER_ROLE_ID);
 
             ((TeacherHostActivity) getActivity()).startProgress();
             new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()

@@ -166,10 +166,10 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
 
     @Override
     public void addTopic(int position) {
-        loadAddTopics(position);
+        loadAddTopics(position,null);
     }
 
-    public void loadAddTopics(int addTopic) {
+    public void loadAddTopics(int addTopic,Bundle fragmentArgument) {
         try {
             switch (addTopic) {
                 case FRAGMENT_CLASSWALL:
@@ -181,7 +181,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
                     break;
                 case FRAGMENT_QUIZ:
                     Utility.showToast("teacher quiz", getActivity());
-                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, AssignmentAddNewFragment.newInstance()).commit();
+                    getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, CreateExamAssignmentContainerFragment.newInstance(fragmentArgument)).commit();
                     break;
                 case FRAGMENT_MARK_SCRIPT:
                     // getChildFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, TeacherMarkScriptHomeFragment.newInstance(), AppConstant.FRAGMENT_TAG_TEACHER_MARKSCRIPT).commit();

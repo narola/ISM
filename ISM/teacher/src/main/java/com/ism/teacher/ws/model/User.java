@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LoginResponse {
+public class User {
 
     private String classId;
     private String courseName;
@@ -23,6 +23,7 @@ public class LoginResponse {
     private String schoolType;
     private String schoolId;
     private String courseId;
+    private String userId;
 
     @JsonProperty("class_id")
     public String getClassId() {
@@ -123,4 +124,12 @@ public class LoginResponse {
         this.courseId = courseId;
     }
 
+    @JsonProperty("user_id")
+    public String getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

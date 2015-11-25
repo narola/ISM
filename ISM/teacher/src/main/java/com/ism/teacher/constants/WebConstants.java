@@ -18,8 +18,11 @@ public class WebConstants {
     public static final String STUDENT_ID_202_OBJECCTIVE="202";
     public static final String USER_ID_370="370";
     public static final String USER_ID_340="340";
+    public static final String TEST_GETSTUDYMATES = "167";
 
 
+    public static final String TEACHER_ROLE_ID = "3";
+    public static final String STUDENT_ID_1 = "1";
 
     /**
      * Api IDs

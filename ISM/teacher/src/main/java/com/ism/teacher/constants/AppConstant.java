@@ -75,4 +75,8 @@ public class AppConstant {
 
     public static final String BUNDLE_EDIT_QUESTION_FRAGMENT="edit_question";
 
+    public static final int LIKE = 1;
+    public static final int DISLIKE = 0;
+
+
 }

@@ -11,6 +11,9 @@ import java.util.ArrayList;
 public class ExamQuestions {
 
     private String id;
+    private String createdDate;
+    private String className;
+    private String bookName;
     private String examName;
     private String instruction;
     private ArrayList<Questions> questions;
@@ -49,6 +52,33 @@ public class ExamQuestions {
 
     public void setQuestions(ArrayList<Questions> questions) {
         this.questions = questions;
+    }
+
+    @JsonProperty("created_date")
+    public String getCreatedDate() {
+        return this.createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    @JsonProperty("class_name")
+    public String getClassName() {
+        return this.className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    @JsonProperty("book_name")
+    public String getBookName() {
+        return this.bookName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
     }
 
 

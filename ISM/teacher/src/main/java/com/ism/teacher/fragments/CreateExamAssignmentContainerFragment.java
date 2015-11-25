@@ -19,10 +19,10 @@ import com.ism.teacher.interfaces.FragmentListener;
 /**
  * Created by c166 on 28/10/15.
  */
-public class AssignmentAddNewFragment extends Fragment {
+public class CreateExamAssignmentContainerFragment extends Fragment {
 
 
-    private static final String TAG = AssignmentAddNewFragment.class.getSimpleName();
+    private static final String TAG = CreateExamAssignmentContainerFragment.class.getSimpleName();
     private View view;
     private FragmentListener fragListener;
     private MyTypeFace myTypeFace;
@@ -30,12 +30,12 @@ public class AssignmentAddNewFragment extends Fragment {
 
     AssignmentExamFragment assignmentExamFragment;
 
-    public static AssignmentAddNewFragment newInstance() {
-        AssignmentAddNewFragment assignmentAddNewFragment = new AssignmentAddNewFragment();
-        return assignmentAddNewFragment;
+    public static CreateExamAssignmentContainerFragment newInstance(Bundle bundleArgument) {
+        CreateExamAssignmentContainerFragment createExamAssignmentContainerFragment = new CreateExamAssignmentContainerFragment();
+        createExamAssignmentContainerFragment.setArguments(bundleArgument);
+        return createExamAssignmentContainerFragment;
     }
-
-    public AssignmentAddNewFragment() {
+    public CreateExamAssignmentContainerFragment() {
         // Required empty public constructor
     }
 
@@ -61,7 +61,7 @@ public class AssignmentAddNewFragment extends Fragment {
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
-        loadFragmentInContainer(FRAGMENT_ASSIGNMENT_ACTIVITY);
+
 
         fl_tab_activity = (FrameLayout) view.findViewById(R.id.fl_tab_activity);
         fl_tab_exam = (FrameLayout) view.findViewById(R.id.fl_tab_exam);
@@ -100,6 +100,15 @@ public class AssignmentAddNewFragment extends Fragment {
         );
 
 
+//        loadFragmentInContainer(FRAGMENT_ASSIGNMENT_ACTIVITY);
+        if (getArguments() != null) {
+            initTab(1);
+            loadFragmentInContainer(FRAGMENT_ASSIGNMENT_EXAM);
+        } else {
+            initTab(0);
+            loadFragmentInContainer(FRAGMENT_ASSIGNMENT_ACTIVITY);
+        }
+
     }
 
     @Override
@@ -137,7 +146,7 @@ public class AssignmentAddNewFragment extends Fragment {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentActivityFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_ASSIGNMENT_EXAM:
-                    assignmentExamFragment=new AssignmentExamFragment(AssignmentAddNewFragment.this);
+                    assignmentExamFragment = new AssignmentExamFragment(CreateExamAssignmentContainerFragment.this);
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, assignmentExamFragment).commit();
 //                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance()).commit();
                     break;

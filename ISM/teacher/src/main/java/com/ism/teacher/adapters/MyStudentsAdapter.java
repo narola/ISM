@@ -24,6 +24,7 @@ import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
+import com.ism.teacher.ws.model.Examsubmittor;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
     //test
     String student_id_to_highlight = "";
+    ArrayList<Examsubmittor> arrayListStudents = new ArrayList<>();
+    public static String student_name = "";
 
     public MyStudentsAdapter(String student_id_to_highlight, ResponseHandler resObjStudentAttempted, Context context, Fragment fragment) {
         this.resObjStudentAttempted = resObjStudentAttempted;
@@ -90,11 +93,11 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
     @Override
     public void onBindViewHolder(final MyStudentsAdapter.ViewHolder holder, final int position) {
-        final ArrayList<Data> arrayListStudents = resObjStudentAttempted.getData().get(0).getArrayListEvaluation();
+        arrayListStudents = resObjStudentAttempted.getExamSubmission().get(0).getExamsubmittor();
         try {
-            holder.txtStudentName.setText(arrayListStudents.get(position).getFull_name());
+            holder.txtStudentName.setText(arrayListStudents.get(position).getStudentName());
 
-            imageLoader.displayImage(WebConstants.USER_IMAGES + arrayListStudents.get(position).getProfile_pic(), holder.imgStudentPic, ISMTeacher.options);
+            imageLoader.displayImage(WebConstants.USER_IMAGES + arrayListStudents.get(position).getStudentProfilePic(), holder.imgStudentPic, ISMTeacher.options);
 
             holder.rlMyStudents.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -113,7 +116,9 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
                     if (arrayListStudents.get(position).isFlagged()) {
                         ((TeacherHostActivity) mContext).startProgress();
                         // callAPIStudentEvaluations(arrayListStudents.get(position).getStudent_id(), resObjStudentAttempted.getData().get(0).getExam_id());
-                        callAPIStudentEvaluations(arrayListStudents.get(position).getStudent_id(), "11");
+                        student_name = arrayListStudents.get(position).getStudentName();
+                        callAPIStudentEvaluations(WebConstants.STUDENT_ID_1, WebConstants.EXAM_ID_11_SUBJECTIVE);
+//                        callAPIStudentEvaluations(arrayListStudents.get(position).getStudentId(), WebConstants.EXAM_ID_11_SUBJECTIVE);
                     } else {
                         ((TeacherHostActivity) mContext).startProgress();
 
@@ -131,7 +136,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
             if (student_id_to_highlight != null && !student_id_to_highlight.equals("")) {
                 for (int i = 0; i < arrayListStudents.size(); i++) {
-                    if (student_id_to_highlight.equalsIgnoreCase(arrayListStudents.get(i).getStudent_id())) {
+                    if (student_id_to_highlight.equalsIgnoreCase(arrayListStudents.get(i).getStudentId())) {
                         holder.txtStudentName.setTextColor(mContext.getResources().getColor(R.color.color_poor));
                     }
                 }
@@ -170,8 +175,8 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
     @Override
     public int getItemCount() {
-        Log.e("test", "" + resObjStudentAttempted.getData().get(0).getArrayListEvaluation().size());
-        return resObjStudentAttempted.getData().get(0).getArrayListEvaluation().size();
+        Log.e("test", "" + resObjStudentAttempted.getExamSubmission().get(0).getExamsubmittor().size());
+        return resObjStudentAttempted.getExamSubmission().get(0).getExamsubmittor().size();
     }
 
 
@@ -181,14 +186,15 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
             ((TeacherHostActivity) mContext).stopProgress();
             switch (api_code) {
                 case WebConstants.GET_EXAM_EVALUATIONS:
-                    ResponseHandler responseObject = (ResponseHandler) object;
-                    if (responseObject.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
-                        if (responseObject.getData().get(0).getArrayListEvaluation().size() != 0) {
-                            responseObjectEval = responseObject;
+
+                    ResponseHandler responseHandler = (ResponseHandler) object;
+                    if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+                        if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
+                            responseObjectEval = responseHandler;
 
                             if (responseObjectEval.getStatus().equalsIgnoreCase(WebConstants.API_STATUS_SUCCESS)) {
                                 SubjectiveQuestionsFragment.rlStudentDetails.setVisibility(View.VISIBLE);
-                                SubjectiveQuestionsFragment.txt_student_name.setText(responseObject.getData().get(0).getStudentName());
+                                SubjectiveQuestionsFragment.txt_student_name.setText(student_name);
                                 // imageLoader.displayImage(WebConstants.USER_IMAGES + arrayListStudents.get(position).getProfile_pic(), holder.imgStudentPic, ISMTeacher.options);
                             }
 
@@ -197,7 +203,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
                             subjectiveQuestionAdapter.notifyDataSetChanged();
                         }
                     } else {
-                        Debug.i(TAG, "Response :" + WebConstants.GET_EXAM_EVALUATIONS + " :" + responseObject.getStatus());
+                        Debug.i(TAG, "Response :" + WebConstants.GET_EXAM_EVALUATIONS + " :" + responseHandler.getStatus());
                     }
                     break;
             }

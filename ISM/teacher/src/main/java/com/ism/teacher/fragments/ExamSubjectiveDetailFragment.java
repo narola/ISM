@@ -34,16 +34,18 @@ public class ExamSubjectiveDetailFragment extends Fragment {
     Context context;
     public String examid_from_param = "";
     public String studentid_from_param = "";
+    public String studentname_from_param = "";
     public boolean callEvaluationApiFlag = false;
 
     SubjectiveQuestionsFragment subjectiveQuestionsFragment;
     MyStudentsFragment myStudentsFragment;
 
-    public ExamSubjectiveDetailFragment(Context context, String examid, String studentid, boolean flag) {
+    public ExamSubjectiveDetailFragment(Context context, String examid, String studentid, boolean flag,String studentname_from_param) {
         this.context = context;
         this.examid_from_param = examid;
         this.studentid_from_param = studentid;
         this.callEvaluationApiFlag = flag;
+        this.studentname_from_param=studentname_from_param;
     }
 
     public ExamSubjectiveDetailFragment() {
@@ -72,8 +74,8 @@ public class ExamSubjectiveDetailFragment extends Fragment {
 
         if (callEvaluationApiFlag) {
 
-            loadMyStudentsFragmentWithHighlightStudent();
-            loadSubjectiveQuesionWithEvaluation();
+            // loadMyStudentsFragmentWithHighlightStudent();
+            loadSubjectiveQuesionWithEvaluation(studentname_from_param);
             Log.i(TAG, "subjective ques with evaluation");
         } else {
             loadOnlySubjectiveQuestion();
@@ -102,8 +104,8 @@ public class ExamSubjectiveDetailFragment extends Fragment {
      * send studentid,examid and flag to call evaluation api after subjective question api response to bind evaluation response.
      */
 
-    public void loadSubjectiveQuesionWithEvaluation() {
-        subjectiveQuestionsFragment = new SubjectiveQuestionsFragment(studentid_from_param, WebConstants.EXAM_ID_11_SUBJECTIVE, true);
+    public void loadSubjectiveQuesionWithEvaluation(String studentname_from_param) {
+        subjectiveQuestionsFragment = new SubjectiveQuestionsFragment(studentid_from_param, WebConstants.EXAM_ID_11_SUBJECTIVE, true,studentname_from_param);
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_container_right, subjectiveQuestionsFragment).commit();
 
     }
@@ -114,7 +116,7 @@ public class ExamSubjectiveDetailFragment extends Fragment {
 
 
     public void loadMyStudentsFragmentWithHighlightStudent() {
-        myStudentsFragment=new MyStudentsFragment(studentid_from_param);
+        myStudentsFragment = new MyStudentsFragment(studentid_from_param);
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_container_left, myStudentsFragment).commit();
     }
 

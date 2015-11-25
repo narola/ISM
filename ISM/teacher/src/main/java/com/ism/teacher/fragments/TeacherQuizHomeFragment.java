@@ -25,6 +25,9 @@ import com.ism.teacher.model.Data;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
+import com.ism.teacher.ws.model.Classrooms;
+import com.ism.teacher.ws.model.Exams;
+import com.ism.teacher.ws.model.Subjects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,13 +48,21 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     ImageView imgToggleList;
     private ActionProcessButton progAssignmentSubject, progAssignmentClass, progAssignmentAssessed;
 
-    List<String> arrayListSubjects, arrayListClasses, arrayListSubmissionDate, arrayListAssessed;
-    ArrayList<Data> arrayListAssignments = new ArrayList<>();
-    private ArrayList<Data> arrListClassRooms, arrListSubject;
 
+    //Array list
+    List<String> arrayListSubjects, arrayListClasses, arrayListSubmissionDate, arrayListAssessed;
+    ArrayList<Exams> arrayListAssignments = new ArrayList<>();
+    private ArrayList<Classrooms> arrListClassRooms;
+    private ArrayList<Subjects>  arrListSubject;
+
+
+    //Objects
     Fragment mFragment;
     AssignmentSubjectsAdapter assignmentSubjectsAdapter;
+
+
     private String examStartDate = "", examEndDate = "";
+
 
     public TeacherQuizHomeFragment(Fragment fragment) {
         // Required empty public constructor
@@ -205,21 +216,21 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         try {
             Utility.hideSpinnerProgress(progAssignmentClass);
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListClassRooms = new ArrayList<Data>();
-                    arrListClassRooms.addAll(responseObj.getData());
+                    arrListClassRooms = new ArrayList<>();
+                    arrListClassRooms.addAll(responseHandler.getClassrooms());
                     List<String> classrooms = new ArrayList<String>();
                     classrooms.add(getString(R.string.strclass));
-                    for (Data course : arrListClassRooms) {
-                        classrooms.add(course.getClass_name());
+                    for (Classrooms classrooms1 : arrListClassRooms) {
+                        classrooms.add(classrooms1.getClassName());
 
                     }
                     Adapters.setUpSpinner(getActivity(), spAssignmentClasswise, classrooms, Adapters.ADAPTER_SMALL);
 
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utility.showToast(responseObj.getMessage(), getActivity());
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetClassrooms api Exception : " + error.toString());
@@ -233,20 +244,20 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         try {
             Utility.hideSpinnerProgress(progAssignmentSubject);
             if (object != null) {
-                ResponseHandler responseObj = (ResponseHandler) object;
-                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-                    arrListSubject = new ArrayList<Data>();
-                    arrListSubject.addAll(responseObj.getData());
+                    arrListSubject = new ArrayList<>();
+                    arrListSubject.addAll(responseHandler.getSubjects());
                     List<String> subjects = new ArrayList<String>();
                     subjects.add(getString(R.string.strsubjectname));
-                    for (Data subject : arrListSubject) {
-                        subjects.add(subject.getSubject_name());
+                    for (Subjects subject : arrListSubject) {
+                        subjects.add(subject.getSubjectName());
 
                     }
                     Adapters.setUpSpinner(getActivity(), spAssignmentSubject, subjects, Adapters.ADAPTER_SMALL);
-                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
-                    Utility.showToast(responseObj.getMessage(), getActivity());
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
                 Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
@@ -258,11 +269,12 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     private void onResponseGetAllAssignments(Object object) {
 
-        ResponseHandler callGetAllAssignments = (ResponseHandler) object;
-        if (callGetAllAssignments.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+        ResponseHandler responseHandler = (ResponseHandler) object;
+        if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
 
-            arrayListAssignments.addAll(callGetAllAssignments.getData());
+            arrayListAssignments.addAll(responseHandler.getExams());
             assignmentSubjectsAdapter.addAll(arrayListAssignments);
+
         } else {
 
             Utility.showToast(getString(R.string.web_service_issue), getActivity());
