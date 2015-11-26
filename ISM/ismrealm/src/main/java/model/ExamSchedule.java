@@ -25,7 +25,7 @@ public class ExamSchedule extends RealmObject {
     private SchoolClassroom schoolClassroom;
     private boolean isCompleted;
     private Date startDate;
-    private Time startTime;
+    private String startTime;
     private Date createdDate;
     private Date modifiedDate;
 
@@ -85,11 +85,11 @@ public class ExamSchedule extends RealmObject {
         this.startDate = startDate;
     }
 
-    public Time getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
