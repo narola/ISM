@@ -37,6 +37,7 @@
                 
                 <!--//button-div-->
                 <!--row table-->
+                <div class="title"><h3> <?php echo $author_name['full_name'].'\'s Books'  ?></h3></div>
               <div class="padding_b30 col-sm-12">
 
                 <?php 

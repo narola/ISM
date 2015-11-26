@@ -91,17 +91,11 @@
                   <?php } ?>
                 </div>
 
-                    
-                    
                   <!--.row-->
-                 
-                
-                 
-                
-                  <a data-slide="prev" href="#Carousel_<?php echo $i; ?>" class="left carousel-control">‹</a>
+                 <a data-slide="prev" href="#Carousel_<?php echo $i; ?>" class="left carousel-control">‹</a>
                   <a data-slide="next" href="#Carousel_<?php echo $i; ?>" class="right carousel-control">›</a>
                 </div><!--.Carousel-->
-
+                <a href="admin/book/view_all/<?php echo $authorbook['author']['id']; ?>" class="btn btn_green pull-right">View All</a>
              <?php   }
                   
                 

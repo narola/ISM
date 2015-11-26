@@ -2201,6 +2201,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .box.bookview h4, .authorbook h4 {
     color: #ff6d5e;
     text-align: center;
+    font-size: 15px;
 }
 .box.bookview {
     margin-top: 25px;
@@ -2251,4 +2252,7 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 .authorbook .carousel {
     margin-bottom: 0;
     padding: 0 40px;
+}
+.authorbook .btn_green {
+    margin: 5px 0;
 }

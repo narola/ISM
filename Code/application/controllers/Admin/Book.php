@@ -57,7 +57,7 @@ class Book extends ADMIN_Controller {
 	
 	}
 
-	public function view_all(){
+	public function view_all($id){
 		if( !empty($_GET['author']) || !empty($_GET['tags']) || !empty($_GET['order']) ){
 
 			if( !empty($_GET['author']) ) { $role = $this->input->get('author'); }	
@@ -66,7 +66,7 @@ class Book extends ADMIN_Controller {
 			
 			$str = '';
 			
-			$where[TBL_BOOKS.'.is_delete'] = FALSE;
+			$where[TBL_AUTHOR_BOOK.'.user_id'] = $id;
 
 			/*if(!empty($role)){ $where['noticeboard_viewer.role_id'] = $role ; $str .= '&role='.$role; }	
 			if(!empty($status)){ 
@@ -83,17 +83,17 @@ class Book extends ADMIN_Controller {
 
 			$str =  trim($str,'&');
 */
-			$config['base_url'] = base_url().'admin/book/index?'.$str;
+			$config['base_url'] = base_url().'admin/book/view_all/'.$id.'?'.$str;
 			$config['page_query_string'] = TRUE;   // Set pagination Query String to TRUE 
 			$offset = $this->input->get('per_page');  // Set Offset from GET method id of 'per_page'
 
 		}else{
-			$where = array(TBL_BOOKS.'.is_delete'=>FALSE);
-			$config['base_url'] = base_url().'admin/book/index';	
-			$offset = $this->uri->segment(4);
+			$where = array(TBL_AUTHOR_BOOK.'.user_id'=>$id);
+			$config['base_url'] = base_url().'admin/book/'.$id;	
+			$offset = $this->uri->segment(5);
 		}
 		$config['num_links'] = 3;
-		$config['total_rows'] = select(TBL_BOOKS,FALSE,array('where'=>$where),array('count'=>TRUE));
+		$config['total_rows'] = select(TBL_AUTHOR_BOOK,FALSE,array('where'=>$where),array('count'=>TRUE));
 		
 		// START To check weather page is on 1st page or not ? if it is on first page do not show add notice field
 		$this->data['page_number'] =  $this->uri->segment(4);
@@ -124,17 +124,23 @@ class Book extends ADMIN_Controller {
 	 	$config['last_link'] = 'Last';
 	 	$config['last_tag_open'] = '<li>';
 	 	$config['last_tag_close'] = '</li>';
-
+		$this->data['author_name'] = select(TBL_USERS,'full_name',array('where'=>array('id'=>$id)),array('single'=>true));
 	 	//fetch data from noticeboard table and join with noticeboard viewerd table
-		$this->data['books'] = select(TBL_BOOKS, 'id, book_name, image_link',
+		$this->data['books'] = select(TBL_AUTHOR_BOOK,TBL_BOOKS.'.id,'. TBL_BOOKS.'.book_name,'.TBL_BOOKS.'.image_link',
 										array('where'=>$where),
 										array(
 											'limit'=>$config['per_page'],
-											'offset'=>$offset
-											
+											'offset'=>$offset,
+											'join'=>array(
+												array(
+							    				'table' => TBL_BOOKS,
+							    				'condition' => TBL_BOOKS.".id = ".TBL_AUTHOR_BOOK.".book_id",
+							    				)
+												)
 											)
 										);
-		// p($this->data['books']);
+		// qry();
+		// p($this->data['books'], true);
 		$this->pagination->initialize($config);
 		
 		$this->template->load('admin/default','admin/book/view_all',$this->data);
