@@ -2,20 +2,16 @@ package model;
 
 
 
-import android.content.Context;
+import java.util.Date;
 
-import com.realm.ismrealm.RealmAdaptor;
-
-import io.realm.Realm;
 import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 
 /**
  * Created by c85 on 19/11/15.
  * {@link RealmObject} class to handle detail of users.
- *
+ * Relationship with {@link MembershipPackage}
  */
 public class User extends RealmObject {
 
@@ -26,7 +22,9 @@ public class User extends RealmObject {
     private String lastName;
     private String fullName;
     private String profilePicture;
-
+    private Date createdDate;
+    private Date modifiedDate;
+    private MembershipPackage membershipPackage;
 
 
     public int getUserId() {
@@ -77,7 +75,27 @@ public class User extends RealmObject {
         this.profilePicture = profilePicture;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
 
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
 
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public MembershipPackage getMembershipPackage() {
+        return membershipPackage;
+    }
+
+    public void setMembershipPackage(MembershipPackage membershipPackage) {
+        this.membershipPackage = membershipPackage;
+    }
 }
