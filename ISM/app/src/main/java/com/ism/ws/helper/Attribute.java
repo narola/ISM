@@ -75,8 +75,15 @@ public class Attribute {
 	private String resourceId;
 	private String resourceName;
 	private String voucherAmount;
+	private String blockUser;
 
-
+	public String getBlockUser() {
+		return blockUser;
+	}
+	@JsonProperty("block_user")
+	public void setBlockUser(String blockUser) {
+		this.blockUser = blockUser;
+	}
 	public String getResourceName() {
 		return resourceName;
 	}

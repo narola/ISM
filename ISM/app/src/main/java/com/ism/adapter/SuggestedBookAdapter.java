@@ -17,6 +17,7 @@ import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.BookDetailsDialog;
 import com.ism.fragment.userprofile.BooksFragment;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -37,12 +38,12 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
     private final ImageLoader imageLoader;
     Context context;
     ArrayList<Book> arrayList = new ArrayList<>();
-    ArrayList<Book> arrayListFilter = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
     private int addToFavItem;
     AddToFavouriteListner addToFavouriteListner;
     SuggestedBookFilter suggestedBookFilter;
+    ArrayList<Book> arrayListFilter = new ArrayList<>();
     public SuggestedBookAdapter(Context context, ArrayList<Book> arrayList, AddToFavouriteListner favouriteBooksListner) {
         this.context = context;
         this.arrayList = arrayList;
@@ -138,7 +139,7 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
 //        LayoutInflater inflater = (LayoutInflater) context
 //                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //
-//        View view = inflater.inflate(R.layout.layout_book_details, null);
+//        View view = inflater.inflate(R.layout.dailog_book_details, null);
 //
 //        final PopupWindow popupWindow = new PopupWindow(view,
 //                400,
@@ -229,7 +230,7 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
             if (Utility.isConnected(context)) {
                 ((HostActivity) context).showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId("1");
+                attribute.setUserId(Global.strUserId);
                 attribute.setResourceId(arrayList.get(position).getBookId());
                 attribute.setResourceName(AppConstant.RESOURCE_BOOKS);
 

@@ -20,6 +20,7 @@ import com.ism.teacher.fragments.ExamSubjectiveDetailFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
 import com.ism.teacher.views.CircleImageView;
+import com.ism.teacher.ws.model.Examsubmittor;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -34,7 +35,7 @@ public class ExamWiseAssignmentAdapter extends RecyclerView.Adapter<ExamWiseAssi
     private static final String TAG = ExamWiseAssignmentAdapter.class.getSimpleName();
 
     Context mContext;
-    ArrayList<Data> listOfAssignments = new ArrayList<Data>();
+    ArrayList<Examsubmittor> listOfAssignments = new ArrayList<>();
     Fragment mFragment;
     MyTypeFace myTypeFace;
     private ImageLoader imageLoader;
@@ -45,7 +46,6 @@ public class ExamWiseAssignmentAdapter extends RecyclerView.Adapter<ExamWiseAssi
 
     ExamObjectiveDetailFragment examObjectiveDetailFragment;
     ExamSubjectiveDetailFragment examSubjectiveDetailFragment;
-
 
     public ExamWiseAssignmentAdapter(String examid, Context context, Fragment fragment, String exam_mode) {
         this.mContext = context;
@@ -101,11 +101,11 @@ public class ExamWiseAssignmentAdapter extends RecyclerView.Adapter<ExamWiseAssi
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        holder.txt_studentName.setText(listOfAssignments.get(position).getFull_name());
-        holder.txt_submission_date.setText(Utility.getFormattedDate("dd-MMM-yyyy", listOfAssignments.get(position).getSubmission_date()));
-        holder.txt_assessed_status.setText(listOfAssignments.get(position).getExam_status());
+        holder.txt_studentName.setText(listOfAssignments.get(position).getStudentName());
+        holder.txt_submission_date.setText(Utility.getFormattedDate("dd-MMM-yyyy", listOfAssignments.get(position).getSubmissionDate()));
+        holder.txt_assessed_status.setText(listOfAssignments.get(position).getExamStatus());
 
-        imageLoader.displayImage(WebConstants.USER_IMAGES + "Users_Images/" + listOfAssignments.get(position).getProfile_pic(), holder.img_student, ISMTeacher.options);
+        imageLoader.displayImage(WebConstants.USER_IMAGES + "Users_Images/" + listOfAssignments.get(position).getStudentProfilePic(), holder.img_student, ISMTeacher.options);
 
 
         holder.ll_parent_student_row.setOnClickListener(new View.OnClickListener() {
@@ -113,12 +113,17 @@ public class ExamWiseAssignmentAdapter extends RecyclerView.Adapter<ExamWiseAssi
             public void onClick(View view) {
                 if (exam_mode.equalsIgnoreCase(EXAM_OBJECTIVE)) {
 
-                    examObjectiveDetailFragment = new ExamObjectiveDetailFragment(mContext, examid, listOfAssignments.get(position).getStudent_id(), true);
+                    //Objective Question + Evaluation api(student id)
+                    // last param is true because we have to call evaluation along with subjective ques list+ student id
+                    examObjectiveDetailFragment = new ExamObjectiveDetailFragment(mContext, examid, listOfAssignments.get(position).getStudentId(), true);
                     mFragment.getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, examObjectiveDetailFragment).commit();
 
                 } else if (exam_mode.equalsIgnoreCase(EXAM_SUBJECTIVE)) {
 
-                    examSubjectiveDetailFragment = new ExamSubjectiveDetailFragment(mContext, examid, listOfAssignments.get(position).getStudent_id(), true);
+                    //Subjective Question + Evaluation api(student id)
+                    // last param is true because we have to call evaluation along with subjective ques list+ student id
+                    examSubjectiveDetailFragment = new ExamSubjectiveDetailFragment(mContext, examid, WebConstants.STUDENT_ID_1, true,listOfAssignments.get(position).getStudentName());
+//                    examSubjectiveDetailFragment = new ExamSubjectiveDetailFragment(mContext, examid, listOfAssignments.get(position).getStudentId(), true);
                     mFragment.getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, examSubjectiveDetailFragment).commit();
 
                 }
@@ -127,7 +132,7 @@ public class ExamWiseAssignmentAdapter extends RecyclerView.Adapter<ExamWiseAssi
     }
 
 
-    public void addAll(ArrayList<Data> evaluationModelArrayList) {
+    public void addAll(ArrayList<Examsubmittor> evaluationModelArrayList) {
 
         try {
             this.listOfAssignments.clear();

@@ -15,6 +15,7 @@ import com.ism.R;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -35,7 +36,8 @@ public class EditAboutMeDetailsActivity extends Activity implements View.OnClick
     private int editType;
     private ActionProcessButton progHost;
     private ProgressGenerator progressGenerator;
-MyTypeFace myTypeFace;
+    MyTypeFace myTypeFace;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -47,7 +49,7 @@ MyTypeFace myTypeFace;
 
     private void initLayout() {
         // txtPost = (TextView) findViewById(R.id.txt_post);
-        myTypeFace=new MyTypeFace(getApplicationContext());
+        myTypeFace = new MyTypeFace(getApplicationContext());
         Bundle bundle = getIntent().getExtras();
         etEnterHere = (EditText) findViewById(R.id.et_enter_here);
         txtCancel = (TextView) findViewById(R.id.txt_cancel);
@@ -116,10 +118,10 @@ MyTypeFace myTypeFace;
 
     private void callApiEditAboutMe() {
         try {
-            if(Utility.isConnected(getApplicationContext())) {
+            if (Utility.isConnected(getApplicationContext())) {
                 showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId("1");
+                attribute.setUserId(Global.strUserId);
                 attribute.setUsername(strUserName);
                 attribute.setContactNumber(strCno);
                 attribute.setBirthdate(strBirthdate);
@@ -136,8 +138,7 @@ MyTypeFace myTypeFace;
 //            requestObject.setAboutMeText("I am a graduate from NIFT specializing in Apparel Production. I have a holistic experience of the Apparel Industry and has worked for domestic as well as the exports market. In the Indian retail industry I have worked with Lifestyle International Pvt. Ltd. on sourcing, vendor management and product development for private labels. I then moved to Madura Fashion & Lifestyle where I worked as a buyer. Product and Margin management, optimum allocation of merchandise, meeting sales targets along with competition, market and trend analysis were some of her responsibilities. I joined ISB to fast track my career and pursue opportunities in Category & Brand Management.I am President of the Retail Club. I  proud myself.");
 
                 new WebserviceWrapper(getApplicationContext(), attribute, this).new WebserviceCaller().execute(WebConstants.EDIT_ABOUT_ME);
-            }
-            else{
+            } else {
                 Utility.alertOffline(getApplicationContext());
             }
         } catch (Exception e) {
@@ -171,7 +172,7 @@ MyTypeFace myTypeFace;
                     Log.e(TAG, "onResponseEditAboutMe success");
                     hideKeyboard();
                     if (editType == AboutMeFragment.ABOUT_ME) {
-                      AboutMeFragment.strDetailAboutMe = etEnterHere.getText().toString();
+                        AboutMeFragment.strDetailAboutMe = etEnterHere.getText().toString();
                     } else if (editType == AboutMeFragment.YOUR_AMBITION) {
                         AboutMeFragment.strAmbition = etEnterHere.getText().toString();
                     }

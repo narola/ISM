@@ -18,7 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
 
 /**
- * Created by c166 on 24/10/15.
+ * Created by c162 on 24/10/15.
  */
 public class MovieDetailsDialog extends Dialog implements View.OnClickListener {
     ImageLoader imageLoader;
@@ -41,7 +41,7 @@ public class MovieDetailsDialog extends Dialog implements View.OnClickListener {
         getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.imageLoader = imageLoader;
-        setContentView(R.layout.layout_book_details);
+        setContentView(R.layout.dailog_book_details);
         w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         w.setBackgroundDrawableResource(android.R.color.transparent);
 
@@ -81,7 +81,7 @@ public class MovieDetailsDialog extends Dialog implements View.OnClickListener {
         txtPriceValue.setTypeface(myTypeFace.getRalewayRegular());
         txtEbook.setTypeface(myTypeFace.getRalewayRegular());
         txtEbookLink.setTypeface(myTypeFace.getRalewayRegular());
-
+        txtBookDetails.setText(R.string.strMovieDetails);
         imgAuthor.setVisibility(View.GONE);
         txtAuthor.setText(R.string.strScreenPlay);
         txtAuthorName.setText(arrayList.get(position).getScreenplay());

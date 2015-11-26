@@ -49,23 +49,6 @@ public class AppConstant {
     public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
 
 
-   /* public static final String URL_LOGIN = URL_RAVI_HOST + "AuthenticateUser";
-    public static final String URL_GET_ALL_FEEDS = URL_RAVI_HOST+ "GetAllFeeds";
-    public static final String URL_GET_ALL_COMMENTS = URL_RAVI_HOST+"GetAllComments";
-    public static final String URL_GET_STUDYMATES = URL_RAVI_HOST+"GetStudymates";
-    public static final String URL_ADD_COMMENT =URL_RAVI_HOST+"AddComment";
-    public static final String URL_TAG_FRIEND_IN_FEED = URL_RAVI_HOST+"TagFriendInFeed";
-    public static final String URL_LIKE_FEED = URL_RAVI_HOST+"LikeFeed";
-    public static final String URL_GETCLASSROOMS = URL_RAVI_HOST + "GetClassrooms";
-    public static final String URL_GETSUBJECT = URL_RAVI_HOST + "GetSubject";
-    public static final String URL_GETTOPICS = URL_RAVI_HOST + "GetTopics";
-    public static final String URL_CREATEASSIGNMENT = URL_RAVI_HOST + "CreateAssignment";
-    public static final String URL_GET_COURSES = URL_RAVI_HOST + "GetCourses";
-    public static final String URL_CREATE_EXAM = URL_RAVI_HOST + "CreateExam";
-    public static final String URL_GETQUESTIONBANK = URL_RAVI_HOST + "GetQuestionBank";
-    public static final String URL_POSTFEED = URL_RAVI_HOST + "PostFeed";
-    public static final String URL_FORGOT_PASSWORD= URL_RAVI_HOST + "ForgotPassword";*/
-
     public static final String TEST_USER_ID = "370";
     public static final String TEST_GET_ALL_FEEDS = "141";
     public static final String TEST_GETSTUDYMATES = "167";
@@ -73,11 +56,12 @@ public class AppConstant {
     public static final String TEST_TAGGED_BY = "134";
     public static final String[] tagUserArray = new String[]{"141", "167"};
     public static final int AUTHOR_ROLE_ID = 4;
-    public static final int TEACHER_ROLE_ID = 3;
+    public static final String TEACHER_ROLE_ID = "3";
 
     /**
      * Managing Teacher office Fragment by using tags
      */
+
     public static final String FRAGMENT_TAG_TEACHER_CLASSWALL = "teacher_classwall";
     public static final String FRAGMENT_TAG_TEACHER_NOTES = "teacher_notes";
     public static final String FRAGMENT_TAG_TEACHER_QUIZ = "teacher_quiz";
@@ -86,10 +70,25 @@ public class AppConstant {
     public static final String FRAGMENT_TAG_TEACHER_PROGRESS_REPORT = "teacher_progress_report";
 
 
+    public static final int LIKE = 1;
+    public static final int DISLIKE = 0;
+
+
     /**
-     * Bundle Tag
+     * Bundle Tags
      */
 
-    public static final String BUNDLE_EDIT_QUESTION_FRAGMENT="edit_question";
+    public static final String ARG_EXAM_ID ="exam_id";
+    public static String ARG_EXAM_NAME = "examName";
+    public static String ARG_CLASSROOM_ID = "classRoomId";
+    public static String ARG_CLASSROOM_NAME = "classRoomName";
+    public static String ARG_EXAM_CATEGORY = "examCategory";
+    public static String ARG_SUBJECT_NAME = "subjectName";
+    public static String ARG_PASS_PERCENTAGE = "passPercentage";
+    public static String ARG_EXAM_TYPE = "examType";
+    public static String ARG_EXAM_MODE = "examMode";
+    public static String ARG_EXAM_DURATION = "examDuration";
+    public static String ARG_ASSIGNMENT_NO = "examAssignmentNo";
+
 
 }

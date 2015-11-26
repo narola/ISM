@@ -16,6 +16,7 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.TagStudyMatesAdapter;
 import com.ism.teacher.model.Data;
+import com.ism.teacher.ws.model.Studymates;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,7 @@ public class TagStudyMatesDialog extends Dialog implements View.OnClickListener 
     RecyclerView rvStudymatesTeacher;
     TagStudyMatesAdapter tagStudyMatesAdapter;
     TextView tvDialogClose, tvDialogTag;
-    ArrayList<Data> studymatesList;
+    ArrayList<Studymates> studyMates;
     EditText etSearchStudymates;
 
     //listener called from post feeds
@@ -40,11 +41,11 @@ public class TagStudyMatesDialog extends Dialog implements View.OnClickListener 
         public void tagStudyMates(String[] arrTagUser);
     }
 
-    public TagStudyMatesDialog(Context context, ArrayList<Data> studymatesList, TagStudyMatesListener tagStudyMatesListener) {
+    public TagStudyMatesDialog(Context context, ArrayList<Studymates> studyMates, TagStudyMatesListener tagStudyMatesListener) {
         super(context);
 
         this.mContext = context;
-        this.studymatesList = studymatesList;
+        this.studyMates = studyMates;
         this.tagStudyMatesListener = tagStudyMatesListener;
 
         Window w = getWindow();
@@ -72,9 +73,10 @@ public class TagStudyMatesDialog extends Dialog implements View.OnClickListener 
         tvDialogTag.setOnClickListener(this);
         tvDialogClose.setOnClickListener(this);
 
-        tagStudyMatesAdapter = new TagStudyMatesAdapter(mContext, studymatesList);
+        tagStudyMatesAdapter = new TagStudyMatesAdapter(mContext);
         rvStudymatesTeacher.setLayoutManager(new LinearLayoutManager(mContext));
         rvStudymatesTeacher.setAdapter(tagStudyMatesAdapter);
+        tagStudyMatesAdapter.addAll(studyMates);
 
         etSearchStudymates.addTextChangedListener(new TextWatcher() {
             @Override

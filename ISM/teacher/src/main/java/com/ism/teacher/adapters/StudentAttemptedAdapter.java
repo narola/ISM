@@ -19,10 +19,11 @@ import com.ism.teacher.fragments.ExamObjectiveDetailFragment;
 import com.ism.teacher.fragments.StudentAttemptedFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.model.Data;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.views.CircleImageView;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
+import com.ism.teacher.ws.model.Examsubmittor;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
  * Created by c162 on 04/11/15.
  */
 public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttemptedAdapter.Viewholder> implements WebserviceWrapper.WebserviceResponse {
-    ResponseObject resObjStudentAttempted;
+    ResponseHandler resObjStudentAttempted;
     private Context context;
     Fragment fragment;
     LayoutInflater inflater;
@@ -40,9 +41,9 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     private static String TAG = StudentAttemptedAdapter.class.getSimpleName();
     private int lastSelected = -1;
     private String studentName;
-    private ResponseObject responseObjectEval;
+    private ResponseHandler responseObjectEval;
 
-    public StudentAttemptedAdapter(ResponseObject resObjStudentAttempted, Context context, Fragment fragment) {
+    public StudentAttemptedAdapter(ResponseHandler resObjStudentAttempted, Context context, Fragment fragment) {
         this.resObjStudentAttempted = resObjStudentAttempted;
         this.context = context;
         this.fragment = fragment;
@@ -62,13 +63,12 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 
     @Override
     public void onBindViewHolder(final Viewholder viewholder, final int position) {
-        final ArrayList<Data> arrayList = resObjStudentAttempted.getData().get(0).getArrayListEvaluation();
+        final ArrayList<Examsubmittor> arrayList = resObjStudentAttempted.getExamSubmission().get(0).getExamsubmittor();
         try {
             // Debug.i(TAG, "FullName:" + arrayList.get(position).getFullName());
-            studentName = arrayList.get(position).getFull_name();
-            viewholder.txtStudentName.setText(arrayList.get(position).getFull_name());
-            viewholder.txtSchoolName.setText("Exam Type : " + arrayList.get(position).getSchoolName());
-            viewholder.txtClass.setText(arrayList.get(position).getClass_name());
+            studentName = arrayList.get(position).getStudentName();
+            viewholder.txtStudentName.setText(arrayList.get(position).getStudentName());
+            // viewholder.txtClass.setText(arrayList.get(position).getClass_name());
             // viewholder.txtScore.setText(arrayList.get(position).getEvaluationsScore());
 
             if (arrayList.get(position).isFlagged()) {
@@ -76,7 +76,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
             } else {
                 viewholder.lLMain.setBackgroundResource(R.drawable.bg_student_attempted_unselected);
             }
-            imageLoader.displayImage(WebConstants.USER_IMAGES + arrayList.get(position).getProfile_pic(), viewholder.imgUserPic, ISMTeacher.options);
+            imageLoader.displayImage(WebConstants.USER_IMAGES + arrayList.get(position).getStudentProfilePic(), viewholder.imgUserPic, ISMTeacher.options);
             viewholder.lLMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -93,14 +93,17 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                         lastSelected = position;
                     }
                     if (arrayList.get(position).isFlagged()) {
-                           ((TeacherHostActivity) context).startProgress();
-                        callAPIStudentEvaluations(arrayList.get(position).getStudent_id(), resObjStudentAttempted.getData().get(0).getExam_id(), studentName);
+                        ((TeacherHostActivity) context).startProgress();
+
+                        //static call
+                        callAPIStudentEvaluations();
+//                        callAPIStudentEvaluations(arrayList.get(position).getStudentId(), resObjStudentAttempted.getExamSubmission().get(0).getExamId(), studentName);
                     } else {
-                         ((TeacherHostActivity) context).startProgress();
+                        ((TeacherHostActivity) context).startProgress();
                         ObjectiveQuestionsAdapter objectiveQuestionsAdapter = new ObjectiveQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, null);
                         ExamObjectiveDetailFragment.rvList.setAdapter(objectiveQuestionsAdapter);
                         objectiveQuestionsAdapter.notifyDataSetChanged();
-                          ((TeacherHostActivity) context).stopProgress();
+                        ((TeacherHostActivity) context).stopProgress();
                     }
                     notifyDataSetChanged();
 
@@ -116,11 +119,29 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     private void callAPIStudentEvaluations(String studentId, String examId, String studentName) {
         try {
             if (Utility.isInternetConnected(context)) {
-                  ((TeacherHostActivity) context).startProgress();
-                RequestObject requestObject = new RequestObject();
-                requestObject.setStudentId(WebConstants.STUDENT_ID_202_OBJECCTIVE);
-                requestObject.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
-                new WebserviceWrapper(context, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                ((TeacherHostActivity) context).startProgress();
+                Attribute attribute = new Attribute();
+                attribute.setStudentId(WebConstants.STUDENT_ID_202_OBJECCTIVE);
+                attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
+                new WebserviceWrapper(context, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.GET_EXAM_EVALUATIONS);
+            } else {
+                Utility.showToast(context.getString(R.string.strnetissue), context);
+            }
+
+        } catch (Exception e) {
+            Debug.i(TAG, "callAPIStudentEvaluations Exceptions: " + e.getLocalizedMessage());
+        }
+    }
+
+    private void callAPIStudentEvaluations() {
+        try {
+            if (Utility.isInternetConnected(context)) {
+                ((TeacherHostActivity) context).startProgress();
+                Attribute attribute = new Attribute();
+                attribute.setStudentId(WebConstants.STUDENT_ID_202_OBJECCTIVE);
+                attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
+                new WebserviceWrapper(context, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_EVALUATIONS);
             } else {
                 Utility.showToast(context.getString(R.string.strnetissue), context);
@@ -133,25 +154,20 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 
 
     @Override
-    public long getItemId(int position) {
-        return resObjStudentAttempted.getData().get(0).getArrayListEvaluation().size();
-    }
-
-    @Override
     public int getItemCount() {
-        return resObjStudentAttempted.getData().get(0).getArrayListEvaluation().size();
+        return resObjStudentAttempted.getExamSubmission().get(0).getExamsubmittor().size();
     }
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
         try {
-              ((TeacherHostActivity) context).stopProgress();
+            ((TeacherHostActivity) context).stopProgress();
 
             if (API_METHOD == WebConstants.GET_EXAM_EVALUATIONS) {
-                ResponseObject responseObject = (ResponseObject) object;
-                if (responseObject.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
-                    if (responseObject.getData().get(0).getArrayListEvaluation().size() != 0) {
-                        responseObjectEval = responseObject;
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+                    if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
+                        responseObjectEval = responseHandler;
                         ObjectiveQuestionsAdapter objectiveQuestionsAdapter = new ObjectiveQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseObjectEval);
                         ExamObjectiveDetailFragment.rvList.setAdapter(objectiveQuestionsAdapter);
                         objectiveQuestionsAdapter.notifyDataSetChanged();

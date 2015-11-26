@@ -299,4 +299,18 @@
     <string name="strScreenPlay">Screen play</string>
     <string name="strMovie">"Movie : "</string>
     <string name="strMovieGenre">"Movie genre : "</string>
+    <string name="strPastimes">Pastimes</string>
+    <string name="strRoleModels">Role Models</string>
+    <string name="strMovies">Movies</string>
+    <string name="strBooks">Books</string>
+    <string name="strAboutMe">About Me</string>
+    <string name="strMovieDetails">Movie Details</string>
+    <string name="strRoleModelDetails">Role Model Details</string>
+    <string name="strRoleModel">"Role Model : "</string>
+    <string name="strBirthdate">Birthdate :</string>
+    <string name="strEducation">Education :</string>
+    <string name="strAchivements">"Achievements : "</string>
+    <string name="strOrganization">Organization :</string>
+    <string name="strQuotes">Quotes :</string>
+    <string name="strActivities">Activities :</string>
 </resources>

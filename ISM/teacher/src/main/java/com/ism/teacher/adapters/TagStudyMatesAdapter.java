@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import com.ism.teacher.R;
 import com.ism.teacher.model.Data;
+import com.ism.teacher.ws.model.Studymates;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -23,15 +26,19 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
     private static final String TAG = TagStudyMatesAdapter.class.getSimpleName();
 
     Context context;
-    ArrayList<Data> listOfAllStudyMates = new ArrayList<>();
-    ArrayList<Data> copyListOfStudyMates = new ArrayList<>();
+    ArrayList<Studymates> arrListStudyMates = new ArrayList<>();
+    ArrayList<Studymates> copyListOfStudyMates = new ArrayList<>();
 
+    private LayoutInflater inflater;
+    private ImageLoader imageLoader;
 
-    public TagStudyMatesAdapter(Context context, ArrayList<Data> listOfStudyMates) {
-        this.context = context;
-        this.listOfAllStudyMates = listOfStudyMates;
-        this.copyListOfStudyMates.addAll(listOfAllStudyMates);
+    public TagStudyMatesAdapter(Context mContext) {
+        this.context = mContext;
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+        inflater = LayoutInflater.from(mContext);
     }
+
 
     public ArrayList<String> tagIds = new ArrayList<String>();
 
@@ -53,7 +60,7 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.txtStudymateName.setText(listOfAllStudyMates.get(position).getFull_name());
+        holder.txtStudymateName.setText(arrListStudyMates.get(position).getFullName());
 
         holder.chkAddusertotag.setOnClickListener(new View.OnClickListener() {
 
@@ -62,11 +69,11 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
 
                 if (holder.chkAddusertotag.isChecked()) {
 
-                    tagIds.add(listOfAllStudyMates.get(position).getUser_id());
+                    tagIds.add(arrListStudyMates.get(position).getUserId());
 
 
                 } else {
-                    tagIds.remove(listOfAllStudyMates.get(position).getUser_id());
+                    tagIds.remove(arrListStudyMates.get(position).getUserId());
                 }
 
 
@@ -77,7 +84,7 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
 
     @Override
     public int getItemCount() {
-        return listOfAllStudyMates.size();
+        return arrListStudyMates.size();
     }
 
 
@@ -100,23 +107,41 @@ public class TagStudyMatesAdapter extends RecyclerView.Adapter<TagStudyMatesAdap
     }
 
     public void filter(CharSequence charText) {
-        listOfAllStudyMates.clear();
+        arrListStudyMates.clear();
 
         if (charText.length() == 0) {
-            listOfAllStudyMates.addAll(copyListOfStudyMates);
+            arrListStudyMates.addAll(copyListOfStudyMates);
         } else {
 
-            for (Data wp : copyListOfStudyMates) {
-                if (wp.getFull_name().contains(charText)) {
-                    listOfAllStudyMates.add(wp);
+            for (Studymates wp : copyListOfStudyMates) {
+                if (wp.getFullName().contains(charText)) {
+                    arrListStudyMates.add(wp);
                 }
             }
-            if (listOfAllStudyMates.size() == 0) {
+            if (arrListStudyMates.size() == 0) {
                 Toast.makeText(context, "No search result found!", Toast.LENGTH_SHORT).show();
             }
         }
         notifyDataSetChanged();
     }
 
+    private Context getActivity() {
+        return context;
 
+    }
+
+
+    public void addAll(ArrayList<Studymates> studyMates) {
+        try {
+
+            this.arrListStudyMates.clear();
+            this.arrListStudyMates.addAll(studyMates);
+            this.copyListOfStudyMates = studyMates;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        notifyDataSetChanged();
+    }
 }

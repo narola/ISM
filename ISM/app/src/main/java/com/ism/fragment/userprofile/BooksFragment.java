@@ -8,8 +8,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -21,6 +19,7 @@ import com.ism.activity.HostActivity;
 import com.ism.adapter.FavoriteBooksAdapter;
 import com.ism.adapter.SuggestedBookAdapter;
 import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -115,8 +114,8 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                     etFavSearch.setText("");
 
                 } else {
-                    startSlideAnimation(etFavSearch, etFavSearch.getWidth(), 0, 0, 0);
-                    startSlideAnimation(imgFavSearch, etFavSearch.getWidth(), 0, 0, 0);
+                    Utility.startSlideAnimation(etFavSearch, etFavSearch.getWidth(), 0, 0, 0);
+                    Utility.startSlideAnimation(imgFavSearch, etFavSearch.getWidth(), 0, 0, 0);
                     etFavSearch.setVisibility(View.VISIBLE);
                     Utility.showSoftKeyboard(etFavSearch, getActivity());
                 }
@@ -136,8 +135,8 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                     setUpSuggestedList(arrayListSuggestedBooks);
                     etSuggestedSearch.setText("");
                 } else {
-                    startSlideAnimation(etSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
-                    startSlideAnimation(imgSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
+                    Utility.startSlideAnimation(etSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
+                    Utility.startSlideAnimation(imgSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
                     etSuggestedSearch.setVisibility(View.VISIBLE);
                     Utility.showSoftKeyboard(etSuggestedSearch, getActivity());
                 }
@@ -176,35 +175,12 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
     }
 
-    private void startSlideAnimation(final View view, int fromX, int toX, int fromY, int toY) {
-        TranslateAnimation slideOutAnimation = new TranslateAnimation(fromX, toX, fromY, toY);
-        slideOutAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.clearAnimation();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        slideOutAnimation.setDuration(500);
-        slideOutAnimation.setFillAfter(true);
-        view.startAnimation(slideOutAnimation);
-    }
-
     public void callApiGetBooksForUser() {
         try {
             if (Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId("1");
+                attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
             } else {
                 Utility.alertOffline(getActivity());

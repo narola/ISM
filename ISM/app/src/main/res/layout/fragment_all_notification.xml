@@ -36,5 +36,5 @@
 		android:inflatedId="@+id/rl_post"
 		android:layout_margin="20dp"
 		android:layout="@layout/list_item_post"
-		android:visibility="visible"/>
+		android:visibility="gone"/>
 </RelativeLayout>
