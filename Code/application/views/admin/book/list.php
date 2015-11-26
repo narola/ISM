@@ -34,79 +34,94 @@
                         
                     </div>
                 </div>
+             
+
                 <!--//filter-->
                 <!--button div-->
                 
                 <!--//button-div-->
                 <!--row table-->
                <?php if(!empty($author_books)){
-               
+               $i=1;
                     foreach ($author_books as $authorbook) {
                       
                 ?>
                 <div class="title"><h3><?php echo $authorbook['author']['full_name']; ?></h3></div>
                 <div class="authorbook">
                 	<div class="col-md-12">
-                <div id="Carousel" class="carousel slide">
                  
                 <!-- -->
                  
                 <!-- Carousel items -->
 
-                <div class="carousel-inner">
                 <?php 
                 $f = 0;
-                if(!empty($authorbook['books'])){
-                  foreach ($authorbook['books'] as $books) {
-                   if($f == 0){
+                if(!empty($authorbook['books'])){ ?>
+                <div id="Carousel_<?php echo $i; ?>" class="carousel slide">
+                <div class="carousel-inner">
+                   <?php $books_cnt = sizeof($authorbook['books']);
+                  foreach ($authorbook['books'] as $books) { ?>
+                    <!-- <div class="item active"> -->
+                  <?php 
+                  if($f == 0){
                          echo '<div class="item active">';
                      }
                     
-                     if ($f%3 == 0 && $f != 0){
+                     if ($f%4 == 0 && $f != 0){
                          echo '</div>';
                          echo '<div class="item">';
                      }
                       $f++;
+
                 ?>    
-                <div class="col-md-3"><div class="thumbnail"><a href="#"><img src="assets/images/book_img2.jpg" alt="Image" style="max-width:100%;"></a>
-                       <h4>Software Engineer</h4>
-                       <h5>Roger  Pressman</h5>
+                <div class="col-md-3">
+                  <div class="thumbnail">
+                    <a href="admin/book/book_detail/<?php echo $books['id']; ?>">
+                      <img class="img-responsive" src="assets/<?php echo $books['image_link']; ?>" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'" alt="Image" style="max-width:100%;">
+                    </a>
+
+                       <a href="admin/book/book_detail/<?php echo $books['id']; ?>"><h4><?php echo character_limiter($books['book_name'], 15); ?></h4></a>
                        
                       </div>
                     </div>
-                      <?php
-                  }
+                    
+                   <?php if($f == $books_cnt){
+                    echo '</div>';
+                  } ?>
+                  <?php } ?>
+                </div>
 
-                }
+                    
+                    
+                  <!--.row-->
+                 
+                
+                 
+                
+                  <a data-slide="prev" href="#Carousel_<?php echo $i; ?>" class="left carousel-control">‹</a>
+                  <a data-slide="next" href="#Carousel_<?php echo $i; ?>" class="right carousel-control">›</a>
+                </div><!--.Carousel-->
+
+             <?php   }
                   
                 
                   ?>
-
-                    
-                	  
-                	<!--.row-->
-                </div><!--.item-->
-                 
-                
-                 
-                </div><!--.carousel-inner-->
-                  <a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a>
-                  <a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
-                </div><!--.Carousel-->
                  
 		</div>
                
                <div class="clearfix"></div>
     <?php 
-    
+    $i++;
   } ?>
 <?php } ?>
 
-            </div>
+            
             <script>
     $(document).ready(function() {
-    $('#Carousel').carousel({
+
+    $('.carousel').carousel({
         interval: 5000
     })
 });
   </script>
+  </div>
