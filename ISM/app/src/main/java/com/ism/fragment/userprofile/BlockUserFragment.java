@@ -15,13 +15,20 @@ import android.widget.TextView;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.BlockedUserAdapter;
+import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.Debug;
 import com.ism.utility.InputValidator;
+import com.ism.utility.Utility;
+import com.ism.ws.helper.Attribute;
+import com.ism.ws.helper.ResponseHandler;
+import com.ism.ws.helper.WebserviceWrapper;
 
 /**
  * Created by c162 on 09/11/15.
  */
-public class BlockUserFragment extends Fragment implements View.OnClickListener{
+public class BlockUserFragment extends Fragment implements View.OnClickListener, WebserviceWrapper.WebserviceResponse {
     private View view;
     private MyTypeFace myTypeFace;
     private TextView txtBlockAssign, txtManageBlockUser, txtContactISMAdmin, txtContactDetails, txtEmailAddress, txtBlockUser, txtNotification, txtBlock;
@@ -52,7 +59,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener{
 
     private void initGlobal() {
         myTypeFace = new MyTypeFace(getActivity());
-        inputValidator=new InputValidator(getActivity());
+        inputValidator = new InputValidator(getActivity());
         txtBlockAssign = (TextView) view.findViewById(R.id.txt_block_studymates);
         txtManageBlockUser = (TextView) view.findViewById(R.id.txt_manage_block_user);
         txtContactISMAdmin = (TextView) view.findViewById(R.id.txt_contact_ism_admin);
@@ -95,6 +102,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener{
         listView.setAdapter(blockedUserAdapter);
         ListViewDynamicHight();
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -113,6 +121,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener{
             Log.e(TAG, "onDetach Exception : " + e.toString());
         }
     }
+
     public void ListViewDynamicHight() {
         int totalHeight = 0;
         for (int i = 0; i < blockedUserAdapter.getCount(); i++) {
@@ -120,8 +129,7 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener{
                 View listItem = blockedUserAdapter.getView(i, null, listView);
                 listItem.measure(0, 0);
                 totalHeight += listItem.getMeasuredHeight();
-            }
-            else
+            } else
                 break;
 
         }
@@ -147,11 +155,59 @@ public class BlockUserFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-    if(v==txtBlock){
-        if(inputValidator.validateAllConstraintsEmail(etBlockUser)){
-            //api call
+        if (v == txtBlock) {
+            if (inputValidator.validateAllConstraintsEmail(etBlockUser)) {
+                //api call
+                callApiForBlockUser();
+            }
+        }
+
+    }
+
+    private void callApiForBlockUser() {
+        try {
+            if (Utility.isConnected(getActivity())) {
+                activityHost.showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setEmailId(etBlockUser.getText().toString().trim());
+                attribute.setBlockUser(Global.strUserId);
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.BLOCK_USER);
+            } else {
+                Utility.alertOffline(getActivity());
+            }
+
+        } catch (Exception e) {
+            Debug.i(TAG, "callApiForBlockUser Exception : " + e.getLocalizedMessage());
         }
     }
+
+    @Override
+    public void onResponse(Object object, Exception error, int apiCode) {
+        switch (apiCode){
+            case WebConstants.BLOCK_USER:
+                    onResponseBlockUser(object,error);
+                break;
+        }
+    }
+
+    private void onResponseBlockUser(Object object, Exception error) {
+        try {
+            activityHost.hideProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                    etBlockUser.setText("");
+                    // add block user in list
+                    Debug.i(TAG, "onResponseBlockUser success");
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Log.i(TAG, "onResponseBlockUser Failed");
+                }
+            } else if (error != null) {
+                Log.i(TAG, "onResponseBlockUser api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onResponseBlockUser Exception : " + e.toString());
+        }
 
     }
 }

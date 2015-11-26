@@ -12,6 +12,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -320,6 +322,38 @@ public class Utility {
 		if (view != null) {
 			inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
 		}
+	}
+
+	/**
+	 * Arti Patel
+	 * set animation on view
+	 * @param view
+	 * @param fromX
+	 * @param toX
+	 * @param fromY
+	 * @param toY
+	 */
+	public static void startSlideAnimation(final View view, int fromX, int toX, int fromY, int toY) {
+		TranslateAnimation slideOutAnimation = new TranslateAnimation(fromX, toX, fromY, toY);
+		slideOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				view.clearAnimation();
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+
+			}
+		});
+		slideOutAnimation.setDuration(500);
+		slideOutAnimation.setFillAfter(true);
+		view.startAnimation(slideOutAnimation);
 	}
 
 

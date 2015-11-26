@@ -95,7 +95,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private ArrayList<ControllerTopMenuItem> controllerTopMenuDesk;
     private ArrayList<ControllerTopMenuItem> controllerTopMenuReportCard;
     private ArrayList<ControllerTopMenuItem> currentControllerTopMenu;
-
+    GeneralSettingsFragment generalSettingsFragment;
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_TUTORIAL = 1;
     public static final int FRAGMENT_CLASSROOM = 2;
@@ -846,28 +846,28 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     private void onResponseGetAllPreference(Object object, Exception error) {
         try {
             if (object != null) {
-                ResponseHandler responseObject = (ResponseHandler) object;
-                if (responseObject.getStatus().toString().equals(WebConstants.SUCCESS)) {
-                    if (responseObject.getPreference().size() > 0) {
-
-                        arrayListSMSAlert = responseObject.getPreference().get(0).getSMSAlert();
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().toString().equals(WebConstants.SUCCESS)) {
+                    if (responseHandler.getPreference().size() > 0) {
+                        arrayListSMSAlert = responseHandler.getPreference().get(0).getSMSAlert();
                         for (int j = 0; j < arrayListSMSAlert.size(); j++) {
                             PreferenceData.setStringPrefs(arrayListSMSAlert.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListSMSAlert.get(j).getId());
                             //  PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
                         }
-                        arrayListNotificationSettings = responseObject.getPreference().get(0).getNotificationSettings();
+                        arrayListNotificationSettings = responseHandler.getPreference().get(0).getNotificationSettings();
                         for (int j = 0; j < arrayListNotificationSettings.size(); j++) {
                             PreferenceData.setStringPrefs(arrayListNotificationSettings.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListNotificationSettings.get(j).getId());
                             // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
                         }
-                        arrayListPrivacySetting = responseObject.getPreference().get(0).getPrivacySetting();
+
+                        arrayListPrivacySetting = responseHandler.getPreference().get(0).getPrivacySetting();
                         for (int j = 0; j < arrayListPrivacySetting.size(); j++) {
                             PreferenceData.setStringPrefs(arrayListPrivacySetting.get(j).getPreferenceKey().toString(), getApplicationContext(), arrayListPrivacySetting.get(j).getId());
                             // PreferenceData.setStringPrefs(arrayList.get(j).getId(), getApplicationContext(), arrayList.get(j).getDefaultValue());
                         }
                     }
 
-                } else if (responseObject.getStatus().equals(WebConstants.FAILED)) {
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
                     Log.e(TAG, "Failed to load general setting preferences");
                 }
             } else if (error != null) {
@@ -891,7 +891,8 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
                         ArrayList<UserPreferences> arrayListUserPreferences=new ArrayList<>();
                         arrayListUserPreferences=responseObject.getUserPreference();
                         for (int j = 0; j < arrayListUserPreferences.size(); j++) {
-                            GeneralSettingsFragment.newInstance().setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getApplicationContext());
+                            Debug.i(TAG,"j :" +j);
+                            generalSettingsFragment.setPreferenceList(arrayListUserPreferences.get(j).getId(), arrayListUserPreferences.get(j).getPreferenceValue(), getApplicationContext());
                         }
                     }
 
