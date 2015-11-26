@@ -165,8 +165,8 @@ public class GetObjectiveAssignmentQuestionsAdapter extends RecyclerView.Adapter
     ArrayList<Evaluation> evaluationList = new ArrayList<Evaluation>();
 
     public void setEvaluationData(ArrayList<Evaluation> evaluationList) {
-        evaluationList.clear();
-        evaluationList.addAll(evaluationList);
+        this.evaluationList = evaluationList;
+        notifyDataSetChanged();
 
     }
 

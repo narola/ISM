@@ -17,10 +17,10 @@ import com.ism.teacher.adapters.Adapters;
 import com.ism.teacher.adapters.ExamWiseAssignmentAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.model.Data;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
+import com.ism.teacher.ws.model.Examsubmittor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,20 +43,22 @@ public class TeacherExamWiseAssignments extends Fragment implements WebserviceWr
 
     List<String> arrayListSubjects, arrayListClasses, arrayListSubmissionDate, arrayListAssessed;
 
-    ArrayList<Data> arrayListAssignments = new ArrayList<>();
+    //    ArrayList<Data> arrayListAssignments = new ArrayList<>();
+    ArrayList<Examsubmittor> arrayListAssignments = new ArrayList<>();
+
     Fragment mFragment;
-    String examid = "",exam_mode="";
+    String examid = "", exam_mode = "";
 
     /*public static TeacherExamWiseAssignments newInstance() {
         TeacherExamWiseAssignments teacherExamWiseAssignments = new TeacherExamWiseAssignments();
         return teacherExamWiseAssignments;
     }*/
 
-    public TeacherExamWiseAssignments(Fragment fragment, String examid,String exammode) {
+    public TeacherExamWiseAssignments(Fragment fragment, String examid, String exammode) {
         // Required empty public constructor
         this.mFragment = fragment;
         this.examid = examid;
-        this.exam_mode=exammode;
+        this.exam_mode = exammode;
     }
 
     @Override
@@ -101,12 +103,12 @@ public class TeacherExamWiseAssignments extends Fragment implements WebserviceWr
     private void callApiGetExamSubmission() {
         if (Utility.isInternetConnected(getActivity())) {
             try {
-                RequestObject request = new RequestObject();
-                request.setExamId("9");
-                request.setUserId("340");
-                request.setRole(AppConstant.TEACHER_ROLE_ID);
+                Attribute attribute = new Attribute();
+                attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
+                attribute.setUserId(WebConstants.USER_ID_340);
+                attribute.setRole(AppConstant.TEACHER_ROLE_ID);
 
-                new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -124,7 +126,6 @@ public class TeacherExamWiseAssignments extends Fragment implements WebserviceWr
                 case WebConstants.GET_ALL_EXAM_SUBMISSION:
                     onResponseGetAllExamSubmission(object);
                     break;
-
             }
 
         } catch (Exception e) {
@@ -136,16 +137,16 @@ public class TeacherExamWiseAssignments extends Fragment implements WebserviceWr
 
     private void onResponseGetAllExamSubmission(Object object) {
 
-        ResponseObject callGetAllExamSubmission = (ResponseObject) object;
-        if (callGetAllExamSubmission.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+        ResponseHandler responseHandler = (ResponseHandler) object;
+        if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
 
-            examWiseAssignmentAdapter = new ExamWiseAssignmentAdapter(callGetAllExamSubmission.getData().get(0).getExam_id(),getActivity(), this,exam_mode);
+            examWiseAssignmentAdapter = new ExamWiseAssignmentAdapter(responseHandler.getExamSubmission().get(0).getExamId(), getActivity(), this, exam_mode);
             recyclerExamwiseAssignments.setHasFixedSize(true);
             recyclerExamwiseAssignments.setLayoutManager(new GridLayoutManager(getActivity(), 3));
             recyclerExamwiseAssignments.setAdapter(examWiseAssignmentAdapter);
 
 
-            arrayListAssignments.addAll(callGetAllExamSubmission.getData().get(0).getArrayListEvaluation());
+            arrayListAssignments.addAll(responseHandler.getExamSubmission().get(0).getExamsubmittor());
             examWiseAssignmentAdapter.addAll(arrayListAssignments);
         } else {
 

@@ -161,6 +161,15 @@ public class WebserviceWrapper {
                         case WebConstants.ADD_RESOURCE_TO_FAVORITE:
                             responseObject = new WebserviceConnector(WebConstants.URL_ADD_RESOURCE_TO_FAVORITE).execute(ResponseHandler.class, attribute);
                             break;
+                        case WebConstants.GET_WALLET_SUMMARY:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_WALLET_SUMMARY).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GENERATE_VOUCHER:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GENERATE_VOUCHER).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_MY_FEEDS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_FEEDS).execute(ResponseHandler.class, attribute);
+                            break;
                     }
                 }
             } catch (Exception e) {
@@ -173,7 +182,7 @@ public class WebserviceWrapper {
         @Override
         protected void onPostExecute(Object responseObject) {
             if (!isNetworkConnected) {
-                Utility.alert(context.getApplicationContext(), context.getString(R.string.connectivity_problem), context.getString(R.string.msg_server_connection));
+                Utility.alertServerNotConnected(context);
             }
             webserviceResponse.onResponse(responseObject, exception, currentApiCode);
             super.onPostExecute(responseObject);

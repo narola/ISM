@@ -6,14 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
+import com.ism.dialog.BookDetailsDialog;
+import com.ism.fragment.userprofile.BooksFragment;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -29,19 +32,21 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapper.WebserviceResponse {
+public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapper.WebserviceResponse,Filterable {
     private static final String TAG = SuggestedBookAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
     ArrayList<Book> arrayList = new ArrayList<>();
+    ArrayList<Book> arrayListFilter = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
     private int addToFavItem;
     AddToFavouriteListner addToFavouriteListner;
-
-    public SuggestedBookAdapter(Context context, ArrayList<Book> arrayList,AddToFavouriteListner favouriteBooksListner) {
+    SuggestedBookFilter suggestedBookFilter;
+    public SuggestedBookAdapter(Context context, ArrayList<Book> arrayList, AddToFavouriteListner favouriteBooksListner) {
         this.context = context;
         this.arrayList = arrayList;
+        this.arrayListFilter=arrayList;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         inflater = LayoutInflater.from(context);
@@ -98,7 +103,7 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
             holder.txtBookName.setTypeface(myTypeFace.getRalewayRegular());
 
 //			imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + arrListFeeds.get(position).getProfilePic(), holder.imgDp, ISMStudent.options);
-            imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", holder.imgBook, ISMStudent.options);
+            imageLoader.displayImage(WebConstants.URL_HOST_202+arrayList.get(position).getBookImage(), holder.imgBook, Utility.getDisplayImageOption(R.drawable.img_no_cover_available,R.drawable.img_no_cover_available));
             holder.txtBookName.setText(arrayList.get(position).getBookName());
             holder.txtBookAuthor.setText(arrayList.get(position).getAuthorName());
             // if(arrayList.get(position).ge)
@@ -114,9 +119,9 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addToFavItem = position;
-                    Debug.i(TAG, "onClickAddToFav : " + position);
-                    callApiAddResourceToFav(position);
+//                    myPopup(position);
+                    BookDetailsDialog  bookDetailsDialog=new BookDetailsDialog(context,arrayList,position,imageLoader);
+                    bookDetailsDialog.show();
                 }
             });
 
@@ -127,16 +132,17 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
 
         return convertView;
     }
-//    public PopupWindow myPopup(final int type) {
+
+//    public PopupWindow myPopup(int position) {
 //
 //        LayoutInflater inflater = (LayoutInflater) context
 //                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //
-//        View view = inflater.inflate(R.layout.layout_add_about_yourself, null);
+//        View view = inflater.inflate(R.layout.layout_book_details, null);
 //
 //        final PopupWindow popupWindow = new PopupWindow(view,
 //                400,
-//                400, true);
+//                500, true);
 //
 //        popupWindow.setOutsideTouchable(false);
 //        popupWindow.setTouchable(true);
@@ -145,33 +151,67 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
 //
 //        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 //        // TextView txtDetails = (TextView) view.findViewById(R.id.txt_about_me_details);
-//        final EditText etAboutMe = (EditText) view
-//                .findViewById(R.id.et_clickAddAboutMe);
-//        final TextView txtAboutMe = (TextView) view
-//                .findViewById(R.id.txt_about_me);
-//        TextView txtCancel = (TextView) view
-//                .findViewById(R.id.txt_cancel);
-//        if (type == ABOUT_ME) {
-//            txtAboutMe.setText(R.string.strAboutYou);
-//            etAboutMe.setText(strDetailAboutMe);
-//            etAboutMe.setHint("Write about your self");
-//        } else if (type == YOUR_AMBITION) {
-//            txtAboutMe.setText(R.string.strYourAmbitionInLife);
-//            etAboutMe.setText(strAmbition);
-//            etAboutMe.setHint("Write about your ambition in life");
-//        }
 //
-//        etAboutMe.setText(strDetailAboutMe);
-//        txtCancel.setOnClickListener(new View.OnClickListener() {
+//        final TextView txtBookDetails = (TextView) view
+//                .findViewById(R.id.txt_book_details);
+//        TextView txtDone = (TextView) view
+//                .findViewById(R.id.txt_done);
+//        TextView txtBook = (TextView) view
+//                .findViewById(R.id.txt_book);
+//        TextView txtBookName = (TextView) view
+//                .findViewById(R.id.txt_book_name);
+//        TextView txtPublisher = (TextView) view
+//                .findViewById(R.id.txt_publisher);
+//        TextView txtPublisherName = (TextView) view
+//                .findViewById(R.id.txt_publisher_name);
+//        TextView txtAuthor = (TextView) view
+//                .findViewById(R.id.txt_author);
+//        TextView txtAuthorName = (TextView) view
+//                .findViewById(R.id.txt_author_name);
+//        TextView txtPrice = (TextView) view
+//                .findViewById(R.id.txt_price);
+//        TextView txtPriceValue = (TextView) view
+//                .findViewById(R.id.txt_price_value);
+//        TextView txtDesc = (TextView) view
+//                .findViewById(R.id.txt_desc);
+//        TextView txtDescDetails = (TextView) view
+//                .findViewById(R.id.txt_desc_details);
+//        TextView txtEbook = (TextView) view
+//                .findViewById(R.id.txt_ebook_for_link);
+//        TextView txtEbookLink = (TextView) view
+//                .findViewById(R.id.txt_ebook_link);
+//
+//        txtAuthor.setTypeface(myTypeFace.getRalewayRegular());
+//        txtAuthorName.setTypeface(myTypeFace.getRalewayRegular());
+//        txtBook.setTypeface(myTypeFace.getRalewayRegular());
+//        txtBookDetails.setTypeface(myTypeFace.getRalewayRegular());
+//        txtBookName.setTypeface(myTypeFace.getRalewayRegular());
+//        txtDesc.setTypeface(myTypeFace.getRalewayRegular());
+//        txtDescDetails.setTypeface(myTypeFace.getRalewayRegular());
+//        txtDone.setTypeface(myTypeFace.getRalewayRegular());
+//        txtPublisher.setTypeface(myTypeFace.getRalewayRegular());
+//        txtPublisherName.setTypeface(myTypeFace.getRalewayRegular());
+//        txtPrice.setTypeface(myTypeFace.getRalewayRegular());
+//        txtPriceValue.setTypeface(myTypeFace.getRalewayRegular());
+//        txtEbook.setTypeface(myTypeFace.getRalewayRegular());
+//        txtEbookLink.setTypeface(myTypeFace.getRalewayRegular());
+//
+//
+//        txtAuthorName.setText(arrayList.get(position).getAuthorName());
+//        txtPublisherName.setText(arrayList.get(position).getPublisherName());
+//        txtPriceValue.setText(arrayList.get(position).getPrice());
+//        txtDescDetails.setText(arrayList.get(position).getDescription());
+//        txtBookName.setText(arrayList.get(position).getBookName());
+//        txtEbookLink.setText(arrayList.get(position).getEbookLink());
+//        //txtAuthor.setText(arrayList.get(position).getAuthorName());
+//
+//
+//        txtDone.setOnClickListener(new View.OnClickListener() {
 //
 //            @Override
 //            public void onClick(View v) {
 //                // TODO Auto-generated method stub
-//                if (type == ABOUT_ME) {
-//                    strDetailAboutMe = etAboutMe.getText().toString().trim();
-//                } else if (type == YOUR_AMBITION) {
-//                    strAmbition = etAboutMe.getText().toString().trim();
-//                }
+//
 //                popupWindow.dismiss();
 //
 //            }
@@ -183,6 +223,7 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
 //        return popupWindow;
 //
 //    }
+
     private void callApiAddResourceToFav(int position) {
         try {
             if (Utility.isConnected(context)) {
@@ -234,7 +275,84 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
         }
     }
 
+    @Override
+    public Filter getFilter() {
+        if (suggestedBookFilter == null) {
+            suggestedBookFilter = new SuggestedBookFilter();
+        }
+        return suggestedBookFilter;
+    }
 
+    class SuggestedBookFilter extends Filter {
+
+        // Invoked in a worker thread to filter the data according to the
+        // constraint.
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            try {
+
+                Debug.i(TAG, "Search string : " + constraint);
+
+                if (constraint!= null) {
+                    Debug.i(TAG, "Search string : " + constraint);
+                    ArrayList<Book> filterList = new ArrayList<Book>();
+                    for (int i = 0; i < arrayListFilter.size(); i++) {
+                        if (arrayListFilter.get(i).getBookName().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getPublisherName().toLowerCase().contains(constraint.toString().toLowerCase()) ) {
+
+//                            if (arrayListFilter.get(i).getAuthorName().contains(constraint) || arrayListFilter.get(i).getBookName().contains(constraint) || arrayListFilter.get(i).getPublisherName().contains(constraint)) {
+                            Debug.i(TAG, "i : " + i);
+                            Book book = new Book();
+                            book.setDescription(arrayListFilter.get(i).getDescription());
+                            book.setAuthorImage(arrayListFilter.get(i).getAuthorImage());
+                            book.setAuthorName(arrayListFilter.get(i).getAuthorName());
+                            book.setBookId(arrayListFilter.get(i).getBookId());
+                            book.setBookImage(arrayListFilter.get(i).getBookImage());
+                            book.setBookName(arrayListFilter.get(i).getBookName());
+                            book.setEbookLink(arrayListFilter.get(i).getEbookLink());
+                            book.setPrice(arrayListFilter.get(i).getPrice());
+                            book.setPublisherName(arrayListFilter.get(i).getPublisherName());
+                            filterList.add(book);
+
+                        }
+                    }
+                    results.count = filterList.size();
+                    results.values = filterList;
+                } else {
+                    results.count = arrayListFilter.size();
+                    results.values = arrayListFilter;
+                }
+                return results;
+            } catch (Exception e) {
+                Debug.i(TAG, "FilterResults Exceptions : " + e.getLocalizedMessage());
+                return null;
+
+            }
+
+
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            try {
+
+                arrayList = (ArrayList<Book>) results.values;
+                if(arrayList.size()==0)
+                {
+                    BooksFragment.txtSuggestedEmpty.setVisibility(View.VISIBLE);
+                    BooksFragment.listViewSuggestedBooks.setVisibility(View.GONE);
+                }
+                else{
+                    BooksFragment.txtSuggestedEmpty.setVisibility(View.GONE);
+                    BooksFragment.listViewSuggestedBooks.setVisibility(View.VISIBLE);
+                }
+                notifyDataSetChanged();
+            } catch (Exception e) {
+                Debug.i(TAG, "publishResults on Exception :  " + e.getLocalizedMessage());
+            }
+        }
+
+    }
     public class ViewHolder {
 
         private ImageView imgBook;

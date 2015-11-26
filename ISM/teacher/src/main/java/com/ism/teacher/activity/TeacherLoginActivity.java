@@ -2,12 +2,12 @@ package com.ism.teacher.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,9 +26,10 @@ import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.helper.PreferenceData;
 import com.ism.teacher.model.Data;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
-import com.ism.teacher.ws.WebserviceWrapper;
+
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,14 +67,22 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.activity_teacher_login);
-        initView();
+        if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME, getActivity())) {
+            launchHostActivity();
+        } else if (PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, getActivity())) {
+            launchProfileInfoActivity();
+        } else {
+            setContentView(R.layout.activity_teacher_login);
+            initGlobal();
+        }
 
     }
+    private Context getActivity() {
+        return TeacherLoginActivity.this;
+    }
 
-    private void initView() {
+    private void initGlobal() {
         MyTypeFace myTypeFace = new MyTypeFace(TeacherLoginActivity.this);
         inputValidator = new InputValidator(TeacherLoginActivity.this);
         btnLogin = (ActionProcessButton) findViewById(R.id.btn_login);
@@ -99,6 +108,9 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
         arrListDefault.add(getString(R.string.select));
 
         progressGenerator = new ProgressGenerator();
+        etTeacherUserid.setText("0YGAJ8793B");
+        etTeacherPassword.setText("narola21");
+
 
     }
 
@@ -171,10 +183,10 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             progForgotPwd.setVisibility(View.VISIBLE);
             progForgotPwd.setProgress(1);
             progressGenerator.start(progForgotPwd);
-            RequestObject requestObject = new RequestObject();
-            requestObject.setEmailId(email);
+            Attribute attribute = new Attribute();
+            attribute.setEmailId(email);
 
-            new WebserviceWrapper(TeacherLoginActivity.this, requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(TeacherLoginActivity.this, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.FORGOT_PASSWORD);
 
         } catch (Exception e) {
@@ -270,18 +282,18 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             public void onClick(View v) {
                 if (Utility.isOnline(TeacherLoginActivity.this)) {
                     if (isInputsValid()) {
-                        RequestObject requestObject = new RequestObject();
-                        requestObject.setFirstname(etFirstName.getText().toString().trim());
-                        requestObject.setLastname(etLastName.getText().toString().trim());
-                        requestObject.setEmailAddress(etEmail.getText().toString().trim());
-                        requestObject.setHomeAddress(etHomeAddress.getText().toString().trim());
-                        requestObject.setSchoolName(etSchoolName.getText().toString().trim());
-                        requestObject.setContactNumber(etContactNo.getText().toString().trim());
-                        requestObject.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
-                        requestObject.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
-                        requestObject.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
+                        Attribute attribute = new Attribute();
+                        attribute.setFirstname(etFirstName.getText().toString().trim());
+                        attribute.setLastname(etLastName.getText().toString().trim());
+                        attribute.setEmailAddress(etEmail.getText().toString().trim());
+                        attribute.setHomeAddress(etHomeAddress.getText().toString().trim());
+                        attribute.setSchoolName(etSchoolName.getText().toString().trim());
+                        attribute.setContactNumber(etContactNo.getText().toString().trim());
+                        attribute.setCountryId(spCountry.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCountries.get(spCountry.getSelectedItemPosition() - 1).getId()) : 0);
+                        attribute.setStateId(spState.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListStates.get(spState.getSelectedItemPosition() - 1).getId()) : 0);
+                        attribute.setCityId(spCity.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListCities.get(spCity.getSelectedItemPosition() - 1).getId()) : 0);
 
-                        callApiRequestCredentials(requestObject);
+                        callApiRequestCredentials(attribute);
                     }
                 } else {
                     Utility.toastOffline(TeacherLoginActivity.this);
@@ -355,10 +367,10 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             progState.setVisibility(View.VISIBLE);
             progState.setProgress(1);
             progressGenerator.start(progState);
-            RequestObject requestObject = new RequestObject();
-            requestObject.setCountryId(countryId);
+            Attribute attribute = new Attribute();
+            attribute.setCountryId(countryId);
 
-            new WebserviceWrapper(TeacherLoginActivity.this, requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(TeacherLoginActivity.this, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GET_STATES);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetStates Exception : " + e.getLocalizedMessage());
@@ -370,23 +382,23 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             progCity.setVisibility(View.VISIBLE);
             progCity.setProgress(1);
             progressGenerator.start(progCity);
-            RequestObject requestObject = new RequestObject();
-            requestObject.setStateId(stateId);
+            Attribute attribute = new Attribute();
+            attribute.setStateId(stateId);
 
-            new WebserviceWrapper(TeacherLoginActivity.this, requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(TeacherLoginActivity.this, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.GET_CITIES);
         } catch (Exception e) {
             Log.e(TAG, "callApiGetCities Exception : " + e.getLocalizedMessage());
         }
     }
 
-    private void callApiRequestCredentials(RequestObject requestObject) {
+    private void callApiRequestCredentials(Attribute attribute) {
         try {
             btnCredentialsSubmit.setEnabled(false);
             progRequestCredentials.setVisibility(View.VISIBLE);
             progRequestCredentials.setProgress(1);
             progressGenerator.start(progRequestCredentials);
-            new WebserviceWrapper(TeacherLoginActivity.this, requestObject, this).new WebserviceCaller()
+            new WebserviceWrapper(TeacherLoginActivity.this, attribute, this).new WebserviceCaller()
                     .execute(WebConstants.REQUEST_CREDENTIALS);
         } catch (Exception e) {
             Log.e(TAG, "callApiRequestCredentials Exception : " + e.getLocalizedMessage());
@@ -407,15 +419,12 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             progressGenerator.start(btnLogin);
 
             btnLogin.setEnabled(false);
-            RequestObject requestObject = new RequestObject();
+            Attribute attribute = new Attribute();
+            attribute.setUsername(etTeacherUserid.getText().toString().trim());
+            attribute.setPassword(etTeacherPassword.getText().toString().trim());
 
-//            requestObject.setUsername(etTeacherUserid.getText().toString().trim());
-//            requestObject.setPassword(etTeacherPassword.getText().toString().trim());
 
-            requestObject.setUsername("0YGAJ8793B");
-            requestObject.setPassword("narola21");
-
-            new WebserviceWrapper(TeacherLoginActivity.this, requestObject, this).new WebserviceCaller().execute(WebConstants.LOGIN);
+            new WebserviceWrapper(TeacherLoginActivity.this, attribute, this).new WebserviceCaller().execute(WebConstants.LOGIN);
 
         } catch (Exception e) {
             Log.e(TAG, "callApiAuthenticateUser Exception : " + e.getLocalizedMessage());
@@ -459,8 +468,8 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             progCity.setProgress(100);
             progCity.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListCities = new ArrayList<Data>();
                     arrListCities.addAll(responseObj.getData());
                     List<String> cities = new ArrayList<String>();
@@ -469,7 +478,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
                         cities.add(city.getCityName());
                     }
                     Adapters.setUpSpinner(TeacherLoginActivity.this, spCity, cities);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Log.e(TAG, "onResponseCities Failed");
                 }
             } else if (error != null) {
@@ -485,8 +494,8 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             progState.setProgress(100);
             progState.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListStates = new ArrayList<Data>();
                     arrListStates.addAll(responseObj.getData());
                     List<String> states = new ArrayList<String>();
@@ -495,7 +504,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
                         states.add(state.getStateName());
                     }
                     Adapters.setUpSpinner(TeacherLoginActivity.this, spState, states);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Log.e(TAG, "onResponseStates Failed");
                 }
             } else if (error != null) {
@@ -512,17 +521,17 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             progCountry.setProgress(100);
             progCountry.setVisibility(View.INVISIBLE);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListCountries = new ArrayList<Data>();
-                    arrListCountries.addAll(responseObj.getData());
+                    arrListCountries.addAll(responseHandler.getData());
                     List<String> countries = new ArrayList<String>();
                     countries.add(getString(R.string.select));
                     for (Data country : arrListCountries) {
                         countries.add(country.getCountryName());
                     }
                     Adapters.setUpSpinner(TeacherLoginActivity.this, spCountry, countries);
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Log.e(TAG, "onResponseCountries Failed");
                 }
             } else if (error != null) {
@@ -545,13 +554,13 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
                 progRequestCredentials.setVisibility(View.INVISIBLE);
             }
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
                     if (dialogCredentials != null) {
                         dialogCredentials.dismiss();
                     }
                     Toast.makeText(TeacherLoginActivity.this, "Request for credentials sent to admin successfully.", Toast.LENGTH_LONG).show();
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
                     Toast.makeText(TeacherLoginActivity.this, responseObj.getMessage(), Toast.LENGTH_LONG).show();
                 }
             } else if (error != null) {
@@ -573,11 +582,11 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
                 progForgotPwd.setVisibility(View.INVISIBLE);
             }
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Toast.makeText(TeacherLoginActivity.this, R.string.password_sent, Toast.LENGTH_LONG).show();
                     dialogForgotPassword.dismiss();
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Toast.makeText(TeacherLoginActivity.this, R.string.email_not_found, Toast.LENGTH_LONG).show();
                 }
             } else if (error != null) {
@@ -594,33 +603,33 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             btnLogin.setProgress(100);
             btnLogin.setEnabled(true);
             if (object != null) {
-                ResponseObject responseObj = (ResponseObject) object;
-                if (responseObj.getStatus().equals(ResponseObject.SUCCESS)) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equalsIgnoreCase(ResponseHandler.SUCCESS)) {
 
-                    if (responseObj.getData().get(0).getUser_id() == null) {
+                    if (responseHandler.getUser().get(0).getUserId() == null) {
 
                         PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, TeacherLoginActivity.this, ((CheckBox) findViewById(R.id.chk_rememberme)).isChecked());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, TeacherLoginActivity.this, responseObj.getData().get(0).getCredentialId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_CREDENTIAL_ID, TeacherLoginActivity.this, responseHandler.getUser().get(0).getCredentialId());
                         PreferenceData.setStringPrefs(PreferenceData.USER_PASSWORD, TeacherLoginActivity.this, etTeacherPassword.getText().toString().trim());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_ID, TeacherLoginActivity.this, responseObj.getData().get(0).getSchoolId());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, TeacherLoginActivity.this, responseObj.getData().get(0).getSchoolName());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, TeacherLoginActivity.this, responseObj.getData().get(0).getSchoolDistrict());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_TYPE, TeacherLoginActivity.this, responseObj.getData().get(0).getSchoolType());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_ID, TeacherLoginActivity.this, responseObj.getData().get(0).getClassId());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, TeacherLoginActivity.this, responseObj.getData().get(0).getClass_name());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_ID, TeacherLoginActivity.this, responseObj.getData().get(0).getCourseId());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, TeacherLoginActivity.this, responseObj.getData().get(0).getCourseName());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, TeacherLoginActivity.this, responseObj.getData().get(0).getAcademicYear());
-                        PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, TeacherLoginActivity.this, responseObj.getData().get(0).getRoleId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_ID, TeacherLoginActivity.this, responseHandler.getUser().get(0).getSchoolId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_NAME, TeacherLoginActivity.this, responseHandler.getUser().get(0).getSchoolName());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_DISTRICT, TeacherLoginActivity.this, responseHandler.getUser().get(0).getDistrictName());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_SCHOOL_TYPE, TeacherLoginActivity.this, responseHandler.getUser().get(0).getSchoolType());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_ID, TeacherLoginActivity.this, responseHandler.getUser().get(0).getClassId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_CLASS_NAME, TeacherLoginActivity.this, responseHandler.getUser().get(0).getClassName());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_ID, TeacherLoginActivity.this, responseHandler.getUser().get(0).getCourseId());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_COURSE_NAME, TeacherLoginActivity.this, responseHandler.getUser().get(0).getCourseName());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_ACADEMIC_YEAR, TeacherLoginActivity.this, responseHandler.getUser().get(0).getAcademicYear());
+                        PreferenceData.setStringPrefs(PreferenceData.USER_ROLE_ID, TeacherLoginActivity.this, responseHandler.getUser().get(0).getRoleId());
 
                         launchProfileInfoActivity();
 
                     } else {
-                        launchTeacherHomeActivity();
+                        launchHostActivity();
                     }
-                    launchTeacherHomeActivity();
+                    launchHostActivity();
 
-                } else if (responseObj.getStatus().equals(ResponseObject.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Toast.makeText(TeacherLoginActivity.this, "Username or Password is wrong!", Toast.LENGTH_LONG).show();
                 }
             } else if (error != null) {
@@ -630,17 +639,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
             Log.e(TAG, "onResponseLogin Exception : " + e.toString());
         }
 
-       /* ResponseObject responseObj = (ResponseObject) object;
-        Log.e(TAG, "onResponse");
-        Log.e(TAG, ((ResponseObject) object).getMessage());
-        if (responseObj.getStatus().equalsIgnoreCase("success")) {
-            Toast.makeText(TeacherLoginActivity.this, "Login Successful!!!", Toast.LENGTH_SHORT).show();
-            launchTeacherHomeActivity();
-            //launchProfileInfoActivity();
 
-        } else {
-            Toast.makeText(TeacherLoginActivity.this, "Please enter valid username and password", Toast.LENGTH_SHORT).show();
-        }*/
     }
 
     private void launchProfileInfoActivity() {
@@ -648,7 +647,7 @@ public class TeacherLoginActivity extends Activity implements WebserviceWrapper.
         finish();
     }
 
-    private void launchTeacherHomeActivity() {
+    private void launchHostActivity() {
         Utility.launchIntent(TeacherLoginActivity.this, TeacherHostActivity.class);
         finish();
     }

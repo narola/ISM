@@ -20,6 +20,7 @@ import com.ism.interfaces.FragmentListener;
 import com.ism.model.HighScoreSubject;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
+import com.ism.utility.Utility;
 import com.ism.views.AccordionView;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
@@ -76,16 +77,20 @@ public class AccordionFragment extends Fragment implements WebserviceWrapper.Web
 		txtViewAllNotice.setTypeface(new MyTypeFace(getActivity()).getRalewaySemiBold());
 
 		txtViewAllNotice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-	            Bundle bundleAllNotice = new Bundle();
-	            bundleAllNotice.putParcelableArrayList(AllNoticeFragment.ARG_ARR_LIST_NOTICE, arrListNotice);
-	            activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTICE, bundleAllNotice);
-            }
-        });
+			@Override
+			public void onClick(View v) {
+				Bundle bundleAllNotice = new Bundle();
+				bundleAllNotice.putParcelableArrayList(AllNoticeFragment.ARG_ARR_LIST_NOTICE, arrListNotice);
+				activityHost.loadFragment(HostActivity.FRAGMENT_ALL_NOTICE, bundleAllNotice);
+			}
+		});
 
-        callApiGetAllNotice();
-		callApiGetHighScorers();
+		if (Utility.isConnected(activityHost)) {
+			callApiGetAllNotice();
+			callApiGetHighScorers();
+		} else {
+			Utility.alertOffline(activityHost);
+		}
 	}
 
 	@Override

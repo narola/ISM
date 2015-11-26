@@ -4,9 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +16,8 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.fragments.AddQuestionContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.QuestionAnswersModel;
-import com.ism.teacher.model.Data;
+import com.ism.teacher.ws.model.Answers;
+import com.ism.teacher.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -33,7 +30,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     private static final String TAG = QuestionBankListAdapter.class.getSimpleName();
 
     Context mContext;
-    ArrayList<Data> listOfQuestions = new ArrayList<Data>();
+    ArrayList<Questions> listOfQuestions = new ArrayList<>();
     MyTypeFace myTypeFace;
 
     Fragment mFragment;
@@ -45,7 +42,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     }
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<Questions> data) {
         try {
             this.listOfQuestions.clear();
             this.listOfQuestions.addAll(data);
@@ -102,23 +99,19 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
         holder.tvQuestionCategory.setTypeface(myTypeFace.getRalewayRegular());
         holder.tvQuestionCategory.setText(mContext.getString(R.string.strcategory));
-        String category = " " + listOfQuestions.get(position).getSubject_name();
-        SpannableString f = new SpannableString(category);
-        f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
-                category.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        holder.tvQuestionCategory.append(f);
+
+        holder.tvQuestionCategory.append(Utility.getSpannableString(" " + listOfQuestions.get(position).getSubjectName(),
+                mContext.getResources().getColor(R.color.color_green)));
 
         holder.tvQuestionCreatedby.setTypeface(myTypeFace.getRalewayRegular());
         holder.tvQuestionCreatedby.setText(mContext.getString(R.string.strcreatedby));
-        String creator = " " + listOfQuestions.get(position).getQuestionCreatorName();
-        f = new SpannableString(creator);
-        f.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_green)), 0,
-                creator.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        holder.tvQuestionCreatedby.append(f);
+
+        holder.tvQuestionCreatedby.append(Utility.getSpannableString(" " + listOfQuestions.get(position).getQuestionCreatorName(),
+                mContext.getResources().getColor(R.color.color_green)));
 
 
         holder.tvQuestion.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvQuestion.setText(listOfQuestions.get(position).getQuestionText());
+        holder.tvQuestion.setText(Utility.formatHtml(listOfQuestions.get(position).getQuestionText()));
 
 
         holder.imgDropdownViewAnswer.setOnClickListener(new View.OnClickListener() {
@@ -226,7 +219,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     }
 
 
-    private View getAnsInflaterView(QuestionAnswersModel answer, int position) {
+    private View getAnsInflaterView(Answers answer, int position) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View v;

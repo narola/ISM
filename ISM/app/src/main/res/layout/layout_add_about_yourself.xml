@@ -30,7 +30,6 @@
                 android:text="Book Details"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/d20sp" />
-
             <TextView
                 android:id="@+id/txt_book_name"
                 android:layout_width="match_parent"

@@ -67,4 +67,11 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@android:color/white"></FrameLayout>
+
+    <View
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="196dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/shape_triangle_profile_controller" />
 </LinearLayout>

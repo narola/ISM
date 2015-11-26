@@ -252,7 +252,7 @@
         <item>Studymates</item>
     </string-array>
 
-	<string name="msg_studymate_request">Please add me to your Studymates group</string>
+    <string name="msg_studymate_request">Please add me to your Studymates group</string>
     <string name="reply">Reply</string>
     <string name="your_studymates">Your Studymates</string>
     <string name="find_more_studymates">Find more Studymates</string>
@@ -282,10 +282,21 @@
     <string name="amount">Amount</string>
     <string name="msg_server_connection">Can\'t connect to server!</string>
     <string name="strBooksYouMayWantToRead">Books you may want to read</string>
-    <string name="strYourFavoriteBooks">Your Favorite Books</string>
+    <string name="strYourFavouriteBooks">Your Favourite Books</string>
     <string name="strSuggestedRoleModels">Suggested role models</string>
-    <string name="strFavRolemodels">Your favorite role models</string>
+    <string name="strFavRolemodels">Your favourite role models</string>
+    <string name="strSuggestedMovies">Suggested movies</string>
+    <string name="strFavMovies">Your favourite movies</string>
     <string name="strSuggestedPastimes">Suggested pastimes</string>
-    <string name="strFavPastimes">Your favorite pastimes</string>
+    <string name="strFavPastimes">Your favourite pastimes</string>
     <string name="connectivity_problem">Connectivity problem!</string>
+    <string name="strAuthor">Author :</string>
+    <string name="strPublisher">Publisher :</string>
+    <string name="strDescription">Description :</string>
+    <string name="strEbookLink">Ebook link :</string>
+    <string name="strBook">Book :</string>
+    <string name="strPrice">Price :</string>
+    <string name="strScreenPlay">Screen play</string>
+    <string name="strMovie">"Movie : "</string>
+    <string name="strMovieGenre">"Movie genre : "</string>
 </resources>

@@ -1,3 +1,4 @@
 <resources>
 	<string name="app_name">CommonSource</string>
+	<string name="currency">GH₵</string>
 </resources>

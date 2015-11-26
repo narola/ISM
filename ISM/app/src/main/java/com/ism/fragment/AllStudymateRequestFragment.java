@@ -16,6 +16,7 @@ import com.ism.adapter.StudymateRequestAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
+import com.ism.utility.Utility;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
@@ -82,7 +83,11 @@ public class AllStudymateRequestFragment extends Fragment implements WebserviceW
 			}
 			adpStudymate = new StudymateRequestAdapter(getActivity(), arrListStudymateRequest);
 			lvAllStudyMate.setAdapter(adpStudymate);
-			callApiUpdateReadStatus();
+			if (Utility.isConnected(activityHost)) {
+				callApiUpdateReadStatus();
+			} else {
+				Utility.alertOffline(activityHost);
+			}
 		}
 
 	}

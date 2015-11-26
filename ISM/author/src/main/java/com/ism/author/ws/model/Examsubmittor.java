@@ -1,13 +1,16 @@
 package com.ism.author.ws.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Examsubmittor {
+public class Examsubmittor implements Parcelable {
 
     private String remarks;
     private String evaluationScore;
@@ -18,6 +21,18 @@ public class Examsubmittor {
     private String studentId;
     private boolean isFlagged;
 
+    public Examsubmittor() {
+    }
+
+    public Examsubmittor(Parcel parcelExamSubmittor) {
+        this.remarks = parcelExamSubmittor.readString();
+        this.evaluationScore = parcelExamSubmittor.readString();
+        this.studentProfilePic = parcelExamSubmittor.readString();
+        this.examStatus = parcelExamSubmittor.readString();
+        this.submissionDate = parcelExamSubmittor.readString();
+        this.studentName = parcelExamSubmittor.readString();
+        this.studentId = parcelExamSubmittor.readString();
+    }
 
     @JsonProperty("remarks")
     public String getRemarks() {
@@ -90,5 +105,34 @@ public class Examsubmittor {
         this.isFlagged = isFlagged;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getRemarks());
+        dest.writeString(getEvaluationScore());
+        dest.writeString(getStudentProfilePic());
+        dest.writeString(getExamStatus());
+        dest.writeString(getSubmissionDate());
+        dest.writeString(getStudentName());
+        dest.writeString(getStudentId());
+    }
+
+
+    public static final Parcelable.Creator<Examsubmittor> CREATOR = new Parcelable.Creator<Examsubmittor>() {
+        @Override
+        public Examsubmittor createFromParcel(Parcel source) {
+            return new Examsubmittor(source);
+        }
+
+        @Override
+        public Examsubmittor[] newArray(int size) {
+            return new Examsubmittor[size];
+        }
+    };
 
 }

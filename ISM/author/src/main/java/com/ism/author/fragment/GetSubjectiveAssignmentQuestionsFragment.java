@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 
 import com.ism.author.R;
 import com.ism.author.activtiy.AuthorHostActivity;
-import com.ism.author.adapter.AssignmentSubmittorAdapter;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.MyTypeFace;
 import com.ism.author.ws.model.Evaluation;
@@ -37,7 +36,6 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
     public static GetSubjectiveAssignmentQuestionsFragment newInstance(Bundle bundleArgument) {
         GetSubjectiveAssignmentQuestionsFragment getSubjectiveAssignmentQuestionsFragment = new GetSubjectiveAssignmentQuestionsFragment();
         getSubjectiveAssignmentQuestionsFragment.setArguments(bundleArgument);
-
         return getSubjectiveAssignmentQuestionsFragment;
     }
 
@@ -108,24 +106,24 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
         fragListener = null;
     }
 
-    public Bundle getBundleArgument() {
-        return getArguments();
-
-    }
+//    public Bundle getBundleArgument() {
+//        return getArguments();
+//    }
 
 
     /*this is to load data for student evaluation*/
     public void loadStudentEvaluationData(String studentId) {
-//        getFragmnetArgument().getFragmentArgumentObject().setStudentId(studentId);
-        getArguments().putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID, studentId);
         getSubjectiveQuestionsFragment.loadStudentEvaluationData();
     }
 
 
     /*this is to refresh adapter on the click of next and previous button*/
+//    public void setBundleArgument() {
+//        getStudentsFragment.setBundleArgument();
+//    }
 
-    public void refreshAdapterForStudentNavigation() {
-        getStudentsFragment.refreshAdapterForStudentNavigation();
+    public void setBundleArgumentForStudent(int position) {
+        getStudentsFragment.setBundleArgument(position);
     }
 
     /*this is to set the question status data in question palette*/

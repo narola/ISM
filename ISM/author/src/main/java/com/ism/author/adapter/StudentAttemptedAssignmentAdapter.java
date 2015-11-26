@@ -83,6 +83,7 @@ public class StudentAttemptedAssignmentAdapter extends RecyclerView.Adapter<Stud
                 @Override
                 public void onClick(View v) {
 
+                    /*this is to select the current student*/
                     bundleArgument.putString(AssignmentSubmittorAdapter.ARG_STUDENT_ID, arrListExamSubmittor.get(position).getStudentId());
                     notifyDataSetChanged();
 //                    ((GetObjectiveAssignmentQuestionsFragment) fragmentArgument.getFragment()).loadStudentEvaluationData();

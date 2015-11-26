@@ -12,11 +12,17 @@ public class WebConstants {
     public static final String FEED_MEDIA = "http://192.168.1.162/ISM/WS_ISM/Feeds/";
     public static final String USER_IMAGES = "http://192.168.1.162/ISM/WS_ISM/Images/";
 
-    public static final String EXAM_ID_11_SUBJECTIVE="11";
-    public static final String EXAM_ID_3_OBJECTIVE="3";
-    public static final String EXAM_ID_9_OBJECTIVE="9";
-    public static final String STUDENT_ID_202_OBJECCTIVE="202";
+    public static final String EXAM_ID_11_SUBJECTIVE = "11";
+    public static final String EXAM_ID_3_OBJECTIVE = "3";
+    public static final String EXAM_ID_9_OBJECTIVE = "9";
+    public static final String STUDENT_ID_202_OBJECCTIVE = "202";
+    public static final String USER_ID_370 = "370";
+    public static final String USER_ID_340 = "340";
+    public static final String TEST_GETSTUDYMATES = "167";
 
+
+    public static final String TEACHER_ROLE_ID = "3";
+    public static final String STUDENT_ID_1 = "1";
 
     /**
      * Api IDs
@@ -60,39 +66,38 @@ public class WebConstants {
     private static final String URL_HOST_75 = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";    // RAVI
     private static final String URL_HOST_161 = "http://192.168.1.161/ISM/WS_ISM/ISMServices.php?Service=";  // KRUNAL
     private static final String URL_HOST_162 = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";  // ARTI
-    private static final String URL_HOST_147 = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
+    private static final String URL_KINJAL_HOST = "http://192.168.1.147/WS_ISM/ISMServices.php?Service=";      // KINJAL
 
-    public static final String URL_LOGIN = URL_HOST_162 + "AuthenticateUser";
-    public static final String URL_GET_ALL_FEEDS = URL_HOST_162 + "GetAllFeeds";
-    public static final String URL_GET_ALL_COMMENTS = URL_HOST_162 + "GetAllComments";
-    public static final String URL_GET_STUDYMATES = URL_HOST_162 + "GetStudymates";
-    public static final String URL_ADD_COMMENT = URL_HOST_162 + "AddComment";
-    public static final String URL_TAG_FRIEND_IN_FEED = URL_HOST_162 + "TagFriendInFeed";
-    public static final String URL_LIKE_FEED = URL_HOST_162 + "LikeFeed";
-    public static final String URL_GETCLASSROOMS = URL_HOST_162 + "GetClassrooms";
-    public static final String URL_GETSUBJECT = URL_HOST_162 + "GetSubject";
-    public static final String URL_GETTOPICS = URL_HOST_162 + "GetTopics";
-    public static final String URL_CREATEASSIGNMENT = URL_HOST_162 + "CreateAssignment";
-    public static final String URL_GET_COURSES = URL_HOST_162 + "GetCourses";
-    public static final String URL_CREATE_EXAM = URL_HOST_162 + "CreateExam";
-    public static final String URL_GETQUESTIONBANK = URL_HOST_162 + "GetQuestionBank";
-    public static final String URL_POSTFEED = URL_HOST_162 + "PostFeed";
-    public static final String URL_SET_QUESTIONS_FOR_EXAM = URL_HOST_162 + "SetQuestionsForExam";
-    public static final String URL_FORGOT_PASSWORD = URL_HOST_162 + "ForgotPassword";
-    public static final String URL_REQUEST_CREDENTIALS = URL_HOST_162 + "RequestForCredentials";
+    public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
+    public static final String URL_GET_ALL_FEEDS = URL_KINJAL_HOST + "GetAllFeeds";
+    public static final String URL_GET_ALL_COMMENTS = URL_KINJAL_HOST + "GetAllComments";
+    public static final String URL_GET_STUDYMATES = URL_KINJAL_HOST + "GetStudymates";
+    public static final String URL_ADD_COMMENT = URL_KINJAL_HOST + "AddComment";
+    public static final String URL_TAG_FRIEND_IN_FEED = URL_KINJAL_HOST + "TagFriendInFeed";
+    public static final String URL_LIKE_FEED = URL_KINJAL_HOST + "LikeFeed";
+    public static final String URL_GETCLASSROOMS = URL_KINJAL_HOST + "GetClassrooms";
+    public static final String URL_GETSUBJECT = URL_KINJAL_HOST + "GetSubject";
+    public static final String URL_GETTOPICS = URL_KINJAL_HOST + "GetTopics";
+    public static final String URL_CREATEASSIGNMENT = URL_KINJAL_HOST + "CreateAssignment";
+    public static final String URL_GET_COURSES = URL_KINJAL_HOST + "GetCourses";
+    public static final String URL_CREATE_EXAM = URL_KINJAL_HOST + "CreateExam";
+    public static final String URL_GET_QUESTION_BANK = URL_KINJAL_HOST + "GetQuestionBank";
+    public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
+    public static final String URL_SET_QUESTIONS_FOR_EXAM = URL_KINJAL_HOST + "SetQuestionsForExam";
+    public static final String URL_FORGOT_PASSWORD = URL_KINJAL_HOST + "ForgotPassword";
+    public static final String URL_REQUEST_CREDENTIALS = URL_KINJAL_HOST + "RequestForCredentials";
 
 
     //used for assignment
-    public static final String URL_GET_ALL_ASSIGNMENTS = URL_HOST_162 + "GetAllExams";
-    public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_HOST_162 + "GetExamSubmission";
-    public static final String URL_GET_EXAM_QUESTIONS = URL_HOST_162 + "GetExamQuestions";
-    public static final String URL_GET_EXAM_EVALUATIONS = URL_HOST_162 + "GetExamEvaluation";
-    public static final String URL_GET_MY_STUDENTS = URL_HOST_162 + "GetMyStudents";
+    public static final String URL_GET_ALL_ASSIGNMENTS = URL_KINJAL_HOST + "GetAllExams";
+    public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_KINJAL_HOST + "GetExamSubmission";
+    public static final String URL_GET_EXAM_QUESTIONS = URL_KINJAL_HOST + "GetExamQuestions";
+    public static final String URL_GET_EXAM_EVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
+    public static final String URL_GET_MY_STUDENTS = URL_KINJAL_HOST + "GetMyStudents";
 
 
-
-    public static final String URL_GET_CITIES = URL_HOST_161 + "GetCities";
-    public static final String URL_GET_STATES = URL_HOST_161 + "GetStates";
-    public static final String URL_GET_COUNTRIES = URL_HOST_161 + "GetCountries";
+    public static final String URL_GET_CITIES = URL_KINJAL_HOST + "GetCities";
+    public static final String URL_GET_STATES = URL_KINJAL_HOST + "GetStates";
+    public static final String URL_GET_COUNTRIES = URL_KINJAL_HOST + "GetCountries";
 
 }

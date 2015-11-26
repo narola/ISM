@@ -27,8 +27,8 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 	private static final String TAG = ClassWallFragment.class.getSimpleName();
 
 	private View view;
-	private RecyclerView recyclerPost;
-	private RelativeLayout llPost;
+	private RecyclerView recyclerPostFeeds;
+	private RelativeLayout rlNewPost;
 
 	private PostFeedsAdapter adpPostFeeds;
 	private HostActivity activityHost;
@@ -52,10 +52,10 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 	}
 
 	private void initGlobal() {
-		recyclerPost = (RecyclerView) view.findViewById(R.id.recycler_post);
-		llPost = (RelativeLayout) view.findViewById(R.id.ll_post);
+		recyclerPostFeeds = (RecyclerView) view.findViewById(R.id.recycler_post);
+		rlNewPost = (RelativeLayout) view.findViewById(R.id.rl_new_post);
 
-		recyclerPost.setLayoutManager(new LinearLayoutManager(getActivity()));
+		recyclerPostFeeds.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 		RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
 			@Override
@@ -70,7 +70,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 			}
 		};
 
-		recyclerPost.addItemDecoration(itemDecoration);
+		recyclerPostFeeds.addItemDecoration(itemDecoration);
 
 		if (Utility.isConnected(getActivity())) {
 			callApiGetAllFeeds();
@@ -78,7 +78,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 			Utility.alertOffline(getActivity());
 		}
 
-		llPost.setOnClickListener(new View.OnClickListener() {
+		rlNewPost.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 //              Start post activity
@@ -102,11 +102,11 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 	@Override
 	public void onResponse(Object object, Exception error, int apiCode) {
 		try {
-				switch (apiCode) {
-					case WebConstants.GET_ALL_FEEDS:
-						onResponseGetAllFeeds(object, error);
-						break;
-				}
+			switch (apiCode) {
+				case WebConstants.GET_ALL_FEEDS:
+					onResponseGetAllFeeds(object, error);
+					break;
+			}
 		} catch (Exception e) {
 			Log.e(TAG, "onResponse Exception : " + e.toString());
 		}
@@ -119,7 +119,7 @@ public class ClassWallFragment extends Fragment implements WebserviceWrapper.Web
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
 					adpPostFeeds = new PostFeedsAdapter(getActivity(), responseHandler.getFeeds());
-					recyclerPost.setAdapter(adpPostFeeds);
+					recyclerPostFeeds.setAdapter(adpPostFeeds);
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Log.e(TAG, "onResponseGetAllFeeds Failed : " + responseHandler.getMessage());
 				}

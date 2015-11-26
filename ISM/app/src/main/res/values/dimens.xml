@@ -69,4 +69,6 @@
     <dimen name="text_size_header_white">20sp</dimen>
     <dimen name="padding_child_fragment_content">15dp</dimen>
     <dimen name="edit_radius">5dp</dimen>
+    <dimen name="padding_voucher_item">15dp</dimen>
+    <dimen name="padding_my_activity">15dp</dimen>
 </resources>

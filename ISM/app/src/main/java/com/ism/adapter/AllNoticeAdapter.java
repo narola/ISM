@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
+import com.ism.commonsource.utility.Utility;
 import com.ism.object.MyTypeFace;
 import com.ism.ws.model.Notice;
 
@@ -66,7 +67,7 @@ public class AllNoticeAdapter extends RecyclerView.Adapter<AllNoticeAdapter.View
 		try {
 			holder.txtNoticeTitle.setText(arrListAllNotice.get(position).getNoticeTitle());
 			holder.txtNotice.setText(arrListAllNotice.get(position).getNotice());
-			holder.txtNoticeTime.setText(arrListAllNotice.get(position).getPostedOn());
+			holder.txtNoticeTime.setText(Utility.getTimeDuration(arrListAllNotice.get(position).getPostedOn()));
 
 			if (arrListAllNotice.get(position).isExpanded()) {
 				expandNotice(holder);
