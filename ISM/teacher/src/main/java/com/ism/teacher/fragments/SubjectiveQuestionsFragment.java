@@ -19,10 +19,10 @@ import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.SubjectiveQuestionAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.views.CircleImageView;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 
 /**
  * Created by c75 on 10/11/15.
@@ -37,7 +37,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     public static RecyclerView rvSubjectiveQuestionList;
     TextView txtExamName;
 
-    public static ResponseObject responseObjQuestions;
+    public static ResponseHandler responseObjQuestions;
 
     //Adapters
     SubjectiveQuestionAdapter subjectiveQuestionAdapter;
@@ -53,8 +53,9 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
     //test
     String studentid_from_param = "";
     String examid_from_param = "";
+    String studentname_from_param = "";
     boolean callEvaluationApiFlag = false;
-    public ResponseObject responseObjectEval;
+    public ResponseHandler responseObjectEval;
 
     public static SubjectiveQuestionsFragment newInstance() {
         SubjectiveQuestionsFragment myStudentsFragment = new SubjectiveQuestionsFragment();
@@ -65,10 +66,11 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         // Required empty public constructor
     }
 
-    public SubjectiveQuestionsFragment(String studentid_from_param, String examid_from_param, boolean callEvaluationApiFlag) {
+    public SubjectiveQuestionsFragment(String studentid_from_param, String examid_from_param, boolean callEvaluationApiFlag, String studentname_from_param) {
         this.studentid_from_param = studentid_from_param;
         this.examid_from_param = examid_from_param;
         this.callEvaluationApiFlag = callEvaluationApiFlag;
+        this.studentname_from_param = studentname_from_param;
 
         Log.i("ExamSubjectiveDetailFragment to Subjec", "call evaluation api=" + callEvaluationApiFlag);
     }
@@ -95,14 +97,14 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         txtExamName = (TextView) rootview.findViewById(R.id.txt_exam_name);
         rvSubjectiveQuestionList = (RecyclerView) rootview.findViewById(R.id.rv_subjective_question_list);
 
-        callGetSubjectionQuestionApi();
+        callGetSubjectiveQuestionApi();
     }
 
-    private void callGetSubjectionQuestionApi() {
+    private void callGetSubjectiveQuestionApi() {
         try {
-            RequestObject requestObject = new RequestObject();
-            requestObject.setExamId("11");
-            new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+            Attribute attribute = new Attribute();
+            attribute.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
+            new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebConstants.GET_EXAM_QUESTIONS);
 
         } catch (Exception e) {
@@ -115,13 +117,13 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
         try {
             if (Utility.isInternetConnected(getActivity())) {
                 ((TeacherHostActivity) getActivity()).startProgress();
-                RequestObject requestObject = new RequestObject();
-                requestObject.setStudentId(student_id);
-                requestObject.setExamId(exam_id);
+                Attribute attribute = new Attribute();
+                attribute.setStudentId(student_id);
+                attribute.setExamId(exam_id);
 
                 Log.e("subjective exam evaluation ", "student_id:" + student_id + "examid" + exam_id);
 
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_EVALUATIONS);
             } else {
                 Utility.showToast(getActivity().getString(R.string.strnetissue), getActivity());
@@ -151,16 +153,16 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
 
     private void onResponseMySubjectiveQuestions(Object object) {
-        ResponseObject responseObj = (ResponseObject) object;
+        ResponseHandler responseHandler = (ResponseHandler) object;
 
-        responseObjQuestions = (ResponseObject) object;
+        responseObjQuestions = (ResponseHandler) object;
 
-        if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
+        if (responseHandler.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
 
-            txtExamName.setText(responseObj.getData().get(0).getExamName());
-//            arrayListSubjectiveQuestions.addAll(responseObj.getData());
+            txtExamName.setText(responseHandler.getExamQuestions().get(0).getExamName());
+//            arrayListSubjectiveQuestions.addAll(responseHandler.getData());
 //            subjectiveQuestionAdapter.addAll(arrayListSubjectiveQuestions);
-            subjectiveQuestionAdapter = new SubjectiveQuestionAdapter(responseObj, getActivity(), this, null);
+            subjectiveQuestionAdapter = new SubjectiveQuestionAdapter(responseHandler, getActivity(), this, null);
             rvSubjectiveQuestionList.setAdapter(subjectiveQuestionAdapter);
             rvSubjectiveQuestionList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -172,14 +174,14 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
 
     private void onResponseGetEvaluation(Object object) {
 
-        ResponseObject responseObject = (ResponseObject) object;
-        if (responseObject.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
-            if (responseObject.getData().get(0).getArrayListEvaluation().size() != 0) {
-                responseObjectEval = responseObject;
+        ResponseHandler responseHandler = (ResponseHandler) object;
+        if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+            if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
+                responseObjectEval = responseHandler;
 
                 if (responseObjectEval.getStatus().equalsIgnoreCase(WebConstants.API_STATUS_SUCCESS)) {
-                    SubjectiveQuestionsFragment.rlStudentDetails.setVisibility(View.VISIBLE);
-                    SubjectiveQuestionsFragment.txt_student_name.setText(responseObject.getData().get(0).getStudentName());
+                    rlStudentDetails.setVisibility(View.VISIBLE);
+                    txt_student_name.setText(studentname_from_param);
                     // imageLoader.displayImage(WebConstants.USER_IMAGES + arrayListStudents.get(position).getProfile_pic(), holder.imgStudentPic, ISMTeacher.options);
                 }
 
@@ -188,7 +190,7 @@ public class SubjectiveQuestionsFragment extends Fragment implements WebserviceW
                 subjectiveQuestionAdapter.notifyDataSetChanged();
             }
         } else {
-            Debug.i(TAG, "Response :" + WebConstants.GET_EXAM_EVALUATIONS + " :" + responseObject.getStatus());
+            Debug.i(TAG, "Response :" + WebConstants.GET_EXAM_EVALUATIONS + " :" + responseHandler.getStatus());
         }
     }
 

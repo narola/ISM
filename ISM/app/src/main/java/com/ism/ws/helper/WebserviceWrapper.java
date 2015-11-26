@@ -169,6 +169,9 @@ public class WebserviceWrapper {
                         case WebConstants.BLOCK_USER:
                             responseObject = new WebserviceConnector(WebConstants.URL_BLOCK_USER).execute(ResponseHandler.class, attribute);
                             break;
+                        case WebConstants.GET_MY_FEEDS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_FEEDS).execute(ResponseHandler.class, attribute);
+                            break;
                     }
                 }
             } catch (Exception e) {

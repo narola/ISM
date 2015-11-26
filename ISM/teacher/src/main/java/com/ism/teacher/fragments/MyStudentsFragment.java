@@ -15,9 +15,9 @@ import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.MyStudentsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 
 /**
  * Created by c75 on 10/11/15.
@@ -67,13 +67,13 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
 
     private void callGetExamSubmissionApi() {
         try {
-            RequestObject requestObject = new RequestObject();
-            requestObject.setExamId("9");
-            requestObject.setUserId("340");
-            requestObject.setRole(Integer.parseInt("3"));
+            Attribute attribute=new Attribute();
+            attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
+            attribute.setUserId(WebConstants.USER_ID_340);
+            attribute.setRole(WebConstants.TEACHER_ROLE_ID);
 
             ((TeacherHostActivity) getActivity()).startProgress();
-            new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+            new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
 
 
@@ -99,7 +99,7 @@ public class MyStudentsFragment extends Fragment implements WebserviceWrapper.We
 
     private void onResponseMyStudents(Object object) {
 
-        ResponseObject resObjStudentAttempted = (ResponseObject) object;
+        ResponseHandler resObjStudentAttempted = (ResponseHandler) object;
         if (resObjStudentAttempted.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
 
             myStudentsAdapter = new MyStudentsAdapter(student_id_to_highlight,resObjStudentAttempted, getActivity(), this);

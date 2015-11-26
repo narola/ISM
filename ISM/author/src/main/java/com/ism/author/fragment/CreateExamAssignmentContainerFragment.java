@@ -101,10 +101,8 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
         if (getArguments() != null) {
             initTab(1);
-            loadFragmentInContainer(FRAGMENT_TRIAL_EXAM);
         } else {
             initTab(0);
-            loadFragmentInContainer(FRAGMENT_TRIAL_ACTIVITY);
         }
 
 
@@ -139,13 +137,14 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
 
     //these is for the load fragment in right container.
     private void loadFragmentInContainer(int fragment) {
+
         try {
             switch (fragment) {
                 case FRAGMENT_TRIAL_ACTIVITY:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateAssignmentFragment.newInstance(getArguments())).commit();
                     break;
                 case FRAGMENT_TRIAL_EXAM:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateExamFragment.newInstance(getArguments())).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, CreateExamFragment.newInstance(getArguments(), getActivity())).commit();
                     break;
             }
 
@@ -157,7 +156,6 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     }
 
     private void initTab(int position) {
-
 
         if (position == 0) {
             tvTabActivity.setTextColor(getResources().getColor(R.color.color_black));

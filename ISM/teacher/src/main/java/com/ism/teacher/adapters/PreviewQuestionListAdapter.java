@@ -15,8 +15,8 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.fragments.AddQuestionContainerFragment;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.QuestionAnswersModel;
-import com.ism.teacher.model.Data;
+import com.ism.teacher.ws.model.Answers;
+import com.ism.teacher.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
     private static final String TAG = PreviewQuestionListAdapter.class.getSimpleName();
 
     Context mContext;
-    ArrayList<Data> listOfPreviewQuestions = new ArrayList<Data>();
+    ArrayList<Questions> listOfPreviewQuestions = new ArrayList<>();
     MyTypeFace myTypeFace;
     Fragment mFragment;
 
@@ -116,14 +116,14 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         });
 
 
-
     }
+
     private void openAddEditQuestionFragment(int position) {
         getFragment().setDataOnFragmentFlip(listOfPreviewQuestions.get(position), true,
                 AddQuestionContainerFragment.FRAGMENT_PREVIEWQUESTION, position);
     }
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<Questions> data) {
         try {
             this.listOfPreviewQuestions.clear();
             this.listOfPreviewQuestions.addAll(data);
@@ -164,7 +164,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         }
     }
 
-    private View getAnsInflaterView(QuestionAnswersModel answer, int position) {
+    private View getAnsInflaterView(Answers answer, int position) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View v;

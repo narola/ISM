@@ -1,6 +1,7 @@
 package com.ism.teacher.adapters;
 
 import android.app.Fragment;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -10,12 +11,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
+import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.Data;
-import com.ism.teacher.model.ResponseObject;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.model.Evaluation;
+import com.ism.teacher.ws.model.Questions;
 
 import java.util.ArrayList;
 
@@ -29,30 +33,23 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
     Fragment mFragment;
     Context context;
     public static MyTypeFace myTypeFace;
-    ResponseObject responseObject, studentEvalResObj;
+    ResponseHandler responseObject, studentEvalResObj;
 
-    ArrayList<Data> dataArrayList = new ArrayList<Data>();
-    ArrayList<Data> arrayListSubjectiveQuestions = new ArrayList<Data>();
+    ArrayList<Evaluation> evaluationArrayList = new ArrayList<>();
+    ArrayList<Questions> arrayListSubjectiveQuestions = new ArrayList<>();
 
-    //Boolean flags
-    public boolean flag_excellent = false;
-    public boolean flag_good = false;
-    public boolean flag_fair = false;
-    public boolean flag_average = false;
-    public boolean flag_poor = false;
-    public boolean flag_incorrect = false;
 
-    public SubjectiveQuestionAdapter(ResponseObject responseObject, Context context, Fragment fragment, ResponseObject studentEvalResObj) {
+    public SubjectiveQuestionAdapter(ResponseHandler responseObject, Context context, Fragment fragment, ResponseHandler studentEvalResObj) {
         this.responseObject = responseObject;
         this.context = context;
         this.mFragment = fragment;
         this.studentEvalResObj = studentEvalResObj;
         myTypeFace = new MyTypeFace(context);
-        addAll(responseObject.getData().get(0).getQuestions());
+        addAll(responseObject.getExamQuestions().get(0).getQuestions());
     }
 
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<Questions> data) {
         try {
             this.arrayListSubjectiveQuestions.clear();
             this.arrayListSubjectiveQuestions.addAll(data);
@@ -79,6 +76,8 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
         //Textviews for answer rating
         TextView tvScoreExcellent, tvScoreGood, tvScoreFair, tvScoreAverage, tvScorePoor, tvScoreIncorrect;
         ImageView imgCopyComments, imgDeleteComments;
+
+        TextView[] scoreTextArray;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -111,6 +110,8 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
                 tvScorePoor.setTypeface(myTypeFace.getRalewayRegular());
                 tvScoreIncorrect.setTypeface(myTypeFace.getRalewayRegular());
 
+                scoreTextArray = new TextView[]{tvScoreExcellent, tvScoreGood, tvScoreFair, tvScoreAverage, tvScorePoor, tvScoreIncorrect};
+
 
             } catch (Exception e) {
                 Debug.i(TAG, "ViewHolder Exceptions :" + e.toString());
@@ -124,7 +125,7 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
     public void onBindViewHolder(final SubjectiveQuestionAdapter.ViewHolder holder, int position) {
         try {
 //            ArrayList<Data> arrayList = new ArrayList<Data>();
-//            arrayList = responseObject.getData().get(0).getQuestions();
+//            arrayList = responseHandler.getData().get(0).getQuestions();
             int qno = position + 1;
             //holder.tvSubjectiveQuestionNo.setText("Questions " + qno);
             holder.tvSubjectiveQuestionNo.setText(Html.fromHtml("QUESTION: " + qno));
@@ -132,15 +133,72 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
             holder.tvSubjectiveQuestion.setText(arrayListSubjectiveQuestions.get(position).getQuestionText());
 
             if (studentEvalResObj != null) {
-                dataArrayList = studentEvalResObj.getData().get(0).getArrayListEvaluation();
 
-                if (arrayListSubjectiveQuestions.get(position).getQuestionId().equalsIgnoreCase(dataArrayList.get(position).getQuestionId())) {
-                    holder.tvSubjectiveQuestionAns.setText(dataArrayList.get(position).getStudentResponse());
-                    holder.tvSubjectiveQuesEvaluationNotes.setText(dataArrayList.get(position).getEvaluationNotes());
+                evaluationArrayList = studentEvalResObj.getExamEvaluation().get(0).getEvaluation();
+                if (evaluationArrayList.size() > 0) {
+
+//                    if (evaluationList.get(position).getStudentResponse() != null) {
+//                        holder.tvSubjectiveQuestionAns.setText(Utility.formatHtml(evaluationList.get(position).getStudentResponse()));
+//                    }
+                    if (arrayListSubjectiveQuestions.get(position).getQuestionId().equalsIgnoreCase(evaluationArrayList.get(position).getQuestionId())) {
+                        holder.tvSubjectiveQuestionAns.setText(evaluationArrayList.get(position).getStudentResponse());
+                    }
+
+                    for (int i = 0; i < holder.scoreTextArray.length; i++) {
+                        holder.scoreTextArray[i].setActivated(false);
+                    }
+
+                    int score = Integer.valueOf(evaluationArrayList.get(position).getEvaluationScore());
+                    if (score >= 5) {
+                        setEvaluationSCore(holder.tvScoreExcellent);
+                    } else if (score == 4) {
+                        setEvaluationSCore(holder.tvScoreGood);
+                    } else if (score == 3) {
+                        setEvaluationSCore(holder.tvScoreFair);
+                    } else if (score == 2) {
+                        setEvaluationSCore(holder.tvScoreAverage);
+                    } else if (score == 1) {
+                        setEvaluationSCore(holder.tvScorePoor);
+                    } else if (score == 0) {
+                        setEvaluationSCore(holder.tvScoreIncorrect);
+                    }
+
                 }
+
                 notifyDataSetChanged();
 
             }
+
+            holder.tvScoreExcellent.setTag(holder.scoreTextArray);
+            holder.tvScoreExcellent.setOnClickListener(evaluationClickListener);
+            holder.tvScoreGood.setTag(holder.scoreTextArray);
+            holder.tvScoreGood.setOnClickListener(evaluationClickListener);
+            holder.tvScoreFair.setTag(holder.scoreTextArray);
+            holder.tvScoreFair.setOnClickListener(evaluationClickListener);
+            holder.tvScoreAverage.setTag(holder.scoreTextArray);
+            holder.tvScoreAverage.setOnClickListener(evaluationClickListener);
+            holder.tvScorePoor.setTag(holder.scoreTextArray);
+            holder.tvScorePoor.setOnClickListener(evaluationClickListener);
+            holder.tvScoreIncorrect.setTag(holder.scoreTextArray);
+            holder.tvScoreIncorrect.setOnClickListener(evaluationClickListener);
+
+            holder.imgDeleteComments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    holder.etAddComment.setText("");
+
+                }
+            });
+
+            holder.imgCopyComments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(holder.etAddComment.getText());
+                    Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show();
+                }
+            });
 
 
         } catch (Exception e) {
@@ -148,9 +206,28 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
         }
     }
 
+    private void setEvaluationSCore(TextView tv) {
+        tv.setActivated(true);
+    }
+
+    View.OnClickListener evaluationClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            TextView[] scoreTextArray = (TextView[]) v.getTag();
+
+            for (int i = 0; i < scoreTextArray.length; i++) {
+                if (v == scoreTextArray[i]) {
+                    scoreTextArray[i].setActivated(true);
+                } else {
+                    scoreTextArray[i].setActivated(false);
+                }
+            }
+
+        }
+    };
 
     @Override
     public int getItemCount() {
-        return responseObject.getData().get(0).getQuestions().size();
+        return responseObject.getExamQuestions().get(0).getQuestions().size();
     }
 }

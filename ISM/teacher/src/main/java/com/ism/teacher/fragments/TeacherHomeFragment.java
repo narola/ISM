@@ -16,16 +16,17 @@ import android.widget.Toast;
 
 import com.ism.teacher.PostActivity;
 import com.ism.teacher.R;
+import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.PostFeedsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
 import com.ism.teacher.model.TagFriendInFeedRequest;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 
 
 /**
@@ -75,6 +76,12 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     private void initGlobal(View rootview) {
         recyclerviewPost = (RecyclerView) rootview.findViewById(R.id.recyclerview_post);
+
+        postFeedsAdapter = new PostFeedsAdapter(getActivity());
+        recyclerviewPost.setAdapter(postFeedsAdapter);
+        recyclerviewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
         if (Utility.isInternetConnected(getActivity())) {
             callAllFeedsApi();
         }
@@ -108,11 +115,10 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     private void callAllFeedsApi() {
         try {
-
-            ((TeacherHostActivity) getActivity()).startProgress();
-            RequestObject requestObject = new RequestObject();
-            requestObject.setUserId("370");
-            new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+         //   ((TeacherHostActivity) getActivity()).startProgress();
+            Attribute attribute = new Attribute();
+            attribute.setUserId(WebConstants.USER_ID_370);
+            new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                     .execute(WebConstants.GET_ALL_FEEDS);
 
         } catch (Exception e) {
@@ -147,18 +153,22 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
         fragListener = null;
     }
 
-    ResponseObject responseObj;
-
     @Override
-    public void onResponse(int apiMethod, Object object, Exception error) {
+    public void onResponse(int apiCode, Object object, Exception error) {
         try {
-            ((TeacherHostActivity) getActivity()).stopProgress();
-            if (apiMethod == WebConstants.GET_ALL_FEEDS) {
-                responseObj = (ResponseObject) object;
-                if (responseObj != null) {
-                    if (responseObj.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
-                        if (responseObj.getData().size() > 0) {
-                            postFeedsAdapter = new PostFeedsAdapter(getActivity(), responseObj.getData(), this);
+            switch (apiCode) {
+                case WebConstants.GET_ALL_FEEDS:
+                    onResponseGetAllFeeds(object, error);
+                    break;
+            }
+
+        /*    if (apiMethod == WebConstants.GET_ALL_FEEDS) {
+                responseHandler = (ResponseHandler) object;
+                if (responseHandler != null) {
+                    if (responseHandler.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
+
+                        if (responseHandler.getData().size() > 0) {
+                            postFeedsAdapter = new PostFeedsAdapter(getActivity(), responseHandler.getData(), this);
                             recyclerviewPost.setAdapter(postFeedsAdapter);
                             recyclerviewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
                         }
@@ -170,11 +180,34 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
                 }
 
 
-            }
+            }*/
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());
         }
 
     }
+
+    private void onResponseGetAllFeeds(Object object, Exception error) {
+        try {
+//            ((TeacherHostActivity) getActivity()).stopProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    if (responseHandler.getFeeds().size() > 0) {
+                        postFeedsAdapter.addAll(responseHandler.getFeeds());
+                    }
+
+
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utility.showToast(responseHandler.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetAllFeeds api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetAllFeeds Exception : " + e.toString());
+        }
+    }
+
 
 }

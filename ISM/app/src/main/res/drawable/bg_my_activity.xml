@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item android:top="@dimen/padding_my_activity"
+		android:bottom="@dimen/padding_my_activity"
+		android:left="@dimen/padding_my_activity"
+		android:right="@dimen/padding_my_activity">
+		<shape>
+		    <solid android:color="@android:color/white" />
+		    <stroke android:color="@color/border_gray" android:width="1dp"/>
+		</shape>
+	</item>
+</layer-list>

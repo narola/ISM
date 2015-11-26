@@ -1,4 +1,4 @@
-package com.ism.fragment;
+package com.ism.fragment.userprofile;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -38,7 +38,7 @@ public class StudymatesFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.fragment_study_mates, container, false);
+		view = inflater.inflate(R.layout.fragment_studymates, container, false);
 
 		initGlobal();
 

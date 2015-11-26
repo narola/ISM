@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <merger version="3"><dataSet config="debug"><source path="/Volumes/DATA/ISM_github/ISM/ISM/richeditor/build/intermediates/bundles/debug/res"/></dataSet><dataSet config="main"><source path="/Volumes/DATA/ISM_github/ISM/ISM/richeditor/src/androidTest/res"/><source path="/Volumes/DATA/ISM_github/ISM/ISM/richeditor/build/generated/res/rs/androidTest/debug"/><source path="/Volumes/DATA/ISM_github/ISM/ISM/richeditor/build/generated/res/resValues/androidTest/debug"/></dataSet><mergedItems/></merger>
+=======
+<merger version="3"><dataSet config="debug"><source path="/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/richeditor/build/intermediates/bundles/debug/res"/></dataSet><dataSet config="main"><source path="/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/richeditor/src/androidTest/res"/><source path="/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/richeditor/build/generated/res/rs/androidTest/debug"/><source path="/Volumes/DATA/AndroidStudioProjects/ISMProject/SourceCode/ISM/ISM/richeditor/build/generated/res/resValues/androidTest/debug"/></dataSet><mergedItems/></merger>
+>>>>>>> f25ea93e1e279f9b4423dd2418e784444bab9540

@@ -113,7 +113,7 @@
             android:background="#f7f7f7"
             android:orientation="horizontal"
             android:padding="5dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -181,7 +181,7 @@
             android:layout_marginRight="10dp"
             android:orientation="horizontal"
             android:padding="10dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="0dp"

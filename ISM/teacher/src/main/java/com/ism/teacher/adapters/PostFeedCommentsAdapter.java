@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ism.teacher.R;
 import com.ism.teacher.model.Data;
+import com.ism.teacher.ws.model.CommentList;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     private static final String TAG = PostFeedCommentsAdapter.class.getSimpleName();
 
     Context mContext;
-    ArrayList<Data> listOfComments = new ArrayList<Data>();
+    private ArrayList<CommentList> arrListComment = new ArrayList<CommentList>();
 
 
     @Override
@@ -37,9 +38,10 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.txtCommenterUsername.setText(listOfComments.get(position).getFull_name());
-        holder.txtCommenterComment.setText(listOfComments.get(position).getComment());
-        holder.txtCommentDuration.setText(listOfComments.get(position).getCommentBy());
+        holder.txtCommenterUsername.setText(arrListComment.get(position).getFullName());
+        holder.txtCommenterComment.setText(arrListComment.get(position).getComment());
+        holder.txtCommentDuration.setText(arrListComment.get(position).getCommentBy());
+
 
         if (position == 0) {
             holder.imgSeparator.setVisibility(View.GONE);
@@ -49,11 +51,11 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
     }
 
 
-    public void addAll(ArrayList<Data> data) {
+    public void addAll(ArrayList<CommentList> commentList) {
 
         try {
-            this.listOfComments.clear();
-            this.listOfComments.addAll(data);
+            this.arrListComment.clear();
+            this.arrListComment.addAll(commentList);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,7 +65,7 @@ public class PostFeedCommentsAdapter extends RecyclerView.Adapter<PostFeedCommen
 
     @Override
     public int getItemCount() {
-        return listOfComments.size();
+        return arrListComment.size();
     }
 
 
