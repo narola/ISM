@@ -840,17 +840,14 @@ class ProfileFunctions
         $configValue=mysql_fetch_row($resultGetConfigValue);
         $voucher_config_value=$configValue[0];
         
-        $percent_value=$balance -(($balance*$voucher_config_value)/100);
+        $percent_value=(($balance*$voucher_config_value)/100);
        
        
        //Generate random String for Voucher Code
-       
-    	$chars ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";//length:36
-    	$final_rand='';
-    	for($i=0;$i<6; $i++)
-    	{
-       		 $final_rand .= $chars[ rand(0,strlen($chars)-1)];
-   		}
+
+            $security=new SecurityFunctions();
+            $final_rand=$security->generateToken(6);
+
        
        //Check, if Voucher_amont is greater than Count value or not
            // if($percent_value > $voucher_amount)
@@ -862,10 +859,17 @@ class ProfileFunctions
           		$queryInsert="INSERT INTO ".TABLE_USER_VOUCHER."(".$insertFields.") values(".$insertValues.")";
           		//echo $queryInsert; 
          		$resultQuery=mysql_query($queryInsert) or $message=mysql_error();
+
+
+                $remaining_wallet_bal = $balance - $voucher_amount;
+                $queryUpdateWalletBalance="UPDATE ".TABLE_STUDENT_PROFILE." SET wallet_balance = ".$remaining_wallet_bal." WHERE user_id=".$user_id;
+                $resultUpdateWalletBalance=mysql_query( $queryUpdateWalletBalance) or $message=mysql_error();
+
       	  		if($resultQuery)
           		{
             			$data['voucher_code']=$final_rand;
             			$data['voucher_amount']=$voucher_amount;
+                        $data['total_available_balance']=$percent_value;
             			$status="success";
       	  		}
       	  		else
@@ -1073,10 +1077,10 @@ class ProfileFunctions
         $limit2 = validateObject($postData, 'limit2', "");
         $limit2 = addslashes($limit2);*/
         
-        $selectQuery="select book.*,authorBookJoin.full_name,authorBookJoin.profile_pic from ".TABLE_BOOKS ." book 
+        $selectQuery="select book.*,authorBookJoin.full_name,authorBookJoin.profile_pic from ".TABLE_BOOKS ." book
          LEFT JOIN(SELECT autotBook.user_id,autotBook.book_id,users.full_name,users.profile_pic from ".TABLE_AUTHOR_BOOK." autotBook LEFT JOIN ".TABLE_USERS.
-         " users ON users.id=autotBook.user_id) authorBookJoin ON authorBookJoin.book_id=book.id WHERE id NOT IN(SELECT book_id from ".TABLE_USER_FAVORITE_BOOK.") ORDER BY book.id DESC LIMIT 30";
-       
+         " users ON users.id=autotBook.user_id) authorBookJoin ON authorBookJoin.book_id=book.id WHERE id NOT IN(SELECT book_id from ".TABLE_USER_FAVORITE_BOOK."  where user_id=".$user_id. ") ORDER BY book.id DESC LIMIT 30";
+
         $resultQuery=mysql_query($selectQuery) or $message=mysql_error();
         
          if(mysql_num_rows($resultQuery)>0)
@@ -1121,8 +1125,8 @@ class ProfileFunctions
             	//$status="failed";
             }
             
-         $selectFavoriteQuery="select book.*,authorBookJoin.full_name,authorBookJoin.profile_pic from ".TABLE_USER_FAVORITE_BOOK . " userFavoriteBook 
-         JOIN ".TABLE_BOOKS ." book ON book.id=userFavoriteBook.book_id 
+         $selectFavoriteQuery="select DISTINCT book.*,authorBookJoin.full_name,authorBookJoin.profile_pic from ".TABLE_USER_FAVORITE_BOOK . " userFavoriteBook
+         INNER JOIN ".TABLE_BOOKS ." book ON book.id=userFavoriteBook.book_id
          LEFT JOIN(SELECT authorBook.user_id,authorBook.book_id,users.full_name,users.profile_pic from ".TABLE_AUTHOR_BOOK." authorBook INNER JOIN ".TABLE_USERS.
          " users ON users.id=authorBook.user_id) authorBookJoin ON authorBookJoin.book_id=book.id
          WHERE userFavoriteBook.user_id=".$user_id;
@@ -1506,76 +1510,94 @@ class ProfileFunctions
         $resource_name = validateObject($postData, 'resource_name', "");
         $resource_name = addslashes($resource_name); 
         
-        $resource_id = validateObject($postData, 'resource_id', "");
-        $resource_id = addslashes($resource_id);
+        $fav_resource_id = validateObject($postData, 'fav_resource_id', "");
 
-        $unfavorite_id = validateObject($postData, 'unfavorite_id', "");
+        $unfavorite_resource_id = validateObject($postData, 'unfavorite_resource_id', "");
 
         if($resource_name == "rolemodel"){
         	$table= TABLE_USER_ROLE_MODEL;
+            $main_table=TABLE_ROLE_MODELS;
         	$resource_name_id="role_model_id";
         }
         else if($resource_name == "books"){
         	$table= TABLE_USER_FAVORITE_BOOK;
+            $main_table=TABLE_BOOKS;
         	$resource_name_id="book_id";
        }
         else if($resource_name == "movies"){
-        	$table= TABLE_USER_FAVORITE_MOVIE;	
+        	$table= TABLE_USER_FAVORITE_MOVIE;
+            $main_table=TABLE_MOVIES;
         	$resource_name_id="movie_id";
         }
        else if($resource_name == "pastimes"){
-        	$table= TABLE_USER_FAVORITE_PASTIME;	
+        	$table= TABLE_USER_FAVORITE_PASTIME;
+            $main_table=TABLE_PASTIMES;
         	$resource_name_id="pastime_id";
         }
 
+
         //To add resources in favorite
 
-            $selQuery = "SELECT * FROM " . $table . " WHERE user_id=" . $user_id . " AND " . $resource_name_id . "=" . $resource_id;
-            $selResult = mysql_query($selQuery) or $message = mysql_error();
-
-            if (mysql_num_rows($selResult) == 0) {
-                $insertFields = "`user_id`,`" . $resource_name_id . "`";
-                $insertValues = $user_id . "," . $resource_id;
-
-                $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                $result = mysql_query($query) or $message = mysql_error();
-
-                $status = "success";
-                $message = "record added";
-            }
-
-        else
+        if($fav_resource_id!=null)
         {
-        	$status="failed";
-            $message="";
+            foreach($fav_resource_id as $fav_id) {
+                $selQuery = "SELECT * FROM " . $table . " WHERE user_id=" . $user_id . " AND " . $resource_name_id . "=" . $fav_id;
+                $selResult = mysql_query($selQuery) or $message = mysql_error();
+
+                if (mysql_num_rows($selResult) == 0) {
+                    $insertFields = "`user_id`,`" . $resource_name_id . "`,`is_delete`";
+                    $insertValues = $user_id . "," . $fav_id.",'1'";
+
+                    $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                    $result = mysql_query($query) or $message = mysql_error();
+
+
+                }
+                else
+                {
+                    $queryUpdate="UPDATE " .$table ." SET is_delete = 1 WHERE user_id=".$user_id." AND ".$resource_name_id."  =" . $fav_id;
+                    $resultUpdate = mysql_query($queryUpdate) or $errorMsg = mysql_error();
+                }
+            }
+            $status = "success";
+            $message = "favorite synced";
         }
+    else
+    {
+        $status = "failed";
+        $message = DEFAULT_NO_RECORDS;
+    }
+
 
         //To make resource ids as unfavorite
-        if($unfavorite_id!=null)
+        if($unfavorite_resource_id!=null)
         {
-            foreach($unfavorite_id as $unfav_id) {
+            foreach($unfavorite_resource_id as $unfav_id) {
 
                 $queryCheckFeed = "SELECT id FROM " . $table . " WHERE user_id=".$user_id." AND ".$resource_name_id." =" . $unfav_id;
+                //$queryCheckFeed = "SELECT id FROM " . $table . " WHERE user_id=".$user_id." AND id = " . $unfav_id;
                 //echo $queryCheckFeed."\n";
                 $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
 
                 if (mysql_num_rows($resultCheckFeed) > 0) {
 
-                    $queryUpdate="UPDATE " .$table ." SET is_delete = 1 WHERE user_id=".$user_id." AND ".$resource_name_id."  =" . $unfav_id;
+                    $queryUpdate="UPDATE " .$table ." SET is_delete = 0 WHERE user_id=".$user_id." AND ".$resource_name_id."  =" . $unfav_id;
                     $resultUpdate = mysql_query($queryUpdate) or $errorMsg = mysql_error();
                    // echo $queryUpdate;
 
                     $status = "success";
-                    $message = "Request accepted";
+                    $message = "favorite synced";
                 }
-                else
-                {
-                    $status="success";
-                    $message=DEFAULT_NO_RECORDS;
-                }
+
             }
 
         }
+        else
+        {
+            $status = "failed";
+            $message = DEFAULT_NO_RECORDS;
+        }
+
 
 
         $response['favorite_resource']=$data;
@@ -1824,6 +1846,8 @@ class ProfileFunctions
               $status="failed";
               $message=DEFAULT_NO_RECORDS;
           }
+
+
           if($remove_book_id!=null)
           {
               foreach($remove_book_id as $book_id) {

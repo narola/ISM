@@ -274,6 +274,7 @@ class ExamFunctions
         $post=array();
         $response=array();
         $evaluations=array();
+
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
 

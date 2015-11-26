@@ -1254,57 +1254,149 @@ class SocialFunctions
         if($resource_type=="book")
         {
             $resource_name="book_id";
-            $table="TABLE_TAGS_BOOK";
+            $table=TABLE_TAGS_BOOK;
         }
         elseif($resource_type=="forum")
         {
             $resource_name="forum_question_id";
-            $table="TABLE_TAGS_FORUM_QUESTION";
+            $table=TABLE_TAGS_FORUM_QUESTION;
         }
         elseif($resource_type=="lecture")
         {
             $resource_name="lecture_id";
-            $table="TABLE_TAGS_LECTURE";
+            $table=TABLE_TAGS_LECTURE;
         }
         elseif($resource_type=="question")
         {
             $resource_name="question_id";
-            $table="TABLE_TAGS_QUESTION";
+            $table=TABLE_TAGS_QUESTION;
         }
         elseif($resource_type=="assignment")
         {
             $resource_name="book_assignment_id	";
-            $table="TABLE_TAG_BOOK_ASSIGNMENT";
+            $table=TABLE_TAG_BOOK_ASSIGNMENT;
         }
 
+        $arrayForTags = explode(',', $hashtag_data);
+
+        $arrayTagsID = array();
+        $arrayTagsName = array();
+        foreach ($arrayForTags as $tag) {
+
+            $arraySeparateKeyValue = explode(':', $tag);
+            $arrayTagsID[] = $arraySeparateKeyValue[1];
+            $arrayTagsName[] = $arraySeparateKeyValue[0];
+        }
         if($hashtag_data !=null) {
 
-            $arrayForTags = explode(',', $hashtag_data);
 
-            $arrayTagsID[] = array();
-            foreach ($arrayForTags as $tag) {
+            for($i=0;$i<count($arrayTagsName);$i++)
+            {
+                if($arrayTagsID[$i] == 0) {
 
-                $arraySeparateKeyValue = explode(':', $tag);
-                $arrayTagsID[] = $arraySeparateKeyValue[0];
-                $arrayTagsName[] = $arraySeparateKeyValue[1];
+                    $selectQueryFotTagName = "SELECT id FROM " . TABLE_TAGS . " WHERE  LOWER(`tag_name`) = LOWER('$arrayTagsName[$i]')";
+                    $resultQueryFotTagName = mysql_query($selectQueryFotTagName) or $message = mysql_error();
+                    $getTagID = mysql_fetch_row($resultQueryFotTagName);
 
-                $selectQueryFotTagName = "SELECT tag_name FROM " . TABLE_TAGS;
-                $resultQueryFotTagName = mysql_query($selectQueryFotTagName) or $message = mysql_error();
+                    if (mysql_num_rows($resultQueryFotTagName) == 0) {
+                        // while ($rowGetTags = mysql_fetch_assoc($resultQueryFotTagName)) {
+
+                        //$found=in_array($rowGetTags['tag_name'],$arrayTagsName,true);
+                        //echo $rowGetTags['tag_name'];
+
+                        $insertFields = "`tag_name`";
+                        $insertValues = "'" . $arrayTagsName[$i] . "'";
 
 
-                    if (mysql_num_rows($resultQueryFotTagName)) {
-                        while ($rowGetTags = mysql_fetch_assoc($resultQueryFotTagName)) {
-                            $name[] = $rowGetTags;
-                            //$found=in_array($rowGetTags['tag_name'],$arrayTagsName,true);
-                            //echo $rowGetTags['tag_name'];
+                        $queryToInsertNewTag = "INSERT INTO " . TABLE_TAGS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                        $resultToInsertNewTag = mysql_query($queryToInsertNewTag) or $message = mysql_error();
 
+                        $latest_tag_id = mysql_insert_id();
+
+                        $insertFields = "`tag_id`,`" . $resource_name . "`";
+                        $insertValues = $latest_tag_id . "," . $resource_id;
+
+                        $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                        $result = mysql_query($query) or $message = mysql_error();
+
+                        if($result)
+                        {
+                            $status = "success";
+                            $message = "resource hash tagged";
+                        }
+                        else
+                        {
+                            $status = "failed";
+                            $message = DEFAULT_NO_RECORDS;
+                        }
+                        //}
+                    }
+
+                else {
+
+                        $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i];
+                        $resultQuery = mysql_query($selectQuery) or $message = mysql_error();
+
+                        if (mysql_num_rows($resultQuery) == 0) {
+                            $insertFields = "`tag_id`,`" . $resource_name . "`";
+                            $insertValues = $getTagID[0] . "," . $resource_id;
+
+                            $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                            $result = mysql_query($query) or $message = mysql_error();
+
+                            if($result)
+                            {
+                                $status = "success";
+                                $message = "resource hash tagged";
+                            }
+                            else
+                            {
+                                $status = "failed";
+                                $message = DEFAULT_NO_RECORDS;
+                            }
+                        }
+                        else
+                        {
+                            $status = "failed";
+                            $message = DEFAULT_NO_RECORDS;
                         }
                     }
 
-                echo $found=array_key_exists($rowGetTags['tag_name'], $arrayTagsName);
 
+                }
+                else {
+
+                    $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i];
+                    $resultQuery = mysql_query($selectQuery) or $message = mysql_error();
+
+                    if (mysql_num_rows($resultQuery) == 0) {
+
+                         $insertFields = "`tag_id`,`" . $resource_name . "`";
+                         $insertValues = $arrayTagsID[$i] . "," . $resource_id;
+
+                         $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                         $result = mysql_query($query) or $message = mysql_error();
+
+                        if($result)
+                        {
+                            $status = "success";
+                            $message = "resource hash tagged";
+                        }
+                        else
+                        {
+                            $status = "failed";
+                            $message = DEFAULT_NO_RECORDS;
+                        }
+                     }
+                    else
+                    {
+                        $status = "failed";
+                        $message = DEFAULT_NO_RECORDS;
+                    }
+                }
 
             }
+
         }
         else{
             $status="failed";
