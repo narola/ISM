@@ -98,7 +98,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     private void callApiFreezeQuestions() {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             if (arrListQuestions.size() > 0) {
                 try {
                     Attribute attribute = new Attribute();

@@ -157,8 +157,8 @@ public class WebserviceWrapper {
                         case WebConstants.GET_ROLEMODEL_FOR_USER:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_ROLEMODEL_FOR_USER).execute(ResponseHandler.class, attribute);
                             break;
-                        case WebConstants.ADD_RESOURCE_TO_FAVORITE:
-                            responseObject = new WebserviceConnector(WebConstants.URL_ADD_RESOURCE_TO_FAVORITE).execute(ResponseHandler.class, attribute);
+                        case WebConstants.MANAGE_FAVOURITES:
+                            responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_FAVOURITES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_WALLET_SUMMARY:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_WALLET_SUMMARY).execute(ResponseHandler.class, attribute);

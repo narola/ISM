@@ -137,7 +137,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
             @Override
             public void onClick(View v) {
-                if (Utility.isOnline(getActivity())) {
+                if (Utility.isConnected(getActivity())) {
                     tagFeedPosition = position;
                     callApiGetStudyMates();
                 } else {
@@ -308,7 +308,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     }
 
     private void callApiAddComment(int position, String comment) {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 addCommentFeedPosition = position;
                 Attribute attribute = new Attribute();
@@ -328,7 +328,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
 
     private void callApiGetAllComments(int position) {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
 
                 Attribute attribute = new Attribute();
@@ -347,7 +347,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     private void callApiGetStudyMates() {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 Attribute attribute = new Attribute();
                 attribute.setUserId(WebConstants.TEST_GETSTUDYMATES);
@@ -365,7 +365,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     @Override
     public void tagUsers(String[] arrTagUser) {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 Attribute attribute = new Attribute();
                 attribute.setFeedId(arrListFeeds.get(tagFeedPosition).getFeedId());

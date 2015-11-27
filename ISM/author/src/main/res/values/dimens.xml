@@ -78,6 +78,8 @@
     <dimen name="rich_text_editor_height">450dp</dimen>
     <dimen name="d22sp">22sp</dimen>
     <dimen name="d2dp">2dp</dimen>
+    <dimen name="notification_digit_text_size">16sp</dimen>
+    <dimen name="notification_digit_horizontal_padding">8dp</dimen>
 
 
 </resources>

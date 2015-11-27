@@ -126,10 +126,10 @@ public class SuggestedPastTimeAdapter extends BaseAdapter implements WebserviceW
                 Attribute attribute = new Attribute();
 
                 attribute.setUserId(Global.strUserId);
-                attribute.setResourceId(arrayList.get(position).getPastimeId());
+               // attribute.setResourceId(arrayList.get(position).getPastimeId());
                 attribute.setResourceName(AppConstant.RESOURCE_PASTTIMES);
 
-                new WebserviceWrapper(context, attribute, this).new WebserviceCaller().execute(WebConstants.ADD_RESOURCE_TO_FAVORITE);
+                new WebserviceWrapper(context, attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
             } else {
                 Utility.alertOffline(context);
             }
@@ -161,7 +161,7 @@ public class SuggestedPastTimeAdapter extends BaseAdapter implements WebserviceW
     public void onResponse(Object object, Exception error, int apiCode) {
         try {
             switch (apiCode) {
-                case WebConstants.ADD_RESOURCE_TO_FAVORITE:
+                case WebConstants.MANAGE_FAVOURITES:
                     onResponseAddResourceToFavorite(object, error);
                     break;
 

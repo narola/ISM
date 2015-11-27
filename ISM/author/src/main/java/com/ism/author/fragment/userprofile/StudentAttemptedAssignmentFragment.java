@@ -1,4 +1,4 @@
-package com.ism.author.fragment.rightcontainerfragment;
+package com.ism.author.fragment.userprofile;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -73,10 +73,10 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
 
 
     private void callApiGetExamSubmission() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
 
             try {
-                ((AuthorHostActivity) getActivity()).startProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
 //                request.setExamId(fragmentArgument.getRequestObject().getExamId());
                 request.setExamId("9");
@@ -111,7 +111,7 @@ public class StudentAttemptedAssignmentFragment extends Fragment implements Webs
 
     private void onResponseGetAllExamSubmission(Object object, Exception error) {
         try {
-            ((AuthorHostActivity) getActivity()).stopProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

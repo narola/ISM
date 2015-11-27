@@ -578,7 +578,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void callApiAddQuestion() {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 Attribute attribute = new Attribute();
 //                attribute.setBankQuestionId("2");

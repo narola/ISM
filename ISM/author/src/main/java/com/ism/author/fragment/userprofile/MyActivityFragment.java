@@ -1,4 +1,4 @@
-package com.ism.author.fragment;
+package com.ism.author.fragment.userprofile;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -7,34 +7,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.interfaces.FragmentListener;
 
-
 /**
- * Created by c166 on 21/10/15.
+ * Created by c162 on 26/10/15.
  */
-public class MyFeedsFragment extends Fragment {
+public class MyActivityFragment extends Fragment {
 
-    private static final String TAG = MyFeedsFragment.class.getSimpleName();
+
+    private static final String TAG = MyActivityFragment.class.getSimpleName();
     private View view;
 
     private FragmentListener fragListener;
 
-    public static MyFeedsFragment newInstance() {
-        MyFeedsFragment fragMyFeeds = new MyFeedsFragment();
-        return fragMyFeeds;
+    public static MyActivityFragment newInstance() {
+        MyActivityFragment fragBooks = new MyActivityFragment();
+        return fragBooks;
     }
 
-    public MyFeedsFragment() {
+    public MyActivityFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_myfeeds, container, false);
+        view = inflater.inflate(R.layout.fragment_my_activity, container, false);
 
         initGlobal();
 
@@ -51,7 +51,7 @@ public class MyFeedsFragment extends Fragment {
         try {
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_MYFEEDS);
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_MY_ACTIVITY);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onAttach Exception : " + e.toString());
@@ -63,7 +63,7 @@ public class MyFeedsFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_MYFEEDS);
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_MY_ACTIVITY);
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());

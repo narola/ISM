@@ -13,7 +13,7 @@ import com.ism.R;
 import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Utility;
-import com.ism.ws.model.Book;
+import com.ism.ws.model.BookData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -26,11 +26,11 @@ public class BookDetailsDialog extends Dialog implements View.OnClickListener {
     private final int position;
     private Context mContext;
     private TextView tvDialogClose;
-    private ArrayList<Book> arrayList;
+    private ArrayList<BookData> arrayList;
     MyTypeFace myTypeFace;
     private TextView txtDone;
 
-    public BookDetailsDialog(Context mContext, ArrayList<Book>
+    public BookDetailsDialog(Context mContext, ArrayList<BookData>
             arrayList, int position, ImageLoader imageLoader) {
         super(mContext);
 

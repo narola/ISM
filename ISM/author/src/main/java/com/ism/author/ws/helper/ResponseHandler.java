@@ -4,6 +4,7 @@ package com.ism.author.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.author.ws.model.Badges;
 import com.ism.author.ws.model.Cities;
 import com.ism.author.ws.model.Classrooms;
 import com.ism.author.ws.model.CommentList;
@@ -40,6 +41,7 @@ public class ResponseHandler {
     public static final String FAILED = "failed";
     public static final String DUPLICATE_ENTRY = "Duplicate entry";
     private String TAG = ResponseHandler.class.getSimpleName();
+    private ArrayList<Badges> badges;
 
     public String getMessage() {
         return this.message;
@@ -252,6 +254,14 @@ public class ResponseHandler {
 
     public void setQuestionBank(ArrayList<Questions> questionBank) {
         this.questionBank = questionBank;
+    }
+    @JsonProperty("badges")
+    public ArrayList<Badges> getBadges() {
+        return this.badges;
+    }
+
+    public void setBadges(ArrayList<Badges> badges) {
+        this.badges = badges;
     }
 
 }

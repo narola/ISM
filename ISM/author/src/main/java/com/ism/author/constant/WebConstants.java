@@ -43,6 +43,14 @@ public class WebConstants {
     public static final int GETEXAMEVALUATIONS = 26;
     public static final int GETEXAMQUESTIONS = 27;
     public static final int GETALLASSIGNMENTS = 28;
+    public static final int GET_ALL_BADGES_COUNT = 29;
+
+
+
+    //user settings preferences
+
+    public static final int GENERAL_SETTING_PREFERENCES = 51;
+    public static final int GET_USER_PREFERENCES = 52;
 
    /*webservice url*/
 
@@ -74,18 +82,17 @@ public class WebConstants {
     public static final String URL_GETEXAMQUESTIONS = URL_KINJAL_HOST + "GetExamQuestions";
     public static final String URL_SETQUESTIONSFOREXAM = URL_KINJAL_HOST + "SetQuestionsForExam";
     public static final String URL_GETALLASSIGNMENTS = URL_KINJAL_HOST + "GetAllExams";
-
+    public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
     /*status for apisuccess ans apifailed*/
 
-    public static final String STATUS_SUCCESS = "success";
-    public static final String STATUS_FAILED = "failed";
+    public static final String SUCCESS = "success";
+    public static final String FAILED = "failed";
 
 
     /*these are the temparory questionData for testing*/
 
     public static final String TEST_USER_ID = "370";
     public static final String TEST_GETSTUDYMATES = "167";
-
 
 }
 

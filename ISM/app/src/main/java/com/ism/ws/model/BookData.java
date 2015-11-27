@@ -4,13 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+
 /**
  * Created by c162 on 19/11/15.
  */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Book {
+public class BookData {
 	
     private String ebookLink;
     private String authorImage;
@@ -21,6 +23,7 @@ public class Book {
     private String publisherName;
     private String description;
     private String bookName;
+    private ArrayList<Tags> tags;
 
 
     @JsonProperty("ebook_link")
@@ -103,8 +106,14 @@ public class Book {
     public void setBookName(String bookName) {
         this.bookName = bookName;
     }
+    @JsonProperty("tags")
+    public ArrayList<Tags> getTags() {
+        return this.tags;
+    }
 
-
+    public void setTags(ArrayList<Tags> tags) {
+        this.tags = tags;
+    }
 
     
 }

@@ -120,12 +120,12 @@ public class TrialExamObjectiveDetailFragment extends Fragment implements Webser
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        ((AuthorHostActivity) getActivity()).stopProgress();
+        ((AuthorHostActivity) getActivity()).hideProgress();
         try {
             //responseObject = (ResponseHandler) object;
 //           if (API_METHOD == WebConstants.GETEXAMQUESTIONS) {
 //                if (responseObject.getStatus().equals(ResponseHandler.SUCCESS)) {
-//                    ((AuthorHostActivity) getActivity()).stopProgress();
+//                    ((AuthorHostActivity) getActivity()).hideProgress();
 //                    if (responseObject.getData().size() != 0) {
 //                        responseObjQuestions = responseObject;
 //                        // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
