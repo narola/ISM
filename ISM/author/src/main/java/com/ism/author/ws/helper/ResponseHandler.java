@@ -45,6 +45,7 @@ public class ResponseHandler {
     private String TAG = ResponseHandler.class.getSimpleName();
     private ArrayList<Badges> badges;
 
+    @JsonProperty("message")
     public String getMessage() {
         return this.message;
     }
@@ -53,6 +54,7 @@ public class ResponseHandler {
         this.message = message;
     }
 
+    @JsonProperty("status")
     public String getStatus() {
         return this.status;
     }
@@ -258,6 +260,7 @@ public class ResponseHandler {
     public void setQuestionBank(ArrayList<Questions> questionBank) {
         this.questionBank = questionBank;
     }
+
     @JsonProperty("badges")
     public ArrayList<Badges> getBadges() {
         return this.badges;

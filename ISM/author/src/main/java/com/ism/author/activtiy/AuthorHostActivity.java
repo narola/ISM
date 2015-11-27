@@ -170,8 +170,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         mFragmentTransaction = mFragmentManager.beginTransaction();
         Global.myTypeFace = new MyTypeFace(getApplicationContext());
 
-        Global.strUserId="370";
-        Global.strFullName="Arti Patel";
+        Global.strUserId = "370";
+        Global.strFullName = "Arti Patel";
 
         rlControllerTop = (RelativeLayout) findViewById(R.id.rl_controller_top);
         llSearch = (LinearLayout) findViewById(R.id.ll_search);
@@ -953,7 +953,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     Log.e(TAG, "Successload badges count");
                     String count = responseHandler.getBadges().get(0).getNotificationCount();
                     PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_NOTIFICATION, this, count != null ? Integer.valueOf(count) : 0);
@@ -963,7 +963,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
                     count = responseHandler.getBadges().get(0).getRequestCount();
                     PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_REQUEST, this, count != null ? Integer.valueOf(count) : 0);
-                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Log.e(TAG, "Failed to load badges count");
                 }
             } else if (error != null) {
