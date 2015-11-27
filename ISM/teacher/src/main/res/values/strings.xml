@@ -276,6 +276,8 @@
     <string name="strerrormessage">:::error</string>
     <string name="strcourse">Course</string>
     <string name="msg_select_question_to_add_to_preview">Please select question to add to preview.</string>
+    <string name="strnopreviewquestions">Please select question to add it to preview.</string>
+
 
     <!--postActivity-->
     <string name="strchooseimagefromgallery">Choose Image from gallery</string>

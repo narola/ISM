@@ -1,7 +1,6 @@
 package com.ism.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
-import com.ism.activity.HostActivity;
-import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.BookDetailsDialog;
 import com.ism.fragment.userprofile.BooksFragment;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
-import com.ism.ws.helper.Attribute;
-import com.ism.ws.helper.ResponseHandler;
-import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Book;
+import com.ism.ws.model.BookData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -32,18 +26,20 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 19/11/15.
  */
-public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapper.WebserviceResponse,Filterable {
+public class SuggestedBookAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = SuggestedBookAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
-    ArrayList<Book> arrayList = new ArrayList<>();
-    ArrayList<Book> arrayListFilter = new ArrayList<>();
+    ArrayList<BookData> arrayList = new ArrayList<>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
-    private int addToFavItem;
     AddToFavouriteListner addToFavouriteListner;
     SuggestedBookFilter suggestedBookFilter;
-    public SuggestedBookAdapter(Context context, ArrayList<Book> arrayList, AddToFavouriteListner favouriteBooksListner) {
+    ArrayList<BookData> arrayListFilter = new ArrayList<>();
+    private ArrayList<String> arrayFavResourceIds=new ArrayList<String>();
+
+
+    public SuggestedBookAdapter(Context context, ArrayList<BookData> arrayList, AddToFavouriteListner favouriteBooksListner) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter=arrayList;
@@ -53,7 +49,12 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
         myTypeFace = new MyTypeFace(context);
         this.addToFavouriteListner = favouriteBooksListner;
     }
-
+    public ArrayList<String> getUnFavResourceIds(){
+        return arrayFavResourceIds;
+    }
+//    public void setFavResourceIds( ArrayList<String> arrayFavResourceIds){
+//        this.arrayFavResourceIds=arrayFavResourceIds;
+//    }
     public interface AddToFavouriteListner {
         public void onAddToFav(int position);
     }
@@ -111,9 +112,9 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
             holder.imgAddToFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addToFavItem = position;
                     Debug.i(TAG, "onClickAddToFav : " + position);
-                    callApiAddResourceToFav(position);
+                    arrayFavResourceIds.add(arrayList.get(position).getBookId());
+                   // callApiAddResourceToFav();
                 }
             });
             holder.imgInfo.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +139,7 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
 //        LayoutInflater inflater = (LayoutInflater) context
 //                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //
-//        View view = inflater.inflate(R.layout.layout_book_details, null);
+//        View view = inflater.inflate(R.layout.dailog_book_details, null);
 //
 //        final PopupWindow popupWindow = new PopupWindow(view,
 //                400,
@@ -224,56 +225,6 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
 //
 //    }
 
-    private void callApiAddResourceToFav(int position) {
-        try {
-            if (Utility.isConnected(context)) {
-                ((HostActivity) context).showProgress();
-                Attribute attribute = new Attribute();
-                attribute.setUserId("1");
-                attribute.setResourceId(arrayList.get(position).getBookId());
-                attribute.setResourceName(AppConstant.RESOURCE_BOOKS);
-
-                new WebserviceWrapper(context, attribute, this).new WebserviceCaller().execute(WebConstants.ADD_RESOURCE_TO_FAVORITE);
-            } else {
-                Utility.alertOffline(context);
-            }
-        } catch (Exception e) {
-            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
-        }
-    }
-
-    private void onResponseAddResourceToFavorite(Object object, Exception error) {
-        try {
-            ((HostActivity) context).hideProgress();
-            if (object != null) {
-                ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite success");
-                    addToFavouriteListner.onAddToFav(addToFavItem);
-                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
-                }
-            } else if (error != null) {
-                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
-            }
-        } catch (Exception e) {
-            Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
-        }
-    }
-
-    @Override
-    public void onResponse(Object object, Exception error, int apiCode) {
-        try {
-            switch (apiCode) {
-                case WebConstants.ADD_RESOURCE_TO_FAVORITE:
-                    onResponseAddResourceToFavorite(object, error);
-                    break;
-
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "onResponse Exception : " + e.toString());
-        }
-    }
 
     @Override
     public Filter getFilter() {
@@ -296,13 +247,13 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
 
                 if (constraint!= null) {
                     Debug.i(TAG, "Search string : " + constraint);
-                    ArrayList<Book> filterList = new ArrayList<Book>();
+                    ArrayList<BookData> filterList = new ArrayList<BookData>();
                     for (int i = 0; i < arrayListFilter.size(); i++) {
                         if (arrayListFilter.get(i).getBookName().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getPublisherName().toLowerCase().contains(constraint.toString().toLowerCase()) ) {
 
 //                            if (arrayListFilter.get(i).getAuthorName().contains(constraint) || arrayListFilter.get(i).getBookName().contains(constraint) || arrayListFilter.get(i).getPublisherName().contains(constraint)) {
                             Debug.i(TAG, "i : " + i);
-                            Book book = new Book();
+                            BookData book = new BookData();
                             book.setDescription(arrayListFilter.get(i).getDescription());
                             book.setAuthorImage(arrayListFilter.get(i).getAuthorImage());
                             book.setAuthorName(arrayListFilter.get(i).getAuthorName());
@@ -336,7 +287,7 @@ public class SuggestedBookAdapter extends BaseAdapter implements WebserviceWrapp
         protected void publishResults(CharSequence constraint, FilterResults results) {
             try {
 
-                arrayList = (ArrayList<Book>) results.values;
+                arrayList = (ArrayList<BookData>) results.values;
                 if(arrayList.size()==0)
                 {
                     BooksFragment.txtSuggestedEmpty.setVisibility(View.VISIBLE);

@@ -72,25 +72,41 @@ public class Attribute {
 	private String ambitionInLife;
 
 	private String fileName;
-	private String resourceId;
 	private String resourceName;
 	private String voucherAmount;
+	private String blockUser;
+	private ArrayList<String> unfavoriteResourceId;
+	private ArrayList<String> favResourceId;
 
 
+	public ArrayList<String> getUnfavoriteResourceId() {
+		return this.unfavoriteResourceId;
+	}
+	@JsonProperty("unfavorite_resource_id")
+	public void setUnfavoriteResourceId(ArrayList<String> unfavoriteResourceId) {
+		this.unfavoriteResourceId = unfavoriteResourceId;
+	}
+	public ArrayList<String> getFavResourceId() {
+		return this.favResourceId;
+	}
+	@JsonProperty("fav_resource_id")
+	public void setFavResourceId(ArrayList<String> favResourceId) {
+		this.favResourceId = favResourceId;
+	}
+
+	public String getBlockUser() {
+		return blockUser;
+	}
+	@JsonProperty("block_user")
+	public void setBlockUser(String blockUser) {
+		this.blockUser = blockUser;
+	}
 	public String getResourceName() {
 		return resourceName;
 	}
 	@JsonProperty("resource_name")
 	public void setResourceName(String resourceName) {
 		this.resourceName = resourceName;
-	}
-
-	public String getResourceId() {
-		return resourceId;
-	}
-	@JsonProperty("resource_id")
-	public void setResourceId(String resourceId) {
-		this.resourceId = resourceId;
 	}
 
 	public String getAmbitionInLife() {

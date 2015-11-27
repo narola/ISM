@@ -1,13 +1,22 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.ism.author.fragment.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_post"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="This is For Author Edit Profile Feeds Fragment" />
+       >
+    </android.support.v7.widget.RecyclerView>
 
-</FrameLayout>
+    <View
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="226dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/shape_triangle_profile_controller" />
+
+</RelativeLayout>

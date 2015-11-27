@@ -84,9 +84,9 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
     }
 
     private void callApiGetExamSubmission() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
-                ((AuthorHostActivity) getActivity()).startProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
 //                request.setExamId(fragmentArgument.getRequestObject().getExamId());
                 request.setExamId("9");
@@ -120,7 +120,7 @@ public class GetAssignmentsSubmittorFragment extends Fragment implements Webserv
 
     private void onResponseGetAllExamSubmission(Object object, Exception error) {
         try {
-            ((AuthorHostActivity) getActivity()).stopProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

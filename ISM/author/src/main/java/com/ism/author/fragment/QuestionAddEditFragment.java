@@ -595,7 +595,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void callApiCreateQuestion() {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 ((AuthorHostActivity) getActivity()).startProgress();
                 Debug.e(TAG, "The user id is::" + WebConstants.TEST_USER_ID);

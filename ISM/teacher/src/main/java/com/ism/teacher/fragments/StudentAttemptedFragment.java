@@ -21,9 +21,9 @@ import com.ism.teacher.adapters.StudentAttemptedAdapter;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.model.Data;
-import com.ism.teacher.model.RequestObject;
-import com.ism.teacher.model.ResponseObject;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.Attribute;
+import com.ism.teacher.ws.helper.ResponseHandler;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +38,10 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     private View view;
     private FragmentListener fragListener;
     private RecyclerView rvList;
-    private ArrayList<Data> arrayList = new ArrayList<>();
     private StudentAttemptedAdapter studentAttemptedAdapter;
     private ObjectiveQuestionsAdapter objectiveQuestionsAdapter;
-    public static ResponseObject responseObjQuestions;
-    public static List<String> questionsID = new ArrayList<>();
+    public static ResponseHandler responseObjQuestions;
+    public static List<String> questionsID;
 
 
     //Test
@@ -50,7 +49,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     public String examid_from_param = "";
     public String studentid_from_param = "";
     public boolean callEvaluationApiFlag = false;
-    ResponseObject responseObjectEval;
+    ResponseHandler responseObjectEval;
 
     public static StudentAttemptedFragment newInstance() {
         StudentAttemptedFragment fragment = new StudentAttemptedFragment();
@@ -81,24 +80,24 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     private void initGlobal() {
         rvList = (RecyclerView) view.findViewById(R.id.rv_list);
         rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        RequestObject requestObject = new RequestObject();
-        requestObject.setExamId("9");
-        requestObject.setUserId("340");
-        requestObject.setRole(Integer.parseInt("3"));
+        Attribute attribute = new Attribute();
+        attribute.setExamId("9");
+        attribute.setUserId("340");
+        attribute.setRole("3");
 
-        callapigetExamSubmission(requestObject);
+        callapigetExamSubmission(attribute);
     }
 
     /**
      * Web Service call for examsubmisison(student attempted)
      */
 
-    private void callapigetExamSubmission(RequestObject requestObject) {
+    private void callapigetExamSubmission(Attribute attribute) {
 
         if (Utility.isInternetConnected(getActivity())) {
             try {
-                // ((AuthorHostActivity) getActivity()).startProgress();
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+//                 ((TeacherHostActivity) getActivity()).startProgress();
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_ALL_EXAM_SUBMISSION);
             } catch (Exception e) {
                 Log.i(TAG, "callApi GET_EXAM_QUESTIONS ::" + e.getLocalizedMessage());
@@ -115,12 +114,12 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
      */
 
 
-    private void callapigetexamquestions(RequestObject requestObject) {
+    private void callapigetexamquestions(Attribute attribute) {
 
         if (Utility.isInternetConnected(getActivity())) {
             try {
                 // ((AuthorHostActivity) getActivity()).startProgress();
-                new WebserviceWrapper(getActivity(), requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_QUESTIONS);
             } catch (Exception e) {
                 Log.i(TAG, "callApi GET_EXAM_QUESTIONS ::" + e.getLocalizedMessage());
@@ -140,10 +139,10 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
         try {
             if (Utility.isOnline(context)) {
                 ((TeacherHostActivity) context).startProgress();
-                RequestObject requestObject = new RequestObject();
-                requestObject.setStudentId(studentId);
-                requestObject.setExamId(examId);
-                new WebserviceWrapper(context, requestObject, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                Attribute attribute = new Attribute();
+                attribute.setStudentId(studentId);
+                attribute.setExamId(examId);
+                new WebserviceWrapper(context, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_EVALUATIONS);
             } else {
                 Utility.toastOffline(context);
@@ -180,56 +179,58 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
 
     private void onResponseGetAllStudentAttempted(Object object) {
-        ResponseObject resObjSubmisssion = (ResponseObject) object;
-        if (resObjSubmisssion.getStatus().equals(ResponseObject.SUCCESS)) {
+        ResponseHandler responseHandler = (ResponseHandler) object;
+        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
             // ((AuthorHostActivity)getActivity()).stopProgress();
-            if (resObjSubmisssion.getData().size() != 0) {
+            if (responseHandler.getExamSubmission().size() != 0) {
 
-                Debug.i(TAG, "Arraylist of student attempted  ::" + resObjSubmisssion);
+                Debug.i(TAG, "Arraylist of student attempted  ::" + responseHandler);
 
-                studentAttemptedAdapter = new StudentAttemptedAdapter(resObjSubmisssion, getActivity(), this);
+                studentAttemptedAdapter = new StudentAttemptedAdapter(responseHandler, getActivity(), this);
                 rvList.setAdapter(studentAttemptedAdapter);
                 rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                RequestObject requestObject = new RequestObject();
-                requestObject.setExamId("3");
+                Attribute attribute = new Attribute();
+                attribute.setExamId("3");
                 //requestObject.setStudentId("202");
 
                 // ((AuthorHostActivity) getActivity()).startProgress();
-                callapigetexamquestions(requestObject);
+                callapigetexamquestions(attribute);
 
             }
 
-        } else if (resObjSubmisssion.getStatus().equals(ResponseObject.FAILED)) {
+        } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
             Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
         }
 
     }
 
     private void onResponseGetExamQuestions(Object object) {
-        ResponseObject resObjQuestions = (ResponseObject) object;
-        if (resObjQuestions.getStatus().equals(ResponseObject.SUCCESS)) {
-            if (resObjQuestions.getData().size() != 0) {
-                responseObjQuestions = resObjQuestions;
+        ResponseHandler responseHandler = (ResponseHandler) object;
+        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+            if (responseHandler.getExamQuestions().size() != 0) {
+                responseObjQuestions = responseHandler;
                 // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
 
                 objectiveQuestionsAdapter = new ObjectiveQuestionsAdapter(responseObjQuestions, getActivity(), this, null);
                 ExamObjectiveDetailFragment.rvList.setAdapter(objectiveQuestionsAdapter);
                 ExamObjectiveDetailFragment.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                ExamObjectiveDetailFragment.txtBookNameValue.setText(responseObjQuestions.getData().get(0).getBookName());
-                ExamObjectiveDetailFragment.txtExamTypeName.setText(responseObjQuestions.getData().get(0).getExam_mode());
-                ExamObjectiveDetailFragment.txtClassName.setText(responseObjQuestions.getData().get(0).getClass_name());
+                ExamObjectiveDetailFragment.txtBookNameValue.setText(responseObjQuestions.getExamQuestions().get(0).getBookName());
+//                ExamObjectiveDetailFragment.txtExamTypeName.setText(responseObjQuestions.getExamQuestions().get(0).getExam_mode());
+                ExamObjectiveDetailFragment.txtClassName.setText(responseObjQuestions.getExamQuestions().get(0).getClassName());
 //                        String examDate = responseObjQuestions.getData().get(0).getCreated_date();
-                ExamObjectiveDetailFragment.txtExamDateValue.setText(Utility.getFormattedDate("dd-MMM-yyyy", responseObjQuestions.getData().get(0).getCreated_date()));
-                ExamObjectiveDetailFragment.txtExamName.setText(responseObjQuestions.getData().get(0).getExamName());
+                ExamObjectiveDetailFragment.txtExamDateValue.setText(Utility.getFormattedDate("dd-MMM-yyyy", responseObjQuestions.getExamQuestions().get(0).getCreatedDate()));
+                ExamObjectiveDetailFragment.txtExamName.setText(responseObjQuestions.getExamQuestions().get(0).getExamName());
                 questionsID = new ArrayList<>();
-                for (int i = 0; i < responseObjQuestions.getData().get(0).getQuestions().size(); i++) {
-                    questionsID.add(responseObjQuestions.getData().get(0).getQuestions().get(i).getQuestionId());
+                for (int i = 0; i < responseObjQuestions.getExamQuestions().get(0).getQuestions().size(); i++) {
+                    questionsID.add(responseObjQuestions.getExamQuestions().get(0).getQuestions().get(i).getQuestionId());
                     Debug.i(TAG, "Q.ID :" + questionsID.get(i));
                 }
 
+                Log.e(TAG, "" + questionsID.size());
+
                 // call evaluation api only if flag is true from examassignadapter-->Host->Objectivedetail->StudentAttempted
                 if (callEvaluationApiFlag) {
-                    Log.i(TAG, "student_id:" + studentid_from_param + "===exam_id" + examid_from_param);
+                    Log.i(TAG, "student_id:" + studentid_from_param + "===exam_id_after_creating_exam" + examid_from_param);
                     //      callAPIStudentEvaluations(studentid_from_param,examid_from_param);
 
                     //static
@@ -239,22 +240,22 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
             }
 
-        } else if (resObjQuestions.getStatus().equals(ResponseObject.FAILED)) {
+        } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
             Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
         }
     }
 
     private void onResponseGetEvaluation(Object object) {
-        ResponseObject responseObject = (ResponseObject) object;
-        if (responseObject.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
-            if (responseObject.getData().get(0).getArrayListEvaluation().size() != 0) {
-                responseObjectEval = responseObject;
+        ResponseHandler responseHandler = (ResponseHandler) object;
+        if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+            if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
+                responseObjectEval = responseHandler;
                 ObjectiveQuestionsAdapter objectiveQuestionsAdapter = new ObjectiveQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, this, responseObjectEval);
                 ExamObjectiveDetailFragment.rvList.setAdapter(objectiveQuestionsAdapter);
                 objectiveQuestionsAdapter.notifyDataSetChanged();
             }
         } else {
-            Debug.i(TAG, "Response :" + WebConstants.GET_EXAM_EVALUATIONS + " :" + responseObject.getStatus());
+            Debug.i(TAG, "Response :" + WebConstants.GET_EXAM_EVALUATIONS + " :" + responseHandler.getStatus());
         }
     }
 

@@ -160,6 +160,7 @@ public class SMSAlertsFragment extends Fragment implements WebserviceWrapper.Web
     public void onDetach() {
         super.onDetach();
         try {
+          //  generalSettingsFragment.callApiGetGeneralSettingPreferences();
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
         }

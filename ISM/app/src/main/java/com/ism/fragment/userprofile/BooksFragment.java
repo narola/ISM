@@ -8,8 +8,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -20,7 +18,9 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.FavoriteBooksAdapter;
 import com.ism.adapter.SuggestedBookAdapter;
+import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -28,7 +28,7 @@ import com.ism.views.HorizontalListView;
 import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Book;
+import com.ism.ws.model.BookData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -45,10 +45,10 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     private HostActivity activityHost;
     public static HorizontalListView listViewFavBooks;
     FavoriteBooksAdapter favoriteBooksAdapter;
-    private ArrayList<Book> arrayListFavBooks;
+    private ArrayList<BookData> arrayListFavBooks;
     public static HorizontalListView listViewSuggestedBooks;
     SuggestedBookAdapter suggestedBooksAdapter;
-    private ArrayList<Book> arrayListSuggestedBooks;
+    private ArrayList<BookData> arrayListSuggestedBooks;
     public static TextView txtSuggestedEmpty;
     public static TextView txtFavEmpty;
     private TextView txtSuggestedBooks;
@@ -91,7 +91,6 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         etFavSearch = (EditText) view.findViewById(R.id.et_search_fav);
         imgSuggestedSearch = (ImageView) view.findViewById(R.id.img_search_suggested);
         etSuggestedSearch = (EditText) view.findViewById(R.id.et_search_suggested);
-
         //set typeface
         txtFavEmpty.setTypeface(myTypeFace.getRalewayRegular());
         txtSuggestedEmpty.setTypeface(myTypeFace.getRalewayRegular());
@@ -115,8 +114,8 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                     etFavSearch.setText("");
 
                 } else {
-                    startSlideAnimation(etFavSearch, etFavSearch.getWidth(), 0, 0, 0);
-                    startSlideAnimation(imgFavSearch, etFavSearch.getWidth(), 0, 0, 0);
+                    Utility.startSlideAnimation(etFavSearch, etFavSearch.getWidth(), 0, 0, 0);
+                    Utility.startSlideAnimation(imgFavSearch, etFavSearch.getWidth(), 0, 0, 0);
                     etFavSearch.setVisibility(View.VISIBLE);
                     Utility.showSoftKeyboard(etFavSearch, getActivity());
                 }
@@ -131,13 +130,13 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 //		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
 //		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
                     etSuggestedSearch.setVisibility(View.GONE);
-                    View view=getActivity().getCurrentFocus();
+                    View view = getActivity().getCurrentFocus();
                     Utility.hideKeyboard(getActivity(), getView());
                     setUpSuggestedList(arrayListSuggestedBooks);
                     etSuggestedSearch.setText("");
                 } else {
-                    startSlideAnimation(etSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
-                    startSlideAnimation(imgSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
+                    Utility.startSlideAnimation(etSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
+                    Utility.startSlideAnimation(imgSuggestedSearch, etSuggestedSearch.getWidth(), 0, 0, 0);
                     etSuggestedSearch.setVisibility(View.VISIBLE);
                     Utility.showSoftKeyboard(etSuggestedSearch, getActivity());
                 }
@@ -152,7 +151,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                             favoriteBooksAdapter.getFilter()
                                     .filter(etFavSearch.getText().toString()
                                             .trim());
-                            Utility.hideKeyboard(getActivity(),getView());
+                            Utility.hideKeyboard(getActivity(), getView());
                             return true;
                         }
                         return false;
@@ -176,35 +175,12 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
     }
 
-    private void startSlideAnimation(final View view, int fromX, int toX, int fromY, int toY) {
-        TranslateAnimation slideOutAnimation = new TranslateAnimation(fromX, toX, fromY, toY);
-        slideOutAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.clearAnimation();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        slideOutAnimation.setDuration(500);
-        slideOutAnimation.setFillAfter(true);
-        view.startAnimation(slideOutAnimation);
-    }
-
     public void callApiGetBooksForUser() {
         try {
             if (Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId("1");
+                attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_BOOKS_FOR_USER);
             } else {
                 Utility.alertOffline(getActivity());
@@ -243,10 +219,9 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 case WebConstants.GET_BOOKS_FOR_USER:
                     onResponseUserBooks(object, error);
                     break;
-//                case WebConstants.ADD_RESOURCE_TO_FAVORITE:
-//                    onResponseAddResourceToFavorite(object, error);
-//                    break;
-
+                case WebConstants.MANAGE_FAVOURITES:
+                    onResponseAddResourceToFavorite(object, error);
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());
@@ -263,7 +238,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     arrayListFavBooks = responseHandler.getBooks().get(0).getFavorite();
                     arrayListSuggestedBooks = responseHandler.getBooks().get(0).getSuggested();
-                    setUpSuggestedList( arrayListSuggestedBooks);
+                    setUpSuggestedList(arrayListSuggestedBooks);
                     setUpFavList(arrayListFavBooks);
                     Debug.i(TAG, "onResponseUserBooks success");
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
@@ -277,7 +252,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         }
     }
 
-    public void setUpFavList(ArrayList<Book> arrayListFavBooks){
+    public void setUpFavList(ArrayList<BookData> arrayListFavBooks) {
         try {
             if (!arrayListFavBooks.isEmpty()) {
                 txtFavEmpty.setVisibility(View.GONE);
@@ -296,7 +271,8 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
             Debug.e(TAG, "setUpFavList Exceptions :" + e.getLocalizedMessage());
         }
     }
-    public void setUpSuggestedList(ArrayList<Book> arrayListSuggestedBooks) {
+
+    public void setUpSuggestedList(ArrayList<BookData> arrayListSuggestedBooks) {
         try {
             if (!arrayListSuggestedBooks.isEmpty()) {
                 txtSuggestedEmpty.setVisibility(View.GONE);
@@ -305,7 +281,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 listViewSuggestedBooks.setAdapter(suggestedBooksAdapter);
                 suggestedBooksAdapter.notifyDataSetChanged();
             } else {
-               txtSuggestedEmpty.setVisibility(View.VISIBLE);
+                txtSuggestedEmpty.setVisibility(View.VISIBLE);
                 listViewSuggestedBooks.setVisibility(View.GONE);
             }
         } catch (Exception e) {
@@ -353,10 +329,67 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     public void onAddToFav(int addToFavItem) {
         Debug.i(TAG, "OnAddToFav" + addToFavItem);
         try {
-            callApiGetBooksForUser();
+            // callApiGetBooksForUser();
+            arrayListFavBooks.add(arrayListSuggestedBooks.get(addToFavItem));
+            arrayListSuggestedBooks.remove(addToFavItem);
 
         } catch (Exception e) {
             Debug.e(TAG, "onAddToFav Exception : " + e.getLocalizedMessage());
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        callApiAddResourceToFav();
+    }
+
+    private void callApiAddResourceToFav() {
+        try {
+            if (Utility.isConnected(getActivity())) {
+                activityHost.showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setUserId(Global.strUserId);
+                if (suggestedBooksAdapter == null)
+                    attribute.setFavResourceId(new ArrayList<String>());
+                else
+                    attribute.setFavResourceId(suggestedBooksAdapter.getUnFavResourceIds());// get all resource ids from suggested list to add resource ids in user favourites
+                if (favoriteBooksAdapter == null)
+                    attribute.setUnfavoriteResourceId(new ArrayList<String>());// get All the resource ids from favourite list to add resource id in user unfavourites
+                else
+                    attribute.setUnfavoriteResourceId(favoriteBooksAdapter.getUnFavResourceIds());// get All the resource ids from favourite list to add resource id in user unfavourites
+                attribute.setResourceName(AppConstant.RESOURCE_BOOKS);
+                Debug.i(TAG, "Attributes object :" + attribute);
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
+            } else {
+                Utility.alertOffline(getActivity());
+            }
+        } catch (Exception e) {
+            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void onResponseAddResourceToFavorite(Object object, Exception error) {
+        try {
+            activityHost.hideProgress();
+            if (object != null) {
+                Debug.i(TAG, "Response object :" + object);
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                    Debug.i(TAG, "onResponseAddResourceToFavorite success");
+//                    addToFavouriteListner.onAddToFav(addToFavItem);
+//                    suggestedBooksAdapter.setFavResourceIds(new ArrayList<String>());
+//                    favoriteBooksAdapter.setUnFavResourceIds(new ArrayList<String>());
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
+                }
+            } else if (error != null) {
+                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
+        }
+    }
+
+
 }

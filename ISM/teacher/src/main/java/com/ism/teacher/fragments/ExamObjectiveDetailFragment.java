@@ -17,7 +17,7 @@ import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.ws.WebserviceWrapper;
+import com.ism.teacher.ws.helper.WebserviceWrapper;
 
 
 /**
@@ -35,8 +35,8 @@ public class ExamObjectiveDetailFragment extends Fragment implements WebserviceW
     ImageView imgCopy, imgEdit;
     private FragmentListener fragListener;
 
-    //private ResponseObject responseObject;
-    //public static ResponseObject responseObjQuestions;
+    //private ResponseHandler responseObject;
+    //public static ResponseHandler responseObjQuestions;
     // public static ObjectiveQuestionsAdapter trialExamDetailsAdapter;
     //public static String questionsID[];
 

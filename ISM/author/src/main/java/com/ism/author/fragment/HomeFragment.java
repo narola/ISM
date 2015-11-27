@@ -127,7 +127,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
 
     private void callApiGetAllPostFeeds() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
 
             try {
                 Attribute attribute = new Attribute();

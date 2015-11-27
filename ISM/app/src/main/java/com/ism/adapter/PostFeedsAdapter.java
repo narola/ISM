@@ -181,14 +181,14 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 			LayoutInflater layoutInflater = LayoutInflater.from(context);
 			view = layoutInflater.inflate(R.layout.item_comment_post, null);
 
-		/*imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + comment.getProfileLink(),
+		/*imageLoader.displayImage(AppConstant.URL_USERS_IMAGE_PATH + comment.getProfilePic(),
 				(CircleImageView) view.findViewById(R.id.img_dp), ISMStudent.options);*/
 			imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
 					(CircleImageView) view.findViewById(R.id.img_dp), ISMStudent.options);
 
 			((TextView) view.findViewById(R.id.txt_name)).setText(comment.getFullName());
 			((TextView) view.findViewById(R.id.txt_comment)).setText(comment.getComment());
-			((TextView) view.findViewById(R.id.txt_duration)).setText("5 min");
+			((TextView) view.findViewById(R.id.txt_duration)).setText(com.ism.commonsource.utility.Utility.getTimeDuration(comment.getCreatedDate()));
 		} catch (Exception e) {
 			Log.e(TAG, "getCommentView Exception : " + e.toString());
 		}

@@ -154,7 +154,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_left_controller_top_button"
                 android:scaleType="centerInside"
-                android:src="@drawable/img_search" />
+                android:src="@drawable/image_search" />
 
             <EditText
                 android:id="@+id/et_search"

@@ -34,27 +34,25 @@ public class WebConstants {
 	public static final int UPLOAD_PROFILE_PIC = 24;
 	public static final int GET_WALLET_SUMMARY = 25;
 	public static final int GENERATE_VOUCHER = 26;
+	public static final int GET_MY_FEEDS = 27;
 
 
 	//general settings
-	//public static final int BLOCK_USER = 52;
 
-	public static final int MANAGE_GENERAL_SETTINGS = 51;
-	public static final int GENERAL_SETTING_PREFERENCES = 52;
-	public static final int GET_USER_PREFERENCES=53;
+	public static final int MANAGE_GENERAL_SETTINGS = 71;
+	public static final int GENERAL_SETTING_PREFERENCES = 72;
+	public static final int GET_USER_PREFERENCES=73;
+	public static final int BLOCK_USER = 74;
 
+	//edit profiles
 
-
-	/*
-	edit profiles
-	 */
 	public static final int GET_BOOKS_FOR_USER = 54;
 	public static final int GET_ABOUT_ME = 55;
 	public static final int EDIT_ABOUT_ME = 56;
 	public static final int GET_ROLEMODEL_FOR_USER = 57;
 	public static final int GET_PASTTIME_FOR_USER = 58;
 	public static final int GET_MOVIES_FOR_USER = 59;
-	public static final int ADD_RESOURCE_TO_FAVORITE = 60;
+	public static final int MANAGE_FAVOURITES = 60;
 
 
 
@@ -93,16 +91,14 @@ public class WebConstants {
 	public static final String URL_GET_NOTIFICATION = URL_HOST_147 + "GetNotification";
 	public static final String URL_GET_MESSAGES = URL_HOST_147 + "GetMessages";
 	public static final String URL_GET_STUDYMATE_REQUEST = URL_HOST_147 + "GetStudymateRequest";
-	public static final String URL_PRIVACY_SETTING = URL_HOST_147 + "GetAllNotices";
-	public static final String URL_BLOCK_USER = URL_HOST_147 + "GetAllNotices";
-	public static final String URL_NOTIFICATION = URL_HOST_147 + "GetAllNotices";
-	public static final String URL_PROFILE_PIC = URL_HOST_162 + "UploadUserProfilePic";
+	public static final String URL_BLOCK_USER = URL_HOST_147 + "BlockUser";
 	public static final String URL_GET_ALL_BADGES_COUNT = URL_HOST_147 + "GetAllBadgeCount";
 	public static final String URL_RESPOND_TO_REQUEST = URL_HOST_147 + "AcceptRequestFromStudymate";
 	public static final String URL_UPDATE_READ_STATUS = URL_HOST_147 + "UpdateReadStatus"; // studymate_request, messages, notification
 	public static final String URL_GET_HIGH_SCORERS = URL_HOST_147 + "GetHighScorers";
 	public static final String URL_GET_WALLET_SUMMARY = URL_HOST_147 + "GetWalletSummary";
 	public static final String URL_GENERATE_VOUCHER = URL_HOST_147 + "GenerateVoucher";
+	public static final String URL_GET_MY_FEEDS = URL_HOST_147 + "GetMyFeeds";
 
 
 	/*
@@ -114,8 +110,8 @@ public class WebConstants {
 	public static final String URL_GET_MOVIES_FOR_USER =  URL_HOST_147 + "GetMoviesForUser";
 	public static final String URL_GET_PASTTIME_FOR_USER =  URL_HOST_147 + "GetPastimeForUser";
 	public static final String URL_GET_ROLEMODEL_FOR_USER =  URL_HOST_147 + "GetRoleModelForUser";
-	public static final String URL_ADD_RESOURCE_TO_FAVORITE =  URL_HOST_147 + "AddResourcesToFavorite";
-
+	public static final String URL_MANAGE_FAVOURITES =  URL_HOST_147 + "ManageFavorite";
+	public static final String URL_EDIT_PROFILE_PIC = " ";
 
 
 	/**
@@ -133,4 +129,5 @@ public class WebConstants {
 	public static final String SUCCESS = "success";
 	public static final String FAILED = "failed";
 	public static final String DUPLICATE_ENTRY = "Duplicate entry";
+
 }

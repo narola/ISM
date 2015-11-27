@@ -11,7 +11,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -291,6 +294,19 @@ public class Utility {
 
 	public static void hideProgressBar(TeacherHostActivity activity) {
 		activity.stopProgress();
+	}
+
+
+
+	public static SpannableString f;
+
+	public static SpannableString getSpannableString(String spanString, Integer color) {
+
+		f = new SpannableString(spanString);
+		f.setSpan(new ForegroundColorSpan(color), 0,
+				spanString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		return f;
+
 	}
 
 }

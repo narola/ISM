@@ -152,7 +152,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (arrListSubject != null && position > 0) {
 
-                    if (Utility.isOnline(getActivity())) {
+                    if (Utility.isConnected(getActivity())) {
 
                         callApiGetTopics(Integer.parseInt(arrListSubject.get(position - 1).getId()));
                     } else {
@@ -182,7 +182,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private void callApiGetClassRooms() {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCLASSROOMS);
@@ -196,7 +196,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     }
 
     private void callApiGetSubjects() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
@@ -210,7 +210,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     }
 
     private void callApiGetTopics(int subject_id) {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 Attribute attribute = new Attribute();
                 attribute.setSubjectId(String.valueOf(subject_id));
@@ -227,7 +227,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private void callApiCreateAssignment() {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
 
             try {
                 Attribute attribute = new Attribute();

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.adapters.PostFeedCommentsAdapter;
 import com.ism.teacher.model.Data;
+import com.ism.teacher.ws.model.CommentList;
 
 import java.util.ArrayList;
 
@@ -25,14 +26,14 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
     RecyclerView rvPostFeedsComments;
     PostFeedCommentsAdapter postFeedCommentsAdapter;
     TextView tvDialogClose;
-    ArrayList<Data> commentsList;
+    private ArrayList<CommentList> commentList;
 
 
-    public ViewAllCommentsDialog(Context mContext, ArrayList<Data> commentsList) {
+    public ViewAllCommentsDialog(Context mContext, ArrayList<CommentList> commentList) {
         super(mContext);
 
         this.mContext = mContext;
-        this.commentsList = commentsList;
+        this.commentList = commentList;
 
         Window w = getWindow();
         getWindow().getAttributes().windowAnimations = R.style.DialogOpenAnimation;
@@ -44,7 +45,6 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
         w.setBackgroundDrawableResource(android.R.color.transparent);
 
         initializeDialog();
-
 
     }
 
@@ -58,7 +58,7 @@ public class ViewAllCommentsDialog extends Dialog implements View.OnClickListene
         rvPostFeedsComments.setAdapter(postFeedCommentsAdapter);
         // Set layout manager to position the items
         rvPostFeedsComments.setLayoutManager(new LinearLayoutManager(mContext));
-        postFeedCommentsAdapter.addAll(commentsList);
+        postFeedCommentsAdapter.addAll(commentList);
 
     }
 

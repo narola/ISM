@@ -142,10 +142,10 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
 
 
     private void callApiGetExamSubmission() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
 
             try {
-                ((AuthorHostActivity) getActivity()).startProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
                 request.setExamId(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 request.setExamId("9");
@@ -180,7 +180,7 @@ public class GetStudentsFragment extends Fragment implements WebserviceWrapper.W
 
     private void onResponseGetAllExamSubmission(Object object, Exception error) {
         try {
-            ((AuthorHostActivity) getActivity()).stopProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

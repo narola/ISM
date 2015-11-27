@@ -3,7 +3,6 @@ package com.ism.ws.helper;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.ism.R;
 import com.ism.constant.WebConstants;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -50,14 +49,14 @@ public class WebserviceWrapper {
             try {
 
 //			    Check if we can get access from the network.
-	            URL url = new URL(WebConstants.HOST_147);
-	            HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-	            urlc.setRequestProperty("Connection", "close");
-	            urlc.setConnectTimeout(2000); // Timeout 2 seconds.
-	            urlc.connect();
-	            isNetworkConnected = urlc.getResponseCode() == 200; //Successful response.
+                URL url = new URL(WebConstants.HOST_147);
+                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(2000); // Timeout 2 seconds.
+                urlc.connect();
+                isNetworkConnected = urlc.getResponseCode() == 200; //Successful response.
 
-	            if (isNetworkConnected) {
+                if (isNetworkConnected) {
                     switch (currentApiCode) {
                         case WebConstants.LOGIN:
                             responseObject = new WebserviceConnector(WebConstants.URL_LOGIN).execute(ResponseHandler.class, attribute);
@@ -158,14 +157,20 @@ public class WebserviceWrapper {
                         case WebConstants.GET_ROLEMODEL_FOR_USER:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_ROLEMODEL_FOR_USER).execute(ResponseHandler.class, attribute);
                             break;
-                        case WebConstants.ADD_RESOURCE_TO_FAVORITE:
-                            responseObject = new WebserviceConnector(WebConstants.URL_ADD_RESOURCE_TO_FAVORITE).execute(ResponseHandler.class, attribute);
+                        case WebConstants.MANAGE_FAVOURITES:
+                            responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_FAVOURITES).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GET_WALLET_SUMMARY:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_WALLET_SUMMARY).execute(ResponseHandler.class, attribute);
                             break;
                         case WebConstants.GENERATE_VOUCHER:
                             responseObject = new WebserviceConnector(WebConstants.URL_GENERATE_VOUCHER).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.BLOCK_USER:
+                            responseObject = new WebserviceConnector(WebConstants.URL_BLOCK_USER).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_MY_FEEDS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_FEEDS).execute(ResponseHandler.class, attribute);
                             break;
                     }
                 }

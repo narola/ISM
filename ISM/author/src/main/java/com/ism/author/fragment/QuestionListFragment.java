@@ -129,7 +129,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (arrListSubject != null && position > 0) {
 
-                    if (Utility.isOnline(getActivity())) {
+                    if (Utility.isConnected(getActivity())) {
 
                         callApiGetTopics(Integer.parseInt(arrListSubject.get(position - 1).getId()));
                     } else {
@@ -177,7 +177,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     }
 
     private void callApiGetSubjects() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
@@ -190,7 +190,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     }
 
     private void callApiGetTopics(int subject_id) {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 Attribute attribute = new Attribute();
                 attribute.setSubjectId(String.valueOf(subject_id));
@@ -206,7 +206,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
 
     private void callApiGetCourses() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller().execute(WebConstants.GETCOURSES);
             } catch (Exception e) {
@@ -219,7 +219,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
 
     private void callApiGetQuestionBank() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 Attribute attribute = new Attribute();
                 attribute.setUserId("370");

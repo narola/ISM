@@ -45,6 +45,14 @@ public class WebConstants {
     public static final int GETALLASSIGNMENTS = 28;
     public static final int CREATEQUESTION = 29;
     public static final int GETALLHASHTAG = 30;
+    public static final int GET_ALL_BADGES_COUNT = 29;
+
+
+
+    //user settings preferences
+
+    public static final int GENERAL_SETTING_PREFERENCES = 51;
+    public static final int GET_USER_PREFERENCES = 52;
 
    /*webservice url*/
 
@@ -79,6 +87,7 @@ public class WebConstants {
     public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
     public static final String URL_GETALLHASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
 
+    public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
     /*status for apisuccess ans apifailed*/
 
     public static final String STATUS_SUCCESS = "success";

@@ -298,7 +298,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private void callApiGetClassrooms() {
-        if (Utility.isOnline(mContext)) {
+        if (Utility.isConnected(mContext)) {
             try {
                 new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCLASSROOMS);
@@ -311,7 +311,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private void callApiGetSubjects() {
-        if (Utility.isOnline(mContext)) {
+        if (Utility.isConnected(mContext)) {
             try {
                 new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
@@ -325,7 +325,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
 
     private void callApiGetTopics(int subject_id) {
-        if (Utility.isOnline(mContext)) {
+        if (Utility.isConnected(mContext)) {
             try {
                 Attribute attribute = new Attribute();
                 attribute.setSubjectId(String.valueOf(subject_id));
@@ -342,7 +342,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private void callApiCreateExam() {
 
-        if (Utility.isOnline(mContext)) {
+        if (Utility.isConnected(mContext)) {
             try {
                 Attribute attribute = new Attribute();
 

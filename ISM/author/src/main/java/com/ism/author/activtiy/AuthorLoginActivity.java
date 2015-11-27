@@ -100,7 +100,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
 
 
     public void onClickLogin(View view) {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             /*if (strValidationMsg == null || strValidationMsg.equals("")) {
                 strValidationMsg = "1";
 				btnLogin.setProgress(1);
@@ -146,7 +146,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         btnForgotPwdSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utility.isOnline(getActivity())) {
+                if (Utility.isConnected(getActivity())) {
                     if (inputValidator.validateAllConstraintsEmail(etEmail)) {
                         callApiForgotPassword(etEmail.getText().toString().trim());
                     }
@@ -181,7 +181,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         progState = (ActionProcessButton) dialogView.findViewById(R.id.prog_state);
         progCity = (ActionProcessButton) dialogView.findViewById(R.id.prog_city);
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             callApiGetCountries();
         } else {
             Utility.toastOffline(getActivity());
@@ -191,7 +191,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (arrListCountries != null && position > 0) {
-                    if (Utility.isOnline(getActivity())) {
+                    if (Utility.isConnected(getActivity())) {
                         callApiGetStates(Integer.parseInt(arrListCountries.get(position - 1).getId()));
                     } else {
                         Utility.toastOffline(getActivity());
@@ -211,7 +211,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (arrListStates != null && position > 0) {
-                    if (Utility.isOnline(getActivity())) {
+                    if (Utility.isConnected(getActivity())) {
                         callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
                     } else {
                         Utility.toastOffline(getActivity());
@@ -248,7 +248,7 @@ public class AuthorLoginActivity extends Activity implements WebserviceWrapper.W
         btnCredentialsSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utility.isOnline(getActivity())) {
+                if (Utility.isConnected(getActivity())) {
                     if (isInputsValid()) {
                         Attribute attribute = new Attribute();
                         attribute.setFirstname(etFirstName.getText().toString().trim());
