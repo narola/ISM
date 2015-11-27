@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.ISMTeacher;
@@ -71,6 +72,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     private ImageLoader imageLoader;
     private LinearLayoutManager mLayoutManager;
     private LinearLayout llPrevStudent, llNextStudent;
+    private RelativeLayout rlBottomEvaluationTab;
 
     private void initGlobal() {
 
@@ -79,6 +81,8 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
         imgStudentProfilePic = (CircleImageView) view.findViewById(R.id.img_student_profile_pic);
+
+        rlBottomEvaluationTab = (RelativeLayout) view.findViewById(R.id.rl_bottom_evaluation_tab);
 
         tvStudentName = (TextView) view.findViewById(R.id.tv_student_name);
         tvStudentRollNo = (TextView) view.findViewById(R.id.tv_student_roll_no);
@@ -158,7 +162,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
                 ((TeacherHostActivity) getActivity()).startProgress();
                 Attribute request = new Attribute();
 //                request.setExamId(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
-                request.setExamId("11");
+                request.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
                 Debug.e(TAG, "The exam ID is::" + getBaseFragment().getArguments().getString(AppConstant.ARG_EXAM_ID));
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_QUESTIONS);
@@ -176,9 +180,8 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
             try {
                 ((TeacherHostActivity) getActivity()).startProgress();
                 Attribute request = new Attribute();
-//                request.setExamId(getBaseFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
                 request.setExamId(getBaseFragment().getArguments().getString(AppConstant.ARG_STUDENT_ID));
-                request.setExamId("11");
+                request.setExamId(WebConstants.EXAM_ID_11_SUBJECTIVE);
 //                request.setStudentId("1");
                 new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_EVALUATIONS);
@@ -217,7 +220,22 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
             if (object != null) {
                 responseObjGetAllExamQuestions = (ResponseHandler) object;
                 if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
-                    loadStudentEvaluationData();
+
+                    /**
+                     * condition to call evaluation based on flag
+                     */
+
+                    if (getBaseFragment().getArguments().getBoolean(AppConstant.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
+                        loadStudentEvaluationData();
+                        getBaseFragment().showGetStudentsandPalleteFragment();
+                        rlBottomEvaluationTab.setVisibility(View.VISIBLE);
+                    } else {
+                        setQuestions();
+                        scrollToSpecificQuestion(0);
+                        getBaseFragment().hideGetStudentsandPalleteFragment();
+                        rlBottomEvaluationTab.setVisibility(View.GONE);
+
+                    }
                 } else if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.FAILED)) {
                     Utility.showToast(responseObjGetAllExamQuestions.getMessage(), getActivity());
                 }

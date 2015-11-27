@@ -87,6 +87,8 @@ public class AppConstant {
     public static final String ARG_STUDENT_NAME = "studentName";
     public static final String ARG_CALL_EVALUATION_API_FLAG = "callEvaluationApiFlag";
 
+    public static String ARG_ISLOAD_FRAGMENTFOREVALUATION = "examIsLoadFragmentForEvaluation";
+
 
 
 }

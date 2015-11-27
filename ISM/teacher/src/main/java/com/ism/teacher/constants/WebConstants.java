@@ -90,7 +90,7 @@ public class WebConstants {
 
     //used for assignment
     public static final String URL_GET_ALL_ASSIGNMENTS = URL_KINJAL_HOST + "GetAllExams";
-    public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_KINJAL_HOST + "GetExamSubmission";
+    public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_HOST_162 + "GetExamSubmission";
     public static final String URL_GET_EXAM_QUESTIONS = URL_KINJAL_HOST + "GetExamQuestions";
     public static final String URL_GET_EXAM_EVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
     public static final String URL_GET_MY_STUDENTS = URL_KINJAL_HOST + "GetMyStudents";

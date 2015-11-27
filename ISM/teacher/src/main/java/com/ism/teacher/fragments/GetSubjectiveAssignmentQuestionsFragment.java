@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 
 import com.ism.teacher.R;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.ws.model.Evaluation;
 
 import java.util.ArrayList;
@@ -24,11 +23,6 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
     private static final String TAG = GetSubjectiveAssignmentQuestionsFragment.class.getSimpleName();
     private View view;
     private FrameLayout flGetsubjectiveAssignmentContainerLeft, flGetsubjectiveAssignmentContainerMiddle, flGetsubjectiveAssignmentContainerRight;
-    private FragmentListener fragListener;
-
-    public static final int FRAGMENT_MY_STUDENTS = 0;
-    public static final int FRAGMENT_SUBJECTIVE_QUESTIONS = 1;
-
 
     //new code
     public GetStudentsFragment getStudentsFragment;
@@ -108,6 +102,17 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
     /*this is to scroll to specific question content on the click of question palette*/
     public void scrollToSpecificQuestion(int position) {
         getSubjectiveQuestionsFragment.scrollToSpecificQuestion(position);
+    }
+
+
+    public void hideGetStudentsandPalleteFragment() {
+        flGetsubjectiveAssignmentContainerLeft.setVisibility(View.GONE);
+        flGetsubjectiveAssignmentContainerRight.setVisibility(View.GONE);
+    }
+
+    public void showGetStudentsandPalleteFragment() {
+        flGetsubjectiveAssignmentContainerLeft.setVisibility(View.VISIBLE);
+        flGetsubjectiveAssignmentContainerRight.setVisibility(View.VISIBLE);
     }
 
 

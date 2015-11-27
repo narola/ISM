@@ -124,6 +124,7 @@
         android:layout_weight="1" />
 
     <RelativeLayout
+        android:id="@+id/rl_bottom_evaluation_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_app_dark">

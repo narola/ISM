@@ -120,26 +120,27 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             holder.txtUnassessedLabel.setText("Unassessed");
         }
 
+
+        final Bundle bundleAssignmentDetails = new Bundle();
+        bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_ID, arrayListAssignments.get(position).getExamId());
+        //bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_ID, "9");
+        bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_NAME, arrayListAssignments.get(position).getExamName());
+        bundleAssignmentDetails.putString(AppConstant.ARG_CLASSROOM_ID, arrayListAssignments.get(position).getClassroomId());
+        bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_CATEGORY, arrayListAssignments.get(position).getExamCategory());
+        bundleAssignmentDetails.putString(AppConstant.ARG_SUBJECT_NAME, arrayListAssignments.get(position).getSubjectName());
+        bundleAssignmentDetails.putString(AppConstant.ARG_PASS_PERCENTAGE, arrayListAssignments.get(position).getPassPercentage());
+        bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_TYPE, arrayListAssignments.get(position).getExamType());
+        bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_MODE, arrayListAssignments.get(position).getExamMode());
+        bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_DURATION, arrayListAssignments.get(position).getDuration());
+        bundleAssignmentDetails.putString(AppConstant.ARG_CLASSROOM_NAME, arrayListAssignments.get(position).getClassroomName());
+        bundleAssignmentDetails.putInt(AppConstant.ARG_ASSIGNMENT_NO, position);
+
+
         holder.llParentAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                mFragment.getFragmentManager().beginTransaction().
-//                        replace(R.id.fl_teacher_office_home, new GetAssignmentsSubmitterFragment(mFragment, arrayListAssignments.get(position).getExamId(), arrayListAssignments.get(position).getExamMode())).commit();
-//
-                Bundle bundleAssignmentDetails = new Bundle();
-                bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_ID, arrayListAssignments.get(position).getExamId());
-                //bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_ID, "9");
-                bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_NAME, arrayListAssignments.get(position).getExamName());
-                bundleAssignmentDetails.putString(AppConstant.ARG_CLASSROOM_ID, arrayListAssignments.get(position).getClassroomId());
-                bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_CATEGORY, arrayListAssignments.get(position).getExamCategory());
-                bundleAssignmentDetails.putString(AppConstant.ARG_SUBJECT_NAME, arrayListAssignments.get(position).getSubjectName());
-                bundleAssignmentDetails.putString(AppConstant.ARG_PASS_PERCENTAGE, arrayListAssignments.get(position).getPassPercentage());
-                bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_TYPE, arrayListAssignments.get(position).getExamType());
-                bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_MODE, arrayListAssignments.get(position).getExamMode());
-                bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_DURATION, arrayListAssignments.get(position).getDuration());
-                bundleAssignmentDetails.putString(AppConstant.ARG_CLASSROOM_NAME, arrayListAssignments.get(position).getClassroomName());
-                bundleAssignmentDetails.putInt(AppConstant.ARG_ASSIGNMENT_NO, position);
 
+                bundleAssignmentDetails.putBoolean(AppConstant.ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
                 mFragment.getFragmentManager().beginTransaction().
                         replace(R.id.fl_teacher_office_home, GetAssignmentsSubmitterFragment.newInstance(bundleAssignmentDetails)).commit();
             }
@@ -151,15 +152,16 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
                 if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_OBJECTIVE)) {
 
+                    bundleAssignmentDetails.putBoolean(AppConstant.ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
                     mFragment.getFragmentManager().beginTransaction().
-                            replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(null)).commit();
+                            replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
 
 
                 } else if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_SUBJECTIVE)) {
 
-
+                    bundleAssignmentDetails.putBoolean(AppConstant.ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
                     mFragment.getFragmentManager().beginTransaction().
-                            replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(null)).commit();
+                            replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(bundleAssignmentDetails)).commit();
 
                 }
 
