@@ -191,11 +191,16 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 			if (object != null) {
 				ResponseHandler responseHandler = (ResponseHandler) object;
 				if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-					Log.e(TAG, "voucher created");
 					if (etVoucherAmount != null) {
 						etVoucherAmount.setText("");
 					}
-					callApiGetWalletSummary();
+
+					if (responseHandler.getWallet().get(0).getWalletBalance() != null) {
+						dBalance = Double.valueOf(responseHandler.getWallet().get(0).getWalletBalance());
+					}
+					showBalance(responseHandler.getWallet().get(0).getWalletBalance());
+					arrListVoucher.add(responseHandler.getWallet().get(0).getVouchers().get(0));
+					adpVoucher.notifyDataSetChanged();
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
 					Utility.alert(activityHost, null, responseHandler.getMessage());
 					Log.e(TAG, "onResponseGenerateVoucher failed : " + responseHandler.getMessage());
@@ -217,9 +222,7 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 					if (responseHandler.getWallet().get(0).getWalletBalance() != null) {
 						dBalance = Double.valueOf(responseHandler.getWallet().get(0).getWalletBalance());
 					}
-					txtBalance.setText(Html.fromHtml("<font color='#323941'>Your wallet Balance is</font>" +
-							"<br><font color='#DA534F'>" + activityHost.getString(R.string.currency) + " "
-							+ responseHandler.getWallet().get(0).getWalletBalance() + "</font>"));
+					showBalance(responseHandler.getWallet().get(0).getWalletBalance());
 					arrListVoucher = responseHandler.getWallet().get(0).getVouchers();
 					fillVoucherList();
 				} else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
@@ -231,6 +234,11 @@ public class MyWalletFragment extends Fragment implements WebserviceWrapper.Webs
 		} catch (Exception e) {
 			Log.e(TAG, "onResponseGetWalletSummary Exception : " + e.toString());
 		}
+	}
+
+	private void showBalance(String balance) {
+		txtBalance.setText(Html.fromHtml("<font color='#323941'>Your wallet Balance is</font>" +
+				"<br><font color='#DA534F'>" + balance + "</font>"));
 	}
 
 	private void fillVoucherList() {

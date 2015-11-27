@@ -20,6 +20,7 @@ import com.ism.commonsource.utility.Utility;
 import com.ism.commonsource.view.ProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
+import com.ism.fragment.userprofile.ProfileControllerFragment;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.views.CircleImageView;
@@ -46,10 +47,11 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 
 	private ArrayList<StudymateRequest> arrListStudymate;
 	private Context context;
+	private ProfileControllerFragment fragProfileController;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 	private MyTypeFace myTypeFace;
-	private int listItemLimit = -1;
+	private int listItemLimit = 0;
 
 	public StudymateRequestAdapter(Context context, ArrayList<StudymateRequest> arrListStudymate) {
 		this.arrListStudymate = arrListStudymate;
@@ -59,16 +61,18 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		myTypeFace = new MyTypeFace(context);
 		progressGenerator = new ProgressGenerator();
+
 	}
 
-	public StudymateRequestAdapter(Context context, ArrayList<StudymateRequest> arrListStudymate, int listItemLimit) {
+	public StudymateRequestAdapter(Context context, ProfileControllerFragment profileControllerFragment, ArrayList<StudymateRequest> arrListStudymate, int listItemLimit) {
 		this(context, arrListStudymate);
+		fragProfileController = profileControllerFragment;
 		this.listItemLimit = listItemLimit;
 	}
 
 	@Override
 	public int getCount() {
-		return listItemLimit >= 0 ? listItemLimit < arrListStudymate.size() ? listItemLimit : arrListStudymate.size() : arrListStudymate.size();
+		return listItemLimit > 0 ? listItemLimit < arrListStudymate.size() ? listItemLimit : arrListStudymate.size() : arrListStudymate.size();
 	}
 
 	@Override
@@ -125,6 +129,15 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 					showRespondToRequestDialog(arrListStudymate.get(position).getRequestFromId());
 				}
 			});
+
+			convertView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (fragProfileController != null) {
+						fragProfileController.showAllStudymateRequests(position);
+					}
+				}
+			});
 		} catch (Exception e) {
 			Log.e(TAG, "getView Exception : " + e.toString());
 		}
@@ -137,6 +150,7 @@ public class StudymateRequestAdapter extends BaseAdapter implements WebserviceWr
 		TextView txtNameRequest, txtTime;
 		Button btnRespond;
 	}
+
 	private void showRespondToRequestDialog(final String studymateId) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 

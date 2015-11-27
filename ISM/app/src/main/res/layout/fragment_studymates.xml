@@ -16,7 +16,10 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:textAllCaps="true"
-			android:padding="15dp"
+			android:textSize="16sp"
+			android:paddingTop="10dp"
+			android:paddingBottom="10dp"
+			android:paddingLeft="30dp"
 			android:textColor="@drawable/txt_color_studymate_label"
 			android:background="@drawable/bg_tab_studymate"
 			android:text="@string/your_studymates"/>
@@ -27,17 +30,20 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:textAllCaps="true"
-			android:padding="15dp"
+			android:textSize="16sp"
+			android:paddingTop="10dp"
+			android:paddingBottom="10dp"
+			android:paddingLeft="30dp"
 			android:textColor="@drawable/txt_color_studymate_label"
 			android:background="@drawable/bg_tab_studymate"
 			android:text="@string/find_more_studymates"/>
 	</LinearLayout>
 
-	<FrameLayout
-		android:id="@+id/fl_fragment_container"
+	<android.support.v4.view.ViewPager
+		android:id="@+id/vp_studymates"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_below="@id/ll_header"></FrameLayout>
+		android:layout_below="@id/ll_header"></android.support.v4.view.ViewPager>
 
 	<View
 		android:layout_width="20dp"
