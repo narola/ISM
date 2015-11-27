@@ -56,9 +56,6 @@
                                     <?php if(!empty($author_books)){
                                         foreach ($author_books as $author) { ?>
                                             
-
-
-
                                     <tr>
                                         <td class="checkbox_td">
                                             <div class="squaredThree">
@@ -94,8 +91,6 @@
                                             }
 
                                              ?>
-                                            
-
                                             </ul>
 
                                             </div>
@@ -129,4 +124,4 @@
                     </div>
                 </div>
                 <!--//row table-->
-            </div>
+</div>

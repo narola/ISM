@@ -125,7 +125,6 @@ class Book extends ADMIN_Controller {
 	 	$config['last_link'] = 'Last';
 	 	$config['last_tag_open'] = '<li>';
 	 	$config['last_tag_close'] = '</li>';
-		$this->data['author_name'] = select(TBL_USERS,'full_name',array('where'=>array('id'=>$id)),array('single'=>true));
 	 	//fetch data from noticeboard table and join with noticeboard viewerd table
 		$this->data['books'] = select(TBL_AUTHOR_BOOK,TBL_BOOKS.'.id,'. TBL_BOOKS.'.book_name,'.TBL_BOOKS.'.image_link',
 										array('where'=>$where),
@@ -143,6 +142,7 @@ class Book extends ADMIN_Controller {
 		// qry();
 		// p($this->data['books'], true);
 		$this->pagination->initialize($config);
+		$this->data['author_name'] = select(TBL_USERS,'full_name',array('where'=>array('id'=>$id)),array('single'=>true));
 		$this->data['page_title'] = 'View All Books';
 		
 		$this->template->load('admin/default','admin/book/view_all',$this->data);

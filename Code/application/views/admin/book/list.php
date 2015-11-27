@@ -98,12 +98,9 @@
                   <a data-slide="next" href="#Carousel_<?php echo $i; ?>" class="right carousel-control">›</a>
                 </div><!--.Carousel-->
                 <a href="admin/book/view_all/<?php echo $authorbook['author']['id']; ?>" class="view_books pull-right">View All</a>
-             <?php   }
-                  
-                
-                  ?>
+             <?php } ?>
                  
-		</div>
+		      </div>
                
                <div class="clearfix"></div>
     <?php 

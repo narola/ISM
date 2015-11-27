@@ -29,7 +29,7 @@ class Author extends ADMIN_Controller {
 								);
 		
 		$authors_ids = array_column($authors, 'id');
-		// p($authors_ids);
+		
 		$author_books = array();
 		foreach ($authors_ids as $author_id) {
 			$author = select(TBL_USERS, TBL_USERS.'.id,'.TBL_USERS.'.full_name,'.TBL_USERS.'.profile_pic,'.TBL_USERS.'.user_status,'.TBL_AUTHOR_PROFILE.'.education',
@@ -56,7 +56,7 @@ class Author extends ADMIN_Controller {
 								    				'condition' => TBL_BOOKS.".id = ".TBL_AUTHOR_BOOK.".book_id",
 							    				)
 							    			),
-										'limit'=>2
+										'limit'=>4
 										)
 									);
 			$array['books'] = $books;
