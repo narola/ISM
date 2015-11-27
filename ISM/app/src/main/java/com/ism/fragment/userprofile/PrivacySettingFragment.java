@@ -12,12 +12,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.Adapters;
-import com.ism.constant.WebConstants;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.ws.helper.ResponseHandler;
@@ -104,7 +102,7 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 int selectedId = spViewers.getSelectedItemPosition();
-                Toast.makeText(getActivity(), "Position : " + selectedId, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Position : " + selectedId, Toast.LENGTH_SHORT).show();
                 String[] array = getResources().getStringArray(R.array.viewers_array);
                 String key_value = getKeyId(PreferenceData.PS_VIWERS_VIEW_EXAMSCORE);
 //                PreferenceData.setStringPrefs(key_value, getActivity(), array[position]);
@@ -203,6 +201,7 @@ public class PrivacySettingFragment extends Fragment implements WebserviceWrappe
     public void onDetach() {
         super.onDetach();
         try {
+           // generalSettingsFragment.callApiGetGeneralSettingPreferences();
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
         }

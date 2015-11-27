@@ -40,6 +40,7 @@ public class FavoriteMoviesAdapter extends BaseAdapter implements Filterable{
     public FavoriteMoviesAdapter(Context context, ArrayList<MovieData> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
+        this.arrayListFilter=arrayList;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         inflater = LayoutInflater.from(context);
@@ -127,12 +128,12 @@ public class FavoriteMoviesAdapter extends BaseAdapter implements Filterable{
             try {
 
                 Debug.i(TAG, "Search string : " + constraint);
-
+                Debug.i(TAG, "Initially Size of list : " + arrayListFilter.size());
                 if (constraint!= null) {
                     Debug.i(TAG, "Search string : " + constraint);
                     ArrayList<MovieData> filterList = new ArrayList<MovieData>();
                     for (int i = 0; i < arrayListFilter.size(); i++) {
-                        if (arrayListFilter.get(i).getMovieName().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getMovieGenre().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getScreenplay().toLowerCase().contains(constraint.toString().toLowerCase()) ) {
+                        if (arrayListFilter.get(i).getMovieName().toLowerCase().contains(constraint.toString().toLowerCase())  || arrayListFilter.get(i).getScreenplay().toLowerCase().contains(constraint.toString().toLowerCase()) ) {
 
 //                            if (arrayListFilter.get(i).getAuthorName().contains(constraint) || arrayListFilter.get(i).getBookName().contains(constraint) || arrayListFilter.get(i).getPublisherName().contains(constraint)) {
                             Debug.i(TAG, "i : " + i);
@@ -153,6 +154,7 @@ public class FavoriteMoviesAdapter extends BaseAdapter implements Filterable{
                     results.count = arrayListFilter.size();
                     results.values = arrayListFilter;
                 }
+                Debug.i(TAG, "Size of list : " + results.count );
                 return results;
             } catch (Exception e) {
                 Debug.i(TAG, "FilterResults Exceptions : " + e.getLocalizedMessage());

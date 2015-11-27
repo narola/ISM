@@ -136,13 +136,13 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
     }
 
     private void callApiGetExamQuestions() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
-                ((AuthorHostActivity) getActivity()).startProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
                 request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
 //                request.setExamId("9");
-                new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -155,15 +155,15 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     /*if bundle arguments are not null then we will call get exam evaluation for student nd set data according to it*/
     private void callAPiGetExamEvaluation() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
-                ((AuthorHostActivity) getActivity()).startProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
 //                request.setExamId(getArguments().getString(ExamsAdapter.ARG_EXAM_ID));
 //                request.setStudentId(getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
                 request.setExamId("9");
                 request.setStudentId("202");
-                new WebserviceWrapper(getActivity(), request, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), request,  this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
@@ -221,7 +221,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     private void onResponseGetAllExamQuestions(Object object, Exception error) {
         try {
-            ((AuthorHostActivity) getActivity()).stopProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 responseObjGetAllExamQuestions = (ResponseHandler) object;
                 if (responseObjGetAllExamQuestions.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -230,7 +230,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
                     setAssignmentDetails(responseObjGetAllExamQuestions.getExamQuestions().get(0));
 
-                    if (getArguments() != null) {
+                    if (getArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                         callAPiGetExamEvaluation();
                     }
 
@@ -247,7 +247,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
     private void onResponseGetExamEvaluation(Object object, Exception error) {
         try {
-            ((AuthorHostActivity) getActivity()).stopProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

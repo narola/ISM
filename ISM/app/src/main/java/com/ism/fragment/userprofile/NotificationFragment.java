@@ -192,6 +192,7 @@ public class NotificationFragment extends Fragment implements WebserviceWrapper.
     public void onDetach() {
         super.onDetach();
         try {
+           // generalSettingsFragment.callApiGetGeneralSettingPreferences();
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
         }

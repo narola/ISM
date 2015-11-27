@@ -89,8 +89,13 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private static int EXAMDURATION_INTERVAL = 30, EXAMDURATION_STARTVALUE = 30, EXAMDURATION_ENDVALUE = 300;
 
     String examStartDate = "", examEndDate = "", strAssignmenttext = "";
-
     private InputValidator inputValidator;
+
+    public static String ARG_EXAM_CLASSROOM_ID = "examClassRoomId";
+    public static String ARG_EXAM_SUBJECT_ID = "examSubjectId";
+    public static String ARG_EXAM_TOPIC_ID = "examTopicId";
+    public static String ARG_EXAM_QUESTION_SCORE = "examQuestionScore";
+    public static String ARG_EXAM_BOOK_ID = "examBookId";
 
 
     @Override
@@ -271,7 +276,9 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
         if (getArguments() != null) {
             setExamDetails();
-
+            btnExamSetquestion.setVisibility(View.VISIBLE);
+        } else {
+//            btnExamSetquestion.setVisibility(View.GONE);
         }
         callApiGetClassrooms();
         callApiGetSubjects();
@@ -291,7 +298,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private void callApiGetClassrooms() {
-        if (Utility.isOnline(mContext)) {
+        if (Utility.isConnected(mContext)) {
             try {
                 new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCLASSROOMS);
@@ -304,7 +311,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private void callApiGetSubjects() {
-        if (Utility.isOnline(mContext)) {
+        if (Utility.isConnected(mContext)) {
             try {
                 new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
@@ -318,7 +325,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
 
     private void callApiGetTopics(int subject_id) {
-        if (Utility.isOnline(mContext)) {
+        if (Utility.isConnected(mContext)) {
             try {
                 Attribute attribute = new Attribute();
                 attribute.setSubjectId(String.valueOf(subject_id));
@@ -335,7 +342,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private void callApiCreateExam() {
 
-        if (Utility.isOnline(mContext)) {
+        if (Utility.isConnected(mContext)) {
             try {
                 Attribute attribute = new Attribute();
 
@@ -654,16 +661,16 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     Utils.showToast(Utility.getString(R.string.msg_success_createexam, mContext), mContext);
                     btnExamSetquestion.setVisibility(View.VISIBLE);
 
-
                     if (getArguments() != null) {
                         getArguments().putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
                     } else {
-
                         Bundle bundleExamDetails = new Bundle();
                         bundleExamDetails.putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
                         setArguments(bundleExamDetails);
-
                     }
+
+                    setBundleArguments();
+
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), mContext);
                 }
@@ -706,6 +713,10 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                 svCreateExam.fullScroll(ScrollView.FOCUS_UP);
             }
         } else if (v == btnExamSetquestion) {
+
+            if (getArguments() != null) {
+                setBundleArguments();
+            }
             ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ADDQUESTION_CONTAINER, getArguments());
         } else if (v == btnExamCancel) {
             backToTrialScreen();
@@ -713,5 +724,21 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     }
 
+    private void setBundleArguments() {
+
+        try {
+            getArguments().putString(ARG_EXAM_CLASSROOM_ID, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
+                    Integer.parseInt(arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
+            getArguments().putString(ARG_EXAM_SUBJECT_ID, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
+                    Integer.parseInt(arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
+            getArguments().putString(ARG_EXAM_TOPIC_ID, "5");
+            getArguments().putString(ARG_EXAM_BOOK_ID, "3");
+            getArguments().putString(ARG_EXAM_QUESTION_SCORE, etExamQuestionscorevalue.getText().toString().equals("") ?
+                    "0" : etExamQuestionscorevalue.getText().toString());
+            getArguments().putString(ExamsAdapter.ARG_SUBJECT_NAME, arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName());
+        } catch (Exception e) {
+            Debug.e(TAG, "SetBundleArgumentsException : " + e.toString());
+        }
+    }
 
 }

@@ -14,23 +14,23 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Books {
 	
-    private ArrayList<Book> suggested;
-    private ArrayList<Book> favorite;
+    private ArrayList<BookData> suggested;
+    private ArrayList<BookData> favorite;
 
     @JsonProperty("suggested_book")
-    public ArrayList<Book> getSuggested() {
+    public ArrayList<BookData> getSuggested() {
         return this.suggested;
     }
 
-    public void setSuggested(ArrayList<Book> suggested) {
+    public void setSuggested(ArrayList<BookData> suggested) {
         this.suggested = suggested;
     }
     @JsonProperty("favorite_book")
-    public ArrayList<Book> getFavorite() {
+    public ArrayList<BookData> getFavorite() {
         return this.favorite;
     }
 
-    public void setFavorite(ArrayList<Book> favorite) {
+    public void setFavorite(ArrayList<BookData> favorite) {
         this.favorite = favorite;
     }
 

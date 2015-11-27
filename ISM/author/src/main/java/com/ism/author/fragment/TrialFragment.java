@@ -70,7 +70,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
         Attribute attribute = new Attribute();
         attribute.setRole("4");
         attribute.setUserId("370");
-        ((AuthorHostActivity) getActivity()).startProgress();
+        ((AuthorHostActivity) getActivity()).showProgress();
         new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                 .execute(WebConstants.GETALLEXAM);
 
@@ -106,7 +106,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        ((AuthorHostActivity) getActivity()).stopProgress();
+        ((AuthorHostActivity) getActivity()).hideProgress();
         try {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (API_METHOD == WebConstants.GETALLEXAM) {

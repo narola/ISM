@@ -1,5 +1,6 @@
 package com.ism.author.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +37,10 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     private View view;
     Fragment mFragment;
 
+    public PreviewQuestionFragment() {
+    }
+
+    @SuppressLint("ValidFragment")
     public PreviewQuestionFragment(Fragment fragment) {
         this.mFragment = fragment;
     }
@@ -98,7 +103,7 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     private void callApiFreezeQuestions() {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             if (arrListQuestions.size() > 0) {
                 try {
                     Attribute attribute = new Attribute();
@@ -172,14 +177,26 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     }
 
-    public void updateQuestionDataAfterEditQuestion() {
-        int position = getFragment().getPOSITION_FOR_EDITQUESTION();
-        arrListQuestions.get(position).setQuestionText("test");
+
+    public void updateQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData, Boolean isChecked) {
+        int position = arrListQuestions.indexOf(prevQuestionData);
+        if (position != -1) {
+            arrListQuestions.set(position, updatedQuestionData);
+            previewQuestionListAdapter.addAll(arrListQuestions);
+            previewQuestionListAdapter.notifyDataSetChanged();
+        } else {
+            if (isChecked) {
+                addQuestionDataAfterAddQuestion(updatedQuestionData);
+            }
+        }
+    }
+
+    public void addQuestionDataAfterAddQuestion(Questions question) {
+        arrListQuestions.add(0, question);
         previewQuestionListAdapter.addAll(arrListQuestions);
         previewQuestionListAdapter.notifyDataSetChanged();
-
-
     }
+
 
     private AddQuestionContainerFragment getFragment() {
         return (AddQuestionContainerFragment) mFragment;

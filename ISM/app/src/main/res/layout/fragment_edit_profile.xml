@@ -21,7 +21,7 @@
             android:background="@drawable/bg_tab_edit_profile"
             android:gravity="center"
             android:padding="@dimen/d5dp"
-            android:text="About Me"
+            android:text="@string/strAboutMe"
             android:textColor="@drawable/text_tab_edit_profile"
             android:textSize="@dimen/d20sp" />
 
@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_tab_edit_profile"
             android:gravity="center"
-            android:text="Books"
+            android:text="@string/strBooks"
             android:textColor="@drawable/text_tab_edit_profile"
             android:textSize="@dimen/d20sp" />
 
@@ -55,7 +55,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_tab_edit_profile"
             android:gravity="center"
-            android:text="Movies"
+            android:text="@string/strMovies"
             android:textColor="@drawable/text_tab_edit_profile"
             android:textSize="@dimen/d20sp" />
 
@@ -72,7 +72,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_tab_edit_profile"
             android:gravity="center"
-            android:text="Role Models"
+            android:text="@string/strRoleModels"
             android:textColor="@drawable/text_tab_edit_profile"
             android:textSize="@dimen/d20sp" />
 
@@ -89,7 +89,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_tab_edit_profile"
             android:gravity="center"
-            android:text="Pasttime"
+            android:text="@string/strPastimes"
             android:textColor="@drawable/text_tab_edit_profile"
             android:textSize="@dimen/d20sp" />
 

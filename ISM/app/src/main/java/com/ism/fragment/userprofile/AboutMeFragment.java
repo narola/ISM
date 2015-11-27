@@ -3,16 +3,13 @@ package com.ism.fragment.userprofile;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,13 +17,13 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.ism.ISMStudent;
 import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -37,6 +34,7 @@ import com.ism.ws.model.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -251,7 +249,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             if(Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId("1");
+                attribute.setUserId(Global.strUserId);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
             }
             else{
@@ -267,7 +265,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             if(Utility.isConnected(getActivity())) {
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId("1");
+                attribute.setUserId(Global.strUserId);
                 attribute.setUsername(txtUserName.getText().toString().trim());
                 attribute.setContactNumber(etCno.getText().toString().trim());
                 attribute.setBirthdate(strDob);
@@ -297,7 +295,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
 
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -315,7 +312,18 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 //                else{
 //                    Debug.e(TAG, "Source File exist");
 //                }
+                Log.e(TAG, "uri :"+uri+" Uri path :" + uri.getPath());
                 imgProfilePic.setImageBitmap(bitmap);
+                File file=new File(Utility.getImagePath(uri, getActivity()));// fileName = file;
+                  Log.e(TAG, "uri :" + uri + " file :" + file);
+                if (!file.isFile()) {
+                    Debug.e(TAG, "Source File Does not exist");
+                }
+                else{
+                    new EditProfileImageAsync(file).execute();
+                }
+
+
                 // hostListenerAboutMe.onSelectImage(bitmap);
                 // strDpBase64 = Utility.getBase64ForImage(bitmap);
             } catch (IOException e) {
