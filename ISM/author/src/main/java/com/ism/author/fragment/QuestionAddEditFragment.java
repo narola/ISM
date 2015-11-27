@@ -575,11 +575,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
 
     private void callAPiGetAllHashTag() {
-        if (Utility.isOnline(getActivity())) {
-
-
+        if (Utility.isConnected(getActivity())) {
+            ((AuthorHostActivity) getActivity()).showProgress();
             try {
-                ((AuthorHostActivity) getActivity()).startProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLHASHTAG);
 
@@ -597,7 +596,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
         if (Utility.isConnected(getActivity())) {
             try {
-                ((AuthorHostActivity) getActivity()).startProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Debug.e(TAG, "The user id is::" + WebConstants.TEST_USER_ID);
                 Debug.e(TAG, "The question text is::" + etAddquestionTitle.getText().toString());
                 Debug.e(TAG, "The subject id is::" + getArguments().getString(CreateExamFragment.ARG_EXAM_SUBJECT_ID));
@@ -704,7 +703,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void onReponseCreateQuestion(Object object, Exception error) {
         try {
-            ((AuthorHostActivity) getActivity()).stopProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -712,14 +711,17 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     Utils.showToast(getString(R.string.msg_success_addquestion), getActivity());
 
 
-                    if (getFragment().getIsSetQuestionData()) {
+                    if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
+
                         Utils.showToast("QUESTION EDIT CALLED", getActivity());
-                        getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(), makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
+
+                        getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
+                                makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
                                 chkAddquestionPreview.isChecked());
                     } else {
+
                         Utils.showToast("QUESTION ADD CALLED", getActivity());
                         /*this is for add question data*/
-
                         getFragment().addQuestionDataAfterAddQuestion(makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
                                 chkAddquestionPreview.isChecked());
 
@@ -785,7 +787,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
     private void onResponseGetAllHashTag(Object object, Exception error) {
         try {
-            ((AuthorHostActivity) getActivity()).stopProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

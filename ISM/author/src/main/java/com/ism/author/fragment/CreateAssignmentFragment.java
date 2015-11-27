@@ -184,6 +184,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
         if (Utility.isConnected(getActivity())) {
             try {
+                ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCLASSROOMS);
             } catch (Exception e) {
@@ -198,6 +199,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     private void callApiGetSubjects() {
         if (Utility.isConnected(getActivity())) {
             try {
+                ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
             } catch (Exception e) {
@@ -212,6 +214,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
     private void callApiGetTopics(int subject_id) {
         if (Utility.isConnected(getActivity())) {
             try {
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setSubjectId(String.valueOf(subject_id));
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -230,6 +233,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
         if (Utility.isConnected(getActivity())) {
 
             try {
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(WebConstants.TEST_USER_ID);
                 attribute.setSubmissionDate(strSubmissionDate);
@@ -337,6 +341,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private void onResponseGetClassrooms(Object object, Exception error) {
         try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -365,6 +370,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private void onResponseGetSubjects(Object object, Exception error) {
         try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -391,6 +397,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private void onResponseGetTopics(Object object, Exception error) {
         try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -417,6 +424,7 @@ public class CreateAssignmentFragment extends Fragment implements WebserviceWrap
 
     private void onResponseCreateAssignment(Object object, Exception error) {
         try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

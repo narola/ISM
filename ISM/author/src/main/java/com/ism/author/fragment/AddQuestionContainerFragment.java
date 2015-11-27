@@ -93,7 +93,7 @@ public class AddQuestionContainerFragment extends Fragment {
     private void initGlobal() {
 
         questionListFragment = new QuestionListFragment(this, getArguments());
-        previewQuestionFragment = new PreviewQuestionFragment(this);
+        previewQuestionFragment = new PreviewQuestionFragment(this, getArguments());
         questionAddEditFragment = new QuestionAddEditFragment(this, getArguments());
 
         flAddquestionfragmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
@@ -190,6 +190,7 @@ public class AddQuestionContainerFragment extends Fragment {
 
     /*this is to add question to preview fragment*/
     public void addQuestionsToPreviewFragment() {
+        Debug.e(TAG, "The size of question list to add it in preview" + getListOfPreviewQuestionsToAdd().size());
         previewQuestionFragment.addQuestionsToPreviewFragment(getListOfPreviewQuestionsToAdd());
     }
 
@@ -198,6 +199,12 @@ public class AddQuestionContainerFragment extends Fragment {
         questionListFragment.updateViewAfterDeleteInPreviewQuestion(questions);
         previewQuestionFragment.arrListQuestions.remove(questions);
 
+    }
+
+    /*this isto update question status after set data from exam*/
+
+    public void updateQuestionStatusAfterSetDataOfExam(ArrayList<Questions> arrListQuestions) {
+        questionListFragment.updateQuestionStatusAfterSetDataOfExam();
     }
 
 

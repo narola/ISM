@@ -298,8 +298,11 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private void callApiGetClassrooms() {
+
+
         if (Utility.isConnected(mContext)) {
             try {
+                ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETCLASSROOMS);
             } catch (Exception e) {
@@ -313,6 +316,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private void callApiGetSubjects() {
         if (Utility.isConnected(mContext)) {
             try {
+                ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETSUBJECT);
             } catch (Exception e) {
@@ -327,6 +331,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private void callApiGetTopics(int subject_id) {
         if (Utility.isConnected(mContext)) {
             try {
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setSubjectId(String.valueOf(subject_id));
                 new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -344,6 +349,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
         if (Utility.isConnected(mContext)) {
             try {
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute attribute = new Attribute();
 
                 attribute.setExamName(etExamName.getText().toString());
@@ -568,6 +574,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private void onResponseGetClassrooms(Object object, Exception error) {
         try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -600,6 +607,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private void onResponseGetSubjects(Object object, Exception error) {
         try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -629,6 +637,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private void onResponseGetTopics(Object object, Exception error) {
         try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -655,6 +664,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
 
     private void onResponseCreateExam(Object object, Exception error) {
         try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

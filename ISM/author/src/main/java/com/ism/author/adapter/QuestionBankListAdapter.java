@@ -101,9 +101,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                         } else {
                             holder.llQuestionAnswers.setVisibility(View.VISIBLE);
                         }
-
                     } else {
-
                         holder.imgDropdownViewAnswer.setActivated(false);
                         if (!arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
                             holder.tvQuestionAns.setVisibility(View.GONE);
@@ -112,36 +110,29 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 //                            holder.llQuestionAnswers.removeAllViews();
                         }
                     }
-
                 }
             });
+
             holder.chkSelectQuestion.setChecked(arrListQuestions.get(position).getIsQuestionAddedInPreview());
 
             holder.chkSelectQuestion.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-
                     if (!getFragment().getListOfPreviewQuestion().contains(arrListQuestions.get(position))) {
-
                         if (holder.chkSelectQuestion.isChecked()) {
                             arrListQuestions.get(position).setIsQuestionAddedInPreview(true);
-                            getFragment().listOfPreviewQuestionsToAdd.add(arrListQuestions.get(position));
-
+                            getFragment().getListOfPreviewQuestionsToAdd().add(arrListQuestions.get(position));
                         } else {
                             arrListQuestions.get(position).setIsQuestionAddedInPreview(false);
-                            getFragment().listOfPreviewQuestionsToAdd.remove(arrListQuestions.get(position));
+                            getFragment().getListOfPreviewQuestionsToAdd().remove(arrListQuestions.get(position));
                         }
-
                     } else {
                         arrListQuestions.get(position).setIsQuestionAddedInPreview(true);
                     }
                     notifyDataSetChanged();
-
-
                 }
             });
-
 
             holder.imgQuestionEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -171,6 +162,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     public void addAll(ArrayList<Questions> arrListQuestionBank) {
         try {
+            this.copyListOfQuestions = arrListQuestionBank;
             this.arrListQuestions.clear();
             this.arrListQuestions.addAll(arrListQuestionBank);
         } catch (Exception e) {
@@ -229,6 +221,26 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
     private AddQuestionContainerFragment getFragment() {
         return (AddQuestionContainerFragment) mFragment;
+    }
+
+
+    ArrayList<Questions> copyListOfQuestions;
+
+    public void filter(CharSequence charText) {
+
+        arrListQuestions.clear();
+        if (charText.length() == 0) {
+            arrListQuestions.addAll(copyListOfQuestions);
+        } else {
+            for (Questions wp : copyListOfQuestions) {
+                if (Utility.containsString(wp.getQuestionText(), charText.toString(), false)) {
+                    arrListQuestions.add(wp);
+                }
+            }
+            if (arrListQuestions.size() == 0) {
+            }
+        }
+        notifyDataSetChanged();
     }
 
 
