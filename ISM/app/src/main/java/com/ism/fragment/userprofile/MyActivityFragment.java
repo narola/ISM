@@ -14,6 +14,7 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.adapter.MyActivityAdapter;
 import com.ism.interfaces.FragmentListener;
+import com.ism.model.TestActivity;
 import com.ism.utility.Debug;
 
 import java.util.ArrayList;
@@ -52,26 +53,36 @@ public class MyActivityFragment extends Fragment {
 	private void initGlobal() {
 		recyclerMyActivity = (RecyclerView) view.findViewById(R.id.recycler_my_activity);
 
+		final ArrayList<TestActivity> arrayListActivities = new ArrayList<>();
+		String[] months = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+		for (int i = 0; i < 12; i++) {
+			for (int j = 0; j < 2; j++) {
+				TestActivity testActivity = new TestActivity();
+				testActivity.setTime(months[i] + " 2015");
+				testActivity.setActivityTitle("Status Updated");
+				arrayListActivities.add(testActivity);
+			}
+		}
+
 		recyclerMyActivity.setLayoutManager(new LinearLayoutManager(activityHost));
 		RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
 			@Override
 			public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
 				super.getItemOffsets(outRect, view, parent, state);
-				outRect.bottom = 10;
-				outRect.left = 10;
-				outRect.right = 10;
+				int spacing = 5;
+				outRect.left = spacing;
+				outRect.right = spacing;
 				if (parent.getChildLayoutPosition(view) == 0) {
-					outRect.top = 10;
+					outRect.top = spacing;
+				}
+				if (parent.getChildLayoutPosition(view) == arrayListActivities.size() - 1) {
+					outRect.bottom = spacing;
 				}
 			}
 		};
 		recyclerMyActivity.addItemDecoration(itemDecoration);
 
-		ArrayList<String> arrayList = new ArrayList<>();
-		for (int i = 0; i < 50; i++) {
-			arrayList.add("List Item : " + i);
-		}
-		adpMyActivity = new MyActivityAdapter(activityHost, arrayList);
+		adpMyActivity = new MyActivityAdapter(activityHost, arrayListActivities);
 		recyclerMyActivity.setAdapter(adpMyActivity);
 
 	}

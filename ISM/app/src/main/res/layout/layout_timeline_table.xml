@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+	<TextView
+		android:id="@+id/txt_header"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="5dp"
+		android:paddingBottom="5dp"
+		android:paddingLeft="10dp"
+		android:textSize="@dimen/txt_timeline_table"
+		android:textAllCaps="true"
+		android:text="Inertia"
+		android:background="@drawable/bg_timeline_table_head"
+		android:textColor="@color/color_green"/>
+
+	<LinearLayout
+		android:id="@+id/ll_content1"
+		android:layout_width="500dp"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/txt_header"
+		android:background="@drawable/bg_white_border_gray"
+		android:padding="5dp"
+		android:orientation="vertical">
+
+		<TextView
+			android:id="@+id/txt_title1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="@dimen/padding_txt_timeline_table"
+			android:textSize="@dimen/txt_timeline_table"
+			android:text="Discussion"
+			android:textColor="@color/bg_app_dark"/>
+
+		<TextView
+			android:id="@+id/txt_value1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="@dimen/padding_txt_timeline_table"
+			android:textSize="@dimen/txt_timeline_table_small"
+			android:text="29 Comments"
+			android:textColor="@color/bg_app_dark"/>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/txt_header"
+		android:layout_toRightOf="@id/ll_content1"
+		android:background="@drawable/bg_white_border_gray"
+		android:padding="5dp"
+		android:orientation="vertical">
+
+		<TextView
+			android:id="@+id/txt_title2"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="@dimen/padding_txt_timeline_table"
+			android:textSize="@dimen/txt_timeline_table"
+			android:text="Examination - Quiz"
+			android:textColor="@color/bg_app_dark"/>
+
+		<TextView
+			android:id="@+id/txt_value2"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="@dimen/padding_txt_timeline_table"
+			android:textSize="@dimen/txt_timeline_table_small"
+			android:text="Score : 215"
+			android:textColor="@color/bg_app_dark"/>
+	</LinearLayout>
+</RelativeLayout>
