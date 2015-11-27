@@ -53,6 +53,7 @@ class Book extends ADMIN_Controller {
 		}
 		// p($author_books, true);
 		$this->data['author_books'] = $author_books;
+		$this->data['page_title'] = 'Books';
 		$this->template->load('admin/default','admin/book/list',$this->data);
 	
 	}
@@ -89,15 +90,15 @@ class Book extends ADMIN_Controller {
 
 		}else{
 			$where = array(TBL_AUTHOR_BOOK.'.user_id'=>$id);
-			$config['base_url'] = base_url().'admin/book/'.$id;	
+			$config['base_url'] = base_url().'admin/book/view_all/'.$id;	
 			$offset = $this->uri->segment(5);
 		}
 		$config['num_links'] = 3;
 		$config['total_rows'] = select(TBL_AUTHOR_BOOK,FALSE,array('where'=>$where),array('count'=>TRUE));
 		
 		// START To check weather page is on 1st page or not ? if it is on first page do not show add notice field
-		$this->data['page_number'] =  $this->uri->segment(4);
-		$config['per_page'] = 11;
+		$this->data['page_number'] =  $this->uri->segment(5);
+		$config['per_page'] = 4;
 		//END
 		
 		$config['full_tag_open'] = '<ul class="pagination pagination_admin">';
@@ -142,6 +143,7 @@ class Book extends ADMIN_Controller {
 		// qry();
 		// p($this->data['books'], true);
 		$this->pagination->initialize($config);
+		$this->data['page_title'] = 'View All Books';
 		
 		$this->template->load('admin/default','admin/book/view_all',$this->data);
 	}
@@ -177,6 +179,7 @@ class Book extends ADMIN_Controller {
 		}
 
 		$this->data['book_detail'] = $book_detail;
+		$this->data['page_title'] = 'Book Details';
 		// p($book_detail, true);
 		$this->template->load('admin/default','admin/book/book_detail',$this->data);
 	}

@@ -2202,13 +2202,21 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     color: #ff6d5e;
     text-align: center;
     font-size: 15px;
+    height: 35px;
+    overflow: hidden;
 }
 .box.bookview {
     margin-top: 25px;
 }
+.book_img_holder{
+	height: 250px;
+	width:100%;
+	background-color: #ddd;
+}
 .bookview img {
-    height: 250px;
-    width: 250px;
+    height: 100%;
+    width: auto;
+    margin: 0 auto;
 }
 .bookview a, .authorbook a{
 	text-decoration: none;
@@ -2238,9 +2246,11 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
     margin: 15px 0;
 }
 .authorbook img {
-    height: 250px !important;
-    width: 250px;
+    height: 100% !important;
+    width: auto;
+    margin: 0 auto;
 }
+
 .authorbook .carousel-control {
     background: #222222 none repeat scroll 0 0;
     border: 4px solid #ffffff;
@@ -2255,4 +2265,45 @@ li.dropdown.sub_menu:hover>ul.dropdown-menu {
 }
 .authorbook .btn_green {
     margin: 5px 0;
+}
+.book_holder img {
+    height: auto;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+}
+.booklist_tab ul li {
+    list-style: outside none none;
+}
+.book_holder {
+    float: left;
+    height: 65px;
+    margin-right: 10px;
+    overflow: hidden;
+    width: 50px;
+}
+td p.active {
+    color: #1bc4a3;
+}
+.booklist_tab a{
+	text-decoration: none;
+}
+.view_books{
+	background: #ff6b6b none repeat scroll 0 0;
+    border-radius: 4px;
+    bottom: 10px;
+    color: #fff;
+    padding: 1px 5px;
+    position: absolute;
+    right: 10px;
+}
+.view_books:hover{
+	color: #fff;
+}
+#table_author td{
+	position: relative;
+}
+.authorbook .view_books{
+	bottom: auto;
+	top:-43px;
 }

@@ -77,10 +77,12 @@
                 <div class="col-md-3">
                   <div class="thumbnail">
                     <a href="admin/book/book_detail/<?php echo $books['id']; ?>">
-                      <img class="img-responsive" src="assets/<?php echo $books['image_link']; ?>" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'" alt="Image" style="max-width:100%;">
+                      <div class="book_img_holder">
+                        <img class="img-responsive" src="assets/<?php echo $books['image_link']; ?>" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'" alt="Image" style="max-width:100%;">
+                      </div>
                     </a>
 
-                       <a href="admin/book/book_detail/<?php echo $books['id']; ?>"><h4><?php echo character_limiter($books['book_name'], 15); ?></h4></a>
+                       <a href="admin/book/book_detail/<?php echo $books['id']; ?>"><h4><?php echo word_limiter($books['book_name'], 4); ?></h4></a>
                        
                       </div>
                     </div>
@@ -95,7 +97,7 @@
                  <a data-slide="prev" href="#Carousel_<?php echo $i; ?>" class="left carousel-control">‹</a>
                   <a data-slide="next" href="#Carousel_<?php echo $i; ?>" class="right carousel-control">›</a>
                 </div><!--.Carousel-->
-                <a href="admin/book/view_all/<?php echo $authorbook['author']['id']; ?>" class="btn btn_green pull-right">View All</a>
+                <a href="admin/book/view_all/<?php echo $authorbook['author']['id']; ?>" class="view_books pull-right">View All</a>
              <?php   }
                   
                 

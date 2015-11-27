@@ -46,8 +46,9 @@
 
                 	<div class="col-sm-12 col-md-6 col-lg-3">
                      <div class="box bookview">
-
-                      <img src="assets/<?php echo $book['image_link']; ?>" class="img-responsive" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'">
+                      <div class="book_img_holder">
+                        <img src="assets/<?php echo $book['image_link']; ?>" class="img-responsive" onerror="this.src='assets/images/books/dev_PlaceholderBook.png'">
+                      </div>
                       <!-- <h4><?php echo character_limiter($book['book_name'], 20); ?></h4> -->
                       <a href="admin/book/book_detail/<?php echo $book['id']; ?>"><h4><?php echo word_limiter($book['book_name'], 3); ?></h4></a>
                      
@@ -59,6 +60,9 @@
 
                  ?>
                     <div class="clearfix"></div>
+                    <div class="text-center ">
+        <?php  echo $this->pagination->create_links();  ?>
+        </div>
                 </div>
                <!--//row table-->
             </div>
