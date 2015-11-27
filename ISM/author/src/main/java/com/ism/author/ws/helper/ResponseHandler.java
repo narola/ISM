@@ -16,6 +16,8 @@ import com.ism.author.ws.model.ExamSubmission;
 import com.ism.author.ws.model.Exams;
 import com.ism.author.ws.model.Feed;
 import com.ism.author.ws.model.Feeds;
+import com.ism.author.ws.model.HashTags;
+import com.ism.author.ws.model.Question;
 import com.ism.author.ws.model.Questions;
 import com.ism.author.ws.model.States;
 import com.ism.author.ws.model.Studymates;
@@ -80,7 +82,8 @@ public class ResponseHandler {
     private ArrayList<Courses> courses;
     private ArrayList<Questions> questions;
     private ArrayList<Questions> questionBank;
-
+    private ArrayList<Question> question;
+    private ArrayList<HashTags> tags;
 
     @JsonProperty("feeds")
     public ArrayList<Feeds> getFeeds() {
@@ -254,5 +257,22 @@ public class ResponseHandler {
         this.questionBank = questionBank;
     }
 
+    @JsonProperty("question")
+    public ArrayList<Question> getQuestion() {
+        return this.question;
+    }
+
+    public void setQuestion(ArrayList<Question> question) {
+        this.question = question;
+    }
+
+    @JsonProperty("tags")
+    public ArrayList<HashTags> getTags() {
+        return this.tags;
+    }
+
+    public void setTags(ArrayList<HashTags> tags) {
+        this.tags = tags;
+    }
 }
 

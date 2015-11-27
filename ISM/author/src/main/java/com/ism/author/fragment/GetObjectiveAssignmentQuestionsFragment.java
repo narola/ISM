@@ -230,7 +230,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
                     getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
                     setAssignmentDetails(responseObjGetAllExamQuestions.getExamQuestions().get(0));
 
-                    if (getArguments() != null) {
+                    if (getArguments().getBoolean(ExamsAdapter.ARG_ISLOAD_FRAGMENTFOREVALUATION)) {
                         callAPiGetExamEvaluation();
                     }
 

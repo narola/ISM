@@ -43,6 +43,8 @@ public class WebConstants {
     public static final int GETEXAMEVALUATIONS = 26;
     public static final int GETEXAMQUESTIONS = 27;
     public static final int GETALLASSIGNMENTS = 28;
+    public static final int CREATEQUESTION = 29;
+    public static final int GETALLHASHTAG = 30;
 
    /*webservice url*/
 
@@ -74,6 +76,8 @@ public class WebConstants {
     public static final String URL_GETEXAMQUESTIONS = URL_KINJAL_HOST + "GetExamQuestions";
     public static final String URL_SETQUESTIONSFOREXAM = URL_KINJAL_HOST + "SetQuestionsForExam";
     public static final String URL_GETALLASSIGNMENTS = URL_KINJAL_HOST + "GetAllExams";
+    public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
+    public static final String URL_GETALLHASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
 
     /*status for apisuccess ans apifailed*/
 
@@ -84,6 +88,7 @@ public class WebConstants {
     /*these are the temparory questionData for testing*/
 
     public static final String TEST_USER_ID = "370";
+    public static final String TEST_USER_NAME = "Admin";
     public static final String TEST_GETSTUDYMATES = "167";
 
 

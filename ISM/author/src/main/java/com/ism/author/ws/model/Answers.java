@@ -38,7 +38,7 @@ public class Answers implements Parcelable {
     public String getImageLink() {
         return this.imageLink;
     }
-
+    
     public void setImageLink(String imageLink) {
         this.imageLink = imageLink;
     }

@@ -48,6 +48,7 @@
     <string name="strquestiontype">Question Type</string>
     <string name="strmultiplechoice">Multiple Choice</string>
     <string name="strevaluationnotes">Evaluation Notes</string>
+    <string name="strsolution">Solution</string>
     <string name="straddquestiontopreview">Add Question to preview</string>
     <string name="strsaveandaddmore">Save &amp; Add More</string>
     <string name="gender">Gender</string>

@@ -150,7 +150,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
-
 //                    Log.e("sub", "" + subject_id);
 //                    Log.e("subname", "" + subjectName);
 //                    Log.e("topics id", "" + arrListTopic.get(position - 1).getId());
@@ -329,7 +328,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                     }
                     Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, topics, Adapters.ADAPTER_SMALL);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-                    Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, arrListDefalt, Adapters.ADAPTER_SMALL);
+                    Adapters.setUpSpinner(getActivity(), spQuestionlistTopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
             } else if (error != null) {
@@ -393,8 +392,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
         if (v == tvQuestionlistAddPreview) {
             if (getFragment().getListOfPreviewQuestionsToAdd().size() > 0) {
-//                ((AddQuestionContainerFragment) mFragment).previewQuestionFragment.
-//                        addQuestionsToPreviewFragment(((AddQuestionContainerFragment) mFragment).getListOfPreviewQuestionsToAdd());
                 getFragment().addQuestionsToPreviewFragment();
                 getFragment().getListOfPreviewQuestionsToAdd().clear();
             } else {
@@ -402,11 +399,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
             }
         } else if (v == tvQuestionlistAddNewQuestion) {
-
-            getFragment().setQuestionData(null);
-            getFragment().setIsSetQuestionData(false);
-            getFragment().flipCard();
-
+            getFragment().setDataOnFragmentFlip(null, false, true);
         }
     }
 
@@ -417,13 +410,20 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         questionBankListAdapter.notifyDataSetChanged();
     }
 
-    public void updateQuestionDataAfterEditQuestion() {
-        int position = getFragment().getPOSITION_FOR_EDITQUESTION();
-        arrListQuestions.get(position).setQuestionText("test");
+    public void updateQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData) {
+        int position = arrListQuestions.indexOf(prevQuestionData);
+        if (position != -1) {
+            arrListQuestions.set(position, updatedQuestionData);
+            questionBankListAdapter.addAll(arrListQuestions);
+            questionBankListAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    public void addQuestionDataAfterAddQuestion(Questions question) {
+        arrListQuestions.add(0, question);
         questionBankListAdapter.addAll(arrListQuestions);
         questionBankListAdapter.notifyDataSetChanged();
-
-
     }
 
     private AddQuestionContainerFragment getFragment() {
