@@ -117,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/bg_controller_top_action"
+                android:background="#323941"
                 android:gravity="center"
                 android:paddingLeft="@dimen/controller_menu_text_padding"
                 android:paddingRight="@dimen/controller_menu_text_padding"
@@ -168,7 +168,7 @@
                 android:background="@drawable/bg_left_controller_top_button"
                 android:onClick="searchFeeds"
                 android:scaleType="centerInside"
-                android:src="@drawable/image_search" />
+                android:src="@drawable/selector_search" />
 
             <EditText
                 android:id="@+id/et_search"
@@ -204,7 +204,7 @@
             android:background="@drawable/bg_left_controller_top_button"
             android:onClick="openRightContainerFragment"
             android:scaleType="centerInside"
-            android:src="@drawable/image_study_mates" />
+            android:src="@drawable/selector_user" />
 
         <ImageView
             android:id="@+id/img_high_score"
@@ -214,7 +214,7 @@
             android:background="@drawable/bg_left_controller_top_button"
             android:onClick="openRightContainerFragment"
             android:scaleType="centerInside"
-            android:src="@drawable/image_chat" />
+            android:src="@drawable/selector_trophy" />
     </RelativeLayout>
 
 

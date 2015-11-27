@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -297,29 +295,6 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
 
     }
-    public String getPath(Uri uri) {
-        String wholeID = DocumentsContract.getDocumentId(uri);
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-
-        String[] column = {MediaStore.Images.Media.DATA};
-
-        // where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
-
-        Cursor cursor = getActivity().getContentResolver().
-                query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                        column, sel, new String[]{id}, null);
-        String filePath = "";
-
-        int columnIndex = cursor.getColumnIndex(column[0]);
-
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
-        }
-        cursor.close();
-        return filePath;
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -337,14 +312,18 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
 //                else{
 //                    Debug.e(TAG, "Source File exist");
 //                }
+                Log.e(TAG, "uri :"+uri+" Uri path :" + uri.getPath());
                 imgProfilePic.setImageBitmap(bitmap);
-                File file=new File(getPath(uri));// fileName = file;
-                  Log.e(TAG, "uri :"+uri+" file :" + file);
+                File file=new File(Utility.getImagePath(uri, getActivity()));// fileName = file;
+                  Log.e(TAG, "uri :" + uri + " file :" + file);
                 if (!file.isFile()) {
                     Debug.e(TAG, "Source File Does not exist");
                 }
+                else{
+                    new EditProfileImageAsync(file).execute();
+                }
 
-                new EditProfileImageAsync(file).execute();
+
                 // hostListenerAboutMe.onSelectImage(bitmap);
                 // strDpBase64 = Utility.getBase64ForImage(bitmap);
             } catch (IOException e) {

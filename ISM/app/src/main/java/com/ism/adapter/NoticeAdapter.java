@@ -64,7 +64,7 @@ public class NoticeAdapter extends BaseAdapter {
 		    holder.txtNotice = (TextView) convertView.findViewById(R.id.txt_noticeDesc);
 		    holder.txtReadmore = (TextView) convertView.findViewById(R.id.txt_noticeReadMore);
 
-		    holder.txtNoticeTitle.setTypeface(myTypeFace.getRalewayBold());
+		    holder.txtNoticeTitle.setTypeface(myTypeFace.getRalewayRegular());
 		    holder.txtNotice.setTypeface(myTypeFace.getRalewayThin());
 		    holder.txtReadmore.setTypeface(myTypeFace.getRalewayLight());
 

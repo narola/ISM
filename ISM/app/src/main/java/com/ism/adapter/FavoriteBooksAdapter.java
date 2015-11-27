@@ -17,7 +17,7 @@ import com.ism.fragment.userprofile.BooksFragment;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
-import com.ism.ws.model.Book;
+import com.ism.ws.model.BookData;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -30,14 +30,14 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = FavoriteBooksAdapter.class.getSimpleName();
     private final ImageLoader imageLoader;
     Context context;
-    ArrayList<Book> arrayList = new ArrayList<>();
-    ArrayList<Book> arrayListFilter = new ArrayList<>();
-
+    ArrayList<BookData> arrayList = new ArrayList<>();
+    ArrayList<BookData> arrayListFilter = new ArrayList<>();
+    private ArrayList<String> arrayUnFavResourceIds =new ArrayList<String>();
     LayoutInflater inflater;
     MyTypeFace myTypeFace;
     FavBookFilter favBookFilter;
 
-    public FavoriteBooksAdapter(Context context, ArrayList<Book> arrayList) {
+    public FavoriteBooksAdapter(Context context, ArrayList<BookData> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         this.arrayListFilter = arrayList;
@@ -46,8 +46,12 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
         inflater = LayoutInflater.from(context);
         myTypeFace = new MyTypeFace(context);
     }
-
-
+    public ArrayList<String> getUnFavResourceIds(){
+        return arrayUnFavResourceIds;
+    }
+    public void setUnFavResourceIds( ArrayList<String> arrayUnFavResourceIds){
+        this.arrayUnFavResourceIds=arrayUnFavResourceIds;
+    }
     @Override
     public int getCount() {
         return arrayList.size();
@@ -72,13 +76,13 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
 
             holder.imgBook = (ImageView) convertView.findViewById(R.id.img_pic);
             holder.imgInfo = (ImageView) convertView.findViewById(R.id.img_book_info);
-            holder.imgBookLike = (ImageView) convertView.findViewById(R.id.img_add_fav);
-            holder.imgBookAdd = (ImageView) convertView.findViewById(R.id.img_book_add);
+            holder.imgAddToUnFav = (ImageView) convertView.findViewById(R.id.img_add_fav);
+            holder.imgLibraryBook = (ImageView) convertView.findViewById(R.id.img_book_add);
             holder.txtBookName = (TextView) convertView.findViewById(R.id.txt_name);
             holder.txtBookAuthor = (TextView) convertView.findViewById(R.id.txt_author);
             holder.imgInfo.setVisibility(View.VISIBLE);
-            holder.imgBookLike.setVisibility((View.VISIBLE));
-            holder.imgBookLike.setBackgroundResource(R.drawable.img_like_red);
+            holder.imgAddToUnFav.setVisibility((View.VISIBLE));
+            holder.imgAddToUnFav.setBackgroundResource(R.drawable.img_like_red);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -96,6 +100,14 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
 //                    myPopup(position);
                     BookDetailsDialog bookDetailsDialog = new BookDetailsDialog(context, arrayList, position, imageLoader);
                     bookDetailsDialog.show();
+                }
+            });
+            holder.imgAddToUnFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Debug.i(TAG, "onClickAddToUnFav : " + position);
+                    arrayUnFavResourceIds.add(arrayList.get(position).getBookId());
+                    // callApiAddResourceToFav();
                 }
             });
 
@@ -127,13 +139,13 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
 
                 if (constraint!= null) {
                     Debug.i(TAG, "Search string : " + constraint);
-                    ArrayList<Book> filterList = new ArrayList<Book>();
+                    ArrayList<BookData> filterList = new ArrayList<BookData>();
                     for (int i = 0; i < arrayListFilter.size(); i++) {
                         Debug.i(TAG, "arrayListFilter.get(i).getAuthorName() : " + arrayListFilter.get(i).getBookName());
                         if (arrayListFilter.get(i).getBookName().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getPublisherName().toLowerCase().contains(constraint.toString().toLowerCase()) ) {
 //                            if (arrayListFilter.get(i).getAuthorName().contains(constraint) || arrayListFilter.get(i).getBookName().contains(constraint) || arrayListFilter.get(i).getPublisherName().contains(constraint)) {
                             Debug.i(TAG, "i : " + i);
-                            Book book = new Book();
+                            BookData book = new BookData();
                             book.setDescription(arrayListFilter.get(i).getDescription());
                             book.setAuthorImage(arrayListFilter.get(i).getAuthorImage());
                             book.setAuthorName(arrayListFilter.get(i).getAuthorName());
@@ -170,7 +182,7 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
         protected void publishResults(CharSequence constraint, FilterResults results) {
             try {
 
-                arrayList = (ArrayList<Book>) results.values;
+                arrayList = (ArrayList<BookData>) results.values;
                 if(arrayList.size()==0)
                 {
                     BooksFragment.txtFavEmpty.setVisibility(View.VISIBLE);
@@ -193,8 +205,8 @@ public class FavoriteBooksAdapter extends BaseAdapter implements Filterable {
 
         private ImageView imgBook;
         private ImageView imgInfo;
-        private ImageView imgBookLike;
-        private ImageView imgBookAdd;
+        private ImageView imgLibraryBook;
+        private ImageView imgAddToUnFav;
         private TextView txtBookAuthor;
         private TextView txtBookName;
 

@@ -4,28 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.ism.author.fragment.rightcontainerfragment.AuthorProfileFragment">
+    tools:context="com.ism.author.fragment.userprofile.AuthorProfileFragment">
 
 
     <LinearLayout
         android:layout_width="@dimen/content_right_width"
         android:layout_height="match_parent"
-        android:background="@color/color_dark_gray"
+        android:background="#323941"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/d15dp">
+            android:padding="@dimen/d10dp">
 
             <com.ism.author.views.CircleImageView
-                android:layout_width="@dimen/circular_imageview_width_height"
-                android:layout_height="@dimen/circular_imageview_width_height"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/img_user"
                 android:src="@drawable/userdp"
+                android:layout_alignParentStart="true"
                 app:civ_border_color="@color/circular_image_border_color"
                 app:civ_border_width="@dimen/circular_imageview_border_width" />
 
@@ -33,23 +35,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/d10dp"
+                android:id="@+id/txt_view_profile"
                 android:text="@string/strviewprofile"
-                android:textColor="@color/color_orange"
+                android:layout_toRightOf="@+id/img_user"
+                android:textColor="@color/color_blue"
                 android:textSize="@dimen/d20sp"
+                android:layout_centerVertical="true"
                 android:textStyle="bold"></TextView>
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/d10dp"
-            android:layout_marginTop="@dimen/d10dp"
+            android:layout_margin="@dimen/d10dp"
+            android:paddingLeft="@dimen/d5dp"
             android:text="@string/strtest"
+            android:id="@+id/txt_user_name"
             android:textAllCaps="true"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/d25sp"
-            android:textStyle="bold"></TextView>
+            android:textSize="@dimen/d22sp"
+            >
+
+        </TextView>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -57,9 +65,73 @@
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="1"></RelativeLayout>
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="85dp"
+                    android:background="@drawable/bg_rightmenu_notification"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/img_notification"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/ic_notification"/>
+                <TextView
+                    android:id="@+id/txt_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/bg_notificaton"
+                    android:textSize="@dimen/notification_digit_text_size"
+                    android:paddingRight="@dimen/notification_digit_horizontal_padding"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/notification_digit_horizontal_padding"
+                    android:visibility="gone"
+                    android:textColor="@android:color/white"
+                    android:layout_alignRight="@id/img_notification"/>
+                <ImageView
+                    android:layout_width="85dp"
+                    android:background="@drawable/bg_rightmenu_notification"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/img_message"
+                    android:layout_toRightOf="@+id/img_notification"
+                    android:src="@drawable/ic_message"/>
+                <TextView
+                    android:id="@+id/txt_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/bg_message"
+                    android:textSize="@dimen/notification_digit_text_size"
+                    android:paddingRight="@dimen/notification_digit_horizontal_padding"
+                    android:paddingLeft="@dimen/notification_digit_horizontal_padding"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:layout_alignRight="@id/img_message"/>
+                <ImageView
+                    android:layout_width="85dp"
+                    android:background="@drawable/bg_rightmenu_notification"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/img_request"
+                    android:layout_toRightOf="@+id/img_message"
+                    android:src="@drawable/ic_friend_request"/>
+                <TextView
+                    android:id="@+id/txt_request"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/bg_friend_request"
+                    android:textSize="@dimen/notification_digit_text_size"
+                    android:paddingRight="@dimen/notification_digit_horizontal_padding"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/notification_digit_horizontal_padding"
+                    android:visibility="gone"
+                    android:textColor="@android:color/white"
+                    android:layout_alignRight="@id/img_request"/>
+
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -79,39 +151,39 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-
             android:padding="@dimen/d20sp"
             android:text="@string/strmyfeeds"
             android:textAllCaps="true"
+            android:background="@drawable/bg_profile_lable"
             android:textColor="@color/color_white"
             android:textSize="@dimen/d20sp"
-            android:textStyle="bold" />
+         />
 
         <TextView
             android:id="@+id/txt_mybooks"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-
             android:padding="@dimen/d20sp"
             android:text="@string/strmybooks"
             android:textAllCaps="true"
+            android:background="@drawable/bg_profile_lable"
             android:textColor="@color/color_white"
             android:textSize="@dimen/d20sp"
-            android:textStyle="bold" />
+            />
 
         <TextView
             android:id="@+id/txt_followers"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-
+            android:background="@drawable/bg_profile_lable"
             android:padding="@dimen/d20sp"
             android:text="@string/strfollowers"
             android:textAllCaps="true"
             android:textColor="@color/color_white"
             android:textSize="@dimen/d20sp"
-            android:textStyle="bold" />
+            />
 
 
         <TextView
@@ -119,13 +191,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-
+            android:background="@drawable/bg_profile_lable"
             android:padding="@dimen/d20sp"
             android:text="@string/strmyactivity"
             android:textAllCaps="true"
             android:textColor="@color/color_white"
             android:textSize="@dimen/d20sp"
-            android:textStyle="bold" />
+            />
 
 
     </LinearLayout>

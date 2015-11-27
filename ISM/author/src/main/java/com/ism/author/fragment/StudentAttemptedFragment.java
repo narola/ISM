@@ -66,7 +66,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
         attribute.setUserId("340");
         attribute.setRole("3");
         // Debug.i(TAG, "Request student attemted list : " ));
-        ((AuthorHostActivity) getActivity()).startProgress();
+        ((AuthorHostActivity) getActivity()).showProgress();
         new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                 .execute(WebConstants.GETEXAMSUBMISSION);
 
@@ -103,7 +103,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        ((AuthorHostActivity) getActivity()).stopProgress();
+        ((AuthorHostActivity) getActivity()).hideProgress();
 
         try {
             if (API_METHOD == WebConstants.GETEXAMSUBMISSION) {
@@ -119,7 +119,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                         Attribute attribute = new Attribute();
                         attribute.setExamId("3");
                         //attribute.setStudentId("202");
-                        ((AuthorHostActivity) getActivity()).startProgress();
+                        ((AuthorHostActivity) getActivity()).showProgress();
                         callapigetexamquestions(attribute);
                     }
 
@@ -161,9 +161,9 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     private void callapigetexamquestions(Attribute attribute) {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
-                ((AuthorHostActivity) getActivity()).startProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMQUESTIONS);
             } catch (Exception e) {

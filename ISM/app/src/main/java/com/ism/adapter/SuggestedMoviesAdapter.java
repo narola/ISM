@@ -134,10 +134,10 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
                 ((HostActivity) context).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
-                attribute.setResourceId(arrayList.get(position).getMovieId());
+                //attribute.setResourceId(arrayList.get(position).getMovieId());
                 attribute.setResourceName(AppConstant.RESOURCE_MOVIES);
 
-                new WebserviceWrapper(context, attribute, this).new WebserviceCaller().execute(WebConstants.ADD_RESOURCE_TO_FAVORITE);
+                new WebserviceWrapper(context, attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
             } else {
                 Utility.alertOffline(context);
             }
@@ -171,7 +171,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
     public void onResponse(Object object, Exception error, int apiCode) {
         try {
             switch (apiCode) {
-                case WebConstants.ADD_RESOURCE_TO_FAVORITE:
+                case WebConstants.MANAGE_FAVOURITES:
                     onResponseAddResourceToFavorite(object, error);
                     break;
 

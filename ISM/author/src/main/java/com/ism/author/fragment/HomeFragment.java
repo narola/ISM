@@ -127,8 +127,8 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
 
     private void callApiGetAllPostFeeds() {
-        if (Utility.isOnline(getActivity())) {
-
+        if (Utility.isConnected(getActivity())) {
+            ((AuthorHostActivity) getActivity()).showProgress();
             try {
                 Attribute attribute = new Attribute();
                 attribute.setUserId(WebConstants.TEST_USER_ID);
@@ -192,6 +192,7 @@ public class HomeFragment extends Fragment implements WebserviceWrapper.Webservi
 
     private void onResponseGetAllFeeds(Object object, Exception error) {
         try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

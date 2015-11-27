@@ -134,9 +134,9 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     private void callApiGetAllAssignments() {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
-                ((AuthorHostActivity) getActivity()).startProgress();
+                ((AuthorHostActivity) getActivity()).showProgress();
                 Attribute request = new Attribute();
                 request.setUserId(WebConstants.TEST_USER_ID);
                 request.setRole(String.valueOf(AppConstant.AUTHOR_ROLE_ID));
@@ -152,7 +152,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void callApiGetClassrooms() {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 Utility.showSpinnerProgress(progExamClass);
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -169,7 +169,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void callApiGetSubjects() {
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             try {
                 Utility.showSpinnerProgress(progExamSubject);
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -209,7 +209,7 @@ public class ExamsFragment extends Fragment implements WebserviceWrapper.Webserv
     private void onResponseGetAllAssignments(Object object, Exception error) {
 
         try {
-            ((AuthorHostActivity) getActivity()).stopProgress();
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

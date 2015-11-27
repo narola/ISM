@@ -41,6 +41,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     public static String ARG_EXAM_MODE = "examMode";
     public static String ARG_EXAM_DURATION = "examDuration";
     public static String ARG_ASSIGNMENT_NO = "examAssignmentNo";
+    public static String ARG_ISLOAD_FRAGMENTFOREVALUATION = "examIsLoadFragmentForEvaluation";
 
 
     public ExamsAdapter(Context mContext) {
@@ -111,23 +112,25 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
                 holder.rlTopExam.setBackgroundResource(R.drawable.bg_subject_yellow);
             }
 
+
+            final Bundle bundleExamDetails = new Bundle();
+            bundleExamDetails.putString(ARG_EXAM_ID, "9");
+            bundleExamDetails.putString(ARG_EXAM_NAME, arrListExams.get(position).getExamName());
+            bundleExamDetails.putString(ARG_CLASSROOM_ID, arrListExams.get(position).getClassroomId());
+            bundleExamDetails.putString(ARG_EXAM_CATEGORY, arrListExams.get(position).getExamCategory());
+            bundleExamDetails.putString(ARG_SUBJECT_NAME, arrListExams.get(position).getSubjectName());
+            bundleExamDetails.putString(ARG_PASS_PERCENTAGE, arrListExams.get(position).getPassPercentage());
+            bundleExamDetails.putString(ARG_EXAM_TYPE, arrListExams.get(position).getExamType());
+            bundleExamDetails.putString(ARG_EXAM_MODE, arrListExams.get(position).getExamMode());
+            bundleExamDetails.putString(ARG_EXAM_DURATION, arrListExams.get(position).getDuration());
+            bundleExamDetails.putString(ARG_CLASSROOM_NAME, arrListExams.get(position).getClassroomName());
+            bundleExamDetails.putInt(ARG_ASSIGNMENT_NO, position);
+
             holder.llExamContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    Bundle bundleExamDetails = new Bundle();
-                    bundleExamDetails.putString(ARG_EXAM_ID, "9");
-                    bundleExamDetails.putString(ARG_EXAM_NAME, arrListExams.get(position).getExamName());
-                    bundleExamDetails.putString(ARG_CLASSROOM_ID, arrListExams.get(position).getClassroomId());
-                    bundleExamDetails.putString(ARG_EXAM_CATEGORY, arrListExams.get(position).getExamCategory());
-                    bundleExamDetails.putString(ARG_SUBJECT_NAME, arrListExams.get(position).getSubjectName());
-                    bundleExamDetails.putString(ARG_PASS_PERCENTAGE, arrListExams.get(position).getPassPercentage());
-                    bundleExamDetails.putString(ARG_EXAM_TYPE, arrListExams.get(position).getExamType());
-                    bundleExamDetails.putString(ARG_EXAM_MODE, arrListExams.get(position).getExamMode());
-                    bundleExamDetails.putString(ARG_EXAM_DURATION, arrListExams.get(position).getDuration());
-                    bundleExamDetails.putString(ARG_CLASSROOM_NAME, arrListExams.get(position).getClassroomName());
-                    bundleExamDetails.putInt(ARG_ASSIGNMENT_NO, position);
-
+                    bundleExamDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, true);
                     ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_ASSIGNMENT_SUBMITTOR, bundleExamDetails);
 
 
@@ -137,8 +140,9 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             holder.llViewExamQuestions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    bundleExamDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
                     ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS,
-                            null);
+                            bundleExamDetails);
                 }
             });
 

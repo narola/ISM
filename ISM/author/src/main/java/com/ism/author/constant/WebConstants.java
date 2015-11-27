@@ -43,6 +43,15 @@ public class WebConstants {
     public static final int GETEXAMEVALUATIONS = 26;
     public static final int GETEXAMQUESTIONS = 27;
     public static final int GETALLASSIGNMENTS = 28;
+    public static final int CREATEQUESTION = 29;
+    public static final int GETALLHASHTAG = 30;
+    public static final int GET_ALL_BADGES_COUNT = 31;
+
+
+    //user settings preferences
+
+    public static final int GENERAL_SETTING_PREFERENCES = 51;
+    public static final int GET_USER_PREFERENCES = 52;
 
    /*webservice url*/
 
@@ -69,12 +78,15 @@ public class WebConstants {
     public static final String URL_CREATEEXAM = URL_KINJAL_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
     public static final String URL_GETALLEXAM = URL_KINJAL_HOST + "GetAllExams";
-    public static final String URL_GETEXAMSUBMISSION = URL_KINJAL_HOST + "GetExamSubmission";
+    public static final String URL_GETEXAMSUBMISSION = URL_ARTI_HOST + "GetExamSubmission";
     public static final String URL_GETEXAMEVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
-    public static final String URL_GETEXAMQUESTIONS = URL_KINJAL_HOST + "GetExamQuestions";
+    public static final String URL_GETEXAMQUESTIONS = URL_ARTI_HOST + "GetExamQuestions";
     public static final String URL_SETQUESTIONSFOREXAM = URL_KINJAL_HOST + "SetQuestionsForExam";
     public static final String URL_GETALLASSIGNMENTS = URL_KINJAL_HOST + "GetAllExams";
+    public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
+    public static final String URL_GETALLHASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
 
+    public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
     /*status for apisuccess ans apifailed*/
 
     public static final String STATUS_SUCCESS = "success";
@@ -84,6 +96,7 @@ public class WebConstants {
     /*these are the temparory questionData for testing*/
 
     public static final String TEST_USER_ID = "370";
+    public static final String TEST_USER_NAME = "Admin";
     public static final String TEST_GETSTUDYMATES = "167";
 
 
