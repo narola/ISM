@@ -15,10 +15,7 @@ import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.ExamObjectiveDetailFragment;
-import com.ism.teacher.fragments.StudentAttemptedFragment;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.Data;
 import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -77,39 +74,39 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                 viewholder.lLMain.setBackgroundResource(R.drawable.bg_student_attempted_unselected);
             }
             imageLoader.displayImage(WebConstants.USER_IMAGES + arrayList.get(position).getStudentProfilePic(), viewholder.imgUserPic, ISMTeacher.options);
-            viewholder.lLMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Utility.showToast("Click " + position, context);
-                    if (lastSelected == -1) {
-                        arrayList.get(position).setIsFlagged(true);
-                        lastSelected = position;
-                    } else if (position == lastSelected) {
-                        arrayList.get(position).setIsFlagged(false);
-                        lastSelected = -1;
-                    } else if (position != lastSelected) {
-                        arrayList.get(position).setIsFlagged(true);
-                        arrayList.get(lastSelected).setIsFlagged(false);
-                        lastSelected = position;
-                    }
-                    if (arrayList.get(position).isFlagged()) {
-                        ((TeacherHostActivity) context).startProgress();
-
-                        //static call
-                        callAPIStudentEvaluations();
-//                        callAPIStudentEvaluations(arrayList.get(position).getStudentId(), resObjStudentAttempted.getExamSubmission().get(0).getExamId(), studentName);
-                    } else {
-                        ((TeacherHostActivity) context).startProgress();
-                        ObjectiveQuestionsAdapter objectiveQuestionsAdapter = new ObjectiveQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, null);
-                        ExamObjectiveDetailFragment.rvList.setAdapter(objectiveQuestionsAdapter);
-                        objectiveQuestionsAdapter.notifyDataSetChanged();
-                        ((TeacherHostActivity) context).stopProgress();
-                    }
-                    notifyDataSetChanged();
-
-
-                }
-            });
+//            viewholder.lLMain.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Utility.showToast("Click " + position, context);
+//                    if (lastSelected == -1) {
+//                        arrayList.get(position).setIsFlagged(true);
+//                        lastSelected = position;
+//                    } else if (position == lastSelected) {
+//                        arrayList.get(position).setIsFlagged(false);
+//                        lastSelected = -1;
+//                    } else if (position != lastSelected) {
+//                        arrayList.get(position).setIsFlagged(true);
+//                        arrayList.get(lastSelected).setIsFlagged(false);
+//                        lastSelected = position;
+//                    }
+//                    if (arrayList.get(position).isFlagged()) {
+//                        ((TeacherHostActivity) context).startProgress();
+//
+//                        //static call
+//                        callAPIStudentEvaluations();
+////                        callAPIStudentEvaluations(arrayList.get(position).getStudentId(), resObjStudentAttempted.getExamSubmission().get(0).getExamId(), studentName);
+//                    } else {
+//                        ((TeacherHostActivity) context).startProgress();
+//                        GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, null);
+//                        GetObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
+//                        getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
+//                        ((TeacherHostActivity) context).stopProgress();
+//                    }
+//                    notifyDataSetChanged();
+//
+//
+//                }
+//            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -168,9 +165,9 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                 if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
                     if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
                         responseObjectEval = responseHandler;
-                        ObjectiveQuestionsAdapter objectiveQuestionsAdapter = new ObjectiveQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseObjectEval);
-                        ExamObjectiveDetailFragment.rvList.setAdapter(objectiveQuestionsAdapter);
-                        objectiveQuestionsAdapter.notifyDataSetChanged();
+//                        GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseObjectEval);
+//                        GetObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
+//                        getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
                     }
                 } else {
                     Debug.i(TAG, "Response :" + WebConstants.GET_EXAM_EVALUATIONS + " :" + resObjStudentAttempted.getStatus());

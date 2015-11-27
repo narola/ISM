@@ -40,14 +40,6 @@ public class AppConstant {
     public static final String videoCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Videos";
     public static final String audioCapturePath = Environment.getExternalStorageDirectory().toString() + File.separator + "ISM" + File.separator + "Audios";
 
-    /**
-     * URLs
-     */
-
-    public static final String URL_ARTI_HOST = "http://192.168.1.162/ISM/WS_ISM/ISMServices.php?Service=";
-
-    public static final String URL_RAVI_HOST = "http://192.168.1.75/ISM/WS_ISM/ISMServices.php?Service=";
-
 
     public static final String TEST_USER_ID = "370";
     public static final String TEST_GET_ALL_FEEDS = "141";
@@ -55,7 +47,7 @@ public class AppConstant {
     public static final String TEST_FEEDID = "240";
     public static final String TEST_TAGGED_BY = "134";
     public static final String[] tagUserArray = new String[]{"141", "167"};
-    public static final int AUTHOR_ROLE_ID = 4;
+    public static final String AUTHOR_ROLE_ID = "4";
     public static final String TEACHER_ROLE_ID = "3";
 
     /**
@@ -78,17 +70,23 @@ public class AppConstant {
      * Bundle Tags
      */
 
-    public static final String ARG_EXAM_ID ="exam_id";
-    public static String ARG_EXAM_NAME = "examName";
-    public static String ARG_CLASSROOM_ID = "classRoomId";
-    public static String ARG_CLASSROOM_NAME = "classRoomName";
-    public static String ARG_EXAM_CATEGORY = "examCategory";
-    public static String ARG_SUBJECT_NAME = "subjectName";
-    public static String ARG_PASS_PERCENTAGE = "passPercentage";
-    public static String ARG_EXAM_TYPE = "examType";
-    public static String ARG_EXAM_MODE = "examMode";
-    public static String ARG_EXAM_DURATION = "examDuration";
-    public static String ARG_ASSIGNMENT_NO = "examAssignmentNo";
+    public static final String ARG_EXAM_ID = "exam_id";
+    public static final String ARG_EXAM_NAME = "examName";
+    public static final String ARG_CLASSROOM_ID = "classRoomId";
+    public static final String ARG_CLASSROOM_NAME = "classRoomName";
+    public static final String ARG_EXAM_CATEGORY = "examCategory";
+    public static final String ARG_SUBJECT_NAME = "subjectName";
+    public static final String ARG_PASS_PERCENTAGE = "passPercentage";
+    public static final String ARG_EXAM_TYPE = "examType";
+    public static final String ARG_EXAM_MODE = "examMode";
+    public static final String ARG_EXAM_DURATION = "examDuration";
+    public static final String ARG_ASSIGNMENT_NO = "examAssignmentNo";
+    public static final String ARG_STUDENT_ID = "studenId";
+    public static final String ARG_STUDENT_POSITION = "studenPosition";
+    public static final String ARG_STUDENT_PROFILE_PIC = "studentProfilePic";
+    public static final String ARG_STUDENT_NAME = "studentName";
+    public static final String ARG_CALL_EVALUATION_API_FLAG = "callEvaluationApiFlag";
+
 
 
 }

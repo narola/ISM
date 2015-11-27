@@ -2,6 +2,7 @@ package com.ism.teacher.adapters;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -12,9 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.fragments.ExamObjectiveDetailFragment;
-import com.ism.teacher.fragments.ExamSubjectiveDetailFragment;
-import com.ism.teacher.fragments.TeacherExamWiseAssignments;
+import com.ism.teacher.constants.AppConstant;
+import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
+import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
+import com.ism.teacher.fragments.GetAssignmentsSubmitterFragment;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.model.Exams;
 
@@ -24,19 +26,19 @@ import java.util.ArrayList;
 /**
  * these is the assignment subjects adapter
  */
-public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSubjectsAdapter.ViewHolder> {
+public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.ViewHolder> {
 
-    private static final String TAG = AssignmentSubjectsAdapter.class.getSimpleName();
+    private static final String TAG = AssignmentsAdapter.class.getSimpleName();
 
     public static String EXAM_OBJECTIVE = "objective";
     public static String EXAM_SUBJECTIVE = "subjective";
     Context mContext;
-    ArrayList<Exams> listOfAssignments = new ArrayList<Exams>();
+    ArrayList<Exams> arrayListAssignments = new ArrayList<Exams>();
     Fragment mFragment;
     MyTypeFace myTypeFace;
 
 
-    public AssignmentSubjectsAdapter(Context context, Fragment fragment) {
+    public AssignmentsAdapter(Context context, Fragment fragment) {
         this.mContext = context;
         this.mFragment = fragment;
         myTypeFace = new MyTypeFace(context);
@@ -46,12 +48,10 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View contactView = inflater.inflate(R.layout.assignment_subjects_row, parent, false);
-//        View contactView = inflater.inflate(R.layout.assignment_student_row, parent, false);
-        ViewHolder viewHolder = new ViewHolder(contactView);
+        View assignments_view = inflater.inflate(R.layout.assignment_subjects_row, parent, false);
+        ViewHolder viewHolder = new ViewHolder(assignments_view);
         return viewHolder;
     }
 
@@ -97,15 +97,15 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        holder.txtAssignmentSubject.setText(listOfAssignments.get(position).getSubjectName());
-        //holder.txtAssignmentCourse.setText(listOfAssignments.get(position).getClass_name());
-        holder.txtAssignmentClassName.setText(listOfAssignments.get(position).getClassroomName());
-//        holder.txtAssignmentDate.setText(listOfAssignments.get(position).);
+        holder.txtAssignmentSubject.setText(arrayListAssignments.get(position).getSubjectName());
+        //holder.txtAssignmentCourse.setText(arrayListAssignments.get(position).getClass_name());
+        holder.txtAssignmentClassName.setText(arrayListAssignments.get(position).getClassroomName());
+//        holder.txtAssignmentDate.setText(arrayListAssignments.get(position).);
 
-//        holder.txtNumberAssessedQuestion.setText(listOfAssignments.get(position).);
-//        holder.txtNumberUnassessedQuestion.setText(listOfAssignments.get(position).);
-//        holder.txtNumberTotalQuestions.setText(listOfAssignments.get(position).);
-        holder.txtAssignmentType.setText(Html.fromHtml("<font color='#77C2EA'>Assignment Type:" + listOfAssignments.get(position).getExamMode() + "</font>"));
+//        holder.txtNumberAssessedQuestion.setText(arrayListAssignments.get(position).);
+//        holder.txtNumberUnassessedQuestion.setText(arrayListAssignments.get(position).);
+//        holder.txtNumberTotalQuestions.setText(arrayListAssignments.get(position).);
+        holder.txtAssignmentType.setText(Html.fromHtml("<font color='#77C2EA'>Assignment Type:" + arrayListAssignments.get(position).getExamMode() + "</font>"));
 
 
         if (position % 2 == 0) {
@@ -114,7 +114,7 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
             holder.rlTopAssignment.setBackgroundResource(R.drawable.bg_subject_yellow);
         }
 
-        if (listOfAssignments.get(position).getExamMode().equalsIgnoreCase("objective")) {
+        if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase("objective")) {
             holder.txtUnassessedLabel.setText("Average Score");
         } else {
             holder.txtUnassessedLabel.setText("Unassessed");
@@ -123,8 +123,25 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
         holder.llParentAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                mFragment.getFragmentManager().beginTransaction().
+//                        replace(R.id.fl_teacher_office_home, new GetAssignmentsSubmitterFragment(mFragment, arrayListAssignments.get(position).getExamId(), arrayListAssignments.get(position).getExamMode())).commit();
+//
+                Bundle bundleAssignmentDetails = new Bundle();
+                bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_ID, arrayListAssignments.get(position).getExamId());
+                //bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_ID, "9");
+                bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_NAME, arrayListAssignments.get(position).getExamName());
+                bundleAssignmentDetails.putString(AppConstant.ARG_CLASSROOM_ID, arrayListAssignments.get(position).getClassroomId());
+                bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_CATEGORY, arrayListAssignments.get(position).getExamCategory());
+                bundleAssignmentDetails.putString(AppConstant.ARG_SUBJECT_NAME, arrayListAssignments.get(position).getSubjectName());
+                bundleAssignmentDetails.putString(AppConstant.ARG_PASS_PERCENTAGE, arrayListAssignments.get(position).getPassPercentage());
+                bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_TYPE, arrayListAssignments.get(position).getExamType());
+                bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_MODE, arrayListAssignments.get(position).getExamMode());
+                bundleAssignmentDetails.putString(AppConstant.ARG_EXAM_DURATION, arrayListAssignments.get(position).getDuration());
+                bundleAssignmentDetails.putString(AppConstant.ARG_CLASSROOM_NAME, arrayListAssignments.get(position).getClassroomName());
+                bundleAssignmentDetails.putInt(AppConstant.ARG_ASSIGNMENT_NO, position);
+
                 mFragment.getFragmentManager().beginTransaction().
-                        replace(R.id.fl_teacher_office_home, new TeacherExamWiseAssignments(mFragment, listOfAssignments.get(position).getExamId(), listOfAssignments.get(position).getExamMode())).commit();
+                        replace(R.id.fl_teacher_office_home, GetAssignmentsSubmitterFragment.newInstance(bundleAssignmentDetails)).commit();
             }
         });
 
@@ -132,16 +149,17 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
             @Override
             public void onClick(View view) {
 
-                if (listOfAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_OBJECTIVE)) {
+                if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_OBJECTIVE)) {
 
                     mFragment.getFragmentManager().beginTransaction().
-                            replace(R.id.fl_teacher_office_home, ExamObjectiveDetailFragment.newInstance()).commit();
+                            replace(R.id.fl_teacher_office_home, GetObjectiveAssignmentQuestionsFragment.newInstance(null)).commit();
 
 
-                } else if (listOfAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_SUBJECTIVE)) {
+                } else if (arrayListAssignments.get(position).getExamMode().equalsIgnoreCase(EXAM_SUBJECTIVE)) {
+
 
                     mFragment.getFragmentManager().beginTransaction().
-                            replace(R.id.fl_teacher_office_home, ExamSubjectiveDetailFragment.newInstance()).commit();
+                            replace(R.id.fl_teacher_office_home, GetSubjectiveAssignmentQuestionsFragment.newInstance(null)).commit();
 
                 }
 
@@ -155,8 +173,8 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
     public void addAll(ArrayList<Exams> exams) {
 
         try {
-            this.listOfAssignments.clear();
-            this.listOfAssignments.addAll(exams);
+            this.arrayListAssignments.clear();
+            this.arrayListAssignments.addAll(exams);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -166,7 +184,7 @@ public class AssignmentSubjectsAdapter extends RecyclerView.Adapter<AssignmentSu
 
     @Override
     public int getItemCount() {
-        return listOfAssignments.size();
+        return arrayListAssignments.size();
     }
 
 

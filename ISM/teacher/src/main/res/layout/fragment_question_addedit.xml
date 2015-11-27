@@ -79,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/d5dp"
-                        android:src="@drawable/ic_edit_question" />
+                        android:src="@drawable/img_edit_question" />
 
                     <ImageView
                         android:id="@+id/img_copy_question"

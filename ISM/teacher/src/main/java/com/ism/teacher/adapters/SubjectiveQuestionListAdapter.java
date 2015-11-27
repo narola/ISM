@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
-import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.model.Evaluation;
@@ -26,9 +25,9 @@ import java.util.ArrayList;
 /**
  * Created by c75 on 16/11/15.
  */
-public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQuestionAdapter.ViewHolder> {
+public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<SubjectiveQuestionListAdapter.ViewHolder> {
 
-    private static String TAG = SubjectiveQuestionAdapter.class.getSimpleName();
+    private static String TAG = SubjectiveQuestionListAdapter.class.getSimpleName();
 
     Fragment mFragment;
     Context context;
@@ -38,8 +37,10 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
     ArrayList<Evaluation> evaluationArrayList = new ArrayList<>();
     ArrayList<Questions> arrayListSubjectiveQuestions = new ArrayList<>();
 
+    private LayoutInflater inflater;
 
-    public SubjectiveQuestionAdapter(ResponseHandler responseObject, Context context, Fragment fragment, ResponseHandler studentEvalResObj) {
+
+    public SubjectiveQuestionListAdapter(ResponseHandler responseObject, Context context, Fragment fragment, ResponseHandler studentEvalResObj) {
         this.responseObject = responseObject;
         this.context = context;
         this.mFragment = fragment;
@@ -47,6 +48,16 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
         myTypeFace = new MyTypeFace(context);
         addAll(responseObject.getExamQuestions().get(0).getQuestions());
     }
+
+
+    public SubjectiveQuestionListAdapter(Context mContext, Fragment mFragment) {
+        this.context = mContext;
+        inflater = LayoutInflater.from(mContext);
+        myTypeFace = new MyTypeFace(mContext);
+        this.mFragment = mFragment;
+    }
+
+
 
 
     public void addAll(ArrayList<Questions> data) {
@@ -61,9 +72,8 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
     }
 
     @Override
-    public SubjectiveQuestionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SubjectiveQuestionListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.row_subjective_questions, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
@@ -122,7 +132,7 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
     }
 
     @Override
-    public void onBindViewHolder(final SubjectiveQuestionAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final SubjectiveQuestionListAdapter.ViewHolder holder, int position) {
         try {
 //            ArrayList<Data> arrayList = new ArrayList<Data>();
 //            arrayList = responseHandler.getData().get(0).getQuestions();
@@ -228,6 +238,14 @@ public class SubjectiveQuestionAdapter extends RecyclerView.Adapter<SubjectiveQu
 
     @Override
     public int getItemCount() {
-        return responseObject.getExamQuestions().get(0).getQuestions().size();
+         return arrayListSubjectiveQuestions.size();
+    }
+
+
+    ArrayList<Evaluation> evaluationList = new ArrayList<Evaluation>();
+
+    public void setEvaluationData(ArrayList<Evaluation> evaluationList) {
+        this.evaluationList = evaluationList;
+        notifyDataSetChanged();
     }
 }

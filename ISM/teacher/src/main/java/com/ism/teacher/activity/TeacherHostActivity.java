@@ -3,7 +3,6 @@ package com.ism.teacher.activity;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,8 +25,8 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.ControllerTopMenuItem;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.ControllerTopSpinnerAdapter;
-import com.ism.teacher.fragments.ExamObjectiveDetailFragment;
-import com.ism.teacher.fragments.ExamSubjectiveDetailFragment;
+import com.ism.teacher.fragments.GetObjectiveAssignmentQuestionsFragment;
+import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.fragments.StudentAttemptedFragment;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
@@ -90,8 +89,8 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     private ProgressGenerator progressGenerator;
 
 
-    ExamSubjectiveDetailFragment examSubjectiveDetailFragment;
-    ExamObjectiveDetailFragment examObjectiveDetailFragment;
+    GetSubjectiveAssignmentQuestionsFragment getSubjectiveAssignmentQuestionsFragment;
+    GetObjectiveAssignmentQuestionsFragment getObjectiveAssignmentQuestionsFragment;
     StudentAttemptedFragment studentAttemptedFragment;
 
 
@@ -310,11 +309,11 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
 
                 /*case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamObjectiveDetailFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GetObjectiveAssignmentQuestionsFragment.newInstance()).commit();
 
                     break;
                 case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamSubjectiveDetailFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, GetSubjectiveAssignmentQuestionsFragment.newInstance()).commit();
                     break;*/
 
 
@@ -330,10 +329,10 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         }
     }
 
+    // public void loadStudentAttemptedFragmentAlongEvaluation(Context context, String examid, String studentid, boolean callEvaluationApiFlag)
 
-    public void loadStudentAttemptedFragmentAlongEvaluation(Context context, String examid, String studentid, boolean callEvaluationApiFlag) {
-        studentAttemptedFragment = new StudentAttemptedFragment(context, examid, studentid, true);
-        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, studentAttemptedFragment).commit();
+    public void loadStudentAttemptedFragmentAlongEvaluation(Bundle bundleArguments) {
+        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedFragment.newInstance(bundleArguments)).commit();
     }
 
     //these is for the load fragment in right container.
@@ -352,7 +351,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, UserProfileFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_STUDENT_ATTEMPTED:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedFragment.newInstance(null)).commit();
                     break;
             }
 
@@ -450,27 +449,27 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     break;
 
 
-                case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
-                    currentMainFragment = fragment;
-                    imgHome.setActivated(false);
-                    currentMainFragmentBg = R.color.bg_classroom;
-                    imgOffice.setActivated(true);
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
-                    hideControllerTopAction();
-                    txtTitle.setText("");
-                    llControllerLeft.setVisibility(View.VISIBLE);
-                    break;
-
-
-                case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
-                    currentMainFragment = fragment;
-                    imgHome.setActivated(false);
-                    currentMainFragmentBg = R.color.bg_classroom;
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
-                    hideControllerTopAction();
-                    txtTitle.setText("");
-                    llControllerLeft.setVisibility(View.GONE);
-                    break;
+//                case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
+//                    currentMainFragment = fragment;
+//                    imgHome.setActivated(false);
+//                    currentMainFragmentBg = R.color.bg_classroom;
+//                    imgOffice.setActivated(true);
+//                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
+//                    hideControllerTopAction();
+//                    txtTitle.setText("");
+//                    llControllerLeft.setVisibility(View.VISIBLE);
+//                    break;
+//
+//
+//                case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
+//                    currentMainFragment = fragment;
+//                    imgHome.setActivated(false);
+//                    currentMainFragmentBg = R.color.bg_classroom;
+//                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
+//                    hideControllerTopAction();
+//                    txtTitle.setText("");
+//                    llControllerLeft.setVisibility(View.GONE);
+//                    break;
 
             }
         } catch (Exception e) {
@@ -517,12 +516,12 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     imgOffice.setActivated(false);
                     break;
 
-                case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
-                    imgOffice.setActivated(true);
-                    break;
-                case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
-                    llControllerLeft.setVisibility(View.VISIBLE);
-                    break;
+//                case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
+//                    imgOffice.setActivated(true);
+//                    break;
+//                case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
+//                    llControllerLeft.setVisibility(View.VISIBLE);
+//                    break;
 
             }
         } catch (Exception e) {
@@ -735,6 +734,14 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     public void hideRightContainerFragment() {
         flFragmentContainerRight.setVisibility(View.GONE);
+    }
+
+    public void hideTxtAction() {
+        txtAction.setVisibility(View.GONE);
+    }
+
+    public void showTxtAction() {
+        txtAction.setVisibility(View.VISIBLE);
     }
 
 

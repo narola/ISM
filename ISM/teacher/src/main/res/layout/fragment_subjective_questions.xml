@@ -2,171 +2,177 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_highscore_subjectlist"
     android:orientation="vertical">
 
-
-    <!--parent top row for heading-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/shadow_bg_trial_exam_details"
         android:orientation="horizontal"
-        android:weightSum="6">
+        android:padding="@dimen/d10dp"
+        android:weightSum="3">
 
-        <!-- student part-->
-        <RelativeLayout
-            android:id="@+id/rl_student_details"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.8"
-            android:visibility="gone">
+            android:layout_weight="0.90"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <com.ism.teacher.views.CircleImageView
-                android:id="@+id/img_student_pic"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_margin="5sp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/userdp" />
+                android:id="@+id/img_student_profile_pic"
+                android:layout_width="@dimen/d50dp"
+                android:layout_height="@dimen/d50dp"
+                android:background="@drawable/userdp" />
 
-            <TextView
-                android:id="@+id/txt_student_name"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/d10dp"
-                android:layout_marginTop="@dimen/d10dp"
-                android:layout_toEndOf="@+id/img_student_pic"
-                android:gravity="left"
-                android:text="Adam Stanger"
-                android:textColor="@color/color_blue_subjective_question"
-                android:textSize="16sp" />
+                android:layout_marginLeft="@dimen/d15dp"
+                android:layout_weight="1"
+                android:gravity="top"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txt_student_rollno"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_student_name"
-                android:layout_marginLeft="@dimen/d10dp"
-                android:layout_marginTop="@dimen/d10dp"
-                android:layout_toEndOf="@+id/img_student_pic"
-                android:gravity="left"
-                android:text="Roll No-"
-                android:textColor="#75767A"
-                android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/tv_student_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/color_blue"
+                    android:textSize="@dimen/d18dp" />
 
-            <ImageView
-                android:id="@+id/img_online"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
-                android:layout_marginRight="@dimen/d10dp"
-                android:src="@drawable/radio_button_select" />
+                <TextView
+                    android:id="@+id/tv_student_roll_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d5dp"
+                    android:text=""
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/d15dp" />
+            </LinearLayout>
+        </LinearLayout>
 
-        </RelativeLayout>
+        <ImageView
+            android:layout_width="@dimen/d1dp"
+            android:layout_height="match_parent"
+            android:background="@color/questionlistseparator" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:background="@color/color_shade_news_feed" />
-
-        <!-- Assignment detail part-->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3.5"
+            android:layout_marginLeft="@dimen/d15dp"
+            android:layout_weight="1.65"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_assignment_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/d10dp"
-                android:gravity="left"
-                android:text="Assignment No 1"
-                android:textColor="#75767A"
-                android:textSize="16sp" />
+                android:text="@string/strassignmentno"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/d18dp" />
 
             <TextView
-                android:id="@+id/txt_exam_name"
+                android:id="@+id/tv_assignment_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:gravity="left"
-                android:text="ORGANIC CHEMISTRY PART 1"
-                android:textColor="@color/color_red_assignment"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
+                android:layout_marginTop="@dimen/d5dp"
+                android:text=""
+                android:textAllCaps="true"
+                android:textColor="@color/color_red"
+                android:textSize="@dimen/d20dp" />
         </LinearLayout>
-        <!-- Score Section-->
-        <View
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:background="@color/color_shade_news_feed" />
+
+        <ImageView
+            android:layout_width="@dimen/d1dp"
+            android:layout_height="match_parent"
+            android:background="@color/questionlistseparator" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="@dimen/d70dp"
-            android:layout_weight="0.7"
-            android:orientation="vertical"
-            >
+            android:layout_height="match_parent"
+            android:layout_weight="0.45"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_subjective_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/d10dp"
-                android:text="Score"
-                android:textSize="@dimen/d18sp" />
+                android:text="@string/strScore"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/d15dp" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_subjective_marks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/d5dp"
+                android:text=""
+                android:textAllCaps="true"
+                android:textColor="@color/color_green"
+                android:textSize="@dimen/d20dp" />
+        </LinearLayout>
+    </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="32"
-                    android:textColor="@color/color_green_subjective_question"
-                    android:textSize="@dimen/d20sp"
-                    android:textStyle="bold" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_subjective_questions_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="/"
-                    android:textColor="@color/color_green_subjective_question"
-                    android:textSize="@dimen/d20sp"
-                    android:textStyle="bold" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_app_dark">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:text="50"
-                    android:textColor="@color/color_green_subjective_question"
-                    android:textSize="@dimen/d20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_prev_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="@dimen/d20dp">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_prev" />
 
         </LinearLayout>
 
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_student_evalution_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/strevaluation"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/d18dp" />
+
+        <LinearLayout
+            android:id="@+id/ll_next_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="@dimen/d20dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_next" />
+
+        </LinearLayout>
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_subjective_question_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="9"
-        android:background="@color/color_white"
-        android:visibility="visible" />
+    </RelativeLayout>
+
+
 </LinearLayout>

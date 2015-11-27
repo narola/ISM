@@ -106,7 +106,7 @@
                     android:id="@+id/img_question_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_edit_question" />
+                    android:background="@drawable/img_edit_question" />
 
                 <ImageView
                     android:id="@+id/img_question_copy"

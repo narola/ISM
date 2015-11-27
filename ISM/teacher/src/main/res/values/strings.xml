@@ -336,4 +336,21 @@
     <string name="straverage">Average</string>
     <string name="strpoor">Poor</string>
     <string name="strincorrect">InCorrect</string>
+
+    <!-- MyStudents-->
+    <string name="strmystudents">My Students</string>
+    <string name="strevaluation">Evaluation</string>
+    <string name="strrollno">Roll No :</string>
+    <string name="strassignmentno">Assignment No</string>
+    <string name="strbookname">Book Name</string>
+    <string name="strtest">test</string>
+    <string name="strassignmentdate">Assignment date</string>
+    <string name="strassignmentdatecolon">Assignment Date:</string>
+    <string name="stranswer">Answer :</string>
+    <string name="strof">of </string>
+    <string name="strquestionpallete">Question Palette</string>
+    <string name="strlegend">Legend :</string>
+    <string name="strassessed">Assessed</string>
+    <string name="strunasssessed">Unassessed</string>
+    <string name="strnotattemted">Not Attempted</string>
 </resources>
