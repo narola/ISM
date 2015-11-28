@@ -275,6 +275,7 @@ public class ResponseHandler {
     public void setBadges(ArrayList<Badges> badges) {
         this.badges = badges;
     }
+
     @JsonProperty("notification")
     public ArrayList<Notification> getNotification() {
         return this.notification;
@@ -301,6 +302,7 @@ public class ResponseHandler {
     public void setStudymateRequest(ArrayList<StudymateRequest> studymateRequest) {
         this.studymateRequest = studymateRequest;
     }
+
     @JsonProperty("question")
     public ArrayList<Question> getQuestion() {
         return this.question;

@@ -75,9 +75,12 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
             holder.llPreviewQuestionAnswers.removeAllViews();
             if (holder.llPreviewQuestionAnswers.getChildCount() == 0) {
-                for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
-                    View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
-                    holder.llPreviewQuestionAnswers.addView(ansView);
+
+                if (arrListQuestions.get(position).getAnswers() != null) {
+                    for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
+                        View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
+                        holder.llPreviewQuestionAnswers.addView(ansView);
+                    }
                 }
             }
 

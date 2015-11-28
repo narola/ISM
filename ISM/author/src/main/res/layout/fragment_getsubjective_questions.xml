@@ -95,25 +95,52 @@
             android:layout_height="match_parent"
             android:layout_weight="0.45"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_subjective_score"
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/strScore"
-                android:textColor="@color/color_gray"
-                android:textSize="@dimen/d15dp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_subjective_marks"
+                <TextView
+                    android:id="@+id/tv_subjective_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/strScore"
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/d15dp" />
+
+                <TextView
+                    android:id="@+id/tv_subjective_marks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d5dp"
+                    android:text="@string/strtest"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_green"
+                    android:textSize="@dimen/d20dp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/d5dp"
-                android:text="@string/strtest"
-                android:textAllCaps="true"
-                android:textColor="@color/color_green"
-                android:textSize="@dimen/d20dp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img_edit_exam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/img_edit_question" />
+
+                <ImageView
+                    android:id="@+id/img_copy_exam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/img_copy_question" />
+            </LinearLayout>
+
+
         </LinearLayout>
     </LinearLayout>
 
