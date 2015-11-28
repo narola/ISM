@@ -145,6 +145,10 @@ public class WebserviceWrapper {
                         responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_STUDENTS).execute(ResponseHandler.class, attribute);
                         break;
 
+                    case WebConstants.CREATEQUESTION:
+                        responseObject = new WebserviceConnector(WebConstants.URL_CREATEQUESTION).execute(ResponseHandler.class, attribute);
+                        break;
+
                     case WebConstants.GET_ALL_HASHTAG:
                         responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_HASHTAG).execute(ResponseHandler.class, attribute);
                         break;

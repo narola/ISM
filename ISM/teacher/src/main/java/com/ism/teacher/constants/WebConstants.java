@@ -107,7 +107,10 @@ public class WebConstants {
     public static final String URL_GET_STATES = URL_KINJAL_HOST + "GetStates";
     public static final String URL_GET_COUNTRIES = URL_KINJAL_HOST + "GetCountries";
 
+    //Add Question Functionality
+
     public static final String URL_GET_ALL_HASHTAG= URL_KINJAL_HOST + "GetAllHashtag";
+    public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
 
     public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
 

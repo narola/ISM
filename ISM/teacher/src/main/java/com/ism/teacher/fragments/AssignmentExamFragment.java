@@ -4,7 +4,6 @@ package com.ism.teacher.fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,43 +47,36 @@ import jp.wasabeef.richeditor.RichEditor;
  */
 public class AssignmentExamFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
+    private View view;
+    private Context mContext;
+    private Fragment fragmentContext;
 
     private static final String TAG = AssignmentExamFragment.class.getSimpleName();
-    //Views
-    private View view;
-    TextView tv_exam_title, tv_exam_examfor, tv_exam_examschedule, tv_exam_examinstruction, tv_exam_declareresult,
-            tv_exam_negativemarking, tv_exam_randomquestion, tv_exam_usescore, tv_exam_questionscorevalue, tv_exam_addnegativemark;
-    Spinner spExamClassroom, spExamSubjectname, spExamSubjecttopic, spExamPassingpercent, spExamExamname, spExamExammode,
+    private TextView tvExamTitle, tvExamExamfor, tvExamExamschedule, tvExamExaminstruction, tvExamDeclareresult,
+            tvExamNegativemarking, tvExamRandomquestion, tvExamUsescore, tvExamQuestionscorevalue, tvExamAddnegativemark;
+    private Spinner spExamClassroom, spExamSubjectname, spExamSubjecttopic, spExamPassingpercent, spExamExamCategory, spExamExammode,
             spExamExamduration;
-
-    ToggleButton tbExamSelectexamfor;
-    EditText etExamName, etExamStartdate, etExamEnddate, etExamQuestionscorevalue, etExamAttemptcount, etExamAddnegativemark;
-    CheckBox cb_exam_startdate_notify, cb_exam_enddate_notify;
-    RadioGroup radioDeclareresult, radioNegativemarking, radioExamRandomQuestion, radioExamUsescore;
-    LinearLayout ll_add_questionscore, ll_add_negative_mark;
-    Button btnExamSave, btnExamSetquestion, btnExamCancel;
-    RichTextEditor rte_trial_exam;
-    MyTypeFace myTypeFace;
-
-
-    //Variables
-    String exam_id_after_creating_exam = "78";
-    private static int PASSINGPERCENT_INTERVAL = 5, PASSINGPERCENT_STARTVALUE = 30, PASSINGPERCENT_ENDVALUE = 99;
-    private static int EXAMDURATION_INTERVAL = 30, EXAMDURATION_STARTVALUE = 30, EXAMDURATION_ENDVALUE = 300;
-    String examStartDate = "", examEndDate = "", strAssignmenttext = "";
-
-    //lists
+    private ArrayList<Topics> arrListTopic;
     private ArrayList<Classrooms> arrListClassRooms;
     private ArrayList<Subjects> arrListSubject;
-    private ArrayList<Topics> arrListTopic;
-    List<String> arrListDefalt, arrListPassingPercent, arrListExamDuration, arrListExamMode, arrListExamName;
-
-    private InputValidator inputValidator;
-
-    private Fragment fragmentContext;
-    private Context mContext;
+    private List<String> arrListDefalt, arrListPassingPercent, arrListExamDuration, arrListExamMode, arrListExamCategory;
+    private ToggleButton tbExamSelectexamfor;
+    private EditText etExamName, etExamStartdate, etExamEnddate, etExamQuestionscorevalue, etExamAttemptcount, etExamAddnegativemark;
+    private CheckBox cbExamStartdateNotify, cbExamEnddateNotify;
+    private RadioGroup radioDeclareresult, radioNegativemarking, radioExamRandomQuestion, radioExamUsescore;
+    private LinearLayout llAddQuestionscore, llAddNegativeMark, llExamStartdate, llExamEnddate;
+    private Button btnExamSave, btnExamSetquestion, btnExamCancel;
+    private RichTextEditor rteTrialExam;
     private ScrollView svCreateExam;
 
+
+    private MyTypeFace myTypeFace;
+
+    private static int PASSINGPERCENT_INTERVAL = 5, PASSINGPERCENT_STARTVALUE = 30, PASSINGPERCENT_ENDVALUE = 99;
+    private static int EXAMDURATION_INTERVAL = 30, EXAMDURATION_STARTVALUE = 30, EXAMDURATION_ENDVALUE = 300;
+
+    String examStartDate = "", examEndDate = "", strAssignmenttext = "";
+    private InputValidator inputValidator;
 
     /**
      * Fragment Args
@@ -119,39 +111,38 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
-        inputValidator = new InputValidator(getActivity());
+        myTypeFace = new MyTypeFace(mContext);
+        inputValidator = new InputValidator(mContext);
 
-        svCreateExam = (ScrollView) view.findViewById(R.id.sv_create_exam);
-        tv_exam_title = (TextView) view.findViewById(R.id.tv_exam_title);
+        tvExamTitle = (TextView) view.findViewById(R.id.tv_exam_title);
 
-        tv_exam_examfor = (TextView) view.findViewById(R.id.tv_exam_examfor);
-        tv_exam_examschedule = (TextView) view.findViewById(R.id.tv_exam_examschedule);
-        tv_exam_examinstruction = (TextView) view.findViewById(R.id.tv_exam_examinstruction);
-        tv_exam_declareresult = (TextView) view.findViewById(R.id.tv_exam_declareresult);
-        tv_exam_negativemarking = (TextView) view.findViewById(R.id.tv_exam_negativemarking);
-        tv_exam_randomquestion = (TextView) view.findViewById(R.id.tv_exam_randomquestion);
-        tv_exam_usescore = (TextView) view.findViewById(R.id.tv_exam_usescore);
-        tv_exam_questionscorevalue = (TextView) view.findViewById(R.id.tv_exam_questionscorevalue);
-        tv_exam_addnegativemark = (TextView) view.findViewById(R.id.tv_exam_addnegativemark);
+        tvExamExamfor = (TextView) view.findViewById(R.id.tv_exam_examfor);
+        tvExamExamschedule = (TextView) view.findViewById(R.id.tv_exam_examschedule);
+        tvExamExaminstruction = (TextView) view.findViewById(R.id.tv_exam_examinstruction);
+        tvExamDeclareresult = (TextView) view.findViewById(R.id.tv_exam_declareresult);
+        tvExamNegativemarking = (TextView) view.findViewById(R.id.tv_exam_negativemarking);
+        tvExamRandomquestion = (TextView) view.findViewById(R.id.tv_exam_randomquestion);
+        tvExamUsescore = (TextView) view.findViewById(R.id.tv_exam_usescore);
+        tvExamQuestionscorevalue = (TextView) view.findViewById(R.id.tv_exam_questionscorevalue);
+        tvExamAddnegativemark = (TextView) view.findViewById(R.id.tv_exam_addnegativemark);
 
-        tv_exam_title.setTypeface(myTypeFace.getRalewayRegular());
-        tv_exam_examfor.setTypeface(myTypeFace.getRalewayRegular());
-        tv_exam_examschedule.setTypeface(myTypeFace.getRalewayRegular());
-        tv_exam_examinstruction.setTypeface(myTypeFace.getRalewayRegular());
-        tv_exam_declareresult.setTypeface(myTypeFace.getRalewayRegular());
-        tv_exam_negativemarking.setTypeface(myTypeFace.getRalewayRegular());
-        tv_exam_randomquestion.setTypeface(myTypeFace.getRalewayRegular());
-        tv_exam_usescore.setTypeface(myTypeFace.getRalewayRegular());
-        tv_exam_questionscorevalue.setTypeface(myTypeFace.getRalewayRegular());
-        tv_exam_addnegativemark.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamTitle.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamExamfor.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamExamschedule.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamExaminstruction.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamDeclareresult.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamNegativemarking.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamRandomquestion.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamUsescore.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamQuestionscorevalue.setTypeface(myTypeFace.getRalewayRegular());
+        tvExamAddnegativemark.setTypeface(myTypeFace.getRalewayRegular());
 
 
         spExamClassroom = (Spinner) view.findViewById(R.id.sp_exam_classroom);
         spExamSubjectname = (Spinner) view.findViewById(R.id.sp_exam_subjectname);
         spExamSubjecttopic = (Spinner) view.findViewById(R.id.sp_exam_subjecttopic);
         spExamPassingpercent = (Spinner) view.findViewById(R.id.sp_exam_passingpercent);
-        spExamExamname = (Spinner) view.findViewById(R.id.sp_exam_examname);
+        spExamExamCategory = (Spinner) view.findViewById(R.id.sp_exam_examcategory);
         spExamExammode = (Spinner) view.findViewById(R.id.sp_exam_exammode);
         spExamExamduration = (Spinner) view.findViewById(R.id.sp_exam_examduration);
 
@@ -171,8 +162,8 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         etExamQuestionscorevalue.setTypeface(myTypeFace.getRalewayRegular());
         etExamAddnegativemark.setTypeface(myTypeFace.getRalewayRegular());
 
-        cb_exam_startdate_notify = (CheckBox) view.findViewById(R.id.cb_exam_startdate_notify);
-        cb_exam_enddate_notify = (CheckBox) view.findViewById(R.id.cb_exam_enddate_notify);
+        cbExamStartdateNotify = (CheckBox) view.findViewById(R.id.cb_exam_startdate_notify);
+        cbExamEnddateNotify = (CheckBox) view.findViewById(R.id.cb_exam_enddate_notify);
 
         radioDeclareresult = (RadioGroup) view.findViewById(R.id.radio_declareresult);
         radioNegativemarking = (RadioGroup) view.findViewById(R.id.radio_negativemarking);
@@ -180,134 +171,109 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         radioExamUsescore = (RadioGroup) view.findViewById(R.id.radio_exam_usescore);
 
 
+        radioDeclareresult.check(R.id.radio_btn_declareresult_yes);
+        radioNegativemarking.check(R.id.radio_btn_negativemarking_yes);
+        radioExamRandomQuestion.check(R.id.radio_btn_randomquestion_yes);
+        radioExamUsescore.check(R.id.radio_btn_examuserscore_yes);
+
+        svCreateExam = (ScrollView) view.findViewById(R.id.sv_create_exam);
+
+
         btnExamSave = (Button) view.findViewById(R.id.btn_exam_save);
         btnExamSetquestion = (Button) view.findViewById(R.id.btn_exam_setquestion);
         btnExamCancel = (Button) view.findViewById(R.id.btn_exam_cancel);
+
+        btnExamSave.setTypeface(myTypeFace.getRalewayRegular());
+        btnExamSetquestion.setTypeface(myTypeFace.getRalewayRegular());
+        btnExamCancel.setTypeface(myTypeFace.getRalewayRegular());
+
+        llAddQuestionscore = (LinearLayout) view.findViewById(R.id.ll_add_questionscore);
+        llAddNegativeMark = (LinearLayout) view.findViewById(R.id.ll_add_negative_mark);
+
+        llAddQuestionscore.setVisibility(View.VISIBLE);
+        llAddNegativeMark.setVisibility(View.VISIBLE);
+
+        llExamStartdate = (LinearLayout) view.findViewById(R.id.ll_exam_startdate);
+        llExamEnddate = (LinearLayout) view.findViewById(R.id.ll_exam_enddate);
+
+
+        arrListDefalt = new ArrayList<String>();
+        arrListDefalt.add(Utility.getString(R.string.select, mContext));
+
+
+        getPassingPercentSpinnerValues();
+        Adapters.setUpSpinner(mContext, spExamPassingpercent, arrListPassingPercent, Adapters.ADAPTER_NORMAL);
+
+        getExamDurationSpinnerValues();
+        Adapters.setUpSpinner(mContext, spExamExamduration, arrListExamDuration, Adapters.ADAPTER_NORMAL);
+
+        arrListExamMode = new ArrayList<String>();
+        arrListExamMode = Arrays.asList(getResources().getStringArray(R.array.exammode));
+        Adapters.setUpSpinner(mContext, spExamExammode, arrListExamMode, Adapters.ADAPTER_NORMAL);
+
+
+        arrListExamCategory = new ArrayList<String>();
+        arrListExamCategory = Arrays.asList(getResources().getStringArray(R.array.examname));
+        Adapters.setUpSpinner(mContext, spExamExamCategory, arrListExamCategory, Adapters.ADAPTER_NORMAL);
+
+        llExamStartdate.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    examStartDate = Utility.showDatePickerDob(mContext, etExamStartdate);
+                    etExamStartdate.setError(null);
+                }
+                return true;
+            }
+        });
+
+        llExamEnddate.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    examEndDate = Utility.showDatePickerDob(mContext, etExamEnddate);
+                    etExamEnddate.setError(null);
+                }
+                return true;
+            }
+        });
+
 
         btnExamSave.setOnClickListener(this);
         btnExamSetquestion.setOnClickListener(this);
         btnExamCancel.setOnClickListener(this);
 
-        ll_add_questionscore = (LinearLayout) view.findViewById(R.id.ll_add_questionscore);
-        ll_add_negative_mark = (LinearLayout) view.findViewById(R.id.ll_add_negative_mark);
-
-
-        arrListDefalt = new ArrayList<String>();
-        arrListDefalt.add(getString(R.string.select));
-
-
-        getPassingPercentSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), spExamPassingpercent, arrListPassingPercent);
-
-        getExamDurationSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), spExamExamduration, arrListExamDuration);
-
-        arrListExamMode = new ArrayList<String>();
-        arrListExamMode.add(getString(R.string.strexammode));
-        arrListExamMode = Arrays.asList(getResources().getStringArray(R.array.exammode));
-        Adapters.setUpSpinner(getActivity(), spExamExammode, arrListExamMode);
-
-
-        arrListExamName = new ArrayList<String>();
-        arrListExamName.add(getString(R.string.strexamname));
-        arrListExamName = Arrays.asList(getResources().getStringArray(R.array.examname));
-        Adapters.setUpSpinner(getActivity(), spExamExamname, arrListExamName);
-
-//        spExamSubjectname.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if (arrListSubject != null && position > 0) {
-//
-//                    if (Utility.isOnline(getActivity())) {
-//
-//                        callApiGetTopics(Integer.parseInt(arrListSubject.get(position - 1).getId()));
-//                    } else {
-//                        Utility.toastOffline(getActivity());
-//                    }
-//                } else {
-//                    com.ism.adapter.Adapters.setUpSpinner(getActivity(), spExamSubjecttopic, arrListDefalt);
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-
-        etExamStartdate.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    examStartDate = Utility.showDatePickerDob(getActivity(), etExamStartdate);
-                }
-                return true;
-            }
-        });
-
-        etExamEnddate.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    examEndDate = Utility.showDatePickerDob(getActivity(), etExamEnddate);
-                }
-                return true;
-            }
-        });
-
 
         radioNegativemarking.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-                // checkedId is the RadioButton selected
-
-
                 if (((RadioButton) view.findViewById(checkedId)).getText().toString().toLowerCase().equals("yes")) {
-
-                    ll_add_negative_mark.setVisibility(View.VISIBLE);
-
+                    llAddNegativeMark.setVisibility(View.VISIBLE);
                 } else {
-
-                    ll_add_negative_mark.setVisibility(View.GONE);
+                    llAddNegativeMark.setVisibility(View.GONE);
                 }
-
-
             }
         });
 
         radioExamUsescore.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-
                 // checkedId is the RadioButton selected
-
-
                 if (((RadioButton) view.findViewById(checkedId)).getText().toString().toLowerCase().equals("yes")) {
-
-                    ll_add_questionscore.setVisibility(View.VISIBLE);
-
+                    llAddQuestionscore.setVisibility(View.VISIBLE);
                 } else {
-
-                    ll_add_questionscore.setVisibility(View.GONE);
+                    llAddQuestionscore.setVisibility(View.GONE);
                 }
-
-
             }
         });
 
 
-        rte_trial_exam = (RichTextEditor) view.findViewById(R.id.rte_trial_exam);
-
-
-        rte_trial_exam.getRichEditor().setEditorFontSize(25);
-
-        rte_trial_exam.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
+        rteTrialExam = (RichTextEditor) view.findViewById(R.id.rte_trial_exam);
+        rteTrialExam.getRichEditor().setEditorFontSize(25);
+        rteTrialExam.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override
             public void onTextChange(String text) {
-
                 strAssignmenttext = text;
-
             }
         });
 
@@ -317,20 +283,258 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         } else {
 //            btnExamSetquestion.setVisibility(View.GONE);
         }
-        callApiGetClassRooms();
+        callApiGetClassrooms();
         callApiGetSubjects();
 
     }
+
 
     private void setExamDetails() {
 
         etExamName.setText(getArguments().getString(AppConstant.ARG_EXAM_NAME));
         spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(AppConstant.ARG_PASS_PERCENTAGE)));
         setExamType(getArguments().getString(AppConstant.ARG_EXAM_TYPE));
-        spExamExamname.setSelection(arrListExamName.indexOf(getArguments().getString(AppConstant.ARG_EXAM_CATEGORY)));
+        spExamExamCategory.setSelection(arrListExamCategory.indexOf(getArguments().getString(AppConstant.ARG_EXAM_CATEGORY)));
         spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(AppConstant.ARG_EXAM_MODE)));
         spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(AppConstant.ARG_EXAM_DURATION)));
 
+    }
+
+    private void callApiGetClassrooms() {
+
+
+        if (Utility.isOnline(mContext)) {
+            try {
+                ((TeacherHostActivity) getActivity()).stopProgress();
+                new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.GET_CLASSROOMS);
+            } catch (Exception e) {
+                Debug.e(TAG + Utility.getString(R.string.strerrormessage, mContext), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(mContext);
+        }
+    }
+
+    private void callApiGetSubjects() {
+        if (Utility.isOnline(mContext)) {
+            try {
+                ((TeacherHostActivity) getActivity()).stopProgress();
+                new WebserviceWrapper(mContext, null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.GET_SUBJECT);
+            } catch (Exception e) {
+                Debug.e(TAG + Utility.getString(R.string.strerrormessage, mContext), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(mContext);
+        }
+    }
+
+
+    private void callApiGetTopics(int subject_id) {
+        if (Utility.isOnline(mContext)) {
+            try {
+                ((TeacherHostActivity) getActivity()).stopProgress();
+                Attribute attribute = new Attribute();
+                attribute.setSubjectId(String.valueOf(subject_id));
+                new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.GET_TOPICS);
+            } catch (Exception e) {
+                Debug.e(TAG + Utility.getString(R.string.strerrormessage, mContext), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(mContext);
+        }
+    }
+
+
+    private void callApiCreateExam() {
+
+        if (Utility.isOnline(mContext)) {
+            try {
+                ((TeacherHostActivity) getActivity()).stopProgress();
+                Attribute attribute = new Attribute();
+
+                attribute.setExamName(etExamName.getText().toString());
+                attribute.setClassroomId(String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
+                        get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
+                attribute.setSubjectId(String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
+                        get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
+                attribute.setAttemptCount(String.valueOf(Integer.valueOf(etExamAttemptcount.getText().toString())));
+                attribute.setExamType(getExamType());
+                attribute.setExamCategory(arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
+                attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
+                attribute.setPassingPercent(arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
+                attribute.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
+                attribute.setExamInstruction(strAssignmenttext);
+                attribute.setDeclareResults(getRadioGropuSelection(radioDeclareresult));
+                attribute.setNegativeMarking(getRadioGropuSelection(radioNegativemarking));
+                attribute.setRandomQuestion(getRadioGropuSelection(radioExamRandomQuestion));
+                attribute.setExamStartDate(Utility.getDateInApiFormat(etExamStartdate.getText().toString()));
+                attribute.setExamStartTime("5:00:00");
+                attribute.setUserId("370");
+                attribute.setNegativeMarkValue(etExamAddnegativemark.getText().toString());
+                attribute.setBookId(String.valueOf(0));
+
+                new WebserviceWrapper(mContext, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.CREATE_EXAM);
+            } catch (Exception e) {
+                Debug.e(TAG + Utility.getString(R.string.strerrormessage, mContext), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(mContext);
+        }
+    }
+
+
+    //local field validations
+    private String strValidationMsg;
+
+    private boolean isInputsValid() {
+        return inputValidator.validateStringPresence(etExamName) & inputValidator.validateStringPresence(etExamAttemptcount)
+                & inputValidator.validateStringPresence(etExamStartdate) & inputValidator.validateStringPresence(etExamEnddate)
+                && checkRadioButtonInputs() && checkOtherInputs();
+    }
+
+    private boolean checkRadioButtonInputs() {
+        strValidationMsg = "";
+
+        if (isDeclareResultOption() & isNegativeMarkingOption() & isRandomQuestionOption() & isUseScoreFromQuestion()) {
+            return true;
+        } else {
+//            Utility.alert(mContext, null, strValidationMsg);
+            return false;
+        }
+    }
+
+    private boolean isUseScoreFromQuestion() {
+//        if (radioExamUsescore.getCheckedRadioButtonId() == -1) {
+//            strValidationMsg += Utility.getString(R.string.msg_validation_use_score_from_questions, mContext);
+//            return false;
+//        } else {
+//            return true;
+//        }
+
+        if (radioExamUsescore.getCheckedRadioButtonId() == R.id.radio_btn_examuserscore_yes) {
+            return inputValidator.validateStringPresence(etExamQuestionscorevalue);
+        } else {
+            return true;
+        }
+    }
+
+    private boolean isRandomQuestionOption() {
+        if (radioExamRandomQuestion.getCheckedRadioButtonId() == -1) {
+            strValidationMsg += Utility.getString(R.string.msg_validation_random_question, mContext);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean isNegativeMarkingOption() {
+//        if (radioNegativemarking.getCheckedRadioButtonId() == -1) {
+//            strValidationMsg += Utility.getString(R.string.msg_validation_negative_marking, mContext);
+//            return false;
+//        } else {
+//            return true;
+//        }
+
+        if (radioNegativemarking.getCheckedRadioButtonId() == R.id.radio_btn_negativemarking_yes) {
+            return inputValidator.validateStringPresence(etExamAddnegativemark);
+        } else {
+            return true;
+        }
+    }
+
+    private boolean isDeclareResultOption() {
+        if (radioDeclareresult.getCheckedRadioButtonId() == -1) {
+            strValidationMsg += Utility.getString(R.string.msg_validation_declare_results, mContext);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean checkOtherInputs() {
+
+        strValidationMsg = "";
+        if (isClassroomSet() & isSubjectSet() & isPassingPercentSet() & isExamNameSet() & isExamModeSet() & isExamDurationSet() & isTextSetInRichTextEditor()) {
+            return true;
+        } else {
+            Utility.alert(mContext, null, strValidationMsg);
+            return false;
+        }
+    }
+
+    private boolean isTextSetInRichTextEditor() {
+        if (strAssignmenttext.trim().length() > 0) {
+            return true;
+        } else {
+            strValidationMsg += Utility.getString(R.string.msg_validation_add_text_rich_editor, mContext);
+            return false;
+        }
+    }
+
+    private boolean isExamDurationSet() {
+        if (arrListExamDuration != null && arrListExamDuration.size() == 0 || spExamExamduration.getSelectedItemPosition() > 0) {
+            return true;
+        } else {
+            strValidationMsg += Utility.getString(R.string.msg_validation_set_exam_duration, mContext);
+            return false;
+        }
+    }
+
+    private boolean isExamModeSet() {
+        if (spExamExammode.getSelectedItemPosition() > 0) {
+            return true;
+        } else {
+            strValidationMsg += Utility.getString(R.string.msg_validation_set_exam_mode, mContext);
+            return false;
+        }
+    }
+
+    private boolean isExamNameSet() {
+        if (spExamExamCategory.getSelectedItemPosition() > 0) {
+            return true;
+        } else {
+            strValidationMsg += Utility.getString(R.string.msg_validation_set_exam_name, mContext);
+            return false;
+        }
+    }
+
+    private boolean isPassingPercentSet() {
+        if (arrListPassingPercent != null && arrListPassingPercent.size() == 0 || spExamPassingpercent.getSelectedItemPosition() > 0) {
+            return true;
+        } else {
+            strValidationMsg += Utility.getString(R.string.msg_validation_set_passingpercent, mContext);
+            return false;
+        }
+    }
+
+    private boolean isSubjectSet() {
+        if (arrListSubject != null && arrListSubject.size() == 0 || spExamSubjectname.getSelectedItemPosition() > 0) {
+            return true;
+        } else {
+            strValidationMsg += Utility.getString(R.string.msg_validation_set_subject, mContext);
+            return false;
+        }
+    }
+
+    private boolean isClassroomSet() {
+        if (arrListClassRooms != null && arrListClassRooms.size() == 0 || spExamClassroom.getSelectedItemPosition() > 0) {
+            return true;
+        } else {
+            strValidationMsg += Utility.getString(R.string.msg_validation_set_classroom, mContext);
+            return false;
+        }
+    }
+
+    private String getExamType() {
+        if (tbExamSelectexamfor.isChecked()) {
+            return "subject";
+        } else {
+            return "topic";
+        }
     }
 
     private void setExamType(String value) {
@@ -342,113 +546,19 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     }
 
-
-    private void callApiGetClassRooms() {
-
-        if (Utility.isInternetConnected(getActivity())) {
-            try {
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GET_CLASSROOMS);
-            } catch (Exception e) {
-                //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-            }
-        } else {
-            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
-        }
-
-    }
-
-    private void callApiGetSubjects() {
-
-        if (Utility.isInternetConnected(getActivity())) {
-            try {
-                new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GET_SUBJECT);
-            } catch (Exception e) {
-                //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-            }
-        } else {
-            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
-        }
-
-    }
-
-
-    private void callApiGetTopics(int subject_id) {
-
-        if (Utility.isInternetConnected(getActivity())) {
-            try {
-                Attribute attribute = new Attribute();
-                attribute.setSubjectId(String.valueOf(subject_id));
-                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.GET_TOPICS);
-            } catch (Exception e) {
-                //Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
-            }
-        } else {
-            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
-        }
-
-    }
-
-
-    private void callApiCreateExam() {
-
-
-        if (Utility.isInternetConnected(getActivity())) {
-            try {
-                Attribute attribute = new Attribute();
-
-                attribute.setExamName(etExamName.getText().toString());
-                attribute.setClassroomId(String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListClassRooms.
-                        get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
-                attribute.setSubjectId(String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ? Integer.parseInt(arrListSubject.
-                        get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
-                attribute.setAttemptCount(String.valueOf(Integer.valueOf(etExamAttemptcount.getText().toString())));
-                attribute.setExamType(getExamType());
-                attribute.setExamCategory(arrListExamName.get(spExamExamname.getSelectedItemPosition()));
-                attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
-                attribute.setPassingPercent(arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
-                attribute.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
-                attribute.setExamInstruction(strAssignmenttext);
-                attribute.setDeclareResults(getRadioGroupSelection(radioDeclareresult));
-                attribute.setNegativeMarking(getRadioGroupSelection(radioNegativemarking));
-                attribute.setRandomQuestion(getRadioGroupSelection(radioExamRandomQuestion));
-                attribute.setExamStartDate(Utility.getDateInApiFormat(etExamStartdate.getText().toString()));
-
-                attribute.setExamStartTime("5:00:00");
-                attribute.setUserId(WebConstants.USER_ID_370);
-                if (etExamAddnegativemark.getText().toString().isEmpty()) {
-                    attribute.setNegativeMarkValue("0");
-                } else {
-                    attribute.setNegativeMarkValue(etExamAddnegativemark.getText().toString());
-                }
-
-                attribute.setBookId("0");
-
-                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                        .execute(WebConstants.CREATE_EXAM);
-            } catch (Exception e) {
-                Log.e(TAG, e.getLocalizedMessage());
-            }
-        } else {
-            Utility.showToast(getActivity().getResources().getString(R.string.no_internet), getActivity());
-        }
-
+    private String getRadioGropuSelection(RadioGroup radioGroup) {
+        int selectedId = radioGroup.getCheckedRadioButtonId();
+        return ((RadioButton) view.findViewById(selectedId)).getText().toString().toLowerCase();
     }
 
 
     @Override
-    public void onResponse(int apiMethodName, Object object, Exception error) {
-
+    public void onResponse(int apiCode, Object object, Exception error) {
         try {
-
-            switch (apiMethodName) {
-
+            switch (apiCode) {
                 case WebConstants.GET_CLASSROOMS:
                     onResponseGetClassrooms(object, error);
                     break;
-
                 case WebConstants.GET_SUBJECT:
                     onResponseGetSubjects(object, error);
                     break;
@@ -460,11 +570,10 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                     break;
             }
         } catch (Exception e) {
-            Log.e(TAG, "Assignment on response exception" + e.toString());
+            Debug.e(TAG, "onResponse Exception : " + e.toString());
         }
-
-
     }
+
 
     private void onResponseGetClassrooms(Object object, Exception error) {
         try {
@@ -497,6 +606,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             Debug.e(TAG, "onResponseGetClassrooms Exception : " + e.toString());
         }
     }
+
 
     private void onResponseGetSubjects(Object object, Exception error) {
         try {
@@ -554,6 +664,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         }
     }
 
+
     private void onResponseCreateExam(Object object, Exception error) {
         try {
             ((TeacherHostActivity) getActivity()).stopProgress();
@@ -584,6 +695,51 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         }
     }
 
+
+    private void getPassingPercentSpinnerValues() {
+        arrListPassingPercent = new ArrayList<String>();
+        arrListPassingPercent.add(Utility.getString(R.string.strpassingpercent, mContext));
+        for (int i = PASSINGPERCENT_STARTVALUE; i < PASSINGPERCENT_ENDVALUE; i += PASSINGPERCENT_INTERVAL) {
+            arrListPassingPercent.add(String.valueOf(i));
+        }
+    }
+
+    private void getExamDurationSpinnerValues() {
+        arrListExamDuration = new ArrayList<String>();
+        arrListExamDuration.add(Utility.getString(R.string.strexamduration, mContext));
+        for (int i = EXAMDURATION_STARTVALUE; i < EXAMDURATION_ENDVALUE; i += EXAMDURATION_INTERVAL) {
+            arrListExamDuration.add(String.valueOf(i));
+        }
+
+    }
+
+    private void backToTrialScreen() {
+        ((TeacherHostActivity) mContext).onBackPressed();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == btnExamSave) {
+            if (isInputsValid()) {
+                callApiCreateExam();
+            } else {
+                svCreateExam.fullScroll(ScrollView.FOCUS_UP);
+            }
+        } else if (v == btnExamSetquestion) {
+
+            if (getArguments() != null) {
+                setBundleArguments();
+            }
+            ((CreateExamAssignmentContainerFragment) fragmentContext).hideTopBar();
+            getFragmentManager().beginTransaction().
+                    replace(R.id.fl_fragment_assignment_container, AddQuestionContainerFragment.newInstance(getArguments()))
+                    .commit();
+        } else if (v == btnExamCancel) {
+            backToTrialScreen();
+        }
+
+    }
+
     private void setBundleArguments() {
 
         try {
@@ -599,216 +755,6 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         } catch (Exception e) {
             Debug.e(TAG, "SetBundleArgumentsException : " + e.toString());
         }
-    }
-
-
-    private void getPassingPercentSpinnerValues() {
-
-        arrListPassingPercent = new ArrayList<String>();
-        arrListPassingPercent.add(getString(R.string.strpassingpercent));
-        for (int i = PASSINGPERCENT_STARTVALUE; i < PASSINGPERCENT_ENDVALUE; i += PASSINGPERCENT_INTERVAL) {
-            arrListPassingPercent.add(String.valueOf(i));
-
-        }
-
-
-    }
-
-    private void getExamDurationSpinnerValues() {
-
-        arrListExamDuration = new ArrayList<String>();
-        arrListExamDuration.add(getString(R.string.strexamduration));
-        for (int i = EXAMDURATION_STARTVALUE; i < EXAMDURATION_ENDVALUE; i += EXAMDURATION_INTERVAL) {
-            arrListExamDuration.add(String.valueOf(i));
-
-        }
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v == btnExamSave) {
-            if (isInputsValid()) {
-                callApiCreateExam();
-            } else {
-                svCreateExam.fullScroll(ScrollView.FOCUS_UP);
-            }
-
-        } else if (v == btnExamSetquestion) {
-
-            if (getArguments() != null) {
-                setBundleArguments();
-            }
-
-            ((CreateExamAssignmentContainerFragment) fragmentContext).hideTopBar();
-            getFragmentManager().beginTransaction().
-                    replace(R.id.fl_fragment_assignment_container, AddQuestionContainerFragment.newInstance(getArguments()))
-                    .commit();
-
-        } else if (v == btnExamCancel) {
-
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((TeacherHostActivity) getActivity()).flFragmentContainerRight.setVisibility(View.VISIBLE);
-    }
-
-
-    /**
-     * Local Field validations
-     */
-    private String strValidationMsg;
-
-    private boolean isInputsValid() {
-        return inputValidator.validateStringPresence(etExamName) & inputValidator.validateStringPresence(etExamAttemptcount)
-                & inputValidator.validateStringPresence(etExamStartdate) & inputValidator.validateStringPresence(etExamEnddate)
-                && checkOtherInputs() && checkRadioButtonInputs();
-    }
-
-    private boolean checkRadioButtonInputs() {
-        strValidationMsg = "";
-
-        if (isDeclareResultOption() & isNegativeMarkingOption() & isRandomQuestionOption() & isUseScoreFromQuestion()) {
-            return true;
-        } else {
-            Utility.alert(getActivity(), null, strValidationMsg);
-            return false;
-        }
-
-    }
-
-    private boolean isUseScoreFromQuestion() {
-        if (radioExamUsescore.getCheckedRadioButtonId() == -1) {
-            strValidationMsg += getString(R.string.msg_validation_use_score_from_questions);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean isRandomQuestionOption() {
-        if (radioExamRandomQuestion.getCheckedRadioButtonId() == -1) {
-            strValidationMsg += getString(R.string.msg_validation_random_question);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean isNegativeMarkingOption() {
-        if (radioNegativemarking.getCheckedRadioButtonId() == -1) {
-            strValidationMsg += getString(R.string.msg_validation_negative_marking);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean isDeclareResultOption() {
-        if (radioDeclareresult.getCheckedRadioButtonId() == -1) {
-            strValidationMsg += getString(R.string.msg_validation_declare_results);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean checkOtherInputs() {
-
-        strValidationMsg = "";
-        if (isClassroomSet() & isSubjectSet() & isPassingPercentSet() & isExamNameSet() & isExamModeSet() & isExamDurationSet() & isTextSetInRichTextEditor()) {
-            return true;
-        } else {
-            Utility.alert(getActivity(), null, strValidationMsg);
-            return false;
-        }
-    }
-
-    private boolean isTextSetInRichTextEditor() {
-
-        if (strAssignmenttext.trim().length() > 0) {
-            return true;
-        } else {
-            strValidationMsg += getString(R.string.msg_validation_add_text_rich_editor);
-            return false;
-        }
-
-    }
-
-    private boolean isExamDurationSet() {
-        if (arrListExamDuration != null && arrListExamDuration.size() == 0 || spExamExamduration.getSelectedItemPosition() > 0) {
-            return true;
-        } else {
-            strValidationMsg += getString(R.string.msg_validation_set_exam_duration);
-            return false;
-        }
-    }
-
-    private boolean isExamModeSet() {
-        if (spExamExammode.getSelectedItemPosition() > 0) {
-            return true;
-        } else {
-            strValidationMsg += getString(R.string.msg_validation_set_exam_mode);
-            return false;
-        }
-    }
-
-    private boolean isExamNameSet() {
-        if (spExamExamname.getSelectedItemPosition() > 0) {
-            return true;
-        } else {
-            strValidationMsg += getString(R.string.msg_validation_set_exam_name);
-            return false;
-        }
-    }
-
-    private boolean isPassingPercentSet() {
-        if (arrListPassingPercent != null && arrListPassingPercent.size() == 0 || spExamPassingpercent.getSelectedItemPosition() > 0) {
-            return true;
-        } else {
-            strValidationMsg += getString(R.string.msg_validation_set_passingpercent);
-            return false;
-        }
-    }
-
-    private boolean isSubjectSet() {
-        if (arrListSubject != null && arrListSubject.size() == 0 || spExamSubjectname.getSelectedItemPosition() > 0) {
-            return true;
-        } else {
-            strValidationMsg += getString(R.string.msg_validation_set_subject);
-            return false;
-        }
-    }
-
-    private boolean isClassroomSet() {
-        if (arrListClassRooms != null && arrListClassRooms.size() == 0 || spExamClassroom.getSelectedItemPosition() > 0) {
-            return true;
-        } else {
-            strValidationMsg += getActivity().getResources().getString(R.string.msg_validation_set_classroom);
-            return false;
-        }
-    }
-
-
-    private String getExamType() {
-        if (tbExamSelectexamfor.isChecked()) {
-            return "subject";
-        } else {
-            return "topic";
-        }
-
-    }
-
-
-    private String getRadioGroupSelection(RadioGroup radioGroup) {
-
-        int selectedId = radioGroup.getCheckedRadioButtonId();
-        return ((RadioButton) view.findViewById(selectedId)).getText().toString().toLowerCase();
-
-
     }
 
 

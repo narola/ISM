@@ -206,8 +206,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(requestCode==AppConstant.REQUEST_CODE_PICK_FROM_GALLERY)
-        {
+        if (requestCode == AppConstant.REQUEST_CODE_PICK_FROM_GALLERY) {
             if (data != null) {
                 selectedUri = data.getData();
                 String[] columns = {MediaStore.Images.Media.DATA,
@@ -597,7 +596,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
 
         if (Utility.isOnline(getActivity())) {
             try {
-                ((TeacherHostActivity) getActivity()).stopProgress();
+                ((TeacherHostActivity) getActivity()).startProgress();
                 Debug.e(TAG, "The user id is::" + WebConstants.TEST_USER_ID);
                 Debug.e(TAG, "The question text is::" + etAddquestionTitle.getText().toString());
                 Debug.e(TAG, "The subject id is::" + getArguments().getString(AssignmentExamFragment.ARG_EXAM_SUBJECT_ID));
