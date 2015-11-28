@@ -51,7 +51,9 @@
     <dimen name="d150dp">150dp</dimen>
     <dimen name="d170dp">170dp</dimen>
     <dimen name="d190dp">190dp</dimen>
-
+    <dimen name="padding_header_white">20dp</dimen>
+    <dimen name="text_size_header_white">20sp</dimen>
+    <dimen name="padding_child_fragment_content">15dp</dimen>
 
     <!--This is for the login activity-->
 

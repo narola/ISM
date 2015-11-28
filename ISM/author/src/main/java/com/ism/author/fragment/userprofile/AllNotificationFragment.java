@@ -1,4 +1,4 @@
-package com.ism.fragment;
+package com.ism.author.fragment.userprofile;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -17,29 +17,27 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ism.ISMStudent;
-import com.ism.R;
-import com.ism.activity.HostActivity;
-import com.ism.adapter.NotificationAdapter;
-import com.ism.constant.WebConstants;
-import com.ism.interfaces.FragmentListener;
-import com.ism.object.Global;
-import com.ism.object.MyTypeFace;
-import com.ism.utility.Utility;
-import com.ism.views.CircleImageView;
-import com.ism.ws.helper.Attribute;
-import com.ism.ws.helper.ResponseHandler;
-import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Notification;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.ism.author.ISMAuthor;
+import com.ism.author.R;
+import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.Utility;
+import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.NotificationAdapter;
+import com.ism.author.constant.WebConstants;
+import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.object.Global;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.ws.helper.Attribute;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.Notification;
 
 import java.util.ArrayList;
 
 /**
- * Created by c161 on 09/11/15.
+ * Created by c162 on 27/11/15.
  */
-public class AllNotificationFragment extends Fragment implements HostActivity.HostListenerAllNotification, WebserviceWrapper.WebserviceResponse {
+public class AllNotificationFragment extends Fragment implements AuthorHostActivity.HostListenerAllNotification, WebserviceWrapper.WebserviceResponse {
 
     private static final String TAG = AllNotificationFragment.class.getSimpleName();
 
@@ -54,10 +52,9 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
     private LinearLayout llComments;
 
     private FragmentListener fragListener;
-    private HostActivity activityHost;
+    private AuthorHostActivity activityHost;
     private ArrayList<Notification> arrListNotification;
     private NotificationAdapter adpNotification;
-    private ImageLoader imageLoader;
 
     public static String ARG_ARR_LIST_NOTIFICATION = "arrListNotification";
     public static String ARG_NOTIFICATION_POSITION = "notificationPosition";
@@ -95,11 +92,8 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
         txtHeader = (TextView) view.findViewById(R.id.txt_header_white);
         lvAllNotification = (ListView) view.findViewById(R.id.lv_all_notification);
 
-        MyTypeFace myTypeFace = new MyTypeFace(activityHost);
-        txtHeader.setTypeface(myTypeFace.getRalewayRegular());
+        txtHeader.setTypeface(Global.myTypeFace.getRalewayRegular());
 
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
         if (positionNotification >= 0) {
             showNotificationDetails(positionNotification);
@@ -112,7 +106,14 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
         }
 
         if (arrListNotification != null) {
+
             adpNotification = new NotificationAdapter(getActivity(), arrListNotification);
+            if(adpNotification.getCount()>0){
+                Debug.i(TAG,"arrListNotification size : "+adpNotification.getCount());
+            }
+            else{
+                Debug.i(TAG,"arrListNotification size : "+adpNotification.getCount());
+            }
             lvAllNotification.setAdapter(adpNotification);
         }
 
@@ -149,7 +150,7 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
             rlNotificationDetails.setVisibility(View.VISIBLE);
         }
 
-        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", imgDp, ISMStudent.options);
+        Global.imageLoader.displayImage(WebConstants.USER_IMAGES+arrListNotification.get(position).getNotificationFromProfilePic(), imgDp, ISMAuthor.options);
         txtName.setText(arrListNotification.get(position).getNotificationFromName());
         txtPost.setText(arrListNotification.get(position).getNotificationText());
 //		txtLikes.setText(arrListNotification.get(position).getTotalLike());
@@ -175,10 +176,10 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
         super.onAttach(activity);
         try {
             fragListener = (FragmentListener) activity;
-            activityHost = (HostActivity) activity;
+            activityHost = (AuthorHostActivity) activity;
             activityHost.setListenerHostAllNotification(this);
             if (fragListener != null) {
-                fragListener.onFragmentAttached(HostActivity.FRAGMENT_ALL_NOTIFICATION);
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_ALL_NOTIFICATION);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -190,7 +191,7 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(HostActivity.FRAGMENT_ALL_NOTIFICATION);
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ALL_NOTIFICATION);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
@@ -223,18 +224,6 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
         showNotificationList();
     }
 
-    @Override
-    public void onResponse(Object object, Exception error, int apiCode) {
-        try {
-            switch (apiCode) {
-                case WebConstants.UPDATE_READ_STATUS:
-                    onResponseUpdateReadStatus(object, error);
-                    break;
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "onResponse Exception : " + e.toString());
-        }
-    }
 
     private void onResponseUpdateReadStatus(Object object, Exception error) {
         try {
@@ -251,6 +240,19 @@ public class AllNotificationFragment extends Fragment implements HostActivity.Ho
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponseUpdateReadStatus Exception : " + e.toString());
+        }
+    }
+
+    @Override
+    public void onResponse(int apiCode, Object object, Exception error) {
+        try {
+            switch (apiCode) {
+                case WebConstants.UPDATE_READ_STATUS:
+                    onResponseUpdateReadStatus(object, error);
+                    break;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onResponse Exception : " + e.toString());
         }
     }
 }

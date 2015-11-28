@@ -2,21 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ism.author.fragment.HomeFragment">
+    tools:context=".fragment.userprofile.MyFeedsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <include android:id="@+id/rl_new_post"
+        layout="@layout/post_feed_layout"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_post"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       >
+        android:layout_below="@id/rl_new_post">
     </android.support.v7.widget.RecyclerView>
 
     <View
         android:layout_width="20dp"
         android:layout_height="30dp"
-        android:layout_marginTop="226dp"
+        android:layout_marginTop="224dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/shape_triangle_profile_controller" />
-
 </RelativeLayout>

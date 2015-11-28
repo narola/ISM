@@ -22,7 +22,6 @@ import com.ism.teacher.adapters.PostFeedsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.model.TagFriendInFeedRequest;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -56,8 +55,6 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
         // Required empty public constructor
     }
 
-    public TagFriendInFeedRequest tagFriendInFeedRequest = new TagFriendInFeedRequest();
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +63,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootview = inflater.inflate(R.layout.fragment_teacher_post_home, container, false);
-
         initGlobal(rootview);
-
-
         return rootview;
     }
 
@@ -121,7 +115,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     private void callAllFeedsApi() {
         try {
-            //   ((TeacherHostActivity) getActivity()).startProgress();
+            ((TeacherHostActivity) getActivity()).startProgress();
             Attribute attribute = new Attribute();
             attribute.setUserId(WebConstants.USER_ID_370);
             new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
@@ -167,26 +161,6 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
                     onResponseGetAllFeeds(object, error);
                     break;
             }
-
-        /*    if (apiMethod == WebConstants.GET_ALL_FEEDS) {
-                responseHandler = (ResponseHandler) object;
-                if (responseHandler != null) {
-                    if (responseHandler.getStatus().equalsIgnoreCase(AppConstant.API_STATUS_SUCCESS)) {
-
-                        if (responseHandler.getData().size() > 0) {
-                            postFeedsAdapter = new PostFeedsAdapter(getActivity(), responseHandler.getData(), this);
-                            recyclerviewPost.setAdapter(postFeedsAdapter);
-                            recyclerviewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        }
-                    } else {
-                        Toast.makeText(getActivity(), apiMethod + " Not Successful!!!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Utility.showToast(getActivity().getResources().getString(R.string.web_service_issue), getActivity());
-                }
-
-
-            }*/
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());
         }
@@ -195,7 +169,7 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
 
     private void onResponseGetAllFeeds(Object object, Exception error) {
         try {
-//            ((TeacherHostActivity) getActivity()).stopProgress();
+            ((TeacherHostActivity) getActivity()).stopProgress();
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {

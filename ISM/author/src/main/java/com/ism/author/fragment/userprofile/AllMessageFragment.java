@@ -1,4 +1,4 @@
-package com.ism.fragment;
+package com.ism.author.fragment.userprofile;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -14,28 +14,28 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ism.R;
-import com.ism.activity.HostActivity;
-import com.ism.adapter.MessageAdapter;
-import com.ism.constant.WebConstants;
-import com.ism.interfaces.FragmentListener;
-import com.ism.object.Global;
-import com.ism.object.MyTypeFace;
-import com.ism.utility.Utility;
-import com.ism.views.CircleImageView;
-import com.ism.ws.helper.Attribute;
-import com.ism.ws.helper.ResponseHandler;
-import com.ism.ws.helper.WebserviceWrapper;
-import com.ism.ws.model.Message;
+import com.ism.author.R;
+import com.ism.author.Utility.Utility;
+import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.adapter.MessageAdapter;
+import com.ism.author.constant.WebConstants;
+import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.object.Global;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.views.CircleImageView;
+import com.ism.author.ws.helper.Attribute;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
+import com.ism.author.ws.model.Message;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
 /**
- * Created by c161 on 09/11/15.
+ * Created by c162 on 27/11/15.
  */
-public class AllMessageFragment extends Fragment implements HostActivity.HostListenerAllMessage, WebserviceWrapper.WebserviceResponse {
+public class AllMessageFragment extends Fragment implements  WebserviceWrapper.WebserviceResponse ,AuthorHostActivity.HostListenerAllMessage {
 
     private static final String TAG = AllMessageFragment.class.getSimpleName();
 
@@ -46,7 +46,7 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
     private TextView txtName, txtMessage, txtReply, txtHeader;
 
     private FragmentListener fragListener;
-    private HostActivity activityHost;
+    private AuthorHostActivity activityHost;
     private ArrayList<Message> arrListMessage;
     private MessageAdapter adpMessage;
     private ImageLoader imageLoader;
@@ -165,10 +165,10 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
         super.onAttach(activity);
         try {
             fragListener = (FragmentListener) activity;
-            activityHost = (HostActivity) activity;
+            activityHost = (AuthorHostActivity) activity;
             activityHost.setListenerHostAllMessage(this);
             if (fragListener != null) {
-                fragListener.onFragmentAttached(HostActivity.FRAGMENT_ALL_MESSAGE);
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_ALL_MESSAGE);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -180,7 +180,7 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(HostActivity.FRAGMENT_ALL_MESSAGE);
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ALL_MESSAGE);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
@@ -212,20 +212,6 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
     public void onControllerTopBackClick() {
         showMessageList();
     }
-
-    @Override
-    public void onResponse(Object object, Exception error, int apiCode) {
-        try {
-            switch (apiCode) {
-                case WebConstants.UPDATE_READ_STATUS:
-                    onResponseUpdateReadStatus(object, error);
-                    break;
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "onResponse Exception : " + e.toString());
-        }
-    }
-
     private void onResponseUpdateReadStatus(Object object, Exception error) {
         try {
             if (object != null) {
@@ -241,6 +227,19 @@ public class AllMessageFragment extends Fragment implements HostActivity.HostLis
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponseUpdateReadStatus Exception : " + e.toString());
+        }
+    }
+
+    @Override
+    public void onResponse(int apiCode, Object object, Exception error) {
+        try {
+            switch (apiCode) {
+                case WebConstants.UPDATE_READ_STATUS:
+                    onResponseUpdateReadStatus(object, error);
+                    break;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onResponse Exception : " + e.toString());
         }
     }
 }

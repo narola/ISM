@@ -39,9 +39,9 @@
                 android:text="@string/strviewprofile"
                 android:layout_toRightOf="@+id/img_user"
                 android:textColor="@color/color_blue"
-                android:textSize="@dimen/d20sp"
+                android:textSize="@dimen/d18sp"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"></TextView>
+               ></TextView>
 
         </RelativeLayout>
 
@@ -54,7 +54,7 @@
             android:id="@+id/txt_user_name"
             android:textAllCaps="true"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/d22sp"
+            android:textSize="@dimen/d20sp"
             >
 
         </TextView>
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/img_notification"
                     android:layout_alignParentTop="true"
-                    android:src="@drawable/ic_notification"/>
+                    android:src="@drawable/img_notification"/>
                 <TextView
                     android:id="@+id/txt_notification"
                     android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/img_message"
                     android:layout_toRightOf="@+id/img_notification"
-                    android:src="@drawable/ic_message"/>
+                    android:src="@drawable/img_message"/>
                 <TextView
                     android:id="@+id/txt_message"
                     android:layout_width="wrap_content"
@@ -113,9 +113,9 @@
                     android:layout_width="85dp"
                     android:background="@drawable/bg_rightmenu_notification"
                     android:layout_height="wrap_content"
-                    android:id="@+id/img_request"
+                    android:id="@+id/img_friend_request"
                     android:layout_toRightOf="@+id/img_message"
-                    android:src="@drawable/ic_friend_request"/>
+                    android:src="@drawable/img_friend_request"/>
                 <TextView
                     android:id="@+id/txt_request"
                     android:layout_width="wrap_content"
@@ -128,7 +128,7 @@
                     android:paddingLeft="@dimen/notification_digit_horizontal_padding"
                     android:visibility="gone"
                     android:textColor="@android:color/white"
-                    android:layout_alignRight="@id/img_request"/>
+                    android:layout_alignRight="@id/img_friend_request"/>
 
 
             </RelativeLayout>

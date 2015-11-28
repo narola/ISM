@@ -43,7 +43,7 @@ public class Voucher {
         this.createdDate = createdDate;
     }
 
-    @JsonProperty("Amount")
+    @JsonProperty("voucher_amount")
     public String getAmount() {
         return this.amount;
     }
