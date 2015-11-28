@@ -48,6 +48,7 @@ import com.ism.fragment.userprofile.GeneralSettingsFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.ControllerTopMenuItem;
 import com.ism.object.Global;
+import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
@@ -155,6 +156,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     }
 
     private void initGlobal() {
+        Global.myTypeFace=new MyTypeFace(getApplicationContext());
         llControllerLeft = (LinearLayout) findViewById(R.id.ll_controller_left);
         flFragmentContainerMain = (FrameLayout) findViewById(R.id.fl_fragment_container_main);
         flFragmentContainerRight = (FrameLayout) findViewById(R.id.fl_fragment_container_right);
@@ -931,7 +933,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         this.hostListenerAboutMe = hostListenerAboutMe;
     }
 
-    public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
+    public void setshowControllerTopBackButton(HostListenerAllNotification listenerHostAllNotification) {
         this.listenerHostAllNotification = listenerHostAllNotification;
     }
 

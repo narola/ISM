@@ -392,45 +392,49 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
     }
 
     private void setUpData(User data) {
-        txtUserName.setText(data.getUsername());
-        txtSchool.setText(data.getSchoolName());
-        txtClass.setText(data.getCourseName());
-        etDob.setText(dateFormat(data.getBirthdate()));
-        etCno.setText(data.getContactNumber());
-        // imgProfilePic.setBackgroundColor(Color.BLACK);
-        strDetailAboutMe = data.getAboutMeText();
-        strAmbition = data.getAmbitionInLife();
-        if (strDetailAboutMe.length()!=0) {
-            txtClickAddAboutMe.setText(data.getAboutMeText());
-            txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
-            imgEditAboutMe.setVisibility(View.VISIBLE);
-            Debug.i(TAG, "Details are available!");
-        } else {
-            txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
-            imgEditAboutMe.setVisibility(View.GONE);
-            Debug.i(TAG, "Details are not available!");
+        try {
+            txtUserName.setText(data.getUsername());
+            txtSchool.setText(data.getSchoolName());
+            txtClass.setText(data.getCourseName());
+            etDob.setText(dateFormat(data.getBirthdate()));
+            etCno.setText(data.getContactNumber());
+            // imgProfilePic.setBackgroundColor(Color.BLACK);
+            strDetailAboutMe = data.getAboutMeText();
+            strAmbition = data.getAmbitionInLife();
+            if (strDetailAboutMe.length() != 0) {
+                txtClickAddAboutMe.setText(data.getAboutMeText());
+                txtClickAddAboutMe.setCompoundDrawables(null, null, null, null);
+                imgEditAboutMe.setVisibility(View.VISIBLE);
+                Debug.i(TAG, "Details are available!");
+            } else {
+                txtClickAddAboutMe.setText(getResources().getString(R.string.strClickToWriteAboutYourSelf));
+                imgEditAboutMe.setVisibility(View.GONE);
+                Debug.i(TAG, "Details are not available!");
+            }
+            if (strAmbition != null) {
+                txtClickAddAmbitions.setText(data.getAmbitionInLife());
+                imgEditAmbition.setVisibility(View.VISIBLE);
+                txtClickAddAmbitions.setCompoundDrawables(null, null, null, null);
+                Debug.i(TAG, "Details are available!");
+            } else {
+                Debug.i(TAG, "Details are not available!");
+                txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
+                imgEditAmbition.setVisibility(View.VISIBLE);
+            }
+            txtTotalAssignment.setText(data.getTotalAssignment());
+            txtTotalAuthorFollowed.setText(data.getTotalAuthorsFollowed());
+            txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
+            txtTotalExam.setText(data.getTotalExams());
+            txtTotalFavQuestions.setText(data.getTotalFavoriteQuestions());
+            txtTotalIsmRank.setText(data.getIsmRank());
+            txtTotalIsmScore.setText(data.getIsmScore());
+            txtTotalPost.setText(data.getTotalPost());
+            txtTotalQueAsked.setText(data.getTotalQuestionAsked());
+            txtTotalStudymates.setText(data.getTotalStudymates());
+            imageLoader.displayImage(WebConstants.URL_USERS_IMAGE_PATH + data.getProfilePic(), imgProfilePic, ISMStudent.options);
+        } catch (Exception e) {
+            Debug.i(TAG,"SetupData :" +e.getLocalizedMessage());
         }
-        if (strAmbition.length()!=0) {
-            txtClickAddAmbitions.setText(data.getAmbitionInLife());
-            imgEditAmbition.setVisibility(View.VISIBLE);
-            txtClickAddAmbitions.setCompoundDrawables(null, null,null,null);
-            Debug.i(TAG, "Details are available!");
-        } else {
-            Debug.i(TAG, "Details are not available!");
-            txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
-            imgEditAmbition.setVisibility(View.VISIBLE);
-        }
-        txtTotalAssignment.setText(data.getTotalAssignment());
-        txtTotalAuthorFollowed.setText(data.getTotalAuthorsFollowed());
-        txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
-        txtTotalExam.setText(data.getTotalExams());
-        txtTotalFavQuestions.setText(data.getTotalFavoriteQuestions());
-        txtTotalIsmRank.setText(data.getIsmRank());
-        txtTotalIsmScore.setText(data.getIsmScore());
-        txtTotalPost.setText(data.getTotalPost());
-        txtTotalQueAsked.setText(data.getTotalQuestionAsked());
-        txtTotalStudymates.setText(data.getTotalStudymates());
-        imageLoader.displayImage(WebConstants.URL_USERS_IMAGE_PATH + data.getProfilePic(), imgProfilePic, ISMStudent.options);
     }
 
 
@@ -487,12 +491,12 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             openGallary();
             //callApiEditAboutMe();
         } else if (v == txtClickAddAboutMe) {
-            if (strDetailAboutMe.length() == 0) {
+            if (strDetailAboutMe==null) {
                 editDetails(ABOUT_ME);
             }
 
         } else if (v == txtClickAddAmbitions) {
-            if (strAmbition.length() == 0) {
+            if (strAmbition==null) {
                 editDetails(YOUR_AMBITION);
             }
 

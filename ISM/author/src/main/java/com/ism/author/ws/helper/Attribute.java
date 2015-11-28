@@ -97,6 +97,10 @@ public class Attribute {
     private String questionText;
     private String questionCreatorId;
 
+    private String studymateId;
+    private ArrayList<String> recordIds;
+    private String readCategory;
+
     public String getFeedId() {
         return this.feedId;
     }
@@ -106,30 +110,30 @@ public class Attribute {
         this.feedId = feedId;
     }
 
-
     public String getCommentBy() {
         return this.commentBy;
     }
+
 
     @JsonProperty("comment_by")
     public void setCommentBy(String commentBy) {
         this.commentBy = commentBy;
     }
 
-
     public String getComment() {
         return this.comment;
     }
+
 
     @JsonProperty("comment")
     public void setComment(String comment) {
         this.comment = comment;
     }
 
-
     public String getAssignmentText() {
         return this.assignmentText;
     }
+
 
     @JsonProperty("assignment_text")
     public void setAssignmentText(String assignmentText) {
@@ -145,10 +149,10 @@ public class Attribute {
         this.classroomId = classroomId;
     }
 
-
     public String getUserId() {
         return this.userId;
     }
+
 
     @JsonProperty("user_id")
     public void setUserId(String userId) {
@@ -164,30 +168,30 @@ public class Attribute {
         this.subjectId = subjectId;
     }
 
-
     public String getSubmissionDate() {
         return this.submissionDate;
     }
+
 
     @JsonProperty("submission_date")
     public void setSubmissionDate(String submissionDate) {
         this.submissionDate = submissionDate;
     }
 
-
     public String getTopicId() {
         return this.topicId;
     }
+
 
     @JsonProperty("topic_id")
     public void setTopicId(String topicId) {
         this.topicId = topicId;
     }
 
-
     public String getExamType() {
         return this.examType;
     }
+
 
     @JsonProperty("exam_type")
     public void setExamType(String examType) {
@@ -221,10 +225,10 @@ public class Attribute {
         this.negativeMarkValue = negativeMarkValue;
     }
 
-
     public String getExamDuration() {
         return this.examDuration;
     }
+
 
     @JsonProperty("exam_duration")
     public void setExamDuration(String examDuration) {
@@ -321,10 +325,10 @@ public class Attribute {
         this.examStartDate = examStartDate;
     }
 
-
     public String getUsername() {
         return this.username;
     }
+
 
     @JsonProperty("username")
     public void setUsername(String username) {
@@ -340,10 +344,10 @@ public class Attribute {
         this.password = password;
     }
 
-
     public String getFeedBy() {
         return this.feedBy;
     }
+
 
     @JsonProperty("feed_by")
     public void setFeedBy(String feedBy) {
@@ -377,10 +381,10 @@ public class Attribute {
         this.audioLink = audioLink;
     }
 
-
     public List<String> getImages() {
         return this.images;
     }
+
 
     @JsonProperty("images")
     public void setImages(List<String> images) {
@@ -441,10 +445,10 @@ public class Attribute {
         this.taggedBy = taggedBy;
     }
 
-
     public String[] getLikedId() {
         return likedId;
     }
+
 
     @JsonProperty("liked_id")
     public void setLikedId(String[] likedId) {
@@ -483,10 +487,10 @@ public class Attribute {
         this.emailId = emailId;
     }
 
-
     public String getEmailId() {
         return this.emailId;
     }
+
 
     public String getSchoolName() {
         return this.schoolName;
@@ -596,10 +600,10 @@ public class Attribute {
         this.profileImage = profileImage;
     }
 
-
     public int getCourseId() {
         return this.courseId;
     }
+
 
     @JsonProperty("course_id")
     public void setCourseId(int courseId) {
@@ -669,18 +673,18 @@ public class Attribute {
         this.deviceType = deviceType;
     }
 
-
     public String getRoleId() {
         return this.roleId;
     }
+
 
     @JsonProperty("role_id")
     public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
 
-
     /*these are for add question*/
+
 
     public String getQuestionFormat() {
         return this.questionFormat;
@@ -781,14 +785,41 @@ public class Attribute {
         this.questionCreatorId = questionCreatorId;
     }
 
-//    public String getBankQuestionId() {
-//        return this.bankQuestionId;
-//    }
-//
+    //    public void setBankQuestionId(String bankQuestionId) {
 //    @JsonProperty("question_id")
-//    public void setBankQuestionId(String bankQuestionId) {
+//
+//    }
+//        return this.bankQuestionId;
+    public String getStudymateId() {
+        return studymateId;
+    }
+
+    @JsonProperty("studymate_id")
+    public void setStudymateId(String studymateId) {
+        this.studymateId = studymateId;
+    }
+
+
+    //    public String getBankQuestionId() {
 //        this.bankQuestionId = questionCreatorId;
 //    }
+    @JsonProperty("read_category")
+    public void setReadCategory(String readCategory) {
+        this.readCategory = readCategory;
+    }
+
+    public String getReadCategory() {
+        return readCategory;
+    }
+
+    public ArrayList<String> getRecordIds() {
+        return recordIds;
+    }
+
+    @JsonProperty("record_id")
+    public void setRecordIds(ArrayList<String> recordIds) {
+        this.recordIds = recordIds;
+    }
 
 
 }

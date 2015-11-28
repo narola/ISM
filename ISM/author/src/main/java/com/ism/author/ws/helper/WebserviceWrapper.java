@@ -179,6 +179,24 @@ public class WebserviceWrapper {
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BADGES_COUNT).execute(ResponseHandler.class, attribute);
                             break;
 
+                        case WebConstants.GET_NOTIFICATION:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_NOTIFICATION).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_MESSAGES:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MESSAGES).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_STUDYMATE_REQUEST:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_STUDYMATE_REQUEST).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.RESPOND_TO_REQUEST:
+                            responseObject = new WebserviceConnector(WebConstants.URL_RESPOND_TO_REQUEST).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.UPDATE_READ_STATUS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_UPDATE_READ_STATUS).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_MY_FEEDS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_FEEDS).execute(ResponseHandler.class, attribute);
+                            break;
                     }
                 }
             } catch (Exception e) {

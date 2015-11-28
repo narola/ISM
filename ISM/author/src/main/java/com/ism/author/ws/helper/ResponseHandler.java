@@ -17,8 +17,11 @@ import com.ism.author.ws.model.ExamSubmission;
 import com.ism.author.ws.model.Exams;
 import com.ism.author.ws.model.Feed;
 import com.ism.author.ws.model.Feeds;
+import com.ism.author.ws.model.Message;
+import com.ism.author.ws.model.Notification;
 import com.ism.author.ws.model.Questions;
 import com.ism.author.ws.model.States;
+import com.ism.author.ws.model.StudymateRequest;
 import com.ism.author.ws.model.Studymates;
 import com.ism.author.ws.model.Subjects;
 import com.ism.author.ws.model.Topics;
@@ -42,6 +45,9 @@ public class ResponseHandler {
     public static final String DUPLICATE_ENTRY = "Duplicate entry";
     private String TAG = ResponseHandler.class.getSimpleName();
     private ArrayList<Badges> badges;
+    private ArrayList<Notification> notification;
+    private ArrayList<StudymateRequest> studymateRequest;
+    private ArrayList<Message> messages;
 
     public String getMessage() {
         return this.message;
@@ -263,6 +269,31 @@ public class ResponseHandler {
     public void setBadges(ArrayList<Badges> badges) {
         this.badges = badges;
     }
+    @JsonProperty("notification")
+    public ArrayList<Notification> getNotification() {
+        return this.notification;
+    }
 
+    public void setNotification(ArrayList<Notification> notification) {
+        this.notification = notification;
+    }
+
+    @JsonProperty("messages")
+    public ArrayList<Message> getMessages() {
+        return this.messages;
+    }
+
+    public void setMessages(ArrayList<Message> messages) {
+        this.messages = messages;
+    }
+
+    @JsonProperty("studymate_request")
+    public ArrayList<StudymateRequest> getStudymateRequest() {
+        return this.studymateRequest;
+    }
+
+    public void setStudymateRequest(ArrayList<StudymateRequest> studymateRequest) {
+        this.studymateRequest = studymateRequest;
+    }
 }
 
