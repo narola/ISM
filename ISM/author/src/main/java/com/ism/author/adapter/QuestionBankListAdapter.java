@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.author.R;
+import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
 import com.ism.author.fragment.AddQuestionContainerFragment;
@@ -84,6 +85,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                     View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
                     holder.llQuestionAnswers.addView(ansView);
                 }
+
             }
 
             holder.imgDropdownViewAnswer.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +121,11 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                 @Override
                 public void onClick(View v) {
-                    if (!getFragment().getListOfPreviewQuestion().contains(arrListQuestions.get(position))) {
+
+                    Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS:::" + getFragment().getListOfPreviewQuestion().size());
+
+//                    if (!getFragment().getListOfPreviewQuestion().contains(arrListQuestions.get(position))) {
+                    if (!checkForQuestionPresence(arrListQuestions.get(position).getQuestionId())) {
                         if (holder.chkSelectQuestion.isChecked()) {
                             arrListQuestions.get(position).setIsQuestionAddedInPreview(true);
                             getFragment().getListOfPreviewQuestionsToAdd().add(arrListQuestions.get(position));
@@ -131,6 +137,7 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
                         arrListQuestions.get(position).setIsQuestionAddedInPreview(true);
                     }
                     notifyDataSetChanged();
+
                 }
             });
 
@@ -153,6 +160,18 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             Log.e(TAG, "onBindViewHolder Exception : " + e.toString());
         }
 
+    }
+
+    private Boolean checkForQuestionPresence(String questionId) {
+        Boolean isPresent = false;
+        for (Questions question : getFragment().getListOfPreviewQuestion()) {
+            if (question.getQuestionId().equals(questionId)) {
+                isPresent = true;
+                break;
+            }
+
+        }
+        return isPresent;
     }
 
     private void openAddEditQuestionFragment(int position, Boolean isCopy) {
@@ -201,8 +220,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
             imgQuestionAddtofavourite = (ImageView) itemView.findViewById(R.id.img_question_addtofavourite);
 
             chkSelectQuestion = (CheckBox) itemView.findViewById(R.id.chk_select_question);
-
-
         }
     }
 
@@ -214,7 +231,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
         TextView tvMcqQuestionAns = (TextView) v.findViewById(R.id.tv_mcq_question_ans);
         tvMcqQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
         tvMcqQuestionAns.setText(Utils.formatHtml(Utils.getCharForNumber(position + 1) + ": " + answers.getChoiceText()));
-
         return v;
     }
 
@@ -227,7 +243,6 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
     ArrayList<Questions> copyListOfQuestions;
 
     public void filter(CharSequence charText) {
-
         arrListQuestions.clear();
         if (charText.length() == 0) {
             arrListQuestions.addAll(copyListOfQuestions);

@@ -60,16 +60,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            arrListQuestions = getArguments().getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
-            Debug.e(TAG, "THE SIZE OF ARRAYLIST IS" + arrListQuestions.size());
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_preview_question, container, false);
 
@@ -111,11 +101,26 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         });
 
 
-        if (getArguments() != null) {
-            previewQuestionListAdapter.addAll(this.arrListQuestions);
-            getFragment().updateQuestionStatusAfterSetDataOfExam(arrListQuestions);
-        }
 
+        /*this condition will not work this is for testing*/
+        /*check for the arraylist presence*/
+
+//        if (getArguments() != null) {
+//
+//            if (getArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
+//
+//                arrListQuestions = getArguments().getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+//                previewQuestionListAdapter.addAll(this.arrListQuestions);
+//
+//                Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS" + arrListQuestions.size());
+//            }
+//        }
+
+    }
+
+    public void setExamQuestions(ArrayList<Questions> arrListExamQuestions) {
+        arrListQuestions.addAll(arrListExamQuestions);
+        previewQuestionListAdapter.addAll(this.arrListQuestions);
     }
 
 
@@ -153,10 +158,11 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
     public void addQuestionsToPreviewFragment(ArrayList<Questions> arrListQuestionsToAdd) {
-
         if (arrListQuestionsToAdd.size() > 0) {
-            Debug.e(TAG, "The size of arraylist is:::" + arrListQuestionsToAdd.size());
-            this.arrListQuestions.addAll(arrListQuestionsToAdd);
+            for (int i = 0; i < arrListQuestionsToAdd.size(); i++) {
+                arrListQuestions.add(arrListQuestionsToAdd.get(i));
+            }
+            Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS" + arrListQuestions.size());
             previewQuestionListAdapter.addAll(this.arrListQuestions);
         }
     }
@@ -195,16 +201,34 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
 
     public void updateQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData, Boolean isChecked) {
-        int position = arrListQuestions.indexOf(prevQuestionData);
-        if (position != -1) {
-            arrListQuestions.set(position, updatedQuestionData);
-            previewQuestionListAdapter.addAll(arrListQuestions);
-            previewQuestionListAdapter.notifyDataSetChanged();
-        } else {
-            if (isChecked) {
-                addQuestionDataAfterAddQuestion(updatedQuestionData);
+
+        Boolean isQuestionPresent = false;
+
+
+        for (Questions questions : arrListQuestions) {
+            if (questions.getQuestionId().equals(prevQuestionData.getQuestionId())) {
+                arrListQuestions.set(arrListQuestions.indexOf(questions), updatedQuestionData);
+                isQuestionPresent = true;
+                break;
             }
         }
+        previewQuestionListAdapter.addAll(arrListQuestions);
+        previewQuestionListAdapter.notifyDataSetChanged();
+
+        if (!isQuestionPresent && isChecked) {
+            addQuestionDataAfterAddQuestion(updatedQuestionData);
+        }
+
+//        int position = arrListQuestions.indexOf(prevQuestionData);
+//        if (position != -1) {
+//            arrListQuestions.set(position, updatedQuestionData);
+//            previewQuestionListAdapter.addAll(arrListQuestions);
+//            previewQuestionListAdapter.notifyDataSetChanged();
+//        } else {
+//            if (isChecked) {
+//                addQuestionDataAfterAddQuestion(updatedQuestionData);
+//            }
+//        }
     }
 
     public void addQuestionDataAfterAddQuestion(Questions question) {
