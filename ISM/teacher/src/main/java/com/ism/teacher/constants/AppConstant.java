@@ -9,7 +9,9 @@ import java.io.File;
  */
 public class AppConstant {
 
-
+    //Pick from Gallery
+    public static  final int REQUEST_CODE_PICK_FROM_GALLERY =1;
+    public static  final int REQUEST_CODE_ADD_POST =2;
     //All fonts
 
     public static final String RalewayBlack = "Raleway-Black.ttf";

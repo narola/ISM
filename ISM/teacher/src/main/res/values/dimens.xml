@@ -66,6 +66,7 @@
     <dimen name="d130dp">130dp</dimen>
     <dimen name="d140dp">140dp</dimen>
     <dimen name="d150dp">150dp</dimen>
+    <dimen name="d170dp">170dp</dimen>
     <dimen name="rich_text_editor_height">450dp</dimen>
     <dimen name="dp_post_creater_image_width_height">160dp</dimen>
     <dimen name="d22sp">22sp</dimen>

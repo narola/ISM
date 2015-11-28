@@ -318,4 +318,9 @@ public class Utility {
 
 	}
 
+
+	public static String getString(int stringId, Context mContext) {
+		return mContext.getResources().getString(stringId);
+
+	}
 }

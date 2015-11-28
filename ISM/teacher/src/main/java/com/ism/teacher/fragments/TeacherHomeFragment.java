@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.ism.teacher.PostActivity;
 import com.ism.teacher.R;
@@ -107,15 +106,22 @@ public class TeacherHomeFragment extends Fragment implements WebserviceWrapper.W
     private void onAttachFileClick(View view) {
         if (view == llPost || view == etWritePost) {
             Intent intent = new Intent(getActivity(), PostActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, AppConstant.REQUEST_CODE_ADD_POST);
 
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == AppConstant.REQUEST_CODE_ADD_POST) {
+            callAllFeedsApi();
+        }
+
+    }
 
     private void callAllFeedsApi() {
         try {
-         //   ((TeacherHostActivity) getActivity()).startProgress();
+            //   ((TeacherHostActivity) getActivity()).startProgress();
             Attribute attribute = new Attribute();
             attribute.setUserId(WebConstants.USER_ID_370);
             new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()

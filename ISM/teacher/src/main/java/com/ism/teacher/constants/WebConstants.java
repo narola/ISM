@@ -59,6 +59,13 @@ public class WebConstants {
     public static final int GET_EXAM_EVALUATIONS = 24;
     public static final int GET_MY_STUDENTS = 25;
 
+    public static final int CREATEQUESTION = 26;
+    public static final int GET_ALL_HASHTAG = 27;
+    public static final int GET_ALL_BADGES_COUNT = 28;
+
+    public static final String TEST_USER_ID = "370";
+    public static final String TEST_USER_NAME = "Admin";
+
 
     /**
      * URLs
@@ -99,5 +106,9 @@ public class WebConstants {
     public static final String URL_GET_CITIES = URL_KINJAL_HOST + "GetCities";
     public static final String URL_GET_STATES = URL_KINJAL_HOST + "GetStates";
     public static final String URL_GET_COUNTRIES = URL_KINJAL_HOST + "GetCountries";
+
+    public static final String URL_GET_ALL_HASHTAG= URL_KINJAL_HOST + "GetAllHashtag";
+
+    public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
 
 }

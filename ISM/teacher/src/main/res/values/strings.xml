@@ -353,4 +353,10 @@
     <string name="strassessed">Assessed</string>
     <string name="strunasssessed">Unassessed</string>
     <string name="strnotattemted">Not Attempted</string>
+    <string name="msg_success_createexam">Exam Created Successfully.</string>
+    <string name="msg_success_addquestion">Question added successfully.</string>
+    <string name="msg_success_editquestion">Question edited successfully.</string>
+    <string name="str_success_setexamquestions">Questions set for the exam.</string>
+    <string name="strsolution">Solution</string>
+
 </resources>

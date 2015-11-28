@@ -1,8 +1,8 @@
 package com.ism.teacher.fragments;
 
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -28,8 +29,6 @@ import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.model.FragmentArgument;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -51,16 +50,14 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
 
     private static final String TAG = AssignmentExamFragment.class.getSimpleName();
-
-
     //Views
     private View view;
     TextView tv_exam_title, tv_exam_examfor, tv_exam_examschedule, tv_exam_examinstruction, tv_exam_declareresult,
             tv_exam_negativemarking, tv_exam_randomquestion, tv_exam_usescore, tv_exam_questionscorevalue, tv_exam_addnegativemark;
     Spinner spExamClassroom, spExamSubjectname, spExamSubjecttopic, spExamPassingpercent, spExamExamname, spExamExammode,
-            sp_exam_examduration;
+            spExamExamduration;
 
-    ToggleButton tb_exam_selectexamfor;
+    ToggleButton tbExamSelectexamfor;
     EditText etExamName, etExamStartdate, etExamEnddate, etExamQuestionscorevalue, etExamAttemptcount, etExamAddnegativemark;
     CheckBox cb_exam_startdate_notify, cb_exam_enddate_notify;
     RadioGroup radioDeclareresult, radioNegativemarking, radioExamRandomQuestion, radioExamUsescore;
@@ -83,25 +80,32 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     List<String> arrListDefalt, arrListPassingPercent, arrListExamDuration, arrListExamMode, arrListExamName;
 
     private InputValidator inputValidator;
-    private FragmentArgument fragmentArgument = new FragmentArgument();
-    private Bundle bundleArgument;
-    private FragmentListener fragListener;
 
     private Fragment fragmentContext;
+    private Context mContext;
+    private ScrollView svCreateExam;
+
+
+    /**
+     * Fragment Args
+     */
+    public static String ARG_EXAM_CLASSROOM_ID = "examClassRoomId";
+    public static String ARG_EXAM_SUBJECT_ID = "examSubjectId";
+    public static String ARG_EXAM_TOPIC_ID = "examTopicId";
+    public static String ARG_EXAM_QUESTION_SCORE = "examQuestionScore";
+    public static String ARG_EXAM_BOOK_ID = "examBookId";
+
 
     public AssignmentExamFragment() {
         // Required empty public constructor
     }
 
-    public static AssignmentExamFragment newInstance(Fragment fragmentContext, Bundle bundleArgument) {
-        AssignmentExamFragment assignmentExamFragment = new AssignmentExamFragment(fragmentContext);
+    public static AssignmentExamFragment newInstance(Fragment fragment, Context mContext, Bundle bundleArgument) {
+        AssignmentExamFragment assignmentExamFragment = new AssignmentExamFragment();
         assignmentExamFragment.setArguments(bundleArgument);
-
+        assignmentExamFragment.mContext = mContext;
+        assignmentExamFragment.fragmentContext = fragment;
         return assignmentExamFragment;
-    }
-
-    public AssignmentExamFragment(Fragment fragmentContext) {
-        this.fragmentContext = fragmentContext;
     }
 
 
@@ -118,6 +122,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         myTypeFace = new MyTypeFace(getActivity());
         inputValidator = new InputValidator(getActivity());
 
+        svCreateExam = (ScrollView) view.findViewById(R.id.sv_create_exam);
         tv_exam_title = (TextView) view.findViewById(R.id.tv_exam_title);
 
         tv_exam_examfor = (TextView) view.findViewById(R.id.tv_exam_examfor);
@@ -148,10 +153,10 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         spExamPassingpercent = (Spinner) view.findViewById(R.id.sp_exam_passingpercent);
         spExamExamname = (Spinner) view.findViewById(R.id.sp_exam_examname);
         spExamExammode = (Spinner) view.findViewById(R.id.sp_exam_exammode);
-        sp_exam_examduration = (Spinner) view.findViewById(R.id.sp_exam_examduration);
+        spExamExamduration = (Spinner) view.findViewById(R.id.sp_exam_examduration);
 
 
-        tb_exam_selectexamfor = (ToggleButton) view.findViewById(R.id.tb_exam_selectexamfor);
+        tbExamSelectexamfor = (ToggleButton) view.findViewById(R.id.tb_exam_selectexamfor);
 
         etExamName = (EditText) view.findViewById(R.id.et_exam_name);
         etExamStartdate = (EditText) view.findViewById(R.id.et_exam_startdate);
@@ -195,7 +200,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
         Adapters.setUpSpinner(getActivity(), spExamPassingpercent, arrListPassingPercent);
 
         getExamDurationSpinnerValues();
-        Adapters.setUpSpinner(getActivity(), sp_exam_examduration, arrListExamDuration);
+        Adapters.setUpSpinner(getActivity(), spExamExamduration, arrListExamDuration);
 
         arrListExamMode = new ArrayList<String>();
         arrListExamMode.add(getString(R.string.strexammode));
@@ -249,35 +254,6 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 return true;
             }
         });
-
-
-        /*btnExamSetquestion.setOnClickListener(new View.OnClickListener() {
-                                                  @Override
-                                                  public void onClick(View v) {
-                                                      if (exam_id_after_creating_exam != null && !exam_id_after_creating_exam.equalsIgnoreCase("")) {
-                                                          Log.e("examid", exam_id_after_creating_exam);
-
-//                                                            addQuestionContainerFragment=new AddQuestionContainerFragment(AssignmentExamFragment.this, exam_id_after_creating_exam);
-//                                                            mFragment.getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home, addQuestionContainerFragment).commit();
-
-//                                                            ((TeacherHostActivity) getActivity()).loadAddQuestionContainerFragment(TeacherHostActivity.FRAGMENT_ADDQUESTION, exam_id_after_creating_exam);
-
-                                                          ((TeacherHostActivity) getActivity()).loadAddQuestionContainerFragment(TeacherHostActivity.FRAGMENT_ADDQUESTION, fragmentArgument);
-                                                      } else {
-                                                          Log.e(TAG, "Setting question with exam id null");
-                                                      }
-                                                  }
-                                              }
-        );*/
-
-/*
-        btnExamCancel.setOnClickListener(new View.OnClickListener() {
-                                             @Override
-                                             public void onClick(View v) {
-                                                 backToTrialScreen();
-                                             }
-                                         }
-        );*/
 
 
         radioNegativemarking.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -335,35 +311,37 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             }
         });
 
+        if (getArguments() != null) {
+            setExamDetails();
+            btnExamSetquestion.setVisibility(View.VISIBLE);
+        } else {
+//            btnExamSetquestion.setVisibility(View.GONE);
+        }
         callApiGetClassRooms();
+        callApiGetSubjects();
 
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            fragListener = (FragmentListener) activity;
-            if (fragListener != null) {
-                //fragListener.onFragmentAttached(TrialAddNewFragment.FRAGMENT_TRIAL_EXAM);
-            }
-        } catch (ClassCastException e) {
-            Debug.e(TAG, "onAttach Exception : " + e.toString());
+    private void setExamDetails() {
+
+        etExamName.setText(getArguments().getString(AppConstant.ARG_EXAM_NAME));
+        spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(AppConstant.ARG_PASS_PERCENTAGE)));
+        setExamType(getArguments().getString(AppConstant.ARG_EXAM_TYPE));
+        spExamExamname.setSelection(arrListExamName.indexOf(getArguments().getString(AppConstant.ARG_EXAM_CATEGORY)));
+        spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(AppConstant.ARG_EXAM_MODE)));
+        spExamExamduration.setSelection(arrListExamDuration.indexOf(getArguments().getString(AppConstant.ARG_EXAM_DURATION)));
+
+    }
+
+    private void setExamType(String value) {
+        if (value.equals("subject")) {
+            tbExamSelectexamfor.setChecked(true);
+        } else if (value.equals("topic")) {
+            tbExamSelectexamfor.setChecked(false);
         }
+
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        try {
-            if (fragListener != null) {
-                //fragListener.onFragmentDetached(TrialAddNewFragment.FRAGMENT_TRIAL_EXAM);
-            }
-        } catch (ClassCastException e) {
-            Debug.e(TAG, "onDetach Exception : " + e.toString());
-        }
-        fragListener = null;
-    }
 
     private void callApiGetClassRooms() {
 
@@ -431,7 +409,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
                 attribute.setExamCategory(arrListExamName.get(spExamExamname.getSelectedItemPosition()));
                 attribute.setExamMode(arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
                 attribute.setPassingPercent(arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
-                attribute.setExamDuration(arrListExamDuration.get(sp_exam_examduration.getSelectedItemPosition()));
+                attribute.setExamDuration(arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
                 attribute.setExamInstruction(strAssignmenttext);
                 attribute.setDeclareResults(getRadioGroupSelection(radioDeclareresult));
                 attribute.setNegativeMarking(getRadioGroupSelection(radioNegativemarking));
@@ -468,17 +446,17 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
             switch (apiMethodName) {
 
                 case WebConstants.GET_CLASSROOMS:
-                    onResponseGetClassRooms(object);
+                    onResponseGetClassrooms(object, error);
                     break;
 
                 case WebConstants.GET_SUBJECT:
-                    onResponseGetSubject(object);
+                    onResponseGetSubjects(object, error);
                     break;
                 case WebConstants.GET_TOPICS:
-                    onResponseGetTopics(object);
+                    onResponseGetTopics(object, error);
                     break;
                 case WebConstants.CREATE_EXAM:
-                    onResponseCreateExam(object);
+                    onResponseCreateExam(object, error);
                     break;
             }
         } catch (Exception e) {
@@ -488,85 +466,138 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     }
 
-    private void onResponseGetClassRooms(Object object) {
-        ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && responseHandler != null) {
+    private void onResponseGetClassrooms(Object object, Exception error) {
+        try {
+            ((TeacherHostActivity) getActivity()).stopProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-            arrListClassRooms = new ArrayList<>();
-            arrListClassRooms.addAll(responseHandler.getClassrooms());
-            List<String> classrooms = new ArrayList<String>();
-            classrooms.add(getString(R.string.strclass));
-            for (Classrooms classrooms1 : arrListClassRooms) {
-                classrooms.add(classrooms1.getClassName());
+                    arrListClassRooms = new ArrayList<Classrooms>();
+                    arrListClassRooms.addAll(responseHandler.getClassrooms());
+                    List<String> classrooms = new ArrayList<String>();
+                    classrooms.add(Utility.getString(R.string.strclass, mContext));
+                    for (Classrooms classroom : arrListClassRooms) {
+                        classrooms.add(classroom.getClassName());
 
+                    }
+                    Adapters.setUpSpinner(mContext, spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL);
+                    if (getArguments() != null) {
+                        spExamClassroom.setSelection(classrooms.indexOf(getArguments().getString(AppConstant.ARG_CLASSROOM_NAME)));
+                    }
+
+
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utility.showToast(responseHandler.getMessage(), mContext);
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetClassrooms api Exception : " + error.toString());
             }
-            Adapters.setUpSpinner(getActivity(), spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL);
-            callApiGetSubjects();
-
-        } else {
-            Utility.showToast(responseHandler.getMessage(), getActivity());
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetClassrooms Exception : " + e.toString());
         }
     }
 
-    private void onResponseGetSubject(Object object) {
-        ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && responseHandler != null) {
+    private void onResponseGetSubjects(Object object, Exception error) {
+        try {
+            ((TeacherHostActivity) getActivity()).stopProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
-            arrListSubject = new ArrayList<>();
-            arrListSubject.addAll(responseHandler.getSubjects());
-            List<String> subjects = new ArrayList<String>();
-            subjects.add(getString(R.string.strsubjectname));
-            for (Subjects subject : arrListSubject) {
-                subjects.add(subject.getSubjectName());
+                    arrListSubject = new ArrayList<Subjects>();
+                    arrListSubject.addAll(responseHandler.getSubjects());
+                    List<String> subjects = new ArrayList<String>();
+                    subjects.add(Utility.getString(R.string.strsubjectname, mContext));
+                    for (Subjects subject : arrListSubject) {
+                        subjects.add(subject.getSubjectName());
+                    }
+                    Adapters.setUpSpinner(mContext, spExamSubjectname, subjects, Adapters.ADAPTER_NORMAL);
 
+                    if (getArguments() != null) {
+                        spExamSubjectname.setSelection(subjects.indexOf(getArguments().getString(AppConstant.ARG_SUBJECT_NAME)));
+                    }
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utility.showToast(responseHandler.getMessage(), mContext);
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetSubjects api Exception : " + error.toString());
             }
-
-            Adapters.setUpSpinner(getActivity(), spExamSubjectname, subjects, Adapters.ADAPTER_NORMAL);
-
-        } else {
-            Utility.showToast(responseHandler.getMessage(), getActivity());
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetSubjects Exception : " + e.toString());
         }
     }
 
-    private void onResponseGetTopics(Object object) {
-        ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS) && responseHandler != null) {
-
-            arrListTopic = new ArrayList<>();
-            arrListTopic.addAll(responseHandler.getTopics());
-            List<String> topics = new ArrayList<String>();
-            topics.add(getString(R.string.strtopic));
-            for (Topics topic : arrListTopic) {
-                topics.add(topic.getTopicName());
-
+    private void onResponseGetTopics(Object object, Exception error) {
+        try {
+            ((TeacherHostActivity) getActivity()).stopProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    arrListTopic = new ArrayList<Topics>();
+                    arrListTopic.addAll(responseHandler.getTopics());
+                    List<String> topics = new ArrayList<String>();
+                    topics.add(Utility.getString(R.string.strtopic, mContext));
+                    for (Topics topic : arrListTopic) {
+                        topics.add(topic.getTopicName());
+                    }
+                    Adapters.setUpSpinner(mContext, spExamSubjecttopic, topics, Adapters.ADAPTER_NORMAL);
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Adapters.setUpSpinner(mContext, spExamSubjecttopic, arrListDefalt, Adapters.ADAPTER_NORMAL);
+                    Utility.showToast(responseHandler.getMessage(), mContext);
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseGetTopics api Exception : " + error.toString());
             }
-            Adapters.setUpSpinner(getActivity(), spExamSubjecttopic, topics);
-        } else {
-            Adapters.setUpSpinner(getActivity(), spExamSubjecttopic, arrListDefalt);
-            Utility.showToast(responseHandler.getMessage(), getActivity());
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseGetTopics Exception : " + e.toString());
         }
     }
 
-    private void onResponseCreateExam(Object object) {
+    private void onResponseCreateExam(Object object, Exception error) {
+        try {
+            ((TeacherHostActivity) getActivity()).stopProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    Utility.showToast(Utility.getString(R.string.msg_success_createexam, mContext), mContext);
+                    btnExamSetquestion.setVisibility(View.VISIBLE);
 
-        ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler != null && responseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS)) {
+                    if (getArguments() != null) {
+                        getArguments().putString(AppConstant.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+                    } else {
+                        Bundle bundleExamDetails = new Bundle();
+                        bundleExamDetails.putString(AppConstant.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
+                        setArguments(bundleExamDetails);
+                    }
 
-            //exam_id_after_creating_exam = callCreateExamResponse.getData().get(0).getExam_id_received_from_bundle();
-            Utility.showToast("Exam Created Successfully", getActivity());
-            btnExamSetquestion.setVisibility(View.VISIBLE);
-            if (getArguments() == null) {
-                bundleArgument = new Bundle();
-                exam_id_after_creating_exam = responseHandler.getCreateExam().get(0).getExamId();
-                bundleArgument.putString(AppConstant.ARG_EXAM_ID, exam_id_after_creating_exam);
+                    setBundleArguments();
 
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utility.showToast(responseHandler.getMessage(), mContext);
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseCreateExam api Exception : " + error.toString());
             }
-            // bundleArgument.putString(ExamsAdapter.ARG_EXAM_ID, String.valueOf(responseHandler.getCreateExam().get(0).getExamId()));
-            // fragmentArgument.getRequestObject().setExamId(callCreateExamResponse.getData().get(0).getExam_id_received_from_bundle());
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseCreateExam Exception : " + e.toString());
+        }
+    }
 
-        } else {
+    private void setBundleArguments() {
 
-            Utility.showToast(getString(R.string.web_service_issue), getActivity());
+        try {
+            getArguments().putString(ARG_EXAM_CLASSROOM_ID, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
+                    Integer.parseInt(arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
+            getArguments().putString(ARG_EXAM_SUBJECT_ID, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
+                    Integer.parseInt(arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
+            getArguments().putString(ARG_EXAM_TOPIC_ID, "5");
+            getArguments().putString(ARG_EXAM_BOOK_ID, "3");
+            getArguments().putString(ARG_EXAM_QUESTION_SCORE, etExamQuestionscorevalue.getText().toString().equals("") ?
+                    "0" : etExamQuestionscorevalue.getText().toString());
+            getArguments().putString(AppConstant.ARG_SUBJECT_NAME, arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName());
+        } catch (Exception e) {
+            Debug.e(TAG, "SetBundleArgumentsException : " + e.toString());
         }
     }
 
@@ -594,9 +625,35 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v == btnExamSave) {
+            if (isInputsValid()) {
+                callApiCreateExam();
+            } else {
+                svCreateExam.fullScroll(ScrollView.FOCUS_UP);
+            }
 
-    private void backToTrialScreen() {
-        ((TeacherHostActivity) getActivity()).onBackPressed();
+        } else if (v == btnExamSetquestion) {
+
+            if (getArguments() != null) {
+                setBundleArguments();
+            }
+
+            ((CreateExamAssignmentContainerFragment) fragmentContext).hideTopBar();
+            getFragmentManager().beginTransaction().
+                    replace(R.id.fl_fragment_assignment_container, AddQuestionContainerFragment.newInstance(getArguments()))
+                    .commit();
+
+        } else if (v == btnExamCancel) {
+
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((TeacherHostActivity) getActivity()).flFragmentContainerRight.setVisibility(View.VISIBLE);
     }
 
 
@@ -682,7 +739,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
     }
 
     private boolean isExamDurationSet() {
-        if (arrListExamDuration != null && arrListExamDuration.size() == 0 || sp_exam_examduration.getSelectedItemPosition() > 0) {
+        if (arrListExamDuration != null && arrListExamDuration.size() == 0 || spExamExamduration.getSelectedItemPosition() > 0) {
             return true;
         } else {
             strValidationMsg += getString(R.string.msg_validation_set_exam_duration);
@@ -737,7 +794,7 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
 
     private String getExamType() {
-        if (tb_exam_selectexamfor.isChecked()) {
+        if (tbExamSelectexamfor.isChecked()) {
             return "subject";
         } else {
             return "topic";
@@ -754,32 +811,5 @@ public class AssignmentExamFragment extends Fragment implements WebserviceWrappe
 
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v == btnExamSave) {
-            if (isInputsValid()) {
-                callApiCreateExam();
-            }
-        } else if (v == btnExamSetquestion) {
 
-            ((CreateExamAssignmentContainerFragment) fragmentContext).hideTopBar();
-            getFragmentManager().beginTransaction().
-                    replace(R.id.fl_fragment_assignment_container, AddQuestionContainerFragment.newInstance(bundleArgument))
-                    .commit();
-
-            // ((TeacherHostActivity)getActivity()).flFragmentContainerRight.setVisibility(View.GONE);
-
-
-         //   ((TeacherHostActivity) getActivity()).loadFragmentInMainContainer(TeacherHostActivity.FRAGMENT_ADDQUESTION_CONTAINER, bundleArgument);
-
-        } else if (v == btnExamCancel) {
-            backToTrialScreen();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((TeacherHostActivity) getActivity()).flFragmentContainerRight.setVisibility(View.VISIBLE);
-    }
 }
