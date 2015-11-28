@@ -40,7 +40,7 @@
     <dimen name="post_feed_spacing">10dp</dimen>
     <dimen name="post_dp_size">120dp</dimen>
     <dimen name="post_dp_margin">17dp</dimen>
-    <dimen name="dp_size_list">50dp</dimen>
+    <dimen name="dp_size_list_comment">50dp</dimen>
     <dimen name="dp_margin_list">15dp</dimen>
     <dimen name="post_text_size">18sp</dimen>
     <dimen name="comment_padding">5dp</dimen>
@@ -76,4 +76,9 @@
     <dimen name="txt_timeline_table">19sp</dimen>
     <dimen name="txt_timeline_table_small">16sp</dimen>
     <dimen name="dp_size_timeline">65dp</dimen>
+    <dimen name="dp_size_list_notification">60dp</dimen>
+    <dimen name="dp_size_list_studymates">80dp</dimen>
+    <dimen name="status_ring_radius">5dp</dimen>
+    <dimen name="status_ring_thickness">2dp</dimen>
+    <dimen name="status_ring_size">16dp</dimen>
 </resources>
