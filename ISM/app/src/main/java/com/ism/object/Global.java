@@ -16,5 +16,6 @@ public class Global {
 	public Realm getRealmInstance() {
 		return Realm.getDefaultInstance();
 	}
+	public static MyTypeFace myTypeFace;
 
 }

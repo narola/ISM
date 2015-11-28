@@ -35,6 +35,7 @@ import com.ism.author.adapter.ExamsAdapter;
 import com.ism.author.autocomplete.ContactsCompletionView;
 import com.ism.author.autocomplete.FilteredArrayAdapter;
 import com.ism.author.autocomplete.TokenCompleteTextView;
+import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.model.HashTagsModel;
 import com.ism.author.object.MyTypeFace;
@@ -250,7 +251,6 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             sb.append(token.toString());
             sb.append("\n");
         }
-        Utils.showToast("The Tokens Are::::" + sb, getActivity());
     }
 
     @Override
@@ -533,6 +533,7 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
     @Override
     public void onClick(View v) {
         if (v == tvAddquestionSave) {
+
             isAddMore = false;
             if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
                 Debug.e(TAG, "QUESTION EDIT CALLED");
@@ -544,6 +545,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                     callApiCreateQuestion();
                 }
             }
+
+
+            /*this is only for testing*/
+
+
         } else if (v == tvAddquestionSaveAddmore) {
             isAddMore = true;
             if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
@@ -577,7 +583,39 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 ((AuthorHostActivity) getActivity()).showProgress();
                 new WebserviceWrapper(getActivity(), null, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GETALLHASHTAG);
+            } catch (Exception e) {
+                Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            }
+        } else {
+            Utility.toastOffline(getActivity());
+        }
+    }
 
+
+    private void callApiSetHashTag(String questionId) {
+        if (Utility.isConnected(getActivity())) {
+            ((AuthorHostActivity) getActivity()).showProgress();
+            try {
+                Attribute attribute = new Attribute();
+
+                StringBuilder sb = new StringBuilder();
+                List<HashTagsModel> list = tagsView.getObjects();
+                for (int i = 0; i < list.size(); i++) {
+                    sb.append(list.get(i).getTagName() + ":" + list.get(i).getTagId());
+                    if (i < list.size() - 1) {
+                        sb.append(",");
+                    }
+
+                }
+
+                Utils.showToast("The tokens are::" + sb.toString(), getActivity());
+                attribute.setHashtagData(sb.toString());
+                attribute.setResourceId("1");
+                attribute.setResourceType(AppConstant.RESOURCE_TYPE_QUESTION);
+
+                ((AuthorHostActivity) getActivity()).showProgress();
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                        .execute(WebConstants.SETHASHTAG);
             } catch (Exception e) {
                 Debug.i(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
             }
@@ -688,6 +726,10 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 case WebConstants.GETALLHASHTAG:
                     onResponseGetAllHashTag(object, error);
                     break;
+
+                case WebConstants.SETHASHTAG:
+                    onResponseSetHashTag(object, error);
+                    break;
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponse Exception : " + e.toString());
@@ -705,12 +747,11 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
 
                     Utils.showToast(getString(R.string.msg_success_addquestion), getActivity());
-
+                    callApiSetHashTag(responseHandler.getQuestion().get(0).getQuestionId());
 
                     if (getFragment().getIsSetQuestionData() && !getFragment().getIsCopy()) {
 
                         Utils.showToast("QUESTION EDIT CALLED", getActivity());
-
                         getFragment().setQuestionDataAfterEditQuestion(getFragment().getQuestionData(),
                                 makeQuestionData(responseHandler.getQuestion().get(0).getQuestionId()),
                                 chkAddquestionPreview.isChecked());
@@ -834,6 +875,25 @@ public class QuestionAddEditFragment extends Fragment implements TokenCompleteTe
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseGetAllHashTags Exception : " + e.toString());
+        }
+    }
+
+
+    private void onResponseSetHashTag(Object object, Exception error) {
+        try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    Utils.showToast(getString(R.string.msg_success_sethashtag), getActivity());
+                } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utils.showToast(responseHandler.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseSetHashTags api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseSetHashTags Exception : " + e.toString());
         }
     }
 

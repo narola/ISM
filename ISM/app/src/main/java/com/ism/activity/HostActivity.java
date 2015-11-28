@@ -28,9 +28,9 @@ import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
 import com.ism.constant.WebConstants;
 import com.ism.fragment.AccordionFragment;
-import com.ism.fragment.AllMessageFragment;
-import com.ism.fragment.AllNoticeFragment;
-import com.ism.fragment.AllNotificationFragment;
+import com.ism.fragment.userprofile.AllMessageFragment;
+import com.ism.fragment.userprofile.AllNoticeFragment;
+import com.ism.fragment.userprofile.AllNotificationFragment;
 import com.ism.fragment.AllStudymateRequestFragment;
 import com.ism.fragment.AssessmentFragment;
 import com.ism.fragment.ChatFragment;
@@ -39,7 +39,7 @@ import com.ism.fragment.DeskFragment;
 import com.ism.fragment.userprofile.MyActivityFragment;
 import com.ism.fragment.userprofile.MyFeedsFragment;
 import com.ism.fragment.userprofile.MyWalletFragment;
-import com.ism.fragment.ProfileControllerFragment;
+import com.ism.fragment.userprofile.ProfileControllerFragment;
 import com.ism.fragment.ReportCardFragment;
 import com.ism.fragment.userprofile.StudymatesFragment;
 import com.ism.fragment.TutorialFragment;
@@ -48,6 +48,7 @@ import com.ism.fragment.userprofile.GeneralSettingsFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.model.ControllerTopMenuItem;
 import com.ism.object.Global;
+import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
@@ -155,6 +156,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
     }
 
     private void initGlobal() {
+        Global.myTypeFace=new MyTypeFace(getApplicationContext());
         llControllerLeft = (LinearLayout) findViewById(R.id.ll_controller_left);
         flFragmentContainerMain = (FrameLayout) findViewById(R.id.fl_fragment_container_main);
         flFragmentContainerRight = (FrameLayout) findViewById(R.id.fl_fragment_container_right);
@@ -931,7 +933,7 @@ public class HostActivity extends Activity implements FragmentListener, Webservi
         this.hostListenerAboutMe = hostListenerAboutMe;
     }
 
-    public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
+    public void setshowControllerTopBackButton(HostListenerAllNotification listenerHostAllNotification) {
         this.listenerHostAllNotification = listenerHostAllNotification;
     }
 

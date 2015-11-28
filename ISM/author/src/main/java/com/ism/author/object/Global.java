@@ -1,5 +1,7 @@
 package com.ism.author.object;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import io.realm.Realm;
 
 /**
@@ -11,6 +13,7 @@ public class Global {
     public static String strProfilePic;
 
     public static int intApiCounter = 0;
+    public static ImageLoader imageLoader;
 
     public Realm getRealmInstance() {
         return Realm.getDefaultInstance();

@@ -22,6 +22,7 @@ import com.ism.author.constant.AppConstant;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.dialog.TagUserDialog;
 import com.ism.author.dialog.ViewAllCommentsDialog;
+import com.ism.author.object.Global;
 import com.ism.author.views.CircleImageView;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
@@ -29,8 +30,6 @@ import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.author.ws.model.CommentList;
 import com.ism.author.ws.model.FeedImages;
 import com.ism.author.ws.model.Feeds;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -45,7 +44,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     private Context mContext;
     private ArrayList<Feeds> arrListFeeds = new ArrayList<Feeds>();
     String likePrefData, unlikePrefData;
-    private ImageLoader imageLoader;
     private int addCommentFeedPosition = -1;
     private int tagFeedPosition = -1;
     private LayoutInflater inflater;
@@ -53,8 +51,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
 
     public PostFeedsAdapter(Context context) {
         this.mContext = context;
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         inflater = LayoutInflater.from(mContext);
 
     }
@@ -69,7 +65,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
+        Global.imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png",
                 holder.imgDpPostCreator, ISMAuthor.options);
         holder.txtPostCreaterName.setText(arrListFeeds.get(position).getFullName());
         holder.txtPostContent.setText(arrListFeeds.get(position).getFeedText());
@@ -191,7 +187,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             holder.imgPlay.setVisibility(View.VISIBLE);
 
             Log.i(TAG, WebConstants.FEED_MEDIA + arrListFeeds.get(position).getVideoThumbnail() + "");
-            imageLoader.displayImage(WebConstants.FEED_MEDIA + arrListFeeds.get(position).getVideoThumbnail(), holder.imgVideo, ISMAuthor.options);
+            Global.imageLoader.displayImage(WebConstants.FEED_MEDIA + arrListFeeds.get(position).getVideoThumbnail(), holder.imgVideo, ISMAuthor.options);
 
         }
         //audio
@@ -208,7 +204,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
             feedImages = arrListFeeds.get(position).getFeedImages();
             for (int i = 0; i < feedImages.size(); i++) {
                 Log.i(TAG, WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink() + "");
-                imageLoader.displayImage(WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink(), holder.imgImage, ISMAuthor.options);
+                Global.imageLoader.displayImage(WebConstants.FEED_MEDIA + feedImages.get(i).getImageLink(), holder.imgImage, ISMAuthor.options);
 
             }
 
@@ -301,7 +297,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         txtCommenterComment.setText(commentList.getComment());
         txtCommentDuration.setText("5 min");
 
-        imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", imgCommenterDp, ISMAuthor.options);
+        Global.imageLoader.displayImage("http://192.168.1.162/ISM/WS_ISM/Images/Users_Images/user_434/image_1446011981010_test.png", imgCommenterDp, ISMAuthor.options);
 
         return v;
     }
@@ -437,6 +433,7 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
         try {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+                Debug.e(TAG, "onResponseGetAllComments success  : " + responseHandler.getComments().size());
                 ViewAllCommentsDialog viewAllCommentsDialog = new ViewAllCommentsDialog(getActivity(), responseHandler.getComments());
                 viewAllCommentsDialog.show();
             } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
