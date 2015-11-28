@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.ism.model.TestActivity;
 import com.ism.utility.Debug;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by c161 on 06/11/15.
@@ -55,11 +57,14 @@ public class MyActivityFragment extends Fragment {
 
 		final ArrayList<TestActivity> arrayListActivities = new ArrayList<>();
 		String[] months = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
+		Random random = new Random();
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 2; j++) {
 				TestActivity testActivity = new TestActivity();
 				testActivity.setTime(months[i] + " 2015");
 				testActivity.setActivityTitle("Status Updated");
+				testActivity.setActivityType(random.nextInt(7));
 				arrayListActivities.add(testActivity);
 			}
 		}

@@ -118,7 +118,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:background="@drawable/bg_wallet_head"
-				android:text="@string/generate_coupon"
+				android:text="@string/generated_coupon"
 				android:textAllCaps="true"
 				android:textColor="@color/color_green"
 				android:textSize="20sp"

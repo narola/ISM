@@ -78,8 +78,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     FragmentTransaction mFragmentTransaction;
     FragmentManager mFragmentManager;
     RelativeLayout rlControllerTop, rlControllerTopMenu;
-
-
     LinearLayout llSearch, llControllerLeft;
     FrameLayout flFragmentContainerMain, flFragmentContainerRight;
 
@@ -103,7 +101,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     * these are the fragments for the main fragment.
     * */
     public static final int FRAGMENT_HOME = 0;
-
     public static final int FRAGMENT_OFFICE = 1;
     public static final int FRAGMENT_BOOKS = 2;
     public static final int FRAGMENT_GOTRENDING = 6;
@@ -190,6 +187,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         mFragmentManager = getFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
         Global.myTypeFace = new MyTypeFace(getApplicationContext());
+
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
         Global.strUserId="370";

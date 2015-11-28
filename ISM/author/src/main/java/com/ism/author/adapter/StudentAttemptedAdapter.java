@@ -151,7 +151,7 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 
             if (API_METHOD == WebConstants.GETEXAMEVALUATIONS) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
                         responseHandlerEval = responseHandler;
                         TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseHandlerEval);

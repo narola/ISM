@@ -3,6 +3,7 @@ package com.ism.fragment.userprofile;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.adapter.StudymatesPagerAdapter;
 import com.ism.interfaces.FragmentListener;
 import com.ism.utility.Debug;
 
@@ -24,9 +26,11 @@ public class StudymatesFragment extends Fragment {
 	private View view;
 	private TextView txtStudymates, txtFindStudymates;
 	private FrameLayout flFragmentContainer;
+	private ViewPager vpStudymates;
 
 	private HostActivity activityHost;
 	private FragmentListener fragListener;
+	private StudymatesPagerAdapter adpStudymatesPager;
 
 	public static StudymatesFragment newInstance() {
 		StudymatesFragment fragment = new StudymatesFragment();
@@ -49,25 +53,63 @@ public class StudymatesFragment extends Fragment {
 		txtStudymates = (TextView) view.findViewById(R.id.txt_studymates);
 		txtFindStudymates = (TextView) view.findViewById(R.id.txt_find_studymates);
 		flFragmentContainer = (FrameLayout) view.findViewById(R.id.fl_fragment_container);
+		vpStudymates = (ViewPager) view.findViewById(R.id.vp_studymates);
+
+		adpStudymatesPager = new StudymatesPagerAdapter(activityHost.getFragmentManager());
+		vpStudymates.setAdapter(adpStudymatesPager);
+
+		vpStudymates.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				switch (position) {
+					case 0:
+						highlightYourStudymates();
+						break;
+					case 1:
+						highlightFindStudymates();
+						break;
+				}
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+
+			}
+		});
 
 		txtStudymates.setEnabled(false);
 
 		txtStudymates.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				txtStudymates.setEnabled(false);
-				txtFindStudymates.setEnabled(true);
+				vpStudymates.setCurrentItem(0);
+				highlightYourStudymates();
 			}
 		});
 
 		txtFindStudymates.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				txtFindStudymates.setEnabled(false);
-				txtStudymates.setEnabled(true);
+				vpStudymates.setCurrentItem(1);
+				highlightFindStudymates();
 			}
 		});
 
+	}
+
+	private void highlightFindStudymates() {
+		txtFindStudymates.setEnabled(false);
+		txtStudymates.setEnabled(true);
+	}
+
+	private void highlightYourStudymates() {
+		txtStudymates.setEnabled(false);
+		txtFindStudymates.setEnabled(true);
 	}
 
 	@Override

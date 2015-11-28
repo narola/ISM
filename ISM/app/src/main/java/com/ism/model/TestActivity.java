@@ -7,6 +7,7 @@ public class TestActivity {
 
 	private String time;
 	private String activityTitle;
+	private int activityType;
 
 	public String getTime() {
 		return time;
@@ -22,6 +23,14 @@ public class TestActivity {
 
 	public void setActivityTitle(String activityTitle) {
 		this.activityTitle = activityTitle;
+	}
+
+	public int getActivityType() {
+		return activityType;
+	}
+
+	public void setActivityType(int activityType) {
+		this.activityType = activityType;
 	}
 
 }

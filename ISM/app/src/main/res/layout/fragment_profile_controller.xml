@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/bg_app_dark"
-                tools:context="com.ism.fragment.ProfileControllerFragment">
+                tools:context=".fragment.userprofile.ProfileControllerFragment">
 
 	<com.ism.views.CircleImageView
 		android:id="@+id/img_dp"

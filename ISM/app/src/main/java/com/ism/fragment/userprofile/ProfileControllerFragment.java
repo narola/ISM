@@ -1,4 +1,4 @@
-package com.ism.fragment;
+package com.ism.fragment.userprofile;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -27,6 +27,7 @@ import com.ism.adapter.MessageAdapter;
 import com.ism.adapter.NotificationAdapter;
 import com.ism.adapter.StudymateRequestAdapter;
 import com.ism.constant.WebConstants;
+import com.ism.fragment.AllStudymateRequestFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
 import com.ism.utility.PreferenceData;
@@ -71,6 +72,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 	private NotificationAdapter adpNotification;
 	private MessageAdapter adpMessage;
 	private StudymateRequestAdapter adpStudymate;
+	private PopupWindow popupFriendRequest;
 
     public static ProfileControllerFragment newInstance() {
         ProfileControllerFragment fragStudyMates = new ProfileControllerFragment();
@@ -167,6 +169,13 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         imgNotification.setOnClickListener(onClickNotificationIcon);
         imgMessage.setOnClickListener(onClickNotificationIcon);
         imgFriendRequest.setOnClickListener(onClickNotificationIcon);
+    }
+
+    public void showAllStudymateRequests(int position) {
+	    if (popupFriendRequest != null) {
+		    popupFriendRequest.dismiss();
+		    loadFragmentAllStudymateRequest(position);
+	    }
     }
 
     private void showBadges() {
@@ -339,7 +348,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 			Utility.alertOffline(activityHost);
 		}
 
-        final PopupWindow popupFriendRequest = new PopupWindow(view, 250, 350, true);
+        popupFriendRequest = new PopupWindow(view, 250, 350, true);
         popupFriendRequest.setOutsideTouchable(true);
         popupFriendRequest.setBackgroundDrawable(new BitmapDrawable());
 
@@ -354,14 +363,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
             @Override
             public void onDismiss() {
                 imgFriendRequest.setActivated(false);
-            }
-        });
-
-        lvStudymates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                popupFriendRequest.dismiss();
-                loadFragmentAllStudymateRequest(position);
             }
         });
 
@@ -520,9 +521,9 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 
 	private void fillListStudymate() {
 		if (arrListStudyMateRequest != null) {
-			adpStudymate = new StudymateRequestAdapter(getActivity(), arrListStudyMateRequest, 4);
+			adpStudymate = new StudymateRequestAdapter(getActivity(), this, arrListStudyMateRequest, 4);
 			lvStudymates.setAdapter(adpStudymate);
-			ArrayList<String> recordIds = new ArrayList<String>();
+			ArrayList<String> recordIds = new ArrayList<>();
 			for (int i = 0; i < (arrListStudyMateRequest.size() >= 4 ? 4 : arrListStudyMateRequest.size()); i++) {
 				recordIds.add(arrListStudyMateRequest.get(i).getRecordId());
 			}

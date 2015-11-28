@@ -1,5 +1,6 @@
 package com.ism.author.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.Utility.Utility;
 import com.ism.author.Utility.Utils;
+import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.adapter.PreviewQuestionListAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.object.MyTypeFace;
@@ -36,8 +38,13 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     private View view;
     Fragment mFragment;
 
-    public PreviewQuestionFragment(Fragment fragment) {
+    public PreviewQuestionFragment() {
+    }
+
+    @SuppressLint("ValidFragment")
+    public PreviewQuestionFragment(Fragment fragment, Bundle bundleArguments) {
         this.mFragment = fragment;
+        this.setArguments(bundleArguments);
     }
 
 
@@ -51,6 +58,16 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     //this is for the movable recyclerview.
     private ItemTouchHelper mItemTouchHelper;
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            arrListQuestions = getArguments().getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+            Debug.e(TAG, "THE SIZE OF ARRAYLIST IS" + arrListQuestions.size());
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,6 +91,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         rvPreviewquestionlist.setAdapter(previewQuestionListAdapter);
         rvPreviewquestionlist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        /*this is for movable items recyclerview */
+
 //        adapter = new RecyclerListAdapter(getActivity(), this);
 //        rvPreviewquestionlist.setHasFixedSize(true);
 //        rvPreviewquestionlist.setAdapter(adapter);
@@ -87,30 +106,33 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         tvPreviewQuestionlistFreeze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 callApiFreezeQuestions();
-
             }
         });
+
+
+        if (getArguments() != null) {
+            previewQuestionListAdapter.addAll(this.arrListQuestions);
+            getFragment().updateQuestionStatusAfterSetDataOfExam(arrListQuestions);
+        }
 
     }
 
 
     private void callApiFreezeQuestions() {
-
         if (Utility.isConnected(getActivity())) {
             if (arrListQuestions.size() > 0) {
                 try {
+                    ((AuthorHostActivity) getActivity()).showProgress();
                     Attribute attribute = new Attribute();
                     attribute.setExamId("61");
-                    attribute.setQuestionId(getQuestionIdList());
+                    attribute.setQuestionId(getArrListQuestionId());
 
                     new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                             .execute(WebConstants.SETQUESTIONSFOREXAM);
                 } catch (Exception e) {
                     Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
                 }
-
             } else {
                 Utils.showToast(getString(R.string.strnopreviewquestions), getActivity());
             }
@@ -120,24 +142,23 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     }
 
-    private ArrayList<String> questionIdList = new ArrayList<String>();
+    private ArrayList<String> arrListQuestionId = new ArrayList<String>();
 
-    private ArrayList<String> getQuestionIdList() {
-
+    private ArrayList<String> getArrListQuestionId() {
         for (int i = 0; i < arrListQuestions.size(); i++) {
-            questionIdList.add(arrListQuestions.get(i).getQuestionId());
+            arrListQuestionId.add(arrListQuestions.get(i).getQuestionId());
         }
-        return questionIdList;
+        return arrListQuestionId;
 
     }
 
-    public void addQuestionsToPreviewFragment(ArrayList<Questions> data) {
-        if (data.size() > 0) {
-            arrListQuestions.addAll(data);
-            previewQuestionListAdapter.addAll(arrListQuestions);
+    public void addQuestionsToPreviewFragment(ArrayList<Questions> arrListQuestionsToAdd) {
 
+        if (arrListQuestionsToAdd.size() > 0) {
+            Debug.e(TAG, "The size of arraylist is:::" + arrListQuestionsToAdd.size());
+            this.arrListQuestions.addAll(arrListQuestionsToAdd);
+            previewQuestionListAdapter.addAll(this.arrListQuestions);
         }
-
     }
 
     //   @Override
@@ -154,8 +175,8 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
     }
 
     private void onResponseSetQuestionsForExam(Object object, Exception error) {
-
         try {
+            ((AuthorHostActivity) getActivity()).hideProgress();
             if (object != null) {
                 ResponseHandler responseObj = (ResponseHandler) object;
                 if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
@@ -172,14 +193,26 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     }
 
-    public void updateQuestionDataAfterEditQuestion() {
-        int position = getFragment().getPOSITION_FOR_EDITQUESTION();
-        arrListQuestions.get(position).setQuestionText("test");
+
+    public void updateQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData, Boolean isChecked) {
+        int position = arrListQuestions.indexOf(prevQuestionData);
+        if (position != -1) {
+            arrListQuestions.set(position, updatedQuestionData);
+            previewQuestionListAdapter.addAll(arrListQuestions);
+            previewQuestionListAdapter.notifyDataSetChanged();
+        } else {
+            if (isChecked) {
+                addQuestionDataAfterAddQuestion(updatedQuestionData);
+            }
+        }
+    }
+
+    public void addQuestionDataAfterAddQuestion(Questions question) {
+        arrListQuestions.add(0, question);
         previewQuestionListAdapter.addAll(arrListQuestions);
         previewQuestionListAdapter.notifyDataSetChanged();
-
-
     }
+
 
     private AddQuestionContainerFragment getFragment() {
         return (AddQuestionContainerFragment) mFragment;

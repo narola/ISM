@@ -3,7 +3,9 @@ package com.ism.author.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.author.ws.model.AnswerChoices;
 import com.ism.author.ws.model.Answers;
+import com.ism.author.ws.model.Tags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,32 +76,31 @@ public class Attribute {
     private String videoThumbnail;
     private String role;
     private String examId;
-    private String[] taggedUserIds;
     private String taggedBy;
-    private String[] likedId;
-    private String[] unlikedId;
-    private ArrayList<String> questionId;
-    //    private String bankQuestionId;
     private String studentId;
-
-
-    //these are for the add question
-
     private String questionFormat;
     private String questionAssetsLink;
     private String questionHint;
     private String questionImageLink;
     private String evaluationNotes;
     private String questionCreatorName;
-    private ArrayList<Answers> answers;
     private String solution;
     private String subjectName;
     private String questionText;
     private String questionCreatorId;
+    private String questionScore;
+    private ArrayList<Answers> answers;
+    private ArrayList<AnswerChoices> answerChoices;
+    private ArrayList<String> questionId;
+    private ArrayList<Tags> tags;
+    private String[] taggedUserIds;
+    private String[] likedId;
+    private String[] unlikedId;
 
     private String studymateId;
     private ArrayList<String> recordIds;
     private String readCategory;
+
 
     public String getFeedId() {
         return this.feedId;
@@ -820,6 +821,31 @@ public class Attribute {
     public void setRecordIds(ArrayList<String> recordIds) {
         this.recordIds = recordIds;
     }
+    public String getQuestionScore() {
+        return questionScore;
+    }
+
+    @JsonProperty("question_score")
+    public void setQuestionScore(String questionScore) {
+        this.questionScore = questionScore;
+    }
+
+    public ArrayList<AnswerChoices> getAnswerChoices() {
+        return this.answerChoices;
+    }
+
+    @JsonProperty("answer_choices")
+    public void setAnswerChoices(ArrayList<AnswerChoices> answerChoices) {
+        this.answerChoices = answerChoices;
+    }
 
 
+    public ArrayList<Tags> getTags() {
+        return tags;
+    }
+
+    @JsonProperty("tags")
+    public void setTags(ArrayList<Tags> tags) {
+        this.tags = tags;
+    }
 }

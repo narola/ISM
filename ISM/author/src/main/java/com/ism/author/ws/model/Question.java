@@ -7,19 +7,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateExam {
+public class Question {
 
+    private String questionId;
 
-    private String examId;
-
-
-    @JsonProperty("exam_id")
-    public String getExamId() {
-        return this.examId;
+    @JsonProperty("question_id")
+    public String getQuestionId() {
+        return this.questionId;
     }
 
-    public void setExamId(String examId) {
-        this.examId = examId;
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
     }
 
 

@@ -51,7 +51,7 @@ public class MessageAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return listItemLimit > 0 ? listItemLimit : arrListMessage.size();
+		return listItemLimit > 0 ? listItemLimit < arrListMessage.size() ? listItemLimit : arrListMessage.size() : arrListMessage.size();
 	}
 
 	@Override

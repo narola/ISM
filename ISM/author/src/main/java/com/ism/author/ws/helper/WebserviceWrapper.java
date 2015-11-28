@@ -197,6 +197,14 @@ public class WebserviceWrapper {
                         case WebConstants.GET_MY_FEEDS:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_FEEDS).execute(ResponseHandler.class, attribute);
                             break;
+                        case WebConstants.CREATEQUESTION:
+                            responseObject = new WebserviceConnector(WebConstants.URL_CREATEQUESTION).execute(ResponseHandler.class, attribute);
+                            break;
+
+                        case WebConstants.GETALLHASHTAG:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GETALLHASHTAG).execute(ResponseHandler.class, attribute);
+                            break;
+
                     }
                 }
             } catch (Exception e) {

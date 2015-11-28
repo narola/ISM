@@ -19,6 +19,8 @@ import com.ism.author.ws.model.Feed;
 import com.ism.author.ws.model.Feeds;
 import com.ism.author.ws.model.Message;
 import com.ism.author.ws.model.Notification;
+import com.ism.author.ws.model.HashTags;
+import com.ism.author.ws.model.Question;
 import com.ism.author.ws.model.Questions;
 import com.ism.author.ws.model.States;
 import com.ism.author.ws.model.StudymateRequest;
@@ -49,6 +51,7 @@ public class ResponseHandler {
     private ArrayList<StudymateRequest> studymateRequest;
     private ArrayList<Message> messages;
 
+    @JsonProperty("message")
     public String getMessage() {
         return this.message;
     }
@@ -57,6 +60,7 @@ public class ResponseHandler {
         this.message = message;
     }
 
+    @JsonProperty("status")
     public String getStatus() {
         return this.status;
     }
@@ -88,7 +92,8 @@ public class ResponseHandler {
     private ArrayList<Courses> courses;
     private ArrayList<Questions> questions;
     private ArrayList<Questions> questionBank;
-
+    private ArrayList<Question> question;
+    private ArrayList<HashTags> tags;
 
     @JsonProperty("feeds")
     public ArrayList<Feeds> getFeeds() {
@@ -261,6 +266,7 @@ public class ResponseHandler {
     public void setQuestionBank(ArrayList<Questions> questionBank) {
         this.questionBank = questionBank;
     }
+
     @JsonProperty("badges")
     public ArrayList<Badges> getBadges() {
         return this.badges;
@@ -294,6 +300,23 @@ public class ResponseHandler {
 
     public void setStudymateRequest(ArrayList<StudymateRequest> studymateRequest) {
         this.studymateRequest = studymateRequest;
+    }
+    @JsonProperty("question")
+    public ArrayList<Question> getQuestion() {
+        return this.question;
+    }
+
+    public void setQuestion(ArrayList<Question> question) {
+        this.question = question;
+    }
+
+    @JsonProperty("tags")
+    public ArrayList<HashTags> getTags() {
+        return this.tags;
+    }
+
+    public void setTags(ArrayList<HashTags> tags) {
+        this.tags = tags;
     }
 }
 
