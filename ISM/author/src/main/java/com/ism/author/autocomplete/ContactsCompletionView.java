@@ -71,19 +71,7 @@ public class ContactsCompletionView extends TokenCompleteTextView<HashTagsModel>
 
     @Override
     protected HashTagsModel defaultObject(String completionText) {
-        //Stupid simple example of guessing if we have an email or not
-
-
-//        int index = completionText.indexOf('@');
-//        if (index == -1) {
-//            return new Person(completionText, completionText.replace(" ", "") + "@example.com");
-//        } else {
-//            return new Person(completionText.substring(0, index), completionText);
-//        }
-
-        //this is to avoid tag generation from random added text.
-
-        return new HashTagsModel("", "-1");
+        return new HashTagsModel(completionText.trim(), "0");
     }
 
 

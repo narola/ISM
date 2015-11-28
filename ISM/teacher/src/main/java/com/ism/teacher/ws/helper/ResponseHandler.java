@@ -16,6 +16,7 @@ import com.ism.teacher.ws.model.ExamSubmission;
 import com.ism.teacher.ws.model.Exams;
 import com.ism.teacher.ws.model.Feed;
 import com.ism.teacher.ws.model.Feeds;
+import com.ism.teacher.ws.model.HashTags;
 import com.ism.teacher.ws.model.Questions;
 import com.ism.teacher.ws.model.States;
 import com.ism.teacher.ws.model.Studymates;
@@ -90,6 +91,7 @@ public class ResponseHandler {
     private ArrayList<User> user;
 
     private ArrayList<Questions> questionBanks;
+    private ArrayList<HashTags> tags;
 
 
     @JsonProperty("question_bank")
@@ -267,5 +269,16 @@ public class ResponseHandler {
     public void setQuestions(ArrayList<Questions> questions) {
         this.questions = questions;
     }
+
+
+    @JsonProperty("tags")
+    public ArrayList<HashTags> getTags() {
+        return this.tags;
+    }
+
+    public void setTags(ArrayList<HashTags> tags) {
+        this.tags = tags;
+    }
+
 }
 

@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/color_gray_light"
+             tools:context="com.ism.fragment.AllStudymateRequestFragment">
+
+	<TextView
+		android:id="@+id/txt_header_white"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/d60dp"
+		android:background="@drawable/bg_header_white"
+		android:gravity="center_vertical"
+		android:paddingLeft="@dimen/padding_header_white"
+		android:textSize="@dimen/text_size_header_white"
+		android:text="Respond to Your 107 Friend Requests"
+		android:textColor="@color/bg_app_dark"/>
+
+	<ListView
+		android:id="@+id/lv_all_studymate"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@drawable/bg_white_border_gray"
+		android:paddingLeft="20dp"
+		android:paddingRight="20dp"
+		android:paddingTop="5dp"
+		android:dividerHeight="2dp"
+		android:layout_margin="@dimen/padding_child_fragment_content"
+		android:layout_below="@id/txt_header_white"
+		android:divider="@drawable/divider_gray_with_padding"></ListView>
+</RelativeLayout>

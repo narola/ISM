@@ -188,23 +188,21 @@ public class AddQuestionContainerFragment extends Fragment {
         return previewQuestionFragment.arrListQuestions;
     }
 
+
+    public void setListOfExamQuestions(ArrayList<Questions> arrListExamQuestions) {
+        previewQuestionFragment.setExamQuestions(arrListExamQuestions);
+    }
+
+
     /*this is to add question to preview fragment*/
     public void addQuestionsToPreviewFragment() {
-        Debug.e(TAG, "The size of question list to add it in preview" + getListOfPreviewQuestionsToAdd().size());
         previewQuestionFragment.addQuestionsToPreviewFragment(getListOfPreviewQuestionsToAdd());
     }
 
     /*this is to update check box view in questionlist after delete it from preview questions*/
-    public void updateQuestionListviewAfterRemoveInPreview(Questions questions) {
-        questionListFragment.updateViewAfterDeleteInPreviewQuestion(questions);
-        previewQuestionFragment.arrListQuestions.remove(questions);
-
-    }
-
-    /*this isto update question status after set data from exam*/
-
-    public void updateQuestionStatusAfterSetDataOfExam(ArrayList<Questions> arrListQuestions) {
-        questionListFragment.updateQuestionStatusAfterSetDataOfExam();
+    public void updateQuestionListviewAfterRemoveInPreview(Questions question) {
+        questionListFragment.updateViewAfterDeleteInPreviewQuestion(question.getQuestionId());
+        previewQuestionFragment.arrListQuestions.remove(question);
     }
 
 

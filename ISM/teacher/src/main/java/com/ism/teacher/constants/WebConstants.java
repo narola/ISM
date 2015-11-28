@@ -59,6 +59,13 @@ public class WebConstants {
     public static final int GET_EXAM_EVALUATIONS = 24;
     public static final int GET_MY_STUDENTS = 25;
 
+    public static final int CREATEQUESTION = 26;
+    public static final int GET_ALL_HASHTAG = 27;
+    public static final int GET_ALL_BADGES_COUNT = 28;
+
+    public static final String TEST_USER_ID = "370";
+    public static final String TEST_USER_NAME = "Admin";
+
 
     /**
      * URLs
@@ -90,7 +97,7 @@ public class WebConstants {
 
     //used for assignment
     public static final String URL_GET_ALL_ASSIGNMENTS = URL_KINJAL_HOST + "GetAllExams";
-    public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_KINJAL_HOST + "GetExamSubmission";
+    public static final String URL_GET_ALL_EXAM_SUBMISSION = URL_HOST_162 + "GetExamSubmission";
     public static final String URL_GET_EXAM_QUESTIONS = URL_KINJAL_HOST + "GetExamQuestions";
     public static final String URL_GET_EXAM_EVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
     public static final String URL_GET_MY_STUDENTS = URL_KINJAL_HOST + "GetMyStudents";
@@ -99,5 +106,12 @@ public class WebConstants {
     public static final String URL_GET_CITIES = URL_KINJAL_HOST + "GetCities";
     public static final String URL_GET_STATES = URL_KINJAL_HOST + "GetStates";
     public static final String URL_GET_COUNTRIES = URL_KINJAL_HOST + "GetCountries";
+
+    //Add Question Functionality
+
+    public static final String URL_GET_ALL_HASHTAG= URL_KINJAL_HOST + "GetAllHashtag";
+    public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
+
+    public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
 
 }

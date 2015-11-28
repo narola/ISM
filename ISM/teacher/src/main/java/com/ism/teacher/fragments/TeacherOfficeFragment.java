@@ -42,7 +42,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
 
 
     TeacherQuizHomeFragment teacherQuizHomeFragment;
-//    TeacherExamWiseAssignments teacherExamWiseAssignments;
+//    GetAssignmentsSubmitterFragment teacherExamWiseAssignments;
 
     public static TeacherOfficeFragment newInstance(int fragment) {
         TeacherOfficeFragment fragClassroom = new TeacherOfficeFragment();
@@ -81,7 +81,7 @@ public class TeacherOfficeFragment extends Fragment implements TeacherHostActivi
         loadFragment(FRAGMENT_CLASSWALL);
 
         teacherQuizHomeFragment = new TeacherQuizHomeFragment(this);
-//        teacherExamWiseAssignments=new TeacherExamWiseAssignments(this);
+//        teacherExamWiseAssignments=new GetAssignmentsSubmitterFragment(this);
 
     }
 

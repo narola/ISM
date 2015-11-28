@@ -30,7 +30,6 @@ import com.ism.constant.WebConstants;
 import com.ism.fragment.AllStudymateRequestFragment;
 import com.ism.interfaces.FragmentListener;
 import com.ism.object.Global;
-import com.ism.object.MyTypeFace;
 import com.ism.utility.PreferenceData;
 import com.ism.utility.Utility;
 import com.ism.views.CircleImageView;
@@ -67,7 +66,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
     private HostActivity activityHost;
     private FragmentListener fragListener;
 	private ImageLoader imageLoader;
-	private MyTypeFace myTypeFace;
 	private ArrayList<Notification> arrListNotification;
 	private ArrayList<Message> arrListMessage;
 	private ArrayList<StudymateRequest> arrListStudyMateRequest;
@@ -108,8 +106,6 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
         imgNotification = (ImageView) view.findViewById(R.id.img_notification);
         imgMessage = (ImageView) view.findViewById(R.id.img_message);
         imgFriendRequest = (ImageView) view.findViewById(R.id.img_friend_request);
-
-        myTypeFace = new MyTypeFace(getActivity());
 
         arrTxtLabel = new TextView[]{txtGeneralSettings, txtMyFeeds, txtStudyMates, txtMyActivity, txtWallet};
         arrImgNotificationIcon = new ImageView[]{imgNotification, imgMessage, imgFriendRequest};
@@ -202,7 +198,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 
         lvNotifications = (ListView) view.findViewById(R.id.lv_notification);
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
-        btnViewAll.setTypeface(myTypeFace.getRalewayRegular());
+        btnViewAll.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 	    if (Utility.isConnected(activityHost)) {
 		    callApiGetNotifications();
@@ -273,7 +269,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 
         lvMessages = (ListView) view.findViewById(R.id.lv_message);
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
-        btnViewAll.setTypeface(myTypeFace.getRalewayRegular());
+        btnViewAll.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 		if (Utility.isConnected(activityHost)) {
 			callApiGetMessages();
@@ -344,7 +340,7 @@ public class ProfileControllerFragment extends Fragment implements WebserviceWra
 
         lvStudymates = (ListView) view.findViewById(R.id.lv_studymates);
         btnViewAll = (Button) view.findViewById(R.id.btn_view_all);
-        btnViewAll.setTypeface(myTypeFace.getRalewayRegular());
+        btnViewAll.setTypeface(Global.myTypeFace.getRalewayRegular());
 
 		if (Utility.isConnected(activityHost)) {
 			callApiGetStudymateRequests();

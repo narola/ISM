@@ -29,7 +29,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
     private static final String TAG = PreviewQuestionListAdapter.class.getSimpleName();
 
     Context mContext;
-    ArrayList<Questions> listOfPreviewQuestions = new ArrayList<>();
+    ArrayList<Questions> arrayListPreviewQuestions = new ArrayList<>();
     MyTypeFace myTypeFace;
     Fragment mFragment;
 
@@ -61,12 +61,12 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
 
         holder.tvPreviewQuestion.setTypeface(myTypeFace.getRalewayRegular());
-        holder.tvPreviewQuestion.setText(listOfPreviewQuestions.get(position).getQuestionText());
+        holder.tvPreviewQuestion.setText(arrayListPreviewQuestions.get(position).getQuestionText());
 
-        if (!listOfPreviewQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
+        if (!arrayListPreviewQuestions.get(position).getQuestionFormat().equalsIgnoreCase("mcq")) {
 
             holder.tvPreviewQuestionAns.setTypeface(myTypeFace.getRalewayRegular());
-            holder.tvPreviewQuestionAns.setText(listOfPreviewQuestions.get(position).getSolution());
+            holder.tvPreviewQuestionAns.setText(arrayListPreviewQuestions.get(position).getSolution());
 
 
             holder.llPreviewQuestionAnswers.setVisibility(View.GONE);
@@ -77,8 +77,8 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
             holder.llPreviewQuestionAnswers.removeAllViews();
             if (holder.llPreviewQuestionAnswers.getChildCount() == 0) {
-                for (int i = 0; i < listOfPreviewQuestions.get(position).getAnswers().size(); i++) {
-                    View ansView = getAnsInflaterView(listOfPreviewQuestions.get(position).getAnswers().get(i), i);
+                for (int i = 0; i < arrayListPreviewQuestions.get(position).getAnswers().size(); i++) {
+                    View ansView = getAnsInflaterView(arrayListPreviewQuestions.get(position).getAnswers().get(i), i);
                     holder.llPreviewQuestionAnswers.addView(ansView);
                 }
             }
@@ -93,8 +93,8 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
             public void onClick(View v) {
 
 
-                getFragment().updateQuestionListviewAfterRemoveInPreview(listOfPreviewQuestions.get(position));
-                listOfPreviewQuestions.remove(listOfPreviewQuestions.get(position));
+                getFragment().updateQuestionListviewAfterRemoveInPreview(arrayListPreviewQuestions.get(position));
+                arrayListPreviewQuestions.remove(arrayListPreviewQuestions.get(position));
                 notifyDataSetChanged();
 
             }
@@ -104,29 +104,28 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         holder.imgPreviewQuestionEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddEditQuestionFragment(position);
+                openAddEditQuestionFragment(position,false);
             }
         });
 
         holder.imgPreviewQuestionCopy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddEditQuestionFragment(position);
+                openAddEditQuestionFragment(position,true);
             }
         });
 
 
     }
 
-    private void openAddEditQuestionFragment(int position) {
-        getFragment().setDataOnFragmentFlip(listOfPreviewQuestions.get(position), true,
-                AddQuestionContainerFragment.FRAGMENT_PREVIEWQUESTION, position);
+    private void openAddEditQuestionFragment(int position, Boolean isCopy) {
+        getFragment().setDataOnFragmentFlip(arrayListPreviewQuestions.get(position), true, isCopy);
     }
 
     public void addAll(ArrayList<Questions> data) {
         try {
-            this.listOfPreviewQuestions.clear();
-            this.listOfPreviewQuestions.addAll(data);
+            this.arrayListPreviewQuestions.clear();
+            this.arrayListPreviewQuestions.addAll(data);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,7 +136,7 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
     @Override
     public int getItemCount() {
-        return listOfPreviewQuestions.size();
+        return arrayListPreviewQuestions.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

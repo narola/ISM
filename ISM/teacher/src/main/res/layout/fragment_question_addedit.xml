@@ -1,55 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_white">
+    android:background="@color/color_white"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fragment_background_color">
+
+        <TextView
+            android:id="@+id/tv_addquestion_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:padding="@dimen/d15dp"
+            android:text="@string/straddnewquestion"
+            android:textColor="@color/color_question"
+            android:textSize="@dimen/d22dp" />
+
+        <TextView
+            android:id="@+id/tv_addquestion_gotoquestionbank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="@dimen/d10dp"
+            android:background="@drawable/btn_freeze"
+            android:gravity="center"
+            android:padding="@dimen/d5dp"
+            android:text="@string/strquestionbank"
+            android:textColor="@color/color_blue"
+            android:textSize="@dimen/d18dp" />
+
+
+    </RelativeLayout>
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="@dimen/d20dp">
-
+        android:layout_marginBottom="@dimen/d20dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/fragment_background_color">
-
-
-                <TextView
-                    android:id="@+id/tv_addquestion_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:background="@color/fragment_background_color"
-                    android:gravity="center"
-                    android:padding="@dimen/d15dp"
-                    android:text="@string/straddnewquestion"
-                    android:textColor="@color/color_question"
-                    android:textSize="@dimen/d22dp" />
-
-                <TextView
-                    android:id="@+id/tv_addquestion_gotoquestionbank"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:layout_marginRight="@dimen/d10dp"
-                    android:background="@drawable/btn_freeze_question"
-                    android:gravity="center"
-                    android:padding="@dimen/d5dp"
-                    android:text="@string/strquestionbank"
-                    android:textColor="@color/color_blue"
-                    android:textSize="@dimen/d18dp" />
-
-            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,13 +74,12 @@
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
-
                     <ImageView
                         android:id="@+id/img_edit_question"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/d5dp"
-                        android:src="@drawable/ic_edit_question" />
+                        android:src="@drawable/img_edit_question" />
 
                     <ImageView
                         android:id="@+id/img_copy_question"
@@ -110,7 +110,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/et_question_title"
+                            android:id="@+id/et_addquestion_title"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginRight="@dimen/d5dp"
@@ -126,7 +126,7 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/txt_question_label"
+                                android:id="@+id/tv_addquestion_type"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -137,11 +137,11 @@
                                 android:textStyle="bold" />
 
                             <Spinner
-                                android:id="@+id/sp_question_type"
+                                android:id="@+id/sp_addquestion_type"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/spinner_selector"
+                                android:background="@drawable/shadow_grey_small_size"
                                 android:entries="@array/question_type"
                                 android:spinnerMode="dropdown" />
 
@@ -149,21 +149,14 @@
 
                     </LinearLayout>
 
+
                     <RelativeLayout
-                        android:id="@+id/rl_image"
+                        android:id="@+id/rl_select_image"
                         android:layout_width="0dp"
-                        android:layout_height="150dp"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/d20dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_highscore_subjectlist">
-
-                        <ImageView
-                            android:id="@+id/img_add_pics"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:scaleType="fitXY"
-                            android:visibility="visible" />
+                        android:background="@drawable/news_feed_post_box">
 
                         <ImageView
                             android:id="@+id/img_play"
@@ -171,15 +164,19 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:src="@drawable/audio_play"
-                            android:visibility="gone" />
+                            android:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/img_select_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop" />
 
                     </RelativeLayout>
-
-
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/et_answer_box"
+                    android:id="@+id/et_addquestion_answer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/d20dp"
@@ -190,7 +187,6 @@
                     android:padding="@dimen/d10dp"
                     android:textSize="@dimen/d18dp" />
 
-
                 <LinearLayout
                     android:id="@+id/ll_add_mcqanswer"
                     android:layout_width="match_parent"
@@ -199,7 +195,6 @@
 
                 </LinearLayout>
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -207,6 +202,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_addquestion_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
@@ -221,14 +217,15 @@
                         android:id="@+id/searchTagView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/selector"
+                        android:background="@drawable/shadow_gray"
                         android:focusableInTouchMode="true"
                         android:gravity="center_vertical"
                         android:imeOptions="actionDone"
                         android:inputType="text|textNoSuggestions|textMultiLine"
                         android:nextFocusDown="@+id/editText"
+                        android:paddingLeft="@dimen/d10dp"
                         android:textColor="@android:color/darker_gray"
-                        android:textSize="@dimen/d20sp" />
+                        android:textSize="@dimen/d20dp" />
 
                 </LinearLayout>
 
@@ -250,10 +247,13 @@
                             android:id="@+id/tv_evaluation_note1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/color_assignment_question"
+                            android:background="@color/fragment_background_color"
                             android:gravity="center"
-                            android:text="Evaluation Notes"
-                            android:textSize="20sp" />
+                            android:padding="@dimen/d5dp"
+                            android:text="@string/strevaluationnotes"
+                            android:textAllCaps="true"
+                            android:textColor="@color/color_black_light"
+                            android:textSize="@dimen/d15dp" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -261,13 +261,15 @@
                             android:background="@drawable/news_feed_post_box" />
 
                         <EditText
-                            android:id="@+id/et_evaluation_notes"
+                            android:id="@+id/et_evaluation_note1"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/d170dp"
+                            android:background="@android:color/transparent"
                             android:gravity="top"
                             android:hint=""
                             android:inputType="textMultiLine"
-                            android:minLines="8" />
+                            android:minLines="8"
+                            android:padding="@dimen/d10dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -279,13 +281,16 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_solution"
+                            android:id="@+id/tv_evaluation_note2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/color_assignment_question"
+                            android:background="@color/fragment_background_color"
                             android:gravity="center"
-                            android:text="Solution"
-                            android:textSize="20sp" />
+                            android:padding="@dimen/d5dp"
+                            android:text="@string/strsolution"
+                            android:textAllCaps="true"
+                            android:textColor="@color/color_black_light"
+                            android:textSize="@dimen/d15dp" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -293,13 +298,14 @@
                             android:background="@drawable/news_feed_post_box" />
 
                         <EditText
-                            android:id="@+id/et_solution"
+                            android:id="@+id/et_evaluation_note2"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/d170dp"
+                            android:background="@android:color/transparent"
                             android:gravity="top"
                             android:hint=""
                             android:inputType="textMultiLine"
-                            android:minLines="8" />
+                            android:padding="@dimen/d10dp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -310,57 +316,61 @@
 
     </ScrollView>
 
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/d50dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/color_bottom_add_question"
-        android:gravity="center_vertical">
+        android:layout_height="wrap_content"
+        android:background="@color/bg_app_dark"
+        android:padding="@dimen/d15dp">
 
         <CheckBox
-            android:id="@+id/chk_add_to_preview"
+            android:id="@+id/chk_addquestion_preview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="@dimen/d10dp"
-            android:button="@drawable/checkbox_preview_drawable"
+            android:layout_centerVertical="true"
+            android:button="@drawable/custom_checkbox_question_selection"
             android:checked="false"
-            android:text="Add Question to Preview"
+            android:text="@string/straddquestiontopreview"
             android:textColor="@color/color_white"
-            android:textSize="14sp" />
+            android:textSize="@dimen/d20dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/d15dp"
+            android:layout_centerInParent="true"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_save_question"
+
+            <TextView
+                android:id="@+id/tv_addquestion_save"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_orange"
+                android:paddingBottom="@dimen/d5dp"
+                android:paddingLeft="@dimen/d15dp"
+                android:paddingRight="@dimen/d15dp"
+                android:paddingTop="@dimen/d5dp"
+                android:text="@string/strsave"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/d20dp" />
+
+
+            <TextView
+                android:id="@+id/tv_addquestion_save_addmore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/d15dp"
-                android:background="@drawable/btn_save_question"
-                android:text="Save"
-                android:textAllCaps="false"
+                android:background="@drawable/btn_green"
+                android:paddingBottom="@dimen/d5dp"
+                android:paddingLeft="@dimen/d15dp"
+                android:paddingRight="@dimen/d15dp"
+                android:paddingTop="@dimen/d5dp"
+                android:text="@string/strsaveandaddmore"
                 android:textColor="@color/color_white"
-                android:textSize="16sp" />
+                android:textSize="@dimen/d20dp" />
 
-            <Button
-                android:id="@+id/btn_save_n_addmore_question"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="@dimen/d20dp"
-                android:background="@drawable/btn_save_n_addmore"
-                android:text="Save and Add More"
-                android:textAllCaps="false"
-                android:textColor="@color/color_white"
-                android:textSize="16sp" />
         </LinearLayout>
-
-
     </RelativeLayout>
 
-
-</RelativeLayout>
+</LinearLayout>

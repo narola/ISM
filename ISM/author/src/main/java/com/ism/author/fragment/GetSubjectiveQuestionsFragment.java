@@ -1,5 +1,6 @@
 package com.ism.author.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,7 +40,8 @@ import java.util.ArrayList;
 /**
  * Created by c166 on 16/11/15.
  */
-public class GetSubjectiveQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+@SuppressLint("ValidFragment")
+public class GetSubjectiveQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener {
 
     private static final String TAG = GetSubjectiveQuestionsFragment.class.getSimpleName();
     private View view;
@@ -66,12 +69,16 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     private ImageLoader imageLoader;
     private LinearLayoutManager mLayoutManager;
     private LinearLayout llPrevStudent, llNextStudent;
+    private ImageView imgEditExam, imgCopyExam;
 
     private void initGlobal() {
 
         myTypeFace = new MyTypeFace(getActivity());
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+
+        imgEditExam = (ImageView) view.findViewById(R.id.img_edit_exam);
+        imgCopyExam = (ImageView) view.findViewById(R.id.img_copy_exam);
 
         imgStudentProfilePic = (CircleImageView) view.findViewById(R.id.img_student_profile_pic);
 
@@ -99,21 +106,10 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
         tvSubjectiveMarks.setTypeface(myTypeFace.getRalewayBold());
         tvStudentEvalutionNo.setTypeface(myTypeFace.getRalewayRegular());
 
-
-        llPrevStudent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadPreviousStudentData();
-            }
-        });
-
-        llNextStudent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadNextStudentData();
-
-            }
-        });
+        llPrevStudent.setOnClickListener(this);
+        llNextStudent.setOnClickListener(this);
+        imgCopyExam.setOnClickListener(this);
+        imgEditExam.setOnClickListener(this);
 
         rvSubjectiveQuestionsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -337,5 +333,35 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     }
 
+    private void setExamQuestions() {
 
+        if (responseObjGetAllExamQuestions != null) {
+
+            getArguments().putParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS, arrListQuestions);
+            getArguments().putString(GetObjectiveAssignmentQuestionsFragment.ARG_EXAM_TYPE, getString(R.string.strsubjective));
+
+            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
+                    (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getArguments());
+
+            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
+                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
+
+        }
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if (v == llPrevStudent) {
+
+            loadPreviousStudentData();
+
+        } else if (v == llNextStudent) {
+            loadNextStudentData();
+
+        } else if (v == imgEditExam || v == imgCopyExam) {
+            setExamQuestions();
+        }
+    }
 }
