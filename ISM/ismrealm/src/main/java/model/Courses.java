@@ -8,7 +8,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by c85 on 19/11/15.
  * {@link RealmObject} class to handle course detail.
- * @relationship with {@link Courses}
+ * Relationship with {@link CourseCategory}
  */
 public class Courses extends RealmObject {
     @PrimaryKey

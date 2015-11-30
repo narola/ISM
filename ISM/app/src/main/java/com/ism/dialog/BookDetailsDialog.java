@@ -19,7 +19,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
 
 /**
- * Created by c166 on 24/10/15.
+ * Created by c162 on 24/10/15.
  */
 public class BookDetailsDialog extends Dialog implements View.OnClickListener {
     ImageLoader imageLoader;
