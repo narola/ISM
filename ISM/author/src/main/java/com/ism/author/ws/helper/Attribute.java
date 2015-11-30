@@ -100,6 +100,9 @@ public class Attribute {
     private String studymateId;
     private ArrayList<String> recordIds;
     private String readCategory;
+    private String hashtagData;
+    private String resourceId;
+    private String resourceType;
 
 
     public String getFeedId() {
@@ -821,6 +824,7 @@ public class Attribute {
     public void setRecordIds(ArrayList<String> recordIds) {
         this.recordIds = recordIds;
     }
+
     public String getQuestionScore() {
         return questionScore;
     }
@@ -847,5 +851,33 @@ public class Attribute {
     @JsonProperty("tags")
     public void setTags(ArrayList<Tags> tags) {
         this.tags = tags;
+    }
+
+
+    public String getHashtagData() {
+        return this.hashtagData;
+    }
+
+    @JsonProperty("hashtag_data")
+    public void setHashtagData(String hashtagData) {
+        this.hashtagData = hashtagData;
+    }
+
+    public String getResourceId() {
+        return this.resourceId;
+    }
+
+    @JsonProperty("resource_id")
+    public void setResourceId(String resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public String getResourceType() {
+        return this.resourceType;
+    }
+
+    @JsonProperty("resource_type")
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
     }
 }

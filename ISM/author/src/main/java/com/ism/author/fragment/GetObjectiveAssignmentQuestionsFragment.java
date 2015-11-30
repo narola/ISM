@@ -123,7 +123,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
         if (responseObjGetAllExamQuestions != null) {
             getArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
-            getArguments().putString(ARG_EXAM_TYPE, "test");
+            getArguments().putString(ARG_EXAM_TYPE, getString(R.string.strobjective));
 
             ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
                     (AuthorHostActivity.FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT), getArguments());
@@ -163,7 +163,7 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 //                request.setStudentId(getArguments().getString(AssignmentSubmittorAdapter.ARG_STUDENT_ID));
                 request.setExamId("9");
                 request.setStudentId("202");
-                new WebserviceWrapper(getActivity(), request,  this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), request, this).new WebserviceCaller()
                         .execute(WebConstants.GETEXAMEVALUATIONS);
             } catch (Exception e) {
                 Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());

@@ -59,16 +59,6 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         this.setArguments(bundleArguments);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            arrListQuestions = getArguments().getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
-            Debug.e(TAG, "THE SIZE OF ARRAYLIST IS" + arrListQuestions.size());
-        }
-    }
-
     private Spinner spQuestionlistCourse, spQuestionlistSubject, spQuestionlistTopic;
     private List<String> arrListExamType, arrListDefalt;
     private List<Subjects> arrListSubject;
@@ -212,12 +202,8 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
             }
         });
 
-//
-//        if (getArguments() != null) {
-//            setQuestionData(arrListQuestions);
-//        } else {
+
         callApiGetQuestionBank();
-//        }
 
         callApiGetSubjects();
     }
@@ -423,7 +409,7 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     arrListQuestions.addAll(responseHandler.getQuestionBank());
-                    setQuestionData(responseHandler.getQuestionBank());
+                    setQuestionData(arrListQuestions);
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), getActivity());
                 }
@@ -438,6 +424,16 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
 
     private void setQuestionData(ArrayList<Questions> questions) {
         questionBankListAdapter.addAll(questions);
+        if (getArguments() != null) {
+            if (getArguments().containsKey(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS)) {
+                ArrayList<Questions> arrListExamQuestions = getArguments().
+                        getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+                Debug.e(TAG, "THE SIZE OF BANK QUESTION LIST IS" + arrListQuestions.size());
+                Debug.e(TAG, "THE SIZE OF EXAM QUESTION LIST IS" + arrListExamQuestions.size());
+                updateQuestionStatusAfterSetDataOfExam(arrListExamQuestions);
+            }
+        }
+
 
     }
 
@@ -467,8 +463,10 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
     @Override
     public void onClick(View v) {
         if (v == tvQuestionlistAddPreview) {
+
             if (getFragment().getListOfPreviewQuestionsToAdd().size() > 0) {
-                Debug.e(TAG, "The size of preview question list is:::" + getFragment().getListOfPreviewQuestionsToAdd().size());
+
+                Debug.e(TAG, "The size of preview questions is" + getFragment().getListOfPreviewQuestion().size());
                 getFragment().addQuestionsToPreviewFragment();
                 getFragment().getListOfPreviewQuestionsToAdd().clear();
             } else {
@@ -479,24 +477,50 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         }
     }
 
-    public void updateViewAfterDeleteInPreviewQuestion(Questions question) {
-        int position = arrListQuestions.indexOf(question);
-        arrListQuestions.get(position).setIsQuestionAddedInPreview(false);
+    public void updateViewAfterDeleteInPreviewQuestion(String questionId) {
+
+        for (Questions question : arrListQuestions) {
+            if (questionId.equals(question.getQuestionId())) {
+                arrListQuestions.get(arrListQuestions.indexOf(question)).setIsQuestionAddedInPreview(false);
+                break;
+            }
+        }
         questionBankListAdapter.addAll(arrListQuestions);
         questionBankListAdapter.notifyDataSetChanged();
+//        int position = arrListQuestions.indexOf(question);
+//        Debug.e(TAG, "The question position is:::" + position);
+//        if (position != -1) {
+//            arrListQuestions.get(position).setIsQuestionAddedInPreview(false);
+//        }
+//        questionBankListAdapter.addAll(arrListQuestions);
+//        questionBankListAdapter.notifyDataSetChanged();
+
+
     }
 
     public void updateQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData) {
-        int position = arrListQuestions.indexOf(prevQuestionData);
-        if (position != -1) {
-            arrListQuestions.set(position, updatedQuestionData);
-            questionBankListAdapter.addAll(arrListQuestions);
-            questionBankListAdapter.notifyDataSetChanged();
+//        int position = arrListQuestions.indexOf(prevQuestionData);
+//        if (position != -1) {
+//            arrListQuestions.set(position, updatedQuestionData);
+//            questionBankListAdapter.addAll(arrListQuestions);
+//            questionBankListAdapter.notifyDataSetChanged();
+//        }
+
+        for (Questions questions : arrListQuestions) {
+            if (questions.getQuestionId().equals(prevQuestionData.getQuestionId())) {
+                updatedQuestionData.setIsQuestionAddedInPreview(true);
+                arrListQuestions.set(arrListQuestions.indexOf(questions), updatedQuestionData);
+                break;
+            }
         }
+        questionBankListAdapter.addAll(arrListQuestions);
+        questionBankListAdapter.notifyDataSetChanged();
+
 
     }
 
     public void addQuestionDataAfterAddQuestion(Questions question) {
+        question.setIsQuestionAddedInPreview(true);
         arrListQuestions.add(0, question);
         questionBankListAdapter.addAll(arrListQuestions);
         questionBankListAdapter.notifyDataSetChanged();
@@ -506,7 +530,33 @@ public class QuestionListFragment extends Fragment implements WebserviceWrapper.
         return (AddQuestionContainerFragment) mFragment;
     }
 
-    public void updateQuestionStatusAfterSetDataOfExam() {
+    public void updateQuestionStatusAfterSetDataOfExam(ArrayList<Questions> arrListExamQuestions) {
+
+        try {
+            Debug.e(TAG, "The size of arraylist is:::" + arrListExamQuestions.size());
+            getFragment().setListOfExamQuestions(arrListExamQuestions);
+            for (int i = 0; i < arrListExamQuestions.size(); i++) {
+                Debug.e(TAG, "THE EXAM QUESTION ID IS::::" + arrListExamQuestions.get(i).getQuestionId());
+                for (int j = 0; j < arrListQuestions.size(); j++) {
+                    Debug.e(TAG, "THE QUESTION LIST QUESTION ID IS====" + arrListQuestions.get(j).getQuestionId());
+
+                    if (arrListExamQuestions.get(i).getQuestionId().equals(arrListQuestions.get(j).getQuestionId())) {
+                        Debug.e(TAG, "The position is" + j);
+                        arrListQuestions.get(j).setIsQuestionAddedInPreview(true);
+                        break;
+                    }
+                }
+            }
+            questionBankListAdapter.addAll(arrListQuestions);
+            questionBankListAdapter.notifyDataSetChanged();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+
+    public ArrayList<String> listOfQuestionId = new ArrayList<String>();
+
 
 }

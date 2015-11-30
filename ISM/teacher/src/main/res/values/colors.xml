@@ -102,4 +102,9 @@
     <color name="color_excellent">#19C59F</color>
     <color name="color_separator">#DDDEE0</color>
     <color name="color_bg_question">#f7f7f7</color>
+    <color name="questionlistseparator">#90D5DBDF</color>
+    <color name="question_color">#74777C</color>
+    <color name="questionpalette_notattemted">#D8DDE1</color>
+    <color name="bg_office">#2BDC1E</color>
+    <color name="circular_image_border_color">#40474F</color>
 </resources>

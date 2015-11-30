@@ -16,16 +16,15 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
-import com.ism.teacher.adapters.ObjectiveQuestionsAdapter;
+import com.ism.teacher.adapters.GetObjectiveAssignmentQuestionsAdapter;
 import com.ism.teacher.adapters.StudentAttemptedAdapter;
+import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.interfaces.FragmentListener;
-import com.ism.teacher.model.Data;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,7 +38,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     private FragmentListener fragListener;
     private RecyclerView rvList;
     private StudentAttemptedAdapter studentAttemptedAdapter;
-    private ObjectiveQuestionsAdapter objectiveQuestionsAdapter;
+    private GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter;
     public static ResponseHandler responseObjQuestions;
     public static List<String> questionsID;
 
@@ -51,21 +50,14 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     public boolean callEvaluationApiFlag = false;
     ResponseHandler responseObjectEval;
 
-    public static StudentAttemptedFragment newInstance() {
-        StudentAttemptedFragment fragment = new StudentAttemptedFragment();
-        return fragment;
+    public static StudentAttemptedFragment newInstance(Bundle bundleArguments) {
+        StudentAttemptedFragment studentAttemptedFragment = new StudentAttemptedFragment();
+        studentAttemptedFragment.setArguments(bundleArguments);
+        return studentAttemptedFragment;
     }
 
     public StudentAttemptedFragment() {
         // Required empty public constructor
-    }
-
-
-    public StudentAttemptedFragment(Context context, String examid, String studentid, boolean callEvaluationApiFlag) {
-        this.context = context;
-        this.examid_from_param = examid;
-        this.studentid_from_param = studentid;
-        this.callEvaluationApiFlag = callEvaluationApiFlag;
     }
 
     @Override
@@ -80,10 +72,23 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
     private void initGlobal() {
         rvList = (RecyclerView) view.findViewById(R.id.rv_list);
         rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        if (getArguments() != null) {
+
+            this.callEvaluationApiFlag = getArguments().getBoolean(AppConstant.ARG_CALL_EVALUATION_API_FLAG);
+            this.examid_from_param = getArguments().getString(AppConstant.ARG_EXAM_ID);
+            ;
+            this.studentid_from_param = getArguments().getString(AppConstant.ARG_STUDENT_ID);
+
+
+        } else {
+            this.callEvaluationApiFlag = false;
+        }
+
         Attribute attribute = new Attribute();
-        attribute.setExamId("9");
-        attribute.setUserId("340");
-        attribute.setRole("3");
+        attribute.setExamId(WebConstants.EXAM_ID_9_OBJECTIVE);
+        attribute.setUserId(WebConstants.USER_ID_340);
+        attribute.setRole(WebConstants.TEACHER_ROLE_ID);
 
         callapigetExamSubmission(attribute);
     }
@@ -137,15 +142,15 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     private void callAPIStudentEvaluations(String studentId, String examId) {
         try {
-            if (Utility.isOnline(context)) {
-                ((TeacherHostActivity) context).startProgress();
+            if (Utility.isOnline(getActivity())) {
+                //    ((TeacherHostActivity) context).startProgress();
                 Attribute attribute = new Attribute();
                 attribute.setStudentId(studentId);
                 attribute.setExamId(examId);
-                new WebserviceWrapper(context, attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
+                new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
                         .execute(WebConstants.GET_EXAM_EVALUATIONS);
             } else {
-                Utility.toastOffline(context);
+                Utility.toastOffline(getActivity());
             }
 
         } catch (Exception e) {
@@ -164,10 +169,10 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                     onResponseGetAllStudentAttempted(object);
                     break;
                 case WebConstants.GET_EXAM_QUESTIONS:
-                    onResponseGetExamQuestions(object);
+                 //   onResponseGetExamQuestions(object);
                     break;
                 case WebConstants.GET_EXAM_EVALUATIONS:
-                    onResponseGetEvaluation(object);
+               //     onResponseGetEvaluation(object);
                     break;
             }
 
@@ -190,7 +195,7 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
                 rvList.setAdapter(studentAttemptedAdapter);
                 rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
                 Attribute attribute = new Attribute();
-                attribute.setExamId("3");
+                attribute.setExamId(WebConstants.EXAM_ID_3_OBJECTIVE);
                 //requestObject.setStudentId("202");
 
                 // ((AuthorHostActivity) getActivity()).startProgress();
@@ -204,60 +209,64 @@ public class StudentAttemptedFragment extends Fragment implements WebserviceWrap
 
     }
 
-    private void onResponseGetExamQuestions(Object object) {
-        ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
-            if (responseHandler.getExamQuestions().size() != 0) {
-                responseObjQuestions = responseHandler;
-                // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
+//    private void onResponseGetExamQuestions(Object object) {
+//        ResponseHandler responseHandler = (ResponseHandler) object;
+//        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+//            if (responseHandler.getExamQuestions().size() != 0) {
+//                responseObjQuestions = responseHandler;
+//                // Debug.i(TAG, "Arraylist of Questions  ::" + responseObject.getData().get(0).getEvaluations());
+//
+//                getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(responseObjQuestions, getActivity(), this, null);
+//                GetObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
+//                GetObjectiveAssignmentQuestionsFragment.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                GetObjectiveAssignmentQuestionsFragment.txtBookNameValue.setText(responseObjQuestions.getExamQuestions().get(0).getBookName());
+//                GetObjectiveAssignmentQuestionsFragment.txtClassName.setText(responseObjQuestions.getExamQuestions().get(0).getClassName());
+//                GetObjectiveAssignmentQuestionsFragment.txtExamDateValue.setText(Utility.getFormattedDate("dd-MMM-yyyy", responseObjQuestions.getExamQuestions().get(0).getCreatedDate()));
+//                GetObjectiveAssignmentQuestionsFragment.txtExamName.setText(responseObjQuestions.getExamQuestions().get(0).getExamName());
+//                questionsID = new ArrayList<>();
+//                for (int i = 0; i < responseObjQuestions.getExamQuestions().get(0).getQuestions().size(); i++) {
+//                    questionsID.add(responseObjQuestions.getExamQuestions().get(0).getQuestions().get(i).getQuestionId());
+//                    Debug.i(TAG, "Q.ID :" + questionsID.get(i));
+//                }
+//
+//                Log.e(TAG, "" + questionsID.size());
+//
+//                // call evaluation api only if flag is true from examassignadapter-->Host->Objectivedetail->StudentAttempted
+//                if (callEvaluationApiFlag) {
+//                    Log.i(TAG, "student_id:" + studentid_from_param + "===exam_id_after_creating_exam" + examid_from_param);
+//
+//
+//                    /**
+//                     * Uncomment below commneted method to pass dynamic params
+//                     */
+//
+//                    //      callAPIStudentEvaluations(studentid_from_param,examid_from_param);
+//
+//                    //static
+//                    callAPIStudentEvaluations(WebConstants.STUDENT_ID_202_OBJECCTIVE, WebConstants.EXAM_ID_9_OBJECTIVE);
+//                }
+//
+//
+//            }
+//
+//        } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
+//            Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
+//        }
+//    }
 
-                objectiveQuestionsAdapter = new ObjectiveQuestionsAdapter(responseObjQuestions, getActivity(), this, null);
-                ExamObjectiveDetailFragment.rvList.setAdapter(objectiveQuestionsAdapter);
-                ExamObjectiveDetailFragment.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                ExamObjectiveDetailFragment.txtBookNameValue.setText(responseObjQuestions.getExamQuestions().get(0).getBookName());
-//                ExamObjectiveDetailFragment.txtExamTypeName.setText(responseObjQuestions.getExamQuestions().get(0).getExam_mode());
-                ExamObjectiveDetailFragment.txtClassName.setText(responseObjQuestions.getExamQuestions().get(0).getClassName());
-//                        String examDate = responseObjQuestions.getData().get(0).getCreated_date();
-                ExamObjectiveDetailFragment.txtExamDateValue.setText(Utility.getFormattedDate("dd-MMM-yyyy", responseObjQuestions.getExamQuestions().get(0).getCreatedDate()));
-                ExamObjectiveDetailFragment.txtExamName.setText(responseObjQuestions.getExamQuestions().get(0).getExamName());
-                questionsID = new ArrayList<>();
-                for (int i = 0; i < responseObjQuestions.getExamQuestions().get(0).getQuestions().size(); i++) {
-                    questionsID.add(responseObjQuestions.getExamQuestions().get(0).getQuestions().get(i).getQuestionId());
-                    Debug.i(TAG, "Q.ID :" + questionsID.get(i));
-                }
-
-                Log.e(TAG, "" + questionsID.size());
-
-                // call evaluation api only if flag is true from examassignadapter-->Host->Objectivedetail->StudentAttempted
-                if (callEvaluationApiFlag) {
-                    Log.i(TAG, "student_id:" + studentid_from_param + "===exam_id_after_creating_exam" + examid_from_param);
-                    //      callAPIStudentEvaluations(studentid_from_param,examid_from_param);
-
-                    //static
-                    callAPIStudentEvaluations(WebConstants.STUDENT_ID_202_OBJECCTIVE, WebConstants.EXAM_ID_9_OBJECTIVE);
-                }
-
-
-            }
-
-        } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
-            Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void onResponseGetEvaluation(Object object) {
-        ResponseHandler responseHandler = (ResponseHandler) object;
-        if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
-            if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
-                responseObjectEval = responseHandler;
-                ObjectiveQuestionsAdapter objectiveQuestionsAdapter = new ObjectiveQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, context, this, responseObjectEval);
-                ExamObjectiveDetailFragment.rvList.setAdapter(objectiveQuestionsAdapter);
-                objectiveQuestionsAdapter.notifyDataSetChanged();
-            }
-        } else {
-            Debug.i(TAG, "Response :" + WebConstants.GET_EXAM_EVALUATIONS + " :" + responseHandler.getStatus());
-        }
-    }
+//    private void onResponseGetEvaluation(Object object) {
+//        ResponseHandler responseHandler = (ResponseHandler) object;
+//        if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
+//            if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
+//                responseObjectEval = responseHandler;
+//                GetObjectiveAssignmentQuestionsAdapter getObjectiveAssignmentQuestionsAdapter = new GetObjectiveAssignmentQuestionsAdapter(StudentAttemptedFragment.responseObjQuestions, getActivity(), this, responseObjectEval);
+//                GetObjectiveAssignmentQuestionsFragment.rvList.setAdapter(getObjectiveAssignmentQuestionsAdapter);
+//                getObjectiveAssignmentQuestionsAdapter.notifyDataSetChanged();
+//            }
+//        } else {
+//            Debug.i(TAG, "Response :" + WebConstants.GET_EXAM_EVALUATIONS + " :" + responseHandler.getStatus());
+//        }
+//    }
 
     @Override
     public void onAttach(Activity activity) {

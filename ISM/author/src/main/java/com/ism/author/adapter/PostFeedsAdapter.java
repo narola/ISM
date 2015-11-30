@@ -237,7 +237,6 @@ public class PostFeedsAdapter extends RecyclerView.Adapter<PostFeedsAdapter.View
     }
 
     public void addAll(ArrayList<Feeds> feeds) {
-
         try {
             this.arrListFeeds.clear();
             this.arrListFeeds.addAll(feeds);

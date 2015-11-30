@@ -1,24 +1,20 @@
 package com.ism.teacher.fragments;
 
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ism.teacher.R;
-import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
@@ -26,7 +22,6 @@ import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.InputValidator;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.model.CreateAssignmentRequest;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
@@ -45,23 +40,11 @@ import jp.wasabeef.richeditor.RichEditor;
 /**
  * Created by c166 on 28/10/15.
  */
-public class AssignmentActivityFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
+public class AssignmentActivityFragment extends Fragment implements WebserviceWrapper.WebserviceResponse,View.OnClickListener{
 
 
     private static final String TAG = AssignmentActivityFragment.class.getSimpleName();
     private View view;
-    private FragmentListener fragListener;
-
-    public static AssignmentActivityFragment newInstance(Bundle bundleArgument) {
-        AssignmentActivityFragment assignmentActivityFragment = new AssignmentActivityFragment();
-        assignmentActivityFragment.setArguments(bundleArgument);
-        return assignmentActivityFragment;
-    }
-
-    public AssignmentActivityFragment() {
-        // Required empty public constructor
-    }
-
 
     TextView tvActivityTitle, tvActivityAssignmentname, tvActivityCoursename, tvActivityClass, tvActivitySubject, tvActivitySubmissiondate, tvActivityTopic;
     EditText etActivityAssignmentname, etActivityCoursename, etActivitySubmissionDate;
@@ -74,10 +57,21 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     private List<String> arrListDefalt;
     private DatePickerDialog datePickerDob;
     private Calendar calDob;
-    private String strDob, strAssignmenttext = "";
+    private String strDob="", strAssignmenttext = "",strSubmissionDate="";
     private long lngMaxDob;
     MyTypeFace myTypeFace;
     private InputValidator inputValidator;
+
+
+    public static AssignmentActivityFragment newInstance(Bundle bundleArgument) {
+        AssignmentActivityFragment assignmentActivityFragment = new AssignmentActivityFragment();
+        assignmentActivityFragment.setArguments(bundleArgument);
+        return assignmentActivityFragment;
+    }
+
+    public AssignmentActivityFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -114,7 +108,7 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
         rteTrialActivity = (RichTextEditor) view.findViewById(R.id.rte_trial_activity);
 
-        callApiGetClassRooms();
+
 
         tvActivityTitle.setTypeface(myTypeFace.getRalewayRegular());
         tvActivityAssignmentname.setTypeface(myTypeFace.getRalewayRegular());
@@ -155,14 +149,14 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    showDatePickerDob();
+                    strSubmissionDate = Utility.showDatePickerDob(getActivity(), etActivitySubmissionDate);
                 }
                 return true;
             }
         });
 
 
-        rteTrialActivity.getRichEditor().setEditorFontSize(30);
+        rteTrialActivity.getRichEditor().setEditorFontSize(25);
 
         rteTrialActivity.getRichEditor().setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override
@@ -199,35 +193,9 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
         arrListDefalt.add(getString(R.string.select));
         Adapters.setUpSpinner(getActivity(), spActivityTopic, arrListDefalt);
 
-
+        callApiGetClassRooms();
     }
 
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            fragListener = (FragmentListener) activity;
-            if (fragListener != null) {
-                // fragListener.onFragmentAttached(TrialAddNewFragment.FRAGMENT_ASSIGNMENT_ACTIVITY);
-            }
-        } catch (ClassCastException e) {
-            Debug.e(TAG, "onAttach Exception : " + e.toString());
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        try {
-            if (fragListener != null) {
-                //  fragListener.onFragmentDetached(TrialAddNewFragment.FRAGMENT_ASSIGNMENT_ACTIVITY);
-            }
-        } catch (ClassCastException e) {
-            Debug.e(TAG, "onDetach Exception : " + e.toString());
-        }
-        fragListener = null;
-    }
 
     private void callApiGetClassRooms() {
 
@@ -467,30 +435,6 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
 
     }
 
-    private void showDatePickerDob() {
-        try {
-            if (calDob == null) {
-                calDob = Calendar.getInstance();
-                calDob.add(Calendar.YEAR, -3);
-                lngMaxDob = calDob.getTimeInMillis();
-            }
-            datePickerDob = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    calDob.set(Calendar.YEAR, year);
-                    calDob.set(Calendar.MONTH, monthOfYear);
-                    calDob.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    strDob = Utility.formatDateApi(calDob.getTime());
-                    etActivitySubmissionDate.setText(Utility.formatDateDisplay(calDob.getTime()));
-                }
-            }, calDob.get(Calendar.YEAR), calDob.get(Calendar.MONTH), calDob.get(Calendar.DAY_OF_MONTH));
-            datePickerDob.getDatePicker().setMaxDate(lngMaxDob);
-            datePickerDob.show();
-        } catch (Exception e) {
-            Log.e(TAG, "showDatePickerDob Exception : " + e.toString());
-        }
-    }
-
 
     private void backToTrialScreen() {
 
@@ -498,6 +442,16 @@ public class AssignmentActivityFragment extends Fragment implements WebserviceWr
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if (v == btnActivitySave) {
+            if (isInputsValid()) {
+                callApiCreateAssignment();
+            }
+        } else if (v == btnActivityCancel) {
+            backToTrialScreen();
+        }
+    }
 }
 
 

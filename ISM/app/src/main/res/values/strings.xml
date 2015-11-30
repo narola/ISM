@@ -321,4 +321,6 @@
 	<string name="became_studymate_with">Became Studymate with</string>
 	<string name="feed_posted">Feed Posted</string>
 	<string name="commented_on">Commented on</string>
+	<string name="recommended_studymates">Recommended Studymates</string>
+	<string name="add_studymate">Add Studymate</string>
 </resources>

@@ -2,13 +2,14 @@ package com.ism.teacher.adapters;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ism.teacher.ISMTeacher;
@@ -16,23 +17,24 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
+import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
-import com.ism.teacher.fragments.SubjectiveQuestionsFragment;
+import com.ism.teacher.fragments.GetSubjectiveAssignmentQuestionsFragment;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.model.Data;
 import com.ism.teacher.views.CircleImageView;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
 import com.ism.teacher.ws.model.Examsubmittor;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
 /**
  * Created by c75 on 10/11/15.
  */
-public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.ViewHolder> implements WebserviceWrapper.WebserviceResponse {
+public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.ViewHolder> {
     private static final String TAG = MyStudentsAdapter.class.getSimpleName();
     Fragment mFragment;
     Context mContext;
@@ -44,23 +46,50 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
     private ResponseHandler responseObjectEval;
 
     //test
-    String student_id_to_highlight = "";
-    ArrayList<Examsubmittor> arrayListStudents = new ArrayList<>();
-    public static String student_name = "";
+    public String student_name = "", student_id = "", student_profile_pic = "";
+    int position_of_student;
 
-    public MyStudentsAdapter(String student_id_to_highlight, ResponseHandler resObjStudentAttempted, Context context, Fragment fragment) {
-        this.resObjStudentAttempted = resObjStudentAttempted;
-        this.mFragment = fragment;
-        this.mContext = context;
+    ArrayList<Examsubmittor> arrayListStudents = new ArrayList<>();
+    ArrayList<Examsubmittor> copyListOfStudents = new ArrayList<>();
+    public static String ARG_ARR_LIST_STUDENTS = "arrListStudents";
+    private LayoutInflater inflater;
+
+//    public MyStudentsAdapter(ResponseHandler resObjStudentAttempted, Context context, Fragment fragment) {
+//        this.resObjStudentAttempted = resObjStudentAttempted;
+//        this.mFragment = fragment;
+//        this.mContext = context;
+//        imageLoader = ImageLoader.getInstance();
+//        myTypeFace = new MyTypeFace(context);
+//    }
+
+
+    public MyStudentsAdapter(Context mContext, Fragment mFragment) {
+
+        this.mContext = mContext;
+        this.mFragment = mFragment;
         imageLoader = ImageLoader.getInstance();
-        myTypeFace = new MyTypeFace(context);
-        this.student_id_to_highlight = student_id_to_highlight;
+        imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
+        myTypeFace = new MyTypeFace(mContext);
+        inflater = LayoutInflater.from(mContext);
+
     }
+
+    public void addAll(ArrayList<Examsubmittor> examSubmittor) {
+        try {
+            this.arrayListStudents.clear();
+            this.arrayListStudents.addAll(examSubmittor);
+            this.copyListOfStudents = examSubmittor;
+            getBundleArgument().putParcelableArrayList(ARG_ARR_LIST_STUDENTS, examSubmittor);
+
+        } catch (Exception e) {
+            Debug.e(TAG, "addAllData Exception : " + e.toString());
+        }
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public MyStudentsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
         View students_row = inflater.inflate(R.layout.row_my_students, parent, false);
         ViewHolder viewHolder = new ViewHolder(students_row);
         return viewHolder;
@@ -73,7 +102,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
         CircleImageView imgStudentPic;
         ImageView imgSeparator;
 
-        RelativeLayout rlMyStudents;
+        LinearLayout llMyStudentsContainer;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -83,7 +112,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
             imgStudentPic = (CircleImageView) itemView.findViewById(R.id.img_student_pic);
             imgSeparator = (ImageView) itemView.findViewById(R.id.img_separator);
 
-            rlMyStudents = (RelativeLayout) itemView.findViewById(R.id.rl_my_students);
+            llMyStudentsContainer = (LinearLayout) itemView.findViewById(R.id.ll_mystudent_container);
 
             txtStudentName.setTypeface(myTypeFace.getRalewayRegular());
             txtStudentRollno.setTypeface(myTypeFace.getRalewayRegular());
@@ -93,61 +122,56 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
     @Override
     public void onBindViewHolder(final MyStudentsAdapter.ViewHolder holder, final int position) {
-        arrayListStudents = resObjStudentAttempted.getExamSubmission().get(0).getExamsubmittor();
         try {
             holder.txtStudentName.setText(arrayListStudents.get(position).getStudentName());
 
             imageLoader.displayImage(WebConstants.USER_IMAGES + arrayListStudents.get(position).getStudentProfilePic(), holder.imgStudentPic, ISMTeacher.options);
 
-            holder.rlMyStudents.setOnClickListener(new View.OnClickListener() {
+            if (getBundleArgument().getString(AppConstant.ARG_STUDENT_ID).equals(arrayListStudents.get(position).getStudentId())) {
+                holder.txtStudentName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+            } else {
+                holder.txtStudentName.setTextColor(mContext.getResources().getColor(R.color.color_gray));
+            }
+
+            holder.llMyStudentsContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    if (lastSelected == -1) {
-                        arrayListStudents.get(position).setIsFlagged(true);
-                        lastSelected = position;
-                    } else if (position == lastSelected) {
-                        arrayListStudents.get(position).setIsFlagged(false);
-                        lastSelected = -1;
-                    } else if (position != lastSelected) {
-                        arrayListStudents.get(position).setIsFlagged(true);
-                        arrayListStudents.get(lastSelected).setIsFlagged(false);
-                        lastSelected = position;
-                    }
-                    if (arrayListStudents.get(position).isFlagged()) {
-                        ((TeacherHostActivity) mContext).startProgress();
-                        // callAPIStudentEvaluations(arrayListStudents.get(position).getStudent_id(), resObjStudentAttempted.getData().get(0).getExam_id_received_from_bundle());
-                        student_name = arrayListStudents.get(position).getStudentName();
-                        callAPIStudentEvaluations(WebConstants.STUDENT_ID_1, WebConstants.EXAM_ID_11_SUBJECTIVE);
-//                        callAPIStudentEvaluations(arrayListStudents.get(position).getStudentId(), WebConstants.EXAM_ID_11_SUBJECTIVE);
-                    } else {
-                        ((TeacherHostActivity) mContext).startProgress();
-
-                        SubjectiveQuestionAdapter subjectiveQuestionAdapter = new SubjectiveQuestionAdapter(SubjectiveQuestionsFragment.responseObjQuestions, mContext, mFragment, null);
-                        SubjectiveQuestionsFragment.rvSubjectiveQuestionList.setAdapter(subjectiveQuestionAdapter);
-                        subjectiveQuestionAdapter.notifyDataSetChanged();
-
-                        ((TeacherHostActivity) mContext).stopProgress();
-                    }
-                    notifyDataSetChanged();
-
+                public void onClick(View v) {
+                    setBundleArgument(position);
+                    getFragmnet().loadStudentEvaluationData(arrayListStudents.get(position).getStudentId());
 
                 }
             });
-
-            if (student_id_to_highlight != null && !student_id_to_highlight.equals("")) {
-                for (int i = 0; i < arrayListStudents.size(); i++) {
-                    if (student_id_to_highlight.equalsIgnoreCase(arrayListStudents.get(i).getStudentId())) {
-                        holder.txtStudentName.setTextColor(mContext.getResources().getColor(R.color.color_poor));
-                    }
-                }
-            }
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
 
+    private void setValuesForSubjectiveFragment(int position) {
+        student_name = arrayListStudents.get(position).getStudentName();
+        student_id = arrayListStudents.get(position).getStudentId();
+        student_profile_pic = arrayListStudents.get(position).getStudentProfilePic();
+        position_of_student = position;
+
+    }
+
+    public void filter(CharSequence charText) {
+
+        arrayListStudents.clear();
+        if (charText.length() == 0) {
+            arrayListStudents.addAll(copyListOfStudents);
+        } else {
+            for (Examsubmittor wp : copyListOfStudents) {
+                if (Utility.containsString(wp.getStudentName(), charText.toString(), false)) {
+                    arrayListStudents.add(wp);
+                }
+            }
+            if (arrayListStudents.size() == 0) {
+            }
+        }
+        notifyDataSetChanged();
     }
 
     private void callAPIStudentEvaluations(String student_id, String exam_id) {
@@ -175,41 +199,34 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.Vi
 
     @Override
     public int getItemCount() {
-        Log.e("test", "" + resObjStudentAttempted.getExamSubmission().get(0).getExamsubmittor().size());
-        return resObjStudentAttempted.getExamSubmission().get(0).getExamsubmittor().size();
+
+        return arrayListStudents.size();
     }
 
 
-    @Override
-    public void onResponse(int api_code, Object object, Exception error) {
-        try {
-            ((TeacherHostActivity) mContext).stopProgress();
-            switch (api_code) {
-                case WebConstants.GET_EXAM_EVALUATIONS:
+    public void setBundleArgument(int position) {
 
-                    ResponseHandler responseHandler = (ResponseHandler) object;
-                    if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
-                        if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
-                            responseObjectEval = responseHandler;
+        getBundleArgument().putInt(AppConstant.ARG_STUDENT_POSITION, position);
+        getBundleArgument().putString(AppConstant.ARG_STUDENT_PROFILE_PIC,
+                arrayListStudents.get(position).getStudentProfilePic());
+        getBundleArgument().putString(AppConstant.ARG_STUDENT_NAME,
+                arrayListStudents.get(position).getStudentName());
+        getBundleArgument().putString(AppConstant.ARG_STUDENT_ID,
+                arrayListStudents.get(position).getStudentId());
 
-                            if (responseObjectEval.getStatus().equalsIgnoreCase(WebConstants.API_STATUS_SUCCESS)) {
-                                SubjectiveQuestionsFragment.rlStudentDetails.setVisibility(View.VISIBLE);
-                                SubjectiveQuestionsFragment.txt_student_name.setText(student_name);
-                                // imageLoader.displayImage(WebConstants.USER_IMAGES + arrayListStudents.get(position).getProfile_pic(), holder.imgStudentPic, ISMTeacher.options);
-                            }
-
-                            SubjectiveQuestionAdapter subjectiveQuestionAdapter = new SubjectiveQuestionAdapter(SubjectiveQuestionsFragment.responseObjQuestions, mContext, mFragment, responseObjectEval);
-                            SubjectiveQuestionsFragment.rvSubjectiveQuestionList.setAdapter(subjectiveQuestionAdapter);
-                            subjectiveQuestionAdapter.notifyDataSetChanged();
-                        }
-                    } else {
-                        Debug.i(TAG, "Response :" + WebConstants.GET_EXAM_EVALUATIONS + " :" + responseHandler.getStatus());
-                    }
-                    break;
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "onResponse Exception : " + e.toString());
-        }
+        notifyDataSetChanged();
 
     }
+
+
+    private Bundle getBundleArgument() {
+        return ((GetSubjectiveAssignmentQuestionsFragment) mFragment).getArguments();
+
+    }
+
+    private GetSubjectiveAssignmentQuestionsFragment getFragmnet() {
+        return (GetSubjectiveAssignmentQuestionsFragment) mFragment;
+    }
+
+
 }

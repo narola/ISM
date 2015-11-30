@@ -3,6 +3,7 @@ package com.ism.teacher.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.teacher.ws.model.AnswerChoices;
 import com.ism.teacher.ws.model.Answers;
 
 import java.util.ArrayList;
@@ -96,6 +97,8 @@ public class Attribute {
     private String subjectName;
     private String questionText;
     private String questionCreatorId;
+    private String questionScore;
+    private ArrayList<AnswerChoices> answerChoices;
 
     public String getFeedId() {
         return this.feedId;
@@ -790,5 +793,23 @@ public class Attribute {
 //        this.bankQuestionId = questionCreatorId;
 //    }
 
+    public String getQuestionScore() {
+        return questionScore;
+    }
+
+    @JsonProperty("question_score")
+    public void setQuestionScore(String questionScore) {
+        this.questionScore = questionScore;
+    }
+
+
+    public ArrayList<AnswerChoices> getAnswerChoices() {
+        return this.answerChoices;
+    }
+
+    @JsonProperty("answer_choices")
+    public void setAnswerChoices(ArrayList<AnswerChoices> answerChoices) {
+        this.answerChoices = answerChoices;
+    }
 
 }

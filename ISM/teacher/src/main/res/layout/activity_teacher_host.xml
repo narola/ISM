@@ -178,7 +178,7 @@
             android:id="@+id/ll_search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/img_notes"
+            android:layout_toLeftOf="@+id/img_upcomings"
             android:orientation="horizontal">
 
             <ImageView
@@ -206,7 +206,7 @@
 
         <!-- right side bar controls-->
         <ImageView
-            android:id="@+id/img_notes"
+            android:id="@+id/img_upcomings"
             android:layout_width="@dimen/controller_top_button_width"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/img_teacher_profile"

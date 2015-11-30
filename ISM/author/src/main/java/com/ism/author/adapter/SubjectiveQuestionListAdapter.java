@@ -208,7 +208,7 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     private void setEvaluationScore(TextView tv) {
         tv.setActivated(true);
     }
-    
+
     View.OnClickListener evaluationClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -227,14 +227,12 @@ public class SubjectiveQuestionListAdapter extends RecyclerView.Adapter<Subjecti
     private int checkIsQuestionEvaluated(String questionId) {
 
         int evaluationIndex = -1;
-
         for (Evaluation evaluation : evaluationList) {
             if (evaluation.getQuestionId() != null && evaluation.getQuestionId().contains(questionId)) {
                 evaluationIndex = evaluationList.indexOf(evaluation);
                 break;
             }
         }
-
         return evaluationIndex;
     }
 
