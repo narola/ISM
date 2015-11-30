@@ -18,7 +18,6 @@ import com.ism.teacher.adapters.GetObjectiveAssignmentQuestionsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.MyTypeFace;
-import com.ism.teacher.interfaces.FragmentListener;
 import com.ism.teacher.ws.helper.Attribute;
 import com.ism.teacher.ws.helper.ResponseHandler;
 import com.ism.teacher.ws.helper.WebserviceWrapper;
@@ -32,13 +31,12 @@ import java.util.ArrayList;
  * Created by c162 on 04/11/15.
  */
 
-public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse{
+public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements WebserviceWrapper.WebserviceResponse {
 
 
     private static final String TAG = GetObjectiveAssignmentQuestionsFragment.class.getSimpleName();
     private View view;
     private MyTypeFace myTypeFace;
-    private FragmentListener fragListener;
 
     private TextView tvObjectiveAssignmentSubject, tvObjectiveAssignmentClass, tvObjectiveAssignmentNo, tvObjectiveAssignmentTitle,
             tvObjectiveAssignmentDateTitle, tvObjectiveAssignmentDate;
@@ -112,12 +110,12 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 
 
     }
+
     private void setExamQuestions() {
 
         if (responseObjGetAllExamQuestions != null) {
             getArguments().putParcelableArrayList(ARG_ARR_LIST_QUESTIONS, arrListQuestions);
-            getArguments().putString(ARG_EXAM_TYPE, "test");
-
+            getArguments().putString(ARG_EXAM_TYPE, getString(R.string.strobjective));
 
 
 //            ((AuthorHostActivity) getActivity()).loadFragmentInMainContainer(
@@ -125,6 +123,9 @@ public class GetObjectiveAssignmentQuestionsFragment extends Fragment implements
 //
 //            ((AuthorHostActivity) getActivity()).loadFragmentInRightContainer(
 //                    (AuthorHostActivity.FRAGMENT_HIGHSCORE), null);
+            getFragmentManager().beginTransaction().replace(R.id.fl_teacher_office_home,
+                    CreateExamAssignmentContainerFragment.newInstance(getArguments())).commit();
+
 
         }
 

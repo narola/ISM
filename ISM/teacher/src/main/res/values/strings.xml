@@ -358,5 +358,7 @@
     <string name="msg_success_editquestion">Question edited successfully.</string>
     <string name="str_success_setexamquestions">Questions set for the exam.</string>
     <string name="strsolution">Solution</string>
+    <string name="strsubjective">subjective</string>
+    <string name="strobjective">objective</string>
 
 </resources>
