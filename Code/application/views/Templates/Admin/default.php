@@ -77,6 +77,53 @@ $url = uri_string();
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
+
+                        <!-- ============================================================= -->
+                        <?php /*
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_home"></span> Tutorial Group</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Groups</a></li>
+                                <li><a href="#">Topics</a></li>
+                                <li><a href="#">Performance</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_home"></span> Resources</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Books</a></li>
+                                <li><a href="#">Badges</a></li>
+                                <li><a href="#">Activities</a></li>
+                                <li><a href="#">Questionnaires</a></li>
+                                <li><a href="#">Banners</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_home"></span> Security</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Spam</a></li>
+                                <li><a href="#">Word Watch</a></li>
+                                <li><a href="#">Permissions</a></li>
+                                <li><a href="#">Roles</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon icon_menu_home"></span> System</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Notice board</a></li>
+                                <li><a href="#">Feeds</a></li>
+                                <li><a href="#">Features</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a href="#"><span class="icon icon_menu_home"></span> Examination</a></li>
+                        <li><a href="#"><span class="icon icon_menu_home"></span> Reports</a></li>
+
+                       */ ?>
+
+                        <!-- ============================================================= -->
+                        
+                        <?php /* */ ?>
                         <li><a href="#"><span class="icon icon_menu_home"></span> Home</a></li>
                         <li class="
                         <?php
@@ -159,6 +206,9 @@ $url = uri_string();
                             echo 'active';
                         }
                         ?>"><a href="admin/report"><span class="icon icon_menu_report"></span> Reports</a></li>
+
+
+                       <?php /* */ ?>
                     </ul>
                     <!-- <ul class="nav navbar-nav navbar-right">
                         <li><a class="" href="#"><span class="icon icon_search"></span></a></li>
