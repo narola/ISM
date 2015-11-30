@@ -56,5 +56,7 @@
     <string name="msg_username_exists">Username already exists.</string>
     <string name="msg_validation_select_answer">Please select mcq answer.</string>
     <string name="error_server_connection">Server connection failed!</string>
-
+    <string name="msg_success_addquestion">Question added successfully.</string>
+    <string name="msg_success_editquestion">Question edited successfully.</string>
+    <string name="msg_success_sethashtag">HashTags Added Successfully.</string>
 </resources>

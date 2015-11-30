@@ -9,9 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateExam {
 
-    @JsonProperty("exam_id")
+
     private String examId;
 
+
+    @JsonProperty("exam_id")
     public String getExamId() {
         return this.examId;
     }

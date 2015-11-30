@@ -23,9 +23,9 @@ public class ISMAuthor extends Application {
 
         options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
-                .showImageOnLoading(R.drawable.ic_classmates_active)
-                .showImageForEmptyUri(R.drawable.ic_classmates_active)
-                .showImageOnFail(R.drawable.ic_classmates_active)
+                .showImageOnLoading(R.drawable.userdp)
+                .showImageForEmptyUri(R.drawable.userdp)
+                .showImageOnFail(R.drawable.userdp)
                 .cacheOnDisk(true)
                 .considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)

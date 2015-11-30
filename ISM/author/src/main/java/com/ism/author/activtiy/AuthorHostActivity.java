@@ -8,13 +8,12 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -28,8 +27,10 @@ import android.widget.TextView;
 
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
+import com.ism.author.Utility.PreferenceData;
 import com.ism.author.Utility.Utility;
 import com.ism.author.adapter.ControllerTopSpinnerAdapter;
+import com.ism.author.constant.WebConstants;
 import com.ism.author.fragment.AddQuestionContainerFragment;
 import com.ism.author.fragment.BooksFragment;
 import com.ism.author.fragment.CreateExamAssignmentContainerFragment;
@@ -39,59 +40,70 @@ import com.ism.author.fragment.GetObjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.GetSubjectiveAssignmentQuestionsFragment;
 import com.ism.author.fragment.HomeFragment;
 import com.ism.author.fragment.OfficeFragment;
-import com.ism.author.fragment.rightcontainerfragment.StudentAttemptedAssignmentFragment;
 import com.ism.author.fragment.StudentAttemptedFragment;
 import com.ism.author.fragment.TrialExamObjectiveDetailFragment;
 import com.ism.author.fragment.TrialExamSujectiveDetailFragment;
 import com.ism.author.fragment.TrialFragment;
-import com.ism.author.fragment.rightcontainerfragment.AuthorProfileFragment;
-import com.ism.author.fragment.rightcontainerfragment.HighScoreFragment;
+import com.ism.author.fragment.mydesk.MyDeskFragment;
+import com.ism.author.fragment.userprofile.AllMessageFragment;
+import com.ism.author.fragment.userprofile.AllNotificationFragment;
+import com.ism.author.fragment.userprofile.AllStudymateRequestFragment;
+import com.ism.author.fragment.userprofile.AuthorProfileFragment;
+import com.ism.author.fragment.userprofile.FollowersFragment;
+import com.ism.author.fragment.userprofile.HighScoreFragment;
+import com.ism.author.fragment.userprofile.MyActivityFragment;
+import com.ism.author.fragment.userprofile.MyBooksFragment;
+import com.ism.author.fragment.userprofile.MyFeedsFragment;
+import com.ism.author.fragment.userprofile.StudentAttemptedAssignmentFragment;
+import com.ism.author.fragment.userprofile.ViewProfileFragment;
 import com.ism.author.interfaces.FragmentListener;
 import com.ism.author.object.ControllerTopMenuItem;
+import com.ism.author.object.Global;
+import com.ism.author.object.MyTypeFace;
+import com.ism.author.ws.helper.Attribute;
+import com.ism.author.ws.helper.ResponseHandler;
+import com.ism.author.ws.helper.WebserviceWrapper;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
-
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
 /*
 * these class is for the main screen after login contains the host activity for managing the main and container fragment.
 * */
-public class AuthorHostActivity extends Activity implements FragmentListener {
+public class AuthorHostActivity extends Activity implements FragmentListener, WebserviceWrapper.WebserviceResponse {
 
     protected static final String TAG = AuthorHostActivity.class.getName();
-
-
     FragmentTransaction mFragmentTransaction;
     FragmentManager mFragmentManager;
-
     RelativeLayout rlControllerTop, rlControllerTopMenu;
     LinearLayout llSearch, llControllerLeft;
     FrameLayout flFragmentContainerMain, flFragmentContainerRight;
-
     ImageView imgLogo, imgHome, imgBack, imgSearch, imgOffice, imgBooks, imgEditProfileHome, imgEditProfileTutorial, imgEditProfileClassroom,
-            imgEditProfileAssesment, imgAuthorProfile, imgHighScore;
 
+    imgEditProfileAssesment, imgAuthorProfile, imgHighScore;
     Spinner spSubmenu;
     TextView txtTitle, txtAction;
 
-
     EditText etSearch;
-
     private View.OnClickListener onClickMenuItem;
-    private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
-    private HostListener listenerHost;
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuTrial, currentControllerTopMenu, controllerTopMenuAssessment;
 
+    private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
+    private HostListenerProfileController listenerHostProfileController;
+
+
+    private HostListenerAllNotification listenerHostAllNotification;
+
+    private HostListenerAllMessage listenerHostAllMessage;
+    private ArrayList<ControllerTopMenuItem> controllerTopMenuTrial, currentControllerTopMenu, controllerTopMenuAssessment, controlTopMenuMyDesk;
     /*
     * these are the fragments for the main fragment.
     * */
-
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_OFFICE = 1;
     public static final int FRAGMENT_BOOKS = 2;
-    public static final int FRAGMENT_MYFEEDS = 3;
-    public static final int FRAGMENT_MYACTIVITY = 5;
     public static final int FRAGMENT_GOTRENDING = 6;
     public static final int FRAGMENT_SETQUIZ = 7;
     public static final int FRAGMENT_PROGRESSREPORT = 8;
@@ -104,15 +116,23 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_ASSIGNMENT_SUBMITTOR = 15;
     public static final int FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS = 16;
     public static final int FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS = 17;
+    public static final int FRAGMENT_ALL_MESSAGE = 18;
+    public static final int FRAGMENT_ALL_NOTIFICATION = 19;
+    public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 20;
+    public static final int FRAGMENT_MY_DESK = 21;
 
 
     //these are the right side fragments
 
-    public static final int FRAGMENT_AUTHORPROFILE = 31;
+    public static final int FRAGMENT_PROFILE_CONTROLLER = 31;
     public static final int FRAGMENT_HIGHSCORE = 32;
-    public static final int FRAGMENT_CHAT = 33;
-    public static final int FRAGMENT_STUDENT_ATTEMPTED = 34;
-    public static final int FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT = 35;
+    public static final int FRAGMENT_STUDENT_ATTEMPTED = 33;
+    public static final int FRAGMENT_STUDENT_ATTEMPTED_ASSIGNMENT = 34;
+    public static final int FRAGMENT_MY_FEEDS = 35;
+    public static final int FRAGMENT_FOLLOWERS = 36;
+    public static final int FRAGMENT_MY_ACTIVITY = 37;
+    public static final int FRAGMENT_MY_BOOKS = 38;
+    public static final int FRAGMENT_VIEW_PROFILE = 39;
 
 
     private InputMethodManager inputMethod;
@@ -126,10 +146,35 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     private ProgressGenerator progressGenerator;
 
 
-    public interface HostListener {
-        public void onControllerMenuItemClicked(int position);
+    public interface HostListenerProfileController {
+        public void onBadgesFetched();
+
+        public void onSubFragmentAttached(int fragmentId);
+
+        public void onSubFragmentDetached(int fragmentId);
+        //  public void onControllerMenuItemClicked(int position);
     }
 
+    public interface HostListenerAllNotification {
+        public void onControllerTopBackClick();
+    }
+
+    public interface HostListenerAllMessage {
+        public void onControllerTopBackClick();
+    }
+
+
+    public void setListenerHostProfileController(HostListenerProfileController listenerHostProfileController) {
+        this.listenerHostProfileController = listenerHostProfileController;
+    }
+
+    public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
+        this.listenerHostAllNotification = listenerHostAllNotification;
+    }
+
+    public void setListenerHostAllMessage(HostListenerAllMessage listenerHostAllMessage) {
+        this.listenerHostAllMessage = listenerHostAllMessage;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +191,13 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
         mFragmentManager = getFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
+        Global.myTypeFace = new MyTypeFace(getApplicationContext());
 
+        Global.imageLoader = ImageLoader.getInstance();
+        Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
+        Global.strUserId = "370";
+        Global.strFullName = "Arti Patel";
+        Global.strProfilePic = WebConstants.USER_IMAGES + "user_370/123_test.png";
         rlControllerTop = (RelativeLayout) findViewById(R.id.rl_controller_top);
         llSearch = (LinearLayout) findViewById(R.id.ll_search);
         rlControllerTopMenu = (RelativeLayout) findViewById(R.id.rl_controller_top_menu);
@@ -168,6 +219,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         imgEditProfileAssesment = (ImageView) findViewById(R.id.img_edit_profile_assesment);
 
         controllerTopMenuTrial = ControllerTopMenuItem.getMenuTrial(AuthorHostActivity.this);
+        controlTopMenuMyDesk = ControllerTopMenuItem.getMenuMyDesk(AuthorHostActivity.this);
         controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(AuthorHostActivity.this);
 
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
@@ -201,11 +253,11 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
         imgBack.setOnClickListener(onClickMenuItem);
         txtAction.setOnClickListener(onClickMenuItem);
+        callApiGetAllBadgesCount();
 
     }
 
-
-    //These is for the load fragmet in main container
+//These is for the load fragmet in main container
 
     public void hideKeyboard() {
         View view = this.getCurrentFocus();
@@ -268,10 +320,46 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
                             mFragment).commit();
                     break;
-
                 case FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
                             GetSubjectiveAssignmentQuestionsFragment.newInstance(bundleArgument)).commit();
+                    break;
+
+                case FRAGMENT_MY_ACTIVITY:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            MyActivityFragment.newInstance()).commit();
+                    break;
+                case FRAGMENT_MY_BOOKS:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            MyBooksFragment.newInstance()).commit();
+                    break;
+                case FRAGMENT_FOLLOWERS:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            FollowersFragment.newInstance()).commit();
+                    break;
+                case FRAGMENT_MY_FEEDS:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            MyFeedsFragment.newInstance()).commit();
+                    break;
+                case FRAGMENT_VIEW_PROFILE:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            ViewProfileFragment.newInstance()).commit();
+                    break;
+                case FRAGMENT_ALL_NOTIFICATION:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AllNotificationFragment.newInstance(bundleArgument)).commit();
+                    break;
+                case FRAGMENT_ALL_MESSAGE:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AllMessageFragment.newInstance(bundleArgument)).commit();
+                    break;
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            AllStudymateRequestFragment.newInstance(bundleArgument)).commit();
+                    break;
+                case FRAGMENT_MY_DESK:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            MyDeskFragment.newInstance()).commit();
                     break;
             }
             currentMainFragment = fragment;
@@ -296,7 +384,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
         try {
             switch (fragment) {
 
-                case FRAGMENT_AUTHORPROFILE:
+                case FRAGMENT_PROFILE_CONTROLLER:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, AuthorProfileFragment.newInstance()).commit();
                     break;
 
@@ -319,6 +407,22 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
     }
 
+    private void callApiGetAllBadgesCount() {
+        try {
+            if (Utility.isConnected(getApplicationContext())) {
+                showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setUserId(Global.strUserId);
+
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+                        .execute(WebConstants.GET_ALL_BADGES_COUNT);
+            } else {
+                Utility.alertOffline(getApplicationContext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "callApiGetAllBadgesCount Exception : " + e.toString());
+        }
+    }
 
     @Override
     public void onFragmentAttached(int fragment) {
@@ -339,9 +443,19 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
                 case FRAGMENT_OFFICE:
                     imgHome.setActivated(false);
+                    imgOffice.setActivated(true);
                     currentMainFragment = fragment;
                     txtAction.setTextColor(getResources().getColor(R.color.bg_office));
                     loadControllerTopMenu(null);
+                    break;
+                case FRAGMENT_MY_DESK:
+                    imgHome.setActivated(false);
+                    currentMainFragment = fragment;
+                    txtAction.setTextColor(getResources().getColor(R.color.bg_office));
+                    loadControllerTopMenu(controlTopMenuMyDesk);
+                    imgOffice.setActivated(true);
+                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_office);
+                    hideControllerTopAction();
                     break;
 
                 case FRAGMENT_BOOKS:
@@ -402,7 +516,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     break;
 
 
-                case FRAGMENT_AUTHORPROFILE:
+                case FRAGMENT_PROFILE_CONTROLLER:
                     currentRightFragment = fragment;
                     imgAuthorProfile.setActivated(true);
                     break;
@@ -419,7 +533,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_office);
                     hideControllerTopAction();
                     txtTitle.setText("");
-
 
                     break;
 
@@ -483,6 +596,40 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     flFragmentContainerRight.setVisibility(View.GONE);
                     llControllerLeft.setVisibility(View.GONE);
                     break;
+                case FRAGMENT_MY_ACTIVITY:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
+                    break;
+                case FRAGMENT_MY_BOOKS:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
+                    break;
+                case FRAGMENT_FOLLOWERS:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
+                    break;
+                case FRAGMENT_MY_FEEDS:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
+                    break;
+                case FRAGMENT_VIEW_PROFILE:
+                    imgOffice.setActivated(true);
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentAttached(fragment);
+                    break;
+                case FRAGMENT_ALL_NOTIFICATION:
+                    currentMainFragment = fragment;
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+                case FRAGMENT_ALL_MESSAGE:
+                    currentMainFragment = fragment;
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    currentMainFragment = fragment;
+                    rlControllerTopMenu.setVisibility(View.VISIBLE);
+                    break;
+
             }
 
         } catch (Exception e) {
@@ -504,7 +651,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     break;
 
                 case FRAGMENT_TRIAL:
-                    imgOffice.setActivated(true);
+                   // imgOffice.setActivated(true);
+                    break;
+                case FRAGMENT_MY_DESK:
+                   // imgOffice.setActivated(true);
                     break;
 
                 case FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT:
@@ -513,7 +663,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_ADDQUESTION_CONTAINER:
                     flFragmentContainerRight.setVisibility(View.VISIBLE);
                     break;
-                case FRAGMENT_AUTHORPROFILE:
+                case FRAGMENT_PROFILE_CONTROLLER:
                     imgAuthorProfile.setActivated(false);
                     break;
                 case FRAGMENT_HIGHSCORE:
@@ -537,7 +687,36 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                 case FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS:
                     imgOffice.setActivated(true);
                     break;
-
+                case FRAGMENT_MY_ACTIVITY:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+                    break;
+                case FRAGMENT_MY_BOOKS:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+                    break;
+                case FRAGMENT_FOLLOWERS:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+                    break;
+                case FRAGMENT_MY_FEEDS:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+                    break;
+                case FRAGMENT_VIEW_PROFILE:
+                    currentMainFragment = fragment;
+                    listenerHostProfileController.onSubFragmentDetached(fragment);
+                    break;
+                case FRAGMENT_ALL_NOTIFICATION:
+                    hideControllerTopBackButton();
+                    loadControllerTopMenu(null);
+                    break;
+                case FRAGMENT_ALL_MESSAGE:
+                    loadControllerTopMenu(null);
+                    break;
+                case FRAGMENT_ALL_STUDYMATE_REQUEST:
+                    loadControllerTopMenu(null);
+                    break;
             }
         } catch (Exception e) {
             Debug.i(TAG, "onFragmentDetached Exception : " + e.toString());
@@ -556,23 +735,23 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                 rlControllerTopMenu.setVisibility(View.GONE);
             } else {
                 rlControllerTopMenu.setVisibility(View.VISIBLE);
-                txtTitle.setVisibility(View.GONE);
+               // txtTitle.setVisibility(View.GONE);
                 hideControllerTopControls();
                 if (currentMainFragment != FRAGMENT_HOME) {
-                    startSlideAnimation(imgBack, -1000, 0, 0, 0);
+                    Utility.startSlideAnimation(imgBack, -1000, 0, 0, 0);
                     imgBack.setVisibility(View.VISIBLE);
                 }
 
                 if (menu.get(0).getMenuItemTitle() != null) {
                     currentControllerTopMenu.get(0).setIsActive(true);
                     txtTitle.setText(currentControllerTopMenu.get(0).getMenuItemTitle());
-                    startSlideAnimation(txtTitle, rlControllerTopMenu.getWidth(), 0, 0, 0);
+                    Utility.startSlideAnimation(txtTitle, rlControllerTopMenu.getWidth(), 0, 0, 0);
                     txtTitle.setVisibility(View.VISIBLE);
                     spSubmenu.setVisibility(View.GONE);
 
                 } else {
                     txtTitle.setText("");
-                    startSlideAnimation(txtTitle, 0, rlControllerTopMenu.getWidth(), 0, 0);
+                    Utility.startSlideAnimation(txtTitle, 0, rlControllerTopMenu.getWidth(), 0, 0);
                     txtTitle.setVisibility(View.GONE);
                 }
                 if (currentControllerTopMenu.get(0).getSubMenu() != null) {
@@ -582,7 +761,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
                     spSubmenu.setAdapter(adapterControllerTopSpinner);
                 }
                 if (currentControllerTopMenu.get(0).getMenuItemAction() != null) {
-                    startSlideAnimation(txtAction, rlControllerTopMenu.getWidth(), 0, 0, 0);
+                    Utility.startSlideAnimation(txtAction, rlControllerTopMenu.getWidth(), 0, 0, 0);
                     txtAction.setText(currentControllerTopMenu.get(0).getMenuItemAction());
                     txtAction.setVisibility(View.VISIBLE);
                 } else {
@@ -681,7 +860,20 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
             flFragmentContainerRight.setVisibility(View.VISIBLE);
             loadFragmentInMainContainer(FRAGMENT_TRIAL, null);
 
+        } else if (currentMainFragment == FRAGMENT_ALL_NOTIFICATION) {
+            listenerHostAllNotification.onControllerTopBackClick();
+        } else if (currentMainFragment == FRAGMENT_ALL_MESSAGE) {
+            listenerHostAllMessage.onControllerTopBackClick();
+        }else if(currentMainFragment==FRAGMENT_MY_DESK){
+            loadFragmentInMainContainer(FRAGMENT_OFFICE, null);
         }
+
+
+    }
+
+    public void showControllerTopBackButton() {
+        Utility.startSlideAnimation(imgBack, -100, 0, 0, 0);
+        imgBack.setVisibility(View.VISIBLE);
     }
 
     private void hideControllerTopControls() {
@@ -697,50 +889,27 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
     }
 
     private void hideControllerTopBackButton() {
-        startSlideAnimation(imgBack, 0, -1000, 0, 0);
+        Utility.startSlideAnimation(imgBack, 0, -100, 0, 0);
         imgBack.setVisibility(View.GONE);
     }
 
     private void hideControllerTopAction() {
-        startSlideAnimation(txtAction, 0, rlControllerTopMenu.getWidth(), 0, 0);
+        Utility.startSlideAnimation(txtAction, 0, rlControllerTopMenu.getWidth(), 0, 0);
         txtAction.setText("");
         txtAction.setVisibility(View.GONE);
     }
 
     private void hideControllerTopSpinner() {
         spSubmenu.setAdapter(null);
-        startSlideAnimation(spSubmenu, 0, -1000, 0, 0);
+        Utility.startSlideAnimation(spSubmenu, 0, -1000, 0, 0);
         spSubmenu.setVisibility(View.GONE);
-    }
-
-    private void startSlideAnimation(final View view, int fromX, int toX, int fromY, int toY) {
-        TranslateAnimation slideOutAnimation = new TranslateAnimation(fromX, toX, fromY, toY);
-        slideOutAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.clearAnimation();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        slideOutAnimation.setDuration(500);
-        slideOutAnimation.setFillAfter(true);
-        view.startAnimation(slideOutAnimation);
     }
 
 
     public void openRightContainerFragment(View view) {
         switch (view.getId()) {
             case R.id.img_author_profile:
-                loadFragmentInRightContainer(FRAGMENT_AUTHORPROFILE, null);
+                loadFragmentInRightContainer(FRAGMENT_PROFILE_CONTROLLER, null);
                 break;
             case R.id.img_high_score:
                 loadFragmentInRightContainer(FRAGMENT_HIGHSCORE, null);
@@ -774,9 +943,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 //		            startSlideAnimation(etSearch, 0, etSearch.getWidth(), 0, 0);
 //		            startSlideAnimation(imgSearch, -imgSearch.getWidth(), 0, 0, 0);
             etSearch.setVisibility(View.GONE);
+            Utility.hideKeyboard(getActivity(), getCurrentFocus());
         } else {
-            startSlideAnimation(etSearch, etSearch.getWidth(), 0, 0, 0);
-            startSlideAnimation(imgSearch, etSearch.getWidth(), 0, 0, 0);
+            Utility.startSlideAnimation(etSearch, etSearch.getWidth(), 0, 0, 0);
+            Utility.startSlideAnimation(imgSearch, etSearch.getWidth(), 0, 0, 0);
             etSearch.setVisibility(View.VISIBLE);
             Utility.showSoftKeyboard(etSearch, getActivity());
         }
@@ -792,10 +962,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
     }
 
-    @Override
-    public void onBackPressed() {
-//        super.onBackPressed();
-    }
 
     private void handleTheActionButtonFragmentEvents() {
         if (currentMainFragment == FRAGMENT_HOME) {
@@ -813,16 +979,60 @@ public class AuthorHostActivity extends Activity implements FragmentListener {
 
     }
 
-    public void startProgress() {
+    public void showProgress() {
         progress_bar.setProgress(1);
         progress_bar.setEnabled(false);
         progress_bar.setVisibility(View.VISIBLE);
         progressGenerator.start(progress_bar);
     }
 
-    public void stopProgress() {
+    public void hideProgress() {
         progress_bar.setProgress(100);
         progress_bar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onResponse(int apiCode, Object object, Exception error) {
+        hideProgress();
+        try {
+            if (WebConstants.GENERAL_SETTING_PREFERENCES == apiCode) {
+                // onResponseGetAllPreference(object, error);
+
+            } else if (WebConstants.GET_USER_PREFERENCES == apiCode) {
+                //  onResponseGetUserPreference(object, error);
+
+            } else if (WebConstants.GET_ALL_BADGES_COUNT == apiCode) {
+                onResponseGetAllBadges(object, error);
+            }
+        } catch (Exception e) {
+            Debug.i(TAG, "On response Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void onResponseGetAllBadges(Object object, Exception error) {
+        try {
+
+            if (object != null) {
+                ResponseHandler responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+                    Debug.i(TAG, "Successload badges count");
+                    String count = responseHandler.getBadges().get(0).getNotificationCount();
+                    PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_NOTIFICATION, this, count != null ? Integer.valueOf(count) : 0);
+
+                    count = responseHandler.getBadges().get(0).getMessageCount();
+                    PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_MESSAGE, this, count != null ? Integer.valueOf(count) : 0);
+
+                    count = responseHandler.getBadges().get(0).getRequestCount();
+                    PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_REQUEST, this, count != null ? Integer.valueOf(count) : 0);
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Debug.i(TAG, "Failed to load badges count");
+                }
+            } else if (error != null) {
+                Debug.i(TAG, "onResponseGetAllBadges api Exceptiion : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.i(TAG, "onResponseGetAllBadges Exceptiion : " + e.toString());
+        }
     }
 
 }

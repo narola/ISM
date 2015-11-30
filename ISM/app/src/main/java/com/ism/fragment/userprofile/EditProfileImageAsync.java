@@ -1,7 +1,6 @@
 package com.ism.fragment.userprofile;
 
 import android.os.AsyncTask;
-import android.os.StrictMode;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by c162 on 25/11/15.
@@ -34,33 +34,27 @@ public class EditProfileImageAsync extends AsyncTask{
     byte[] buffer;
     int maxBufferSize = 1 * 1024 * 1024;
     String responseFromServer = "", fileName = null;
-    private File sourceFile;
     private int serverResponseCode;
-    private ObjectMapper mapper;
-    private Lock lock;
+    private ObjectMapper mapper=null;
+    private static final Lock lock = new ReentrantLock();
     File file;
 
     public EditProfileImageAsync(File file) {
         this.file = file;
     }
 
-    public <Request, Response> Response execute(Class<Response> responseType, Request request) throws Exception {
+    public <Response> Response execute(Class<Response> responseType) throws Exception {
 
         Response ret = null;
         try {
-            if (android.os.Build.VERSION.SDK_INT > 9) {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-            }
-            // fileName = file;
-            // sourceFile = new File(file);
-//            Log.e(TAG, "" + file);
-//            if (!file.isFile()) {
-//                Debug.e(TAG, "Source File Does not exist");
+//            if (android.os.Build.VERSION.SDK_INT > 9) {
+//                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//                StrictMode.setThreadPolicy(policy);
 //            }
-            FileInputStream fileInputStream = new FileInputStream(sourceFile);
+
+            FileInputStream fileInputStream = new FileInputStream(file);
             // open a URL connection to the Servlet
-            URL url = new URL("http://localhost/demo/testImageUpload.php");
+            URL url = new URL("http://192.168.1.162/demo/testImageUpload.php");
             // Open a HTTP connection to the URL
             conn = (HttpURLConnection) url.openConnection();
             // Allow Inputs
@@ -72,25 +66,30 @@ public class EditProfileImageAsync extends AsyncTask{
 
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Connection", "Keep-Alive");
-            conn.setRequestProperty("ENCTYPE", "multipart/form-questionData");
-            conn.setRequestProperty("Content-Type", "multipart/form-questionData;boundary=" + boundary);
+            conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
             //conn.setRequestProperty("mediaFile", fileName);
             dos = new DataOutputStream(conn.getOutputStream());
-            dos.writeBytes(twoHyphens + boundary + lineEnd);
-            //dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-questionData; name=\"mediaFile\";filename=\"" + sourceFile.getName() + "\"" + lineEnd);
-            dos.writeBytes(lineEnd);
-            dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes(lineEnd);
-            dos.writeBytes(lineEnd);
-            dos.writeBytes(twoHyphens + boundary + lineEnd);
 
-//            dos.writeBytes("Content-Disposition: form-questionData; name=\"user_id\"" + lineEnd);
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=\"mediaFile\";filename=\"" + file.getName() + "\"" + lineEnd);
+            dos.writeBytes(lineEnd);
+
+
+
+//            dos.writeBytes(twoHyphens + boundary + lineEnd);
+//            //dos.writeBytes(twoHyphens + boundary + lineEnd);
+//            dos.writeBytes("Content-Disposition: form-data; name=\"mediaFile\";filename=\"" + file.getName() + "\"" + lineEnd);
 //            dos.writeBytes(lineEnd);
-//            dos.writeBytes(Global.strUserId);
 //            dos.writeBytes(lineEnd);
 //            dos.writeBytes(twoHyphens + boundary + lineEnd);
 
+//            dos.writeBytes("Content-Disposition: form-questionData; name=\"feed_id\"" + lineEnd);
+//            dos.writeBytes(lineEnd);
+//            dos.writeBytes(feed_id);
+//            dos.writeBytes(lineEnd);
+//            dos.writeBytes(twoHyphens + boundary + lineEnd);
+//
 //            dos.writeBytes("Content-Disposition: form-questionData; name=\"mediaType\"" + lineEnd);
 //            dos.writeBytes(lineEnd);
 //            dos.writeBytes(type);
@@ -101,8 +100,6 @@ public class EditProfileImageAsync extends AsyncTask{
 //            dos.writeBytes(feed_by);
 //            dos.writeBytes(lineEnd);
 //            dos.writeBytes(twoHyphens + boundary + lineEnd);
-
-            dos.writeBytes(lineEnd);
 
             bytesAvailable = fileInputStream.available(); // create a buffer of  maximum size
             Log.i(TAG, "Initial .available : " + bytesAvailable);
@@ -130,7 +127,7 @@ public class EditProfileImageAsync extends AsyncTask{
 
             Log.i("Upload file to server", "HTTP Response is : " + serverResponseMessage + ": " + serverResponseCode);
             // close streams
-            Log.i("Upload file to server", fileName + " File is written");
+            Log.i("Upload file to server", file.getName() + " File is written");
             fileInputStream.close();
             dos.flush();
             dos.close();
@@ -185,7 +182,7 @@ public class EditProfileImageAsync extends AsyncTask{
     @Override
     protected Object doInBackground(Object[] params) {
         try {
-            execute(AboutMeFragment.class,null);
+            execute(AboutMeFragment.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

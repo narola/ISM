@@ -17,8 +17,13 @@ import com.ism.teacher.helper.MyTypeFace;
 
 
 /**
- * Created by c166 on 28/10/15.
+ * This fragment contains two tabs
+ * AssignmentActivity and AssignmentExam
+ * And (from AssignmentExam) After assignment exam is created successfully(retrieve exam id and click on
+ * SetQuestion which calls AddQuestionContainerFragment
  */
+
+
 public class CreateExamAssignmentContainerFragment extends Fragment {
 
 
@@ -85,7 +90,7 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
                                                public void onClick(View v) {
 
                                                    initTab(0);
-                                                   loadFragmentInContainer(FRAGMENT_ASSIGNMENT_ACTIVITY);
+
 
                                                }
                                            }
@@ -97,14 +102,13 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
                                            public void onClick(View v) {
 
                                                initTab(1);
-                                               loadFragmentInContainer(FRAGMENT_ASSIGNMENT_EXAM);
+
 
                                            }
                                        }
         );
 
 
-//        loadFragmentInContainer(FRAGMENT_ASSIGNMENT_ACTIVITY);
         if (getArguments() != null) {
             initTab(1);
             loadFragmentInContainer(FRAGMENT_ASSIGNMENT_EXAM);
@@ -118,27 +122,12 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-//        try {
-//            fragListener = (FragmentListener) activity;
-//            if (fragListener != null) {
-////                fragListener.onFragmentAttached();
-//            }
-//        } catch (ClassCastException e) {
-//            Debug.e(TAG, "onAttach Exception : " + e.toString());
-//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        try {
-//            if (fragListener != null) {
-////                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_ADDNEWTRIAL);
-//            }
-//        } catch (ClassCastException e) {
-//            Debug.e(TAG, "onDetach Exception : " + e.toString());
-//        }
-//        fragListener = null;
+
     }
 
 
@@ -152,7 +141,7 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
                 case FRAGMENT_ASSIGNMENT_EXAM:
 //                    assignmentExamFragment = new AssignmentExamFragment(CreateExamAssignmentContainerFragment.this);
 //                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, assignmentExamFragment).commit();
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance(this, getArguments())).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_assignment_container, AssignmentExamFragment.newInstance(this,getActivity(), getArguments())).commit();
                     break;
 
             }
@@ -173,6 +162,7 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
             img_sep_tab_activity.setVisibility(View.VISIBLE);
             tv_tab_exam.setTextColor(getResources().getColor(R.color.color_text_hint));
             img_sep_tab_exam.setVisibility(View.INVISIBLE);
+            loadFragmentInContainer(FRAGMENT_ASSIGNMENT_ACTIVITY);
 
         } else if (position == 1) {
 
@@ -181,11 +171,16 @@ public class CreateExamAssignmentContainerFragment extends Fragment {
             img_sep_tab_activity.setVisibility(View.INVISIBLE);
             tv_tab_exam.setTextColor(getResources().getColor(R.color.color_black));
             img_sep_tab_exam.setVisibility(View.VISIBLE);
+            loadFragmentInContainer(FRAGMENT_ASSIGNMENT_EXAM);
 
         }
 
     }
 
+    /**
+     * Hide top tab bar in AddQuestionContainerFragment because we are replacing AddQuestionContainerFragment in teacher office so the top
+     * bar was visible.
+     */
     public void hideTopBar() {
         ll_topbar_assignment.setVisibility(View.GONE);
     }

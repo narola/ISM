@@ -95,14 +95,14 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
                         lastSelected = position;
                     }
                     if (arrayList.get(position).isFlagged()) {
-                        ((AuthorHostActivity) context).startProgress();
+                        ((AuthorHostActivity) context).showProgress();
                         callAPIStudentEvaluations(arrayList.get(position).getStudentId(), resObjStudentAttempted.getExamSubmission().get(0).getExamId(), studentName);
                     } else {
-                        ((AuthorHostActivity) context).startProgress();
+                        ((AuthorHostActivity) context).showProgress();
                         TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, null);
                         TrialExamObjectiveDetailFragment.rvList.setAdapter(trialExamDetailsAdapter);
                         trialExamDetailsAdapter.notifyDataSetChanged();
-                        ((AuthorHostActivity) context).stopProgress();
+                        ((AuthorHostActivity) context).hideProgress();
                     }
                     notifyDataSetChanged();
 
@@ -117,8 +117,8 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
 
     private void callAPIStudentEvaluations(String studentId, String examId, String studentName) {
         try {
-            if (Utility.isOnline(context)) {
-                ((AuthorHostActivity) context).startProgress();
+            if (Utility.isConnected(context)) {
+                ((AuthorHostActivity) context).showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setStudentId("202");
                 attribute.setExamId("9");
@@ -147,11 +147,11 @@ public class StudentAttemptedAdapter extends RecyclerView.Adapter<StudentAttempt
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
         try {
-            ((AuthorHostActivity) context).stopProgress();
+            ((AuthorHostActivity) context).hideProgress();
 
             if (API_METHOD == WebConstants.GETEXAMEVALUATIONS) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
-                if (responseHandler.getStatus().equals(WebConstants.STATUS_SUCCESS)) {
+                if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
                     if (responseHandler.getExamEvaluation().get(0).getEvaluation().size() != 0) {
                         responseHandlerEval = responseHandler;
                         TrialExamDetailsAdapter trialExamDetailsAdapter = new TrialExamDetailsAdapter(StudentAttemptedFragment.responseObjQuestions, context, fragment, responseHandlerEval);

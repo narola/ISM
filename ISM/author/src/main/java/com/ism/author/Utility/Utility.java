@@ -6,21 +6,30 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.ism.author.R;
 import com.ism.commonsource.view.ActionProcessButton;
 import com.ism.commonsource.view.ProgressGenerator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -34,6 +43,8 @@ public class Utility {
 
     public static final SimpleDateFormat DATE_FORMAT_API = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     public static final SimpleDateFormat DATE_FORMAT_DISPLAY = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+    private static final String TAG = Utility.class.getSimpleName();
+    private static AlertDialog dialogOffline;
 
     /**
      * Krunal Panchal
@@ -67,10 +78,12 @@ public class Utility {
      * @param context
      * @return
      */
-    public static boolean isOnline(Context context) {
+    public static boolean isConnected(Context context) {
         NetworkInfo networkInfo = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+        return networkInfo != null && networkInfo.isConnected();
     }
+
+
 
     /**
      * Krunal Panchal
@@ -110,29 +123,6 @@ public class Utility {
         return Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
     }
 
-    /**
-     * Krunal Panchal
-     * Simple alert message dialog.
-     *
-     * @param context
-     * @param title
-     * @param message
-     */
-    public static void alert(Context context, String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        if (title != null) {
-            builder.setTitle(title);
-        }
-        if (message != null) {
-            builder.setMessage(message);
-        }
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        }).create().show();
-    }
 
     /**
      * Krunal Panchal
@@ -214,4 +204,147 @@ public class Utility {
         return mContext.getResources().getString(stringId);
 
     }
+    /**
+     * Arti Patel
+     * initialization of Imageloader
+     *
+     * @param failed
+     * @param placeholder
+     */
+    public static DisplayImageOptions getDisplayImageOption(int failed, int placeholder) {
+        try {
+            return new DisplayImageOptions.Builder()
+                    .cacheInMemory(true)
+                    .showImageOnLoading(R.drawable.ic_classmates_active)
+                    .showImageForEmptyUri(placeholder)
+                    .showImageOnFail(failed)
+                    .cacheOnDisk(true)
+                    .considerExifParams(true)
+                    .bitmapConfig(Bitmap.Config.RGB_565)
+                    .build();
+        } catch (Exception e) {
+            Log.e(TAG, "intiImageLoader Exception : " + e.toString());
+            return null;
+        }
+
+
+    }
+
+    /**
+     * Arti Patel
+     * hide keyboard
+     *
+     * @param context
+     * @param view
+     */
+    public static void hideKeyboard(Context context, View view) {
+        InputMethodManager inputMethod = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (view != null) {
+            inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * Krunal Panchal
+     * Toast alert when user is offline.
+     *
+     * @param context
+     */
+    public static void alertOffline(Context context) {
+        if (dialogOffline == null || !dialogOffline.isShowing()) {
+            dialogOffline = alert(context, context.getString(R.string.connectivity_problem), context.getString(R.string.msg_offline));
+        }
+    }
+
+    /**
+     * Krunal Panchal
+     * Simple alert message dialog.
+     *
+     * @param context
+     * @param title
+     * @param message
+     */
+    public static AlertDialog alert(Context context, String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppTheme);
+        if (title != null) {
+            builder.setTitle(title);
+        }
+        if (message != null) {
+            builder.setMessage(message);
+        }
+        AlertDialog dialog = builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).create();
+        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        dialog.show();
+        return dialog;
+    }
+
+    /**
+     * Arti Patel
+     * get Image path from uri
+     * @param uri
+     * @param context
+     * @return
+     */
+    public static String getImagePath(Uri uri, Context context) {
+        String wholeID = DocumentsContract.getDocumentId(uri);
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = {MediaStore.Images.Media.DATA};
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = context.getContentResolver().
+                query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        column, sel, new String[]{id}, null);
+        String filePath = "";
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
+    }
+    /**
+     * Arti Patel
+     * set animation on view
+     *
+     * @param view
+     * @param fromX
+     * @param toX
+     * @param fromY
+     * @param toY
+     */
+    public static void startSlideAnimation(final View view, int fromX, int toX, int fromY, int toY) {
+        TranslateAnimation slideOutAnimation = new TranslateAnimation(fromX, toX, fromY, toY);
+        slideOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.clearAnimation();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        slideOutAnimation.setDuration(500);
+        slideOutAnimation.setFillAfter(true);
+        view.startAnimation(slideOutAnimation);
+    }
+
+
 }

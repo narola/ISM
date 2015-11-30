@@ -4,6 +4,7 @@ package com.ism.author.ws.helper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ism.author.ws.model.Badges;
 import com.ism.author.ws.model.Cities;
 import com.ism.author.ws.model.Classrooms;
 import com.ism.author.ws.model.CommentList;
@@ -16,8 +17,13 @@ import com.ism.author.ws.model.ExamSubmission;
 import com.ism.author.ws.model.Exams;
 import com.ism.author.ws.model.Feed;
 import com.ism.author.ws.model.Feeds;
+import com.ism.author.ws.model.Message;
+import com.ism.author.ws.model.Notification;
+import com.ism.author.ws.model.HashTags;
+import com.ism.author.ws.model.Question;
 import com.ism.author.ws.model.Questions;
 import com.ism.author.ws.model.States;
+import com.ism.author.ws.model.StudymateRequest;
 import com.ism.author.ws.model.Studymates;
 import com.ism.author.ws.model.Subjects;
 import com.ism.author.ws.model.Topics;
@@ -40,7 +46,12 @@ public class ResponseHandler {
     public static final String FAILED = "failed";
     public static final String DUPLICATE_ENTRY = "Duplicate entry";
     private String TAG = ResponseHandler.class.getSimpleName();
+    private ArrayList<Badges> badges;
+    private ArrayList<Notification> notification;
+    private ArrayList<StudymateRequest> studymateRequest;
+    private ArrayList<Message> messages;
 
+    @JsonProperty("message")
     public String getMessage() {
         return this.message;
     }
@@ -49,6 +60,7 @@ public class ResponseHandler {
         this.message = message;
     }
 
+    @JsonProperty("status")
     public String getStatus() {
         return this.status;
     }
@@ -80,7 +92,8 @@ public class ResponseHandler {
     private ArrayList<Courses> courses;
     private ArrayList<Questions> questions;
     private ArrayList<Questions> questionBank;
-
+    private ArrayList<Question> question;
+    private ArrayList<HashTags> tags;
 
     @JsonProperty("feeds")
     public ArrayList<Feeds> getFeeds() {
@@ -254,5 +267,58 @@ public class ResponseHandler {
         this.questionBank = questionBank;
     }
 
+    @JsonProperty("badges")
+    public ArrayList<Badges> getBadges() {
+        return this.badges;
+    }
+
+    public void setBadges(ArrayList<Badges> badges) {
+        this.badges = badges;
+    }
+
+    @JsonProperty("notification")
+    public ArrayList<Notification> getNotification() {
+        return this.notification;
+    }
+
+    public void setNotification(ArrayList<Notification> notification) {
+        this.notification = notification;
+    }
+
+    @JsonProperty("messages")
+    public ArrayList<Message> getMessages() {
+        return this.messages;
+    }
+
+    public void setMessages(ArrayList<Message> messages) {
+        this.messages = messages;
+    }
+
+    @JsonProperty("studymate_request")
+    public ArrayList<StudymateRequest> getStudymateRequest() {
+        return this.studymateRequest;
+    }
+
+    public void setStudymateRequest(ArrayList<StudymateRequest> studymateRequest) {
+        this.studymateRequest = studymateRequest;
+    }
+
+    @JsonProperty("question")
+    public ArrayList<Question> getQuestion() {
+        return this.question;
+    }
+
+    public void setQuestion(ArrayList<Question> question) {
+        this.question = question;
+    }
+
+    @JsonProperty("tags")
+    public ArrayList<HashTags> getTags() {
+        return this.tags;
+    }
+
+    public void setTags(ArrayList<HashTags> tags) {
+        this.tags = tags;
+    }
 }
 

@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:background="@color/color_gray_light"
               android:orientation="vertical"
-              tools:context="com.ism.fragment.AllNoticeFragment">
+              tools:context=".fragment.userprofile.AllNoticeFragment">
 
 	<LinearLayout
 		android:layout_width="match_parent"

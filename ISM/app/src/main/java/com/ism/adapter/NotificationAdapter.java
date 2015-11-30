@@ -53,7 +53,7 @@ public class NotificationAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return listItemLimit > 0 ? listItemLimit : arrListNotification.size();
+		return listItemLimit > 0 ? listItemLimit < arrListNotification.size() ? listItemLimit : arrListNotification.size() : arrListNotification.size();
 	}
 
 	@Override

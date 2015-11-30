@@ -21,6 +21,7 @@ import com.ism.ws.model.StudymateRequest;
 import com.ism.ws.model.TutorialGroup;
 import com.ism.ws.model.User;
 import com.ism.ws.model.UserPreferences;
+import com.ism.ws.model.Voucher;
 import com.ism.ws.model.Wallet;
 
 import java.util.ArrayList;

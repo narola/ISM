@@ -53,20 +53,35 @@ public class AddQuestionContainerFragment extends Fragment {
         initGlobal();
         if (savedInstanceState == null) {
 
+//            getFragmentManager()
+//                    .beginTransaction()
+//                    .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
+//                    .commit();
+//
+//            getFragmentManager()
+//                    .beginTransaction()
+//                    .add(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
+//                    .commit();
+//
+//
+//            showHideFragment(questionAddEditFragment);
+//
+//            isFrontVisible = true;
 
-            getFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
-                    .commit();
+            /*new code*/
+
 
             getFragmentManager()
                     .beginTransaction()
                     .add(R.id.fl_addquestionfragment_container_left, questionAddEditFragment)
                     .commit();
 
-
             showHideFragment(questionAddEditFragment);
 
+            getFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fl_addquestionfragment_container_left, questionListFragment)
+                    .commit();
             isFrontVisible = true;
 
         }
@@ -78,13 +93,11 @@ public class AddQuestionContainerFragment extends Fragment {
     private void initGlobal() {
 
         questionListFragment = new QuestionListFragment(this, getArguments());
-        previewQuestionFragment = new PreviewQuestionFragment(this);
-        questionAddEditFragment = new QuestionAddEditFragment(this);
+        previewQuestionFragment = new PreviewQuestionFragment(this, getArguments());
+        questionAddEditFragment = new QuestionAddEditFragment(this, getArguments());
 
         flAddquestionfragmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_left);
         flAddquestionfragmentContainerRight = (FrameLayout) view.findViewById(R.id.fl_addquestionfragment_container_right);
-
-
     }
 
     @Override
@@ -135,7 +148,6 @@ public class AddQuestionContainerFragment extends Fragment {
 
     }
 
-
     public void showHideFragment(final Fragment fragment) {
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -156,16 +168,14 @@ public class AddQuestionContainerFragment extends Fragment {
             ft.hide(fragment);
             Debug.e("Shown", "Hide");
         }
-
         ft.commit();
     }
 
 
+    /*from here methods start to communicate between three fragments*/
 
 
-
-
-    /*thsese are the listofpreview questions to add */
+    /*thsese are the listof questions to add it in preview */
 
     public ArrayList<Questions> listOfPreviewQuestionsToAdd = new ArrayList<Questions>();
 
@@ -178,31 +188,37 @@ public class AddQuestionContainerFragment extends Fragment {
         return previewQuestionFragment.arrListQuestions;
     }
 
+
+    public void setListOfExamQuestions(ArrayList<Questions> arrListExamQuestions) {
+        previewQuestionFragment.setExamQuestions(arrListExamQuestions);
+    }
+
+
     /*this is to add question to preview fragment*/
     public void addQuestionsToPreviewFragment() {
         previewQuestionFragment.addQuestionsToPreviewFragment(getListOfPreviewQuestionsToAdd());
-
     }
 
     /*this is to update check box view in questionlist after delete it from preview questions*/
-    public void updateQuestionListviewAfterRemoveInPreview(Questions questions) {
-        questionListFragment.updateViewAfterDeleteInPreviewQuestion(questions);
-        previewQuestionFragment.arrListQuestions.remove(questions);
-
+    public void updateQuestionListviewAfterRemoveInPreview(Questions question) {
+        questionListFragment.updateViewAfterDeleteInPreviewQuestion(question.getQuestionId());
+        previewQuestionFragment.arrListQuestions.remove(question);
     }
 
 
     /*these is to set data in the add question fragment*/
-    public Questions questionData;
-    public Boolean isSetQuestionData = false;
+    private Questions questionData;
+    private Boolean isSetQuestionData = false;
+    private Boolean isCopy = false;/*this variable will use for both copy and add new question because copy is same like
+    addnewquestion using other question data*/
 
 
-    public Boolean getIsSetQuestionData() {
-        return isSetQuestionData;
+    public Boolean getIsCopy() {
+        return isCopy;
     }
 
-    public void setIsSetQuestionData(Boolean isSetQuestionData) {
-        this.isSetQuestionData = isSetQuestionData;
+    public void setIsCopy(Boolean isCopy) {
+        this.isCopy = isCopy;
     }
 
     public Questions getQuestionData() {
@@ -213,49 +229,34 @@ public class AddQuestionContainerFragment extends Fragment {
         this.questionData = questionData;
     }
 
-    private int FRAGMENT_TYPE;
-
-    public void setFragmentTypeForQuestionEdit(int FRAGMENTTYPE) {
-        this.FRAGMENT_TYPE = FRAGMENTTYPE;
+    public Boolean getIsSetQuestionData() {
+        return isSetQuestionData;
     }
 
-    public int getFRAGMENT_TYPE() {
-        return FRAGMENT_TYPE;
+    public void setIsSetQuestionData(Boolean isSetQuestionData) {
+        this.isSetQuestionData = isSetQuestionData;
     }
 
-
-    private int POSITION_FOR_EDITQUESTION;
-
-    public int getPOSITION_FOR_EDITQUESTION() {
-        return POSITION_FOR_EDITQUESTION;
-    }
-
-    public void setPositionForEditQuestion(int POSITION_FOR_EDITQUESTION) {
-        this.POSITION_FOR_EDITQUESTION = POSITION_FOR_EDITQUESTION;
-    }
-
-    public void setDataOnFragmentFlip(Questions questions, Boolean isSetQuestionData, int FRAGMENT_TYPE, int POSITION_FOR_EDITQUESTION) {
-
+    public void setDataOnFragmentFlip(Questions questions, Boolean isSetQuestionData, Boolean isCopy) {
         setQuestionData(questions);
         setIsSetQuestionData(isSetQuestionData);
-        setFragmentTypeForQuestionEdit(FRAGMENT_TYPE);
-        setPositionForEditQuestion(POSITION_FOR_EDITQUESTION);
+        setIsCopy(isCopy);
         flipCard();
-
     }
 
-    public void setQuestionDataAfterEditQuestion() {
 
-        if (getFRAGMENT_TYPE() == FRAGMENT_QUESTIONLIST) {
+    /*this is to edit question data after edit.*/
+    public void setQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData, Boolean isChecked) {
+        questionListFragment.updateQuestionDataAfterEditQuestion(prevQuestionData, updatedQuestionData);
+        previewQuestionFragment.updateQuestionDataAfterEditQuestion(prevQuestionData, updatedQuestionData, isChecked);
+    }
 
-            questionListFragment.updateQuestionDataAfterEditQuestion();
-
-        } else if (getFRAGMENT_TYPE() == FRAGMENT_PREVIEWQUESTION) {
-
-            previewQuestionFragment.updateQuestionDataAfterEditQuestion();
-
+    /*this is to refresh list after successfull question add  */
+    public void addQuestionDataAfterAddQuestion(Questions question, Boolean isChecked) {
+        questionListFragment.addQuestionDataAfterAddQuestion(question);
+        if (isChecked) {
+            previewQuestionFragment.addQuestionDataAfterAddQuestion(question);
         }
-
     }
 
 }

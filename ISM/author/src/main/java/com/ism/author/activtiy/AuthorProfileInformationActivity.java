@@ -172,7 +172,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
         txtSchoolGender.setText(strSchoolType);
         txtProgramCourse.setText(strCourseName);
 
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
             callApiGetCountries();
         } else {
             Utility.toastOffline(getActivity());
@@ -192,7 +192,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (arrListCountries != null && position > 0) {
-                    if (Utility.isOnline(getActivity())) {
+                    if (Utility.isConnected(getActivity())) {
                         callApiGetStates(Integer.parseInt(arrListCountries.get(position - 1).getId()));
                     } else {
                         Utility.toastOffline(getActivity());
@@ -212,7 +212,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (arrListStates != null && position > 0) {
-                    if (Utility.isOnline(getActivity())) {
+                    if (Utility.isConnected(getActivity())) {
                         callApiGetCities(Integer.parseInt(arrListStates.get(position - 1).getId()));
                     } else {
                         Utility.toastOffline(getActivity());
@@ -267,7 +267,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
     }
 
     public void onClickSubmit(View view) {
-        if (Utility.isOnline(getActivity())) {
+        if (Utility.isConnected(getActivity())) {
 
 //			PreferenceData.setBooleanPrefs(PreferenceData.IS_REMEMBER_ME, ProfileInformationActivity.this,
 //					PreferenceData.getBooleanPrefs(PreferenceData.IS_REMEMBER_ME_FIRST_LOGIN, ProfileInformationActivity.this));
@@ -327,7 +327,7 @@ public class AuthorProfileInformationActivity extends Activity implements Webser
         btnDialogSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utility.isOnline(getActivity())) {
+                if (Utility.isConnected(getActivity())) {
                     if (isInputsValidSchoolInfo()) {
                         Attribute attribute = new Attribute();
                         attribute.setName(etName.getText().toString().trim());

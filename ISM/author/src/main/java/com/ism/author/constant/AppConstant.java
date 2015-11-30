@@ -41,6 +41,7 @@ public class AppConstant {
 
     public static final String STATUS_UPLOADING = "uploading";
     public static final int AUTHOR_ROLE_ID = 4;
+    public static final String RESOURCE_TYPE_QUESTION = "question";
     public static final int LIKE = 1;
     public static final int DISLIKE = 0;
 

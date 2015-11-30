@@ -52,9 +52,10 @@ public class WebserviceWrapper {
 
             try {
 
-//                Check if we can get access from the network.
-//	            URL url = new URL("http://192.168.1.147/");
-                URL url = new URL("http://google.com/");
+////            Check if we can get access from the network.
+////	            URL url = new URL("http://192.168.1.147/");
+//                URL url = new URL("http://google.com/");
+                URL url = new URL(WebConstants.URL_KINJAL_HOST);
                 HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
                 urlc.setRequestProperty("Connection", "close");
                 urlc.setConnectTimeout(2000); // Timeout 2 seconds.
@@ -173,6 +174,37 @@ public class WebserviceWrapper {
 
                         case WebConstants.GETALLASSIGNMENTS:
                             responseObject = new WebserviceConnector(WebConstants.URL_GETALLASSIGNMENTS).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_ALL_BADGES_COUNT:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ALL_BADGES_COUNT).execute(ResponseHandler.class, attribute);
+                            break;
+
+                        case WebConstants.GET_NOTIFICATION:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_NOTIFICATION).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_MESSAGES:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MESSAGES).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_STUDYMATE_REQUEST:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_STUDYMATE_REQUEST).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.RESPOND_TO_REQUEST:
+                            responseObject = new WebserviceConnector(WebConstants.URL_RESPOND_TO_REQUEST).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.UPDATE_READ_STATUS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_UPDATE_READ_STATUS).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_MY_FEEDS:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_FEEDS).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.CREATEQUESTION:
+                            responseObject = new WebserviceConnector(WebConstants.URL_CREATEQUESTION).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GETALLHASHTAG:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GETALLHASHTAG).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.SETHASHTAG:
+                            responseObject = new WebserviceConnector(WebConstants.URL_HASHTAG).execute(ResponseHandler.class, attribute);
                             break;
 
                     }

@@ -19,7 +19,7 @@
 
 	<LinearLayout
 		android:id="@+id/ll_content1"
-		android:layout_width="500dp"
+		android:layout_width="300dp"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txt_header"
 		android:background="@drawable/bg_white_border_gray"

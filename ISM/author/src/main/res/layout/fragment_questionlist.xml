@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/fragment_background_color">
 
 
     <LinearLayout
@@ -60,29 +61,32 @@
                     <ImageView
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/d5dp"
                         android:layout_marginTop="@dimen/d5dp"
                         android:background="@color/color_text_hint" />
 
                     <ImageView
+                        android:id="@+id/img_search_questions"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:padding="@dimen/d10dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/img_question_search" />
 
                     <EditText
-                        android:id="@+id/et_questionlist_search"
-                        android:layout_width="@dimen/d150dp"
+                        android:id="@+id/et_search_questions"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="@dimen/d5dp"
                         android:layout_weight="1"
+                        android:background="@android:color/transparent"
                         android:hint="@string/hint_search"
                         android:imeOptions="actionSearch"
                         android:inputType="text"
-                        android:padding="10dp"
+                        android:padding="@dimen/d5dp"
                         android:textColor="@color/colorPrimary"
                         android:textColorHint="@color/color_graylight"
+                        android:textSize="@dimen/d18dp"
                         android:visibility="gone" />
                 </LinearLayout>
             </RelativeLayout>

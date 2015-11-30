@@ -59,6 +59,10 @@
     <color name="color_assignment_submission">#596068</color>
     <color name="question_color">#74777C</color>
     <color name="questionpalette_notattemted">#D8DDE1</color>
-
+    <color name="color_friend_request_yellow">#FFBA00</color>
+    <color name="divider_light">#EEEEEE</color>
+    <color name="text_gray">#C3C3C3</color>
+    <color name="color_gray_light">#F5F5F5</color>
+    <color name="desk_tab_bg">#F2F2F2</color>
 
 </resources>

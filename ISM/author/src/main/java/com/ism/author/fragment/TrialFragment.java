@@ -11,12 +11,14 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.ism.author.Utility.Utility;
 import com.ism.author.activtiy.AuthorHostActivity;
 import com.ism.author.R;
 import com.ism.author.Utility.Debug;
 import com.ism.author.adapter.TrialExamsAdapter;
 import com.ism.author.constant.WebConstants;
 import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.object.Global;
 import com.ism.author.ws.helper.Attribute;
 import com.ism.author.ws.helper.ResponseHandler;
 import com.ism.author.ws.helper.WebserviceWrapper;
@@ -67,13 +69,26 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void initGlobal() {
         gridExams = (GridView) view.findViewById(R.id.grid_trial);// The number of Columns
-        Attribute attribute = new Attribute();
-        attribute.setRole("4");
-        attribute.setUserId("370");
-        ((AuthorHostActivity) getActivity()).startProgress();
-        new WebserviceWrapper(getActivity(), attribute, (WebserviceWrapper.WebserviceResponse) this).new WebserviceCaller()
-                .execute(WebConstants.GETALLEXAM);
+        callApiForGetAllExam();
 
+    }
+
+    private void callApiForGetAllExam() {
+        try {
+            if(Utility.isConnected(getActivity())){
+                ((AuthorHostActivity) getActivity()).showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setRole(Global.role);
+                attribute.setUserId(Global.strUserId);
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller()
+                        .execute(WebConstants.GETALLEXAM);
+            }
+            else {
+                Utility.alertOffline(getActivity());
+            }
+        }catch (Exception e ){
+            Debug.i(TAG,"callApiForGetAllExam Exception : "+e.getLocalizedMessage());
+        }
     }
 
     @Override
@@ -106,7 +121,7 @@ public class TrialFragment extends Fragment implements WebserviceWrapper.Webserv
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        ((AuthorHostActivity) getActivity()).stopProgress();
+        ((AuthorHostActivity) getActivity()).hideProgress();
         try {
             ResponseHandler responseHandler = (ResponseHandler) object;
             if (API_METHOD == WebConstants.GETALLEXAM) {

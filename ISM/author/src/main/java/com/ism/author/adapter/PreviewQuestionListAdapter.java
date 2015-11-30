@@ -75,9 +75,12 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
 
             holder.llPreviewQuestionAnswers.removeAllViews();
             if (holder.llPreviewQuestionAnswers.getChildCount() == 0) {
-                for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
-                    View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
-                    holder.llPreviewQuestionAnswers.addView(ansView);
+
+                if (arrListQuestions.get(position).getAnswers() != null) {
+                    for (int i = 0; i < arrListQuestions.get(position).getAnswers().size(); i++) {
+                        View ansView = getAnsInflaterView(arrListQuestions.get(position).getAnswers().get(i), i);
+                        holder.llPreviewQuestionAnswers.addView(ansView);
+                    }
                 }
             }
 
@@ -100,23 +103,22 @@ public class PreviewQuestionListAdapter extends RecyclerView.Adapter<PreviewQues
         holder.imgPreviewQuestionEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddEditQuestionFragment(position);
+                openAddEditQuestionFragment(position, false);
             }
         });
 
         holder.imgPreviewQuestionCopy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddEditQuestionFragment(position);
+                openAddEditQuestionFragment(position, true);
             }
         });
 
 
     }
 
-    private void openAddEditQuestionFragment(int position) {
-        getFragment().setDataOnFragmentFlip(arrListQuestions.get(position), true,
-                AddQuestionContainerFragment.FRAGMENT_PREVIEWQUESTION, position);
+    private void openAddEditQuestionFragment(int position, Boolean isCopy) {
+        getFragment().setDataOnFragmentFlip(arrListQuestions.get(position), true, isCopy);
     }
 
 

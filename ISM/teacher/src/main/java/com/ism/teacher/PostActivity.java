@@ -308,7 +308,7 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                     }
                 }
 
-                Attribute attribute=new Attribute();
+                Attribute attribute = new Attribute();
                 attribute.setFeedBy(WebConstants.USER_ID_370);
 //                Log.e(TAG + "Images", "" + listImages);
                 attribute.setImages(listImages);
@@ -865,15 +865,16 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
 
     @Override
     public void onResponse(int API_METHOD, Object object, Exception error) {
-        ResponseHandler responseObj = (ResponseHandler) object;
-        if (responseObj.getStatus().equals(AppConstant.API_STATUS_SUCCESS)) {
-            feed_id = responseObj.getData().get(0).getFeed_id();
+        ResponseHandler responseHandler = (ResponseHandler) object;
+        if (responseHandler.getStatus().equals(ResponseHandler.SUCCESS)) {
+            feed_id = responseHandler.getFeed().get(0).getFeedId();
             if (arrayList != null) {
                 for (int i = 0; i < arrayList.size(); i++) {
                     if (arrayList.get(i).getStrFileType().equals("video")) {
                         mediaType = "video";
 //                        fileName = getPath(arrayList.get(i).getStrFilePath());
                         uploadUri = getPath(arrayList.get(i).getStrFilePath());
+                        ;
                         new UploadFileToServer().execute();
                     } else if (arrayList.get(i).getStrFileType().equals("audio")) {
                         uploadUri = arrayList.get(i).getStrFilePath().getPath();
@@ -881,11 +882,12 @@ public class PostActivity extends Activity implements View.OnClickListener, Webs
                         new UploadFileToServer().execute();
                     }
                 }
+                arrayList.clear();
             }
-            arrayList.clear();
+
             super.onBackPressed();
 
-        } else if (responseObj.getStatus().equals(AppConstant.API_STATUS_FAIL)) {
+        } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
             Toast.makeText(PostActivity.this, "Please try again!", Toast.LENGTH_LONG).show();
         }
 

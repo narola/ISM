@@ -7,6 +7,7 @@
 
 
     <ScrollView
+        android:id="@+id/sv_create_exam"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none">
@@ -31,7 +32,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/strpersonalinformation"
                 android:textAllCaps="true"
-                android:textSize="@dimen/d18sp" />
+                android:textSize="@dimen/d18dp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -61,7 +62,7 @@
                         android:paddingLeft="@dimen/d20dp"
                         android:textColor="@color/color_black"
                         android:textColorHint="@color/color_text_hint"
-                        android:textSize="@dimen/d20sp" />
+                        android:textSize="@dimen/d20dp" />
 
                     <Spinner
                         android:id="@+id/sp_exam_classroom"
@@ -118,7 +119,7 @@
                             android:hint="@string/strexamfor"
                             android:paddingLeft="@dimen/d20dp"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20sp" />
+                            android:textSize="@dimen/d20dp" />
 
                         <ToggleButton
                             android:id="@+id/tb_exam_selectexamfor"
@@ -163,7 +164,7 @@
                     android:orientation="horizontal">
 
                     <Spinner
-                        android:id="@+id/sp_exam_examname"
+                        android:id="@+id/sp_exam_examcategory"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -207,7 +208,7 @@
                         android:paddingLeft="@dimen/d20dp"
                         android:textColor="@color/color_black"
                         android:textColorHint="@color/color_text_hint"
-                        android:textSize="@dimen/d20sp" />
+                        android:textSize="@dimen/d20dp" />
 
                 </LinearLayout>
 
@@ -232,7 +233,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/strexamschedule"
                 android:textAllCaps="true"
-                android:textSize="@dimen/d18sp" />
+                android:textSize="@dimen/d18dp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -258,15 +259,20 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <RelativeLayout
+                        <LinearLayout
+                            android:id="@+id/ll_exam_startdate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
 
                             <EditText
                                 android:id="@+id/et_exam_startdate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:background="@drawable/selector"
                                 android:editable="false"
                                 android:gravity="center_vertical"
@@ -274,16 +280,18 @@
                                 android:paddingLeft="@dimen/d20dp"
                                 android:textColor="@color/color_black"
                                 android:textColorHint="@color/color_text_hint"
-                                android:textSize="@dimen/d20sp" />
+                                android:textSize="@dimen/d20dp" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
+                                android:layout_marginLeft="-8dp"
                                 android:background="@drawable/btn_calendar_teacher" />
 
-                        </RelativeLayout>
+
+                        </LinearLayout>
 
                         <CheckBox
                             android:id="@+id/cb_exam_startdate_notify"
@@ -291,30 +299,34 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d15dp"
                             android:layout_marginTop="@dimen/d20dp"
-                            android:button="@drawable/notify_checkbox_assignment"
+                            android:button="@drawable/notify_checkbox"
                             android:checked="true"
                             android:padding="@dimen/d10dp"
                             android:text="@string/strnotifystudent"
                             android:textColor="@color/color_text_hint"
-                            android:textSize="@dimen/d18sp" />
+                            android:textSize="@dimen/d18dp" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_exam_enddate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/d10dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
                             <EditText
                                 android:id="@+id/et_exam_enddate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:background="@drawable/selector"
                                 android:editable="false"
                                 android:gravity="center_vertical"
@@ -322,16 +334,17 @@
                                 android:paddingLeft="@dimen/d20dp"
                                 android:textColor="@color/color_black"
                                 android:textColorHint="@color/color_text_hint"
-                                android:textSize="@dimen/d20sp" />
+                                android:textSize="@dimen/d20dp" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
+                                android:layout_marginLeft="-8dp"
                                 android:background="@drawable/btn_calendar_teacher" />
 
-                        </RelativeLayout>
+                        </LinearLayout>
 
                         <CheckBox
                             android:id="@+id/cb_exam_enddate_notify"
@@ -339,12 +352,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d15dp"
                             android:layout_marginTop="@dimen/d20dp"
-                            android:button="@drawable/notify_checkbox_assignment"
+                            android:button="@drawable/notify_checkbox"
                             android:checked="true"
                             android:padding="@dimen/d10dp"
                             android:text="@string/strnotifystudent"
                             android:textColor="@color/color_text_hint"
-                            android:textSize="@dimen/d18sp" />
+                            android:textSize="@dimen/d18dp" />
                     </LinearLayout>
 
 
@@ -369,7 +382,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/strexaminstruction"
                 android:textAllCaps="true"
-                android:textSize="@dimen/d18sp" />
+                android:textSize="@dimen/d18dp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -400,7 +413,7 @@
                         android:layout_weight="1"
                         android:text="@string/strdeclareresults"
                         android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20sp" />
+                        android:textSize="@dimen/d20dp" />
 
 
                     <RadioGroup
@@ -412,6 +425,7 @@
                         android:paddingLeft="@dimen/d15dp">
 
                         <RadioButton
+                            android:id="@+id/radio_btn_declareresult_yes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:button="@null"
@@ -422,6 +436,7 @@
                             android:textSize="@dimen/d20dp" />
 
                         <RadioButton
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/d15dp"
@@ -462,6 +477,7 @@
                         android:paddingLeft="@dimen/d15dp">
 
                         <RadioButton
+                            android:id="@+id/radio_btn_negativemarking_yes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:button="@null"
@@ -551,7 +567,7 @@
                         android:paddingLeft="@dimen/d15dp">
 
                         <RadioButton
-
+                            android:id="@+id/radio_btn_randomquestion_yes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:button="@null"
@@ -570,7 +586,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/strno"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20sp" />
+                            android:textSize="@dimen/d20dp" />
                     </RadioGroup>
                 </LinearLayout>
 
@@ -590,10 +606,11 @@
                         android:layout_weight="1"
                         android:text="@string/strusescore"
                         android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20sp" />
+                        android:textSize="@dimen/d20dp" />
 
 
                     <RadioGroup
+
                         android:id="@+id/radio_exam_usescore"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -602,6 +619,7 @@
                         android:paddingLeft="@dimen/d15dp">
 
                         <RadioButton
+                            android:id="@+id/radio_btn_examuserscore_yes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:button="@null"
@@ -609,7 +627,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/stryes"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20sp" />
+                            android:textSize="@dimen/d20dp" />
 
                         <RadioButton
                             android:layout_width="wrap_content"
@@ -620,7 +638,7 @@
                             android:drawablePadding="@dimen/d15dp"
                             android:text="@string/strno"
                             android:textColor="@color/color_black_light"
-                            android:textSize="@dimen/d20sp" />
+                            android:textSize="@dimen/d20dp" />
                     </RadioGroup>
                 </LinearLayout>
 
@@ -642,7 +660,7 @@
                         android:layout_weight="1"
                         android:text="@string/strscorevalue"
                         android:textColor="@color/color_black_light"
-                        android:textSize="@dimen/d20sp" />
+                        android:textSize="@dimen/d20dp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -659,7 +677,7 @@
                             android:inputType="number"
                             android:paddingLeft="@dimen/d20dp"
                             android:textColor="@color/color_black"
-                            android:textSize="@dimen/d20sp" />
+                            android:textSize="@dimen/d20dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -668,7 +686,10 @@
                     android:id="@+id/rte_trial_exam"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/rich_text_editor_height"
-                    android:layout_margin="@dimen/d15dp"/>
+                    android:layout_marginRight="@dimen/d15dp"
+                    android:layout_marginTop="@dimen/d15dp">
+
+                </com.narola.kpa.richtexteditor.view.RichTextEditor>
             </LinearLayout>
 
 
@@ -684,11 +705,11 @@
                     android:id="@+id/btn_exam_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_save_assignment"
+                    android:background="@drawable/btn_green"
                     android:text="@string/strsave"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20sp" />
+                    android:textSize="@dimen/d20dp" />
 
                 <Button
                     android:id="@+id/btn_exam_setquestion"
@@ -699,8 +720,8 @@
                     android:text="@string/strsetquestion"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20sp"
-                    android:visibility="visible"/>
+                    android:textSize="@dimen/d20dp"
+                    android:visibility="visible" />
 
                 <Button
                     android:id="@+id/btn_exam_cancel"
@@ -711,7 +732,7 @@
                     android:text="@string/strcancel"
                     android:textAllCaps="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/d20sp" />
+                    android:textSize="@dimen/d20dp" />
 
             </LinearLayout>
         </LinearLayout>
