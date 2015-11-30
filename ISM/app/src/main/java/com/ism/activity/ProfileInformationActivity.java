@@ -49,7 +49,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import model.User;
-import model.UserHelper;
+import realmhelper.UserHelper;
 
 /**
  * Created by c161 on 07/10/15.

@@ -222,6 +222,12 @@
     <string name="notifications">Notifications</string>
     <string name="strdescriptive">descriptive</string>
     <string name="strmcq">MCQ</string>
+    <string name="strAboutMe">About Me</string>
+    <string name="strBooks">Books</string>
+    <string name="strAssignments">Assignments</string>
+    <string name="strEducation">Education :</string>
+    <string name="strMyDesk">My Desk</string>
+
 
     <!--string array-->
 

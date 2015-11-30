@@ -3,7 +3,6 @@ package com.ism.teacher.activity;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,8 +25,6 @@ import com.ism.teacher.R;
 import com.ism.teacher.Utility.ControllerTopMenuItem;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.adapters.ControllerTopSpinnerAdapter;
-import com.ism.teacher.fragments.ExamObjectiveDetailFragment;
-import com.ism.teacher.fragments.ExamSubjectiveDetailFragment;
 import com.ism.teacher.fragments.StudentAttemptedFragment;
 import com.ism.teacher.fragments.TeacherChatFragment;
 import com.ism.teacher.fragments.TeacherHomeFragment;
@@ -50,7 +47,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     private LinearLayout llControllerLeft, llSearch;
     public FrameLayout flFragmentContainerMain, flFragmentContainerRight;
     private RelativeLayout rlControllerTopMenu, rlAddPost;
-    private ImageView imgHome, imgTutorial, imgOffice, imgAssessment, imgDesk, imgReportCard, imgLogOut, imgSearch, imgNotes, img_teacher_profile, imgChat, imgBack;
+    private ImageView imgHome, imgTutorial, imgOffice, imgAssessment, imgDesk, imgReportCard, imgLogOut, imgSearch, imgUpcomings, img_teacher_profile, imgChat, imgBack;
     private TextView txtTitle, txtOne, txtTwo, txtThree, txtFour, txtFive, txtSix, txtAction, txtAddPost;
     private EditText etSearch;
     private Spinner spSubmenu;
@@ -68,34 +65,18 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     public static final int FRAGMENT_TEACHER_HOME = 9;
     public static final int FRAGMENT_TEACHER_TUTORIAL_GROUP = 10;
     public static final int FRAGMENT_TEACHER_OFFICE = 11;
-
-    //    public static final int FRAGMENT_ADDQUESTION = 12;
-    public static final int FRAGMENT_EXAM_OBJECTIVE_DETAILS = 13;
-    public static final int FRAGMENT_EXAM_SUBJECTIVE_DETAILS = 14;
-    public static final int FRAGMENT_STUDENT_ATTEMPTED = 15;
-    public static final int FRAGMENT_ADDQUESTION_CONTAINER = 16;
-
+    public static final int FRAGMENT_STUDENT_ATTEMPTED = 12;
 
     public static int currentMainFragment;
     public static int currentRightFragment;
     private int currentMainFragmentBg;
 
-    //ry
     private ArrayList<ControllerTopMenuItem> controllerTopMenuOffice, controllerTopMenuQuiz;
     private HostListener listenerHost;
     private AddTopicsListener addTopicsListener;
 
-
     private ActionProcessButton progress_bar;
     private ProgressGenerator progressGenerator;
-
-
-    ExamSubjectiveDetailFragment examSubjectiveDetailFragment;
-    ExamObjectiveDetailFragment examObjectiveDetailFragment;
-    StudentAttemptedFragment studentAttemptedFragment;
-
-
-    //latest changes
 
     FragmentTransaction mFragmentTransaction;
     FragmentManager mFragmentManager;
@@ -142,7 +123,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         imgReportCard = (ImageView) findViewById(R.id.img_reportcard);
         imgLogOut = (ImageView) findViewById(R.id.img_logout);
         imgSearch = (ImageView) findViewById(R.id.img_search);
-        imgNotes = (ImageView) findViewById(R.id.img_notes);
+        imgUpcomings = (ImageView) findViewById(R.id.img_upcomings);
         img_teacher_profile = (ImageView) findViewById(R.id.img_teacher_profile);
         imgChat = (ImageView) findViewById(R.id.img_chat);
         txtTitle = (TextView) findViewById(R.id.txt_title);
@@ -172,7 +153,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         imgHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                loadFragmentInMainContainer(FRAGMENT_HOME);
                 loadFragmentInMainContainer(FRAGMENT_TEACHER_HOME, null);
             }
         });
@@ -186,7 +166,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         imgOffice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                loadFragmentInMainContainer(FRAGMENT_CLASSROOM);
                 loadFragmentInMainContainer(FRAGMENT_TEACHER_OFFICE, null);
             }
         });
@@ -226,7 +205,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
             }
         });
 
-        imgNotes.setOnClickListener(new View.OnClickListener() {
+        imgUpcomings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadFragmentInRightContainer(FRAGMENT_UPCOMING_EVENTS);
@@ -269,19 +248,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     }
 
-//    public void loadAddQuestionContainerFragment(int fragment, Bundle fragmentArgument) {
-//        try {
-//
-//            switch (fragment) {
-//
-//            }
-//        } catch (Exception e)
-//
-//        {
-//            Log.e(TAG, "loadAddQuestionContainerFragment Exception : " + e.toString());
-//        }
-//    }
-
     public void loadFragmentInMainContainer(int fragment, Bundle fragmentArgument) {
         try {
             switch (fragment) {
@@ -301,46 +267,16 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, teacherOfficeFragment).commit();
                     break;
 
-//                case FRAGMENT_ADDQUESTION_CONTAINER:
-//                    mFragmentTransaction = mFragmentManager.beginTransaction();
-//                    mFragmentTransaction.add(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance(fragmentArgument));
-//                    mFragmentTransaction.addToBackStack(String.valueOf(FRAGMENT_ADDQUESTION_CONTAINER));
-//                    mFragmentTransaction.commit();
-//                    break;
-
-
-                /*case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamObjectiveDetailFragment.newInstance()).commit();
-
-                    break;
-                case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, ExamSubjectiveDetailFragment.newInstance()).commit();
-                    break;*/
-
-
-               /* case FRAGMENT_ADDQUESTION:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main, AddQuestionContainerFragment.newInstance(FRAGMENT_ADDQUESTION)).commit();
-                    flFragmentContainerRight.setVisibility(View.GONE);
-                    break;*/
-
-
             }
         } catch (Exception e) {
             Log.e(TAG, "loadFragmentInMainContainer Exception : " + e.toString());
         }
     }
 
-
-    public void loadStudentAttemptedFragmentAlongEvaluation(Context context, String examid, String studentid, boolean callEvaluationApiFlag) {
-        studentAttemptedFragment = new StudentAttemptedFragment(context, examid, studentid, true);
-        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, studentAttemptedFragment).commit();
-    }
-
     //these is for the load fragment in right container.
     public void loadFragmentInRightContainer(int fragment) {
         try {
             switch (fragment) {
-
                 case FRAGMENT_UPCOMING_EVENTS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, UpcomingEventsFragment.newInstance()).commit();
                     break;
@@ -352,7 +288,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, UserProfileFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_STUDENT_ATTEMPTED:
-                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedFragment.newInstance()).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_right, StudentAttemptedFragment.newInstance(null)).commit();
                     break;
             }
 
@@ -369,31 +305,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
         try {
             switch (fragment) {
-
-                //called when add question container is replaced in main fragment instead of from inside Teacher Office fragment
-
-//                case FRAGMENT_ADDQUESTION_CONTAINER:
-//                    imgHome.setActivated(false);
-//                    flFragmentContainerRight.setVisibility(View.GONE);
-//                    currentMainFragment = fragment;
-//
-//                    currentMainFragmentBg = R.color.bg_classroom;
-//                    txtAction.setVisibility(View.GONE);
-//                    imgOffice.setActivated(false);
-//                    rlControllerTopMenu.setVisibility(View.VISIBLE);
-//                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
-//                    txtAction.setTextColor(getResources().getColor(R.color.bg_classroom));
-//
-//                    txtAction.setVisibility(View.GONE);
-//                    txtTitle.setVisibility(View.VISIBLE);
-//                    txtTitle.setText(getString(R.string.assignment));
-//                    txtTitle.setTextColor(getResources().getColor(R.color.bg_classroom));
-//
-//                    imgBack.setVisibility(View.VISIBLE);
-//                    //  loadControllerTopMenu(null);
-//                    llControllerLeft.setVisibility(View.VISIBLE);
-//                    break;
-
                 case FRAGMENT_HOME:
                     currentMainFragment = fragment;
                     imgHome.setActivated(true);
@@ -404,7 +315,7 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
                 case FRAGMENT_UPCOMING_EVENTS:
                     currentRightFragment = fragment;
-                    imgNotes.setActivated(true);
+                    imgUpcomings.setActivated(true);
                     llControllerLeft.setVisibility(View.VISIBLE);
                     break;
                 case FRAGMENT_USER_PROFILE:
@@ -449,29 +360,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     flFragmentContainerRight.setVisibility(View.VISIBLE);
                     break;
 
-
-                case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
-                    currentMainFragment = fragment;
-                    imgHome.setActivated(false);
-                    currentMainFragmentBg = R.color.bg_classroom;
-                    imgOffice.setActivated(true);
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
-                    hideControllerTopAction();
-                    txtTitle.setText("");
-                    llControllerLeft.setVisibility(View.VISIBLE);
-                    break;
-
-
-                case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
-                    currentMainFragment = fragment;
-                    imgHome.setActivated(false);
-                    currentMainFragmentBg = R.color.bg_classroom;
-                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_classroom);
-                    hideControllerTopAction();
-                    txtTitle.setText("");
-                    llControllerLeft.setVisibility(View.GONE);
-                    break;
-
             }
         } catch (Exception e) {
             Log.e(TAG, "onFragmentAttached Exception : " + e.toString());
@@ -482,20 +370,12 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
     public void onFragmentDetached(int fragment) {
         try {
             switch (fragment) {
-
-                //called when question container is detached from main container frag
-//                case FRAGMENT_ADDQUESTION_CONTAINER:
-//                    imgOffice.setActivated(false);
-//                    flFragmentContainerRight.setVisibility(View.VISIBLE);
-//                    break;
-
-
                 case FRAGMENT_HOME:
                     imgHome.setActivated(false);
                     break;
 
                 case FRAGMENT_UPCOMING_EVENTS:
-                    imgNotes.setActivated(false);
+                    imgUpcomings.setActivated(false);
                     break;
                 case FRAGMENT_USER_PROFILE:
                     img_teacher_profile.setActivated(false);
@@ -515,13 +395,6 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
                     break;
                 case FRAGMENT_TEACHER_OFFICE:
                     imgOffice.setActivated(false);
-                    break;
-
-                case FRAGMENT_EXAM_OBJECTIVE_DETAILS:
-                    imgOffice.setActivated(true);
-                    break;
-                case FRAGMENT_EXAM_SUBJECTIVE_DETAILS:
-                    llControllerLeft.setVisibility(View.VISIBLE);
                     break;
 
             }
@@ -721,13 +594,13 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
         progress_bar.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e(TAG, "inside on resume host activity");
-        loadFragmentInMainContainer(FRAGMENT_TEACHER_HOME, null);
-
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        Log.e(TAG, "inside on resume host activity");
+//        loadFragmentInMainContainer(FRAGMENT_TEACHER_HOME, null);
+//
+//    }
 
     public void showRightContainerFragment() {
         flFragmentContainerRight.setVisibility(View.VISIBLE);
@@ -735,6 +608,14 @@ public class TeacherHostActivity extends Activity implements FragmentListener {
 
     public void hideRightContainerFragment() {
         flFragmentContainerRight.setVisibility(View.GONE);
+    }
+
+    public void hideTxtAction() {
+        txtAction.setVisibility(View.GONE);
+    }
+
+    public void showTxtAction() {
+        txtAction.setVisibility(View.VISIBLE);
     }
 
 

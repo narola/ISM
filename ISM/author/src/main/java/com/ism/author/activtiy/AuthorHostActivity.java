@@ -44,6 +44,7 @@ import com.ism.author.fragment.StudentAttemptedFragment;
 import com.ism.author.fragment.TrialExamObjectiveDetailFragment;
 import com.ism.author.fragment.TrialExamSujectiveDetailFragment;
 import com.ism.author.fragment.TrialFragment;
+import com.ism.author.fragment.mydesk.MyDeskFragment;
 import com.ism.author.fragment.userprofile.AllMessageFragment;
 import com.ism.author.fragment.userprofile.AllNotificationFragment;
 import com.ism.author.fragment.userprofile.AllStudymateRequestFragment;
@@ -80,23 +81,22 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     RelativeLayout rlControllerTop, rlControllerTopMenu;
     LinearLayout llSearch, llControllerLeft;
     FrameLayout flFragmentContainerMain, flFragmentContainerRight;
-
     ImageView imgLogo, imgHome, imgBack, imgSearch, imgOffice, imgBooks, imgEditProfileHome, imgEditProfileTutorial, imgEditProfileClassroom,
             imgEditProfileAssesment, imgAuthorProfile, imgHighScore;
     Spinner spSubmenu;
-
     TextView txtTitle, txtAction;
+
     EditText etSearch;
-
     private View.OnClickListener onClickMenuItem;
+
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
-
-
     private HostListenerProfileController listenerHostProfileController;
 
+
     private HostListenerAllNotification listenerHostAllNotification;
+
     private HostListenerAllMessage listenerHostAllMessage;
-    private ArrayList<ControllerTopMenuItem> controllerTopMenuTrial, currentControllerTopMenu, controllerTopMenuAssessment;
+    private ArrayList<ControllerTopMenuItem> controllerTopMenuTrial, currentControllerTopMenu, controllerTopMenuAssessment, controlTopMenuMyDesk;
     /*
     * these are the fragments for the main fragment.
     * */
@@ -118,6 +118,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public static final int FRAGMENT_ALL_MESSAGE = 18;
     public static final int FRAGMENT_ALL_NOTIFICATION = 19;
     public static final int FRAGMENT_ALL_STUDYMATE_REQUEST = 20;
+    public static final int FRAGMENT_MY_DESK = 21;
 
 
     //these are the right side fragments
@@ -217,6 +218,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         imgEditProfileAssesment = (ImageView) findViewById(R.id.img_edit_profile_assesment);
 
         controllerTopMenuTrial = ControllerTopMenuItem.getMenuTrial(AuthorHostActivity.this);
+        controlTopMenuMyDesk = ControllerTopMenuItem.getMenuMyDesk(AuthorHostActivity.this);
         controllerTopMenuAssessment = ControllerTopMenuItem.getMenuAssessment(AuthorHostActivity.this);
 
         spSubmenu = (Spinner) findViewById(R.id.sp_submenu);
@@ -354,6 +356,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
                             AllStudymateRequestFragment.newInstance(bundleArgument)).commit();
                     break;
+                case FRAGMENT_MY_DESK:
+                    getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
+                            MyDeskFragment.newInstance()).commit();
+                    break;
             }
             currentMainFragment = fragment;
 
@@ -436,9 +442,19 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
                 case FRAGMENT_OFFICE:
                     imgHome.setActivated(false);
+                    imgOffice.setActivated(true);
                     currentMainFragment = fragment;
                     txtAction.setTextColor(getResources().getColor(R.color.bg_office));
                     loadControllerTopMenu(null);
+                    break;
+                case FRAGMENT_MY_DESK:
+                    imgHome.setActivated(false);
+                    currentMainFragment = fragment;
+                    txtAction.setTextColor(getResources().getColor(R.color.bg_office));
+                    loadControllerTopMenu(controlTopMenuMyDesk);
+                    imgOffice.setActivated(true);
+                    rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_office);
+                    hideControllerTopAction();
                     break;
 
                 case FRAGMENT_BOOKS:
@@ -516,7 +532,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     rlControllerTopMenu.setBackgroundResource(R.drawable.bg_controller_top_office);
                     hideControllerTopAction();
                     txtTitle.setText("");
-
 
                     break;
 
@@ -597,6 +612,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     listenerHostProfileController.onSubFragmentAttached(fragment);
                     break;
                 case FRAGMENT_VIEW_PROFILE:
+                    imgOffice.setActivated(true);
                     currentMainFragment = fragment;
                     listenerHostProfileController.onSubFragmentAttached(fragment);
                     break;
@@ -634,7 +650,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
 
                 case FRAGMENT_TRIAL:
-                    imgOffice.setActivated(true);
+                    // imgOffice.setActivated(true);
+                    break;
+                case FRAGMENT_MY_DESK:
+                    // imgOffice.setActivated(true);
                     break;
 
                 case FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT:
@@ -718,7 +737,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 rlControllerTopMenu.setVisibility(View.GONE);
             } else {
                 rlControllerTopMenu.setVisibility(View.VISIBLE);
-                txtTitle.setVisibility(View.GONE);
+                // txtTitle.setVisibility(View.GONE);
                 hideControllerTopControls();
                 if (currentMainFragment != FRAGMENT_HOME) {
                     Utility.startSlideAnimation(imgBack, -1000, 0, 0, 0);
@@ -847,6 +866,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             listenerHostAllNotification.onControllerTopBackClick();
         } else if (currentMainFragment == FRAGMENT_ALL_MESSAGE) {
             listenerHostAllMessage.onControllerTopBackClick();
+        } else if (currentMainFragment == FRAGMENT_MY_DESK) {
+            loadFragmentInMainContainer(FRAGMENT_OFFICE, null);
         }
 
 
@@ -986,7 +1007,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 onResponseGetAllBadges(object, error);
             }
         } catch (Exception e) {
-            Log.e(TAG, "On response Exception : " + e.getLocalizedMessage());
+            Debug.i(TAG, "On response Exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -996,7 +1017,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             if (object != null) {
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-                    Log.e(TAG, "Successload badges count");
+                    Debug.i(TAG, "Successload badges count");
                     String count = responseHandler.getBadges().get(0).getNotificationCount();
                     PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_NOTIFICATION, this, count != null ? Integer.valueOf(count) : 0);
 
@@ -1006,13 +1027,13 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     count = responseHandler.getBadges().get(0).getRequestCount();
                     PreferenceData.setIntPrefs(PreferenceData.BADGE_COUNT_REQUEST, this, count != null ? Integer.valueOf(count) : 0);
                 } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-                    Log.e(TAG, "Failed to load badges count");
+                    Debug.i(TAG, "Failed to load badges count");
                 }
             } else if (error != null) {
-                Log.e(TAG, "onResponseGetAllBadges api Exceptiion : " + error.toString());
+                Debug.i(TAG, "onResponseGetAllBadges api Exceptiion : " + error.toString());
             }
         } catch (Exception e) {
-            Log.e(TAG, "onResponseGetAllBadges Exceptiion : " + e.toString());
+            Debug.i(TAG, "onResponseGetAllBadges Exceptiion : " + e.toString());
         }
     }
 

@@ -1,0 +1,14 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:innerRadius="0dp"
+    android:shape="ring"
+    android:thicknessRatio="2"
+    android:useLevel="false">
+    <solid android:color="@android:color/transparent" />
+
+    <stroke
+        android:width="3dp"
+        android:color="@color/bg_office" />
+    <size
+        android:width="@dimen/d15dp"
+        android:height="@dimen/d15dp" />
+</shape>

@@ -19,7 +19,7 @@ import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
 import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.Adapters;
-import com.ism.teacher.adapters.AssignmentSubjectsAdapter;
+import com.ism.teacher.adapters.AssignmentsAdapter;
 import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.ws.helper.Attribute;
@@ -58,7 +58,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
 
     //Objects
     Fragment mFragment;
-    AssignmentSubjectsAdapter assignmentSubjectsAdapter;
+    AssignmentsAdapter assignmentsAdapter;
 
 
     private String examStartDate = "", examEndDate = "";
@@ -82,11 +82,11 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
     }
 
     private void initGlobal(View view) {
-        assignmentSubjectsAdapter = new AssignmentSubjectsAdapter(getActivity(), this);
+        assignmentsAdapter = new AssignmentsAdapter(getActivity(), this);
         recyclerAssignmentSubjects = (RecyclerView) view.findViewById(R.id.recycler_assignment_subjects);
         recyclerAssignmentSubjects.setHasFixedSize(true);
         recyclerAssignmentSubjects.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        recyclerAssignmentSubjects.setAdapter(assignmentSubjectsAdapter);
+        recyclerAssignmentSubjects.setAdapter(assignmentsAdapter);
 
         spAssignmentSubject = (Spinner) view.findViewById(R.id.sp_assignment_subject);
         spAssignmentClasswise = (Spinner) view.findViewById(R.id.sp_assignment_classwise);
@@ -276,7 +276,7 @@ public class TeacherQuizHomeFragment extends Fragment implements WebserviceWrapp
         if (responseHandler.getStatus().equals(WebConstants.API_STATUS_SUCCESS)) {
 
             arrayListAssignments.addAll(responseHandler.getExams());
-            assignmentSubjectsAdapter.addAll(arrayListAssignments);
+            assignmentsAdapter.addAll(arrayListAssignments);
 
         } else {
 

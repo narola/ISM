@@ -72,7 +72,7 @@ public class MyActivityAdapter extends RecyclerView.Adapter<MyActivityAdapter.Vi
 	}
 
 	@Override
-	public void onBindViewHolder(final ViewHolder holder, int position) {
+	public void onBindViewHolder(ViewHolder holder, int position) {
 		try {
 
 			if (position == 0 || !arrListActivity.get(position).getTime().equals(arrListActivity.get(position - 1).getTime())) {

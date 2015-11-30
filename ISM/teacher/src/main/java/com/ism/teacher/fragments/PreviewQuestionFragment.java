@@ -1,5 +1,6 @@
 package com.ism.teacher.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +13,8 @@ import android.widget.TextView;
 import com.ism.teacher.R;
 import com.ism.teacher.Utility.Debug;
 import com.ism.teacher.Utility.Utility;
+import com.ism.teacher.activity.TeacherHostActivity;
 import com.ism.teacher.adapters.PreviewQuestionListAdapter;
-import com.ism.teacher.constants.AppConstant;
 import com.ism.teacher.constants.WebConstants;
 import com.ism.teacher.helper.MyTypeFace;
 import com.ism.teacher.ws.helper.Attribute;
@@ -41,16 +42,29 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
 
     //ArrayList
-    public ArrayList<Questions> listOfPreviewQuestions = new ArrayList<>();
+    public ArrayList<Questions> arrListQuestions = new ArrayList<>();
 
 
-    public PreviewQuestionFragment(Fragment fragment) {
-        // Required empty public constructor
+    @SuppressLint("ValidFragment")
+    public PreviewQuestionFragment(Fragment fragment, Bundle bundleArguments) {
         this.mFragment = fragment;
+        this.setArguments(bundleArguments);
     }
 
-    public PreviewQuestionFragment(){}
+    public PreviewQuestionFragment() {
+    }
+
     Attribute attribute = new Attribute();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            arrListQuestions = getArguments().getParcelableArrayList(GetObjectiveAssignmentQuestionsFragment.ARG_ARR_LIST_QUESTIONS);
+            Debug.e(TAG, "THE SIZE OF ARRAYLIST IS" + arrListQuestions.size());
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,16 +87,6 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
         rvPreviewquestionlist.setAdapter(previewQuestionListAdapter);
         rvPreviewquestionlist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-/*        adapter = new RecyclerListAdapter(getActivity(), this);
-//        rvPreviewquestionlist.setHasFixedSize(true);
-        rvPreviewquestionlist.setAdapter(adapter);
-        rvPreviewquestionlist.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        callback.isItemViewSwipeEnabled();
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(rvPreviewquestionlist);*/
-
         tv_freeze_question.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,12 +94,16 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
                 callApiFreezeQuestions();
             }
         });
+        if (getArguments() != null) {
+            previewQuestionListAdapter.addAll(this.arrListQuestions);
+            getFragment().updateQuestionStatusAfterSetDataOfExam(arrListQuestions);
+        }
 
     }
 
     private void callApiFreezeQuestions() {
         if (Utility.isOnline(getActivity())) {
-            if (listOfPreviewQuestions.size() > 0) {
+            if (arrListQuestions.size() > 0) {
                 try {
                     Attribute attribute = new Attribute();
                     attribute.setExamId("61");
@@ -119,20 +127,20 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
     private ArrayList<String> getQuestionIdList() {
 
-        for (int i = 0; i < listOfPreviewQuestions.size(); i++) {
-            questionIdList.add(listOfPreviewQuestions.get(i).getQuestionId());
+        for (int i = 0; i < arrListQuestions.size(); i++) {
+            questionIdList.add(arrListQuestions.get(i).getQuestionId());
         }
         return questionIdList;
 
     }
 
 
-    public void addQuestionsToPreviewFragment(ArrayList<Questions> data) {
+    public void addQuestionsToPreviewFragment(ArrayList<Questions> arrListQuestionsToAdd) {
 
-        if (data.size() > 0) {
+        if (arrListQuestionsToAdd.size() > 0) {
 
-            listOfPreviewQuestions.addAll(data);
-            previewQuestionListAdapter.addAll(listOfPreviewQuestions);
+            arrListQuestions.addAll(arrListQuestionsToAdd);
+            previewQuestionListAdapter.addAll(arrListQuestions);
 
         }
 
@@ -140,33 +148,57 @@ public class PreviewQuestionFragment extends Fragment implements WebserviceWrapp
 
 
     @Override
-    public void onResponse(int apiMethodName, Object object, Exception error) {
+    public void onResponse(int apiCode, Object object, Exception error) {
+
         try {
-            if (apiMethodName == WebConstants.SET_QUESTIONS_FOR_EXAM) {
-
-                ResponseHandler callGetFreezeQuesytionResponseHandler = (ResponseHandler) object;
-                if (callGetFreezeQuesytionResponseHandler != null && callGetFreezeQuesytionResponseHandler.getStatus().equals(AppConstant.API_STATUS_SUCCESS)) {
-
-                    Utility.showToast("Freeze question successful", getActivity());
-
-                } else {
-                    Utility.showToast("Freeze question not successful", getActivity());
-                }
-
+            switch (apiCode) {
+                case WebConstants.SET_QUESTIONS_FOR_EXAM:
+                    onResponseSetQuestionsForExam(object, error);
+                    break;
             }
         } catch (Exception e) {
-            Debug.e(TAG + getString(R.string.strerrormessage), e.getLocalizedMessage());
+            Debug.e(TAG, "onResponse Exception : " + e.toString());
+        }
+
+
+    }
+
+    private void onResponseSetQuestionsForExam(Object object, Exception error) {
+        try {
+            ((TeacherHostActivity) getActivity()).stopProgress();
+            if (object != null) {
+                ResponseHandler responseObj = (ResponseHandler) object;
+                if (responseObj.getStatus().equals(ResponseHandler.SUCCESS)) {
+                    Utility.showToast(getActivity().getString(R.string.str_success_setexamquestions), getActivity());
+                } else if (responseObj.getStatus().equals(ResponseHandler.FAILED)) {
+                    Utility.showToast(responseObj.getMessage(), getActivity());
+                }
+            } else if (error != null) {
+                Debug.e(TAG, "onResponseSetQuestionForExam api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Debug.e(TAG, "onResponseSetQuestionForExam Exception : " + e.toString());
         }
 
     }
 
-    public void updateQuestionDataAfterEditQuestion() {
-        int position = getFragment().getPOSITION_FOR_EDITQUESTION();
-        listOfPreviewQuestions.get(position).setQuestionText("test");
-        previewQuestionListAdapter.addAll(listOfPreviewQuestions);
+    public void updateQuestionDataAfterEditQuestion(Questions prevQuestionData, Questions updatedQuestionData, Boolean isChecked) {
+        int position = arrListQuestions.indexOf(prevQuestionData);
+        if (position != -1) {
+            arrListQuestions.set(position, updatedQuestionData);
+            previewQuestionListAdapter.addAll(arrListQuestions);
+            previewQuestionListAdapter.notifyDataSetChanged();
+        } else {
+            if (isChecked) {
+                addQuestionDataAfterAddQuestion(updatedQuestionData);
+            }
+        }
+    }
+
+    public void addQuestionDataAfterAddQuestion(Questions question) {
+        arrListQuestions.add(0, question);
+        previewQuestionListAdapter.addAll(arrListQuestions);
         previewQuestionListAdapter.notifyDataSetChanged();
-
-
     }
 
     private AddQuestionContainerFragment getFragment() {

@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="Ques"
+                android:text="@string/strtest"
                 android:textAllCaps="true"
                 android:textColor="@color/color_blue"
                 android:textSize="@dimen/d15dp" />
@@ -50,10 +50,10 @@
                 android:id="@+id/tv_subjective_question_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/d10dp"
                 android:singleLine="true"
                 android:text="@string/strScore"
                 android:textAllCaps="true"
+
                 android:textColor="@color/color_question"
                 android:textSize="@dimen/d15dp" />
         </LinearLayout>
@@ -122,7 +122,7 @@
                 android:id="@+id/tv_subjective_question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:text="@string/strtest"
                 android:textColor="@color/color_gray"
                 android:textSize="@dimen/d18dp" />
 
@@ -139,16 +139,16 @@
                 android:layout_height="wrap_content"
                 android:text="@string/stryouranswer"
                 android:textColor="@color/color_answer"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d15dp" />
 
             <TextView
                 android:id="@+id/tv_subjective_question_ans"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/d5dp"
-                android:text=""
+                android:text="@string/strtest"
                 android:textColor="@color/color_answer"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d15dp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -166,16 +166,16 @@
                 android:singleLine="true"
                 android:text="@string/strevaluationnotes"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d15dp" />
 
             <TextView
                 android:id="@+id/tv_subjective_ques_evaluation_notes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/d5dp"
-                android:text="Notes"
+                android:text="@string/strtest"
                 android:textColor="@color/color_answer"
-                android:textSize="@dimen/d18dp" />
+                android:textSize="@dimen/d15dp" />
 
         </LinearLayout>
 
@@ -187,6 +187,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="vertical">
@@ -196,10 +197,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:background="@drawable/excellent_score_color_back"
                 android:gravity="left|center_vertical"
                 android:padding="@dimen/d15dp"
                 android:text="@string/strexcellent"
-                android:textColor="@color/colorAccent"
+                android:textAllCaps="false"
+                android:textColor="@drawable/excellent_score_color_text"
                 android:textSize="@dimen/d20dp" />
 
             <ImageView
@@ -212,10 +215,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:background="@drawable/good_score_color_back"
                 android:gravity="left|center_vertical"
                 android:padding="@dimen/d15dp"
                 android:text="@string/strgood"
-                android:textColor="@color/color_blue"
+                android:textColor="@drawable/good_score_color_text"
                 android:textSize="@dimen/d20dp" />
 
             <ImageView
@@ -228,10 +232,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:background="@drawable/fair_score_color_back"
                 android:gravity="left|center_vertical"
                 android:padding="@dimen/d15dp"
                 android:text="@string/strfair"
-                android:textColor="@color/color_gray"
+                android:textColor="@drawable/fair_score_color_text"
                 android:textSize="@dimen/d20dp" />
 
             <ImageView
@@ -244,10 +249,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:background="@drawable/average_score_color_back"
                 android:gravity="left|center_vertical"
                 android:padding="@dimen/d15dp"
                 android:text="@string/straverage"
-                android:textColor="@color/color_red"
+                android:textColor="@drawable/average_score_color_text"
+
                 android:textSize="@dimen/d20dp" />
 
             <ImageView
@@ -261,10 +268,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:background="@drawable/poor_score_color_back"
                 android:gravity="left|center_vertical"
                 android:padding="@dimen/d15dp"
                 android:text="@string/strpoor"
-                android:textColor="@color/color_green"
+                android:textColor="@drawable/poor_score_color_text"
                 android:textSize="@dimen/d20dp" />
 
             <ImageView
@@ -277,11 +285,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:background="@drawable/fair_score_color_back"
                 android:gravity="left|center_vertical"
                 android:padding="@dimen/d15dp"
                 android:text="@string/strincorrect"
-                android:textColor="@color/color_gray"
+                android:textColor="@drawable/fair_score_color_text"
                 android:textSize="@dimen/d20dp" />
+
 
         </LinearLayout>
 

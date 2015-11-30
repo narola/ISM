@@ -8,7 +8,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by c85 on 19/11/15.
  * {@link RealmObject} class to handle detail of user group information.
- * @relationship with {@link Classrooms}
+ * Relationship with {@link Classrooms}
  */
 public class TutorialGroup extends RealmObject {
 
@@ -21,8 +21,6 @@ public class TutorialGroup extends RealmObject {
     private boolean isCompleted;
     private Date createdDate;
     private Date modifiedDate;
-    private boolean isDelete;
-    private Classrooms classroom;
 
     public int getGroupId() {
         return groupId;
@@ -88,19 +86,5 @@ public class TutorialGroup extends RealmObject {
         this.modifiedDate = modifiedDate;
     }
 
-    public boolean getIsDelete() {
-        return isDelete;
-    }
 
-    public void setIsDelete(boolean isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public Classrooms getClassroom() {
-        return classroom;
-    }
-
-    public void setClassroom(Classrooms classroom) {
-        this.classroom = classroom;
-    }
 }

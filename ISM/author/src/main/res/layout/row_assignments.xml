@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/d5dp">
+
+    <LinearLayout
+        android:id="@+id/ll_exam_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_assessment_box"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <RelativeLayout
+                android:id="@+id/rl_top_exam"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/d100dp"
+                android:background="@drawable/bg_subject_yellow"
+                android:orientation="vertical">
+
+                <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/color_assignment_top_yellow" />-->
+
+                <TextView
+                    android:id="@+id/txt_book_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/d10dp"
+                    android:text="@string/strtest"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/d18dp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/txt_view_all"
+                android:layout_width="@dimen/d100dp"
+                android:layout_height="@dimen/d100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/d75dp"
+                android:layout_marginRight="@dimen/d25dp"
+                android:background="@drawable/bg_circle_white"
+                android:gravity="center"
+                android:padding="@dimen/d15dp"
+                android:singleLine="false"
+                android:textSize="@dimen/d18dp" />
+
+            <TextView
+                android:id="@+id/txt_assignment_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/arrow_green"
+                android:gravity="left"
+                android:layout_below="@+id/rl_top_exam"
+                android:padding="@dimen/d5dp"
+                android:textSize="@dimen/d15dp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/line1"
+                android:layout_below="@+id/txt_assignment_one"
+                android:background="@color/divider_light" />
+            <TextView
+                android:id="@+id/txt_assignment_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/arrow_green"
+                android:gravity="left"
+                android:layout_below="@+id/line1"
+                android:padding="@dimen/d5dp"
+                android:textSize="@dimen/d15dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/line2"
+                android:layout_below="@+id/txt_assignment_two"
+                android:background="@color/assignment_separator" />
+
+            <TextView
+                android:id="@+id/txt_assignment_three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/arrow_green"
+                android:gravity="left"
+                android:layout_below="@+id/line2"
+                android:padding="@dimen/d5dp"
+                android:textSize="@dimen/d15dp" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/assignment_separator" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
