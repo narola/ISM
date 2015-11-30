@@ -2,13 +2,19 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 	<item>
 		<shape>
-			<padding android:bottom="4dp" />
-			<solid android:color="@color/orange" />
+			<padding android:bottom="2dp"/>
+			<solid android:color="@color/border_table"/>
 		</shape>
 	</item>
 	<item>
 		<shape>
-			<solid android:color="@color/studymate_tab_bg" />
+			<padding android:bottom="4dp"/>
+			<solid android:color="@color/orange"/>
+		</shape>
+	</item>
+	<item>
+		<shape>
+			<solid android:color="@color/studymate_tab_bg"/>
 		</shape>
 	</item>
 </layer-list>

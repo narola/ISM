@@ -88,8 +88,11 @@ public class OfficeTabGridAdapter extends BaseAdapter {
                     if (position == 2)
                         ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_TRIAL);
 
-                    if (position == 4)
+                   else if (position == 4)
                         ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_ASSESSMENT);
+
+                    else if (position == 0)
+                        ((OfficeFragment) fragment).loadFragment(OfficeFragment.FRAGMENT_MY_DESK);
 
 
                 }

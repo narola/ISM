@@ -56,9 +56,9 @@ public class WebConstants {
     public static final int RESPOND_TO_REQUEST = 56;
     public static final int UPDATE_READ_STATUS = 57;
 
-    public static final int GET_MY_FEEDS = 58;
-   /*webservice url*/
-
+    public static final int GET_MY_FEEDS =58 ;
+    public static final int GET_ABOUT_ME = 59;
+    /*webservice url*/
     public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
     public static final String URL_FORGOTPASSWORD = URL_KINJAL_HOST + "ForgotPassword";
     public static final String URL_REQUESTCREDENTIALS = URL_KINJAL_HOST + "RequestForCredentials";
@@ -79,12 +79,13 @@ public class WebConstants {
     public static final String URL_CREATEASSIGNMENT = URL_KINJAL_HOST + "CreateAssignment";
     public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
     public static final String URL_GETCOURSES = URL_KINJAL_HOST + "GetCourses";
+
     public static final String URL_CREATEEXAM = URL_KINJAL_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
     public static final String URL_GETALLEXAM = URL_KINJAL_HOST + "GetAllExams";
-    public static final String URL_GETEXAMSUBMISSION = URL_ARTI_HOST + "GetExamSubmission";
     public static final String URL_HASHTAG = URL_KINJAL_HOST + "Hashtag";
 
+    public static final String URL_GETEXAMSUBMISSION = URL_ARTI_HOST + "GetExamSubmission";
     public static final String URL_GETEXAMEVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
     public static final String URL_GETEXAMQUESTIONS = URL_ARTI_HOST + "GetExamQuestions";
     public static final String URL_SETQUESTIONSFOREXAM = URL_KINJAL_HOST + "SetQuestionsForExam";
@@ -100,8 +101,8 @@ public class WebConstants {
     public static final String URL_GETALLHASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
     public static final String URL_RESPOND_TO_REQUEST = URL_KINJAL_HOST + "AcceptRequestFromStudymate";
     public static final String URL_UPDATE_READ_STATUS = URL_KINJAL_HOST + "UpdateReadStatus"; // studymate_request, messages, notification
-    public static final String URL_GET_HIGH_SCORERS = URL_KINJAL_HOST + "GetHighScorers";
 
+    public static final String URL_GET_HIGH_SCORERS = URL_KINJAL_HOST + "GetHighScorers";
     public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
     /*status for apisuccess ans apifailed*/
 
@@ -111,8 +112,10 @@ public class WebConstants {
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
 
-    /*these are the temparory questionData for testing*/
 
+    public static final String STATUS_SUCCESS = "success";
+    public static final String STATUS_FAILED = "failed";
+    /*these are the temparory questionData for testing*/
     public static final String TEST_USER_ID = "370";
     public static final String TEST_USER_NAME = "Admin";
     public static final String TEST_GETSTUDYMATES = "167";

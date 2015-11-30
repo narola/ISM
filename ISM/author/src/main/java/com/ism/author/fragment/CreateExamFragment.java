@@ -735,7 +735,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private void setBundleArguments() {
-
         try {
             getArguments().putString(ARG_EXAM_CLASSROOM_ID, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
                     Integer.parseInt(arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
@@ -745,7 +744,10 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
             getArguments().putString(ARG_EXAM_BOOK_ID, "3");
             getArguments().putString(ARG_EXAM_QUESTION_SCORE, etExamQuestionscorevalue.getText().toString().equals("") ?
                     "0" : etExamQuestionscorevalue.getText().toString());
-            getArguments().putString(ExamsAdapter.ARG_SUBJECT_NAME, arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName());
+            getArguments().putString(ExamsAdapter.ARG_SUBJECT_NAME,
+                    arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName());
+            getArguments().putString(ExamsAdapter.ARG_EXAM_MODE,
+                    arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
         } catch (Exception e) {
             Debug.e(TAG, "SetBundleArgumentsException : " + e.toString());
         }

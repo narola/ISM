@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by c85 on 19/11/15.
  *  {@link RealmObject} class to handle detail of group member information.
- *  @relationship with {@link TutorialGroup},{@link User}
+ *  Relationship with {@link TutorialGroup},{@link User}
  */
 public class TutorialGroupMember extends RealmObject {
     @PrimaryKey

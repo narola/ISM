@@ -60,6 +60,8 @@
     <color name="color_red">#D9524F</color>
     <color name="border_timeline">#ededed</color>
     <color name="text_red_timeline">#fc3f35</color>
-    <color name="bg_timeline_table_head">#F2F2F2</color>
-    <color name="border_timeline_table">#DCDFE4</color>
+    <color name="bg_table_head">#F2F2F2</color>
+    <color name="border_table">#DCDFE4</color>
+    <color name="green_online">#27A611</color>
+    <color name="gray_offline">#b7b7b7</color>
 </resources>

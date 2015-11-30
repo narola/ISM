@@ -112,5 +112,15 @@ public class ControllerTopMenuItem {
         }
         return menu;
     }
+    public static ArrayList<ControllerTopMenuItem> getMenuMyDesk(Context mContext) {
+        ArrayList<ControllerTopMenuItem> menu = null;
+        try {
+            menu = new ArrayList<ControllerTopMenuItem>();
+            menu.add(new ControllerTopMenuItem((mContext.getString(R.string.strMyDesk)), null, null));
 
+        } catch (Exception e) {
+            Debug.e(TAG, "getMenuMyDesk Exception : " + e.toString());
+        }
+        return menu;
+    }
 }

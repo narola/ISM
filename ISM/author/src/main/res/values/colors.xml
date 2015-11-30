@@ -63,5 +63,6 @@
     <color name="divider_light">#EEEEEE</color>
     <color name="text_gray">#C3C3C3</color>
     <color name="color_gray_light">#F5F5F5</color>
+    <color name="desk_tab_bg">#F2F2F2</color>
 
 </resources>

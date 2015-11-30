@@ -54,7 +54,7 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
     private void initGlobal() {
 
         getStudentsFragment = new GetStudentsFragment(this);
-        getSubjectiveQuestionsFragment = new GetSubjectiveQuestionsFragment(this);
+        getSubjectiveQuestionsFragment = new GetSubjectiveQuestionsFragment(this, getArguments());
         questionPaletteFragment = new QuestionPaletteFragment(this);
 
         flGetsubjectiveAssignmentContainerLeft = (FrameLayout) view.findViewById(R.id.fl_getsubjective_assignment_container_left);
@@ -65,13 +65,10 @@ public class GetSubjectiveAssignmentQuestionsFragment extends Fragment {
                 .beginTransaction()
                 .replace(R.id.fl_getsubjective_assignment_container_left, getStudentsFragment)
                 .commit();
-
-
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fl_getsubjective_assignment_container_middle, getSubjectiveQuestionsFragment)
                 .commit();
-
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fl_getsubjective_assignment_container_right, questionPaletteFragment)
