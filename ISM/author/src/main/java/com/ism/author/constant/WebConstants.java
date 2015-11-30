@@ -13,6 +13,7 @@ public class WebConstants {
     public static final String FEED_MEDIA = "http://192.168.1.147/WS_ISM/Images/feeds/";
     public static final String USER_IMAGES = "http://192.168.1.147/WS_ISM/Images/users_images/";
     public static final String USER_IMAGES_TEST = "http://192.168.1.147/WS_ISM/Images/users_images/";
+    public static final String URL_HOST_202 = "http://192.168.1.202/pg/ISM/WS_ISM/";
     //	webservice constants for apiCode.
     public static final int LOGIN = 1;
     public static final int FORGOTPASSWORD = 2;
@@ -46,18 +47,19 @@ public class WebConstants {
     public static final int CREATEQUESTION = 30;
     public static final int GETALLHASHTAG = 31;
     public static final int SETHASHTAG = 32;
-    //user settings preferences
 
+    //user settings preferences
     public static final int GENERAL_SETTING_PREFERENCES = 51;
     public static final int GET_USER_PREFERENCES = 52;
     public static final int GET_NOTIFICATION = 53;
     public static final int GET_MESSAGES = 54;
     public static final int GET_STUDYMATE_REQUEST = 55;
     public static final int RESPOND_TO_REQUEST = 56;
-    public static final int UPDATE_READ_STATUS = 57;
 
+    public static final int UPDATE_READ_STATUS = 57;
     public static final int GET_MY_FEEDS =58 ;
     public static final int GET_ABOUT_ME = 59;
+    public static final int GET_BOOKS_FOR_USER = 60;
     /*webservice url*/
     public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
     public static final String URL_FORGOTPASSWORD = URL_KINJAL_HOST + "ForgotPassword";
@@ -78,13 +80,13 @@ public class WebConstants {
     public static final String URL_GETTOPICS = URL_KINJAL_HOST + "GetTopics";
     public static final String URL_CREATEASSIGNMENT = URL_KINJAL_HOST + "CreateAssignment";
     public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
-    public static final String URL_GETCOURSES = URL_KINJAL_HOST + "GetCourses";
 
+    public static final String URL_GETCOURSES = URL_KINJAL_HOST + "GetCourses";
     public static final String URL_CREATEEXAM = URL_KINJAL_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
     public static final String URL_GETALLEXAM = URL_KINJAL_HOST + "GetAllExams";
-    public static final String URL_HASHTAG = URL_KINJAL_HOST + "Hashtag";
 
+    public static final String URL_HASHTAG = URL_KINJAL_HOST + "Hashtag";
     public static final String URL_GETEXAMSUBMISSION = URL_ARTI_HOST + "GetExamSubmission";
     public static final String URL_GETEXAMEVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
     public static final String URL_GETEXAMQUESTIONS = URL_ARTI_HOST + "GetExamQuestions";
@@ -100,19 +102,22 @@ public class WebConstants {
     public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
     public static final String URL_GETALLHASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
     public static final String URL_RESPOND_TO_REQUEST = URL_KINJAL_HOST + "AcceptRequestFromStudymate";
-    public static final String URL_UPDATE_READ_STATUS = URL_KINJAL_HOST + "UpdateReadStatus"; // studymate_request, messages, notification
 
+    public static final String URL_UPDATE_READ_STATUS = URL_KINJAL_HOST + "UpdateReadStatus"; // studymate_request, messages, notification
     public static final String URL_GET_HIGH_SCORERS = URL_KINJAL_HOST + "GetHighScorers";
     public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
-    /*status for apisuccess ans apifailed*/
 
+    /*status for apisuccess ans apifailed*/
     public static final String URL_GET_WALLET_SUMMARY = URL_KINJAL_HOST + "GetWalletSummary";
     public static final String URL_GET_MY_FEEDS = URL_KINJAL_HOST + "GetMyFeeds";
+    public static final String URL_GET_ABOUT_ME =  URL_KINJAL_HOST + "GetAboutMe";
+    public static final String URL_GET_BOOKS_FOR_USER =  URL_KINJAL_HOST + "GetBooksForUser";
+
     /*status for apisuccess ans apifailed*/
     public static final String SUCCESS = "success";
+
+
     public static final String FAILED = "failed";
-
-
     public static final String STATUS_SUCCESS = "success";
     public static final String STATUS_FAILED = "failed";
     /*these are the temparory questionData for testing*/
@@ -124,9 +129,9 @@ public class WebConstants {
      */
     public static final String STUDYMATE_REQUEST = "studymate_request";
     public static final String MESSAGES = "messages";
+
+
     public static final String NOTIFICATION = "notification";
-
-
     public static final String ROLE_ALL = "all";
     public static final String ROLE_STUDENT = "student";
 }

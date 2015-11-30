@@ -206,6 +206,9 @@ public class WebserviceWrapper {
                         case WebConstants.SETHASHTAG:
                             responseObject = new WebserviceConnector(WebConstants.URL_HASHTAG).execute(ResponseHandler.class, attribute);
                             break;
+                        case WebConstants.GET_BOOKS_FOR_USER:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseHandler.class, attribute);
+                            break;
 
                     }
                 }

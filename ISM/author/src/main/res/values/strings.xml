@@ -225,6 +225,12 @@
     <string name="strAssignments">Assignments</string>
     <string name="strEducation">Education :</string>
     <string name="strMyDesk">My Desk</string>
+    <string name="strBook">Book :</string>
+    <string name="strDescription">Description :</string>
+    <string name="strPrice">Price :</string>
+    <string name="strPublisher">Publisher :</string>
+    <string name="strAuthor">Author :</string>
+    <string name="strEbookLink">Ebook link :</string>
 
     <!--string array-->
 

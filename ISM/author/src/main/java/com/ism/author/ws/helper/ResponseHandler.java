@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ism.author.ws.model.Badges;
+import com.ism.author.ws.model.Books;
 import com.ism.author.ws.model.Cities;
 import com.ism.author.ws.model.Classrooms;
 import com.ism.author.ws.model.CommentList;
@@ -17,9 +18,9 @@ import com.ism.author.ws.model.ExamSubmission;
 import com.ism.author.ws.model.Exams;
 import com.ism.author.ws.model.Feed;
 import com.ism.author.ws.model.Feeds;
+import com.ism.author.ws.model.HashTags;
 import com.ism.author.ws.model.Message;
 import com.ism.author.ws.model.Notification;
-import com.ism.author.ws.model.HashTags;
 import com.ism.author.ws.model.Question;
 import com.ism.author.ws.model.Questions;
 import com.ism.author.ws.model.States;
@@ -50,6 +51,7 @@ public class ResponseHandler {
     private ArrayList<Notification> notification;
     private ArrayList<StudymateRequest> studymateRequest;
     private ArrayList<Message> messages;
+    private ArrayList<Books> books;
 
     @JsonProperty("message")
     public String getMessage() {
@@ -319,6 +321,14 @@ public class ResponseHandler {
 
     public void setTags(ArrayList<HashTags> tags) {
         this.tags = tags;
+    }
+    @JsonProperty("books")
+    public ArrayList<Books> getBooks() {
+        return books;
+    }
+
+    public void setBooks(ArrayList<Books> books) {
+        this.books = books;
     }
 }
 

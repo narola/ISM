@@ -22,9 +22,7 @@ public class MyDeskFragment extends Fragment {
     private static final String TAG = MyDeskFragment.class.getSimpleName();
     private static final int FRAGMENT_ABOUT_ME = 0;
     private static final int FRAGMENT_BOOKS = 1;
-    private static final int FRAGMENT_MOVIES = 2;
-    private static final int FRAGMENT_ROLE_MODELS = 3;
-    private static final int FRAGMENT_PASTTIME = 4;
+    private static final int FRAGMENT_ASSIGNMENTS = 2;
 
     private View view;
 
@@ -32,6 +30,7 @@ public class MyDeskFragment extends Fragment {
     private TextView txtAboutMe, txtBooks, txtAssignments;
     private int currentFragment = -1;
     private AuthorHostActivity activityHost;
+    private TextView txtAdd;
 
     public static MyDeskFragment newInstance() {
         MyDeskFragment frag = new MyDeskFragment();
@@ -53,6 +52,7 @@ public class MyDeskFragment extends Fragment {
 
     private void initGlobal() {
         txtAboutMe = (TextView) view.findViewById(R.id.txt_about_me);
+        txtAdd = (TextView) view.findViewById(R.id.txt_add);
         txtBooks = (TextView) view.findViewById(R.id.txt_books);
         txtAssignments = (TextView) view.findViewById(R.id.txt_assignments);
         txtAboutMe.setTypeface(Global.myTypeFace.getRalewayRegular());
@@ -73,7 +73,7 @@ public class MyDeskFragment extends Fragment {
                     }
                     break;
                     case R.id.txt_assignments: {
-                        loadFragment(FRAGMENT_MOVIES);
+                        loadFragment(FRAGMENT_ASSIGNMENTS);
                     }
                     break;
                 }
@@ -98,18 +98,21 @@ public class MyDeskFragment extends Fragment {
         switch (frag) {
             case FRAGMENT_ABOUT_ME: {
                 currentFragment = frag;
+                txtAdd.setVisibility(View.GONE);
                 AboutMeFragment fragment = AboutMeFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_BOOKS: {
                 currentFragment = frag;
+                txtAdd.setVisibility(View.GONE);
                 MyDeskBooksFragment fragment = MyDeskBooksFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
-            case FRAGMENT_MOVIES: {
+            case FRAGMENT_ASSIGNMENTS: {
                 currentFragment = frag;
+                txtAdd.setVisibility(View.VISIBLE);
                 MyDeskAssignments fragment = MyDeskAssignments.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
