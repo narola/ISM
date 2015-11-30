@@ -220,6 +220,11 @@
     <string name="find_more_studymates">Find more Studymates</string>
     <string name="strNoRecordFound">No record found</string>
     <string name="notifications">Notifications</string>
+    <string name="strAboutMe">About Me</string>
+    <string name="strBooks">Books</string>
+    <string name="strAssignments">Assignments</string>
+    <string name="strEducation">Education :</string>
+    <string name="strMyDesk">My Desk</string>
 
     <!--string array-->
 

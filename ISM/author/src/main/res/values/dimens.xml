@@ -82,6 +82,7 @@
     <dimen name="d2dp">2dp</dimen>
     <dimen name="notification_digit_text_size">16sp</dimen>
     <dimen name="notification_digit_horizontal_padding">8dp</dimen>
+    <dimen name="d75dp">75dp</dimen>
 
 
 </resources>

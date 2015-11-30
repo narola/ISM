@@ -1,4 +1,4 @@
-package com.ism.fragment.userprofile;
+package com.ism.author.fragment.mydesk;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -9,18 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ism.R;
-import com.ism.activity.HostActivity;
-import com.ism.interfaces.FragmentListener;
-import com.ism.object.MyTypeFace;
-import com.ism.utility.Debug;
+import com.ism.author.R;
+import com.ism.author.activtiy.AuthorHostActivity;
+import com.ism.author.interfaces.FragmentListener;
+import com.ism.author.object.Global;
 
 /**
- * Created by c162 on 17/10/15.
+ * Created by c162 on 28/10/15.
  */
-public class EditProfileFragment extends Fragment {
+public class MyDeskFragment extends Fragment {
 
-    private static final String TAG = EditProfileFragment.class.getSimpleName();
+    private static final String TAG = MyDeskFragment.class.getSimpleName();
     private static final int FRAGMENT_ABOUT_ME = 0;
     private static final int FRAGMENT_BOOKS = 1;
     private static final int FRAGMENT_MOVIES = 2;
@@ -30,23 +29,22 @@ public class EditProfileFragment extends Fragment {
     private View view;
 
     private FragmentListener fragListener;
-    private TextView txtAboutMe, txtBooks, txtMovies, txtRoleModels, txtPastTime;
+    private TextView txtAboutMe, txtBooks, txtAssignments;
     private int currentFragment = -1;
-    private HostActivity activityHost;
-    MyTypeFace myTypeFace;
+    private AuthorHostActivity activityHost;
 
-    public static EditProfileFragment newInstance() {
-        EditProfileFragment fragChat = new EditProfileFragment();
-        return fragChat;
+    public static MyDeskFragment newInstance() {
+        MyDeskFragment frag = new MyDeskFragment();
+        return frag;
     }
 
-    public EditProfileFragment() {
+    public MyDeskFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_mydesk, container, false);
 
         initGlobal();
 
@@ -56,15 +54,10 @@ public class EditProfileFragment extends Fragment {
     private void initGlobal() {
         txtAboutMe = (TextView) view.findViewById(R.id.txt_about_me);
         txtBooks = (TextView) view.findViewById(R.id.txt_books);
-        txtMovies = (TextView) view.findViewById(R.id.txt_movies);
-        txtRoleModels = (TextView) view.findViewById(R.id.txt_role_models);
-        txtPastTime = (TextView) view.findViewById(R.id.txt_pasttime);
-        myTypeFace = new MyTypeFace(getActivity());
-        txtAboutMe.setTypeface(myTypeFace.getRalewayRegular());
-        txtBooks.setTypeface(myTypeFace.getRalewayRegular());
-        txtMovies.setTypeface(myTypeFace.getRalewayRegular());
-        txtRoleModels.setTypeface(myTypeFace.getRalewayRegular());
-        txtPastTime.setTypeface(myTypeFace.getRalewayRegular());
+        txtAssignments = (TextView) view.findViewById(R.id.txt_assignments);
+        txtAboutMe.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtAssignments.setTypeface(Global.myTypeFace.getRalewayRegular());
         txtAboutMe.setEnabled(false);
         View.OnClickListener onClick = new View.OnClickListener() {
             @Override
@@ -79,21 +72,10 @@ public class EditProfileFragment extends Fragment {
                         loadFragment(FRAGMENT_BOOKS);
                     }
                     break;
-                    case R.id.txt_movies: {
+                    case R.id.txt_assignments: {
                         loadFragment(FRAGMENT_MOVIES);
                     }
                     break;
-                    case R.id.txt_role_models: {
-                        Debug.i(TAG, "loadFragment(FRAGMENT_ROLE_MODELS): " + FRAGMENT_ROLE_MODELS);
-                        loadFragment(FRAGMENT_ROLE_MODELS);
-                    }
-                    break;
-                    case R.id.txt_pasttime: {
-                        Debug.i(TAG, "loadFragment(FRAGMENT_PASTTIME):" + FRAGMENT_PASTTIME);
-                        loadFragment(FRAGMENT_PASTTIME);
-                    }
-                    break;
-
                 }
                 selected(v);
             }
@@ -101,17 +83,13 @@ public class EditProfileFragment extends Fragment {
         loadFragment(FRAGMENT_ABOUT_ME);
         txtAboutMe.setOnClickListener(onClick);
         txtBooks.setOnClickListener(onClick);
-        txtMovies.setOnClickListener(onClick);
-        txtRoleModels.setOnClickListener(onClick);
-        txtPastTime.setOnClickListener(onClick);
+        txtAssignments.setOnClickListener(onClick);
     }
 
     private void selected(View v) {
         txtAboutMe.setEnabled(true);
         txtBooks.setEnabled(true);
-        txtMovies.setEnabled(true);
-        txtRoleModels.setEnabled(true);
-        txtPastTime.setEnabled(true);
+        txtAssignments.setEnabled(true);
         v.setEnabled(false);
 
     }
@@ -126,27 +104,13 @@ public class EditProfileFragment extends Fragment {
             break;
             case FRAGMENT_BOOKS: {
                 currentFragment = frag;
-                BooksFragment fragment = BooksFragment.newInstance();
+                MyDeskBooksFragment fragment = MyDeskBooksFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_MOVIES: {
                 currentFragment = frag;
-                MoviesFragment fragment = MoviesFragment.newInstance();
-                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
-            }
-            break;
-            case FRAGMENT_ROLE_MODELS: {
-                Debug.i(TAG, "call for RoleModelFragment ");
-                currentFragment = frag;
-                RoleModelFragment fragment = RoleModelFragment.newInstance();
-                getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
-            }
-            break;
-            case FRAGMENT_PASTTIME: {
-                Debug.i(TAG, "call for PastTimeFragment ");
-                currentFragment = frag;
-                PastTimeFragment fragment = PastTimeFragment.newInstance();
+                MyDeskAssignments fragment = MyDeskAssignments.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
@@ -157,10 +121,10 @@ public class EditProfileFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            activityHost = (HostActivity) activity;
+            activityHost = (AuthorHostActivity) activity;
             fragListener = (FragmentListener) activity;
             if (fragListener != null) {
-                fragListener.onFragmentAttached(HostActivity.FRAGMENT_EDIT_PROFILE);
+                fragListener.onFragmentAttached(AuthorHostActivity.FRAGMENT_MY_DESK);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach Exception : " + e.toString());
@@ -172,7 +136,7 @@ public class EditProfileFragment extends Fragment {
         super.onDetach();
         try {
             if (fragListener != null) {
-                fragListener.onFragmentDetached(HostActivity.FRAGMENT_EDIT_PROFILE);
+                fragListener.onFragmentDetached(AuthorHostActivity.FRAGMENT_MY_DESK);
             }
         } catch (ClassCastException e) {
             Log.e(TAG, "onDetach Exception : " + e.toString());
