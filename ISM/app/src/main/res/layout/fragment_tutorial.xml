@@ -1,110 +1,116 @@
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.ism.fragment.TutorialFragment">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context="com.ism.fragment.TutorialFragment">
 
-    <TextView
-        android:id="@+id/txt_week_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-	    android:background="@color/bg_tutorial"
-	    android:textColor="@android:color/white"
-	    android:textAllCaps="true"
-	    android:gravity="center"/>
+	<TextView
+		android:id="@+id/txt_week_number"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/bg_tutorial"
+		android:gravity="center"
+		android:textAllCaps="true"
+		android:textColor="@android:color/white"/>
 
 	<LinearLayout
 		android:id="@+id/ll_week_days"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:layout_below="@id/txt_week_number">
+		android:layout_below="@id/txt_week_number"
+		android:orientation="horizontal">
 
 		<TextView
 			android:id="@+id/txt_monday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:background="@drawable/bg_week_day"
+			android:gravity="center"
+			android:paddingBottom="@dimen/week_day_padding"
+			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/monday"
 			android:textAllCaps="true"
-			android:textColor="@drawable/color_week_day_text"
-			android:gravity="center"
-			android:paddingTop="@dimen/week_day_padding"
-			android:paddingBottom="@dimen/week_day_padding"
-			android:background="@drawable/bg_week_day"/>
+			android:textColor="@drawable/color_week_day_text"/>
+
 		<TextView
 			android:id="@+id/txt_tuesday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:background="@drawable/bg_week_day"
+			android:gravity="center"
+			android:paddingBottom="@dimen/week_day_padding"
+			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/tuesday"
 			android:textAllCaps="true"
-			android:textColor="@drawable/color_week_day_text"
-			android:gravity="center"
-			android:paddingTop="@dimen/week_day_padding"
-			android:paddingBottom="@dimen/week_day_padding"
-			android:background="@drawable/bg_week_day"/>
+			android:textColor="@drawable/color_week_day_text"/>
+
 		<TextView
 			android:id="@+id/txt_wednesday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:background="@drawable/bg_week_day"
+			android:gravity="center"
+			android:paddingBottom="@dimen/week_day_padding"
+			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/wednesday"
 			android:textAllCaps="true"
-			android:textColor="@drawable/color_week_day_text"
-			android:gravity="center"
-			android:paddingTop="@dimen/week_day_padding"
-			android:paddingBottom="@dimen/week_day_padding"
-			android:background="@drawable/bg_week_day"/>
+			android:textColor="@drawable/color_week_day_text"/>
+
 		<TextView
 			android:id="@+id/txt_thursday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:background="@drawable/bg_week_day"
+			android:gravity="center"
+			android:paddingBottom="@dimen/week_day_padding"
+			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/thursday"
 			android:textAllCaps="true"
-			android:textColor="@drawable/color_week_day_text"
-			android:gravity="center"
-			android:paddingTop="@dimen/week_day_padding"
-			android:paddingBottom="@dimen/week_day_padding"
-			android:background="@drawable/bg_week_day"/>
+			android:textColor="@drawable/color_week_day_text"/>
+
 		<TextView
 			android:id="@+id/txt_friday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:background="@drawable/bg_week_day"
+			android:gravity="center"
+			android:paddingBottom="@dimen/week_day_padding"
+			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/friday"
 			android:textAllCaps="true"
-			android:textColor="@drawable/color_week_day_text"
-			android:gravity="center"
-			android:paddingTop="@dimen/week_day_padding"
-			android:paddingBottom="@dimen/week_day_padding"
-			android:background="@drawable/bg_week_day"/>
+			android:textColor="@drawable/color_week_day_text"/>
+
 		<TextView
 			android:id="@+id/txt_saturday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:background="@drawable/bg_week_day"
+			android:gravity="center"
+			android:paddingBottom="@dimen/week_day_padding"
+			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/saturday"
 			android:textAllCaps="true"
-			android:textColor="@drawable/color_week_day_text"
-			android:gravity="center"
-			android:paddingTop="@dimen/week_day_padding"
-			android:paddingBottom="@dimen/week_day_padding"
-			android:background="@drawable/bg_week_day"/>
+			android:textColor="@drawable/color_week_day_text"/>
+
 		<TextView
 			android:id="@+id/txt_sunday"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:background="@drawable/bg_week_day"
+			android:gravity="center"
+			android:paddingBottom="@dimen/week_day_padding"
+			android:paddingTop="@dimen/week_day_padding"
 			android:text="@string/sunday"
 			android:textAllCaps="true"
-			android:textColor="@drawable/color_week_day_text"
-			android:gravity="center"
-			android:paddingTop="@dimen/week_day_padding"
-			android:paddingBottom="@dimen/week_day_padding"
-			android:background="@drawable/bg_week_day"/>
+			android:textColor="@drawable/color_week_day_text"/>
 	</LinearLayout>
 
 	<FrameLayout
@@ -112,5 +118,4 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_below="@id/ll_week_days"></FrameLayout>
-
 </RelativeLayout>
