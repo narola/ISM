@@ -1,4 +1,4 @@
-package model;
+package realmhelper;
 
 
 
@@ -7,6 +7,7 @@ import android.content.Context;
 import com.realm.ismrealm.RealmAdaptor;
 
 import io.realm.Realm;
+import model.User;
 
 /**
  * Created by c85 on 24/11/15.

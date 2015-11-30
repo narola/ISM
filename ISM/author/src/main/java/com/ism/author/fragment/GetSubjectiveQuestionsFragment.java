@@ -48,8 +48,9 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
     Fragment mFragment;
 
 
-    public GetSubjectiveQuestionsFragment(Fragment fragment) {
+    public GetSubjectiveQuestionsFragment(Fragment fragment, Bundle bundleArguments) {
         this.mFragment = fragment;
+        setArguments(bundleArguments);
     }
 
     @Override
@@ -277,7 +278,7 @@ public class GetSubjectiveQuestionsFragment extends Fragment implements Webservi
 
     private void setQuestions() {
 
-        arrListQuestions.clear();
+//        arrListQuestions.clear();
         arrListQuestions.addAll(responseObjGetAllExamQuestions.getExamQuestions().get(0).getQuestions());
         subjectiveQuestionListAdapter.addAll(arrListQuestions);
         subjectiveQuestionListAdapter.notifyDataSetChanged();

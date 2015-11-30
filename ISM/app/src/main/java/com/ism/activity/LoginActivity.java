@@ -30,6 +30,7 @@ import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.City;
 import com.ism.ws.model.Country;
 import com.ism.ws.model.State;
+import com.realm.ismrealm.RealmAdaptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +106,8 @@ public class LoginActivity extends Activity implements WebserviceWrapper.Webserv
 		arrListDefalt.add(getString(R.string.select));
 
 		progressGenerator = new ProgressGenerator();
+
+		RealmAdaptor.getInstance(this);
 	}
 
 	public void onClickLogin(View view) {

@@ -82,8 +82,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     LinearLayout llSearch, llControllerLeft;
     FrameLayout flFragmentContainerMain, flFragmentContainerRight;
     ImageView imgLogo, imgHome, imgBack, imgSearch, imgOffice, imgBooks, imgEditProfileHome, imgEditProfileTutorial, imgEditProfileClassroom,
-
-    imgEditProfileAssesment, imgAuthorProfile, imgHighScore;
+            imgEditProfileAssesment, imgAuthorProfile, imgHighScore;
     Spinner spSubmenu;
     TextView txtTitle, txtAction;
 
@@ -651,10 +650,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
 
                 case FRAGMENT_TRIAL:
-                   // imgOffice.setActivated(true);
+                    // imgOffice.setActivated(true);
                     break;
                 case FRAGMENT_MY_DESK:
-                   // imgOffice.setActivated(true);
+                    // imgOffice.setActivated(true);
                     break;
 
                 case FRAGMENT_CONTAINER_CREATEEXAMASSIGNMENT:
@@ -686,6 +685,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
                 case FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS:
                     imgOffice.setActivated(true);
+                    llControllerLeft.setVisibility(View.VISIBLE);
+                    flFragmentContainerRight.setVisibility(View.VISIBLE);
+                    loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_HIGHSCORE, null);
                     break;
                 case FRAGMENT_MY_ACTIVITY:
                     currentMainFragment = fragment;
@@ -735,7 +737,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                 rlControllerTopMenu.setVisibility(View.GONE);
             } else {
                 rlControllerTopMenu.setVisibility(View.VISIBLE);
-               // txtTitle.setVisibility(View.GONE);
+                // txtTitle.setVisibility(View.GONE);
                 hideControllerTopControls();
                 if (currentMainFragment != FRAGMENT_HOME) {
                     Utility.startSlideAnimation(imgBack, -1000, 0, 0, 0);
@@ -864,7 +866,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             listenerHostAllNotification.onControllerTopBackClick();
         } else if (currentMainFragment == FRAGMENT_ALL_MESSAGE) {
             listenerHostAllMessage.onControllerTopBackClick();
-        }else if(currentMainFragment==FRAGMENT_MY_DESK){
+        } else if (currentMainFragment == FRAGMENT_MY_DESK) {
             loadFragmentInMainContainer(FRAGMENT_OFFICE, null);
         }
 

@@ -140,6 +140,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             holder.llViewExamQuestions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    
                     bundleExamDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
                     ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS,
                             bundleExamDetails);

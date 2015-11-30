@@ -124,6 +124,15 @@ public class QuestionBankListAdapter extends RecyclerView.Adapter<QuestionBankLi
 
                     Debug.e(TAG, "THE SIZE OF PREVIEW QUESTION LIST IS:::" + getFragment().getListOfPreviewQuestion().size());
 
+                    if (getFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strsubjective)) &&
+                            arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strdescriptive))) {
+
+                    } else if (getFragment().getArguments().getString(ExamsAdapter.ARG_EXAM_MODE).equalsIgnoreCase(mContext.getString(R.string.strobjective)) &&
+                            arrListQuestions.get(position).getQuestionFormat().equalsIgnoreCase(mContext.getString(R.string.strmcq))) {
+
+                    }
+
+
 //                    if (!getFragment().getListOfPreviewQuestion().contains(arrListQuestions.get(position))) {
                     if (!checkForQuestionPresence(arrListQuestions.get(position).getQuestionId())) {
                         if (holder.chkSelectQuestion.isChecked()) {
