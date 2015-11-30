@@ -15,7 +15,7 @@ public class UserPermission extends RealmObject {
     @PrimaryKey
     private  int userPermissionId;
     private User user;
-    private UserPermission userPermission;
+    private PermissionAccess permissionAccess;
     private Date createdDate;
     private Date modifiedDate;
 
@@ -35,12 +35,12 @@ public class UserPermission extends RealmObject {
         this.user = user;
     }
 
-    public UserPermission getUserPermission() {
-        return userPermission;
+    public PermissionAccess getPermissionAccess() {
+        return permissionAccess;
     }
 
-    public void setUserPermission(UserPermission userPermission) {
-        this.userPermission = userPermission;
+    public void setPermissionAccess(PermissionAccess permissionAccess) {
+        this.permissionAccess = permissionAccess;
     }
 
     public Date getCreatedDate() {

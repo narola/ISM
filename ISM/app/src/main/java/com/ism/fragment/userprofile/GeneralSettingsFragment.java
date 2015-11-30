@@ -13,6 +13,7 @@ import com.ism.R;
 import com.ism.activity.HostActivity;
 import com.ism.constant.WebConstants;
 import com.ism.interfaces.FragmentListener;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.PreferenceData;
@@ -146,12 +147,14 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         switch (frag) {
             case FRAGMENT_PRIVACY_SETTING: {
                 currentFragment = frag;
+               // callApiGetGeneralSettingPreferences(preferencesList);
                 PrivacySettingFragment fragment = PrivacySettingFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_SMS_ALERTS: {
                 currentFragment = frag;
+                //callApiGetGeneralSettingPreferences(preferencesList);
                 SMSAlertsFragment fragment = SMSAlertsFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
@@ -159,12 +162,13 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
             case FRAGMENT_BLOCK_USER: {
                 currentFragment = frag;
                 BlockUserFragment fragment = BlockUserFragment.newInstance();
-                callApiGetGeneralSettingPreferences(preferencesList);
+                //callApiGetGeneralSettingPreferences(preferencesList);
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
             break;
             case FRAGMENT_NOTIFICATION: {
                 currentFragment = frag;
+               // callApiGetGeneralSettingPreferences(preferencesList);
                 NotificationFragment fragment = NotificationFragment.newInstance();
                 getChildFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, fragment).commit();
             }
@@ -192,6 +196,7 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         try {
             if (fragListener != null) {
                 fragListener.onFragmentDetached(HostActivity.FRAGMENT_GENERAL_SETTINGS);
+                //callApiGetGeneralSettingPreferences();
             }
         } catch (ClassCastException e) {
             Debug.e(TAG, "onDetach Exception : " + e.toString());
@@ -239,18 +244,17 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
     }
 
 
-    private void callApiGetGeneralSettingPreferences(ArrayList<Attribute> reqObj) {
+    public void callApiGetGeneralSettingPreferences() {
         try {
             if (Utility.isConnected(getActivity())) {
-
-                activityHost.showProgress();
-                if (reqObj != null) {
+                if (preferencesList != null) {
+                    activityHost.showProgress();
                     attribute = new Attribute();
-                    attribute.setPreferences(reqObj);
+                    attribute.setPreferences(preferencesList);
                     new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_GENERAL_SETTINGS);
 
                 } else {
-                    Debug.i(TAG, "General setting Pereference list size :" + reqObj.size());
+                    Debug.i(TAG, "General setting Pereference list size :" + preferencesList.size());
                 }
             } else {
                 Utility.alertOffline(getActivity());
@@ -262,10 +266,16 @@ public class GeneralSettingsFragment extends Fragment implements WebserviceWrapp
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        callApiGetGeneralSettingPreferences();
+    }
+
     //used for store the preferences value of general setting in arraylist
     public void setPreferenceList(String key, String value, Context context) {
         Attribute requestObject = new Attribute();
-        requestObject.setUserId("1");
+        requestObject.setUserId(Global.strUserId);
         requestObject.setKeyId(key);
         requestObject.setSettingValue(value);
         Debug.i(TAG, "setPreferenceList " + "key:" + key + "value:" + value);

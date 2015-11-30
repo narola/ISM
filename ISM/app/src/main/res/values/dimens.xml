@@ -71,4 +71,8 @@
     <dimen name="edit_radius">5dp</dimen>
     <dimen name="padding_voucher_item">15dp</dimen>
     <dimen name="padding_my_activity">15dp</dimen>
+    <dimen name="size_dot_timeline">12dp</dimen>
+    <dimen name="padding_txt_timeline_table">5dp</dimen>
+    <dimen name="txt_timeline_table">19sp</dimen>
+    <dimen name="txt_timeline_table_small">16sp</dimen>
 </resources>

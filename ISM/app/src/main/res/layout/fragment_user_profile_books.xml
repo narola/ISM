@@ -22,21 +22,21 @@
             android:textColor="@color/bg_app_dark"
             android:textSize="@dimen/d20sp" />
 
-        <ImageView
-            android:id="@+id/img_filter_read_books"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/line1"
-            android:src="@drawable/img_filter" />
+        <!--<ImageView-->
+            <!--android:id="@+id/img_filter_read_books"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_toLeftOf="@+id/line1"-->
+            <!--android:src="@drawable/img_filter" />-->
 
-        <TextView
-            android:id="@+id/line1"
-            android:layout_width="1dp"
-            android:layout_height="@dimen/d40dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/ll_search_suggested"
-            android:background="@color/color_text_hint" />
+        <!--<TextView-->
+            <!--android:id="@+id/line1"-->
+            <!--android:layout_width="1dp"-->
+            <!--android:layout_height="@dimen/d40dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_toLeftOf="@+id/ll_search_suggested"-->
+            <!--android:background="@color/color_text_hint" />-->
 
         <LinearLayout
             android:id="@+id/ll_search_suggested"
@@ -143,21 +143,21 @@
             android:textColor="@color/bg_app_dark"
             android:textSize="@dimen/d20sp" />
 
-        <ImageView
-            android:id="@+id/img_filter_fav_books"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/line2"
-            android:src="@drawable/img_filter" />
+        <!--<ImageView-->
+            <!--android:id="@+id/img_filter_fav_books"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_toLeftOf="@+id/line2"-->
+            <!--android:src="@drawable/img_filter" />-->
 
-        <TextView
-            android:id="@+id/line2"
-            android:layout_width="1dp"
-            android:layout_height="@dimen/d40dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/ll_search_fav"
-            android:background="@color/color_text_hint" />
+        <!--<TextView-->
+            <!--android:id="@+id/line2"-->
+            <!--android:layout_width="1dp"-->
+            <!--android:layout_height="@dimen/d40dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_toLeftOf="@+id/ll_search_fav"-->
+            <!--android:background="@color/color_text_hint" />-->
 
         <LinearLayout
             android:id="@+id/ll_search_fav"

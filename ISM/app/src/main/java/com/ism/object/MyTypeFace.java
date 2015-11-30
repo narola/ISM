@@ -44,8 +44,7 @@ public class MyTypeFace {
 
 	public Typeface setCustomFont(String fontType) {
 
-		Typeface customFont = Typeface.createFromAsset(context
-				.getAssets(), fontType);
+		Typeface customFont = Typeface.createFromAsset(context.getAssets(), fontType);
 
 		return customFont;
 	}

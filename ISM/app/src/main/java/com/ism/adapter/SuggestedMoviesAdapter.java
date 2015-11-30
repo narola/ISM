@@ -18,6 +18,7 @@ import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.dialog.MovieDetailsDialog;
 import com.ism.fragment.userprofile.MoviesFragment;
+import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
@@ -48,6 +49,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
     public SuggestedMoviesAdapter(Context context, ArrayList<MovieData> arrayList, SuggestedBookAdapter.AddToFavouriteListner addToFavouriteListner) {
         this.context = context;
         this.arrayList = arrayList;
+        this.arrayListFilter=arrayList;
         this.addToFavouriteListner = addToFavouriteListner;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
@@ -131,7 +133,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
             if (Utility.isConnected(context)) {
                 ((HostActivity) context).showProgress();
                 Attribute attribute = new Attribute();
-                attribute.setUserId("1");
+                attribute.setUserId(Global.strUserId);
                 attribute.setResourceId(arrayList.get(position).getMovieId());
                 attribute.setResourceName(AppConstant.RESOURCE_MOVIES);
 
@@ -202,7 +204,7 @@ public class SuggestedMoviesAdapter extends BaseAdapter implements WebserviceWra
                     Debug.i(TAG, "Search string : " + constraint);
                     ArrayList<MovieData> filterList = new ArrayList<MovieData>();
                     for (int i = 0; i < arrayListFilter.size(); i++) {
-                        if (arrayListFilter.get(i).getMovieName().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getMovieGenre().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getScreenplay().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                        if (arrayListFilter.get(i).getMovieName().toLowerCase().contains(constraint.toString().toLowerCase()) || arrayListFilter.get(i).getScreenplay().toLowerCase().contains(constraint.toString().toLowerCase())) {
 
 //                            if (arrayListFilter.get(i).getAuthorName().contains(constraint) || arrayListFilter.get(i).getBookName().contains(constraint) || arrayListFilter.get(i).getPublisherName().contains(constraint)) {
                             Debug.i(TAG, "i : " + i);

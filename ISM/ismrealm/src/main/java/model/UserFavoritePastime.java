@@ -35,12 +35,12 @@ public class UserFavoritePastime extends RealmObject {
         this.user = user;
     }
 
-    public Pastime getPast() {
+    public Pastime getPastime() {
         return pastime;
     }
 
-    public void setPast(Pastime past) {
-        this.pastime = past;
+    public void setPastime(Pastime pastime) {
+        this.pastime = pastime;
     }
 
     public Date getCreatedDate() {
