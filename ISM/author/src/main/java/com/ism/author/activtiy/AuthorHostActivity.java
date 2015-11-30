@@ -82,7 +82,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     FrameLayout flFragmentContainerMain, flFragmentContainerRight;
 
     ImageView imgLogo, imgHome, imgBack, imgSearch, imgOffice, imgBooks, imgEditProfileHome, imgEditProfileTutorial, imgEditProfileClassroom,
-    imgEditProfileAssesment, imgAuthorProfile, imgHighScore;
+            imgEditProfileAssesment, imgAuthorProfile, imgHighScore;
     Spinner spSubmenu;
 
     TextView txtTitle, txtAction;
@@ -152,6 +152,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         public void onSubFragmentDetached(int fragmentId);
         //  public void onControllerMenuItemClicked(int position);
     }
+
     public interface HostListenerAllNotification {
         public void onControllerTopBackClick();
     }
@@ -164,6 +165,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public void setListenerHostProfileController(HostListenerProfileController listenerHostProfileController) {
         this.listenerHostProfileController = listenerHostProfileController;
     }
+
     public void setListenerHostAllNotification(HostListenerAllNotification listenerHostAllNotification) {
         this.listenerHostAllNotification = listenerHostAllNotification;
     }
@@ -171,6 +173,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     public void setListenerHostAllMessage(HostListenerAllMessage listenerHostAllMessage) {
         this.listenerHostAllMessage = listenerHostAllMessage;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,9 +193,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
-        Global.strUserId="370";
-        Global.strFullName="Arti Patel";
-        Global.strProfilePic=WebConstants.USER_IMAGES+"user_370/123_test.png";
+        Global.strUserId = "370";
+        Global.strFullName = "Arti Patel";
+        Global.strProfilePic = WebConstants.USER_IMAGES + "user_370/123_test.png";
         rlControllerTop = (RelativeLayout) findViewById(R.id.rl_controller_top);
         llSearch = (LinearLayout) findViewById(R.id.ll_search);
         rlControllerTopMenu = (RelativeLayout) findViewById(R.id.rl_controller_top_menu);
@@ -663,6 +666,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
                 case FRAGMENT_GET_SUBJECTIVE_ASSIGNMENT_QUESTIONS:
                     imgOffice.setActivated(true);
+                    llControllerLeft.setVisibility(View.VISIBLE);
+                    flFragmentContainerRight.setVisibility(View.VISIBLE);
+                    loadFragmentInRightContainer(AuthorHostActivity.FRAGMENT_HIGHSCORE, null);
                     break;
                 case FRAGMENT_MY_ACTIVITY:
                     currentMainFragment = fragment;
@@ -837,18 +843,20 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             flFragmentContainerRight.setVisibility(View.VISIBLE);
             loadFragmentInMainContainer(FRAGMENT_TRIAL, null);
 
-        }  else if (currentMainFragment==FRAGMENT_ALL_NOTIFICATION) {
+        } else if (currentMainFragment == FRAGMENT_ALL_NOTIFICATION) {
             listenerHostAllNotification.onControllerTopBackClick();
-        }else if (currentMainFragment==FRAGMENT_ALL_MESSAGE) {
+        } else if (currentMainFragment == FRAGMENT_ALL_MESSAGE) {
             listenerHostAllMessage.onControllerTopBackClick();
         }
 
 
     }
+
     public void showControllerTopBackButton() {
         Utility.startSlideAnimation(imgBack, -100, 0, 0, 0);
         imgBack.setVisibility(View.VISIBLE);
     }
+
     private void hideControllerTopControls() {
         if (imgBack.getVisibility() == View.VISIBLE) {
             hideControllerTopBackButton();
@@ -877,7 +885,6 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         Utility.startSlideAnimation(spSubmenu, 0, -1000, 0, 0);
         spSubmenu.setVisibility(View.GONE);
     }
-
 
 
     public void openRightContainerFragment(View view) {
