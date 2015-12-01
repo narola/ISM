@@ -15,9 +15,8 @@ import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
-import com.ism.adapter.SuggestedBookAdapter;
-import com.ism.adapter.SuggestedRoleModelsAdapter;
 import com.ism.adapter.FavoriteRoleModelsAdapter;
+import com.ism.adapter.SuggestedRoleModelsAdapter;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
 import com.ism.object.MyTypeFace;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 /**
  * Created by c162 on 09/11/15.
  */
-public class RoleModelFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener, SuggestedBookAdapter.AddToFavouriteListner {
+public class RoleModelFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener, HostActivity.AddToFavouriteListner {
 
     private static final String TAG = RoleModelFragment.class.getSimpleName();
     ImageLoader imageLoader;
@@ -310,5 +309,10 @@ public class RoleModelFragment extends Fragment implements WebserviceWrapper.Web
     @Override
     public void onAddToFav(int position) {
         callApiGetRoleModelsForUser();
+    }
+
+    @Override
+    public void onRemoveFromFav(int position) {
+
     }
 }

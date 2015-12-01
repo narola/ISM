@@ -250,6 +250,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
+                attribute.setRoleId(Global.roleID);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.GET_ABOUT_ME);
             }
             else{
@@ -421,6 +422,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
                 txtClickAddAmbitions.setText(getResources().getString(R.string.strClickTOAddAmbitionInLife));
                 imgEditAmbition.setVisibility(View.VISIBLE);
             }
+
             txtTotalAssignment.setText(data.getTotalAssignment());
             txtTotalAuthorFollowed.setText(data.getTotalAuthorsFollowed());
             txtTotalBadgesEarned.setText(data.getTotalBadgesEarned());
@@ -431,6 +433,7 @@ public class AboutMeFragment extends Fragment implements WebserviceWrapper.Webse
             txtTotalPost.setText(data.getTotalPost());
             txtTotalQueAsked.setText(data.getTotalQuestionAsked());
             txtTotalStudymates.setText(data.getTotalStudymates());
+//            imageLoader.displayImage(Global.strProfilePic, imgProfilePic, ISMStudent.options);
             imageLoader.displayImage(WebConstants.URL_USERS_IMAGE_PATH + data.getProfilePic(), imgProfilePic, ISMStudent.options);
         } catch (Exception e) {
             Debug.i(TAG,"SetupData :" +e.getLocalizedMessage());

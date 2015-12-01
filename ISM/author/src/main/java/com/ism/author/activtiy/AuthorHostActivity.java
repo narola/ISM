@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -52,7 +53,6 @@ import com.ism.author.fragment.userprofile.AuthorProfileFragment;
 import com.ism.author.fragment.userprofile.FollowersFragment;
 import com.ism.author.fragment.userprofile.HighScoreFragment;
 import com.ism.author.fragment.userprofile.MyActivityFragment;
-import com.ism.author.fragment.userprofile.MyBooksFragment;
 import com.ism.author.fragment.userprofile.MyFeedsFragment;
 import com.ism.author.fragment.userprofile.StudentAttemptedAssignmentFragment;
 import com.ism.author.fragment.userprofile.ViewProfileFragment;
@@ -91,6 +91,8 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
     private ControllerTopSpinnerAdapter adapterControllerTopSpinner;
     private HostListenerProfileController listenerHostProfileController;
+    private AddToFavouriteListner addToFavouriteListner;
+    private AddToLibraryListner addToLibraryListner;
 
 
     private HostListenerAllNotification listenerHostAllNotification;
@@ -144,6 +146,61 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
     private ActionProcessButton progress_bar;
     private ProgressGenerator progressGenerator;
 
+    //    /**
+//     * ATTENTION: This was auto-generated to implement the App Indexing API.
+//     * See https://g.co/AppIndexing/AndroidStudio for more information.
+//     */
+//    private GoogleApiClient client;
+//
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//
+//        // ATTENTION: This was auto-generated to implement the App Indexing API.
+//        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        client.connect();
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "AuthorHost Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app deep link URI is correct.
+//                Uri.parse("android-app://com.ism.author.activtiy/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.start(client, viewAction);
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//
+//        // ATTENTION: This was auto-generated to implement the App Indexing API.
+//        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "AuthorHost Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app deep link URI is correct.
+//                Uri.parse("android-app://com.ism.author.activtiy/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.end(client, viewAction);
+//        client.disconnect();
+//    }
+//
+    public interface AddToLibraryListner {
+        public void onAddToLibrary(String id);
+
+        public void onRemoveFromLibrary(String id);
+    }
+
+    public void setListenerAddToLibrary(AddToLibraryListner addToLibraryListner) {
+        this.addToLibraryListner = addToLibraryListner;
+    }
 
     public interface HostListenerProfileController {
         public void onBadgesFetched();
@@ -175,6 +232,10 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         this.listenerHostAllMessage = listenerHostAllMessage;
     }
 
+    public void setListenerFavourites(AddToFavouriteListner addToFavouriteListner) {
+        this.addToFavouriteListner = addToFavouriteListner;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,6 +244,9 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
         inigGlobal();
 
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        // client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -194,7 +258,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
         Global.imageLoader = ImageLoader.getInstance();
         Global.imageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
-        Global.strUserId = "370";
+        Global.strUserId = "52";
         Global.strFullName = "Arti Patel";
         Global.strProfilePic = WebConstants.USER_IMAGES + "user_370/123_test.png";
         rlControllerTop = (RelativeLayout) findViewById(R.id.rl_controller_top);
@@ -330,7 +394,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
                     break;
                 case FRAGMENT_MY_BOOKS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
-                            MyBooksFragment.newInstance()).commit();
+                            GetAssignmentsSubmittorFragment.BooksFragment.newInstance()).commit();
                     break;
                 case FRAGMENT_FOLLOWERS:
                     getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container_main,
@@ -787,7 +851,7 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
 
         View view = inflater.inflate(R.layout.row_trial, null);
         popupWindow = new PopupWindow(view, 400,
-                android.view.ViewGroup.LayoutParams.MATCH_PARENT, true);
+                ViewGroup.LayoutParams.MATCH_PARENT, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
@@ -1036,5 +1100,12 @@ public class AuthorHostActivity extends Activity implements FragmentListener, We
             Debug.i(TAG, "onResponseGetAllBadges Exceptiion : " + e.toString());
         }
     }
+
+    public interface AddToFavouriteListner {
+        public void onAddToFav(int position);
+
+        public void onRemoveFromFav(int position);
+    }
+
 
 }

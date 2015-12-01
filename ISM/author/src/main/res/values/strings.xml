@@ -27,6 +27,8 @@
     <string name="strdateofbirth">Date of Birth</string>
     <string name="strcontactnumber">Contact Number</string>
     <string name="strage">Age</string>
+    <string name="strBooksYouMayWantToRead">Books you may want to read</string>
+    <string name="strYourFavouriteBooks">Your Favourite Books</string>
     <string name="struploadprofilepicture">UPLOAD PROFILE PICTURE</string>
     <string name="strschoolinformation">SCHOOL INFORMATION</string>
     <string name="stryouareregisteredforfollowingschool">You are registered for following school.</string>
