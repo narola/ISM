@@ -262,11 +262,11 @@ class StudyMateFunctions
                 //echo "mov=".$fav_movie_id = $movie_id[0];
 
                 //favorite author + favorite book
-                if ($fav_book_id != NULL && $fav_author_id) {
+                if ($fav_book_id[0] != NULL && $fav_author_id[0]) {
                     $querySchool = "SELECT * FROM `user_favorite_author` author
-INNER JOIN  `user_favorite_book` book on author.user_id=book.user_id, book.book_id=".$fav_book_id." , author.author_id=".$fav_author_id;
+INNER JOIN  `user_favorite_book` book on author.user_id=book.user_id, book.book_id=".$fav_book_id[0]." , author.author_id=".$fav_author_id[0];
                     $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
-                    //echo $querySchool;
+                    echo $querySchool;
                     if (mysqli_num_rows($resultSchool) > 0) {
 
                         while ($row = mysqli_fetch_assoc($resultSchool)) {
@@ -282,10 +282,10 @@ INNER JOIN  `user_favorite_book` book on author.user_id=book.user_id, book.book_
                 //  movie INNER JOIN user_favorite_pastime passtime on passtime.user.id=movie.user_id
 
                 //favorite author + favorite book
-                if ($fav_movie_id != NULL && $fav_pastime_id != NULL) {
-                    $querySchool = "SELECT * FROM `user_favorite_movie` movie,user_favorite_pastime pastime WHERE movie.movie_id=" . $fav_movie_id." and pastime.pastime_id=".$fav_pastime_id;
+                if ($fav_movie_id[0] != NULL && $fav_pastime_id[0] != NULL) {
+                    $querySchool = "SELECT * FROM `user_favorite_movie` movie,user_favorite_pastime pastime WHERE movie.movie_id=" . $fav_movie_id[0]." and pastime.pastime_id=".$fav_pastime_id[0];
                     $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
-                    echo $querySchool;
+                   // echo $querySchool;
                     if (mysqli_num_rows($resultSchool)) {
 
                         while ($row = mysqli_fetch_assoc($resultSchool)) {

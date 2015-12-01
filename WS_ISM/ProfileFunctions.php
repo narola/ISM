@@ -1684,7 +1684,8 @@ class ProfileFunctions
                     $updateResult = mysqli_query($GLOBALS['con'], $updateQuery) or $message = mysqli_error($GLOBALS['con']);
                     $message = "user blocked";
                     $status = "success";
-                } else {
+                }
+              /*  else {
                     //Find UserId and Block User from StudyMateRequest table
 
                     $queryFindUserFromRequest = "SELECT * FROM ".TABLE_STUDYMATES_REQUEST." WHERE request_from_mate_id=".$block_user." AND request_to_mate_id=".$user_id." AND is_delete=0";
@@ -1698,10 +1699,10 @@ class ProfileFunctions
                         $message = DEFAULT_NO_RECORDS;
                         $status = "failed";
                     }
-                }
+                }*/
             } else {
                 $status = "failed";
-                $message = "";
+                $message = DEFAULT_NO_RECORDS;
             }
         }
         else
@@ -2387,9 +2388,7 @@ class ProfileFunctions
 
         $queryGetBlockedUser="SELECT DISTINCT ".$getField." FROM ".TABLE_STUDYMATES." studymates
         JOIN ". TABLE_USERS." users ON users.id=studymates.mate_of
-        JOIN ".TABLE_STUDYMATES_REQUEST." studymate_request ON studymate_request.request_to_mate_id=users.id
-        WHERE  (studymates.mate_of=".$user_id."
-        OR studymate_request.request_to_mate_id=".$user_id.") AND (studymates.status='block' OR studymate_request.status=2) AND studymates.is_delete=0 AND studymate_request.is_delete=0";
+        WHERE  studymates.mate_of=".$user_id." AND studymates.status='block'  AND studymates.is_delete=0";
         $resultGetBlockedUser=mysqli_query($GLOBALS['con'],$queryGetBlockedUser) or $message=mysqli_error($GLOBALS['con']);
 
         if(mysqli_num_rows($resultGetBlockedUser) > 0)

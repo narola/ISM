@@ -169,7 +169,7 @@ class NotificationFunctions
 
             //For request_count
 
-            $queryRequest = "SELECT ifnull(count(*),'0') as 'request_count' FROM ".TABLE_STUDYMATES_REQUEST." WHERE request_to_mate_id = ". $user_id ." and is_seen = 0 and is_delete=0 ";
+            $queryRequest = "SELECT ifnull(count(*),'0') as 'request_count' FROM ".TABLE_STUDYMATES." WHERE mate_of = ". $user_id ." and is_request_seen = 0 and status='pending' and is_delete=0 ";
             $resultRequest = mysqli_query($GLOBALS['con'], $queryRequest) or $message = mysqli_error($GLOBALS['con']);
             $requestCount = mysqli_fetch_row($resultRequest);
             $data['request_count'] = $requestCount[0];
@@ -349,14 +349,14 @@ class NotificationFunctions
         $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
         if($isSecure==yes) {
-            $query = "SELECT * FROM ".TABLE_STUDYMATES_REQUEST."  WHERE request_from_mate_id = ".$user_id ." and request_to_mate_id= ". $studymate_id." and is_delete=0";
+            $query = "SELECT * FROM ".TABLE_STUDYMATES."  WHERE mate_of = ".$user_id ." and mate_id= ". $studymate_id." and is_delete=0";
 
 
             $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
 
             if (mysqli_num_rows($result) > 0) {
 
-                $queryToUpdateStatus = "UPDATE ".TABLE_STUDYMATES_REQUEST." SET status= 1 WHERE request_from_mate_id = ".$user_id ." and request_to_mate_id= ". $studymate_id." and is_delete=0";
+                $queryToUpdateStatus = "UPDATE ".TABLE_STUDYMATES." SET status= 1  WHERE mate_of = ".$user_id ." and mate_id= ". $studymate_id." and is_delete=0";
                 //echo $queryToUpdateStatus;
                 $resultToUpdateStatus = mysqli_query($GLOBALS['con'], $queryToUpdateStatus) or $message = mysqli_error($GLOBALS['con']);
 
@@ -410,27 +410,30 @@ class NotificationFunctions
         if($isSecure==yes) {
 
             if ($read_category == "studymate_request") {
-                $table = TABLE_STUDYMATES_REQUEST;
-                $is_read = "is_seen";
+                $table = TABLE_STUDYMATES;
+                $is_read = " is_request_seen = 1,status = 'pending'";
+                $condition=" mate_of= ".$user_id;
             } else if ($read_category == "notification") {
                 $table = TABLE_USER_NOTIFICATION;
-                $is_read = "is_read";
+                $is_read = " is_read = 1";
+                $condition=" notification_to= ".$user_id;
             } else if ($read_category == "messages") {
                 $table = TABLE_MESSAGE_RECEIVER;
-                $is_read = "is_read";
+                $is_read = " is_read = 1";
+                $condition=" receiver_id= ".$user_id;
             }
 
 
             if ($record_id != null) {
                 foreach ($record_id as $feed_id) {
 
-                    $queryCheckFeed = "SELECT id FROM " . $table . " WHERE id =" . $feed_id;
+                    $queryCheckFeed = "SELECT id FROM " . $table . " WHERE id =" . $feed_id." AND ".$condition;
                     //echo $queryCheckFeed."\n";
                     $resultCheckFeed = mysqli_query($GLOBALS['con'], $queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
 
                     if (mysqli_num_rows($resultCheckFeed) > 0) {
                         $val = mysqli_fetch_assoc($resultCheckFeed);
-                        $queryUpdate = "UPDATE " .$table ." SET ".$is_read." = 1 WHERE id =".$feed_id;
+                        $queryUpdate = "UPDATE " .$table ." SET ".$is_read." WHERE id =".$feed_id." AND ".$condition;
                         $resultUpdate = mysqli_query($GLOBALS['con'], $queryUpdate) or $message = mysqli_error($GLOBALS['con']);
                         //echo $queryUpdate;
 
