@@ -31,6 +31,7 @@ public class Questions implements Parcelable {
     private String questionCreatorName;
     private String subjectName;
     private Boolean isQuestionAddedInPreview = false;
+    private Boolean isDropdownOpen = false;
 
     public Questions() {
     }
@@ -210,6 +211,15 @@ public class Questions implements Parcelable {
 
     public void setIsQuestionAddedInPreview(Boolean isQuestionAddedInPreview) {
         this.isQuestionAddedInPreview = isQuestionAddedInPreview;
+    }
+
+    public Boolean getIsDropdownOpen() {
+        return isDropdownOpen;
+    }
+
+    public Questions setIsDropdownOpen(Boolean isDropdownOpen) {
+        this.isDropdownOpen = isDropdownOpen;
+        return this;
     }
 
     @Override

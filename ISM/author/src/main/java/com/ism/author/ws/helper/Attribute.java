@@ -123,6 +123,18 @@ public class Attribute {
     public void setFavResourceId(ArrayList<String> favResourceId) {
         this.favResourceId = favResourceId;
     }
+    public String getQuestionid() {
+        return questionid;
+    }
+
+    @JsonProperty("question_id")
+    public Attribute setQuestionid(String questionid) {
+        this.questionid = questionid;
+        return this;
+    }
+
+    private String questionid;
+
 
 
     public String getResourceName() {
@@ -505,14 +517,14 @@ public class Attribute {
         return studentId;
     }
 
-    public ArrayList<String> getQuestionId() {
-        return this.questionId;
-    }
-
-    @JsonProperty("question_id")
-    public void setQuestionId(ArrayList<String> questionId) {
-        this.questionId = questionId;
-    }
+//    public ArrayList<String> getQuestionId() {
+//        return this.questionId;
+//    }
+//
+//    @JsonProperty("question_id")
+//    public void setQuestionId(ArrayList<String> questionId) {
+//        this.questionId = questionId;
+//    }
 
     @JsonProperty("email_id")
     public void setEmailId(String emailId) {

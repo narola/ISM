@@ -30,17 +30,26 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
     private MyTypeFace myTypeFace;
     private LayoutInflater inflater;
 
+
+    /*this bundle arguments are use for both in edit exam and create exam we have to set it both the places*/
     public static String ARG_EXAM_ID = "examId";
     public static String ARG_EXAM_NAME = "examName";
-    public static String ARG_CLASSROOM_ID = "classRoomId";
-    public static String ARG_CLASSROOM_NAME = "classRoomName";
+    public static String ARG_EXAM_CLASSROOM_ID = "examClassRoomId";
+    public static String ARG_EXAM_CLASSROOM_NAME = "examClassRoomName";
+    public static String ARG_EXAM_SUBJECT_ID = "examSubjectId";
+    public static String ARG_EXAM_SUBJECT_NAME = "examSubjectName";
+    public static String ARG_EXAM_TOPIC_ID = "examTopicId";
+    public static String ARG_EXAM_TOPIC_NAME = "examTopicName";
+    public static String ARG_EXAM_BOOK_ID = "examBookId";
+    public static String ARG_EXAM_BOOK_NAME = "examBookName";
     public static String ARG_EXAM_CATEGORY = "examCategory";
-    public static String ARG_SUBJECT_NAME = "subjectName";
-    public static String ARG_PASS_PERCENTAGE = "passPercentage";
     public static String ARG_EXAM_TYPE = "examType";
     public static String ARG_EXAM_MODE = "examMode";
     public static String ARG_EXAM_DURATION = "examDuration";
-    public static String ARG_ASSIGNMENT_NO = "examAssignmentNo";
+    public static String ARG_EXAM_NO = "examNo";
+    public static String ARG_EXAM_PASS_PERCENTAGE = "examPassPercentage";
+    public static String ARG_EXAM_QUESTION_SCORE = "examQuestionScore";
+    public static String ARG_EXAM_CREATED_DATE = "examCreatedDate";
     public static String ARG_ISLOAD_FRAGMENTFOREVALUATION = "examIsLoadFragmentForEvaluation";
 
 
@@ -112,19 +121,26 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
                 holder.rlTopExam.setBackgroundResource(R.drawable.bg_subject_yellow);
             }
 
-
             final Bundle bundleExamDetails = new Bundle();
-            bundleExamDetails.putString(ARG_EXAM_ID, "9");
+            bundleExamDetails.putString(ARG_EXAM_ID, arrListExams.get(position).getExamId());
             bundleExamDetails.putString(ARG_EXAM_NAME, arrListExams.get(position).getExamName());
-            bundleExamDetails.putString(ARG_CLASSROOM_ID, arrListExams.get(position).getClassroomId());
+            bundleExamDetails.putString(ARG_EXAM_CLASSROOM_ID, arrListExams.get(position).getClassroomId());
+            bundleExamDetails.putString(ARG_EXAM_CLASSROOM_NAME, arrListExams.get(position).getClassroomName());
+            bundleExamDetails.putString(ARG_EXAM_SUBJECT_ID, arrListExams.get(position).getSubjectId());
+            bundleExamDetails.putString(ARG_EXAM_SUBJECT_NAME, arrListExams.get(position).getSubjectName());
+            bundleExamDetails.putString(ARG_EXAM_TOPIC_ID, "");
+            bundleExamDetails.putString(ARG_EXAM_TOPIC_NAME, "");
+            bundleExamDetails.putString(ARG_EXAM_BOOK_ID, "");
+            bundleExamDetails.putString(ARG_EXAM_BOOK_NAME, "");
             bundleExamDetails.putString(ARG_EXAM_CATEGORY, arrListExams.get(position).getExamCategory());
-            bundleExamDetails.putString(ARG_SUBJECT_NAME, arrListExams.get(position).getSubjectName());
-            bundleExamDetails.putString(ARG_PASS_PERCENTAGE, arrListExams.get(position).getPassPercentage());
             bundleExamDetails.putString(ARG_EXAM_TYPE, arrListExams.get(position).getExamType());
             bundleExamDetails.putString(ARG_EXAM_MODE, arrListExams.get(position).getExamMode());
             bundleExamDetails.putString(ARG_EXAM_DURATION, arrListExams.get(position).getDuration());
-            bundleExamDetails.putString(ARG_CLASSROOM_NAME, arrListExams.get(position).getClassroomName());
-            bundleExamDetails.putInt(ARG_ASSIGNMENT_NO, position);
+            bundleExamDetails.putInt(ARG_EXAM_NO, position);
+            bundleExamDetails.putString(ARG_EXAM_PASS_PERCENTAGE, arrListExams.get(position).getPassPercentage());
+            bundleExamDetails.putString(ARG_EXAM_QUESTION_SCORE, "0");
+            bundleExamDetails.putString(ARG_EXAM_CREATED_DATE, "");
+
 
             holder.llExamContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -140,7 +156,7 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             holder.llViewExamQuestions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    
+
                     bundleExamDetails.putBoolean(ARG_ISLOAD_FRAGMENTFOREVALUATION, false);
                     ((AuthorHostActivity) mContext).loadFragmentInMainContainer(AuthorHostActivity.FRAGMENT_GET_OBJECTIVE_ASSIGNMENT_QUESTIONS,
                             bundleExamDetails);
