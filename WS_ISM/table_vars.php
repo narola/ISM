@@ -17,7 +17,7 @@ define("TABLE_BADGE_CATEGORY",   "badge_category");
 define("TABLE_BADGES",   "badges");
 define("TABLE_BANNER_CATEGORY",   "banner_category");
 define("TABLE_BANNERS",   "banners");
-define("TABLE_BOOK_ASSIGNMENT",   "book_assignment");
+//define("TABLE_BOOK_ASSIGNMENT",   "book_assignment");
 define("TABLE_BOOKS",   "books");
 define("TABLE_CITIES",   "cities");
 define("TABLE_CLASSROOM_ASSIGNMENT",   "classroom_assignment");

@@ -48,10 +48,11 @@ switch ($_REQUEST['Service'])
     case "FollowUser":
     case "GetStudentProfile":
     case "ManageBookLibrary":
+    case "GetBlockedUser":
     {
-  	 include_once 'ProfileFunctions.php';
-     $profile = new ProfileFunctions();
-     $data = $profile -> call_service($_REQUEST['Service'], $postData);
+        include_once 'ProfileFunctions.php';
+        $profile = new ProfileFunctions();
+        $data = $profile -> call_service($_REQUEST['Service'], $postData);
     }
         break;
 
@@ -62,8 +63,8 @@ switch ($_REQUEST['Service'])
     case "GetSuggestedStudymates":
     case "SendRequestToStudymate":
     case "AcceptRequestFromStudymate":
-    case "GetStudymates": 
-	case "GetStudymateRequest":
+    case "GetStudymates":
+    case "GetStudymateRequest":
     {
         include_once 'StudyMateFunctions.php';
         $studyMate = new StudyMateFunctions();
@@ -103,9 +104,9 @@ switch ($_REQUEST['Service'])
     case "CreateQuestion":
     case "UploadMediaForQuestion":
     case "GetAllResults":
-	case "GetStudentResultsByExam":
-	case "GetHighScorers":
-	case "TempCreateQuestion":
+    case "GetStudentResultsByExam":
+    case "GetHighScorers":
+    case "TempCreateQuestion":
     {
         include_once 'ExamFunctions.php';
         $exam = new ExamFunctions();
@@ -120,66 +121,66 @@ switch ($_REQUEST['Service'])
     case "AddComment":
     case "LikeFeed":
     case "GetAllComments":
-	case "GetMyFeeds":
-	case "AddQuestionToFavorite":
-	case "TempGetMyFeeds":
-	case "GetSecurirty":
-	case "GetConfigData":
-	case "EncryptionData":
-	case "DecryptionData":
+    case "GetMyFeeds":
+    case "AddQuestionToFavorite":
+    case "TempGetMyFeeds":
+    case "GetSecurirty":
+    case "GetConfigData":
+    case "EncryptionData":
+    case "DecryptionData":
     case "Hashtag":
     case "GetAllHashtag":
     {
-         include_once 'SocialFunctions.php';
-       	 $profile = new SocialFunctions();
-    	 $data = $profile -> call_service($_REQUEST['Service'], $postData);
-    }    
-        
+        include_once 'SocialFunctions.php';
+        $profile = new SocialFunctions();
+        $data = $profile -> call_service($_REQUEST['Service'], $postData);
+    }
+
         break;
 
-	/*********************  TutorialGroup Functions  ******************************/
+    /*********************  TutorialGroup Functions  ******************************/
 
-	case "AllocateTutorialGroup":
-	case "AcceptTutorialGroup":
-	{
-		include_once 'TutorialGroup.php';
-		$profile = new TutorialGroup();
-		$data = $profile -> call_service($_REQUEST['Service'], $postData);
-	}
-		break;
+    case "AllocateTutorialGroup":
+    case "AcceptTutorialGroup":
+    {
+        include_once 'TutorialGroup.php';
+        $profile = new TutorialGroup();
+        $data = $profile -> call_service($_REQUEST['Service'], $postData);
+    }
+        break;
 
-	/*********************  Data Functions  ***************************************/
+    /*********************  Data Functions  ***************************************/
 
-	case "GetCountries":
-	case "GetStates":
-	case "GetCities":
-	{
-		include_once 'Data.php';
-		$profile = new TutorialGroup();
-		$data = $profile -> call_service($_REQUEST['Service'], $postData);
-	}
-		break;
-		
-	/*********************  Notification Functions  ***************************************/
+    case "GetCountries":
+    case "GetStates":
+    case "GetCities":
+    {
+        include_once 'Data.php';
+        $profile = new TutorialGroup();
+        $data = $profile -> call_service($_REQUEST['Service'], $postData);
+    }
+        break;
 
-	case "GetAllNotices":
-	case "GetAllBadgeCount":
-	case "GetNotification":
-	case "GetMessages":
-	case "GetWalletData":
-	case "UpdateReadStatus":
-	case "ManageGeneralSettings":
-	case "GetAllPreferences":
-	case "GetUserPreferences":
-	{
-		include_once 'NotificationFunctions.php';
-		$notification = new NotificationFunctions();
-		$data = $notification -> call_service($_REQUEST['Service'], $postData);
-	}
-		break;
+    /*********************  Notification Functions  ***************************************/
 
-	
-	/*********************  Invalid Option to serve  ******************************/
+    case "GetAllNotices":
+    case "GetAllBadgeCount":
+    case "GetNotification":
+    case "GetMessages":
+    case "GetWalletData":
+    case "UpdateReadStatus":
+    case "ManageGeneralSettings":
+    case "GetAllPreferences":
+    case "GetUserPreferences":
+    {
+        include_once 'NotificationFunctions.php';
+        $notification = new NotificationFunctions();
+        $data = $notification -> call_service($_REQUEST['Service'], $postData);
+    }
+        break;
+
+
+    /*********************  Invalid Option to serve  ******************************/
     default:
     {
         $data['data'] = 'No Service Found';
@@ -191,6 +192,6 @@ switch ($_REQUEST['Service'])
 header('Content-type: application/json');
 
 echo json_encode($data);
-mysql_close($con);
+mysqli_close($con);
 
 ?>

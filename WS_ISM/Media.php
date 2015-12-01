@@ -440,7 +440,7 @@ class Media {
                 else
                 {
                     $status = 2;
-                    $errorMsg = "Failed to upload media on server.";
+                    $errorMsg = FAILED_TO_UPLOAD_MEDIA;
                     $posts = null;
                 }
             }
@@ -485,10 +485,10 @@ class Media {
 
 
         $queryToPlayer = ""."Select id,device_token from user where device_token IS NOT NULL AND LENGTH(device_token) <> 0 AND device_token <> '(null)'";
-        $resToPlayer = mysql_query($queryToPlayer) or $errorMsg =  mysql_error();
+        $resToPlayer = mysqli_query($GLOBALS['con'],$queryToPlayer) or $errorMsg =  mysqli_error($GLOBALS['con']);
 
 
-        if(mysql_num_rows($resToPlayer) != 0) {
+        if(mysqli_num_rows($resToPlayer) != 0) {
 
             $pushNotification->sendBroadcastPushToIOS($resToPlayer, $msg);
         }

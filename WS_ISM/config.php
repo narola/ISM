@@ -18,18 +18,21 @@ date_default_timezone_set('UTC');
 $server = "192.168.1.201";
 $user = "ISM";
 $password = "69NC52j07761uvw";
-$dbname = 'ism';
+$dbname = "ism";
 
+global $con;
 $con = "";
-$con = mysql_connect($server, $user, $password);
+$con = mysqli_connect($server, $user, $password, $dbname);
 
-mysql_set_charset('utf8', $con);
+
+mysqli_set_charset($con , 'utf8' );
 
 if (!$con) {
-    die('Database does not connect: ' . mysql_error());
+    die('Database does not connect: ' . mysqli_error($con));
 }
 else {
-    mysql_select_db($dbname, $con);
+    mysqli_select_db($con , $dbname);
+
 }
 
 ?>

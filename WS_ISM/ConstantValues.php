@@ -24,4 +24,14 @@ define("MOZILLA","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/53
 
 define("MALICIOUS_SOURCE","Malicious source detected");
 
+define("FAILED_TO_UPLOAD_MEDIA","Failed to upload media on server.");
+
+define("REQUEST_ACCEPTED","Request accepted");
+
+define("SUCCESSFULLY_ADDED","Added successfully");
+
+define("SUCCESSFULLY_UPDATED","Updated successfully");
+
+define("RECORD_ALREADY_EXIST","Record already exist.");
+
 ?>

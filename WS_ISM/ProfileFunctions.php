@@ -10,6 +10,7 @@ include_once 'ConstantValues.php';
 include_once 'SendEmail.php';
 include_once 'TutorialGroup.php';
 
+
 error_reporting(0);
 class ProfileFunctions
 {
@@ -122,10 +123,10 @@ class ProfileFunctions
                 return $this->getMoviesForUser($postData);
             }
                 break;
-                
+
             case "ManageFavorite":
             {
-                return $this->addResourcesToFavorite($postData);
+                return $this->manageFavorite($postData);
             }
                 break;
                 
@@ -146,6 +147,12 @@ class ProfileFunctions
                 return $this->manageBookLibrary($postData);
             }
                 break;
+
+            case "GetBlockedUser":
+            {
+                return $this->getBlockedUser($postData);
+            }
+                break;
         }
     }
     /*
@@ -160,30 +167,46 @@ class ProfileFunctions
         $user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
 
-        $queryFrom=TABLE_STUDENT_ACADEMIC_INFO . " academicInfo INNER JOIN ".TABLE_CLASSROOMS." classroom INNER JOIN ".TABLE_SCHOOLS." schools INNER JOIN ".TABLE_COURSES."  courses INNER JOIN ".TABLE_SCHOOL_CLASSROOM."  school_classroom ";
-        $queryGetFields="school_classroom.classroom_name,academicInfo.school_id,academicInfo.classroom_id,academicInfo.academic_year,academicInfo.course_id,schools.school_name,classroom.class_name,courses.course_name";
-        $queryOn="academicInfo.school_id=school_classroom.school_id and academicInfo.classroom_id=school_classroom.classroom_id and academicInfo.school_id=schools.id and academicInfo.classroom_id=classroom.id and academicInfo.course_id=courses.id";
-        $query = "SELECT ".$queryGetFields. " FROM ".$queryFrom ." on ".$queryOn." where user_id =" . $user_id;
-        $result = mysql_query($query) or $message = mysql_error();
-       //  echo $query;
-        //echo $message;
-        if (mysql_num_rows($result)) {
-            $val = mysql_fetch_assoc($result);
-            $data['school_id'] = $val['school_id'];
-            $data['school_name'] = $val['school_name'];
-            $data['course_id'] = $val['course_id'];
-            $data['course_name'] = $val['course_name'];
-            $data['academic_year'] = $val['academic_year'];
-            $data['classroom_id'] = $val['classroom_id'];
-            $data['classroom_name'] = $val['class_name'];
-            $data['class_division'] = $val['classroom_name'];
-            $status="success";
-            //$message="";
-        }
-        else{
-            $status="failed";
-            //$message=DEFAULT_NO_RECORDS;
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $queryFrom = TABLE_STUDENT_PROFILE . " academicInfo INNER JOIN " . TABLE_CLASSROOMS . " classroom INNER JOIN " . TABLE_SCHOOLS . " schools INNER JOIN " . TABLE_COURSES . "  courses INNER JOIN " . TABLE_SCHOOL_CLASSROOM . "  school_classroom ";
+            $queryGetFields = "school_classroom.classroom_name,academicInfo.school_id,academicInfo.classroom_id,academicInfo.academic_year,academicInfo.course_id,schools.school_name,classroom.class_name,courses.course_name";
+            $queryOn = "academicInfo.school_id=school_classroom.school_id and academicInfo.classroom_id=school_classroom.classroom_id and academicInfo.school_id=schools.id and academicInfo.classroom_id=classroom.id and academicInfo.course_id=courses.id";
+            $query = "SELECT ".$queryGetFields. " FROM ".$queryFrom ." on ".$queryOn." where user_id =" . $user_id ." and academicInfo.is_delete=0 and schools.is_delete=0 and courses.is_delete=0 and school_classroom.is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            //  echo $query;
+            //echo $message;
+            if (mysqli_num_rows($result)) {
+                $val = mysqli_fetch_assoc($result);
+                $data['school_id'] = $val['school_id'];
+                $data['school_name'] = $val['school_name'];
+                $data['course_id'] = $val['course_id'];
+                $data['course_name'] = $val['course_name'];
+                $data['academic_year'] = $val['academic_year'];
+                $data['classroom_id'] = $val['classroom_id'];
+                $data['classroom_name'] = $val['class_name'];
+                $data['class_division'] = $val['classroom_name'];
+                $status = "success";
+                //$message="";
+            } else {
+                $status = "failed";
+                //$message=DEFAULT_NO_RECORDS;
+
+            }
+        }
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
         }
         $response['student_info']=$data;
         $response['status']=$status;
@@ -198,38 +221,50 @@ class ProfileFunctions
         $email_id = validateObject ($postData , 'email_id', "");
         $email_id = addslashes($email_id);
 
-        $sendEmail = new SendEmail();
-        $randomString=gen_random_string();
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-        $status=0;
-        $queryCheckEmail="SELECT * FROM ".TABLE_USERS." WHERE `email_id`='".$email_id."'";
-        $resultCheckEmail=mysql_query($queryCheckEmail) or $errorMsg=mysql_error();
-       // echo $queryCheckEmail;
-        if(mysql_num_rows($resultCheckEmail)) {
-            while ($val = mysql_fetch_assoc($resultCheckEmail)) {
-                $status = 1;
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $sendEmail = new SendEmail();
+            $randomString = gen_random_string();
+
+            $status = 0;
+            $queryCheckEmail = "SELECT * FROM ".TABLE_USERS." WHERE `email_id`='".$email_id."' and is_delete=0";
+            $resultCheckEmail = mysqli_query($GLOBALS['con'], $queryCheckEmail) or $message = mysqli_error($GLOBALS['con']);
+            // echo $queryCheckEmail;
+            if (mysqli_num_rows($resultCheckEmail)) {
+                while ($val = mysqli_fetch_assoc($resultCheckEmail)) {
+                    $status = 1;
+                }
+            } else {
+
+                $status = 0;
+
             }
-        }
-        else{
+            //$message="Hello ISM,\nI am very much interested to be part of ISM system.Please check my details below and let me know how can I become the part of this system.
+            if ($status == 1) {
+                $message = "Successfully sent";
+                $status = "success";
+                $response = $sendEmail->sendemail("ism.educare@gmail.com", $randomString, "Forgot Password", $email_id);
+            } else {
+                $message = "Email id is not valid!";
+                $status = "failed";
+            }
+            // return "Request sent successfully'";
 
-                $status=0;
-
-        }
-        //$message="Hello ISM,\nI am very much interested to be part of ISM system.Please check my details below and let me know how can I become the part of this system.
-        if($status==1) {
-            $message = "Successfully sent";
-            $status="success";
-            $response = $sendEmail->sendemail("ism.educare@gmail.com", $randomString, "Forgot Password", $email_id);
         }
         else
         {
-            $message = "Email id is not valid!";
             $status="failed";
+            $message = MALICIOUS_SOURCE;
         }
-        // return "Request sent successfully'";
-
-        //$response['data']=$data;
-        // $response['status']=$status;
         $response['message']=$message;
         $response['status']=$status;
         $response['user']=$data;
@@ -245,46 +280,53 @@ class ProfileFunctions
         $username = validateObject ($postData , 'username', "");
         $username = addslashes($username);
 
-        if($username!=null)
-        {
-            $queryUserName="SELECT `username` FROM ".TABLE_USERS." WHERE `username`='".$username."'";
-            $resultUserName=mysql_query($queryUserName) or $errorMsg=mysql_error();
-            if(mysql_num_rows($resultUserName))
-            {
-                while ($val = mysql_fetch_assoc($resultUserName))
-                {
-                    regenerate:
-                    {
-                        $username=$val['username'];
-                        $randomNumber=rand ( 0 , 999 );
-                        $username.=$randomNumber;
-                        //echo "\n".$username."i=";
-                        $queryGenUserName="SELECT `username` FROM ".TABLE_USERS." WHERE `username`='".$username."'";
-                        $resultGenUserName=mysql_query($queryGenUserName) or $errorMsg=mysql_error();
-                        if(mysql_num_rows($resultGenUserName))
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            if ($username != null) {
+                $queryUserName = "SELECT `username` FROM ".TABLE_USERS." WHERE `username`='".$username."'  and is_delete=0";
+                $resultUserName = mysqli_query($GLOBALS['con'], $queryUserName) or $message = mysqli_error($GLOBALS['con']);
+                if (mysqli_num_rows($resultUserName)) {
+                    while ($val = mysqli_fetch_assoc($resultUserName)) {
+                        regenerate:
                         {
-                            goto regenerate;
-                        }
-                        else
-                        {
-                            //	echo "\n".$username."i=else=";}
-                            $status="success";
-                            $message="username is not available.";
-                            $data['username']=$username;
+                            $username = $val['username'];
+                            $randomNumber = rand(0, 999);
+                            $username .= $randomNumber;
+                            //echo "\n".$username."i=";
+                            $queryGenUserName = "SELECT `username` FROM " . TABLE_USERS . " WHERE `username`='" . $username . "'";
+                            $resultGenUserName = mysqli_query($GLOBALS['con'], $queryGenUserName) or $message = mysqli_error($GLOBALS['con']);
+                            if (mysqli_num_rows($resultGenUserName)) {
+                                goto regenerate;
+                            } else {
+                                //	echo "\n".$username."i=else=";}
+                                $status = "success";
+                                $message = "username is not available.";
+                                $data['username'] = $username;
+                            }
                         }
                     }
+                } else {
+                    $status = "success";
+                    $message = "username is available.";
                 }
-            }
-            else
-            {
-                $status="success";
-                $message="username is available.";
+            } else {
+                $status = "failed";
+                $message = "Invalid data.";
             }
         }
         else
         {
             $status="failed";
-            $message="Invalid data.";
+            $message = MALICIOUS_SOURCE;
         }
         $response['user']=$data;
         $response['message']=$message;
@@ -325,73 +367,81 @@ class ProfileFunctions
         $country_id = validateObject ($postData , 'country_id', "");
         $country_id = addslashes($country_id);
 
-        $queryState="SELECT `state_name` FROM `states` WHERE `id`=".$state_id;
-        $resultState=mysql_query($queryState) or $errorMsg=mysql_error();
-        if(mysql_num_rows($resultState))
-        {
-            while ($val = mysql_fetch_assoc($resultState))
-            {
-                $state_name=$val['state_name'];
-            }
-        }
-        else
-        {
-            $state_name=DEFAULT_NO_RECORDS;
-        }
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-        $queryCountry="SELECT `country_name` FROM `countries` WHERE `id`=".$country_id;
-        $resultCountry=mysql_query($queryCountry) or $errorMsg=mysql_error();
-        if(mysql_num_rows($resultCountry))
-        {
-            while ($val = mysql_fetch_assoc($resultCountry))
-            {
-                $country_name=$val['country_name'];
-            }
-        }
-        else
-        {
-            $country_name=DEFAULT_NO_RECORDS;
-        }
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
 
-        $queryCity="SELECT `city_name` FROM `cities` WHERE `id`=".$city_id;
-        $resultCity=mysql_query($queryCity) or $errorMsg=mysql_error();
-        if(mysql_num_rows($resultCity))
-        {
-            while ($val = mysql_fetch_assoc($resultCity))
-            {
-                $city_name=$val['city_name'];
-            }
-        }
-        else
-        {
-            $country_name=DEFAULT_NO_RECORDS;
-        }
-        $data['firstname']=$firstname;
-        $data['lastname']=$lastname;
-        $data['home_address']=$home_address;
-        $data['contact_number']=$contact_number;
-        $data['email_address']=$email_address;
-        $data['school_name']=$school_name;
-        $data['city_id']=$city_id;
-        $data['state_id']=$state_id;
-        $data['country_id']=$country_id;
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
-        $sendEmail = new SendEmail();
-        $message="Hello ISM,\nI am very much interested to be part of ISM system.Please check my details below and let me know how can I become the part of this system.
-     	\nFullname: ".$firstname." ".$lastname.
-            "\nHome Address: ".$home_address.
-            "\nContact number: ". $contact_number.
-            "\nEmail address: ".$email_address.
-            "\nSchool name: ".$school_name.
-            "\nCity: ".$city_name.
-            "\nState: ".$state_name.
-            "\nCountry: ".$country_name.
-            "\n\nI am waiting for your call.
+        if($isSecure==yes) {
+
+            $queryState = "SELECT `state_name` FROM `states` WHERE `id`=" . $state_id ." and is_delete=0";
+            $resultState = mysqli_query($GLOBALS['con'], $queryState) or $errorMsg = mysqli_error($GLOBALS['con']);
+            if (mysqli_num_rows($resultState)) {
+                while ($val = mysqli_fetch_assoc($resultState)) {
+                    $state_name = $val['state_name'];
+                }
+            } else {
+                $state_name = DEFAULT_NO_RECORDS;
+            }
+
+            $queryCountry = "SELECT `country_name` FROM `countries` WHERE `id`=".$country_id ." and is_delete=0";
+            $resultCountry = mysqli_query($GLOBALS['con'], $queryCountry) or $message = mysqli_error($GLOBALS['con']);
+            if (mysqli_num_rows($resultCountry)) {
+                while ($val = mysqli_fetch_assoc($resultCountry)) {
+                    $country_name = $val['country_name'];
+                }
+            } else {
+                $country_name = DEFAULT_NO_RECORDS;
+            }
+
+            $queryCity = "SELECT `city_name` FROM `cities` WHERE `id`=".$city_id." and is_delete=0";
+            $resultCity = mysqli_query($GLOBALS['con'], $queryCity) or $message = mysqli_error($GLOBALS['con']);
+            if (mysqli_num_rows($resultCity)) {
+                while ($val = mysqli_fetch_assoc($resultCity)) {
+                    $city_name = $val['city_name'];
+                }
+            } else {
+                $country_name = DEFAULT_NO_RECORDS;
+            }
+            $data['firstname'] = $firstname;
+            $data['lastname'] = $lastname;
+            $data['home_address'] = $home_address;
+            $data['contact_number'] = $contact_number;
+            $data['email_address'] = $email_address;
+            $data['school_name'] = $school_name;
+            $data['city_id'] = $city_id;
+            $data['state_id'] = $state_id;
+            $data['country_id'] = $country_id;
+
+            $sendEmail = new SendEmail();
+            $message = "Hello ISM,\nI am very much interested to be part of ISM system.Please check my details below and let me know how can I become the part of this system.
+     	\nFullname: " . $firstname . " " . $lastname .
+                "\nHome Address: " . $home_address .
+                "\nContact number: " . $contact_number .
+                "\nEmail address: " . $email_address .
+                "\nSchool name: " . $school_name .
+                "\nCity: " . $city_name .
+                "\nState: " . $state_name .
+                "\nCountry: " . $country_name .
+                "\n\nI am waiting for your call.
 		\nThanks.";
-        $response['status'] ="success";
-        $sendEmail -> sendemail($email_address, $message,"Request For Credentials","ism.educare@gmail.com");
-        //  $response['status'] =$status;
-        $response['message'] ="Sent successfully";
+            $status = "success";
+            $sendEmail->sendemail($email_address, $message, "Request For Credentials", "ism.educare@gmail.com");
+            //  $response['status'] =$status;
+        $message="Sent successfully";
+
+        }
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['status'] =$status;
+        $response['message'] =$message;
         $response['request_credentials']=$post;
         return $response;
 
@@ -399,24 +449,44 @@ class ProfileFunctions
 
     public function RequestForSchoolInfoUpdation ($postData)
     {
-        $message ='';
-        $post=array();
-        $response=array();
-        $email_address = validateObject ($postData , 'email_address', "");
-        $email_address= addslashes($email_address);
+        $message = '';
+        $post = array();
+        $response = array();
+        $email_address = validateObject($postData, 'email_address', "");
+        $email_address = addslashes($email_address);
 
-        $message= validateObject ($postData , 'message', "");
+        $message = validateObject($postData, 'message', "");
         $message = addslashes($message);
 
-        $name = validateObject ($postData , 'name', "");
+        $name = validateObject($postData, 'name', "");
         $name = addslashes($name);
 
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security = new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key, $secret_key);
+
+        if ($isSecure == yes) {
+
         $sendEmail = new SendEmail();
-        $email_message="Hello, \n".$message."\n\n Thank You \n ".$name;
-        $response['status'] ="success";
-        $sendEmail -> sendemail($email_address, $email_message,"Request For Wrong School Details ","ism.educare@gmail.com");
+        $email_message = "Hello, \n" . $message . "\n\n Thank You \n " . $name;
+            $status= "success";
+        $sendEmail->sendemail($email_address, $email_message, "Request For Wrong School Details ", "ism.educare@gmail.com");
         //  $response['status'] =$status;
-        $response['message'] ="Sent successfully";
+        $message="Sent successfully";;
+
+        }
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['status'] = $status;
+        $response['message'] =$message;
         $response['request_updation']=$post;
         return $response;
 
@@ -435,118 +505,118 @@ class ProfileFunctions
         $password = validateObject ($postData , 'password', "");
         $password = addslashes($password);
 
-        $queryUser="SELECT id,username,password,profile_pic,full_name from ".TABLE_USERS." where username='".$username."'";
-        //echo $encrypted_passwd = $obj->encode($password);
-        //$decrypted_password = $obj->decode("vxbhjXDuOZ8uncgNP7ykB2UvgLr5Q9SU31K6z+JGMYfREqZTYyr1f5E20k7jMTxNILaWMK0ImrNVS1GGn6gshA==");
-        //echo "---------".$obj->decode("v8R/H5JqnMdmkqVWyYLr7a/z46844fI8otkn17Ba+Afd5eOTjH9uJRg0X5nHW6EAcAQP4QNhvbNWmfgqlzLXew==");
-        $resultUser=mysql_query($queryUser) or $message=mysql_error();
-        if(mysql_num_rows($resultUser))
-        {
-            $encryptedPassword='';
-            while ($val = mysql_fetch_assoc($resultUser))
-            {
-                //echo $obj->encode($password);
-                $encryptedPassword=$val['password'];
-                //echo $encryptedPassword;
-                $decrypted_password = $obj->decode($encryptedPassword);
-                //echo $decrypted_password;
-                if($decrypted_password==$password)
-                {
-                	$post=array();
-                    $message=CREDENTIALS_EXITST;
-                    $post['user_id']=$val['id'];
-                    $post['full_name']=$val['full_name'];
-                    $post['profile_pic']=$val['profile_pic'];
-                    $status="success";
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-	                $tutorialGroupClass = new TutorialGroup();
-	                $tutorialGroup = $tutorialGroupClass -> call_service("GetTutorialGroupOfUser", $post['user_id']);
-					
-	                if ($tutorialGroup['tutorial_group_found']) {
-		                $groupData = $tutorialGroup['tutorial_group'];
-		                $post['tutorial_group_id'] = $groupData['tutorial_group_id'];
-		                $post['tutorial_group_joining_status'] = $groupData['tutorial_group_joining_status'];
-		                $post['tutorial_group_complete'] = $groupData['tutorial_group_complete'];
-		                $post['tutorial_group_name'] = $groupData['tutorial_group_name'];
-		                $post['tutorial_group_members'] = $groupData['tutorial_group_members'];
-	                }
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
 
-               }
-                else
-                {
-                    $status="failed";
-                    $message=CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            $queryUser = "SELECT id,username,password,profile_pic,full_name from ".TABLE_USERS." where username='".$username."' and is_delete=0";
+            //echo $encrypted_passwd = $obj->encode($password);
+            //$decrypted_password = $obj->decode("vxbhjXDuOZ8uncgNP7ykB2UvgLr5Q9SU31K6z+JGMYfREqZTYyr1f5E20k7jMTxNILaWMK0ImrNVS1GGn6gshA==");
+            //echo "---------".$obj->decode("v8R/H5JqnMdmkqVWyYLr7a/z46844fI8otkn17Ba+Afd5eOTjH9uJRg0X5nHW6EAcAQP4QNhvbNWmfgqlzLXew==");
+            $resultUser = mysqli_query($GLOBALS['con'], $queryUser) or $message = mysqli_error($GLOBALS['con']);
+            if (mysqli_num_rows($resultUser)) {
+                $encryptedPassword = '';
+                while ($val = mysqli_fetch_assoc($resultUser)) {
+                    //echo $obj->encode($password);
+                    $encryptedPassword = $val['password'];
+                    //echo $encryptedPassword;
+                    $decrypted_password = $obj->decode($encryptedPassword);
+                    //echo $decrypted_password;
+                    if ($decrypted_password == $password) {
+                        $post = array();
+                        $message = CREDENTIALS_EXITST;
+                        $post['user_id'] = $val['id'];
+                        $post['full_name'] = $val['full_name'];
+                        $post['profile_pic'] = $val['profile_pic'];
+                        $status = "success";
+
+                        $tutorialGroupClass = new TutorialGroup();
+                        $tutorialGroup = $tutorialGroupClass->call_service("GetTutorialGroupOfUser", $post['user_id']);
+
+                        if ($tutorialGroup['tutorial_group_found']) {
+                            $groupData = $tutorialGroup['tutorial_group'];
+                            $post['tutorial_group_id'] = $groupData['tutorial_group_id'];
+                            $post['tutorial_group_joining_status'] = $groupData['tutorial_group_joining_status'];
+                            $post['tutorial_group_complete'] = $groupData['tutorial_group_complete'];
+                            $post['tutorial_group_name'] = $groupData['tutorial_group_name'];
+                            $post['tutorial_group_members'] = $groupData['tutorial_group_members'];
+                        }
+
+                    } else {
+                        $status = "failed";
+                        $message = CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
+                    }
                 }
+            } else {
+                //$encryptedPassword=encryptPassword($passowrd);
+                $queryOn = "autoGenerateCredential.school_id=schools.id and autoGenerateCredential.course_id=courses.id";
+                $queryData = "SELECT * FROM ".TABLE_AUTO_GENERATED_CREDENTIAL." autoGenerateCredential where username='".$username."' and is_delete=0";
+                //$queryAuthUser="select * from ".TABLE_AUTO_GENERATED_CREDENTIAL." where username='".$userName."'";
+                $resultAuthUser = mysqli_query($GLOBALS['con'], $queryData) or $message = mysqli_error($GLOBALS['con']);
+                if (mysqli_num_rows($resultAuthUser)) {
+                    $encryptedPassword = '';
+                    while ($val = mysqli_fetch_assoc($resultAuthUser)) {
+                        $username = $val['username'];
+                        $encryptedPassword = $val['password'];
+                        $status = $val['status'];
+                        $id = $val['id'];
+                        $decrypted_password = $obj->decode($encryptedPassword);
+
+                        if ($decrypted_password == $password) {
+
+                            if ($status == 1) {
+                                //$status=$status;
+                                $message = CREDENTIALS_ARE_DEACTIVATED_OR_ALREADY_TAKEN;
+                            } else if ($status == 0) {
+                                $post = array();
+                                //$queryData="SELECT * FROM `auto_generated_credential` t1 INNER JOIN `schools`t2 INNER JOIN `courses`t3 ON t1.school_id=t2.id and t1.course_id=t3.id where `username`='WJL91RU473'";
+                                $post['credential_id'] = $val['id'];
+                                $post['school_id'] = $val['school_id'];
+                                $post['role_id'] = $val['role_id'];
+                                $post['class_id'] = $val['classroom_id'];
+                                $post['course_id'] = $val['course_id'];
+
+                                $post['academic_year'] = $val['academic_year'];
+                                $querySchool = "select school.school_name,school.school_type,course.course_name,district. district_name, class.class_name from courses course INNER JOIN classrooms class INNER JOIN districts district INNER JOIN schools school on school.district_id=district.id where course.id=" . $val['course_id'] . " and school.id=" . $val['school_id'] . " and class.id=" . $val['classroom_id'] . " limit 1";
+                                $resultSchool = mysqli_query($GLOBALS['con'], $querySchool) or $message = mysqli_error($GLOBALS['con']);
+                                if (mysqli_num_rows($resultSchool)) {
+                                    $valSchool = mysqli_fetch_assoc($resultSchool);
+                                    $post['school_name'] = $valSchool['school_name'];
+                                    $post['course_name'] = $valSchool['course_name'];
+                                    $post['district_name'] = $valSchool['district_name'];
+                                    $post['class_name'] = $valSchool['class_name'];
+                                    $post['school_type'] = $valSchool['school_type'];
+                                }
+                                $status = "success";
+                                $message = CREDENTIALS_EXITST;
+
+                            }
+                        } else {
+                            // $post="";
+                            $status = "failed";
+                            $message = CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
+                        }
+
+                    }
+                } else {
+                    // $post="";
+                    $status = "failed";
+                    $message = CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
+                }
+
             }
         }
         else
         {
-            //$encryptedPassword=encryptPassword($passowrd);
-            $queryOn="autoGenerateCredential.school_id=schools.id and autoGenerateCredential.course_id=courses.id";
-            $queryData="SELECT * FROM ".TABLE_AUTO_GENERATED_CREDENTIAL." autoGenerateCredential where username='".$username."'";
-            //$queryAuthUser="select * from ".TABLE_AUTO_GENERATED_CREDENTIAL." where username='".$userName."'";
-            $resultAuthUser=mysql_query($queryData) or $message=mysql_error();
-            if(mysql_num_rows($resultAuthUser))
-            {
-                $encryptedPassword='';
-                while ($val = mysql_fetch_assoc($resultAuthUser))
-                {
-                    $username=$val['username'];
-                    $encryptedPassword=$val['password'];
-                    $status=$val['status'];
-                    $id=$val['id'];
-                    $decrypted_password = $obj->decode($encryptedPassword);
-
-                    if($decrypted_password==$password)
-                    {
-
-                        if($status==1)
-                        {
-                            //$status=$status;
-                            $message = CREDENTIALS_ARE_DEACTIVATED_OR_ALREADY_TAKEN;
-                        }
-                        else if($status==0)
-                        {
-                            $post=array();
-                            //$queryData="SELECT * FROM `auto_generated_credential` t1 INNER JOIN `schools`t2 INNER JOIN `courses`t3 ON t1.school_id=t2.id and t1.course_id=t3.id where `username`='WJL91RU473'";
-                            $post['credential_id']=$val['id'];
-                            $post['school_id']=$val['school_id'];
-                            $post['role_id']=$val['role_id'];
-                            $post['class_id']=$val['classroom_id'];
-                            $post['course_id']=$val['course_id'];
-
-                            $post['academic_year']=$val['academic_year'];
-                            $querySchool="select school.school_name,school.school_type,course.course_name,district. district_name, class.class_name from courses course INNER JOIN classrooms class INNER JOIN districts district INNER JOIN schools school on school.district_id=district.id where course.id=".$val['course_id']." and school.id=".$val['school_id']." and class.id=".$val['classroom_id']." limit 1";
-                            $resultSchool=mysql_query($querySchool) or $message=mysql_error();
-                            if(mysql_num_rows($resultSchool)){
-                                $valSchool=mysql_fetch_assoc($resultSchool);
-                                $post['school_name']=$valSchool['school_name'];
-                                $post['course_name']=$valSchool['course_name'];
-                                $post['district_name']=$valSchool['district_name'];
-                                $post['class_name']=$valSchool['class_name'];
-                                $post['school_type']=$valSchool['school_type'];
-                            }
-                            $status="success";
-                            $message=CREDENTIALS_EXITST;
-
-                        }
-                    }
-                    else
-                    {
-                       // $post="";
-                        $status="failed";
-                        $message=CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
-                    }
-
-                }
-            }
-            else
-            {
-               // $post="";
-                $status="failed";
-               $message = CREDENTIALS_DO_NOT_EXIST_IN_OUR_SYSTEM;
-            }
-
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
         }
         // AND password='".$encryptedPassword."'
 
@@ -617,112 +687,159 @@ class ProfileFunctions
         $profile_image = validateObject ($postData , 'profile_image', "");
         $profile_image_name = validateObject ($postData , 'profile_image_name', "");
         $profile_image_name = addslashes($profile_image_name);
-        $profile_image_name_array=explode(".",$profile_image_name);
-        if (!is_dir(USER_PROFILE_PICTURE)) {
-            mkdir(USER_PROFILE_PICTURE, 0777, true);
-        }
-       // if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
-           // die('Failed to create folders...'.USER_PROFILE_PICTURE);
-       // }
-        // echo $profile_image_name_array[0]."_test.".$profile_image_name_array[1];
-        
-        $profile_image_name=$profile_image_name_array[0]."_test.".$profile_image_name_array[1];
-        $obj = new CI_Encrypt();
 
-        $insertFields="`username`, `password`,`device_type`, `first_name`, `last_name`, `full_name`,`email_id`, `contact_number`, `home_address`, `city_id`, `state_id`, `country_id`, `birthdate`, `gender`, `device_token`, `role_id`";
-        $insertValues="'".$username."','".$obj->encode($password)."','".$device_type."','".$firstname."','".$lastname."','".$firstname." ".$lastname."','".$email_address."','".$contact_number."','".$home_address."','".$city_id."','".$state_id."','".$country_id."','".$birthdate."','".$gender."','".$device_token."','".$role_id."'";
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-        $queryInsert="INSERT INTO ".TABLE_USERS."(".$insertFields.") values(".$insertValues.")";
-        $resultQuery=mysql_query($queryInsert) or $message=mysql_error();
-        if($resultQuery)
-        {
-            $user_id = mysql_insert_id();
-            if($role_id==2)
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            $profile_image_name_array = explode(".", $profile_image_name);
+            if (!is_dir(USER_PROFILE_PICTURE)) {
+                mkdir(USER_PROFILE_PICTURE, 0777, true);
+            }
+            // if (!mkdir(USER_PROFILE_PICTURE, 0777, true)) {
+            // die('Failed to create folders...'.USER_PROFILE_PICTURE);
+            // }
+            // echo $profile_image_name_array[0]."_test.".$profile_image_name_array[1];
+
+            $profile_image_name = $profile_image_name_array[0] . "_test." . $profile_image_name_array[1];
+            $obj = new CI_Encrypt();
+
+            $firstName=ucfirst(strtolower($firstname));
+            $lastName=ucfirst(strtolower($lastname));
+
+            $insertFields = "`username`, `password`,`device_type`, `first_name`, `last_name`, `full_name`,`email_id`, `contact_number`, `home_address`, `city_id`, `state_id`, `country_id`, `birthdate`, `gender`, `device_token`, `role_id`";
+            $insertValues = "'" . $username . "','" . $obj->encode($password) . "','" . $device_type . "','" . $firstName . "','" . $lastName . "','" . $firstName . " " . $lastName . "','" . $email_address . "','" . $contact_number . "','" . $home_address . "','" . $city_id . "','" . $state_id . "','" . $country_id . "','" . $birthdate . "','" . $gender . "','" . $device_token . "','" . $role_id . "'";
+
+            $queryInsert = "INSERT INTO " . TABLE_USERS . "(" . $insertFields . ") values(" . $insertValues . ")";
+            $resultQuery = mysqli_query($GLOBALS['con'], $queryInsert) or $message = mysqli_error($GLOBALS['con']);
+            if($resultQuery)
             {
-                $course_id = validateObject ($postData , 'course_id', "");
-                $course_id = addslashes($course_id);
+                $user_id =  mysqli_insert_id($GLOBALS['con']);
+                if($role_id==2) {
+                    $course_id = validateObject($postData, 'course_id', "");
+                    $course_id = addslashes($course_id);
 
-                $academic_year = validateObject ($postData , 'academic_year', "");
-                $academic_year = addslashes($academic_year);
+                    $academic_year = validateObject($postData, 'academic_year', "");
+                    $academic_year = addslashes($academic_year);
 
-                $classroom_id = validateObject ($postData , 'classroom_id', "");
-                $classroom_id = addslashes($classroom_id);
+                    $classroom_id = validateObject($postData, 'classroom_id', "");
+                    $classroom_id = addslashes($classroom_id);
 
-                $school_id = validateObject ($postData , 'school_id', "");
-                $school_id = addslashes($school_id);
-                
-                
-                $insertAcademicField="`user_id`, `school_id`, `classroom_id`, `academic_year`, `joining_year`, `joining_class`, `course_id`";
-                $insertAcademicValue="'".$user_id."', '".$school_id."','".$classroom_id."','".$academic_year."','". date('M,Y')."','".$classroom_id."','".$course_id."'";
-				
-	
+                    $school_id = validateObject($postData, 'school_id', "");
+                    $school_id = addslashes($school_id);
+
+
+                    $insertAcademicField = "`user_id`, `school_id`, `classroom_id`, `academic_year`, `joining_year`, `joining_class`, `course_id`";
+                    $insertAcademicValue = "'" . $user_id . "', '" . $school_id . "','" . $classroom_id . "','" . $academic_year . "','" . date('M,Y') . "','" . $classroom_id . "','" . $course_id . "'";
+
+                    $queryAcademic = "INSERT INTO " . TABLE_STUDENT_PROFILE . "(" . $insertAcademicField . ") values (" . $insertAcademicValue . ")";
+                    $resultAcademic = mysqli_query($GLOBALS['con'], $queryAcademic) or $message = mysqli_error($GLOBALS['con']);
+
+                }
+                else if($role_id==3) {
+                    $specialization = validateObject($postData, 'specialization', "");
+                    $specialization = addslashes($specialization);
+
+                    $education = validateObject($postData, 'education', "");
+                    $education = addslashes($education);
+
+                    $school_id = validateObject($postData, 'school_id', "");
+                    $school_id = addslashes($school_id);
+
+                    $insertTeacherField = "`user_id`, `specialization`, `education`";
+                    $insertTeacherValue = "'" . $user_id . "','" . $specialization . "','" . $education . "'";
+
+                    $queryTeacher = "INSERT INTO " . TABLE_TEACHER_PROFILE . "(" . $insertTeacherField . ") values (" . $insertTeacherValue . ")";
+                    $resultTeacher = mysqli_query($GLOBALS['con'], $queryTeacher) or $message = mysqli_error($GLOBALS['con']);
+
+
+
+                }
+                else if($role_id==4) {
+
+                    $education = validateObject($postData, 'education', "");
+                    $education = addslashes($education);
+
+                    $insertAuthorField = "`user_id`, `education`";
+                    $insertAuthorValue = "'" . $user_id . "', '" . $education . "'";
+
+                    $queryAuthor = "INSERT INTO " . TABLE_AUTHOR_PROFILE . "(" . $insertAuthorField . ") values (" . $insertAuthorValue . ")";
+                    $resultAuthor = mysqli_query($GLOBALS['con'], $queryAuthor) or $message = mysqli_error($GLOBALS['con']);
+
+                }
                 //Image Saving
-                $profile_user_link="user_".$user_id."/";
+                $profile_user_link = "user_" . $user_id . "/";
 
-                $profile_image_dir=USER_PROFILE_PICTURE.$profile_user_link;
+                $profile_image_dir = USER_PROFILE_PICTURE . $profile_user_link;
 
-                if (!is_dir(USER_PROFILE_PICTURE.$profile_user_link)) {
-                    mkdir(USER_PROFILE_PICTURE.$profile_user_link, 0777, true);
+                if (!is_dir(USER_PROFILE_PICTURE . $profile_user_link)) {
+                    mkdir(USER_PROFILE_PICTURE . $profile_user_link, 0777, true);
                 }
 
                 $profile_image_dir = $profile_image_dir . $profile_image_name;
-                $profile_image_link = $profile_user_link.$profile_image_name;
+                $profile_image_link = $profile_user_link . $profile_image_name;
                 file_put_contents($profile_image_dir, base64_decode($profile_image));
 
-                $queryProfileImage="INSERT INTO ".TABLE_USER_PROFILE_PICTURE."(`user_id`, `profile_link`) VALUES (".$user_id.",'".$profile_image_link."')";
-                $resultProfileImage=mysql_query($queryProfileImage) or $message=mysql_error();
-                
-                $queryAcademic="INSERT INTO ".TABLE_STUDENT_PROFILE."(".$insertAcademicField.") values (".$insertAcademicValue.")";
-                $resultAcademic=mysql_query($queryAcademic) or $message=mysql_error();
-                
+                $queryProfileImage = "INSERT INTO " . TABLE_USER_PROFILE_PICTURE . "(`user_id`, `profile_link`) VALUES (" . $user_id . ",'" . $profile_image_link . "')";
+                $resultProfileImage = mysqli_query($GLOBALS['con'], $queryProfileImage) or $message = mysqli_error($GLOBALS['con']);
+
+
+
                 //Generate Token
                 $security=new SecurityFunctions();
-    			$generateToken=$security->generateToken(8);
-               
-                
+                $generateToken=$security->generateToken(8);
+
+
                 $insertTokenField="`user_id`, `token`";
                 $insertTokenValue="".$user_id.",'".$generateToken."'";
-				
-				$queryAddToken="INSERT INTO ".TABLE_TOKENS."(".$insertTokenField.") values (".$insertTokenValue.")";
-                $resultAddToken=mysql_query($queryAddToken) or $message=mysql_error();
-                
+
+                $queryAddToken="INSERT INTO ".TABLE_TOKENS."(".$insertTokenField.") values (".$insertTokenValue.")";
+                $resultAddToken=mysqli_query($GLOBALS['con'], $queryAddToken) or $message=mysqli_error($GLOBALS['con']);
+
                 //**************************For Encryption***************************
                 //===================================================================
                 //=============Use username as Key For Encrypt=======================
-              	$aes256Key = hash("SHA256", $username, true);
+                $aes256Key = hash("SHA256", $username, true);
 
-				// for good entropy (for MCRYPT_RAND)
-				
-				srand((double) microtime() * 1000000);
-				// generate random iv
-		
-				$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
-				
-				
-				//===================================================================
+                // for good entropy (for MCRYPT_RAND)
+
+                srand((double) microtime() * 1000000);
+                // generate random iv
+
+                $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
+
+
+                //===================================================================
                 //===================Call AES Encrypt Function=======================
-                
-				$secrect_key = $security->functionToEncrypt($generateToken, $aes256Key);
-		
-				//**************************End Encryption***************************
-		
+
+                $secrect_key = $security->functionToEncrypt($generateToken, $aes256Key);
+
+                //**************************End Encryption***************************
+
                 if($resultAddToken)
                 {
-                	$post['token']=$secrect_key;
-                	$status="success";
+                    $post['token']=$secrect_key;
+                    $status="success";
                     $message="Token key generated.";
                 }
                 else
                 {
-                	$status="failed";
+                    $status="failed";
                 }
-                
-                
-                if($resultAcademic)
+
+
+                if($resultAcademic || $resultAuthor || $resultTeacher)
                 {
 //                    $updateStatus="UPDATE `auto_generated_credential` SET `status`='1' WHERE `id`=".$credential_id;
-//                    $resultAcademic=mysql_query($updateStatus) or $message=mysql_error();
-                   // echo $updateStatus;
+//                    $resultAcademic=mysqli_query($GLOBALS['con'], $updateStatus) or $message=mysqli_error($GLOBALS['con']);
+                    // echo $updateStatus;
                     $post['user_id']=$user_id;
                     $post['full_name']=$firstname." ".$lastname;
                     $post['profile_pic']=$profile_image_link;
@@ -732,14 +849,19 @@ class ProfileFunctions
 
                 }
                 ELSE{
-					$status="failed";
+                    $status="failed";
                 }
+                //}
+            }
+            else {
+                $status = "failed";
+
             }
         }
         else
         {
             $status="failed";
-
+            $message = MALICIOUS_SOURCE;
         }
         $response['user']=$data;
         $response['status'] = $status;
@@ -762,45 +884,57 @@ class ProfileFunctions
         
 		$user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
-        
-        $queryGetSummary = "SELECT user_id,wallet_balance FROM " . TABLE_STUDENT_PROFILE ." WHERE user_id =".$user_id;
-        $resultGetSummary = mysql_query($queryGetSummary) or $message = mysql_error();
-        $summary_count = mysql_num_rows($resultGetSummary);
 
-        if ($summary_count > 0) {
-            while ($val = mysql_fetch_assoc($resultGetSummary)) {
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-			$post=array();
-			
-			$post['user_id']=$val['user_id'];
-			$post['wallet_balance']=$val['wallet_balance'];
-			
-			//Get Voucher Details
-            $queryGetDetails = "SELECT id as 'voucher_id',voucher_code,created_date,voucher_amount as 'Amount' FROM ".TABLE_USER_VOUCHER." WHERE user_id=".$user_id;
-            $resultGetDetails = mysql_query($queryGetDetails) or $message = mysql_error();
-            $allDetails=array();
-            
-            if(mysql_num_rows($resultGetDetails))
-            {
-                while($details=mysql_fetch_assoc($resultGetDetails))
-                {
-                    $allDetails[]=$details;
-                } 
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            $queryGetSummary = "SELECT user_id,wallet_balance FROM " . TABLE_STUDENT_PROFILE ." WHERE user_id =".$user_id ." and is_delete=0";
+            $resultGetSummary = mysqli_query($GLOBALS['con'], $queryGetSummary) or $message = mysqli_error($GLOBALS['con']);
+            $summary_count = mysqli_num_rows($resultGetSummary);
+
+            if ($summary_count > 0) {
+                while ($val = mysqli_fetch_assoc($resultGetSummary)) {
+
+                    $post = array();
+
+                    $post['user_id'] = $val['user_id'];
+                    $post['wallet_balance'] = $val['wallet_balance'];
+
+                    //Get Voucher Details
+                    $queryGetDetails = "SELECT id as 'voucher_id',voucher_code,created_date,voucher_amount as 'voucher_amount' FROM ".TABLE_USER_VOUCHER." WHERE user_id=".$user_id ." and is_delete=0";
+                    $resultGetDetails = mysqli_query($GLOBALS['con'], $queryGetDetails) or $message = mysqli_error($GLOBALS['con']);
+                    $allDetails = array();
+
+                    if (mysqli_num_rows($resultGetDetails)) {
+                        while ($details = mysqli_fetch_assoc($resultGetDetails)) {
+                            $allDetails[] = $details;
+                        }
+                    }
+                    $post['voucher_details'] = $allDetails;
+
+                    $data[] = $post;
+                }
+                $status = "success";
+                $message = "";
+            } else {
+                $status = "failed";
+                $message = DEFAULT_NO_RECORDS;
+                $data = "";
             }
-			$post['voucher_details']=$allDetails;
-      
-            $data[]=$post;
-            }
-             $status="success";
-       		 $message="";
         }
         else
         {
             $status="failed";
-            $message = DEFAULT_NO_RECORDS;
-            $data="";
+            $message = MALICIOUS_SOURCE;
         }
-
 
 		$response['wallet_summary']=$data;
         $response['message'] = $message;
@@ -825,70 +959,90 @@ class ProfileFunctions
         
         $voucher_amount = validateObject($postData, voucher_amount, "");
         $voucher_amount = addslashes($voucher_amount);
-        
-        $queryGetWalletBal="select wallet_balance from ".TABLE_STUDENT_PROFILE." where user_id=".$user_id;
-        $resultGetWalletBal=mysql_query($queryGetWalletBal) or $message=mysql_error();
-        
-        if(mysql_num_rows($resultGetWalletBal)>0)
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            $queryGetWalletBal = "select wallet_balance from ".TABLE_STUDENT_PROFILE." where user_id=".$user_id ." and is_delete=0";
+            $resultGetWalletBal = mysqli_query($GLOBALS['con'], $queryGetWalletBal) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultGetWalletBal) > 0) {
+                $walletBalance = mysqli_fetch_row($resultGetWalletBal);
+                $balance = $walletBalance[0];
+
+                $queryGetConfigValue = "select config_value from ".TABLE_ADMIN_CONFIG." where config_key='maxVoucherAmount' and is_delete=0";
+                $resultGetConfigValue = mysqli_query($GLOBALS['con'], $queryGetConfigValue) or $message = mysqli_error($GLOBALS['con']);
+
+                $configValue = mysqli_fetch_row($resultGetConfigValue);
+                $voucher_config_value = $configValue[0];
+
+                $percent_value = (($balance*$voucher_config_value)/100);
+
+
+                //Generate random String for Voucher Code
+
+                $security=new SecurityFunctions();
+                $final_rand=$security->generateToken(6);
+
+
+                //Check, if Voucher_amont is greater than Count value or not
+                if ($voucher_amount < $percent_value) {
+                    $insertFields = "`user_id`,`voucher_code`,`voucher_amount`";
+                    $insertValues = "" . $user_id . ",'" . $final_rand . "'," . $voucher_amount . "";
+
+                    $queryInsert = "INSERT INTO " . TABLE_USER_VOUCHER . "(" . $insertFields . ") values(" . $insertValues . ")";
+                    //echo $queryInsert;
+                    $resultQuery = mysqli_query($GLOBALS['con'], $queryInsert) or $message = mysqli_error($GLOBALS['con']);
+
+                    $voucher_id=mysqli_insert_id($GLOBALS['con']);
+
+                    //Get Crete date
+                    $querySelect="SELECT created_date FROM ".TABLE_USER_VOUCHER." WHERE id = ".$voucher_id." and is_delete=0";
+                    $resultSelect=mysqli_query($GLOBALS['con'],$querySelect) or $message = mysqli_error($GLOBALS['con']);
+                    $create_date=mysqli_fetch_row($resultSelect);
+
+
+                    //For getting remaining balance
+                    $remaining_wallet_bal = $balance - $voucher_amount;
+                    $queryUpdateWalletBalance="UPDATE ".TABLE_STUDENT_PROFILE." SET wallet_balance = ".$remaining_wallet_bal." WHERE user_id=".$user_id ." and is_delete=0";
+                    $resultUpdateWalletBalance=mysqli_query($GLOBALS['con'], $queryUpdateWalletBalance) or $message = mysqli_error($GLOBALS['con']);
+
+
+                    if ($resultQuery || $resultUpdateWalletBalance) {
+                        $data['voucher_code'] = $final_rand;
+                        $data['voucher_amount'] = $voucher_amount;
+                        //$post['created_date']=date('Y-m-d h:i:s');
+                        $post['created_date']=$create_date[0];
+                        $data[]=$post;
+                        $data1['wallet_balance']=$remaining_wallet_bal;
+                        $data1['voucher_details']=$data;
+                        $status="success";
+                    } else {
+                        $status = "failed";
+                    }
+                } else {
+                    $message = "You cannot create coupon greater then " . $percent_value;
+                    $status = "failed";
+
+                }
+            } else {
+                $status = "failed";
+            }
+        }
+        else
         {
-       		$walletBalance=mysql_fetch_row($resultGetWalletBal);
-    	    $balance= $walletBalance[0];
-        
-        $queryGetConfigValue="select config_value from ".TABLE_ADMIN_CONFIG." where config_key='maxVoucherAmount'";
-        $resultGetConfigValue=mysql_query($queryGetConfigValue) or $message=mysql_error();
-        
-        $configValue=mysql_fetch_row($resultGetConfigValue);
-        $voucher_config_value=$configValue[0];
-        
-        $percent_value=(($balance*$voucher_config_value)/100);
-       
-       
-       //Generate random String for Voucher Code
-
-            $security=new SecurityFunctions();
-            $final_rand=$security->generateToken(6);
-
-       
-       //Check, if Voucher_amont is greater than Count value or not
-           // if($percent_value > $voucher_amount)
-       		if($voucher_amount < $percent_value)
-      	 	{
-       	  		$insertFields="`user_id`,`voucher_code`,`voucher_amount`";
-          		$insertValues="".$user_id.",'".$final_rand."',".$voucher_amount."";
-           
-          		$queryInsert="INSERT INTO ".TABLE_USER_VOUCHER."(".$insertFields.") values(".$insertValues.")";
-          		//echo $queryInsert; 
-         		$resultQuery=mysql_query($queryInsert) or $message=mysql_error();
-
-
-                $remaining_wallet_bal = $balance - $voucher_amount;
-                $queryUpdateWalletBalance="UPDATE ".TABLE_STUDENT_PROFILE." SET wallet_balance = ".$remaining_wallet_bal." WHERE user_id=".$user_id;
-                $resultUpdateWalletBalance=mysql_query( $queryUpdateWalletBalance) or $message=mysql_error();
-
-      	  		if($resultQuery)
-          		{
-            			$data['voucher_code']=$final_rand;
-            			$data['voucher_amount']=$voucher_amount;
-                        $data['total_available_balance']=$percent_value;
-            			$status="success";
-      	  		}
-      	  		else
-      	 		{
-						$status="failed";
-      	  		}
-      		}	  
-      		else
-      		{
-       	       	$message="You cannot create coupon greater then ".$percent_value;
-       	       	$status="failed";
-       	       	
-      		}
-       } 
-       else
-       {
-       		$status="failed";
-       }
-        $response['voucher']=$data;
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
+        $response['wallet_summary'][]=$data1;
         $response['message'] = $message;
         $response['status'] = $status;
 
@@ -908,48 +1062,85 @@ class ProfileFunctions
     
     	$user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
-        
-        $selectQuery="SELECT school.school_name,classroom.class_name,student_profile.*,users.id,users.full_name,users.profile_pic,users.contact_number,users.birthdate,users.about_me 
-        FROM ".TABLE_USERS." users INNER JOIN ".TABLE_STUDENT_PROFILE." student_profile ON users.id=student_profile.user_id
-        INNER JOIN ".TABLE_SCHOOLS." school ON school.id=student_profile.school_id 
-        INNER JOIN ".TABLE_CLASSROOMS." classroom ON classroom.id=student_profile.classroom_id
-        WHERE student_profile.user_id=".$user_id;
-        
-        $resultQuery=mysql_query($selectQuery) or $message=mysql_error();
-        
-        if(mysql_num_rows($resultQuery)>0)
+
+        $role_id = validateObject($postData, 'role_id', "");
+        $role_id = addslashes($role_id);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            if($role_id==2)
             {
-                while($val=mysql_fetch_assoc($resultQuery))
-                {
-                	$post=array();
-                	$post['user_id']=$val['id'];
-                	$post['username']=$val['full_name'];
-                	$post['profile_pic']=$val['profile_pic'];
-                	$post['school_name']=$val['school_name'];
-                	$post['course_name']=$val['class_name'];
-                	$post['contact_number']=$val['contact_number'];
-                	$post['birthdate']=$val['birthdate'];
-                	$post['aboutMeText']=$val['about_me'];
-                	$post['ambitionInLife']=$val['ambition_in_life'];
-                	$post['total_post']=$val['total_posts'];
-                	$post['total_studymates']=$val['total_studymates'];
-                	$post['total_authors_followed']=$val['otal_authors_followed'];
-                	$post['ism_score']=$val['total_score'];
-                	$post['ism_rank']=$val['rank'];
-                	$post['total_exams']=$val['total_exams'];
-                	$post['total_assignment']=$val['total_assignment'];
-                	$post['total_question_asked']=$val['total_questions_asked'];
-                	$post['total_Favorite_questions']=$val['total_favorite_questions'];
-                	$post['total_badges_earned']=$val['total_badges'];
-                    $data[]=$post;
-                } 
-                $message="Request accepted";
-                $status="success";
+                $selectQuery="SELECT school.school_name,classroom.class_name,student_profile.*,users.id,users.full_name,users.profile_pic,users.contact_number,users.birthdate,users.about_me
+        FROM ".TABLE_USERS." users INNER JOIN ".TABLE_STUDENT_PROFILE." student_profile ON users.id=student_profile.user_id
+        INNER JOIN ".TABLE_SCHOOLS." school ON school.id=student_profile.school_id
+        INNER JOIN ".TABLE_CLASSROOMS." classroom ON classroom.id=student_profile.classroom_id
+        WHERE student_profile.user_id=".$user_id." and student_profile.is_delete=0 and users.is_delete=0 and school.is_delete=0 and classroom.is_delete=0";
             }
-       
+            elseif($role_id==4)
+            {
+                $selectQuery="SELECT author_profile.*,users.id,users.full_name,users.profile_pic,users.contact_number,users.birthdate,users.about_me
+        FROM ".TABLE_USERS." users INNER JOIN ".TABLE_AUTHOR_PROFILE." author_profile ON users.id=author_profile.user_id
+        WHERE author_profile.user_id=".$user_id." and author_profile.is_delete=0 and users.is_delete=0 ";
+            }
+
+            $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultQuery) > 0) {
+                while ($val = mysqli_fetch_assoc($resultQuery)) {
+                    $post = array();
+                    $post['user_id'] = $val['id'];
+                    $post['username'] = $val['full_name'];
+                    $post['profile_pic'] = $val['profile_pic'];
+                    $post['school_name'] = $val['school_name'];
+                    $post['course_name'] = $val['class_name'];
+                    $post['contact_number'] = $val['contact_number'];
+                    $post['birthdate'] = $val['birthdate'];
+                    $post['aboutMeText'] = $val['about_me'];
+                    if($role_id==2) {
+                        $post['ambitionInLife']=$val['ambition_in_life'];
+                        $post['total_post'] = $val['total_posts'];
+                        $post['total_studymates'] = $val['total_studymates'];
+                        $post['total_authors_followed'] = $val['total_authors_followed'];
+                        $post['ism_score'] = $val['total_score'];
+                        $post['ism_rank'] = $val['rank'];
+                        $post['total_exams'] = $val['total_exams'];
+                        $post['total_assignment'] = $val['total_assignment'];
+                        $post['total_question_asked'] = $val['total_questions_asked'];
+                        $post['total_Favorite_questions'] = $val['total_favorite_questions'];
+                        $post['total_badges_earned'] = $val['total_badges'];
+                    }
+                    if($role_id==4)
+                    {
+                        $post['education'] = $val['education'];
+                        $post['about_author'] = $val['about_author'];
+                        $post['total_questions_answered'] = $val['total_questions_answered'];
+                        $post['total_assignment'] = $val['total_assignment'];
+                        $post['total_submission_received'] = $val['total_submission_received'];
+                        $post['total_posts'] = $val['total_posts'];
+                        $post['total_badges'] = $val['total_badges'];
+
+                    }
+                    $data[] = $post;
+                }
+                $message = REQUEST_ACCEPTED;
+                $status = "success";
+            } else {
+                $status = "failed";
+            }
+        }
         else
         {
-       		$status="failed";
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
         }
         $response['user']=$data;
         $response['message'] = $message;
@@ -988,65 +1179,85 @@ class ProfileFunctions
     	
     	$ambitionInLife = validateObject($postData, 'ambitionInLife', "");
         $ambitionInLife = addslashes($ambitionInLife);
-    	
-    	
-    	//============For Profile Picture========================
-    	/*if (!is_dir(USER_PROFILE_PICTURE))
-            mkdir(USER_PROFILE_PICTURE, 0777, true);
 
-        //Image Saving
-        $profile_user_link="user_".$user_id."/";
-		
-        $profile_image_dir=USER_PROFILE_PICTURE.$profile_user_link;
-		
-        if (!is_dir(USER_PROFILE_PICTURE.$profile_user_link)) {
-            mkdir(USER_PROFILE_PICTURE.$profile_user_link, 0777, true);
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            //============For Profile Picture========================
+            /*if (!is_dir(USER_PROFILE_PICTURE))
+                mkdir(USER_PROFILE_PICTURE, 0777, true);
+
+            //Image Saving
+            $profile_user_link="user_".$user_id."/";
+
+            $profile_image_dir=USER_PROFILE_PICTURE.$profile_user_link;
+
+            if (!is_dir(USER_PROFILE_PICTURE.$profile_user_link)) {
+                mkdir(USER_PROFILE_PICTURE.$profile_user_link, 0777, true);
+            }
+            $created_date = date("Ymd-His");
+
+            if ($_FILES["mediaFile"]["error"] > 0) {
+                $message = $_FILES["mediaFile"]["error"];
+            }
+            else {
+                $mediaName = "IMG".$created_date."_test.png";
+
+                $uploadFile = $profile_image_dir . $mediaName;
+                if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $uploadFile)) {
+                    //store image data.
+                    $link=$profile_user_link . $mediaName;
+                }
+            }*/
+            //=========================================================
+
+            $queryToChk="select * from ".TABLE_USERS." where id=".$user_id ." and is_delete=0";
+            $resultToChk=mysqli_query($GLOBALS['con'], $queryToChk) or $message=mysqli_error($GLOBALS['con']);
+
+            if(mysqli_num_rows($resultToChk)>0) {
+
+                $updateFeild = "full_name='" . $username . "', profile_pic='" . $profile_image . "', contact_number='" . $contact_number . "', birthdate='" . $birthdate . "', about_me='" . $aboutMeText . "'";
+
+                $queryUpdate = "UPDATE " . TABLE_USERS . " SET " . $updateFeild . " WHERE id=" . $user_id;
+                $resultQuery = mysqli_query($GLOBALS['con'], $queryUpdate) or $message = mysqli_error($GLOBALS['con']);
+
+                if ($resultQuery) {
+                    $status = "success";
+                    $message = SUCCESSFULLY_UPDATED;
+
+                    if ($ambitionInLife != NULL) {
+                        $queryToUpdateAmbition = "UPDATE " . TABLE_STUDENT_PROFILE . " SET ambition_in_life='" . $ambitionInLife . "' WHERE user_id=" . $user_id;
+                        $resultToUpdateAmbition = mysqli_query($GLOBALS['con'], $queryToUpdateAmbition) or $message = mysqli_error($GLOBALS['con']);
+
+                        if ($resultToUpdateAmbition) {
+                            $status = "success";
+                            $message = SUCCESSFULLY_UPDATED;
+                        }
+                    }
+
+                } else {
+                    $status = "failed";
+                }
+            }
+            else
+            {
+                $status = "failed";
+                $message=DEFAULT_NO_RECORDS;
+            }
         }
-        $created_date = date("Ymd-His");
-
-        if ($_FILES["mediaFile"]["error"] > 0) {
-            $message = $_FILES["mediaFile"]["error"];
-        }
-        else {
-            $mediaName = "IMG".$created_date."_test.png";
-
-            $uploadFile = $profile_image_dir . $mediaName;
-            if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $uploadFile)) {
-                //store image data.
-                $link=$profile_user_link . $mediaName;
-			}
-		}*/
-    	//=========================================================
-    	
-    	
-    	
-    	$updateFeild="full_name='".$username."', profile_pic='".$profile_image."', contact_number='".$contact_number."', birthdate='".$birthdate."', about_me='".$aboutMeText."'";
-    	
-    		$queryUpdate="UPDATE ".TABLE_USERS." SET ".$updateFeild ." WHERE id=".$user_id;
-    		$resultQuery=mysql_query($queryUpdate) or $message=mysql_error();
-    		
-    	 if($resultQuery)
-    	 {
-    		if($ambitionInLife != NULL)
-    		{
-    			$queryToUpdateAmbition="UPDATE ".TABLE_STUDENT_PROFILE." SET ambition_in_life='".$ambitionInLife."' WHERE user_id=".$user_id;
-    			$resultToUpdateAmbition=mysql_query($queryToUpdateAmbition) or $message=mysql_error();
-    		
-    			if($resultToUpdateAmbition)
-    			{
-    				$status="success";
-    			}    			
-    			else
-    			{
-    				$status="failed";
-    			}
-    		}
-    		$status="success";
-    		$message= "successfully updated";
-    	}
-    	else
+        else
         {
-       		$status="failed";
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
         }
         $response['user']=$data;
         $response['message'] = $message;
@@ -1070,40 +1281,43 @@ class ProfileFunctions
         
     	$user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
-        
-        /*$limit1 = validateObject($postData, 'limit1', "");
-        $limit1 = addslashes($limit1);
-        
-        $limit2 = validateObject($postData, 'limit2', "");
-        $limit2 = addslashes($limit2);*/
-        
-        $selectQuery="select book.*,authorBookJoin.full_name,authorBookJoin.profile_pic from ".TABLE_BOOKS ." book
-         LEFT JOIN(SELECT autotBook.user_id,autotBook.book_id,users.full_name,users.profile_pic from ".TABLE_AUTHOR_BOOK." autotBook LEFT JOIN ".TABLE_USERS.
-         " users ON users.id=autotBook.user_id) authorBookJoin ON authorBookJoin.book_id=book.id WHERE id NOT IN(SELECT book_id from ".TABLE_USER_FAVORITE_BOOK."  where user_id=".$user_id. ") ORDER BY book.id DESC LIMIT 30";
 
-        $resultQuery=mysql_query($selectQuery) or $message=mysql_error();
-        
-         if(mysql_num_rows($resultQuery)>0)
-            {
-                while($val=mysql_fetch_assoc($resultQuery))
-                {
-                	$suggested['book_id']=$val['id'];
-                	$suggested['book_name']=$val['book_name'];
-                	$suggested['book_image']=$val['image_link'];
-                	$suggested['ebook_link']=$val['ebook_link'];
-                	$suggested['publisher_name']=$val['publisher_name'];
-                	$suggested['description']=$val['book_description'];
-                	$suggested['author_name']=$val['full_name'];
-                	$suggested['author_image']=$val['profile_pic'];
-                	$suggested['price']=$val['price'];
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            $selectQuery = "select book.*,authorBookJoin.full_name,authorBookJoin.profile_pic from ".TABLE_BOOKS ." book
+         LEFT JOIN(SELECT autotBook.user_id,autotBook.book_id,users.full_name,users.profile_pic from ".TABLE_AUTHOR_BOOK." autotBook LEFT JOIN ".TABLE_USERS.
+                " users ON users.id=autotBook.user_id) authorBookJoin ON authorBookJoin.book_id=book.id WHERE book.is_delete=0 AND book.id NOT IN(SELECT book_id from ".TABLE_USER_FAVORITE_BOOK."  where user_id=".$user_id. " AND is_delete=0)  ORDER BY book.id DESC LIMIT 30";
+
+            $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultQuery) > 0) {
+                while ($val = mysqli_fetch_assoc($resultQuery)) {
+                    $suggested['book_id'] = $val['id'];
+                    $suggested['book_name'] = $val['book_name'];
+                    $suggested['book_image'] = $val['image_link'];
+                    $suggested['ebook_link'] = $val['ebook_link'];
+                    $suggested['publisher_name'] = $val['publisher_name'];
+                    $suggested['description'] = $val['book_description'];
+                    $suggested['author_name'] = $val['full_name'];
+                    $suggested['author_image'] = $val['profile_pic'];
+                    $suggested['price'] = $val['price'];
 
                     $tags=array();
-                    $tagQuery="SELECT tags.id as 'tag_id',tags.tag_name FROM ".TABLE_TAGS_BOOK." tag_books JOIN ".TABLE_TAGS." tags ON tags.id=tag_books.tag_id WHERE tag_books.book_id=".$val['id'];
-                    $tagResult=mysql_query($tagQuery) or  $message=mysql_error();
-                    if(mysql_num_rows($tagResult))
+                    $tagQuery="SELECT tags.id as 'tag_id',tags.tag_name FROM ".TABLE_TAGS_BOOK." tag_books JOIN ".TABLE_TAGS." tags ON tags.id=tag_books.tag_id WHERE tag_books.book_id=".$val['id']." AND tags.is_delete=0 and tag_books.is_delete=0";
+                    $tagResult=mysqli_query($GLOBALS['con'], $tagQuery) or  $message= mysqli_error($GLOBALS['con']);
+                    if(mysqli_num_rows($tagResult))
                     {
 
-                        while($rowGetTags=mysql_fetch_assoc($tagResult)) {
+                        while($rowGetTags=mysqli_fetch_assoc($tagResult)) {
                             $tags[]=$rowGetTags;
 
                         }
@@ -1113,47 +1327,44 @@ class ProfileFunctions
                         $suggested['tags']=$tags;
                     }
 
-                    $data['suggested_book'][]=$suggested;
-                } 
-                
-                $message="Request accepted";
-                $status="success";
+
+                    $data['suggested_book'][] = $suggested;
+                }
+
+                $message=REQUEST_ACCEPTED;
+                $status = "success";
+            } else {
+                $data['suggested_book'] = array();
+                //$status="failed";
             }
-            else
-            {
-            	 $data['suggested_book']=array();
-            	//$status="failed";
-            }
-            
-         $selectFavoriteQuery="select DISTINCT book.*,authorBookJoin.full_name,authorBookJoin.profile_pic from ".TABLE_USER_FAVORITE_BOOK . " userFavoriteBook
+
+            $selectFavoriteQuery="select DISTINCT book.*,authorBookJoin.full_name,authorBookJoin.profile_pic from ".TABLE_USER_FAVORITE_BOOK . " userFavoriteBook
          INNER JOIN ".TABLE_BOOKS ." book ON book.id=userFavoriteBook.book_id
          LEFT JOIN(SELECT authorBook.user_id,authorBook.book_id,users.full_name,users.profile_pic from ".TABLE_AUTHOR_BOOK." authorBook INNER JOIN ".TABLE_USERS.
-         " users ON users.id=authorBook.user_id) authorBookJoin ON authorBookJoin.book_id=book.id
-         WHERE userFavoriteBook.user_id=".$user_id;
-        // echo  $selectFavoriteQuery;
-    	 $resultFavoriteQuery=mysql_query($selectFavoriteQuery) or $message=mysql_error();
-        
-         if(mysql_num_rows($resultFavoriteQuery)>0)
-            {
-                while($val=mysql_fetch_assoc($resultFavoriteQuery))
-                {
-                    $favorite['book_id']=$val['id'];
-                	$favorite['book_name']=$val['book_name'];
-                	$favorite['book_image']=$val['image_link'];
-                	$favorite['ebook_link']=$val['ebook_link'];
-                	$favorite['publisher_name']=$val['publisher_name'];
-                	$favorite['description']=$val['book_description'];
-                	$favorite['author_name']=$val['full_name'];
-                	$favorite['author_image']=$val['profile_pic'];
-                	$favorite['price']=$val['price'];
+                " users ON users.id=authorBook.user_id) authorBookJoin ON authorBookJoin.book_id=book.id
+         WHERE userFavoriteBook.user_id=".$user_id ." AND userFavoriteBook.is_delete = 0";
+            // echo  $selectFavoriteQuery;
+            $resultFavoriteQuery = mysqli_query($GLOBALS['con'], $selectFavoriteQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultFavoriteQuery) > 0) {
+                while ($val = mysqli_fetch_assoc($resultFavoriteQuery)) {
+                    $favorite['book_id'] = $val['id'];
+                    $favorite['book_name'] = $val['book_name'];
+                    $favorite['book_image'] = $val['image_link'];
+                    $favorite['ebook_link'] = $val['ebook_link'];
+                    $favorite['publisher_name'] = $val['publisher_name'];
+                    $favorite['description'] = $val['book_description'];
+                    $favorite['author_name'] = $val['full_name'];
+                    $favorite['author_image'] = $val['profile_pic'];
+                    $favorite['price'] = $val['price'];
 
                     $tags=array();
-                    $tagQuery="SELECT tags.id as 'tag_id',tags.tag_name FROM ".TABLE_TAGS_BOOK." tag_books JOIN ".TABLE_TAGS." tags ON tags.id=tag_books.tag_id WHERE tag_books.book_id=".$val['id'];
-                    $tagResult=mysql_query($tagQuery) or  $message=mysql_error();
-                    if(mysql_num_rows($tagResult))
+                    $tagQuery="SELECT tags.id as 'tag_id',tags.tag_name FROM ".TABLE_TAGS_BOOK." tag_books JOIN ".TABLE_TAGS." tags ON tags.id=tag_books.tag_id WHERE tag_books.book_id=".$val['id']." AND tags.is_delete=0 and tag_books.is_delete=0";
+                    $tagResult=mysqli_query($GLOBALS['con'], $tagQuery) or  $message= mysqli_error($GLOBALS['con']);
+                    if(mysqli_num_rows($tagResult))
                     {
 
-                        while($rowGetTags=mysql_fetch_assoc($tagResult)) {
+                        while($rowGetTags=mysqli_fetch_assoc($tagResult)) {
                             $tags[]=$rowGetTags;
 
                         }
@@ -1163,18 +1374,21 @@ class ProfileFunctions
                         $favorite['tags']=$tags;
                     }
 
-                    $data['favorite_book'][]=$favorite;
-                } 
-                $message="Request accepted";
-                $status="success";
+                    $data['favorite_book'][] = $favorite;
+                }
+                $message = REQUEST_ACCEPTED;
+                $status = "success";
+            } else {
+                $data['favorite_book'] = array();
+                //$status="failed";
             }
-            else
-            {
-            	 $data['favorite_book']=array();
-            	//$status="failed";
-            }
-       
-       
+
+        }
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
     	$response['books'][]=$data;
         $response['message'] = $message;
         $response['status'] = $status;
@@ -1194,26 +1408,225 @@ class ProfileFunctions
         
     	$user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
-        
-        $selectQuery="SELECT user_activity.user_id,users.full_name,users.profile_pic,user_activity.display_content,user_activity.resource_id FROM ".TABLE_USER_ACTIVITY. " user_activity 
-        INNER JOIN ".TABLE_USERS." users ON user_activity.user_id=users.id WHERE user_activity.user_id=".$user_id;
-       // echo $selectQuery;
-        $resultQuery=mysql_query($selectQuery) or $message=mysql_error();
-        
-        if(mysql_num_rows($resultQuery)>0)
-            {
-                while($val=mysql_fetch_assoc($resultQuery))
-                {
-                    $data[]=$val;
-                } 
-                $message="";
-                $status="success";
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            $selectQuery="SELECT user_activity.user_id,users.full_name,users.profile_pic,user_activity.display_content,user_activity.resource_id,user_activity.activity_type FROM ".TABLE_USER_ACTIVITY. " user_activity
+        INNER JOIN ".TABLE_USERS." users ON user_activity.user_id=users.id WHERE user_activity.user_id=".$user_id." AND user_activity.is_delete=0 and users.is_delete=0";
+            // echo $selectQuery;
+            $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultQuery) > 0) {
+                while ($val = mysqli_fetch_assoc($resultQuery)) {
+                    $data[] = $val;
+
+                    if($val['activity_type'] = 'topicAllocated')
+                    {
+
+                        /*$getFields="tutorial_group_topic_allocation.topic_id,tutorial_group_topic_allocation.group_id,tutorial_group_member.group_id,tutorial_group_member.user_id";
+
+                        $queryToGetTopic="SELECT ".$getFields." FROM ". TABLE_TUTORIAL_GROUP_MEMBER ." tutorial_group_member LEFT JOIN  ". TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION ." tutorial_group_topic_allocation
+                         ON tutorial_group_member.group_id=tutorial_group_topic_allocation.group_id WHERE tutorial_group_member.user_id=".$user_id." AND tutorial_group_member.is_delete=0" ;
+                        $resultToGetTopic=mysqli_query($GLOBALS['con'], $queryToGetTopic);
+                        if(mysqli_num_rows($resultToGetTopic)) {
+                            while ($assignmentRow = mysqli_fetch_assoc($resultToGetTopic)) {
+
+                            }
+                        }*/
+
+                        $getFields="tutorial_group_member_score.topic_id,tutorial_group_member_score.score,tutorial_group_member_score.total_comments,tutorial_groups.group_name";
+
+                        $queryToGetTopic="SELECT DISTINCT ".$getFields." FROM ". TABLE_TUTORIAL_GROUP_MEMBER_SCORE." tutorial_group_member_score
+                        INNER JOIN(SELECT tutorial_group_topic_allocation.topic_id,tutorial_group_topic_allocation.group_id,tutorial_group_member.user_id,tutorial_group_member.id  FROM ". TABLE_TUTORIAL_GROUP_MEMBER ." tutorial_group_member
+                        INNER JOIN  ". TABLE_TUTORIAL_GROUP_TOPIC_ALLOCATION ." tutorial_group_topic_allocation ON tutorial_group_member.group_id=tutorial_group_topic_allocation.group_id WHERE tutorial_group_member.user_id=".$user_id.")s1
+                        ON s1.topic_id=tutorial_group_member_score.topic_id and tutorial_group_member_score.member_id =s1.id JOIN ". TABLE_TUTORIAL_GROUPS." tutorial_groups tutorial_groups ON tg.id=s1.group_id";
+                        $resultToGetTopic=mysqli_query($GLOBALS['con'], $queryToGetTopic);
+
+                        $topic_array=array();
+                        if(mysqli_num_rows($resultToGetTopic)) {
+                            while ($topicRow = mysqli_fetch_assoc($resultToGetTopic)) {
+                                $topic_array[]=$topicRow;
+                            }
+                        }
+                        $post['topic_allocated']=$topic_array;
+                    }
+                    if($val['activity_type'] = 'assignmentSubmitted')
+                    {
+                        $selectAssignment="SELECT assignment.assignment_name,assignment.submission_date,subjects.subject_name from ".TABLE_ASSIGNMENT_SUBMISSION." assignment_submission
+                        INNER JOIN ".TABLE_ASSIGNMENTS." assignment ON assignment_submission.assignment_id=assignment.id
+                        INNER JOIN ". TABLE_SUBJECTS." subjects ON subjects.id=assignment.subject_id
+                        WHERE assignment_submission.assignment_id=".$val['resource_id']." AND assignment_submission.user_id=".$user_id." assignment.is_delete=0";
+                        $resultAssignment=mysqli_query($GLOBALS['con'], $selectAssignment);
+
+                        $assignment=array();
+                        if(mysqli_num_rows($resultAssignment))
+                        {
+                            while($assignmentRow=mysqli_fetch_assoc($resultAssignment))
+                            {
+                                $assignment[]=$assignmentRow;
+                            }
+                        }
+                        $post['assignmentSubmitted']=$assignment;
+                    }
+                    if($val['activity_type'] = 'exam_attempted')
+                    {
+                        $selectExam="SELECT exam.exam_name,student_exam_score.marks_obtained,subjects.subject_name from ".TABLE_STUDENT_EXAM_SCORE." student_exam_score
+                        INNER JOIN ". TABLE_EXAMS ." exams ON exam.id=student_exam_score.exam_id
+                        INNER JOIN ". TABLE_SUBJECTS." subjects ON subjects.id=exam.subject_id WHERE student_exam_score.exam_id=".$val['resource_id']." AND student_exam_score.user_id=".$user_id." AND student_exam_score.is_delete=0";
+                        $resultExam=mysqli_query($GLOBALS['con'], $selectExam);
+
+                        $exams=array();
+                        if(mysqli_num_rows($resultExam))
+                        {
+                            while($examRow=mysqli_fetch_assoc($resultExam))
+                            {
+                                $exams[]=$examRow;
+                            }
+                        }
+                        $post['exam_attempted']=$exams;
+                    }
+                    if($val['activity_type'] = 'feedLiked')
+                    {
+
+                        $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEED_LIKE." feed_like
+                         inner join ". TABLE_FEEDS ." feed
+                        INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
+                         where feed_like.like_by=".$user_id." and feed_like.feed_id= ". $val['resource_id']." and feed_like.is_delete=0 and feed.is_delete=0 and user.is_delete=0";
+                        $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $errorMsg= mysqli_error($GLOBALS['con']);
+
+
+                        $feeds=array();
+                        if(mysqli_num_rows($resultExam))
+                        {
+                            while($feed=mysqli_fetch_assoc($resultExam))
+                            {
+                                $feeds['feed_id']=$feed['id'];
+                                $feeds['feed_text']=$feed['feed_text'];
+                                $feeds['video_link']=$feed['video_link'];
+                                $feeds['user_id']=$feed['UserId'];
+                                $feeds['full_name']=$feed['full_name'];
+                                $feeds['profile_pic']=$feed['Profile_pic'];
+                                $feeds['total_like']=$feed['total_like'];
+                                $feeds['total_comment']=$feed['total_comment'];
+                                //Get Comments
+                                $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
+            ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 LIMIT 2";
+                                //echo $queryGetAllComments;
+                                $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg =  mysqli_error($GLOBALS['con']);
+                                $allcomment=array();
+
+                                if(mysqli_num_rows($resultGetAlComments))
+                                {
+                                    while($comments=mysqli_fetch_assoc($resultGetAlComments))
+                                    {
+                                        $allcomment[]=$comments;
+                                    }
+                                }
+                                $feeds['comment_list']=$allcomment;
+
+                            }
+                        }
+                        $post['feedLiked']=$feeds;
+                    }
+                    if($val['activity_type'] = 'studymates')
+                    {
+                        $queryGetStudyMate="SELECT studymates.mate_id,users.full_name,users.profile_pic from ".TABLE_STUDYMATES." studymates INNER JOIN ".TABLE_USERS." users on studymates.mate_id=users.id where is_delete=0 and id=".$val['resource_id']." AND mate_id=".$user_id;
+                        $resultGetStudyMate=mysqli_query($GLOBALS['con'], $queryGetStudyMate) or $message= mysqli_error($GLOBALS['con']);
+                        $resultExam=mysqli_query($GLOBALS['con'], $selectExam);
+
+                        $studymate=array();
+                        if(mysqli_num_rows($resultExam))
+                        {
+                            while($studymateRow=mysqli_fetch_assoc($resultExam))
+                            {
+                                $studymate[]=$studymateRow;
+                            }
+                        }
+                        $post['studymates']=$studymate;
+                    }
+
+                    if($val['activity_type'] = 'comment added') {
+                        $queryGetComment = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM " . TABLE_FEED_COMMENT . " f INNER JOIN " . TABLE_USERS . " u
+            ON f.comment_by=u.id INNER JOIN " . TABLE_USER_PROFILE_PICTURE . " p ON p.user_id=u.id WHERE f.id=" . $val['resource_id'] . " AND comment_by=" . $user_id . " AND f.is_delete=0
+            AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC LIMIT 2";
+                        //echo $queryGetAllComments;
+                        $resultGetComment = mysqli_query($GLOBALS['con'], $queryGetComment) or $message =  mysqli_error($GLOBALS['con']);
+
+                        $comment = array();
+                        if (mysqli_num_rows($resultGetComment)) {
+                            while ($commentRow = mysqli_fetch_assoc($resultGetComment)) {
+                                $comment[] = $commentRow;
+                            }
+                        }
+                        $post['comment added'] = $comment;
+                    }
+                    if($val['activity_type'] = 'feedPosted')
+                    {
+
+                        $queryFeedLike="select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from ".TABLE_FEEDS." feed
+                        INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id
+                         where feed.feed_by=".$user_id." and feed.id= ". $val['resource_id']." and feed.is_delete=0 and user.is_delete=0";
+                        $resultFeedLike=mysqli_query($GLOBALS['con'], $queryFeedLike) or $errorMsg= mysqli_error($GLOBALS['con']);
+
+
+                        $feeds=array();
+                        if(mysqli_num_rows($resultExam))
+                        {
+                            while($feed=mysqli_fetch_assoc($resultExam))
+                            {
+                                $feeds['feed_id']=$feed['id'];
+                                $feeds['feed_text']=$feed['feed_text'];
+                                $feeds['video_link']=$feed['video_link'];
+                                $feeds['user_id']=$feed['UserId'];
+                                $feeds['full_name']=$feed['full_name'];
+                                $feeds['profile_pic']=$feed['Profile_pic'];
+                                $feeds['total_like']=$feed['total_like'];
+                                $feeds['total_comment']=$feed['total_comment'];
+                                //Get Comments
+                                $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
+            ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 ORDER BY f.id DESC LIMIT 2";
+                                //echo $queryGetAllComments;
+                                $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg =  mysqli_error($GLOBALS['con']);
+                                $allcomments=array();
+
+                                if(mysqli_num_rows($resultGetAlComments))
+                                {
+                                    while($comments=mysqli_fetch_assoc($resultGetAlComments))
+                                    {
+                                        $allcomments[]=$comments;
+                                    }
+                                }
+                                $feeds['comment_list']=$allcomments;
+
+                            }
+                        }
+                        $post['feedPosted']=$feeds;
+                    }
+
+
+                    $data['resource']=$post;
+
+                }
+                $message = "";
+                $status = "success";
+            } else {
+                $status = "failed";
             }
-            else
-            {
-            	$status="failed";
-            }
-        
+        }
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
     	$response['activity']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
@@ -1239,56 +1652,63 @@ class ProfileFunctions
         
         $block_user = validateObject($postData, 'block_user', "");
         $block_user = addslashes($block_user);
-        
-        //Check If UserID is not Present, then Find id from EmailID.
-        if($user_id == NULL || $user_id == 0)
-        {
-        	$selectQuery="SELECT id FROM ".TABLE_USERS." WHERE email_id='".$email_id."'";
-   			$resultQuery=mysql_query($selectQuery) or $message=mysql_error();
-        	$getUserId=mysql_fetch_row($resultQuery);
-        	$user_id= $getUserId[0];
-        }
-        
-         if($user_id != NULL || $block_user != NULL){
-         	
-         	//Find UserId and Block User from StudyMate table
-        	 $queryFindStudyMate="SELECT * FROM ".TABLE_STUDYMATES." WHERE mate_id=".$block_user." and mate_of=".$user_id;
-        	 //echo $queryFindStudyMate;
-         	 $resultFindStudyMate=mysql_query($queryFindStudyMate) or $message=mysql_error();
-         
-        	if(mysql_num_rows($resultFindStudyMate) > 0)
-        	{
-                $updateQuery="UPDATE ".TABLE_STUDYMATES." SET status='block' WHERE mate_id=".$block_user." and mate_of=".$user_id;
-                $updateResult=mysql_query($updateQuery) or $message=mysql_error();
-                $message="user blocked";
-                $status="success";
-        	}
-        	else
-        	{
-        		//Find UserId and Block User from StudyMateRequest table
-        		
-        		$queryFindUserFromRequest="SELECT * FROM ".TABLE_STUDYMATES_REQUEST." WHERE request_from_mate_id=".$block_user." and request_to_mate_id=".$user_id;
-        		$resultFindUserFromRequest=mysql_query($queryFindUserFromRequest) or $message=mysql_error();
-        		if(mysql_num_rows($resultFindUserFromRequest) > 0)
-        		{
-        			$updateQuery="UPDATE ".TABLE_STUDYMATES_REQUEST." SET status=2 WHERE request_from_mate_id=".$block_user." and request_to_mate_id=".$user_id;
-        			$updateResult=mysql_query($updateQuery) or $message=mysql_error();
-               		 $message="user blocked";
-                	 $status="success";
-            	}
-            	else
-            	{
-            		 $message= DEFAULT_NO_RECORDS;
-            		 $status="failed";
-            	}
-        	}
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            //Check If UserID is not Present, then Find id from EmailID.
+            if ($user_id == NULL || $user_id == 0) {
+                $selectQuery = "SELECT id FROM ".TABLE_USERS." WHERE email_id='".$email_id."' AND is_delete=0";
+                $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+                $getUserId = mysqli_fetch_row($resultQuery);
+                $user_id = $getUserId[0];
+            }
+
+            if ($user_id != NULL || $block_user != NULL) {
+
+                //Find UserId and Block User from StudyMate table
+                $queryFindStudyMate = "SELECT * FROM ".TABLE_STUDYMATES." WHERE mate_id=".$block_user." AND mate_of=".$user_id." AND is_delete=0";
+                //echo $queryFindStudyMate;
+                $resultFindStudyMate = mysqli_query($GLOBALS['con'], $queryFindStudyMate) or $message = mysqli_error($GLOBALS['con']);
+
+                if (mysqli_num_rows($resultFindStudyMate) > 0) {
+                    $updateQuery = "UPDATE " . TABLE_STUDYMATES . " SET status='block' WHERE mate_id=" . $block_user . " and mate_of=" . $user_id;
+                    $updateResult = mysqli_query($GLOBALS['con'], $updateQuery) or $message = mysqli_error($GLOBALS['con']);
+                    $message = "user blocked";
+                    $status = "success";
+                } else {
+                    //Find UserId and Block User from StudyMateRequest table
+
+                    $queryFindUserFromRequest = "SELECT * FROM ".TABLE_STUDYMATES_REQUEST." WHERE request_from_mate_id=".$block_user." AND request_to_mate_id=".$user_id." AND is_delete=0";
+                    $resultFindUserFromRequest = mysqli_query($GLOBALS['con'], $queryFindUserFromRequest) or $message = mysqli_error($GLOBALS['con']);
+                    if (mysqli_num_rows($resultFindUserFromRequest) > 0) {
+                        $updateQuery = "UPDATE " . TABLE_STUDYMATES_REQUEST . " SET status=2 WHERE request_from_mate_id=" . $block_user . " and request_to_mate_id=" . $user_id;
+                        $updateResult = mysqli_query($GLOBALS['con'], $updateQuery) or $message = mysqli_error($GLOBALS['con']);
+                        $message = "user blocked";
+                        $status = "success";
+                    } else {
+                        $message = DEFAULT_NO_RECORDS;
+                        $status = "failed";
+                    }
+                }
+            } else {
+                $status = "failed";
+                $message = "";
+            }
         }
         else
         {
-        	$status="failed";
-            $message="";
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
         }
-       
         $response['block_user']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
@@ -1310,53 +1730,60 @@ class ProfileFunctions
         
     	$user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
-        
-        
-         $selectQuery="select id as 'pastime_id',pastime_name,pastime_image from ".TABLE_PASTIMES." WHERE id NOT IN(SELECT pastime_id from ".TABLE_USER_FAVORITE_PASTIME.") ORDER BY id DESC LIMIT 30";
-         $resultQuery=mysql_query($selectQuery) or $message=mysql_error();
-        
-         if(mysql_num_rows($resultQuery)>0)
-            {
-                while($val=mysql_fetch_assoc($resultQuery))
-                {
-                    $data['suggested_pastime'][]=$val;
-                } 
-                
-                $message="Request accepted";
-                $status="success";
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            $selectQuery = "select id as 'pastime_id',pastime_name,pastime_image from ".TABLE_PASTIMES." WHERE AND is_delete=0 AND id NOT IN(SELECT pastime_id from ".TABLE_USER_FAVORITE_PASTIME." WHERE user_id=".$user_id. " AND is_delete=0)  ORDER BY id DESC LIMIT 30";
+            $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultQuery) > 0) {
+                while ($val = mysqli_fetch_assoc($resultQuery)) {
+                    $data['suggested_pastime'][] = $val;
+                }
+
+                $message = REQUEST_ACCEPTED;
+                $status = "success";
+            } else {
+                $data['suggested_pastime'] = array();
+                //$status="failed";
             }
-            else
-            {
-            	 $data['suggested_pastime']=array();
-            	//$status="failed";
+
+            /* $selectFavoriteQuery="select user_favorite_pastime.pastime_id,users.full_name as 'pastime_name',users.profile_pic as 'pastime_image' from " .TABLE_USER_FAVORITE_PASTIME." user_favorite_pastime
+             INNER JOIN ".TABLE_PASTIMES." pastime ON user_favorite_pastime.pastime_id=pastime.id
+             INNER JOIN ".TABLE_USERS." users ON users.id=user_favorite_pastime.user_id
+             WHERE user_favorite_pastime.user_id=".$user_id;
+             echo  $selectFavoriteQuery;*/
+            $selectFavoriteQuery =  $selectFavoriteQuery="select user_favorite_pastime.pastime_id,pastime.pastime_name,pastime.pastime_image from " .TABLE_USER_FAVORITE_PASTIME." user_favorite_pastime
+         INNER JOIN ".TABLE_PASTIMES." pastime ON user_favorite_pastime.pastime_id=pastime.id
+         WHERE user_favorite_pastime.user_id=".$user_id ." AND user_favorite_pastime.is_delete = 0";
+            $resultFavoriteQuery = mysqli_query($GLOBALS['con'], $selectFavoriteQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultFavoriteQuery) > 0) {
+                while ($val = mysqli_fetch_assoc($resultFavoriteQuery)) {
+                    $data['favorite_pastime'][] = $val;
+                }
+                $message = REQUEST_ACCEPTED;
+                $status = "success";
+            } else {
+                $data['favorite_pastime'] = array();
+                //$status="failed";
             }
-            
-        /* $selectFavoriteQuery="select user_favorite_pastime.pastime_id,users.full_name as 'pastime_name',users.profile_pic as 'pastime_image' from " .TABLE_USER_FAVORITE_PASTIME." user_favorite_pastime 
-         INNER JOIN ".TABLE_PASTIMES." pastime ON user_favorite_pastime.pastime_id=pastime.id 
-         INNER JOIN ".TABLE_USERS." users ON users.id=user_favorite_pastime.user_id
-         WHERE user_favorite_pastime.user_id=".$user_id;
-         echo  $selectFavoriteQuery;*/
-          $selectFavoriteQuery="select user_favorite_pastime.pastime_id,pastime.pastime_name,pastime.pastime_image from " .TABLE_USER_FAVORITE_PASTIME." user_favorite_pastime 
-         INNER JOIN ".TABLE_PASTIMES." pastime ON user_favorite_pastime.pastime_id=pastime.id 
-         WHERE user_favorite_pastime.user_id=".$user_id;
-    	 $resultFavoriteQuery=mysql_query($selectFavoriteQuery) or $message=mysql_error();
-        
-         if(mysql_num_rows($resultFavoriteQuery)>0)
-            {
-                while($val=mysql_fetch_assoc($resultFavoriteQuery))
-                {
-                    $data['favorite_pastime'][]=$val;
-                } 
-                $message="Request accepted";
-                $status="success";
-            }
-            else
-            {
-            	 $data['favorite_pastime']=array();
-            	//$status="failed";
-            }
-       
-       
+
+        }
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
     	$response['pastime'][]=$data;
         $response['message'] = $message;
         $response['status'] = $status;
@@ -1378,51 +1805,57 @@ class ProfileFunctions
         
     	$user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
-        
-        
-         $selectQuery="SELECT id as 'rolemodel_id',model_name,model_image,birthdate,description,organization,quotes,achievements,activities,education 
-         from ".TABLE_ROLE_MODELS." WHERE id NOT IN(SELECT role_model_id from ".TABLE_USER_ROLE_MODEL.") ORDER BY id DESC LIMIT 30";
-         $resultQuery=mysql_query($selectQuery) or $message=mysql_error();
-        
-         if(mysql_num_rows($resultQuery)>0)
-            {
-                while($val=mysql_fetch_assoc($resultQuery))
-                {
-                    $data['suggested_rolemodel'][]=$val;
-                } 
-                
-                $message="Request accepted";
-                $status="success";
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            $selectQuery = "SELECT id as 'rolemodel_id',model_name,model_image,birthdate,description,organization,quotes,achievements,activities,education
+         from ".TABLE_ROLE_MODELS." WHERE  is_delete=0 AND id NOT IN(SELECT role_model_id from ".TABLE_USER_ROLE_MODEL." where user_id=".$user_id. " AND is_delete=0)  ORDER BY id DESC LIMIT 30";
+            $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultQuery) > 0) {
+                while ($val = mysqli_fetch_assoc($resultQuery)) {
+                    $data['suggested_rolemodel'][] = $val;
+                }
+
+                $message = REQUEST_ACCEPTED;
+                $status = "success";
+            } else {
+                $data['suggested_rolemodel'] = array();
+                //$status="failed";
             }
-            else
-            {
-            	 $data['suggested_rolemodel']=array();
-            	//$status="failed";
+
+            $selectFavoriteQuery = "select user_rolemodel.role_model_id,roleModel.model_name,roleModel.model_image,roleModel.birthdate,roleModel.description,
+         roleModel.organization,roleModel.quotes,roleModel.achievements,roleModel.activities,roleModel.education from " .TABLE_USER_ROLE_MODEL." user_rolemodel
+         INNER JOIN ".TABLE_ROLE_MODELS." roleModel ON user_rolemodel.role_model_id=roleModel.id
+         WHERE user_rolemodel.user_id=".$user_id." AND user_rolemodel.is_delete = 0";
+            // echo  $selectFavoriteQuery;
+            $resultFavoriteQuery = mysqli_query($GLOBALS['con'], $selectFavoriteQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultFavoriteQuery) > 0) {
+                while ($val = mysqli_fetch_assoc($resultFavoriteQuery)) {
+                    $data['favorite_rolemodel'][] = $val;
+                }
+                $message = REQUEST_ACCEPTED;
+                $status = "success";
+            } else {
+                $data['favorite_rolemodel'] = array();
+                //$status="failed";
             }
-            
-         $selectFavoriteQuery="select user_rolemodel.role_model_id,roleModel.model_name,roleModel.model_image,roleModel.birthdate,roleModel.description,
-         roleModel.organization,roleModel.quotes,roleModel.achievements,roleModel.activities,roleModel.education from " .TABLE_USER_ROLE_MODEL." user_rolemodel 
-         INNER JOIN ".TABLE_ROLE_MODELS." roleModel ON user_rolemodel.role_model_id=roleModel.id 
-         WHERE user_rolemodel.user_id=".$user_id;
-        // echo  $selectFavoriteQuery;
-    	 $resultFavoriteQuery=mysql_query($selectFavoriteQuery) or $message=mysql_error();
-        
-         if(mysql_num_rows($resultFavoriteQuery)>0)
-            {
-                while($val=mysql_fetch_assoc($resultFavoriteQuery))
-                {
-                    $data['favorite_rolemodel'][]=$val;
-                } 
-                $message="Request accepted";
-                $status="success";
-            }
-            else
-            {
-            	 $data['favorite_rolemodel']=array();
-            	//$status="failed";
-            }
-       
-       
+        }
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
     	$response['role_model'][]=$data;
         $response['message'] = $message;
         $response['status'] = $status;
@@ -1445,50 +1878,57 @@ class ProfileFunctions
         
     	$user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
-        
-        
-         $selectQuery="SELECT id as 'movie_id',movie_name,movie_image,genres as 'movie_genre',description,screenplay from ".TABLE_MOVIES." WHERE id NOT IN (SELECT movie_id from ".TABLE_USER_FAVORITE_MOVIE.") ORDER BY id DESC LIMIT 30";
-         $resultQuery=mysql_query($selectQuery) or $message=mysql_error();
-        
-         if(mysql_num_rows($resultQuery)>0)
-            {
-                while($val=mysql_fetch_assoc($resultQuery))
-                {
-                    $data['suggested_movies'][]=$val;
-                } 
-                
-                $message="Request accepted";
-                $status="success";
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            $selectQuery = "SELECT id as 'movie_id',movie_name,movie_image,genres as 'movie_genre',description,screenplay from ".TABLE_MOVIES." WHERE  is_delete=0 AND id NOT IN (SELECT movie_id from ".TABLE_USER_FAVORITE_MOVIE." where user_id=".$user_id. " AND is_delete=0)  ORDER BY id DESC LIMIT 30";
+            $resultQuery = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultQuery) > 0) {
+                while ($val = mysqli_fetch_assoc($resultQuery)) {
+                    $data['suggested_movies'][] = $val;
+                }
+
+                $message = REQUEST_ACCEPTED;
+                $status = "success";
+            } else {
+                $data['suggested_movies'] = array();
+                //$status="failed";
             }
-            else
-            {
-            	 $data['suggested_movies']=array();
-            	//$status="failed";
+
+            $selectFavoriteQuery = "select user_favorite_movie.movie_id,movie.movie_name,movie.movie_image,movie.genres as 'movie_genre',movie.description,movie.screenplay
+         from " .TABLE_USER_FAVORITE_MOVIE." user_favorite_movie
+         INNER JOIN ".TABLE_MOVIES." movie ON user_favorite_movie.movie_id=movie.id
+         WHERE user_favorite_movie.user_id=".$user_id." AND user_favorite_movie.is_delete = 0";
+            // echo  $selectFavoriteQuery;
+            $resultFavoriteQuery = mysqli_query($GLOBALS['con'], $selectFavoriteQuery) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultFavoriteQuery) > 0) {
+                while ($val = mysqli_fetch_assoc($resultFavoriteQuery)) {
+                    $data['favorite_movies'][] = $val;
+                }
+                $message = REQUEST_ACCEPTED;
+                $status = "success";
+            } else {
+                $data['favorite_movies'] = array();
+                //$status="failed";
             }
-            
-         $selectFavoriteQuery="select user_favorite_movie.movie_id,movie.movie_name,movie.movie_image,movie.genres as 'movie_genre',movie.description,movie.screenplay 
-         from " .TABLE_USER_FAVORITE_MOVIE." user_favorite_movie 
-         INNER JOIN ".TABLE_MOVIES." movie ON user_favorite_movie.movie_id=movie.id 
-         WHERE user_favorite_movie.user_id=".$user_id;
-        // echo  $selectFavoriteQuery;
-    	 $resultFavoriteQuery=mysql_query($selectFavoriteQuery) or $message=mysql_error();
-        
-         if(mysql_num_rows($resultFavoriteQuery)>0)
-            {
-                while($val=mysql_fetch_assoc($resultFavoriteQuery))
-                {
-                    $data['favorite_movies'][]=$val;
-                } 
-                $message="Request accepted";
-                $status="success";
-            }
-            else
-            {
-            	 $data['favorite_movies']=array();
-            	//$status="failed";
-            }
-       
-       
+
+        }
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
     	$response['movies'][]=$data;
         $response['message'] = $message;
         $response['status'] = $status;
@@ -1499,7 +1939,7 @@ class ProfileFunctions
     /*
     * addResourcesToFavorite
     */
-    public function addResourcesToFavorite($postData)
+    public function manageFavorite($postData)
     {
     	$data = array();
         $response = array();
@@ -1508,85 +1948,116 @@ class ProfileFunctions
         $user_id = addslashes($user_id);
         
         $resource_name = validateObject($postData, 'resource_name', "");
-        $resource_name = addslashes($resource_name); 
-        
+        $resource_name = addslashes($resource_name);
+
         $fav_resource_id = validateObject($postData, 'fav_resource_id', "");
 
         $unfavorite_resource_id = validateObject($postData, 'unfavorite_resource_id', "");
 
-        if($resource_name == "rolemodel"){
-        	$table= TABLE_USER_ROLE_MODEL;
-            $main_table=TABLE_ROLE_MODELS;
-        	$resource_name_id="role_model_id";
-        }
-        else if($resource_name == "books"){
-        	$table= TABLE_USER_FAVORITE_BOOK;
-            $main_table=TABLE_BOOKS;
-        	$resource_name_id="book_id";
-       }
-        else if($resource_name == "movies"){
-        	$table= TABLE_USER_FAVORITE_MOVIE;
-            $main_table=TABLE_MOVIES;
-        	$resource_name_id="movie_id";
-        }
-       else if($resource_name == "pastimes"){
-        	$table= TABLE_USER_FAVORITE_PASTIME;
-            $main_table=TABLE_PASTIMES;
-        	$resource_name_id="pastime_id";
-        }
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
 
-        //To add resources in favorite
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
-        if($fav_resource_id!=null)
-        {
-            foreach($fav_resource_id as $fav_id) {
-                $selQuery = "SELECT * FROM " . $table . " WHERE user_id=" . $user_id . " AND " . $resource_name_id . "=" . $fav_id;
-                $selResult = mysql_query($selQuery) or $message = mysql_error();
+        if ($isSecure == yes) {
 
-                if (mysql_num_rows($selResult) == 0) {
-                    $insertFields = "`user_id`,`" . $resource_name_id . "`,`is_delete`";
-                    $insertValues = $user_id . "," . $fav_id.",'1'";
+            if ($resource_name == "rolemodel") {
+                $table = TABLE_USER_ROLE_MODEL;
+                $resource_name_id = "role_model_id";
+            } else if ($resource_name == "books") {
+                $table = TABLE_USER_FAVORITE_BOOK;
+                $resource_name_id = "book_id";
+            } else if ($resource_name == "movies") {
+                $table = TABLE_USER_FAVORITE_MOVIE;
+                $resource_name_id = "movie_id";
+            } else if ($resource_name == "pastimes") {
+                $table = TABLE_USER_FAVORITE_PASTIME;
+                $resource_name_id = "pastime_id";
+            }
 
-                    $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                    $result = mysql_query($query) or $message = mysql_error();
+            //To add resources in favorite
 
+            if($fav_resource_id!=null)
+            {
+                foreach($fav_resource_id as $fav_id) {
+                    $selQuery = "SELECT * FROM " . $table . " WHERE user_id=" . $user_id . " AND " . $resource_name_id . "=" . $fav_id ." AND is_delete=0";;
+                    $selResult = mysqli_query($GLOBALS['con'],$selQuery) or $message = mysqli_error($GLOBALS['con']);
 
-                }
-                else
-                {
-                    $queryUpdate="UPDATE " .$table ." SET is_delete = 1 WHERE user_id=".$user_id." AND ".$resource_name_id."  =" . $fav_id;
-                    $resultUpdate = mysql_query($queryUpdate) or $errorMsg = mysql_error();
+                    if (mysqli_num_rows($selResult) == 0) {
+                        $insertFields = "`user_id`,`" . $resource_name_id . "`,`is_delete`";
+                        $insertValues = $user_id . "," . $fav_id.",'0'";
+
+                        $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                        $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
+
+                        if($result)
+                        {
+                            $status = "success";
+                            $message = "favorite synced";
+                        }
+                        else{
+                            $status = "failed";
+                            $message = DEFAULT_NO_RECORDS;
+                        }
+                    }
+                    else
+                    {
+                        $queryUpdate="UPDATE " .$table ." SET is_delete = 0 WHERE user_id=".$user_id." AND ".$resource_name_id."  =" . $fav_id;
+                        $resultUpdate = mysqli_query($GLOBALS['con'],$queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
+
+                        if($resultUpdate)
+                        {
+
+                            $status = "success";
+                            $message = "favorite synced";
+                        }
+                        else{
+                            $status = "failed";
+                            $message = DEFAULT_NO_RECORDS;
+                        }
+                    }
                 }
             }
-            $status = "success";
-            $message = "favorite synced";
-        }
-    else
-    {
-        $status = "failed";
-        $message = DEFAULT_NO_RECORDS;
-    }
 
 
-        //To make resource ids as unfavorite
-        if($unfavorite_resource_id!=null)
-        {
-            foreach($unfavorite_resource_id as $unfav_id) {
+            //To make resource ids as unfavorite
+            if($unfavorite_resource_id!=null)
+            {
+                foreach($unfavorite_resource_id as $unfav_id) {
 
-                $queryCheckFeed = "SELECT id FROM " . $table . " WHERE user_id=".$user_id." AND ".$resource_name_id." =" . $unfav_id;
-                //$queryCheckFeed = "SELECT id FROM " . $table . " WHERE user_id=".$user_id." AND id = " . $unfav_id;
-                //echo $queryCheckFeed."\n";
-                $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
+                    $queryCheckFeed = "SELECT id FROM " . $table . " WHERE user_id=".$user_id." AND ".$resource_name_id." =" . $unfav_id ." AND is_delete=0";
+                    $resultCheckFeed = mysqli_query($GLOBALS['con'],$queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
 
-                if (mysql_num_rows($resultCheckFeed) > 0) {
+                    if (mysqli_num_rows($resultCheckFeed) > 0) {
 
-                    $queryUpdate="UPDATE " .$table ." SET is_delete = 0 WHERE user_id=".$user_id." AND ".$resource_name_id."  =" . $unfav_id;
-                    $resultUpdate = mysql_query($queryUpdate) or $errorMsg = mysql_error();
-                   // echo $queryUpdate;
+                        $queryUpdate="UPDATE " .$table ." SET is_delete = 1 WHERE user_id=".$user_id." AND ".$resource_name_id."  =" . $unfav_id;
+                        $resultUpdate = mysqli_query($GLOBALS['con'],$queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
 
-                    $status = "success";
-                    $message = "favorite synced";
+                        // $queryToDelete="DELETE * FROM " .$table ."  WHERE user_id=".$user_id." AND ".$resource_name_id."  =" . $unfav_id;
+                        //$resultToDelete = mysqli_query($GLOBALS['con'],$queryToDelete) or $errorMsg = mysqli_error($GLOBALS['con']);
+
+                        if($resultUpdate)
+                        {
+
+                            $status = "success";
+                            $message = "favorite synced";
+                        }
+                        else{
+                            $status = "failed";
+                            $message = DEFAULT_NO_RECORDS;
+                        }
+
+                    }
+                    else
+                    {
+                        $status = "success";
+                        $message = DEFAULT_NO_RECORDS;
+                    }
+
                 }
 
             }
@@ -1594,12 +2065,9 @@ class ProfileFunctions
         }
         else
         {
-            $status = "failed";
-            $message = DEFAULT_NO_RECORDS;
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
         }
-
-
-
         $response['favorite_resource']=$data;
         $response['status']=$status;
         $response['message']=$message;
@@ -1621,54 +2089,61 @@ class ProfileFunctions
         $follower_id = addslashes($follower_id);
         
         $follow_to = validateObject($postData, 'follow_to', "");
-        $follow_to = addslashes($follow_to); 
-        
-        if($follower_id != NULL &&  $follow_to != NULL)
-        {
-        	$selectQuery="SELECT * FROM ".TABLE_FOLLOWERS." WHERE follower_id=". $follower_id ." AND follow_to=".$follow_to;
-        	$selResult=mysql_query($selectQuery) or  $message=mysql_error();
-        
-        	if(mysql_num_rows($selResult) > 0)
-        	{
-				while($row=mysql_fetch_assoc($selResult)){
-                    $follow_status=$row['follow_status'];
-                }
-                if($follow_status=="followed")
-                	$follow_status="unfollowed";
-                else
-                	$follow_status="followed";
-                
-                //Check for following user
-                $queryUpdateStatus="SELECT status FROM ".TABLE_FOLLOWERS." WHERE follower_id=". $follow_to ." AND follow_to=".$follower_id;
-                $resultUpdateStatus=mysql_query($queryUpdateStatus) or  $message=mysql_error();
-                
-                if($resultUpdateStatus)
-                {
-                	$queryUpdate="UPDATE ".TABLE_FOLLOWERS." SET follow_status='following' WHERE follower_id=". $follow_to ." AND follow_to=".$follower_id;
-        			$resultUpdate=mysql_query($queryUpdate) or  $message=mysql_error(); 
-                }
-                else
-                {
-        			$queryUpdate="UPDATE ".TABLE_FOLLOWERS." SET follow_status='".$follow_status."' WHERE follower_id=". $follower_id ." AND follow_to=".$follow_to;
-        			$resultUpdate=mysql_query($queryUpdate) or  $message=mysql_error();  
-        		}
-        	}
-        	else
-        	{
-        	 	$insertFields="`follower_id`,`follow_to`";
-        	 	$insertValues=$follower_id .",". $follow_to;
+        $follow_to = addslashes($follow_to);
 
-       		 	$queryInsert="INSERT INTO ".TABLE_FOLLOWERS."(".$insertFields.") VALUES (".$insertValues.")";
-        	 	$resultInsert=mysql_query($queryInsert) or  $message=mysql_error();
-        	}
-		    	$status = "success";
-       	    	$message = "Followship updated";
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            if ($follower_id != NULL && $follow_to != NULL) {
+                $selectQuery = "SELECT * FROM ".TABLE_FOLLOWERS." WHERE follower_id=". $follower_id ." AND follow_to=".$follow_to ." AND is_delete=0";
+                $selResult = mysqli_query($GLOBALS['con'], $selectQuery) or $message = mysqli_error($GLOBALS['con']);
+
+                if (mysqli_num_rows($selResult) > 0) {
+                    while ($row = mysqli_fetch_assoc($selResult)) {
+                        $follow_status = $row['follow_status'];
+                    }
+                    if ($follow_status == "followed")
+                        $follow_status = "unfollowed";
+                    else
+                        $follow_status = "followed";
+
+                    //Check for following user
+                    $queryUpdateStatus = "SELECT status FROM ".TABLE_FOLLOWERS." WHERE follower_id=". $follow_to ." AND follow_to=".$follower_id." AND is_delete=0";
+                    $resultUpdateStatus = mysqli_query($GLOBALS['con'], $queryUpdateStatus) or $message = mysqli_error($GLOBALS['con']);
+
+                    if ($resultUpdateStatus) {
+                        $queryUpdate = "UPDATE " . TABLE_FOLLOWERS . " SET follow_status='following' WHERE follower_id=" . $follow_to . " AND follow_to=" . $follower_id;
+                        $resultUpdate = mysqli_query($GLOBALS['con'], $queryUpdate) or $message = mysqli_error($GLOBALS['con']);
+                    } else {
+                        $queryUpdate = "UPDATE " . TABLE_FOLLOWERS . " SET follow_status='" . $follow_status . "' WHERE follower_id=" . $follower_id . " AND follow_to=" . $follow_to;
+                        $resultUpdate = mysqli_query($GLOBALS['con'], $queryUpdate) or $message = mysqli_error($GLOBALS['con']);
+                    }
+                } else {
+                    $insertFields = "`follower_id`,`follow_to`";
+                    $insertValues = $follower_id . "," . $follow_to;
+
+                    $queryInsert = "INSERT INTO " . TABLE_FOLLOWERS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                    $resultInsert = mysqli_query($GLOBALS['con'], $queryInsert) or $message = mysqli_error($GLOBALS['con']);
+                }
+                $status = "success";
+                $message = "Followship updated";
+            } else {
+                $status = "failed";
+            }
         }
         else
         {
-        		$status = "failed";
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
         }
-        
         $response['user']=$data;
         $response['status']=$status;
         $response['message']=$message;
@@ -1689,112 +2164,118 @@ class ProfileFunctions
 
      	$user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
-        
-        //Check Privacy Setting for Contact and Birthdate Info in User account Prefernce.
-        $queryToChkDOBInPreference="SELECT preference_value FROM ".TABLE_USER_ACCOUNT_PREFERENCE." WHERE preference_id=6 AND user_id=".$user_id;
-        $resultToChkDOBInPreference=mysql_query($queryToChkDOBInPreference) or  $message=mysql_error();
-      	$isShowDOB=mysql_fetch_row($resultToChkDOBInPreference);
-       
-        $queryToChkContactInPreference="SELECT preference_value FROM ".TABLE_USER_ACCOUNT_PREFERENCE." WHERE preference_id=7 AND user_id=".$user_id;
-        $resultToChkContactInPreference=mysql_query($queryToChkContactInPreference) or  $message=mysql_error();
-      	$isShowContact=mysql_fetch_row($resultToChkContactInPreference);
-       
-       
-        if((strcasecmp($isShowDOB[0], 'yes') ==0) && (strcasecmp($isShowContact[0], 'yes') == 0))
-		{
-        	$getUserInfo="users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.birthdate,users.contact_number,users.email_id,users.about_me";
-        }
-        else if((strcasecmp($isShowDOB[0], 'no')==0) && (strcasecmp($isShowContact[0], 'yes') == 0))
-		{
-        	$getUserInfo="users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.contact_number,users.email_id,users.about_me";
-        }
-        else if((strcasecmp($isShowDOB[0], 'yes') ==0) && (strcasecmp($isShowContact[0], 'no') == 0))
-		{
-        	$getUserInfo="users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.birthdate,users.email_id,users.about_me";
-        }
-        else if((strcasecmp($isShowDOB[0], 'no') == 0) && (strcasecmp($isShowContact[0], 'no') == 0))
-		{
-        	$getUserInfo="users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.email_id,users.about_me";
-        }
-        
-        $getStudentProfileInfo="studentProfile.total_score,studentProfile.total_exams,studentProfile.total_badges,studentProfile.total_studymate,studentProfile.total_authors_followed,studentProfile.total_assignment,studentProfile.total_favorite_question,studentProfile.total_question_asked,studentProfile.total_post,studentProfile.rank as 'ism_rank',studentProfile.ambition_in_life";
-    	$queryGetInfo="SELECT ".$getUserInfo.",school.school_name,tutorial_group.group_name,course.course_name,classroom.class_name as 'classroom_name',".$getStudentProfileInfo." FROM ".TABLE_STUDENT_PROFILE." studentProfile 
-    	INNER JOIN ".TABLE_USERS." users ON users.id=studentProfile.user_id 
+
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if ($isSecure == yes) {
+
+            //Check Privacy Setting for Contact and Birthdate Info in User account Prefernce.
+            $queryToChkDOBInPreference = "SELECT preference_value FROM ".TABLE_USER_ACCOUNT_PREFERENCE." WHERE preference_id=6 AND user_id=".$user_id." AND is_delete=0";
+            $resultToChkDOBInPreference = mysqli_query($GLOBALS['con'], $queryToChkDOBInPreference) or $message = mysqli_error($GLOBALS['con']);
+            $isShowDOB = mysqli_fetch_row($resultToChkDOBInPreference);
+
+            $queryToChkContactInPreference = "SELECT preference_value FROM ".TABLE_USER_ACCOUNT_PREFERENCE." WHERE preference_id=7 AND user_id=".$user_id." AND is_delete=0";
+            $resultToChkContactInPreference = mysqli_query($GLOBALS['con'], $queryToChkContactInPreference) or $message = mysqli_error($GLOBALS['con']);
+            $isShowContact = mysqli_fetch_row($resultToChkContactInPreference);
+
+
+            if ((strcasecmp($isShowDOB[0], 'yes') == 0) && (strcasecmp($isShowContact[0], 'yes') == 0)) {
+                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.birthdate,users.contact_number,users.email_id,users.about_me";
+            } else if ((strcasecmp($isShowDOB[0], 'no') == 0) && (strcasecmp($isShowContact[0], 'yes') == 0)) {
+                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.contact_number,users.email_id,users.about_me";
+            } else if ((strcasecmp($isShowDOB[0], 'yes') == 0) && (strcasecmp($isShowContact[0], 'no') == 0)) {
+                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.birthdate,users.email_id,users.about_me";
+            } else if ((strcasecmp($isShowDOB[0], 'no') == 0) && (strcasecmp($isShowContact[0], 'no') == 0)) {
+                $getUserInfo = "users.id as 'user_id',users.full_name as 'username',users.profile_pic,users.email_id,users.about_me";
+            }
+
+            $getStudentProfileInfo = "studentProfile.total_score,studentProfile.total_exams,studentProfile.total_badges,studentProfile.total_studymate,studentProfile.total_authors_followed,studentProfile.total_assignment,studentProfile.total_favorite_question,studentProfile.total_question_asked,studentProfile.total_post,studentProfile.rank as 'ism_rank',studentProfile.ambition_in_life";
+            $queryGetInfo = "SELECT ".$getUserInfo.",school.school_name,tutorial_group.group_name,course.course_name,classroom.class_name as 'classroom_name',".$getStudentProfileInfo." FROM ".TABLE_STUDENT_PROFILE." studentProfile
+    	INNER JOIN ".TABLE_USERS." users ON users.id=studentProfile.user_id
     	LEFT JOIN ".TABLE_SCHOOLS." school ON school.id=studentProfile.school_id
     	LEFT JOIN ".TABLE_CLASSROOMS." classroom ON classroom.id=studentProfile.classroom_id
     	LEFT JOIN ".TABLE_COURSES." course ON course.id=studentProfile.course_id
     	LEFT JOIN ".TABLE_TUTORIAL_GROUPS." tutorial_group ON tutorial_group.classroom_id=studentProfile.classroom_id
-    	WHERE studentProfile.user_id=".$user_id;
-    	//echo $queryGetInfo;
-    	$resultGetInfo=mysql_query($queryGetInfo) or  $message=mysql_error();
-    	
-    	if(mysql_num_rows($resultGetInfo) > 0){
-			while($row=mysql_fetch_assoc($resultGetInfo)){
-                   $post[]=$row;
-                   $post=$post[0];
-            } 
-            
-         //Get Favorite Authors
-      	 	$queryGetFavoriteAuthors="SELECT fav_author.id as 'author_id',users.full_name as 'author_name',users.profile_pic as 'author_image' FROM " .TABLE_USER_FAVORITE_AUTHOR." fav_author LEFT JOIN ".TABLE_USERS." users ON fav_author.author_id=users.id WHERE fav_author.author_id=".$user_id;
-            $resultGetFavoriteAuthors=mysql_query($queryGetFavoriteAuthors) or  $message=mysql_error();
-            $fav_author_array=array();
-        	if(mysql_num_rows($resultGetFavoriteAuthors)>0){
-            	
-				while($authors=mysql_fetch_assoc($resultGetFavoriteAuthors)){
-                   $fav_author_array[]=$authors; 
-            	}
+    	WHERE studentProfile.user_id=".$user_id." AND studentProfile.is_delete=0 AND users.is_delete=0 AND school.is_delete=0 AND classroom.is_delete=0 AND course.is_delete=0 AND tutorial_group.is_delete=0 ";
+            //echo $queryGetInfo;
+            $resultGetInfo = mysqli_query($GLOBALS['con'], $queryGetInfo) or $message = mysqli_error($GLOBALS['con']);
+
+            if (mysqli_num_rows($resultGetInfo) > 0) {
+                while ($row = mysqli_fetch_assoc($resultGetInfo)) {
+                    $post[] = $row;
+                    $post = $post[0];
+                }
+
+                //Get Favorite Authors
+                $queryGetFavoriteAuthors = "SELECT fav_author.id as 'author_id',users.full_name as 'author_name',users.profile_pic as 'author_image' FROM " .TABLE_USER_FAVORITE_AUTHOR." fav_author LEFT JOIN ".TABLE_USERS." users ON fav_author.author_id=users.id WHERE fav_author.author_id=".$user_id." AND fav_author.is_delete=0 AND users.is_delete=0 ";
+                $resultGetFavoriteAuthors = mysqli_query($GLOBALS['con'], $queryGetFavoriteAuthors) or $message = mysqli_error($GLOBALS['con']);
+                $fav_author_array = array();
+                if (mysqli_num_rows($resultGetFavoriteAuthors) > 0) {
+
+                    while ($authors = mysqli_fetch_assoc($resultGetFavoriteAuthors)) {
+                        $fav_author_array[] = $authors;
+                    }
+                }
+                $post['favorite_authors'] = $fav_author_array;
+
+                //Get User Movies
+
+                $queryGetFavoriteMovies = "SELECT fav_movie.movie_id,movie.movie_name,movie.movie_image FROM " .TABLE_USER_FAVORITE_MOVIE." fav_movie INNER JOIN ".TABLE_MOVIES." movie ON fav_movie.movie_id=movie.id WHERE fav_movie.user_id=".$user_id ." AND fav_movie.is_delete=0 AND movie.is_delete=0 ";
+                $resultGetFavoriteMovies = mysqli_query($GLOBALS['con'], $queryGetFavoriteMovies) or $message = mysqli_error($GLOBALS['con']);
+                $fav_movies_array = array();
+                if (mysqli_num_rows($resultGetFavoriteMovies) > 0) {
+
+                    while ($authors = mysqli_fetch_assoc($resultGetFavoriteMovies)) {
+                        $fav_movies_array[] = $authors;
+                    }
+                }
+                $post['user_movies'] = $fav_movies_array;
+
+                //Get favorite pastime
+
+                $queryGetFavoritepastime = "SELECT fav_pastime.pastime_id,pastimes.pastime_name,pastimes.pastime_image FROM " .TABLE_USER_FAVORITE_PASTIME." fav_pastime INNER JOIN ".TABLE_PASTIMES." pastimes ON fav_pastime.pastime_id=pastimes.id WHERE fav_pastime.user_id=".$user_id." AND fav_pastime.is_delete=0 AND pastimes.is_delete=0 ";
+                $resultGetFavoritepastime = mysqli_query($GLOBALS['con'], $queryGetFavoritepastime) or $message = mysqli_error($GLOBALS['con']);
+                $fav_pastime_array = array();
+                if (mysqli_num_rows($resultGetFavoritepastime) > 0) {
+
+                    while ($authors = mysqli_fetch_assoc($resultGetFavoritepastime)) {
+                        $fav_pastime_array[] = $authors;
+                    }
+                }
+                $post['favorite_pastime'] = $fav_pastime_array;
+
+                //Get favorite role_model
+
+                $queryGetUserRole_model = "SELECT fav_role_model.role_model_id as 'model_id',role_model.model_name,role_model.model_image FROM " .TABLE_USER_ROLE_MODEL." fav_role_model INNER JOIN ".TABLE_ROLE_MODELS." role_model ON fav_role_model.role_model_id=role_model.id WHERE fav_role_model.user_id=".$user_id." AND fav_role_model.is_delete=0 AND role_model.is_delete=0 ";
+                $resultGetFavoriteUserRole_model = mysqli_query($GLOBALS['con'], $queryGetUserRole_model) or $message = mysqli_error($GLOBALS['con']);
+                $user_role_model_array = array();
+                if (mysqli_num_rows($resultGetFavoriteUserRole_model) > 0) {
+
+                    while ($authors = mysqli_fetch_assoc($resultGetFavoriteUserRole_model)) {
+                        $user_role_model_array[] = $authors;
+                    }
+                }
+                $post['role_model'] = $user_role_model_array;
+
+                $data[] = $post;
+                $status = "success";
+                $message = REQUEST_ACCEPTED;
+            } else {
+                $status = "failed";
             }
-            $post['favorite_authors']=$fav_author_array;
-            
-            //Get User Movies
-            
-            $queryGetFavoriteMovies="SELECT fav_movie.movie_id,movie.movie_name,movie.movie_image FROM " .TABLE_USER_FAVORITE_MOVIE." fav_movie INNER JOIN ".TABLE_MOVIES." movie ON fav_movie.movie_id=movie.id WHERE fav_movie.user_id=".$user_id;
-            $resultGetFavoriteMovies=mysql_query($queryGetFavoriteMovies) or  $message=mysql_error();
-            $fav_movies_array=array();
-        	if(mysql_num_rows($resultGetFavoriteMovies)>0){
-            	
-				while($authors=mysql_fetch_assoc($resultGetFavoriteMovies)){
-                   $fav_movies_array[]=$authors; 
-            	}
-            }
-            $post['user_movies']=$fav_movies_array;
-            
-             //Get favorite pastime
-            
-            $queryGetFavoritepastime="SELECT fav_pastime.pastime_id,pastimes.pastime_name,pastimes.pastime_image FROM " .TABLE_USER_FAVORITE_PASTIME." fav_pastime INNER JOIN ".TABLE_PASTIMES." pastimes ON fav_pastime.pastime_id=pastimes.id WHERE fav_pastime.user_id=".$user_id;
-            $resultGetFavoritepastime=mysql_query($queryGetFavoritepastime) or  $message=mysql_error();
-            $fav_pastime_array=array();
-        	if(mysql_num_rows($resultGetFavoritepastime)>0){
-            	
-				while($authors=mysql_fetch_assoc($resultGetFavoritepastime)){
-                   $fav_pastime_array[]=$authors; 
-            	}
-            }
-            $post['favorite_pastime']=$fav_pastime_array;
-            
-            //Get favorite role_model
-            
-            $queryGetUserRole_model="SELECT fav_role_model.role_model_id as 'model_id',role_model.model_name,role_model.model_image FROM " .TABLE_USER_ROLE_MODEL." fav_role_model INNER JOIN ".TABLE_ROLE_MODELS." role_model ON fav_role_model.role_model_id=role_model.id WHERE fav_role_model.author_id=".$user_id;
-            $resultGetFavoriteUserRole_model=mysql_query($queryGetUserRole_model) or  $message=mysql_error();
-            $user_role_model_array=array();
-        	if(mysql_num_rows($resultGetFavoriteUserRole_model)>0){
-            	
-				while($authors=mysql_fetch_assoc($resultGetFavoriteUserRole_model)){
-                   $user_role_model_array[]=$authors; 
-            	}
-            }
-            $post['role_model']=$user_role_model_array;
-            
-       	 	$data[]=$post;
-        	$status="success";
-        	$message="Request accepted";
-    	}
-    	 
+        }
         else
         {
-        	$status = "failed";
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
         }
-        
     	$response['student_profile']=$data;
         $response['status']=$status;
         $response['message']=$message;
@@ -1802,90 +2283,134 @@ class ProfileFunctions
         return $response;
     }
 
-      public function manageBookLibrary($postData)
-      {
-          $data = array();
-          $response = array();
 
-          $user_id = validateObject($postData, 'user_id', "");
-          $user_id = addslashes($user_id);
+    public function manageBookLibrary($postData)
+    {
+        $data = array();
+        $response = array();
 
-          $add_book_id = validateObject($postData, '$add_book_id', "");
+        $user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
 
-          $remove_book_id = validateObject($postData, '$remove_book_id', "");
+        $add_book_id = validateObject($postData, 'add_book_id', "");
 
-          if($add_book_id!=null)
-          {
-              foreach($add_book_id as $book_id) {
+        $remove_book_id = validateObject($postData, 'remove_book_id', "");
 
-                  $queryCheckFeed = "SELECT * FROM " . TABLE_USER_LIBRARY . " WHERE user_id=" . $user_id . " AND book_id="  . $book_id;
-                  //echo $queryCheckFeed."\n";
-                  $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
+        if($add_book_id!=null)
+        {
+            foreach($add_book_id as $book_id) {
 
-                  if (mysql_num_rows($resultCheckFeed) == 0) {
+                $queryCheckFeed = "SELECT * FROM " . TABLE_USER_LIBRARY . " WHERE user_id=" . $user_id . " AND book_id=" . $book_id ." AND is_delete=0";
+                //echo $queryCheckFeed."\n";
+                $resultCheckFeed =mysqli_query($GLOBALS['con'],$queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
 
-                      $insertFields = "`user_id`,`book_id`";
-                      $insertValues = $user_id . "," . $book_id;
+                if (mysqli_num_rows($resultCheckFeed) == 0) {
 
-                      $query = "INSERT INTO " . TABLE_USER_LIBRARY . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                      $result = mysql_query($query) or $message = mysql_error();
+                    $insertFields = "`user_id`,`book_id`,`is_delete`";
+                    $insertValues = $user_id . "," . $book_id.", 0";
 
-                      $status = "success";
-                      $message = "library synced";
-                  }
-                  else
-                  {
-                      $status="success";
-                      $message=DEFAULT_NO_RECORDS;
-                  }
-              }
+                    $query = "INSERT INTO " . TABLE_USER_LIBRARY . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                    $result =mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
 
-          }
-          else
-          {
-              $status="failed";
-              $message=DEFAULT_NO_RECORDS;
-          }
+                    if($result) {
+                        $status = "success";
+                        $message = "library synced";
+                    }
+                    else{
+                        $status="failed";
+                        $message="";
+                    }
+                }
+                else
+                {
+                    $status="success";
+                    $message=RECORD_ALREADY_EXIST;
+                }
+            }
 
-
-          if($remove_book_id!=null)
-          {
-              foreach($remove_book_id as $book_id) {
-
-                  $queryCheckFeed = "SELECT * FROM " . TABLE_USER_LIBRARY . " WHERE user_id=" . $user_id . " AND book_id="  . $book_id;
-                  //echo $queryCheckFeed."\n";
-                  $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
-
-                  if (mysql_num_rows($resultCheckFeed) > 0) {
-
-                      $queryUpdate="UPDATE " .TABLE_USER_LIBRARY ." SET is_delete = 1 WHERE user_id=".$user_id." AND book_id="  . $book_id;
-                      $resultUpdate = mysql_query($queryUpdate) or $errorMsg = mysql_error();
-                      // echo $queryUpdate;
-
-                      $status = "success";
-                      $message = "library synced";
-                  }
-                  else
-                  {
-                      $status="success";
-                      $message=DEFAULT_NO_RECORDS;
-                  }
-              }
-
-          }
-          else
-          {
-              $status="failed";
-              $message=DEFAULT_NO_RECORDS;
-          }
+        }
 
 
 
-          $response['student_profile']=$data;
-          $response['status']=$status;
-          $response['message']=$message;
+        if($remove_book_id!=null)
+        {
+            foreach($remove_book_id as $book_id) {
 
-          return $response;
-      }
+                $queryCheckFeed = "SELECT * FROM " . TABLE_USER_LIBRARY . " WHERE user_id=" . $user_id . " AND book_id="  . $book_id." AND is_delete=0";
+                //echo $queryCheckFeed."\n";
+                $resultCheckFeed =mysqli_query($GLOBALS['con'],$queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
+
+                if (mysqli_num_rows($resultCheckFeed) > 0) {
+
+                    $queryUpdate="UPDATE " .TABLE_USER_LIBRARY ." SET is_delete = 1 WHERE user_id=".$user_id." AND book_id="  . $book_id." AND is_delete=0";
+                    $resultUpdate =mysqli_query($GLOBALS['con'],$queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
+                    // echo $queryUpdate;
+
+                    if($resultUpdate) {
+                        $status = "success";
+                        $message = "library synced";
+                    }
+                    else{
+                        $status="failed";
+                        $message="";
+                    }
+                }
+                else
+                {
+                    $status="success";
+                    $message=RECORD_ALREADY_EXIST;
+                }
+            }
+
+        }
+
+
+
+
+        $response['student_profile']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+
+        return $response;
+    }
+
+    public function getBlockedUser($postData)
+    {
+        $data = array();
+        $response = array();
+
+        $user_id = validateObject($postData, 'user_id', "");
+        $user_id = addslashes($user_id);
+
+        //studymate_request.request_to_mate_id,studymates.mate_of,
+        $getField="studymate_request.request_to_mate_id,studymates.mate_of,users.full_name,users.profile_pic";
+
+        $queryGetBlockedUser="SELECT DISTINCT ".$getField." FROM ".TABLE_STUDYMATES." studymates
+        JOIN ". TABLE_USERS." users ON users.id=studymates.mate_of
+        JOIN ".TABLE_STUDYMATES_REQUEST." studymate_request ON studymate_request.request_to_mate_id=users.id
+        WHERE  (studymates.mate_of=".$user_id."
+        OR studymate_request.request_to_mate_id=".$user_id.") AND (studymates.status='block' OR studymate_request.status=2) AND studymates.is_delete=0 AND studymate_request.is_delete=0";
+        $resultGetBlockedUser=mysqli_query($GLOBALS['con'],$queryGetBlockedUser) or $message=mysqli_error($GLOBALS['con']);
+
+        if(mysqli_num_rows($resultGetBlockedUser) > 0)
+        {
+            while($row=mysqli_fetch_assoc($resultGetBlockedUser))
+            {
+                $data[]=$row;
+
+            }
+            $status="success";
+        }
+        else
+        {
+            $status="failed";
+            $message=DEFAULT_NO_RECORDS;
+        }
+        $response['student_profile']=$data;
+        $response['status']=$status;
+        $response['message']=$message;
+
+        return $response;
+    }
 }
 ?>

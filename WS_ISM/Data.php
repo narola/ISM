@@ -4,6 +4,7 @@
  * User: c161
  * Date: 24/10/15
  */
+error_reporting(0);
 class TutorialGroup
 {
 
@@ -16,7 +17,7 @@ class TutorialGroup
 	{
 		switch ($service) {
 			case "GetCountries": {
-				return $this->getCountries();
+				return $this->getCountries($postData);
 			}
 				break;
 
@@ -32,36 +33,55 @@ class TutorialGroup
 		}
 	}
 
-	public function getCountries()
+	public function getCountries($postData)
 	{
-		$get_countries_query = "SELECT id, country_name from " . TABLE_COUNTRIES;
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-		$res = mysql_query($get_countries_query) or $message = mysql_error();
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
 
-		if ($res) {
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
-			$countryArray = array();
-			if ((mysql_num_rows($res)) > 0) {
+        if($isSecure==yes) {
 
-				while ($country = mysql_fetch_assoc($res)) {
-					$countryObj = '';
-					$countryObj['id'] = $country['id'];
-					$countryObj['country_name'] = $country['country_name'];
-					$countryArray[] = $countryObj;
-				}
+            $get_countries_query = "SELECT id, country_name from " . TABLE_COUNTRIES ." WHERE is_delete=0";
 
-				$status = 1;
-				$message = "Countries found.";
+            $res = mysqli_query($GLOBALS['con'],$get_countries_query) or $message = mysqli_error($GLOBALS['con']);
 
-			} else {
-				$status = 1;
-				$message = "Countries not found.";
-			}
-		} else {
-			$status = 2;
-		}
+            if ($res) {
 
-		$data['status'] = ($status > 1) ? 'failed' : 'success';
+                $countryArray = array();
+                if ((($res)) > 0) {
+
+                    while ($country = mysqli_fetch_assoc($res)) {
+                        $countryObj = '';
+                        $countryObj['id'] = $country['id'];
+                        $countryObj['country_name'] = $country['country_name'];
+                        $countryArray[] = $countryObj;
+                    }
+
+                    $status = 1;
+                    $message = "Countries found.";
+
+                } else {
+                    $status = 1;
+                    $message = "Countries not found.";
+                }
+            } else {
+                $status = 2;
+            }
+
+           $status = ($status > 1) ? 'failed' : 'success';
+        }
+      else
+          {
+              $status="failed";
+              $message = MALICIOUS_SOURCE;
+          }
+
+        $data['status']=$status;
 		$data['message'] = $message;
 		$data['countries'] = $countryArray;
 
@@ -73,16 +93,27 @@ class TutorialGroup
 		$countryId = validateObject($postData, 'country_id', "");
 		$countryId = addslashes($countryId);
 
-		$get_states_query = "SELECT id, state_name from " . TABLE_STATES . " where country_id = " . $countryId;
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-		$res = mysql_query($get_states_query) or $message = mysql_error();
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+
+        if($isSecure==yes) {
+		$get_states_query = "SELECT id, state_name from " . TABLE_STATES . " where country_id = " . $countryId." and is_delete=0";
+
+		$res = mysqli_query($GLOBALS['con'],$get_states_query) or $message = mysqli_error($GLOBALS['con']);
 
 		if ($res) {
 
 			$stateArray = array();
-			if ((mysql_num_rows($res)) > 0) {
+			if ((mysqli_num_rows($res)) > 0) {
 
-				while ($state = mysql_fetch_assoc($res)) {
+				while ($state = mysqli_fetch_assoc($res)) {
 					$stateObj = '';
 					$stateObj['id'] = $state['id'];
 					$stateObj['state_name'] = $state['state_name'];
@@ -100,7 +131,15 @@ class TutorialGroup
 			$status = 2;
 		}
 
-		$data['status'] = ($status > 1) ? 'failed' : 'success';
+            $status = ($status > 1) ? 'failed' : 'success';
+        }
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
+
+        $data['status']=$status;
 		$data['message'] = $message;
 		$data['states'] = $stateArray;
 
@@ -112,16 +151,26 @@ class TutorialGroup
 		$stateId = validateObject($postData, 'state_id', "");
 		$stateId = addslashes($stateId);
 
-		$get_cities_query = "SELECT id, city_name from " . TABLE_CITIES . " where state_id = " . $stateId;
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-		$res = mysql_query($get_cities_query) or $message = mysql_error();
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+		$get_cities_query = "SELECT id, city_name from " . TABLE_CITIES . " where state_id = " . $stateId ." and is_delete=0";
+
+		$res = mysqli_query($GLOBALS['con'],$get_cities_query) or $message = mysqli_error($GLOBALS['con']);
 
 		if ($res) {
 
 			$cityArray = array();
-			if ((mysql_num_rows($res)) > 0) {
+			if ((mysqli_num_rows($res)) > 0) {
 
-				while ($city = mysql_fetch_assoc($res)) {
+				while ($city = mysqli_fetch_assoc($res)) {
 					$cityObj = '';
 					$cityObj['id'] = $city['id'];
 					$cityObj['city_name'] = $city['city_name'];
@@ -139,7 +188,15 @@ class TutorialGroup
 			$status = 2;
 		}
 
-		$data['status'] = ($status > 1) ? 'failed' : 'success';
+            $status = ($status > 1) ? 'failed' : 'success';
+        }
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
+
+        $data['status']=$status;
 		$data['message'] = $message;
 		$data['cities'] = $cityArray;
 

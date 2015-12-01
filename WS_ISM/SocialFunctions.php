@@ -1,4 +1,6 @@
 <?php
+
+
 error_reporting(0);
 class SocialFunctions
 {
@@ -99,6 +101,7 @@ class SocialFunctions
                 return $this->getAllHashtag($postData);
             }
                 break;
+
         }
     }
 
@@ -114,23 +117,37 @@ class SocialFunctions
         $feed_id = validateObject ($postData , 'feed_id', "");
         $feed_id = addslashes($feed_id);
 
-        $getFields="f.id, f.comment,f.created_date, f.comment_by,u.full_name,p.profile_link";
-        $query="SELECT ".$getFields."  FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feed_id;
-        $result=mysql_query($query) or $message=mysql_error();
-        //echo $query;
-        if(mysql_num_rows($result))
-        {
-            while($comments=mysql_fetch_assoc($result))
-            {
-                $data[]=$comments;
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $getFields = "f.id, f.comment,f.created_date, f.comment_by,u.full_name,p.profile_link";
+            $query = "SELECT ".$getFields."  FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feed_id ." AND f.is_delete=0 AND p.is_delete=0 AND u.is_delete=0";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            //echo $query;
+            if (mysqli_num_rows($result)) {
+                while ($comments = mysqli_fetch_assoc($result)) {
+                    $data[] = $comments;
+                }
+                $message = "";
+                $status="success";
+            } else {
+                $message = DEFAULT_NO_RECORDS;
             }
-            $message="";
         }
         else
         {
-            $message=DEFAULT_NO_RECORDS;
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
         }
-        $status="success";
+
         $response['comments']=$data;
         $response['status']=$status;
         $response['message']=$message;
@@ -140,8 +157,8 @@ class SocialFunctions
 
     /*
       * LikeFeed
-      */
 
+    */
     public function likeFeed ($postData)
     {
         $data=array();
@@ -150,46 +167,63 @@ class SocialFunctions
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
 
-        $liked_id = validateObject ($postData , 'liked_id', "");
-        $unliked_id = validateObject ($postData , 'unliked_id', "");
-        if($unliked_id!=null){
-            foreach($unliked_id as $feed_id) {
-                $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id;
-                // echo $queryCheckFeed."\n_unliked";
-                $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
-                // echo $queryCheckFeed . "\n";
-                if (mysql_num_rows($resultCheckFeed)) {
-                    $val = mysql_fetch_assoc($resultCheckFeed);
-                    $feed_like_id = $val['id'];
-                    $queryUpdate = "UPDATE `feed_like` SET `is_delete`=0 WHERE `id`=".$feed_like_id;
-                    // echo $procedure;
-                    $result = mysql_query($queryUpdate) or $errorMsg = mysql_error();
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $liked_id = validateObject($postData, 'liked_id', "");
+            $unliked_id = validateObject($postData, 'unliked_id', "");
+            if ($unliked_id != null) {
+                foreach ($unliked_id as $feed_id) {
+                    $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id;
+                    // echo $queryCheckFeed."\n_unliked";
+                    $resultCheckFeed = mysqli_query($GLOBALS['con'], $queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
+                    // echo $queryCheckFeed . "\n";
+                    if (mysqli_num_rows($resultCheckFeed)) {
+                        $val = mysqli_fetch_assoc($resultCheckFeed);
+                        $feed_like_id = $val['id'];
+                        $queryUpdate = "UPDATE `feed_like` SET `is_delete`=0 WHERE `id`=" . $feed_like_id;
+                        // echo $procedure;
+                        $result = mysqli_query($GLOBALS['con'], $queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
+                    }
                 }
             }
-        }
 
-        if($liked_id!=null) {
-            foreach ($liked_id as $feed_id) {
-                $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id;
-                //echo $queryCheckFeed."\n_liked";
-                $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
-                if (mysql_num_rows($resultCheckFeed)) {
-                    $val = mysql_fetch_assoc($resultCheckFeed);
-                    $feed_like_id = $val['id'];
-                    $queryUpdate = "UPDATE `feed_like` SET `is_delete`=1 WHERE `id`=".$feed_like_id;
-                    // echo $procedure;
-                    $result = mysql_query($queryUpdate) or $errorMsg = mysql_error();
+            if ($liked_id != null) {
+                foreach ($liked_id as $feed_id) {
+                    $queryCheckFeed = "SELECT * FROM " . TABLE_FEED_LIKE . " where like_by =" . $user_id . " and feed_id=" . $feed_id;
+                    //echo $queryCheckFeed."\n_liked";
+                    $resultCheckFeed = mysqli_query($GLOBALS['con'], $queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
+                    if (mysqli_num_rows($resultCheckFeed)) {
+                        $val = mysqli_fetch_assoc($resultCheckFeed);
+                        $feed_like_id = $val['id'];
+                        $queryUpdate = "UPDATE `feed_like` SET `is_delete`=1 WHERE `id`=" . $feed_like_id;
+                        // echo $procedure;
+                        $result = mysqli_query($GLOBALS['con'], $queryUpdate) or $errorMsg = mysqli_error($GLOBALS['con']);
 
-                } else {
-                    $insertFields = "`like_by`, `feed_id`,`is_delete`";
-                    $insertValues = "" . $user_id . ", " . $feed_id . ",'1'";
-                    $query = "INSERT INTO " . TABLE_FEED_LIKE . " (" . $insertFields . ") VALUES (" . $insertValues . ")";
-                    $result = mysql_query($query) or $message = mysql_error();
+                    } else {
+                        $insertFields = "`like_by`, `feed_id`,`is_delete`";
+                        $insertValues = "" . $user_id . ", " . $feed_id . ",'1'";
+                        $query = "INSERT INTO " . TABLE_FEED_LIKE . " (" . $insertFields . ") VALUES (" . $insertValues . ")";
+                        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+                    }
                 }
             }
+            $status = "success";
+            $message = "Successfully";
         }
-        $status = "success";
-        $message = "Successfully";
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
         $response['like_feed']=$data;
         $response['status']=$status;
         $response['message']=$message;
@@ -199,8 +233,8 @@ class SocialFunctions
 
     /*
        * AddComment
-       */
 
+     */
     public function addComment ($postData)
     {
         $data=array();
@@ -215,22 +249,35 @@ class SocialFunctions
         $comment = validateObject ($postData , 'comment', "");
         $comment = addslashes($comment);
 
-        $insertFields="`comment`, `comment_by`, `feed_id`";
-        $insertValues="'".$comment."', ".$comment_by.", ".$feed_id."";
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+            $insertFields = "`comment`, `comment_by`, `feed_id`";
+            $insertValues = "'" . $comment . "', " . $comment_by . ", " . $feed_id . "";
 
 
-        $query="INSERT INTO " .TABLE_FEED_COMMENT." (".$insertFields.") VALUES (".$insertValues.")";
-        $result=mysql_query($query) or $message=mysql_error();
-        //echo $query;
-        if($result)
-        {
-            $status="success";
-            $message="Comment added successfully";
+            $query = "INSERT INTO " . TABLE_FEED_COMMENT . " (" . $insertFields . ") VALUES (" . $insertValues . ")";
+            $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+            //echo $query;
+            if ($result) {
+                $status = "success";
+                $message = SUCCESSFULLY_ADDED;
+            } else {
+                $status = "failed";
+                $message = "";
+            }
         }
         else
         {
             $status="failed";
-            $message="";
+            $message = MALICIOUS_SOURCE;
         }
         $response['comment']=$data;
         $response['status']=$status;
@@ -240,8 +287,8 @@ class SocialFunctions
     }
     /*
     * TagFriendInFeed
-    */
 
+     */
     public function tagFriendInFeed ($postData)
     {
         $data=array();
@@ -256,21 +303,35 @@ class SocialFunctions
         $tagged_by = validateObject ($postData , 'tagged_by', "");
         $tagged_by = addslashes($tagged_by);
 
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
 
 
-        foreach($user_id as $id){
-            $insertFields="`user_id`, `feed_id`, `tagged_by`";
-            $insertValues=$id.", ".$feed_id.", ".$tagged_by;
-            $query="INSERT INTO " .TABLE_FEEDS_TAGGED_USER." (".$insertFields.") VALUES (".$insertValues.")";
-            $result=mysql_query($query) or $message=mysql_error();
-            // echo $query;
-            if($result)
-            {
-                $status="success";
-                $message="Tagged successfully";
+            foreach ($user_id as $id) {
+                $insertFields = "`user_id`, `feed_id`, `tagged_by`";
+                $insertValues = $id . ", " . $feed_id . ", " . $tagged_by;
+                $query = "INSERT INTO " . TABLE_FEEDS_TAGGED_USER . " (" . $insertFields . ") VALUES (" . $insertValues . ")";
+                $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+                // echo $query;
+                if ($result) {
+                    $status = "success";
+                    $message = "Tagged successfully";
+                }
             }
         }
-
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
         $response['tag_friend']=$data;
         $response['status']=$status;
         $response['message']=$message;
@@ -280,8 +341,8 @@ class SocialFunctions
 
     /*
      * postFeed
-     *
      */
+
     public function postFeed ($postData)
     {
         $data=array();
@@ -307,61 +368,70 @@ class SocialFunctions
         $video_thumbnail = validateObject ($postData , 'video_thumbnail', "");
         $video_thumbnail = addslashes($video_thumbnail);
 
-        if (!is_dir(FEEDS_MEDIA)) {
-            mkdir(FEEDS_MEDIA, 0777, true);
-        }
-        $feed_media_dir = "user_" . $feed_by . "/";
-        $dir = FEEDS_MEDIA . $feed_media_dir;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777);
-        }
-         $feed_thumb_link=null;
-        if($video_thumbnail!=null){
-            $feed_thumb = "Thumb-" . date("Ymd-his").".png";
-            $feed_thumb_link = $feed_media_dir.$feed_thumb;
-            if(!file_put_contents(FEEDS_MEDIA.$feed_thumb_link, base64_decode($video_thumbnail))){
-                $feed_thumb_link="Failed";
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            if (!is_dir(FEEDS_MEDIA)) {
+                mkdir(FEEDS_MEDIA, 0777, true);
             }
-
-        }
-        $insertFields="`feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`,`video_thumbnail`";
-        $insertValues=$feed_by.",'".$feed_text."','".$video_link."','".$audio_link."','".$posted_on."','".$feed_thumb_link."'";
-        $queryPostFeed="INSERT INTO ".TABLE_FEEDS."(".$insertFields.") VALUES (".$insertValues.")";
-        $result=mysql_query($queryPostFeed) or $message=mysql_error();
-        if($result)
-        {
-            $feed_id=mysql_insert_id();
-            $post['feed_id']=$feed_id;
-            if($video_link!=null)
-            {
-                //$this->uploadMedia($feed_id,"video",$feed_media_dir);
+            $feed_media_dir = "user_" . $feed_by . "/";
+            $dir = FEEDS_MEDIA . $feed_media_dir;
+            if (!is_dir($dir)) {
+                mkdir($dir, 0777);
             }
-            $i=0;
-            if($images!=null)
-            {
-                foreach($images as $feed_image)
-                {
-                    if($feed_image!=null)
-                    {
-
-                        $feed_image_name = "IMG-" . date("Ymd-his").$i++.".png";
-                        $feed_image_link = $feed_media_dir.$feed_image_name;
-                        file_put_contents(FEEDS_MEDIA.$feed_image_link, base64_decode($feed_image));
-                        $queryInsertImage="INSERT INTO `feed_image`(`feed_id`, `image_link`) VALUES (".$feed_id.",'".$feed_image_link."')";
-                        $resultImageUploading=mysql_query($queryInsertImage) or $message=mysql_error();
-                    }
-
+            $feed_thumb_link = null;
+            if ($video_thumbnail != null) {
+                $feed_thumb = "Thumb-" . date("Ymd-his") . ".png";
+                $feed_thumb_link = $feed_media_dir . $feed_thumb;
+                if (!file_put_contents(FEEDS_MEDIA . $feed_thumb_link, base64_decode($video_thumbnail))) {
+                    $feed_thumb_link = "Failed";
                 }
+
             }
-            $data[]=$post;
-            //$message="“Post successfully submitted";
-            $status="success";
-        }
-        else
-        {
-            $status="failed";
+            $insertFields = "`feed_by`, `feed_text`, `video_link`, `audio_link`, `posted_on`,`video_thumbnail`";
+            $insertValues = $feed_by . ",'" . $feed_text . "','" . $video_link . "','" . $audio_link . "','" . $posted_on . "','" . $feed_thumb_link . "'";
+            $queryPostFeed = "INSERT INTO " . TABLE_FEEDS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+            $result = mysqli_query($GLOBALS['con'], $queryPostFeed) or $message = mysqli_error($GLOBALS['con']);
+            if ($result) {
+                $feed_id = mysqli_insert_id($GLOBALS['con']);
+                $post['feed_id'] = $feed_id;
+                if ($video_link != null) {
+                    //$this->uploadMedia($feed_id,"video",$feed_media_dir);
+                }
+                $i = 0;
+                if ($images != null) {
+                    foreach ($images as $feed_image) {
+                        if ($feed_image != null) {
+
+                            $feed_image_name = "IMG-" . date("Ymd-his") . $i++ . ".png";
+                            $feed_image_link = $feed_media_dir . $feed_image_name;
+                            file_put_contents(FEEDS_MEDIA . $feed_image_link, base64_decode($feed_image));
+                            $queryInsertImage = "INSERT INTO `feed_image`(`feed_id`, `image_link`) VALUES (" . $feed_id . ",'" . $feed_image_link . "')";
+                            $resultImageUploading = mysqli_query($GLOBALS['con'], $queryInsertImage) or $message = mysqli_error($GLOBALS['con']);
+                        }
+
+                    }
+                }
+                $data[] = $post;
+                $message="";//"Post successfully submitted";
+                $status = "success";
+            } else {
+                $status = "failed";
+            }
         }
 
+        else{
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
         $response['status']=$status;
         $response['message']=$message;
         $response['feed']=$data;
@@ -384,71 +454,80 @@ class SocialFunctions
         $feed_id = $_POST['feed_id'];
         $feed_by = $_POST['feed_by'];
         $mediaType = $_POST['mediaType'];
+        $secret_key = $_POST['secret_key'];
+        $access_key = $_POST['access_key'];
 
-        if (!is_dir(FEEDS_MEDIA)) {
-            mkdir(FEEDS_MEDIA, 0777, true);
-        }
-        
-        $data['feed_id']=$feed_id;
-        $data['mediaType']=$mediaType;
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
 
-        $data['feed_by']=$feed_by;
-        $feed_media_dir = "user_" . $feed_by . "/";
-        $dir = FEEDS_MEDIA . $feed_media_dir;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777);
-        }
-        if("video"==$mediaType)
-        {
-            if ($_FILES["mediaFile"]["error"] > 0) {
-                $message = $_FILES["mediaFile"]["error"];
+        if($isSecure==yes) {
 
-            } else {
-                // Image 5 = Video 6 = Audio 7
-
-                $mediaName = "VIDEO".$created_date."_test.mp4";
-                $uploadDir = $dir;
-                $uploadFile = FEEDS_MEDIA.$feed_media_dir . $mediaName;
-                if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
-                    //store image data.
-                    $link=$feed_media_dir . $mediaName;
-                    $procedure_insert_set = "CALL UPDATE_VIDEO_LINK ('".$link."','".$feed_id."' )";
-                    $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
-                    $status = "success";
-                    $message = "Successfully uploaded!.";
-                } else {
-                    $status = "failed";
-                    $message = "Failed to upload media on server.";
-                }
-            }
-        }
-        else if("audio"==$mediaType)
-        {
-            if ($_FILES["mediaFile"]["error"] > 0) {
-                $message = $_FILES["audio_link"]["error"];
-                $status=2;
-            } else {
-                $mediaName = "AUDIO".$created_date."_test.mp3";
-
-                $uploadDir = $dir;
-                $uploadFile = FEEDS_MEDIA .$feed_media_dir. $mediaName;
-                if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
-                    //store image data.
-
-                    $link=$feed_media_dir . $mediaName;
-                    $procedure_insert_set = "CALL UPDATE_AUDIO_LINK ('".$link."','".$feed_id."' )";
-                    $result_procedure = mysql_query($procedure_insert_set) or $errorMsg = mysql_error();
-                    $status = "success";
-                    $message = "Successfully uploaded!.";
-                } else {
-                    $status = "failed";
-                    $message = "Failed to upload media on server.";
-                }
+            if (!is_dir(FEEDS_MEDIA)) {
+                mkdir(FEEDS_MEDIA, 0777, true);
             }
 
+            $data['feed_id'] = $feed_id;
+            $data['mediaType'] = $mediaType;
+
+            $data['feed_by'] = $feed_by;
+            $feed_media_dir = "user_" . $feed_by . "/";
+            $dir = FEEDS_MEDIA . $feed_media_dir;
+            if (!is_dir($dir)) {
+                mkdir($dir, 0777);
+            }
+            if ("video" == $mediaType) {
+                if ($_FILES["mediaFile"]["error"] > 0) {
+                    $message = $_FILES["mediaFile"]["error"];
+
+                } else {
+                    // Image 5 = Video 6 = Audio 7
+
+                    $mediaName = "VIDEO" . $created_date . "_test.mp4";
+                    $uploadDir = $dir;
+                    $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
+                    if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
+                        //store image data.
+                        $link = $feed_media_dir . $mediaName;
+                        $procedure_insert_set = "CALL UPDATE_VIDEO_LINK ('" . $link . "','" . $feed_id . "' )";
+                        $result_procedure = mysqli_query($GLOBALS['con'], $procedure_insert_set) or $message = mysqli_error($GLOBALS['con']);
+                        $status = "success";
+                        $message = "Successfully uploaded!.";
+                    } else {
+                        $status = "failed";
+                        $message = FAILED_TO_UPLOAD_MEDIA;
+                    }
+                }
+            } else if ("audio" == $mediaType) {
+                if ($_FILES["mediaFile"]["error"] > 0) {
+                    $message = $_FILES["audio_link"]["error"];
+                    $status = 2;
+                } else {
+                    $mediaName = "AUDIO" . $created_date . "_test.mp3";
+
+                    $uploadDir = $dir;
+                    $uploadFile = FEEDS_MEDIA . $feed_media_dir . $mediaName;
+                    if (move_uploaded_file($_FILES['mediaFile']['tmp_name'], $uploadFile)) {
+                        //store image data.
+
+                        $link = $feed_media_dir . $mediaName;
+                        $procedure_insert_set = "CALL UPDATE_AUDIO_LINK ('" . $link . "','" . $feed_id . "' )";
+                        $result_procedure = mysqli_query($GLOBALS['con'], $procedure_insert_set) or $message = mysqli_error($GLOBALS['con']);
+                        $status = "success";
+                        $message = "Successfully uploaded!.";
+                    } else {
+                        $status = "failed";
+                        $message = FAILED_TO_UPLOAD_MEDIA;
+                    }
+                }
+
+            }
+
         }
-
-
+        else
+        {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
+        }
         $data['status']=$status;
         $data['link']=$link;
         $data['message']=$message;
@@ -480,15 +559,30 @@ class SocialFunctions
         $user_id = validateObject ($postData , 'user_id', "");
         $user_id = addslashes($user_id);
 
-        $final_followers = $this->getAllFollowtoFromFollowers($user_id);
-        $final_mates = $this->getAllMatesFromStudyMates($user_id);
-        $final_teachers = $this->getAllTeachersFromStudentTeacher($user_id);
-        $final_groups= $this->getAllGroupsFromTutorialGroupMember($user_id);
-        $final_users= $this->getAllUsersFromUsers($user_id);
-        $final_feeds_tagged = $this->getAllFeedIdFromFeedsTag($user_id);
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-        $final_feeds = $this->getAllFeedsFromFeeds($user_id,$final_followers, $final_mates, $final_teachers, $final_groups, $final_users, $final_feeds_tagged);
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
 
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+            $final_followers = $this->getAllFollowtoFromFollowers($user_id);
+            $final_mates = $this->getAllMatesFromStudyMates($user_id);
+            $final_teachers = $this->getAllTeachersFromStudentTeacher($user_id);
+            $final_groups = $this->getAllGroupsFromTutorialGroupMember($user_id);
+            $final_users = $this->getAllUsersFromUsers($user_id);
+            $final_feeds_tagged = $this->getAllFeedIdFromFeedsTag($user_id);
+
+            $final_feeds = $this->getAllFeedsFromFeeds($user_id, $final_followers, $final_mates, $final_teachers, $final_groups, $final_users, $final_feeds_tagged);
+        }
+        else
+        {
+            $final_feeds['status']="failed";
+            $final_feeds['message'] = MALICIOUS_SOURCE;
+        }
         $response['feeds']=$final_feeds['data'];
         $response['status']=$final_feeds['status'];
         $response['message']=$final_feeds['message'];
@@ -502,15 +596,17 @@ class SocialFunctions
 
     public function getAllFollowtoFromFollowers($user_id)
     {
-        $query = "select follow_to from " . TABLE_FOLLOWERS . " where follower_id='" . $user_id . "'";
 
-        $result = mysql_query($query) or
-        $errorMsg = mysql_error();
-        $my_row_count = mysql_num_rows($result);
+
+        $query = "select follow_to from " . TABLE_FOLLOWERS . " where follower_id='" . $user_id . "' and is_delete=0";
+
+        $result = mysqli_query($GLOBALS['con'],$query) or
+        $errorMsg = mysqli_error($GLOBALS['con']);
+        $my_row_count = mysqli_num_rows($result);
         //echo "followers:" . $my_row_count;
         $followers_array = array();
         if ($my_row_count > 0) {
-            while ($followers = mysql_fetch_assoc($result)) {
+            while ($followers = mysqli_fetch_assoc($result)) {
                 $followers_array[] = $followers['follow_to'];
             }
         }
@@ -520,14 +616,14 @@ class SocialFunctions
 
     public function getAllMatesFromStudyMates($user_id)
     {
-        $query_mates = "select mate_id from " . TABLE_STUDYMATES . " where mate_of='" . $user_id . "'";
-        $result_mates = mysql_query($query_mates) or $errorMsg = mysql_error();
+        $query_mates = "select mate_id from " . TABLE_STUDYMATES . " where mate_of='" . $user_id . "' and is_delete=0";
+        $result_mates = mysqli_query($GLOBALS['con'],$query_mates) or $errorMsg = mysqli_error($GLOBALS['con']);
 
-        $mates_row_count = mysql_num_rows($result_mates);
+        $mates_row_count = mysqli_num_rows($result_mates);
         $mates_array = array();
         //echo "mates:" . $mates_row_count;
         if ($mates_row_count > 0) {
-            while ($mates = mysql_fetch_assoc($result_mates)) {
+            while ($mates = mysqli_fetch_assoc($result_mates)) {
                 $mates_array[] = $mates['mate_id'];
             }
         }
@@ -538,14 +634,14 @@ class SocialFunctions
 
     public function getAllTeachersFromStudentTeacher($user_id)
     {
-        $query_teachers = "select teacher_id from " . TABLE_STUDENT_TEACHER . " where student_id='" . $user_id . "'";
-        $result_teachers = mysql_query($query_teachers) or $errorMsg = mysql_error();
+        $query_teachers = "select teacher_id from " . TABLE_STUDENT_TEACHER . " where student_id='" . $user_id . "' and is_delete=0";
+        $result_teachers = mysqli_query($GLOBALS['con'],$query_teachers) or $errorMsg = mysqli_error($GLOBALS['con']);
 
-        $teachers_row_count = mysql_num_rows($result_teachers);
+        $teachers_row_count = mysqli_num_rows($result_teachers);
         $teachers_array = array();
         //echo "teachers:" . $teachers_row_count;
         if ($teachers_row_count > 0) {
-            while ($teachers = mysql_fetch_assoc($result_teachers)) {
+            while ($teachers = mysqli_fetch_assoc($result_teachers)) {
                 $teachers_array[] = $teachers['teacher_id'];
 
             }
@@ -557,16 +653,16 @@ class SocialFunctions
 
     public function getAllGroupsFromTutorialGroupMember($user_id)
     {
-        $query_group_id = "select group_id from " . TABLE_TUTORIAL_GROUP_MEMBER . " where user_id='" . $user_id . "'";
+        $query_group_id = "select group_id from " . TABLE_TUTORIAL_GROUP_MEMBER . " where user_id='" . $user_id . "' and is_delete=0";
 
-        $result_group_ids = mysql_query($query_group_id) or $errorMsg = mysql_error();
+        $result_group_ids = mysqli_query($GLOBALS['con'],$query_group_id) or $errorMsg = mysqli_error($GLOBALS['con']);
 
-        $group_ids_count = mysql_num_rows($result_group_ids);
+        $group_ids_count = mysqli_num_rows($result_group_ids);
         //echo "groups:" . $group_ids_count;
         $group_id_array = array();
 
         if ($group_ids_count > 0) {
-            while ($group_ids = mysql_fetch_assoc($result_group_ids)) {
+            while ($group_ids = mysqli_fetch_assoc($result_group_ids)) {
                 $group_id_array[] = $group_ids['group_id'];
 
             }
@@ -578,14 +674,14 @@ class SocialFunctions
 
     public function getAllUsersFromUsers($user_id)
     {
-        $query_id_from_user_table = "select id from " . TABLE_USERS . " where role_id='1'";
+        $query_id_from_user_table = "select id from " . TABLE_USERS . " where role_id='1' and is_delete=0";
 
-        $result_id_from_user_table = mysql_query($query_id_from_user_table) or $errorMsg = mysql_error();
-        $users_count = mysql_num_rows($result_id_from_user_table);
+        $result_id_from_user_table = mysqli_query($GLOBALS['con'],$query_id_from_user_table) or $errorMsg = mysqli_error($GLOBALS['con']);
+        $users_count = mysqli_num_rows($result_id_from_user_table);
         $users_array = array();
         //echo "all_users:" . $users_count;
         if ($users_count > 0) {
-            while ($users = mysql_fetch_assoc($result_id_from_user_table)) {
+            while ($users = mysqli_fetch_assoc($result_id_from_user_table)) {
                 $users_array[] = $users['id'];
 
             }
@@ -597,15 +693,15 @@ class SocialFunctions
 
     public function getAllFeedIdFromFeedsTag($user_id)
     {
-        $query_feed_id = "select feed_id from " . TABLE_FEEDS_TAGGED_USER . " where user_id='" . $user_id . "'";
-        $result_feed_id = mysql_query($query_feed_id) or $errorMsg = mysql_error();
-        $feed_id_counts = mysql_num_rows($result_feed_id);
+        $query_feed_id = "select feed_id from " . TABLE_FEEDS_TAGGED_USER . " where user_id='" . $user_id . "' and is_delete=0";
+        $result_feed_id = mysqli_query($GLOBALS['con'],$query_feed_id) or $errorMsg = mysqli_error($GLOBALS['con']);
+        $feed_id_counts = mysqli_num_rows($result_feed_id);
         $feeds_id_array = array();
 
         //echo "allfeeds_tagged:" . $feed_id_counts;
 
         if ($feed_id_counts > 0) {
-            while ($feeds_ids = mysql_fetch_assoc($result_feed_id)) {
+            while ($feeds_ids = mysqli_fetch_assoc($result_feed_id)) {
                 $feeds_id_array[] = $feeds_ids['feed_id'];
 
             }
@@ -650,16 +746,16 @@ class SocialFunctions
 
 
         //$queryGetAllFeeds = "select * from " . TABLE_FEEDS . " where feed_by IN ('138','140')";
-        $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." where feed_by IN (".$final_string.") ORDER BY id DESC Limit 20";
-        $resultGetAllFeeds = mysql_query($queryGetAllFeeds) or $errorMsg = mysql_error();
+        $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." where feed_by IN (".$final_string.") and is_delete=0 ORDER BY id DESC Limit 20";
+        $resultGetAllFeeds = mysqli_query($GLOBALS['con'],$queryGetAllFeeds) or $errorMsg = mysqli_error($GLOBALS['con']);
 
         //for counting the number of rows for query result
-        $feeds_count = mysql_num_rows($resultGetAllFeeds);
+        $feeds_count = mysqli_num_rows($resultGetAllFeeds);
         $feeds_array = array();
         $allfeeds=array();
         $feedId[]=array();
         if ($feeds_count > 0) {
-            while ($feeds = mysql_fetch_assoc($resultGetAllFeeds)) {
+            while ($feeds = mysqli_fetch_assoc($resultGetAllFeeds)) {
 //                $feeds_array['user_id'] = $user_id;
 //                $feeds_array['feed_id'] = $feeds['id'];
 //                $feeds_array['feed_by'] = $feeds['feed_by'];
@@ -673,19 +769,19 @@ class SocialFunctions
 //                $feeds_array['modified_date'] = $feeds['modified_date'];
 //
 //                $queryUser="select * from ".TABLE_USERS." where id=". $feeds['feed_by'];
-//                $resultUser=mysql_query($queryUser) or $errorMsg=mysql_error();
+//                $resultUser=mysqli_query($GLOBALS['con'],$queryUser) or $errorMsg=mysqli_error($GLOBALS['con']);
 //
-//                if(mysql_num_rows($resultUser)){
-//                    $val = mysql_fetch_assoc($resultUser);
+//                if(mysqli_num_rows($resultUser)){
+//                    $val = mysqli_fetch_assoc($resultUser);
 //                    $feeds_array['full_name'] = $val['full_name'];
 //                    $feeds_array['profile_pic'] = $val['profile_pic'];
 //
 //                }
 //                $queryLike="select * from ".TABLE_FEED_LIKE." where like_by=".$user_id." and feed_id= ". $feeds['id'];
-//                $resultLike=mysql_query($queryLike) or $errorMsg=mysql_error();
+//                $resultLike=mysqli_query($GLOBALS['con'],$queryLike) or $errorMsg=mysqli_error($GLOBALS['con']);
 //                $feeds_array['like'] ="0";
-//                if(mysql_num_rows($resultLike)){
-//                    $valLike = mysql_fetch_assoc($resultLike);
+//                if(mysqli_num_rows($resultLike)){
+//                    $valLike = mysqli_fetch_assoc($resultLike);
 //                    $feeds_array['like'] = $valLike['is_delete'];
 //                }
 //                //$feeds_array['user_id'] = $feeds['user_id'];
@@ -694,13 +790,13 @@ class SocialFunctions
 //                if(sizeof($feeds_array)>0)
 //                {
 //                    $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,u.full_name,p.profile_link FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id']." Limit 2";
-//                    $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
+//                    $resultGetAlComments = mysqli_query($GLOBALS['con'],$queryGetAllComments) or $errorMsg = mysqli_error($GLOBALS['con']);
 //                        $allcomment=array();
 //                    //echo "\n".$queryGetAllComments;
 //                    //for counting the number of rows for query result
-//                    if(mysql_num_rows($resultGetAlComments))
+//                    if(mysqli_num_rows($resultGetAlComments))
 //                    {
-//                        while($comments=mysql_fetch_assoc($resultGetAlComments))
+//                        while($comments=mysqli_fetch_assoc($resultGetAlComments))
 //                        {
 //                            $allcomment[]=$comments;
 //                        }
@@ -717,13 +813,13 @@ class SocialFunctions
         } else {
 
         }
-        $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." where feed_by =".$user_id." ORDER BY id DESC Limit 20";
-        $resultGetAllFeeds = mysql_query($queryGetAllFeeds) or $errorMsg = mysql_error();
+        $queryGetAllFeeds = "select * from " . TABLE_FEEDS ." where feed_by =".$user_id."  and is_delete=0 ORDER BY id DESC Limit 20";
+        $resultGetAllFeeds = mysqli_query($GLOBALS['con'],$queryGetAllFeeds) or $errorMsg = mysqli_error($GLOBALS['con']);
        // echo $queryGetAllFeeds;
-        $feeds_count = mysql_num_rows($resultGetAllFeeds);
+        $feeds_count = mysqli_num_rows($resultGetAllFeeds);
 
         if ($feeds_count > 0) {
-            while ($feeds = mysql_fetch_assoc($resultGetAllFeeds)) {
+            while ($feeds = mysqli_fetch_assoc($resultGetAllFeeds)) {
                 $feedID=$feeds['id'];
                // echo $feedID."\n";
 //                    if(in_array($feedID,$feedId)){
@@ -758,20 +854,20 @@ class SocialFunctions
         $feeds_array['modified_date'] = $feeds['modified_date'];
 
 
-        $queryUser="select * from ".TABLE_USERS." where id=". $feeds['feed_by'];
-        $resultUser=mysql_query($queryUser) or $errorMsg=mysql_error();
+        $queryUser="select * from ".TABLE_USERS." where id=". $feeds['feed_by']." and is_delete=0";
+        $resultUser=mysqli_query($GLOBALS['con'],$queryUser) or $errorMsg=mysqli_error($GLOBALS['con']);
 
-        if(mysql_num_rows($resultUser)){
-            $val = mysql_fetch_assoc($resultUser);
+        if(mysqli_num_rows($resultUser)){
+            $val = mysqli_fetch_assoc($resultUser);
             $feeds_array['full_name'] = $val['full_name'];
             $feeds_array['profile_pic'] = $val['profile_pic'];
 
         }
-        $queryLike="select * from ".TABLE_FEED_LIKE." where like_by=".$user_id." and feed_id= ". $feeds['id'];
-        $resultLike=mysql_query($queryLike) or $errorMsg=mysql_error();
+        $queryLike="select * from ".TABLE_FEED_LIKE." where like_by=".$user_id." and feed_id= ". $feeds['id']." and is_delete=0";
+        $resultLike=mysqli_query($GLOBALS['con'],$queryLike) or $errorMsg=mysqli_error($GLOBALS['con']);
         $feeds_array['like'] ="0";
-        if(mysql_num_rows($resultLike)){
-            $valLike = mysql_fetch_assoc($resultLike);
+        if(mysqli_num_rows($resultLike)){
+            $valLike = mysqli_fetch_assoc($resultLike);
             $feeds_array['like'] = $valLike['is_delete'];
         }
         //$feeds_array['user_id'] = $feeds['user_id'];
@@ -779,14 +875,18 @@ class SocialFunctions
 
         if(sizeof($feeds_array)>0)
         {
-            $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM feed_comment f INNER JOIN users u INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id WHERE f.feed_id=".$feeds['id']." Limit 2";
-            $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
+            $queryGetAllComments = "SELECT f.id, f.comment, f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic'
+            FROM feed_comment f
+            INNER JOIN users u
+            INNER JOIN user_profile_picture p ON f.comment_by=u.id and p.user_id=u.id
+            WHERE f.feed_id=".$feeds['id']." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 Limit 2";
+            $resultGetAlComments = mysqli_query($GLOBALS['con'],$queryGetAllComments) or $errorMsg = mysqli_error($GLOBALS['con']);
             $allcomment=array();
             //echo "\n".$queryGetAllComments;
             //for counting the number of rows for query result
-            if(mysql_num_rows($resultGetAlComments))
+            if(mysqli_num_rows($resultGetAlComments))
             {
-                while($comments=mysql_fetch_assoc($resultGetAlComments))
+                while($comments=mysqli_fetch_assoc($resultGetAlComments))
                 {
                     $allcomment[]=$comments;
                 }
@@ -797,14 +897,14 @@ class SocialFunctions
             //$data['comments']=$comments_array;
 
         }
-        $queryGetImages="SELECT `id`,`image_link` FROM `feed_image` WHERE `feed_id`=".$feeds['id'];
-        $resultGetImages=mysql_query($queryGetImages) or $errorMsg=mysql_error();
+        $queryGetImages="SELECT `id`,`image_link` FROM `feed_image` WHERE `feed_id`=".$feeds['id']." and is_delete=0";
+        $resultGetImages=mysqli_query($GLOBALS['con'],$queryGetImages) or $errorMsg=mysqli_error($GLOBALS['con']);
         $allImages=array();
         //echo "\n".$queryGetAllComments;
         //for counting the number of rows for query result
-        if(mysql_num_rows($resultGetImages))
+        if(mysqli_num_rows($resultGetImages))
         {
-            while($images=mysql_fetch_assoc($resultGetImages))
+            while($images=mysqli_fetch_assoc($resultGetImages))
             {
                 $allImages[]=$images;
             }
@@ -829,81 +929,93 @@ class SocialFunctions
         
 		$user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
-		
 
-        $queryGetAllFeeds = "select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from " . TABLE_FEEDS ." feed INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id where feed.feed_by =".$user_id;
-        $resultGetAllFeeds = mysql_query($queryGetAllFeeds) or $errorMsg = mysql_error();
-        $feeds_count = mysql_num_rows($resultGetAllFeeds);
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
 
-        if ($feeds_count > 0) {
-            while ($feed = mysql_fetch_assoc($resultGetAllFeeds)) {
-              
-             $feeds['feed_id']=$feed['id'];
-             $feeds['feed_text']=$feed['feed_text'];
-             $feeds['video_link']=$feed['video_link'];
-             $feeds['user_id']=$feed['UserId'];
-             $feeds['full_name']=$feed['full_name'];
-             $feeds['profile_pic']=$feed['Profile_pic'];
-             $feeds['total_like']=$feed['total_like'];
-             $feeds['total_comment']=$feed['total_comment'];
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
 
-                $queryLike="select * from ".TABLE_FEED_LIKE." where like_by=".$user_id." and feed_id= ". $feed['id'];
-                $resultLike=mysql_query($queryLike) or $errorMsg=mysql_error();
-                $feeds_array['like'] ="0";
-                if(mysql_num_rows($resultLike)){
-                    $valLike = mysql_fetch_assoc($resultLike);
-                    $feeds['like'] = $valLike['is_delete'];
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            $queryGetAllFeeds = "select feed.*,user.id as 'UserId',user.full_name,user.profile_pic as 'Profile_pic' from " . TABLE_FEEDS ." feed
+        INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id where feed.feed_by =".$user_id ." and feed.is_delete=0 and user.is_delete=0";
+            $resultGetAllFeeds = mysqli_query($GLOBALS['con'],$queryGetAllFeeds) or $errorMsg = mysqli_error($GLOBALS['con']);
+            $feeds_count = mysqli_num_rows($resultGetAllFeeds);
+
+            if ($feeds_count > 0) {
+                while ($feed = mysqli_fetch_assoc($resultGetAllFeeds)) {
+
+                    $feeds['feed_id']=$feed['id'];
+                    $feeds['feed_text']=$feed['feed_text'];
+                    $feeds['video_link']=$feed['video_link'];
+                    $feeds['user_id']=$feed['UserId'];
+                    $feeds['full_name']=$feed['full_name'];
+                    $feeds['profile_pic']=$feed['Profile_pic'];
+                    $feeds['total_like']=$feed['total_like'];
+                    $feeds['total_comment']=$feed['total_comment'];
+
+
+                    //For Like
+                    $queryLike="select * from ".TABLE_FEED_LIKE." where like_by=".$user_id." and feed_id= ". $feed['id']." and is_delete=0";
+                    $resultLike=mysqli_query($GLOBALS['con'],$queryLike) or $errorMsg=mysqli_error($GLOBALS['con']);
+                    $feeds_array['like'] ="0";
+                    if(mysqli_num_rows($resultLike)){
+                        $valLike = mysqli_fetch_assoc($resultLike);
+                        $feeds['like'] = $valLike['is_delete'];
+                    }
+                    else
+                    {
+                        $feeds['like'] = 0;
+                    }
+
+                    //Get Comments
+                    $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
+            ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." AND f.is_delete=0 AND u.is_delete=0 AND p.is_delete=0 LIMIT 2";
+                    //echo $queryGetAllComments;
+                    $resultGetAlComments = mysqli_query($GLOBALS['con'], $queryGetAllComments) or $errorMsg = mysqli_error($GLOBALS['con']);
+                    $allcomment = array();
+
+                    if (mysqli_num_rows($resultGetAlComments)) {
+                        while ($comments = mysqli_fetch_assoc($resultGetAlComments)) {
+                            $allcomment[] = $comments;
+                        }
+                    }
+                    $feeds['comment_list'] = $allcomment;
+
+
+                    //Get Images
+                    $queryGetImages = "SELECT `id`,`image_link` FROM `feed_image` WHERE `feed_id`=".$feed['id']." AND f.is_delete=0";
+                    $resultGetImages = mysqli_query($GLOBALS['con'], $queryGetImages) or $errorMsg = mysqli_error($GLOBALS['con']);
+                    $allImages = array();
+                    //for counting the number of rows for query result
+                    if (mysqli_num_rows($resultGetImages)) {
+                        while ($images = mysqli_fetch_assoc($resultGetImages)) {
+                            $allImages[] = $images;
+                        }
+
+                    }
+                    $feeds['feed_images'] = $allImages;
+
+                    $data[] = $feeds;
                 }
-                else
-                {
-                    $feeds['like'] = 0;
-                }
-
-			//Get Comments 
-             $queryGetAllComments = "SELECT f.id,f.comment ,f.comment_by,f.created_date,u.full_name,p.profile_link as 'profile_pic' FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u
-            ON f.comment_by=u.id INNER JOIN ".TABLE_USER_PROFILE_PICTURE." p ON p.user_id=u.id WHERE f.feed_id=".$feed['id'] ." LIMIT 2";
-            //echo $queryGetAllComments;
-            $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
-            $allcomment=array();
-            
-            if(mysql_num_rows($resultGetAlComments))
-            {
-                while($comments=mysql_fetch_assoc($resultGetAlComments))
-                {
-                    $allcomment[]=$comments;
-                } 
-            }
-			$feeds['comment_list']=$allcomment;
-
-        
-        //Get Images
-        $queryGetImages="SELECT `id`,`image_link` FROM `feed_image` WHERE `feed_id`=".$feed['id'];
-        $resultGetImages=mysql_query($queryGetImages) or $errorMsg=mysql_error();
-        $allImages=array();
-        //for counting the number of rows for query result
-        if(mysql_num_rows($resultGetImages))
-        {
-            while($images=mysql_fetch_assoc($resultGetImages))
-            {
-                $allImages[]=$images;
+                $status = "success";
+                $message = "";
+            } else {
+                $status = "failed";
+                $message = DEFAULT_NO_RECORDS;
+                $data = "";
             }
 
-        }
-        $feeds['feed_images']=$allImages;
-			
-                $data[]=$feeds;
-            }
-             $status="success";
-       		 $message="";
         }
         else
         {
             $status="failed";
-            $message = DEFAULT_NO_RECORDS;
-            $data="";
+            $message = MALICIOUS_SOURCE;
         }
-
-
 		$response['feeds']=$data;
         $response['message'] = $message;
         $response['status'] = $status;
@@ -913,7 +1025,7 @@ class SocialFunctions
 
 	/*
 	* AddQuestionToFavorite
-	*/
+     */
 	public function addQuestionToFavorite($postData)
 	{
 		$data = array();
@@ -923,48 +1035,55 @@ class SocialFunctions
         $user_id = addslashes($user_id);
         
         $question_id = validateObject($postData, 'question_id', "");
-        
-         if($question_id != null)
-        {
-            foreach($question_id as $record_id) {
-            
-                $queryCheckFeed = "SELECT * FROM ".TABLE_USER_FAVORITE_QUESTION." WHERE user_id=".$user_id." AND question_id =". $record_id;
-               // echo $queryCheckFeed."\n";
-                $resultCheckFeed = mysql_query($queryCheckFeed) or $message = mysql_error();
-                
-                if (mysql_num_rows($resultCheckFeed) == 0) {
-                    $insertFields="`user_id`,`question_id`";
-        			$insertValues=$user_id.",". $record_id;
 
-       				$query="INSERT INTO ".TABLE_USER_FAVORITE_QUESTION."(".$insertFields.") VALUES (".$insertValues.")";
-       				//echo $query;
-        			$result=mysql_query($query) or  $message=mysql_error();
-       			
-       				if($result)
-       				{
-       					$status = "success";
-       					$message = "favorite synced";
-       				}
-       				else
-       				{
-       					$status="failed";
-            			$message="";
-       				}
+        $secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
+
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+        $isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+        if($isSecure==yes) {
+
+            if ($question_id != null) {
+                foreach ($question_id as $record_id) {
+
+                    $queryCheckFeed = "SELECT * FROM ".TABLE_USER_FAVORITE_QUESTION." WHERE user_id=".$user_id." AND question_id =". $record_id." AND f.is_delete=0";
+                    // echo $queryCheckFeed."\n";
+                    $resultCheckFeed = mysqli_query($GLOBALS['con'], $queryCheckFeed) or $message = mysqli_error($GLOBALS['con']);
+
+                    if (mysqli_num_rows($resultCheckFeed) == 0) {
+                        $insertFields = "`user_id`,`question_id`";
+                        $insertValues = $user_id . "," . $record_id;
+
+                        $query = "INSERT INTO " . TABLE_USER_FAVORITE_QUESTION . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                        //echo $query;
+                        $result = mysqli_query($GLOBALS['con'], $query) or $message = mysqli_error($GLOBALS['con']);
+
+                        if ($result)
+                        {
+                            $status = "success";
+                            $message = "favorite synced";
+                        } else
+                        {
+                            $status = "failed";
+                            $message = "";
+                        }
+                    } else
+                    {
+                        $status = "failed";
+                        $message = DEFAULT_NO_RECORDS;
+                    }
                 }
-                else
-                {
-                	 $status="failed";
-            		 $message="";
-                }
+
             }
-            
         }
-        else
-        {
-        	$status="failed";
-            $message="";
+        else {
+            $status="failed";
+            $message = MALICIOUS_SOURCE;
         }
-        
 
         $response['favorite_question']=$data;
         $response['status']=$status;
@@ -973,32 +1092,9 @@ class SocialFunctions
         return $response;
 	}
 	
-	function fnDecrypt1($sValue) {
-   		 global $iv;
-   		 
-   		$query = "SELECT config_value FROM ".TABLE_ADMIN_CONFIG. " WHERE config_key='globalPassword'";
-   		$result = mysql_query($query) or $message = mysql_error();
-    	$masterKey=mysql_fetch_row($result);
- 
- 
- 		//For decrypt access key
- 		
-		// 32 byte binary blob
-		 $aes256Key = hash("SHA256", $masterKey[0], true);
 
-		// for good entropy (for MCRYPT_RAND)
-		srand((double) microtime() * 1000000);
-		
-		// generate random iv
-		$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
-
-        return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $aes256Key, base64_decode($sValue), MCRYPT_MODE_CBC, $iv), "\0\3");
-	}
 	public function tempGetMyFeeds($postData)
     {
-    	$security=new SecurityFunctions();
-    	$token=$security->generateToken(8);
-   
     	$message ='';
         $status='';
         $post=array();
@@ -1008,24 +1104,26 @@ class SocialFunctions
 		$user_id = validateObject($postData, 'user_id', "");
         $user_id = addslashes($user_id);
 		
-		$secretkey = validateObject($postData, 'secretkey', "");
-        $secretkey = addslashes($secretkey);
+		$secret_key = validateObject($postData, 'secret_key', "");
+        $secret_key = addslashes($secret_key);
         
-        $accesskey = validateObject($postData, 'accesskey', "");
-        $accesskey = addslashes($accesskey);
-		
-		
-		$isSecure = $security->checkForSecurity($accesskey,$secretkey);
-		
+        $access_key = validateObject($postData, 'access_key', "");
+        $access_key = addslashes($access_key);
+
+        $security=new SecurityFunctions();
+		$isSecure = $security->checkForSecurity($access_key,$secret_key);
+
+
+
 		if($isSecure==yes)
     	{
     	
         $queryGetAllFeeds = "select feed.*,user.id as 'UserId',user.full_name as 'Username',user.profile_pic as 'Profile_pic' from " . TABLE_FEEDS ." feed INNER JOIN ".TABLE_USERS." user ON feed.feed_by=user.id where feed.feed_by =".$user_id;
-        $resultGetAllFeeds = mysql_query($queryGetAllFeeds) or $errorMsg = mysql_error();
-        $feeds_count = mysql_num_rows($resultGetAllFeeds);
+        $resultGetAllFeeds = mysqli_query( $GLOBALS['con'], $queryGetAllFeeds) or $errorMsg = mysqli_error($GLOBALS['con']);
+        $feeds_count = mysqli_num_rows($resultGetAllFeeds);
 
         if ($feeds_count > 0) {
-            while ($feed = mysql_fetch_assoc($resultGetAllFeeds)) {
+            while ($feed = mysqli_fetch_assoc($resultGetAllFeeds)) {
               
              $feeds['postId']=$feed['id']; 
              $feeds['postText']=$feed['feed_text']; 
@@ -1039,12 +1137,12 @@ class SocialFunctions
 			//Get Comments 
             $queryGetAllComments = "SELECT f.comment as 'comment_text', f.comment_by,u.username,u.profile_pic FROM ".TABLE_FEED_COMMENT." f INNER JOIN ".TABLE_USERS." u ON f.comment_by=u.id WHERE f.feed_id=".$feed['id'];
             //echo $queryGetAllComments;
-            $resultGetAlComments = mysql_query($queryGetAllComments) or $errorMsg = mysql_error();
+            $resultGetAlComments = mysqli_query($GLOBALS['con'],$queryGetAllComments) or $errorMsg = mysqli_error($GLOBALS['con']);
             $allcomment=array();
             
-            if(mysql_num_rows($resultGetAlComments))
+            if(mysqli_num_rows($resultGetAlComments))
             {
-                while($comments=mysql_fetch_assoc($resultGetAlComments))
+                while($comments=mysqli_fetch_assoc($resultGetAlComments))
                 {
                     $allcomment[]=$comments;
                 } 
@@ -1054,12 +1152,12 @@ class SocialFunctions
         
         //Get Images
         $queryGetImages="SELECT `id`,`image_link` FROM `feed_image` WHERE `feed_id`=".$feed['id'];
-        $resultGetImages=mysql_query($queryGetImages) or $errorMsg=mysql_error();
+        $resultGetImages=mysqli_query($GLOBALS['con'],$queryGetImages) or $errorMsg=mysqli_error($GLOBALS['con']);
         $allImages=array();
         //for counting the number of rows for query result
-        if(mysql_num_rows($resultGetImages))
+        if(mysqli_num_rows($resultGetImages))
         {
-            while($images=mysql_fetch_assoc($resultGetImages))
+            while($images=mysqli_fetch_assoc($resultGetImages))
             {
                 $allImages[]=$images;
             }
@@ -1093,7 +1191,7 @@ class SocialFunctions
         return $response;
     }
     
-    
+
     public function getSecurirty($postData)
     {
     	$message ='';
@@ -1120,7 +1218,7 @@ class SocialFunctions
     
     /*
     * getConfigData
-    */
+     */
     public function getConfigData($postData)
     {
      	$status='';
@@ -1128,12 +1226,12 @@ class SocialFunctions
         $data=array();
         $response=array();
         
-     	$query = "SELECT config_key,config_value,value_unit FROM ".TABLE_ADMIN_CONFIG;
-        $result = mysql_query($query) or $message = mysql_error();
+     	$query = "SELECT config_key,config_value,value_unit FROM ".TABLE_ADMIN_CONFIG." WHERE is_delete=0";
+        $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
              
-        if(mysql_num_rows($result))
+        if(mysqli_num_rows($result))
         {
-             while($row=mysql_fetch_assoc($result))
+             while($row=mysqli_fetch_assoc($result))
             {
                     $data[]=$row;
             } 
@@ -1151,7 +1249,6 @@ class SocialFunctions
     }
     
    
-    
 
 
 	public function encryptionData($postData)
@@ -1162,12 +1259,12 @@ class SocialFunctions
         $data=array();
         $response=array();
         
-        $username = validateObject($postData, "username", "");
+        $username = validateObject($postData, username, "");
         $username = addslashes($username);
         
 		$query = "SELECT config_value FROM ".TABLE_ADMIN_CONFIG. " WHERE config_key='globalPassword'";
-        $result = mysql_query($query) or $message = mysql_error();
-        $secerectkey=mysql_fetch_row($result);
+        $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
+        $secerectkey=mysqli_fetch_row($result);
         
 		
 
@@ -1182,10 +1279,12 @@ class SocialFunctions
 
 
 	//$crypted = $this->fnEncrypt($_POST['username'], $aes256Key);
-	$crypted = fnEncrypt($username, $aes256Key);
-	
+	//$crypted = fnEncrypt($username, $aes256Key);
+        $security=new SecurityFunctions();
+        echo $crypted = $security->fnEncrypt($username, $aes256Key);
 
-	$data['encrypted']=$crypted;
+
+        $data['encrypted']=$crypted;
 	//$newClear = $this->fnDecrypt($crypted, $aes256Key);
 
 
@@ -1205,12 +1304,12 @@ class SocialFunctions
         $response=array();
         
         
-    $username = validateObject($postData, "username", "");
+    $username = validateObject($postData, username, "");
     $username = addslashes($username);
 	
 	$query = "SELECT config_value FROM ".TABLE_ADMIN_CONFIG. " WHERE config_key='globalPassword'";
-    $result = mysql_query($query) or $message = mysql_error();
-    $secerectkey=mysql_fetch_row($result);
+    $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
+    echo $secerectkey=mysqli_fetch_row($result);
  
 	// 32 byte binary blob
 	$aes256Key = hash("SHA256", $secerectkey[0], true);
@@ -1220,10 +1319,10 @@ class SocialFunctions
 	// generate random iv
 	$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
 
-	
+        $security=new SecurityFunctions();
 	//$newClear = $this->fnDecrypt($_POST['username'], $aes256Key);
-	$newClear = fnDecrypt($username, $aes256Key);
-		
+	$newClear = $security->fnDecrypt($username, $aes256Key);
+
 	
        $data['decrpted']=$newClear;
        
@@ -1233,6 +1332,10 @@ class SocialFunctions
        
        return $response;
 	}
+
+    /*
+   *  Hashtag
+   */
 
     public function hashTag($postData)
     {
@@ -1287,6 +1390,7 @@ class SocialFunctions
             $arrayTagsID[] = $arraySeparateKeyValue[1];
             $arrayTagsName[] = $arraySeparateKeyValue[0];
         }
+
         if($hashtag_data !=null) {
 
 
@@ -1294,12 +1398,12 @@ class SocialFunctions
             {
                 if($arrayTagsID[$i] == 0) {
 
-                    $selectQueryFotTagName = "SELECT id FROM " . TABLE_TAGS . " WHERE  LOWER(`tag_name`) = LOWER('$arrayTagsName[$i]')";
-                    $resultQueryFotTagName = mysql_query($selectQueryFotTagName) or $message = mysql_error();
-                    $getTagID = mysql_fetch_row($resultQueryFotTagName);
+                    $selectQueryFotTagName = "SELECT id FROM " . TABLE_TAGS . " WHERE  LOWER(`tag_name`) = LOWER('$arrayTagsName[$i]') AND is_delete=0";
+                    $resultQueryFotTagName = mysqli_query($GLOBALS['con'],$selectQueryFotTagName) or $message = mysqli_error($GLOBALS['con']);
+                    $getTagID = mysqli_fetch_row($resultQueryFotTagName);
 
-                    if (mysql_num_rows($resultQueryFotTagName) == 0) {
-                        // while ($rowGetTags = mysql_fetch_assoc($resultQueryFotTagName)) {
+                    if (mysqli_num_rows($resultQueryFotTagName) == 0) {
+                        // while ($rowGetTags = mysqli_fetch_assoc($resultQueryFotTagName)) {
 
                         //$found=in_array($rowGetTags['tag_name'],$arrayTagsName,true);
                         //echo $rowGetTags['tag_name'];
@@ -1309,15 +1413,16 @@ class SocialFunctions
 
 
                         $queryToInsertNewTag = "INSERT INTO " . TABLE_TAGS . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                        $resultToInsertNewTag = mysql_query($queryToInsertNewTag) or $message = mysql_error();
+                        $resultToInsertNewTag = mysqli_query($GLOBALS['con'],$queryToInsertNewTag) or $message = mysqli_error($GLOBALS['con']);
 
-                        $latest_tag_id = mysql_insert_id();
+                        $latest_tag_id = mysqli_insert_id($GLOBALS['con']);
 
                         $insertFields = "`tag_id`,`" . $resource_name . "`";
                         $insertValues = $latest_tag_id . "," . $resource_id;
 
+
                         $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                        $result = mysql_query($query) or $message = mysql_error();
+                        $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
 
                         if($result)
                         {
@@ -1332,17 +1437,17 @@ class SocialFunctions
                         //}
                     }
 
-                else {
+                    else {
 
-                        $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i];
-                        $resultQuery = mysql_query($selectQuery) or $message = mysql_error();
+                        $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i] ." AND is_delete=0";
+                        $resultQuery = mysqli_query($GLOBALS['con'],$selectQuery) or $message = mysqli_error($GLOBALS['con']);
 
-                        if (mysql_num_rows($resultQuery) == 0) {
+                        if (mysqli_num_rows($resultQuery) == 0) {
                             $insertFields = "`tag_id`,`" . $resource_name . "`";
                             $insertValues = $getTagID[0] . "," . $resource_id;
 
                             $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                            $result = mysql_query($query) or $message = mysql_error();
+                            $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
 
                             if($result)
                             {
@@ -1358,24 +1463,23 @@ class SocialFunctions
                         else
                         {
                             $status = "failed";
-                            $message = DEFAULT_NO_RECORDS;
+                            $message = RECORD_ALREADY_EXIST;
                         }
                     }
-
 
                 }
                 else {
 
-                    $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i];
-                    $resultQuery = mysql_query($selectQuery) or $message = mysql_error();
+                    $selectQuery = "SELECT * FROM " . $table . " WHERE " . $resource_name . " = " . $resource_id . " AND tag_id = " . $arrayTagsID[$i]." AND is_delete=0";
+                    $resultQuery = mysqli_query($GLOBALS['con'],$selectQuery) or $message = mysqli_error($GLOBALS['con']);
 
-                    if (mysql_num_rows($resultQuery) == 0) {
+                    if (mysqli_num_rows($resultQuery) == 0) {
 
-                         $insertFields = "`tag_id`,`" . $resource_name . "`";
-                         $insertValues = $arrayTagsID[$i] . "," . $resource_id;
+                        $insertFields = "`tag_id`,`" . $resource_name . "`";
+                        $insertValues = $arrayTagsID[$i] . "," . $resource_id;
 
-                         $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
-                         $result = mysql_query($query) or $message = mysql_error();
+                        $query = "INSERT INTO " . $table . "(" . $insertFields . ") VALUES (" . $insertValues . ")";
+                        $result = mysqli_query($GLOBALS['con'],$query) or $message = mysqli_error($GLOBALS['con']);
 
                         if($result)
                         {
@@ -1387,11 +1491,11 @@ class SocialFunctions
                             $status = "failed";
                             $message = DEFAULT_NO_RECORDS;
                         }
-                     }
+                    }
                     else
                     {
                         $status = "failed";
-                        $message = DEFAULT_NO_RECORDS;
+                        $message = RECORD_ALREADY_EXIST;
                     }
                 }
 
@@ -1409,17 +1513,20 @@ class SocialFunctions
         return $response;
     }
 
+    /*
+     * Get All Hashtag
+     */
     public function getAllHashtag($postData)
     {
         $data=array();
         $response=array();
 
-        $tagQuery="SELECT id as 'tag_id',tag_name as 'tag' FROM ".TABLE_TAGS." ORDER BY id";
-        $tagResult=mysql_query($tagQuery) or  $message=mysql_error();
+        $tagQuery="SELECT id as 'tag_id',tag_name as 'tag' FROM ".TABLE_TAGS." WHERE is_delete=0 ORDER BY id";
+        $tagResult=mysqli_query($GLOBALS['con'],$tagQuery) or  $message=mysqli_error($GLOBALS['con']);
 
         if($tagResult) {
-            if (mysql_num_rows($tagResult)) {
-                while ($rowGetTags = mysql_fetch_assoc($tagResult)) {
+            if (mysqli_num_rows($tagResult)) {
+                while ($rowGetTags = mysqli_fetch_assoc($tagResult)) {
                     $data[] = $rowGetTags;
                 }
             }
@@ -1437,6 +1544,7 @@ class SocialFunctions
 
         return $response;
     }
+
 }
 
 ?>
