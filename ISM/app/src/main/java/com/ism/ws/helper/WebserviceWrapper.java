@@ -172,6 +172,9 @@ public class WebserviceWrapper {
                         case WebConstants.GET_MY_FEEDS:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_MY_FEEDS).execute(ResponseHandler.class, attribute);
                             break;
+                        case WebConstants.MANAGE_BOOK_LIBRARY:
+                            responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_BOOK_LIBRARY).execute(ResponseHandler.class, attribute);
+                            break;
                     }
                 }
             } catch (Exception e) {

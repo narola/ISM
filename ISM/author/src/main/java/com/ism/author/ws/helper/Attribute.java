@@ -103,7 +103,47 @@ public class Attribute {
     private String hashtagData;
     private String resourceId;
     private String resourceType;
+    private ArrayList<String> addBookId;
+    private ArrayList<String> removeBookId;
+    private String resourceName;
+    private ArrayList<String> unfavoriteResourceId;
+    private ArrayList<String> favResourceId;
 
+    public ArrayList<String> getUnfavoriteResourceId() {
+        return this.unfavoriteResourceId;
+    }
+    @JsonProperty("unfavorite_resource_id")
+    public void setUnfavoriteResourceId(ArrayList<String> unfavoriteResourceId) {
+        this.unfavoriteResourceId = unfavoriteResourceId;
+    }
+    public ArrayList<String> getFavResourceId() {
+        return this.favResourceId;
+    }
+    @JsonProperty("fav_resource_id")
+    public void setFavResourceId(ArrayList<String> favResourceId) {
+        this.favResourceId = favResourceId;
+    }
+    public String getQuestionid() {
+        return questionid;
+    }
+
+    @JsonProperty("question_id")
+    public Attribute setQuestionid(String questionid) {
+        this.questionid = questionid;
+        return this;
+    }
+
+    private String questionid;
+
+
+
+    public String getResourceName() {
+        return resourceName;
+    }
+    @JsonProperty("resource_name")
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
+    }
 
     public String getFeedId() {
         return this.feedId;
@@ -477,14 +517,14 @@ public class Attribute {
         return studentId;
     }
 
-    public ArrayList<String> getQuestionId() {
-        return this.questionId;
-    }
-
-    @JsonProperty("question_id")
-    public void setQuestionId(ArrayList<String> questionId) {
-        this.questionId = questionId;
-    }
+//    public ArrayList<String> getQuestionId() {
+//        return this.questionId;
+//    }
+//
+//    @JsonProperty("question_id")
+//    public void setQuestionId(ArrayList<String> questionId) {
+//        this.questionId = questionId;
+//    }
 
     @JsonProperty("email_id")
     public void setEmailId(String emailId) {
@@ -879,5 +919,21 @@ public class Attribute {
     @JsonProperty("resource_type")
     public void setResourceType(String resourceType) {
         this.resourceType = resourceType;
+    }
+    public void setRemoveBookId(ArrayList<String> removeBookId) {
+        this.removeBookId = removeBookId;
+    }
+    @JsonProperty("remove_book_id")
+    public ArrayList<String> getRemoveBookId() {
+        return removeBookId;
+    }
+    @JsonProperty("add_book_id")
+    public ArrayList<String> getAddBookId() {
+        return addBookId;
+    }
+
+    public void setAddBookId(ArrayList<String> addBookId) {
+
+        this.addBookId = addBookId;
     }
 }

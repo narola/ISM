@@ -9,19 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ism.R;
 import com.ism.activity.HostActivity;
+import com.ism.activity.HostActivity.AddToFavouriteListner;
 import com.ism.adapter.FavoriteBooksAdapter;
 import com.ism.adapter.SuggestedBookAdapter;
 import com.ism.constant.AppConstant;
 import com.ism.constant.WebConstants;
 import com.ism.object.Global;
-import com.ism.object.MyTypeFace;
 import com.ism.utility.Debug;
 import com.ism.utility.Utility;
 import com.ism.views.HorizontalListView;
@@ -29,19 +28,16 @@ import com.ism.ws.helper.Attribute;
 import com.ism.ws.helper.ResponseHandler;
 import com.ism.ws.helper.WebserviceWrapper;
 import com.ism.ws.model.BookData;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
 /**
  * Created by c162 on 09/11/15.
  */
-public class BooksFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener, AdapterView.OnItemClickListener, SuggestedBookAdapter.AddToFavouriteListner {
+public class BooksFragment extends Fragment implements WebserviceWrapper.WebserviceResponse, View.OnClickListener,HostActivity.AddToLibraryListner, AddToFavouriteListner {
 
     private static final String TAG = BooksFragment.class.getSimpleName();
-    ImageLoader imageLoader;
     private View view;
-    private MyTypeFace myTypeFace;
     private HostActivity activityHost;
     public static HorizontalListView listViewFavBooks;
     FavoriteBooksAdapter favoriteBooksAdapter;
@@ -59,14 +55,48 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     private EditText etFavSearch;
     private ImageView imgSuggestedSearch;
     private EditText etSuggestedSearch;
+    private int resourceId;
+    private boolean favourite;
+    ArrayList<String> arrayListFav = new ArrayList<String>();
+    ArrayList<String> arrayListUnFav = new ArrayList<String>();
+    ArrayList<String> arrayListAddBooksToLibrary = new ArrayList<String>();
+    ArrayList<String> arrayListRemoveBooksFromLibrary = new ArrayList<String>();
+    private HostActivity.AddToLibraryListner addToLibraryListner;
 
     public static BooksFragment newInstance() {
         BooksFragment fragment = new BooksFragment();
         return fragment;
     }
 
+    @Override
+    public void onAddToLibrary(String id) {
+        Debug.i(TAG, "onAddToLibrary" + id);
+        try {
+            //callApiGetBooksForUser();
+            arrayListAddBooksToLibrary.add(id);
+
+        } catch (Exception e) {
+            Debug.e(TAG, "onAddToLibrary Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public void onRemoveFromLibrary(String id) {
+        Debug.i(TAG, "onRemoveFromLibrary" + id);
+        try {
+            //callApiGetBooksForUser();
+            arrayListRemoveBooksFromLibrary.add(id);
+
+        } catch (Exception e) {
+            Debug.e(TAG, "onRemoveFromLibrary Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+
+
     public BooksFragment() {
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,8 +111,6 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
 
     private void initGlobal() {
 
-        myTypeFace = new MyTypeFace(getActivity());
-
         txtFavEmpty = (TextView) view.findViewById(R.id.txt_fav_empty);
         txtSuggestedEmpty = (TextView) view.findViewById(R.id.txt_suggested_empty);
         txtSuggestedBooks = (TextView) view.findViewById(R.id.txt_read_books);
@@ -92,10 +120,10 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         imgSuggestedSearch = (ImageView) view.findViewById(R.id.img_search_suggested);
         etSuggestedSearch = (EditText) view.findViewById(R.id.et_search_suggested);
         //set typeface
-        txtFavEmpty.setTypeface(myTypeFace.getRalewayRegular());
-        txtSuggestedEmpty.setTypeface(myTypeFace.getRalewayRegular());
-        txtFavBooks.setTypeface(myTypeFace.getRalewayRegular());
-        txtSuggestedBooks.setTypeface(myTypeFace.getRalewayRegular());
+        txtFavEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtSuggestedEmpty.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtFavBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
+        txtSuggestedBooks.setTypeface(Global.myTypeFace.getRalewayRegular());
 
         listViewFavBooks = (HorizontalListView) view.findViewById(R.id.lv_fav_books);
         listViewSuggestedBooks = (HorizontalListView) view.findViewById(R.id.lv_suggested_books);
@@ -190,27 +218,6 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         }
     }
 
-//    private void onResponseAddResourceToFavorite(Object object, Exception error) {
-//        try {
-//            activityHost.hideProgress();
-//            if (object != null) {
-//                ResponseHandler responseHandler = (ResponseHandler) object;
-//                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
-//                    arrayListFavBooks.add(arrayListSuggestedBooks.get(addToFavItem));
-//                    arrayListSuggestedBooks.remove(addToFavItem);
-//                    Debug.i(TAG, "onResponseAddResourceToFavorite success");
-//                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
-//                    Debug.i(TAG, "onResponseAddResourceToFavorite Failed");
-//                }
-//            } else if (error != null) {
-//                Debug.i(TAG, "onResponseAddResourceToFavorite api Exception : " + error.toString());
-//            }
-//        } catch (Exception e) {
-//            Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
-//        }
-//    }
-
-
     @Override
     public void onResponse(Object object, Exception error, int apiCode) {
 
@@ -222,11 +229,33 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 case WebConstants.MANAGE_FAVOURITES:
                     onResponseAddResourceToFavorite(object, error);
                     break;
+                case WebConstants.MANAGE_BOOK_LIBRARY:
+                    onResponseManageLibrary(object, error);
+                    break;
             }
         } catch (Exception e) {
             Log.e(TAG, "onResponse Exception : " + e.toString());
         }
 
+    }
+
+    private void onResponseManageLibrary(Object object, Exception error) {
+        try {
+            activityHost.hideProgress();
+            if (object != null) {
+                responseHandler = (ResponseHandler) object;
+                if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
+
+                    Debug.i(TAG, "onResponseManageLibrary success");
+                } else if (responseHandler.getStatus().equals(WebConstants.FAILED)) {
+                    Log.i(TAG, "onResponseManageLibrary Failed");
+                }
+            } else if (error != null) {
+                Log.i(TAG, "onResponseManageLibrary api Exception : " + error.toString());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onResponseManageLibrary Exception : " + e.toString());
+        }
     }
 
 
@@ -257,7 +286,7 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
             if (!arrayListFavBooks.isEmpty()) {
                 txtFavEmpty.setVisibility(View.GONE);
                 listViewFavBooks.setVisibility(View.VISIBLE);
-                favoriteBooksAdapter = new FavoriteBooksAdapter(getActivity(), arrayListFavBooks);
+                favoriteBooksAdapter = new FavoriteBooksAdapter(getActivity(), arrayListFavBooks, this);
                 listViewFavBooks.setAdapter(favoriteBooksAdapter);
                 favoriteBooksAdapter.notifyDataSetChanged();
 
@@ -315,23 +344,17 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (view.getId()) {
-//            case R.id.lv_suggested_books:
-//
-//                break;
-        }
-
-    }
 
     @Override
     public void onAddToFav(int addToFavItem) {
         Debug.i(TAG, "OnAddToFav" + addToFavItem);
         try {
-            // callApiGetBooksForUser();
+            //callApiGetBooksForUser();
+            arrayListFav.add(arrayListSuggestedBooks.get(addToFavItem).getBookId());
             arrayListFavBooks.add(arrayListSuggestedBooks.get(addToFavItem));
-            arrayListSuggestedBooks.remove(addToFavItem);
+            arrayListSuggestedBooks.remove(resourceId);
+            setVisibilityItems(txtFavEmpty, listViewFavBooks, arrayListFavBooks.size());
+            setVisibilityItems(txtSuggestedEmpty, listViewSuggestedBooks, arrayListSuggestedBooks.size());
 
         } catch (Exception e) {
             Debug.e(TAG, "onAddToFav Exception : " + e.getLocalizedMessage());
@@ -339,9 +362,29 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
     }
 
     @Override
+    public void onRemoveFromFav(int position) {
+        Debug.i(TAG, "onRemoveFromFav" + position);
+        try {
+            callApiAddResourceToFav();
+            arrayListUnFav.add(arrayListFavBooks.get(position).getBookId());
+            arrayListSuggestedBooks.add(arrayListFavBooks.get(position));
+            arrayListFavBooks.remove(position);
+            setVisibilityItems(txtFavEmpty, listViewFavBooks, arrayListFavBooks.size());
+            setVisibilityItems(txtSuggestedEmpty, listViewSuggestedBooks, arrayListSuggestedBooks.size());
+
+        } catch (Exception e) {
+            Debug.e(TAG, "onRemoveFromFav Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
-        callApiAddResourceToFav();
+        if (arrayListFav.size() != 0 || arrayListUnFav.size() != 0)
+            callApiAddResourceToFav();
+        if (arrayListAddBooksToLibrary.size() != 0 || arrayListRemoveBooksFromLibrary.size() != 0)
+            callApiManageLibrary();
+
     }
 
     private void callApiAddResourceToFav() {
@@ -350,17 +393,37 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 activityHost.showProgress();
                 Attribute attribute = new Attribute();
                 attribute.setUserId(Global.strUserId);
-                if (suggestedBooksAdapter == null)
+                if (arrayListFav == null)
                     attribute.setFavResourceId(new ArrayList<String>());
-                else
-                    attribute.setFavResourceId(suggestedBooksAdapter.getUnFavResourceIds());// get all resource ids from suggested list to add resource ids in user favourites
-                if (favoriteBooksAdapter == null)
+                else {
+                    attribute.setFavResourceId(arrayListFav);// get all resource ids from suggested list to add resource ids in user favourites
+                }
+                if (arrayListUnFav == null)
                     attribute.setUnfavoriteResourceId(new ArrayList<String>());// get All the resource ids from favourite list to add resource id in user unfavourites
-                else
-                    attribute.setUnfavoriteResourceId(favoriteBooksAdapter.getUnFavResourceIds());// get All the resource ids from favourite list to add resource id in user unfavourites
+                else {
+                    attribute.setUnfavoriteResourceId(arrayListUnFav);// get All the resource ids from favourite list to add resource id in user unfavourites
+                }
                 attribute.setResourceName(AppConstant.RESOURCE_BOOKS);
                 Debug.i(TAG, "Attributes object :" + attribute);
                 new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_FAVOURITES);
+            } else {
+                Utility.alertOffline(getActivity());
+            }
+        } catch (Exception e) {
+            Debug.i(TAG, "callApiAddResourceToFav Exception : " + e.getLocalizedMessage());
+        }
+    }
+
+    private void callApiManageLibrary() {
+        try {
+            if (Utility.isConnected(getActivity())) {
+                activityHost.showProgress();
+                Attribute attribute = new Attribute();
+                attribute.setUserId(Global.strUserId);
+                attribute.setAddBookId(arrayListAddBooksToLibrary);
+                attribute.setRemoveBookId(arrayListAddBooksToLibrary);
+                Debug.i(TAG, "Attributes object :" + attribute);
+                new WebserviceWrapper(getActivity(), attribute, this).new WebserviceCaller().execute(WebConstants.MANAGE_BOOK_LIBRARY);
             } else {
                 Utility.alertOffline(getActivity());
             }
@@ -377,6 +440,9 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
                 ResponseHandler responseHandler = (ResponseHandler) object;
                 if (responseHandler.getStatus().equals(WebConstants.SUCCESS)) {
                     Debug.i(TAG, "onResponseAddResourceToFavorite success");
+                    // arrayListFav=new ArrayList<>();
+                    // arrayListUnFav=new ArrayList<>();
+
 //                    addToFavouriteListner.onAddToFav(addToFavItem);
 //                    suggestedBooksAdapter.setFavResourceIds(new ArrayList<String>());
 //                    favoriteBooksAdapter.setUnFavResourceIds(new ArrayList<String>());
@@ -388,6 +454,18 @@ public class BooksFragment extends Fragment implements WebserviceWrapper.Webserv
             }
         } catch (Exception e) {
             Debug.e(TAG, "onResponseAddResourceToFavorite Exception : " + e.toString());
+        }
+    }
+
+    private void setVisibilityItems(TextView txtEmpty, HorizontalListView listView, int size) {
+        favoriteBooksAdapter.notifyDataSetChanged();
+        suggestedBooksAdapter.notifyDataSetChanged();
+        if (size == 0) {
+            txtEmpty.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+        } else {
+            txtEmpty.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
         }
     }
 

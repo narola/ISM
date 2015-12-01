@@ -24,7 +24,15 @@ public class BookData {
     private String description;
     private String bookName;
     private ArrayList<Tags> tags;
+    private String isLibrary;
 
+    public String getIsLibrary() {
+        return isLibrary;
+    }
+
+    public void setIsLibrary(String isLibrary) {
+        this.isLibrary = isLibrary;
+    }
 
     @JsonProperty("ebook_link")
     public String getEbookLink() {

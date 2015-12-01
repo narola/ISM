@@ -206,8 +206,19 @@ public class WebserviceWrapper {
                         case WebConstants.SETHASHTAG:
                             responseObject = new WebserviceConnector(WebConstants.URL_HASHTAG).execute(ResponseHandler.class, attribute);
                             break;
+                        case WebConstants.TEMPCREATEQUESTION:
+                            responseObject = new WebserviceConnector(WebConstants.URL_TEMPCREATEQUESTION).execute(ResponseHandler.class, attribute);
+                            break;
                         case WebConstants.GET_BOOKS_FOR_USER:
                             responseObject = new WebserviceConnector(WebConstants.URL_GET_BOOKS_FOR_USER).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.GET_ABOUT_ME:
+                            responseObject = new WebserviceConnector(WebConstants.URL_GET_ABOUT_ME).execute(ResponseHandler.class, attribute);
+                            break;
+                        case WebConstants.MANAGE_FAVOURITES:
+                            responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_FAVOURITES).execute(ResponseHandler.class, attribute);
+                            break; case WebConstants.MANAGE_BOOK_LIBRARY:
+                            responseObject = new WebserviceConnector(WebConstants.URL_MANAGE_BOOK_LIBRARY).execute(ResponseHandler.class, attribute);
                             break;
 
                     }

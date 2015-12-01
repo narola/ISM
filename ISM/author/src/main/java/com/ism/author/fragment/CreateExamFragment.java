@@ -91,13 +91,6 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     String examStartDate = "", examEndDate = "", strAssignmenttext = "";
     private InputValidator inputValidator;
 
-    public static String ARG_EXAM_CLASSROOM_ID = "examClassRoomId";
-    public static String ARG_EXAM_SUBJECT_ID = "examSubjectId";
-    public static String ARG_EXAM_TOPIC_ID = "examTopicId";
-    public static String ARG_EXAM_QUESTION_SCORE = "examQuestionScore";
-    public static String ARG_EXAM_BOOK_ID = "examBookId";
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_create_exam, container, false);
@@ -277,11 +270,17 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
         if (getArguments() != null) {
             setExamDetails();
             btnExamSetquestion.setVisibility(View.VISIBLE);
+            spExamSubjectname.setEnabled(false);
+            spExamExammode.setEnabled(false);
+
+            /*we cant change the exam mode and subject for that particular exam if it once created*/
         } else {
-//            btnExamSetquestion.setVisibility(View.GONE);
+            btnExamSetquestion.setVisibility(View.GONE);
+
         }
         callApiGetClassrooms();
         callApiGetSubjects();
+
 
     }
 
@@ -289,7 +288,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     private void setExamDetails() {
 
         etExamName.setText(getArguments().getString(ExamsAdapter.ARG_EXAM_NAME));
-        spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(ExamsAdapter.ARG_PASS_PERCENTAGE)));
+        spExamPassingpercent.setSelection(arrListPassingPercent.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE)));
         setExamType(getArguments().getString(ExamsAdapter.ARG_EXAM_TYPE));
         spExamExamCategory.setSelection(arrListExamCategory.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_CATEGORY)));
         spExamExammode.setSelection(arrListExamMode.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_MODE)));
@@ -589,7 +588,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     }
                     Adapters.setUpSpinner(mContext, spExamClassroom, classrooms, Adapters.ADAPTER_NORMAL);
                     if (getArguments() != null) {
-                        spExamClassroom.setSelection(classrooms.indexOf(getArguments().getString(ExamsAdapter.ARG_CLASSROOM_NAME)));
+                        spExamClassroom.setSelection(classrooms.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME)));
                     }
 
 
@@ -622,7 +621,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     Adapters.setUpSpinner(mContext, spExamSubjectname, subjects, Adapters.ADAPTER_NORMAL);
 
                     if (getArguments() != null) {
-                        spExamSubjectname.setSelection(subjects.indexOf(getArguments().getString(ExamsAdapter.ARG_SUBJECT_NAME)));
+                        spExamSubjectname.setSelection(subjects.indexOf(getArguments().getString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME)));
                     }
                 } else if (responseHandler.getStatus().equals(ResponseHandler.FAILED)) {
                     Utils.showToast(responseHandler.getMessage(), mContext);
@@ -671,6 +670,8 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
                     Utils.showToast(Utility.getString(R.string.msg_success_createexam, mContext), mContext);
                     btnExamSetquestion.setVisibility(View.VISIBLE);
 
+                    Debug.e(TAG, "The Created ExamId is::" + responseHandler.getCreateExam().get(0).getExamId());
+
                     if (getArguments() != null) {
                         getArguments().putString(ExamsAdapter.ARG_EXAM_ID, responseHandler.getCreateExam().get(0).getExamId());
                     } else {
@@ -711,7 +712,7 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private void backToTrialScreen() {
-        ((AuthorHostActivity) mContext).onBackPressed();
+//        ((AuthorHostActivity) mContext).onBackPressed();
     }
 
     @Override
@@ -735,19 +736,33 @@ public class CreateExamFragment extends Fragment implements WebserviceWrapper.We
     }
 
     private void setBundleArguments() {
+
+
         try {
-            getArguments().putString(ARG_EXAM_CLASSROOM_ID, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
+            getArguments().putString(ExamsAdapter.ARG_EXAM_NAME, etExamName.getText().toString());
+            getArguments().putString(ExamsAdapter.ARG_EXAM_CLASSROOM_ID, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
                     Integer.parseInt(arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getId()) : 0));
-            getArguments().putString(ARG_EXAM_SUBJECT_ID, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
+            getArguments().putString(ExamsAdapter.ARG_EXAM_CLASSROOM_NAME, String.valueOf(spExamClassroom.getSelectedItemPosition() > 0 ?
+                    Integer.parseInt(arrListClassRooms.get(spExamClassroom.getSelectedItemPosition() - 1).getClassName()) : 0));
+            getArguments().putString(ExamsAdapter.ARG_EXAM_SUBJECT_ID, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
                     Integer.parseInt(arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getId()) : 0));
-            getArguments().putString(ARG_EXAM_TOPIC_ID, "5");
-            getArguments().putString(ARG_EXAM_BOOK_ID, "3");
-            getArguments().putString(ARG_EXAM_QUESTION_SCORE, etExamQuestionscorevalue.getText().toString().equals("") ?
-                    "0" : etExamQuestionscorevalue.getText().toString());
-            getArguments().putString(ExamsAdapter.ARG_SUBJECT_NAME,
-                    arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName());
+            getArguments().putString(ExamsAdapter.ARG_EXAM_SUBJECT_NAME, String.valueOf(spExamSubjectname.getSelectedItemPosition() > 0 ?
+                    Integer.parseInt(arrListSubject.get(spExamSubjectname.getSelectedItemPosition() - 1).getSubjectName()) : 0));
+            getArguments().putString(ExamsAdapter.ARG_EXAM_TOPIC_ID, "");
+            getArguments().putString(ExamsAdapter.ARG_EXAM_TOPIC_NAME, "");
+            getArguments().putString(ExamsAdapter.ARG_EXAM_BOOK_ID, "");
+            getArguments().putString(ExamsAdapter.ARG_EXAM_BOOK_NAME, "");
+            getArguments().putString(ExamsAdapter.ARG_EXAM_CATEGORY, arrListExamCategory.get(spExamExamCategory.getSelectedItemPosition()));
+            getArguments().putString(ExamsAdapter.ARG_EXAM_TYPE, getExamType());
             getArguments().putString(ExamsAdapter.ARG_EXAM_MODE,
                     arrListExamMode.get(spExamExammode.getSelectedItemPosition()));
+            getArguments().putString(ExamsAdapter.ARG_EXAM_DURATION,
+                    arrListExamDuration.get(spExamExamduration.getSelectedItemPosition()));
+            getArguments().putString(ExamsAdapter.ARG_EXAM_NO, "0");
+            getArguments().putString(ExamsAdapter.ARG_EXAM_PASS_PERCENTAGE, arrListPassingPercent.get(spExamPassingpercent.getSelectedItemPosition()));
+            getArguments().putString(ExamsAdapter.ARG_EXAM_QUESTION_SCORE, etExamQuestionscorevalue.getText().toString());
+            getArguments().putString(ExamsAdapter.ARG_EXAM_CREATED_DATE, "");
+
         } catch (Exception e) {
             Debug.e(TAG, "SetBundleArgumentsException : " + e.toString());
         }

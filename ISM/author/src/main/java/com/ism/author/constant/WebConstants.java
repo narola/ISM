@@ -47,7 +47,7 @@ public class WebConstants {
     public static final int CREATEQUESTION = 30;
     public static final int GETALLHASHTAG = 31;
     public static final int SETHASHTAG = 32;
-
+    public static final int TEMPCREATEQUESTION = 33;
     //user settings preferences
     public static final int GENERAL_SETTING_PREFERENCES = 51;
     public static final int GET_USER_PREFERENCES = 52;
@@ -60,6 +60,8 @@ public class WebConstants {
     public static final int GET_MY_FEEDS =58 ;
     public static final int GET_ABOUT_ME = 59;
     public static final int GET_BOOKS_FOR_USER = 60;
+    public static final int MANAGE_FAVOURITES = 61;
+    public static final int MANAGE_BOOK_LIBRARY = 62;
     /*webservice url*/
     public static final String URL_LOGIN = URL_KINJAL_HOST + "AuthenticateUser";
     public static final String URL_FORGOTPASSWORD = URL_KINJAL_HOST + "ForgotPassword";
@@ -80,18 +82,17 @@ public class WebConstants {
     public static final String URL_GETTOPICS = URL_KINJAL_HOST + "GetTopics";
     public static final String URL_CREATEASSIGNMENT = URL_KINJAL_HOST + "CreateAssignment";
     public static final String URL_POSTFEED = URL_KINJAL_HOST + "PostFeed";
-
     public static final String URL_GETCOURSES = URL_KINJAL_HOST + "GetCourses";
     public static final String URL_CREATEEXAM = URL_KINJAL_HOST + "CreateExam";
     public static final String URL_GETQUESTIONBANK = URL_KINJAL_HOST + "GetQuestionBank";
     public static final String URL_GETALLEXAM = URL_KINJAL_HOST + "GetAllExams";
-
     public static final String URL_HASHTAG = URL_KINJAL_HOST + "Hashtag";
     public static final String URL_GETEXAMSUBMISSION = URL_ARTI_HOST + "GetExamSubmission";
     public static final String URL_GETEXAMEVALUATIONS = URL_KINJAL_HOST + "GetExamEvaluation";
     public static final String URL_GETEXAMQUESTIONS = URL_ARTI_HOST + "GetExamQuestions";
     public static final String URL_SETQUESTIONSFOREXAM = URL_KINJAL_HOST + "SetQuestionsForExam";
     public static final String URL_GETALLASSIGNMENTS = URL_KINJAL_HOST + "GetAllExams";
+    public static final String URL_TEMPCREATEQUESTION = URL_KINJAL_HOST + "TempCreateQuestion";
     public static final String URL_USER_PREFERENCES = URL_KINJAL_HOST + "GetUserPreferences";
     public static final String URL_GENERAL_SETTING_PREFERENCES = URL_KINJAL_HOST + "GetAllPreferences";
     public static final String URL_MANAGE_GENERAL_SETTING = URL_KINJAL_HOST + "ManageGeneralSettings";
@@ -102,21 +103,17 @@ public class WebConstants {
     public static final String URL_CREATEQUESTION = URL_KINJAL_HOST + "CreateQuestion";
     public static final String URL_GETALLHASHTAG = URL_KINJAL_HOST + "GetAllHashtag";
     public static final String URL_RESPOND_TO_REQUEST = URL_KINJAL_HOST + "AcceptRequestFromStudymate";
-
     public static final String URL_UPDATE_READ_STATUS = URL_KINJAL_HOST + "UpdateReadStatus"; // studymate_request, messages, notification
     public static final String URL_GET_HIGH_SCORERS = URL_KINJAL_HOST + "GetHighScorers";
     public static final String URL_GET_ALL_BADGES_COUNT = URL_KINJAL_HOST + "GetAllBadgeCount";
-
     /*status for apisuccess ans apifailed*/
-    public static final String URL_GET_WALLET_SUMMARY = URL_KINJAL_HOST + "GetWalletSummary";
+    public static final String URL_MANAGE_FAVOURITES = URL_KINJAL_HOST + "ManageFavorite";
     public static final String URL_GET_MY_FEEDS = URL_KINJAL_HOST + "GetMyFeeds";
+    public static final String URL_MANAGE_BOOK_LIBRARY =  URL_KINJAL_HOST + "ManageBookLibrary";
     public static final String URL_GET_ABOUT_ME =  URL_KINJAL_HOST + "GetAboutMe";
     public static final String URL_GET_BOOKS_FOR_USER =  URL_KINJAL_HOST + "GetBooksForUser";
-
     /*status for apisuccess ans apifailed*/
     public static final String SUCCESS = "success";
-
-
     public static final String FAILED = "failed";
     public static final String STATUS_SUCCESS = "success";
     public static final String STATUS_FAILED = "failed";
@@ -129,8 +126,6 @@ public class WebConstants {
      */
     public static final String STUDYMATE_REQUEST = "studymate_request";
     public static final String MESSAGES = "messages";
-
-
     public static final String NOTIFICATION = "notification";
     public static final String ROLE_ALL = "all";
     public static final String ROLE_STUDENT = "student";
